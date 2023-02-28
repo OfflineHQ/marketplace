@@ -5,7 +5,8 @@
     "eslint-config-prettier",
     "plugin:markdown/recommended",
     "plugin:json/recommended",
-    "plugin:sonarjs/recommended"
+    "plugin:sonarjs/recommended",
+    "plugin:storybook/recommended"
   ],
   "overrides": [
     {

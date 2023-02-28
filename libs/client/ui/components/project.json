@@ -23,7 +23,6 @@
     "storybook": {
       "executor": "@nrwl/storybook:storybook",
       "options": {
-        "uiFramework": "@storybook/react",
         "port": 4402,
         "configDir": "libs/client/ui/components/.storybook"
       },
@@ -37,7 +36,6 @@
       "executor": "@nrwl/storybook:build",
       "outputs": ["{options.outputDir}"],
       "options": {
-        "uiFramework": "@storybook/react",
         "configDir": "libs/client/ui/components/.storybook",
         "outputDir": "dist/storybook/ui-components"
       },

@@ -1,35 +1,19 @@
-import type { StorybookConfig } from '@storybook/core-common';
-import { propNames } from '@chakra-ui/react';
-// https://github.com/chakra-ui/chakra-ui/issues/2009#issuecomment-852793946
-const excludedPropNames = propNames.concat(['as', 'apply', 'sx', '__css']);
-
+import type { StorybookConfig } from '@storybook/react-webpack5';
 export const rootMain: StorybookConfig = {
+  // TODO include all stories
   stories: [],
-  addons: ['@storybook/addon-essentials', '@storybook/addon-interactions'],
-  features: {
-    interactionsDebugger: true, // 👈 Enable playback controls
+  addons: [
+    '@storybook/addon-essentials',
+    '@storybook/addon-interactions',
+    '@nrwl/react/plugins/storybook',
+  ],
+  framework: {
+    name: '@storybook/react-webpack5',
+    options: {},
   },
-  typescript: {
-    check: false,
-    checkOptions: {},
-    reactDocgen: 'react-docgen-typescript',
-    reactDocgenTypescriptOptions: {
-      compilerOptions: {
-        allowSyntheticDefaultImports: false,
-        esModuleInterop: false,
-      },
-      shouldExtractLiteralValuesFromEnum: true,
-      propFilter: (prop) => {
-        const isStyledSystemProp = excludedPropNames.includes(prop.name);
-        const isHTMLElementProp = prop.parent?.fileName.includes('node_modules') ?? false;
-        return !(isStyledSystemProp || isHTMLElementProp);
-      },
-    },
+  docs: {
+    autodocs: true,
   },
-  // webpackFinal: async (config, { configType }) => {
-  //   // Make whatever fine-grained changes you need that should apply to all storybook configs
-
-  //   // Return the altered config
-  //   return config;
-  // },
 };
+
+export default rootMain;
