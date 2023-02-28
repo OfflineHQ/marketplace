@@ -34,7 +34,7 @@ jobs:
         pnpm exec nx-cloud record -- pnpm docker:test & pnpm docker:services
         # pnpm exec nx-cloud record -- pnpm docker:hasura-test-logs
         # pnpm exec nx-cloud record -- pnpm docker:hasura-engine-logs
-        NX_CLOUD_DISTRIBUTED_EXECUTION=false pnpm nx is-services-launched
+        NX_CLOUD_DISTRIBUTED_EXECUTION=false pnpm nx is-services-launched web
 
       parallel-commands: |
         pnpm nx format:check --verbose
