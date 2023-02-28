@@ -1,7 +1,7 @@
 import { Box, Button, Code, Flex, Image, Link } from '@chakra-ui/react';
 import { AiFillGithub } from 'react-icons/ai';
 
-const repoLink = 'https://github.com/sebpalluel/web3-monorepo';
+const repoLink = 'https://github.com/sebpalluel/offline';
 
 const CTASection = () => {
   return (
@@ -11,7 +11,7 @@ const CTASection = () => {
           aria-label="Deploy to Vercel"
           isExternal
           rel="noopener noreferrer"
-          href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsebpalluel%2Fweb3-monorepo&env=NEXT_PUBLIC_SENTRY_DSN,SENTRY_DSN,NEXTAUTH_URL,NEXTAUTH_SECRET,GOOGLE_CLIENT_SECRET,GOOGLE_CLIENT_ID,GITHUB_SECRET,GITHUB_ID,NX_CACHE_DIRECTORY,TOKEN_LIFE_TIME&build-command=pnpm%20nx%20build%20web%20--prod&output-directory=dist%2Fapps%2Fweb%2F.next"
+          href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsebpalluel%2Foffline&env=NEXT_PUBLIC_SENTRY_DSN,SENTRY_DSN,NEXTAUTH_URL,NEXTAUTH_SECRET,GOOGLE_CLIENT_SECRET,GOOGLE_CLIENT_ID,GITHUB_SECRET,GITHUB_ID,NX_CACHE_DIRECTORY,TOKEN_LIFE_TIME&build-command=pnpm%20nx%20build%20web%20--prod&output-directory=dist%2Fapps%2Fweb%2F.next"
         >
           <Image src="https://vercel.com/button" alt="Vercel deploy button" />
         </Link>
@@ -20,7 +20,7 @@ const CTASection = () => {
           aria-label="Deploy to Netlify"
           isExternal
           rel="noopener noreferrer"
-          href="https://app.netlify.com/start/deploy?repository=https://github.com/sebpalluel/web3-monorepo"
+          href="https://app.netlify.com/start/deploy?repository=https://github.com/sebpalluel/offline"
         >
           <Image
             src="https://www.netlify.com/img/deploy/button.svg"
@@ -30,13 +30,13 @@ const CTASection = () => {
       </Flex>
 
       <Box marginY={2}>
-        <Code>npx degit sebpalluel/web3-monorepo {'<YOUR_APP_NAME>'}</Code>
+        <Code>npx degit sebpalluel/offline {'<YOUR_APP_NAME>'}</Code>
         <br />
 
         <Button
           marginTop={2}
           as="a"
-          href="https://github.com/sebpalluel/web3-monorepo/generate"
+          href="https://github.com/sebpalluel/offline/generate"
           target="_blank"
           size="sm"
         >
@@ -61,7 +61,7 @@ const CTASection = () => {
         <Link href={repoLink} isExternal rel="noopener noreferrer">
           <Image
             align="center"
-            src="https://img.shields.io/github/stars/sebpalluel/web3-monorepo?style=social"
+            src="https://img.shields.io/github/stars/sebpalluel/offline?style=social"
             alt="github stars"
           />
         </Link>

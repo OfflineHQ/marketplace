@@ -26,7 +26,7 @@
           "build-storybook"
         ],
         "parallel": true,
-        "accessToken": "OGM4NWRjYzAtZTg2MS00ZTEzLWE3MjEtODlmZTM3NWU2YWYzfHJlYWQtd3JpdGU=",
+        "accessToken": "ZDQ1ZGNjY2YtODBkNy00MzgwLThmNDktOGI3Y2Y1ZWEyOWUyfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": true,
         "showUsageWarning": true
       }
@@ -38,7 +38,7 @@
     }
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "web3-monorepo",
+  "npmScope": "offline",
   "affected": {
     "defaultBase": "main"
   },

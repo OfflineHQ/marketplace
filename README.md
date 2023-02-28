@@ -1,13 +1,13 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/11297176/195363494-6cc53b41-958d-4493-88b3-2cbfc65a2594.png" width="50%"></p>
 
-[![CodeFactor](https://www.codefactor.io/repository/github/sebpalluel/web3-monorepo/badge)](https://www.codefactor.io/repository/github/sebpalluel/web3-monorepo)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_web3-monorepo&metric=alert_status)](https://sonarcloud.io/dashboard?id=sebpalluel_web3-monorepo) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_web3-monorepo&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=sebpalluel_web3-monorepo) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_web3-monorepo&metric=bugs)](https://sonarcloud.io/dashboard?id=sebpalluel_web3-monorepo) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_web3-monorepo&metric=code_smells)](https://sonarcloud.io/dashboard?id=sebpalluel_web3-monorepo) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_web3-monorepo&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=sebpalluel_web3-monorepo) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![CodeFactor](https://www.codefactor.io/repository/github/sebpalluel/offline/badge)](https://www.codefactor.io/repository/github/sebpalluel/offline)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_offline&metric=alert_status)](https://sonarcloud.io/dashboard?id=sebpalluel_offline) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_offline&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=sebpalluel_offline) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_offline&metric=bugs)](https://sonarcloud.io/dashboard?id=sebpalluel_offline) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_offline&metric=code_smells)](https://sonarcloud.io/dashboard?id=sebpalluel_offline) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_offline&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=sebpalluel_offline) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 ---
 
 > **All you need to start your web3 service, 🔋 included.**
 
-> **This project has been deployed using [Vercel](https://vercel.com/), [Hasura Cloud](https://hasura.io/cloud/) and [Railway.app](https://railway.app/). You can check it out [here](https://www.web3-monorepo.app/). For more information about the deployment process, check the [deployment section](./production/README.md) 🚀.**
+> **This project has been deployed using [Vercel](https://vercel.com/), [Hasura Cloud](https://hasura.io/cloud/) and [Railway.app](https://railway.app/). You can check it out [here](https://www.offline.app/). For more information about the deployment process, check the [deployment section](./production/README.md) 🚀.**
 
 ## Quick install
 
@@ -23,9 +23,9 @@
 
 ## Project structure
 
-**View in [NX Graph](https://sebpalluel.github.io/web3-monorepo/?groupByFolder=true&select=all)**
+**View in [NX Graph](https://sebpalluel.github.io/offline/?groupByFolder=true&select=all)**
 
-[![name](https://user-images.githubusercontent.com/11297176/207392383-8f817b50-d646-4586-870e-d6bf53481577.png)](https://sebpalluel.github.io/web3-monorepo/?groupByFolder=true&select=all)
+[![name](https://user-images.githubusercontent.com/11297176/207392383-8f817b50-d646-4586-870e-d6bf53481577.png)](https://sebpalluel.github.io/offline/?groupByFolder=true&select=all)
 
 ### Access to the services and app URLs locally
 
@@ -176,8 +176,8 @@ This repo has some additional tools already setup for you:
 
 Looking for a specific feature ? We have a few flavors 🍦 to choose from:
 
-- [with_waltid_idpkit](/sebpalluel/web3-monorepo/tree/with_waltid_idpkit): a flavor that uses the [WaltID IDPKit](https://walt.id/idp-kit) to provide sign-in in with a DID.
-- [with_web2_signin](/sebpalluel/web3-monorepo/tree/with_web2_signin): a flavor that uses the common Web2 sign-in methods such as OAuth or Email/Password.
+- [with_waltid_idpkit](/sebpalluel/offline/tree/with_waltid_idpkit): a flavor that uses the [WaltID IDPKit](https://walt.id/idp-kit) to provide sign-in in with a DID.
+- [with_web2_signin](/sebpalluel/offline/tree/with_web2_signin): a flavor that uses the common Web2 sign-in methods such as OAuth or Email/Password.
 
 ## Libraries
 
@@ -439,7 +439,7 @@ The Nestjs and Nextjs Apps uses [Alchemy](https://alchemy.com/?r=ba8fc42476de40a
 ALCHEMY_ETHEREUM_MAINNET_TOKEN=
 ALCHEMY_POLYGON_MAINNET_TOKEN=
 ALCHEMY_ARBITRUM_MAINNET_TOKEN=
-# Warning ! Those api keys are going to get leaked in the client side code so it's advised to set ALLOWLIST DOMAIN in the alchemy dashboard to your apex domain (in our case www.web3-monorepo.app) in order to avoid someone hijacking your api keys. By default a public rpc network is used for the client side code so you don't need to set those api keys if you don't want to.
+# Warning ! Those api keys are going to get leaked in the client side code so it's advised to set ALLOWLIST DOMAIN in the alchemy dashboard to your apex domain (in our case www.offline.app) in order to avoid someone hijacking your api keys. By default a public rpc network is used for the client side code so you don't need to set those api keys if you don't want to.
 # NEXT_APP_ALCHEMY_ETHEREUM_MAINNET_TOKEN=
 # NEXT_APP_ALCHEMY_POLYGON_MAINNET_TOKEN=
 # NEXT_APP_ALCHEMY_ARBITRUM_MAINNET_TOKEN=

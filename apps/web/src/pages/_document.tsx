@@ -5,7 +5,7 @@ import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 import theme from '@client/ui/theme';
 
-const APP_NAME = 'web3-monorepo';
+const APP_NAME = 'offline';
 
 class MyDocument extends Document {
   static getInitialProps(ctx: DocumentContext) {

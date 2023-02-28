@@ -37,7 +37,6 @@ jobs:
         NX_CLOUD_DISTRIBUTED_EXECUTION=false pnpm nx is-services-launched
 
       parallel-commands: |
-        pnpm nx workspace-lint
         pnpm nx format:check --verbose
         ## test relying in prisma + hasura not working in parallel, docker services not available ?
         pnpm nx affected --target=test-prisma --ci --code-coverage

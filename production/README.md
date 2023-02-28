@@ -34,7 +34,7 @@ Sign up for a [free Sentry account](https://sentry.io/signup/) and create a new 
 
 Click on the button below to deploy the web app to Vercel. This will create a new Vercel project and deploy the web app to it.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsebpalluel%2Fweb3-monorepo&env=NEXT_PUBLIC_SENTRY_DSN,SENTRY_DSN,NEXTAUTH_URL,NEXTAUTH_SECRET,GOOGLE_CLIENT_SECRET,GOOGLE_CLIENT_ID,GITHUB_SECRET,GITHUB_ID,NX_CACHE_DIRECTORY,TOKEN_LIFE_TIME&build-command=pnpm%20nx%20build%20web%20--prod&output-directory=dist%2Fapps%2Fweb%2F.next)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsebpalluel%2Foffline&env=NEXT_PUBLIC_SENTRY_DSN,SENTRY_DSN,NEXTAUTH_URL,NEXTAUTH_SECRET,GOOGLE_CLIENT_SECRET,GOOGLE_CLIENT_ID,GITHUB_SECRET,GITHUB_ID,NX_CACHE_DIRECTORY,TOKEN_LIFE_TIME&build-command=pnpm%20nx%20build%20web%20--prod&output-directory=dist%2Fapps%2Fweb%2F.next)
 
 1. Give the name of your project and click on the `Create` button. It will create a copy of the repository on your Github account.
 
@@ -106,7 +106,7 @@ TOKEN_LIFE_TIME=2592000
 
 <img width="1920" alt="dashboard after creation" src="https://user-images.githubusercontent.com/11297176/208073299-fd38cf26-7e89-47c0-896f-260c981b0048.png">
 
-You should now be able to access your web app at the default domain provided by Vercel, here the default production domain is `web3-monorepo-test.vercel.app`.
+You should now be able to access your web app at the default domain provided by Vercel, here the default production domain is `offline-test.vercel.app`.
 
 ## Deploy Nestjs server + Postgres & Redis to Railway.app
 
@@ -210,7 +210,7 @@ Because we are using Next Auth and there is no secure way to send the authentica
 
 The easiest way to do this is to [buy a domain in vercel](https://vercel.com/domains) to point to your project.
 
-Once you have done that you will need to configure the DNS on your domain. In our case we are using `www.web3-monorepo.app` as the domain we bought in vercel.
+Once you have done that you will need to configure the DNS on your domain. In our case we are using `www.offline.app` as the domain we bought in vercel.
 
 **Warning ! You will need to adapt the DNS settings and subsequent URLs linking to the services with the domain of your choice**.
 
@@ -226,26 +226,26 @@ CAA 0 issue "digicert.com"
 
 2. [Go to Settings of your Hasura cloud project](https://cloud.hasura.io/projects) in the `Domains` tab and click on the `New Custom Domain` button.
 
-3. Type the subdomain you want to use for your Hasura project and click on the `Add` button. In our case we are using `hasura.web3-monorepo.app`. Keep the tab open as you will need to copy the `Default Hasura Domain` value as `CNAME` and check if the custom domain worked.
+3. Type the subdomain you want to use for your Hasura project and click on the `Add` button. In our case we are using `hasura.offline.app`. Keep the tab open as you will need to copy the `Default Hasura Domain` value as `CNAME` and check if the custom domain worked.
 
 4. Go back to the DNS configuration page of your domain and add the following records:
 
 ```bash
-### This will create a subdomain for the hasura cloud instance, in our case it's hasura.web3-monorepo.app that we link to the default domain provided by hasura
-hasura CNAME web3-monorepo.hasura.app
+### This will create a subdomain for the hasura cloud instance, in our case it's hasura.offline.app that we link to the default domain provided by hasura
+hasura CNAME offline.hasura.app
 ```
 
 As a result, your Custom domain should be validated after a few minutes on the `Domains` tab of your Hasura Cloud project.
 
 <img width="1203" alt="As a result, your Custom domain should be validated after a few minutes on the `Domains` tab of your Hasura Cloud project" src="https://user-images.githubusercontent.com/11297176/208074394-c8dfc48d-aa06-4b90-b185-678cea2635d1.png">
 
-5. [Go to the Railway dashboard](https://railway.app/dashboard), select your project, next your app and click on the `Settings` tab. Then click on the `Custom Domain` button. Type the subdomain you want to use for your Nestjs server app and click on the `Add` button. In our case we are using `nestjs-server.web3-monorepo.app`. Keep the tab open as you will need to copy the default domain value as `CNAME` and check if the custom domain worked.
+5. [Go to the Railway dashboard](https://railway.app/dashboard), select your project, next your app and click on the `Settings` tab. Then click on the `Custom Domain` button. Type the subdomain you want to use for your Nestjs server app and click on the `Add` button. In our case we are using `nestjs-server.offline.app`. Keep the tab open as you will need to copy the default domain value as `CNAME` and check if the custom domain worked.
 
 6. Go back to the DNS configuration page of your domain and add the following records:
 
 ```bash
-### This will create a subdomain for the nestjs server instance, in our case it's nestjs-server.web3-monorepo.app that we link to the default domain provided by Railway
-nestjs-server CNAME web3-monorepo-nestjs-server-production.up.railway.app
+### This will create a subdomain for the nestjs server instance, in our case it's nestjs-server.offline.app that we link to the default domain provided by Railway
+nestjs-server CNAME offline-nestjs-server-production.up.railway.app
 ```
 
 The result on Railway should look like this:
@@ -256,13 +256,13 @@ Congrats ! You have now setup your DNS to point to your Hasura and Nestjs server
 
 ### Update your env variables on Railway, Hasura and Vercel
 
-1. Go to the `Settings` tab of your Railway app and update the `HASURA_PROJECT_ENDPOINT` env variable with the value corresponding to your hasura endpoint. In our case `https://hasura.web3-monorepo.app`. This will setup CORS on the nestjs-server to allow communication coming only from your hasura cloud server.
+1. Go to the `Settings` tab of your Railway app and update the `HASURA_PROJECT_ENDPOINT` env variable with the value corresponding to your hasura endpoint. In our case `https://hasura.offline.app`. This will setup CORS on the nestjs-server to allow communication coming only from your hasura cloud server.
 
 2. Go to the `Settings` of your [Hasura cloud project](https://cloud.hasura.io/projects) in the `Env vars` tab and enter/edit the following env variables:
 
 ```bash
 ### This is the CORS policy to accept connection only with the URL of the server app running on Railway and your client app running on Vercel + the Hasura cloud instance
-HASURA_GRAPHQL_CORS_DOMAIN=https://www.web3-monorepo.app,https://nestjs-server.web3-monorepo.app,https://cloud.hasura.io
+HASURA_GRAPHQL_CORS_DOMAIN=https://www.offline.app,https://nestjs-server.offline.app,https://cloud.hasura.io
 
 ### This is the JWT settings for Hasura to validate the JWT token sent by the client app. You will need to copy the public key from the rsa key pair you have generated in the previous step. Use this command to format correctly the "key" and paste it as a value surrounded with "" : `awk -v ORS='\\n' '1' jwtRS256.key.pub | pbcopy`
 
@@ -299,7 +299,7 @@ HASURA_GRAPHQL_JWT_SECRET={
 }
 
 # This is the URL of the Nestjs server app running on Railway
-NEST_API_URL=https://nestjs-server.web3-monorepo.app
+NEST_API_URL=https://nestjs-server.offline.app
 
 # This is the postgresql url of your neon hosted database, you can find it in the neon dashboard or in the env already linked to your Hasura cloud project, NEON_DATABASE_URL
 HASURA_GRAPHQL_DATABASE_URL=postgres://...
@@ -314,12 +314,12 @@ After this, Hasura should deploy with the updated variables and you shouldn't ha
 3. Go to the `Settings` tab of your Vercel project and update the following env variables
 
 ```bash
-# This is the URL of your Hasura cloud graphql api, In our case it's https://hasura.web3-monorepo.app/v1/graphql
+# This is the URL of your Hasura cloud graphql api, In our case it's https://hasura.offline.app/v1/graphql
 # be sure to set it to the subdomain of your client app running in production, otherwise your requests will not contain the session cookie containing the JWT token and you will not be able to get request from Hasura
 HASURA_PROJECT_ENDPOINT=
 NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=
 
-# This is the URL of your client app running in production, In our case it's https://www.web3-monorepo.app. Set this variable only for production to avoid issues on other environments. The VERCEL_URL variable is automatically set by Vercel but it's safer to set it manually for production.
+# This is the URL of your client app running in production, In our case it's https://www.offline.app. Set this variable only for production to avoid issues on other environments. The VERCEL_URL variable is automatically set by Vercel but it's safer to set it manually for production.
 NEXTAUTH_URL=
 
 ## OAuth providers you can use optionally to login to your app. Once set you will see the login buttons on the sign in page.
