@@ -33,7 +33,7 @@
         }
       }
     },
-    "build-storybook": {
+    "storybook-build": {
       "executor": "@nrwl/storybook:build",
       "outputs": ["{options.outputDir}"],
       "options": {
