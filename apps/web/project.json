@@ -116,7 +116,7 @@
         }
       }
     },
-    "storybook-build": {
+    "build-storybook": {
       "executor": "@nrwl/storybook:build",
       "outputs": ["{options.outputDir}"],
       "options": {

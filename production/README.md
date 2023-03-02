@@ -65,7 +65,7 @@ Click on the button below to deploy the web app to Vercel. This will create a ne
     "affected:test",
     "e2e",
     "affected:e2e",
-    "storybook-build"
+    "build-storybook"
   ]
 }
 ```

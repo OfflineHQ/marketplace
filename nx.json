@@ -23,7 +23,7 @@
           "affected:test",
           "e2e",
           "affected:e2e",
-          "storybook-build"
+          "build-storybook"
         ],
         "parallel": true,
         "accessToken": "ZDQ1ZGNjY2YtODBkNy00MzgwLThmNDktOGI3Y2Y1ZWEyOWUyfHJlYWQtd3JpdGU=",
@@ -65,7 +65,7 @@
     "test": {
       "inputs": ["noMarkdown", "^noMarkdown"]
     },
-    "storybook-build": {
+    "build-storybook": {
       "inputs": ["default", "^default", "{workspaceRoot}/.storybook/**/*"]
     },
     "e2e": {

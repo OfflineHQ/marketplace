@@ -6,6 +6,7 @@
     "nx": "nx",
     "serve": "nx run-many --target=serve --all",
     "start": "npm-run-all --parallel serve docker:services",
+    "lint": "nx workspace-lint && nx lint",
     "format": "nx format:write",
     "format:write": "nx format:write",
     "format:check": "nx format:check",
@@ -34,7 +35,7 @@
     "docker:hasura-test-logs": "docker-compose -f tools/test/docker-compose.yml --env-file tools/test/.env.test.jest logs -f hasura-engine-test",
     "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\"",
     "cypress": "cypress",
-    "build-storybook": "nx run-many --target=storybook-build --all",
+    "build-storybook": "nx run-many --target=build-storybook --all",
     "chromatic": "npx chromatic --project-token=cbd146078cb4",
     "storybook-main": "nx run storybook-main:storybook",
     "storybook-composition": "nx run storybook-main:storybook-composition",
@@ -268,8 +269,5 @@
   "_id": "offline@0.0.0",
   "msw": {
     "workerDirectory": "apps/nestjs-server/src"
-  },
-  "nx": {
-    "targets": {}
   }
 }
