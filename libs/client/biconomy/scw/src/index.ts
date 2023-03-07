@@ -1,1 +1,1 @@
-export { default } from './lib/scw';
+export { default } from './lib/useScw';

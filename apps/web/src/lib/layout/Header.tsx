@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, useBreakpointValue, Button, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, useBreakpointValue } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import styles from './header.module.css';
@@ -13,15 +13,15 @@ import { Suspense } from 'react';
 export function HeaderContent({ session }) {
   // we need to instantiate this component dynamically to avoid SSR,
   // otherwise we get an issue with window and the generated code from biconomy
-  const SocialLoginDynamic = dynamic(
-    () => import('@client/biconomy/scw').then((res) => res.default),
+  const BiconomyDynamic = dynamic(
+    () => import('../components/Biconomy').then((res) => res.default),
     {
       ssr: false,
     }
   );
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <SocialLoginDynamic />
+      <BiconomyDynamic />
     </Suspense>
   );
 }
