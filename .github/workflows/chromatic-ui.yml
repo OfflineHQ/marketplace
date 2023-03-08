@@ -53,8 +53,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Install dependencies and build storybook
-        run: pnpm install && pnpm nx run ui-components:build-storybook
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Publish to Chromatic
         uses: chromaui/action@v1
@@ -64,3 +64,4 @@ jobs:
           storybookBuildDir: dist/storybook/ui-components
           exitZeroOnChanges: true
           onlyChanged: true
+          buildScriptName: build-storybook:ui
