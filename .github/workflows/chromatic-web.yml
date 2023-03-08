@@ -63,7 +63,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           projectToken: ${{ secrets.CHROMATIC_WEB_PROJECT_TOKEN }}
-          storybookBuildDir: dist/storybook/web
           exitZeroOnChanges: true
           onlyChanged: true
           buildScriptName: build-storybook:web

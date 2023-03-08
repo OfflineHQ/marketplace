@@ -61,7 +61,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           projectToken: ${{ secrets.CHROMATIC_UI_PROJECT_TOKEN }}
-          storybookBuildDir: dist/storybook/ui-components
           exitZeroOnChanges: true
           onlyChanged: true
           buildScriptName: build-storybook:ui
