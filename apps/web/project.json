@@ -121,7 +121,8 @@
       "outputs": ["{options.outputDir}"],
       "options": {
         "configDir": "apps/web/.storybook",
-        "outputDir": "dist/storybook/web"
+        "outputDir": "dist/storybook/web",
+        "webpackStatsJson": true
       },
       "configurations": {
         "ci": {
