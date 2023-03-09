@@ -32,7 +32,8 @@ import { publicProvider } from 'wagmi/providers/public';
 import defaultSEOConfig from '../../next-seo.config';
 import { Chakra } from '../lib/components/Chakra';
 import Layout from '../lib/layout';
-import '../lib/styles/globals.css';
+
+import '../styles/globals.css';
 
 const web3_providers: ChainProviderFn[] = [publicProvider()];
 /* TODO Get error here on production build, need to check if it's a bug in wagmi or nextjs (maybe try wagmi 0.9 with InjectedConnector)

@@ -9,6 +9,9 @@ const SomeText = () => {
 
   return (
     <Grid gap={2}>
+      <h1 className="text-3xl font-bold underline decoration-indigo-500/30">
+        Hello, Next.js!
+      </h1>
       <Heading as="h2" fontSize={{ base: 'lg', sm: '3xl' }}>
         Hello
       </Heading>
