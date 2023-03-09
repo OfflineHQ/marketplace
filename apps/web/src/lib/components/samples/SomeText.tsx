@@ -9,7 +9,7 @@ const SomeText = () => {
   });
 
   return (
-    <Grid gap={2}>
+    <Grid gap={2} className="format lg:format-lg">
       <Alert color="info">Alert!</Alert>
 
       <Dropdown label="Dropdown button">
@@ -18,9 +18,7 @@ const SomeText = () => {
         <Dropdown.Item>Earnings</Dropdown.Item>
         <Dropdown.Item>Sign out</Dropdown.Item>
       </Dropdown>
-      <h1 className="text-3xl font-bold underline decoration-indigo-500/30">
-        Hello, Next.js!
-      </h1>
+      <h2 className="font-bold underline decoration-indigo-500/30 ">Hello, Next.js!</h2>
       <Heading as="h2" fontSize={{ base: 'lg', sm: '3xl' }}>
         Hello
       </Heading>

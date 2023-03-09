@@ -1,5 +1,4 @@
 const { join } = require('path');
-const colors = require('tailwindcss/colors');
 
 // const { createGlobPatternsForDependencies } = require('@nrwl/next/tailwind')
 const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
@@ -28,5 +27,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require('flowbite/plugin')],
+  plugins: [require('flowbite/plugin'), require('flowbite-typography')],
 };

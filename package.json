@@ -234,6 +234,7 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-sonarjs": "^0.16.0",
     "eslint-plugin-storybook": "^0.6.11",
+    "flowbite-typography": "^1.0.3",
     "graphql": "^16.6.0",
     "graphql-config": "^4.5.0",
     "husky": "^8.0.3",
