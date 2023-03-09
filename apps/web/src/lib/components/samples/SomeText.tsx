@@ -1,4 +1,5 @@
 import { Box, Grid, Heading, useBreakpointValue, useColorMode } from '@chakra-ui/react';
+import { Alert, Dropdown } from 'flowbite-react';
 
 const SomeText = () => {
   const { colorMode } = useColorMode();
@@ -9,6 +10,14 @@ const SomeText = () => {
 
   return (
     <Grid gap={2}>
+      <Alert color="info">Alert!</Alert>
+
+      <Dropdown label="Dropdown button">
+        <Dropdown.Item>Dashboard</Dropdown.Item>
+        <Dropdown.Item>Settings</Dropdown.Item>
+        <Dropdown.Item>Earnings</Dropdown.Item>
+        <Dropdown.Item>Sign out</Dropdown.Item>
+      </Dropdown>
       <h1 className="text-3xl font-bold underline decoration-indigo-500/30">
         Hello, Next.js!
       </h1>
