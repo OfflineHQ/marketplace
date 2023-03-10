@@ -120,6 +120,7 @@ specifiers:
   chromatic: ^6.17.1
   class-transformer: ^0.5.1
   class-validator: ^0.14.0
+  class-variance-authority: ^0.4.0
   coingecko-api-v3: 0.0.13
   core-js: ^3.29.0
   crypto-js: ^4.1.1
@@ -246,6 +247,7 @@ dependencies:
   chalk: 4.1.0
   class-transformer: 0.5.1
   class-validator: 0.14.0
+  class-variance-authority: 0.4.0_typescript@4.9.5
   coingecko-api-v3: 0.0.13
   core-js: 3.29.0
   crypto-js: 4.1.1
@@ -14585,6 +14587,17 @@ packages:
       '@types/validator': 13.7.12
       libphonenumber-js: 1.10.21
       validator: 13.9.0
+
+  /class-variance-authority/0.4.0_typescript@4.9.5:
+    resolution: {integrity: sha512-74enNN8O9ZNieycac/y8FxqgyzZhZbxmCitAtAeUrLPlxjSd5zA7LfpprmxEcOmQBnaGs5hYhiSGnJ0mqrtBLQ==}
+    peerDependencies:
+      typescript: '>= 4.5.5 < 5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 4.9.5
+    dev: false
 
   /classic-level/1.2.0:
     resolution: {integrity: sha512-qw5B31ANxSluWz9xBzklRWTUAJ1SXIdaVKTVS7HcTGKOAmExx65Wo5BUICW+YGORe2FOUaDghoI9ZDxj82QcFg==}
