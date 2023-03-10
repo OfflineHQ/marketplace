@@ -1,50 +1,76 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-
-import { within, userEvent } from '@storybook/testing-library';
-
 import { expect } from '@storybook/jest';
-import { Button } from './Button';
-import { theme } from '@chakra-ui/react';
-import { getThemingArgTypes } from '@chakra-ui/storybook-addon';
+import type { Meta, StoryObj } from '@storybook/react';
+import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
+import { HiOutlineArrowRight } from 'react-icons/hi';
 import { delayData } from '@test-utils/functions';
 
-const Story: ComponentMeta<typeof Button> = {
-  component: Button,
+import { Button } from './Button';
+
+const meta = {
   title: 'Atoms/Button',
-};
-export default Story;
+  component: Button,
+} satisfies Meta<typeof Button>;
 
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+export default meta;
 
-export const Primary = Template.bind({});
-Primary.argTypes = {
-  ...getThemingArgTypes(theme, 'Button'),
-  children: { type: 'string' },
-};
-Primary.args = {
-  action: async () => await delayData(2000, null),
-  children: 'Button',
-};
+type Story = StoryObj<typeof meta>;
 
-export const Clicked = Template.bind({});
-Clicked.args = {
-  action: async () => await delayData(2000, null),
-  children: 'Button being clicked',
-};
-Clicked.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  await userEvent.click(canvas.getByRole('button'));
-  // // 👇 Assert DOM structure
-  await expect(canvas.getByText('Button being clicked')).not.toBeVisible();
-};
+export const Primary = {
+  args: {
+    txt: 'Primary',
+    outline: false,
+    size: 'md',
+  },
+} satisfies Story;
 
-export const Loading = Template.bind({});
-Loading.args = {
-  isLoading: true,
-  children: 'External loading',
-};
+export const Secondary = {
+  args: {
+    txt: 'Secondary',
+    outline: true,
+    size: 'md',
+  },
+} satisfies Story;
 
-Loading.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  await expect(canvas.getByText('External loading')).not.toBeVisible();
-};
+export const WithIcon = {
+  args: {
+    txt: 'Button with Icon',
+    outline: false,
+    size: 'md',
+    icon: HiOutlineArrowRight,
+  },
+} satisfies Story;
+
+export const WithClick = {
+  args: {
+    txt: 'Button with Click',
+    outline: false,
+    size: 'md',
+    action: () => delayData(2000, null),
+  },
+} satisfies Story;
+
+export const WithClickAndLoading = {
+  args: {
+    txt: 'Button with Click and Loading',
+    outline: false,
+    size: 'md',
+    action: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    },
+  },
+} satisfies Story;
+
+export const WithTestClick = {
+  args: {
+    txt: 'Button with Click and Loading',
+    action: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    },
+  },
+  play: async ({ canvasElement, controls }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button'));
+    // Check that the spinner is present
+    expect(screen.queryByRole('status')).toBeInTheDocument();
+  },
+} satisfies Story;

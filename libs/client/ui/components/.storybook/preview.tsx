@@ -1,5 +1,5 @@
 import theme from '@client/ui/theme';
-import { Container } from '@chakra-ui/react';
+import './globals.css';
 
 export const parameters = {
   chakra: {
@@ -7,10 +7,10 @@ export const parameters = {
   },
 };
 
-export const decorators = [
-  (Story: any) => (
-    <Container mt="40px" display="flex" flexWrap="wrap" centerContent gap="4">
-      <Story />
-    </Container>
-  ),
-];
+// export const decorators = [
+//   (Story: any) => (
+//     <Container mt="40px" display="flex" flexWrap="wrap" centerContent gap="4">
+//       <Story />
+//     </Container>
+//   ),
+// ];
