@@ -259,6 +259,7 @@
     "prettier-plugin-prisma": "^4.10.0",
     "react-test-renderer": "18.2.0",
     "start-server-and-test": "^1.15.4",
+    "storybook-dark-mode": "^2.1.1",
     "swc-loader": "0.1.15",
     "ts-jest": "29.0.5",
     "ts-node": "10.9.1",

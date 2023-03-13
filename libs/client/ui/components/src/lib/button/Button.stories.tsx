@@ -17,60 +17,87 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary = {
   args: {
-    txt: 'Primary',
+    children: 'Primary',
     outline: false,
-    size: 'md',
   },
 } satisfies Story;
 
 export const Secondary = {
   args: {
-    txt: 'Secondary',
+    children: 'Secondary',
     outline: true,
-    size: 'md',
+  },
+} satisfies Story;
+
+export const Disabled = {
+  args: {
+    children: 'Disabled button',
+    disabled: true,
+  },
+} satisfies Story;
+
+export const Loading = {
+  args: {
+    children: 'Button with Loading',
+    action: () => delayData(3000, null),
+    isLoading: true,
   },
 } satisfies Story;
 
 export const WithIcon = {
   args: {
-    txt: 'Button with Icon',
-    outline: false,
-    size: 'md',
+    children: 'Button with Icon',
     icon: HiOutlineArrowRight,
-  },
-} satisfies Story;
-
-export const WithClick = {
-  args: {
-    txt: 'Button with Click',
-    outline: false,
-    size: 'md',
-    action: () => delayData(2000, null),
-  },
-} satisfies Story;
-
-export const WithClickAndLoading = {
-  args: {
-    txt: 'Button with Click and Loading',
-    outline: false,
-    size: 'md',
-    action: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-    },
+    action: () => delayData(3000, null),
   },
 } satisfies Story;
 
 export const WithTestClick = {
   args: {
-    txt: 'Button with Click and Loading',
-    action: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    },
+    children: 'Button with Click and Loading',
+    action: () => delayData(1000, null),
   },
   play: async ({ canvasElement, controls }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole('button'));
     // Check that the spinner is present
     expect(screen.queryByRole('status')).toBeInTheDocument();
+  },
+} satisfies Story;
+
+export const SecondaryWithIconRight = {
+  args: {
+    children: 'Secondary with Icon Right',
+    outline: true,
+    iconRight: HiOutlineArrowRight,
+    action: () => delayData(3000, null),
+  },
+} satisfies Story;
+
+export const SecondaryWithIconRightLoading = {
+  args: {
+    children: 'Secondary with Icon Right and Loading',
+    outline: true,
+    iconRight: HiOutlineArrowRight,
+    action: () => delayData(3000, null),
+    isLoading: true,
+  },
+} satisfies Story;
+
+export const Small = {
+  args: {
+    children: 'Small',
+    size: 'sm',
+    icon: HiOutlineArrowRight,
+    action: () => delayData(3000, null),
+  },
+} satisfies Story;
+
+export const ExtraSmall = {
+  args: {
+    children: 'Extra Small',
+    size: 'xs',
+    icon: HiOutlineArrowRight,
+    action: () => delayData(3000, null),
   },
 } satisfies Story;

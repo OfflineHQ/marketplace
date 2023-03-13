@@ -12,6 +12,7 @@ module.exports = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/addon-a11y',
+    'storybook-dark-mode',
     '@chakra-ui/storybook-addon',
   ],
   framework: {
@@ -24,7 +25,7 @@ module.exports = {
     storyStoreV7: !isCI,
   },
   docs: {
-    autodocs: 'tag',
+    autodocs: true,
   },
   webpackFinal: async (config, { configType }) => {
     // Add tsconfig-paths-webpack-plugin to the resolve.plugins array

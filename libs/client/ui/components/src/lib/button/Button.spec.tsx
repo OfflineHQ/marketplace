@@ -3,7 +3,7 @@ import { composeStories } from '@storybook/testing-react';
 import * as stories from './Button.stories'; // import all stories from the stories file
 
 // Every component that is returned maps 1:1 with the stories, but they already contain all decorators from story level, meta level and global level.
-const { Primary } = composeStories(stories);
+const { Primary, WithTestClick } = composeStories(stories);
 
 describe('Button', () => {
   test('renders primary button with default args', () => {
@@ -18,7 +18,7 @@ describe('Button', () => {
   });
   test('onclick handler is called', () => {
     const onClickSpy = jest.fn();
-    render(<Primary onClick={onClickSpy} />);
+    render(<WithTestClick action={onClickSpy} />);
     const buttonElement = screen.getByRole('button');
     buttonElement.click();
     expect(onClickSpy).toHaveBeenCalled();

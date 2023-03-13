@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useMemo } from 'react';
 import type { VariantProps } from 'class-variance-authority';
-import { cva, cx } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
+import { iconCVA } from '@client/ui/shared';
 
 import {
   Button as FlowbiteButton,
@@ -10,7 +10,31 @@ import {
   Spinner,
 } from 'flowbite-react';
 
-interface ButtonProps extends FlowbiteButtonProps {
+export const buttonCVA = cva('button', {
+  variants: {
+    intent: {
+      primary: ['bg-blue-500', 'text-white', 'border-transparent', 'hover:bg-blue-600'],
+      secondary: ['bg-white', 'text-gray-800', 'border-gray-400', 'hover:bg-gray-100'],
+    },
+    size: {
+      xs: ['text-xs', 'py-0', 'px-1'],
+      sm: ['text-sm', 'py-1', 'px-2'],
+      md: ['text-base', 'py-2', 'px-4'],
+      lg: ['text-lg', 'py-3', 'px-6'],
+    },
+  },
+  compoundVariants: [{ intent: 'primary', size: 'md', class: 'uppercase' }],
+  defaultVariants: {
+    intent: 'primary',
+    size: 'md',
+  },
+});
+
+type ExtendedProps = VariantProps<typeof buttonCVA> & {
+  size?: keyof ButtonSizes;
+} & FlowbiteButtonProps;
+
+interface ButtonProps extends ExtendedProps {
   action?: () => void;
   txt?: string;
   isLoading?: boolean;
@@ -18,78 +42,39 @@ interface ButtonProps extends FlowbiteButtonProps {
   iconRight?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
-// export interface ButtonProps
-//   extends FlowbiteButtonProps,
-//     Omit<ButtonVariantProps, 'required'>,
-//     Required<Pick<ButtonVariantProps, 'required'>> {}
-
-// export type ButtonVariantProps = VariantProps<typeof buttonVariants>;
-// export const buttonVariants = cva('…', {
-//   variants: {
-//     optional: {  },
-//     required: { a: '…', b: '…' },
-//   },
-// });
-
-const getSizeClasses = (size: keyof ButtonSizes | undefined) => {
-  switch (size) {
-    case 'sm': {
-      return 'px-4 py-2.5';
-    }
-    case 'lg': {
-      return 'px-6 py-3';
-    }
-    default: {
-      return 'px-5 py-2.5';
-    }
-  }
-};
-
-// const getModeClasses = (isPrimary: boolean) =>
-//   isPrimary
-//     ? 'text-white bg-pink-600 border-pink-600 dark:bg-pink-700 dark:border-pink-700'
-//     : 'text-slate-700 bg-transparent border-slate-700 dark:text-white dark:border-white';
-
-// const BASE_BUTTON_CLASSES =
-//   'cursor-pointer rounded-full border-2 font-bold leading-none inline-block';
-
 export function Button(props: ButtonProps): JSX.Element {
-  const { action, isLoading, size, ...rest } = props;
+  const { children, action, isLoading, size, intent, icon, iconRight, ...rest } = props;
 
   const [loading, setLoading] = useState(false);
+  const _loading = isLoading || loading;
 
-  const computedClasses = useMemo(() => {
-    // const modeClass = getModeClasses(primary);
-    // return [modeClass, sizeClass].join(' ');
-    return getSizeClasses(size);
-  }, [size]);
+  // TODO maybe use later
+  const button = buttonCVA({ intent, size });
 
   // a function that await for the action to be completed
   const handleClick = async (action: (() => void) | undefined) => {
-    if (action) {
+    if (action && !_loading) {
       try {
-        console.log('loading');
         setLoading(true);
         await action();
       } finally {
-        console.log('not loading');
         setLoading(false);
       }
     }
   };
   const content = () => {
-    const [LeftIcon, RightIcon] = [props.icon, props.iconRight];
-    const _loading = isLoading || loading;
+    const [LeftIcon, RightIcon] = [icon, iconRight];
+    const _icon = iconCVA({ size });
     return (
       <>
         {_loading ? (
           <div className="mr-3">
-            <Spinner size={size} />{' '}
+            <Spinner size="sm" />
           </div>
         ) : null}
-        {LeftIcon ? <LeftIcon className="mr-2 h-6 w-6" /> : null}
-        {props.txt || null}
-        {RightIcon ? <RightIcon className="ml-2 h-6 w-6" /> : null}
+        {LeftIcon && !_loading ? <LeftIcon className={`mr-2 ${_icon}`} /> : null}
+        {typeof children !== 'undefined' && children}
+        {RightIcon ? <RightIcon className={`ml-2 ${icon}`} /> : null}
       </>
     );
   };

@@ -14,12 +14,12 @@ module.exports = {
   // https://flowbite.com/docs/customize/theming/
   theme: {
     extend: {},
-    screens: {
-      sm: '480px',
-      md: '768px',
-      lg: '976px',
-      xl: '1440px',
-    },
+    // screens: {
+    //   sm: '480px',
+    //   md: '768px',
+    //   lg: '976px',
+    //   xl: '1440px',
+    // },
   },
   variants: {
     extend: {},
