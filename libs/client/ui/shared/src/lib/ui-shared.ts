@@ -1,3 +1,6 @@
+import { ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
 const colors = [
   '#FC5C54',
   '#FFD95A',
@@ -77,4 +80,8 @@ export function emojiAvatarForAddress(address: string) {
   const resolvedAddress = typeof address === 'string' ? address : '';
   const avatarIndex = Math.abs(hashCode(resolvedAddress.toLowerCase()) % avatars.length);
   return avatars[avatarIndex ?? 0];
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
 }

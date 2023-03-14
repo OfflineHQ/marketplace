@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import Input from './Input';
+import TextInput from './TextInput';
 
-describe('Input', () => {
+describe('TextInput', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Input label="This is a label" />);
+    const { baseElement } = render(<TextInput />);
     expect(baseElement).toBeTruthy();
   });
 });

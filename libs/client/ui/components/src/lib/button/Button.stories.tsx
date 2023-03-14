@@ -18,14 +18,13 @@ type Story = StoryObj<typeof meta>;
 export const Primary = {
   args: {
     children: 'Primary',
-    outline: false,
   },
 } satisfies Story;
 
 export const Secondary = {
   args: {
     children: 'Secondary',
-    outline: true,
+    variant: 'outline',
   },
 } satisfies Story;
 
@@ -68,7 +67,7 @@ export const WithTestClick = {
 export const SecondaryWithIconRight = {
   args: {
     children: 'Secondary with Icon Right',
-    outline: true,
+    variant: 'outline',
     iconRight: HiOutlineArrowRight,
     action: () => delayData(3000, null),
   },
@@ -77,7 +76,7 @@ export const SecondaryWithIconRight = {
 export const SecondaryWithIconRightLoading = {
   args: {
     children: 'Secondary with Icon Right and Loading',
-    outline: true,
+    variant: 'outline',
     iconRight: HiOutlineArrowRight,
     action: () => delayData(3000, null),
     isLoading: true,

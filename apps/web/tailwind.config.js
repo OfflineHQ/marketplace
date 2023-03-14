@@ -20,12 +20,12 @@ module.exports = {
     ),
     ...createGlobPatternsForDependencies(__dirname),
   ],
-  darkMode: 'class', // or 'media' or 'class'
+  darkMode: 'class',
   theme: {
     extend: {},
   },
   variants: {
     extend: {},
   },
-  plugins: [require('flowbite/plugin'), require('flowbite-typography')],
+  plugins: [require('tailwindcss-animate')],
 };

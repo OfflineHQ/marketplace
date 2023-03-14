@@ -1,9 +1,9 @@
-import theme from '@client/ui/theme';
+// import theme from '@client/ui/theme';
 
 export const parameters = {
-  chakra: {
-    theme,
-  },
+  // chakra: {
+  //   theme,
+  // },
   darkMode: {
     current: 'dark',
     darkClass: 'dark',

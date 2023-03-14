@@ -1,23 +1,22 @@
-import theme from '@client/ui/theme';
 import './globals.css';
+import { DEFAULT_THEME, withTailwindTheme } from './withTailwindTheme.decorator';
 
-export const parameters = {
-  chakra: {
-    theme,
+export const globalTypes = {
+  theme: {
+    name: 'Theme',
+    description: 'Global theme for components',
+    defaultValue: DEFAULT_THEME,
+    toolbar: {
+      icon: 'paintbrush',
+      // Array of plain string values or MenuItem shape (see below)
+      items: [
+        { value: 'light', title: 'Light', left: '🌞' },
+        { value: 'dark', title: 'Dark', left: '🌛' },
+      ],
+      // Change title based on selected value
+      dynamicTitle: true,
+    },
   },
-  darkMode: {
-    current: 'dark',
-    darkClass: 'dark',
-    stylePreview: true,
-  },
-  backgrounds: { disable: true },
-  layout: 'centered',
 };
 
-// export const decorators = [
-//   (Story: any) => (
-//     <Container mt="40px" display="flex" flexWrap="wrap" centerContent gap="4">
-//       <Story />
-//     </Container>
-//   ),
-// ];
+export const decorators = [withTailwindTheme];
