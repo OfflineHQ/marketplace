@@ -1,9 +1,9 @@
 import { Spinner, SpinnerProps, variants } from './Spinner';
-import { iconSizes } from '@client/ui/theme';
+import { spinnerSizes } from '../spinner/Spinner';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const variantOptions = Object.keys(variants);
-const sizeOptions = Object.keys(iconSizes);
+const sizeOptions = Object.keys(spinnerSizes);
 
 const meta = {
   title: 'Atoms/Spinner',
