@@ -76,10 +76,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const _icon = iconCVA({ size });
       return (
         <>
-          {_loading ? <Spinner size="sm" /> : null}
+          {_loading ? <Spinner className="mr-2" size={size} /> : null}
           {LeftIcon && !_loading ? <LeftIcon className={`mr-2 ${_icon}`} /> : null}
           {typeof children !== 'undefined' && children}
-          {RightIcon ? <RightIcon className={`ml-2 ${icon}`} /> : null}
+          {RightIcon ? <RightIcon className={`ml-2 ${_icon}`} /> : null}
         </>
       );
     };
