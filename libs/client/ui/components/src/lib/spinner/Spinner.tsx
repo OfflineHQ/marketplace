@@ -35,7 +35,7 @@ const Spinner: React.FC<SpinnerProps> = ({ size, ...rest }) => {
   const icon = iconCVA({ size });
   const spinnerClass = cn(icon, spinnerVariants(rest));
 
-  return <Loader2 className={spinnerClass} {...rest} />;
+  return <Loader2 role="status" className={spinnerClass} {...rest} />;
 };
 
 export { Spinner, variants, spinnerVariants };

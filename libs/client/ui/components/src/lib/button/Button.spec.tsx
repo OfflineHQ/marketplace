@@ -1,26 +1,42 @@
-import { render, screen } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import { composeStories } from '@storybook/testing-react';
-import * as stories from './Button.stories'; // import all stories from the stories file
+import * as stories from './Button.stories';
 
-// Every component that is returned maps 1:1 with the stories, but they already contain all decorators from story level, meta level and global level.
-const { Primary, WithTestClick } = composeStories(stories);
+const { DefaultButton } = composeStories(stories);
 
 describe('Button', () => {
-  test('renders primary button with default args', () => {
-    render(<Primary />);
-    const buttonElement = screen.getByText(/Button/i);
-    expect(buttonElement).not.toBeNull();
+  test('renders button with text', () => {
+    render(<DefaultButton>Test Button</DefaultButton>);
+    const buttonElement = screen.getByText(/Test Button/i);
+    expect(buttonElement).toBeInTheDocument();
   });
-  test('renders primary button with overriden props', () => {
-    render(<Primary>Hello world</Primary>); // you can override props and they will get merged with values from the Story's args
-    const buttonElement = screen.getByText(/Hello world/i);
-    expect(buttonElement).not.toBeNull();
-  });
-  test('onclick handler is called', () => {
+
+  test('onClick handler is called', async () => {
     const onClickSpy = jest.fn();
-    render(<WithTestClick action={onClickSpy} />);
+    render(<DefaultButton action={onClickSpy}>Test Button</DefaultButton>);
     const buttonElement = screen.getByRole('button');
-    buttonElement.click();
+    fireEvent.click(buttonElement);
     expect(onClickSpy).toHaveBeenCalled();
+
+    // Check that the spinner is present and then removed
+    expect(screen.queryByRole('status')).toBeInTheDocument();
+    await waitForElementToBeRemoved(() => screen.queryByRole('status'));
+  });
+
+  test('button is disabled when disabled prop is true', () => {
+    render(<DefaultButton disabled>default Disabled</DefaultButton>);
+    const buttonElement = screen.getByText('default Disabled');
+    expect(buttonElement).toBeDisabled();
+  });
+
+  test('button displays loading state when isLoading is true', () => {
+    render(<DefaultButton isLoading>default Loading</DefaultButton>);
+    screen.getByText('default Loading');
+    expect(screen.getByRole('status')).toBeInTheDocument();
   });
 });

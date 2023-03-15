@@ -4,54 +4,31 @@ import { screen, fireEvent, userEvent, within } from '@storybook/testing-library
 import { HiOutlineArrowRight } from 'react-icons/hi';
 import { delayData } from '@test-utils/functions';
 
-import { Button } from './Button';
+import { Button, variants, sizes } from './Button';
+
+const variantOptions = Object.keys(variants);
+const sizeOptions = Object.keys(sizes);
 
 const meta = {
   title: 'Atoms/Button',
   component: Button,
+  argTypes: {
+    variant: {
+      options: variantOptions,
+      control: { type: 'radio' },
+    },
+    size: {
+      options: sizeOptions,
+      control: { type: 'select' },
+    },
+  },
 } satisfies Meta<typeof Button>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Primary = {
-  args: {
-    children: 'Primary',
-  },
-} satisfies Story;
-
-export const Secondary = {
-  args: {
-    children: 'Secondary',
-    variant: 'outline',
-  },
-} satisfies Story;
-
-export const Disabled = {
-  args: {
-    children: 'Disabled button',
-    disabled: true,
-  },
-} satisfies Story;
-
-export const Loading = {
-  args: {
-    children: 'Button with Loading',
-    action: () => delayData(3000, null),
-    isLoading: true,
-  },
-} satisfies Story;
-
-export const WithIcon = {
-  args: {
-    children: 'Button with Icon',
-    icon: HiOutlineArrowRight,
-    action: () => delayData(3000, null),
-  },
-} satisfies Story;
-
-export const WithTestClick = {
+export const DefaultButton = {
   args: {
     children: 'Button with Click and Loading',
     action: () => delayData(1000, null),
@@ -64,39 +41,220 @@ export const WithTestClick = {
   },
 } satisfies Story;
 
-export const SecondaryWithIconRight = {
-  args: {
-    children: 'Secondary with Icon Right',
-    variant: 'outline',
-    iconRight: HiOutlineArrowRight,
-    action: () => delayData(3000, null),
-  },
-} satisfies Story;
+type AllVariantsComponentProps = {
+  size: keyof typeof sizes;
+};
 
-export const SecondaryWithIconRightLoading = {
-  args: {
-    children: 'Secondary with Icon Right and Loading',
-    variant: 'outline',
-    iconRight: HiOutlineArrowRight,
-    action: () => delayData(3000, null),
-    isLoading: true,
-  },
-} satisfies Story;
+const AllVariantsComponent: React.FC<AllVariantsComponentProps> = ({ size }) => (
+  <>
+    {variantOptions.map((variant) => (
+      <Button key={variant} size={size} variant={variant as keyof typeof variants}>
+        {variant}
+      </Button>
+    ))}
+  </>
+);
 
-export const Small = {
+export const AllVariants = {
+  render: AllVariantsComponent,
   args: {
-    children: 'Small',
-    size: 'sm',
-    icon: HiOutlineArrowRight,
-    action: () => delayData(3000, null),
+    size: 'md',
   },
-} satisfies Story;
+  argTypes: {
+    variant: {
+      control: false,
+    },
+  },
+};
 
-export const ExtraSmall = {
+type AllSizesComponentProps = {
+  variant: keyof typeof variants;
+};
+
+const AllSizesComponent: React.FC<AllSizesComponentProps> = ({ variant }) => (
+  <>
+    {sizeOptions.map((size) => (
+      <Button key={size} size={size as keyof typeof sizes} variant={variant}>
+        {size}
+      </Button>
+    ))}
+  </>
+);
+
+export const AllSizes = {
+  render: AllSizesComponent,
   args: {
-    children: 'Extra Small',
-    size: 'xs',
-    icon: HiOutlineArrowRight,
-    action: () => delayData(3000, null),
+    variant: 'default',
   },
-} satisfies Story;
+  argTypes: {
+    size: {
+      control: false,
+    },
+  },
+};
+
+const AllVariantsLoadingComponent: React.FC<AllVariantsComponentProps> = ({ size }) => (
+  <>
+    {variantOptions.map((variant) => (
+      <Button
+        key={variant}
+        size={size}
+        variant={variant as keyof typeof variants}
+        action={() => delayData(3000, null)}
+        isLoading
+      >
+        {variant} Loading
+      </Button>
+    ))}
+  </>
+);
+
+export const AllVariantsLoading = {
+  render: AllVariantsLoadingComponent,
+  args: {
+    size: 'md',
+  },
+  argTypes: {
+    variant: {
+      control: false,
+    },
+  },
+};
+
+const AllSizesLoadingComponent: React.FC<AllSizesComponentProps> = ({ variant }) => (
+  <>
+    {sizeOptions.map((size) => (
+      <Button
+        key={size}
+        size={size as keyof typeof sizes}
+        variant={variant}
+        action={() => delayData(3000, null)}
+        isLoading
+      >
+        {size} Loading
+      </Button>
+    ))}
+  </>
+);
+
+export const AllSizesLoading = {
+  render: AllSizesLoadingComponent,
+  args: {
+    variant: 'default',
+  },
+  argTypes: {
+    size: {
+      control: false,
+    },
+  },
+};
+
+const AllVariantsDisabledComponent: React.FC<AllVariantsComponentProps> = ({ size }) => (
+  <>
+    {variantOptions.map((variant) => (
+      <Button
+        key={variant}
+        size={size}
+        variant={variant as keyof typeof variants}
+        disabled
+      >
+        {variant} Disabled
+      </Button>
+    ))}
+  </>
+);
+
+export const AllVariantsDisabled = {
+  render: AllVariantsDisabledComponent,
+  args: {
+    size: 'md',
+  },
+  argTypes: {
+    variant: {
+      control: false,
+    },
+  },
+};
+
+const AllVariantsWithIconComponent: React.FC<AllVariantsComponentProps> = ({ size }) => (
+  <>
+    {variantOptions.map((variant) => (
+      <Button
+        key={variant}
+        size={size}
+        variant={variant as keyof typeof variants}
+        icon={HiOutlineArrowRight}
+      >
+        {variant} with Icon
+      </Button>
+    ))}
+  </>
+);
+
+export const AllVariantsWithIcon = {
+  render: AllVariantsWithIconComponent,
+  args: {
+    size: 'md',
+  },
+  argTypes: {
+    variant: {
+      control: false,
+    },
+  },
+};
+
+const AllSizesWithIconComponent: React.FC<AllSizesComponentProps> = ({ variant }) => (
+  <>
+    {sizeOptions.map((size) => (
+      <Button
+        key={size}
+        size={size as keyof typeof sizes}
+        variant={variant}
+        icon={HiOutlineArrowRight}
+      >
+        {size} with Icon
+      </Button>
+    ))}
+  </>
+);
+
+export const AllSizesWithIcon = {
+  render: AllSizesWithIconComponent,
+  args: {
+    variant: 'default',
+  },
+  argTypes: {
+    size: {
+      control: false,
+    },
+  },
+};
+
+const AllSizesWithIconRightComponent: React.FC<AllSizesComponentProps> = ({
+  variant,
+}) => (
+  <>
+    {sizeOptions.map((size) => (
+      <Button
+        key={size}
+        size={size as keyof typeof sizes}
+        variant={variant}
+        iconRight={HiOutlineArrowRight}
+      >
+        {size} with Icon Right
+      </Button>
+    ))}
+  </>
+);
+
+export const AllSizesWithIconRight = {
+  render: AllSizesWithIconRightComponent,
+  args: {
+    variant: 'default',
+  },
+  argTypes: {
+    size: {
+      control: false,
+    },
+  },
+};
