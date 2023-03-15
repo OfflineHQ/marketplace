@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { iconCVA } from '@client/ui/shared';
+import { iconCVA } from '@client/ui/theme';
 
 import {
   // Button as FlowbiteButton,
@@ -12,26 +12,6 @@ import * as React from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 
 import { cn } from '@client/ui/shared';
-
-// export const buttonCVA = cva('button', {
-//   variants: {
-//     intent: {
-//       primary: ['bg-blue-500', 'text-white', 'border-transparent', 'hover:bg-blue-600'],
-//       secondary: ['bg-white', 'text-gray-800', 'border-gray-400', 'hover:bg-gray-100'],
-//     },
-//     size: {
-//       xs: ['text-xs', 'py-0', 'px-1'],
-//       sm: ['text-sm', 'py-1', 'px-2'],
-//       md: ['text-base', 'py-2', 'px-4'],
-//       lg: ['text-lg', 'py-3', 'px-6'],
-//     },
-//   },
-//   compoundVariants: [{ intent: 'primary', size: 'md', class: 'uppercase' }],
-//   defaultVariants: {
-//     intent: 'primary',
-//     size: 'md',
-//   },
-// });
 
 // type ExtendedProps = VariantProps<typeof buttonCVA> & {
 //   size?: keyof ButtonSizes;
@@ -106,14 +86,14 @@ const buttonVariants = cva(
         link: 'bg-transparent dark:bg-transparent underline-offset-4 hover:underline text-slate-900 dark:text-slate-100 hover:bg-transparent dark:hover:bg-transparent',
       },
       size: {
-        default: 'h-10 py-2 px-4',
+        md: 'h-10 py-2 px-4',
         sm: 'h-9 px-2 rounded-md',
         lg: 'h-11 px-8 rounded-md',
       },
     },
     defaultVariants: {
       variant: 'default',
-      size: 'default',
+      size: 'md',
     },
   }
 );
@@ -151,11 +131,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const _icon = iconCVA({ size });
       return (
         <>
-          {_loading ? (
-            <div className="mr-3">
-              <Spinner size="sm" />
-            </div>
-          ) : null}
+          {_loading ? <Spinner size="sm" /> : null}
           {LeftIcon && !_loading ? <LeftIcon className={`mr-2 ${_icon}`} /> : null}
           {typeof children !== 'undefined' && children}
           {RightIcon ? <RightIcon className={`ml-2 ${icon}`} /> : null}

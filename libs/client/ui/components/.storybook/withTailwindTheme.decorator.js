@@ -1,20 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-// .storybook/withTailwindTheme.decorator.js
-
 import { useEffect } from 'react';
+import { useDarkMode } from 'storybook-dark-mode';
 
-export const DEFAULT_THEME = 'light';
-
-export const withTailwindTheme = (Story, context) => {
-  const { theme } = context.globals;
-
+export const withTailwindTheme = (Story) => {
+  const isDarkMode = useDarkMode();
   useEffect(() => {
     const htmlTag = document.documentElement;
-
     // Set the "data-theme" attribute on the iFrame html tag
-    htmlTag.setAttribute('data-theme', theme || DEFAULT_THEME);
-    htmlTag.setAttribute('class', theme || DEFAULT_THEME);
-  }, [theme]);
+    htmlTag.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    htmlTag.setAttribute('class', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
 
   return <Story />;
 };
