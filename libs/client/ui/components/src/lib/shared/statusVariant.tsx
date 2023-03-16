@@ -48,4 +48,12 @@ const statusBorderVariants = {
   success: 'border-green-500 dark:border-green-700',
 };
 
-export { statusVariantIcons, statusBorderVariants };
+const statusTextColorVariants = {
+  default: 'text-slate-700 dark:text-slate-300',
+  info: 'text-blue-600 dark:text-blue-500',
+  failure: 'text-red-600 dark:text-red-500',
+  warning: 'text-yellow-600 dark:text-yellow-500',
+  success: 'text-green-600 dark:text-green-500',
+};
+
+export { statusVariantIcons, statusBorderVariants, statusTextColorVariants };
