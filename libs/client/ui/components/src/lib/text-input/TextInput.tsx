@@ -24,6 +24,7 @@ const TextInput: React.FC<TextInputProps> = ({
   id,
   className,
   size,
+  disabled,
   ...props
 }) => {
   const generatedId = id || `text-input-${++idCounter}`;
@@ -31,11 +32,16 @@ const TextInput: React.FC<TextInputProps> = ({
 
   return (
     <div className="flex flex-col">
-      <Label htmlFor={htmlFor || generatedId} variant={variant} className="pb-1 sm:pb-2">
+      <Label
+        htmlFor={htmlFor || generatedId}
+        variant={disabled ? 'disabled' : variant}
+        className="pb-1 sm:pb-2"
+      >
         {label}
       </Label>
       <Input
         {...props}
+        disabled={disabled}
         id={htmlFor || generatedId}
         variant={variant}
         icon={icon}

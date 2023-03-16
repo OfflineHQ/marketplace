@@ -9,7 +9,13 @@ interface StatusVariantClass {
 }
 
 // Define a type for the variant names
-type StatusVariantName = 'default' | 'info' | 'failure' | 'warning' | 'success';
+type StatusVariantName =
+  | 'default'
+  | 'info'
+  | 'failure'
+  | 'warning'
+  | 'success'
+  | 'disabled';
 
 // Modify the utility function to specify the return type
 function generateStatusVariantClasses(
@@ -38,6 +44,7 @@ const statusVariantIcons: Record<StatusVariantName, StatusVariantClass> = {
     'text-green-500',
     'text-green-700'
   ),
+  disabled: generateStatusVariantClasses(null, '', ''),
 };
 
 const statusBorderVariants = {
@@ -46,6 +53,7 @@ const statusBorderVariants = {
   failure: 'border-red-500 dark:border-red-700',
   warning: 'border-yellow-500 dark:border-yellow-700',
   success: 'border-green-500 dark:border-green-700',
+  disabled: 'border-slate-400 dark:border-slate-600',
 };
 
 const statusTextColorVariants = {
@@ -54,6 +62,7 @@ const statusTextColorVariants = {
   failure: 'text-red-600 dark:text-red-500',
   warning: 'text-yellow-600 dark:text-yellow-500',
   success: 'text-green-600 dark:text-green-500',
+  disabled: 'text-slate-400 dark:text-slate-600',
 };
 
 export { statusVariantIcons, statusBorderVariants, statusTextColorVariants };
