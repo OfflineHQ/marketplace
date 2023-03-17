@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { iconCVA } from '../shared/iconVariant';
+import { iconCVA } from '../icons/variants';
 
 import { Spinner } from '../spinner/Spinner';
 

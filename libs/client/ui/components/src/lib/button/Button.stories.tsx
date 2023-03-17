@@ -1,7 +1,7 @@
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
 import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
-import { HiOutlineArrowRight } from 'react-icons/hi';
+import { OutlineArrowRight } from '../icons';
 import { delayData } from '@test-utils/functions';
 
 import { Button, variants, sizes } from './Button';
@@ -183,7 +183,7 @@ const AllVariantsWithIconComponent: React.FC<AllVariantsComponentProps> = ({ siz
         key={variant}
         size={size}
         variant={variant as keyof typeof variants}
-        icon={HiOutlineArrowRight}
+        icon={OutlineArrowRight}
       >
         {variant} with Icon
       </Button>
@@ -210,7 +210,7 @@ const AllSizesWithIconComponent: React.FC<AllSizesComponentProps> = ({ variant }
         key={size}
         size={size as keyof typeof sizes}
         variant={variant}
-        icon={HiOutlineArrowRight}
+        icon={OutlineArrowRight}
       >
         {size} with Icon
       </Button>
@@ -239,7 +239,7 @@ const AllSizesWithIconRightComponent: React.FC<AllSizesComponentProps> = ({
         key={size}
         size={size as keyof typeof sizes}
         variant={variant}
-        iconRight={HiOutlineArrowRight}
+        iconRight={OutlineArrowRight}
       >
         {size} with Icon Right
       </Button>
