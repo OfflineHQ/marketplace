@@ -17,10 +17,11 @@ const helperTextVariants = cva('text-sm', {
 export interface HelperTextProps extends VariantProps<typeof helperTextVariants> {
   children?: React.ReactNode;
   id?: string;
+  className?: string;
 }
 
-const HelperText: React.FC<HelperTextProps> = ({ variant, children, id }) => {
-  const helperTextClasses = cn(helperTextVariants({ variant }));
+const HelperText: React.FC<HelperTextProps> = ({ variant, children, id, className }) => {
+  const helperTextClasses = cn(helperTextVariants({ variant, className }));
   return children ? (
     <p className={helperTextClasses} id={id}>
       {children}
