@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { iconCVA } from '@client/ui/theme';
+import { iconCVA } from '../shared/iconVariant';
 
 import { Spinner } from '../spinner/Spinner';
 
@@ -9,11 +9,11 @@ import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@client/ui/shared';
 
 const sizes = {
-  xs: 'text-xs px-2 py-1',
-  sm: 'text-sm px-3 py-1.5',
-  md: 'text-sm px-4 py-2',
-  lg: 'text-base px-5 py-2.5',
-  xl: 'text-base px-6 py-3',
+  xs: 'text-xs px-3 py-2',
+  sm: 'text-sm px-3 py-2',
+  md: 'text-sm px-5 py-2.5',
+  lg: 'text-base px-5 py-3',
+  xl: 'text-base px-5 py-3',
 };
 
 const variants = {
@@ -73,13 +73,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
     const content = () => {
       const [LeftIcon, RightIcon] = [icon, iconRight];
-      const _icon = iconCVA({ size });
+      const _iconLeft = iconCVA({ size, marginRight: size });
+      const _iconRight = iconCVA({ size, marginLeft: size });
       return (
         <>
-          {_loading ? <Spinner className="mr-2" size={size} /> : null}
-          {LeftIcon && !_loading ? <LeftIcon className={`mr-2 ${_icon}`} /> : null}
+          {_loading ? (
+            <Spinner className={_iconLeft} variant={variant} size={size} />
+          ) : null}
+          {LeftIcon && !_loading ? <LeftIcon className={_iconLeft} /> : null}
           {typeof children !== 'undefined' && children}
-          {RightIcon ? <RightIcon className={`ml-2 ${_icon}`} /> : null}
+          {RightIcon ? <RightIcon className={_iconRight} /> : null}
         </>
       );
     };
