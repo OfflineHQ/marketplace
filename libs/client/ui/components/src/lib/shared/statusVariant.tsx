@@ -65,4 +65,27 @@ const statusTextColorVariants = {
   disabled: 'text-slate-400 dark:text-slate-600',
 };
 
-export { statusVariantIcons, statusBorderVariants, statusTextColorVariants };
+const statusBgColorVariants = {
+  default: 'bg-slate-100 dark:bg-slate-900',
+  info: 'bg-blue-100 dark:bg-blue-400',
+  failure: 'bg-red-100 dark:bg-red-400',
+  warning: 'bg-yellow-100 dark:bg-yellow-400',
+  success: 'bg-green-100 dark:bg-green-400',
+  disabled: 'bg-slate-200 dark:bg-slate-800',
+};
+
+export const statusBgFillVariants = {
+  default: 'bg-slate-700 dark:bg-slate-300',
+  info: 'bg-blue-600 dark:bg-blue-500',
+  failure: 'bg-red-600 dark:bg-red-500',
+  warning: 'bg-yellow-600 dark:bg-yellow-500',
+  success: 'bg-green-600 dark:bg-green-500',
+  disabled: 'bg-slate-400 dark:bg-slate-600',
+};
+
+export {
+  statusVariantIcons,
+  statusBorderVariants,
+  statusTextColorVariants,
+  statusBgColorVariants,
+};
