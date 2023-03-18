@@ -3,6 +3,7 @@ export {
   HiOutlineSearch as OutlineSearch,
   HiOutlineArrowRight as OutlineArrowRight,
   HiPlus as Plus,
+  HiOutlineChevronDown as ChevronDown,
 } from 'react-icons/hi';
 
 export {
