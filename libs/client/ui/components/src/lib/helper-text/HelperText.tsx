@@ -5,7 +5,7 @@ import { statusTextColorVariants } from '../shared/statusVariant';
 
 const variants = statusTextColorVariants;
 
-const helperTextVariants = cva('text-sm', {
+const helperTextVariants = cva('text-sm opacity-80', {
   variants: {
     variant: variants,
   },
