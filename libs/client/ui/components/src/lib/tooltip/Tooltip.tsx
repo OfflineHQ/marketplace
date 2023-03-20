@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 
 import { cn } from '@client/ui/shared';
+import { arrowClasses } from '../shared/arrow';
 import { cva, VariantProps } from 'class-variance-authority';
 
 export interface TooltipProps {
@@ -43,11 +44,7 @@ export function Tooltip({
           {...props}
         >
           {content}
-          <TooltipPrimitive.Arrow
-            width={11}
-            height={5}
-            className="fill-current text-slate-200 dark:text-gray-600"
-          />
+          <TooltipPrimitive.Arrow className={arrowClasses} />
         </TooltipPrimitive.Content>
       </TooltipPrimitive.Root>
     </TooltipPrimitive.Provider>

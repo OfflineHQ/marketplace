@@ -14,6 +14,11 @@ const meta = {
   title: 'Molecules/Accordion',
   component: Accordion,
   render: (args) => <AccordionDemo {...args} />,
+  argTypes: {
+    collapsible: {
+      control: { type: 'boolean' },
+    },
+  },
   args: {
     collapsible: true,
   },

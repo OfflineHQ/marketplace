@@ -3,7 +3,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import * as Icons from './index';
-import { IconProps, iconCVA, iconSizes, iconColors } from './variants';
+import { IconProps, iconSizes, iconColors } from './variants';
 
 const meta: Meta = {
   title: 'UI/Icons',
@@ -25,13 +25,12 @@ type Story = StoryObj<typeof meta>;
 
 export const AllIcons: Story = {
   render: ({ size, color }: IconProps) => {
-    const classIcon = iconCVA({ size, color });
     const colorText = iconColors[color || 'default'];
     return (
       <div className="flex flex-wrap items-center justify-center gap-4">
         {Object.entries(Icons).map(([name, Icon]) => (
           <div key={name} className="flex flex-col items-center justify-center px-4">
-            <Icon className={`${classIcon}`} />
+            <Icon size={size} color={color} />
             <span className={`mt-2 ${colorText}`}>{name}</span>
           </div>
         ))}
@@ -49,10 +48,9 @@ export const AllColors: Story = {
     return (
       <div className="flex flex-wrap items-center justify-center gap-4">
         {Object.entries(iconColors).map(([name, color]) => {
-          const className = iconCVA({ size, color: name as keyof typeof iconColors });
           return (
             <div key={name} className="flex flex-col items-center justify-center px-4">
-              <Icon className={className} />
+              <Icon size={size} color={name as keyof typeof iconColors} />
               <span className={`mt-2 ${color}`}>{name}</span>
             </div>
           );
@@ -76,10 +74,9 @@ export const AllSizes: Story = {
     return (
       <div className="flex flex-wrap items-center justify-center gap-4">
         {Object.entries(iconSizes).map(([name]) => {
-          const className = iconCVA({ size: name as keyof typeof iconSizes, color });
           return (
             <div key={name} className="flex flex-col items-center justify-center px-4">
-              <Icon className={className} />
+              <Icon size={name as keyof typeof iconSizes} color={color} />
               <span className={`mt-2`}>{name}</span>
             </div>
           );

@@ -42,4 +42,4 @@ export const iconCVA = cva('', {
   },
 });
 
-export type IconProps = VariantProps<typeof iconCVA>;
+export type IconProps = VariantProps<typeof iconCVA> & { className?: string };

@@ -17,7 +17,7 @@ const TooltipWrapper: React.FC<{
 
   return (
     <Tooltip content={helperText} className="inline-block">
-      <div className="inline-block relative">{children}</div>
+      <div className="relative inline-block">{children}</div>
     </Tooltip>
   );
 };
