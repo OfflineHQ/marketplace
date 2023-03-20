@@ -14,6 +14,7 @@ const config: StorybookConfig = {
     '@storybook/addon-interactions',
     '@storybook/addon-a11y',
     'storybook-dark-mode',
+    // Add PostCSS into addons for compiling tailwind below
     {
       name: '@storybook/addon-styling',
       options: {
