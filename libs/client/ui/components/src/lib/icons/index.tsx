@@ -5,6 +5,7 @@ export {
   HiPlus as Plus,
   HiOutlineChevronDown as ChevronDown,
 } from 'react-icons/hi';
+export { HiOutlineCalendarDays as OutlineCalendarDays } from 'react-icons/hi2';
 
 export {
   AiFillWarning as FillWarning,

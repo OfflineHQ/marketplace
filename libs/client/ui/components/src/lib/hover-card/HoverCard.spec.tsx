@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import { Badge } from './Badge';
+import HoverCard from './HoverCard';
 
-describe('Badge', () => {
+describe('HoverCard', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Badge />);
+    const { baseElement } = render(<HoverCard />);
     expect(baseElement).toBeTruthy();
   });
 });
