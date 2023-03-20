@@ -54,7 +54,17 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, children, action, isLoading, icon, iconRight, ...props },
+    {
+      className,
+      variant,
+      size = 'md',
+      children,
+      action,
+      isLoading,
+      icon,
+      iconRight,
+      ...props
+    },
     ref
   ) => {
     const [loading, setLoading] = useState(false);

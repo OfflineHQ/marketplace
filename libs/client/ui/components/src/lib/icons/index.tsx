@@ -15,3 +15,4 @@ export {
 export { MdOutlineError as OutlineError } from 'react-icons/md';
 
 export { RiMoonFill as FillMoon, RiSunLine as Sun } from 'react-icons/ri';
+export { FiAward as Award } from 'react-icons/fi';

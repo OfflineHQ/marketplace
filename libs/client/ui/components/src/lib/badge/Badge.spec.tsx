@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import { Accordion } from './Accordion';
+import Badge from './Badge';
 
-describe('Accordion', () => {
+describe('Badge', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Accordion type="single" />);
+    const { baseElement } = render(<Badge />);
     expect(baseElement).toBeTruthy();
   });
 });
