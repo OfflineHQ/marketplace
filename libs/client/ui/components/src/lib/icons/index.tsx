@@ -23,7 +23,7 @@ import {
   AiOutlineCreditCard,
   AiOutlineMail,
 } from 'react-icons/ai';
-import { MdOutlineError } from 'react-icons/md';
+import { MdOutlineError, MdOutlineClose } from 'react-icons/md';
 import { RiMoonFill, RiSunLine } from 'react-icons/ri';
 import {
   FiAward,
@@ -71,3 +71,4 @@ export const Settings = createWrappedIcon(FiSettings, 'Settings');
 export const User = createWrappedIcon(HiOutlineUser, 'User');
 export const UserAdd = createWrappedIcon(HiOutlineUserAdd, 'User Add');
 export const Users = createWrappedIcon(HiOutlineUsers, 'Users');
+export const Close = createWrappedIcon(MdOutlineClose, 'Close');
