@@ -20,7 +20,12 @@ export interface HelperTextProps extends VariantProps<typeof helperTextVariants>
   className?: string;
 }
 
-const HelperText: React.FC<HelperTextProps> = ({ variant, children, id, className }) => {
+const HelperText: React.FC<HelperTextProps> = ({
+  variant = 'default',
+  children,
+  id,
+  className,
+}) => {
   const helperTextClasses = cn(helperTextVariants({ variant, className }));
   return children ? (
     <p className={helperTextClasses} id={id}>

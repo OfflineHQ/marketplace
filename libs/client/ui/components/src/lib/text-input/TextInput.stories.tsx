@@ -1,6 +1,6 @@
 // TextInput.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { HiOutlineSearch } from 'react-icons/hi';
+import { OutlineSearch } from '../icons';
 import { TextInput } from './TextInput';
 import { sizes, variants } from '../input/Input';
 
@@ -18,6 +18,9 @@ const meta = {
     variant: {
       options: variantOptions,
       control: { type: 'select' },
+    },
+    helperText: {
+      control: { type: 'text' },
     },
   },
 } satisfies Meta<typeof TextInput>;
@@ -37,14 +40,14 @@ export const Default: Story = {
 export const WithIcon: Story = {
   args: {
     ...Default.args,
-    icon: HiOutlineSearch,
+    icon: OutlineSearch,
   },
 };
 
 export const WithRightIcon: Story = {
   args: {
     ...Default.args,
-    rightIcon: HiOutlineSearch,
+    rightIcon: OutlineSearch,
   },
 };
 

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { cn } from '@client/ui/shared';
 import { cva, VariantProps } from 'class-variance-authority';
 import { statusVariantIcons, statusBorderVariants } from '../shared/statusVariant';
+import { IconProps } from '../icons/variants';
 
 const sizes = {
   sm: 'py-2 px-3 text-sm',
@@ -28,14 +29,16 @@ const inputVariants = cva(
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputVariants> {
-  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  rightIcon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  icon?: React.FC<IconProps>;
+  rightIcon?: React.FC<IconProps>;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, size, variant, icon: Icon, rightIcon: RightIcon, ...props }, ref) => {
-    const { Icon: DefaultRightIcon, color: rightIconColor } =
-      statusVariantIcons[variant || 'default'];
+  (
+    { className, size, variant = 'default', icon: Icon, rightIcon: RightIcon, ...props },
+    ref
+  ) => {
+    const DefaultRightIcon = statusVariantIcons[variant || 'default'];
     const RightIconComponent = RightIcon || DefaultRightIcon;
     const inputClasses = cn(
       inputVariants({ size, variant, className }),
@@ -46,16 +49,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="relative">
         {Icon && (
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-            <Icon className="h-5 w-5 text-gray-400" />
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+            <Icon color={variant} size="md" />
           </div>
         )}
         <input className={inputClasses} ref={ref} {...props} />
         {RightIconComponent && (
           <div
-            className={`absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 ${rightIconColor}`}
+            className={`absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400`}
           >
-            <RightIconComponent className="h-5 w-5" />
+            <RightIconComponent color={variant} size="md" />
           </div>
         )}
       </div>

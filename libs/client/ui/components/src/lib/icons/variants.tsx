@@ -1,5 +1,5 @@
 import { cva, VariantProps } from 'class-variance-authority';
-import { statusTextColorVariants } from '../shared/statusVariant';
+// import { statusTextColorVariants } from '../shared/statusVariant';
 
 export const iconSizes = {
   xs: 'w-3.5 h-3.5 md:w-4 md:h-4',
@@ -25,7 +25,16 @@ export const iconMarginRight = {
   xl: 'mr-3',
 };
 
-export const iconColors = statusTextColorVariants;
+export const iconColors = {
+  default: '',
+  info: 'text-blue-500 dark:text-blue-700',
+  failure: 'text-red-500 dark:text-red-700',
+  warning: 'text-yellow-500 dark:text-yellow-700',
+  success: 'text-green-500 dark:text-green-700',
+  disabled: 'text-slate-400 dark:text-slate-600',
+};
+
+// export const iconColors = statusTextColorVariants;
 
 export const iconCVA = cva('', {
   variants: {

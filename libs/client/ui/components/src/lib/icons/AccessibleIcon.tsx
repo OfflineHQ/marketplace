@@ -13,10 +13,11 @@ export const AccessibleIcon: FC<AccessibleIconProps> = ({
   IconComponent,
   label,
   className,
+  size = 'sm',
+  color = null,
   ...rest
 }) => {
-  const iconClasses = iconCVA({ ...rest, className });
-
+  const iconClasses = iconCVA({ ...rest, size, color, className });
   return (
     <IconComponent aria-label={label} focusable="false" className={cn(iconClasses)} />
   );

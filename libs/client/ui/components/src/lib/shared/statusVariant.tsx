@@ -1,15 +1,6 @@
-import { AiFillWarning, AiFillCheckCircle, AiFillInfoCircle } from 'react-icons/ai';
-import { MdOutlineError } from 'react-icons/md';
-import { ComponentType } from 'react';
+import { FillWarning, FillSuccess, FillInfo, OutlineError } from '../icons';
 
-// Define an interface for the variant classes
-interface StatusVariantClass {
-  Icon: ComponentType | null;
-  color: string;
-}
-
-// Define a type for the variant names
-type StatusVariantName =
+export type StatusVariantName =
   | 'default'
   | 'info'
   | 'failure'
@@ -17,34 +8,13 @@ type StatusVariantName =
   | 'success'
   | 'disabled';
 
-// Modify the utility function to specify the return type
-function generateStatusVariantClasses(
-  icon: ComponentType | null,
-  color: string,
-  darkColor: string
-): StatusVariantClass {
-  return {
-    Icon: icon,
-    color: `${color} dark:${darkColor}`,
-  };
-}
-
-// Use the type and interface to create the statusVariantIcons object
-const statusVariantIcons: Record<StatusVariantName, StatusVariantClass> = {
-  default: generateStatusVariantClasses(null, '', ''),
-  info: generateStatusVariantClasses(AiFillInfoCircle, 'text-blue-500', 'text-blue-700'),
-  failure: generateStatusVariantClasses(MdOutlineError, 'text-red-500', 'text-red-700'),
-  warning: generateStatusVariantClasses(
-    AiFillWarning,
-    'text-yellow-500',
-    'text-yellow-700'
-  ),
-  success: generateStatusVariantClasses(
-    AiFillCheckCircle,
-    'text-green-500',
-    'text-green-700'
-  ),
-  disabled: generateStatusVariantClasses(null, '', ''),
+const statusVariantIcons = {
+  default: null,
+  info: FillInfo,
+  failure: OutlineError,
+  warning: FillWarning,
+  success: FillSuccess,
+  disabled: null,
 };
 
 const statusBorderVariants = {
