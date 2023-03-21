@@ -18,7 +18,7 @@ describe('Button', () => {
 
   test('onClick handler is called', async () => {
     const onClickSpy = jest.fn();
-    render(<DefaultButton action={onClickSpy}>Test Button</DefaultButton>);
+    render(<DefaultButton onClick={onClickSpy}>Test Button</DefaultButton>);
     const buttonElement = screen.getByRole('button');
     fireEvent.click(buttonElement);
     expect(onClickSpy).toHaveBeenCalled();

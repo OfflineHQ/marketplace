@@ -31,7 +31,7 @@ type Story = StoryObj<typeof meta>;
 export const DefaultButton = {
   args: {
     children: 'Button with Click and Loading',
-    action: () => delayData(1000, null),
+    onClick: () => delayData(1000, null),
   },
   play: async ({ canvasElement, controls }) => {
     const canvas = within(canvasElement);
@@ -100,7 +100,7 @@ const AllVariantsLoadingComponent: React.FC<AllVariantsComponentProps> = ({ size
         key={variant}
         size={size}
         variant={variant as keyof typeof variants}
-        action={() => delayData(3000, null)}
+        onClick={() => delayData(3000, null)}
         isLoading
       >
         {variant} Loading
@@ -128,7 +128,7 @@ const AllSizesLoadingComponent: React.FC<AllSizesComponentProps> = ({ variant })
         key={size}
         size={size as keyof typeof sizes}
         variant={variant}
-        action={() => delayData(3000, null)}
+        onClick={() => delayData(3000, null)}
         isLoading
       >
         {size} Loading

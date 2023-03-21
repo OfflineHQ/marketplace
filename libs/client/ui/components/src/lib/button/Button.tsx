@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { iconCVA } from '../icons/variants';
+import { iconCVA, IconProps } from '../icons/variants';
 
 import { Spinner } from '../spinner/Spinner';
 
@@ -46,10 +46,9 @@ const buttonVariants = cva(
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  action?: () => void;
   isLoading?: boolean;
-  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  iconRight?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  icon?: React.FC<IconProps>; // Change this line
+  iconRight?: React.FC<IconProps>; // Change this line
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -59,7 +58,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant,
       size = 'md',
       children,
-      action,
+      onClick,
       isLoading,
       icon,
       iconRight,
@@ -70,12 +69,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const [loading, setLoading] = useState(false);
     const _loading = isLoading || loading;
 
-    // a function that await for the action to be completed
-    const handleClick = async (action: (() => void) | undefined) => {
-      if (action && !_loading) {
+    // a function that await for the onClick to be completed
+    const handleClick = async (
+      event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      if (onClick && !_loading) {
         try {
           setLoading(true);
-          await action();
+          await onClick(event); // <-- Change action to onClick here
         } finally {
           setLoading(false);
         }
@@ -104,7 +105,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn([loadingClasses], buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-        onClick={() => (!_loading ? handleClick(action) : null)}
+        onClick={handleClick}
       >
         {content()}
       </button>
