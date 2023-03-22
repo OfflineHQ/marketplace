@@ -1,5 +1,6 @@
 // Switch.tsx
-import React from 'react';
+import React, { forwardRef } from 'react';
+
 import * as SwitchPrimitives from '@radix-ui/react-switch';
 import { Label, LabelProps } from '../label/Label';
 import { Tooltip } from '../tooltip/Tooltip';
@@ -22,7 +23,7 @@ const TooltipWrapper: React.FC<{
   );
 };
 
-const Switch = React.forwardRef<
+const Switch = forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> & {
     disabled?: boolean;

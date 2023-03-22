@@ -46,8 +46,6 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 
     const baseClasses = badgeVariants({ variant, size, className });
     const iconClasses = iconOnly ? 'p-1 rounded-full' : 'mr-1';
-    console.log({ iconOnly, children, iconClasses, baseClasses });
-
     return (
       <span
         className={cn([baseClasses, iconOnly ? iconClasses : ''])}

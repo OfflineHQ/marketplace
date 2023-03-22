@@ -1,4 +1,5 @@
 const { join } = require('path');
+const baseConfig = require('../../tailwind.config.base');
 
 // const { createGlobPatternsForDependencies } = require('@nrwl/next/tailwind')
 const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
@@ -10,12 +11,5 @@ module.exports = {
     join(__dirname, '{src,app,pages,components,public}/**/*!(*.spec).{ts,tsx,html}'),
     ...createGlobPatternsForDependencies(__dirname),
   ],
-  darkMode: 'class',
-  theme: {
-    extend: {},
-  },
-  variants: {
-    extend: {},
-  },
-  plugins: [require('tailwindcss-animate')],
+  ...baseConfig,
 };

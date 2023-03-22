@@ -3,10 +3,10 @@ import { Meta, StoryObj } from '@storybook/react';
 import { OutlineSearch } from '../icons';
 import { TextInput, TextInputProps } from './TextInput';
 import { TextInputWithLeftLabels } from './examples';
-import { sizes, variants } from '../input/Input';
+import { inputSizes, inputBorderVariants } from '../input/Input';
 
-const variantOptions = Object.keys(variants);
-const sizeOptions = Object.keys(sizes);
+const variantOptions = Object.keys(inputBorderVariants);
+const sizeOptions = Object.keys(inputSizes);
 
 const meta = {
   title: 'Molecules/TextInput',
@@ -66,14 +66,14 @@ export const Disabled: Story = {
   },
 };
 
-export const AllSizes: Story = {
+export const AllinputSizes: Story = {
   render: ({ variant }) => (
     <>
       {sizeOptions.map((size) => (
         <div key={size} className="mb-2">
           <TextInput
             {...Default.args}
-            size={size as keyof typeof sizes}
+            size={size as keyof typeof inputSizes}
             label={`${size} Size`}
             variant={variant}
             htmlFor={`input-id-${size}`}
@@ -93,7 +93,7 @@ export const AllSizes: Story = {
   },
 };
 
-export const AllVariants: Story = {
+export const AllinputBorderVariants: Story = {
   render: ({ size }) => (
     <>
       {variantOptions.map((variant) => (
@@ -101,7 +101,7 @@ export const AllVariants: Story = {
           <TextInput
             {...Default.args}
             size={size}
-            variant={variant as keyof typeof variants}
+            variant={variant as keyof typeof inputBorderVariants}
             label={`${variant} Variant`}
             htmlFor={`input-id-${variant}`}
           />
@@ -120,7 +120,7 @@ export const AllVariants: Story = {
   },
 };
 
-export const AllVariantsWithHelperText: Story = {
+export const AllinputBorderVariantsWithHelperText: Story = {
   render: ({ size }) => (
     <>
       {variantOptions.map((variant) => (
@@ -128,7 +128,7 @@ export const AllVariantsWithHelperText: Story = {
           <TextInput
             {...WithHelperText.args}
             size={size}
-            variant={variant as keyof typeof variants}
+            variant={variant as keyof typeof inputBorderVariants}
             label={`${variant} Variant`}
             htmlFor={`input-id-${variant}`}
           />

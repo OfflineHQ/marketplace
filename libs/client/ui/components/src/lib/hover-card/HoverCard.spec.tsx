@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 
-import HoverCard from './HoverCard';
+import { HoverCard } from './HoverCard';
 
 describe('HoverCard', () => {
   it('should render successfully', () => {

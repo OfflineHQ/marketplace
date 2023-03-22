@@ -12,6 +12,26 @@
         "lintFilePatterns": ["libs/client/ui/components/**/*.{ts,tsx,js,jsx}"]
       }
     },
+    "build": {
+      "executor": "@nrwl/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/client/ui/components",
+        "tsConfig": "libs/client/ui/components/tsconfig.lib.json",
+        "project": "libs/client/ui/components/package.json",
+        "entryFile": "libs/client/ui/components/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "assets": [
+          {
+            "glob": "libs/client/ui/components/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/client/ui/components"],
