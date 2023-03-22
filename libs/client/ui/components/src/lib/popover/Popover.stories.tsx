@@ -5,6 +5,7 @@ import { Popover, PopoverTrigger, PopoverContent } from './Popover';
 
 import { Button } from '../button/Button';
 import { TextInput } from '../text-input/TextInput';
+import { TextInputWithLeftLabels } from '../text-input/examples';
 import { Settings } from '../icons';
 
 const meta = {
@@ -30,12 +31,7 @@ function PopoverDemo() {
               Set the dimensions for the layer.
             </p>
           </div>
-          <div className="grid gap-2">
-            <TextInput size="sm" label="Width" defaultValue="100%" />
-            <TextInput size="sm" label="Max. width" defaultValue="300px" />
-            <TextInput size="sm" label="Height" defaultValue="25px" />
-            <TextInput size="sm" label="Max Height" defaultValue="none" />
-          </div>
+          <TextInputWithLeftLabels label="dummy" size="sm" />
         </div>
       </PopoverContent>
     </Popover>

@@ -34,11 +34,11 @@ const statusBorderVariants = {
   failure: 'border-red-500 dark:border-red-700',
   warning: 'border-yellow-500 dark:border-yellow-700',
   success: 'border-green-500 dark:border-green-700',
-  disabled: 'border-slate-400 dark:border-slate-600',
+  disabled: 'border-slate-100 dark:border-slate-800',
 };
 
 const statusTextColorVariants = {
-  default: 'text-slate-700 dark:text-slate-300',
+  default: '',
   info: 'text-slate-700 dark:text-slate-300',
   failure: 'text-red-600 dark:text-red-500',
   warning: 'text-yellow-600 dark:text-yellow-500',

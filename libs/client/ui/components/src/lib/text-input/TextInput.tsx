@@ -10,6 +10,7 @@ export interface TextInputProps
   label: string;
   htmlFor?: string;
   helperText?: React.ReactNode;
+  leftLabel?: boolean;
 }
 
 let idCounter = 0;
@@ -25,20 +26,24 @@ const TextInput: React.FC<TextInputProps> = ({
   className,
   size,
   disabled,
+  leftLabel,
   ...props
 }) => {
   const generatedId = id || `text-input-${++idCounter}`;
   const helperTextId = `${generatedId}-helper-text`;
 
-  return (
+  const labelElement = (
+    <Label
+      htmlFor={htmlFor || generatedId}
+      variant={disabled ? 'disabled' : variant}
+      className={`${leftLabel ? '' : 'pb-1 sm:pb-2'}`}
+    >
+      {label}
+    </Label>
+  );
+
+  const inputElement = (
     <div className="flex flex-col">
-      <Label
-        htmlFor={htmlFor || generatedId}
-        variant={disabled ? 'disabled' : variant}
-        className="pb-1 sm:pb-2"
-      >
-        {label}
-      </Label>
       <Input
         {...props}
         disabled={disabled}
@@ -52,6 +57,18 @@ const TextInput: React.FC<TextInputProps> = ({
       <HelperText id={helperTextId} variant={variant}>
         {helperText}
       </HelperText>
+    </div>
+  );
+
+  return leftLabel ? (
+    <div className="grid grid-cols-3 items-center gap-4">
+      {labelElement}
+      <div className="col-span-2">{inputElement}</div>
+    </div>
+  ) : (
+    <div className="flex flex-col">
+      {labelElement}
+      {inputElement}
     </div>
   );
 };

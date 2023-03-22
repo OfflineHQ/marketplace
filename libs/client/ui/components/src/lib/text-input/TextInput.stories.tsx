@@ -1,7 +1,8 @@
 // TextInput.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
 import { OutlineSearch } from '../icons';
-import { TextInput } from './TextInput';
+import { TextInput, TextInputProps } from './TextInput';
+import { TextInputWithLeftLabels } from './examples';
 import { sizes, variants } from '../input/Input';
 
 const variantOptions = Object.keys(variants);
@@ -141,6 +142,20 @@ export const AllVariantsWithHelperText: Story = {
   },
   argTypes: {
     variant: {
+      control: false,
+    },
+  },
+};
+
+export const WithLeftLabels: Story = {
+  render: (props) => <TextInputWithLeftLabels {...props} className="sm:w-80" />,
+  args: {
+    leftLabel: true,
+    size: 'sm',
+    label: '',
+  },
+  argTypes: {
+    leftLabel: {
       control: false,
     },
   },
