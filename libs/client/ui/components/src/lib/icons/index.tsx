@@ -17,12 +17,15 @@ import {
 import { HiOutlineCalendarDays } from 'react-icons/hi2';
 import { BiCircle } from 'react-icons/bi';
 import {
-  AiFillWarning,
   AiFillCheckCircle,
+  AiOutlineCheck,
   AiFillInfoCircle,
   AiOutlineCreditCard,
   AiOutlineMail,
 } from 'react-icons/ai';
+
+import { IoWarning, IoWarningOutline } from 'react-icons/io5';
+
 import { MdOutlineError, MdOutlineClose } from 'react-icons/md';
 import { RiMoonFill, RiSunLine } from 'react-icons/ri';
 import {
@@ -51,8 +54,10 @@ export const OutlineCalendarDays = createWrappedIcon(
   'Outline Calendar Days'
 );
 export const Circle = createWrappedIcon(BiCircle, 'Circle');
-export const FillWarning = createWrappedIcon(AiFillWarning, 'Fill Warning');
+export const FillWarning = createWrappedIcon(IoWarning, 'Fill Warning');
+export const OutlineWarning = createWrappedIcon(IoWarningOutline, 'Outline Warning');
 export const FillSuccess = createWrappedIcon(AiFillCheckCircle, 'Fill Success');
+export const OutlineSuccess = createWrappedIcon(AiOutlineCheck, 'Outline Success');
 export const FillInfo = createWrappedIcon(AiFillInfoCircle, 'Fill Info');
 export const OutlineError = createWrappedIcon(MdOutlineError, 'Outline Error');
 export const FillMoon = createWrappedIcon(RiMoonFill, 'Fill Moon');

@@ -12,28 +12,14 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogVariants,
 } from './AlertDialog';
 
-import { Button } from '../button/Button';
-
-const meta = {
-  title: 'Molecules/AlertDialog',
-  component: AlertDialogDemo,
-} as Meta<typeof AlertDialogDemo>;
-
-export default meta;
-
-type Story = StoryObj<typeof meta>;
-
-function AlertDialogDemo() {
+const AlertDialogDemo: React.FC<AlertDialogVariants> = ({ variant }) => {
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Open</Button>
-      </AlertDialogTrigger>
+    <AlertDialog defaultOpen={true}>
       <AlertDialogContent>
-        <AlertDialogHeader>
+        <AlertDialogHeader variant={variant}>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your account and
@@ -42,49 +28,48 @@ function AlertDialogDemo() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
+          <AlertDialogAction variant={variant}>Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
-}
+};
 
-export const OpenAlertDialog: Story = {
-  play: async () => {
-    const alertDialogTrigger = screen.getByRole('button', { name: 'Open' });
-    await userEvent.click(alertDialogTrigger);
+const meta = {
+  title: 'Molecules/AlertDialog',
+  component: AlertDialogHeader,
+  argTypes: {
+    variant: {
+      control: {
+        type: 'select',
+        options: ['default', 'success', 'destructive'],
+      },
+    },
+  },
+  args: {
+    variant: 'default',
+  },
+  render: AlertDialogDemo,
+} as Meta<typeof AlertDialogHeader>;
 
-    const alertDialogTitle = await screen.findByText('Are you absolutely sure?');
-    expect(alertDialogTitle).toBeVisible();
+export default meta;
 
-    const alertDialogDescription = await screen.findByText(
-      'This action cannot be undone. This will permanently delete your account and remove your data from our servers.'
-    );
-    expect(alertDialogDescription).toBeVisible();
+type Story = StoryObj<typeof meta>;
+
+export const DefaultAlertDialog: Story = {
+  args: {
+    variant: 'default',
   },
 };
 
-export const CancelAlertDialog: Story = {
-  play: async () => {
-    const alertDialogTrigger = screen.getByRole('button', { name: 'Open' });
-    await userEvent.click(alertDialogTrigger);
-
-    const alertDialogCancel = screen.getByRole('button', { name: 'Cancel' });
-    await fireEvent.click(alertDialogCancel);
-
-    const alertDialogTitle = screen.queryByText('Are you absolutely sure?');
-    expect(alertDialogTitle).not.toBeInTheDocument();
+export const SuccessAlertDialog: Story = {
+  args: {
+    variant: 'success',
   },
 };
 
-export const ConfirmAlertDialog: Story = {
-  play: async () => {
-    const alertDialogTrigger = screen.getByRole('button', { name: 'Open' });
-    await userEvent.click(alertDialogTrigger);
-
-    const alertDialogAction = screen.getByRole('button', { name: 'Continue' });
-    await fireEvent.click(alertDialogAction);
-
-    // Add any assertions or actions related to the 'Continue' button click
+export const DestructiveAlertDialog: Story = {
+  args: {
+    variant: 'destructive',
   },
 };

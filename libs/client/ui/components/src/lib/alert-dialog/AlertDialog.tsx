@@ -2,12 +2,14 @@
 
 import * as React from 'react';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
-import { cva, VariantProps } from 'class-variance-authority';
-import { statusTextColorVariants, statusVariantIcons } from '../shared/statusVariant';
+import { statusVariantIcons } from '../shared/statusVariant';
+import { buttonVariants } from '../button/Button';
 
 import { cn } from '@client/ui/shared';
 
-const variants = statusTextColorVariants;
+export type AlertDialogVariants = {
+  variant?: 'default' | 'destructive' | 'success';
+};
 
 const AlertDialog = AlertDialogPrimitive.Root;
 
@@ -60,15 +62,35 @@ const AlertDialogContent = React.forwardRef<
 ));
 AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName;
 
-const AlertDialogHeader = ({
+interface AlertDialogHeaderProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    AlertDialogVariants {}
+
+const AlertDialogHeader: React.FC<AlertDialogHeaderProps> = ({
   className,
+  variant = 'default',
+  children,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn('flex flex-col space-y-2 text-center sm:text-left', className)}
-    {...props}
-  />
-);
+}) => {
+  const IconComponent = statusVariantIcons[variant];
+  return (
+    <div
+      className={cn(
+        'flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 text-center sm:text-left',
+        className
+      )}
+      {...props}
+    >
+      {IconComponent && (
+        <div className="flex w-full justify-center sm:w-auto sm:justify-start">
+          <IconComponent color={variant} size="xl" />
+        </div>
+      )}
+      <div className="w-full sm:w-auto">{children}</div>
+    </div>
+  );
+};
+
 AlertDialogHeader.displayName = 'AlertDialogHeader';
 
 const AlertDialogFooter = ({
@@ -113,19 +135,25 @@ const AlertDialogDescription = React.forwardRef<
 ));
 AlertDialogDescription.displayName = AlertDialogPrimitive.Description.displayName;
 
-const AlertDialogAction = React.forwardRef<
-  React.ElementRef<typeof AlertDialogPrimitive.Action>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
->(({ className, ...props }, ref) => (
-  <AlertDialogPrimitive.Action
-    ref={ref}
-    className={cn(
-      'inline-flex h-10 items-center justify-center rounded-md bg-slate-900 py-2 px-4 text-sm font-semibold text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900',
-      className
-    )}
-    {...props}
-  />
-));
+interface AlertDialogActionProps
+  extends React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>,
+    AlertDialogVariants {}
+
+const AlertDialogAction = React.forwardRef<HTMLButtonElement, AlertDialogActionProps>(
+  ({ className, variant = 'default', ...props }, ref) => {
+    const buttonClasses = buttonVariants({
+      variant: variant === 'success' ? 'default' : variant,
+      className,
+    });
+    return (
+      <AlertDialogPrimitive.Action
+        ref={ref}
+        className={cn(buttonClasses, 'font-semibold')}
+        {...props}
+      />
+    );
+  }
+);
 AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
 
 const AlertDialogCancel = React.forwardRef<
