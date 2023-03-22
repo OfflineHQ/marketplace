@@ -16,7 +16,7 @@ import { Button } from '../button/Button';
 import { TextInput } from '../text-input/TextInput';
 
 const meta = {
-  title: 'Molecules/Dialog',
+  title: 'Organisms/Dialog',
   component: Dialog,
   render: DialogDemo,
 } satisfies Meta<typeof Dialog>;
@@ -79,6 +79,9 @@ export const CloseDialog: Story = {
 
     const dialogTitle = screen.queryByText('Edit profile Dialog');
     expect(dialogTitle).not.toBeInTheDocument();
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
   },
 };
 

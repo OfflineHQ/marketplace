@@ -23,6 +23,9 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  chromatic: {
+    viewports: [320, 1200],
+  },
 };
 
 export const decorators = [withTailwindTheme, rootLayout];

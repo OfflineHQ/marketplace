@@ -1,9 +1,6 @@
 // Separator.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { screen } from '@storybook/testing-library';
 import { Separator } from './Separator';
-import { Label } from '../label/Label';
-import { HelperText } from '../helper-text/HelperText';
 
 const meta = {
   title: 'Atoms/Separator',
@@ -12,8 +9,8 @@ const meta = {
     orientation: {
       control: {
         type: 'select',
-        options: ['horizontal', 'vertical'],
       },
+      options: ['horizontal', 'vertical'],
     },
   },
 } satisfies Meta<typeof Separator>;

@@ -36,14 +36,14 @@ const AlertDialogDemo: React.FC<AlertDialogVariants> = ({ variant }) => {
 };
 
 const meta = {
-  title: 'Molecules/AlertDialog',
+  title: 'Organisms/AlertDialog',
   component: AlertDialogHeader,
   argTypes: {
     variant: {
       control: {
         type: 'select',
-        options: ['default', 'success', 'destructive'],
       },
+      options: ['default', 'success', 'destructive'],
     },
   },
   args: {

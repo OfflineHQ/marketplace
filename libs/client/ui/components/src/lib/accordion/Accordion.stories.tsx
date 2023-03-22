@@ -77,6 +77,9 @@ export const OpenAccordionItem: Story = {
 
 export const CloseAccordionItem: Story = {
   ...Default,
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
   play: async () => {
     const accordionTrigger = screen.getByRole('button', { name: 'Is it accessible?' });
     await userEvent.click(accordionTrigger);

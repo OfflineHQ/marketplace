@@ -45,11 +45,6 @@ function HoverCardDemo() {
 }
 
 export const Default: Story = {
-  render: HoverCardDemo,
-  args: {},
-};
-
-export const OpenedHoverCard: Story = {
   play: async ({ canvasElement }) => {
     userEvent.hover(screen.getByText('@nextjs'));
 
