@@ -4,7 +4,6 @@ import { screen, fireEvent, userEvent, within } from '@storybook/testing-library
 import { Popover, PopoverTrigger, PopoverContent } from './Popover';
 
 import { Button } from '../button/Button';
-import { TextInput } from '../text-input/TextInput';
 import { TextInputWithLeftLabels } from '../text-input/examples';
 import { Settings } from '../icons';
 

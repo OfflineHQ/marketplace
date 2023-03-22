@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { HiOutlineSearch } from 'react-icons/hi';
+import { OutlineSearch } from '../icons';
 
-import { Input, InputProps, variants, sizes } from './Input';
+import { Input, InputProps, inputBorderVariants, inputSizes } from './Input';
 
-const variantOptions = Object.keys(variants);
-const sizeOptions = Object.keys(sizes);
+const variantOptions = Object.keys(inputBorderVariants);
+const sizeOptions = Object.keys(inputSizes);
 
 const meta = {
   title: 'Atoms/Input',
@@ -34,14 +34,14 @@ export const DefaultInput: Story = {
 export const InputWithIcon: Story = {
   args: {
     placeholder: 'Input with Icon',
-    icon: HiOutlineSearch,
+    icon: OutlineSearch,
   },
 };
 
 export const InputWithRightIcon: Story = {
   args: {
     placeholder: 'Input with Right Icon',
-    rightIcon: HiOutlineSearch,
+    rightIcon: OutlineSearch,
   },
 };
 

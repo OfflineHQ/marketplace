@@ -1,23 +1,24 @@
 import * as React from 'react';
 import { cn } from '@client/ui/shared';
 import { cva, VariantProps } from 'class-variance-authority';
-import { statusVariantIcons, statusBorderVariants } from '../shared/statusVariant';
+import {
+  statusVariantIcons,
+  statusBorderVariants as inputBorderVariants,
+} from '../shared/statusVariant';
 import { IconProps } from '../icons/variants';
 
-const sizes = {
+const inputSizes = {
   sm: 'py-2 px-3 text-sm',
   md: 'py-3 px-4 text-sm',
   lg: 'py-4 px-5 text-sm',
 };
 
-const variants = statusBorderVariants;
-
-const inputVariants = cva(
+const inputCVA = cva(
   'border block w-full rounded-md bg-transparent placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-50 dark:focus:ring-offset-slate-900 dark:focus:ring-slate-400',
   {
     variants: {
-      size: sizes,
-      variant: variants,
+      size: inputSizes,
+      variant: inputBorderVariants,
     },
     defaultVariants: {
       size: 'md',
@@ -28,7 +29,7 @@ const inputVariants = cva(
 
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
-    VariantProps<typeof inputVariants> {
+    VariantProps<typeof inputCVA> {
   icon?: React.FC<IconProps>;
   rightIcon?: React.FC<IconProps>;
 }
@@ -41,7 +42,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const DefaultRightIcon = statusVariantIcons[variant || 'default'];
     const RightIconComponent = RightIcon || DefaultRightIcon;
     const inputClasses = cn(
-      inputVariants({ size, variant, className }),
+      inputCVA({ size, variant, className }),
       Icon && 'pl-10',
       RightIconComponent && 'pr-10'
     );
@@ -68,4 +69,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = 'Input';
 
-export { Input, sizes, variants };
+export { Input, inputSizes, inputBorderVariants };
