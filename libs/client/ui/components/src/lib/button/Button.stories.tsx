@@ -1,7 +1,7 @@
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
 import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
-import { OutlineArrowRight } from '../icons';
+import { OutlineArrowRight, Settings } from '../icons';
 import { delayData } from '@test-utils/functions';
 
 import { Button, variants, sizes } from './Button';
@@ -38,6 +38,13 @@ export const DefaultButton = {
     await userEvent.click(canvas.getByRole('button'));
     // Check that the spinner is present
     expect(screen.queryByRole('status')).toBeInTheDocument();
+  },
+} satisfies Story;
+
+export const ButtonWithOnlyIcon = {
+  args: {
+    children: undefined,
+    icon: Settings,
   },
 } satisfies Story;
 

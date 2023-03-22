@@ -24,6 +24,22 @@ export const iconMarginRight = {
   xl: 'mr-3',
 };
 
+export const iconMargins = {
+  xs: 'm-1.5',
+  sm: 'm-1.5',
+  md: 'm-2',
+  lg: 'm-2.5',
+  xl: 'm-3',
+};
+
+export const iconPaddings = {
+  xs: 'p-1.5',
+  sm: 'p-1.5',
+  md: 'p-2',
+  lg: 'p-2.5',
+  xl: 'p-3',
+};
+
 export const iconColors = {
   default: '',
   info: '',
@@ -34,17 +50,19 @@ export const iconColors = {
   disabled: 'text-slate-400 dark:text-slate-600',
 };
 
-// export const iconColors = statusTextColorVariants;
-
 export const iconCVA = cva('', {
   variants: {
     size: iconSizes,
+    padding: iconPaddings,
+    margin: iconMargins,
     marginLeft: iconMarginLeft,
     marginRight: iconMarginRight,
     color: iconColors,
   },
   defaultVariants: {
     size: 'md',
+    padding: null,
+    margin: null,
     marginLeft: null,
     marginRight: null,
     color: null,

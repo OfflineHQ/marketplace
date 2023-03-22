@@ -5,6 +5,7 @@ import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@client/ui/shared';
 import { Close } from '../icons';
+import { closeClasses } from '../shared/close';
 
 const Sheet = SheetPrimitive.Root;
 
@@ -125,10 +126,7 @@ const SheetContent = React.forwardRef<
       {...props}
     >
       {children}
-      <SheetPrimitive.Close
-        data-testid="sheet-close"
-        className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900 dark:data-[state=open]:bg-slate-800"
-      >
+      <SheetPrimitive.Close data-testid="sheet-close" className={closeClasses}>
         <Close size="md" />
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>

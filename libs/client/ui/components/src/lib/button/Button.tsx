@@ -35,11 +35,20 @@ const buttonVariants = cva(
     variants: {
       variant: variants,
       size: sizes,
+      isIconOnly: {
+        true: 'rounded-full p-0 w-content',
+      },
     },
     defaultVariants: {
       variant: 'default',
       size: 'md',
+      isIconOnly: false,
     },
+    compoundVariants: Object.keys(variants).map((key) => ({
+      variant: key as keyof typeof variants,
+      isIconOnly: true,
+      class: 'rounded-full',
+    })),
   }
 );
 
@@ -68,6 +77,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const [loading, setLoading] = useState(false);
     const _loading = isLoading || loading;
+    const hasChildren = typeof children !== 'undefined';
+    const isIconOnly = !hasChildren && !!(icon || iconRight);
 
     // a function that await for the onClick to be completed
     const handleClick = async (
@@ -84,8 +95,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
     const content = () => {
       const [LeftIcon, RightIcon] = [icon, iconRight];
-      const _iconLeft = iconCVA({ size, marginRight: size });
-      const _iconRight = iconCVA({ size, marginLeft: size });
+      const _iconLeft = iconCVA({
+        size,
+        marginRight: !isIconOnly ? size : null,
+        margin: isIconOnly ? size : null,
+      });
+      const _iconRight = iconCVA({
+        size,
+        marginLeft: !isIconOnly ? size : null,
+        margin: isIconOnly ? size : null,
+      });
       return (
         <>
           {_loading ? (
@@ -100,9 +119,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const loadingClasses = _loading
       ? 'cursor-not-allowed hover:scale-100'
       : 'active:scale-95';
+    const buttonClasses = buttonVariants({ variant, size, isIconOnly, className });
     return (
       <button
-        className={cn([loadingClasses], buttonVariants({ variant, size, className }))}
+        className={cn(loadingClasses, buttonClasses)}
         ref={ref}
         {...props}
         onClick={handleClick}
