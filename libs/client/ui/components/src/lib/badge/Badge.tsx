@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@client/ui/shared';
+import { IconProps } from '../icons/variants';
 
 const sizes = {
   sm: 'text-xs px-2.5 py-0.5',
@@ -36,7 +37,7 @@ const badgeVariants = cva(
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLSpanElement>,
     VariantProps<typeof badgeVariants> {
-  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  icon?: React.FC<IconProps>;
 }
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
@@ -52,7 +53,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         ref={ref}
         {...props}
       >
-        {Icon && <Icon className={iconOnly ? '' : iconClasses} />}
+        {Icon && <Icon size={size} className={iconOnly ? '' : iconClasses} />}
         {children && <span>{children}</span>}
       </span>
     );
