@@ -1,11 +1,9 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
-import { Popover, PopoverTrigger, PopoverContent } from './Popover';
+import { Popover } from './Popover';
 
-import { Button } from '../button/Button';
-import { TextInputWithLeftLabels } from '../text-input/examples';
-import { Settings } from '../icons';
+import { PopoverDemo, PopoverDemoWithNoHeader } from './examples';
 
 const meta = {
   component: Popover,
@@ -15,27 +13,6 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-function PopoverDemo() {
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="subtle" icon={Settings} />
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="grid gap-4">
-          <div className="space-y-2">
-            <h4 className="font-medium leading-none">Dimensions</h4>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Set the dimensions for the layer.
-            </p>
-          </div>
-          <TextInputWithLeftLabels label="dummy" size="sm" />
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-}
 
 export const OpenPopoverWithFocus: Story = {
   play: async ({ canvasElement }) => {
@@ -63,4 +40,14 @@ export const OpenPopoverAndClose: Story = {
   parameters: {
     chromatic: { disableSnapshot: true },
   },
+};
+
+export const OpenPopoverWithNoHeader: Story = {
+  play: async ({ canvasElement }) => {
+    userEvent.click(screen.getByRole('button'));
+    const dialogContent = await screen.findByRole('dialog');
+    const allInputs = within(dialogContent).getAllByRole('textbox');
+    expect(allInputs[0]).toHaveFocus();
+  },
+  render: PopoverDemoWithNoHeader,
 };

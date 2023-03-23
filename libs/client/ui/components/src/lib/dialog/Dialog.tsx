@@ -45,6 +45,10 @@ const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => {
+  const childrenArray = React.Children.toArray(children);
+  const shouldBeClosable = childrenArray.some(
+    (child) => React.isValidElement(child) && child.type === DialogHeader
+  );
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -60,9 +64,11 @@ const DialogContent = React.forwardRef<
         {...props}
       >
         {children}
-        <DialogPrimitive.Close data-testid="dialog-close" className={closeClasses}>
-          <Close size="md" />
-        </DialogPrimitive.Close>
+        {shouldBeClosable && (
+          <DialogPrimitive.Close data-testid="dialog-close" className={closeClasses}>
+            <Close size="md" />
+          </DialogPrimitive.Close>
+        )}
       </DialogPrimitive.Content>
     </DialogPortal>
   );

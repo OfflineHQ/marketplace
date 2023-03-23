@@ -1,6 +1,6 @@
 // Dialog.stories.tsx
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
+import { expect } from '@storybook/jest';
 import { fireEvent, screen, userEvent, within } from '@storybook/testing-library';
 
 import {
@@ -85,9 +85,25 @@ export const CloseDialog: Story = {
   },
 };
 
+export const DialogWithNoHeader: Story = {
+  render: () => (
+    <Dialog defaultOpen={true}>
+      <DialogContent>
+        <div className="grid gap-4 py-4">
+          <TextInput label="Name" defaultValue="Pedro Duarte" />
+          <TextInput label="User name" defaultValue="@peduarte" />
+        </div>
+        <DialogFooter>
+          <Button type="submit">Save changes</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
+};
+
 export const OpenedDialogScrollable: Story = {
   render: () => (
-    <Dialog open={true}>
+    <Dialog defaultOpen={true}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Long scrollable text dialog</DialogTitle>
