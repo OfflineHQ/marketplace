@@ -8,7 +8,6 @@ export const useDarkMode = () => {
       const containsDarkClass = document.documentElement.classList.contains('dark');
       setIsDark(containsDarkClass);
     });
-
     observer.observe(document.documentElement, { attributes: true });
     return () => {
       observer.disconnect();

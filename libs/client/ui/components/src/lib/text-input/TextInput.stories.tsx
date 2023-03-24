@@ -1,6 +1,6 @@
 // TextInput.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { OutlineSearch } from '../icons';
+import { OutlineSearch } from '@client/ui/icons';
 import { TextInput, TextInputProps } from './TextInput';
 import { TextInputWithLeftLabels } from './examples';
 import { inputSizes, inputBorderVariants } from '../input/Input';

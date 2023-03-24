@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@client/ui/shared';
-import { IconProps } from '../icons/variants';
+import { IconProps } from '@client/ui/icons';
 
 const sizes = {
   sm: 'text-xs px-2.5 py-0.5',

@@ -1,6 +1,6 @@
 'use client';
 
-import { useToast } from '@client/ui/hooks';
+import { useToast } from './useToast';
 import { ToastProps, ToastActionElement } from './Toast';
 
 import { Button } from '../button/Button';

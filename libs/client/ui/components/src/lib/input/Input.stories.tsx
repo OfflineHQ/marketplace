@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { OutlineSearch } from '../icons';
+import { OutlineSearch } from '@client/ui/icons';
 
 import { Input, InputProps, inputBorderVariants, inputSizes } from './Input';
 

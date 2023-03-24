@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import { Check } from '../icons';
+import { Check } from '@client/ui/icons';
 
 import { cn } from '@client/ui/shared';
 

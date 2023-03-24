@@ -5,7 +5,7 @@ import {
   statusVariantIcons,
   statusBorderVariants as inputBorderVariants,
 } from '../shared/statusVariant';
-import { IconProps } from '../icons/variants';
+import { IconProps } from '@client/ui/icons';
 
 const inputSizes = {
   sm: 'py-2 px-3 text-sm',

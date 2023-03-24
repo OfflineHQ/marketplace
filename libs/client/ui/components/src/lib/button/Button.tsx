@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { iconCVA, IconProps } from '../icons/variants';
+import { iconCVA, IconProps } from '@client/ui/icons';
 
 import { Spinner } from '../spinner/Spinner';
 

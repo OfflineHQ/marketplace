@@ -1,7 +1,7 @@
 /* eslint-disable-next-line */
 import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@client/ui/shared';
-import { iconCVA, IconProps } from '../icons/variants';
+import { iconCVA, IconProps } from '@client/ui/icons';
 import { HTMLAttributes, FC } from 'react';
 
 const variants = {

@@ -3,7 +3,7 @@ import { screen, fireEvent, userEvent, within } from '@storybook/testing-library
 import { HoverCard, HoverCardTrigger, HoverCardContent } from './HoverCard';
 import { Avatar, AvatarImage, AvatarFallback } from '../avatar/Avatar';
 import { Button } from '../button/Button';
-import { OutlineCalendarDays } from '../icons';
+import { OutlineCalendarDays } from '@client/ui/icons';
 
 const meta = {
   component: HoverCard,

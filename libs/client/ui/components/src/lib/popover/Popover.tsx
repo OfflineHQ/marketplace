@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
-import { Close } from '../icons';
+import { Close } from '@client/ui/icons';
 import { closeClasses } from '../shared/close';
 import { arrowClasses } from '../shared/arrow';
 

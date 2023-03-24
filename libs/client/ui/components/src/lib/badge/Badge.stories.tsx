@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Award } from '../icons';
+import { Award } from '@client/ui/icons';
 
 import { Badge, BadgeProps, variants, sizes } from './Badge';
 

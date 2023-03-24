@@ -1,5 +1,5 @@
 import { Spinner, SpinnerProps, variants } from './Spinner';
-import { iconSizes } from '../icons/variants';
+import { iconSizes } from '@client/ui/icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const variantOptions = Object.keys(variants);

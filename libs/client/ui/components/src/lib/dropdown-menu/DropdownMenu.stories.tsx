@@ -29,7 +29,7 @@ import {
   User,
   UserAdd,
   Users,
-} from '../icons';
+} from '@client/ui/icons';
 
 function DropdownMenuDemo() {
   return (

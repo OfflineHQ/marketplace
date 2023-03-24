@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { Close } from '../icons';
+import { Close } from '@client/ui/icons';
 import { closeClasses } from '../shared/close';
 
 import { cn } from '@client/ui/shared';

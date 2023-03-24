@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { cn } from '@client/ui/shared';
 import { cva, VariantProps } from 'class-variance-authority';
-import { ChevronDown } from '../icons';
+import { ChevronDown } from '@client/ui/icons';
 
 const Accordion = AccordionPrimitive.Root;
 

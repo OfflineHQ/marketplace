@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
 import { Tooltip, TooltipProps } from './Tooltip';
 import { Button } from '../button/Button';
-import { Plus } from '../icons';
+import { Plus } from '@client/ui/icons';
 
 const meta = {
   title: 'Atoms/Tooltip',

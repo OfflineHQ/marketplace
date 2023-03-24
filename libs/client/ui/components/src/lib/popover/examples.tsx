@@ -6,7 +6,7 @@ import {
   PopoverTitle,
   PopoverHeader,
 } from './Popover';
-import { Settings } from '../icons';
+import { Settings } from '@client/ui/icons';
 import { Button } from '../button/Button';
 import { TextInputWithLeftLabels } from '../text-input/examples';
 

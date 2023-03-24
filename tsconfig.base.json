@@ -28,6 +28,7 @@
       "@client/siwe/provider": ["libs/client/siwe/provider/src/index.ts"],
       "@client/ui/components": ["libs/client/ui/components/src/index.ts"],
       "@client/ui/hooks": ["libs/client/ui/hooks/src/index.ts"],
+      "@client/ui/icons": ["libs/client/ui/icons/src/index.ts"],
       "@client/ui/shared": ["libs/client/ui/shared/src/index.ts"],
       "@client/ui/theme": ["libs/client/ui/theme/src/index.ts"],
       "@client/zustand": ["libs/client/zustand/src/index.ts"],

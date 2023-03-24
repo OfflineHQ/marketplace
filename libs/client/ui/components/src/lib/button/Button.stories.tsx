@@ -1,7 +1,7 @@
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
 import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
-import { OutlineArrowRight, Settings } from '../icons';
+import { OutlineArrowRight, Settings } from '@client/ui/icons';
 import { delayData } from '@test-utils/functions';
 
 import { Button, variants, sizes } from './Button';

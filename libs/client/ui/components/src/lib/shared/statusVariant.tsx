@@ -5,7 +5,7 @@ import {
   FillSuccess,
   FillInfo,
   OutlineError,
-} from '../icons';
+} from '@client/ui/icons';
 
 export type StatusVariantState =
   | 'default'

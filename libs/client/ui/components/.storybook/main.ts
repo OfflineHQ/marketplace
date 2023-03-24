@@ -8,7 +8,7 @@ const tsconfig = require('../../../../../tsconfig.base.json');
 const isCI = !!process.env.GITHUB_EVENT_NAME; // Check if running in CI
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ['../../../ui'],
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',

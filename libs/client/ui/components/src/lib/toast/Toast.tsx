@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import { VariantProps, cva } from 'class-variance-authority';
-import { Close } from '../icons';
-import { closeClasses } from '../shared/close';
+import { Close } from '@client/ui/icons';
 
 import { cn } from '@client/ui/shared';
 

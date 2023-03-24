@@ -2,7 +2,7 @@
 
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import * as Icons from './index';
+import * as Icons from './icons';
 import { IconProps, iconSizes, iconColors } from './variants';
 
 const meta: Meta = {
