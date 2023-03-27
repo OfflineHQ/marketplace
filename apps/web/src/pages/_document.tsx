@@ -3,8 +3,6 @@ import { ColorModeScript } from '@chakra-ui/react';
 import type { DocumentContext } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-import theme from '@client/ui/theme';
-
 const APP_NAME = 'offline';
 
 class MyDocument extends Document {
@@ -39,7 +37,7 @@ class MyDocument extends Document {
           <link rel="manifest" href="/manifest.json" />
         </Head>
         <body>
-          <ColorModeScript initialColorMode={theme.config?.initialColorMode} />
+          <ColorModeScript initialColorMode={'light'} />
           <Main />
           <NextScript />
         </body>

@@ -1,12 +1,13 @@
 {
   "root": true,
-  "plugins": ["@nrwl/nx", "eslint-plugin-prettier", "markdown", "sonarjs"],
+  "plugins": ["@nrwl/nx", "eslint-plugin-prettier", "markdown", "sonarjs", "tailwindcss"],
   "extends": [
     "eslint-config-prettier",
     "plugin:markdown/recommended",
     "plugin:json/recommended",
     "plugin:sonarjs/recommended",
-    "plugin:storybook/recommended"
+    "plugin:storybook/recommended",
+    "plugin:tailwindcss/recommended"
   ],
   "overrides": [
     {

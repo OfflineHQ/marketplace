@@ -1,51 +1,91 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
-import { theme } from '@chakra-ui/react';
-import { getThemingArgTypes } from '@chakra-ui/storybook-addon';
-import { Input } from './Input';
+import type { Meta, StoryObj } from '@storybook/react';
+import { OutlineSearch } from '@client/ui/icons';
 
-const labelText = 'This is a label';
+import { Input, InputProps, inputBorderVariants, inputSizes } from './Input';
 
-const Story: ComponentMeta<typeof Input> = {
-  component: Input,
+const variantOptions = Object.keys(inputBorderVariants);
+const sizeOptions = Object.keys(inputSizes);
+
+const meta = {
   title: 'Atoms/Input',
+  component: Input,
+  argTypes: {
+    size: {
+      options: sizeOptions,
+      control: { type: 'select' },
+    },
+    variant: {
+      options: variantOptions,
+      control: { type: 'select' },
+    },
+  },
+} satisfies Meta<typeof Input>;
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const DefaultInput: Story = {
   args: {
-    label: labelText,
+    placeholder: 'Default Input',
+  },
+};
+
+export const InputWithIcon: Story = {
+  args: {
+    placeholder: 'Input with Icon',
+    icon: OutlineSearch,
+  },
+};
+
+export const InputWithRightIcon: Story = {
+  args: {
+    placeholder: 'Input with Right Icon',
+    rightIcon: OutlineSearch,
+  },
+};
+
+export const AllSizes: Story = {
+  render: ({ variant }) => (
+    <>
+      {sizeOptions.map((size) => (
+        <div key={size} className="mb-2">
+          <Input
+            size={size as InputProps['size']}
+            variant={variant}
+            placeholder={`${size} Input`}
+          />
+        </div>
+      ))}
+    </>
+  ),
+  args: {
+    variant: 'default',
   },
   argTypes: {
-    label: { control: 'text' },
-    helper: { control: 'text' },
-    error: { control: 'text' },
-    input: { control: 'text' },
+    size: {
+      control: false,
+    },
   },
 };
-export default Story;
 
-const Template: ComponentStory<typeof Input> = (args) => <Input {...args} />;
-
-export const Primary = Template.bind({});
-Primary.argTypes = {
-  ...getThemingArgTypes(theme, 'Input'),
-};
-
-export const Required = Template.bind({});
-Required.argTypes = {
-  isRequired: {
-    type: 'boolean',
+export const AllVariants: Story = {
+  render: ({ size }) => (
+    <>
+      {variantOptions.map((variant) => (
+        <div key={variant} className="mb-2">
+          <Input
+            size={size}
+            variant={variant as InputProps['variant']}
+            placeholder={`${variant} Input`}
+          />
+        </div>
+      ))}
+    </>
+  ),
+  argTypes: {
+    variant: {
+      control: false,
+    },
   },
-};
-Required.args = { isRequired: true };
-
-export const TypeText = Template.bind({});
-TypeText.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  const input = canvas.getByLabelText(labelText);
-  console.log({ input });
-  await expect(canvas.getByText(labelText)).toBeVisible();
-  await userEvent.click(input);
-  const text = 'This is some text';
-  await userEvent.type(input, text);
-  await expect(canvas.getByText(labelText)).toBeVisible();
-  expect(input).toHaveValue(text);
 };

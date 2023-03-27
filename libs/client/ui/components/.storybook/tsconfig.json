@@ -4,11 +4,7 @@
     "emitDecoratorMetadata": true,
     "outDir": ""
   },
-  "files": [
-    "../../../../../node_modules/@nrwl/react/typings/styled-jsx.d.ts",
-    "../../../../node_modules/@nrwl/react/typings/cssmodule.d.ts",
-    "../../../../node_modules/@nrwl/react/typings/image.d.ts"
-  ],
+  "files": [],
   "exclude": [
     "../**/*.spec.ts",
     "../**/*.spec.js",
@@ -16,11 +12,11 @@
     "../**/*.spec.jsx"
   ],
   "include": [
-    "../components/**/*.ts",
-    "../components/**/*.js",
-    "../components/**/*.jsx",
-    "../components/**/*.tsx",
-    "../components/**/*.mdx",
+    "../src/**/*.ts",
+    "../src/**/*.js",
+    "../src/**/*.jsx",
+    "../src/**/*.tsx",
+    "../src/**/*.mdx",
     "preview.tsx"
   ]
 }

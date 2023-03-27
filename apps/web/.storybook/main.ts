@@ -11,7 +11,17 @@ module.exports = {
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
+    '@storybook/addon-a11y',
     '@chakra-ui/storybook-addon',
+    // Add PostCSS into addons for compiling tailwind below
+    {
+      name: '@storybook/addon-styling',
+      options: {
+        // Check out https://github.com/storybookjs/addon-styling/blob/main/docs/api.md
+        // For more details on this addon's options.
+        postCss: true,
+      },
+    },
   ],
   framework: {
     name: '@storybook/nextjs',
@@ -23,7 +33,7 @@ module.exports = {
     storyStoreV7: !isCI,
   },
   docs: {
-    autodocs: 'tag',
+    autodocs: true,
   },
   webpackFinal: async (config, { configType }) => {
     // Add tsconfig-paths-webpack-plugin to the resolve.plugins array
