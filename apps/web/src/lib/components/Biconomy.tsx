@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Biconomy.module.css';
 import { Button, Text } from '@chakra-ui/react';
-import { emojiAvatarForAddress } from '@client/ui/shared';
+import { emojiAvatarForAddress } from '@ui/shared';
 import useScw from '@client/biconomy/scw';
 import { useSession } from 'next-auth/react';
 
