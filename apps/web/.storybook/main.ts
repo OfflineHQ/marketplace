@@ -28,6 +28,7 @@ module.exports = {
     options: {
       nextConfigPath: path.resolve(__dirname, '../next.config.js'),
     },
+    interactionsDebugger: true,
   },
   features: {
     storyStoreV7: !isCI,

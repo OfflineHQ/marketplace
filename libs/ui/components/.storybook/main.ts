@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import path from 'path';
 
-import type { StorybookConfig } from '@storybook/react-webpack5';
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const tsconfig = require('../../../../tsconfig.base.json');
 
 const isCI = !!process.env.GITHUB_EVENT_NAME; // Check if running in CI
 
-const config: StorybookConfig = {
+module.exports = {
   stories: ['../../../ui'],
   addons: [
     '@storybook/addon-essentials',
@@ -23,10 +22,12 @@ const config: StorybookConfig = {
         postCss: true,
       },
     },
+    // eslint-disable-next-line storybook/no-uninstalled-addons
     '@nrwl/react/plugins/storybook',
   ],
   features: {
     storyStoreV7: !isCI,
+    interactionsDebugger: true,
   },
   framework: {
     name: '@storybook/react-webpack5',
@@ -40,7 +41,7 @@ const config: StorybookConfig = {
     config.resolve.plugins = [
       ...(config.resolve.plugins || []),
       new TsconfigPathsPlugin({
-        configFile: path.resolve(__dirname, '../../../../../tsconfig.base.json'),
+        configFile: path.resolve(__dirname, '../../../../tsconfig.base.json'),
       }),
     ];
     // Add aliases from tsconfig.base.json to the resolve.alias object
@@ -48,7 +49,7 @@ const config: StorybookConfig = {
       const aliases = tsconfig.compilerOptions.paths;
       for (const alias in aliases) {
         const paths = aliases[alias].map((p) =>
-          path.resolve(__dirname, '../../../../../', p)
+          path.resolve(__dirname, '../../../../', p)
         );
         config.resolve.alias[alias.replace('/*', '')] =
           paths.length > 1 ? paths : paths[0];
@@ -57,5 +58,3 @@ const config: StorybookConfig = {
     return config;
   },
 };
-
-export default config;

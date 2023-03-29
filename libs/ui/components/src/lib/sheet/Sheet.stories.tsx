@@ -193,7 +193,7 @@ export const Right: Story = {
   },
 };
 
-// Path: libs/client/ui/components/src/lib/sheet/Sheet.tsx
-// Compare this snippet from libs/client/ui/components/src/lib/dialog/Dialog.tsx:
+// Path: libs/ui/components/src/lib/sheet/Sheet.tsx
+// Compare this snippet from libs/ui/components/src/lib/dialog/Dialog.tsx:
 //
 // import { DialogContent, DialogProps }

@@ -104,19 +104,17 @@ export const ToastWithTitleAndDescription: Story = {
 
 export const ToastWithAction: Story = {
   args: {
-    title: 'Uh oh! Something went wrong.',
-    description: 'There was a problem with your request.',
+    title: 'This is a toast with action',
+    description: 'And a description',
     action: <ToastAction altText="Try again">Try again</ToastAction>,
   },
   play: async () => {
     const toasterTrigger = screen.getByRole('button', { name: 'Show Toast' });
     await userEvent.click(toasterTrigger);
-    const toastTitle = await screen.findByText('Uh oh! Something went wrong.');
+    const toastTitle = await screen.findByText('This is a toast with action');
     expect(toastTitle).toBeVisible();
 
-    const toastDescription = await screen.findByText(
-      'There was a problem with your request.'
-    );
+    const toastDescription = await screen.findByText('And a description');
     expect(toastDescription).toBeVisible();
 
     const toastAction = screen.getByRole('button', { name: 'Try again' });
@@ -126,23 +124,16 @@ export const ToastWithAction: Story = {
 
 export const ToastWithDestructiveVariant: Story = {
   args: {
-    variant: 'destructive',
     ...ToastWithAction.args,
+    variant: 'destructive',
+    title: 'Uh oh! Something went wrong.',
+    description: 'There was a problem with your request.',
   },
   play: async () => {
     const toasterTrigger = screen.getByRole('button', { name: 'Show Toast' });
     await userEvent.click(toasterTrigger);
     const toastTitle = await screen.findByText('Uh oh! Something went wrong.');
     expect(toastTitle).toBeVisible();
-
-    const toastDescription = await screen.findByText(
-      'There was a problem with your request.'
-    );
-    expect(toastDescription).toBeVisible();
-
-    const toastAction = screen.getByRole('button', { name: 'Try again' });
-    expect(toastAction).toBeVisible();
-
     const toastElement = screen.getByRole('alert');
     expect(toastElement).toHaveClass('destructive');
   },

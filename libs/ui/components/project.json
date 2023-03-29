@@ -65,6 +65,12 @@
           "quiet": true
         }
       }
+    },
+    "test-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "test-storybook -c libs/ui/components/.storybook --url=http://localhost:4402"
+      }
     }
   }
 }
