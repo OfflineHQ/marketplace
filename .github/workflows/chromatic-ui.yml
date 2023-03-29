@@ -45,8 +45,11 @@ jobs:
       - name: Set up environment and cache dependencies
         uses: sebpalluel/ci/.github/actions/setup-environment@latest
 
-      - name: Launch Storybook and run tests
+      - name: Run Storybook
+        run: pnpm nx run ui-components:storybook -- --ci --port 4402 --quiet &
+
+      - name: Run Test-Storybook
         run: |
-          npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
-            "pnpm nx run ui-components:storybook -- --ci --port 4402 --quiet" \
-            "npx wait-on tcp:4402 && pnpm nx run ui-components:test-storybook"
+          pnpm install -g wait-on
+          pnpm wait-on tcp:4402
+          pnpm nx run ui-components:test-storybook
