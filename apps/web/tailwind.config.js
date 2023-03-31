@@ -1,8 +1,7 @@
 const { join } = require('path');
 const baseConfig = require('../../tailwind.config.base');
 
-// const { createGlobPatternsForDependencies } = require('@nrwl/next/tailwind')
-const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
+const { createGlobPatternsForDependencies } = require('@nrwl/next/tailwind');
 /**
  * @type {import('@types/tailwindcss/tailwind-config').TailwindConfig}
  */
