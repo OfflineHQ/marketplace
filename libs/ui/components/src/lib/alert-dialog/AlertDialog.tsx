@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import { statusVariantIcons } from '../shared/statusVariant';
-import { buttonVariants } from '../button/Button';
+import { buttonVariantsCva } from '../button/Button';
 
 import { cn } from '@ui/shared';
 
@@ -141,7 +141,7 @@ interface AlertDialogActionProps
 
 const AlertDialogAction = React.forwardRef<HTMLButtonElement, AlertDialogActionProps>(
   ({ className, variant = 'default', ...props }, ref) => {
-    const buttonClasses = buttonVariants({
+    const buttonClasses = buttonVariantsCva({
       variant: variant === 'success' ? 'default' : variant,
       className,
     });

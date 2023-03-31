@@ -12,7 +12,7 @@ import { NavigationMenuDemo } from './examples';
 
 const meta = {
   component: NavigationMenu,
-  title: 'Organisms/NavigationMenu',
+  title: 'Molecules/NavigationMenu',
   parameters: {
     layout: 'fullscreen',
   },
