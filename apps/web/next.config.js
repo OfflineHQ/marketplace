@@ -29,9 +29,6 @@ const nextConfig = {
     return config;
   },
   images: {},
-  // Use the CDN in production and localhost for development.
-  // assetPrefix: isProd() ? 'https://cdn.mydomain.com' : undefined,
-  assetPrefix: undefined,
   // optimize build with vercel nft (node file tracing) https://nextjs.org/docs/advanced-features/output-file-tracing
   // outputFileTracingRoot needed for monorepo
   output: 'standalone',
@@ -49,12 +46,6 @@ const nextConfig = {
   },
   //
   sentry: {
-    // Use `hidden-source-map` rather than `source-map` as the Webpack `devtool`
-    // for client-side builds. (This will be the default starting in
-    // `@sentry/nextjs` version 8.0.0.) See
-    // https://webpack.js.org/configuration/devtool/ and
-    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map
-    // for more information.
     hideSourceMaps: true,
   },
 };
@@ -74,3 +65,26 @@ const sentryWebpackPluginOptions = {
 module.exports = withBundleAnalyzer(
   withSentryConfig(withNx(nextConfig), sentryWebpackPluginOptions)
 );
+
+module.exports = async (phase, context) => {
+  const isProd = process.env.NODE_ENV === 'production';
+  // Use the CDN in production and localhost for development.
+  // assetPrefix: isProd() ? 'https://cdn.mydomain.com' : undefined,
+  const assetPrefix = isProd && phase !== '' ? phase : undefined;
+  const buildId = isProd ? `${assetPrefix.substring(1).replaceAll('/', '-')}` : '';
+
+  const addNx = withNx({
+    ...nextConfig,
+    assetPrefix,
+    generateBuildId: async () => buildId,
+    publicRuntimeConfig: {
+      assetPrefix,
+    },
+  });
+
+  let config = await addNx(phase);
+  // config = await nextTranslate(config);
+  config = await withSentryConfig(config, sentryWebpackPluginOptions);
+  config = await withBundleAnalyzer(config);
+  return config;
+};
