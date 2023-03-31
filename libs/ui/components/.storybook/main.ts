@@ -22,8 +22,6 @@ module.exports = {
         postCss: true,
       },
     },
-    // eslint-disable-next-line storybook/no-uninstalled-addons
-    '@nrwl/react/plugins/storybook',
   ],
   features: {
     storyStoreV7: !isCI,
