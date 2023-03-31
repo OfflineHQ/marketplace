@@ -1,4 +1,5 @@
 import styles from './index.module.css';
+import { Button } from '@ui/components';
 
 export function Index() {
   /*
@@ -15,6 +16,7 @@ export function Index() {
               <span> Hello there, </span>
               Welcome testnext 👋
             </h1>
+            <Button>Button</Button>
           </div>
 
           <div id="hero" className="rounded">
