@@ -3,6 +3,10 @@ const withNx = require('@nrwl/next/plugins/with-nx');
 const path = require('path');
 const { withSentryConfig } = require('@sentry/nextjs');
 
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
   ? null
   : process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
@@ -67,4 +71,6 @@ const sentryWebpackPluginOptions = {
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
-module.exports = withSentryConfig(withNx(nextConfig), sentryWebpackPluginOptions);
+module.exports = withBundleAnalyzer(
+  withSentryConfig(withNx(nextConfig), sentryWebpackPluginOptions)
+);
