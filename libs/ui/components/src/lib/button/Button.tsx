@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { iconCVA, IconProps } from '@ui/icons';
 
@@ -29,7 +31,7 @@ const variants = {
   link: 'bg-transparent dark:bg-transparent underline-offset-4 hover:underline text-slate-900 dark:text-slate-100 hover:bg-transparent dark:hover:bg-transparent',
 };
 
-const buttonVariants = cva(
+const buttonVariantsCva = cva(
   'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 dark:hover:bg-slate-800 dark:hover:text-slate-100 disabled:opacity-50 dark:focus:ring-slate-400 disabled:pointer-events-none dark:focus:ring-offset-slate-900 data-[state=open]:bg-slate-100 dark:data-[state=open]:bg-slate-800',
   {
     variants: {
@@ -54,7 +56,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonVariantsCva> {
   isLoading?: boolean;
   icon?: React.FC<IconProps>;
   iconRight?: React.FC<IconProps>;
@@ -119,7 +121,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const loadingClasses = _loading
       ? 'cursor-not-allowed hover:scale-100'
       : 'active:scale-95';
-    const buttonClasses = buttonVariants({ variant, size, isIconOnly, className });
+    const buttonClasses = buttonVariantsCva({ variant, size, isIconOnly, className });
     return (
       <button
         className={cn(loadingClasses, buttonClasses)}
@@ -134,4 +136,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = 'Button';
 
-export { Button, sizes, variants, buttonVariants };
+export { Button, sizes as buttonSizes, variants as buttonVariants, buttonVariantsCva };

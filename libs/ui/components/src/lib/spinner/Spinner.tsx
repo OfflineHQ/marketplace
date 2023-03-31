@@ -14,7 +14,7 @@ const variants = {
   disabled: 'text-dark dark:text-white fill-slate-200 dark:fill-slate-400',
 };
 
-const spinnerVariants = cva('w-10 h-10 animate-spin', {
+const spinnerVariantsCva = cva('w-10 h-10 animate-spin', {
   variants: {
     variant: variants,
   },
@@ -24,14 +24,14 @@ const spinnerVariants = cva('w-10 h-10 animate-spin', {
 });
 
 export interface SpinnerProps
-  extends VariantProps<typeof spinnerVariants>,
+  extends VariantProps<typeof spinnerVariantsCva>,
     HTMLAttributes<SVGElement> {
   size?: IconProps['size'];
 }
 
 const Spinner: FC<SpinnerProps> = ({ size = 'md', className, variant, ...rest }) => {
   const iconClasses = iconCVA({ size });
-  const spinnerClasses = cn(spinnerVariants({ variant }));
+  const spinnerClasses = cn(spinnerVariantsCva({ variant }));
   return (
     <div
       role="status"
@@ -58,4 +58,4 @@ const Spinner: FC<SpinnerProps> = ({ size = 'md', className, variant, ...rest })
   );
 };
 
-export { Spinner, variants, spinnerVariants };
+export { Spinner, variants as spinnerVariants, spinnerVariantsCva };

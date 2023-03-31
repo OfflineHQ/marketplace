@@ -1,8 +1,8 @@
-import { Spinner, SpinnerProps, variants } from './Spinner';
+import { Spinner, SpinnerProps, spinnerVariants } from './Spinner';
 import { iconSizes } from '@ui/icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const variantOptions = Object.keys(variants);
+const variantOptions = Object.keys(spinnerVariants);
 const sizeOptions = Object.keys(iconSizes);
 
 const meta = {
