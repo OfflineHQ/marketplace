@@ -13,7 +13,23 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    href: 'link',
+    href: '/link',
+    children: 'A link',
+  },
+  parameters: {
+    nextjs: {
+      router: {
+        asPath: '/link',
+      },
+    },
+  },
+
+  render: NavLinkExample,
+};
+
+export const NotActive: Story = {
+  args: {
+    href: '/link',
     children: 'A link',
   },
   render: NavLinkExample,

@@ -1,4 +1,5 @@
 import type { Session } from 'next-auth';
+import { NavLink } from '../nav-link/NavLink';
 /* eslint-disable-next-line */
 export interface NavDesktopProps {
   session: Session | null | undefined;

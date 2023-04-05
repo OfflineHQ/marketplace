@@ -11,15 +11,23 @@ import { cn } from '@ui/shared';
 export interface NavLinkProps {
   href: string;
   children: React.ReactNode;
+  className?: string;
 }
 
-export function NavLink({ href, children }: NavLinkProps) {
+export function NavLink({ href, children, className }: NavLinkProps) {
   const router = useRouter();
   const isActive = router.asPath === href;
   return (
     <NavigationMenuItem>
       <Link href={href} legacyBehavior passHref>
-        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+        <NavigationMenuLink
+          className={cn(
+            navigationMenuTriggerStyle(),
+            className,
+            //TODO change for existing primary color
+            isActive ? 'underline' : ''
+          )}
+        >
           {children}
         </NavigationMenuLink>
       </Link>
