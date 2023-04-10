@@ -11,6 +11,7 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuIndicator,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from './NavigationMenu';

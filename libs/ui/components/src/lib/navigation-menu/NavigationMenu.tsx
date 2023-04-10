@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu';
 import { cva } from 'class-variance-authority';
 import { ChevronDown } from '@ui/icons';
+import { indicatorClasses } from '../shared/indicator';
 
 import { cn } from '@ui/shared';
 
@@ -28,7 +29,10 @@ const NavigationMenuList = React.forwardRef<
     ref={ref}
     className={cn('group flex flex-1 list-none items-center justify-center', className)}
     {...props}
-  />
+  >
+    {props.children}
+    <NavigationMenuIndicator />
+  </NavigationMenuPrimitive.List>
 ));
 NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName;
 
@@ -97,12 +101,16 @@ const NavigationMenuIndicator = React.forwardRef<
   <NavigationMenuPrimitive.Indicator
     ref={ref}
     className={cn(
-      'data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=visible]:fade-in data-[state=hidden]:fade-out top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden',
+      'z-10',
+      'top-[100%] flex items-end justify-center h-2 overflow-hidden',
+      'radix-state-visible:animate-fade-in',
+      'radix-state-hidden:animate-fade-out',
+      'transition-[width_transform] duration-[250ms] ease-[ease]',
       className
     )}
     {...props}
   >
-    <div className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-slate-200 shadow-md dark:bg-slate-800" />
+    <div className={cn('top-1 relative rotate-45', indicatorClasses)} />
   </NavigationMenuPrimitive.Indicator>
 ));
 NavigationMenuIndicator.displayName = NavigationMenuPrimitive.Indicator.displayName;
