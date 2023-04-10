@@ -118,9 +118,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         </>
       );
     };
-    const loadingClasses = _loading
-      ? 'cursor-not-allowed hover:scale-100'
-      : 'active:scale-95';
+    const loadingClasses = _loading ? 'cursor-not-allowed' : '';
     const buttonClasses = buttonVariantsCva({ variant, size, isIconOnly, className });
     return (
       <button
