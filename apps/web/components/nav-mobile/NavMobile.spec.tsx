@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
 
-import { NavDesktop } from './NavDesktop';
+import { NavMobile } from './NavMobile';
 import { menuSections } from './examples';
 
-describe('NavDesktop', () => {
+describe('NavMobile', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<NavDesktop menuSections={menuSections} />);
+    const { baseElement } = render(<NavMobile menuSections={menuSections} />);
     expect(baseElement).toBeTruthy();
   });
 });

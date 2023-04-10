@@ -10,7 +10,7 @@ import { cn } from '@ui/shared';
 
 export interface NavLinkProps {
   href: string;
-  children: React.ReactNode;
+  children: React.ReactNode | string;
   className?: string;
 }
 

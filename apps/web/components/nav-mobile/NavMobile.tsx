@@ -11,21 +11,25 @@ import {
 
 /* eslint-disable-next-line */
 
-export interface NavDesktopProps {
+export interface NavMobileProps {
   menuSections: NavLinkProps[];
 }
 
-export function NavDesktop({ menuSections }: NavDesktopProps) {
+export function NavMobile({ menuSections }: NavMobileProps) {
   const sections = menuSections.map(({ children, href, ...rest }) => (
-    <NavLink {...rest} key={href} href={href}>
-      {children}
-    </NavLink>
+    <>
+      <NavLink {...rest} key={href} href={href}>
+        {children}
+      </NavLink>
+    </>
   ));
   return (
-    <NavigationMenu>
-      <NavigationMenuList>{sections}</NavigationMenuList>
+    <NavigationMenu orientation="vertical">
+      <NavigationMenuList data-orientation="vertical" className="flex-col items-start">
+        {sections}
+      </NavigationMenuList>
     </NavigationMenu>
   );
 }
 
-export default NavDesktop;
+export default NavMobile;
