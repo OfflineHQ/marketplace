@@ -1,6 +1,3 @@
-export const rootLayoutClasses =
-  'min-h-screen bg-transparent font-sans text-slate-900 dark:bg-slate-900 antialiased dark:text-slate-50';
-
 export const parameters = {
   darkMode: {
     darkClass: 'dark',
