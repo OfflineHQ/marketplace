@@ -5,6 +5,9 @@ import { NavDesktopExample } from './examples';
 const Story: Meta<typeof NavDesktop> = {
   component: NavDesktop,
   render: NavDesktopExample,
+  parameters: {
+    layout: 'fullscreen',
+  },
 };
 export default Story;
 

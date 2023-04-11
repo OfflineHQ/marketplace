@@ -26,6 +26,7 @@ import {
   AiOutlineMail,
   AiOutlineCheckCircle,
   AiOutlineDelete,
+  AiOutlineMenu,
 } from 'react-icons/ai';
 
 import { IoWarning, IoWarningOutline } from 'react-icons/io5';
@@ -89,6 +90,7 @@ export const OutlinePlusCircle = createWrappedIcon(
   HiOutlinePlusCircle,
   'Outline Plus Circle'
 );
+export const Menu = createWrappedIcon(AiOutlineMenu, 'Menu');
 export const Settings = createWrappedIcon(FiSettings, 'Settings');
 export const User = createWrappedIcon(HiOutlineUser, 'User');
 export const UserAdd = createWrappedIcon(HiOutlineUserAdd, 'User Add');
