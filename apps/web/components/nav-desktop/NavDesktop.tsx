@@ -17,7 +17,7 @@ export interface NavDesktopProps {
 
 export function NavDesktop({ menuSections }: NavDesktopProps) {
   const sections = menuSections.map(({ children, href, ...rest }) => (
-    <NavLink {...rest} key={href} href={href}>
+    <NavLink {...rest} key={`${href}-desktop`} href={href}>
       {children}
     </NavLink>
   ));

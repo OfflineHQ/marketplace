@@ -9,10 +9,11 @@ const Story: Meta<typeof HeaderNav> = {
   args: {
     menuSections,
     session: null,
+    signIn: () => null,
   },
 };
 export default Story;
 
-export const Primary = {
+export const Default = {
   args: {},
 };

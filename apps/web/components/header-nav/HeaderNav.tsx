@@ -4,17 +4,19 @@ import Logo from './Logo';
 import { NavLink } from '../nav-link/NavLink';
 import { type NavDesktopProps, NavDesktop } from '../nav-desktop/NavDesktop';
 import { type NavMobileProps, NavMobile } from '../nav-mobile/NavMobile';
-import { useScreenSize, useDarkMode } from '@ui/hooks';
+import { type ProfileNavProps, ProfileNav } from '../profile-nav/ProfileNav';
 import { Menu, Close } from '@ui/icons';
 import { Button, NavigationMenu, NavigationMenuList } from '@ui/components';
 
-export interface HeaderNavProps extends NavDesktopProps {
+export interface HeaderNavProps
+  extends NavDesktopProps,
+    Omit<ProfileNavProps, 'session'> {
   session: Session | null | undefined;
+  signIn: () => void;
 }
 
 export function HeaderNav(props: HeaderNavProps) {
-  const { menuSections, session } = props;
-  const { isDesktop } = useScreenSize();
+  const { menuSections, signIn, session } = props;
   const [menuExpanded, setMenuExpanded] = useState(false);
   useEffect(() => {
     const html: HTMLElement = document.querySelector('html')!;
@@ -62,6 +64,11 @@ export function HeaderNav(props: HeaderNavProps) {
             </div>
           )} */}
           <div className="flex gap-2">
+            {!session ? (
+              <Button onClick={signIn}>Sign in</Button>
+            ) : (
+              <ProfileNav session={session} />
+            )}
             {/* {actions?.map((action: ActionsProps, index) => {
               if ('title' in action) {
                 const { title, url, icon } = action;
