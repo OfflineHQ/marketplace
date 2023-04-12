@@ -23,6 +23,9 @@
     "../**/*.mdx",
     "*.ts",
     "*.js",
+    "../next-env.d.ts",
+    "../.next/types/**/*.ts",
+    "../types/*.d.ts",
     "preview.tsx"
   ]
 }
