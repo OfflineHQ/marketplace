@@ -1,6 +1,6 @@
 // Read more at: https://next-auth.js.org/getting-started/typescript#module-augmentation
 
-import NextAuth, { DefaultSession } from 'next-auth';
+import NextAuth from 'next-auth';
 
 declare module 'next-auth' {
   interface User {
@@ -14,6 +14,10 @@ declare module 'next-auth' {
     error: string;
     user: {
       id: string;
-    } & DefaultSession['user'];
+      firstName?: string | null;
+      lastName?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
   }
 }
