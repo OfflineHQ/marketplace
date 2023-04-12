@@ -1,20 +1,33 @@
-import type { Session } from 'next-auth';
+import { ProfileAvatarProps, ProfileAvatar } from '../profile-avatar/ProfileAvatar';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuItems,
+  DropdownMenuItemsProps,
+  Button,
+} from '@ui/components';
+import { truncateEmailString, truncateString } from '@utils';
 
-export interface ProfileNavProps {
-  session: Session;
-}
+export interface ProfileNavProps extends ProfileAvatarProps, DropdownMenuItemsProps {}
 
-export function ProfileNav(props: ProfileNavProps) {
+export function ProfileNav({ session, items }: ProfileNavProps) {
   const {
-    session: {
-      address,
-      user: { firstName, lastName, email, image },
-    },
-  } = props;
+    address,
+    user: { email },
+  } = session;
+
   return (
-    <div>
-      <h1>Welcome to ProfileMenu!</h1>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="py-1">
+          <ProfileAvatar session={session} />
+          <span className="hidden pl-2 md:flex">
+            {email ? truncateEmailString(email, 12) : truncateString(address, 12)}
+          </span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuItems items={items} />
+    </DropdownMenu>
   );
 }
 

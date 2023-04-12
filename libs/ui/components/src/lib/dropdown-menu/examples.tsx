@@ -13,6 +13,8 @@ import {
   DropdownMenuTrigger,
 } from './DropdownMenu';
 
+import { DropdownMenuItems, type DropdownMenuItemsProps } from './DropdownMenuItems';
+
 import { Button } from '../button/Button';
 
 import {
@@ -102,6 +104,33 @@ export function DropdownMenuDemo() {
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export const menuItems = [
+  { type: 'label', text: 'My Account' },
+  { type: 'separator' },
+  { type: 'item', icon: <User />, text: 'Profile', shortcut: '⇧⌘P' },
+  { type: 'item', icon: <CreditCard />, text: 'Billing', shortcut: '⌘B' },
+  { type: 'item', icon: <Settings />, text: 'Settings', shortcut: '⌘S' },
+  { type: 'separator' },
+  { type: 'item', icon: <Users />, text: 'Team', disabled: true },
+  { type: 'item', icon: <UserAdd />, text: 'Invite users' },
+  { type: 'item', icon: <Plus />, text: 'New Team', shortcut: '⌘+T' },
+  { type: 'separator' },
+  { type: 'item', icon: <LifeBuoy />, text: 'Support' },
+  { type: 'separator' },
+  { type: 'item', icon: <LogOut />, text: 'Log out', shortcut: '⇧⌘Q' },
+] satisfies DropdownMenuItemsProps['items'];
+
+export function DropdownMenuItemsDemo(props: DropdownMenuItemsProps) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">Open</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuItems {...props} />
     </DropdownMenu>
   );
 }
