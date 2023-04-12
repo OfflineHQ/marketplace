@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Avatar, AvatarImage, AvatarFallback, avatarSizes, AvatarProps } from './Avatar';
+import { Avatar, avatarSizes } from './Avatar';
+import { AvatarExample, AvatarFallbackExample } from './examples';
 
 const sizeOptions = Object.keys(avatarSizes);
 
@@ -13,6 +14,7 @@ const meta = {
       control: { type: 'select' },
     },
   },
+  render: AvatarExample,
 } satisfies Meta<typeof Avatar>;
 
 export default meta;
@@ -23,35 +25,21 @@ export const DefaultAvatar: Story = {
   args: {
     size: 'md',
   },
-  render: (props) => (
-    <Avatar {...props}>
-      <AvatarImage src="https://github.com/sebpalluel.png" />
-      <AvatarFallback>SP</AvatarFallback>
-    </Avatar>
-  ),
 };
 
 export const FallbackAvatar: Story = {
   args: {
     size: 'md',
   },
-  render: ({ size }) => (
-    <Avatar size={size}>
-      <AvatarImage src="https://github.com/!@£$%.png" />
-      <AvatarFallback>FA</AvatarFallback>
-    </Avatar>
-  ),
+  render: AvatarFallbackExample,
 };
 
 export const AllSizes: Story = {
   render: () => (
     <>
-      {sizeOptions.map((size) => (
+      {Object.keys(avatarSizes).map((size) => (
         <div key={size} className="mb-2">
-          <Avatar size={size as AvatarProps['size']}>
-            <AvatarImage src="https://github.com/sebpalluel.png" />
-            <AvatarFallback>SP</AvatarFallback>
-          </Avatar>
+          <AvatarExample size={size as keyof typeof avatarSizes} />
         </div>
       ))}
     </>
@@ -68,10 +56,7 @@ export const FallbackAvatarSizes: Story = {
     <>
       {Object.keys(avatarSizes).map((size) => (
         <div key={size} className="mb-2">
-          <Avatar size={size as keyof typeof avatarSizes}>
-            <AvatarImage src="https://github.com/!@£$%.png" />
-            <AvatarFallback>FA</AvatarFallback>
-          </Avatar>
+          <AvatarFallbackExample size={size as keyof typeof avatarSizes} />
         </div>
       ))}
     </>
