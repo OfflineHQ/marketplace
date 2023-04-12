@@ -14,7 +14,7 @@ const variants = {
   disabled: 'text-dark dark:text-white fill-slate-200 dark:fill-slate-400',
 };
 
-const spinnerVariantsCva = cva('w-10 h-10 animate-spin', {
+const spinnerVariantsCva = cva('h-10 w-10 animate-spin', {
   variants: {
     variant: variants,
   },

@@ -14,7 +14,7 @@ const inputSizes = {
 };
 
 const inputCVA = cva(
-  'border block w-full rounded-md bg-transparent placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-50 dark:focus:ring-offset-slate-900 dark:focus:ring-slate-400',
+  'block w-full rounded-md border bg-transparent placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-50 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900',
   {
     variants: {
       size: inputSizes,

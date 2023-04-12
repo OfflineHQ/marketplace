@@ -21,7 +21,7 @@ const variants = {
 };
 
 const badgeVariants = cva(
-  'inline-flex items-center font-medium mr-2 rounded-full transition-colors',
+  'mr-2 inline-flex items-center rounded-full font-medium transition-colors',
   {
     variants: {
       variant: variants,
