@@ -1,4 +1,4 @@
-import './globals.css';
+import '../styles/globals.css';
 import { Inter } from '@next/font/google';
 import { Preview } from '@storybook/react';
 import { parameters } from '../../../storybook.preview.base';
