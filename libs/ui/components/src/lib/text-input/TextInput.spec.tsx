@@ -1,6 +1,6 @@
 // TextInput.spec.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
-import { composeStories } from '@storybook/testing-react';
+import { composeStories } from '@storybook/react';
 import * as stories from './TextInput.stories';
 
 const { Default } = composeStories(stories);

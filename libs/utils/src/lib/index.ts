@@ -96,16 +96,7 @@ export function truncateEmailString(str: string, maxChars: number): string {
   if (emailParts.length !== 2) {
     throw new Error('Invalid email format');
   }
-
   const localPart = emailParts[0];
   const domainPart = emailParts[1];
-
-  if (str.length <= maxChars) {
-    return str;
-  }
-
-  const charsToShow = maxChars - domainPart.length - 4; // 4 = 3 (asterisks) + 1 (@ symbol)
-  const frontChars = Math.min(localPart.length, charsToShow);
-
-  return localPart.slice(0, frontChars) + '***' + '@' + domainPart;
+  return `${truncateString(localPart, maxChars)}@${domainPart}`;
 }

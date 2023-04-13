@@ -43,14 +43,14 @@ describe('truncateEmailString', () => {
   });
 
   test('should truncate email', () => {
-    const originalEmail = 'johndoe@example.com';
-    expect(truncateEmailString(originalEmail, 16)).toBe('j***@example.com');
+    const originalEmail = 'johnny.doeyeydodidooooo@example.com';
+    expect(truncateEmailString(originalEmail, 12)).toBe('john***ooooo@example.com');
   });
 
-  test('should truncate email with long domain', () => {
-    const originalEmail = 'johndoe@verylongdomainexample.com';
+  test('should not truncate email with long domain', () => {
+    const originalEmail = 'jonhdoe@verylongdomainexample.com';
     expect(truncateEmailString(originalEmail, 24)).toBe(
-      'jo***@verylongdomainexample.com'
+      'jonhdoe@verylongdomainexample.com'
     );
   });
 });

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
+import type { DialogPortalProps } from '@radix-ui/react-dialog';
 import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@ui/shared';
 import { Close } from '@ui/icons';
@@ -24,7 +25,7 @@ const portalVariants = cva('fixed inset-0 z-50 flex', {
 });
 
 interface SheetPortalProps
-  extends SheetPrimitive.DialogPortalProps,
+  extends DialogPortalProps,
     VariantProps<typeof portalVariants> {}
 
 const SheetPortal = ({ position, className, children, ...props }: SheetPortalProps) => (

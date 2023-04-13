@@ -14,8 +14,12 @@ import {
   HiOutlineUsers,
   HiOutlineCalculator,
 } from 'react-icons/hi';
-import { HiOutlineArrowUpCircle, HiChevronUpDown } from 'react-icons/hi2';
-import { HiOutlineCalendarDays, HiCalendar } from 'react-icons/hi2';
+import {
+  HiOutlineArrowUpCircle,
+  HiChevronUpDown,
+  HiOutlineCalendarDays,
+  HiCalendar,
+} from 'react-icons/hi2';
 import { BiCircle, BiHelpCircle, BiXCircle } from 'react-icons/bi';
 import { BsTags } from 'react-icons/bs';
 import {
@@ -39,9 +43,11 @@ import {
   FiLogOut,
   FiMessageSquare,
   FiSettings,
+  FiSmile,
+  FiMoreHorizontal,
+  FiEdit,
 } from 'react-icons/fi';
 
-import { FiSmile, FiMoreHorizontal, FiEdit } from 'react-icons/fi';
 // import and export IconType
 
 import type { IconType as ReactIcon } from 'react-icons';

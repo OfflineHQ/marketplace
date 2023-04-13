@@ -17,11 +17,13 @@ interface MenuItem {
   type: 'label' | 'separator' | 'item' | 'sub' | 'children';
   text?: string;
   children?: React.ReactNode;
+  wrapper?: React.ReactElement;
   icon?: React.ReactElement;
   action?: () => void;
   shortcut?: string;
   disabled?: boolean;
   subItems?: MenuItem[];
+  className?: string;
 }
 
 interface DropdownMenuItemsProps {
@@ -38,15 +40,24 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({ items, className 
             return <DropdownMenuSeparator key={index} />;
 
           case 'label':
-            return <DropdownMenuLabel key={index}>{item.text}</DropdownMenuLabel>;
+            return (
+              <DropdownMenuLabel key={index} className={item.className}>
+                {item.text}
+              </DropdownMenuLabel>
+            );
 
           case 'children':
-            return item.children;
+            return <div key={index}>{item.children}</div>;
 
           case 'item':
             return (
               <DropdownMenuGroup key={index}>
-                <DropdownMenuItem disabled={item.disabled} onClick={item.action}>
+                <DropdownMenuItem
+                  disabled={item.disabled}
+                  onSelect={item.action}
+                  wrapper={item.wrapper}
+                  className={item.className}
+                >
                   {item.icon &&
                     React.cloneElement(item.icon, { size: 'sm', marginRight: 'md' })}
                   <span>{item.text}</span>

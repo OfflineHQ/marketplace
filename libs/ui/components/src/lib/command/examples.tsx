@@ -18,8 +18,8 @@ import {
   Edit,
   Tags,
   Delete,
+  IconProps,
 } from '@ui/icons';
-import { IconProps } from '@ui/icons';
 
 import {
   Command,
