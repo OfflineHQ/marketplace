@@ -6,17 +6,18 @@ import { type NavDesktopProps, NavDesktop } from '../nav-desktop/NavDesktop';
 import { type NavMobileProps, NavMobile } from '../nav-mobile/NavMobile';
 import { type ProfileNavProps, ProfileNav } from '../profile-nav/ProfileNav';
 import { Menu, Close } from '@ui/icons';
-import { Button, NavigationMenu, NavigationMenuList } from '@ui/components';
+import { Button, NavigationMenu, NavigationMenuList, Separator } from '@ui/components';
 
 export interface HeaderNavProps
   extends NavDesktopProps,
-    Omit<ProfileNavProps, 'session'> {
+    Omit<ProfileNavProps, 'items' | 'session'> {
   session: Session | null | undefined;
+  profileSections: ProfileNavProps['items'];
   signIn: () => void;
 }
 
 export function HeaderNav(props: HeaderNavProps) {
-  const { menuSections, signIn, session } = props;
+  const { menuSections, signIn, session, profileSections } = props;
   const [menuExpanded, setMenuExpanded] = useState(false);
   useEffect(() => {
     const html: HTMLElement = document.querySelector('html')!;
@@ -36,9 +37,11 @@ export function HeaderNav(props: HeaderNavProps) {
             <div className="flex items-center gap-2">
               <div className="block lg:hidden">
                 <Button
+                  className="ml-2"
                   icon={menuExpanded ? Close : Menu}
                   variant="ghost"
-                  size="lg"
+                  data-testid="hamburger-menu"
+                  size="md"
                   onClick={() => setMenuExpanded(!menuExpanded)}
                 />
               </div>
@@ -65,32 +68,19 @@ export function HeaderNav(props: HeaderNavProps) {
           )} */}
           <div className="flex gap-2">
             {!session ? (
-              <Button onClick={signIn}>Sign in</Button>
+              <Button onClick={signIn} className="m-1 md:m-2">
+                Sign in
+              </Button>
             ) : (
-              <ProfileNav session={session} />
+              <>
+                <Separator orientation="vertical" className="my-1 h-10 md:h-12" />
+                <ProfileNav
+                  data-testid="profile-menu"
+                  session={session}
+                  items={profileSections}
+                />
+              </>
             )}
-            {/* {actions?.map((action: ActionsProps, index) => {
-              if ('title' in action) {
-                const { title, url, icon } = action;
-                return (
-                  <Link href={url} key={index}>
-                    <Button variant="outlined-primary" size="small">
-                      <div className="flex items-center gap-2">
-                        <span className="text-brand-ui-primary text-xs font-bold lg:text-base">
-                          {title}
-                        </span>
-                        {icon && (
-                          <Icon className="text-brand-ui-primary" icon={icon} size={25} />
-                        )}
-                      </div>
-                    </Button>
-                  </Link>
-                );
-              } else if ('content' in action) {
-                return <div key={index}>{action.content}</div>;
-              }
-              return null;
-            })} */}
           </div>
         </div>
       </div>

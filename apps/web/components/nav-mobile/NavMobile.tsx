@@ -17,11 +17,9 @@ export interface NavMobileProps {
 
 export function NavMobile({ menuSections }: NavMobileProps) {
   const sections = menuSections.map(({ children, href, ...rest }) => (
-    <>
-      <NavLink {...rest} key={`${href}-mobile`} href={href}>
-        {children}
-      </NavLink>
-    </>
+    <NavLink {...rest} href={href} key={`${href}-mobile`}>
+      {children}
+    </NavLink>
   ));
   return (
     <NavigationMenu orientation="vertical">

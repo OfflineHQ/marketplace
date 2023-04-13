@@ -1,10 +1,10 @@
-import type { Meta } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
 import { ProfileNav } from './ProfileNav';
-import { ProfileNavExample, menuItems } from './examples';
+import { ProfileNavExample, cryptoUserMenuItems, normalUserMenuItems } from './examples';
 import { cryptoUserSession, normalUserSession } from '../profile-avatar/examples';
 
-const Story: Meta<typeof ProfileNav> = {
+const meta = {
   component: ProfileNav,
   render: ProfileNavExample,
   parameters: {
@@ -14,12 +14,15 @@ const Story: Meta<typeof ProfileNav> = {
   },
   args: {
     session: cryptoUserSession,
-    items: menuItems,
+    items: cryptoUserMenuItems,
   },
-};
-export default Story;
+} satisfies Meta<typeof ProfileNav>;
 
-export const CryptoUser = {
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const CryptoUser: Story = {
   args: {},
   play: async ({ canvasElement }) => {
     userEvent.click(screen.getByText('0x', { exact: false }));
@@ -28,9 +31,10 @@ export const CryptoUser = {
   },
 };
 
-export const NormalUser = {
+export const NormalUser: Story = {
   args: {
     session: normalUserSession,
+    items: normalUserMenuItems,
   },
   play: async ({ canvasElement }) => {
     userEvent.click(screen.getByText('@', { exact: false }));

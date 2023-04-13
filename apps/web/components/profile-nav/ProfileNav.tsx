@@ -4,13 +4,15 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItems,
   DropdownMenuItemsProps,
+  NavigationMenu,
   Button,
+  NavigationMenuList,
 } from '@ui/components';
 import { truncateEmailString, truncateString } from '@utils';
 
 export interface ProfileNavProps extends ProfileAvatarProps, DropdownMenuItemsProps {}
 
-export function ProfileNav({ session, items }: ProfileNavProps) {
+export function ProfileNav({ session, items, ...props }: ProfileNavProps) {
   const {
     address,
     user: { email },
@@ -19,14 +21,18 @@ export function ProfileNav({ session, items }: ProfileNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="py-1">
+        <Button variant="ghost" className="py-1" {...props}>
           <ProfileAvatar session={session} />
           <span className="hidden pl-2 md:flex">
-            {email ? truncateEmailString(email, 12) : truncateString(address, 12)}
+            {email ? truncateEmailString(email, 12) : truncateString(address, 16)}
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuItems items={items} />
+      <NavigationMenu>
+        <NavigationMenuList>
+          <DropdownMenuItems items={items} />
+        </NavigationMenuList>
+      </NavigationMenu>
     </DropdownMenu>
   );
 }

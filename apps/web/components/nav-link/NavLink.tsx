@@ -14,7 +14,7 @@ export interface NavLinkProps {
   className?: string;
 }
 
-export function NavLink({ href, children, className }: NavLinkProps) {
+export function NavLink({ href, children, className, ...props }: NavLinkProps) {
   const router = useRouter();
   const isActive = router.asPath === href;
   return (
@@ -27,6 +27,7 @@ export function NavLink({ href, children, className }: NavLinkProps) {
             //TODO change for existing primary color
             isActive ? 'underline' : ''
           )}
+          {...props}
         >
           {children}
         </NavigationMenuLink>
