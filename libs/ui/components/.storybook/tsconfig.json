@@ -4,6 +4,7 @@
     "emitDecoratorMetadata": true,
     "outDir": ""
   },
+  "types": ["jest", "node", "@testing-library/jest-dom"],
   "files": [],
   "exclude": [
     "../**/*.spec.ts",
