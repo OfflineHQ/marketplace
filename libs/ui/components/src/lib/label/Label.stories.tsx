@@ -1,9 +1,9 @@
 // Label.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Label, LabelProps, variants } from './Label';
+import { Label, LabelProps, labelVariants } from './Label';
 
-const variantOptions = Object.keys(variants);
+const variantOptions = Object.keys(labelVariants);
 
 const meta = {
   title: 'Atoms/Label',

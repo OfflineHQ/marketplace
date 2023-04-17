@@ -7,13 +7,13 @@ import { cn } from '@ui/shared';
 import { cva, VariantProps } from 'class-variance-authority';
 import { statusTextColorVariants } from '../shared/statusVariant';
 
-const variants = statusTextColorVariants;
+const labelVariants = statusTextColorVariants;
 
-const labelVariants = cva(
+const labelCva = cva(
   'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
   {
     variants: {
-      variant: variants,
+      variant: labelVariants,
     },
     defaultVariants: {
       variant: 'default',
@@ -23,13 +23,13 @@ const labelVariants = cva(
 
 export interface LabelProps
   extends React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>,
-    VariantProps<typeof labelVariants> {}
+    VariantProps<typeof labelCva> {}
 
 const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, LabelProps>(
   ({ className, variant, children, ...props }, ref) => (
     <LabelPrimitive.Root
       ref={ref}
-      className={cn(labelVariants({ variant }), className)}
+      className={cn(labelCva({ variant }), className)}
       {...props}
     >
       {children}
@@ -38,4 +38,4 @@ const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, Lab
 );
 Label.displayName = LabelPrimitive.Root.displayName;
 
-export { Label, variants };
+export { Label, labelVariants };

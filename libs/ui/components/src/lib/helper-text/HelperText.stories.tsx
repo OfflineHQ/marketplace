@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { HelperText, HelperTextProps, variants } from './HelperText';
+import { HelperText, HelperTextProps, helperTextVariants } from './HelperText';
 
-const variantOptions = Object.keys(variants);
+const variantOptions = Object.keys(helperTextVariants);
 
 const meta = {
   title: 'Atoms/HelperText',
