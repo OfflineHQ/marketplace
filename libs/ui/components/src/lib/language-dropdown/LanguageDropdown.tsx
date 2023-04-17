@@ -1,13 +1,10 @@
+import { Button, ButtonProps } from '../button/Button';
+import { DropdownMenu, DropdownMenuTrigger } from '../dropdown-menu/DropdownMenu';
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuItems,
   DropdownMenuItemsProps,
-  NavigationMenu,
-  Button,
-  ButtonProps,
-  NavigationMenuList,
-} from '@ui/components';
+} from '../dropdown-menu/DropdownMenuItems';
+
 import { Language } from '@ui/icons';
 
 export interface LanguageDropdownProps extends DropdownMenuItemsProps, ButtonProps {}
@@ -18,11 +15,7 @@ export function LanguageDropdown({ items, ...props }: LanguageDropdownProps) {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" icon={Language} {...props} />
       </DropdownMenuTrigger>
-      <NavigationMenu>
-        <NavigationMenuList>
-          <DropdownMenuItems items={items} className="w-10" />
-        </NavigationMenuList>
-      </NavigationMenu>
+      <DropdownMenuItems items={items} className="w-10" />
     </DropdownMenu>
   );
 }

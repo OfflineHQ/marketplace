@@ -11,3 +11,5 @@ export * from './lib/avatar/Avatar';
 export * from './lib/dropdown-menu/DropdownMenu';
 export * from './lib/dropdown-menu/DropdownMenuItems';
 export * from './lib/auto-animate/AutoAnimate';
+export * from './lib/checkbox/Checkbox';
+export * from './lib/language-dropdown/LanguageDropdown';

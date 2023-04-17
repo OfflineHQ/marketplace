@@ -6,6 +6,7 @@ import { LanguageDropdownExample, languageItems } from './examples';
 const helperText = 'Select a language';
 
 const meta = {
+  title: 'Molecules/LanguageDropdown',
   component: LanguageDropdown,
   render: LanguageDropdownExample,
   args: {

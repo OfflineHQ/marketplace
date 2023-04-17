@@ -13,6 +13,8 @@ import {
   HiOutlineUserAdd,
   HiOutlineUsers,
   HiOutlineCalculator,
+  HiOutlineSun,
+  HiOutlineMoon,
 } from 'react-icons/hi';
 import {
   HiOutlineArrowUpCircle,
@@ -49,6 +51,8 @@ import {
   FiEdit,
 } from 'react-icons/fi';
 
+import { TbSunMoon } from 'react-icons/tb';
+
 // import and export IconType
 
 import type { IconType as ReactIcon } from 'react-icons';
@@ -76,6 +80,8 @@ export const OutlineCalendarDays = createWrappedIcon(
 export const Calendar = createWrappedIcon(HiCalendar, 'Calendar');
 export const Circle = createWrappedIcon(BiCircle, 'Circle');
 export const Calculator = createWrappedIcon(HiOutlineCalculator, 'Calculator');
+export const Light = createWrappedIcon(HiOutlineSun, 'Light');
+export const Dark = createWrappedIcon(HiOutlineMoon, 'Dark');
 export const FillWarning = createWrappedIcon(IoWarning, 'Fill Warning');
 export const OutlineWarning = createWrappedIcon(IoWarningOutline, 'Outline Warning');
 export const FillSuccess = createWrappedIcon(AiFillCheckCircle, 'Fill Success');
@@ -84,6 +90,9 @@ export const OutlineSuccessCircle = createWrappedIcon(
   AiOutlineCheckCircle,
   'Outline Success Circle'
 );
+
+export const DarkLight = createWrappedIcon(TbSunMoon, 'Dark Light Auto');
+
 export const FillInfo = createWrappedIcon(AiFillInfoCircle, 'Fill Info');
 export const OutlineError = createWrappedIcon(MdOutlineError, 'Outline Error');
 export const FillMoon = createWrappedIcon(RiMoonFill, 'Fill Moon');

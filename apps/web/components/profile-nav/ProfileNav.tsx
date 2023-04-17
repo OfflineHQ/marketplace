@@ -4,9 +4,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItems,
   DropdownMenuItemsProps,
-  NavigationMenu,
   Button,
-  NavigationMenuList,
 } from '@ui/components';
 import { truncateEmailString, truncateString } from '@utils';
 
@@ -28,11 +26,7 @@ export function ProfileNav({ session, items, ...props }: ProfileNavProps) {
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <NavigationMenu>
-        <NavigationMenuList>
-          <DropdownMenuItems items={items} />
-        </NavigationMenuList>
-      </NavigationMenu>
+      <DropdownMenuItems items={items} />
     </DropdownMenu>
   );
 }
