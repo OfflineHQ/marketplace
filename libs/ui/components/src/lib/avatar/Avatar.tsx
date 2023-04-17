@@ -68,4 +68,22 @@ const AvatarFallback = React.forwardRef<
 ));
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
-export { Avatar, AvatarImage, AvatarFallback, avatarSizes };
+const AvatarLoader = React.forwardRef<
+  HTMLDivElement,
+  VariantProps<typeof avatarVariants> & {
+    className?: string;
+  }
+>(({ className, size, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      avatarVariants({ size }),
+      'relative flex-shrink-0 animate-pulse bg-slate-100 dark:bg-slate-700',
+      className
+    )}
+    {...props}
+  />
+));
+AvatarLoader.displayName = 'AvatarLoader';
+
+export { Avatar, AvatarImage, AvatarFallback, AvatarLoader, avatarSizes };

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Avatar, avatarSizes } from './Avatar';
-import { AvatarExample, AvatarFallbackExample } from './examples';
+import { AvatarExample, AvatarFallbackExample, AvatarLoaderExample } from './examples';
 
 const sizeOptions = Object.keys(avatarSizes);
 
@@ -61,4 +61,21 @@ export const FallbackAvatarSizes: Story = {
       ))}
     </>
   ),
+};
+
+export const AllSizesLoader: Story = {
+  render: () => (
+    <>
+      {Object.keys(avatarSizes).map((size) => (
+        <div key={size} className="mb-2">
+          <AvatarLoaderExample size={size as keyof typeof avatarSizes} />
+        </div>
+      ))}
+    </>
+  ),
+  argTypes: {
+    size: {
+      control: false,
+    },
+  },
 };

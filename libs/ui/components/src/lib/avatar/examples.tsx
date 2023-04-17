@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage, AvatarFallback, AvatarProps } from './Avatar';
+import { Avatar, AvatarImage, AvatarFallback, AvatarProps, AvatarLoader } from './Avatar';
 
 export function AvatarExample(props: AvatarProps) {
   return (
@@ -16,4 +16,8 @@ export function AvatarFallbackExample(props: AvatarProps) {
       <AvatarFallback>FA</AvatarFallback>
     </Avatar>
   );
+}
+
+export function AvatarLoaderExample(props: AvatarProps) {
+  return <AvatarLoader {...props} />;
 }
