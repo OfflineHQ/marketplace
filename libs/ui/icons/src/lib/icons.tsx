@@ -17,6 +17,7 @@ import {
 import {
   HiOutlineArrowUpCircle,
   HiChevronUpDown,
+  HiOutlineLanguage,
   HiOutlineCalendarDays,
   HiCalendar,
 } from 'react-icons/hi2';
@@ -65,6 +66,7 @@ export const OutlineArrowRight = createWrappedIcon(
   'Outline Arrow Right'
 );
 export const Plus = createWrappedIcon(HiPlus, 'Plus');
+export const Language = createWrappedIcon(HiOutlineLanguage, 'Language');
 export const ChevronDown = createWrappedIcon(HiOutlineChevronDown, 'Chevron Down');
 export const ChevronRight = createWrappedIcon(HiOutlineChevronRight, 'Chevron Right');
 export const OutlineCalendarDays = createWrappedIcon(

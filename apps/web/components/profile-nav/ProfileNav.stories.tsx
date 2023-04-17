@@ -7,11 +7,6 @@ import { cryptoUserSession, normalUserSession } from '../profile-avatar/examples
 const meta = {
   component: ProfileNav,
   render: ProfileNavExample,
-  parameters: {
-    screen: {
-      mobile: true,
-    },
-  },
   args: {
     session: cryptoUserSession,
     items: cryptoUserMenuItems,
@@ -23,7 +18,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const CryptoUser: Story = {
-  args: {},
   play: async ({ canvasElement }) => {
     userEvent.click(screen.getByText('0x', { exact: false }));
     await screen.findByText('My Account');

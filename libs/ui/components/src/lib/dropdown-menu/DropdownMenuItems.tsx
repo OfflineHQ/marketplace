@@ -23,6 +23,7 @@ interface MenuItem {
   shortcut?: string;
   disabled?: boolean;
   subItems?: MenuItem[];
+  current?: boolean;
   className?: string;
 }
 

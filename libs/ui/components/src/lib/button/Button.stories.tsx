@@ -21,6 +21,9 @@ const meta = {
       options: sizeOptions,
       control: { type: 'select' },
     },
+    helperText: {
+      control: { type: 'text' },
+    },
   },
 } satisfies Meta<typeof Button>;
 
@@ -41,10 +44,29 @@ export const DefaultButton = {
   },
 } satisfies Story;
 
-export const ButtonWithOnlyIcon = {
+export const ButtonWithOnlyIcon: Story = {
   args: {
     children: undefined,
     icon: Settings,
+  },
+} satisfies Story;
+
+const helperText = 'This is a helper text';
+
+export const ButtonWithHelperText = {
+  args: {
+    ...ButtonWithOnlyIcon.args,
+    helperText,
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.hover(screen.getByRole('button'));
+    // Check that the helper text is present
+    await screen.findByText((content, element) => {
+      return (
+        element?.getAttribute('data-state') === 'delayed-open' &&
+        content.includes(helperText)
+      );
+    });
   },
 } satisfies Story;
 

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { iconCVA, IconProps } from '@ui/icons';
 
 import { Spinner } from '../spinner/Spinner';
+import { TooltipWrapper } from '../tooltip/Tooltip';
 
 import * as React from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
@@ -60,6 +61,7 @@ export interface ButtonProps
   isLoading?: boolean;
   icon?: React.FC<IconProps>;
   iconRight?: React.FC<IconProps>;
+  helperText?: React.ReactNode; // Add helperText here
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -73,6 +75,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       isLoading,
       icon,
       iconRight,
+      helperText,
       ...props
     },
     ref
@@ -121,14 +124,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const loadingClasses = _loading ? 'cursor-not-allowed' : '';
     const buttonClasses = buttonVariantsCva({ variant, size, isIconOnly, className });
     return (
-      <button
-        className={cn(loadingClasses, buttonClasses)}
-        ref={ref}
-        {...props}
-        onClick={handleClick}
-      >
-        {content()}
-      </button>
+      <TooltipWrapper helperText={helperText}>
+        <button
+          className={cn(loadingClasses, buttonClasses)}
+          ref={ref}
+          {...props}
+          onClick={handleClick}
+        >
+          {content()}
+        </button>
+      </TooltipWrapper>
     );
   }
 );

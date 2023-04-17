@@ -50,3 +50,18 @@ export function Tooltip({
     </TooltipPrimitive.Provider>
   );
 }
+
+export interface TooltipWrapperProps {
+  helperText?: ReactNode;
+  children: React.ReactNode;
+}
+
+export function TooltipWrapper({ helperText, children }: TooltipWrapperProps) {
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  if (!helperText) return <>{children}</>;
+  return (
+    <Tooltip content={helperText} className="inline-block">
+      <div className="relative inline-block">{children}</div>
+    </Tooltip>
+  );
+}

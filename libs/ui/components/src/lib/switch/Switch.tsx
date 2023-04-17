@@ -2,26 +2,12 @@
 import React, { forwardRef } from 'react';
 
 import * as SwitchPrimitives from '@radix-ui/react-switch';
-import { Label, LabelProps } from '../label/Label';
-import { Tooltip } from '../tooltip/Tooltip';
+import { Label } from '../label/Label';
+import { TooltipWrapper } from '../tooltip/Tooltip';
 
 import { cn } from '@ui/shared';
-import { cva, VariantProps } from 'class-variance-authority';
 
 let idCounter = 0;
-
-const TooltipWrapper: React.FC<{
-  helperText?: React.ReactNode;
-  children: React.ReactNode;
-}> = ({ helperText, children }) => {
-  if (!helperText) return <>{children}</>;
-
-  return (
-    <Tooltip content={helperText} className="inline-block">
-      <div className="relative inline-block">{children}</div>
-    </Tooltip>
-  );
-};
 
 const Switch = forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
