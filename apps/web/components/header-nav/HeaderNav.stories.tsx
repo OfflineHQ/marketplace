@@ -24,7 +24,8 @@ const meta = {
     profileSections: [],
     menuSections,
     session: null,
-    signIn: () => null,
+    signIn: () => sleep(1000),
+    sessionLoading: false,
   },
   parameters: {
     layout: 'fullscreen',
@@ -56,6 +57,23 @@ export const NormalUser: Story = {
   args: {
     session: normalUserSessionWithImage,
     profileSections: normalUserMenuItems,
+  },
+};
+
+export const SessionLoading: Story = {
+  ...NormalUser,
+  args: {
+    sessionLoading: true,
+  },
+  play: undefined,
+};
+
+export const MobileSessionLoading: Story = {
+  ...SessionLoading,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
 };
 

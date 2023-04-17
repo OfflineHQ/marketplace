@@ -1,23 +1,77 @@
 import type { Session } from 'next-auth';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import autoAnimate from '@formkit/auto-animate';
 import Logo from './Logo';
 import { NavLink } from '../nav-link/NavLink';
 import { type NavDesktopProps, NavDesktop } from '../nav-desktop/NavDesktop';
 import { type NavMobileProps, NavMobile } from '../nav-mobile/NavMobile';
 import { type ProfileNavProps, ProfileNav } from '../profile-nav/ProfileNav';
 import { Menu, Close } from '@ui/icons';
-import { Button, NavigationMenu, NavigationMenuList, Separator } from '@ui/components';
+import {
+  Button,
+  NavigationMenu,
+  NavigationMenuList,
+  Separator,
+  AvatarLoader,
+  TextLoader,
+} from '@ui/components';
 
 export interface HeaderNavProps
   extends NavDesktopProps,
-    Omit<ProfileNavProps, 'items' | 'session'> {
+    HeaderProfileProps,
+    Omit<ProfileNavProps, 'items' | 'session'> {}
+
+export interface HeaderProfileProps {
   session: Session | null | undefined;
-  profileSections: ProfileNavProps['items'];
   signIn: () => void;
+  sessionLoading: boolean;
+  profileSections: ProfileNavProps['items'];
+}
+
+function Profile({
+  session,
+  signIn,
+  sessionLoading,
+  profileSections,
+}: HeaderProfileProps) {
+  const notSignedIn = (!session && !sessionLoading) || !!session?.error;
+  const container = useRef(null);
+  const profileContainer = useRef(null);
+  useEffect(() => {
+    profileContainer.current && autoAnimate(profileContainer.current);
+    container.current && autoAnimate(container.current);
+  }, [profileContainer, container]);
+  return (
+    <div className="flex gap-2" ref={container}>
+      {notSignedIn ? (
+        <Button onClick={signIn} className="m-1 md:m-2">
+          Sign in
+        </Button>
+      ) : (
+        <>
+          <Separator orientation="vertical" className="my-1 h-10 md:h-12" />
+          <div className="flex items-center" ref={profileContainer}>
+            {sessionLoading || !session ? (
+              <div className="flex items-center opacity-100">
+                <AvatarLoader size="md" className="mx-5 mr-7 md:mr-2" />
+                <TextLoader className="mr-5 hidden md:flex" />
+              </div>
+            ) : (
+              <ProfileNav
+                data-testid="profile-menu"
+                session={session}
+                items={profileSections}
+              />
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
 
 export function HeaderNav(props: HeaderNavProps) {
-  const { menuSections, signIn, session, profileSections } = props;
+  const { menuSections, ...profileProps } = props;
   const [menuExpanded, setMenuExpanded] = useState(false);
   useEffect(() => {
     const html: HTMLElement = document.querySelector('html')!;
@@ -66,22 +120,7 @@ export function HeaderNav(props: HeaderNavProps) {
               <SocialIcons />
             </div>
           )} */}
-          <div className="flex gap-2">
-            {!session ? (
-              <Button onClick={signIn} className="m-1 md:m-2">
-                Sign in
-              </Button>
-            ) : (
-              <>
-                <Separator orientation="vertical" className="my-1 h-10 md:h-12" />
-                <ProfileNav
-                  data-testid="profile-menu"
-                  session={session}
-                  items={profileSections}
-                />
-              </>
-            )}
-          </div>
+          <Profile {...profileProps} />
         </div>
       </div>
 
