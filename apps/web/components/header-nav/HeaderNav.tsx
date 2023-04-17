@@ -1,6 +1,5 @@
 import type { Session } from 'next-auth';
 import { useEffect, useState, useRef } from 'react';
-import autoAnimate from '@formkit/auto-animate';
 import Logo from './Logo';
 import { NavLink } from '../nav-link/NavLink';
 import { type NavDesktopProps, NavDesktop } from '../nav-desktop/NavDesktop';
@@ -14,6 +13,7 @@ import {
   Separator,
   AvatarLoader,
   TextLoader,
+  AutoAnimate,
 } from '@ui/components';
 
 export interface HeaderNavProps
@@ -35,14 +35,8 @@ function Profile({
   profileSections,
 }: HeaderProfileProps) {
   const notSignedIn = (!session && !sessionLoading) || !!session?.error;
-  const container = useRef(null);
-  const profileContainer = useRef(null);
-  useEffect(() => {
-    profileContainer.current && autoAnimate(profileContainer.current);
-    container.current && autoAnimate(container.current);
-  }, [profileContainer, container]);
   return (
-    <div className="flex gap-2" ref={container}>
+    <AutoAnimate className="flex gap-2">
       {notSignedIn ? (
         <Button onClick={signIn} className="m-1 md:m-2">
           Sign in
@@ -50,7 +44,7 @@ function Profile({
       ) : (
         <>
           <Separator orientation="vertical" className="my-1 h-10 md:h-12" />
-          <div className="flex items-center" ref={profileContainer}>
+          <AutoAnimate className="flex items-center">
             {sessionLoading || !session ? (
               <div className="flex items-center opacity-100">
                 <AvatarLoader size="md" className="mx-5 mr-7 md:mr-2" />
@@ -63,10 +57,10 @@ function Profile({
                 items={profileSections}
               />
             )}
-          </div>
+          </AutoAnimate>
         </>
       )}
-    </div>
+    </AutoAnimate>
   );
 }
 
@@ -83,8 +77,9 @@ export function HeaderNav(props: HeaderNavProps) {
       activeClasses.forEach((activeClass) => html.classList.remove(activeClass));
     }
   }, [menuExpanded]);
+
   return (
-    <div className={`relative ${menuExpanded ? 'fixed top-0' : ''}`}>
+    <AutoAnimate className={`relative ${menuExpanded ? 'fixed top-0' : ''}`}>
       <div className="flex w-full items-center justify-between gap-2">
         <div className="flex gap-8">
           <div>
@@ -135,7 +130,7 @@ export function HeaderNav(props: HeaderNavProps) {
           </div>
         </div>
       )}
-    </div>
+    </AutoAnimate>
   );
 }
 
