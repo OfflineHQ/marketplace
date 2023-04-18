@@ -31,5 +31,10 @@
   },
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-  ]
+  ],
+  "i18n-ally.localesPaths": "**/**/locales",
+  "i18n-ally.extract.ignoredByFiles": {
+    "apps/web/pages/_app.tsx": ["noopener noreferrer", "noopener noreferrer"]
+  },
+  "i18n-ally.keystyle": "flat"
 }

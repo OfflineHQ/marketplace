@@ -11,6 +11,8 @@
     "firsttris.vscode-jest-runner",
     "graphql.vscode-graphql",
     "me-dutour-mathieu.vscode-github-actions",
-    "github.vscode-github-actions"
+    "github.vscode-github-actions",
+    "yoavbls.pretty-ts-errors",
+    "lokalise.i18n-ally"
   ]
 }
