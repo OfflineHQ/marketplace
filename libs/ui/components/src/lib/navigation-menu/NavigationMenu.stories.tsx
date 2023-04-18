@@ -30,7 +30,6 @@ export const DefaultNavigationMenu: Story = {
     });
     await userEvent.click(gettingStartedTrigger);
     const gettingStartedContent = await screen.findByText('Introduction');
-    console.log({ gettingStartedContent });
     expect(gettingStartedContent).toBeVisible();
 
     const componentsTrigger = await screen.findByRole('button', {

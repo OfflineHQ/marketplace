@@ -21,6 +21,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   play: async ({ canvasElement }) => {
+    await screen.findByLabelText('Light', { selector: 'svg' });
     const button = screen.getByRole('button');
     await userEvent.hover(button);
     // Check that the helper text is present
@@ -31,7 +32,6 @@ export const Default: Story = {
       );
     });
     await userEvent.click(button);
-    // Check that the language items are present
     await screen.findByText('Light');
     await screen.findByText('Dark');
   },
@@ -43,24 +43,10 @@ export const Dark: Story = {
   },
   parameters: {
     darkMode: {
-      // Set the initial theme
-      current: 'dark',
+      isDark: true,
     },
   },
-  play: undefined,
-  // play: async ({ canvasElement }) => {
-  //   const button = screen.getByRole('button');
-  //   await userEvent.hover(button);
-  //   // Check that the helper text is present
-  //   await screen.findByText((content, element) => {
-  //     return (
-  //       element?.getAttribute('data-state') === 'delayed-open' &&
-  //       content.includes(helperText)
-  //     );
-  //   });
-  //   await userEvent.click(button);
-  //   // Check that the language items are present
-  //   await screen.findByText('Light');
-  //   await screen.findByText('Dark');
-  // },
+  play: async ({ canvasElement }) => {
+    await screen.findByLabelText('Dark', { selector: 'svg' });
+  },
 };

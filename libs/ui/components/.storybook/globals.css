@@ -4,7 +4,7 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  @apply antialiased h-full font-sans bg-transparent text-slate-900 dark:bg-slate-900 antialiased dark:text-slate-50;
+  @apply h-full font-sans bg-transparent text-slate-900 dark:bg-slate-900 antialiased dark:text-slate-50;
 }
 html {
   height: 100%;
