@@ -10,9 +10,14 @@ export const DarkModeDecorator: Decorator = (Story: any, context) => {
   const dark = useDarkMode();
   const { isDark } = context.parameters.darkMode;
   useEffect(() => {
+    document.documentElement.classList.add('light');
     if (isDark) {
       // add dark class to className
       document.documentElement.classList.replace('light', 'dark');
+    } else {
+      if (document.documentElement.classList.contains('light') && dark)
+        document.documentElement.classList.replace('light', 'dark');
+      else document.documentElement.classList.replace('dark', 'light');
     }
   }, [dark, isDark]);
   return <Story />;
