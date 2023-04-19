@@ -1,5 +1,4 @@
 import '../styles/globals.css';
-import { Inter } from '@next/font/google';
 import { Preview, Decorator } from '@storybook/react';
 import { parameters } from '../../../storybook.preview.base';
 import { useEffect, Suspense } from 'react';
@@ -51,24 +50,7 @@ const I18nextStoryDecorator: Decorator = (Story, context) => {
   );
 };
 
-const fontSans = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
-});
-
-document.body.classList.add(fontSans.variable);
 document.body.classList.add('font-sans');
-
-// export const i18nDecorator: Decorator = (Story: any, context) => {
-//   const { locale } = context.parameters.i18n;
-//   messages = (await import(`../../messages/${locale}.json`)).default;
-//   return (
-//     <NextIntlClientProvider>
-//       <Story />
-//     </NextIntlClientProvider>
-//   );
-// };
 
 const preview: Preview = {
   parameters,
