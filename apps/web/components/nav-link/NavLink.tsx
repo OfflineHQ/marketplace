@@ -4,22 +4,21 @@ import {
   navigationMenuTriggerStyle,
   NavigationMenuItem,
 } from '@ui/components';
-import Link from 'next/link';
-import { VariantProps, cva } from 'class-variance-authority';
+import NextLink, { LinkProps } from 'next/link';
 import { cn } from '@ui/shared';
 
-export interface NavLinkProps {
-  href: string;
+export type NavLinkProps<T = string> = {
+  href: LinkProps<T>['href'];
   children: React.ReactNode | string;
   className?: string;
-}
+};
 
 export function NavLink({ href, children, className, ...props }: NavLinkProps) {
   const router = useRouter();
   const isActive = router.asPath === href;
   return (
     <NavigationMenuItem>
-      <Link href={href} legacyBehavior passHref>
+      <NextLink href={href} legacyBehavior passHref>
         <NavigationMenuLink
           className={cn(
             navigationMenuTriggerStyle(),
@@ -31,9 +30,7 @@ export function NavLink({ href, children, className, ...props }: NavLinkProps) {
         >
           {children}
         </NavigationMenuLink>
-      </Link>
+      </NextLink>
     </NavigationMenuItem>
   );
 }
-
-export default NavLink;
