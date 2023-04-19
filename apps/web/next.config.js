@@ -3,6 +3,15 @@ const withNx = require('@nrwl/next/plugins/with-nx');
 const path = require('path');
 const { withSentryConfig } = require('@sentry/nextjs');
 
+/**
+ * Don't be scared of the generics here.
+ * All they do is to give us autocompletion when using this.
+ *
+ * @template {import('next').NextConfig} T
+ * @param {T} nextI18n - A generic parameter that flows through to the return type
+ * @constraint {{import('next').NextConfig}}
+ */
+
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -36,7 +45,7 @@ const nextConfig = {
     outputFileTracingRoot: path.join(__dirname, '../../'),
     // to fix chakra ui error with cancelSync esm import
     esmExternals: false,
-    appDir: false, // TODO set to true when shared components works + nx fixed build and serve
+    appDir: true, // TODO set to true when shared components works + nx fixed build and serve
     fontLoaders: [
       {
         loader: '@next/font/google',
