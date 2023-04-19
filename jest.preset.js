@@ -3,6 +3,7 @@ const nxPreset = require('@nrwl/jest/preset').default;
 module.exports = {
   ...nxPreset,
   setupFiles: [`${process.cwd()}/tools/test/jest.setup.ts`],
+  // setupFilesAfterEnv: [`${process.cwd()}/tools/test/jest.setup.ts`],
   // collectCoverage: true,
   coverageReporters: ['text', 'lcov', 'html'],
   coverageThreshold: {

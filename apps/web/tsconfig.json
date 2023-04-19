@@ -12,7 +12,7 @@
     "isolatedModules": true,
     "incremental": true,
     "composite": false,
-    "types": ["jest", "node", "@types/node"],
+    "types": ["jest", "node"],
     "plugins": [
       {
         "name": "next"
