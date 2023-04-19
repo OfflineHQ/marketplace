@@ -1,6 +1,6 @@
 import { createInstance, TFunction, i18n } from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
-import { initReactI18next } from 'react-i18next';
+import { initReactI18next } from 'react-i18next/initReactI18next';
 import { getOptions } from './settings';
 
 export async function initI18next(
