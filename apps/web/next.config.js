@@ -46,6 +46,7 @@ const nextConfig = {
     // to fix chakra ui error with cancelSync esm import
     esmExternals: false,
     appDir: true, // TODO set to true when shared components works + nx fixed build and serve
+    typedRoutes: true,
     fontLoaders: [
       {
         loader: '@next/font/google',
