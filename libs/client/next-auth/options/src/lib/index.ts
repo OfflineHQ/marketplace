@@ -130,7 +130,6 @@ export const authOptions: NextAuthOptions = {
       // handle when user is logged in with siwe
       if (isAddress(token.sub as string)) {
         session.address = token.sub as string;
-        session.user.name = token.sub;
       }
       return session;
     },
