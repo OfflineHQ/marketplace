@@ -24,6 +24,7 @@ export {
   NavigationMenuLink,
   NavigationMenuIndicator,
   NavigationMenuViewport,
+  navigationMenuTriggerStyle,
 } from './lib/navigation-menu/NavigationMenu';
 export { Avatar, AvatarImage, AvatarFallback, AvatarLoader } from './lib/avatar/Avatar';
 export {
