@@ -1,17 +1,11 @@
-interface SiteConfig {
-  name: string;
-  description: string;
-  links: {
-    twitter: string;
-    github: string;
-  };
-}
-
-export const siteConfig: SiteConfig = {
-  name: 'shadcn/ui',
+export const siteConfig = {
+  name: 'offline',
+  url: 'https://www.offline.live',
+  ogImage: 'https://ui.shadcn.com/og.jpg',
   description: 'Beautifully designed components built with Radix UI and Tailwind CSS.',
   links: {
-    twitter: 'https://twitter.com/shadcn',
-    github: 'https://github.com/shadcn/ui',
+    twitter: 'https://twitter.com/offline',
   },
 };
+
+export type SiteConfig = typeof siteConfig;
