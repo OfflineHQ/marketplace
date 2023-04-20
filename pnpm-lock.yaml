@@ -99,7 +99,7 @@ specifiers:
   '@swc-node/register': ^1.6.4
   '@swc/cli': ~0.1.62
   '@swc/core': ^1.3.50
-  '@swc/helpers': ~0.4.14
+  '@swc/helpers': ~0.5.0
   '@swc/jest': 0.2.20
   '@tailwindcss/forms': ^0.5.3
   '@tailwindcss/typography': ^0.5.9
@@ -282,7 +282,7 @@ dependencies:
   '@sentry/nextjs': 7.47.0_next@13.2.4+react@18.2.0
   '@sentry/node': 7.47.0
   '@sentry/tracing': 7.47.0
-  '@swc/helpers': 0.4.14
+  '@swc/helpers': 0.5.0
   '@tailwindcss/forms': 0.5.3_tailwindcss@3.3.1
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.3.1
   '@tanstack/react-query': 4.29.1_biqbaboplfbrettd7655fr4n2y
@@ -420,7 +420,7 @@ devDependencies:
   '@svgr/webpack': 5.5.0
   '@swc-node/register': 1.6.4_zsnydjusgettacsdjyt24el6ma
   '@swc/cli': 0.1.62_@swc+core@1.3.50
-  '@swc/core': 1.3.50_@swc+helpers@0.4.14
+  '@swc/core': 1.3.50_@swc+helpers@0.5.0
   '@swc/jest': 0.2.20_@swc+core@1.3.50
   '@tanstack/react-query-devtools': 4.29.1_veiur3vxaibs2bgteler4tkrom
   '@testing-library/cypress': 8.0.7_cypress@12.9.0
@@ -10515,7 +10515,7 @@ packages:
     peerDependencies:
       '@swc/core': '>= 1.3'
     dependencies:
-      '@swc/core': 1.3.50_@swc+helpers@0.4.14
+      '@swc/core': 1.3.50_@swc+helpers@0.5.0
     dev: true
 
   /@swc-node/register/1.6.4_zsnydjusgettacsdjyt24el6ma:
@@ -10526,7 +10526,7 @@ packages:
     dependencies:
       '@swc-node/core': 1.10.3_@swc+core@1.3.50
       '@swc-node/sourcemap-support': 0.3.0
-      '@swc/core': 1.3.50_@swc+helpers@0.4.14
+      '@swc/core': 1.3.50_@swc+helpers@0.5.0
       colorette: 2.0.19
       debug: 4.3.4
       pirates: 4.0.5
@@ -10555,7 +10555,7 @@ packages:
         optional: true
     dependencies:
       '@mole-inc/bin-wrapper': 8.0.1
-      '@swc/core': 1.3.50_@swc+helpers@0.4.14
+      '@swc/core': 1.3.50_@swc+helpers@0.5.0
       commander: 7.2.0
       fast-glob: 3.2.12
       semver: 7.4.0
@@ -10643,7 +10643,7 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@swc/core/1.3.50_@swc+helpers@0.4.14:
+  /@swc/core/1.3.50_@swc+helpers@0.5.0:
     resolution: {integrity: sha512-soTAHlwkI8zukR9KftWZ0gZ7HKU99B/C3CtBxzSI3N23QG+EfSSOgrYARfuZk5g4yLWpsU0rEkojd78vixqkwg==}
     engines: {node: '>=10'}
     requiresBuild: true
@@ -10653,7 +10653,7 @@ packages:
       '@swc/helpers':
         optional: true
     dependencies:
-      '@swc/helpers': 0.4.14
+      '@swc/helpers': 0.5.0
     optionalDependencies:
       '@swc/core-darwin-arm64': 1.3.50
       '@swc/core-darwin-x64': 1.3.50
@@ -10671,6 +10671,11 @@ packages:
     dependencies:
       tslib: 2.5.0
 
+  /@swc/helpers/0.5.0:
+    resolution: {integrity: sha512-SjY/p4MmECVVEWspzSRpQEM3sjR17sP8PbGxELWrT+YZMBfiUyt1MRUNjMV23zohwlG2HYtCQOsCwsTHguXkyg==}
+    dependencies:
+      tslib: 2.5.0
+
   /@swc/jest/0.2.20_@swc+core@1.3.50:
     resolution: {integrity: sha512-5qSUBYY1wyIMn7p0Vl9qqV4hMI69oJwZCIPUpBsTFWN2wlwn6RDugzdgCn+bLXVYh+Cxi8bJcZ1uumDgsoL+FA==}
     engines: {npm: '>= 7.0.0'}
@@ -10678,7 +10683,7 @@ packages:
       '@swc/core': '*'
     dependencies:
       '@jest/create-cache-key-function': 27.5.1
-      '@swc/core': 1.3.50_@swc+helpers@0.4.14
+      '@swc/core': 1.3.50_@swc+helpers@0.5.0
     dev: true
 
   /@szmarczak/http-timer/1.1.2:
@@ -24098,7 +24103,7 @@ packages:
       '@nrwl/tao': 15.9.1_svruvkemsj6v75d7cq4n4tbb64
       '@parcel/watcher': 2.0.4
       '@swc-node/register': 1.6.4_zsnydjusgettacsdjyt24el6ma
-      '@swc/core': 1.3.50_@swc+helpers@0.4.14
+      '@swc/core': 1.3.50_@swc+helpers@0.5.0
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.0-rc.42
       '@zkochan/js-yaml': 0.0.6
@@ -24162,7 +24167,7 @@ packages:
       '@nrwl/tao': 15.9.2_svruvkemsj6v75d7cq4n4tbb64
       '@parcel/watcher': 2.0.4
       '@swc-node/register': 1.6.4_zsnydjusgettacsdjyt24el6ma
-      '@swc/core': 1.3.50_@swc+helpers@0.4.14
+      '@swc/core': 1.3.50_@swc+helpers@0.5.0
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.0-rc.42
       '@zkochan/js-yaml': 0.0.6
@@ -28006,7 +28011,7 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.21.0
-      '@swc/core': 1.3.50_@swc+helpers@0.4.14
+      '@swc/core': 1.3.50_@swc+helpers@0.5.0
       deepmerge: 4.3.1
       swc-loader: 0.1.15_@swc+core@1.3.50
     dev: true
@@ -28571,7 +28576,7 @@ packages:
       '@swc/core': ^1.2.52
       webpack: '>=2'
     dependencies:
-      '@swc/core': 1.3.50_@swc+helpers@0.4.14
+      '@swc/core': 1.3.50_@swc+helpers@0.5.0
       loader-utils: 2.0.4
     dev: true
 
@@ -28758,7 +28763,7 @@ packages:
         optional: true
     dependencies:
       '@jridgewell/trace-mapping': 0.3.18
-      '@swc/core': 1.3.50_@swc+helpers@0.4.14
+      '@swc/core': 1.3.50_@swc+helpers@0.5.0
       jest-worker: 27.5.1
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
@@ -29054,7 +29059,7 @@ packages:
         optional: true
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
-      '@swc/core': 1.3.50_@swc+helpers@0.4.14
+      '@swc/core': 1.3.50_@swc+helpers@0.5.0
       '@tsconfig/node10': 1.0.9
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
