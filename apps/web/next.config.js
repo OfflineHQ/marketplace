@@ -26,6 +26,7 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+  transpilePackages: ['@ui/components', '@ui/theme'],
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -37,6 +38,7 @@ const nextConfig = {
     }
     return config;
   },
+
   images: {},
   // optimize build with vercel nft (node file tracing) https://nextjs.org/docs/advanced-features/output-file-tracing
   // outputFileTracingRoot needed for monorepo
@@ -45,7 +47,7 @@ const nextConfig = {
     outputFileTracingRoot: path.join(__dirname, '../../'),
     // to fix chakra ui error with cancelSync esm import
     esmExternals: false,
-    appDir: true, // TODO set to true when shared components works + nx fixed build and serve
+    appDir: true,
     typedRoutes: true,
     fontLoaders: [
       {
