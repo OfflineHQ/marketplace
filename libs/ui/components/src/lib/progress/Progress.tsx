@@ -7,7 +7,7 @@ import { cn } from '@ui/shared';
 import { cva, VariantProps } from 'class-variance-authority';
 import { statusBgFillVariants } from '../shared/statusVariant';
 
-const sizes = {
+const progressSizes = {
   xs: 'h-0.5 md:h-1',
   sm: 'h-1 md:h-1.5',
   md: 'h-2 md:h-2.5',
@@ -15,7 +15,7 @@ const sizes = {
   xl: 'h-4 md:h-4.5',
 };
 
-const variants = statusBgFillVariants;
+const progressVariants = statusBgFillVariants;
 
 export type ProgressRootProps = React.ComponentPropsWithoutRef<
   typeof ProgressPrimitive.Root
@@ -26,7 +26,7 @@ const progressRootVariants = cva(
   'relative w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800',
   {
     variants: {
-      size: sizes,
+      size: progressSizes,
     },
     defaultVariants: {
       size: 'md',
@@ -40,7 +40,7 @@ export type ProgressIndicatorProps = React.ComponentPropsWithoutRef<
   VariantProps<typeof progressIndicatorVariants>;
 const progressIndicatorVariants = cva('h-full w-full flex-1 transition-all', {
   variants: {
-    variant: variants,
+    variant: progressVariants,
   },
   defaultVariants: {
     variant: 'default',
@@ -66,4 +66,4 @@ const Progress = React.forwardRef<
 ));
 Progress.displayName = ProgressPrimitive.Root.displayName;
 
-export { Progress, sizes, variants };
+export { Progress, progressSizes, progressVariants };

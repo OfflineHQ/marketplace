@@ -1,18 +1,18 @@
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
 import { screen, within } from '@storybook/testing-library';
-import { Progress, sizes, variants } from './Progress';
+import { Progress, progressSizes, progressVariants } from './Progress';
 
 const meta: Meta = {
   title: 'Atoms/Progress',
   component: Progress,
   argTypes: {
     size: {
-      options: Object.keys(sizes),
+      options: Object.keys(progressSizes),
       control: { type: 'select' },
     },
     variant: {
-      options: Object.keys(variants),
+      options: Object.keys(progressVariants),
       control: { type: 'radio' },
     },
   },
@@ -33,10 +33,10 @@ export const DefaultProgress: ProgressStory = {
 export const AllSizes: ProgressStory = {
   render: (args) => (
     <>
-      {Object.keys(sizes).map((size) => (
+      {Object.keys(progressSizes).map((size) => (
         <div key={size} className="mb-4">
           <h3 className="mb-2">{size}</h3>
-          <Progress {...args} size={size as keyof typeof sizes} />
+          <Progress {...args} size={size as keyof typeof progressSizes} />
         </div>
       ))}
     </>
@@ -55,10 +55,10 @@ export const AllSizes: ProgressStory = {
 export const AllVariants: ProgressStory = {
   render: (args) => (
     <>
-      {Object.keys(variants).map((variant) => (
+      {Object.keys(progressVariants).map((variant) => (
         <div key={variant} className="mb-4">
           <h3 className="mb-2">{variant}</h3>
-          <Progress {...args} variant={variant as keyof typeof variants} />
+          <Progress {...args} variant={variant as keyof typeof progressVariants} />
         </div>
       ))}
     </>

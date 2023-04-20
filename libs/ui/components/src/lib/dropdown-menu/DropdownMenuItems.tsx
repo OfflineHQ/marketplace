@@ -96,4 +96,4 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({ items, className 
 };
 DropdownMenuItems.displayName = 'DropdownMenuItems';
 
-export { DropdownMenuItems, DropdownMenuItemsProps };
+export { DropdownMenuItems, type DropdownMenuItemsProps };

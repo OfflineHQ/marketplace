@@ -1,5 +1,4 @@
 // Text.tsx
-'use client';
 
 import * as React from 'react';
 import { cn } from '@ui/shared';
@@ -87,4 +86,4 @@ const TextLoader: React.FC<TextLoaderProps> = ({
   return <Component className={classNames} {...props} />;
 };
 
-export { Text, TextLoader, TextProps, TextLoaderProps, textVariants };
+export { Text, TextLoader, type TextProps, type TextLoaderProps, textVariants };

@@ -1,4 +1,5 @@
-// Switch.tsx
+'use client';
+
 import React, { forwardRef } from 'react';
 
 import * as SwitchPrimitives from '@radix-ui/react-switch';
