@@ -49,7 +49,7 @@
       "@ui/shared": ["libs/ui/shared/src/index.ts"],
       "@ui/theme": ["libs/ui/theme/src/index.ts"],
       "@utils": ["libs/utils/src/index.ts"],
-      "@web/*": ["apps/web/src/*"],
+      "@web/*": ["apps/web/*"],
       "@workspace": ["libs/workspace/src/index.ts"]
     }
   },
