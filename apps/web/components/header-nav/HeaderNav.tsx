@@ -96,7 +96,7 @@ export function HeaderNav(props: HeaderNavProps) {
               </div>
               <NavigationMenu>
                 <NavigationMenuList>
-                  <NavLink href="/" className="min-w-[100px]">
+                  <NavLink href="/en" className="min-w-[100px]">
                     <div className="h-full w-full">
                       <Logo />
                     </div>

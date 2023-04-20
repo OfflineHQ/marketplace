@@ -12,7 +12,7 @@ import {
 /* eslint-disable-next-line */
 
 export interface NavMobileProps {
-  menuSections: NavLinkProps[];
+  menuSections: NavLinkProps<string>[];
 }
 
 export function NavMobile({ menuSections }: NavMobileProps) {

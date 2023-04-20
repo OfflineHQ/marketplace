@@ -4,21 +4,26 @@ import {
   navigationMenuTriggerStyle,
   NavigationMenuItem,
 } from '@ui/components';
-import NextLink, { LinkProps } from 'next/link';
+import Link, { LinkProps } from 'next/link';
 import { cn } from '@ui/shared';
 
-export type NavLinkProps<T = string> = {
-  href: LinkProps<T>['href'];
-  children: React.ReactNode | string;
+// export type NavLinkProps<T = string> = {
+//   href: LinkProps<T>['href'];
+//   children: React.ReactNode | string;
+//   className?: string;
+// };
+
+export type NavLinkProps<T> = LinkProps<T> & {
+  children: React.ReactNode;
   className?: string;
 };
 
-export function NavLink({ href, children, className, ...props }: NavLinkProps) {
+export function NavLink({ href, children, className }: NavLinkProps<typeof href>) {
   const router = useRouter();
   const isActive = router.asPath === href;
   return (
     <NavigationMenuItem>
-      <NextLink href={href} legacyBehavior passHref>
+      <Link href={href} legacyBehavior passHref>
         <NavigationMenuLink
           className={cn(
             navigationMenuTriggerStyle(),
@@ -26,11 +31,10 @@ export function NavLink({ href, children, className, ...props }: NavLinkProps) {
             //TODO change for existing primary color
             isActive ? 'underline' : ''
           )}
-          {...props}
         >
           {children}
         </NavigationMenuLink>
-      </NextLink>
+      </Link>
     </NavigationMenuItem>
   );
 }

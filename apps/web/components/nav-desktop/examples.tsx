@@ -2,7 +2,7 @@ import { NavDesktopProps, NavDesktop } from './NavDesktop';
 import type { Route } from 'next';
 
 export const menuSections: NavDesktopProps['menuSections'] = [
-  { children: 'Explore', href: '/' },
+  { children: 'Explore', href: '/' as Route },
   { children: 'Collections', href: '/collections' as Route },
   { children: 'FAQ', href: '/faq' as Route },
 ];

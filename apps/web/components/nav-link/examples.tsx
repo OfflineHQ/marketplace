@@ -9,7 +9,7 @@ import {
   navigationMenuTriggerStyle,
 } from '@ui/components';
 
-export function NavLinkExample({ href, children }: NavLinkProps) {
+export function NavLinkExample({ href, children }: NavLinkProps<string>) {
   return (
     <NavigationMenu>
       <NavigationMenuList>
