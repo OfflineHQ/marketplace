@@ -12,7 +12,7 @@ export default (async function Footer({ lng }: Props) {
   return (
     <footer style={{ marginTop: 50 }}>
       <Trans i18nKey="languageSwitcher" t={t}>
-        Switch from <strong>{{ lng }}</strong> to:{' '}
+        Switch from <strong>{{ lng } as TI}</strong> to:{' '}
       </Trans>
       {languages
         .filter((l) => lng !== l)

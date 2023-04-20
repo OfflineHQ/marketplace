@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Trans } from 'react-i18next/TransWithoutContext';
 import { languages } from '../../../i18n/settings';
 import { useTranslation } from '../../../i18n/client';
+import { Button } from '@ui/components';
 
 type Props = {
   lng: I18nLanguage;
@@ -13,8 +14,9 @@ export const Footer = ({ lng }: Props) => {
   const { t } = useTranslation(lng, 'footer');
   return (
     <footer style={{ marginTop: 50 }}>
+      <Button>Client Button</Button>
       <Trans i18nKey="languageSwitcher" t={t}>
-        Switch from <strong>{{ lng }}</strong> to:{' '}
+        Switch from <strong>{{ lng } as TI}</strong> to:{' '}
       </Trans>
       {languages
         .filter((l) => lng !== l)

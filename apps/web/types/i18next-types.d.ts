@@ -16,3 +16,8 @@ declare interface I18nOptions {
   ns: I18nNamespace | I18nNamespace[];
   debug?: boolean;
 }
+
+/**
+ *  Interpolation for `t` - see https://github.com/i18next/react-i18next/issues/1483
+ */
+declare type TI = any;
