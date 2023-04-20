@@ -12,7 +12,7 @@ module.exports = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/addon-a11y',
-    'storybook-addon-swc',
+    // 'storybook-addon-swc', // Buggy for some reason
     'storybook-dark-mode',
     // Add PostCSS into addons for compiling tailwind below
     {

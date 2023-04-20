@@ -39,3 +39,20 @@ jobs:
           exitZeroOnChanges: true
           onlyChanged: true
           buildScriptName: build-storybook:web
+
+  test-storybook:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up environment and cache dependencies
+        uses: sebpalluel/ci/.github/actions/setup-environment@latest
+
+      - name: Run Storybook
+        run: pnpm nx run web:storybook -- --ci --port 4401 --quiet &
+
+      - name: Run Test-Storybook
+        run: |
+          pnpm install -g wait-on
+          pnpm wait-on tcp:4401
+          pnpm nx run web:test-storybook

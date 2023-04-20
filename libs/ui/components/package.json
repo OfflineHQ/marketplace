@@ -1,8 +1,4 @@
 {
   "name": "@ui/components",
-  "version": "0.0.1",
-  "dependencies": {
-    "@swc/helpers": "~0.4.11"
-  },
-  "devDependencies": {}
+  "version": "0.0.1"
 }
