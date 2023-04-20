@@ -32,6 +32,7 @@
     "../../dist/apps/web/.next/types/**/*.ts"
   ],
   "exclude": [
+    "../../dist/apps/web/.next/types/**/*.ts",
     "node_modules",
     "jest.config.ts",
     "**/*.stories.ts",

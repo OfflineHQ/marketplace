@@ -24,9 +24,6 @@
         "development": {
           "outputPath": "apps/web"
         },
-        "test": {
-          "outputPath": "apps/web-test"
-        },
         "production": {}
       }
     },
