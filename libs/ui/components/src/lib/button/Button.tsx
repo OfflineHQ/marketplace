@@ -85,7 +85,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const hasChildren = typeof children !== 'undefined';
     const isIconOnly = !hasChildren && !!(icon || iconRight);
 
-    // a function that await for the onClick to be completed
     const handleClick = async (
       event: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {

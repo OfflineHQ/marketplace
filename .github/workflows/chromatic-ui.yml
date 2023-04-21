@@ -46,10 +46,9 @@ jobs:
         uses: sebpalluel/ci/.github/actions/setup-environment@latest
 
       - name: Run Storybook
-        run: pnpm nx run ui-components:storybook -- --ci --port 4402 --quiet &
+        run: pnpm build-storybook:ui && pnpx http-server dist/storybook/ui-components --port 4402 --silent &
 
       - name: Run Test-Storybook
         run: |
-          pnpm install -g wait-on
-          pnpm wait-on tcp:4402
-          pnpm nx run ui-components:test-storybook
+          pnpx wait-on tcp:4402
+          pnpm nx run ui-components:test-storybook --maxWorkers 10

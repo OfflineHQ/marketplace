@@ -49,10 +49,9 @@ jobs:
         uses: sebpalluel/ci/.github/actions/setup-environment@latest
 
       - name: Run Storybook
-        run: pnpm nx run web:storybook -- --ci --port 4401 --quiet &
+        run: pnpm build-storybook:web && pnpx http-server dist/storybook/web --port 4401 --silent &
 
       - name: Run Test-Storybook
         run: |
-          pnpm install -g wait-on
-          pnpm wait-on tcp:4401
-          pnpm nx run web:test-storybook
+          pnpx wait-on tcp:4401
+          pnpm nx run web:test-storybook --maxWorkers 10
