@@ -1,10 +1,17 @@
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
+import {
+  screen,
+  fireEvent,
+  userEvent,
+  within,
+  waitForElementToBeRemoved,
+} from '@storybook/testing-library';
 import { OutlineArrowRight, Settings } from '@ui/icons';
 import { delayData } from '@test-utils/functions';
 
 import { Button, buttonVariants, buttonSizes } from './Button';
+import { sleep } from '@utils';
 
 const variantOptions = Object.keys(buttonVariants);
 const sizeOptions = Object.keys(buttonSizes);
@@ -41,6 +48,8 @@ export const DefaultButton = {
     await userEvent.click(canvas.getByRole('button'));
     // Check that the spinner is present
     expect(screen.queryByRole('status')).toBeInTheDocument();
+    await sleep(1000);
+    await waitForElementToBeRemoved(() => screen.queryByRole('status'));
   },
 } satisfies Story;
 
