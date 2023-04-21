@@ -23,7 +23,13 @@ export const DarkModeDecorator: Decorator = (Story: any, context: any = {}) => {
 document.body.classList.add('font-sans');
 
 const preview: Preview = {
-  parameters,
+  parameters: {
+    ...parameters,
+    chromatic: {
+      // want to test for each ui component mobile and desktop
+      viewports: [320, 1200],
+    },
+  },
   decorators: [DarkModeDecorator],
 };
 

@@ -60,6 +60,11 @@ export const Default: Story = {
 };
 
 export const OpenedDisplay: Story = {
+  parameters: {
+    chromatic: {
+      viewports: [1200],
+    },
+  },
   play: async ({ canvasElement }) => {
     const displayButton = screen.getByRole('button', { name: displayHelperText });
     userEvent.click(displayButton);
@@ -90,6 +95,21 @@ export const NormalUser: Story = {
   args: {
     session: normalUserSessionWithImage,
     profileSections: normalUserMenuItems,
+  },
+};
+
+export const NormalUserDark: Story = {
+  ...NormalUser,
+  parameters: {
+    darkMode: {
+      isDark: true,
+    },
+  },
+  play: async ({ canvasElement }) => {
+    await sleep(300);
+    await screen.findByLabelText('Dark', { selector: 'svg' });
+    userEvent.click(screen.getByText('@', { exact: false }));
+    await screen.findByText('Log out');
   },
 };
 
