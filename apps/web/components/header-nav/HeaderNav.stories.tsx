@@ -28,8 +28,10 @@ const meta = {
     sessionLoading: false,
     settings: {
       languages,
+      languageText: 'Language',
       languageHelperText: 'Select your language',
       displays: displayItems,
+      displayText: 'Display mode',
       displayHelperText: 'Select a display mode',
     },
   },

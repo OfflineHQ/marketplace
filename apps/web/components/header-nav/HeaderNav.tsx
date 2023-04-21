@@ -30,8 +30,10 @@ export interface HeaderNavProps
 export interface HeaderSettingsProps {
   languageHelperText: string;
   languages: LanguageDropdownProps['items'];
-  displayHelperText: string;
+  languageText: string;
   displays: DisplayDropdownProps['items'];
+  displayText: string;
+  displayHelperText: string;
   // locations: LanguageDropdownProps['items']; // TODO add locations (France/Germany/UK etc)
 }
 
@@ -129,27 +131,41 @@ export function HeaderNav(props: HeaderNavProps) {
               <SocialIcons />
             </div>
           )} */}
-          <DisplayDropdown
-            items={settings.displays}
-            helperText={settings.displayHelperText}
-          />
-          <LanguageDropdown
-            items={settings.languages}
-            helperText={settings.languageHelperText}
-          />
+          <div className="hidden gap-4 md:flex">
+            <DisplayDropdown
+              items={settings.displays}
+              helperText={settings.displayHelperText}
+            />
+            <LanguageDropdown
+              items={settings.languages}
+              helperText={settings.languageHelperText}
+            />
+          </div>
           <Profile {...profileProps} />
         </div>
       </div>
 
       {/* mobile menu */}
       {menuExpanded && (
-        <div
-          className={`fixed bottom-0 top-24 z-10 block overflow-scroll pb-20 lg:hidden`}
-        >
-          <div className="flex flex-col gap-10">
-            <NavMobile menuSections={menuSections} />
-            {/* {showSocialIcons && <SocialIcons />} */}
-          </div>
+        <div className={`fixed bottom-0 top-24 z-10 block w-full lg:hidden`}>
+          {/* <div className="flex flex-col gap-10"> */}
+          <NavMobile menuSections={menuSections} className="flex h-full flex-col">
+            <div className="relative z-10 shrink-0">
+              <div className="relative pb-3">
+                <Separator orientation="horizontal" className="my-2 min-w-full" />
+                <div className="flex items-center gap-4">
+                  <DisplayDropdown items={settings.displays}>
+                    {settings.displayText}
+                  </DisplayDropdown>
+                  <LanguageDropdown items={settings.languages}>
+                    {settings.languageText}
+                  </LanguageDropdown>
+                </div>
+              </div>
+            </div>
+          </NavMobile>
+          {/* {showSocialIcons && <SocialIcons />} */}
+          {/* </div> */}
         </div>
       )}
     </AutoAnimate>
