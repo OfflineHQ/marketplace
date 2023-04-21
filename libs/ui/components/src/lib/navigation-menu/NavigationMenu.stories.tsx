@@ -40,5 +40,6 @@ export const DefaultNavigationMenu: Story = {
     const componentsContent = await screen.findByText('Hover Card');
     console.log({ componentsContent });
     expect(componentsContent).toBeVisible();
+    await screen.findByText('Tooltip');
   },
 };
