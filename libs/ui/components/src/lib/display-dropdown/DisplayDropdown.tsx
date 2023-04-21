@@ -17,7 +17,12 @@ export function DisplayDropdown({ items, ...props }: DisplayDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" icon={isDark ? Dark : Light} {...props} />
+        <Button
+          variant="ghost"
+          aria-label={props.helperText as string}
+          icon={isDark ? Dark : Light}
+          {...props}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuItems items={items} className="w-10" />
     </DropdownMenu>

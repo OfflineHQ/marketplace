@@ -13,7 +13,12 @@ export function LanguageDropdown({ items, ...props }: LanguageDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" icon={Language} {...props} />
+        <Button
+          variant="ghost"
+          aria-label={props.helperText as string}
+          icon={Language}
+          {...props}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuItems items={items} className="w-10" />
     </DropdownMenu>

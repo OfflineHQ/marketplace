@@ -1,26 +1,23 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import './globals.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Preview, Decorator } from '@storybook/react';
 import { parameters } from '../../../../storybook.preview.base';
 
-import { useDarkMode } from 'storybook-dark-mode';
-
-export const DarkModeDecorator: Decorator = (Story: any, context) => {
-  const dark = useDarkMode();
+// // can't take it from storybook.preview.base otherwise buggy
+export const DarkModeDecorator: Decorator = (Story: any, context: any = {}) => {
+  const [dark, setDark] = useState(false);
   const { isDark } = context.parameters.darkMode;
+
   useEffect(() => {
+    setDark(isDark);
     document.documentElement.classList.add('light');
     if (isDark) {
-      // add dark class to className
       document.documentElement.classList.replace('light', 'dark');
-    } else {
-      if (document.documentElement.classList.contains('light') && dark)
-        document.documentElement.classList.replace('light', 'dark');
-      else document.documentElement.classList.replace('dark', 'light');
     }
   }, [dark, isDark]);
-  return <Story />;
+
+  return dark ? <Story key={dark} /> : <Story />;
 };
 
 document.body.classList.add('font-sans');

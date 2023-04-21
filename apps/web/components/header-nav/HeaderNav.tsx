@@ -153,11 +153,11 @@ export function HeaderNav(props: HeaderNavProps) {
             <div className="relative z-10 shrink-0">
               <div className="relative pb-3">
                 <Separator orientation="horizontal" className="my-2 min-w-full" />
-                <div className="flex items-center gap-4">
-                  <DisplayDropdown items={settings.displays}>
+                <div className="flex justify-center">
+                  <DisplayDropdown items={settings.displays} className="mx-2 px-3">
                     {settings.displayText}
                   </DisplayDropdown>
-                  <LanguageDropdown items={settings.languages}>
+                  <LanguageDropdown items={settings.languages} className="mx-2 px-3">
                     {settings.languageText}
                   </LanguageDropdown>
                 </div>

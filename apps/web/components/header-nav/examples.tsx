@@ -1,7 +1,7 @@
 import { HeaderNavProps, HeaderNav, type HeaderSettingsProps } from './HeaderNav';
 import { Dark, Light, DarkLight, Check } from '@ui/icons';
 
-export const displayItems: HeaderSettingsProps['displays'] = [
+const displayItems: HeaderSettingsProps['displays'] = [
   {
     type: 'item',
     text: 'Light',
@@ -20,7 +20,7 @@ export const displayItems: HeaderSettingsProps['displays'] = [
   },
 ];
 
-export const displayItemsDark: HeaderSettingsProps['displays'] = [
+const displayItemsDark: HeaderSettingsProps['displays'] = [
   {
     type: 'item',
     text: 'Light',
@@ -39,7 +39,7 @@ export const displayItemsDark: HeaderSettingsProps['displays'] = [
   },
 ];
 
-export const languages: HeaderSettingsProps['languages'] = [
+const languages: HeaderSettingsProps['languages'] = [
   {
     type: 'item',
     text: 'English',
@@ -52,6 +52,22 @@ export const languages: HeaderSettingsProps['languages'] = [
   },
 ];
 
-export function HeaderNavExample(props: HeaderNavProps) {
+const languageText = 'Language';
+const languageHelperText = 'Select your language';
+const displayText = 'Display mode';
+const displayHelperText = 'Select a display mode';
+
+function HeaderNavExample(props: HeaderNavProps) {
   return <HeaderNav {...props} />;
 }
+
+export {
+  displayItems,
+  displayItemsDark,
+  languages,
+  languageText,
+  languageHelperText,
+  displayText,
+  displayHelperText,
+  HeaderNavExample,
+};

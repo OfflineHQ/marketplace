@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
 import { DisplayDropdown } from './DisplayDropdown';
 import { DisplayDropdownExample, displayItems, displayItemsDark } from './examples';
+import { sleep } from '@utils';
 
 const helperText = 'Select a display mode';
 
@@ -47,6 +48,7 @@ export const Dark: Story = {
     },
   },
   play: async ({ canvasElement }) => {
+    await sleep(300);
     await screen.findByLabelText('Dark', { selector: 'svg' });
   },
 };
