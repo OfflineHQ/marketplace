@@ -50,6 +50,12 @@ export const Default: Story = {
   },
 };
 
+export const OpenedDisplayMode: Story = {
+  play: async ({ canvasElement }) => {
+    userEvent.click(screen.getByText('Should fail'));
+  },
+};
+
 export const CryptoUser: Story = {
   args: {
     session: cryptoUserSession,

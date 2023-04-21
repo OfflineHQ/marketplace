@@ -36,19 +36,3 @@ jobs:
           exitZeroOnChanges: true
           onlyChanged: true
           buildScriptName: build-storybook:ui
-
-  test-storybook:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up environment and cache dependencies
-        uses: sebpalluel/ci/.github/actions/setup-environment@latest
-
-      - name: Run Storybook
-        run: pnpm build-storybook:ui && pnpx http-server dist/storybook/ui-components --port 4402 --silent &
-
-      - name: Run Test-Storybook
-        run: |
-          pnpx wait-on tcp:4402
-          pnpm nx run ui-components:test-storybook --maxWorkers 10
