@@ -60,11 +60,6 @@ export const Default: Story = {
 };
 
 export const OpenedDisplay: Story = {
-  parameters: {
-    chromatic: {
-      viewports: [1200],
-    },
-  },
   play: async ({ canvasElement }) => {
     const displayButton = screen.getByRole('button', { name: displayHelperText });
     userEvent.click(displayButton);
@@ -126,6 +121,7 @@ export const MobileNoSession: Story = {
     viewport: {
       defaultViewport: 'mobile1',
     },
+    chromatic: { viewports: [320] },
   },
 };
 
@@ -135,6 +131,7 @@ export const MobileSessionLoading: Story = {
     viewport: {
       defaultViewport: 'mobile1',
     },
+    chromatic: { viewports: [320] },
   },
 };
 
@@ -144,6 +141,7 @@ export const MobileOpenedMenu: Story = {
     viewport: {
       defaultViewport: 'mobile1',
     },
+    chromatic: { viewports: [320] },
   },
   play: async ({ canvasElement }) => {
     userEvent.click(screen.getByTestId('hamburger-menu'));

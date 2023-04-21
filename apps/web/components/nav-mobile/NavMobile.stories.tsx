@@ -6,9 +6,10 @@ const Story: Meta<typeof NavMobile> = {
   component: NavMobile,
   render: NavMobileExample,
   parameters: {
-    screen: {
-      mobile: true,
+    viewport: {
+      defaultViewport: 'mobile1',
     },
+    chromatic: { viewports: [320] },
   },
 };
 export default Story;
