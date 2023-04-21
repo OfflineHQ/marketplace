@@ -2,8 +2,7 @@ import { HttpException, MiddlewareConsumer, Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
-import { SentryInterceptor } from '@ntegral/nestjs-sentry';
-import { SentryModule } from '@ntegral/nestjs-sentry';
+import { SentryInterceptor, SentryModule } from '@ntegral/nestjs-sentry';
 import { Integrations as SentryIntegrations } from '@sentry/node';
 
 import { PrismaModule } from '@server/prisma';

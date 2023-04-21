@@ -10,7 +10,8 @@
       "defaultConfiguration": "production",
       "options": {
         "root": "apps/web",
-        "outputPath": "dist/apps/web"
+        "outputPath": "dist/apps/web",
+        "postcssConfig": "apps/web/postcss.config.js"
       },
       "assets": [
         {
@@ -21,14 +22,9 @@
       ],
       "configurations": {
         "development": {
-          "outputPath": "tmp/apps/web"
+          "outputPath": "apps/web"
         },
-        "test": {
-          "outputPath": "tmp/apps/web-test"
-        },
-        "production": {
-          "outputPath": "dist/apps/web"
-        }
+        "production": {}
       }
     },
     "serve": {
@@ -133,7 +129,7 @@
     "test-storybook": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "test-storybook -c apps/web/.storybook --url=http://localhost:4400"
+        "command": "test-storybook -c apps/web/.storybook --url=http://localhost:4401"
       }
     }
   },

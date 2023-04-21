@@ -3,6 +3,19 @@ const withNx = require('@nrwl/next/plugins/with-nx');
 const path = require('path');
 const { withSentryConfig } = require('@sentry/nextjs');
 
+/**
+ * Don't be scared of the generics here.
+ * All they do is to give us autocompletion when using this.
+ *
+ * @template {import('next').NextConfig} T
+ * @param {T} nextI18n - A generic parameter that flows through to the return type
+ * @constraint {{import('next').NextConfig}}
+ */
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
   ? null
   : process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
@@ -13,6 +26,7 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+  transpilePackages: ['@ui/components', '@ui/theme'],
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -24,10 +38,8 @@ const nextConfig = {
     }
     return config;
   },
+
   images: {},
-  // Use the CDN in production and localhost for development.
-  // assetPrefix: isProd() ? 'https://cdn.mydomain.com' : undefined,
-  assetPrefix: undefined,
   // optimize build with vercel nft (node file tracing) https://nextjs.org/docs/advanced-features/output-file-tracing
   // outputFileTracingRoot needed for monorepo
   output: 'standalone',
@@ -35,15 +47,17 @@ const nextConfig = {
     outputFileTracingRoot: path.join(__dirname, '../../'),
     // to fix chakra ui error with cancelSync esm import
     esmExternals: false,
+    appDir: true,
+    typedRoutes: true,
+    fontLoaders: [
+      {
+        loader: '@next/font/google',
+        options: { subsets: ['latin'] },
+      },
+    ],
   },
   //
   sentry: {
-    // Use `hidden-source-map` rather than `source-map` as the Webpack `devtool`
-    // for client-side builds. (This will be the default starting in
-    // `@sentry/nextjs` version 8.0.0.) See
-    // https://webpack.js.org/configuration/devtool/ and
-    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map
-    // for more information.
     hideSourceMaps: true,
   },
 };
@@ -60,4 +74,29 @@ const sentryWebpackPluginOptions = {
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
-module.exports = withSentryConfig(withNx(nextConfig), sentryWebpackPluginOptions);
+module.exports = withBundleAnalyzer(
+  withSentryConfig(withNx(nextConfig), sentryWebpackPluginOptions)
+);
+
+module.exports = async (phase, context) => {
+  const isProd = process.env.NODE_ENV === 'production';
+  // Use the CDN in production and localhost for development.
+  // assetPrefix: isProd() ? 'https://cdn.mydomain.com' : undefined,
+  const assetPrefix = isProd && phase !== '' ? phase : undefined;
+  const buildId = isProd ? `${assetPrefix.substring(1).replaceAll('/', '-')}` : '';
+
+  const addNx = withNx({
+    ...nextConfig,
+    assetPrefix,
+    generateBuildId: async () => buildId,
+    publicRuntimeConfig: {
+      assetPrefix,
+    },
+  });
+
+  let config = await addNx(phase);
+  // config = await nextTranslate(config);
+  config = await withSentryConfig(config, sentryWebpackPluginOptions);
+  config = await withBundleAnalyzer(config);
+  return config;
+};

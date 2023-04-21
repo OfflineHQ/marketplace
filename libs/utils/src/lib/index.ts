@@ -72,3 +72,31 @@ export function isPreviewOrPRDeployment(): boolean {
     !!process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF?.startsWith('pull/')
   );
 }
+
+export function truncateString(str: string, maxChars: number): string {
+  if (maxChars < 5) {
+    throw new Error(
+      'maxChars must be at least 5 to allow proper truncation with three asterisks (***)'
+    );
+  }
+
+  if (str.length <= maxChars) {
+    return str;
+  }
+
+  const charsToShow = maxChars - 3;
+  const frontChars = Math.floor(charsToShow / 2);
+  const backChars = Math.ceil(charsToShow / 2);
+
+  return str.slice(0, frontChars) + '***' + str.slice(-backChars);
+}
+
+export function truncateEmailString(str: string, maxChars: number): string {
+  const emailParts = str.split('@');
+  if (emailParts.length !== 2) {
+    throw new Error('Invalid email format');
+  }
+  const localPart = emailParts[0];
+  const domainPart = emailParts[1];
+  return `${truncateString(localPart, maxChars)}@${domainPart}`;
+}
