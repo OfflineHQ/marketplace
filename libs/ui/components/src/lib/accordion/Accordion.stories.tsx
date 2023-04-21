@@ -9,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from './Accordion';
+import { sleep } from '@utils';
 
 const meta = {
   title: 'Molecules/Accordion',
@@ -72,6 +73,7 @@ export const OpenAccordionItem: Story = {
 
     const accordionItem = accordionContent.closest('[role="region"]');
     expect(accordionItem?.getAttribute('data-state')).toBe('open');
+    await sleep(400);
   },
 };
 
@@ -116,5 +118,6 @@ export const MultipleOpenAccordionItem: Story = {
 
     const thirdAccordionItem = accordionContent.closest('[role="region"]');
     expect(thirdAccordionItem?.getAttribute('data-state')).toBe('open');
+    await sleep(400);
   },
 };
