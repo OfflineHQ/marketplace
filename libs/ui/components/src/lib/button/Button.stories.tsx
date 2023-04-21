@@ -48,7 +48,7 @@ export const DefaultButton = {
     await userEvent.click(canvas.getByRole('button'));
     // Check that the spinner is present
     expect(screen.queryByRole('status')).toBeInTheDocument();
-    await sleep(1000);
+    await sleep(100);
     await waitForElementToBeRemoved(() => screen.queryByRole('status'));
   },
 } satisfies Story;
