@@ -14,12 +14,26 @@ import {
   AvatarLoader,
   TextLoader,
   AutoAnimate,
+  DisplayDropdown,
+  type DisplayDropdownProps,
+  LanguageDropdown,
+  type LanguageDropdownProps,
 } from '@ui/components';
 
 export interface HeaderNavProps
   extends NavDesktopProps,
     HeaderProfileProps,
-    Omit<ProfileNavProps, 'items' | 'session'> {}
+    Omit<ProfileNavProps, 'items' | 'session'> {
+  settings: HeaderSettingsProps;
+}
+
+export interface HeaderSettingsProps {
+  languageHelperText: string;
+  languages: LanguageDropdownProps['items'];
+  displayHelperText: string;
+  displays: DisplayDropdownProps['items'];
+  // locations: LanguageDropdownProps['items']; // TODO add locations (France/Germany/UK etc)
+}
 
 export interface HeaderProfileProps {
   session: Session | null | undefined;
@@ -65,7 +79,7 @@ function Profile({
 }
 
 export function HeaderNav(props: HeaderNavProps) {
-  const { menuSections, ...profileProps } = props;
+  const { menuSections, settings, ...profileProps } = props;
   const [menuExpanded, setMenuExpanded] = useState(false);
   useEffect(() => {
     const html: HTMLElement = document.querySelector('html')!;
@@ -115,6 +129,14 @@ export function HeaderNav(props: HeaderNavProps) {
               <SocialIcons />
             </div>
           )} */}
+          <DisplayDropdown
+            items={settings.displays}
+            helperText={settings.displayHelperText}
+          />
+          <LanguageDropdown
+            items={settings.languages}
+            helperText={settings.languageHelperText}
+          />
           <Profile {...profileProps} />
         </div>
       </div>

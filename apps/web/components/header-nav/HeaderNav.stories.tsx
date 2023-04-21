@@ -14,7 +14,7 @@ import {
 } from '../profile-avatar/examples';
 import { cryptoUserMenuItems, normalUserMenuItems } from '../profile-nav/examples';
 import { HeaderNav } from './HeaderNav';
-import { HeaderNavExample } from './examples';
+import { HeaderNavExample, displayItems, displayItemsDark, languages } from './examples';
 import { sleep } from '@utils';
 
 const meta = {
@@ -26,6 +26,12 @@ const meta = {
     session: null,
     signIn: () => sleep(1000),
     sessionLoading: false,
+    settings: {
+      languages,
+      languageHelperText: 'Select your language',
+      displays: displayItems,
+      displayHelperText: 'Select a display mode',
+    },
   },
   parameters: {
     layout: 'fullscreen',
@@ -66,6 +72,14 @@ export const SessionLoading: Story = {
     sessionLoading: true,
   },
   play: undefined,
+};
+
+export const MobileNoSession: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
 };
 
 export const MobileSessionLoading: Story = {

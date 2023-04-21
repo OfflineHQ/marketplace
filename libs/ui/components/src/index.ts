@@ -51,7 +51,10 @@ export {
 export { AutoAnimate } from './lib/auto-animate/AutoAnimate';
 export { Checkbox } from './lib/checkbox/Checkbox';
 export { CheckboxWithText } from './lib/checkbox/CheckboxWithText';
-export { LanguageDropdown } from './lib/language-dropdown/LanguageDropdown';
+export {
+  LanguageDropdown,
+  type LanguageDropdownProps,
+} from './lib/language-dropdown/LanguageDropdown';
 export { Switch } from './lib/switch/Switch';
 export {
   Accordion,
@@ -59,7 +62,10 @@ export {
   AccordionTrigger,
   AccordionContent,
 } from './lib/accordion/Accordion';
-export { DisplayDropdown } from './lib/display-dropdown/DisplayDropdown';
+export {
+  DisplayDropdown,
+  type DisplayDropdownProps,
+} from './lib/display-dropdown/DisplayDropdown';
 export {
   HoverCard,
   HoverCardTrigger,
