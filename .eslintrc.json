@@ -21,9 +21,35 @@
         "project": ["apps/**/tsconfig.*?.json", "libs/**/tsconfig.*?.json"]
       }
     },
+    "tailwindcss": {
+      "config": "libs/ui/components/tailwind.config.js"
+    },
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
     }
+  },
+  "rules": {
+    "tailwindcss/no-custom-classname": [
+      "error",
+      {
+        "whitelist": [
+          "primary",
+          "primary-foreground",
+          "secondary",
+          "secondary-foreground",
+          "destructive",
+          "destructive-foreground",
+          "muted",
+          "muted-foreground",
+          "accent",
+          "accent-foreground",
+          "popover",
+          "popover-foreground",
+          "card",
+          "card-foreground"
+        ]
+      }
+    ]
   },
   "overrides": [
     {
