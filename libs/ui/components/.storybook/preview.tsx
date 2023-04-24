@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/no-custom-classname */
 import './globals.css';
 import { useEffect, useState } from 'react';
 import { Preview, Decorator } from '@storybook/react';
