@@ -23,7 +23,7 @@ export type ProgressRootProps = React.ComponentPropsWithoutRef<
   VariantProps<typeof progressRootVariants>;
 
 const progressRootVariants = cva(
-  'relative w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800',
+  'relative w-full overflow-hidden rounded-full bg-secondary',
   {
     variants: {
       size: progressSizes,
@@ -38,7 +38,8 @@ export type ProgressIndicatorProps = React.ComponentPropsWithoutRef<
   typeof ProgressPrimitive.Indicator
 > &
   VariantProps<typeof progressIndicatorVariants>;
-const progressIndicatorVariants = cva('h-full w-full flex-1 transition-all', {
+
+const progressIndicatorVariants = cva('h-full w-full flex-1 bg-primary transition-all', {
   variants: {
     variant: progressVariants,
   },

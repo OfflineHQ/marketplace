@@ -55,7 +55,7 @@ import { cn } from '@ui/shared';
 
 export function CommandDemo() {
   return (
-    <Command className="rounded-lg border border-slate-100  shadow-md dark:border-slate-800">
+    <Command className="rounded-lg border shadow-md">
       <CommandInput placeholder="Type a command or search..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
@@ -108,9 +108,9 @@ export function CommandDialogDemo() {
 
   return (
     <>
-      <p className="text-sm text-slate-500 dark:text-slate-400">
+      <p className="text-sm text-muted-foreground">
         Press{' '}
-        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-slate-100 bg-slate-100 px-1.5 font-mono text-[10px] font-medium text-slate-600 opacity-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
+        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
           <span className="text-xs">⌘</span>J
         </kbd>
       </p>
@@ -268,7 +268,7 @@ export function CommandPopoverDemo() {
 
   return (
     <div className="flex items-center space-x-4">
-      <p className="text-sm text-slate-500 dark:text-slate-400">Status</p>
+      <p className="text-sm text-muted-foreground">Status</p>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" size="sm" className="w-[120px] justify-start">
@@ -333,12 +333,12 @@ export function CommandDropdownMenuDemo() {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div className="flex w-full flex-col items-start justify-between rounded-md border border-slate-200 px-4 py-3 dark:border-slate-700 sm:flex-row sm:items-center">
+    <div className="flex w-full flex-col items-start justify-between rounded-md border px-4 py-3 sm:flex-row sm:items-center">
       <p className="text-sm font-medium leading-none">
-        <span className="mr-2 rounded-lg bg-slate-900 px-2 py-1 text-xs text-slate-50 dark:bg-slate-800 dark:text-slate-100">
+        <span className="mr-2 rounded-lg bg-primary px-2 py-1 text-xs text-primary-foreground">
           {label}
         </span>
-        <span className="text-slate-500">Create a new project</span>
+        <span className="text-muted-foreground">Create a new project</span>
       </p>
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
