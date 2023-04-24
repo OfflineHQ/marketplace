@@ -25,27 +25,24 @@ const statusVariantIcons = {
   failure: OutlineError,
   warning: FillWarning,
   success: OutlineSuccess,
-  disabled: null,
 };
 
 // TODO: change for tokens
 
 const statusBorderVariants = {
-  default: 'border-slate-300 dark:border-slate-700',
+  default: 'border',
   info: 'border-slate-300 dark:border-slate-700',
   failure: 'border-red-500 dark:border-red-700',
   warning: 'border-yellow-500 dark:border-yellow-700',
   success: 'border-green-500 dark:border-green-700',
-  disabled: 'border-slate-100 dark:border-slate-800',
 };
 
 const statusTextColorVariants = {
   default: '',
-  info: 'text-slate-700 dark:text-slate-300',
-  failure: 'text-red-600 dark:text-red-500',
-  warning: 'text-yellow-600 dark:text-yellow-500',
-  success: 'text-green-600 dark:text-green-500',
-  disabled: 'text-slate-400 dark:text-slate-600',
+  info: 'text-info-foreground',
+  failure: 'text-failure-foreground',
+  warning: 'text-warning-foreground',
+  success: 'text-success-foreground',
 };
 
 const statusBgColorVariants = {
@@ -54,7 +51,6 @@ const statusBgColorVariants = {
   failure: 'bg-red-100 dark:bg-red-400',
   warning: 'bg-yellow-100 dark:bg-yellow-400',
   success: 'bg-green-100 dark:bg-green-400',
-  disabled: 'bg-slate-200 dark:bg-slate-800',
 };
 
 export const statusBgFillVariants = {
@@ -63,7 +59,6 @@ export const statusBgFillVariants = {
   failure: 'bg-red-600 dark:bg-red-500',
   warning: 'bg-yellow-600 dark:bg-yellow-500',
   success: 'bg-green-600 dark:bg-green-500',
-  disabled: 'bg-slate-400 dark:bg-slate-600',
 };
 
 export {
