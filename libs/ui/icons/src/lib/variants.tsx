@@ -40,15 +40,13 @@ export const iconPaddings = {
   xl: 'p-3',
 };
 
-// TODO: change for tokens
 export const iconColors = {
   default: '',
-  info: '',
-  failure: 'text-red-500 dark:text-red-700',
-  destructive: 'text-red-500 dark:text-red-700',
-  warning: 'text-yellow-500 dark:text-yellow-700',
-  success: 'text-green-500 dark:text-green-700',
-  disabled: 'text-slate-400 dark:text-slate-600',
+  info: 'text-info-foreground',
+  failure: 'text-failure-foreground',
+  destructive: 'text-destructive-foreground',
+  warning: 'text-warning-foreground',
+  success: 'text-success-foreground',
 };
 
 export const iconCVA = cva('', {
