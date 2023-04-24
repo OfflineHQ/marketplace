@@ -27,14 +27,12 @@ const statusVariantIcons = {
   success: OutlineSuccess,
 };
 
-// TODO: change for tokens
-
 const statusBorderVariants = {
   default: 'border',
-  info: 'border-slate-300 dark:border-slate-700',
-  failure: 'border-red-500 dark:border-red-700',
-  warning: 'border-yellow-500 dark:border-yellow-700',
-  success: 'border-green-500 dark:border-green-700',
+  info: 'border-info-border',
+  failure: 'border-failure-border',
+  warning: 'border-warning-border',
+  success: 'border-success-border',
 };
 
 const statusTextColorVariants = {
@@ -46,19 +44,11 @@ const statusTextColorVariants = {
 };
 
 const statusBgColorVariants = {
-  default: 'bg-slate-100 dark:bg-slate-900',
-  info: 'bg-slate-100 dark:bg-slate-900',
-  failure: 'bg-red-100 dark:bg-red-400',
-  warning: 'bg-yellow-100 dark:bg-yellow-400',
-  success: 'bg-green-100 dark:bg-green-400',
-};
-
-export const statusBgFillVariants = {
-  default: 'bg-slate-700 dark:bg-slate-300',
-  info: 'bg-slate-700 dark:bg-slate-300',
-  failure: 'bg-red-600 dark:bg-red-500',
-  warning: 'bg-yellow-600 dark:bg-yellow-500',
-  success: 'bg-green-600 dark:bg-green-500',
+  default: '',
+  info: 'bg-info-foreground',
+  failure: 'bg-failure-foreground',
+  warning: 'bg-warning-foreground',
+  success: 'bg-success-foreground',
 };
 
 export {

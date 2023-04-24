@@ -5,7 +5,7 @@ import * as ProgressPrimitive from '@radix-ui/react-progress';
 
 import { cn } from '@ui/shared';
 import { cva, VariantProps } from 'class-variance-authority';
-import { statusBgFillVariants } from '../shared/statusVariant';
+import { statusBgColorVariants } from '../shared/statusVariant';
 
 const progressSizes = {
   xs: 'h-0.5 md:h-1',
@@ -15,7 +15,7 @@ const progressSizes = {
   xl: 'h-4 md:h-4.5',
 };
 
-const progressVariants = statusBgFillVariants;
+const progressVariants = statusBgColorVariants;
 
 export type ProgressRootProps = React.ComponentPropsWithoutRef<
   typeof ProgressPrimitive.Root
