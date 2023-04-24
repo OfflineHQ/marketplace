@@ -38,7 +38,7 @@ const textVariantClasses = cva('', {
 });
 
 const textLoaderVariantClasses = cva(
-  'max-w-full animate-pulse rounded-full bg-slate-100 dark:bg-slate-700',
+  'max-w-full shrink-0 animate-pulse rounded-full bg-muted',
   {
     variants: {
       variant: textLoaderVariants,
