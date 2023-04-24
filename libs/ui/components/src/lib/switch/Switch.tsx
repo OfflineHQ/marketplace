@@ -32,8 +32,8 @@ const Switch = forwardRef<
         {leftLabel && (
           <Label
             htmlFor={htmlFor || generatedId}
-            className={cn('mr-2 cursor-pointer', { 'cursor-not-allowed': disabled })}
-            variant={disabled ? 'disabled' : undefined}
+            disabled={disabled}
+            className={cn('mr-2 cursor-pointer')}
           >
             {leftLabel}
           </Label>
@@ -56,11 +56,7 @@ const Switch = forwardRef<
           />
         </SwitchPrimitives.Root>
         {rightLabel && (
-          <Label
-            htmlFor={htmlFor || generatedId}
-            className={cn('ml-2 cursor-pointer', { 'cursor-not-allowed': disabled })}
-            variant={disabled ? 'disabled' : undefined}
-          >
+          <Label htmlFor={htmlFor || generatedId} className={cn('ml-2 cursor-pointer')}>
             {rightLabel}
           </Label>
         )}

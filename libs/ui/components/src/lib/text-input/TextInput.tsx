@@ -35,7 +35,8 @@ const TextInput: React.FC<TextInputProps> = ({
   const labelElement = (
     <Label
       htmlFor={htmlFor || generatedId}
-      variant={disabled ? 'disabled' : variant}
+      variant={variant}
+      disabled={disabled}
       className={`${leftLabel ? '' : 'pb-1 sm:pb-2'}`}
     >
       {label}

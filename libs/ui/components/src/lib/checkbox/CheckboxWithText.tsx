@@ -34,19 +34,16 @@ const CheckboxWithText: React.FC<CheckboxWithTextProps> = ({
           disabled={disabled}
           aria-describedby={helperTextId}
         />
-        <Label
-          htmlFor={htmlFor || generatedId}
-          className="ml-2 cursor-pointer"
-          variant={disabled ? 'disabled' : undefined}
-        >
+        <Label htmlFor={htmlFor || generatedId} className="ml-2 cursor-pointer">
           {label}
         </Label>
       </div>
       {helperText && (
         <HelperText
           id={helperTextId}
-          className="ml-6" // Added margin-left to align with the label
-          variant={disabled ? 'disabled' : undefined}
+          htmlFor={htmlFor || generatedId}
+          disabled={disabled}
+          className="ml-6"
         >
           {helperText}
         </HelperText>

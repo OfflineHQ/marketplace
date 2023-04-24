@@ -70,3 +70,7 @@ export const WithHelperText: Story = {
     helperText: 'This is a helper text',
   },
 };
+
+export const WithHelperTextAndDisabled: Story = {
+  args: { ...WithHelperText.args, disabled: true },
+};

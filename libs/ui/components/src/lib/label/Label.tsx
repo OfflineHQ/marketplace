@@ -9,7 +9,7 @@ import { statusTextColorVariants } from '../shared/statusVariant';
 const labelVariants = statusTextColorVariants;
 
 const labelCva = cva(
-  'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
+  'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
   {
     variants: {
       variant: labelVariants,
@@ -22,17 +22,22 @@ const labelCva = cva(
 
 export interface LabelProps
   extends React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>,
-    VariantProps<typeof labelCva> {}
+    VariantProps<typeof labelCva> {
+  disabled?: boolean;
+}
 
 const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Root>, LabelProps>(
-  ({ className, variant, children, ...props }, ref) => (
-    <LabelPrimitive.Root
-      ref={ref}
-      className={cn(labelCva({ variant }), className)}
-      {...props}
-    >
-      {children}
-    </LabelPrimitive.Root>
+  ({ className, variant, children, disabled, ...props }, ref) => (
+    <>
+      <input className="peer hidden" disabled={disabled} aria-hidden="true" />
+      <LabelPrimitive.Root
+        ref={ref}
+        className={cn(labelCva({ variant }), className)}
+        {...props}
+      >
+        {children}
+      </LabelPrimitive.Root>
+    </>
   )
 );
 Label.displayName = LabelPrimitive.Root.displayName;
