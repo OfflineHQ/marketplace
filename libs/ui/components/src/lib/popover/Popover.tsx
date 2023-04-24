@@ -35,7 +35,7 @@ const PopoverContent = React.forwardRef<
         {children}
         {shouldBeClosable && (
           <PopoverPrimitive.Close data-testid="popover-close" className={closeClasses}>
-            <Close size="md" />
+            <Close />
           </PopoverPrimitive.Close>
         )}
         <PopoverPrimitive.Arrow className={arrowClasses} />

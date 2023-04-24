@@ -60,7 +60,7 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({ items, className 
                   className={item.className}
                 >
                   {item.icon &&
-                    React.cloneElement(item.icon, { size: 'sm', marginRight: 'md' })}
+                    React.cloneElement(item.icon, { size: 'sm', marginRight: 'default' })}
                   <span>{item.text}</span>
                   {item.shortcut && (
                     <DropdownMenuShortcut>{item.shortcut}</DropdownMenuShortcut>
@@ -75,7 +75,10 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({ items, className 
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger>
                     {item.icon &&
-                      React.cloneElement(item.icon, { size: 'sm', marginRight: 'md' })}
+                      React.cloneElement(item.icon, {
+                        size: 'sm',
+                        marginRight: 'default',
+                      })}
                     <span>{item.text}</span>
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>

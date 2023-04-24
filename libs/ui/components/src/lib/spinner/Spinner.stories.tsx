@@ -18,6 +18,9 @@ const meta = {
       control: { type: 'select' },
     },
   },
+  args: {
+    size: 'default',
+  },
 } satisfies Meta<typeof Spinner>;
 
 export default meta;
@@ -27,42 +30,36 @@ type Story = StoryObj<typeof meta>;
 export const Default = {
   args: {
     variant: 'default',
-    size: 'md',
   },
 } satisfies Story;
 
 export const Destructive = {
   args: {
     variant: 'destructive',
-    size: 'md',
   },
 } satisfies Story;
 
 export const Outline = {
   args: {
     variant: 'outline',
-    size: 'md',
   },
 } satisfies Story;
 
 export const Subtle = {
   args: {
     variant: 'subtle',
-    size: 'md',
   },
 } satisfies Story;
 
 export const Ghost = {
   args: {
     variant: 'ghost',
-    size: 'md',
   },
 } satisfies Story;
 
 export const Link = {
   args: {
     variant: 'link',
-    size: 'md',
   },
 } satisfies Story;
 

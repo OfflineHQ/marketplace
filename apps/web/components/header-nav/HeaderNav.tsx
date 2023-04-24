@@ -63,7 +63,7 @@ function Profile({
           <AutoAnimate className="flex items-center">
             {sessionLoading || !session ? (
               <div className="flex items-center opacity-100">
-                <AvatarLoader size="md" className="mx-5 mr-7 md:mr-2" />
+                <AvatarLoader className="mx-5 mr-7 md:mr-2" />
                 <TextLoader className="mr-5 hidden md:flex" />
               </div>
             ) : (
@@ -106,7 +106,6 @@ export function HeaderNav(props: HeaderNavProps) {
                   icon={menuExpanded ? Close : Menu}
                   variant="ghost"
                   data-testid="hamburger-menu"
-                  size="md"
                   onClick={() => setMenuExpanded(!menuExpanded)}
                 />
               </div>

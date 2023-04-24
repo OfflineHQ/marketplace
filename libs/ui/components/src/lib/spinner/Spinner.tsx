@@ -5,13 +5,12 @@ import { iconCVA, IconProps } from '@ui/icons';
 import { HTMLAttributes, FC } from 'react';
 
 const variants = {
-  default: 'text-white dark:text-black fill-slate-400 dark:fill-slate-200',
-  destructive: 'text-white dark:text-black fill-slate-400 dark:fill-slate-200',
-  outline: 'text-dark dark:text-white fill-slate-200 dark:fill-slate-400',
-  subtle: 'text-dark dark:text-white fill-slate-200 dark:fill-slate-400',
-  ghost: 'text-dark dark:text-white fill-slate-200 dark:fill-slate-400',
-  link: 'text-dark dark:text-white fill-slate-200 dark:fill-slate-400',
-  disabled: 'text-dark dark:text-white fill-slate-200 dark:fill-slate-400',
+  default: 'text-primary-foreground fill-muted-foreground',
+  destructive: 'text-destructive-foreground fill-muted-foreground',
+  outline: 'text-secondary-foreground fill-background-foreground',
+  secondary: 'text-secondary-foreground fill-background-foreground',
+  ghost: 'text-secondary-foreground fill-background-foreground',
+  link: 'text-secondary-foreground fill-background-foreground',
 };
 
 const spinnerVariantsCva = cva('h-10 w-10 animate-spin', {
@@ -29,7 +28,7 @@ export interface SpinnerProps
   size?: IconProps['size'];
 }
 
-const Spinner: FC<SpinnerProps> = ({ size = 'md', className, variant, ...rest }) => {
+const Spinner: FC<SpinnerProps> = ({ size = 'default', className, variant, ...rest }) => {
   const iconClasses = iconCVA({ size });
   const spinnerClasses = cn(spinnerVariantsCva({ variant }));
   return (
