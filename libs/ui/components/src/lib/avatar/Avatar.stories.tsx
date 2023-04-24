@@ -14,6 +14,9 @@ const meta = {
       control: { type: 'select' },
     },
   },
+  args: {
+    size: 'default',
+  },
   render: AvatarExample,
 } satisfies Meta<typeof Avatar>;
 
@@ -21,16 +24,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const DefaultAvatar: Story = {
-  args: {
-    size: 'md',
-  },
-};
+export const DefaultAvatar: Story = {};
 
 export const FallbackAvatar: Story = {
-  args: {
-    size: 'md',
-  },
   render: AvatarFallbackExample,
 };
 

@@ -65,7 +65,7 @@ export const AllVariants: ProgressStory = {
   ),
   args: {
     value: 50,
-    size: 'md',
+    size: 'default',
   },
   argTypes: {
     variant: {

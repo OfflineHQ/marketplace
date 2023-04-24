@@ -32,6 +32,9 @@ const meta = {
       control: { type: 'text' },
     },
   },
+  args: {
+    size: 'default',
+  },
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -97,9 +100,6 @@ const AllbuttonVariantsComponent: React.FC<AllbuttonVariantsComponentProps> = ({
 
 export const AllbuttonVariants = {
   render: AllbuttonVariantsComponent,
-  args: {
-    size: 'md',
-  },
   argTypes: {
     variant: {
       control: false,
@@ -154,7 +154,7 @@ const AllbuttonVariantsLoadingComponent: React.FC<AllbuttonVariantsComponentProp
 export const AllbuttonVariantsLoading = {
   render: AllbuttonVariantsLoadingComponent,
   args: {
-    size: 'md',
+    size: 'default',
   },
   argTypes: {
     variant: {
@@ -213,7 +213,7 @@ const AllbuttonVariantsDisabledComponent: React.FC<AllbuttonVariantsComponentPro
 export const AllbuttonVariantsDisabled = {
   render: AllbuttonVariantsDisabledComponent,
   args: {
-    size: 'md',
+    size: 'default',
   },
   argTypes: {
     variant: {
@@ -242,7 +242,7 @@ const AllbuttonVariantsWithIconComponent: React.FC<AllbuttonVariantsComponentPro
 export const AllbuttonVariantsWithIcon = {
   render: AllbuttonVariantsWithIconComponent,
   args: {
-    size: 'md',
+    size: 'default',
   },
   argTypes: {
     variant: {

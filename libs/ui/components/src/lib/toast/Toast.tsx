@@ -85,7 +85,7 @@ const ToastClose = forwardRef<
     toast-close=""
     {...props}
   >
-    <Close size="md" />
+    <Close />
   </ToastPrimitives.Close>
 ));
 ToastClose.displayName = ToastPrimitives.Close.displayName;

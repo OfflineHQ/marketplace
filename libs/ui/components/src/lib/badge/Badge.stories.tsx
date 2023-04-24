@@ -1,15 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Award } from '@ui/icons';
 
-import { Badge, BadgeProps, variants, sizes } from './Badge';
+import { Badge, BadgeProps, badgeVariants, badgeSizes } from './Badge';
 
-const variantOptions = Object.keys(variants);
-const sizeOptions = Object.keys(sizes);
+const variantOptions = Object.keys(badgeVariants);
+const sizeOptions = Object.keys(badgeSizes);
 
 const meta: Meta<typeof Badge> = {
   title: 'Atoms/Badge',
   component: Badge,
-  render: (args) => <Badge {...args} />,
   argTypes: {
     variant: {
       options: variantOptions,
@@ -43,7 +42,7 @@ export const IconOnly: Story = {
 const AllVariantsComponent: React.FC = () => (
   <>
     {variantOptions.map((variant) => (
-      <Badge key={variant} variant={variant as keyof typeof variants}>
+      <Badge key={variant} variant={variant as keyof typeof badgeVariants}>
         {variant}
       </Badge>
     ))}
@@ -62,7 +61,7 @@ export const AllVariants = {
 const AllSizesComponent: React.FC = () => (
   <>
     {sizeOptions.map((size) => (
-      <Badge key={size} size={size as keyof typeof sizes}>
+      <Badge key={size} size={size as keyof typeof badgeSizes}>
         {size}
       </Badge>
     ))}
@@ -81,7 +80,7 @@ export const AllSizes = {
 const AllVariantsWithIconComponent: React.FC = () => (
   <>
     {variantOptions.map((variant) => (
-      <Badge key={variant} variant={variant as keyof typeof variants} icon={Award}>
+      <Badge key={variant} variant={variant as keyof typeof badgeVariants} icon={Award}>
         {variant} with Icon
       </Badge>
     ))}
@@ -100,7 +99,7 @@ export const AllVariantsWithIcon = {
 const AllSizesWithIconComponent: React.FC = () => (
   <>
     {sizeOptions.map((size) => (
-      <Badge key={size} size={size as keyof typeof sizes} icon={Award}>
+      <Badge key={size} size={size as keyof typeof badgeSizes} icon={Award}>
         {size} with Icon
       </Badge>
     ))}

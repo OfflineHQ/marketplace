@@ -9,7 +9,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 const avatarSizes = {
   xs: 'w-6 h-6 sm:w-8 sm:h-8 text-xs',
   sm: 'w-8 h-8 sm:w-10 sm:h-10 text-sm',
-  md: 'w-10 h-10 sm:w-12 sm:h-12 text-base',
+  default: 'w-10 h-10 sm:w-12 sm:h-12 text-base',
   lg: 'w-12 h-12 sm:w-16 sm:h-16 text-lg',
   xl: 'w-16 h-16 sm:w-20 sm:h-20 text-xl',
 };
@@ -19,7 +19,7 @@ const avatarVariants = cva('relative flex shrink-0 overflow-hidden rounded-full'
     size: avatarSizes,
   },
   defaultVariants: {
-    size: 'md',
+    size: 'default',
   },
 });
 
@@ -56,7 +56,7 @@ const AvatarFallback = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback> & {
     size?: keyof typeof avatarSizes;
   }
->(({ className, size = 'md', ...props }, ref) => (
+>(({ className, size = 'default', ...props }, ref) => (
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(

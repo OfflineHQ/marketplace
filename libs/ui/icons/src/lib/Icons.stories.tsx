@@ -38,7 +38,7 @@ export const AllIcons: Story = {
     );
   },
   args: {
-    size: 'md',
+    size: 'default',
   },
 };
 
@@ -59,7 +59,7 @@ export const AllColors: Story = {
     );
   },
   args: {
-    size: 'md',
+    size: 'default',
   },
   argTypes: {
     color: {
@@ -85,7 +85,7 @@ export const AllSizes: Story = {
     );
   },
   args: {
-    size: 'md',
+    size: 'default',
   },
   argTypes: {
     color: {

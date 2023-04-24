@@ -28,6 +28,8 @@ const statusVariantIcons = {
   disabled: null,
 };
 
+// TODO: change for tokens
+
 const statusBorderVariants = {
   default: 'border-slate-300 dark:border-slate-700',
   info: 'border-slate-300 dark:border-slate-700',

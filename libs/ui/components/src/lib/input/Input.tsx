@@ -9,7 +9,7 @@ import { IconProps } from '@ui/icons';
 
 const inputSizes = {
   sm: 'py-2 px-3 text-sm',
-  md: 'py-3 px-4 text-sm',
+  default: 'py-3 px-4 text-sm',
   lg: 'py-4 px-5 text-sm',
 };
 
@@ -21,7 +21,7 @@ const inputCVA = cva(
       variant: inputBorderVariants,
     },
     defaultVariants: {
-      size: 'md',
+      size: 'default',
       variant: 'default',
     },
   }
@@ -51,7 +51,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div className="relative">
         {Icon && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-            <Icon color={variant} size="md" />
+            <Icon color={variant} />
           </div>
         )}
         <input className={inputClasses} ref={ref} {...props} />
@@ -59,7 +59,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <div
             className={`absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400`}
           >
-            <RightIconComponent color={variant} size="md" />
+            <RightIconComponent color={variant} />
           </div>
         )}
       </div>

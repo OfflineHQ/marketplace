@@ -65,7 +65,7 @@ const DialogContent = React.forwardRef<
         {children}
         {shouldBeClosable && (
           <DialogPrimitive.Close data-testid="dialog-close" className={closeClasses}>
-            <Close size="md" />
+            <Close />
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>

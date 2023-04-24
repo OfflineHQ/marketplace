@@ -128,7 +128,7 @@ const SheetContent = React.forwardRef<
     >
       {children}
       <SheetPrimitive.Close data-testid="sheet-close" className={closeClasses}>
-        <Close size="md" />
+        <Close />
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>
   </SheetPortal>

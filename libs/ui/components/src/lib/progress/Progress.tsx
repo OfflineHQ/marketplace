@@ -10,7 +10,7 @@ import { statusBgFillVariants } from '../shared/statusVariant';
 const progressSizes = {
   xs: 'h-0.5 md:h-1',
   sm: 'h-1 md:h-1.5',
-  md: 'h-2 md:h-2.5',
+  default: 'h-2 md:h-2.5',
   lg: 'h-3 md:h-3.5',
   xl: 'h-4 md:h-4.5',
 };
@@ -29,7 +29,7 @@ const progressRootVariants = cva(
       size: progressSizes,
     },
     defaultVariants: {
-      size: 'md',
+      size: 'default',
     },
   }
 );

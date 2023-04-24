@@ -42,17 +42,17 @@ export function DropdownMenuDemo() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <User size="sm" marginRight="md" />
+            <User size="sm" marginRight="default" />
             <span>Profile</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <CreditCard size="sm" marginRight="md" />
+            <CreditCard size="sm" marginRight="default" />
             <span>Billing</span>
             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Settings size="sm" marginRight="md" />
+            <Settings size="sm" marginRight="default" />
             <span>Settings</span>
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>
@@ -60,46 +60,46 @@ export function DropdownMenuDemo() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem disabled>
-            <Users size="sm" marginRight="md" />
+            <Users size="sm" marginRight="default" />
             <span>Team</span>
           </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
-              <UserAdd size="sm" marginRight="md" />
+              <UserAdd size="sm" marginRight="default" />
               <span>Invite users</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
                 <DropdownMenuItem>
-                  <Mail size="sm" marginRight="md" />
+                  <Mail size="sm" marginRight="default" />
                   <span>Email</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <MessageSquare size="sm" marginRight="md" />
+                  <MessageSquare size="sm" marginRight="default" />
                   <span>Message</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <OutlinePlusCircle size="sm" marginRight="md" />
+                  <OutlinePlusCircle size="sm" marginRight="default" />
                   <span>More...</span>
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
           <DropdownMenuItem>
-            <Plus size="sm" marginRight="md" />
+            <Plus size="sm" marginRight="default" />
             <span>New Team</span>
             <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <LifeBuoy size="sm" marginRight="md" />
+          <LifeBuoy size="sm" marginRight="default" />
           <span>Support</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <LogOut size="sm" marginRight="md" />
+          <LogOut size="sm" marginRight="default" />
           <span>Log out</span>
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
