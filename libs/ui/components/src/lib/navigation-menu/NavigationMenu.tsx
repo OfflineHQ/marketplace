@@ -111,7 +111,7 @@ const NavigationMenuIndicator = React.forwardRef<
     )}
     {...props}
   >
-    <div className={cn('top-1 relative rotate-45', indicatorClasses)} />
+    <div className={cn(indicatorClasses)} />
   </NavigationMenuPrimitive.Indicator>
 ));
 NavigationMenuIndicator.displayName = NavigationMenuPrimitive.Indicator.displayName;

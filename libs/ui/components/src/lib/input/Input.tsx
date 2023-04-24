@@ -8,13 +8,13 @@ import {
 import { IconProps } from '@ui/icons';
 
 const inputSizes = {
-  sm: 'py-2 px-3 text-sm',
-  default: 'py-3 px-4 text-sm',
-  lg: 'py-4 px-5 text-sm',
+  sm: 'py-1.5 text-sm h-8',
+  default: 'py-2 text-sm h-10',
+  lg: 'py-3 text-sm h-12',
 };
 
 const inputCVA = cva(
-  'block w-full rounded-md border bg-transparent placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-50 dark:focus:ring-slate-400 dark:focus:ring-offset-slate-900',
+  'flex w-full rounded-md border border-input bg-transparent px-3 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
   {
     variants: {
       size: inputSizes,
@@ -43,8 +43,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const RightIconComponent = RightIcon || DefaultRightIcon;
     const inputClasses = cn(
       inputCVA({ size, variant, className }),
-      Icon && 'pl-10',
-      RightIconComponent && 'pr-10'
+      Icon && 'pl-8 md:pl-10',
+      RightIconComponent && 'pr-8 md:pr-10'
     );
 
     return (
