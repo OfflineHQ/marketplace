@@ -23,14 +23,21 @@ const NavigationMenu = React.forwardRef<
 ));
 NavigationMenu.displayName = NavigationMenuPrimitive.Root.displayName;
 
+type NavigationMenuListProps = React.ComponentPropsWithoutRef<
+  typeof NavigationMenuPrimitive.List
+> & {
+  'data-orientation'?: 'vertical' | 'horizontal';
+};
+
 const NavigationMenuList = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.List>
->(({ className, ...props }, ref) => (
+  NavigationMenuListProps
+>(({ className, 'data-orientation': orientation, ...props }, ref) => (
   <NavigationMenuPrimitive.List
     ref={ref}
     className={cn(
-      'group flex flex-1 list-none items-center justify-center space-x-1',
+      'group flex flex-1 list-none items-center justify-center',
+      orientation === 'vertical' ? 'flex-col space-y-1' : 'space-x-1',
       className
     )}
     {...props}
