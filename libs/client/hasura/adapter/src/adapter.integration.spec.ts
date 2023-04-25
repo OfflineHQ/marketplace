@@ -1,6 +1,6 @@
 import { deleteUsers } from '@test-utils/db';
 import { adapter as HasuraAdapter } from './index';
-import { AdapterAccount } from 'next-auth/adapters';
+import type { AdapterAccount } from 'next-auth/adapters';
 
 describe('hasura Next Auth Adapter', () => {
   const user = {
