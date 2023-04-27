@@ -2,7 +2,8 @@ import { render } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 import * as stories from './HeaderNav.stories';
 
-jest.mock('next/router', () => require('next-router-mock'));
+// Not needed anymore as useRouter is not used in NavLink
+// jest.mock('next/router', () => require('next-router-mock'));
 
 const { Default, CryptoUser, NormalUser } = composeStories(stories);
 
