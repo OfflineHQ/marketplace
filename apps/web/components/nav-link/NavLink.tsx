@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import {
   NavigationMenuLink,
   navigationMenuTriggerStyle,
@@ -7,20 +7,13 @@ import {
 import Link, { LinkProps } from 'next/link';
 import { cn } from '@ui/shared';
 
-// export type NavLinkProps<T = string> = {
-//   href: LinkProps<T>['href'];
-//   children: React.ReactNode | string;
-//   className?: string;
-// };
-
 export type NavLinkProps<T> = LinkProps<T> & {
   children: React.ReactNode;
   className?: string;
 };
 
 export function NavLink({ href, children, className }: NavLinkProps<typeof href>) {
-  const router = useRouter();
-  const isActive = router.asPath === href;
+  const isActive = usePathname() === href;
   return (
     <NavigationMenuItem>
       <Link href={href} legacyBehavior passHref>
