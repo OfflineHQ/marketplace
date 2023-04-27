@@ -1,4 +1,5 @@
 import '@web/styles/globals.css';
+import { type Session } from 'next-auth';
 import { Metadata } from 'next';
 import { dir } from 'i18next';
 import { languages } from '../i18n/settings';
@@ -8,6 +9,9 @@ import { siteConfig } from '@web/config/site';
 import { Analytics } from '@web/components/Analytics';
 import { ThemeProvider } from '@ui/theme';
 import { Toaster } from '@ui/components';
+import { NextAuthProvider, SSXProvider } from '@web/lib/providers';
+
+import Header from './Header';
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
@@ -61,12 +65,17 @@ export default function RootLayout({ children, params: { lng } }) {
       <head />
       <body className={fontSans.variable}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="relative flex min-h-screen flex-col">
-            {/* <SiteHeader /> */}
-            <div className="flex-1">{children}</div>
-            {/* <SiteFooter /> */}
-          </div>
-          {/* <TailwindIndicator /> */}
+          {/* <SSXProvider> */}
+          <NextAuthProvider>
+            <div className="relative flex min-h-screen flex-col">
+              <Header />
+              {/* <SiteHeader /> */}
+              <div className="flex-1">{children}</div>
+              {/* <SiteFooter /> */}
+            </div>
+            {/* <TailwindIndicator /> */}
+          </NextAuthProvider>
+          {/* </SSXProvider> */}
         </ThemeProvider>
         <Analytics />
         <Toaster />

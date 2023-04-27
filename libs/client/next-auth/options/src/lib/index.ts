@@ -3,7 +3,8 @@ import { NextAuthOptions, User, Account, Profile } from 'next-auth';
 import type { JWT, JWTOptions } from 'next-auth/jwt';
 import { isAddress } from 'ethers/lib/utils';
 
-import { adapter } from '@client/hasura/adapter';
+// TODO set back adapter when useEffect issue is fixed in hasura fetcher. Should do a server side fetcher for hasura
+// import { adapter } from '@client/hasura/adapter';
 import { SiweProvider } from '@client/siwe/provider';
 import { Roles } from '@client/hasura/utils';
 import { isProd } from '@utils';
@@ -67,7 +68,7 @@ export const authOptions: NextAuthOptions = {
   },
   debug: !isProd(),
   providers,
-  adapter: adapter(),
+  // adapter: adapter(),
   pages: {
     signIn: undefined,
     signOut: undefined,

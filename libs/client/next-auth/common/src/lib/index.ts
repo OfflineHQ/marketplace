@@ -11,6 +11,6 @@ export function getNextAppURL(): string {
       vercelURL = process.env.VERCEL_URL
         ? `https://${process.env.VERCEL_URL}`
         : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-    return vercelURL || 'http://localhost:3000';
+    return vercelURL || 'http://localhost:3000/en';
   }
 }
