@@ -1,5 +1,5 @@
 import * as jsonwebtoken from 'jsonwebtoken';
-import { NextAuthOptions, User, Account, Profile } from 'next-auth';
+import { type NextAuthOptions, User, Account, Profile } from 'next-auth';
 import type { JWT, JWTOptions } from 'next-auth/jwt';
 import { isAddress } from 'ethers/lib/utils';
 
@@ -99,6 +99,8 @@ export const authOptions: NextAuthOptions = {
         account?: Account | null;
         isNewUser?: boolean;
       } = args;
+
+      logger.debug('jwt callback', { token, user, account });
       // First time user sign in
       if (user && account) {
         return {
@@ -124,14 +126,11 @@ export const authOptions: NextAuthOptions = {
       return refreshAccessToken(token);
     },
     async session({ session, token }) {
+      logger.debug('session callback', { session, token });
       // needed for hasura claims_map
       session.user = token.user as User;
       // used to detect if provider with same email exists
       session.error = token.error as string;
-      // handle when user is logged in with siwe
-      if (isAddress(token.sub as string)) {
-        session.address = token.sub as string;
-      }
       return session;
     },
   },

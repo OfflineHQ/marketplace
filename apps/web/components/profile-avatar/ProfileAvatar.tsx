@@ -19,8 +19,7 @@ function EmojiAvatar(props, address) {
 export function ProfileAvatar(props: ProfileAvatarProps) {
   const {
     session: {
-      address,
-      user: { firstName, lastName, image },
+      user: { firstName, lastName, image, address },
     },
   } = props;
   const fallBack = firstName && lastName ? `${firstName[0]}${lastName[0]}` : '';

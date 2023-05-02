@@ -12,8 +12,7 @@ export interface ProfileNavProps extends ProfileAvatarProps, DropdownMenuItemsPr
 
 export function ProfileNav({ session, items, ...props }: ProfileNavProps) {
   const {
-    address,
-    user: { email },
+    user: { email, address },
   } = session;
 
   return (

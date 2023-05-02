@@ -1,5 +1,8 @@
 'use client';
 
+import { createClient, configureChains, defaultChains, WagmiConfig } from 'wagmi';
+import { publicProvider } from 'wagmi/providers/public';
+
 import { SessionProvider } from 'next-auth/react';
 import { SSXProvider as _SSXProvider } from '@spruceid/ssx-react';
 // eslint-disable-next-line import/no-unresolved
@@ -9,8 +12,16 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export const NextAuthProvider = ({ children }: Props) => {
-  return <SessionProvider>{children}</SessionProvider>;
+interface INextAuthProps {
+  children: React.ReactNode;
+}
+
+export const NextAuthProvider = ({ children }: INextAuthProps) => {
+  return (
+    <SessionProvider refetchOnWindowFocus={false} refetchInterval={0}>
+      {children}
+    </SessionProvider>
+  );
 };
 
 export const SSXProvider = ({ children }: Props) => {
@@ -28,3 +39,17 @@ export const SSXProvider = ({ children }: Props) => {
 
   return <_SSXProvider ssxConfig={ssxConfig}>{children}</_SSXProvider>;
 };
+
+const { provider, webSocketProvider } = configureChains(defaultChains, [
+  publicProvider(),
+]);
+
+const client = createClient({
+  provider,
+  webSocketProvider,
+  autoConnect: true,
+});
+
+export const WagmiProvider = ({ children }: Props) => (
+  <WagmiConfig client={client}>{children}</WagmiConfig>
+);

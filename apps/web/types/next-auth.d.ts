@@ -5,19 +5,16 @@ import NextAuth from 'next-auth';
 declare module 'next-auth' {
   interface User {
     id: string;
-    access_token?: string;
+    // crypto wallet address
+    address: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    email?: string | null;
+    image?: string | null;
   }
 
   interface Session {
-    // crypto wallet address
-    address: string;
     error: string;
-    user: {
-      id: string;
-      firstName?: string | null;
-      lastName?: string | null;
-      email?: string | null;
-      image?: string | null;
-    };
+    user: User;
   }
 }
