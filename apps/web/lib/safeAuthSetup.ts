@@ -1,5 +1,5 @@
 // safeAuthSetup.ts
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAuthKit,
   SafeAuthSignInData,
@@ -98,9 +98,9 @@ export function useSafeAuth(
       const adapter = new Web3AuthAdapter(options, [openloginAdapter], modalConfig);
       setWeb3AuthAdapter(adapter);
       const safeAuthKit = await SafeAuthKit.init(adapter, {
-        txServiceUrl: process.env.NEXT_PUBLIC_SAFE_TX_SERVICE_URL,
-        loginSiwe,
-        logoutSiwe: () => signOut({ callbackUrl: '/', redirect: true }),
+        // txServiceUrl: process.env.NEXT_PUBLIC_SAFE_TX_SERVICE_URL,
+        // loginSiwe,
+        // logoutSiwe: () => signOut({ callbackUrl: '/', redirect: true }),
       });
 
       safeAuthKit.subscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler);

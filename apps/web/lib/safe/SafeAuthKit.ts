@@ -57,9 +57,7 @@ export class SafeAuthKit<TAdapter extends SafeAuthAdapter<TAdapter>>
    * @throws Error if the provider was not created
    * @throws Error if there was an error while trying to get the safes for the current user using the provided txServiceUrl
    */
-
   async signIn(): Promise<SafeAuthSignInData> {
-    // ...
     await this.#adapter.signIn();
 
     if (!this.#adapter.provider) {
@@ -73,16 +71,6 @@ export class SafeAuthKit<TAdapter extends SafeAuthAdapter<TAdapter>>
     const address = await signer.getAddress();
 
     let safes: string[] | undefined;
-
-    // if loginSiwe is provided, login with siwe
-    console.log('this.#config?.loginSiwe', this.#config?.loginSiwe);
-    if (this.#config?.loginSiwe) {
-      try {
-        await this.#config.loginSiwe(signer);
-      } catch (e) {
-        throw new Error(getErrorMessage(e));
-      }
-    }
 
     // Retrieve safes if txServiceUrl is provided
     if (this.#config?.txServiceUrl) {
@@ -107,15 +95,6 @@ export class SafeAuthKit<TAdapter extends SafeAuthAdapter<TAdapter>>
    */
   async signOut(): Promise<void> {
     await this.#adapter.signOut();
-
-    // if logoutSiwe is provided, logout with siwe
-    if (this.#config?.logoutSiwe) {
-      try {
-        await this.#config.logoutSiwe();
-      } catch (e) {
-        throw new Error(getErrorMessage(e));
-      }
-    }
 
     this.safeAuthData = undefined;
   }
