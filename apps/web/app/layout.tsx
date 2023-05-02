@@ -8,7 +8,7 @@ import { Analytics } from '@web/components/Analytics';
 import { ThemeProvider } from '@ui/theme';
 import { cn } from '@ui/shared';
 import { Toaster } from '@ui/components';
-import { WagmiProvider, NextAuthProvider } from '@web/lib/providers';
+import { WagmiProvider, NextAuthProvider, AuthProvider } from '@web/lib/providers';
 
 import Header from '@web/components/header/Header';
 
@@ -83,15 +83,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <WagmiProvider>
             <NextAuthProvider>
-              {/* <SSXProvider> */}
-              <div className="relative flex min-h-screen flex-col">
-                <Header />
-                {/* <SiteHeader /> */}
-                <div className="flex-1">{children}</div>
-                {/* <SiteFooter /> */}
-              </div>
-              {/* <TailwindIndicator /> */}
-              {/* </SSXProvider> */}
+              <AuthProvider>
+                {/* <SSXProvider> */}
+                <div className="relative flex min-h-screen flex-col">
+                  {/* <Header /> */}
+                  {/* <SiteHeader /> */}
+                  <div className="flex-1">{children}</div>
+                  {/* <SiteFooter /> */}
+                </div>
+                {/* <TailwindIndicator /> */}
+                {/* </SSXProvider> */}
+              </AuthProvider>
             </NextAuthProvider>
           </WagmiProvider>
         </ThemeProvider>

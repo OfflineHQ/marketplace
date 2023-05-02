@@ -1,5 +1,4 @@
 import { ExternalProvider } from '@ethersproject/providers';
-import { ethers } from 'ethers';
 
 import { Web3AuthEvent, Web3AuthEventListener } from './packs/web3auth/types';
 import { Web3AuthAdapter } from './packs/web3auth/Web3AuthAdapter';
@@ -46,6 +45,4 @@ export type SafeSignInResponse<T> = T extends Web3AuthAdapter ? void : never;
 
 export interface SafeAuthConfig {
   txServiceUrl?: string;
-  loginSiwe?: (signer: ethers.Signer) => Promise<void>;
-  logoutSiwe?: () => Promise<void>;
 }

@@ -12,7 +12,7 @@ import { Web3AuthEvent, Web3AuthEventListener } from './types';
  */
 export class Web3AuthAdapter implements SafeAuthAdapter<Web3AuthAdapter> {
   provider: ExternalProvider | null;
-  web3authInstance?: Web3Auth;
+  private web3authInstance?: Web3Auth;
   #options: Web3AuthOptions;
   #adapters?: IAdapter<unknown>[];
   #modalConfig?: Record<string, ModalConfig>;
