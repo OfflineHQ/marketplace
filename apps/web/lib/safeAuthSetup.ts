@@ -1,6 +1,5 @@
 // safeAuthSetup.ts
 import { useEffect, useState } from 'react';
-import { signOut } from 'next-auth/react';
 import {
   SafeAuthKit,
   SafeAuthSignInData,
@@ -11,29 +10,30 @@ import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
 import { Web3AuthOptions } from '@web3auth/modal';
 import { ADAPTER_EVENTS, CHAIN_NAMESPACES, WALLET_ADAPTERS } from '@web3auth/base';
 import { ethers } from 'ethers';
+import { SiweMessage } from 'siwe';
+import { signIn, signOut, getCsrfToken } from 'next-auth/react';
 
 // signin with siwe to provide a JWT through next-auth
 async function loginSiwe(signer: ethers.Signer) {
   try {
     // setSiweLoading(true);
     console.log('loginSiwe with signer: ', signer);
-    // const address = await signer.getAddress();
-    // const message = new SiweMessage({
-    //   domain: window.location.host,
-    //   address,
-    //   statement: 'Sign in with Ethereum to the app.',
-    //   uri: window.location.origin + '/en',
-    //   version: '1',
-    //   chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_EIP_155 as string),
-    //   nonce: await getCsrfToken(),
-    // });
-    // const signature = await signer?.signMessage(message.prepareMessage());
-    // await signIn('credentials', {
-    //   message: JSON.stringify(message),
-    //   redirect: false,
-    //   signature,
-    //   callbackUrl: window.location.href + '/en',
-    // });
+    const address = await signer.getAddress();
+    const message = new SiweMessage({
+      domain: window.location.host,
+      address,
+      statement: 'Sign in with Ethereum to the app.',
+      uri: window.location.origin,
+      version: '1',
+      chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_EIP_155 as string),
+      nonce: await getCsrfToken(),
+    });
+    const signature = await signer?.signMessage(message.prepareMessage());
+    await signIn('credentials', {
+      message: JSON.stringify(message),
+      redirect: false,
+      signature,
+    });
   } catch (error) {
     console.error(error);
   } finally {
@@ -46,6 +46,7 @@ export function useSafeAuth(
   disconnectedHandler: Web3AuthEventListener
 ) {
   const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthAdapter>>();
+  const [web3AuthAdapter, setWeb3AuthAdapter] = useState<Web3AuthAdapter>();
 
   useEffect(() => {
     (async () => {
@@ -95,7 +96,7 @@ export function useSafeAuth(
       });
 
       const adapter = new Web3AuthAdapter(options, [openloginAdapter], modalConfig);
-
+      setWeb3AuthAdapter(adapter);
       const safeAuthKit = await SafeAuthKit.init(adapter, {
         txServiceUrl: process.env.NEXT_PUBLIC_SAFE_TX_SERVICE_URL,
         loginSiwe,
@@ -116,5 +117,5 @@ export function useSafeAuth(
     };
   }, []);
 
-  return safeAuth;
+  return { safeAuth, web3AuthAdapter };
 }

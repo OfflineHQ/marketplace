@@ -49,12 +49,6 @@ const nextConfig = {
     esmExternals: false,
     appDir: true,
     typedRoutes: true,
-    fontLoaders: [
-      {
-        loader: '@next/font/google',
-        options: { subsets: ['latin'] },
-      },
-    ],
   },
   //
   sentry: {
