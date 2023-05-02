@@ -9,7 +9,10 @@ import { InjectedConnector } from 'wagmi/connectors/injected';
 
 import { getCsrfToken, signIn, useSession } from 'next-auth/react';
 
+import { loginSiwe, logoutSiwe } from '@web/lib/safeAuthSetup';
+
 import { SiweMessage } from 'siwe';
+import { ethers } from 'ethers';
 
 import { useEffect, useState } from 'react';
 
@@ -22,10 +25,14 @@ import { SafeEventEmitterProvider, type IWeb3Auth } from '@web3auth/base';
 import { SafeAuthSignInData, Web3AuthEventListener } from '@web/lib/safe';
 
 import { useAuthContext } from '@web/lib/providers';
+import { User } from 'next-auth';
 
+interface WalletProps {
+  user?: User;
+}
 // Page
 // ========================================================
-export default function Wallet() {
+export default function Wallet({ user }: WalletProps) {
   // State / Props
 
   const { signMessageAsync } = useSignMessage();
@@ -34,8 +41,6 @@ export default function Wallet() {
   const { connect } = useConnect({
     connector: new InjectedConnector(),
   });
-  const { data: session, status } = useSession();
-  const { disconnect } = useDisconnect();
 
   const [safeAuthSignInResponse, setSafeAuthSignInResponse] =
     useState<SafeAuthSignInData | null>(null);
@@ -61,9 +66,13 @@ export default function Wallet() {
     try {
       const response = await safeAuth.signIn();
       console.log('SIGN IN RESPONSE: ', response);
-
-      setSafeAuthSignInResponse(response);
-      setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
+      const safeAuthProvider = safeAuth?.getProvider();
+      console.log('safeAuthProvider', safeAuthProvider, safeAuth);
+      if (safeAuthProvider) {
+        const provider = new ethers.providers.Web3Provider(safeAuthProvider);
+        const signer = provider.getSigner();
+        await loginSiwe(signer);
+      }
     } catch (error) {
       console.error(error);
       await logout();
@@ -73,8 +82,7 @@ export default function Wallet() {
   const logout = async () => {
     if (!safeAuth) return;
     await safeAuth.signOut();
-    setProvider(null);
-    setSafeAuthSignInResponse(null);
+    await logoutSiwe();
   };
 
   // const handleLogin = async () => {
@@ -114,11 +122,11 @@ export default function Wallet() {
   return (
     <div>
       <ClientOnly>
-        {!isConnected ? (
+        {!user ? (
           <div>
             <button
               className="h-10 rounded-full bg-blue-600 px-6 text-white transition-colors duration-200 ease-in-out hover:bg-blue-800"
-              onClick={() => login()} // connect()
+              onClick={login} // connect()
             >
               Connect Wallet
             </button>
@@ -126,14 +134,14 @@ export default function Wallet() {
         ) : (
           <div>
             <label className="mb-2 block text-zinc-400">
-              Wallet Address Connected {session?.user?.address}
+              Wallet Address Connected {user?.address}
             </label>
             <code className="mb-4 block rounded bg-zinc-700 p-4 text-zinc-200">
               <pre>{address}</pre>
             </code>
             <button
               className="h-10 rounded-full bg-red-600 px-6 text-white transition-colors duration-200 ease-in-out hover:bg-red-800"
-              onClick={() => disconnect()}
+              onClick={logout}
             >
               Disconnect Wallet
             </button>

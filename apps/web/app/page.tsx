@@ -12,16 +12,18 @@
 // ========================================================
 import React from 'react';
 import ConnectWallet from './wallet';
+import { getCurrentUser } from '@web/lib/session';
+import { Text } from '@ui/components';
 
 // Page
 // ========================================================
-export default function Home() {
+export default async function Home() {
+  const user = await getCurrentUser();
   // Render
   return (
     <div className="p-8">
-      <h1 className="mb-6 text-2xl font-medium text-white">Wallet Connection</h1>
-
-      <ConnectWallet />
+      <Text>{user ? `Welcome ${user.id}` : 'You are not logged in'}</Text>
+      <ConnectWallet user={user} />
     </div>
   );
 }
