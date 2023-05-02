@@ -14,7 +14,7 @@ import { SiweMessage } from 'siwe';
 import { signIn, signOut, getCsrfToken } from 'next-auth/react';
 
 // signin with siwe to provide a JWT through next-auth
-async function loginSiwe(signer: ethers.Signer) {
+export async function loginSiwe(signer: ethers.Signer) {
   try {
     // setSiweLoading(true);
     console.log('loginSiwe with signer: ', signer);
@@ -39,6 +39,10 @@ async function loginSiwe(signer: ethers.Signer) {
   } finally {
     // setSiweLoading(false);
   }
+}
+
+export async function logoutSiwe() {
+  await signOut({ redirect: false });
 }
 
 export function useSafeAuth(

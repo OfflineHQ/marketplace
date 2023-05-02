@@ -6,7 +6,7 @@ import { publicProvider } from 'wagmi/providers/public';
 import { SessionProvider } from 'next-auth/react';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useSafeAuth } from '@web/lib/safeAuthSetup';
+import { useSafeAuth, loginSiwe } from '@web/lib/safeAuthSetup';
 // import { SSXProvider as _SSXProvider } from '@spruceid/ssx-react';
 // eslint-disable-next-line import/no-unresolved
 // import { SSXNextAuthRouteConfig } from '@spruceid/ssx-react/next-auth/frontend';
@@ -22,11 +22,7 @@ interface INextAuthProps {
 }
 
 export const NextAuthProvider = ({ children }: INextAuthProps) => {
-  return (
-    <SessionProvider refetchOnWindowFocus={false} refetchInterval={0}>
-      {children}
-    </SessionProvider>
-  );
+  return <SessionProvider refetchInterval={0}>{children}</SessionProvider>;
 };
 
 // export const SSXProvider = ({ children }: IAppProviderProps) => {
@@ -74,8 +70,10 @@ export const useAuthContext = () => {
   return context;
 };
 
-export const AuthProvider: React.FC = ({ children }: IAppProviderProps) => {
-  const connectedHandler = (data: any) => console.log('CONNECTED', data);
+export const AuthProvider = ({ children }: IAppProviderProps) => {
+  const connectedHandler = async (data: any) => {
+    console.log('CONNECTED', data);
+  };
   const disconnectedHandler = (data: any) => console.log('DISCONNECTED', data);
   const { safeAuth, web3AuthAdapter } = useSafeAuth(
     connectedHandler,
