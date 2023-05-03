@@ -9,11 +9,6 @@ import { InjectedConnector } from 'wagmi/connectors/injected';
 
 import { getCsrfToken, signIn, useSession } from 'next-auth/react';
 
-import { loginSiwe, logoutSiwe } from '@web/lib/safeAuthSetup';
-
-import { SiweMessage } from 'siwe';
-import { ethers } from 'ethers';
-
 import { useEffect, useState } from 'react';
 
 // import { useSafeAuth } from '@web/lib/safeAuthSetup';
@@ -59,31 +54,7 @@ export default function Wallet({ user }: WalletProps) {
   //   disconnectedHandler
   // );
 
-  const { safeAuth, web3AuthAdapter } = useAuthContext();
-
-  const login = async () => {
-    if (!safeAuth) return;
-    try {
-      const response = await safeAuth.signIn();
-      console.log('SIGN IN RESPONSE: ', response);
-      const safeAuthProvider = safeAuth?.getProvider();
-      console.log('safeAuthProvider', safeAuthProvider, safeAuth);
-      if (safeAuthProvider) {
-        const provider = new ethers.providers.Web3Provider(safeAuthProvider);
-        const signer = provider.getSigner();
-        await loginSiwe(signer);
-      }
-    } catch (error) {
-      console.error(error);
-      await logout();
-    }
-  };
-
-  const logout = async () => {
-    if (!safeAuth) return;
-    await safeAuth.signOut();
-    await logoutSiwe();
-  };
+  const { safeAuth, login, logout } = useAuthContext();
 
   // const handleLogin = async () => {
   //   try {

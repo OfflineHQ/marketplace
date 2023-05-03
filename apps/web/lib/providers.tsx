@@ -6,12 +6,10 @@ import { publicProvider } from 'wagmi/providers/public';
 import { SessionProvider } from 'next-auth/react';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useSafeAuth, loginSiwe } from '@web/lib/safeAuthSetup';
+import { useSafeAuth } from '@web/lib/safeAuthSetup';
 // import { SSXProvider as _SSXProvider } from '@spruceid/ssx-react';
 // eslint-disable-next-line import/no-unresolved
 // import { SSXNextAuthRouteConfig } from '@spruceid/ssx-react/next-auth/frontend';
-import { SafeAuthKit } from '@safe-global/auth-kit';
-import { Web3AuthOptions } from '@web3auth/modal';
 
 type IAppProviderProps = {
   children?: React.ReactNode;
@@ -57,7 +55,13 @@ export const WagmiProvider = ({ children }: IAppProviderProps) => (
 
 interface AuthContextValue {
   safeAuth: ReturnType<typeof useSafeAuth>['safeAuth'];
-  web3AuthAdapter: ReturnType<typeof useSafeAuth>['web3AuthAdapter'];
+  safeAuthSignInResponse: ReturnType<typeof useSafeAuth>['safeAuthSignInResponse'];
+  userInfo: ReturnType<typeof useSafeAuth>['userInfo'];
+  provider: ReturnType<typeof useSafeAuth>['provider'];
+  login: ReturnType<typeof useSafeAuth>['login'];
+  logout: ReturnType<typeof useSafeAuth>['logout'];
+  loginSiwe: ReturnType<typeof useSafeAuth>['loginSiwe'];
+  logoutSiwe: ReturnType<typeof useSafeAuth>['logoutSiwe'];
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -75,25 +79,27 @@ export const AuthProvider = ({ children }: IAppProviderProps) => {
     console.log('CONNECTED', data);
   };
   const disconnectedHandler = (data: any) => console.log('DISCONNECTED', data);
-  const { safeAuth, web3AuthAdapter } = useSafeAuth(
-    connectedHandler,
-    disconnectedHandler
-  );
+  const { safeAuth, ...props } = useSafeAuth(connectedHandler, disconnectedHandler);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (safeAuth && web3AuthAdapter) {
+    if (safeAuth) {
       setLoading(false);
     }
-  }, [safeAuth, web3AuthAdapter]);
+  }, [safeAuth]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <AuthContext.Provider value={{ safeAuth, web3AuthAdapter }}>
+    <AuthContext.Provider
+      value={{
+        safeAuth,
+        ...props,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
