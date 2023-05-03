@@ -3,54 +3,98 @@ import React, { useEffect, useState } from 'react';
 import {
   SafeAuthKit,
   SafeAuthSignInData,
-  Web3AuthAdapter,
+  SafeGetUserInfoResponse,
+  Web3AuthModalPack,
   Web3AuthEventListener,
 } from '@web/lib/safe';
+
 import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
 import { Web3AuthOptions } from '@web3auth/modal';
-import { ADAPTER_EVENTS, CHAIN_NAMESPACES, WALLET_ADAPTERS } from '@web3auth/base';
+import {
+  ADAPTER_EVENTS,
+  CHAIN_NAMESPACES,
+  WALLET_ADAPTERS,
+  SafeEventEmitterProvider,
+} from '@web3auth/base';
 import { ethers } from 'ethers';
 import { SiweMessage } from 'siwe';
 import { signIn, signOut, getCsrfToken } from 'next-auth/react';
-
-// signin with siwe to provide a JWT through next-auth
-export async function loginSiwe(signer: ethers.Signer) {
-  try {
-    // setSiweLoading(true);
-    console.log('loginSiwe with signer: ', signer);
-    const address = await signer.getAddress();
-    const message = new SiweMessage({
-      domain: window.location.host,
-      address,
-      statement: 'Sign in with Ethereum to the app.',
-      uri: window.location.origin,
-      version: '1',
-      chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_EIP_155 as string),
-      nonce: await getCsrfToken(),
-    });
-    const signature = await signer?.signMessage(message.prepareMessage());
-    await signIn('credentials', {
-      message: JSON.stringify(message),
-      redirect: false,
-      signature,
-    });
-  } catch (error) {
-    console.error(error);
-  } finally {
-    // setSiweLoading(false);
-  }
-}
-
-export async function logoutSiwe() {
-  await signOut({ redirect: false });
-}
 
 export function useSafeAuth(
   connectedHandler: Web3AuthEventListener,
   disconnectedHandler: Web3AuthEventListener
 ) {
-  const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthAdapter>>();
-  const [web3AuthAdapter, setWeb3AuthAdapter] = useState<Web3AuthAdapter>();
+  const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthModalPack>>();
+  const [safeAuthSignInResponse, setSafeAuthSignInResponse] =
+    useState<SafeAuthSignInData | null>(null);
+  const [userInfo, setUserInfo] = useState<SafeGetUserInfoResponse<Web3AuthModalPack>>();
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+
+  // signin with siwe to provide a JWT through next-auth
+  const loginSiwe = async (signer: ethers.Signer) => {
+    try {
+      // setSiweLoading(true);
+      console.log('loginSiwe with signer: ', signer);
+      const address = await signer.getAddress();
+      const message = new SiweMessage({
+        domain: window.location.host,
+        address,
+        statement: 'Sign in with Ethereum to the app.',
+        uri: window.location.origin,
+        version: '1',
+        chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_EIP_155 as string),
+        nonce: await getCsrfToken(),
+      });
+      const signature = await signer?.signMessage(message.prepareMessage());
+      await signIn('credentials', {
+        message: JSON.stringify(message),
+        redirect: false,
+        signature,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      // setSiweLoading(false);
+    }
+  };
+
+  const logoutSiwe = async () => {
+    return signOut({ redirect: false });
+  };
+
+  const login = async () => {
+    if (!safeAuth) return;
+
+    try {
+      const signInInfo = await safeAuth.signIn();
+      console.log('SIGN IN RESPONSE: ', signInInfo);
+
+      const userInfo = await safeAuth.getUserInfo();
+      console.log('USER INFO: ', userInfo);
+
+      setSafeAuthSignInResponse(signInInfo);
+      setUserInfo(userInfo || undefined);
+      setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
+      if (provider) {
+        const web3Provider = new ethers.providers.Web3Provider(provider);
+        const signer = web3Provider.getSigner();
+        await loginSiwe(signer);
+      }
+    } catch (error) {
+      console.error(error);
+      await logout();
+    }
+  };
+
+  const logout = async () => {
+    if (!safeAuth) return;
+
+    await safeAuth.signOut();
+    await logoutSiwe();
+
+    setProvider(null);
+    setSafeAuthSignInResponse(null);
+  };
 
   useEffect(() => {
     (async () => {
@@ -99,27 +143,36 @@ export function useSafeAuth(
         },
       });
 
-      const adapter = new Web3AuthAdapter(options, [openloginAdapter], modalConfig);
-      setWeb3AuthAdapter(adapter);
-      const safeAuthKit = await SafeAuthKit.init(adapter, {
-        // txServiceUrl: process.env.NEXT_PUBLIC_SAFE_TX_SERVICE_URL,
-        // loginSiwe,
-        // logoutSiwe: () => signOut({ callbackUrl: '/', redirect: true }),
-      });
+      const web3AuthModalPack = new Web3AuthModalPack(
+        options,
+        [openloginAdapter],
+        modalConfig
+      );
 
+      const safeAuthKit = await SafeAuthKit.init(web3AuthModalPack, {
+        txServiceUrl: 'https://safe-transaction-goerli.safe.global',
+      });
       safeAuthKit.subscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler);
+
       safeAuthKit.subscribe(ADAPTER_EVENTS.DISCONNECTED, disconnectedHandler);
 
       setSafeAuth(safeAuthKit);
-    })();
 
-    return () => {
-      if (safeAuth) {
-        safeAuth.unsubscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler);
-        safeAuth.unsubscribe(ADAPTER_EVENTS.DISCONNECTED, disconnectedHandler);
-      }
-    };
+      return () => {
+        safeAuthKit.unsubscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler);
+        safeAuthKit.unsubscribe(ADAPTER_EVENTS.DISCONNECTED, disconnectedHandler);
+      };
+    })();
   }, []);
 
-  return { safeAuth, web3AuthAdapter };
+  return {
+    safeAuth,
+    safeAuthSignInResponse,
+    userInfo,
+    provider,
+    login,
+    logout,
+    loginSiwe,
+    logoutSiwe,
+  };
 }
