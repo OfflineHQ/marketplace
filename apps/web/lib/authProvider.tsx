@@ -1,15 +1,9 @@
 'use client';
 
-import { createClient, configureChains, defaultChains, WagmiConfig } from 'wagmi';
-import { publicProvider } from 'wagmi/providers/public';
-
 import { SessionProvider } from 'next-auth/react';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useSafeAuth } from '@web/lib/safeAuthSetup';
-// import { SSXProvider as _SSXProvider } from '@spruceid/ssx-react';
-// eslint-disable-next-line import/no-unresolved
-// import { SSXNextAuthRouteConfig } from '@spruceid/ssx-react/next-auth/frontend';
 
 type IAppProviderProps = {
   children?: React.ReactNode;
@@ -22,36 +16,6 @@ interface INextAuthProps {
 export const NextAuthProvider = ({ children }: INextAuthProps) => {
   return <SessionProvider refetchInterval={0}>{children}</SessionProvider>;
 };
-
-// export const SSXProvider = ({ children }: IAppProviderProps) => {
-//   const { server } = SSXNextAuthRouteConfig({
-//     signInOptions: { callbackUrl: '/protected' },
-//   });
-//   const ssxConfig: any = {
-//     siweConfig: {
-//       domain: 'localhost:3000',
-//     },
-//     providers: {
-//       server,
-//     },
-//   };
-
-//   return <_SSXProvider ssxConfig={ssxConfig}>{children}</_SSXProvider>;
-// };
-
-const { provider, webSocketProvider } = configureChains(defaultChains, [
-  publicProvider(),
-]);
-
-const client = createClient({
-  provider,
-  webSocketProvider,
-  autoConnect: true,
-});
-
-export const WagmiProvider = ({ children }: IAppProviderProps) => (
-  <WagmiConfig client={client}>{children}</WagmiConfig>
-);
 
 export type SafeUser = ReturnType<typeof useSafeAuth>['safeUser'];
 
@@ -90,10 +54,6 @@ export const AuthProvider = ({ children }: IAppProviderProps) => {
       setLoading(false);
     }
   }, [safeAuth]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <AuthContext.Provider
