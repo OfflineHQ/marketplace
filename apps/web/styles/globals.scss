@@ -130,7 +130,7 @@
   }
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  @apply h-full font-sans antialiased;
+.w3a-parent-container #w3a-modal .w3a-header__logo img {
+  height: auto !important;
+  width: 6rem !important;
 }

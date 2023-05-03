@@ -45,10 +45,10 @@ const nextConfig = {
   output: 'standalone',
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
-    // to fix chakra ui error with cancelSync esm import
-    esmExternals: false,
     appDir: true,
     typedRoutes: true,
+    // try to fix FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory // https://github.com/vercel/next.js/issues/32314
+    webpackBuildWorker: true,
   },
   //
   sentry: {

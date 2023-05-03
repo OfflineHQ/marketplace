@@ -1,3 +1,4 @@
+'use client';
 // import { Button, Text } from '@ui/components';
 
 // export default async function Page() {
@@ -14,16 +15,16 @@ import React from 'react';
 import ConnectWallet from './wallet';
 import { getCurrentUser } from '@web/lib/session';
 import { Text } from '@ui/components';
+import { useAuthContext } from '@web/lib/providers';
 
 // Page
 // ========================================================
-export default async function Home() {
-  const user = await getCurrentUser();
-  // Render
+export default function Home() {
+  const { userInfo } = useAuthContext();
   return (
     <div className="p-8">
-      <Text>{user ? `Welcome ${user.id}` : 'You are not logged in'}</Text>
-      <ConnectWallet user={user} />
+      <Text>{userInfo ? `Welcome ${userInfo.name}` : 'You are not logged in'}</Text>
+      <ConnectWallet user={userInfo} />
     </div>
   );
 }
