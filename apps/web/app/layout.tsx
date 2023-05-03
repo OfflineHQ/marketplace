@@ -7,10 +7,7 @@ import { siteConfig } from '@web/config/site';
 import { Analytics } from '@web/components/Analytics';
 import { ThemeProvider } from '@ui/theme';
 import { cn } from '@ui/shared';
-import { Toaster } from '@ui/components';
-import { WagmiProvider, AuthProvider } from '@web/lib/providers';
-
-import Header from '@web/components/header/Header';
+import App from './app';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -81,22 +78,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <WagmiProvider>
-            <AuthProvider>
-              {/* <SSXProvider> */}
-              <div className="relative flex min-h-screen flex-col">
-                {/* <Header /> */}
-                {/* <SiteHeader /> */}
-                <div className="flex-1">{children}</div>
-                {/* <SiteFooter /> */}
-              </div>
-              {/* <TailwindIndicator /> */}
-              {/* </SSXProvider> */}
-            </AuthProvider>
-          </WagmiProvider>
+          <App>{children}</App>
         </ThemeProvider>
         <Analytics />
-        <Toaster />
       </body>
     </html>
   );
