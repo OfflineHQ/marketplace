@@ -59,11 +59,13 @@ export class SafeAuthKit<TPack extends SafeAuthPack<TPack>>
    */
   async signIn(): Promise<SafeAuthSignInData> {
     await this.#pack.signIn();
+    return this.getSafeAuthData();
+  }
 
+  async getSafeAuthData(): Promise<SafeAuthSignInData> {
     if (!this.#pack.provider) {
       throw new Error('Provider is not defined');
     }
-
     const ethersProvider = new ethers.providers.Web3Provider(this.#pack.provider);
 
     const signer = ethersProvider.getSigner();

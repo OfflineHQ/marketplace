@@ -21,7 +21,6 @@ export type SafeUser = ReturnType<typeof useSafeAuth>['safeUser'];
 
 interface AuthContextValue {
   safeAuth: ReturnType<typeof useSafeAuth>['safeAuth'];
-  safeAuthSignInResponse: ReturnType<typeof useSafeAuth>['safeAuthSignInResponse'];
   safeUser: SafeUser;
   provider: ReturnType<typeof useSafeAuth>['provider'];
   login: ReturnType<typeof useSafeAuth>['login'];

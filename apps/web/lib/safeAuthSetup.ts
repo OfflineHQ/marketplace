@@ -21,6 +21,33 @@ import { SiweMessage } from 'siwe';
 import { signIn, signOut, getCsrfToken } from 'next-auth/react';
 import { getCurrentUser } from '@web/lib/session';
 
+import { logger } from '@logger';
+
+type ChainConfig = Web3AuthOptions['chainConfig'] & {
+  safeTxServiceUrl?: string;
+};
+
+const chainConfigs: Record<string, ChainConfig> = {
+  goerli: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    rpcTarget: 'https://eth-goerli.g.alchemy.com/v2/XGWYfxudDv5ACSpZegVCjkgSrskOpG3v',
+    chainId: '0x5',
+    displayName: 'Ethereum Goerli',
+    blockExplorer: 'https://goerli.etherscan.io/',
+    ticker: 'ETH',
+    tickerName: 'GETH',
+    safeTxServiceUrl: 'https://safe-transaction-goerli.safe.global',
+    decimals: 18,
+  },
+  // Add other chains here
+};
+
+const { safeTxServiceUrl, chainId, ...chainConfig } = (chainConfigs[
+  process.env.NEXT_PUBLIC_CHAIN as string
+] || chainConfigs.goerli) as ChainConfig; // Default to goerli if no matching config
+
+logger.debug('CHAIN CONFIG: ', chainConfig);
+
 interface SafeUser
   extends SafeGetUserInfoResponse<Web3AuthModalPack>,
     SafeAuthSignInData {}
@@ -30,8 +57,6 @@ export function useSafeAuth(
   disconnectedHandler: Web3AuthEventListener
 ) {
   const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthModalPack>>();
-  const [safeAuthSignInResponse, setSafeAuthSignInResponse] =
-    useState<SafeAuthSignInData | null>(null);
   const [safeUser, setSafeUser] = useState<SafeUser>();
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
@@ -47,19 +72,26 @@ export function useSafeAuth(
         statement: 'Sign in with Ethereum to the app.',
         uri: window.location.origin,
         version: '1',
-        chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_EIP_155 as string),
+        chainId: parseInt(chainId as string),
         nonce: await getCsrfToken(),
       });
       const signature = await signer?.signMessage(message.prepareMessage());
-      await signIn('credentials', {
+      logger.debug({ message, signature });
+      const signInRes = await signIn('credentials', {
         message: JSON.stringify(message),
         redirect: false,
         signature,
       });
+      console.log({ signInRes });
       await setupUserSession();
+      if (signInRes?.error) {
+        console.error('Error signing in with siwe');
+        // TODO handle error, show toast
+      }
     } catch (error) {
-      console.error(error);
-      // TODO handle error, show toast
+      // TODO handle error, show toast and allow retry
+      // if persist send mail to support after retry. Prepare modal for this.
+      console.error({ error });
     } finally {
       // setSiweLoading(false);
     }
@@ -72,6 +104,8 @@ export function useSafeAuth(
   const setupUserSession = async () => {
     if (!safeAuth) return;
     const userInfo = await safeAuth.getUserInfo();
+    // here mean the page have been refreshed, so we need to get the safeAuthData again
+    if (!safeAuth.safeAuthData?.eoa) await safeAuth.getSafeAuthData();
     const _safeUser = {
       eoa: safeAuth.safeAuthData?.eoa || '',
       safes: safeAuth.safeAuthData?.safes || [],
@@ -86,7 +120,6 @@ export function useSafeAuth(
     try {
       const signInInfo = await safeAuth.signIn();
       console.log('SIGN IN RESPONSE: ', signInInfo);
-      setSafeAuthSignInResponse(signInInfo);
       setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
     } catch (error) {
       console.error(error);
@@ -102,7 +135,6 @@ export function useSafeAuth(
 
     setProvider(null);
     setSafeUser(undefined);
-    setSafeAuthSignInResponse(null);
   };
 
   // when the provider (wallet) is connected, login to siwe or bypass if cookie is present
@@ -121,43 +153,14 @@ export function useSafeAuth(
     })();
   }, [provider]);
 
-  interface ChainConfig {
-    rpcEndpoint: string;
-    chainId: string;
-    displayName: string;
-    blockExplorer: string;
-    ticker: string;
-    tickerName: string;
-    safeTxServiceUrl?: string;
-    decimals?: number;
-  }
-
-  const chainConfigs: Record<string, ChainConfig> = {
-    goerli: {
-      rpcEndpoint: 'https://eth-goerli.g.alchemy.com/v2/XGWYfxudDv5ACSpZegVCjkgSrskOpG3v',
-      chainId: '0x5',
-      displayName: 'Ethereum Goerli',
-      blockExplorer: 'https://goerli.etherscan.io/',
-      ticker: 'ETH',
-      tickerName: 'GETH',
-      safeTxServiceUrl: 'https://safe-transaction-goerli.safe.global',
-      decimals: 18,
-    },
-    // Add other chains here
-  };
-
-  const currentChain = process.env.NEXT_PUBLIC_CHAIN as string;
-  const { safeTxServiceUrl, ...chainConfig } = (chainConfigs[currentChain] ||
-    chainConfigs.goerli) as ChainConfig; // Default to goerli if no matching config
-
   useEffect(() => {
     (async () => {
       const options: Web3AuthOptions = {
         clientId: process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || '',
         web3AuthNetwork: 'testnet',
         chainConfig: {
-          chainNamespace: CHAIN_NAMESPACES.EIP155,
           ...chainConfig,
+          chainId,
         },
         uiConfig: {
           // TODO apply by theme mode
@@ -235,7 +238,6 @@ export function useSafeAuth(
 
   return {
     safeAuth,
-    safeAuthSignInResponse,
     safeUser,
     provider,
     login,
