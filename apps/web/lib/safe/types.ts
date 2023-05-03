@@ -21,6 +21,7 @@ export interface SafeAuthPack<TPack> {
 
 export interface ISafeAuthKit<TPack> {
   signIn(): Promise<SafeAuthSignInData>;
+  getSafeAuthData(): Promise<SafeAuthSignInData>;
   signOut(): Promise<void>;
   getProvider(): ExternalProvider | null;
   subscribe(event: SafeAuthEvent<TPack>, listener: SafeAuthEventListener<TPack>): void;
