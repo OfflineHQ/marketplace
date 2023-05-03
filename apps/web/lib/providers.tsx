@@ -53,10 +53,12 @@ export const WagmiProvider = ({ children }: IAppProviderProps) => (
   <WagmiConfig client={client}>{children}</WagmiConfig>
 );
 
+export type SafeUser = ReturnType<typeof useSafeAuth>['safeUser'];
+
 interface AuthContextValue {
   safeAuth: ReturnType<typeof useSafeAuth>['safeAuth'];
   safeAuthSignInResponse: ReturnType<typeof useSafeAuth>['safeAuthSignInResponse'];
-  userInfo: ReturnType<typeof useSafeAuth>['userInfo'];
+  safeUser: SafeUser;
   provider: ReturnType<typeof useSafeAuth>['provider'];
   login: ReturnType<typeof useSafeAuth>['login'];
   logout: ReturnType<typeof useSafeAuth>['logout'];

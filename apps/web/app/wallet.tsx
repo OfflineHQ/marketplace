@@ -11,19 +11,14 @@ import { getCsrfToken, signIn, useSession } from 'next-auth/react';
 
 import { useEffect, useState } from 'react';
 
-// import { useSafeAuth } from '@web/lib/safeAuthSetup';
-
-import { SafeThemeProvider, EthHashInfo } from '@safe-global/safe-react-components';
-
 import { SafeEventEmitterProvider, type IWeb3Auth } from '@web3auth/base';
 
 import { SafeAuthSignInData, Web3AuthEventListener } from '@web/lib/safe';
 
-import { useAuthContext } from '@web/lib/providers';
-import { UserInfo } from '@web3auth/base';
+import { useAuthContext, type SafeUser } from '@web/lib/providers';
 
 interface WalletProps {
-  user: Partial<UserInfo> | undefined;
+  user: SafeUser;
 }
 // Page
 // ========================================================
@@ -105,7 +100,7 @@ export default function Wallet({ user }: WalletProps) {
         ) : (
           <div>
             <label className="mb-2 block text-zinc-400">
-              Wallet Address Connected {user?.name}
+              Wallet Address Connected {user?.eoa}
             </label>
             <code className="mb-4 block rounded bg-zinc-700 p-4 text-zinc-200">
               <pre>{address}</pre>

@@ -20,11 +20,11 @@ import { useAuthContext } from '@web/lib/providers';
 // Page
 // ========================================================
 export default function Home() {
-  const { userInfo } = useAuthContext();
+  const { safeUser } = useAuthContext();
   return (
     <div className="p-8">
-      <Text>{userInfo ? `Welcome ${userInfo.name}` : 'You are not logged in'}</Text>
-      <ConnectWallet user={userInfo} />
+      <Text>{safeUser ? `Welcome ${safeUser.name}` : 'You are not logged in'}</Text>
+      <ConnectWallet user={safeUser} />
     </div>
   );
 }

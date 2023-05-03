@@ -21,6 +21,10 @@ import { SiweMessage } from 'siwe';
 import { signIn, signOut, getCsrfToken } from 'next-auth/react';
 import { getCurrentUser } from '@web/lib/session';
 
+interface SafeUser
+  extends SafeGetUserInfoResponse<Web3AuthModalPack>,
+    SafeAuthSignInData {}
+
 export function useSafeAuth(
   connectedHandler: Web3AuthEventListener,
   disconnectedHandler: Web3AuthEventListener
@@ -28,7 +32,7 @@ export function useSafeAuth(
   const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthModalPack>>();
   const [safeAuthSignInResponse, setSafeAuthSignInResponse] =
     useState<SafeAuthSignInData | null>(null);
-  const [userInfo, setUserInfo] = useState<SafeGetUserInfoResponse<Web3AuthModalPack>>();
+  const [safeUser, setSafeUser] = useState<SafeUser>();
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
 
   // signin with siwe to provide a JWT through next-auth
@@ -67,8 +71,13 @@ export function useSafeAuth(
   const setupUserSession = async () => {
     if (!safeAuth) return;
     const userInfo = await safeAuth.getUserInfo();
-    console.log('USER INFO: ', userInfo);
-    setUserInfo(userInfo || undefined);
+    const _safeUser = {
+      eoa: safeAuth.safeAuthData?.eoa || '',
+      safes: safeAuth.safeAuthData?.safes || [],
+      ...userInfo,
+    } satisfies SafeUser;
+    console.log('Safe User: ', _safeUser);
+    setSafeUser(_safeUser);
   };
 
   const login = async () => {
@@ -91,7 +100,7 @@ export function useSafeAuth(
     await logoutSiwe();
 
     setProvider(null);
-    setUserInfo(undefined);
+    setSafeUser(undefined);
     setSafeAuthSignInResponse(null);
   };
 
@@ -111,6 +120,35 @@ export function useSafeAuth(
     })();
   }, [provider]);
 
+  interface ChainConfig {
+    rpcEndpoint: string;
+    chainId: string;
+    displayName: string;
+    blockExplorer: string;
+    ticker: string;
+    tickerName: string;
+    safeTxServiceUrl?: string;
+    decimals?: number;
+  }
+
+  const chainConfigs: Record<string, ChainConfig> = {
+    goerli: {
+      rpcEndpoint: 'https://eth-goerli.g.alchemy.com/v2/XGWYfxudDv5ACSpZegVCjkgSrskOpG3v',
+      chainId: '0x5',
+      displayName: 'Ethereum Goerli',
+      blockExplorer: 'https://goerli.etherscan.io/',
+      ticker: 'ETH',
+      tickerName: 'GETH',
+      safeTxServiceUrl: 'https://safe-transaction-goerli.safe.global',
+      decimals: 18,
+    },
+    // Add other chains here
+  };
+
+  const currentChain = process.env.NEXT_PUBLIC_CHAIN as string;
+  const { safeTxServiceUrl, ...chainConfig } = (chainConfigs[currentChain] ||
+    chainConfigs.goerli) as ChainConfig; // Default to goerli if no matching config
+
   useEffect(() => {
     (async () => {
       const options: Web3AuthOptions = {
@@ -118,15 +156,11 @@ export function useSafeAuth(
         web3AuthNetwork: 'testnet',
         chainConfig: {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: process.env.NEXT_PUBLIC_CHAIN_EIP_155,
-          rpcTarget: process.env.NEXT_PUBLIC_CHAIN_RPC_ENDPOINT,
-          displayName: process.env.NEXT_PUBLIC_CHAIN_DISPLAY_NAME,
-          blockExplorer: process.env.NEXT_PUBLIC_CHAIN_EXPLORER_ENDPOINT,
-          ticker: process.env.NEXT_PUBLIC_CHAIN_TICKER,
-          tickerName: process.env.NEXT_PUBLIC_CHAIN_TICKER_NAME,
+          ...chainConfig,
         },
         uiConfig: {
-          appLogo: './logo-dark.svg',
+          // TODO apply by theme mode
+          appLogo: './logo-dark.svg', // './logo-light.svg',
           theme: 'auto',
           loginMethodsOrder: [
             'google',
@@ -181,7 +215,7 @@ export function useSafeAuth(
       );
 
       const safeAuthKit = await SafeAuthKit.init(web3AuthModalPack, {
-        txServiceUrl: 'https://safe-transaction-goerli.safe.global',
+        txServiceUrl: safeTxServiceUrl,
       });
       safeAuthKit.subscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler);
 
@@ -201,7 +235,7 @@ export function useSafeAuth(
   return {
     safeAuth,
     safeAuthSignInResponse,
-    userInfo,
+    safeUser,
     provider,
     login,
     logout,
