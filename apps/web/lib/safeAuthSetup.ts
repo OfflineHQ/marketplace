@@ -59,6 +59,7 @@ export function useSafeAuth(
       await setupUserSession();
     } catch (error) {
       console.error(error);
+      // TODO handle error, show toast
     } finally {
       // setSiweLoading(false);
     }
