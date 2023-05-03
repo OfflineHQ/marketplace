@@ -15,7 +15,7 @@ import React from 'react';
 import ConnectWallet from './wallet';
 import { getCurrentUser } from '@web/lib/session';
 import { Text } from '@ui/components';
-import { useAuthContext } from '@web/lib/providers';
+import { useAuthContext } from '@web/lib/authProvider';
 
 // Page
 // ========================================================
