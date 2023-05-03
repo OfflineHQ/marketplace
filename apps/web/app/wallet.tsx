@@ -20,10 +20,10 @@ import { SafeEventEmitterProvider, type IWeb3Auth } from '@web3auth/base';
 import { SafeAuthSignInData, Web3AuthEventListener } from '@web/lib/safe';
 
 import { useAuthContext } from '@web/lib/providers';
-import { User } from 'next-auth';
+import { UserInfo } from '@web3auth/base';
 
 interface WalletProps {
-  user?: User;
+  user: Partial<UserInfo> | undefined;
 }
 // Page
 // ========================================================
@@ -54,7 +54,7 @@ export default function Wallet({ user }: WalletProps) {
   //   disconnectedHandler
   // );
 
-  const { safeAuth, login, logout } = useAuthContext();
+  const { login, logout } = useAuthContext();
 
   // const handleLogin = async () => {
   //   try {
@@ -105,7 +105,7 @@ export default function Wallet({ user }: WalletProps) {
         ) : (
           <div>
             <label className="mb-2 block text-zinc-400">
-              Wallet Address Connected {user?.address}
+              Wallet Address Connected {user?.name}
             </label>
             <code className="mb-4 block rounded bg-zinc-700 p-4 text-zinc-200">
               <pre>{address}</pre>

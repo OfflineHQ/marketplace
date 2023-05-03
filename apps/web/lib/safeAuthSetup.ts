@@ -19,6 +19,7 @@ import {
 import { ethers } from 'ethers';
 import { SiweMessage } from 'siwe';
 import { signIn, signOut, getCsrfToken } from 'next-auth/react';
+import { getCurrentUser } from '@web/lib/session';
 
 export function useSafeAuth(
   connectedHandler: Web3AuthEventListener,
@@ -51,6 +52,7 @@ export function useSafeAuth(
         redirect: false,
         signature,
       });
+      await setupUserSession();
     } catch (error) {
       console.error(error);
     } finally {
@@ -62,24 +64,20 @@ export function useSafeAuth(
     return signOut({ redirect: false });
   };
 
+  const setupUserSession = async () => {
+    if (!safeAuth) return;
+    const userInfo = await safeAuth.getUserInfo();
+    console.log('USER INFO: ', userInfo);
+    setUserInfo(userInfo || undefined);
+  };
+
   const login = async () => {
     if (!safeAuth) return;
-
     try {
       const signInInfo = await safeAuth.signIn();
       console.log('SIGN IN RESPONSE: ', signInInfo);
-
-      const userInfo = await safeAuth.getUserInfo();
-      console.log('USER INFO: ', userInfo);
-
       setSafeAuthSignInResponse(signInInfo);
-      setUserInfo(userInfo || undefined);
       setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
-      if (provider) {
-        const web3Provider = new ethers.providers.Web3Provider(provider);
-        const signer = web3Provider.getSigner();
-        await loginSiwe(signer);
-      }
     } catch (error) {
       console.error(error);
       await logout();
@@ -93,8 +91,25 @@ export function useSafeAuth(
     await logoutSiwe();
 
     setProvider(null);
+    setUserInfo(undefined);
     setSafeAuthSignInResponse(null);
   };
+
+  // when the provider (wallet) is connected, login to siwe or bypass if cookie is present
+  useEffect(() => {
+    (async () => {
+      console.log('PROVIDER: ', provider);
+      if (provider) {
+        // TODO set back when next fix issue: Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './server.edge'
+        // const nextAuthUser = await getCurrentUser();
+        // if (!nextAuthUser) {
+        const web3Provider = new ethers.providers.Web3Provider(provider);
+        const signer = web3Provider.getSigner();
+        await loginSiwe(signer);
+        // }
+      }
+    })();
+  }, [provider]);
 
   useEffect(() => {
     (async () => {
@@ -111,8 +126,24 @@ export function useSafeAuth(
           tickerName: process.env.NEXT_PUBLIC_CHAIN_TICKER_NAME,
         },
         uiConfig: {
+          appLogo: './logo-dark.svg',
           theme: 'auto',
-          loginMethodsOrder: ['google', 'facebook'],
+          loginMethodsOrder: [
+            'google',
+            'twitter',
+            'apple',
+            'facebook',
+            'discord',
+            'reddit',
+            'twitch',
+            'line',
+            'github',
+            'kakao',
+            'linkedin',
+            'weibo',
+            'wechat',
+            'email_passwordless',
+          ],
         },
       };
 
@@ -157,6 +188,8 @@ export function useSafeAuth(
       safeAuthKit.subscribe(ADAPTER_EVENTS.DISCONNECTED, disconnectedHandler);
 
       setSafeAuth(safeAuthKit);
+
+      setProvider(safeAuthKit.getProvider() as SafeEventEmitterProvider);
 
       return () => {
         safeAuthKit.unsubscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler);

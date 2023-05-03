@@ -1,4 +1,4 @@
-import '@web/styles/globals.css';
+import '@web/styles/globals.scss';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 
