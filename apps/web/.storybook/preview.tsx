@@ -1,4 +1,4 @@
-import '../styles/globals.scss';
+import '../styles/globals.css';
 import { Preview, Decorator } from '@storybook/react';
 import { useEffect, useState, Suspense } from 'react';
 import { parameters } from '../../../storybook.preview.base';

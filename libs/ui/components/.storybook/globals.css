@@ -134,10 +134,3 @@ body {
   font-family: 'Inter', sans-serif;
   @apply h-full font-sans antialiased;
 }
-
-html {
-  height: 100%;
-}
-#storybook-root {
-  height: 100%;
-}
