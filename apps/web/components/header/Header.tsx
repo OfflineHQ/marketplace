@@ -1,7 +1,4 @@
 'use client';
-
-import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
-
 // import { useSession, signIn, signOut, getCsrfToken } from 'next-auth/react';
 import { HeaderNav } from '@web/components/header-nav/HeaderNav';
 import type { HeaderSettingsProps } from '@web/components/header-nav/HeaderNav';
@@ -9,7 +6,7 @@ import { Dark, Light, DarkLight, Check } from '@ui/icons';
 import { useAuthContext } from '@web/lib/authProvider';
 
 export default function Header() {
-  const { safeUser, login, logout } = useAuthContext();
+  const { safeUser, login, logout, safeAuth, provider } = useAuthContext();
 
   const displayItems: HeaderSettingsProps['displays'] = [
     {
@@ -57,8 +54,9 @@ export default function Header() {
       profileSections={[]}
       menuSections={[]}
       signIn={login}
-      session={null}
-      sessionLoading={false}
+      loading={!safeAuth}
+      session={safeUser}
+      sessionLoading={!!provider && !safeUser} // mean web3Auth is connected but waiting for cookie and safe user info
       settings={{
         languages,
         languageText,

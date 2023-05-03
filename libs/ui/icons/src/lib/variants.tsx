@@ -44,7 +44,7 @@ export const iconColors = {
   default: '',
   info: 'text-info-foreground',
   failure: 'text-failure-foreground',
-  destructive: 'text-destructive-foreground',
+  destructive: 'text-destructive',
   warning: 'text-warning-foreground',
   success: 'text-success-foreground',
 };
