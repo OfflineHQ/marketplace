@@ -1,5 +1,5 @@
 import { AutoAnimate } from './AutoAnimate';
-import { AvatarExample, AvatarLoaderExample } from '../avatar/examples';
+import { AvatarExample, AvatarSkeletonExample } from '../avatar/examples';
 
 const meta = {
   title: 'UI/AutoAnimate',
@@ -15,7 +15,9 @@ export default meta;
 
 export const Default = {
   render: ({ loading }: { loading: boolean }) => (
-    <AutoAnimate>{loading ? <AvatarLoaderExample /> : <AvatarExample />}</AutoAnimate>
+    <AutoAnimate>
+      {loading ? <AvatarSkeletonExample /> : <AvatarExample />}
+    </AutoAnimate>
   ),
   args: {
     loading: false,

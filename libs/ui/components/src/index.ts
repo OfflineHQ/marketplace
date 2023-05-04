@@ -1,7 +1,7 @@
-export { Button } from './lib/button/Button';
+export { Button, ButtonSkeleton } from './lib/button/Button';
 export { Input } from './lib/input/Input';
 export { Label } from './lib/label/Label';
-export { Text, TextLoader } from './lib/text/Text';
+export { Text, TextSkeleton } from './lib/text/Text';
 export { HelperText } from './lib/helper-text/HelperText';
 export {
   Toast,
@@ -26,7 +26,12 @@ export {
   NavigationMenuViewport,
   navigationMenuTriggerStyle,
 } from './lib/navigation-menu/NavigationMenu';
-export { Avatar, AvatarImage, AvatarFallback, AvatarLoader } from './lib/avatar/Avatar';
+export {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  AvatarSkeleton,
+} from './lib/avatar/Avatar';
 export {
   DropdownMenu,
   DropdownMenuTrigger,

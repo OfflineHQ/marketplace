@@ -12,14 +12,15 @@ import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@ui/shared';
 
 const sizes = {
-  sm: 'h-9 px-3 rounded-md text-sm',
+  sm: 'h-9 px-3 text-sm',
   default: 'h-10 py-2 px-4 text-sm',
-  lg: 'h-11 px-6 md:px-8 rounded-md text-base',
+  lg: 'h-11 px-6 md:px-8 text-base',
 };
 
 const variants = {
   default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-  destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+  destructive:
+    'bg-destructive text-destructive-foreground hover:bg-destructive/90',
   outline: 'border border-input hover:bg-accent hover:text-accent-foreground',
   secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
   ghost: 'hover:bg-accent hover:text-accent-foreground',
@@ -48,6 +49,38 @@ const buttonVariantsCva = cva(
     })),
   }
 );
+
+const SkeletonSizes = {
+  sm: 'h-9 w-5',
+  default: 'h-10 w-6',
+  lg: 'h-11 w-7',
+};
+
+const buttonSkeletonVariantsCva = cva(
+  'max-w-full shrink-0 animate-pulse rounded-md bg-muted',
+  {
+    variants: {
+      size: SkeletonSizes,
+    },
+    defaultVariants: {
+      size: 'default',
+    },
+  }
+);
+
+interface ButtonSkeletonProps
+  extends React.HTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonSkeletonVariantsCva> {}
+
+const ButtonSkeleton: React.FC<ButtonSkeletonProps> = ({
+  size = 'default',
+  className,
+  ...props
+}) => {
+  const classNames = cn(buttonSkeletonVariantsCva({ size }), className);
+
+  return <span className={classNames} {...props} />;
+};
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -115,7 +148,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       );
     };
     const loadingClasses = _loading ? 'cursor-not-allowed' : '';
-    const buttonClasses = buttonVariantsCva({ variant, size, isIconOnly, className });
+    const buttonClasses = buttonVariantsCva({
+      variant,
+      size,
+      isIconOnly,
+      className,
+    });
     return (
       <TooltipWrapper helperText={helperText}>
         <button
@@ -132,4 +170,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = 'Button';
 
-export { Button, sizes as buttonSizes, variants as buttonVariants, buttonVariantsCva };
+export {
+  Button,
+  sizes as buttonSizes,
+  variants as buttonVariants,
+  buttonVariantsCva,
+  ButtonSkeleton,
+  type ButtonSkeletonProps,
+};

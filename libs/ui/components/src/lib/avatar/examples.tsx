@@ -1,4 +1,10 @@
-import { Avatar, AvatarImage, AvatarFallback, AvatarProps, AvatarLoader } from './Avatar';
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  AvatarProps,
+  AvatarSkeleton,
+} from './Avatar';
 
 export function AvatarExample(props: AvatarProps) {
   return (
@@ -18,6 +24,6 @@ export function AvatarFallbackExample(props: AvatarProps) {
   );
 }
 
-export function AvatarLoaderExample(props: AvatarProps) {
-  return <AvatarLoader {...props} />;
+export function AvatarSkeletonExample(props: AvatarProps) {
+  return <AvatarSkeleton {...props} />;
 }

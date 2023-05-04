@@ -16,7 +16,7 @@ const textVariants = {
   small: 'text-sm',
 };
 
-const textLoaderVariants = {
+const textSkeletonVariants = {
   h1: 'h-7 min-w-[10rem] md:min-w-[16rem]',
   h2: 'h-6 min-w-[8rem] md:min-w-[14rem]',
   h3: 'h-5 min-w-[6rem] md:min-w-[12rem]',
@@ -37,11 +37,11 @@ const textVariantClasses = cva('', {
   },
 });
 
-const textLoaderVariantClasses = cva(
+const textSkeletonVariantClasses = cva(
   'max-w-full shrink-0 animate-pulse rounded-full bg-muted',
   {
     variants: {
-      variant: textLoaderVariants,
+      variant: textSkeletonVariants,
     },
     defaultVariants: {
       variant: 'span',
@@ -71,19 +71,25 @@ const Text: React.FC<TextProps> = ({ variant = 'span', ...props }) => {
   return <Component className={className} {...props} />;
 };
 
-interface TextLoaderProps
+interface TextSkeletonProps
   extends React.HTMLAttributes<HTMLElement>,
-    VariantProps<typeof textLoaderVariantClasses> {}
+    VariantProps<typeof textSkeletonVariantClasses> {}
 
-const TextLoader: React.FC<TextLoaderProps> = ({
+const TextSkeleton: React.FC<TextSkeletonProps> = ({
   variant = 'span',
   className,
   ...props
 }) => {
   const Component = variant as AllowedHtmlElements;
-  const classNames = cn(textLoaderVariantClasses({ variant }), className);
+  const classNames = cn(textSkeletonVariantClasses({ variant }), className);
 
   return <Component className={classNames} {...props} />;
 };
 
-export { Text, TextLoader, type TextProps, type TextLoaderProps, textVariants };
+export {
+  Text,
+  TextSkeleton,
+  type TextProps,
+  type TextSkeletonProps,
+  textVariants,
+};

@@ -1,7 +1,13 @@
 // Text.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Text, TextProps, TextLoader, TextLoaderProps, textVariants } from './Text';
+import {
+  Text,
+  TextProps,
+  TextSkeleton,
+  TextSkeletonProps,
+  textVariants,
+} from './Text';
 
 const variantOptions = Object.keys(textVariants);
 
@@ -32,7 +38,9 @@ export const AllVariants: Story = {
     <>
       {variantOptions.map((variant) => (
         <div key={variant} className="mb-2">
-          <Text variant={variant as TextProps['variant']}>{`${variant} Text`}</Text>
+          <Text
+            variant={variant as TextProps['variant']}
+          >{`${variant} Text`}</Text>
         </div>
       ))}
     </>
@@ -44,12 +52,12 @@ export const AllVariants: Story = {
   },
 };
 
-export const LoaderAllVariants: Story = {
+export const SkeletonAllVariants: Story = {
   render: () => (
     <>
       {variantOptions.map((variant) => (
         <div key={variant} className="mb-2 flex">
-          <TextLoader variant={variant as TextLoaderProps['variant']} />
+          <TextSkeleton variant={variant as TextSkeletonProps['variant']} />
         </div>
       ))}
     </>
