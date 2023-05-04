@@ -1,6 +1,7 @@
 'use client';
 // safeAuthSetup.ts
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useDarkMode } from '@ui/hooks';
 import {
   SafeAuthKit,
   SafeAuthSignInData,
@@ -63,49 +64,9 @@ export function useSafeAuth(
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
+  const isDark = useDarkMode();
 
-  // signin with siwe to provide a JWT through next-auth
-  const loginSiwe = async (signer: ethers.Signer) => {
-    try {
-      // setSiweLoading(true);
-      console.log('loginSiwe with signer: ', signer);
-      const address = await signer.getAddress();
-      const message = new SiweMessage({
-        domain: window.location.host,
-        address,
-        statement: 'Sign in with Ethereum to the app.',
-        uri: window.location.origin,
-        version: '1',
-        chainId: parseInt(chainId as string),
-        nonce: await getCsrfToken(),
-      });
-      const signature = await signer?.signMessage(message.prepareMessage());
-      logger.debug({ message, signature });
-      const signInRes = await signIn('credentials', {
-        message: JSON.stringify(message),
-        redirect: false,
-        signature,
-      });
-      console.log({ signInRes });
-      await setupUserSession();
-      if (signInRes?.error) {
-        console.error('Error signing in with siwe');
-        // TODO handle error, show toast
-      }
-    } catch (error) {
-      // TODO handle error, show toast and allow retry
-      // if persist send mail to support after retry. Prepare modal for this.
-      console.error({ error });
-    } finally {
-      // setSiweLoading(false);
-    }
-  };
-
-  const logoutSiwe = async () => {
-    return signOut({ redirect: false });
-  };
-
-  const setupUserSession = async () => {
+  const setupUserSession = useCallback(async () => {
     if (!safeAuth) return;
     const userInfo = await safeAuth.getUserInfo();
     // here mean the page have been refreshed, so we need to get the safeAuthData again
@@ -117,9 +78,63 @@ export function useSafeAuth(
     } satisfies SafeUser;
     console.log('Safe User: ', _safeUser);
     setSafeUser(_safeUser);
-  };
+  }, [safeAuth]);
 
-  const login = async () => {
+  // signin with siwe to provide a JWT through next-auth
+  const loginSiwe = useCallback(
+    async (signer: ethers.Signer) => {
+      try {
+        // setSiweLoading(true);
+        console.log('loginSiwe with signer: ', signer);
+        const address = await signer.getAddress();
+        const message = new SiweMessage({
+          domain: window.location.host,
+          address,
+          statement: 'Sign in with Ethereum to the app.',
+          uri: window.location.origin,
+          version: '1',
+          chainId: parseInt(chainId as string),
+          nonce: await getCsrfToken(),
+        });
+        const signature = await signer?.signMessage(message.prepareMessage());
+        logger.debug({ message, signature });
+        const signInRes = await signIn('credentials', {
+          message: JSON.stringify(message),
+          redirect: false,
+          signature,
+        });
+        console.log({ signInRes });
+        await setupUserSession();
+        if (signInRes?.error) {
+          console.error('Error signing in with siwe');
+          // TODO handle error, show toast
+        }
+      } catch (error) {
+        // TODO handle error, show toast and allow retry
+        // if persist send mail to support after retry. Prepare modal for this.
+        console.error({ error });
+      } finally {
+        // setSiweLoading(false);
+      }
+    },
+    [setupUserSession]
+  );
+
+  const logoutSiwe = useCallback(async () => {
+    return signOut({ redirect: false });
+  }, []);
+
+  const logout = useCallback(async () => {
+    if (!safeAuth) return;
+
+    await safeAuth.signOut();
+    await logoutSiwe();
+
+    setProvider(null);
+    setSafeUser(undefined);
+  }, [safeAuth, logoutSiwe]);
+
+  const login = useCallback(async () => {
     if (!safeAuth) return;
     try {
       const signInInfo = await safeAuth.signIn();
@@ -129,17 +144,7 @@ export function useSafeAuth(
       console.error(error);
       await logout();
     }
-  };
-
-  const logout = async () => {
-    if (!safeAuth) return;
-
-    await safeAuth.signOut();
-    await logoutSiwe();
-
-    setProvider(null);
-    setSafeUser(undefined);
-  };
+  }, [safeAuth, logout]);
 
   // when the provider (wallet) is connected, login to siwe or bypass if cookie is present
   useEffect(() => {
@@ -155,10 +160,11 @@ export function useSafeAuth(
         // }
       }
     })();
-  }, [provider]);
+  }, [provider, loginSiwe]);
 
   useEffect(() => {
     (async () => {
+      console.log('setting safeAuthKit');
       const options: Web3AuthOptions = {
         clientId: process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || '',
         web3AuthNetwork: 'testnet',
@@ -167,9 +173,8 @@ export function useSafeAuth(
           chainId,
         },
         uiConfig: {
-          // TODO apply by theme mode
-          appLogo: './logo-dark.svg', // './logo-light.svg',
-          theme: 'auto',
+          appLogo: isDark ? './logo-light.svg' : './logo-dark.svg',
+          theme: isDark ? 'dark' : 'light',
           loginMethodsOrder: [
             'google',
             'twitter',
@@ -242,7 +247,7 @@ export function useSafeAuth(
         );
       };
     })();
-  }, []);
+  }, [isDark]);
 
   return {
     safeAuth,

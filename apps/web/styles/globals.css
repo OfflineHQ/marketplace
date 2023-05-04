@@ -142,3 +142,14 @@ body {
   height: auto !important;
   width: 6rem !important;
 }
+
+.w3a-parent-container #w3a-modal .w3a-modal__loader-app-logo {
+  width: 10rem !important;
+  height: 8rem;
+}
+.w3a-parent-container #w3a-modal .w3a-modal__loader-app-logo img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  max-width: 100% !important;
+}
