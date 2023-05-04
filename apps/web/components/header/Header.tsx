@@ -1,55 +1,68 @@
 'use client';
-// import { useSession, signIn, signOut, getCsrfToken } from 'next-auth/react';
+import React, { useState, useMemo } from 'react';
+import { useTheme } from 'next-themes';
 import { HeaderNav } from '@web/components/header-nav/HeaderNav';
 import type { HeaderSettingsProps } from '@web/components/header-nav/HeaderNav';
 import { Dark, Light, DarkLight, Check } from '@ui/icons';
 import { useAuthContext } from '@client/auth';
 
-export default function Header() {
+const Header = () => {
   const { safeUser, login, logout, safeAuth, provider } = useAuthContext();
+  const [language, setLanguage] = useState<'en' | 'fr'>();
+  const { setTheme, theme } = useTheme();
 
-  const displayItems: HeaderSettingsProps['displays'] = [
-    {
-      type: 'item',
-      text: 'Light',
-      icon: <Light />,
-      disabled: true,
-    },
-    {
-      type: 'item',
-      text: 'Dark',
-      icon: <Dark />,
-    },
-    {
-      type: 'item',
-      text: 'Automatic',
-      icon: <DarkLight />,
-    },
-  ];
+  const displays = useMemo(
+    () => [
+      {
+        type: 'item',
+        text: 'Light',
+        icon: <Light />,
+        action: () => setTheme('light'),
+        disabled: theme === 'light',
+      },
+      {
+        type: 'item',
+        text: 'Dark',
+        action: () => {
+          console.log('set dark');
+          setTheme('dark');
+        },
+        icon: <Dark />,
+        disabled: theme === 'dark',
+      },
+      {
+        type: 'item',
+        text: 'Automatic',
+        action: () => setTheme('auto'),
+        icon: <DarkLight />,
+        disabled: theme === 'auto',
+      },
+    ],
+    [theme, setTheme]
+  );
 
-  const languages: HeaderSettingsProps['languages'] = [
-    {
-      type: 'item',
-      text: 'English',
-      icon: <Check />,
-      disabled: true,
-    },
-    {
-      type: 'item',
-      text: 'Français',
-    },
-  ];
+  const languages = useMemo(
+    () => [
+      {
+        type: 'item',
+        text: 'English',
+        icon: <Check />,
+        disabled: true,
+      },
+      {
+        type: 'item',
+        text: 'Français',
+      },
+    ],
+    []
+  );
 
   const languageText = 'Language';
   const languageHelperText = 'Select your language';
   const displayText = 'Display mode';
   const displayHelperText = 'Select a display mode';
 
-  // const { data: session } = useSession();
-
   return (
-    // <SafeThemeProvider mode="dark">
-    //   {(safeTheme) => (
     <HeaderNav
       profileSections={[]}
       menuSections={[]}
@@ -61,12 +74,12 @@ export default function Header() {
         languages,
         languageText,
         languageHelperText,
-        displays: displayItems,
+        displays,
         displayText,
         displayHelperText,
       }}
     />
-    //   )}
-    // </SafeThemeProvider>
   );
-}
+};
+
+export default React.memo(Header);
