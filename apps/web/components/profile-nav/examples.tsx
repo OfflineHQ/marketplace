@@ -1,5 +1,8 @@
 import { ProfileNavProps, ProfileNav } from './ProfileNav';
-import { cryptoUserSession, normalUserSession } from '../profile-avatar/examples';
+import {
+  cryptoUserSession,
+  normalUserSession,
+} from '../profile-avatar/examples';
 import { LifeBuoy, LogOut, Settings, User } from '@ui/icons';
 // import Link from 'next/link';
 
@@ -9,7 +12,7 @@ export const cryptoUserMenuItems = [
     type: 'children',
     children: (
       <div className="overflow-hidden text-ellipsis px-2 pb-2 text-sm">
-        {cryptoUserSession.address}
+        {cryptoUserSession.eoa}
       </div>
     ),
   },
@@ -31,7 +34,12 @@ export const cryptoUserMenuItems = [
     shortcut: '⌘S',
   },
   { type: 'separator' },
-  { type: 'item', icon: <LifeBuoy />, className: 'cursor-pointer', text: 'Support' },
+  {
+    type: 'item',
+    icon: <LifeBuoy />,
+    className: 'cursor-pointer',
+    text: 'Support',
+  },
   { type: 'separator' },
   {
     type: 'item',
@@ -48,7 +56,7 @@ export const normalUserMenuItems = [
     type: 'children',
     children: (
       <div className="overflow-hidden text-ellipsis  px-2 pb-2 text-sm">
-        {normalUserSession.user.email}
+        {normalUserSession.name}
       </div>
     ),
   },

@@ -1,4 +1,3 @@
-import type { Session } from 'next-auth';
 import { useEffect, useState, useRef } from 'react';
 import Logo from './Logo';
 import { NavLink } from '../nav-link/NavLink';
@@ -8,11 +7,12 @@ import { type ProfileNavProps, ProfileNav } from '../profile-nav/ProfileNav';
 import { Menu, Close } from '@ui/icons';
 import {
   Button,
+  ButtonSkeleton,
   NavigationMenu,
   NavigationMenuList,
   Separator,
-  AvatarLoader,
-  TextLoader,
+  AvatarSkeleton,
+  TextSkeleton,
   AutoAnimate,
   DisplayDropdown,
   type DisplayDropdownProps,
@@ -23,8 +23,10 @@ import {
 export interface HeaderNavProps
   extends NavDesktopProps,
     HeaderProfileProps,
-    Omit<ProfileNavProps, 'items' | 'session'> {
+    Omit<ProfileNavProps, 'user' | 'items'> {
   settings: HeaderSettingsProps;
+  user: ProfileNavProps['user'] | undefined;
+  loading?: boolean;
 }
 
 export interface HeaderSettingsProps {
@@ -38,22 +40,26 @@ export interface HeaderSettingsProps {
 }
 
 export interface HeaderProfileProps {
-  session: Session | null | undefined;
+  user: HeaderNavProps['user'];
   signIn: () => void;
-  sessionLoading: boolean;
+  userLoading: boolean;
   profileSections: ProfileNavProps['items'];
+  loading?: HeaderNavProps['loading'];
 }
 
 function Profile({
-  session,
+  user,
   signIn,
-  sessionLoading,
+  loading,
+  userLoading,
   profileSections,
 }: HeaderProfileProps) {
-  const notSignedIn = (!session && !sessionLoading) || !!session?.error;
+  const notSignedIn = !user && !userLoading;
   return (
     <AutoAnimate className="flex gap-2">
-      {notSignedIn ? (
+      {loading ? (
+        <ButtonSkeleton className="m-1 w-20 md:m-2" />
+      ) : notSignedIn ? (
         <Button onClick={signIn} className="m-1 md:m-2">
           Sign in
         </Button>
@@ -61,15 +67,15 @@ function Profile({
         <>
           <Separator orientation="vertical" className="my-1 h-10 md:h-12" />
           <AutoAnimate className="flex items-center">
-            {sessionLoading || !session ? (
+            {userLoading || !user ? (
               <div className="flex items-center opacity-100">
-                <AvatarLoader className="mx-5 mr-7 md:mr-2" />
-                <TextLoader className="mr-5 hidden md:flex" />
+                <AvatarSkeleton className="mx-5 mr-7 md:mr-2" />
+                <TextSkeleton className="mr-5 hidden md:flex" />
               </div>
             ) : (
               <ProfileNav
                 data-testid="profile-menu"
-                session={session}
+                user={user}
                 items={profileSections}
               />
             )}
@@ -90,7 +96,9 @@ export function HeaderNav(props: HeaderNavProps) {
     if (html && menuExpanded) {
       activeClasses.forEach((activeClass) => html.classList.add(activeClass));
     } else if (html.classList.contains(activeClasses[0])) {
-      activeClasses.forEach((activeClass) => html.classList.remove(activeClass));
+      activeClasses.forEach((activeClass) =>
+        html.classList.remove(activeClass)
+      );
     }
   }, [menuExpanded]);
 
@@ -148,15 +156,27 @@ export function HeaderNav(props: HeaderNavProps) {
       {menuExpanded && (
         <div className={`fixed bottom-0 top-24 z-10 block w-full lg:hidden`}>
           {/* <div className="flex flex-col gap-10"> */}
-          <NavMobile menuSections={menuSections} className="flex h-full flex-col">
+          <NavMobile
+            menuSections={menuSections}
+            className="flex h-full flex-col"
+          >
             <div className="relative z-10 shrink-0">
               <div className="relative pb-3">
-                <Separator orientation="horizontal" className="my-2 min-w-full" />
+                <Separator
+                  orientation="horizontal"
+                  className="my-2 min-w-full"
+                />
                 <div className="flex justify-center">
-                  <DisplayDropdown items={settings.displays} className="mx-2 px-3">
+                  <DisplayDropdown
+                    items={settings.displays}
+                    className="mx-2 px-3"
+                  >
                     {settings.displayText}
                   </DisplayDropdown>
-                  <LanguageDropdown items={settings.languages} className="mx-2 px-3">
+                  <LanguageDropdown
+                    items={settings.languages}
+                    className="mx-2 px-3"
+                  >
                     {settings.languageText}
                   </LanguageDropdown>
                 </div>

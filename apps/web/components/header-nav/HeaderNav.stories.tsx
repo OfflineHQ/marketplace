@@ -12,7 +12,10 @@ import {
   cryptoUserSession,
   normalUserSessionWithImage,
 } from '../profile-avatar/examples';
-import { cryptoUserMenuItems, normalUserMenuItems } from '../profile-nav/examples';
+import {
+  cryptoUserMenuItems,
+  normalUserMenuItems,
+} from '../profile-nav/examples';
 import { HeaderNav } from './HeaderNav';
 import {
   HeaderNavExample,
@@ -32,9 +35,10 @@ const meta = {
   args: {
     profileSections: [],
     menuSections,
-    session: null,
+    user: undefined,
+    loading: false,
     signIn: () => sleep(1000),
-    sessionLoading: false,
+    userLoading: false,
     settings: {
       languages,
       languageText,
@@ -59,9 +63,17 @@ export const Default: Story = {
   },
 };
 
+export const Loading: Story = {
+  args: {
+    loading: true,
+  },
+};
+
 export const OpenedDisplay: Story = {
   play: async ({ canvasElement }) => {
-    const displayButton = screen.getByRole('button', { name: displayHelperText });
+    const displayButton = screen.getByRole('button', {
+      name: displayHelperText,
+    });
     userEvent.click(displayButton);
     await screen.findByText('Dark');
   },
@@ -69,7 +81,9 @@ export const OpenedDisplay: Story = {
 
 export const OpenedLanguage: Story = {
   play: async ({ canvasElement }) => {
-    const LanguageButton = screen.getByRole('button', { name: languageHelperText });
+    const LanguageButton = screen.getByRole('button', {
+      name: languageHelperText,
+    });
     userEvent.click(LanguageButton);
     await screen.findByText('Français');
   },
@@ -77,7 +91,7 @@ export const OpenedLanguage: Story = {
 
 export const CryptoUser: Story = {
   args: {
-    session: cryptoUserSession,
+    user: cryptoUserSession,
     profileSections: cryptoUserMenuItems,
   },
   play: async ({ canvasElement }) => {
@@ -88,7 +102,7 @@ export const CryptoUser: Story = {
 
 export const NormalUser: Story = {
   args: {
-    session: normalUserSessionWithImage,
+    user: normalUserSessionWithImage,
     profileSections: normalUserMenuItems,
   },
 };
@@ -111,7 +125,7 @@ export const NormalUserDark: Story = {
 export const SessionLoading: Story = {
   ...NormalUser,
   args: {
-    sessionLoading: true,
+    userLoading: true,
   },
   play: undefined,
 };

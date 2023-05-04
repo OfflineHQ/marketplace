@@ -1,14 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
+import {
+  screen,
+  fireEvent,
+  userEvent,
+  within,
+} from '@storybook/testing-library';
 import { ProfileNav } from './ProfileNav';
-import { ProfileNavExample, cryptoUserMenuItems, normalUserMenuItems } from './examples';
-import { cryptoUserSession, normalUserSession } from '../profile-avatar/examples';
+import {
+  ProfileNavExample,
+  cryptoUserMenuItems,
+  normalUserMenuItems,
+} from './examples';
+import {
+  cryptoUserSession,
+  normalUserSession,
+} from '../profile-avatar/examples';
 
 const meta = {
   component: ProfileNav,
   render: ProfileNavExample,
   args: {
-    session: cryptoUserSession,
+    user: cryptoUserSession,
     items: cryptoUserMenuItems,
   },
 } satisfies Meta<typeof ProfileNav>;
@@ -27,7 +39,7 @@ export const CryptoUser: Story = {
 
 export const NormalUser: Story = {
   args: {
-    session: normalUserSession,
+    user: normalUserSession,
     items: normalUserMenuItems,
   },
   play: async ({ canvasElement }) => {

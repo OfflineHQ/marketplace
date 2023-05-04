@@ -16,7 +16,7 @@ const Story: Meta<typeof ProfileAvatar> = {
     },
   },
   args: {
-    session: cryptoUserSession,
+    user: cryptoUserSession,
   },
 };
 export default Story;
@@ -27,12 +27,12 @@ export const CryptoUser = {
 
 export const NormalUser = {
   args: {
-    session: normalUserSession,
+    user: normalUserSession,
   },
 };
 
 export const NormalUserWithImage = {
   args: {
-    session: normalUserSessionWithImage,
+    user: normalUserSessionWithImage,
   },
 };
