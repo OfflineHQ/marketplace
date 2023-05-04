@@ -7,7 +7,7 @@ import { cryptoUserSession } from '../profile-avatar/examples';
 describe('ProfileNav', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
-      <ProfileNav session={cryptoUserSession} items={cryptoUserMenuItems} />
+      <ProfileNav user={cryptoUserSession} items={cryptoUserMenuItems} />
     );
     expect(baseElement).toBeTruthy();
   });
