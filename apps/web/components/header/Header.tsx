@@ -3,7 +3,7 @@
 import { HeaderNav } from '@web/components/header-nav/HeaderNav';
 import type { HeaderSettingsProps } from '@web/components/header-nav/HeaderNav';
 import { Dark, Light, DarkLight, Check } from '@ui/icons';
-import { useAuthContext } from '@web/lib/authProvider';
+import { useAuthContext } from '@client/auth';
 
 export default function Header() {
   const { safeUser, login, logout, safeAuth, provider } = useAuthContext();
@@ -55,8 +55,8 @@ export default function Header() {
       menuSections={[]}
       signIn={login}
       loading={!safeAuth}
-      session={safeUser}
-      sessionLoading={!!provider && !safeUser} // mean web3Auth is connected but waiting for cookie and safe user info
+      user={safeUser}
+      userLoading={!!provider && !safeUser} // mean web3Auth is connected but waiting for cookie and safe user info
       settings={{
         languages,
         languageText,

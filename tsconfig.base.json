@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@client/auth": ["libs/client/auth/src/index.ts"],
       "@client/biconomy/scw": ["libs/client/biconomy/scw/src/index.ts"],
       "@client/biconomy/store": ["libs/client/biconomy/store/src/index.ts"],
       "@client/gql/admin": ["libs/client/gql/admin/src/generated/index.ts"],
@@ -24,7 +25,10 @@
       "@client/hasura/fetcher": ["libs/client/hasura/fetcher/src/index.ts"],
       "@client/hasura/utils": ["libs/client/hasura/utils/src/index.ts"],
       "@client/next-auth/common": ["libs/client/next-auth/common/src/index.ts"],
-      "@client/next-auth/options": ["libs/client/next-auth/options/src/index.ts"],
+      "@client/next-auth/options": [
+        "libs/client/next-auth/options/src/index.ts"
+      ],
+      "@client/safe/auth": ["libs/client/safe/auth/src/index.ts"],
       "@client/siwe/provider": ["libs/client/siwe/provider/src/index.ts"],
       "@client/zustand": ["libs/client/zustand/src/index.ts"],
       "@dlt/types": ["libs/dlt/types/src/index.ts"],
