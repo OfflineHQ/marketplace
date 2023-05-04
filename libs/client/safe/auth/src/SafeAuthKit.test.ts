@@ -5,7 +5,7 @@ import { SafeAuthKit } from './SafeAuthKit';
 import { Web3AuthModalPack } from './packs/web3auth/Web3AuthModalPack';
 
 import { generateTestingUtils } from 'eth-testing';
-import EventEmitter from 'events';
+import { EventEmitter } from 'node:events';
 
 const testingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
@@ -43,13 +43,16 @@ jest.mock('@web3auth/modal', () => {
 });
 
 jest.mock('@safe-global/api-kit', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      getSafesByOwner: jest.fn().mockImplementation(() => {
-        return Promise.resolve({ safes: ['0x123', '0x456'] });
-      }),
-    };
-  });
+  return {
+    __esModule: true,
+    default: jest.fn().mockImplementation(() => {
+      return {
+        getSafesByOwner: jest.fn().mockImplementation(() => {
+          return Promise.resolve({ safes: ['0x123', '0x456'] });
+        }),
+      };
+    }),
+  };
 });
 
 const config: Web3AuthOptions = {
@@ -154,7 +157,9 @@ describe('SafeAuthKit', () => {
 
       expect(MockedWeb3Auth).toHaveBeenCalledTimes(1);
       expect(mockInitModal).toHaveBeenCalledTimes(1);
-      expect(MockedWeb3Auth).toHaveBeenCalledWith(expect.objectContaining(config));
+      expect(MockedWeb3Auth).toHaveBeenCalledWith(
+        expect.objectContaining(config)
+      );
     });
 
     it('should return the associated eoa when the user is signed in', async () => {

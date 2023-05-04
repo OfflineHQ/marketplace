@@ -66,7 +66,9 @@ export class SafeAuthKit<TPack extends SafeAuthPack<TPack>>
     if (!this.#pack.provider) {
       throw new Error('Provider is not defined');
     }
-    const ethersProvider = new ethers.providers.Web3Provider(this.#pack.provider);
+    const ethersProvider = new ethers.providers.Web3Provider(
+      this.#pack.provider
+    );
 
     const signer = ethersProvider.getSigner();
 
@@ -77,7 +79,9 @@ export class SafeAuthKit<TPack extends SafeAuthPack<TPack>>
     // Retrieve safes if txServiceUrl is provided
     if (this.#config?.txServiceUrl) {
       try {
-        const safesByOwner = await this.#getSafeCoreClient().getSafesByOwner(address);
+        const safesByOwner = await this.#getSafeCoreClient().getSafesByOwner(
+          address
+        );
         safes = safesByOwner.safes;
       } catch (e) {
         throw new Error(getErrorMessage(e));
@@ -125,7 +129,10 @@ export class SafeAuthKit<TPack extends SafeAuthPack<TPack>>
    * @param eventName The event name to subscribe to. Choose from SafeAuthEvents type
    * @param listener The callback function to be called when the event is emitted
    */
-  subscribe(event: SafeAuthEvent<TPack>, listener: SafeAuthEventListener<TPack>) {
+  subscribe(
+    event: SafeAuthEvent<TPack>,
+    listener: SafeAuthEventListener<TPack>
+  ) {
     this.#pack.subscribe(event, listener);
   }
 
@@ -134,7 +141,10 @@ export class SafeAuthKit<TPack extends SafeAuthPack<TPack>>
    * @param eventName The event name to unsubscribe from. Choose from SafeAuthEvents type
    * @param listener The callback function to unsubscribe
    */
-  unsubscribe(event: SafeAuthEvent<TPack>, listener: SafeAuthEventListener<TPack>) {
+  unsubscribe(
+    event: SafeAuthEvent<TPack>,
+    listener: SafeAuthEventListener<TPack>
+  ) {
     this.#pack.unsubscribe(event, listener);
   }
 

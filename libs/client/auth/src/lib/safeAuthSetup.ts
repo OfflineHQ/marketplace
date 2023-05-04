@@ -1,3 +1,4 @@
+'use client';
 // safeAuthSetup.ts
 import React, { useEffect, useState } from 'react';
 import {
@@ -6,7 +7,7 @@ import {
   SafeGetUserInfoResponse,
   Web3AuthModalPack,
   Web3AuthEventListener,
-} from '@web/lib/safe';
+} from '@client/safe/auth';
 
 import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
 import { Web3AuthOptions } from '@web3auth/modal';
@@ -19,7 +20,7 @@ import {
 import { ethers } from 'ethers';
 import { SiweMessage } from 'siwe';
 import { signIn, signOut, getCsrfToken } from 'next-auth/react';
-import { getCurrentUser } from '@web/lib/session';
+// import { getCurrentUser } from '@web/lib/session';
 
 import { logger } from '@logger';
 
@@ -30,7 +31,8 @@ type ChainConfig = Web3AuthOptions['chainConfig'] & {
 const chainConfigs: Record<string, ChainConfig> = {
   goerli: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    rpcTarget: 'https://eth-goerli.g.alchemy.com/v2/XGWYfxudDv5ACSpZegVCjkgSrskOpG3v',
+    rpcTarget:
+      'https://eth-goerli.g.alchemy.com/v2/XGWYfxudDv5ACSpZegVCjkgSrskOpG3v',
     chainId: '0x5',
     displayName: 'Ethereum Goerli',
     blockExplorer: 'https://goerli.etherscan.io/',
@@ -48,7 +50,7 @@ const { safeTxServiceUrl, chainId, ...chainConfig } = (chainConfigs[
 
 logger.debug('CHAIN CONFIG: ', chainConfig);
 
-interface SafeUser
+export interface SafeUser
   extends SafeGetUserInfoResponse<Web3AuthModalPack>,
     SafeAuthSignInData {}
 
@@ -58,7 +60,9 @@ export function useSafeAuth(
 ) {
   const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthModalPack>>();
   const [safeUser, setSafeUser] = useState<SafeUser>();
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null
+  );
 
   // signin with siwe to provide a JWT through next-auth
   const loginSiwe = async (signer: ethers.Signer) => {
@@ -201,7 +205,8 @@ export function useSafeAuth(
         loginSettings: {
           mfaLevel: 'mandatory',
           sessionTime:
-            parseInt(process.env.TOKEN_LIFE_TIME as string) || 30 * 24 * 60 * 60, // 30 days,
+            parseInt(process.env.TOKEN_LIFE_TIME as string) ||
+            30 * 24 * 60 * 60, // 30 days,
         },
         adapterSettings: {
           uxMode: 'popup',
@@ -231,7 +236,10 @@ export function useSafeAuth(
 
       return () => {
         safeAuthKit.unsubscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler);
-        safeAuthKit.unsubscribe(ADAPTER_EVENTS.DISCONNECTED, disconnectedHandler);
+        safeAuthKit.unsubscribe(
+          ADAPTER_EVENTS.DISCONNECTED,
+          disconnectedHandler
+        );
       };
     })();
   }, []);

@@ -15,8 +15,14 @@ export interface SafeAuthPack<TPack> {
   signIn(): Promise<SafeSignInResponse<TPack>>;
   signOut(): Promise<void>;
   getUserInfo(): Promise<SafeGetUserInfoResponse<TPack>>;
-  subscribe(event: SafeAuthEvent<TPack>, handler: SafeAuthEventListener<TPack>): void;
-  unsubscribe(event: SafeAuthEvent<TPack>, handler: SafeAuthEventListener<TPack>): void;
+  subscribe(
+    event: SafeAuthEvent<TPack>,
+    handler: SafeAuthEventListener<TPack>
+  ): void;
+  unsubscribe(
+    event: SafeAuthEvent<TPack>,
+    handler: SafeAuthEventListener<TPack>
+  ): void;
 }
 
 export interface ISafeAuthKit<TPack> {
@@ -24,8 +30,14 @@ export interface ISafeAuthKit<TPack> {
   getSafeAuthData(): Promise<SafeAuthSignInData>;
   signOut(): Promise<void>;
   getProvider(): ExternalProvider | null;
-  subscribe(event: SafeAuthEvent<TPack>, listener: SafeAuthEventListener<TPack>): void;
-  unsubscribe(event: SafeAuthEvent<TPack>, listener: SafeAuthEventListener<TPack>): void;
+  subscribe(
+    event: SafeAuthEvent<TPack>,
+    listener: SafeAuthEventListener<TPack>
+  ): void;
+  unsubscribe(
+    event: SafeAuthEvent<TPack>,
+    listener: SafeAuthEventListener<TPack>
+  ): void;
 }
 
 export type SafeAuthEvent<TPack> = TPack extends Web3AuthModalPack
@@ -34,7 +46,9 @@ export type SafeAuthEvent<TPack> = TPack extends Web3AuthModalPack
 export type SafeAuthEventListener<TPack> = TPack extends Web3AuthModalPack
   ? Web3AuthEventListener
   : never;
-export type SafeSignInResponse<TPack> = TPack extends Web3AuthModalPack ? void : never;
+export type SafeSignInResponse<TPack> = TPack extends Web3AuthModalPack
+  ? void
+  : never;
 export type SafeGetUserInfoResponse<TPack> = TPack extends Web3AuthModalPack
   ? Partial<UserInfo>
   : never;

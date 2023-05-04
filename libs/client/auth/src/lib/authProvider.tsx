@@ -3,7 +3,7 @@
 import { SessionProvider } from 'next-auth/react';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useSafeAuth } from '@web/lib/safeAuthSetup';
+import { useSafeAuth } from './safeAuthSetup';
 
 type IAppProviderProps = {
   children?: React.ReactNode;
@@ -17,11 +17,9 @@ export const NextAuthProvider = ({ children }: INextAuthProps) => {
   return <SessionProvider refetchInterval={0}>{children}</SessionProvider>;
 };
 
-export type SafeUser = ReturnType<typeof useSafeAuth>['safeUser'];
-
 interface AuthContextValue {
   safeAuth: ReturnType<typeof useSafeAuth>['safeAuth'];
-  safeUser: SafeUser;
+  safeUser: ReturnType<typeof useSafeAuth>['safeUser'];
   provider: ReturnType<typeof useSafeAuth>['provider'];
   login: ReturnType<typeof useSafeAuth>['login'];
   logout: ReturnType<typeof useSafeAuth>['logout'];
@@ -44,7 +42,10 @@ export const AuthProvider = ({ children }: IAppProviderProps) => {
     console.log('CONNECTED', data);
   };
   const disconnectedHandler = (data: any) => console.log('DISCONNECTED', data);
-  const { safeAuth, ...props } = useSafeAuth(connectedHandler, disconnectedHandler);
+  const { safeAuth, ...props } = useSafeAuth(
+    connectedHandler,
+    disconnectedHandler
+  );
 
   const [loading, setLoading] = useState(true);
 
