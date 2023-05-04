@@ -2,7 +2,7 @@
 
 import { SessionProvider } from 'next-auth/react';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 import { useSafeAuth } from './safeAuthSetup';
 
 type IAppProviderProps = {
@@ -46,14 +46,6 @@ export const AuthProvider = ({ children }: IAppProviderProps) => {
     connectedHandler,
     disconnectedHandler
   );
-
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (safeAuth) {
-      setLoading(false);
-    }
-  }, [safeAuth]);
 
   return (
     <AuthContext.Provider
