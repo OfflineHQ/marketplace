@@ -10,7 +10,13 @@ import {
 import { OutlineArrowRight, Settings } from '@ui/icons';
 import { delayData } from '@test-utils/functions';
 
-import { Button, buttonVariants, buttonSizes } from './Button';
+import {
+  Button,
+  buttonVariants,
+  buttonSizes,
+  ButtonSkeleton,
+  type ButtonSkeletonProps,
+} from './Button';
 import { sleep } from '@utils';
 
 const variantOptions = Object.keys(buttonVariants);
@@ -91,7 +97,11 @@ const AllbuttonVariantsComponent: React.FC<AllbuttonVariantsComponentProps> = ({
 }) => (
   <>
     {variantOptions.map((variant) => (
-      <Button key={variant} size={size} variant={variant as keyof typeof buttonVariants}>
+      <Button
+        key={variant}
+        size={size}
+        variant={variant as keyof typeof buttonVariants}
+      >
         {variant}
       </Button>
     ))}
@@ -111,10 +121,16 @@ type AllbuttonSizesComponentProps = {
   variant: keyof typeof buttonVariants;
 };
 
-const AllbuttonSizesComponent: React.FC<AllbuttonSizesComponentProps> = ({ variant }) => (
+const AllbuttonSizesComponent: React.FC<AllbuttonSizesComponentProps> = ({
+  variant,
+}) => (
   <>
     {sizeOptions.map((size) => (
-      <Button key={size} size={size as keyof typeof buttonSizes} variant={variant}>
+      <Button
+        key={size}
+        size={size as keyof typeof buttonSizes}
+        variant={variant}
+      >
         {size}
       </Button>
     ))}
@@ -133,9 +149,9 @@ export const AllbuttonSizes = {
   },
 };
 
-const AllbuttonVariantsLoadingComponent: React.FC<AllbuttonVariantsComponentProps> = ({
-  size,
-}) => (
+const AllbuttonVariantsLoadingComponent: React.FC<
+  AllbuttonVariantsComponentProps
+> = ({ size }) => (
   <>
     {variantOptions.map((variant) => (
       <Button
@@ -163,9 +179,9 @@ export const AllbuttonVariantsLoading = {
   },
 };
 
-const AllbuttonSizesLoadingComponent: React.FC<AllbuttonSizesComponentProps> = ({
-  variant,
-}) => (
+const AllbuttonSizesLoadingComponent: React.FC<
+  AllbuttonSizesComponentProps
+> = ({ variant }) => (
   <>
     {sizeOptions.map((size) => (
       <Button
@@ -193,9 +209,9 @@ export const AllbuttonSizesLoading = {
   },
 };
 
-const AllbuttonVariantsDisabledComponent: React.FC<AllbuttonVariantsComponentProps> = ({
-  size,
-}) => (
+const AllbuttonVariantsDisabledComponent: React.FC<
+  AllbuttonVariantsComponentProps
+> = ({ size }) => (
   <>
     {variantOptions.map((variant) => (
       <Button
@@ -222,9 +238,9 @@ export const AllbuttonVariantsDisabled = {
   },
 };
 
-const AllbuttonVariantsWithIconComponent: React.FC<AllbuttonVariantsComponentProps> = ({
-  size,
-}) => (
+const AllbuttonVariantsWithIconComponent: React.FC<
+  AllbuttonVariantsComponentProps
+> = ({ size }) => (
   <>
     {variantOptions.map((variant) => (
       <Button
@@ -251,9 +267,9 @@ export const AllbuttonVariantsWithIcon = {
   },
 };
 
-const AllbuttonSizesWithIconComponent: React.FC<AllbuttonSizesComponentProps> = ({
-  variant,
-}) => (
+const AllbuttonSizesWithIconComponent: React.FC<
+  AllbuttonSizesComponentProps
+> = ({ variant }) => (
   <>
     {sizeOptions.map((size) => (
       <Button
@@ -280,9 +296,9 @@ export const AllbuttonSizesWithIcon = {
   },
 };
 
-const AllbuttonSizesWithIconRightComponent: React.FC<AllbuttonSizesComponentProps> = ({
-  variant,
-}) => (
+const AllbuttonSizesWithIconRightComponent: React.FC<
+  AllbuttonSizesComponentProps
+> = ({ variant }) => (
   <>
     {sizeOptions.map((size) => (
       <Button
@@ -304,6 +320,23 @@ export const AllbuttonSizesWithIconRight = {
   },
   argTypes: {
     size: {
+      control: false,
+    },
+  },
+};
+
+export const AllButtonSkeletonSizes: Story = {
+  render: () => (
+    <>
+      {sizeOptions.map((size) => (
+        <div key={size} className="mb-2 flex">
+          <ButtonSkeleton size={size as ButtonSkeletonProps['size']} />
+        </div>
+      ))}
+    </>
+  ),
+  argTypes: {
+    variant: {
       control: false,
     },
   },

@@ -14,17 +14,23 @@ const avatarSizes = {
   xl: 'w-16 h-16 sm:w-20 sm:h-20 text-xl',
 };
 
-const avatarVariants = cva('relative flex shrink-0 overflow-hidden rounded-full', {
-  variants: {
-    size: avatarSizes,
-  },
-  defaultVariants: {
-    size: 'default',
-  },
-});
+const avatarVariants = cva(
+  'relative flex shrink-0 overflow-hidden rounded-full',
+  {
+    variants: {
+      size: avatarSizes,
+    },
+    defaultVariants: {
+      size: 'default',
+    },
+  }
+);
 
 export interface AvatarProps
-  extends Omit<React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>, 'size'>,
+  extends Omit<
+      React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>,
+      'size'
+    >,
     VariantProps<typeof avatarVariants> {}
 
 const Avatar = React.forwardRef<
@@ -33,7 +39,11 @@ const Avatar = React.forwardRef<
 >(({ className, size, ...props }, ref) => (
   <AvatarPrimitive.Root
     ref={ref}
-    className={cn(avatarVariants({ size }), 'relative flex-shrink-0', className)}
+    className={cn(
+      avatarVariants({ size }),
+      'relative flex-shrink-0',
+      className
+    )}
     {...props}
   />
 ));
@@ -68,7 +78,7 @@ const AvatarFallback = React.forwardRef<
 ));
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
-const AvatarLoader = React.forwardRef<
+const AvatarSkeleton = React.forwardRef<
   HTMLDivElement,
   VariantProps<typeof avatarVariants> & {
     className?: string;
@@ -84,6 +94,6 @@ const AvatarLoader = React.forwardRef<
     {...props}
   />
 ));
-AvatarLoader.displayName = 'AvatarLoader';
+AvatarSkeleton.displayName = 'AvatarSkeleton';
 
-export { Avatar, AvatarImage, AvatarFallback, AvatarLoader, avatarSizes };
+export { Avatar, AvatarImage, AvatarFallback, AvatarSkeleton, avatarSizes };
