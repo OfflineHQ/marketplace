@@ -13,6 +13,7 @@ export {
   ToastAction,
 } from './lib/toast/Toast';
 export { Toaster } from './lib/toast/Toaster';
+export { useToast } from './lib/toast/useToast';
 export { Spinner } from './lib/spinner/Spinner';
 export { Separator } from './lib/separator/Separator';
 export {
