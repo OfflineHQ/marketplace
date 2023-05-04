@@ -1,6 +1,6 @@
 import Header from '@web/components/header/Header';
 import { Toaster } from '@ui/components';
-import { AuthProvider } from '@web/lib/authProvider';
+import { AuthProvider } from '@client/auth';
 
 interface AppProps {
   children: React.ReactNode;

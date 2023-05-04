@@ -4,7 +4,7 @@
 // ========================================================
 import React from 'react';
 import ClientOnly from './clientOnly';
-import { useAuthContext, type SafeUser } from '@web/lib/authProvider';
+import { useAuthContext, type SafeUser } from '@client/auth';
 
 interface WalletProps {
   user: SafeUser;
