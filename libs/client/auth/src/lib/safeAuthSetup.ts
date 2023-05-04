@@ -1,6 +1,6 @@
 'use client';
 // safeAuthSetup.ts
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useDarkMode } from '@ui/hooks';
 import {
   SafeAuthKit,
@@ -110,9 +110,10 @@ export function useSafeAuth(
           // TODO handle error, show toast
         }
       } catch (error) {
-        // TODO handle error, show toast and allow retry
-        // if persist send mail to support after retry. Prepare modal for this.
-        console.error({ error });
+        // TODO handle error, show toast saying signature rejected or failed
+        console.error({ loginSiweError: error });
+        await logout();
+        throw error;
       } finally {
         // setSiweLoading(false);
       }
@@ -134,17 +135,67 @@ export function useSafeAuth(
     setSafeUser(undefined);
   }, [safeAuth, logoutSiwe]);
 
+  // used to stop execution of login function if user closes modal
+  const observeModalElement = async () => {
+    let resolveModalAppeared: any;
+    const modalAppeared = new Promise((resolve) => {
+      resolveModalAppeared = resolve;
+    });
+
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+          const modalElement = document.getElementById('w3a-modal');
+          if (modalElement) {
+            resolveModalAppeared();
+            observer.disconnect();
+          }
+        }
+      }
+    });
+
+    observer.observe(document, { childList: true, subtree: true });
+    await modalAppeared;
+
+    return new Promise((resolve, reject) => {
+      const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+          if (mutation.type === 'childList') {
+            const modalElement = document.getElementById('w3a-modal');
+            if (!modalElement) {
+              reject('Modal closed');
+              observer.disconnect();
+            }
+          }
+        }
+      });
+
+      observer.observe(document, { childList: true, subtree: true });
+    });
+  };
+
   const login = useCallback(async () => {
     if (!safeAuth) return;
+
     try {
-      const signInInfo = await safeAuth.signIn();
-      console.log('SIGN IN RESPONSE: ', signInInfo);
-      setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
+      // here will determine if the user close the modal or not
+      // if the user close the modal, the modalClosed will be returned
+      const raceResult = await Promise.race([
+        safeAuth.signIn().then(() => 'signIn'),
+        observeModalElement().catch(() => 'modalClosed'),
+      ]);
+
+      // if the user sign in, the signIn we want to set the provider
+      if (raceResult === 'signIn') {
+        setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
+      }
     } catch (error) {
-      console.error(error);
-      await logout();
+      // The error is thrown when the user close the modal to connect with the provider
+      console.error({ errorFromLogin: error });
+      // todo add popup error with error message "Error: The popup window was closed"
+      throw error;
     }
-  }, [safeAuth, logout]);
+  }, [safeAuth]);
 
   // when the provider (wallet) is connected, login to siwe or bypass if cookie is present
   useEffect(() => {
@@ -173,6 +224,7 @@ export function useSafeAuth(
           chainId,
         },
         uiConfig: {
+          // defaultLanguage: 'de', // todo add language
           appLogo: isDark ? './logo-light.svg' : './logo-dark.svg',
           theme: isDark ? 'dark' : 'light',
           loginMethodsOrder: [
@@ -208,7 +260,7 @@ export function useSafeAuth(
 
       const openloginAdapter = new OpenloginAdapter({
         loginSettings: {
-          mfaLevel: 'mandatory',
+          mfaLevel: 'default',
           sessionTime:
             parseInt(process.env.TOKEN_LIFE_TIME as string) ||
             30 * 24 * 60 * 60, // 30 days,
@@ -218,6 +270,10 @@ export function useSafeAuth(
           whiteLabel: {
             // TODO adapt here with Offline branding, https://web3auth.io/docs/sdk/web/openlogin#whitelabel
             name: 'Offline',
+            logoLight: './logo-dark.svg',
+            logoDark: './logo-light.svg',
+            dark: isDark,
+            // defaultLanguage: 'de', // todo add language
           },
         },
       });
@@ -247,6 +303,8 @@ export function useSafeAuth(
         );
       };
     })();
+    // IMPORTANT: keep only isDark in the dependency array, otherwise it will create an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDark]);
 
   return {
