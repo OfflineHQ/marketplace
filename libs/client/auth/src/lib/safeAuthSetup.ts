@@ -2,6 +2,7 @@
 // safeAuthSetup.ts
 import { useEffect, useState, useCallback } from 'react';
 import { useDarkMode } from '@ui/hooks';
+import { useToast } from '@ui/components';
 import {
   SafeAuthKit,
   SafeAuthSignInData,
@@ -65,6 +66,7 @@ export function useSafeAuth(
     null
   );
   const isDark = useDarkMode();
+  const { toast } = useToast();
 
   const setupUserSession = useCallback(async () => {
     if (!safeAuth) return;
@@ -106,16 +108,23 @@ export function useSafeAuth(
         console.log({ signInRes });
         await setupUserSession();
         if (signInRes?.error) {
-          console.error('Error signing in with siwe');
+          console.error('Error signing in with SIWE:', signInRes?.error);
+          toast({
+            variant: 'destructive',
+            title: 'Error signing in with your wallet',
+            description:
+              'Something went wrong with the signature. Please try again or contact the support if its still failing.',
+          });
           // TODO handle error, show toast
         }
       } catch (error) {
+        toast({
+          title: 'Signature declined',
+          description:
+            'You either declined or the signature failed. Please try again.',
+        });
         // TODO handle error, show toast saying signature rejected or failed
-        console.error({ loginSiweError: error });
         await logout();
-        throw error;
-      } finally {
-        // setSiweLoading(false);
       }
     },
     [setupUserSession]
@@ -191,9 +200,12 @@ export function useSafeAuth(
       }
     } catch (error) {
       // The error is thrown when the user close the modal to connect with the provider
-      console.error({ errorFromLogin: error });
-      // todo add popup error with error message "Error: The popup window was closed"
-      throw error;
+      console.warn({ error });
+      toast({
+        title: 'Sign in error',
+        description:
+          'The connection to the login provider was closed. Please try again.',
+      });
     }
   }, [safeAuth]);
 
