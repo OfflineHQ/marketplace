@@ -16,6 +16,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
+const withNextIntl = require('next-intl/plugin')(
+  // This is the default (also the `src` folder is supported out of the box)
+  './apps/web/i18n.ts'
+);
+
 const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
   ? null
   : process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
@@ -92,5 +97,6 @@ module.exports = async (phase, context) => {
   // config = await nextTranslate(config);
   config = await withSentryConfig(config, sentryWebpackPluginOptions);
   config = await withBundleAnalyzer(config);
+  config = await withNextIntl(config);
   return config;
 };

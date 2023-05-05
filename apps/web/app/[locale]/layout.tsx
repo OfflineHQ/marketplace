@@ -1,8 +1,9 @@
 import '@web/styles/globals.css';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
-
+import { useLocale } from 'next-intl';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { siteConfig } from '@web/config/site';
 import { Analytics } from '@web/components/Analytics';
 import { ThemeProvider } from '@ui/theme';
@@ -16,13 +17,9 @@ const fontSans = FontSans({
 
 // Font files can be colocated inside of `pages`
 const fontHeading = localFont({
-  src: '../assets/fonts/CalSans-SemiBold.woff2',
+  src: '../../assets/fonts/CalSans-SemiBold.woff2',
   variable: '--font-heading',
 });
-
-interface RootLayoutProps {
-  children: React.ReactNode;
-}
 
 export const metadata: Metadata = {
   title: {
@@ -30,7 +27,13 @@ export const metadata: Metadata = {
     template: `%s - ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: ['Next.js', 'React', 'Tailwind CSS', 'Server Components', 'Radix UI'],
+  keywords: [
+    'Next.js',
+    'React',
+    'Tailwind CSS',
+    'Server Components',
+    'Radix UI',
+  ],
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },
@@ -66,7 +69,13 @@ export const metadata: Metadata = {
   // manifest: `${siteConfig.url}/site.webmanifest`, // set back when we have a manifest published
 };
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children, params }) {
+  const locale = useLocale();
+
+  // Show a 404 error if the user requests an unknown locale
+  if (params.locale !== locale) {
+    notFound();
+  }
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
