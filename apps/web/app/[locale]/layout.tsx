@@ -77,7 +77,7 @@ export default function RootLayout({ children, params }) {
     notFound();
   }
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head />
       <body
         className={cn(
