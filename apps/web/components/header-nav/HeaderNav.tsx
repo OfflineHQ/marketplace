@@ -119,7 +119,7 @@ export function HeaderNav(props: HeaderNavProps) {
               </div>
               <NavigationMenu>
                 <NavigationMenuList>
-                  <NavLink href="/" className="min-w-[100px]">
+                  <NavLink href="/">
                     <div className="h-full w-full">
                       <Logo />
                     </div>
