@@ -105,6 +105,7 @@
     "@types/cache-manager-redis-store": "^2.0.1",
     "@vercel/analytics": "^0.1.11",
     "@wagmi/connectors": "^0.3.18",
+    "@web3auth/ui": "^5.1.0",
     "@web3auth/web3auth-wagmi-connector": "^3.0.2",
     "@xstate/react": "^3.2.2",
     "alchemy-sdk": "^2.8.2",

@@ -38,14 +38,7 @@ export const useAuthContext = () => {
 };
 
 export const AuthProvider = ({ children }: IAppProviderProps) => {
-  const connectedHandler = async (data: any) => {
-    console.log('CONNECTED', data);
-  };
-  const disconnectedHandler = (data: any) => console.log('DISCONNECTED', data);
-  const { safeAuth, ...props } = useSafeAuth(
-    connectedHandler,
-    disconnectedHandler
-  );
+  const { safeAuth, ...props } = useSafeAuth();
 
   return (
     <AuthContext.Provider

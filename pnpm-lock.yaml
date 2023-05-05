@@ -134,6 +134,7 @@ specifiers:
   '@web3auth/base': ^5.1.0
   '@web3auth/modal': ^5.1.1
   '@web3auth/openlogin-adapter': ^5.1.1
+  '@web3auth/ui': ^5.1.0
   '@web3auth/web3auth-wagmi-connector': ^3.0.2
   '@xstate/react': ^3.2.2
   alchemy-sdk: ^2.8.2
@@ -305,6 +306,7 @@ dependencies:
   '@types/cache-manager-redis-store': 2.0.1
   '@vercel/analytics': 0.1.11_react@18.2.0
   '@wagmi/connectors': 0.3.18_uhxi3duk7obpfydwzg7zivsyni
+  '@web3auth/ui': 5.1.0_k3fe6nn6afmaw4tt3qkyc7b6yy
   '@web3auth/web3auth-wagmi-connector': 3.0.2_vcojvm7ffumljjbawbfptvrfai
   '@xstate/react': 3.2.2_pmekkgnqduwlme35zpnqhenc34
   alchemy-sdk: 2.8.2

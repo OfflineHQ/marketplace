@@ -19,6 +19,7 @@ import {
   WALLET_ADAPTERS,
   SafeEventEmitterProvider,
 } from '@web3auth/base';
+import { LOGIN_MODAL_EVENTS } from '@web3auth/ui';
 import { ethers } from 'ethers';
 import { SiweMessage } from 'siwe';
 import { signIn, signOut, getCsrfToken } from 'next-auth/react';
@@ -56,10 +57,7 @@ export interface SafeUser
   extends SafeGetUserInfoResponse<Web3AuthModalPack>,
     SafeAuthSignInData {}
 
-export function useSafeAuth(
-  connectedHandler: Web3AuthEventListener,
-  disconnectedHandler: Web3AuthEventListener
-) {
+export function useSafeAuth() {
   const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthModalPack>>();
   const [safeUser, setSafeUser] = useState<SafeUser>();
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
@@ -67,6 +65,41 @@ export function useSafeAuth(
   );
   const isDark = useDarkMode();
   const { toast } = useToast();
+
+  const web3AuthErrorHandler = useCallback((error: any) => {
+    // eslint-disable-next-line sonarjs/no-small-switch
+    switch (error?.message) {
+      case 'user closed popup':
+        toast({
+          title: 'Sign in error',
+          description:
+            'The connection to the login provider was closed. Please try again.',
+        });
+        break;
+      default:
+        console.error({ error });
+        break;
+    }
+  }, []);
+
+  // const web3AuthModalVisibilityHandler = useCallback(
+  //   (visible: boolean) => visible,
+  //   []
+  // );
+
+  const logoutSiwe = useCallback(async () => {
+    return signOut({ redirect: false });
+  }, []);
+
+  const logout = useCallback(async () => {
+    if (!safeAuth) return;
+
+    await safeAuth.signOut();
+    await logoutSiwe();
+
+    setProvider(null);
+    setSafeUser(undefined);
+  }, [safeAuth, logoutSiwe]);
 
   const setupUserSession = useCallback(async () => {
     if (!safeAuth) return;
@@ -127,22 +160,8 @@ export function useSafeAuth(
         await logout();
       }
     },
-    [setupUserSession]
+    [setupUserSession, toast, logout]
   );
-
-  const logoutSiwe = useCallback(async () => {
-    return signOut({ redirect: false });
-  }, []);
-
-  const logout = useCallback(async () => {
-    if (!safeAuth) return;
-
-    await safeAuth.signOut();
-    await logoutSiwe();
-
-    setProvider(null);
-    setSafeUser(undefined);
-  }, [safeAuth, logoutSiwe]);
 
   // used to stop execution of login function if user closes modal
   const observeModalElement = async () => {
@@ -187,25 +206,46 @@ export function useSafeAuth(
     if (!safeAuth) return;
 
     try {
+      let modalVisibleResolve: any, modalClosedResolved: any;
+      // used to detect when the modal is closed during the login process
+      const modalVisibilityChanged = new Promise((resolve, _) => {
+        modalVisibleResolve = resolve;
+      }).then(() => {
+        return new Promise((resolve, _) => (modalClosedResolved = resolve));
+      });
+
+      const web3AuthModalVisibilityHandler = (isVisible: boolean) => {
+        if (isVisible) {
+          modalVisibleResolve();
+        } else {
+          modalClosedResolved();
+        }
+      };
+
+      safeAuth.subscribe(
+        LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
+        web3AuthModalVisibilityHandler
+      );
+
       // here will determine if the user close the modal or not
-      // if the user close the modal, the modalClosed will be returned
+      // if the user close the modal, web3AuthModalVisibilityHandler will be resolved before
       const raceResult = await Promise.race([
-        safeAuth.signIn().then(() => 'signIn'),
-        observeModalElement().catch(() => 'modalClosed'),
+        safeAuth.signIn().then(() => {
+          safeAuth.unsubscribe(
+            LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
+            web3AuthModalVisibilityHandler
+          );
+          return 'signIn';
+        }),
+        modalVisibilityChanged,
       ]);
 
-      // if the user sign in, the signIn we want to set the provider
+      // if the user sign in, we want to set the provider
       if (raceResult === 'signIn') {
         setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
       }
     } catch (error) {
-      // The error is thrown when the user close the modal to connect with the provider
       console.warn({ error });
-      toast({
-        title: 'Sign in error',
-        description:
-          'The connection to the login provider was closed. Please try again.',
-      });
     }
   }, [safeAuth]);
 
@@ -299,20 +339,24 @@ export function useSafeAuth(
       const safeAuthKit = await SafeAuthKit.init(web3AuthModalPack, {
         txServiceUrl: safeTxServiceUrl,
       });
-      safeAuthKit.subscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler);
 
-      safeAuthKit.subscribe(ADAPTER_EVENTS.DISCONNECTED, disconnectedHandler);
+      safeAuthKit.subscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
+
+      // safeAuthKit.subscribe(
+      //   LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
+      //   web3AuthModalVisibilityHandler
+      // );
 
       setSafeAuth(safeAuthKit);
 
       setProvider(safeAuthKit.getProvider() as SafeEventEmitterProvider);
 
       return () => {
-        safeAuthKit.unsubscribe(ADAPTER_EVENTS.CONNECTED, connectedHandler);
-        safeAuthKit.unsubscribe(
-          ADAPTER_EVENTS.DISCONNECTED,
-          disconnectedHandler
-        );
+        safeAuthKit.unsubscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
+        // safeAuthKit.unsubscribe(
+        //   LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
+        //   web3AuthModalVisibilityHandler
+        // );
       };
     })();
     // IMPORTANT: keep only isDark in the dependency array, otherwise it will create an infinite loop
