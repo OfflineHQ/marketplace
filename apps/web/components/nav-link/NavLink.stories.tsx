@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { NavLink } from './NavLink';
 import { NavLinkExample } from './examples';
+import { Route } from 'next';
 
 const meta = {
   component: NavLink,
@@ -13,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    href: '/link',
+    href: '/link' as Route,
     children: 'A link',
   },
   parameters: {
@@ -29,7 +30,7 @@ export const Default: Story = {
 
 export const NotActive: Story = {
   args: {
-    href: '/link',
+    href: '/en/link' as Route,
     children: 'A link',
   },
   render: NavLinkExample,

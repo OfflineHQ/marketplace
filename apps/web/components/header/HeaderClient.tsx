@@ -29,7 +29,7 @@ const Header = () => {
       },
       {
         type: 'item',
-        text: 'Dark',
+        text: t('display-options.dark'),
         action: () => {
           console.log('set dark');
           setTheme('dark');
@@ -39,7 +39,7 @@ const Header = () => {
       },
       {
         type: 'item',
-        text: 'Automatic',
+        text: t('display-options.auto'),
         action: () => setTheme('auto'),
         icon: <DarkLight />,
         disabled: theme === 'auto',
@@ -52,13 +52,13 @@ const Header = () => {
     () => [
       {
         type: 'item',
-        text: 'English',
+        text: t('language-options.en'),
         icon: <Check />,
         disabled: true,
       },
       {
         type: 'item',
-        text: 'Français',
+        text: t('language-options.fr'),
       },
     ],
     []
@@ -67,8 +67,8 @@ const Header = () => {
   const signOutUserAction = useCallback(async () => {
     await logout();
     toast({
-      title: 'You have been signed out',
-      description: 'See you soon 👋 !',
+      title: t('sign-out.title'),
+      description: t('sign-out.description'),
     });
   }, [logout, toast]);
 
@@ -77,7 +77,11 @@ const Header = () => {
       !safeUser
         ? []
         : [
-            { type: 'label', text: 'My Account', className: 'pt-2 pb-0' },
+            {
+              type: 'label',
+              text: t('profile-sections.my-account'),
+              className: 'pt-2 pb-0',
+            },
             {
               type: 'children',
               children: (
@@ -91,11 +95,11 @@ const Header = () => {
               type: 'item',
               icon: <LifeBuoy />,
               className: 'cursor-pointer',
-              text: 'Support',
+              text: t('profile-sections.support'),
               action: () =>
                 toast({
-                  title: 'Coming soon',
-                  description: 'This feature is not available yet',
+                  title: t('profile-sections.support-title'),
+                  description: t('profile-sections.support-description'),
                 }),
             },
             { type: 'separator' },
@@ -104,16 +108,11 @@ const Header = () => {
               icon: <LogOut />,
               className: 'cursor-pointer',
               action: signOutUserAction,
-              text: 'Sign out',
+              text: t('profile-sections.sign-out'),
             },
           ],
     [safeUser, signOutUserAction, toast]
   );
-
-  const languageText = 'Language';
-  const languageHelperText = 'Select your language';
-  const displayText = 'Display mode';
-  const displayHelperText = 'Select a display mode';
 
   return (
     <HeaderNav
@@ -125,11 +124,11 @@ const Header = () => {
       userLoading={!!provider && !safeUser} // mean web3Auth is connected but waiting for cookie and safe user info
       settings={{
         languages,
-        languageText,
-        languageHelperText,
+        languageText: t('language-text'),
+        languageHelperText: t('language-helper-text'),
         displays,
-        displayText,
-        displayHelperText,
+        displayText: t('display-text'),
+        displayHelperText: t('display-helper-text'),
       }}
     />
   );

@@ -15,6 +15,17 @@
     "language-options": {
       "en": "English",
       "fr": "Français"
+    },
+    "sign-out": {
+      "title": "You have been signed out",
+      "description": "See you soon 👋 !"
+    },
+    "profile-sections": {
+      "my-account": "My Account",
+      "support": "Support",
+      "support-title": "Coming soon",
+      "support-description": "This feature is not available yet",
+      "sign-out": "Sign out"
     }
   }
 }
