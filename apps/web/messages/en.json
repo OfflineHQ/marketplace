@@ -1,5 +1,20 @@
 {
   "Index": {
     "title": "Hello world!"
+  },
+  "Header": {
+    "display-text": "Display mode",
+    "display-helper-text": "Select a display mode",
+    "display-options": {
+      "light": "Light",
+      "dark": "Dark",
+      "auto": "Automatic"
+    },
+    "language-text": "Language",
+    "language-helper-text": "Select a language",
+    "language-options": {
+      "en": "English",
+      "fr": "Français"
+    }
   }
 }
