@@ -15,10 +15,9 @@ import { getNextAppURL } from '@client/next-auth/common';
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 
-const refreshAccessToken = async (token: JWT) => {
-  logger.debug('refreshing access token', { token });
-  return token;
-};
+// const refreshAccessToken = async (token: JWT) => {
+//   return token;
+// };
 
 export const jwtOptions: JWTOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,
@@ -64,7 +63,8 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: 'jwt',
-    maxAge: parseInt(process.env.TOKEN_LIFE_TIME as string) || 30 * 24 * 60 * 60, // 30 days
+    maxAge:
+      parseInt(process.env.TOKEN_LIFE_TIME as string) || 30 * 24 * 60 * 60, // 30 days
   },
   debug: !isProd(),
   providers,
@@ -105,7 +105,8 @@ export const authOptions: NextAuthOptions = {
       if (user && account) {
         return {
           accessToken: account.access_token,
-          accessTokenExpires: Date.now() + (account?.expires_at as number) * 1000,
+          accessTokenExpires:
+            Date.now() + (account?.expires_at as number) * 1000,
           refreshToken: account.refresh_token,
           user: { ...user, name: profile?.name },
           provider: account.provider,
@@ -121,9 +122,9 @@ export const authOptions: NextAuthOptions = {
       if (Date.now() < (token.accessTokenExpires as number)) {
         return token;
       }
-
+      return token;
       // Access token has expired, try to update it
-      return refreshAccessToken(token);
+      // return refreshAccessToken(token);
     },
     async session({ session, token }) {
       logger.debug('session callback', { session, token });
