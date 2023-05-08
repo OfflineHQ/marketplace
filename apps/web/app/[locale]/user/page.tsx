@@ -11,7 +11,7 @@ export default async function Page() {
   logger.debug('session', session);
   return (
     <>
-      <Text variant="h1">Hello ! {session?.user?.email || ''}</Text>
+      <Text variant="h1">Hello ! {session?.user?.id || ''}</Text>
       <Button>Connected Server Button</Button>
     </>
   );
