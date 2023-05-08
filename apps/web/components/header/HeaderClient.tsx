@@ -1,7 +1,7 @@
 'use client';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import {
   HeaderNav,
   type HeaderSettingsProps,
@@ -10,13 +10,37 @@ import {
 import { Dark, Light, DarkLight, Check, LifeBuoy, LogOut } from '@ui/icons';
 import { useToast } from '@ui/components';
 import { useAuthContext } from '@client/auth';
+import { usePathname } from 'next-intl/client';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 const Header = () => {
   const { safeUser, login, logout, safeAuth, provider } = useAuthContext();
-  const [language, setLanguage] = useState<'en' | 'fr'>();
   const { setTheme, theme } = useTheme();
   const { toast } = useToast();
   const t = useTranslations('Header');
+  const router = useRouter();
+  const locale = useLocale();
+
+  // const { pathname, asPath, query } = router;
+  const pathname = usePathname() as string;
+  const searchParams = useSearchParams();
+  const getCurrentUrl = useCallback(() => {
+    let url = pathname;
+    if (searchParams?.toString()) url += `?${searchParams.toString()}`;
+    return url;
+  }, [pathname, searchParams]);
+
+  const [currentUrl, setCurrentUrl] = useState<string>(getCurrentUrl());
+
+  useEffect(() => {
+    setCurrentUrl(getCurrentUrl());
+  }, [pathname, searchParams]);
+
+  const changeLocale = (newLocale: string) => {
+    const url =
+      currentUrl && currentUrl !== '/' ? newLocale + currentUrl : newLocale;
+    router.push(url);
+  };
 
   const displays: HeaderSettingsProps['displays'] = useMemo(
     () => [
@@ -53,15 +77,19 @@ const Header = () => {
       {
         type: 'item',
         text: t('language-options.en'),
-        icon: <Check />,
-        disabled: true,
+        icon: locale === 'en' ? <Check /> : undefined,
+        disabled: locale === 'en',
+        action: () => changeLocale('en'),
       },
       {
         type: 'item',
         text: t('language-options.fr'),
+        icon: locale === 'fr' ? <Check /> : undefined,
+        disabled: locale === 'fr',
+        action: () => changeLocale('fr'),
       },
     ],
-    []
+    [locale, currentUrl, changeLocale]
   );
 
   const signOutUserAction = useCallback(async () => {
