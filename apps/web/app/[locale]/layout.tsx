@@ -69,9 +69,15 @@ export const metadata: Metadata = {
   // manifest: `${siteConfig.url}/site.webmanifest`, // set back when we have a manifest published
 };
 
+// Error: Usage of next-intl APIs in Server Components is currently only available for dynamic rendering (i.e. no `generateStaticParams`).
+
+// Support for static rendering is under consideration, please refer to the roadmap: https://next-intl-docs.vercel.app/docs/next-13/server-components#roadmap
+// export async function generateStaticParams() {
+//   return locales.map((locale) => ({ locale }));
+// }
+
 export default function RootLayout({ children, params }) {
   const locale = useLocale();
-
   // Show a 404 error if the user requests an unknown locale
   if (params.locale !== locale) {
     notFound();

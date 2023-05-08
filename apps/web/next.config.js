@@ -16,10 +16,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-const withNextIntl = require('next-intl/plugin')(
-  // This is the default (also the `src` folder is supported out of the box)
-  './apps/web/i18n.ts'
-);
+const withNextIntl = require('next-intl/plugin')('./apps/web/i18n.ts');
 
 const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
   ? null
