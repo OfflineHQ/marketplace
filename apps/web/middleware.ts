@@ -40,8 +40,6 @@ export default function middleware(req: NextRequest) {
     'i'
   );
   const isAuthPage = restrictedPathnameRegex.test(req.nextUrl.pathname);
-  console.log('isAuthPage', isAuthPage, 'pathname', req.nextUrl.pathname);
-
   if (isAuthPage) {
     return (authMiddleware as any)(req);
   } else {
