@@ -29,18 +29,6 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   transpilePackages: ['@ui/components', '@ui/theme'],
-  // webpack: (config, { isServer }) => {
-  //   if (!isServer) {
-  //     config.resolve.fallback = {
-  //       fs: false,
-  //       net: false,
-  //       tls: false,
-  //       // crypto: require.resolve('crypto-browserify'),
-  //     };
-  //   }
-  //   return config;
-  // },
-
   images: {},
   // optimize build with vercel nft (node file tracing) https://nextjs.org/docs/advanced-features/output-file-tracing
   // outputFileTracingRoot needed for monorepo
