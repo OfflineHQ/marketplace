@@ -1,8 +1,11 @@
-import { joinPathFragments, readProjectConfiguration, Tree } from '@nrwl/devkit';
+import {
+  joinPathFragments,
+  readProjectConfiguration,
+  Tree,
+} from '@nrwl/devkit';
 import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
 import { Linter } from '@nrwl/linter';
-import { libraryGenerator } from '@nrwl/react/src/generators/library/library';
-import { storybookConfigurationGenerator } from '@nrwl/react/src/generators/storybook-configuration/configuration';
+import { libraryGenerator, storybookConfigurationGenerator } from '@nrwl/react';
 import generator from './generator';
 
 describe('component generator', () => {
@@ -25,7 +28,6 @@ describe('component generator', () => {
     await storybookConfigurationGenerator(tree, {
       configureCypress: true,
       name: 'ui-lib',
-      standaloneConfig: true,
     });
 
     await generator(tree, {
@@ -34,18 +36,25 @@ describe('component generator', () => {
     });
 
     const { sourceRoot } = readProjectConfiguration(tree, 'ui-lib');
-    const { sourceRoot: e2eSourceRoot } = readProjectConfiguration(tree, 'ui-lib-e2e');
+    const { sourceRoot: e2eSourceRoot } = readProjectConfiguration(
+      tree,
+      'ui-lib-e2e'
+    );
 
     expect(
       tree.exists(joinPathFragments(sourceRoot, 'lib/data-table/DataTable.tsx'))
     ).toBe(true);
 
     expect(
-      tree.exists(joinPathFragments(sourceRoot, 'lib/data-table/DataTable.spec.tsx'))
+      tree.exists(
+        joinPathFragments(sourceRoot, 'lib/data-table/DataTable.spec.tsx')
+      )
     ).toBe(true);
 
     expect(
-      tree.exists(joinPathFragments(sourceRoot, 'lib/data-table/DataTable.stories.tsx'))
+      tree.exists(
+        joinPathFragments(sourceRoot, 'lib/data-table/DataTable.stories.tsx')
+      )
     ).toBe(true);
   });
 });
