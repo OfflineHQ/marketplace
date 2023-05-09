@@ -42,7 +42,7 @@ export const globalTypes = {
 };
 
 const I18nextStoryDecorator: Decorator = (Story, context) => {
-  const { locale } = context.globals;
+  let { locale } = context.globals;
   let messages;
   switch (locale) {
     case 'en':
@@ -52,6 +52,7 @@ const I18nextStoryDecorator: Decorator = (Story, context) => {
       messages = messagesFrancais;
       break;
     default:
+      locale = 'en';
       messages = messagesEnglish;
   }
   return (
