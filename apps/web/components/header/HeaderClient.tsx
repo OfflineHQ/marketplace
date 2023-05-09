@@ -13,7 +13,7 @@ import { useAuthContext } from '@client/auth';
 import { usePathname } from 'next-intl/client';
 import { useSearchParams, useRouter } from 'next/navigation';
 
-const Header = () => {
+export const Header = () => {
   const { safeUser, login, logout, safeAuth, provider } = useAuthContext();
   const { setTheme, theme } = useTheme();
   const { toast } = useToast();

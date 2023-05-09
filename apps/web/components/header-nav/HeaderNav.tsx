@@ -190,5 +190,3 @@ export function HeaderNav(props: HeaderNavProps) {
     </AutoAnimate>
   );
 }
-
-export default HeaderNav;
