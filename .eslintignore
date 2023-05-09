@@ -1,5 +1,6 @@
 node_modules
 dist
+dist/**
 coverage
 tmp
 generated
@@ -7,4 +8,5 @@ generated
 *lock.yaml
 .babelrc
 hasura/app/**
+.next/**
 .next
