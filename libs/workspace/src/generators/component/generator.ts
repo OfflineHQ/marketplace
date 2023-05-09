@@ -1,6 +1,8 @@
 import { formatFiles, installPackagesTask, Tree, names } from '@nrwl/devkit';
-import { componentStoryGenerator } from '@nrwl/react/src/generators/component-story/component-story';
-import { componentGenerator as reactComponentGenerator } from '@nrwl/react/src/generators/component/component';
+import {
+  componentStoryGenerator,
+  componentGenerator as reactComponentGenerator,
+} from '@nrwl/react';
 import { ComponentGeneratorSchema } from './schema';
 import { toPascalCase } from '@utils';
 
@@ -9,7 +11,9 @@ export async function componentGenerator(
   { name, project }: ComponentGeneratorSchema
 ) {
   const { fileName: componentFileName, className: componentName } = names(name);
-  const componentPath = `lib/${componentFileName}/${toPascalCase(componentFileName)}.tsx`;
+  const componentPath = `lib/${componentFileName}/${toPascalCase(
+    componentFileName
+  )}.tsx`;
 
   await reactComponentGenerator(tree, {
     name: componentName,
