@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const withNx = require('@nrwl/next/plugins/with-nx');
+const { withNx } = require('@nrwl/next');
 const path = require('path');
 const { withSentryConfig } = require('@sentry/nextjs');
 
@@ -29,17 +29,17 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   transpilePackages: ['@ui/components', '@ui/theme'],
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        fs: false,
-        net: false,
-        tls: false,
-        // crypto: require.resolve('crypto-browserify'),
-      };
-    }
-    return config;
-  },
+  // webpack: (config, { isServer }) => {
+  //   if (!isServer) {
+  //     config.resolve.fallback = {
+  //       fs: false,
+  //       net: false,
+  //       tls: false,
+  //       // crypto: require.resolve('crypto-browserify'),
+  //     };
+  //   }
+  //   return config;
+  // },
 
   images: {},
   // optimize build with vercel nft (node file tracing) https://nextjs.org/docs/advanced-features/output-file-tracing
@@ -68,10 +68,6 @@ const sentryWebpackPluginOptions = {
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
-module.exports = withBundleAnalyzer(
-  withSentryConfig(withNx(nextConfig), sentryWebpackPluginOptions)
-);
-
 module.exports = async (phase, context) => {
   const isProd = process.env.NODE_ENV === 'production';
   // Use the CDN in production and localhost for development.
@@ -91,8 +87,8 @@ module.exports = async (phase, context) => {
   });
 
   let config = await addNx(phase);
-  // config = await nextTranslate(config);
-  config = await withSentryConfig(config, sentryWebpackPluginOptions);
+  // // TODO, set back after fix for: Module not found: Can't resolve '@sentry/utils/esm/buildPolyfills'
+  // config = await withSentryConfig(config, sentryWebpackPluginOptions);
   config = await withBundleAnalyzer(config);
   config = await withNextIntl(config);
   return config;

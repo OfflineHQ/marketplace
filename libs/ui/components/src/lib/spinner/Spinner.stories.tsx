@@ -45,12 +45,6 @@ export const Outline = {
   },
 } satisfies Story;
 
-export const Subtle = {
-  args: {
-    variant: 'subtle',
-  },
-} satisfies Story;
-
 export const Ghost = {
   args: {
     variant: 'ghost',
@@ -70,7 +64,11 @@ type AllSizesComponentProps = {
 const AllSizesComponent: React.FC<AllSizesComponentProps> = ({ variant }) => (
   <>
     {sizeOptions.map((size) => (
-      <Spinner key={size} size={size as SpinnerProps['size']} variant={variant} />
+      <Spinner
+        key={size}
+        size={size as SpinnerProps['size']}
+        variant={variant}
+      />
     ))}
   </>
 );

@@ -14,12 +14,14 @@ export function PopoverDemo() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="subtle" icon={Settings} />
+        <Button variant="ghost" icon={Settings} />
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <PopoverHeader>
           <PopoverTitle>Dimensions</PopoverTitle>
-          <PopoverDescription>Set the dimensions for the layer.</PopoverDescription>
+          <PopoverDescription>
+            Set the dimensions for the layer.
+          </PopoverDescription>
         </PopoverHeader>
         <TextInputWithLeftLabels label="dummy" size="sm" />
       </PopoverContent>
@@ -31,7 +33,7 @@ export function PopoverDemoWithNoHeader() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="subtle" icon={Settings} />
+        <Button variant="ghost" icon={Settings} />
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <TextInputWithLeftLabels label="dummy" size="sm" />

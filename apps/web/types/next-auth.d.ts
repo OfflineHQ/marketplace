@@ -7,10 +7,7 @@ declare module 'next-auth' {
     id: string;
     // crypto wallet address
     address: string;
-    firstName?: string | null;
-    lastName?: string | null;
-    email?: string | null;
-    image?: string | null;
+    chainId: number;
   }
 
   interface Session {

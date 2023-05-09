@@ -44,6 +44,7 @@ export const SiweProvider = () =>
       } catch (error) {
         Sentry.captureException(error);
         console.error({ error });
+        return null;
       }
     },
   });

@@ -16,8 +16,6 @@
     "baseUrl": ".",
     "paths": {
       "@client/auth": ["libs/client/auth/src/index.ts"],
-      "@client/biconomy/scw": ["libs/client/biconomy/scw/src/index.ts"],
-      "@client/biconomy/store": ["libs/client/biconomy/store/src/index.ts"],
       "@client/gql/admin": ["libs/client/gql/admin/src/generated/index.ts"],
       "@client/gql/thegraph": ["libs/client/gql/thegraph/src/index.ts"],
       "@client/gql/user": ["libs/client/gql/user/src/generated/index.ts"],
