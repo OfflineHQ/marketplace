@@ -7,7 +7,12 @@ const tsconfig = require('../../../tsconfig.base.json');
 const isCI = !!process.env.GITHUB_EVENT_NAME; // Check if running in CI
 
 module.exports = {
-  stories: ['../**/*.mdx', '../**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: [
+    '../**/*.mdx',
+    '../**/*.stories.@(js|jsx|ts|tsx)',
+    '../../../libs/features/**/*.stories.@(js|jsx|ts|tsx)',
+    '../../../libs/features/**/*.mdx',
+  ],
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',

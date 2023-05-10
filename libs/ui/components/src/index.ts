@@ -32,6 +32,7 @@ export {
   AvatarImage,
   AvatarFallback,
   AvatarSkeleton,
+  type AvatarProps,
 } from './lib/avatar/Avatar';
 export {
   DropdownMenu,

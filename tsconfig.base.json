@@ -22,6 +22,7 @@
       "@client/hasura/adapter": ["libs/client/hasura/adapter/src/index.ts"],
       "@client/hasura/fetcher": ["libs/client/hasura/fetcher/src/index.ts"],
       "@client/hasura/utils": ["libs/client/hasura/utils/src/index.ts"],
+      "@client/i18n": ["libs/client/i18n/src/index.ts"],
       "@client/next-auth/common": ["libs/client/next-auth/common/src/index.ts"],
       "@client/next-auth/options": [
         "libs/client/next-auth/options/src/index.ts"
@@ -30,6 +31,8 @@
       "@client/siwe/provider": ["libs/client/siwe/provider/src/index.ts"],
       "@client/zustand": ["libs/client/zustand/src/index.ts"],
       "@dlt/types": ["libs/dlt/types/src/index.ts"],
+      "@features/header/ui": ["libs/features/header/ui/src/index.ts"],
+      "@features/header/ui/server": ["libs/features/header/ui/src/server.tsx"],
       "@logger": ["libs/logger/src/index.ts"],
       "@server/alchemy": ["libs/server/alchemy/src/index.ts"],
       "@server/api": ["libs/server/api/src/index.ts"],

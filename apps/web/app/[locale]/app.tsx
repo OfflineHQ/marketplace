@@ -1,4 +1,4 @@
-import Header from '@web/components/header/Header';
+import Header from '@features/header/ui/server';
 import { Toaster } from '@ui/components';
 import { AuthProvider } from '@client/auth';
 import { useTranslations } from 'next-intl';

@@ -1,13 +1,22 @@
 import { useMemo } from 'react';
-import { Avatar, AvatarImage, AvatarFallback } from '@ui/components';
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  type AvatarProps,
+} from '@ui/components';
 import { emojiAvatarForAddress } from '@ui/shared';
 import type { SafeUser } from '@client/auth';
 
-export interface ProfileAvatarProps {
+export interface ProfileAvatarProps extends Omit<AvatarProps, 'size'> {
   user: SafeUser;
 }
 
-function EmojiAvatar(props, address) {
+export interface EmojiAvatarProps extends Omit<AvatarProps, 'size'> {
+  address: string;
+}
+
+function EmojiAvatar({ address, ...props }: EmojiAvatarProps) {
   const { color, emoji } = useMemo(
     () => emojiAvatarForAddress(address),
     [address]
@@ -42,7 +51,7 @@ export function ProfileAvatar(props: ProfileAvatarProps) {
       <AvatarFallback>{fallBack}</AvatarFallback>
     </Avatar>
   ) : (
-    EmojiAvatar({ ...props, className }, eoa)
+    EmojiAvatar({ ...props, className, address: eoa })
   );
 }
 
