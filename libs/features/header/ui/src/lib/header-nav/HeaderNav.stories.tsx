@@ -26,6 +26,7 @@ import {
   languageHelperText,
   displayText,
   displayHelperText,
+  signInText,
 } from './examples';
 import { sleep } from '@utils';
 
@@ -38,6 +39,7 @@ const meta = {
     user: undefined,
     loading: false,
     signIn: () => sleep(1000),
+    signInText,
     userLoading: false,
     settings: {
       languages,

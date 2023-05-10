@@ -51,6 +51,7 @@ export interface HeaderProfileProps {
 function Profile({
   user,
   signIn,
+  signInText,
   loading,
   userLoading,
   profileSections,
