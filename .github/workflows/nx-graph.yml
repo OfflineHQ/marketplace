@@ -34,7 +34,7 @@ jobs:
       - name: Setup Nx Graph Page
         uses: actions/configure-pages@v2.1.2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
