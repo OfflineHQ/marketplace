@@ -1,8 +1,8 @@
-import { formatFiles, installPackagesTask, Tree, names } from '@nrwl/devkit';
+import { formatFiles, installPackagesTask, Tree, names } from '@nx/devkit';
 import {
   componentStoryGenerator,
   componentGenerator as reactComponentGenerator,
-} from '@nrwl/react';
+} from '@nx/react';
 import { ComponentGeneratorSchema } from './schema';
 import { toPascalCase } from '@utils';
 

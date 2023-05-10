@@ -6,7 +6,7 @@
   "tags": ["data-access"],
   "targets": {
     "build": {
-      "executor": "@nrwl/rollup:rollup",
+      "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/client/next-auth/options",
@@ -14,7 +14,7 @@
         "project": "libs/client/next-auth/options/package.json",
         "entryFile": "libs/client/next-auth/options/src/index.ts",
         "external": ["react/jsx-runtime"],
-        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "rollupConfig": "@nx/react/plugins/bundle-rollup",
         "compiler": "babel",
         "assets": [
           {
@@ -26,14 +26,16 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/client/next-auth/options/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "libs/client/next-auth/options/**/*.{ts,tsx,js,jsx}"
+        ]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/client/next-auth/options"],
       "options": {
         "jestConfig": "libs/client/next-auth/options/jest.config.ts",

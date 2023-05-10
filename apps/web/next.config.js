@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { withNx } = require('@nrwl/next');
+const { withNx } = require('@nx/next');
 const path = require('path');
 const { withSentryConfig } = require('@sentry/nextjs');
 

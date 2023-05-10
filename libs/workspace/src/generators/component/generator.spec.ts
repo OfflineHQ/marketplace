@@ -1,11 +1,7 @@
-import {
-  joinPathFragments,
-  readProjectConfiguration,
-  Tree,
-} from '@nrwl/devkit';
-import { createTreeWithEmptyWorkspace } from '@nrwl/devkit/testing';
-import { Linter } from '@nrwl/linter';
-import { libraryGenerator, storybookConfigurationGenerator } from '@nrwl/react';
+import { joinPathFragments, readProjectConfiguration, Tree } from '@nx/devkit';
+import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
+import { Linter } from '@nx/linter';
+import { libraryGenerator, storybookConfigurationGenerator } from '@nx/react';
 import generator from './generator';
 
 describe('component generator', () => {
