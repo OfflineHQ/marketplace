@@ -147,6 +147,7 @@ export const Header = () => {
       profileSections={profileSections}
       menuSections={[]}
       signIn={login}
+      signInText={t('sign-in')}
       loading={!safeAuth}
       user={safeUser}
       userLoading={!!provider && !safeUser} // mean web3Auth is connected but waiting for cookie and safe user info
