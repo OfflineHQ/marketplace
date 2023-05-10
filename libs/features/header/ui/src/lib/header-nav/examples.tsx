@@ -1,4 +1,8 @@
-import { HeaderNavProps, HeaderNav, type HeaderSettingsProps } from './HeaderNav';
+import {
+  HeaderNavProps,
+  HeaderNav,
+  type HeaderSettingsProps,
+} from './HeaderNav';
 import { Dark, Light, DarkLight, Check } from '@ui/icons';
 
 const displayItems: HeaderSettingsProps['displays'] = [
@@ -57,6 +61,8 @@ const languageHelperText = 'Select your language';
 const displayText = 'Display mode';
 const displayHelperText = 'Select a display mode';
 
+const signInText = 'Sign in';
+
 function HeaderNavExample(props: HeaderNavProps) {
   return <HeaderNav {...props} />;
 }
@@ -69,5 +75,6 @@ export {
   languageHelperText,
   displayText,
   displayHelperText,
+  signInText,
   HeaderNavExample,
 };

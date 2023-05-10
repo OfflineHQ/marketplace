@@ -1,0 +1,31 @@
+{
+  "Index": {
+    "title": "Bonjour!"
+  },
+  "Header": {
+    "display-text": "Mode d'affichage",
+    "display-helper-text": "Sélectionnez un mode d'affichage",
+    "display-options": {
+      "light": "Clair",
+      "dark": "Sombre",
+      "auto": "Automatique"
+    },
+    "language-text": "Langue",
+    "language-helper-text": "Sélectionnez une langue",
+    "language-options": {
+      "en": "Anglais",
+      "fr": "Français"
+    },
+    "sign-out": {
+      "title": "Vous avez été déconnecté",
+      "description": "À bientôt 👋 !"
+    },
+    "profile-sections": {
+      "my-account": "Mon compte",
+      "support": "Assistance",
+      "support-title": "Bientôt disponible",
+      "support-description": "Cette fonctionnalité n'est pas encore disponible",
+      "sign-out": "Se déconnecter"
+    }
+  }
+}

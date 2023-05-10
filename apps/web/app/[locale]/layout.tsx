@@ -8,6 +8,7 @@ import { siteConfig } from '@web/config/site';
 import { Analytics } from '@web/components/Analytics';
 import { ThemeProvider } from '@ui/theme';
 import { cn } from '@ui/shared';
+import { locales } from '@client/i18n';
 import App from './app';
 
 const fontSans = FontSans({

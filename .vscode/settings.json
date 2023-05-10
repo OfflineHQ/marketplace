@@ -34,9 +34,6 @@
   ],
   "typescript.tsdk": "../../node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "i18n-ally.localesPaths": "**/**/messages",
-  "i18n-ally.extract.ignoredByFiles": {
-    "apps/web/pages/_app.tsx": ["noopener noreferrer", "noopener noreferrer"]
-  },
+  "i18n-ally.localesPaths": "libs/client/i18n/src/messages",
   "i18n-ally.keystyle": "flat"
 }

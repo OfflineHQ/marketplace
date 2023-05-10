@@ -3,10 +3,7 @@ import { Preview, Decorator } from '@storybook/react';
 import { useEffect, useState, Suspense } from 'react';
 import { parameters } from '../../../storybook.preview.base';
 import { NextIntlClientProvider } from 'next-intl';
-import messagesEnglish from '../messages/en.json';
-import messagesFrancais from '../messages/fr.json';
-// import { I18nextProvider } from 'react-i18next';
-// import { i18next } from '../app/i18n/client';
+import { messages, locales, defaultLocale } from '@client/i18n';
 
 export const DarkModeDecorator: Decorator = (Story: any, context: any = {}) => {
   const [dark, setDark] = useState(false);
@@ -43,20 +40,9 @@ export const globalTypes = {
 
 const I18nextStoryDecorator: Decorator = (Story, context) => {
   let { locale } = context.globals;
-  let messages;
-  switch (locale) {
-    case 'en':
-      messages = messagesEnglish;
-      break;
-    case 'fr':
-      messages = messagesFrancais;
-      break;
-    default:
-      locale = 'en';
-      messages = messagesEnglish;
-  }
+  locale = locale && locales.includes[locale] ? locale : defaultLocale;
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
+    <NextIntlClientProvider locale={locale} messages={messages[locale]}>
       <Story />
     </NextIntlClientProvider>
   );

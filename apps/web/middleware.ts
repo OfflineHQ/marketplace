@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { withAuth } from 'next-auth/middleware';
 import createIntlMiddleware from 'next-intl/middleware';
+import { locales, defaultLocale } from '@client/i18n';
 
-const locales = ['en', 'fr'];
 const authPages = [
   '/dummy', // /user // not working currently
   // Add more restricted pages if needed
 ];
 
 const intlMiddleware = createIntlMiddleware({
-  locales,
-  defaultLocale: 'en',
+  locales: locales.slice(),
+  defaultLocale,
 });
 
 const authMiddleware = withAuth(

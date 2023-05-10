@@ -6,7 +6,7 @@ import {
   HeaderNav,
   type HeaderSettingsProps,
   type HeaderProfileProps,
-} from '@web/components/header-nav/HeaderNav';
+} from './header-nav/HeaderNav';
 import { Dark, Light, DarkLight, Check, LifeBuoy, LogOut } from '@ui/icons';
 import { useToast } from '@ui/components';
 import { useAuthContext } from '@client/auth';

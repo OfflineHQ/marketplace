@@ -42,6 +42,7 @@ export interface HeaderSettingsProps {
 export interface HeaderProfileProps {
   user: HeaderNavProps['user'];
   signIn: () => void;
+  signInText: string;
   userLoading: boolean;
   profileSections: ProfileNavProps['items'];
   loading?: HeaderNavProps['loading'];
@@ -61,7 +62,7 @@ function Profile({
         <ButtonSkeleton className="m-1 w-20 md:m-2" />
       ) : notSignedIn ? (
         <Button onClick={signIn} className="m-1 md:m-2">
-          Sign in
+          {signInText}
         </Button>
       ) : (
         <>

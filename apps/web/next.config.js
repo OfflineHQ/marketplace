@@ -36,7 +36,7 @@ const nextConfig = {
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
     appDir: true,
-    typedRoutes: true,
+    typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
   },
   //
   sentry: {
