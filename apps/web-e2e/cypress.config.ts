@@ -2,23 +2,24 @@ import { defineConfig } from 'cypress';
 import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
 import { deleteUser, deleteUsers, seedDb, queryDb } from '@test-utils/db';
 
-const cypressJsonConfig = {
+const cypressConfigGlobal = {
+  defaultCommandTimeout: 30000,
+  pageLoadTimeout: 30000,
+  requestTimeout: 30000,
   fileServerFolder: '.',
   fixturesFolder: './src/fixtures',
   video: false, // Disable for now in local + CI
   videosFolder: '../../dist/cypress/apps/web-e2e/videos',
   screenshotsFolder: '../../dist/cypress/apps/web-e2e/screenshots',
-  chromeWebSecurity: false,
-  specPattern: 'src/e2e/**/*.cy.{js,jsx,ts,tsx}',
-  supportFile: 'src/support/e2e.ts',
-  baseUrl: `http://localhost:${process.env.CLIENT_PORT}`,
-  experimentalSessionAndOrigin: true,
-  defaultCommandTimeout: 15000,
 };
+
 export default defineConfig({
+  ...cypressConfigGlobal,
   e2e: {
     ...nxE2EPreset(__filename),
-    ...cypressJsonConfig,
+    chromeWebSecurity: true,
+    baseUrl: `http://localhost:${process.env.CLIENT_PORT}`,
+    supportFile: 'src/support/e2e.ts',
     setupNodeEvents(on, config) {
       // implement node event listeners here
       on('task', {

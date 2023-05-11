@@ -12,7 +12,7 @@
       "name": "Next.js: debug client-side",
       "type": "chrome",
       "request": "launch",
-      "url": "http://localhost:3000/en"
+      "url": "http://localhost:8888/en"
     },
     {
       "name": "Next.js: debug full stack",

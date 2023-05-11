@@ -350,6 +350,7 @@ export function useSafeAuth() {
       setSafeAuth(safeAuthKit);
 
       setProvider(safeAuthKit.getProvider() as SafeEventEmitterProvider);
+      console.log({ initProvider: safeAuthKit.getProvider() });
 
       return () => {
         safeAuthKit.unsubscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
