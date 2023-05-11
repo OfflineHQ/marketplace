@@ -20,6 +20,7 @@ export const users = {
   },
   alpha_admin: {
     email: 'alpha_admin@test.io',
+    address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
     firstName: null,
     id: '4c2aa03a7dcb06ab7ac2ba0783d2e466a525e1e5794a42b2a0fa9f61fa7a2965',
     image: null,

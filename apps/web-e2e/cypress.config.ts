@@ -17,7 +17,7 @@ export default defineConfig({
   ...cypressConfigGlobal,
   e2e: {
     ...nxE2EPreset(__filename),
-    chromeWebSecurity: true,
+    chromeWebSecurity: false,
     baseUrl: `http://localhost:${process.env.CLIENT_PORT}`,
     supportFile: 'src/support/e2e.ts',
     setupNodeEvents(on, config) {

@@ -5,6 +5,7 @@ import { ExternalProvider } from '@ethersproject/providers';
 import type { SafeAuthPack } from '../../types';
 import { getErrorMessage } from '../../lib/errors';
 import { Web3AuthEvent, Web3AuthEventListener } from './types';
+import { isCypressRunning } from '@utils';
 
 /**
  * Web3AuthModalPack implements the SafeAuthClient interface for adapting the Web3Auth service provider
@@ -47,8 +48,12 @@ export class Web3AuthModalPack implements SafeAuthPack<Web3AuthModalPack> {
       );
 
       await this.web3authInstance.initModal({ modalConfig: this.#modalConfig });
-
-      this.provider = this.web3authInstance.provider;
+      // here we check if we are running in cypress and if the window.ethereum is available
+      // in that case we use the window.ethereum as provider, will be used for mocking in cypress
+      this.provider =
+        isCypressRunning() && window.ethereum
+          ? window.ethereum
+          : this.web3authInstance.provider;
     } catch (e) {
       throw new Error(getErrorMessage(e));
     }

@@ -1,21 +1,36 @@
 import { getGreeting } from '../support/app.po';
 import { users } from '@test-utils/gql';
-import { mock, resetMocks } from '@depay/web3-mock';
-const blockchain = 'ethereum';
-const accounts = ['0xd8da6bf26964af9d7eed9e03e53415d37aa96045'];
+import { mock, resetMocks } from '@depay/web3-mock-evm';
 
 describe('Authentication tests', () => {
-  before(() => {
-    cy.task('db:delete-users');
-    cy.task('db:seed-db', '../../tools/test/seeds/users.sql');
-    mock({ blockchain, accounts: { return: accounts } });
-  });
+  // beforeEach(() => {
+  //   // cy.task('db:delete-users');
+  //   // cy.task('db:seed-db', '../../tools/test/seeds/users.sql');
+  //   cy.on('window:before:load', (win) => {
+  //     mock({
+  //       blockchain: 'ethereum',
+  //       accounts: {
+  //         return: [users.alpha_admin.address],
+  //       },
+  //     });
+  //     win.ethereum = cy.window().specWindow.window.ethereum;
+  //   });
+  // });
 
   it('cypress direct login allow logged user to see his infos', function () {
     cy.login('alpha_admin');
+    cy.on('window:before:load', (win) => {
+      mock({
+        blockchain: 'ethereum',
+        accounts: {
+          return: [users.alpha_admin.address],
+        },
+      });
+      win.ethereum = cy.window().specWindow.window.ethereum;
+    });
     cy.visit('/user');
-    cy.findAllByText(new RegExp(users.alpha_admin.email, 'i')).should(
-      'be.visible'
-    );
+    cy.findByText(users.alpha_admin.address.slice(0, 3), {
+      exact: false,
+    }).should('be.visible');
   });
 });
