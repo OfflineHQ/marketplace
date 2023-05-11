@@ -22,13 +22,6 @@ declare global {
     }
   }
 }
-
-// Cypress.Commands.add('dataCy', (value) => {
-//   return cy.get(`[data-cy=${value}]`)
-// })
-//
-// -- This is a parent command --
-
 // Copied access_token copied from cookie set by next auth when user logged in
 // Allow for direct access to the user session
 const sessions = {
@@ -39,30 +32,8 @@ const sessions = {
   seb_google:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NUb2tlbiI6InlhMjkuQTBBVkE5eTFzeHBuc1pMZHA2RUxUSlZiMnZkWUpUUzZIZnRTa1FhcXM3RlZGZHpYRG1nbnJqdFhnVEJwUFdybUZDVGgzd0NjWm5EcnJCbUQ1cVlpdGlrcFg0QWMzbWRLU1p1ZUxLY0FtS0R2bi14dnFaZl95bm52QzBaYXF6NG9WZklpU2lqVldZMEFPSHdxeXY1T0FXc3lwM3RwY1ZhQ2dZS0FUQVNBVEFTRlFFNjVkcjhHVERTLWhLN3V2N0h1NE9sd3JUWVVRMDE2MyIsImFjY2Vzc1Rva2VuRXhwaXJlcyI6MzMyMTg0NzM1NDA0NCwicmVmcmVzaFRva2VuIjoiMS8vMDNqb09Xc0ZXMkdMTUNnWUlBUkFBR0FNU053Ri1MOUlydXZwWjBTYjllU3Z5b1dBQUNrZUxBNFhYSW55TG5LbFAtMnNIYjN0TW9CM3pITnYtQ01TN25xd0g2U2xtT0x2QjJtbyIsInVzZXIiOnsiZW1haWwiOiJzZWJwYWxsdWVsQGdtYWlsLmNvbSIsImVtYWlsVmVyaWZpZWQiOm51bGwsImlkIjoiMjBjMGJjOTFlMTI1NDQ0NWQ0NTlmYzZhYzk3MjA2ZjZiYjkyMjNlNzFjNzY0YzQ5YTc3OGY4Yjg0ZDNmYzU3ZiIsImltYWdlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FGZFp1Y3B1VmlQeFYxQWhpSG1tMUNhbG1CeUduSEFKZW1SSDZNb0NhZVBNRWYwPXM5Ni1jIiwibmFtZSI6IlPDqWJhc3RpZW4gUGFsbHVlbCJ9LCJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVyVHlwZSI6Im9hdXRoIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2NjA5MjE4Nzh9.bQba06n_LYuMaVt2ZMyPx1CtoDQeozsuImZQD4V4elU',
 };
-const openlogin = {
-  alpha_admin: {
-    sessionId:
-      '0b4ae46120f6986445d21b3e817886dc91acab090bfdcccbac18fbce8d231f6e',
-    touchIDPreference: 'unset',
-    appState: '',
-    email: 'sebpalluel@gmail.com',
-    aggregateVerifier: 'tkey-google-lrc',
-    name: 'Sébastien Palluel',
-    profileImage:
-      'https://lh3.googleusercontent.com/a/AGNmyxYOWbca7sY5OFYCqqV5Nw0AU_XfWEux0J1wX8lG8jw=s96-c',
-    typeOfLogin: 'google',
-    verifier: 'torus',
-    verifierId: 'sebpalluel@gmail.com',
-    dappShare: '',
-    oAuthIdToken: '',
-    oAuthAccessToken: '',
-    idToken:
-      'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlRZT2dnXy01RU9FYmxhWS1WVlJZcVZhREFncHRuZktWNDUzNU1aUEMwdzAifQ.eyJpYXQiOjE2ODM3MjY4NDcsImF1ZCI6IkJETTFyZGJKbzY5MTFidEZaaEhHbXVkNzZkRHh3TGFDWm5GRWt1ckFFZHV1Q3R5QU94aWNyb3BLZHdHUWhQdk1TZUxQMURySk1SNWZiV3lqZmpFbjJHOCIsIm5vbmNlIjoiMDJlYzZkYTRkZjJhMmY2ZDMwNWY1NGFiYmYwYWI4MTZlNTYwMDY5YWMzYmNjMWFjZGJhNTY2ODJkNTIwOWRmMmQ1IiwiaXNzIjoiaHR0cHM6Ly9hcGkub3BlbmxvZ2luLmNvbSIsIndhbGxldHMiOlt7InB1YmxpY19rZXkiOiIwM2IwZWM4NDQxYzEyNmJjYmEzN2E3NWE1ODgyMTJhMzJkZWRjYzEwMTA0Njk0Nzg2YTc1ZmEzNDVkZTc2M2FlM2IiLCJ0eXBlIjoid2ViM2F1dGhfYXBwX2tleSIsImN1cnZlIjoic2VjcDI1NmsxIn1dLCJlbWFpbCI6InNlYnBhbGx1ZWxAZ21haWwuY29tIiwibmFtZSI6IlPDqWJhc3RpZW4gUGFsbHVlbCIsInByb2ZpbGVJbWFnZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FHTm15eFlPV2JjYTdzWTVPRllDcXFWNU53MEFVX1hmV0V1eDBKMXdYOGxHOGp3PXM5Ni1jIiwidmVyaWZpZXIiOiJ0b3J1cyIsInZlcmlmaWVySWQiOiJzZWJwYWxsdWVsQGdtYWlsLmNvbSIsImFnZ3JlZ2F0ZVZlcmlmaWVyIjoidGtleS1nb29nbGUtbHJjIiwiZXhwIjoxNjg0MzMxNjQ3fQ.JcNMrnyfo65EgPfWq181vzIiNzGDwNmhwTO0CMezx0RqxCKwWa6a3AeJltZ0czgWzFuEkyIgoG2hOr0tNSeReA',
-    accessToken: '',
-    sessionNamespace: '',
-  },
-};
 // https://github.com/nextauthjs/next-auth/discussions/2053
+
 Cypress.Commands.add('login', (user) => {
   cy.session(user, () => {
     cy.intercept('/api/auth/session', { fixture: `${user}.session.json` }).as(
@@ -72,22 +43,5 @@ Cypress.Commands.add('login', (user) => {
     // Set the cookie for cypress.
     // It has to be a valid cookie so next-auth can decrypt it and confirm its validity.
     cy.setCookie('next-auth.session-token', sessions[user]);
-    window.localStorage.setItem(
-      'openlogin_store',
-      JSON.stringify(openlogin[user])
-    );
-    // cy.setLocalStorage('openlogin_store', openlogin[user]);
-    // Cypress.Cookies.preserveOnce('next-auth.session-token');
   });
 });
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })

@@ -174,7 +174,7 @@
     "@babel/preset-typescript": "^7.21.5",
     "@babel/runtime": "^7.21.5",
     "@cypress/code-coverage": "^3.10.4",
-    "@depay/web3-mock": "^14.7.0",
+    "@depay/web3-mock-evm": "^14.7.0",
     "@faker-js/faker": "^7.6.0",
     "@graphprotocol/client-cli": "^2.2.22",
     "@graphql-codegen/add": "^3.2.3",

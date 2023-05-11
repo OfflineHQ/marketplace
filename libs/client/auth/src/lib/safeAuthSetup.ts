@@ -26,6 +26,7 @@ import { signIn, signOut, getCsrfToken } from 'next-auth/react';
 // import { getCurrentUser } from '@web/lib/session';
 
 import { logger } from '@logger';
+import { isCypressRunning } from '@utils';
 
 type ChainConfig = Web3AuthOptions['chainConfig'] & {
   safeTxServiceUrl?: string;
@@ -103,7 +104,8 @@ export function useSafeAuth() {
 
   const setupUserSession = useCallback(async () => {
     if (!safeAuth) return;
-    const userInfo = await safeAuth.getUserInfo();
+    // avoid running this function if cypress is running because it will fail
+    const userInfo = !isCypressRunning() ? await safeAuth.getUserInfo() : {};
     // here mean the page have been refreshed, so we need to get the safeAuthData again
     if (!safeAuth.safeAuthData?.eoa) await safeAuth.getSafeAuthData();
     const _safeUser = {
@@ -119,8 +121,8 @@ export function useSafeAuth() {
   const loginSiwe = useCallback(
     async (signer: ethers.Signer) => {
       try {
-        // setSiweLoading(true);
-        console.log('loginSiwe with signer: ', signer);
+        // don't run this function if cypress is running, cannot mock the signature so directly provide the cookie instead
+        if (isCypressRunning()) return;
         const address = await signer.getAddress();
         const message = new SiweMessage({
           domain: window.location.host,
@@ -132,14 +134,11 @@ export function useSafeAuth() {
           nonce: await getCsrfToken(),
         });
         const signature = await signer?.signMessage(message.prepareMessage());
-        logger.debug({ message, signature });
         const signInRes = await signIn('credentials', {
           message: JSON.stringify(message),
           redirect: false,
           signature,
         });
-        console.log({ signInRes });
-        await setupUserSession();
         if (signInRes?.error) {
           console.error('Error signing in with SIWE:', signInRes?.error);
           toast({
@@ -148,7 +147,6 @@ export function useSafeAuth() {
             description:
               'Something went wrong with the signature. Please try again or contact the support if its still failing.',
           });
-          // TODO handle error, show toast
         }
       } catch (error) {
         toast({
@@ -156,51 +154,11 @@ export function useSafeAuth() {
           description:
             'You either declined or the signature failed. Please try again.',
         });
-        // TODO handle error, show toast saying signature rejected or failed
         await logout();
       }
     },
-    [setupUserSession, toast, logout]
+    [toast, logout]
   );
-
-  // used to stop execution of login function if user closes modal
-  const observeModalElement = async () => {
-    let resolveModalAppeared: any;
-    const modalAppeared = new Promise((resolve) => {
-      resolveModalAppeared = resolve;
-    });
-
-    const observer = new MutationObserver((mutationsList) => {
-      for (const mutation of mutationsList) {
-        if (mutation.type === 'childList') {
-          const modalElement = document.getElementById('w3a-modal');
-          if (modalElement) {
-            resolveModalAppeared();
-            observer.disconnect();
-          }
-        }
-      }
-    });
-
-    observer.observe(document, { childList: true, subtree: true });
-    await modalAppeared;
-
-    return new Promise((resolve, reject) => {
-      const observer = new MutationObserver((mutationsList) => {
-        for (const mutation of mutationsList) {
-          if (mutation.type === 'childList') {
-            const modalElement = document.getElementById('w3a-modal');
-            if (!modalElement) {
-              reject('Modal closed');
-              observer.disconnect();
-            }
-          }
-        }
-      });
-
-      observer.observe(document, { childList: true, subtree: true });
-    });
-  };
 
   const login = useCallback(async () => {
     if (!safeAuth) return;
@@ -260,6 +218,7 @@ export function useSafeAuth() {
         const web3Provider = new ethers.providers.Web3Provider(provider);
         const signer = web3Provider.getSigner();
         await loginSiwe(signer);
+        await setupUserSession();
         // }
       }
     })();
