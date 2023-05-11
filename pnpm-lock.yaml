@@ -8,6 +8,7 @@ specifiers:
   '@babel/preset-typescript': ^7.21.5
   '@babel/runtime': ^7.21.5
   '@cypress/code-coverage': ^3.10.4
+  '@depay/web3-mock': ^14.7.0
   '@ethersproject/providers': ^5.7.2
   '@faker-js/faker': ^7.6.0
   '@formkit/auto-animate': 1.0.0-beta.6
@@ -368,6 +369,7 @@ devDependencies:
   '@babel/preset-typescript': 7.21.5_@babel+core@7.21.8
   '@babel/runtime': 7.21.5
   '@cypress/code-coverage': 3.10.4_muudb55kqkg4t64ii7sdkuyqre
+  '@depay/web3-mock': 14.7.0
   '@faker-js/faker': 7.6.0
   '@graphprotocol/client-cli': 2.2.22_h2zgvv5t56ei7kagqwkw6jb3wi
   '@graphql-codegen/add': 3.2.3_graphql@16.6.0
@@ -2062,6 +2064,27 @@ packages:
       lodash.once: 4.1.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@depay/solana-web3.js/1.22.0:
+    resolution: {integrity: sha512-GcJXmJHCMb3K3N/xhOE72YORu/R2iVw/BELXsTMz7L3CgfSqCINtXHHxB8bdTDecbpSpsUl2Cmij7lwhipocDA==}
+    dev: true
+
+  /@depay/web3-blockchains/8.0.2:
+    resolution: {integrity: sha512-Gi3wA7eMiU3gj0ATLlnxyRr04FhHOjJhG3+27dZU9ifZDgQYfmKcCqFvYHhtqU7wIqmhOsgSkXreL0PhyX75Ug==}
+    engines: {node: '>=10'}
+    dev: true
+
+  /@depay/web3-mock/14.7.0:
+    resolution: {integrity: sha512-xizgXZHobjivnDDwObpXvkCY+eoAoi/VzqGWk1P8rBw+3WO0FPNmXN15Sg2/68LTb3xIbL+/wIR2aolvTnFlRA==}
+    engines: {node: '>=16'}
+    dependencies:
+      '@depay/solana-web3.js': 1.22.0
+      '@depay/web3-blockchains': 8.0.2
+      ethers: 5.7.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
     dev: true
 
   /@discoveryjs/json-ext/0.5.7:

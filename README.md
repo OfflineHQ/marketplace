@@ -33,7 +33,7 @@
 
 The console is used as a backoffice to handle the graphQL server and to innerlink all the microservices.
 
-- [**React Next app**](http://localhost:3000/en/)
+- [**React Next app**](http://localhost:8888/en/)
 
 This is the main web app client used to access the whole array of services.
 
@@ -241,7 +241,7 @@ The library located in `libs/client/gql/thegraph` integrate the client and the t
 
 The query are defined in `libs/client/gql/thegraph/queries` and the smart contract sources are defined in `libs/client/gql/thegraph/src/.graphclientrc.yml`. When updating queries or smart contract sources, be sure to launch the command `pnpm thegraph-build` in order to generate the new version of the generated files located in `libs/client/gql/thegraph/.graphclient`.
 
-You can find an example of live query of smart contract on the [Blockchain page](http://localhost:3000/en/blockchain).
+You can find an example of live query of smart contract on the [Blockchain page](http://localhost:8888/en/blockchain).
 
 ## Test
 
@@ -392,7 +392,7 @@ Libraries are shareable across libraries and applications. They can be imported 
 
 ### Development server
 
-Run `nx serve web` for a dev server. Navigate to <http://localhost:3000/en/>. The app will automatically reload if you change any of the source files.
+Run `nx serve web` for a dev server. Navigate to <http://localhost:8888/en/>. The app will automatically reload if you change any of the source files.
 
 ### Code scaffolding
 
