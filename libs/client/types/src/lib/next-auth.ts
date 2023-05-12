@@ -1,7 +1,6 @@
+/// <reference types="next-auth" />
+
 // Read more at: https://next-auth.js.org/getting-started/typescript#module-augmentation
-
-import NextAuth from 'next-auth';
-
 declare module 'next-auth' {
   interface User {
     id: string;
@@ -11,7 +10,8 @@ declare module 'next-auth' {
   }
 
   interface Session {
-    error: string;
     user: User;
   }
 }
+
+export {};

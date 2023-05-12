@@ -29,6 +29,7 @@
       ],
       "@client/safe/auth": ["libs/client/safe/auth/src/index.ts"],
       "@client/siwe/provider": ["libs/client/siwe/provider/src/index.ts"],
+      "@client/types": ["libs/client/types/src/index.ts"],
       "@client/zustand": ["libs/client/zustand/src/index.ts"],
       "@dlt/types": ["libs/dlt/types/src/index.ts"],
       "@features/header/ui": ["libs/features/header/ui/src/index.ts"],
