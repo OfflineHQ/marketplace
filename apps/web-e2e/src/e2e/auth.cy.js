@@ -1,4 +1,3 @@
-import { getGreeting } from '../support/app.po';
 import { users } from '@test-utils/gql';
 import { mock, resetMocks } from '@depay/web3-mock-evm';
 
