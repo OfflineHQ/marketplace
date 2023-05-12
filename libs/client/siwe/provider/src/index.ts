@@ -22,7 +22,6 @@ export const SiweProvider = () =>
     },
     async authorize(credentials, req) {
       try {
-        logger.debug({ credentials, req });
         const siwe = new SiweMessage(JSON.parse(credentials?.message || '{}'));
         const nextAuthUrl = new URL(getNextAppURL());
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

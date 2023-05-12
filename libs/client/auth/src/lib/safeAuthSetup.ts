@@ -26,7 +26,8 @@ import { signIn, signOut, getCsrfToken } from 'next-auth/react';
 // import { getCurrentUser } from '@web/lib/session';
 
 import { logger } from '@logger';
-import { isCypressRunning } from '@utils';
+import { isCypressRunning, checkCookie } from '@utils';
+import { nextAuthCookieName } from '@client/next-auth/common';
 
 type ChainConfig = Web3AuthOptions['chainConfig'] & {
   safeTxServiceUrl?: string;
@@ -212,14 +213,12 @@ export function useSafeAuth() {
     (async () => {
       console.log('PROVIDER: ', provider);
       if (provider) {
-        // TODO set back when next fix issue: Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './server.edge'
-        // const nextAuthUser = await getCurrentUser();
-        // if (!nextAuthUser) {
-        const web3Provider = new ethers.providers.Web3Provider(provider);
-        const signer = web3Provider.getSigner();
-        await loginSiwe(signer);
+        if (!checkCookie(nextAuthCookieName())) {
+          const web3Provider = new ethers.providers.Web3Provider(provider);
+          const signer = web3Provider.getSigner();
+          await loginSiwe(signer);
+        }
         await setupUserSession();
-        // }
       }
     })();
   }, [provider, loginSiwe]);
