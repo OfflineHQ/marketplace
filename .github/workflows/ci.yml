@@ -27,7 +27,7 @@ jobs:
       environment-variables: |
         CYPRESS_CACHE_FOLDER=~/.cache/Cypress
       cypress_cache_path: ~/.cache/Cypress
-      node-version: 18
+      node-version: 20
       pnpm-version: 7
       environment: staging
       init-commands: |
@@ -55,7 +55,7 @@ jobs:
     with:
       runs-on: ubuntu-latest
       environment: staging
-      node-version: 18
+      node-version: 20
       pnpm-version: 7
       number-of-agents: 3
       init-commands: |
