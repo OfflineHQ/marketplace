@@ -3,10 +3,10 @@ import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
 import { deleteUser, deleteUsers, seedDb, queryDb } from '@test-utils/db';
 
 const cypressConfigGlobal = {
-  defaultCommandTimeout: 30000,
-  pageLoadTimeout: 60000,
+  defaultCommandTimeout: 15000,
+  pageLoadTimeout: 90000, // very long because next 13 is slow to build pages
   responseTimeout: 60000,
-  requestTimeout: 30000,
+  requestTimeout: 15000,
   fileServerFolder: '.',
   fixturesFolder: './src/fixtures',
   video: false, // Disable for now in local + CI
