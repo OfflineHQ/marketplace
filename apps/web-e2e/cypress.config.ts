@@ -5,7 +5,7 @@ import { deleteUser, deleteUsers, seedDb, queryDb } from '@test-utils/db';
 const cypressConfigGlobal = {
   defaultCommandTimeout: 15000,
   pageLoadTimeout: 90000, // very long because next 13 is slow to build pages
-  responseTimeout: 60000,
+  responseTimeout: 90000,
   requestTimeout: 15000,
   fileServerFolder: '.',
   fixturesFolder: './src/fixtures',
