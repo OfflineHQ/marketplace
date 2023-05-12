@@ -1,5 +1,5 @@
 import * as jsonwebtoken from 'jsonwebtoken';
-import { type NextAuthOptions, User, Account, Profile } from 'next-auth';
+import type { NextAuthOptions, User, Account, Profile } from 'next-auth';
 import type { JWT, JWTOptions } from 'next-auth/jwt';
 
 // TODO set back adapter when useEffect issue is fixed in hasura fetcher. Should do a server side fetcher for hasura
@@ -129,8 +129,6 @@ export const authOptions: NextAuthOptions = {
       logger.debug('session callback', { session, token });
       // needed for hasura claims_map
       session.user = token.user as User;
-      // used to detect if provider with same email exists
-      session.error = token.error as string;
       return session;
     },
   },

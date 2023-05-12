@@ -6,6 +6,8 @@ import type { SafeAuthPack } from '../../types';
 import { getErrorMessage } from '../../lib/errors';
 import { Web3AuthEvent, Web3AuthEventListener } from './types';
 import { isCypressRunning } from '@utils';
+// eslint-disable-next-line import/no-unresolved
+import '@client/types';
 
 /**
  * Web3AuthModalPack implements the SafeAuthClient interface for adapting the Web3Auth service provider

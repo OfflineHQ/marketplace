@@ -10,10 +10,11 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": false,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "types": ["@client/types"]
   },
   "files": [],
-  "include": ["../../../../apps/web/types/next-auth.d.ts"],
+  "include": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"
