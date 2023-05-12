@@ -60,7 +60,8 @@ export function isProd() {
 
 export function isPreviewDeployment(): boolean {
   return (
-    !!process.env.VERCEL_GIT_COMMIT_SHA || !!process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA
+    !!process.env.VERCEL_GIT_COMMIT_SHA ||
+    !!process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA
   );
 }
 
@@ -99,4 +100,24 @@ export function truncateEmailString(str: string, maxChars: number): string {
   const localPart = emailParts[0];
   const domainPart = emailParts[1];
   return `${truncateString(localPart, maxChars)}@${domainPart}`;
+}
+
+export function checkCookie(name: string) {
+  // Split cookie string and get all individual name=value pairs in an array
+  const cookieArr = document.cookie.split(';');
+
+  // Loop through the array elements
+  for (let i = 0; i < cookieArr.length; i++) {
+    const cookiePair = cookieArr[i].split('=');
+
+    /* Removing whitespace at the beginning of the cookie name
+      and compare it with the given string */
+    if (name == cookiePair[0].trim()) {
+      // Return true if the cookie with the requested name exists
+      return true;
+    }
+  }
+
+  // Return false if the cookie with the requested name can't be found
+  return false;
 }
