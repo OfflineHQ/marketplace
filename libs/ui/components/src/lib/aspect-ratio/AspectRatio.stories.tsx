@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { AspectRatio } from './AspectRatio';
+import {
+  AspectRatio,
+  AspectRatioSkeleton,
+  type AspectRatioSkeletonProps,
+} from './AspectRatio';
 
 const variantOptions = ['square', 'classic', 'widescreen', 'ultrawide'];
 
@@ -55,5 +59,24 @@ export const Widescreen: Story = {
 export const Ultrawide: Story = {
   args: {
     variant: 'ultrawide',
+  },
+};
+
+export const Loading: Story = {
+  render: () => (
+    <>
+      {variantOptions.map((variant) => (
+        <div key={variant} className="mb-2 flex">
+          <AspectRatioSkeleton
+            variant={variant as AspectRatioSkeletonProps['variant']}
+          />
+        </div>
+      ))}
+    </>
+  ),
+  argTypes: {
+    variant: {
+      control: false,
+    },
   },
 };
