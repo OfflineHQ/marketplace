@@ -137,7 +137,10 @@ export {
   SheetTitle,
   SheetDescription,
 } from './lib/sheet/Sheet';
-export { AspectRatio } from './lib/aspect-ratio/AspectRatio';
+export {
+  AspectRatio,
+  AspectRatioSkeleton,
+} from './lib/aspect-ratio/AspectRatio';
 export { Badge } from './lib/badge/Badge';
 export { Progress } from './lib/progress/Progress';
 export { TooltipWrapper, Tooltip } from './lib/tooltip/Tooltip';

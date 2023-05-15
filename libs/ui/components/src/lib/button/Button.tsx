@@ -51,9 +51,9 @@ const buttonVariantsCva = cva(
 );
 
 const SkeletonSizes = {
-  sm: 'h-9 w-5',
-  default: 'h-10 w-6',
-  lg: 'h-11 w-7',
+  sm: 'h-9 w-24',
+  default: 'h-10 w-28',
+  lg: 'h-11 w-32',
 };
 
 const buttonSkeletonVariantsCva = cva(
@@ -79,7 +79,7 @@ const ButtonSkeleton: React.FC<ButtonSkeletonProps> = ({
 }) => {
   const classNames = cn(buttonSkeletonVariantsCva({ size }), className);
 
-  return <span className={classNames} {...props} />;
+  return <div className={classNames} />;
 };
 
 export interface ButtonProps

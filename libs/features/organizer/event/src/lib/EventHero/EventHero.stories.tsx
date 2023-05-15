@@ -5,7 +5,7 @@ import {
   userEvent,
   within,
 } from '@storybook/testing-library';
-import { EventHero } from './EventHero';
+import { EventHero, EventHeroSkeleton } from './EventHero';
 import { eventHeroProps } from './examples';
 
 const meta = {
@@ -18,3 +18,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const Loading: Story = {
+  render: () => <EventHeroSkeleton />,
+};

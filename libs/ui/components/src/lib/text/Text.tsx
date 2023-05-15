@@ -17,15 +17,15 @@ const textVariants = {
 };
 
 const textSkeletonVariants = {
-  h1: 'h-7 min-w-[10rem] md:min-w-[16rem]',
-  h2: 'h-6 min-w-[8rem] md:min-w-[14rem]',
-  h3: 'h-5 min-w-[6rem] md:min-w-[12rem]',
-  h4: 'h-4 min-w-[5rem] md:min-w-[10rem]',
-  h5: 'h-3 min-w-[4rem] md:min-w-[8rem]',
-  h6: 'h-2.5 min-w-[3.5rem] md:min-w-[6rem]',
-  p: 'h-2 min-w-[3rem] md:min-w-[5rem]',
-  span: 'h-2 min-w-[3rem] md:min-w-[5rem]',
-  small: 'h-1 min-w-[2.5rem] md:min-w-[4rem]',
+  h1: 'h-7 w-[10rem] md:w-[16rem]',
+  h2: 'h-6 w-[8rem] md:w-[14rem]',
+  h3: 'h-5 w-[6rem] md:w-[12rem]',
+  h4: 'h-4 w-[5rem] md:w-[10rem]',
+  h5: 'h-3 w-[4rem] md:w-[8rem]',
+  h6: 'h-2.5 w-[3.5rem] md:w-[6rem]',
+  p: 'h-2 w-[3rem] md:w-[5rem]',
+  span: 'h-2 w-[3rem] md:w-[5rem]',
+  small: 'h-1 w-[2.5rem] md:w-[4rem]',
 };
 
 const textVariantClasses = cva('', {
