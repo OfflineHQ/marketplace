@@ -28,5 +28,12 @@
       "support-description": "This feature is not available yet",
       "sign-out": "Sign out"
     }
+  },
+  "Organizer": {
+    "Event": {
+      "Details": {
+        "title": "Event details"
+      }
+    }
   }
 }
