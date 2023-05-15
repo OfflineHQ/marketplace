@@ -7,7 +7,7 @@ const renderImage = (args: any) => (
   <AspectRatio {...args} className="m-5">
     <img
       src="https://images.unsplash.com/photo-1576075796033-848c2a5f3696?w=800&dpr=2&q=80"
-      alt="Photo by Alvaro Pinot"
+      alt="by Alvaro Pinot"
       style={{
         width: '100%',
         height: '100%',

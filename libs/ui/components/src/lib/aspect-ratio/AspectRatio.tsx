@@ -11,12 +11,18 @@ const aspectRatios = {
 
 export interface AspectRatioProps {
   variant?: keyof typeof aspectRatios;
+  children?: React.ReactNode;
 }
 
 const AspectRatio = React.forwardRef<HTMLDivElement, AspectRatioProps>(
-  ({ variant, ...props }, ref) => {
+  ({ variant, children, ...props }, ref) => {
     const ratio = variant ? aspectRatios[variant] : 1;
-    return <AspectRatioPrimitive.Root ratio={ratio} ref={ref} {...props} />;
+
+    return (
+      <AspectRatioPrimitive.Root ratio={ratio} ref={ref} {...props}>
+        {children}
+      </AspectRatioPrimitive.Root>
+    );
   }
 );
 
