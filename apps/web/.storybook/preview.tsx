@@ -43,7 +43,7 @@ const I18nextStoryDecorator: Decorator = (Story, context) => {
   locale = locale && locales.includes[locale] ? locale : defaultLocale;
   return (
     <NextIntlClientProvider locale={locale} messages={messages[locale]}>
-      <Story />
+      {Story(context)}
     </NextIntlClientProvider>
   );
 };
@@ -52,6 +52,6 @@ document.body.classList.add('font-sans');
 
 const preview: Preview = {
   parameters,
-  decorators: [I18nextStoryDecorator, DarkModeDecorator],
+  decorators: [DarkModeDecorator, I18nextStoryDecorator],
 };
 export default preview;
