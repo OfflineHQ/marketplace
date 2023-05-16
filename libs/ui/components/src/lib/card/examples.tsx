@@ -1,14 +1,16 @@
 import { BellRing, Check } from '@ui/icons';
 
 import { cn } from '@ui/shared';
-import { Button } from '../button/Button';
+import { Button, ButtonSkeleton } from '../button/Button';
 import {
   Card,
   CardContent,
   CardDescription,
+  CardDescriptionSkeleton,
   CardFooter,
   CardHeader,
   CardTitle,
+  CardTitleSkeleton,
 } from './Card';
 import { Separator } from '../separator/Separator';
 import { Switch } from '../switch/Switch';
@@ -22,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../select/Select';
+import { TextSkeleton } from '../text/Text';
 
 const notifications = [
   {
@@ -139,6 +142,24 @@ export function CardWithForm() {
       <CardFooter className="flex justify-between">
         <Button variant="ghost">Cancel</Button>
         <Button>Deploy</Button>
+      </CardFooter>
+    </Card>
+  );
+}
+
+export function CardSkeleton() {
+  return (
+    <Card className="w-full md:w-[380px]">
+      <CardHeader>
+        <CardTitleSkeleton />
+        <CardDescriptionSkeleton />
+      </CardHeader>
+      <CardContent className="grid gap-4">
+        <TextSkeleton className="h-4" />
+        <TextSkeleton className="h-4" />
+      </CardContent>
+      <CardFooter>
+        <ButtonSkeleton className="w-full" />
       </CardFooter>
     </Card>
   );

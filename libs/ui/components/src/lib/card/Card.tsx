@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { cn } from '@ui/shared';
+import { TextSkeleton } from '../text/Text';
 
 const Card = React.forwardRef<
   HTMLDivElement,
@@ -45,6 +46,14 @@ const CardTitle = React.forwardRef<
 ));
 CardTitle.displayName = 'CardTitle';
 
+const CardTitleSkeleton = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <TextSkeleton className={className} variant="h3" {...props} />
+));
+CardTitleSkeleton.displayName = 'CardTitleSkeleton';
+
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
@@ -56,6 +65,14 @@ const CardDescription = React.forwardRef<
   />
 ));
 CardDescription.displayName = 'CardDescription';
+
+const CardDescriptionSkeleton = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <TextSkeleton className={className} variant="p" {...props} />
+));
+CardDescriptionSkeleton.displayName = 'CardDescriptionSkeleton';
 
 const CardContent = React.forwardRef<
   HTMLDivElement,
@@ -84,4 +101,6 @@ export {
   CardTitle,
   CardDescription,
   CardContent,
+  CardTitleSkeleton,
+  CardDescriptionSkeleton,
 };

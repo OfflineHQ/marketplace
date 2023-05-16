@@ -17,15 +17,15 @@ const textVariants = {
 };
 
 const textSkeletonVariants = {
-  h1: 'h-7 w-[10rem] md:w-[16rem]',
-  h2: 'h-6 w-[8rem] md:w-[14rem]',
-  h3: 'h-5 w-[6rem] md:w-[12rem]',
-  h4: 'h-4 w-[5rem] md:w-[10rem]',
-  h5: 'h-3 w-[4rem] md:w-[8rem]',
-  h6: 'h-2.5 w-[3.5rem] md:w-[6rem]',
-  p: 'h-2 w-[3rem] md:w-[5rem]',
-  span: 'h-2 w-[3rem] md:w-[5rem]',
-  small: 'h-1 w-[2.5rem] md:w-[4rem]',
+  h1: 'h-7 w-[11rem] md:w-[17rem]',
+  h2: 'h-6 w-[9rem] md:w-[15.5rem]',
+  h3: 'h-5 w-[7rem] md:w-[12.5rem]',
+  h4: 'h-4 w-[6.5rem] md:w-[10.5rem]',
+  h5: 'h-3 w-[6rem] md:w-[9rem]',
+  h6: 'h-2.5 w-[5.5rem] md:w-[8.5rem]',
+  p: 'h-2 w-[5rem] md:w-[8rem]',
+  span: 'h-2 w-[5rem] md:w-[8rem] flex',
+  small: 'h-1 w-[2.5rem] md:w-[4rem] flex',
 };
 
 const textVariantClasses = cva('', {
@@ -83,7 +83,21 @@ const TextSkeleton: React.FC<TextSkeletonProps> = ({
   const Component = variant as AllowedHtmlElements;
   const classNames = cn(textSkeletonVariantClasses({ variant }), className);
 
-  return <Component className={classNames} {...props} />;
+  return variant !== 'p' ? (
+    <Component className={classNames} {...props} />
+  ) : (
+    <div className="flex-col space-y-1">
+      <Component className={classNames} {...props} />
+      <small
+        className={cn(
+          textSkeletonVariantClasses({ variant: 'small' }),
+          className,
+          'h-2'
+        )}
+        {...props}
+      />
+    </div>
+  );
 };
 
 export {
