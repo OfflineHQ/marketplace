@@ -1,4 +1,4 @@
-interface Organizer {
+export interface Organizer {
   id: string; // Assuming UUIDs
   name: string;
   description: string;
@@ -6,7 +6,7 @@ interface Organizer {
   updatedAt?: string; // Timestamps
 }
 
-interface User {
+export interface User {
   id: string; // Assuming UUIDs
   name: string;
   email: string;
@@ -14,7 +14,7 @@ interface User {
   updatedAt?: string; // Timestamps
 }
 
-interface Location {
+export interface Location {
   street: string;
   city: string;
   state: string;
@@ -26,7 +26,7 @@ interface Location {
 }
 
 // Define the data structure for a date and location
-interface EventDateLocation {
+export interface EventDateLocation {
   id?: string; // Assuming UUIDs
   dateStart: string; // ISO 8601 datetime string in the event's local timezone
   dateEnd: string; // ISO 8601 datetime string in the event's local timezone
@@ -36,7 +36,7 @@ interface EventDateLocation {
 }
 
 // Define the data structure for a pass option
-interface PassOption {
+export interface PassOption {
   id?: string; // Assuming UUIDs
   name: string; // Name of the option, like "Day 1 Access" or "VIP Room Access"
   eventDateLocationId?: string; // Foreign key reference
@@ -47,7 +47,7 @@ interface PassOption {
 }
 
 // Define the data structure for a pass
-interface Pass {
+export interface Pass {
   id?: string; // Assuming UUIDs
   name: string; // User-friendly name of the pass, like "VIP 3-Day Pass"
   type: string; // Type of the pass, like "Standard", "VIP", "Backstage", etc.
@@ -64,7 +64,7 @@ interface Pass {
 }
 
 // Define the data structure for an event
-interface Event {
+export interface Event {
   id?: string; // Assuming UUIDs
   name: string;
   description: string;
@@ -80,6 +80,6 @@ interface Event {
 }
 
 // Define the props that the EventTemplate component will take
-interface EventTemplateProps {
+export interface EventTemplateProps {
   event: Event;
 }
