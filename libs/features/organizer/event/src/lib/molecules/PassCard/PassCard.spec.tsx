@@ -1,11 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
-import * as stories from './TicketCard.stories';
+import * as stories from './PassCard.stories';
 
 const { Default, BoundaryConditions } = composeStories(stories);
 
-describe('TicketCard', () => {
-  test('renders TicketCard with initial values', () => {
+describe('PassCard', () => {
+  test('renders PassCard with initial values', () => {
     render(<Default />);
     const ticketType = screen.getByText('General Admission');
     const description = screen.getByText('General Admission to the event');
