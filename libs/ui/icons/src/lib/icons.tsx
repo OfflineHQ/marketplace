@@ -38,7 +38,12 @@ import {
 
 import { IoWarning, IoWarningOutline } from 'react-icons/io5';
 
-import { MdOutlineError, MdOutlineClose } from 'react-icons/md';
+import {
+  MdOutlineError,
+  MdOutlineClose,
+  MdOutlineNotificationsActive,
+  MdOutlineNotificationsNone,
+} from 'react-icons/md';
 import { RiMoonFill, RiSunLine } from 'react-icons/ri';
 import {
   FiAward,
@@ -64,15 +69,24 @@ const createWrappedIcon =
     <AccessibleIcon IconComponent={IconComponent} label={label} {...props} />;
 
 export const Check = createWrappedIcon(HiCheck, 'Check');
-export const OutlineSearch = createWrappedIcon(HiOutlineSearch, 'Outline Search');
+export const OutlineSearch = createWrappedIcon(
+  HiOutlineSearch,
+  'Outline Search'
+);
 export const OutlineArrowRight = createWrappedIcon(
   HiOutlineArrowRight,
   'Outline Arrow Right'
 );
 export const Plus = createWrappedIcon(HiPlus, 'Plus');
 export const Language = createWrappedIcon(HiOutlineLanguage, 'Language');
-export const ChevronDown = createWrappedIcon(HiOutlineChevronDown, 'Chevron Down');
-export const ChevronRight = createWrappedIcon(HiOutlineChevronRight, 'Chevron Right');
+export const ChevronDown = createWrappedIcon(
+  HiOutlineChevronDown,
+  'Chevron Down'
+);
+export const ChevronRight = createWrappedIcon(
+  HiOutlineChevronRight,
+  'Chevron Right'
+);
 export const OutlineCalendarDays = createWrappedIcon(
   HiOutlineCalendarDays,
   'Outline Calendar Days'
@@ -83,9 +97,15 @@ export const Calculator = createWrappedIcon(HiOutlineCalculator, 'Calculator');
 export const Light = createWrappedIcon(HiOutlineSun, 'Light');
 export const Dark = createWrappedIcon(HiOutlineMoon, 'Dark');
 export const FillWarning = createWrappedIcon(IoWarning, 'Fill Warning');
-export const OutlineWarning = createWrappedIcon(IoWarningOutline, 'Outline Warning');
+export const OutlineWarning = createWrappedIcon(
+  IoWarningOutline,
+  'Outline Warning'
+);
 export const FillSuccess = createWrappedIcon(AiFillCheckCircle, 'Fill Success');
-export const OutlineSuccess = createWrappedIcon(AiOutlineCheck, 'Outline Success');
+export const OutlineSuccess = createWrappedIcon(
+  AiOutlineCheck,
+  'Outline Success'
+);
 export const OutlineSuccessCircle = createWrappedIcon(
   AiOutlineCheckCircle,
   'Outline Success Circle'
@@ -95,6 +115,11 @@ export const DarkLight = createWrappedIcon(TbSunMoon, 'Dark Light Auto');
 
 export const FillInfo = createWrappedIcon(AiFillInfoCircle, 'Fill Info');
 export const OutlineError = createWrappedIcon(MdOutlineError, 'Outline Error');
+export const BellRing = createWrappedIcon(
+  MdOutlineNotificationsActive,
+  'Bell Ring'
+);
+export const Bell = createWrappedIcon(MdOutlineNotificationsNone, 'Bell');
 export const FillMoon = createWrappedIcon(RiMoonFill, 'Fill Moon');
 export const Sun = createWrappedIcon(RiSunLine, 'Sun');
 export const Award = createWrappedIcon(FiAward, 'Award');
@@ -102,7 +127,10 @@ export const CreditCard = createWrappedIcon(AiOutlineCreditCard, 'Credit Card');
 export const LifeBuoy = createWrappedIcon(FiLifeBuoy, 'Life Buoy');
 export const LogOut = createWrappedIcon(FiLogOut, 'Log Out');
 export const Mail = createWrappedIcon(AiOutlineMail, 'Mail');
-export const MessageSquare = createWrappedIcon(FiMessageSquare, 'Message Square');
+export const MessageSquare = createWrappedIcon(
+  FiMessageSquare,
+  'Message Square'
+);
 export const OutlinePlusCircle = createWrappedIcon(
   HiOutlinePlusCircle,
   'Outline Plus Circle'
@@ -115,11 +143,20 @@ export const Users = createWrappedIcon(HiOutlineUsers, 'Users');
 export const Close = createWrappedIcon(MdOutlineClose, 'Close');
 
 export const Smile = createWrappedIcon(FiSmile, 'Smile');
-export const ChevronsUpDown = createWrappedIcon(HiChevronUpDown, 'Chevrons Up Down');
-export const ArrowUpCircle = createWrappedIcon(HiOutlineArrowUpCircle, 'Arrow Up Circle');
+export const ChevronsUpDown = createWrappedIcon(
+  HiChevronUpDown,
+  'Chevrons Up Down'
+);
+export const ArrowUpCircle = createWrappedIcon(
+  HiOutlineArrowUpCircle,
+  'Arrow Up Circle'
+);
 export const HelpCircle = createWrappedIcon(BiHelpCircle, 'Help Circle');
 export const XCircle = createWrappedIcon(BiXCircle, 'X Circle');
-export const MoreHorizontal = createWrappedIcon(FiMoreHorizontal, 'More Horizontal');
+export const MoreHorizontal = createWrappedIcon(
+  FiMoreHorizontal,
+  'More Horizontal'
+);
 export const Edit = createWrappedIcon(FiEdit, 'Edit');
 export const Tags = createWrappedIcon(BsTags, 'Tags');
 
