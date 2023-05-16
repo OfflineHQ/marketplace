@@ -6,6 +6,7 @@ import {
   HiOutlineSearch,
   HiOutlineArrowRight,
   HiPlus,
+  HiMinus,
   HiOutlineChevronDown,
   HiOutlineChevronRight,
   HiOutlinePlusCircle,
@@ -78,6 +79,7 @@ export const OutlineArrowRight = createWrappedIcon(
   'Outline Arrow Right'
 );
 export const Plus = createWrappedIcon(HiPlus, 'Plus');
+export const Minus = createWrappedIcon(HiMinus, 'Minus');
 export const Language = createWrappedIcon(HiOutlineLanguage, 'Language');
 export const ChevronDown = createWrappedIcon(
   HiOutlineChevronDown,
