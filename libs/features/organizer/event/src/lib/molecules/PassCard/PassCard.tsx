@@ -11,7 +11,7 @@ import {
   Text,
 } from '@ui/components';
 
-export interface TicketCardProps
+export interface PassCardProps
   extends Omit<BoundedNumericStepperProps, 'initialValue'> {
   ticketType: string;
   description: string;
@@ -19,7 +19,7 @@ export interface TicketCardProps
   numTickets: number;
 }
 
-export const TicketCard: React.FC<TicketCardProps> = ({
+export const PassCard: React.FC<PassCardProps> = ({
   ticketType,
   description,
   price,

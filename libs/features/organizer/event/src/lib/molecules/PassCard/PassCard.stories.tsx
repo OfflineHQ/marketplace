@@ -1,15 +1,15 @@
-// TicketCard.stories.tsx
+// PassCard.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-import { TicketCard, TicketCardProps } from './TicketCard';
-import { TicketCardExample, ticketCardProps } from './examples';
+import { PassCard, PassCardProps } from './PassCard';
+import { PassCardExample, passCardProps } from './examples';
 
 const meta = {
-  component: TicketCard,
-  args: ticketCardProps,
-  render: TicketCardExample,
-} satisfies Meta<typeof TicketCard>;
+  component: PassCard,
+  args: passCardProps,
+  render: PassCardExample,
+} satisfies Meta<typeof PassCard>;
 
 export default meta;
 
@@ -19,7 +19,7 @@ export const Default: Story = {};
 
 export const BoundaryConditions: Story = {
   args: {
-    ...ticketCardProps,
+    ...passCardProps,
     numTickets: 3,
     maxVal: 3,
   },

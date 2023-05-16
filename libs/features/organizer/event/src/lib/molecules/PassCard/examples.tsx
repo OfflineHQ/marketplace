@@ -1,22 +1,22 @@
-import { type TicketCardProps, TicketCard } from './TicketCard';
+import { type PassCardProps, PassCard } from './PassCard';
 import { useState } from 'react';
 
-export const ticketCardProps = {
+export const passCardProps = {
   ticketType: 'General Admission',
   description: 'General Admission to the event',
   price: 1300,
   numTickets: 2,
   maxVal: 3,
-} as TicketCardProps;
+} as PassCardProps;
 
-export const TicketCardExample = ({
+export const PassCardExample = ({
   numTickets: _numTickets,
   onChange: _onChange,
   ...props
-}: TicketCardProps) => {
+}: PassCardProps) => {
   const [numTickets, setNumTickets] = useState(_numTickets);
   return (
-    <TicketCard
+    <PassCard
       numTickets={numTickets}
       onChange={(val) => setNumTickets(val)}
       {...props}
