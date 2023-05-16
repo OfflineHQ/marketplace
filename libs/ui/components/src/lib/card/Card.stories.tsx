@@ -1,4 +1,4 @@
-import { CardDemo, CardWithForm, CardOverflow } from './examples';
+import { CardDemo, CardWithForm, CardOverflow, CardSkeleton } from './examples';
 import { Card } from './Card';
 
 import { Meta, StoryObj } from '@storybook/react';
@@ -22,4 +22,8 @@ export const Overflow: Story = {
 
 export const WithForm: Story = {
   render: CardWithForm,
+};
+
+export const Loading: Story = {
+  render: CardSkeleton,
 };

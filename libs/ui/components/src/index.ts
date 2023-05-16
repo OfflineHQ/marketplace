@@ -141,6 +141,17 @@ export {
   AspectRatio,
   AspectRatioSkeleton,
 } from './lib/aspect-ratio/AspectRatio';
+
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardTitleSkeleton,
+  CardDescriptionSkeleton,
+} from './lib/card/Card';
 export { Badge } from './lib/badge/Badge';
 export { Progress } from './lib/progress/Progress';
 export { TooltipWrapper, Tooltip } from './lib/tooltip/Tooltip';

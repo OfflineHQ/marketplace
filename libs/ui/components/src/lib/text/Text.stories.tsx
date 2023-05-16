@@ -56,7 +56,8 @@ export const SkeletonAllVariants: Story = {
   render: () => (
     <>
       {variantOptions.map((variant) => (
-        <div key={variant} className="mb-2 flex">
+        <div key={variant} className="mb-2 flex-col">
+          <span>{`${variant} Text`}</span>
           <TextSkeleton variant={variant as TextSkeletonProps['variant']} />
         </div>
       ))}
