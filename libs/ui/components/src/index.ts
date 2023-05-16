@@ -155,3 +155,7 @@ export {
 export { Badge } from './lib/badge/Badge';
 export { Progress } from './lib/progress/Progress';
 export { TooltipWrapper, Tooltip } from './lib/tooltip/Tooltip';
+export {
+  type BoundedNumericStepperProps,
+  BoundedNumericStepper,
+} from './lib/bounded-numeric-stepper/BoundedNumericStepper';
