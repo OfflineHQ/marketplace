@@ -1,9 +1,9 @@
 // EventLocations/examples.tsx
 import { EventDateLocation, Location } from '../../types';
-import { EventLocations } from './EventLocations';
+import { type EventLocationsProps } from './EventLocations';
 
 // Define some sample locations
-const location1: Location = {
+export const location1: Location = {
   street: '123 Main St',
   city: 'New York',
   state: 'NY',
@@ -12,7 +12,7 @@ const location1: Location = {
   placeId: 'ChIJd8BlQ2BZwokRAFUEcm_qrcA',
 };
 
-const location2: Location = {
+export const location2: Location = {
   street: '456 Broadway',
   city: 'New York',
   state: 'NY',
@@ -22,25 +22,21 @@ const location2: Location = {
 };
 
 // Define some sample event date locations
-const eventDateLocation1: EventDateLocation = {
+export const eventDateLocation1: EventDateLocation = {
   id: '1',
   dateStart: '2023-06-01T00:00:00Z',
-  dateEnd: '2023-06-01T23:59:59Z',
+  dateEnd: '2023-06-01T08:00:00Z',
   location: location1,
 };
 
-const eventDateLocation2: EventDateLocation = {
+export const eventDateLocation2: EventDateLocation = {
   id: '2',
-  dateStart: '2023-06-02T00:00:00Z',
-  dateEnd: '2023-06-02T23:59:59Z',
+  dateStart: '2023-06-02T12:00:00Z',
+  dateEnd: '2023-06-02T23:00:00Z',
   location: location2,
 };
 
-export const eventLocationsProps = {
+export const eventLocationsProps: EventLocationsProps = {
   locations: [eventDateLocation1, eventDateLocation2],
   detailed: false,
 };
-
-export const EventLocationsExample = () => (
-  <EventLocations {...eventLocationsProps} />
-);
