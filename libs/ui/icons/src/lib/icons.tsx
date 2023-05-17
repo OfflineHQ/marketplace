@@ -35,6 +35,7 @@ import {
   AiOutlineCheckCircle,
   AiOutlineDelete,
   AiOutlineMenu,
+  AiOutlineShoppingCart,
 } from 'react-icons/ai';
 
 import { IoWarning, IoWarningOutline } from 'react-icons/io5';
@@ -112,6 +113,7 @@ export const OutlineSuccessCircle = createWrappedIcon(
   AiOutlineCheckCircle,
   'Outline Success Circle'
 );
+export const Cart = createWrappedIcon(AiOutlineShoppingCart, 'Cart');
 
 export const DarkLight = createWrappedIcon(TbSunMoon, 'Dark Light Auto');
 

@@ -9,6 +9,7 @@ export const passTotalProps = {
       price: 1300,
       numTickets: 2,
       maxVal: 3,
+      onChange: () => null,
     },
     {
       ticketType: 'VIP Pass',
@@ -16,6 +17,7 @@ export const passTotalProps = {
       price: 2500,
       numTickets: 1,
       maxVal: 3,
+      onChange: () => null,
     },
   ],
-} as PassTotalProps;
+} satisfies PassTotalProps;
