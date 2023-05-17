@@ -1,7 +1,5 @@
 // EventLocations.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { screen } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 import { EventLocations, EventLocationsProps } from './EventLocations';
 import { eventLocationsProps } from './examples';
 
@@ -15,3 +13,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const Detailed: Story = {
+  args: {
+    ...eventLocationsProps,
+    detailed: true,
+  },
+};
+
+export const OneLocation: Story = {
+  args: {
+    ...eventLocationsProps,
+    locations: [eventLocationsProps.locations[0]],
+  },
+};
