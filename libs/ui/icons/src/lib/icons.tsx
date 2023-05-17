@@ -38,7 +38,11 @@ import {
   AiOutlineShoppingCart,
 } from 'react-icons/ai';
 
-import { IoWarning, IoWarningOutline } from 'react-icons/io5';
+import {
+  IoWarning,
+  IoWarningOutline,
+  IoLocationOutline,
+} from 'react-icons/io5';
 
 import {
   MdOutlineError,
@@ -165,3 +169,5 @@ export const Edit = createWrappedIcon(FiEdit, 'Edit');
 export const Tags = createWrappedIcon(BsTags, 'Tags');
 
 export const Delete = createWrappedIcon(AiOutlineDelete, 'Delete');
+
+export const Location = createWrappedIcon(IoLocationOutline, 'Location');

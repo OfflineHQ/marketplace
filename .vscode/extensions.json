@@ -13,6 +13,7 @@
     "me-dutour-mathieu.vscode-github-actions",
     "github.vscode-github-actions",
     "yoavbls.pretty-ts-errors",
-    "lokalise.i18n-ally"
+    "lokalise.i18n-ally",
+    "ms-azuretools.vscode-docker"
   ]
 }

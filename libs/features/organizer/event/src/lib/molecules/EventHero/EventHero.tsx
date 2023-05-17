@@ -8,6 +8,7 @@ import {
   ButtonSkeleton,
 } from '@ui/components';
 import Image from 'next/image';
+import { Organizer } from '../../types';
 
 export interface EventHeroProps {
   heroImage: string;
@@ -15,6 +16,7 @@ export interface EventHeroProps {
   date: string;
   location: string;
   buyFunction: () => void;
+  organizer: Organizer;
   buyText: string;
 }
 
@@ -29,6 +31,7 @@ const layout = {
 export const EventHero: React.FC<EventHeroProps> = ({
   heroImage,
   title,
+  organizer,
   date,
   location,
   buyFunction,
@@ -48,6 +51,10 @@ export const EventHero: React.FC<EventHeroProps> = ({
       <div className={layout.textContainer}>
         <Text variant="h1" className={layout.text}>
           {title}
+        </Text>
+        <Text variant="h4" className={`${layout.text} flex`}>
+          <div className="font-medium">By</div>
+          <div className="ml-1 tracking-wider">{organizer.name}</div>
         </Text>
         <Text variant="h3" className={layout.text}>
           {date}
