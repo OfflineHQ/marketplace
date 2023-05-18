@@ -36,6 +36,11 @@ module.exports = {
     autodocs: true,
   },
   webpackFinal: async (config: any, { configType }) => {
+    // Used to fix the issue with next-intl url module
+    config.resolve.fallback = {
+      ...config.resolve.fallback, // This spreads the existing fallback configuration if there is any
+      url: false,
+    };
     // Add tsconfig-paths-webpack-plugin to the resolve.plugins array
     config.resolve.plugins = [
       ...(config.resolve.plugins || []),

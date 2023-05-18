@@ -19,6 +19,13 @@ export const AccessibleIcon: FC<AccessibleIconProps> = ({
 }) => {
   const iconClasses = iconCVA({ ...rest, size, color, className });
   return (
-    <IconComponent aria-label={label} focusable="false" className={cn(iconClasses)} />
+    // Enforce size in case IconComponent is in a flex container that shrinken it
+    <div className={cn(iconClasses, 'flex items-center justify-center')}>
+      <IconComponent
+        aria-label={label}
+        focusable="false"
+        className={cn(iconClasses)}
+      />
+    </div>
   );
 };

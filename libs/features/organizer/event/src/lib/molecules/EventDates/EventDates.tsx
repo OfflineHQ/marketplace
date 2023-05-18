@@ -30,10 +30,10 @@ export const EventDates: React.FC<EventDatesProps> = ({ dates, detailed }) => {
 
   return (
     <div className="flex items-center space-x-4">
-      <div className="flex min-w-[1.75rem] items-center justify-center">
-        {/* added a wrapper around the SVG */}
-        <CalendarIcon size="lg" />
-      </div>
+      {/* <div className="flex min-w-[1.75rem] items-center justify-center"> */}
+      {/* added a wrapper around the SVG */}
+      <CalendarIcon size="lg" />
+      {/* </div> */}
       <div className="flex flex-col items-start space-y-4">
         {dates.length > 1 && !detailed ? (
           <Text className={`flex`}>

@@ -5,7 +5,7 @@ jest.mock('@formkit/auto-animate/react');
 
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props: any) => {
-    return <img {...props} />;
+  default: () => {
+    return null;
   },
 }));
