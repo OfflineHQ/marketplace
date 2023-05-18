@@ -28,7 +28,7 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
 
   return (
     <div className="flex items-center space-x-1">
-      <LocationIcon size="lg" />
+      <LocationIcon size="lg" flex />
       <div className="flex flex-col items-start space-y-0">
         {locations.length > 1 && !detailed ? (
           <Button
