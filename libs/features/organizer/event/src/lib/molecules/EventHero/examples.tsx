@@ -1,4 +1,3 @@
-import { delay } from '@test-utils/functions';
 import { type EventHeroProps } from './EventHero';
 import { eventLocationsProps } from '../../molecules/EventLocations/examples';
 import { eventDatesProps } from '../../molecules/EventDates/examples';
@@ -16,7 +15,5 @@ export const eventHeroProps: EventHeroProps = {
   title: 'Lorem ipsum dolor sit amet',
   ...eventLocationsProps,
   ...eventDatesProps,
-  buyFunction: () => delay(1000),
   organizer,
-  buyText: 'Buy tickets',
 };

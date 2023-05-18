@@ -19,7 +19,7 @@ export interface EventDetailsProps {
 export const EventDetails: React.FC<EventDetailsProps> = ({ description }) => {
   const t = useTranslations('Organizer.Event.Details');
   return (
-    <Card>
+    <Card variant="noBorder">
       <CardHeader>
         <CardTitle>{t('title')}</CardTitle>
       </CardHeader>
@@ -32,7 +32,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({ description }) => {
 
 export const EventDetailsSkeleton: React.FC = () => {
   return (
-    <Card>
+    <Card variant="noBorder">
       <CardHeader>
         <CardTitle>
           <CardTitleSkeleton />
