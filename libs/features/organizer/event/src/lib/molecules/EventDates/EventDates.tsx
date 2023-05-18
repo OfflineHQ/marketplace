@@ -21,14 +21,19 @@ const style = {
 export const EventDates: React.FC<EventDatesProps> = ({ dates, detailed }) => {
   const format = useFormatter();
 
+  if (!dates.length) return null;
+
   const formatDateTime = (date: string, options: any) =>
     format.dateTime(new Date(date), options);
 
   const commonDate = dates[0];
 
   return (
-    <div className="flex items-center justify-center space-x-4">
-      <CalendarIcon size="lg" />
+    <div className="flex items-center space-x-4">
+      <div className="flex min-w-[1.75rem] items-center justify-center">
+        {/* added a wrapper around the SVG */}
+        <CalendarIcon size="lg" />
+      </div>
       <div className="flex flex-col items-start space-y-4">
         {dates.length > 1 && !detailed ? (
           <Text className={`flex`}>

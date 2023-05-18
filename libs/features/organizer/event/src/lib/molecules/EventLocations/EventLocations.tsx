@@ -15,6 +15,8 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
   locations,
   detailed,
 }) => {
+  if (!locations.length) return null;
+
   const handleClick = (location: Location) => {
     // Generate a Google Maps URL using the placeId.
     const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${location.placeId}`;
@@ -25,7 +27,7 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
   const commonLocation = locations[0].location;
 
   return (
-    <div className="flex items-center justify-center space-x-1">
+    <div className="flex items-center space-x-1">
       <LocationIcon size="lg" />
       <div className="flex flex-col items-start space-y-0">
         {locations.length > 1 && !detailed ? (

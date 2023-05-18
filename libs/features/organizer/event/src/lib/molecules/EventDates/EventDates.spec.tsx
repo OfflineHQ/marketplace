@@ -1,32 +1,38 @@
 // EventDates.spec.tsx
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
+import { renderWithIntl } from '@test-utils/functions';
+import { EventDates } from './EventDates';
 import * as stories from './EventDates.stories';
 
 const { Default, Detailed, OneDate } = composeStories(stories);
 
 describe('EventDates', () => {
   it('renders the default component', () => {
-    render(<Default />);
-    expect(screen.getByText(/from/i)).toBeInTheDocument();
-    expect(screen.getByText(/to/i)).toBeInTheDocument();
+    renderWithIntl(<Default />);
+    screen.getByText('Thu, June 1 at 1:00 AM');
+    screen.getByText('Sat, June 3 at 12:00 AM');
+  });
+
+  it('renders component with detailed dates', () => {
+    renderWithIntl(<Detailed />);
+    screen.getByText('Thu, June 1');
+    screen.getByText('1:00 AM');
+    screen.getByText('9:00 AM');
+    screen.getByText('Fri, June 2');
+    screen.getByText('1:00 PM');
+    screen.getByText('12:00 AM');
   });
 
   it('renders component with one date', () => {
-    render(<OneDate />);
-    expect(screen.getByText(/from/i)).toBeInTheDocument();
-    expect(screen.getByText(/to/i)).toBeInTheDocument();
+    renderWithIntl(<OneDate />);
+    screen.getByText('Thu, June 1');
+    screen.getByText('1:00 AM');
+    screen.getByText('9:00 AM');
   });
 
-  // it('renders component with detailed dates', () => {
-  //   render(<Detailed />);
-  //   Detailed.dates.forEach((date) => {
-  //     expect(
-  //       screen.getByText(new RegExp(date.dateStart.slice(0, 10), 'i'))
-  //     ).toBeInTheDocument();
-  //     expect(
-  //       screen.getByText(new RegExp(date.dateEnd.slice(0, 10), 'i'))
-  //     ).toBeInTheDocument();
-  //   });
-  // });
+  it('renders nothing if dates is an empty array', () => {
+    const { container } = renderWithIntl(<EventDates dates={[]} />);
+    expect(container.firstChild).toBeNull();
+  });
 });

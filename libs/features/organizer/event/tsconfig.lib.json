@@ -18,10 +18,10 @@
     "src/**/*.test.js",
     "src/**/*.spec.jsx",
     "src/**/*.test.jsx",
-    "str/**/*.stories.ts",
-    "str/**/*.stories.js",
-    "str/**/*.stories.jsx",
-    "str/**/*.stories.tsx"
+    "src/**/*.stories.ts",
+    "src/**/*.stories.js",
+    "src/**/*.stories.jsx",
+    "src/**/*.stories.tsx"
   ],
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
 }

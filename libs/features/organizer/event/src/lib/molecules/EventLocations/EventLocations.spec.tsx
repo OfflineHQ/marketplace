@@ -1,6 +1,7 @@
 // EventLocations.spec.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
+import { EventLocations } from './EventLocations';
 import * as stories from './EventLocations.stories';
 
 // Mock window.open function
@@ -66,5 +67,10 @@ describe('EventLocations', () => {
     expect(url).toEqual(
       'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJd8BlQ2BZwokRAFUEcm_qrcA'
     );
+  });
+
+  it('renders nothing if locations is an empty array', () => {
+    const { container } = render(<EventLocations locations={[]} />);
+    expect(container.firstChild).toBeNull();
   });
 });

@@ -9,12 +9,18 @@ import {
 } from '@ui/components';
 import Image from 'next/image';
 import { Organizer } from '../../types';
+import {
+  EventDates,
+  type EventDatesProps,
+} from '../../molecules/EventDates/EventDates';
+import {
+  EventLocations,
+  type EventLocationsProps,
+} from '../../molecules/EventLocations/EventLocations';
 
-export interface EventHeroProps {
+export interface EventHeroProps extends EventDatesProps, EventLocationsProps {
   heroImage: string;
   title: string;
-  date: string;
-  location: string;
   buyFunction: () => void;
   organizer: Organizer;
   buyText: string;
@@ -23,7 +29,7 @@ export interface EventHeroProps {
 const layout = {
   grid: 'grid grid-cols-1 items-center gap-8 md:grid-cols-2',
   image: 'rounded-sm',
-  textContainer: 'space-y-2',
+  textContainer: 'space-y-4 items-start',
   text: 'mb-4',
   button: 'self-start',
 };
@@ -32,8 +38,9 @@ export const EventHero: React.FC<EventHeroProps> = ({
   heroImage,
   title,
   organizer,
-  date,
-  location,
+  dates,
+  locations,
+  detailed,
   buyFunction,
   buyText,
 }) => {
@@ -49,19 +56,16 @@ export const EventHero: React.FC<EventHeroProps> = ({
         />
       </AspectRatio>
       <div className={layout.textContainer}>
-        <Text variant="h1" className={layout.text}>
+        <Text variant="h2" className={layout.text}>
           {title}
         </Text>
         <Text variant="h4" className={`${layout.text} flex`}>
           <div className="font-medium">By</div>
           <div className="ml-1 tracking-wider">{organizer.name}</div>
         </Text>
-        <Text variant="h3" className={layout.text}>
-          {date}
-        </Text>
-        <Text variant="p" className={layout.text}>
-          {location}
-        </Text>
+        <EventDates dates={dates} detailed={detailed} />
+        <EventLocations locations={locations} detailed={detailed} />
+
         <Button
           onClick={buyFunction}
           variant="default"
