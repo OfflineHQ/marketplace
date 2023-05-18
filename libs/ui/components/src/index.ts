@@ -144,6 +144,7 @@ export {
 
 export {
   Card,
+  CardOverflow,
   CardContent,
   CardDescription,
   CardFooter,
@@ -151,6 +152,7 @@ export {
   CardTitle,
   CardTitleSkeleton,
   CardDescriptionSkeleton,
+  CardOverlay,
 } from './lib/card/Card';
 export { Badge } from './lib/badge/Badge';
 export { Progress } from './lib/progress/Progress';

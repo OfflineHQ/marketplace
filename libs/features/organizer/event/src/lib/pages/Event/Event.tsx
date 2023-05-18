@@ -3,8 +3,10 @@ import {
   CardHeader,
   CardContent,
   CardFooter,
+  CardOverflow,
   Button,
   ButtonSkeleton,
+  CardOverlay,
 } from '@ui/components';
 import {
   EventHero,
@@ -30,14 +32,15 @@ export const Event: React.FC<EventProps> = ({
   ...eventHeroProps
 }) => {
   return (
-    <Card>
-      <CardHeader>
-        <EventHero {...eventHeroProps} />
-      </CardHeader>
-      <CardContent>
+    <Card variant="stickyFooter">
+      <CardOverflow>
+        <CardHeader>
+          <EventHero {...eventHeroProps} />
+        </CardHeader>
         <EventDetails description={description} />
-      </CardContent>
-      <CardFooter className="justify-center">
+        <CardOverlay />
+      </CardOverflow>
+      <CardFooter className="justify-center" variant="sticky">
         <Button onClick={buyFunction} className="w-full md:w-1/2" icon={QrCode}>
           {buyText}
         </Button>
