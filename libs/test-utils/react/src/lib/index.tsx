@@ -1,5 +1,3 @@
-// react-testing-jest.tsx
-import { ReactElement } from 'react';
 import { pick } from 'remeda';
 import {
   render as rtlRender,

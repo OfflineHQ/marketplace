@@ -55,6 +55,7 @@
       "@test-utils/functions": ["libs/test-utils/functions/src/index.ts"],
       "@test-utils/gql": ["libs/test-utils/gql/src/index.ts"],
       "@test-utils/mocks": ["libs/test-utils/mocks/src/index.ts"],
+      "@test-utils/react": ["libs/test-utils/react/src/index.ts"],
       "@ui/components": ["libs/ui/components/src/index.ts"],
       "@ui/hooks": ["libs/ui/hooks/src/index.ts"],
       "@ui/icons": ["libs/ui/icons/src/index.ts"],

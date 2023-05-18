@@ -1,5 +1,4 @@
 {
-  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "allowJs": false,
@@ -12,12 +11,7 @@
   "references": [
     {
       "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    },
-    {
-      "path": "./.storybook/tsconfig.json"
     }
-  ]
+  ],
+  "extends": "../../../tsconfig.base.json"
 }
