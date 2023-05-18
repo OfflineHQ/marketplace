@@ -2,20 +2,37 @@ import * as React from 'react';
 
 import { cn } from '@ui/shared';
 import { TextSkeleton } from '../text/Text';
+import { VariantProps, cva } from 'class-variance-authority';
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'rounded-lg border bg-card text-card-foreground shadow-sm',
-      className
-    )}
-    {...props}
-  />
-));
+const variants = {
+  default: 'border shadow-sm',
+  noBorder: '',
+};
+
+const cardVariantsCva = cva('rounded-lg bg-card text-card-foreground', {
+  variants: {
+    variant: variants,
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export interface CardProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardVariantsCva> {
+  children?: React.ReactNode;
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(cardVariantsCva({ variant }), className)}
+      {...props}
+    />
+  )
+);
 Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<

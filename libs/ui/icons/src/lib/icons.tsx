@@ -25,7 +25,7 @@ import {
   HiCalendar,
 } from 'react-icons/hi2';
 import { BiCircle, BiHelpCircle, BiXCircle } from 'react-icons/bi';
-import { BsTags } from 'react-icons/bs';
+import { BsTags, BsQrCode, BsQrCodeScan } from 'react-icons/bs';
 import {
   AiFillCheckCircle,
   AiOutlineCheck,
@@ -79,6 +79,8 @@ export const OutlineSearch = createWrappedIcon(
   HiOutlineSearch,
   'Outline Search'
 );
+export const QrCode = createWrappedIcon(BsQrCode, 'Qr Code');
+export const QrCodeScan = createWrappedIcon(BsQrCodeScan, 'Qr Code Scan');
 export const OutlineArrowRight = createWrappedIcon(
   HiOutlineArrowRight,
   'Outline Arrow Right'

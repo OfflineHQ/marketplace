@@ -2,10 +2,8 @@ import React from 'react';
 import {
   AspectRatio,
   Text,
-  Button,
   AspectRatioSkeleton,
   TextSkeleton,
-  ButtonSkeleton,
 } from '@ui/components';
 import Image from 'next/image';
 import { Organizer } from '../../types';
@@ -21,9 +19,7 @@ import {
 export interface EventHeroProps extends EventDatesProps, EventLocationsProps {
   heroImage: string;
   title: string;
-  buyFunction: () => void;
   organizer: Organizer;
-  buyText: string;
 }
 
 const layout = {
@@ -41,8 +37,6 @@ export const EventHero: React.FC<EventHeroProps> = ({
   dates,
   locations,
   detailed,
-  buyFunction,
-  buyText,
 }) => {
   return (
     <div className={layout.grid}>
@@ -65,14 +59,6 @@ export const EventHero: React.FC<EventHeroProps> = ({
         </Text>
         <EventDates dates={dates} detailed={detailed} />
         <EventLocations locations={locations} detailed={detailed} />
-
-        <Button
-          onClick={buyFunction}
-          variant="default"
-          className={layout.button}
-        >
-          {buyText}
-        </Button>
       </div>
     </div>
   );
@@ -86,7 +72,6 @@ export const EventHeroSkeleton: React.FC = () => {
         <TextSkeleton variant="h1" />
         <TextSkeleton variant="h3" />
         <TextSkeleton variant="p" />
-        <ButtonSkeleton size="default" />
       </div>
     </div>
   );
