@@ -6,7 +6,7 @@ import {
   within,
 } from '@storybook/testing-library';
 import { EventDetails, EventDetailsSkeleton } from './EventDetails';
-import { eventDetailsProps } from './examples';
+import { eventDetailsProps, long_description } from './examples';
 
 const meta = {
   component: EventDetails,
@@ -18,6 +18,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const WithLongDescription: Story = {
+  args: {
+    description: long_description,
+  },
+};
 
 export const Loading: Story = {
   render: () => <EventDetailsSkeleton />,
