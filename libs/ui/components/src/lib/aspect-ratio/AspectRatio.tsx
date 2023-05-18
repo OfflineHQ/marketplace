@@ -85,5 +85,5 @@ export {
   AspectRatio,
   aspectRatios,
   AspectRatioSkeleton,
-  AspectRatioSkeletonProps,
+  type AspectRatioSkeletonProps,
 };

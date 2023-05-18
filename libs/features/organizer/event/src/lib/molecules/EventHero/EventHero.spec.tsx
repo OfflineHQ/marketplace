@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { renderWithIntl } from '@test-utils/functions';
 import { composeStories } from '@storybook/react';
 import * as stories from './EventHero.stories';
 
@@ -8,7 +8,7 @@ describe('EventHero', () => {
   it('should render successfully Stories', () => {
     const stories = [Default, Loading];
     stories.forEach((Story) => {
-      const { baseElement } = render(<Story />);
+      const { baseElement } = renderWithIntl(<Story />);
       expect(baseElement).toBeTruthy();
     });
   });

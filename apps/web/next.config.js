@@ -38,10 +38,6 @@ const nextConfig = {
     appDir: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
   },
-  //
-  sentry: {
-    hideSourceMaps: true,
-  },
 };
 
 const sentryWebpackPluginOptions = {
@@ -51,6 +47,7 @@ const sentryWebpackPluginOptions = {
   //   release, url, org, project, authToken, configFile, stripPrefix,
   //   urlPrefix, include, ignore
   dryRun: !SENTRY_DSN,
+  hideSourceMaps: true,
   silent: true, // Suppresses all logs
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
