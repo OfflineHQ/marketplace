@@ -8,6 +8,9 @@ import { eventProps } from './examples';
 const meta = {
   component: Event,
   args: eventProps,
+  parameters: {
+    layout: 'fullscreen',
+  },
 } satisfies Meta<typeof Event>;
 
 export default meta;

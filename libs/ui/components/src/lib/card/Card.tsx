@@ -7,6 +7,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 const variants = {
   default: 'border shadow-sm',
   noBorder: '',
+  stickyFooter: 'border shadow-sm flex flex-col h-full',
 };
 
 const cardVariantsCva = cva('rounded-lg bg-card text-card-foreground', {
@@ -95,21 +96,66 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
+  <div ref={ref} className={cn('p-6 pt-0 flex-grow', className)} {...props} />
 ));
 CardContent.displayName = 'CardContent';
 
-const CardFooter = React.forwardRef<
+const footerVariants = {
+  default: 'p-6 pt-0 relative',
+  sticky: 'mt-auto pb-3 pt-0 px-6 relative',
+};
+
+const cardFooterVariantsCva = cva('flex items-center', {
+  variants: {
+    variant: footerVariants,
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export interface CardFooterProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardFooterVariantsCva> {}
+
+const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
+  ({ className, variant, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(cardFooterVariantsCva({ variant }), className)}
+      {...props}
+    >
+      {props.children}
+    </div>
+  )
+);
+
+CardFooter.displayName = 'CardFooter';
+
+export interface CardOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
+  footerHeight?: string;
+}
+
+const CardOverlay = React.forwardRef<HTMLDivElement, CardOverlayProps>(
+  ({ footerHeight = '3.25rem', ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        `absolute inset-x-0 bottom-[${footerHeight}] z-10 h-20 bg-gradient-to-t from-card to-transparent pointer-events-none`,
+        props
+      )}
+    />
+  )
+);
+CardOverlay.displayName = 'CardOverlay';
+
+const CardOverflow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(' flex items-center p-6 pt-0', className)}
-    {...props}
-  />
+  <div ref={ref} className={cn('overflow-y-auto', className)} {...props} />
 ));
-CardFooter.displayName = 'CardFooter';
+CardFooter.displayName = 'CardOverflow';
 
 export {
   Card,
@@ -120,4 +166,6 @@ export {
   CardContent,
   CardTitleSkeleton,
   CardDescriptionSkeleton,
+  CardOverflow,
+  CardOverlay,
 };
