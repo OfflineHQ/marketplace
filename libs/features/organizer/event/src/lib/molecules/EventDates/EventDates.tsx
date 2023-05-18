@@ -30,13 +30,10 @@ export const EventDates: React.FC<EventDatesProps> = ({ dates, detailed }) => {
 
   return (
     <div className="flex items-center space-x-4">
-      {/* <div className="flex min-w-[1.75rem] items-center justify-center"> */}
-      {/* added a wrapper around the SVG */}
-      <CalendarIcon size="lg" />
-      {/* </div> */}
+      <CalendarIcon size="lg" flex />
       <div className="flex flex-col items-start space-y-4">
         {dates.length > 1 && !detailed ? (
-          <Text className={`flex`}>
+          <Text className={`ml-1 flex`}>
             From{' '}
             <span className={style.date}>
               {formatDateTime(commonDate.dateStart, {
@@ -60,7 +57,7 @@ export const EventDates: React.FC<EventDatesProps> = ({ dates, detailed }) => {
           </Text>
         ) : (
           dates.map((eventDate) => (
-            <Text key={eventDate.id} className={`flex`}>
+            <Text key={eventDate.id} className={`ml-1 flex`}>
               <span className={style.date}>
                 {formatDateTime(eventDate.dateStart, {
                   weekday: 'short',
