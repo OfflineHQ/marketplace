@@ -30,25 +30,23 @@ export const PassCard: React.FC<PassCardProps> = ({
   numTickets,
   ...boundedNumberProps
 }) => (
-  <Card>
+  <Card className="flex flex-col justify-between">
     <CardHeader>
       <CardTitle>{ticketType}</CardTitle>
       <CardDescription>{description}</CardDescription>
     </CardHeader>
-    <CardContent>
-      <div className="flex items-center justify-between">
-        <Text>${price}</Text>
-        <BoundedNumericStepper
-          initialValue={numTickets}
-          {...boundedNumberProps}
-        />
-      </div>
-    </CardContent>
+    <CardFooter className="flex items-center justify-between">
+      <Text>${price}</Text>
+      <BoundedNumericStepper
+        initialValue={numTickets}
+        {...boundedNumberProps}
+      />
+    </CardFooter>
   </Card>
 );
 
 export const PassCardSkeleton: React.FC = () => (
-  <Card>
+  <Card className="flex flex-col justify-between">
     <CardHeader>
       <CardTitle>
         <CardTitleSkeleton />

@@ -42,7 +42,7 @@ const SheetPortal = ({
 SheetPortal.displayName = SheetPrimitive.Portal.displayName;
 
 const sheetVariants = cva(
-  'fixed z-50 scale-100 gap-4 border bg-background p-6 opacity-100 shadow-lg',
+  'fixed z-50 scale-100 gap-4 border bg-background opacity-100 shadow-lg',
   {
     variants: {
       position: {
@@ -138,7 +138,7 @@ const SheetHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'flex flex-col space-y-2 text-center sm:text-left',
+      'flex flex-col space-y-2 text-center sm:text-left px-6 pt-6',
       className
     )}
     {...props}
@@ -171,7 +171,7 @@ const SheetOverflow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('overflow-y-auto', className)} {...props} />
+  <div ref={ref} className={cn('overflow-y-auto px-6', className)} {...props} />
 ));
 SheetOverflow.displayName = 'SheetOverflow';
 
@@ -180,17 +180,14 @@ const footerVariants = {
   sticky: 'mt-auto pb-3 pt-0 px-6 relative',
 };
 
-const sheetFooterVariantsCva = cva(
-  'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
-  {
-    variants: {
-      variant: footerVariants,
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  }
-);
+const sheetFooterVariantsCva = cva('flex flex-col-reverse', {
+  variants: {
+    variant: footerVariants,
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
 
 export interface SheetFooterProps
   extends React.HTMLAttributes<HTMLDivElement>,

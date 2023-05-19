@@ -32,7 +32,7 @@ export const SheetDemo: React.FC<DialogContentProps> = ({ size, position }) => {
               Make changes to your profile here. Click save when you're done.
             </SheetDescription>
           </SheetHeader>
-          <div className="grid gap-4 py-4">
+          <div className="grid gap-4 p-6">
             <TextInput label="Name" defaultValue="Pedro Duarte" />
             <TextInput label="User name" defaultValue="@peduarte" />
           </div>

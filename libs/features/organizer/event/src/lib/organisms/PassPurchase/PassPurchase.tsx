@@ -14,6 +14,17 @@ import {
   CardOverlay,
   Button,
   AutoAnimate,
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetOverlay,
+  SheetOverflow,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetTitleSkeleton,
+  SheetDescription,
+  SheetDescriptionSkeleton,
 } from '@ui/components';
 import {
   PassSelection,
@@ -25,11 +36,13 @@ import { PassTotal } from '../../molecules/PassTotal/PassTotal';
 export interface PassPurchaseProps extends PassSelectionProps {
   goPaymentText: string;
   title: string;
+  description: string;
 }
 
 export const PassPurchase: React.FC<PassPurchaseProps> = ({
   passes: _passes,
   goPaymentText,
+  description,
   title,
 }) => {
   const [passes, setPasses] = useState(_passes);
@@ -49,38 +62,39 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   );
 
   return (
-    <Card variant="stickyFooter">
-      <CardOverflow className="pb-3">
-        <CardHeader>
-          <Text variant="h3" className="text-muted-foreground">
-            {title}
-          </Text>
-        </CardHeader>
-        <PassSelection
-          passes={passes.map((pass, index) => ({
-            ...pass,
-            onChange: (newNumTickets: number) =>
-              handleOnChange(index, newNumTickets),
-          }))}
-        />
-      </CardOverflow>
-      <AutoAnimate className="mt-auto">
-        {isPassSelected && (
-          <>
-            <CardOverlay footerHeight="112px" />
-            <CardFooter
-              variant="sticky"
-              className="flex flex-col items-start space-y-2"
-            >
-              <PassTotal passes={passes} />
-              <Button className="w-full" icon={Cart}>
-                {goPaymentText}
-              </Button>
-            </CardFooter>
-          </>
-        )}
-      </AutoAnimate>
-    </Card>
+    <Sheet open={true}>
+      <SheetContent variant="stickyFooter">
+        <SheetHeader>
+          <SheetTitle> {title}</SheetTitle>
+          <SheetDescription>{description}</SheetDescription>
+        </SheetHeader>
+        <SheetOverflow className="py-3">
+          <PassSelection
+            passes={passes.map((pass, index) => ({
+              ...pass,
+              onChange: (newNumTickets: number) =>
+                handleOnChange(index, newNumTickets),
+            }))}
+          />
+        </SheetOverflow>
+        <AutoAnimate className="mt-auto">
+          {isPassSelected && (
+            <>
+              <SheetOverlay footerHeight="112px" />
+              <SheetFooter
+                variant="sticky"
+                className="flex flex-col items-start space-y-2"
+              >
+                <PassTotal passes={passes} />
+                <Button className="w-full" icon={Cart}>
+                  {goPaymentText}
+                </Button>
+              </SheetFooter>
+            </>
+          )}
+        </AutoAnimate>
+      </SheetContent>
+    </Sheet>
   );
 };
 

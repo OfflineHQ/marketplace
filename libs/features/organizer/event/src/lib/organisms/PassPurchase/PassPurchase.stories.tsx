@@ -69,9 +69,13 @@ export const WithLotsOfPasses: Story = {
       numTickets: 0,
     })),
   },
+};
+
+export const WithLotsOfPassesSelected: Story = {
+  ...WithLotsOfPasses,
   play: async () => {
     const passCards = screen.getAllByRole('button');
-    expect(passCards).toHaveLength(14); // Two buttons (increment and decrement) for each PassCard
+    expect(passCards).toHaveLength(15); // Two buttons (increment and decrement) for each PassCard + close btn
     passCards[11].click(); // Click the 7th pass increment button
     const cartButton = await screen.findByRole('button', {
       name: /Go to payment/i,
