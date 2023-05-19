@@ -29,6 +29,7 @@ export const Event: React.FC<EventProps> = ({
   description,
   buyFunction,
   buyText,
+  detailsTitle,
   ...eventHeroProps
 }) => {
   return (
@@ -37,7 +38,7 @@ export const Event: React.FC<EventProps> = ({
         <CardHeader>
           <EventHero {...eventHeroProps} />
         </CardHeader>
-        <EventDetails description={description} />
+        <EventDetails description={description} detailsTitle={detailsTitle} />
       </CardOverflow>
       <CardOverlay />
       <CardFooter className="justify-center" variant="sticky">

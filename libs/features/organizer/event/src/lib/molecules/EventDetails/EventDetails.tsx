@@ -10,18 +10,20 @@ import {
   Text,
   TextSkeleton,
 } from '@ui/components';
-import { useTranslations } from 'next-intl';
 
 export interface EventDetailsProps {
+  detailsTitle: string;
   description: string;
 }
 
-export const EventDetails: React.FC<EventDetailsProps> = ({ description }) => {
-  const t = useTranslations('Organizer.Event.Details');
+export const EventDetails: React.FC<EventDetailsProps> = ({
+  detailsTitle,
+  description,
+}) => {
   return (
     <Card variant="noBorder">
       <CardHeader>
-        <CardTitle>{t('title')}</CardTitle>
+        <CardTitle>{detailsTitle}</CardTitle>
       </CardHeader>
       <CardContent>
         <Text variant="p">{description}</Text>
