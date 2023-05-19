@@ -2,7 +2,11 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-import { PassPurchase, PassPurchaseProps } from './PassPurchase';
+import {
+  PassPurchase,
+  PassPurchaseProps,
+  PassPurchaseSkeleton,
+} from './PassPurchase';
 import {
   PassPurchaseExample,
   passPurchaseProps,
@@ -74,4 +78,8 @@ export const WithLotsOfPasses: Story = {
     });
     expect(cartButton).toBeInTheDocument();
   },
+};
+
+export const Loading: Story = {
+  render: () => <PassPurchaseSkeleton />,
 };
