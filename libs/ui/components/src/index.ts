@@ -134,8 +134,12 @@ export {
   SheetContent,
   SheetHeader,
   SheetFooter,
+  SheetOverlay,
+  SheetOverflow,
   SheetTitle,
+  SheetTitleSkeleton,
   SheetDescription,
+  SheetDescriptionSkeleton,
 } from './lib/sheet/Sheet';
 export {
   AspectRatio,
