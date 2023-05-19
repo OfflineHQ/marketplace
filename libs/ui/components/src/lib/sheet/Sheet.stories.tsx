@@ -1,47 +1,16 @@
 // Sheet.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
 import { expect } from '@storybook/jest';
-import { fireEvent, screen, userEvent, within } from '@storybook/testing-library';
-import { Button } from '../button/Button';
-import { TextInput } from '../text-input/TextInput';
-
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-  DialogContentProps,
-} from './Sheet';
+  fireEvent,
+  screen,
+  userEvent,
+  within,
+} from '@storybook/testing-library';
 
-const SheetDemo: React.FC<DialogContentProps> = ({ size, position }) => {
-  return (
-    <div className="flex flex-col space-y-8">
-      <Sheet>
-        <SheetTrigger asChild>
-          <button>Open sheet</button>
-        </SheetTrigger>
-        <SheetContent position={position} size={size}>
-          <SheetHeader>
-            <SheetTitle>Edit profile</SheetTitle>
-            <SheetDescription>
-              Make changes to your profile here. Click save when you're done.
-            </SheetDescription>
-          </SheetHeader>
-          <div className="grid gap-4 py-4">
-            <TextInput label="Name" defaultValue="Pedro Duarte" />
-            <TextInput label="User name" defaultValue="@peduarte" />
-          </div>
-          <SheetFooter>
-            <Button type="submit">Save changes</Button>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
-    </div>
-  );
-};
+import { Sheet, DialogContentProps } from './Sheet';
+
+import { SheetDemo, SheetWithStickyFooter } from './examples';
 
 const meta = {
   title: 'Organisms/Sheet',
@@ -66,6 +35,10 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+export const StickyFooter: Story = {
+  render: (props) => <SheetWithStickyFooter {...props} />,
+};
 
 export const OpenedSheetWithFocus: Story = {
   play: async () => {

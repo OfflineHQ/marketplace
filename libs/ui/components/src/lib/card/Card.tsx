@@ -158,7 +158,7 @@ const CardOverflow = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div ref={ref} className={cn('overflow-y-auto', className)} {...props} />
 ));
-CardFooter.displayName = 'CardOverflow';
+CardOverflow.displayName = 'CardOverflow';
 
 export {
   Card,
