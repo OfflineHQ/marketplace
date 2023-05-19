@@ -38,8 +38,8 @@ export const Event: React.FC<EventProps> = ({
           <EventHero {...eventHeroProps} />
         </CardHeader>
         <EventDetails description={description} />
-        <CardOverlay />
       </CardOverflow>
+      <CardOverlay />
       <CardFooter className="justify-center" variant="sticky">
         <Button onClick={buyFunction} className="w-full md:w-1/2" icon={QrCode}>
           {buyText}

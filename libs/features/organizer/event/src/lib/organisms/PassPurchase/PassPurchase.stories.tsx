@@ -3,12 +3,19 @@ import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 import { PassPurchase, PassPurchaseProps } from './PassPurchase';
-import { PassPurchaseExample, passPurchaseProps } from './examples';
+import {
+  PassPurchaseExample,
+  passPurchaseProps,
+  passPurchasePropsWithLotsOfPasses,
+} from './examples';
 
 const meta = {
   component: PassPurchase,
   args: passPurchaseProps,
   render: PassPurchaseExample,
+  parameters: {
+    layout: 'fullscreen',
+  },
 } satisfies Meta<typeof PassPurchase>;
 
 export default meta;
@@ -47,5 +54,24 @@ export const WithPassesSelected: Story = {
 
     const passTotal = screen.getByText(/Total/i);
     expect(passTotal).toBeInTheDocument();
+  },
+};
+
+export const WithLotsOfPasses: Story = {
+  args: {
+    ...passPurchasePropsWithLotsOfPasses,
+    passes: passPurchasePropsWithLotsOfPasses.passes.map((pass) => ({
+      ...pass,
+      numTickets: 0,
+    })),
+  },
+  play: async () => {
+    const passCards = screen.getAllByRole('button');
+    expect(passCards).toHaveLength(14); // Two buttons (increment and decrement) for each PassCard
+    passCards[11].click(); // Click the 7th pass increment button
+    const cartButton = await screen.findByRole('button', {
+      name: /Go to payment/i,
+    });
+    expect(cartButton).toBeInTheDocument();
   },
 };

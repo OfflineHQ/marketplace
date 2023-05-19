@@ -134,16 +134,19 @@ CardFooter.displayName = 'CardFooter';
 
 export interface CardOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
   footerHeight?: string;
+  className?: string;
 }
 
 const CardOverlay = React.forwardRef<HTMLDivElement, CardOverlayProps>(
-  ({ footerHeight = '3.25rem', ...props }, ref) => (
+  ({ footerHeight = '3.25rem', className, ...props }, ref) => (
     <div
       ref={ref}
       className={cn(
-        `absolute inset-x-0 bottom-[${footerHeight}] z-10 h-20 bg-gradient-to-t from-card to-transparent pointer-events-none`,
-        props
+        `absolute inset-x-0 z-10 h-20 bg-gradient-to-t from-card to-transparent pointer-events-none`,
+        className
       )}
+      style={{ bottom: footerHeight }}
+      {...props}
     />
   )
 );
