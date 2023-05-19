@@ -10,5 +10,5 @@ export const eventProps: EventProps = {
   ...eventDetailsProps,
   description: long_description,
   buyFunction: () => null,
-  buyText: 'Select Passes',
+  buyText: 'Select passes',
 };
