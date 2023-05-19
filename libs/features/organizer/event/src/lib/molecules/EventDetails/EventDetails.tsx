@@ -36,9 +36,7 @@ export const EventDetailsSkeleton: React.FC = () => {
   return (
     <Card variant="noBorder">
       <CardHeader>
-        <CardTitle>
-          <CardTitleSkeleton />
-        </CardTitle>
+        <CardTitleSkeleton />
       </CardHeader>
       <CardContent>
         <TextSkeleton variant="p" />

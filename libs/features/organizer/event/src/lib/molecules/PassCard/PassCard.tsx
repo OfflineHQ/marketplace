@@ -48,12 +48,8 @@ export const PassCard: React.FC<PassCardProps> = ({
 export const PassCardSkeleton: React.FC = () => (
   <Card className="flex flex-col justify-between">
     <CardHeader>
-      <CardTitle>
-        <CardTitleSkeleton />
-      </CardTitle>
-      <CardDescription>
-        <CardDescriptionSkeleton />
-      </CardDescription>
+      <CardTitleSkeleton />
+      <CardDescriptionSkeleton />
     </CardHeader>
     <CardContent>
       <div className="flex items-center justify-between">
