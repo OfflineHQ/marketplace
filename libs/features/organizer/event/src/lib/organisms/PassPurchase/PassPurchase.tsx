@@ -48,7 +48,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
     <Card variant="stickyFooter">
       <CardOverflow>
         <CardHeader>
-          <CardTitle>{title}</CardTitle>
+          <CardTitle className="opacity-60">{title}</CardTitle>
         </CardHeader>
         <PassSelection
           passes={passes.map((pass, index) => ({

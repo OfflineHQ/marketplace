@@ -52,14 +52,12 @@ export const Event: React.FC<EventProps> = ({
 
 export const EventSkeleton: React.FC = () => {
   return (
-    <Card>
+    <Card variant="stickyFooter">
       <CardHeader>
         <EventHeroSkeleton />
       </CardHeader>
-      <CardContent>
-        <EventDetailsSkeleton />
-      </CardContent>
-      <CardFooter className="justify-center">
+      <EventDetailsSkeleton />
+      <CardFooter variant="sticky" className="justify-center">
         <ButtonSkeleton className="w-full md:w-1/2" />
       </CardFooter>
     </Card>
