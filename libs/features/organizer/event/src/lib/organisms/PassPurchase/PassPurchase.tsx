@@ -50,9 +50,9 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
 
   return (
     <Card variant="stickyFooter">
-      <CardOverflow>
+      <CardOverflow className="pb-3">
         <CardHeader>
-          <Text variant="h3" className="opacity-60">
+          <Text variant="h3" className="text-muted-foreground">
             {title}
           </Text>
         </CardHeader>
