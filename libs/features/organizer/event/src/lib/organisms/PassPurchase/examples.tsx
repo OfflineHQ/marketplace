@@ -6,6 +6,7 @@ export const passPurchaseProps = {
   ...passSelectionProps,
   goPaymentText: 'Go to Payment',
   title: 'Pass Selection',
+  description: 'Select the passes you want to purchase and validate your order',
 };
 export const passPurchasePropsWithLotsOfPasses = {
   ...passPurchaseProps,
