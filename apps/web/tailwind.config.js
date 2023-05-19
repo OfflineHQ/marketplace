@@ -11,6 +11,7 @@ module.exports = {
       __dirname,
       '{src,app,pages,components,public}/**/*!(*.spec).{ts,tsx,html}'
     ),
+    join(__dirname, '../../libs/features/**/!(*.spec).{ts,tsx}'),
     ...createGlobPatternsForDependencies(__dirname),
   ],
   ...baseConfig,

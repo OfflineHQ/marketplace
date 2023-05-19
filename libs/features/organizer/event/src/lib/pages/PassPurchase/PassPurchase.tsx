@@ -2,20 +2,9 @@
 import React, { useState } from 'react';
 import { Cart } from '@ui/icons';
 import {
-  Card,
-  CardContent,
-  Text,
-  TextSkeleton,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  CardTitleSkeleton,
-  CardOverflow,
-  CardOverlay,
   Button,
   AutoAnimate,
   Sheet,
-  SheetTrigger,
   SheetContent,
   SheetOverlay,
   SheetOverflow,
@@ -30,7 +19,7 @@ import {
   PassSelection,
   PassSelectionProps,
   PassSelectionSkeleton,
-} from '../PassSelection/PassSelection';
+} from '../../organisms/PassSelection/PassSelection';
 import { PassTotal } from '../../molecules/PassTotal/PassTotal';
 
 export interface PassPurchaseProps extends PassSelectionProps {
@@ -65,7 +54,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
     <Sheet open={true}>
       <SheetContent variant="stickyFooter" size="lg">
         <SheetHeader>
-          <SheetTitle> {title}</SheetTitle>
+          <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>
         </SheetHeader>
         <SheetOverflow className="py-3">

@@ -41,7 +41,7 @@ export const Event: React.FC<EventProps> = ({
       </CardOverflow>
       <CardOverlay />
       <CardFooter className="justify-center" variant="sticky">
-        <Button onClick={buyFunction} className="w-full md:w-1/2" icon={QrCode}>
+        <Button onClick={buyFunction} className="w-full md:w-1/6" icon={QrCode}>
           {buyText}
         </Button>
       </CardFooter>
@@ -57,7 +57,7 @@ export const EventSkeleton: React.FC = () => {
       </CardHeader>
       <EventDetailsSkeleton />
       <CardFooter variant="sticky" className="justify-center">
-        <ButtonSkeleton className="w-full md:w-1/2" />
+        <ButtonSkeleton className="w-full md:w-1/6" />
       </CardFooter>
     </Card>
   );
