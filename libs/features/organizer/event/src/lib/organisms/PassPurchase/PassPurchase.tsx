@@ -7,6 +7,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  CardOverflow,
+  CardOverlay,
   Button,
   AutoAnimate,
 } from '@ui/components';
@@ -16,10 +18,15 @@ import {
 } from '../PassSelection/PassSelection';
 import { PassTotal } from '../../molecules/PassTotal/PassTotal';
 
-export type PassPurchaseProps = PassSelectionProps;
+export interface PassPurchaseProps extends PassSelectionProps {
+  goPaymentText: string;
+  title: string;
+}
 
 export const PassPurchase: React.FC<PassPurchaseProps> = ({
   passes: _passes,
+  goPaymentText,
+  title,
 }) => {
   const [passes, setPasses] = useState(_passes);
 
@@ -38,11 +45,11 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   );
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Pass Selection</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Card variant="stickyFooter">
+      <CardOverflow>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+        </CardHeader>
         <PassSelection
           passes={passes.map((pass, index) => ({
             ...pass,
@@ -50,15 +57,21 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
               handleOnChange(index, newNumTickets),
           }))}
         />
-      </CardContent>
-      <AutoAnimate>
+      </CardOverflow>
+      <AutoAnimate className="mt-auto">
         {isPassSelected && (
-          <CardFooter className="flex flex-col items-start space-y-2">
-            <PassTotal passes={passes} />
-            <Button className="w-full" icon={Cart}>
-              Go to payment
-            </Button>
-          </CardFooter>
+          <>
+            <CardOverlay footerHeight="112px" />
+            <CardFooter
+              variant="sticky"
+              className="flex flex-col items-start space-y-2"
+            >
+              <PassTotal passes={passes} />
+              <Button className="w-full" icon={Cart}>
+                {goPaymentText}
+              </Button>
+            </CardFooter>
+          </>
         )}
       </AutoAnimate>
     </Card>
