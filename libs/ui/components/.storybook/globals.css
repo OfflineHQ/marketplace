@@ -197,3 +197,11 @@ body {
 .pt-ultrawide {
   padding-top: 42.86%;
 }
+
+body,
+html,
+#storybook-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

@@ -7,7 +7,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 const variants = {
   default: 'border shadow-sm',
   noBorder: '',
-  stickyFooter: 'border shadow-sm flex flex-col h-full',
+  stickyFooter: 'relative border shadow-sm flex flex-col h-full',
 };
 
 const cardVariantsCva = cva('rounded-lg bg-card text-card-foreground', {

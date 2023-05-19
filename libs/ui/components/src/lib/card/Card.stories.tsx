@@ -1,4 +1,9 @@
-import { CardDemo, CardWithForm, CardOverflow, CardSkeleton } from './examples';
+import {
+  CardDemo,
+  CardWithForm,
+  CardWithOverflow,
+  CardSkeleton,
+} from './examples';
 import { Card } from './Card';
 
 import { Meta, StoryObj } from '@storybook/react';
@@ -14,10 +19,15 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const FullSizeStickyFooter: Story = {
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
 
-export const Overflow: Story = {
-  render: CardOverflow,
+export const FullSizeStickyFooterOverflow: Story = {
+  ...FullSizeStickyFooter,
+  render: CardWithOverflow,
 };
 
 export const WithForm: Story = {

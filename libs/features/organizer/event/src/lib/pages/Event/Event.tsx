@@ -1,7 +1,6 @@
 import {
   Card,
   CardHeader,
-  CardContent,
   CardFooter,
   CardOverflow,
   Button,
