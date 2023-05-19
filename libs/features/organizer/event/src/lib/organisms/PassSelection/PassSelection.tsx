@@ -6,11 +6,17 @@ import {
 } from '../../molecules/PassCard/PassCard';
 
 export interface PassSelectionProps {
+  className?: string;
   passes: PassCardProps[];
 }
 
-export const PassSelection: React.FC<PassSelectionProps> = ({ passes }) => (
-  <div className="grid grid-cols-1 gap-4 px-1 md:grid-cols-2 lg:grid-cols-3">
+export const PassSelection: React.FC<PassSelectionProps> = ({
+  passes,
+  className,
+}) => (
+  <div
+    className={`grid grid-cols-1 gap-4 px-1 md:grid-cols-2 lg:grid-cols-3 ${className}`}
+  >
     {passes.map((passProps, index) => (
       <PassCard key={index} {...passProps} />
     ))}
