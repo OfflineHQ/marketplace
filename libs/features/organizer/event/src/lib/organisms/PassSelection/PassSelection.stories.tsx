@@ -2,7 +2,11 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-import { PassSelection, PassSelectionProps } from './PassSelection';
+import {
+  PassSelection,
+  PassSelectionProps,
+  PassSelectionSkeleton,
+} from './PassSelection';
 import { PassSelectionExample, passSelectionProps } from './examples';
 
 const meta = {
@@ -40,4 +44,8 @@ export const BoundaryConditions: Story = {
       expect(decrementButton).not.toBeDisabled();
     });
   },
+};
+
+export const Loading: Story = {
+  render: () => <PassSelectionSkeleton />,
 };

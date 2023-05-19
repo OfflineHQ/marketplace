@@ -2,7 +2,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-import { PassCard, PassCardProps } from './PassCard';
+import { PassCard, PassCardProps, PassCardSkeleton } from './PassCard';
 import { PassCardExample, passCardProps } from './examples';
 
 const meta = {
@@ -33,4 +33,8 @@ export const BoundaryConditions: Story = {
     });
     expect(decrementButton).not.toBeDisabled();
   },
+};
+
+export const Loading: Story = {
+  render: () => <PassCardSkeleton />,
 };

@@ -6,6 +6,10 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
+  CardTitleSkeleton,
+  CardDescriptionSkeleton,
+  TextSkeleton,
+  ButtonSkeleton,
   BoundedNumericStepper,
   BoundedNumericStepperProps,
   Text,
@@ -38,6 +42,25 @@ export const PassCard: React.FC<PassCardProps> = ({
           initialValue={numTickets}
           {...boundedNumberProps}
         />
+      </div>
+    </CardContent>
+  </Card>
+);
+
+export const PassCardSkeleton: React.FC = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>
+        <CardTitleSkeleton />
+      </CardTitle>
+      <CardDescription>
+        <CardDescriptionSkeleton />
+      </CardDescription>
+    </CardHeader>
+    <CardContent>
+      <div className="flex items-center justify-between">
+        <TextSkeleton />
+        <ButtonSkeleton />
       </div>
     </CardContent>
   </Card>

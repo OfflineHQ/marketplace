@@ -68,7 +68,7 @@ const CardTitleSkeleton = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
-  <TextSkeleton className={className} variant="h3" {...props} />
+  <TextSkeleton className={className} variant="h4" {...props} />
 ));
 CardTitleSkeleton.displayName = 'CardTitleSkeleton';
 

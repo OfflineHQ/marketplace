@@ -4,9 +4,12 @@ import { Cart } from '@ui/icons';
 import {
   Card,
   CardContent,
+  Text,
+  TextSkeleton,
   CardFooter,
   CardHeader,
   CardTitle,
+  CardTitleSkeleton,
   CardOverflow,
   CardOverlay,
   Button,
@@ -15,6 +18,7 @@ import {
 import {
   PassSelection,
   PassSelectionProps,
+  PassSelectionSkeleton,
 } from '../PassSelection/PassSelection';
 import { PassTotal } from '../../molecules/PassTotal/PassTotal';
 
@@ -48,7 +52,9 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
     <Card variant="stickyFooter">
       <CardOverflow>
         <CardHeader>
-          <CardTitle className="opacity-60">{title}</CardTitle>
+          <Text variant="h3" className="opacity-60">
+            {title}
+          </Text>
         </CardHeader>
         <PassSelection
           passes={passes.map((pass, index) => ({
@@ -74,6 +80,17 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
           </>
         )}
       </AutoAnimate>
+    </Card>
+  );
+};
+
+export const PassPurchaseSkeleton: React.FC = () => {
+  return (
+    <Card variant="stickyFooter">
+      <CardHeader>
+        <TextSkeleton variant="h3" />
+      </CardHeader>
+      <PassSelectionSkeleton />
     </Card>
   );
 };
