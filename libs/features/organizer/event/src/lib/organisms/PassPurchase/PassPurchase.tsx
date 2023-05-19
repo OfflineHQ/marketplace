@@ -63,7 +63,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
 
   return (
     <Sheet open={true}>
-      <SheetContent variant="stickyFooter">
+      <SheetContent variant="stickyFooter" size="lg">
         <SheetHeader>
           <SheetTitle> {title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>
@@ -100,11 +100,16 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
 
 export const PassPurchaseSkeleton: React.FC = () => {
   return (
-    <Card variant="stickyFooter">
-      <CardHeader>
-        <TextSkeleton variant="h3" />
-      </CardHeader>
-      <PassSelectionSkeleton />
-    </Card>
+    <Sheet open={true}>
+      <SheetContent variant="stickyFooter" size="lg">
+        <SheetHeader>
+          <SheetTitleSkeleton />
+          <SheetDescriptionSkeleton />
+        </SheetHeader>
+        <SheetOverflow className="py-3">
+          <PassSelectionSkeleton />
+        </SheetOverflow>
+      </SheetContent>
+    </Sheet>
   );
 };
