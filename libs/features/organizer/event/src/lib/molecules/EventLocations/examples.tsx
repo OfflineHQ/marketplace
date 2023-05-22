@@ -37,6 +37,6 @@ export const eventDateLocation2: EventDateLocation = {
 };
 
 export const eventLocationsProps: EventLocationsProps = {
-  locations: [eventDateLocation1, eventDateLocation2],
+  eventDateLocations: [eventDateLocation1, eventDateLocation2],
   detailed: false,
 };

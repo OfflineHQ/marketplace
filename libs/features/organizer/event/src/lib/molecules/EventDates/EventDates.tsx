@@ -9,7 +9,7 @@ import { Text } from '@ui/components';
 import { useFormatter } from 'next-intl';
 
 export interface EventDatesProps {
-  dates: EventDateLocation[];
+  eventDateLocations: EventDateLocation[];
   detailed?: boolean;
 }
 
@@ -18,21 +18,24 @@ const style = {
   hourMinutes: 'text-base font-semibold px-1',
 };
 
-export const EventDates: React.FC<EventDatesProps> = ({ dates, detailed }) => {
+export const EventDates: React.FC<EventDatesProps> = ({
+  eventDateLocations,
+  detailed,
+}) => {
   const format = useFormatter();
 
-  if (!dates.length) return null;
+  if (!eventDateLocations.length) return null;
 
   const formatDateTime = (date: string, options: any) =>
     format.dateTime(new Date(date), options);
 
-  const commonDate = dates[0];
+  const commonDate = eventDateLocations[0];
 
   return (
     <div className="flex items-center space-x-4">
       <CalendarIcon size="lg" flex />
       <div className="flex flex-col items-start space-y-4">
-        {dates.length > 1 && !detailed ? (
+        {eventDateLocations.length > 1 && !detailed ? (
           <Text className={`ml-1 flex`}>
             From{' '}
             <span className={style.date}>
@@ -46,17 +49,20 @@ export const EventDates: React.FC<EventDatesProps> = ({ dates, detailed }) => {
             </span>
             To{' '}
             <span className={style.date}>
-              {formatDateTime(dates[dates.length - 1].dateEnd, {
-                weekday: 'short',
-                day: 'numeric',
-                month: 'long',
-                hour: 'numeric',
-                minute: 'numeric',
-              })}
+              {formatDateTime(
+                eventDateLocations[eventDateLocations.length - 1].dateEnd,
+                {
+                  weekday: 'short',
+                  day: 'numeric',
+                  month: 'long',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                }
+              )}
             </span>
           </Text>
         ) : (
-          dates.map((eventDate) => (
+          eventDateLocations.map((eventDate) => (
             <Text key={eventDate.id} className={`ml-1 flex`}>
               <span className={style.date}>
                 {formatDateTime(eventDate.dateStart, {

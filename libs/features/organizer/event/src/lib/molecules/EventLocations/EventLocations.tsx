@@ -7,15 +7,15 @@ import type { Location, EventDateLocation } from '../../types';
 import { Location as LocationIcon } from '@ui/icons';
 import { Button } from '@ui/components';
 export interface EventLocationsProps {
-  locations: EventDateLocation[];
+  eventDateLocations: EventDateLocation[];
   detailed?: boolean;
 }
 
 export const EventLocations: React.FC<EventLocationsProps> = ({
-  locations,
+  eventDateLocations,
   detailed,
 }) => {
-  if (!locations.length) return null;
+  if (!eventDateLocations.length) return null;
 
   const handleClick = (location: Location) => {
     // Generate a Google Maps URL using the placeId.
@@ -24,13 +24,13 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
     window.open(googleMapsUrl, '_blank');
   };
 
-  const commonLocation = locations[0].location;
+  const commonLocation = eventDateLocations[0].location;
 
   return (
     <div className="flex items-center space-x-1">
       <LocationIcon size="lg" flex />
       <div className="flex flex-col items-start space-y-0">
-        {locations.length > 1 && !detailed ? (
+        {eventDateLocations.length > 1 && !detailed ? (
           <Button
             variant="link"
             className="text-base font-semibold"
@@ -39,7 +39,7 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
             {commonLocation.city}, {commonLocation.country}
           </Button>
         ) : (
-          locations.map((eventLocation) => (
+          eventDateLocations.map((eventLocation) => (
             <Button
               key={eventLocation.id}
               variant="link"

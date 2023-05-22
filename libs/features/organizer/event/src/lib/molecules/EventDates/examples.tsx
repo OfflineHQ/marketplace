@@ -5,6 +5,6 @@ import {
 } from '../EventLocations/examples';
 
 export const eventDatesProps: EventDatesProps = {
-  dates: [eventDateLocation1, eventDateLocation2],
+  eventDateLocations: [eventDateLocation1, eventDateLocation2],
   detailed: false,
 };

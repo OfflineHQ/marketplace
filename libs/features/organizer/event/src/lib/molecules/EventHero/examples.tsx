@@ -13,6 +13,7 @@ const organizer: EventHeroProps['organizer'] = {
 export const eventHeroProps: EventHeroProps = {
   heroImage: 'https://picsum.photos/seed/hero/800/450',
   title: 'Lorem ipsum dolor sit amet',
+  // followers: [],
   ...eventLocationsProps,
   ...eventDatesProps,
   organizer,
