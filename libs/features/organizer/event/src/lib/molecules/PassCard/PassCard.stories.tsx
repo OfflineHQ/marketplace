@@ -3,11 +3,16 @@ import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 import { PassCard, PassCardProps, PassCardSkeleton } from './PassCard';
-import { PassCardExample, passCardProps } from './examples';
+import {
+  PassCardExample,
+  passWithMaxAmount,
+  passWithMaxAmountPerUser,
+  passWithSoldOut,
+} from './examples';
 
 const meta = {
   component: PassCard,
-  args: passCardProps,
+  args: passWithMaxAmount,
   render: PassCardExample,
 } satisfies Meta<typeof PassCard>;
 
@@ -19,9 +24,8 @@ export const Default: Story = {};
 
 export const BoundaryConditions: Story = {
   args: {
-    ...passCardProps,
+    ...passWithMaxAmountPerUser,
     numTickets: 3,
-    maxVal: 3,
   },
   play: async () => {
     const incrementButton = screen.getByRole('button', {
@@ -32,6 +36,20 @@ export const BoundaryConditions: Story = {
       name: /decrement value/i,
     });
     expect(decrementButton).not.toBeDisabled();
+  },
+};
+
+export const SoldOut: Story = {
+  args: passWithSoldOut,
+  play: async () => {
+    const incrementButton = screen.getByRole('button', {
+      name: /increment value/i,
+    });
+    expect(incrementButton).toBeDisabled();
+    const decrementButton = screen.getByRole('button', {
+      name: /decrement value/i,
+    });
+    expect(decrementButton).toBeDisabled();
   },
 };
 

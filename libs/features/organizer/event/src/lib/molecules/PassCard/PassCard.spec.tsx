@@ -7,11 +7,11 @@ const { Default, BoundaryConditions } = composeStories(stories);
 describe('PassCard', () => {
   test('renders PassCard with initial values', () => {
     render(<Default />);
-    const ticketType = screen.getByText('General Admission');
+    const name = screen.getByText('General Admission');
     const description = screen.getByText('General Admission to the event');
     const price = screen.getByText('$1300');
     const numTickets = screen.getByText('2');
-    expect(ticketType).toBeInTheDocument();
+    expect(name).toBeInTheDocument();
     expect(description).toBeInTheDocument();
     expect(price).toBeInTheDocument();
     expect(numTickets).toBeInTheDocument();
