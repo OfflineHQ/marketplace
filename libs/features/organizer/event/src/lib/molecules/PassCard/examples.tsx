@@ -42,6 +42,7 @@ export const PassCardExample = ({
     <PassCard
       numTickets={numTickets}
       onChange={(val) => setNumTickets(val)}
+      soldOutText="Sold out"
       {...props}
     />
   );

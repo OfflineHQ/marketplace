@@ -42,14 +42,8 @@ export const BoundaryConditions: Story = {
 export const SoldOut: Story = {
   args: passWithSoldOut,
   play: async () => {
-    const incrementButton = screen.getByRole('button', {
-      name: /increment value/i,
-    });
-    expect(incrementButton).toBeDisabled();
-    const decrementButton = screen.getByRole('button', {
-      name: /decrement value/i,
-    });
-    expect(decrementButton).toBeDisabled();
+    const soldOut = screen.getByText(/sold out/i);
+    expect(soldOut).toBeInTheDocument();
   },
 };
 

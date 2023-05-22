@@ -13,6 +13,7 @@ import {
   BoundedNumericStepper,
   BoundedNumericStepperProps,
   Text,
+  Badge,
 } from '@ui/components';
 
 import type { Pass } from '../../types';
@@ -21,6 +22,7 @@ export interface PassCardProps
     Pass {
   description: string;
   numTickets: number;
+  soldOutText?: string;
 }
 
 export const PassCard: React.FC<PassCardProps> = ({
@@ -31,6 +33,7 @@ export const PassCard: React.FC<PassCardProps> = ({
   maxAmount,
   maxAmountPerUser,
   currentAmount,
+  soldOutText,
   ...boundedNumberProps
 }) => {
   const maxAvailableTickets = maxAmount - currentAmount;
@@ -49,11 +52,15 @@ export const PassCard: React.FC<PassCardProps> = ({
       <CardFooter className="flex items-center justify-between">
         <Text>${price}</Text>
         <div className="flex gap-1">
-          <BoundedNumericStepper
-            initialValue={numTickets}
-            maxVal={maxVal}
-            {...boundedNumberProps}
-          />
+          {!maxVal ? (
+            <Badge variant="secondary">{soldOutText}</Badge>
+          ) : (
+            <BoundedNumericStepper
+              initialValue={numTickets}
+              maxVal={maxVal}
+              {...boundedNumberProps}
+            />
+          )}
         </div>
       </CardFooter>
     </Card>

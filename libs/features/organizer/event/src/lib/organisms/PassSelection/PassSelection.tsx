@@ -7,10 +7,12 @@ import {
 
 export interface PassSelectionProps {
   className?: string;
+  soldOutText: string;
   passes: PassCardProps[];
 }
 
 export const PassSelection: React.FC<PassSelectionProps> = ({
+  soldOutText,
   passes,
   className,
 }) => (
@@ -18,7 +20,7 @@ export const PassSelection: React.FC<PassSelectionProps> = ({
     className={`grid grid-cols-1 gap-4 px-1 md:grid-cols-2 lg:grid-cols-3 ${className}`}
   >
     {passes.map((passProps, index) => (
-      <PassCard key={index} {...passProps} />
+      <PassCard key={index} {...passProps} soldOutText={soldOutText} />
     ))}
   </div>
 );

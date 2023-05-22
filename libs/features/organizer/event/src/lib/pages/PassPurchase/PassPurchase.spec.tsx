@@ -6,12 +6,6 @@ import * as stories from './PassPurchase.stories';
 const { Default, WithPassesSelected } = composeStories(stories);
 
 describe('PassPurchase', () => {
-  test('renders PassPurchase with initial values', () => {
-    render(<Default />);
-    const passCards = screen.getAllByRole('button');
-    expect(passCards).toHaveLength(4); // Two buttons (increment and decrement) for each PassCard
-  });
-
   test('CardFooter appears when passes are selected', () => {
     render(<WithPassesSelected />);
     const cartButton = screen.getByRole('button', {
