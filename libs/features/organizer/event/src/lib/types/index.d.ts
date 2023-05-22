@@ -50,13 +50,14 @@ export interface PassOption {
 export interface Pass {
   id?: string; // Assuming UUIDs
   name: string; // User-friendly name of the pass, like "VIP 3-Day Pass"
-  type: string; // Type of the pass, like "Standard", "VIP", "Backstage", etc.
+  type?: string; // Type of the pass, like "Standard", "VIP", "Backstage", etc.
   price: number;
   description: string;
   ownersId?: string[]; // Many to One Foreign key reference to Users owning this pass
-  passOptions: PassOption[]; // Array of pass option objects
+  passOptions?: PassOption[]; // Array of pass option objects
   passOptionIds?: string[]; // Array of foreign key references
   eventId?: string; // Foreign key reference
+  maxAmountPerUser?: number; // Max amount of this type of pass per user
   maxAmount: number; // Max amount of this type of pass
   currentAmount: number; // Computed field for current amount of this type of pass
   createdAt?: string; // Timestamps
@@ -66,14 +67,15 @@ export interface Pass {
 // Define the data structure for an event
 export interface Event {
   id?: string; // Assuming UUIDs
-  name: string;
+  heroImage: string; // URL to the hero image
+  title: string;
   description: string;
   organizerId?: string; // Foreign key reference to Organizer
   eventDateLocationIds?: string[]; // Array of foreign key references
   passIds?: string[]; // Array of foreign key references
   eventDateLocations: EventDateLocation[]; // Array of date and location objects
   passes: Pass[]; // Array of pass objects
-  followers: string[]; // Array of User ids who follow this event
+  // followers: string[]; // Array of User ids who follow this event
   isOngoing: boolean; // Computed field to check if the event is ongoing
   createdAt?: string; // Timestamps
   updatedAt?: string; // Timestamps
