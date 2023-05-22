@@ -40,7 +40,7 @@ export const SelectPasses: Story = {
   ...Default,
   play: async () => {
     const passCards = screen.getAllByRole('button');
-    expect(passCards).toHaveLength(4); // Two buttons (increment and decrement) for each PassCard
+    expect(passCards).toHaveLength(5); // Two buttons (increment and decrement) for each PassCard
     passCards[1].click(); // Click the first pass increment button
     const cartButton = await screen.findByRole('button', {
       name: /Go to payment/i,

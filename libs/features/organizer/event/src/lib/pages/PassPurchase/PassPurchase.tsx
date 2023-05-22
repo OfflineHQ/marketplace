@@ -1,3 +1,5 @@
+'use client';
+
 // PassPurchase.tsx
 import React, { useState } from 'react';
 import { Cart } from '@ui/icons';
@@ -26,6 +28,9 @@ export interface PassPurchaseProps extends PassSelectionProps {
   goPaymentText: string;
   title: string;
   description: string;
+  soldOutText: string;
+  open: boolean;
+  onOpenChange: () => void;
 }
 
 export const PassPurchase: React.FC<PassPurchaseProps> = ({
@@ -33,6 +38,9 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   goPaymentText,
   description,
   title,
+  soldOutText,
+  open,
+  onOpenChange,
 }) => {
   const [passes, setPasses] = useState(_passes);
 
@@ -51,7 +59,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   );
 
   return (
-    <Sheet open={true}>
+    <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent variant="stickyFooter" size="lg">
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
@@ -64,6 +72,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
               onChange: (newNumTickets: number) =>
                 handleOnChange(index, newNumTickets),
             }))}
+            soldOutText={soldOutText}
           />
         </SheetOverflow>
         <AutoAnimate className="mt-auto">

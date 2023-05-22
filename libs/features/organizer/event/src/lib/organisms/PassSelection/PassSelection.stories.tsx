@@ -8,6 +8,11 @@ import {
   PassSelectionSkeleton,
 } from './PassSelection';
 import { PassSelectionExample, passSelectionProps } from './examples';
+import {
+  passWithMaxAmount,
+  passWithMaxAmountPerUser,
+  passWithSoldOut,
+} from '../../molecules/PassCard/examples';
 
 const meta = {
   component: PassSelection,
@@ -24,10 +29,13 @@ export const Default: Story = {};
 export const BoundaryConditions: Story = {
   args: {
     ...passSelectionProps,
-    passes: passSelectionProps.passes.map((pass) => ({
-      ...pass,
-      numTickets: pass.maxVal,
-    })),
+    passes: [
+      { ...passWithMaxAmount, numTickets: 6 },
+      {
+        ...passWithMaxAmountPerUser,
+        numTickets: passWithMaxAmountPerUser.maxAmountPerUser as number,
+      },
+    ],
   },
   play: async () => {
     const incrementButtons = screen.getAllByRole('button', {

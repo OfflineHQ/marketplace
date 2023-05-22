@@ -5,10 +5,12 @@ import { passTotalProps } from '../../molecules/PassTotal/examples';
 
 export const passSelectionProps = {
   passes: passTotalProps['passes'],
+  soldOutText: 'Sold out',
 } satisfies PassSelectionProps;
 
 export const PassSelectionExample = ({
   passes: _passes,
+  soldOutText,
 }: PassSelectionProps) => {
   const [passes, setPasses] = useState(_passes);
 
@@ -27,6 +29,7 @@ export const PassSelectionExample = ({
         onChange: (newNumTickets: number) =>
           handleOnChange(index, newNumTickets),
       }))}
+      soldOutText={soldOutText}
     />
   );
 };

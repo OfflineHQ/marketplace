@@ -7,7 +7,9 @@ export const passPurchaseProps = {
   goPaymentText: 'Go to payment',
   title: 'Pass selection',
   description: 'Select the passes you want to purchase and validate your order',
-};
+  open: true,
+  onOpenChange: () => null,
+} satisfies PassPurchaseProps;
 export const passPurchasePropsWithLotsOfPasses = {
   ...passPurchaseProps,
   passes: lotsOfPasses,
