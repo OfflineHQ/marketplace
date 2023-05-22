@@ -6,7 +6,7 @@ import {
   TextSkeleton,
 } from '@ui/components';
 import Image from 'next/image';
-import { Organizer } from '../../types';
+import { Organizer, Event } from '../../types';
 import {
   EventDates,
   type EventDatesProps,
@@ -16,10 +16,12 @@ import {
   type EventLocationsProps,
 } from '../../molecules/EventLocations/EventLocations';
 
-export interface EventHeroProps extends EventDatesProps, EventLocationsProps {
-  heroImage: string;
-  title: string;
+export interface EventHeroProps
+  extends EventDatesProps,
+    EventLocationsProps,
+    Pick<Event, 'heroImage' | 'title'> {
   organizer: Organizer;
+  // followers: string[];
 }
 
 const layout = {
@@ -34,9 +36,7 @@ export const EventHero: React.FC<EventHeroProps> = ({
   heroImage,
   title,
   organizer,
-  dates,
-  locations,
-  detailed,
+  ...locationDatesProps
 }) => {
   return (
     <div className={layout.grid}>
@@ -57,8 +57,8 @@ export const EventHero: React.FC<EventHeroProps> = ({
           <div className="font-medium">By</div>
           <div className="ml-1 tracking-wider">{organizer.name}</div>
         </Text>
-        <EventDates dates={dates} detailed={detailed} />
-        <EventLocations locations={locations} detailed={detailed} />
+        <EventDates {...locationDatesProps} />
+        <EventLocations {...locationDatesProps} />
       </div>
     </div>
   );

@@ -24,6 +24,6 @@ export const Detailed: Story = {
 export const OneDate: Story = {
   args: {
     ...eventDatesProps,
-    dates: [eventDatesProps.dates[0]],
+    eventDateLocations: [eventDatesProps.eventDateLocations[0]],
   },
 };

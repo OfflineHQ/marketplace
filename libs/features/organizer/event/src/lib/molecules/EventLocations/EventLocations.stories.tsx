@@ -24,6 +24,6 @@ export const Detailed: Story = {
 export const OneLocation: Story = {
   args: {
     ...eventLocationsProps,
-    locations: [eventLocationsProps.locations[0]],
+    eventDateLocations: [eventLocationsProps.eventDateLocations[0]],
   },
 };
