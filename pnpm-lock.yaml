@@ -224,8 +224,8 @@ dependencies:
     specifier: 4.22.1
     version: 4.22.1(next@13.4.2)(nodemailer@6.9.2)(react-dom@18.2.0)(react@18.2.0)
   next-intl:
-    specifier: 2.14.0-beta.3
-    version: 2.14.0-beta.3(next@13.4.2)(react@18.2.0)
+    specifier: ^2.14.4
+    version: 2.14.4(next@13.4.2)(react@18.2.0)
   next-seo:
     specifier: ^5.15.0
     version: 5.15.0(next@13.4.2)(react-dom@18.2.0)(react@18.2.0)
@@ -22649,8 +22649,8 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-intl@2.14.0-beta.3(next@13.4.2)(react@18.2.0):
-    resolution: {integrity: sha512-E6W3rGlNnFmWz7Ukvyj5aPoY4jSagMQAAL36zf3X8I/Vk4ciOWcx9XJ0NBs7irEM6e0uk/WLjyVt1bNlOgyqWQ==}
+  /next-intl@2.14.4(next@13.4.2)(react@18.2.0):
+    resolution: {integrity: sha512-rTgJGzZjEaSOKO3MBfxmmpJBBcn38Dk40r7honwZusWyIB8k3qW06jdNq38XHnXAUj+EhZ7qcEeiP+Xhh2A3ew==}
     engines: {node: '>=10'}
     peerDependencies:
       next: ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0
@@ -22660,8 +22660,7 @@ packages:
       negotiator: 0.6.3
       next: 13.4.2(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
-      server-only: 0.0.1
-      use-intl: 2.14.2(react@18.2.0)
+      use-intl: 2.14.3(react@18.2.0)
     dev: false
 
   /next-router-mock@0.9.3(next@13.4.2)(react@18.2.0):
@@ -26151,10 +26150,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /server-only@0.0.1:
-    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
-    dev: false
-
   /servify@0.1.12:
     resolution: {integrity: sha512-/xE6GvsKKqyo1BAY+KxOWXcLpPsUUyji7Qg3bVD7hh1eRze5bR1uYiuDA/k3Gof1s9BTzQZEJK8sNcNGFIzeWw==}
     engines: {node: '>=6'}
@@ -28279,8 +28274,8 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /use-intl@2.14.2(react@18.2.0):
-    resolution: {integrity: sha512-aLwT5sqc9FOPO0wq9XrPykGCyN2FskW7+v1MKqNwBYU7kNVKseWh1QnJD1GZcmvbd6tvyifV1COOzj/TF4OkKA==}
+  /use-intl@2.14.3(react@18.2.0):
+    resolution: {integrity: sha512-sOjd1IrlyyGioVqTauQ0/pYtVlVbSnOU91VGKVI8d4YpGw9JXmGK23nIa9SY5LOYz6ZXKpDKAhrAlEPf14j90g==}
     engines: {node: '>=10'}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
