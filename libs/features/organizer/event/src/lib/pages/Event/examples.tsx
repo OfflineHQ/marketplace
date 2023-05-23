@@ -9,6 +9,6 @@ export const eventProps: EventProps = {
   ...eventHeroProps,
   ...eventDetailsProps,
   description: long_description,
-  buyFunction: () => null,
-  buyText: 'Select passes',
+  purchaseLink: { href: { pathname: '/dummy' } },
+  purchaseText: 'Select passes',
 };

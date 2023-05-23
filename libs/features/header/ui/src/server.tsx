@@ -8,10 +8,7 @@ export default (async function Header() {
   return (
     <NextIntlClientProvider
       locale={locale}
-      messages={
-        // Only provide the minimum of messages
-        pick(messages[(locale as Locale) || defaultLocale], ['Header'])
-      }
+      messages={pick(messages[(locale as Locale) || defaultLocale], ['Header'])}
     >
       <HeaderClient />
     </NextIntlClientProvider>

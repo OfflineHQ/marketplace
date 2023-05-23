@@ -4,13 +4,13 @@ import { eventProps } from '../pages/Event/examples';
 import { passTotalProps } from '../molecules/PassTotal/examples';
 
 interface GetEventProps {
-  organizer: string;
-  event: string;
+  eventSlug: string;
+  organizerSlug: string;
 }
 
 export const getEvent = async ({
-  organizer,
-  event,
+  eventSlug,
+  organizerSlug,
 }: GetEventProps): Promise<Event> => {
   // TODO implement
 

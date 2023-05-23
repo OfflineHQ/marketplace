@@ -17,17 +17,20 @@ import {
   EventDetailsSkeleton,
   type EventDetailsProps,
 } from '../../molecules/EventDetails/EventDetails';
-import { QrCode } from '@ui/icons';
+import {
+  EventFooterClient,
+  type EventFooterClientProps,
+} from './EventFooterClient';
 
-export interface EventProps extends EventHeroProps, EventDetailsProps {
-  buyFunction: () => void;
-  buyText: string;
-}
+export interface EventProps
+  extends EventHeroProps,
+    EventDetailsProps,
+    EventFooterClientProps {}
 
 export const Event: React.FC<EventProps> = ({
   description,
-  buyFunction,
-  buyText,
+  purchaseLink,
+  purchaseText,
   detailsTitle,
   ...eventHeroProps
 }) => {
@@ -41,9 +44,10 @@ export const Event: React.FC<EventProps> = ({
       </CardOverflow>
       <CardOverlay />
       <CardFooter className="justify-center" variant="sticky">
-        <Button onClick={buyFunction} className="w-full md:w-1/6" icon={QrCode}>
-          {buyText}
-        </Button>
+        <EventFooterClient
+          purchaseLink={purchaseLink}
+          purchaseText={purchaseText}
+        />
       </CardFooter>
     </Card>
   );

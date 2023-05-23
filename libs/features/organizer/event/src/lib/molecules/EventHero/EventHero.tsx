@@ -6,7 +6,7 @@ import {
   TextSkeleton,
 } from '@ui/components';
 import Image from 'next/image';
-import { Organizer, Event } from '../../types';
+import { EventOrganizer, Event } from '../../types';
 import {
   EventDates,
   type EventDatesProps,
@@ -19,10 +19,7 @@ import {
 export interface EventHeroProps
   extends EventDatesProps,
     EventLocationsProps,
-    Pick<Event, 'heroImage' | 'title'> {
-  organizer: Organizer;
-  // followers: string[];
-}
+    Pick<Event, 'heroImage' | 'title' | 'organizer'> {}
 
 const layout = {
   grid: 'grid grid-cols-1 items-center gap-8 md:grid-cols-2',
