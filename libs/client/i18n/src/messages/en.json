@@ -31,8 +31,17 @@
   },
   "Organizer": {
     "Event": {
-      "Details": {
+      "details": {
         "title": "Event details"
+      },
+      "purchase-button-activator": "Select passes",
+      "pass-purchase": {
+        "title": "Pass selection",
+        "description": "Select the passes you want to purchase and validate your order",
+        "pass": {
+          "sold-out": "Sold Out"
+        },
+        "purchase-button": "Go to payment"
       }
     }
   }

@@ -1,2 +1,5 @@
-export { Event } from './lib/pages/Event/Event';
-export { PassPurchase } from './lib/pages/PassPurchase/PassPurchase';
+export { Event, type EventProps } from './lib/pages/Event/Event';
+export {
+  PassPurchase,
+  type PassPurchaseProps,
+} from './lib/pages/PassPurchase/PassPurchase';
