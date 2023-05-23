@@ -20,7 +20,6 @@ import type { Pass } from '../../types';
 export interface PassCardProps
   extends Omit<BoundedNumericStepperProps, 'initialValue' | 'maxVal'>,
     Pass {
-  description: string;
   numTickets: number;
   soldOutText?: string;
 }
