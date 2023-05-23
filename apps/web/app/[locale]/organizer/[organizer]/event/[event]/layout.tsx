@@ -1,13 +1,19 @@
 export interface EventLayoutProps {
   children: React.ReactNode;
-  sheet: React.ReactNode; // TODO parallel route for sheet to display alternatively the event passes directly
+  eventSection: React.ReactNode;
+  purchaseSection: React.ReactNode;
 }
 
-export default function EventLayout({ children, sheet }: EventLayoutProps) {
+export default function EventLayout({
+  children,
+  eventSection,
+  purchaseSection,
+}: EventLayoutProps) {
   return (
     <section className="container mx-auto">
       {children}
-      {sheet}
+      {eventSection}
+      {purchaseSection}
     </section>
   );
 }
