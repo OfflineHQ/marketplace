@@ -171,6 +171,11 @@
   }
 }
 
+.container {
+  @apply mx-auto px-8;
+  max-width: 2160px;
+}
+
 @media (max-width: 640px) {
   .container {
     @apply px-4;

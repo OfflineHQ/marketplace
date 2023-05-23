@@ -16,10 +16,10 @@ import {
   Badge,
 } from '@ui/components';
 
-import type { Pass } from '../../types';
+import type { EventPass } from '../../types';
 export interface PassCardProps
   extends Omit<BoundedNumericStepperProps, 'initialValue' | 'maxVal'>,
-    Pass {
+    EventPass {
   numTickets: number;
   soldOutText?: string;
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import { type PassCardProps, PassCard } from './PassCard';
 import { useState } from 'react';
 
