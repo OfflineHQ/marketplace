@@ -50,15 +50,15 @@ function PurchaseSectionContent({
       } satisfies PurchaseSectionClientProps['passes'][0])
   );
   return (
-    <div className="flex min-h-[1024px] w-full min-w-[1080px] bg-blue-600">
-      @purchase
-    </div>
-    // <PurchaseSectionClient
-    //   passes={passes}
-    //   title={t('pass-purchase.title')}
-    //   description={t('pass-purchase.description')}
-    //   goPaymentText={t('pass-purchase.purchase-button')}
-    //   soldOutText={t('pass-purchase.pass.sold-out')}
-    // />
+    // <div className="flex min-h-[1024px] w-full min-w-[1080px] bg-blue-600">
+    //   @purchase
+    // </div>
+    <PurchaseSectionClient
+      passes={passes}
+      title={t('pass-purchase.title')}
+      description={t('pass-purchase.description')}
+      goPaymentText={t('pass-purchase.purchase-button')}
+      soldOutText={t('pass-purchase.pass.sold-out')}
+    />
   );
 }

@@ -23,5 +23,7 @@ export const PurchaseSectionClient: React.FC<PurchaseSectionClientProps> = (
       router.back();
     }
   }, [open, router]);
-  return <PassPurchase {...props} open={open} onOpenChange={setOpen} />;
+  return (
+    <PassPurchase {...props} open={open} size="full" onOpenChange={setOpen} />
+  );
 };
