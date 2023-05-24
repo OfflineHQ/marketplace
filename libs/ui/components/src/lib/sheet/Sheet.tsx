@@ -6,8 +6,10 @@ import { TextSkeleton, Text } from '../text/Text';
 import type { DialogPortalProps, DialogProps } from '@radix-ui/react-dialog';
 import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@ui/shared';
-import { Close } from '@ui/icons';
+import { Close, ChevronBack } from '@ui/icons';
 import { closeClasses } from '../shared/close';
+import { backClasses } from '../shared/back';
+import { Button } from '../button/Button';
 
 const Sheet = SheetPrimitive.Root;
 
@@ -107,42 +109,80 @@ const sheetVariants = cva(
   }
 );
 
-export interface DialogContentProps
+export interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-    VariantProps<typeof sheetVariants> {}
+    VariantProps<typeof sheetVariants> {
+  backButtonText?: string;
+}
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
-  DialogContentProps
->(({ position, size, variant, className, children, ...props }, ref) => (
-  <SheetPortal position={position}>
-    <SheetOverlay />
-    <SheetPrimitive.Content
-      ref={ref}
-      className={cn(sheetVariants({ position, variant, size }), className)}
-      {...props}
-    >
-      {children}
-      <SheetPrimitive.Close data-testid="sheet-close" className={closeClasses}>
-        <Close />
-      </SheetPrimitive.Close>
-    </SheetPrimitive.Content>
-  </SheetPortal>
-));
+  SheetContentProps
+>(
+  (
+    { position, size, variant, className, children, backButtonText, ...props },
+    ref
+  ) => {
+    const isFullWidth =
+      ['left', 'right'].includes(position as string) &&
+      ['full', 'content'].includes(size as string);
+    return (
+      <SheetPortal position={position}>
+        <SheetOverlay />
+        <SheetPrimitive.Content
+          ref={ref}
+          className={cn(sheetVariants({ position, variant, size }), className)}
+          {...props}
+        >
+          {children}
+          {!isFullWidth ? (
+            <SheetPrimitive.Close
+              data-testid="sheet-close"
+              className={closeClasses}
+            >
+              <Close />
+            </SheetPrimitive.Close>
+          ) : (
+            <SheetPrimitive.Close
+              data-testid="sheet-back"
+              className={backClasses}
+            >
+              <Button variant="ghost" size="sm">
+                <ChevronBack />{' '}
+                {backButtonText && <div className="pl-2">{backButtonText}</div>}
+              </Button>
+            </SheetPrimitive.Close>
+          )}
+        </SheetPrimitive.Content>
+      </SheetPortal>
+    );
+  }
+);
 
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
-const SheetHeader = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      'flex flex-col space-y-2 text-center sm:text-left px-6 pt-6',
-      className
-    )}
-    {...props}
-  />
+export interface SheetHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  position?: SheetContentProps['position'];
+  size?: SheetContentProps['size'];
+}
+
+const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
+  ({ className, position, size, ...props }) => {
+    const isFullWidth =
+      ['left', 'right'].includes(position as string) &&
+      ['full', 'content'].includes(size as string);
+    return (
+      <div
+        className={cn(
+          `flex flex-col space-y-2 text-center sm:text-left px-6 pt-6 ${
+            isFullWidth && 'pt-12 md:pt-14'
+          }`,
+          className
+        )}
+        {...props}
+      />
+    );
+  }
 );
 SheetHeader.displayName = 'SheetHeader';
 
