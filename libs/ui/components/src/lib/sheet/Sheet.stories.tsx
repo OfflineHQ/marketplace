@@ -8,9 +8,10 @@ import {
   within,
 } from '@storybook/testing-library';
 
-import { Sheet, DialogContentProps } from './Sheet';
+import { Sheet, SheetContentProps } from './Sheet';
 
-import { SheetDemo, SheetWithStickyFooter } from './examples';
+import { SheetDemo } from './examples';
+import { Button } from '../button/Button';
 
 const meta = {
   title: 'Organisms/Sheet',
@@ -30,15 +31,11 @@ const meta = {
     size: 'default',
     position: 'right',
   },
-} as Meta<DialogContentProps>;
+} as Meta<SheetContentProps>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-export const StickyFooter: Story = {
-  render: (props) => <SheetWithStickyFooter {...props} />,
-};
 
 export const OpenedSheetWithFocus: Story = {
   play: async () => {
@@ -85,6 +82,23 @@ export const Large: Story = {
   },
   args: {
     size: 'lg',
+  },
+};
+
+export const FullWithBackButton: Story = {
+  play: async () => {
+    const dialogTrigger = screen.getByRole('button', { name: 'Open sheet' });
+    await userEvent.click(dialogTrigger);
+
+    const goBackButton = screen.getByTestId('sheet-goback');
+    await fireEvent.click(goBackButton);
+
+    const dialogTitle = await screen.findByText('Edit profile');
+    expect(dialogTitle).toBeVisible();
+  },
+  args: {
+    size: 'full',
+    backButtonText: 'go back',
   },
 };
 

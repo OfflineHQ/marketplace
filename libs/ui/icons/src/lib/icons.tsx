@@ -42,6 +42,7 @@ import {
   IoWarning,
   IoWarningOutline,
   IoLocationOutline,
+  IoChevronBack,
 } from 'react-icons/io5';
 
 import {
@@ -73,6 +74,8 @@ export type IconType = ReactIcon;
 const createWrappedIcon =
   (IconComponent: ReactIcon, label: string) => (props: IconProps) =>
     <AccessibleIcon IconComponent={IconComponent} label={label} {...props} />;
+
+export const ChevronBack = createWrappedIcon(IoChevronBack, 'Go Back');
 
 export const Check = createWrappedIcon(HiCheck, 'Check');
 export const OutlineSearch = createWrappedIcon(

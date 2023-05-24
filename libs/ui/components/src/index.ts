@@ -141,6 +141,7 @@ export {
   SheetDescription,
   SheetDescriptionSkeleton,
   type SheetProps,
+  type SheetContentProps,
 } from './lib/sheet/Sheet';
 export {
   AspectRatio,
