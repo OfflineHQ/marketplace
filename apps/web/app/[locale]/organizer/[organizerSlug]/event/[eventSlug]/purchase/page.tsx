@@ -53,15 +53,15 @@ function PurchaseSectionContent({
   );
 
   return (
-    <div className="flex min-h-[1024px] w-full min-w-[1080px] bg-red-600">
-      purchase page
-    </div>
-    // <PurchaseSectionClient
-    //   passes={passes}
-    //   title={t('pass-purchase.title')}
-    //   description={t('pass-purchase.description')}
-    //   goPaymentText={t('pass-purchase.purchase-button')}
-    //   soldOutText={t('pass-purchase.pass.sold-out')}
-    // />
+    // <div className="flex min-h-[1024px] w-full min-w-[1080px] bg-red-600">
+    //   purchase page
+    // </div>
+    <PurchaseSectionClient
+      passes={passes}
+      title={t('pass-purchase.title')}
+      description={t('pass-purchase.description')}
+      goPaymentText={t('pass-purchase.purchase-button')}
+      soldOutText={t('pass-purchase.pass.sold-out')}
+    />
   );
 }

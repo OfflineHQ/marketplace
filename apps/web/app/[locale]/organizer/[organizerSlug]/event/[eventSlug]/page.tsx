@@ -38,28 +38,28 @@ function EventSectionContent({
 }: EventSectionContentProps) {
   console.log({ eventSlug, organizerSlug });
   const t = useTranslations('Organizer.Event');
-  return (
-    <div className="bg-green-600">
-      Event page
-      <Link href={`/organizer/${organizerSlug}/event/${eventSlug}/purchase`}>
-        Purchase
-      </Link>
-    </div>
-  );
   // return (
-  //   <Event
-  //     {...event}
-  //     purchaseLink={{
-  //       href: {
-  //         pathname: `/organizer/${organizerSlug}/event/${eventSlug}/purchase`,
-  //         // query: {
-  //         //   organizerSlug: organizerSlug,
-  //         //   eventSlug: eventSlug,
-  //         // },
-  //       },
-  //     }}
-  //     purchaseText={t('purchase-button-activator')}
-  //     detailsTitle={t('details.title')}
-  //   />
+  //   <div className="bg-green-600">
+  //     Event page
+  //     <Link href={`/organizer/${organizerSlug}/event/${eventSlug}/purchase`}>
+  //       Purchase
+  //     </Link>
+  //   </div>
   // );
+  return (
+    <Event
+      {...event}
+      purchaseLink={{
+        href: {
+          pathname: `/organizer/${organizerSlug}/event/${eventSlug}/purchase`,
+          // query: {
+          //   organizerSlug: organizerSlug,
+          //   eventSlug: eventSlug,
+          // },
+        },
+      }}
+      purchaseText={t('purchase-button-activator')}
+      detailsTitle={t('details.title')}
+    />
+  );
 }

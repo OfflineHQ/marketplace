@@ -7,6 +7,7 @@ import {
   Button,
   AutoAnimate,
   type SheetProps,
+  type SheetContentProps,
   Sheet,
   SheetContent,
   SheetOverlay,
@@ -27,7 +28,8 @@ import { PassTotal } from '../../molecules/PassTotal/PassTotal';
 
 export interface PassPurchaseProps
   extends PassSelectionProps,
-    Pick<SheetProps, 'open' | 'onOpenChange'> {
+    Pick<SheetProps, 'open' | 'onOpenChange'>,
+    Pick<SheetContentProps, 'size'> {
   goPaymentText: string;
   title: string;
   description: string;
@@ -41,6 +43,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   title,
   soldOutText,
   open,
+  size = 'lg',
   onOpenChange,
 }) => {
   const [passes, setPasses] = useState(_passes);
@@ -61,7 +64,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent variant="stickyFooter" size="lg">
+      <SheetContent variant="stickyFooter" size={size}>
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>
