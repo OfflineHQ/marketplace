@@ -1,19 +1,13 @@
 export interface EventLayoutProps {
   children: React.ReactNode;
-  eventSection: React.ReactNode;
-  purchaseSection: React.ReactNode;
+  purchase: React.ReactNode;
 }
 
-export default function EventLayout({
-  children,
-  eventSection,
-  purchaseSection,
-}: EventLayoutProps) {
+export default function EventLayout({ children, purchase }: EventLayoutProps) {
   return (
     <section className="container mx-auto">
       {children}
-      {eventSection}
-      {purchaseSection}
+      {purchase}
     </section>
   );
 }

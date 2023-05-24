@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { TextSkeleton, Text } from '../text/Text';
-import type { DialogPortalProps } from '@radix-ui/react-dialog';
+import type { DialogPortalProps, DialogProps } from '@radix-ui/react-dialog';
 import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@ui/shared';
 import { Close } from '@ui/icons';
@@ -263,4 +263,5 @@ export {
   SheetTitleSkeleton,
   SheetDescription,
   SheetDescriptionSkeleton,
+  type DialogProps as SheetProps,
 };
