@@ -1,16 +1,23 @@
 import { getEventPasses } from '@features/organizer/event/server';
 import type { EventPass } from '@features/organizer/event/types';
 import {
-  PassPurchase,
-  type PassPurchaseProps,
-} from '@features/organizer/event';
+  PurchaseSectionClient,
+  type PurchaseSectionClientProps,
+} from './PurchaseSectionClient';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/router';
 
-export default async function PurchaseSection() {
-  const router = useRouter();
-  const eventSlug = router.query.eventSlug as string;
-  const organizerSlug = router.query.organizerSlug as string;
+interface PurchaseSectionProps {
+  params: {
+    eventSlug: string;
+    organizerSlug: string;
+    locale: string;
+  };
+}
+
+export default async function PurchaseSection({
+  params,
+}: PurchaseSectionProps) {
+  const { eventSlug, organizerSlug, locale } = params;
   const passes = await getEventPasses({ eventSlug, organizerSlug });
 
   return (
@@ -35,23 +42,23 @@ function PurchaseSectionContent({
 }: PurchaseSectionContentProps) {
   const t = useTranslations('Organizer.Event');
   // TODO get reserved passes and owned passes from user if connected and change pass props so it respect boundaries. Also need to change pass purchase to handle this.
-  const passes: PassPurchaseProps['passes'] = _passes.map(
+  const passes: PurchaseSectionClientProps['passes'] = _passes.map(
     (pass) =>
       ({
-        numTickets: 0,
-        onChange: () => null,
         ...pass,
-      } satisfies PassPurchaseProps['passes'][0])
+        numTickets: 0,
+      } satisfies PurchaseSectionClientProps['passes'][0])
   );
   return (
-    <PassPurchase
-      passes={passes}
-      title={t('pass-purchase.title')}
-      description={t('pass-purchase.description')}
-      goPaymentText={t('pass-purchase.purchase-button')}
-      soldOutText={t('pass-purchase.pass.sold-out')}
-      open={false}
-      onOpenChange={() => null}
-    />
+    <div className="flex min-h-[1024px] w-full min-w-[1080px] bg-blue-600">
+      @purchase
+    </div>
+    // <PurchaseSectionClient
+    //   passes={passes}
+    //   title={t('pass-purchase.title')}
+    //   description={t('pass-purchase.description')}
+    //   goPaymentText={t('pass-purchase.purchase-button')}
+    //   soldOutText={t('pass-purchase.pass.sold-out')}
+    // />
   );
 }

@@ -15,6 +15,7 @@
     "yoavbls.pretty-ts-errors",
     "lokalise.i18n-ally",
     "ms-azuretools.vscode-docker",
-    "bradlc.vscode-tailwindcss"
+    "bradlc.vscode-tailwindcss",
+    "irongeek.vscode-env"
   ]
 }

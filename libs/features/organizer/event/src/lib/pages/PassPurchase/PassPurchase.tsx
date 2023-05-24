@@ -6,6 +6,7 @@ import { Cart } from '@ui/icons';
 import {
   Button,
   AutoAnimate,
+  type SheetProps,
   Sheet,
   SheetContent,
   SheetOverlay,
@@ -24,13 +25,13 @@ import {
 } from '../../organisms/PassSelection/PassSelection';
 import { PassTotal } from '../../molecules/PassTotal/PassTotal';
 
-export interface PassPurchaseProps extends PassSelectionProps {
+export interface PassPurchaseProps
+  extends PassSelectionProps,
+    Pick<SheetProps, 'open' | 'onOpenChange'> {
   goPaymentText: string;
   title: string;
   description: string;
   soldOutText: string;
-  open: boolean;
-  onOpenChange: () => void;
 }
 
 export const PassPurchase: React.FC<PassPurchaseProps> = ({

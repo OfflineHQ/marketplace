@@ -140,6 +140,7 @@ export {
   SheetTitleSkeleton,
   SheetDescription,
   SheetDescriptionSkeleton,
+  type SheetProps,
 } from './lib/sheet/Sheet';
 export {
   AspectRatio,

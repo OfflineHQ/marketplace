@@ -9,7 +9,7 @@ export interface BoundedNumericStepperProps {
   minVal?: number;
   maxVal: number;
   initialValue?: number;
-  onChange: (value: number) => void;
+  onChange?: (value: number) => void;
   helperTextDecrement?: string;
   helperTextIncrement?: string;
 }
@@ -28,7 +28,7 @@ export const BoundedNumericStepper: React.FC<BoundedNumericStepperProps> = ({
     if (value < maxVal) {
       const newValue = value + 1;
       setValue(newValue);
-      onChange(newValue);
+      if (onChange) onChange(newValue);
     }
   };
 
@@ -36,7 +36,7 @@ export const BoundedNumericStepper: React.FC<BoundedNumericStepperProps> = ({
     if (value > minVal) {
       const newValue = value - 1;
       setValue(newValue);
-      onChange(newValue);
+      if (onChange) onChange(newValue);
     }
   };
 
