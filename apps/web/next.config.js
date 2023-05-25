@@ -58,7 +58,6 @@ const nextConfig = {
       __dirname,
       '../../libs/{ui,features,client,utils}'
     ),
-    outputFileTracingExcludes: ['**/*.spec.tsx', '**/*.stories.tsx'],
     serverActions: true,
     appDir: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)

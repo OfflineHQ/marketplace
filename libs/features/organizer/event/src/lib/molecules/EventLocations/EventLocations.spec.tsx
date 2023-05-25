@@ -70,7 +70,7 @@ describe('EventLocations', () => {
   });
 
   it('renders nothing if locations is an empty array', () => {
-    const { container } = render(<EventLocations locations={[]} />);
+    const { container } = render(<EventLocations eventDateLocations={[]} />);
     expect(container.firstChild).toBeNull();
   });
 });
