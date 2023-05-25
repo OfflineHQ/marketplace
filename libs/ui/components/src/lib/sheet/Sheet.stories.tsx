@@ -188,5 +188,13 @@ export const Right: Story = {
 };
 
 export const Loading: Story = {
-  render: () => <SheetSkeletonDemo />,
+  render: (props) => <SheetSkeletonDemo {...props} />,
+};
+
+export const LoadingWithGoBackButton: Story = {
+  ...Loading,
+  args: {
+    backButtonText: 'Go back',
+    size: 'full',
+  },
 };

@@ -2,15 +2,12 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-import {
-  PassPurchase,
-  PassPurchaseProps,
-  PassPurchaseSkeleton,
-} from './PassPurchase';
+import { PassPurchase } from './PassPurchase';
 import {
   PassPurchaseExample,
   passPurchaseProps,
   passPurchasePropsWithLotsOfPasses,
+  PassPurchaseLoadingExample,
 } from './examples';
 
 const meta = {
@@ -26,7 +23,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const NoPassSelected: Story = {
   args: {
     ...passPurchaseProps,
     passes: passPurchaseProps.passes.map((pass) => ({
@@ -37,7 +34,7 @@ export const Default: Story = {
 };
 
 export const SelectPasses: Story = {
-  ...Default,
+  ...NoPassSelected,
   play: async () => {
     const passCards = screen.getAllByRole('button');
     expect(passCards).toHaveLength(5); // Two buttons (increment and decrement) for each PassCard
@@ -75,7 +72,7 @@ export const WithLotsOfPassesSelected: Story = {
   ...WithLotsOfPasses,
   play: async () => {
     const passCards = screen.getAllByRole('button');
-    expect(passCards).toHaveLength(13); // Two buttons (increment and decrement) for each PassCard + close btn - sold out card
+    expect(passCards).toHaveLength(13); // Two buttons (increment and decrement) for each PassCard
     passCards[9].click(); // Click the 6th pass increment button
     const cartButton = await screen.findByRole('button', {
       name: /Go to payment/i,
@@ -84,7 +81,7 @@ export const WithLotsOfPassesSelected: Story = {
   },
 };
 
-export const WithFullSize: Story = {
+export const WithFullSizeAndBackButton: Story = {
   args: {
     ...WithLotsOfPasses.args,
     size: 'full',
@@ -93,10 +90,17 @@ export const WithFullSize: Story = {
     const backButton = screen.getByRole('button', {
       name: /Go back to the event/i,
     });
-    expect(backButton).toBeInTheDocument();
+    expect(backButton).toBeVisible();
   },
 };
 
 export const Loading: Story = {
-  render: () => <PassPurchaseSkeleton />,
+  render: PassPurchaseLoadingExample,
+};
+
+export const LoadingFullSize: Story = {
+  ...Loading,
+  args: {
+    size: 'full',
+  },
 };
