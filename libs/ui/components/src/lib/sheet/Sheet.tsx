@@ -167,7 +167,7 @@ export interface SheetHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
-  ({ className, position, size, ...props }) => {
+  ({ className, position, size, ...props }, ref) => {
     const isFullWidth =
       ['left', 'right'].includes(position as string) &&
       ['full', 'content'].includes(size as string);
@@ -256,9 +256,7 @@ const SheetTitle = React.forwardRef<
     className={cn('text-lg font-semibold text-foreground', className)}
     {...props}
   >
-    <Text variant="h3" className="text-muted-foreground">
-      {props.children}
-    </Text>
+    {props.children}
   </SheetPrimitive.Title>
 ));
 SheetTitle.displayName = SheetPrimitive.Title.displayName;
