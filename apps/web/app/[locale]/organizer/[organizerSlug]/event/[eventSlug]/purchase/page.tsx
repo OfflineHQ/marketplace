@@ -3,12 +3,12 @@
 import { getEventPasses } from '@features/organizer/event/server';
 import type { EventPass } from '@features/organizer/event/types';
 import {
-  PurchaseSectionClient,
-  type PurchaseSectionClientProps,
-} from './PurchaseSectionClient';
+  PassPurchase,
+  type PassPurchaseProps,
+} from '@features/organizer/event';
 import { useTranslations } from 'next-intl';
 
-interface PurchaseSectionProps {
+export interface PurchaseSectionProps {
   params: {
     eventSlug: string;
     organizerSlug: string;
@@ -45,27 +45,24 @@ function PurchaseSectionContent({
   const t = useTranslations('Organizer.Event');
   const backRoute = `/organizer/${organizerSlug}/event/${eventSlug}`;
   // TODO get reserved passes and owned passes from user if connected and change pass props so it respect boundaries. Also need to change pass purchase to handle this.
-  const passes: PurchaseSectionClientProps['passes'] = _passes.map(
+  const passes: PassPurchaseProps['passes'] = _passes.map(
     (pass) =>
       ({
         ...pass,
         numTickets: 0,
-      } satisfies PurchaseSectionClientProps['passes'][0])
+      } satisfies PassPurchaseProps['passes'][0])
   );
 
   return (
-    // <div className="flex min-h-[1024px] w-full min-w-[1080px] bg-red-600">
-    //   purchase page
-    // </div>
-    <PurchaseSectionClient
+    <PassPurchase
       passes={passes}
-      backRoute={backRoute}
       size={'full'}
       title={t('pass-purchase.title')}
       description={t('pass-purchase.description')}
       goPaymentText={t('pass-purchase.purchase-button')}
       soldOutText={t('pass-purchase.pass.sold-out')}
       backButtonText={t('pass-purchase.see-event-button')}
+      backButtonLink={{ href: backRoute }}
     />
   );
 }

@@ -4,6 +4,13 @@ import { Event, type EventProps } from '@features/organizer/event';
 import { useTranslations } from 'next-intl';
 import Link, { type LinkProps } from 'next/link';
 
+import {
+  type SheetProps,
+  type SheetContentProps,
+  Sheet,
+  SheetContent,
+} from '@ui/components';
+
 interface EventSectionProps {
   params: {
     eventSlug: string;
@@ -11,6 +18,8 @@ interface EventSectionProps {
     locale: string;
   };
 }
+
+export const displayName = 'EventSection';
 
 export default async function EventSection({ params }: EventSectionProps) {
   const { eventSlug, organizerSlug, locale } = params;
