@@ -7,6 +7,7 @@ export const passPurchaseProps = {
   goPaymentText: 'Go to payment',
   title: 'Pass selection',
   description: 'Select the passes you want to purchase and validate your order',
+  backButtonText: 'Go back to the event',
   open: true,
   onOpenChange: () => null,
 } satisfies PassPurchaseProps;

@@ -9,7 +9,7 @@ import { cn } from '@ui/shared';
 import { Close, ChevronBack } from '@ui/icons';
 import { closeClasses } from '../shared/close';
 import { backClasses } from '../shared/back';
-import { Button } from '../button/Button';
+import { Button, buttonVariantsCva } from '../button/Button';
 
 const Sheet = SheetPrimitive.Root;
 
@@ -115,6 +115,16 @@ export interface SheetContentProps
   backButtonText?: string;
 }
 
+function isFullWidth(
+  position?: SheetContentProps['position'],
+  size?: SheetContentProps['size']
+): boolean {
+  return (
+    (['left', 'right'].includes(position as string) || !position) &&
+    ['full', 'content'].includes(size as string)
+  );
+}
+
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
@@ -123,9 +133,10 @@ const SheetContent = React.forwardRef<
     { position, size, variant, className, children, backButtonText, ...props },
     ref
   ) => {
-    const isFullWidth =
-      ['left', 'right'].includes(position as string) &&
-      ['full', 'content'].includes(size as string);
+    const closeButtonClasses = buttonVariantsCva({
+      variant: 'ghost',
+      size: 'sm',
+    });
     return (
       <SheetPortal position={position}>
         <SheetOverlay />
@@ -135,22 +146,20 @@ const SheetContent = React.forwardRef<
           {...props}
         >
           {children}
-          {!isFullWidth ? (
+          {!isFullWidth(position, size) ? (
             <SheetPrimitive.Close
               data-testid="sheet-close"
-              className={closeClasses}
+              className={cn(closeClasses, closeButtonClasses, 'right-1 top-1')}
             >
               <Close />
             </SheetPrimitive.Close>
           ) : (
             <SheetPrimitive.Close
               data-testid="sheet-back"
-              className={backClasses}
+              className={cn(backClasses, closeButtonClasses, 'left-1 top-1')}
             >
-              <Button variant="ghost" size="sm">
-                <ChevronBack />{' '}
-                {backButtonText && <div className="pl-2">{backButtonText}</div>}
-              </Button>
+              <ChevronBack />{' '}
+              {backButtonText && <div className="pl-2">{backButtonText}</div>}
             </SheetPrimitive.Close>
           )}
         </SheetPrimitive.Content>
@@ -168,14 +177,11 @@ export interface SheetHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
   ({ className, position, size, ...props }, ref) => {
-    const isFullWidth =
-      ['left', 'right'].includes(position as string) &&
-      ['full', 'content'].includes(size as string);
     return (
       <div
         className={cn(
           `flex flex-col space-y-2 text-center sm:text-left px-6 pt-6 ${
-            isFullWidth && 'pt-12 md:pt-14'
+            isFullWidth(position, size) && 'pt-12 md:pt-14'
           }`,
           className
         )}
