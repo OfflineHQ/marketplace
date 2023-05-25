@@ -21,7 +21,6 @@ export const lotsOfPasses = [
     numTickets: 0,
     maxAmount: 10,
     currentAmount: 0,
-    onChange: () => null,
   },
   {
     name: 'Early Bird Pass',
@@ -30,7 +29,6 @@ export const lotsOfPasses = [
     numTickets: 0,
     maxAmount: 10,
     currentAmount: 0,
-    onChange: () => null,
   },
   {
     name: 'Weekend Pass',
@@ -39,7 +37,6 @@ export const lotsOfPasses = [
     numTickets: 0,
     maxAmount: 10,
     currentAmount: 0,
-    onChange: () => null,
   },
   {
     name: 'Premium Pass',
@@ -48,6 +45,5 @@ export const lotsOfPasses = [
     numTickets: 0,
     maxAmount: 10,
     currentAmount: 0,
-    onChange: () => null,
   },
 ] satisfies PassTotalProps['passes'];
