@@ -6,11 +6,14 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetContentProps,
+  type SheetContentProps,
+  type SheetNavigationProps,
   SheetOverflow,
   SheetOverlay,
   SheetTitleSkeleton,
   SheetDescriptionSkeleton,
+  SheetNavigation,
+  SheetNavigationSkeleton,
 } from './Sheet';
 import { Button } from '../button/Button';
 import { TextInput } from '../text-input/TextInput';
@@ -20,23 +23,16 @@ export const long_text = `Lorem ipsum dolor sit amet, consectetur adipiscing eli
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl.\n\n
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\n\n`;
 
-export const SheetDemo: React.FC<SheetContentProps> = ({
-  size,
-  position,
-  backButtonText,
-}) => {
+interface SheetDemoProps extends SheetContentProps, SheetNavigationProps {}
+export const SheetDemo: React.FC<SheetDemoProps> = (props) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
         <button>Open sheet</button>
       </SheetTrigger>
-      <SheetContent
-        position={position}
-        size={size}
-        backButtonText={backButtonText}
-        variant="stickyFooter"
-      >
-        <SheetHeader position={position} size={size}>
+      <SheetContent {...props} variant="stickyFooter">
+        <SheetNavigation {...props} />
+        <SheetHeader {...props}>
           <SheetTitle>Edit profile</SheetTitle>
           <SheetDescription>
             Make changes to your profile here. Click save when you're done.
@@ -58,20 +54,11 @@ export const SheetDemo: React.FC<SheetContentProps> = ({
   );
 };
 
-export const SheetSkeletonDemo: React.FC<SheetContentProps> = ({
-  size,
-  position,
-  backButtonText,
-}) => (
+export const SheetSkeletonDemo: React.FC<SheetDemoProps> = (props) => (
   <Sheet open={true}>
-    <SheetContent
-      variant="stickyFooter"
-      backButtonText={backButtonText}
-      position={position}
-      size={size}
-      loading
-    >
-      <SheetHeader position={position} size={size}>
+    <SheetContent {...props} variant="stickyFooter">
+      <SheetNavigationSkeleton {...props} />
+      <SheetHeader {...props}>
         <SheetTitleSkeleton />
         <SheetDescriptionSkeleton />
       </SheetHeader>
