@@ -28,7 +28,18 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  transpilePackages: ['@ui/components', '@ui/theme'],
+  /* could improve performance in dev but @ui components no organized like that.
+  See that as ref: https://github.com/knitkode/koine/blob/3046607d655a3cfa1e3b3438f1aef168fbdc6ad5/packages/next/config/index.ts#L251
+  https://nextjs.org/blog/next-13-1#import-resolution-for-smaller-bundles
+  And this thread n
+  + this article: https://medium.com/@yashashr/next-js-optimization-for-better-performance-part-1-material-ui-mui-configs-plugins-6fdc48a4e984
+  */
+  // modularizeImports: {
+  //   '@ui/components/?(((\\w*)?/?)*)': {
+  //     transform: '@ui/components/{{ matches.[1] }}/{{member}}',
+  //   },
+  // },
+  transpilePackages: ['@ui/components', '@ui/theme', '@ui/icons'],
   images: {
     remotePatterns: [
       {
@@ -43,7 +54,11 @@ const nextConfig = {
   // outputFileTracingRoot needed for monorepo
   output: 'standalone',
   experimental: {
-    outputFileTracingRoot: path.join(__dirname, '../../'),
+    outputFileTracingRoot: path.join(
+      __dirname,
+      '../../libs/{ui,features,client,utils}'
+    ),
+    outputFileTracingExcludes: ['**/*.spec.tsx', '**/*.stories.tsx'],
     serverActions: true,
     appDir: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)

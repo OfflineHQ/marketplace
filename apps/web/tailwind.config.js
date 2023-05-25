@@ -9,10 +9,13 @@ module.exports = {
   content: [
     join(
       __dirname,
-      '{src,app,pages,components,public}/**/*!(*.spec).{ts,tsx,html}'
+      '{src,app,pages,components,public}/**/!(*.spec|*.stories|examples).{ts,tsx,html}'
     ),
-    join(__dirname, '../../libs/features/**/!(*.spec).{ts,tsx}'),
-    ...createGlobPatternsForDependencies(__dirname),
+    join(
+      __dirname,
+      '../../libs/features/**/!(*.spec|*.stories|examples).{ts,tsx}'
+    ),
+    join(__dirname, '../../libs/ui/**/!(*.spec|*.stories|examples).{ts,tsx}'),
   ],
   ...baseConfig,
 };
