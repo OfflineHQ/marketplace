@@ -6,8 +6,7 @@ import { Cart } from '@ui/icons';
 import {
   Button,
   AutoAnimate,
-  SheetContent,
-  type SheetContentProps,
+  type SheetNavigationProps,
   SheetOverlay,
   SheetOverflow,
   SheetHeader,
@@ -16,6 +15,8 @@ import {
   SheetTitleSkeleton,
   SheetDescription,
   SheetDescriptionSkeleton,
+  SheetNavigationSkeleton,
+  SheetNavigation,
 } from '@ui/components';
 import {
   PassSelection,
@@ -26,7 +27,7 @@ import { PassTotal } from '../../molecules/PassTotal/PassTotal';
 
 export interface PassPurchaseProps
   extends PassSelectionProps,
-    SheetContentProps {
+    SheetNavigationProps {
   goPaymentText: string;
   title: string;
   description: string;
@@ -60,12 +61,12 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   );
 
   return (
-    <SheetContent
-      variant="stickyFooter"
-      size={size}
-      backButtonText={backButtonText}
-      backButtonLink={backButtonLink}
-    >
+    <>
+      <SheetNavigation
+        size={size}
+        backButtonText={backButtonText}
+        backButtonLink={backButtonLink}
+      />
       <SheetHeader size={size}>
         <SheetTitle>{title}</SheetTitle>
         <SheetDescription>{description}</SheetDescription>
@@ -96,17 +97,18 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
           </>
         )}
       </AutoAnimate>
-    </SheetContent>
+    </>
   );
 };
 
-export type PassPurchaseSkeletonProps = Pick<SheetContentProps, 'size'>;
+export type PassPurchaseSkeletonProps = Pick<SheetNavigationProps, 'size'>;
 
 export const PassPurchaseSkeleton: React.FC<PassPurchaseSkeletonProps> = ({
   size = 'lg',
 }) => {
   return (
-    <SheetContent variant="stickyFooter" size={size} loading>
+    <>
+      <SheetNavigationSkeleton size={size} />
       <SheetHeader size={size}>
         <SheetTitleSkeleton />
         <SheetDescriptionSkeleton />
@@ -114,6 +116,6 @@ export const PassPurchaseSkeleton: React.FC<PassPurchaseSkeletonProps> = ({
       <SheetOverflow className="py-3">
         <PassSelectionSkeleton />
       </SheetOverflow>
-    </SheetContent>
+    </>
   );
 };

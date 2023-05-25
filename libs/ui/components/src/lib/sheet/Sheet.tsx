@@ -110,14 +110,6 @@ const sheetVariants = cva(
   }
 );
 
-export interface SheetContentProps
-  extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-    VariantProps<typeof sheetVariants> {
-  backButtonText?: string;
-  backButtonLink?: LinkProps;
-  loading?: boolean;
-}
-
 function isFullWidth(
   position?: SheetContentProps['position'],
   size?: SheetContentProps['size']
@@ -128,75 +120,101 @@ function isFullWidth(
   );
 }
 
+export interface SheetNavigationProps {
+  backButtonText?: string;
+  backButtonLink?: LinkProps;
+  position?: SheetContentProps['position'];
+  size?: SheetContentProps['size'];
+}
+
+const SheetNavigation: React.FC<SheetNavigationProps> = ({
+  backButtonText,
+  backButtonLink,
+  position,
+  size,
+}) => {
+  const closeButtonClasses = buttonVariantsCva({
+    variant: 'ghost',
+    size: 'sm',
+  });
+
+  const renderButton = (buttonType: string) => {
+    const classNames = cn(
+      buttonType === 'close' ? closeClasses : backClasses,
+      closeButtonClasses,
+      `${buttonType === 'close' ? 'right' : 'left'}-1 top-1`
+    );
+    const testId = `sheet-${buttonType}`;
+    const Icon = buttonType === 'close' ? Close : ChevronBack;
+    const buttonText =
+      buttonType === 'close'
+        ? null
+        : backButtonText && <div className="pl-2">{backButtonText}</div>;
+
+    return (
+      <SheetPrimitive.Close data-testid={testId} className={classNames}>
+        <Icon /> {buttonText}
+      </SheetPrimitive.Close>
+    );
+  };
+
+  return backButtonLink ? (
+    <Link {...backButtonLink} passHref>
+      {isFullWidth(position, size)
+        ? renderButton('back')
+        : renderButton('close')}
+    </Link>
+  ) : isFullWidth(position, size) ? (
+    renderButton('back')
+  ) : (
+    renderButton('close')
+  );
+};
+
+const SheetNavigationSkeleton: React.FC<SheetNavigationProps> = ({
+  position,
+  size,
+}) => {
+  const closeButtonClasses = buttonVariantsCva({
+    variant: 'ghost',
+    size: 'sm',
+  });
+
+  const renderButton = (buttonType: string) => {
+    const classNames = cn(
+      buttonType === 'close' ? closeClasses : backClasses,
+      closeButtonClasses,
+      `${buttonType === 'close' ? 'right' : 'left'}-1 top-1`
+    );
+    return <ButtonSkeleton className={`${classNames} w-12`} size="sm" />;
+  };
+
+  return isFullWidth(position, size)
+    ? renderButton('back')
+    : renderButton('close');
+};
+
+export interface SheetContentProps
+  extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+    VariantProps<typeof sheetVariants> {}
+
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(
-  (
-    {
-      position,
-      size,
-      variant,
-      className,
-      children,
-      backButtonText,
-      backButtonLink,
-      loading,
-      ...props
-    },
-    ref
-  ) => {
-    const closeButtonClasses = buttonVariantsCva({
-      variant: 'ghost',
-      size: 'sm',
-    });
-
-    const renderCloseButton = (buttonType: string) => {
-      const classNames = cn(
-        buttonType === 'close' ? closeClasses : backClasses,
-        closeButtonClasses,
-        `${buttonType === 'close' ? 'right' : 'left'}-1 top-1`
-      );
-      const testId = `sheet-${buttonType}`;
-      const Icon = buttonType === 'close' ? Close : ChevronBack;
-      const buttonText =
-        buttonType === 'close'
-          ? null
-          : backButtonText && <div className="pl-2">{backButtonText}</div>;
-
-      return !loading ? (
-        <SheetPrimitive.Close data-testid={testId} className={classNames}>
-          <Icon /> {buttonText}
-        </SheetPrimitive.Close>
-      ) : (
-        <ButtonSkeleton className={`${classNames} w-12`} size="sm" />
-      );
-    };
-    return (
-      <SheetPortal position={position}>
-        <SheetOverlay />
-        <SheetPrimitive.Content
-          ref={ref}
-          className={cn(sheetVariants({ position, variant, size }), className)}
-          {...props}
-        >
-          {children}
-          {backButtonLink && !loading ? (
-            <Link {...backButtonLink} passHref>
-              {isFullWidth(position, size)
-                ? renderCloseButton('back')
-                : renderCloseButton('close')}
-            </Link>
-          ) : isFullWidth(position, size) ? (
-            renderCloseButton('back')
-          ) : (
-            renderCloseButton('close')
-          )}
-        </SheetPrimitive.Content>
-      </SheetPortal>
-    );
-  }
-);
+>(({ position, size, variant, className, children, ...props }, ref) => {
+  return (
+    <SheetPortal position={position}>
+      <SheetOverlay />
+      <SheetPrimitive.Content
+        ref={ref}
+        className={cn(sheetVariants({ position, variant, size }), className)}
+        {...props}
+      >
+        {children}
+      </SheetPrimitive.Content>
+    </SheetPortal>
+  );
+});
 
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
@@ -337,5 +355,7 @@ export {
   SheetTitleSkeleton,
   SheetDescription,
   SheetDescriptionSkeleton,
+  SheetNavigation,
+  SheetNavigationSkeleton,
   type DialogProps as SheetProps,
 };

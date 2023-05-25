@@ -6,7 +6,7 @@ export default function PurchaseLayout({
   children: React.ReactNode;
 }) {
   return (
-    <PassPurchaseSheetContainer open={true}>
+    <PassPurchaseSheetContainer open={true} size="full">
       {children}
     </PassPurchaseSheetContainer>
   );
