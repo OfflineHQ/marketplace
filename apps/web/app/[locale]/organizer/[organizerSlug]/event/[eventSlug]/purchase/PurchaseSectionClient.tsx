@@ -7,23 +7,23 @@ import {
 import { useRouter } from 'next/navigation';
 import { useState, useCallback } from 'react';
 
-export type PurchaseSectionClientProps = Omit<
-  PassPurchaseProps,
-  'onOpenChange' | 'open'
->;
+export interface PurchaseSectionClientProps
+  extends Omit<PassPurchaseProps, 'onOpenChange' | 'open'> {
+  backRoute?: string;
+}
 
-export const PurchaseSectionClient: React.FC<PurchaseSectionClientProps> = (
-  props
-) => {
+export const PurchaseSectionClient: React.FC<PurchaseSectionClientProps> = ({
+  backRoute,
+  ...props
+}) => {
   const router = useRouter();
   const [open, setOpen] = useState(true);
   useCallback(() => {
     console.log('useCallback in purchase, open: ', open);
     if (!open) {
-      router.back();
+      if (backRoute) router.push(backRoute);
+      else router.back();
     }
-  }, [open, router]);
-  return (
-    <PassPurchase {...props} open={open} size="full" onOpenChange={setOpen} />
-  );
+  }, [open, router, backRoute]);
+  return <PassPurchase {...props} open={open} onOpenChange={setOpen} />;
 };
