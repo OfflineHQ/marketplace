@@ -3,7 +3,7 @@ import type { EventPass } from '@features/organizer/event/types';
 import {
   PurchaseSectionClient,
   type PurchaseSectionClientProps,
-} from './PurchaseSectionClient';
+} from '../../purchase/PurchaseSectionClient';
 import { useTranslations } from 'next-intl';
 
 interface PurchaseSectionProps {
@@ -59,6 +59,7 @@ function PurchaseSectionContent({
       description={t('pass-purchase.description')}
       goPaymentText={t('pass-purchase.purchase-button')}
       soldOutText={t('pass-purchase.pass.sold-out')}
+      backButtonText={t('pass-purchase.go-back-button')}
     />
   );
 }

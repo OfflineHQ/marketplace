@@ -41,7 +41,9 @@
         "pass": {
           "sold-out": "Sold Out"
         },
-        "purchase-button": "Go to payment"
+        "purchase-button": "Go to payment",
+        "go-back-button": "Come back to the event",
+        "see-event-button": "See the event"
       }
     }
   }
