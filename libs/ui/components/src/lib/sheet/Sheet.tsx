@@ -9,7 +9,8 @@ import { cn } from '@ui/shared';
 import { Close, ChevronBack } from '@ui/icons';
 import { closeClasses } from '../shared/close';
 import { backClasses } from '../shared/back';
-import { Button, buttonVariantsCva } from '../button/Button';
+import { Button, ButtonSkeleton, buttonVariantsCva } from '../button/Button';
+import Link, { type LinkProps } from 'next/link';
 
 const Sheet = SheetPrimitive.Root;
 
@@ -113,6 +114,8 @@ export interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {
   backButtonText?: string;
+  backButtonLink?: LinkProps;
+  loading?: boolean;
 }
 
 function isFullWidth(
@@ -130,13 +133,45 @@ const SheetContent = React.forwardRef<
   SheetContentProps
 >(
   (
-    { position, size, variant, className, children, backButtonText, ...props },
+    {
+      position,
+      size,
+      variant,
+      className,
+      children,
+      backButtonText,
+      backButtonLink,
+      loading,
+      ...props
+    },
     ref
   ) => {
     const closeButtonClasses = buttonVariantsCva({
       variant: 'ghost',
       size: 'sm',
     });
+
+    const renderCloseButton = (buttonType: string) => {
+      const classNames = cn(
+        buttonType === 'close' ? closeClasses : backClasses,
+        closeButtonClasses,
+        `${buttonType === 'close' ? 'right' : 'left'}-1 top-1`
+      );
+      const testId = `sheet-${buttonType}`;
+      const Icon = buttonType === 'close' ? Close : ChevronBack;
+      const buttonText =
+        buttonType === 'close'
+          ? null
+          : backButtonText && <div className="pl-2">{backButtonText}</div>;
+
+      return !loading ? (
+        <SheetPrimitive.Close data-testid={testId} className={classNames}>
+          <Icon /> {buttonText}
+        </SheetPrimitive.Close>
+      ) : (
+        <ButtonSkeleton className={`${classNames} w-12`} size="sm" />
+      );
+    };
     return (
       <SheetPortal position={position}>
         <SheetOverlay />
@@ -146,21 +181,16 @@ const SheetContent = React.forwardRef<
           {...props}
         >
           {children}
-          {!isFullWidth(position, size) ? (
-            <SheetPrimitive.Close
-              data-testid="sheet-close"
-              className={cn(closeClasses, closeButtonClasses, 'right-1 top-1')}
-            >
-              <Close />
-            </SheetPrimitive.Close>
+          {backButtonLink && !loading ? (
+            <Link {...backButtonLink} passHref>
+              {isFullWidth(position, size)
+                ? renderCloseButton('back')
+                : renderCloseButton('close')}
+            </Link>
+          ) : isFullWidth(position, size) ? (
+            renderCloseButton('back')
           ) : (
-            <SheetPrimitive.Close
-              data-testid="sheet-back"
-              className={cn(backClasses, closeButtonClasses, 'left-1 top-1')}
-            >
-              <ChevronBack />{' '}
-              {backButtonText && <div className="pl-2">{backButtonText}</div>}
-            </SheetPrimitive.Close>
+            renderCloseButton('close')
           )}
         </SheetPrimitive.Content>
       </SheetPortal>

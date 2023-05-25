@@ -3,7 +3,8 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 import * as stories from './PassPurchase.stories';
 
-const { Default, WithPassesSelected, WithFullSize } = composeStories(stories);
+const { NoPassSelected, WithPassesSelected, WithFullSizeAndBackButton } =
+  composeStories(stories);
 
 describe('PassPurchase', () => {
   test('CardFooter appears when passes are selected', () => {
@@ -18,7 +19,7 @@ describe('PassPurchase', () => {
   });
 
   test('CardFooter does not appear when no passes are selected', () => {
-    render(<Default />);
+    render(<NoPassSelected />);
     const cartButton = screen.queryByRole('button', {
       name: /Go to payment/i,
     });
@@ -28,31 +29,13 @@ describe('PassPurchase', () => {
     expect(passTotal).not.toBeInTheDocument();
   });
 
-  test('onOpenChange is called when close button is clicked', () => {
-    const onOpenChangeMock = jest.fn();
-
-    render(<WithPassesSelected onOpenChange={onOpenChangeMock} />);
-    const closeButton = screen.getByRole('button', { name: /close/i });
-    fireEvent.click(closeButton);
-
-    expect(onOpenChangeMock).toHaveBeenCalledTimes(1);
-    expect(onOpenChangeMock).toHaveBeenCalledWith(false);
-    const sheet = screen.queryByText(/title/i);
-    expect(sheet).toBeNull();
-  });
-
-  test('onOpenChange is called when "Go back" button is clicked', () => {
-    const onOpenChangeMock = jest.fn();
-
-    render(<WithFullSize onOpenChange={onOpenChangeMock} />);
-    const goBackButton = screen.getByRole('button', {
+  test('Next Link provided with backButtonLink', () => {
+    const backButtonLink = { href: '/dummy' };
+    render(<WithFullSizeAndBackButton backButtonLink={backButtonLink} />);
+    const backButton = screen.getByRole('link', {
       name: /Go back to the event/i,
     });
-    fireEvent.click(goBackButton);
-
-    expect(onOpenChangeMock).toHaveBeenCalledTimes(1);
-    expect(onOpenChangeMock).toHaveBeenCalledWith(false);
-    const sheet = screen.queryByText(/title/i);
-    expect(sheet).toBeNull();
+    expect(backButton).toBeInTheDocument();
+    expect(backButton).toHaveAttribute('href', backButtonLink.href);
   });
 });

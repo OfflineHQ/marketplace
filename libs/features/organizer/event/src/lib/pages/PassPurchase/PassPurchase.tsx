@@ -6,10 +6,8 @@ import { Cart } from '@ui/icons';
 import {
   Button,
   AutoAnimate,
-  type SheetProps,
-  type SheetContentProps,
-  Sheet,
   SheetContent,
+  type SheetContentProps,
   SheetOverlay,
   SheetOverflow,
   SheetHeader,
@@ -28,8 +26,7 @@ import { PassTotal } from '../../molecules/PassTotal/PassTotal';
 
 export interface PassPurchaseProps
   extends PassSelectionProps,
-    Pick<SheetProps, 'open' | 'onOpenChange'>,
-    Pick<SheetContentProps, 'size' | 'backButtonText'> {
+    SheetContentProps {
   goPaymentText: string;
   title: string;
   description: string;
@@ -41,11 +38,10 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   goPaymentText,
   description,
   title,
-  soldOutText,
-  open,
-  backButtonText,
   size = 'lg',
-  onOpenChange,
+  backButtonText,
+  backButtonLink,
+  soldOutText,
 }) => {
   const [passes, setPasses] = useState(_passes);
 
@@ -64,59 +60,60 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   );
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent
-        variant="stickyFooter"
-        size={size}
-        backButtonText={backButtonText}
-      >
-        <SheetHeader size={size}>
-          <SheetTitle>{title}</SheetTitle>
-          <SheetDescription>{description}</SheetDescription>
-        </SheetHeader>
-        <SheetOverflow className="py-3">
-          <PassSelection
-            passes={passes.map((pass, index) => ({
-              ...pass,
-              onChange: (newNumTickets: number) =>
-                handleOnChange(index, newNumTickets),
-            }))}
-            soldOutText={soldOutText}
-          />
-        </SheetOverflow>
-        <AutoAnimate className="mt-auto">
-          {isPassSelected && (
-            <>
-              <SheetOverlay footerHeight="112px" />
-              <SheetFooter
-                variant="sticky"
-                className="flex flex-col items-start space-y-2"
-              >
-                <PassTotal passes={passes} />
-                <Button className="w-full" icon={Cart}>
-                  {goPaymentText}
-                </Button>
-              </SheetFooter>
-            </>
-          )}
-        </AutoAnimate>
-      </SheetContent>
-    </Sheet>
+    <SheetContent
+      variant="stickyFooter"
+      size={size}
+      backButtonText={backButtonText}
+      backButtonLink={backButtonLink}
+    >
+      <SheetHeader size={size}>
+        <SheetTitle>{title}</SheetTitle>
+        <SheetDescription>{description}</SheetDescription>
+      </SheetHeader>
+      <SheetOverflow className="py-3">
+        <PassSelection
+          passes={passes.map((pass, index) => ({
+            ...pass,
+            onChange: (newNumTickets: number) =>
+              handleOnChange(index, newNumTickets),
+          }))}
+          soldOutText={soldOutText}
+        />
+      </SheetOverflow>
+      <AutoAnimate className="mt-auto">
+        {isPassSelected && (
+          <>
+            <SheetOverlay footerHeight="112px" />
+            <SheetFooter
+              variant="sticky"
+              className="flex flex-col items-start space-y-2"
+            >
+              <PassTotal passes={passes} />
+              <Button className="w-full" icon={Cart}>
+                {goPaymentText}
+              </Button>
+            </SheetFooter>
+          </>
+        )}
+      </AutoAnimate>
+    </SheetContent>
   );
 };
 
-export const PassPurchaseSkeleton: React.FC = () => {
+export type PassPurchaseSkeletonProps = Pick<SheetContentProps, 'size'>;
+
+export const PassPurchaseSkeleton: React.FC<PassPurchaseSkeletonProps> = ({
+  size = 'lg',
+}) => {
   return (
-    <Sheet open={true}>
-      <SheetContent variant="stickyFooter" size="lg">
-        <SheetHeader>
-          <SheetTitleSkeleton />
-          <SheetDescriptionSkeleton />
-        </SheetHeader>
-        <SheetOverflow className="py-3">
-          <PassSelectionSkeleton />
-        </SheetOverflow>
-      </SheetContent>
-    </Sheet>
+    <SheetContent variant="stickyFooter" size={size} loading>
+      <SheetHeader size={size}>
+        <SheetTitleSkeleton />
+        <SheetDescriptionSkeleton />
+      </SheetHeader>
+      <SheetOverflow className="py-3">
+        <PassSelectionSkeleton />
+      </SheetOverflow>
+    </SheetContent>
   );
 };

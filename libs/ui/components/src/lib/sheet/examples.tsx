@@ -58,10 +58,20 @@ export const SheetDemo: React.FC<SheetContentProps> = ({
   );
 };
 
-export const SheetSkeletonDemo: React.FC = () => (
+export const SheetSkeletonDemo: React.FC<SheetContentProps> = ({
+  size,
+  position,
+  backButtonText,
+}) => (
   <Sheet open={true}>
-    <SheetContent variant="stickyFooter" size="lg">
-      <SheetHeader>
+    <SheetContent
+      variant="stickyFooter"
+      backButtonText={backButtonText}
+      position={position}
+      size={size}
+      loading
+    >
+      <SheetHeader position={position} size={size}>
         <SheetTitleSkeleton />
         <SheetDescriptionSkeleton />
       </SheetHeader>
