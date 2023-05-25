@@ -10,7 +10,6 @@ export const passWithMaxAmount: PassCardProps = {
   numTickets: 2,
   maxAmount: 7,
   currentAmount: 1,
-  onChange: () => null,
 };
 
 export const passWithMaxAmountPerUser: PassCardProps = {
@@ -21,7 +20,6 @@ export const passWithMaxAmountPerUser: PassCardProps = {
   maxAmountPerUser: 3,
   maxAmount: 30,
   currentAmount: 10,
-  onChange: () => null,
 };
 
 export const passWithSoldOut: PassCardProps = {
@@ -31,7 +29,6 @@ export const passWithSoldOut: PassCardProps = {
   numTickets: 0,
   maxAmount: 10,
   currentAmount: 10,
-  onChange: () => null,
 };
 
 export const PassCardExample = ({
