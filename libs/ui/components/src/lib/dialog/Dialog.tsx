@@ -6,6 +6,7 @@ import { Close } from '@ui/icons';
 import { closeClasses } from '../shared/close';
 
 import { cn } from '@ui/shared';
+import { buttonVariantsCva } from '../button/Button';
 
 const Dialog = DialogPrimitive.Root;
 
@@ -49,6 +50,10 @@ const DialogContent = React.forwardRef<
   const shouldBeClosable = childrenArray.some(
     (child) => React.isValidElement(child) && child.type === DialogHeader
   );
+  const closeButtonClasses = buttonVariantsCva({
+    variant: 'ghost',
+    size: 'sm',
+  });
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -66,7 +71,7 @@ const DialogContent = React.forwardRef<
         {shouldBeClosable && (
           <DialogPrimitive.Close
             data-testid="dialog-close"
-            className={closeClasses}
+            className={cn(closeClasses, closeButtonClasses, 'right-1 -top-3')}
           >
             <Close />
           </DialogPrimitive.Close>

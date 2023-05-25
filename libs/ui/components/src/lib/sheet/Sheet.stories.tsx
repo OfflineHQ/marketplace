@@ -111,10 +111,10 @@ export const FullWithBackButton: Story = {
     expect(dialogTitle).toBeVisible();
 
     // Button is wrapped inside SheetPrimitive.Close Button
-    const backButtonTxt = await screen.getAllByRole('button', {
+    const backButtonTxt = await screen.getByRole('button', {
       name: /Go back/i,
     });
-    expect(backButtonTxt[1]).toBeVisible();
+    expect(backButtonTxt).toBeVisible();
   },
   args: {
     size: 'full',

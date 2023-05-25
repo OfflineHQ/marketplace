@@ -84,6 +84,19 @@ export const WithLotsOfPassesSelected: Story = {
   },
 };
 
+export const WithFullSize: Story = {
+  args: {
+    ...WithLotsOfPasses.args,
+    size: 'full',
+  },
+  play: async () => {
+    const backButton = screen.getByRole('button', {
+      name: /Go back to the event/i,
+    });
+    expect(backButton).toBeInTheDocument();
+  },
+};
+
 export const Loading: Story = {
   render: () => <PassPurchaseSkeleton />,
 };

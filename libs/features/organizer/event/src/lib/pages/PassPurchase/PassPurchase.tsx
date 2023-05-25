@@ -29,7 +29,7 @@ import { PassTotal } from '../../molecules/PassTotal/PassTotal';
 export interface PassPurchaseProps
   extends PassSelectionProps,
     Pick<SheetProps, 'open' | 'onOpenChange'>,
-    Pick<SheetContentProps, 'size'> {
+    Pick<SheetContentProps, 'size' | 'backButtonText'> {
   goPaymentText: string;
   title: string;
   description: string;
@@ -43,6 +43,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   title,
   soldOutText,
   open,
+  backButtonText,
   size = 'lg',
   onOpenChange,
 }) => {
@@ -64,8 +65,12 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent variant="stickyFooter" size={size}>
-        <SheetHeader>
+      <SheetContent
+        variant="stickyFooter"
+        size={size}
+        backButtonText={backButtonText}
+      >
+        <SheetHeader size={size}>
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>
         </SheetHeader>
