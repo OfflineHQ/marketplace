@@ -5,7 +5,7 @@ import {
   type PassPurchaseProps,
 } from '@features/organizer/event';
 import { useRouter } from 'next/navigation';
-import { useState, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 export interface PurchaseSectionClientProps
   extends Omit<PassPurchaseProps, 'onOpenChange' | 'open'> {
@@ -18,8 +18,8 @@ export const PurchaseSectionClient: React.FC<PurchaseSectionClientProps> = ({
 }) => {
   const router = useRouter();
   const [open, setOpen] = useState(true);
-  useCallback(() => {
-    console.log('useCallback in purchase, open: ', open);
+  useEffect(() => {
+    console.log('useEffect in purchase, open: ', open);
     if (!open) {
       if (backRoute) router.push(backRoute);
       else router.back();
