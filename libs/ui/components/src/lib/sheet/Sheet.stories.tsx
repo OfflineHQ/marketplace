@@ -10,8 +10,7 @@ import {
 
 import { Sheet, SheetContentProps } from './Sheet';
 
-import { SheetDemo } from './examples';
-import { Button } from '../button/Button';
+import { SheetDemo, SheetSkeletonDemo } from './examples';
 
 const meta = {
   title: 'Organisms/Sheet',
@@ -53,6 +52,9 @@ export const OpenedSheetWithFocus: Story = {
     const dialogContent = screen.getByRole('dialog');
     const allInputs = within(dialogContent).getAllByRole('textbox');
     expect(allInputs[0]).toHaveFocus();
+    // check if scroll work as expected, Button "Save change" should be visible
+    const saveButton = screen.getByRole('button', { name: 'Save changes' });
+    expect(saveButton).toBeVisible();
   },
 };
 
@@ -85,23 +87,6 @@ export const Large: Story = {
   },
 };
 
-export const FullWithBackButton: Story = {
-  play: async () => {
-    const dialogTrigger = screen.getByRole('button', { name: 'Open sheet' });
-    await userEvent.click(dialogTrigger);
-
-    const goBackButton = screen.getByTestId('sheet-goback');
-    await fireEvent.click(goBackButton);
-
-    const dialogTitle = await screen.findByText('Edit profile');
-    expect(dialogTitle).toBeVisible();
-  },
-  args: {
-    size: 'full',
-    backButtonText: 'go back',
-  },
-};
-
 export const Full: Story = {
   play: async () => {
     const dialogTrigger = screen.getByRole('button', { name: 'Open sheet' });
@@ -109,9 +94,31 @@ export const Full: Story = {
 
     const dialogTitle = await screen.findByText('Edit profile');
     expect(dialogTitle).toBeVisible();
+    const backButton = screen.getByTestId('sheet-back');
+    expect(backButton).toBeVisible();
   },
   args: {
     size: 'full',
+  },
+};
+
+export const FullWithBackButton: Story = {
+  play: async () => {
+    const dialogTrigger = screen.getByRole('button', { name: 'Open sheet' });
+    await userEvent.click(dialogTrigger);
+
+    const dialogTitle = await screen.findByText('Edit profile');
+    expect(dialogTitle).toBeVisible();
+
+    // Button is wrapped inside SheetPrimitive.Close Button
+    const backButtonTxt = await screen.getAllByRole('button', {
+      name: /Go back/i,
+    });
+    expect(backButtonTxt[1]).toBeVisible();
+  },
+  args: {
+    size: 'full',
+    backButtonText: 'Go back',
   },
 };
 
@@ -180,7 +187,6 @@ export const Right: Story = {
   },
 };
 
-// Path: libs/ui/components/src/lib/sheet/Sheet.tsx
-// Compare this snippet from libs/ui/components/src/lib/dialog/Dialog.tsx:
-//
-// import { DialogContent, DialogProps }
+export const Loading: Story = {
+  render: () => <SheetSkeletonDemo />,
+};

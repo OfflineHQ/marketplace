@@ -9,10 +9,12 @@ import {
   SheetContentProps,
   SheetOverflow,
   SheetOverlay,
+  SheetTitleSkeleton,
+  SheetDescriptionSkeleton,
 } from './Sheet';
 import { Button } from '../button/Button';
 import { TextInput } from '../text-input/TextInput';
-import { Text } from '../text/Text';
+import { Text, TextSkeleton } from '../text/Text';
 
 export const long_text = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl.\n\n
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl.\n\n
@@ -55,3 +57,19 @@ export const SheetDemo: React.FC<SheetContentProps> = ({
     </Sheet>
   );
 };
+
+export const SheetSkeletonDemo: React.FC = () => (
+  <Sheet open={true}>
+    <SheetContent variant="stickyFooter" size="lg">
+      <SheetHeader>
+        <SheetTitleSkeleton />
+        <SheetDescriptionSkeleton />
+      </SheetHeader>
+      <SheetOverflow>
+        <div className="grid gap-4 py-4">
+          <TextSkeleton variant="p" />
+        </div>
+      </SheetOverflow>
+    </SheetContent>
+  </Sheet>
+);
