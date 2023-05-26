@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'features-header-ui',
+  displayName: 'features-appNav-ui',
   preset: '../../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': [
@@ -14,5 +14,5 @@ export default {
     'auto-animate': '<rootDir>/../../../../__mocks__/auto-animate.tsx',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../../coverage/libs/features/header/ui',
+  coverageDirectory: '../../../../coverage/libs/features/appNav/ui',
 };
