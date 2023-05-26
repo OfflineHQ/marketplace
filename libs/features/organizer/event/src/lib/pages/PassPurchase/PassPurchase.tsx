@@ -62,11 +62,6 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
 
   return (
     <>
-      <SheetNavigation
-        size={size}
-        backButtonText={backButtonText}
-        backButtonLink={backButtonLink}
-      />
       <SheetHeader size={size}>
         <SheetTitle>{title}</SheetTitle>
         <SheetDescription>{description}</SheetDescription>
@@ -97,6 +92,11 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
           </>
         )}
       </AutoAnimate>
+      <SheetNavigation
+        size={size}
+        backButtonText={backButtonText}
+        backButtonLink={backButtonLink}
+      />
     </>
   );
 };

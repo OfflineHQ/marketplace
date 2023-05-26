@@ -21,7 +21,7 @@ export const PassPurchaseSheetContainerExample = ({
 export const PassPurchaseSheetContainerWithFullSizeExample = ({
   ...props
 }: PassPurchaseSheetContainerProps) => (
-  <PassPurchaseSheetContainer {...props}>
-    <PassPurchase {...passPurchaseProps} size={'full'} />
+  <PassPurchaseSheetContainer {...props} size="full">
+    <PassPurchase {...passPurchaseProps} size="full" />
   </PassPurchaseSheetContainer>
 );

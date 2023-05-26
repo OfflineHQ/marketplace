@@ -31,7 +31,6 @@ export const SheetDemo: React.FC<SheetDemoProps> = (props) => {
         <button>Open sheet</button>
       </SheetTrigger>
       <SheetContent {...props} variant="stickyFooter">
-        <SheetNavigation {...props} />
         <SheetHeader {...props}>
           <SheetTitle>Edit profile</SheetTitle>
           <SheetDescription>
@@ -49,6 +48,7 @@ export const SheetDemo: React.FC<SheetDemoProps> = (props) => {
         <SheetFooter variant="sticky">
           <Button type="submit">Save changes</Button>
         </SheetFooter>
+        <SheetNavigation {...props} />
       </SheetContent>
     </Sheet>
   );
@@ -57,7 +57,6 @@ export const SheetDemo: React.FC<SheetDemoProps> = (props) => {
 export const SheetSkeletonDemo: React.FC<SheetDemoProps> = (props) => (
   <Sheet open={true}>
     <SheetContent {...props} variant="stickyFooter">
-      <SheetNavigationSkeleton {...props} />
       <SheetHeader {...props}>
         <SheetTitleSkeleton />
         <SheetDescriptionSkeleton />
@@ -67,6 +66,7 @@ export const SheetSkeletonDemo: React.FC<SheetDemoProps> = (props) => (
           <TextSkeleton variant="p" />
         </div>
       </SheetOverflow>
+      <SheetNavigationSkeleton {...props} />
     </SheetContent>
   </Sheet>
 );
