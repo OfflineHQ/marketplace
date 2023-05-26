@@ -10,6 +10,7 @@ import {
   ProfileNavExample,
   cryptoUserMenuItems,
   normalUserMenuItems,
+  notConnectedMenuItems,
 } from './examples';
 import {
   cryptoUserSession,
@@ -52,11 +53,11 @@ export const NormalUser: Story = {
 export const NoUser: Story = {
   args: {
     user: undefined,
-    items: normalUserMenuItems,
-    signInTxt: 'Sign In',
+    items: notConnectedMenuItems,
+    signInTxt: 'Sign in',
   },
   play: async ({ canvasElement }) => {
-    userEvent.click(screen.getByText('Sign In'));
+    userEvent.click(screen.getByText('Sign in'));
     await screen.findByText('Settings');
   },
 };

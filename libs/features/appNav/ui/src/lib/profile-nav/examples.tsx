@@ -3,8 +3,7 @@ import {
   cryptoUserSession,
   normalUserSession,
 } from '../profile-avatar/examples';
-import { LifeBuoy, LogOut, Settings, User } from '@ui/icons';
-// import Link from 'next/link';
+import { LifeBuoy, LogOut, LogIn, Settings, User } from '@ui/icons';
 
 export const cryptoUserMenuItems = [
   { type: 'label', text: 'My Account', className: 'pt-2 pb-0' },
@@ -70,3 +69,27 @@ export function ProfileNavExample(props: ProfileNavProps) {
     </div>
   );
 }
+
+export const notConnectedMenuItems = [
+  {
+    type: 'item',
+    icon: <LogIn />,
+    className: 'cursor-pointer font-semibold',
+    text: 'Sign in',
+  },
+  { type: 'separator' },
+  {
+    type: 'item',
+    // wrapper: <Link href="/settings" />,
+    icon: <Settings />,
+    className: 'cursor-pointer',
+    text: 'Settings',
+  },
+  { type: 'separator' },
+  {
+    type: 'item',
+    icon: <LifeBuoy />,
+    className: 'cursor-pointer',
+    text: 'Support',
+  },
+] satisfies ProfileNavProps['items'];

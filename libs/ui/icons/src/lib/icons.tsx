@@ -57,6 +57,7 @@ import {
   FiAward,
   FiLifeBuoy,
   FiLogOut,
+  FiLogIn,
   FiMessageSquare,
   FiSettings,
   FiSmile,
@@ -140,6 +141,7 @@ export const Award = createWrappedIcon(FiAward, 'Award');
 export const CreditCard = createWrappedIcon(AiOutlineCreditCard, 'Credit Card');
 export const LifeBuoy = createWrappedIcon(FiLifeBuoy, 'Life Buoy');
 export const LogOut = createWrappedIcon(FiLogOut, 'Log Out');
+export const LogIn = createWrappedIcon(FiLogIn, 'Log In');
 export const Mail = createWrappedIcon(AiOutlineMail, 'Mail');
 export const MessageSquare = createWrappedIcon(
   FiMessageSquare,
