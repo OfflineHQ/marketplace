@@ -64,5 +64,9 @@ export const normalUserMenuItems = [
 ] satisfies ProfileNavProps['items'];
 
 export function ProfileNavExample(props: ProfileNavProps) {
-  return <ProfileNav {...props} />;
+  return (
+    <div className="flex">
+      <ProfileNav {...props} />{' '}
+    </div>
+  );
 }

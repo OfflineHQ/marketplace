@@ -1,7 +1,8 @@
 import { users } from '@test-utils/gql';
 import { mock, resetMocks } from '@depay/web3-mock-evm';
 
-describe('Authentication tests', () => {
+// TODO, set back when optimization of next dev is done: https://github.com/Offline-Project/marketplace/issues/23
+describe.skip('Authentication tests', () => {
   // beforeEach(() => {
   //   // cy.task('db:delete-users');
   //   // cy.task('db:seed-db', '../../tools/test/seeds/users.sql');
