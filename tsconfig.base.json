@@ -32,8 +32,8 @@
       "@client/types": ["libs/client/types/src/index.ts"],
       "@client/zustand": ["libs/client/zustand/src/index.ts"],
       "@dlt/types": ["libs/dlt/types/src/index.ts"],
-      "@features/header/ui": ["libs/features/header/ui/src/index.ts"],
-      "@features/header/ui/server": ["libs/features/header/ui/src/server.tsx"],
+      "@features/appNav/ui": ["libs/features/appNav/ui/src/index.ts"],
+      "@features/appNav/ui/server": ["libs/features/appNav/ui/src/server.tsx"],
       "@features/organizer/event": [
         "libs/features/organizer/event/src/index.ts"
       ],

@@ -1,7 +1,7 @@
 {
-  "name": "features-header-ui",
+  "name": "features-appNav-ui",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/features/header/ui/src",
+  "sourceRoot": "libs/features/appNav/ui/src",
   "projectType": "library",
   "tags": ["ui"],
   "targets": {
@@ -9,23 +9,23 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/features/header/ui/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/features/appNav/ui/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "build": {
       "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/features/header/ui",
-        "tsConfig": "libs/features/header/ui/tsconfig.lib.json",
-        "project": "libs/features/header/ui/package.json",
-        "entryFile": "libs/features/header/ui/src/index.ts",
+        "outputPath": "dist/libs/features/appNav/ui",
+        "tsConfig": "libs/features/appNav/ui/tsconfig.lib.json",
+        "project": "libs/features/appNav/ui/package.json",
+        "entryFile": "libs/features/appNav/ui/src/index.ts",
         "external": ["react", "react-dom", "react/jsx-runtime"],
         "rollupConfig": "@nx/react/plugins/bundle-rollup",
         "compiler": "swc",
         "assets": [
           {
-            "glob": "libs/features/header/ui/README.md",
+            "glob": "libs/features/appNav/ui/README.md",
             "input": ".",
             "output": "."
           }
@@ -36,7 +36,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/features/header/ui/jest.config.ts",
+        "jestConfig": "libs/features/appNav/ui/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
