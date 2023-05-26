@@ -41,5 +41,9 @@ export const displayItemsDark: DisplayDropdownProps['items'] = [
 ];
 
 export function DisplayDropdownExample(props: DisplayDropdownProps) {
-  return <DisplayDropdown {...props} />;
+  return (
+    <div className="flex">
+      <DisplayDropdown {...props} />{' '}
+    </div>
+  );
 }

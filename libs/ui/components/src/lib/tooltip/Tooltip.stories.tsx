@@ -1,6 +1,11 @@
 // Tooltip.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
+import {
+  screen,
+  fireEvent,
+  userEvent,
+  within,
+} from '@storybook/testing-library';
 import { Tooltip, TooltipProps } from './Tooltip';
 import { Button } from '../button/Button';
 import { Plus } from '@ui/icons';
@@ -9,9 +14,11 @@ const meta = {
   title: 'Atoms/Tooltip',
   component: Tooltip,
   render: () => (
-    <Tooltip content="Add to library">
-      <Button icon={Plus} variant="outline" />
-    </Tooltip>
+    <div className="flex">
+      <Tooltip content="Add to library">
+        <Button icon={Plus} variant="outline" />
+      </Tooltip>
+    </div>
   ),
 } satisfies Meta<typeof Tooltip>;
 

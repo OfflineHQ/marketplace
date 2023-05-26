@@ -7,6 +7,11 @@ import { Switch } from './Switch';
 const meta = {
   title: 'Atoms/Switch',
   component: Switch,
+  render: (props) => (
+    <div className="flex">
+      <Switch {...props} />
+    </div>
+  ),
   argTypes: {
     helperText: {
       control: {
