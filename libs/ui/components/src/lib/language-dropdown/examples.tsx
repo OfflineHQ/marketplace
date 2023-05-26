@@ -19,5 +19,9 @@ export const languageItems: LanguageDropdownProps['items'] = [
 ];
 
 export function LanguageDropdownExample(props: LanguageDropdownProps) {
-  return <LanguageDropdown {...props} />;
+  return (
+    <div className="flex">
+      <LanguageDropdown {...props} />
+    </div>
+  );
 }

@@ -7,7 +7,7 @@ import { cn } from '@ui/shared';
 import { VariantProps, cva } from 'class-variance-authority';
 
 const avatarSizes = {
-  xs: 'w-6 h-6 sm:w-8 sm:h-8 text-xs',
+  xs: 'w-7 h-7 sm:w-8 sm:h-8 text-xs',
   sm: 'w-8 h-8 sm:w-10 sm:h-10 text-sm',
   default: 'w-10 h-10 sm:w-12 sm:h-12 text-base',
   lg: 'w-12 h-12 sm:w-16 sm:h-16 text-lg',

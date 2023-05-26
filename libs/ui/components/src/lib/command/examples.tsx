@@ -264,14 +264,20 @@ const statuses: Status[] = [
 
 export function CommandPopoverDemo() {
   const [open, setOpen] = React.useState(false);
-  const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(null);
+  const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(
+    null
+  );
 
   return (
     <div className="flex items-center space-x-4">
       <p className="text-sm text-muted-foreground">Status</p>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" className="w-[120px] justify-start">
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-[120px] justify-start"
+          >
             {selectedStatus ? (
               <>
                 <selectedStatus.icon className="mr-2 h-4 w-4 shrink-0" />
@@ -293,7 +299,8 @@ export function CommandPopoverDemo() {
                     key={status.value}
                     onSelect={(value) => {
                       setSelectedStatus(
-                        statuses.find((priority) => priority.value === value) || null
+                        statuses.find((priority) => priority.value === value) ||
+                          null
                       );
                       setOpen(false);
                     }}
@@ -365,7 +372,10 @@ export function CommandDropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent className="p-0">
                 <Command>
-                  <CommandInput placeholder="Filter label..." autoFocus={true} />
+                  <CommandInput
+                    placeholder="Filter label..."
+                    autoFocus={true}
+                  />
                   <CommandList>
                     <CommandEmpty>No label found.</CommandEmpty>
                     <CommandGroup>
