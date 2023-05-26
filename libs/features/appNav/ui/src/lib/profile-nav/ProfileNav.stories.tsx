@@ -48,3 +48,15 @@ export const NormalUser: Story = {
     await screen.findByText('Log out');
   },
 };
+
+export const NoUser: Story = {
+  args: {
+    user: undefined,
+    items: normalUserMenuItems,
+    signInTxt: 'Sign In',
+  },
+  play: async ({ canvasElement }) => {
+    userEvent.click(screen.getByText('Sign In'));
+    await screen.findByText('Settings');
+  },
+};

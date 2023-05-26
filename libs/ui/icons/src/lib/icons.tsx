@@ -10,6 +10,7 @@ import {
   HiOutlineChevronDown,
   HiOutlineChevronRight,
   HiOutlinePlusCircle,
+  HiOutlineUserCircle,
   HiOutlineUser,
   HiOutlineUserAdd,
   HiOutlineUsers,
@@ -150,6 +151,10 @@ export const OutlinePlusCircle = createWrappedIcon(
 );
 export const Menu = createWrappedIcon(AiOutlineMenu, 'Menu');
 export const Settings = createWrappedIcon(FiSettings, 'Settings');
+export const OutlineUserCircle = createWrappedIcon(
+  HiOutlineUserCircle,
+  'Outline User Circle'
+);
 export const User = createWrappedIcon(HiOutlineUser, 'User');
 export const UserAdd = createWrappedIcon(HiOutlineUserAdd, 'User Add');
 export const Users = createWrappedIcon(HiOutlineUsers, 'Users');
