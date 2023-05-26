@@ -44,7 +44,7 @@ export function ProfileAvatar(props: ProfileAvatarProps) {
     user: { name, profileImage, eoa },
   } = props;
   const fallBack = name ? getInitials(name) : '';
-  const className = 'w-10 h-10 sm:w-10 sm:h-10';
+  const className = 'w-12 h-12';
   return profileImage || fallBack ? (
     <Avatar {...props} className={className}>
       <AvatarImage src={profileImage || ''} />
