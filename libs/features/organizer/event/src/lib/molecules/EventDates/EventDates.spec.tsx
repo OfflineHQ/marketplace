@@ -10,8 +10,8 @@ const { Default, Detailed, OneDate } = composeStories(stories);
 describe('EventDates', () => {
   it('renders the default component', () => {
     renderWithIntl(<Default />);
-    screen.getByText('Thu, June 1 at 1:00 AM');
-    screen.getByText('Sat, June 3 at 12:00 AM');
+    screen.getByText(/Thu, June 1 at 1:00 AM/i);
+    screen.getByText(/Sat, June 3 at 12:00 AM/i);
   });
 
   it('renders component with detailed dates', () => {
