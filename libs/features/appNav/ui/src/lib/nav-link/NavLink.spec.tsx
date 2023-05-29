@@ -1,4 +1,5 @@
-import { render } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
+import { useRouter } from 'next/router';
 
 import { NavLinkExample } from './examples';
 import { NextIntlClientProvider } from 'next-intl';
@@ -11,5 +12,18 @@ describe('NavLink', () => {
       </NextIntlClientProvider>
     );
     expect(baseElement).toBeTruthy();
+  });
+  it('should render with the correct href', () => {
+    const mockRouter = {
+      pathname: '/',
+    };
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
+
+    const href = '/test';
+    render(<NavLinkExample href={href}>Test</NavLinkExample>);
+
+    const linkElement = screen.getByRole('link', { name: /Test/i });
+
+    expect(linkElement.getAttribute('href')).toBe(href);
   });
 });
