@@ -71,10 +71,32 @@ export const ButtonWithOnlyIcon: Story = {
   args: {
     children: undefined,
     icon: Settings,
+    variant: 'ghost',
   },
 } satisfies Story;
 
 const helperText = 'This is a helper text';
+
+export const ButtonWithIconPing = {
+  args: {
+    ...ButtonWithOnlyIcon.args,
+    ping: { isActive: true },
+  },
+};
+
+export const ButtonWithIconPingAndNumber = {
+  args: {
+    ...ButtonWithOnlyIcon.args,
+    ping: { isActive: true, number: 3 },
+  },
+};
+
+export const ButtonWithIconPingAndNumberDoubleDigit = {
+  args: {
+    ...ButtonWithOnlyIcon.args,
+    ping: { isActive: true, number: 12 },
+  },
+};
 
 export const ButtonWithHelperText = {
   args: {
