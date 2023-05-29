@@ -1,13 +1,5 @@
 import { NavLink, NavLinkProps } from './NavLink';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from '@ui/components';
+import { NavigationMenu, NavigationMenuList } from '@ui/components';
 
 export function NavLinkExample({ href, children }: NavLinkProps) {
   return (
