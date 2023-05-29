@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { iconCVA, IconProps } from '@ui/icons';
 
+import { Ping, type PingProps } from '../Ping/Ping';
 import { Spinner } from '../spinner/Spinner';
 import { TooltipWrapper } from '../tooltip/Tooltip';
 
@@ -67,7 +68,6 @@ const buttonSkeletonVariantsCva = cva(
     },
   }
 );
-
 interface ButtonSkeletonProps
   extends React.HTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonSkeletonVariantsCva> {}
@@ -88,7 +88,8 @@ export interface ButtonProps
   isLoading?: boolean;
   icon?: React.FC<IconProps>;
   iconRight?: React.FC<IconProps>;
-  helperText?: React.ReactNode; // Add helperText here
+  helperText?: React.ReactNode;
+  ping?: PingProps;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -103,6 +104,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       icon,
       iconRight,
       helperText,
+      ping,
       ...props
     },
     ref
@@ -156,14 +158,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     });
     return (
       <TooltipWrapper helperText={helperText}>
-        <button
-          className={cn(loadingClasses, buttonClasses)}
-          ref={ref}
-          {...props}
-          onClick={handleClick}
-        >
-          {content()}
-        </button>
+        <div className="relative inline-block">
+          <Ping isActive={ping?.isActive} number={ping?.number} />
+          <button
+            className={cn(loadingClasses, buttonClasses)}
+            ref={ref}
+            {...props}
+            onClick={handleClick}
+          >
+            {content()}
+          </button>
+        </div>
       </TooltipWrapper>
     );
   }
