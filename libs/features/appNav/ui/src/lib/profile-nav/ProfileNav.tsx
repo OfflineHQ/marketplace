@@ -8,6 +8,8 @@ import {
   DropdownMenuItems,
   DropdownMenuItemsProps,
   Button,
+  AvatarSkeleton,
+  TextSkeleton,
 } from '@ui/components';
 import { OutlineUserCircle } from '@ui/icons';
 import { truncateEmailString, truncateString } from '@utils';
@@ -42,15 +44,24 @@ export function ProfileNav({
               </span>
             </>
           ) : (
-            <div className="flex flex-col items-center md:flex-row md:space-x-2">
-              <OutlineUserCircle size="lg" />
-              <div>{signInTxt}</div>
+            <div className="flex flex-col items-center space-y-1 md:flex-row md:space-x-2">
+              <OutlineUserCircle size="xl" />
+              <div className="font-semibold">{signInTxt}</div>
             </div>
           )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuItems items={items} />
     </DropdownMenu>
+  );
+}
+
+export function ProfileNavSkeleton() {
+  return (
+    <div className="flex items-center opacity-100">
+      <AvatarSkeleton className="mx-5 mr-7 md:mr-2" />
+      <TextSkeleton className="mr-5 hidden md:flex" />
+    </div>
   );
 }
 

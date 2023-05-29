@@ -5,7 +5,7 @@ import {
   userEvent,
   within,
 } from '@storybook/testing-library';
-import { ProfileNav } from './ProfileNav';
+import { ProfileNav, ProfileNavSkeleton } from './ProfileNav';
 import {
   ProfileNavExample,
   cryptoUserMenuItems,
@@ -60,4 +60,8 @@ export const NoUser: Story = {
     userEvent.click(screen.getByText('Sign in'));
     await screen.findByText('Settings');
   },
+};
+
+export const Loading: Story = {
+  render: ProfileNavSkeleton,
 };
