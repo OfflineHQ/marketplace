@@ -73,6 +73,14 @@ export const PassWithPing: Story = {
   },
 };
 
+export const PassWithPingLoading: Story = {
+  ...Pass,
+  args: {
+    ping: { isActive: true },
+    isLoading: true,
+  },
+};
+
 export const Loading: Story = {
   render: NavSectionSkeleton,
 };
