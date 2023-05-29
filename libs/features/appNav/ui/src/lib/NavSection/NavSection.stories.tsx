@@ -5,7 +5,7 @@ import {
   userEvent,
   within,
 } from '@storybook/testing-library';
-import { NavSection } from './NavSection';
+import { NavSection, NavSectionSkeleton } from './NavSection';
 import { Cart as CartIcon, QrCode } from '@ui/icons';
 import { NavSectionDemo, cartNavProps } from './examples';
 
@@ -71,4 +71,8 @@ export const PassWithPing: Story = {
   args: {
     ping: { isActive: true },
   },
+};
+
+export const Loading: Story = {
+  render: NavSectionSkeleton,
 };
