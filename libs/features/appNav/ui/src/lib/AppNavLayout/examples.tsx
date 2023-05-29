@@ -1,5 +1,6 @@
 import {
   cryptoUserSession,
+  normalUserSession,
   normalUserSessionWithImage,
 } from '../profile-avatar/examples';
 import {
@@ -7,7 +8,7 @@ import {
   normalUserMenuItems,
   notConnectedMenuItems,
 } from '../profile-nav/examples';
-import { ProfileNav } from '../profile-nav/ProfileNav';
+import { ProfileNav, ProfileNavSkeleton } from '../profile-nav/ProfileNav';
 import { CartNav } from '../CartNav/CartNav';
 import { PassNav } from '../PassNav/PassNav';
 import { NavSectionSkeleton } from '../NavSection/NavSection';
@@ -24,6 +25,14 @@ export const ProfileNavWithNormalUser = () => (
   <ProfileNav
     user={normalUserSessionWithImage}
     items={normalUserMenuItems}
+    signInTxt="Sign in"
+  />
+);
+
+export const ProfileNavWithFallbackUser = () => (
+  <ProfileNav
+    user={normalUserSession}
+    items={notConnectedMenuItems}
     signInTxt="Sign in"
   />
 );
@@ -47,5 +56,10 @@ export const PassNavEmpty = () => <PassNav text="Pass" href="/pass" />;
 export const PassNavWithPing = () => (
   <PassNav text="Pass" href="/pass" ping={{ isActive: true }} />
 );
+export const PassNavLoading = () => (
+  <PassNav text="Pass" href="/pass" isLoading />
+);
 
 export const NavSectionLoading = () => <NavSectionSkeleton />;
+
+export const ProfileNavLoading = () => <ProfileNavSkeleton />;

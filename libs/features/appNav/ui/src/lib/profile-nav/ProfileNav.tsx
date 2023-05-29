@@ -35,21 +35,21 @@ export function ProfileNav({
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="h-fit p-0 px-4 pt-2 md:h-12 md:py-2"
+          className="mt-1 h-16 p-0 px-4 md:h-12 md:py-2"
           {...props}
         >
           {user ? (
-            <>
+            <div className="flex flex-col items-center space-y-1 pb-0 md:flex-row md:space-x-2">
               <ProfileAvatar user={user} />
               <span className="hidden pl-2 md:flex">
                 {email
                   ? truncateEmailString(email, 12)
                   : truncateString(eoa, 16)}
               </span>
-            </>
+            </div>
           ) : (
             <div className="flex flex-col items-center space-y-1 pb-0 md:flex-row md:space-x-2">
-              <OutlineUserCircle size="lg" />
+              <OutlineUserCircle size="xl" />
               <div className="font-semibold">{signInTxt}</div>
             </div>
           )}
@@ -63,7 +63,7 @@ export function ProfileNav({
 export function ProfileNavSkeleton() {
   return (
     <div className="flex items-center opacity-100">
-      <AvatarSkeleton className="mx-5 mr-7 md:mr-2" />
+      <AvatarSkeleton className="mx-5 mr-7 h-12 w-12 md:mr-2" />
       <TextSkeleton className="mr-5 hidden md:flex" />
     </div>
   );

@@ -15,6 +15,7 @@ import {
 import {
   cryptoUserSession,
   normalUserSession,
+  normalUserSessionWithImage,
 } from '../profile-avatar/examples';
 
 const meta = {
@@ -47,6 +48,13 @@ export const NormalUser: Story = {
     userEvent.click(screen.getByText('@', { exact: false }));
     await screen.findByText('My Account');
     await screen.findByText('Log out');
+  },
+};
+
+export const NormalUserWithAvatar: Story = {
+  args: {
+    user: normalUserSessionWithImage,
+    items: normalUserMenuItems,
   },
 };
 

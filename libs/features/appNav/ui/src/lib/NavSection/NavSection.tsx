@@ -20,7 +20,7 @@ export function NavSection({
       helperText={helperText}
       ping={ping}
       isLoading={isLoading}
-      className="h-fit p-0 md:h-12"
+      className="h-16 p-0 md:h-12"
     >
       <NavLink
         {...props}
@@ -37,5 +37,5 @@ export function NavSection({
 }
 
 export function NavSectionSkeleton() {
-  return <ButtonSkeleton className="h-12 w-12 p-0 md:h-12 md:w-24" />;
+  return <ButtonSkeleton className="relative inline-block h-12 w-12 md:w-24" />;
 }

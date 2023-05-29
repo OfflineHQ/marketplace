@@ -47,7 +47,10 @@ export function ProfileAvatar(props: ProfileAvatarProps) {
   const className = 'w-12 h-12';
   return profileImage || fallBack ? (
     <Avatar {...props} className={className}>
-      <AvatarImage src={profileImage || ''} />
+      <AvatarImage
+        src={profileImage || ''}
+        className="flex items-center justify-center bg-muted"
+      />
       <AvatarFallback>{fallBack}</AvatarFallback>
     </Avatar>
   ) : (
