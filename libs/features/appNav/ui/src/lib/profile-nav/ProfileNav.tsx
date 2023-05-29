@@ -33,7 +33,11 @@ export function ProfileNav({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-fit py-0 md:h-12" {...props}>
+        <Button
+          variant="ghost"
+          className="h-fit p-0 px-4 pt-2 md:h-12 md:py-2"
+          {...props}
+        >
           {user ? (
             <>
               <ProfileAvatar user={user} />
@@ -44,8 +48,8 @@ export function ProfileNav({
               </span>
             </>
           ) : (
-            <div className="flex flex-col items-center space-y-1 md:flex-row md:space-x-2">
-              <OutlineUserCircle size="xl" />
+            <div className="flex flex-col items-center space-y-1 pb-0 md:flex-row md:space-x-2">
+              <OutlineUserCircle size="lg" />
               <div className="font-semibold">{signInTxt}</div>
             </div>
           )}
