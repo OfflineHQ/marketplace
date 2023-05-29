@@ -1,4 +1,4 @@
-export { Button, ButtonSkeleton } from './lib/button/Button';
+export { Button, ButtonSkeleton, type ButtonProps } from './lib/button/Button';
 export { Input } from './lib/input/Input';
 export { Label } from './lib/label/Label';
 export { Text, TextSkeleton } from './lib/text/Text';
