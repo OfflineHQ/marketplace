@@ -24,7 +24,7 @@ export const Ping: React.FC<PingProps> = ({ isActive, children, number }) => {
             `relative inline-flex ${size} items-center justify-center rounded-full bg-primary`
           )}
         >
-          {number && (
+          {!!number && (
             <span className="text-xs text-primary-foreground">{number}</span>
           )}
         </span>
