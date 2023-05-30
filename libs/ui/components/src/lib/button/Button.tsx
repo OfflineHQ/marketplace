@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { iconCVA, IconProps } from '@ui/icons';
 
-import { Ping, type PingProps } from '../Ping/Ping';
 import { Spinner } from '../spinner/Spinner';
 import { TooltipWrapper } from '../tooltip/Tooltip';
 
@@ -37,11 +36,15 @@ const buttonVariantsCva = cva(
       isIconOnly: {
         true: 'rounded-full p-0',
       },
+      block: {
+        true: 'w-full',
+      },
     },
     defaultVariants: {
       variant: 'default',
       size: 'default',
       isIconOnly: false,
+      block: false,
     },
     compoundVariants: Object.keys(variants).map((key) => ({
       variant: key as keyof typeof variants,
@@ -89,7 +92,6 @@ export interface ButtonProps
   icon?: React.FC<IconProps>;
   iconRight?: React.FC<IconProps>;
   helperText?: React.ReactNode;
-  ping?: PingProps;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -98,13 +100,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       variant,
       size = 'default',
+      block,
       children,
       onClick,
       isLoading,
       icon,
       iconRight,
       helperText,
-      ping,
       ...props
     },
     ref
@@ -154,21 +156,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant,
       size,
       isIconOnly,
+      block: !!block,
       className,
     });
     return (
       <TooltipWrapper helperText={helperText}>
-        <div className="relative inline-block">
-          <Ping isActive={ping?.isActive} number={ping?.number} />
-          <button
-            className={cn(loadingClasses, buttonClasses)}
-            ref={ref}
-            {...props}
-            onClick={handleClick}
-          >
-            {content()}
-          </button>
-        </div>
+        <button
+          className={cn(loadingClasses, buttonClasses)}
+          ref={ref}
+          {...props}
+          onClick={handleClick}
+        >
+          {content()}
+        </button>
       </TooltipWrapper>
     );
   }
