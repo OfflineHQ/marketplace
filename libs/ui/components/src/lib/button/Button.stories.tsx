@@ -77,27 +77,6 @@ export const ButtonWithOnlyIcon: Story = {
 
 const helperText = 'This is a helper text';
 
-export const ButtonWithIconPing = {
-  args: {
-    ...ButtonWithOnlyIcon.args,
-    ping: { isActive: true },
-  },
-};
-
-export const ButtonWithIconPingAndNumber = {
-  args: {
-    ...ButtonWithOnlyIcon.args,
-    ping: { isActive: true, number: 3 },
-  },
-};
-
-export const ButtonWithIconPingAndNumberDoubleDigit = {
-  args: {
-    ...ButtonWithOnlyIcon.args,
-    ping: { isActive: true, number: 12 },
-  },
-};
-
 export const ButtonWithHelperText = {
   args: {
     ...ButtonWithOnlyIcon.args,

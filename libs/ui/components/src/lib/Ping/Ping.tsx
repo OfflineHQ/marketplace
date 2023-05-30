@@ -4,15 +4,21 @@ export interface PingProps {
   isActive?: boolean;
   number?: number;
   children?: React.ReactNode;
+  className?: string;
 }
 
-export const Ping: React.FC<PingProps> = ({ isActive, children, number }) => {
+export const Ping: React.FC<PingProps> = ({
+  isActive,
+  children,
+  number,
+  className,
+}) => {
   const isDoubleDigit = number && number > 9;
   const numberSize = isDoubleDigit ? 'h-4 w-4' : 'h-3.5 w-3.5';
   const size = number ? numberSize : 'h-2.5 w-2.5';
   const position = number ? 'top-0.5 right-0.5' : 'top-1 right-1';
   return (
-    <>
+    <div className={cn('relative inline-block max-w-fit', className)}>
       <span
         className={cn(
           `absolute ${position} ${isActive ? 'flex' : 'hidden'} ${size}`
@@ -30,6 +36,6 @@ export const Ping: React.FC<PingProps> = ({ isActive, children, number }) => {
         </span>
       </span>
       {children}
-    </>
+    </div>
   );
 };

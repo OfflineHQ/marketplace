@@ -170,3 +170,4 @@ export {
   type BoundedNumericStepperProps,
   BoundedNumericStepper,
 } from './lib/bounded-numeric-stepper/BoundedNumericStepper';
+export { Ping, type PingProps } from './lib/Ping/Ping';
