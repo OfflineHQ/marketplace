@@ -15,7 +15,7 @@ export function AppNavLayout(props: AppNavLayoutProps) {
   return (
     <div className="flex h-full w-full flex-col-reverse md:flex-col">
       {/* Navigation for larger screens */}
-      <div className="sticky top-0 z-50 hidden w-full md:flex">
+      <div className="sticky top-0 z-50 hidden w-full bg-background md:flex">
         <NavigationMenu className="flex-1 justify-start">
           <NavigationMenuList>
             <NavLink href="/" className="min-w-[100px]">

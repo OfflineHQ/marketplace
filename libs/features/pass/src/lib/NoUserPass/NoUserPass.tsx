@@ -20,7 +20,7 @@ export const NoUserPass: React.FC = () => {
   // getLocalCart();
   return (
     <section className="container">
-      <Card variant="stickyFooter">
+      <Card variant="stickyFooter" noBorder>
         <CardOverflow>
           <CardHeader>
             <CardTitle>{t('title')}</CardTitle>

@@ -3,11 +3,12 @@ import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 import { Event, EventSkeleton } from './Event';
-import { eventProps } from './examples';
+import { eventProps, EventExample, EventLoadingExample } from './examples';
 
 const meta = {
   component: Event,
   args: eventProps,
+  render: EventExample,
   parameters: {
     layout: 'fullscreen',
   },
@@ -20,5 +21,5 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 export const Loading: Story = {
-  render: () => <EventSkeleton />,
+  render: () => <EventLoadingExample />,
 };
