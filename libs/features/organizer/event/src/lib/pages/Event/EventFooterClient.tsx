@@ -15,8 +15,8 @@ export const EventFooterClient: React.FC<EventFooterClientProps> = ({
   purchaseText,
 }) => {
   return (
-    <Link {...purchaseLink} legacyBehavior passHref>
-      <Button icon={QrCode} className="w-full md:w-1/6">
+    <Link {...purchaseLink} legacyBehavior passHref className="w-full">
+      <Button icon={QrCode} block className="w-full md:w-1/6">
         {purchaseText}
       </Button>
     </Link>

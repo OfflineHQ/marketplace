@@ -85,7 +85,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
               className="flex flex-col items-start space-y-2"
             >
               <PassTotal passes={passes} />
-              <Button className="w-full" icon={Cart}>
+              <Button className="w-full" block icon={Cart}>
                 {goPaymentText}
               </Button>
             </SheetFooter>
