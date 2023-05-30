@@ -25,6 +25,15 @@ export const FullSizeStickyFooter: Story = {
   },
 };
 
+export const NoBorder: Story = {
+  args: {
+    noBorder: true,
+  },
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
+
 export const FullSizeStickyFooterOverflow: Story = {
   ...FullSizeStickyFooter,
   render: CardWithOverflow,

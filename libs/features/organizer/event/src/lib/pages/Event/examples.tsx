@@ -3,7 +3,8 @@ import {
   eventDetailsProps,
   long_description,
 } from '../../molecules/EventDetails/examples';
-import { type EventProps } from './Event';
+import { Event, EventSkeleton, type EventProps } from './Event';
+import { WithNormalUser, AppNavLayout } from '@features/appNav/ui';
 
 export const eventProps: EventProps = {
   ...eventHeroProps,
@@ -12,3 +13,13 @@ export const eventProps: EventProps = {
   purchaseLink: { href: { pathname: '/dummy' } },
   purchaseText: 'Select passes',
 };
+
+export function EventExample(props: EventProps) {
+  return (
+    <AppNavLayout {...WithNormalUser.args} children={<Event {...props} />} />
+  );
+}
+
+export function EventLoadingExample() {
+  return <AppNavLayout {...WithNormalUser.args} children={<EventSkeleton />} />;
+}

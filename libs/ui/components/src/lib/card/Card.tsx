@@ -13,9 +13,13 @@ const variants = {
 const cardVariantsCva = cva('rounded-lg bg-card text-card-foreground', {
   variants: {
     variant: variants,
+    noBorder: {
+      true: 'border-none shadow-none',
+    },
   },
   defaultVariants: {
     variant: 'default',
+    noBorder: false,
   },
 });
 
@@ -26,10 +30,13 @@ export interface CardProps
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, ...props }, ref) => (
+  ({ className, variant, noBorder, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn(cardVariantsCva({ variant }), className)}
+      className={cn(
+        cardVariantsCva({ variant, noBorder: !!noBorder }),
+        className
+      )}
       {...props}
     />
   )

@@ -35,7 +35,7 @@ export const Event: React.FC<EventProps> = ({
   ...eventHeroProps
 }) => {
   return (
-    <Card variant="stickyFooter">
+    <Card variant="stickyFooter" noBorder>
       <CardOverflow>
         <CardHeader>
           <EventHero {...eventHeroProps} />
@@ -55,7 +55,7 @@ export const Event: React.FC<EventProps> = ({
 
 export const EventSkeleton: React.FC = () => {
   return (
-    <Card variant="stickyFooter">
+    <Card variant="stickyFooter" noBorder className="w-full">
       <CardHeader>
         <EventHeroSkeleton />
       </CardHeader>
