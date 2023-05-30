@@ -10,8 +10,10 @@ import {
   Button,
   AvatarSkeleton,
   TextSkeleton,
+  NavigationMenuItem,
+  NavigationMenuLink,
 } from '@ui/components';
-import { OutlineUserCircle } from '@ui/icons';
+import { OutlineUserCircle, QrCode } from '@ui/icons';
 import { truncateEmailString, truncateString } from '@utils';
 
 export interface ProfileNavProps
@@ -35,12 +37,12 @@ export function ProfileNav({
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="mt-1 h-16 p-0 px-4 md:h-12 md:py-2"
           {...props}
+          className="inline-flex h-16 w-fit p-0 md:h-12"
         >
           {user ? (
-            <div className="flex flex-col items-center space-y-1 pb-0 md:flex-row md:space-x-2">
-              <ProfileAvatar user={user} />
+            <div className="flex h-16 w-16 flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:px-4">
+              <ProfileAvatar user={user} className="relative bottom-10" />
               <span className="hidden pl-2 md:flex">
                 {email
                   ? truncateEmailString(email, 12)
@@ -48,9 +50,10 @@ export function ProfileNav({
               </span>
             </div>
           ) : (
-            <div className="flex flex-col items-center space-y-1 pb-0 md:flex-row md:space-x-2">
+            <div className="mt-3 flex h-16 flex-col items-center space-y-0 px-4 md:mt-0 md:flex-row md:space-x-2">
               <OutlineUserCircle size="xl" />
-              <div className="font-semibold">{signInTxt}</div>
+              {/* <QrCode size="lg" /> */}
+              <div className="pb-1 font-semibold md:pb-0">{signInTxt}</div>
             </div>
           )}
         </Button>
@@ -62,8 +65,8 @@ export function ProfileNav({
 
 export function ProfileNavSkeleton() {
   return (
-    <div className="flex items-center opacity-100">
-      <AvatarSkeleton className="mx-5 mr-7 h-12 w-12 md:mr-2" />
+    <div className="relative inline-block items-center justify-center opacity-100 md:flex">
+      <AvatarSkeleton className="h-12 w-12 md:mx-5" />
       <TextSkeleton className="mr-5 hidden md:flex" />
     </div>
   );
