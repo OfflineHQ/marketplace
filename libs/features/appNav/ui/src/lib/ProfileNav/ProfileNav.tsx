@@ -20,14 +20,14 @@ export interface ProfileNavProps
   extends Omit<ProfileAvatarProps, 'user'>,
     DropdownMenuItemsProps {
   user?: ProfileAvatarProps['user'];
-  signInTxt?: React.ReactNode;
+  signInText?: React.ReactNode;
   isLoading?: boolean;
 }
 
 export function ProfileNav({
   user,
   items,
-  signInTxt,
+  signInText,
   isLoading,
   ...props
 }: ProfileNavProps) {
@@ -67,7 +67,7 @@ export function ProfileNav({
                 )}
               </AutoAnimate>
               {/* <QrCode size="lg" /> */}
-              <div className="pb-1 font-semibold md:pb-0">{signInTxt}</div>
+              <div className="pb-1 font-semibold md:pb-0">{signInText}</div>
             </div>
           )}
         </Button>

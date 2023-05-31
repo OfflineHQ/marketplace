@@ -3,7 +3,7 @@ import Logo from './Logo';
 import { NavLink } from '../nav-link/NavLink';
 import { type NavDesktopProps, NavDesktop } from '../nav-desktop/NavDesktop';
 import { type NavMobileProps, NavMobile } from '../nav-mobile/NavMobile';
-import { type ProfileNavProps, ProfileNav } from '../profile-nav/ProfileNav';
+import { type ProfileNavProps, ProfileNav } from '../ProfileNav/ProfileNav';
 import { Menu, Close } from '@ui/icons';
 import {
   Button,
