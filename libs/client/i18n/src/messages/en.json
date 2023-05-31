@@ -29,6 +29,30 @@
       "sign-out": "Sign out"
     }
   },
+  "AppNav": {
+    "Profile": {
+      "sign-in": "Sign in",
+      "sections-text": {
+        "my-account": "My Account",
+        "support": "Support",
+        "support-title": "Coming soon",
+        "support-description": "This feature is not available yet",
+        "sign-out": "Sign out",
+        "sign-out-title": "You have been signed out",
+        "sign-out-description": "See you soon 👋 !",
+        "sign-in": "Sign in",
+        "settings": "Settings"
+      }
+    },
+    "Pass": {
+      "text": "Pass",
+      "helper-text": "Go to your pass"
+    },
+    "Cart": {
+      "text": "Cart",
+      "helper-text": "Go to your cart"
+    }
+  },
   "Organizer": {
     "Event": {
       "details": {

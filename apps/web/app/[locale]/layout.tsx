@@ -11,6 +11,8 @@ import { cn } from '@ui/shared';
 import { locales } from '@client/i18n';
 import App from './app';
 
+import { AppNavLayout, type AppNavLayoutProps } from '@features/appNav/ui';
+
 const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
@@ -77,7 +79,17 @@ export const metadata: Metadata = {
 //   return locales.map((locale) => ({ locale }));
 // }
 
-export default function RootLayout({ children, params }) {
+interface RootLayoutProps extends AppNavLayoutProps {
+  params: {
+    locale: string;
+  };
+}
+
+export default function RootLayout({
+  params,
+  children,
+  ...appNavLayout
+}: RootLayoutProps) {
   const locale = useLocale();
   // Show a 404 error if the user requests an unknown locale
   if (params.locale !== locale) {
@@ -94,7 +106,10 @@ export default function RootLayout({ children, params }) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <App>{children}</App>
+          <AppNavLayout {...appNavLayout}>
+            {children}
+            {/* <App>{children}</App> */}
+          </AppNavLayout>
         </ThemeProvider>
         <Analytics />
       </body>

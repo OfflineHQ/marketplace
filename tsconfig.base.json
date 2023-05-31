@@ -34,6 +34,9 @@
       "@dlt/types": ["libs/dlt/types/src/index.ts"],
       "@features/appNav/ui": ["libs/features/appNav/ui/src/index.ts"],
       "@features/appNav/ui/server": ["libs/features/appNav/ui/src/server.tsx"],
+      "@features/appNav/ui/stories": [
+        "libs/features/appNav/ui/src/stories.tsx"
+      ],
       "@features/cart": ["libs/features/cart/src/index.ts"],
       "@features/cart/server": ["libs/features/cart/src/server.ts"],
       "@features/organizer/event": [
