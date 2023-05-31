@@ -21,7 +21,7 @@ export const Ping: React.FC<PingProps> = ({
     <div className={cn('relative inline-block max-w-fit', className)}>
       <span
         className={cn(
-          `absolute ${position} ${isActive ? 'flex' : 'hidden'} ${size}`
+          `absolute z-10 ${position} ${isActive ? 'flex' : 'hidden'} ${size}`
         )}
       >
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
