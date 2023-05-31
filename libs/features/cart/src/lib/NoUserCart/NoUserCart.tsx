@@ -7,16 +7,13 @@ import {
   CardFooter,
   CardOverflow,
   CardContent,
-  Button,
-  ButtonSkeleton,
   CardOverlay,
-  Text,
   CardDescription,
 } from '@ui/components';
-import { NoUserPassFooterClient } from './NoUserPassFooterClient';
+import { NoUserCartFooterClient } from './NoUserCartFooterClient';
 
-export const NoUserPass: React.FC = () => {
-  const t = useTranslations('Pass.NoUserPass');
+export const NoUserCart: React.FC = () => {
+  const t = useTranslations('Cart.NoUserCart');
   // getLocalCart();
   return (
     <section className="container">
@@ -27,12 +24,13 @@ export const NoUserPass: React.FC = () => {
             <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
           <CardContent>
-            {/* TODO add image or animation in lieu of passes */}
+            {/* TODO add image or animation if cart is empty */}
+            {/* or LocalCartContent component */}
           </CardContent>
         </CardOverflow>
         <CardOverlay />
         <CardFooter className="justify-center" variant="sticky">
-          <NoUserPassFooterClient signInText={t('sign-in-text')} />
+          <NoUserCartFooterClient signInText={t('sign-in-text')} />
         </CardFooter>
       </Card>
     </section>
