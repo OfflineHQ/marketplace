@@ -62,7 +62,7 @@ export const NoUser: Story = {
   args: {
     user: undefined,
     items: notConnectedMenuItems,
-    signInTxt: 'Sign in',
+    signInText: 'Sign in',
   },
   play: async ({ canvasElement }) => {
     userEvent.click(screen.getByText('Sign in'));

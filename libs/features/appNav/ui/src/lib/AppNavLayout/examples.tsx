@@ -7,8 +7,8 @@ import {
   cryptoUserMenuItems,
   normalUserMenuItems,
   notConnectedMenuItems,
-} from '../profile-nav/examples';
-import { ProfileNav, ProfileNavSkeleton } from '../profile-nav/ProfileNav';
+} from '../ProfileNav/examples';
+import { ProfileNav, ProfileNavSkeleton } from '../ProfileNav/ProfileNav';
 import { CartNav } from '../CartNav/CartNav';
 import { PassNav } from '../PassNav/PassNav';
 import { NavSectionSkeleton } from '../NavSection/NavSection';
@@ -17,7 +17,7 @@ export const ProfileNavWithNoUser = () => (
   <ProfileNav
     user={undefined}
     items={notConnectedMenuItems}
-    signInTxt="Sign in"
+    signInText="Sign in"
   />
 );
 
@@ -26,7 +26,7 @@ export const ProfileNavWithNoUserLoading = () => (
     user={undefined}
     items={notConnectedMenuItems}
     isLoading={true}
-    signInTxt="Sign in"
+    signInText="Sign in"
   />
 );
 
@@ -34,7 +34,7 @@ export const ProfileNavWithNormalUser = () => (
   <ProfileNav
     user={normalUserSessionWithImage}
     items={normalUserMenuItems}
-    signInTxt="Sign in"
+    signInText="Sign in"
   />
 );
 
@@ -42,7 +42,7 @@ export const ProfileNavWithFallbackUser = () => (
   <ProfileNav
     user={normalUserSession}
     items={normalUserMenuItems}
-    signInTxt="Sign in"
+    signInText="Sign in"
   />
 );
 
@@ -50,7 +50,7 @@ export const ProfileNavWithCryptoUser = () => (
   <ProfileNav
     user={cryptoUserSession}
     items={cryptoUserMenuItems}
-    signInTxt="Sign in"
+    signInText="Sign in"
   />
 );
 

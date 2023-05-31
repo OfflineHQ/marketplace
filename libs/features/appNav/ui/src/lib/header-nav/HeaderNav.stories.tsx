@@ -15,7 +15,7 @@ import {
 import {
   cryptoUserMenuItems,
   normalUserMenuItems,
-} from '../profile-nav/examples';
+} from '../ProfileNav/examples';
 import { HeaderNav } from './HeaderNav';
 import {
   HeaderNavExample,

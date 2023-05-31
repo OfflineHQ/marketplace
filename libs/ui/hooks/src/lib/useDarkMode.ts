@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 
 export const useDarkMode = () => {
@@ -5,7 +7,8 @@ export const useDarkMode = () => {
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
-      const containsDarkClass = document.documentElement.classList.contains('dark');
+      const containsDarkClass =
+        document.documentElement.classList.contains('dark');
       setIsDark(containsDarkClass);
     });
     observer.observe(document.documentElement, { attributes: true });
