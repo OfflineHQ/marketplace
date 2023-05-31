@@ -21,6 +21,15 @@ export const ProfileNavWithNoUser = () => (
   />
 );
 
+export const ProfileNavWithNoUserLoading = () => (
+  <ProfileNav
+    user={undefined}
+    items={notConnectedMenuItems}
+    isLoading={true}
+    signInTxt="Sign in"
+  />
+);
+
 export const ProfileNavWithNormalUser = () => (
   <ProfileNav
     user={normalUserSessionWithImage}
@@ -32,7 +41,7 @@ export const ProfileNavWithNormalUser = () => (
 export const ProfileNavWithFallbackUser = () => (
   <ProfileNav
     user={normalUserSession}
-    items={notConnectedMenuItems}
+    items={normalUserMenuItems}
     signInTxt="Sign in"
   />
 );

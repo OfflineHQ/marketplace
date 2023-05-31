@@ -7,10 +7,12 @@ import {
   waitFor,
 } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
+import { sleep } from '@utils';
 
 import { AppNavLayout } from './AppNavLayout';
 import {
   ProfileNavWithNoUser,
+  ProfileNavWithNoUserLoading,
   ProfileNavWithNormalUser,
   ProfileNavWithCryptoUser,
   ProfileNavWithFallbackUser,
@@ -69,6 +71,15 @@ export const WithCryptoUser: Story = {
   },
 };
 
+export const WithDarkMode: Story = {
+  ...WithNormalUser,
+  parameters: {
+    darkMode: {
+      isDark: true,
+    },
+  },
+};
+
 export const WithCartItems: Story = {
   args: {
     ...WithNormalUser.args,
@@ -105,24 +116,58 @@ export const WithPassActive: Story = {
   },
 };
 
-export const WithNavSectionLoading: Story = {
+export const WithNavSectionSkeleton: Story = {
   args: {
     ...WithNormalUser.args,
     cart: <NavSectionLoading />,
   },
 };
 
-export const WithProfileNavLoading: Story = {
+export const WithProfileNavSkeleton: Story = {
   args: {
     ...WithNormalUser.args,
     profile: <ProfileNavLoading />,
   },
 };
 
-export const WithAllLoading: Story = {
+export const WithAllSkeleton: Story = {
   args: {
-    ...WithProfileNavLoading.args,
+    ...WithProfileNavSkeleton.args,
     cart: <NavSectionLoading />,
     pass: <NavSectionLoading />,
+  },
+};
+
+export const WithMobile: Story = {
+  ...WithFallbackUser,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+export const WithMobileLoadingProfile: Story = {
+  ...WithMobile,
+  args: {
+    ...WithMobile.args,
+    profile: <ProfileNavWithNoUserLoading />,
+  },
+};
+
+export const WithMobileOpenedProfileMenu: Story = {
+  ...WithMobile,
+  play: async ({ container }) => {
+    const profileButton = await screen.findAllByText('JD');
+    // target the second profile button that is on mobile menu
+    userEvent.click(profileButton[1]);
+    await screen.findByText('Log out');
+  },
+};
+
+export const WithMobileAllSkeleton: Story = {
+  ...WithMobile,
+  args: {
+    ...WithAllSkeleton.args,
   },
 };
