@@ -70,6 +70,13 @@ export const NoUser: Story = {
   },
 };
 
-export const Loading: Story = {
+export const Loading = {
+  args: {
+    isLoading: true,
+    ...NoUser.args,
+  },
+};
+
+export const Skeleton: Story = {
   render: ProfileNavSkeleton,
 };

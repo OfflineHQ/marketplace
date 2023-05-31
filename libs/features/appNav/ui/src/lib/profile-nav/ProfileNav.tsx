@@ -10,8 +10,8 @@ import {
   Button,
   AvatarSkeleton,
   TextSkeleton,
-  NavigationMenuItem,
-  NavigationMenuLink,
+  Spinner,
+  AutoAnimate,
 } from '@ui/components';
 import { OutlineUserCircle, QrCode } from '@ui/icons';
 import { truncateEmailString, truncateString } from '@utils';
@@ -21,12 +21,14 @@ export interface ProfileNavProps
     DropdownMenuItemsProps {
   user?: ProfileAvatarProps['user'];
   signInTxt?: React.ReactNode;
+  isLoading?: boolean;
 }
 
 export function ProfileNav({
   user,
   items,
   signInTxt,
+  isLoading,
   ...props
 }: ProfileNavProps) {
   const email = user?.email || '';
@@ -41,9 +43,15 @@ export function ProfileNav({
           className="inline-flex h-16 w-fit p-0 md:h-12"
         >
           {user ? (
-            <div className="flex h-16 w-16 flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:px-4">
-              <ProfileAvatar user={user} className="relative bottom-10" />
-              <span className="hidden pl-2 md:flex">
+            <div className="flex h-16 w-16 flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:space-y-0 md:px-4">
+              <AutoAnimate className="flex items-center">
+                {isLoading ? (
+                  <Spinner size="xl" variant="ghost" className="md:mr-2" />
+                ) : (
+                  <ProfileAvatar user={user} className="relative bottom-10" />
+                )}
+              </AutoAnimate>
+              <span className="hidden items-center justify-center pl-2 md:flex">
                 {email
                   ? truncateEmailString(email, 12)
                   : truncateString(eoa, 16)}
@@ -51,7 +59,13 @@ export function ProfileNav({
             </div>
           ) : (
             <div className="mt-3 flex h-16 flex-col items-center space-y-0 px-4 md:mt-0 md:flex-row md:space-x-2">
-              <OutlineUserCircle size="xl" />
+              <AutoAnimate className="flex items-center">
+                {isLoading ? (
+                  <Spinner size="xl" variant="ghost" className="md:mr-2" />
+                ) : (
+                  <OutlineUserCircle size="xl" />
+                )}
+              </AutoAnimate>
               {/* <QrCode size="lg" /> */}
               <div className="pb-1 font-semibold md:pb-0">{signInTxt}</div>
             </div>

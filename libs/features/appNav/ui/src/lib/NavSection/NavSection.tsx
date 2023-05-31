@@ -26,7 +26,6 @@ export function NavSection({
       <Button
         variant="link"
         helperText={helperText}
-        isLoading={isLoading}
         className="h-16 w-fit p-0 md:h-12"
       >
         <NavLink
