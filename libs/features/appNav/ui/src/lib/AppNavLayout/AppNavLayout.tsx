@@ -38,7 +38,10 @@ export function AppNavLayout(props: AppNavLayoutProps) {
       </div>
       <div className="flex h-full w-full pb-16 md:pb-0">{children}</div>
       {/* Navigation for mobile screens */}
-      <NavigationMenu className="fixed bottom-0 z-50 flex w-full md:hidden">
+      <NavigationMenu
+        data-testid="mobile-menu"
+        className="fixed bottom-0 z-50 flex w-full md:hidden"
+      >
         <NavigationMenuList className="flex w-full">
           <div className="w-28 flex-1 whitespace-nowrap text-center">
             {cart}
