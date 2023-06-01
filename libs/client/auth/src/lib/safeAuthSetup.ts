@@ -307,8 +307,13 @@ export function useSafeAuth() {
 
       setSafeAuth(safeAuthKit);
 
-      setProvider(safeAuthKit.getProvider() as SafeEventEmitterProvider);
-      console.log({ initProvider: safeAuthKit.getProvider() });
+      const safeProvider: SafeEventEmitterProvider | null =
+        safeAuthKit.getProvider() as SafeEventEmitterProvider;
+      // if the provider is set, mean the user is already connected to web3auth
+      // otherwise we deconnect the user from next auth if he is connected to sync the state with web3auth
+      if (safeProvider) setProvider(safeProvider);
+      else logoutSiwe();
+      console.log({ initProvider: safeProvider });
 
       return () => {
         safeAuthKit.unsubscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
