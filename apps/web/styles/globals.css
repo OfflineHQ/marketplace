@@ -134,22 +134,16 @@
     @apply text-base;
   }
   a {
-    @apply text-primary underline;
+    @apply text-primary;
   }
   a:hover {
-    @apply text-primary-foreground;
+    @apply underline;
   }
   a:focus {
-    @apply text-primary-foreground;
+    @apply underline;
   }
   a:active {
-    @apply text-primary-foreground;
-  }
-  a:visited {
-    @apply text-primary-foreground;
-  }
-  p {
-    @apply text-base;
+    @apply underline;
   }
   span {
     @apply text-base;

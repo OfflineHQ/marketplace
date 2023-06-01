@@ -23,8 +23,7 @@ export function NavLink({ href, children, className }: NavLinkProps) {
           className={cn(
             navigationMenuTriggerStyle(),
             className,
-            //TODO change for existing primary color
-            isActive ? 'underline' : 'no-underline'
+            isActive ? 'underline' : ''
           )}
         >
           {children}

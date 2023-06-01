@@ -6,13 +6,13 @@ import { NavigationMenu, NavigationMenuList, Separator } from '@ui/components';
 
 export interface AppNavLayoutProps {
   children: React.ReactNode;
-  profile: React.ReactNode;
-  cart: React.ReactNode;
-  pass: React.ReactNode;
+  profileNav: React.ReactNode;
+  cartNav: React.ReactNode;
+  passNav: React.ReactNode;
 }
 
 export function AppNavLayout(props: AppNavLayoutProps) {
-  const { children, profile, cart, pass } = props;
+  const { children, profileNav, cartNav, passNav } = props;
 
   return (
     <div className="flex h-full w-full flex-col-reverse md:flex-col">
@@ -21,20 +21,20 @@ export function AppNavLayout(props: AppNavLayoutProps) {
         <NavigationMenu className="flex-1 justify-start">
           <NavigationMenuList>
             <NavLink href="/" className="min-w-[100px]">
-              <Logo className="text-primary" />
+              <Logo />
             </NavLink>
           </NavigationMenuList>
         </NavigationMenu>
         <NavigationMenu className="flex-1 justify-end">
           <NavigationMenuList className="mr-4 gap-6">
-            {cart}
-            {pass}
+            {cartNav}
+            {passNav}
           </NavigationMenuList>
         </NavigationMenu>
         <NavigationMenu className="flex max-w-fit justify-end">
           <NavigationMenuList>
             <Separator orientation="vertical" className="my-1 h-12" />
-            {profile}
+            {profileNav}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
@@ -46,13 +46,13 @@ export function AppNavLayout(props: AppNavLayoutProps) {
       >
         <NavigationMenuList className="flex w-full">
           <div className="w-28 flex-1 whitespace-nowrap text-center">
-            {cart}
+            {cartNav}
           </div>
           <div className="w-28 flex-1 whitespace-nowrap text-center">
-            {pass}
+            {passNav}
           </div>
           <div className="w-28 flex-1 whitespace-nowrap text-center">
-            {profile}
+            {profileNav}
           </div>
         </NavigationMenuList>
       </NavigationMenu>
