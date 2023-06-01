@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { getCurrentUser } from '@web/lib/session';
 
 export default (async function CartNavSection() {
-  const session = await getCurrentUser();
+  const user = await getCurrentUser();
   // TODO get user cart if connected, otherwise get local storage cart from zustand.
   // const cart = await getCart(getUser);
   return <CartNavSectionContent />;
