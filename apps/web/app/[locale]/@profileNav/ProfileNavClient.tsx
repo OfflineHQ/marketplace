@@ -34,7 +34,7 @@ export const ProfileNavClient = ({
   const { toast } = useToast();
 
   const signOutUserAction = useCallback(async () => {
-    await logout();
+    await logout({ refresh: true });
     toast({
       title: profileSectionsText.signOutTitle,
       description: profileSectionsText.signOutDescription,

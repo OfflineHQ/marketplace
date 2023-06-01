@@ -23,6 +23,7 @@ import { LOGIN_MODAL_EVENTS } from '@web3auth/ui';
 import { ethers } from 'ethers';
 import { SiweMessage } from 'siwe';
 import { signIn, signOut, getCsrfToken } from 'next-auth/react';
+import { usePathname, useRouter } from 'next/navigation';
 // import { getCurrentUser } from '@web/lib/session';
 
 import { logger } from '@logger';
@@ -67,6 +68,7 @@ export function useSafeAuth() {
   );
   const isDark = useDarkMode();
   const { toast } = useToast();
+  const router = useRouter();
 
   const web3AuthErrorHandler = useCallback((error: any) => {
     // eslint-disable-next-line sonarjs/no-small-switch
@@ -89,19 +91,26 @@ export function useSafeAuth() {
   //   []
   // );
 
-  const logoutSiwe = useCallback(async () => {
-    return signOut({ redirect: false });
-  }, []);
+  const logoutSiwe = useCallback(
+    async ({ refresh }: { refresh?: boolean }) => {
+      await signOut({ redirect: false });
+      if (refresh) router.refresh();
+    },
+    [router]
+  );
 
-  const logout = useCallback(async () => {
-    if (!safeAuth) return;
+  const logout = useCallback(
+    async ({ refresh }: { refresh?: boolean }) => {
+      if (!safeAuth) return;
 
-    await safeAuth.signOut();
-    await logoutSiwe();
+      await safeAuth.signOut();
+      await logoutSiwe({ refresh });
 
-    setProvider(null);
-    setSafeUser(undefined);
-  }, [safeAuth, logoutSiwe]);
+      setProvider(null);
+      setSafeUser(undefined);
+    },
+    [safeAuth, logoutSiwe]
+  );
 
   const setupUserSession = useCallback(async () => {
     if (!safeAuth) return;
@@ -148,17 +157,17 @@ export function useSafeAuth() {
             description:
               'Something went wrong with the signature. Please try again or contact the support if its still failing.',
           });
-        }
+        } else router.refresh();
       } catch (error) {
         toast({
           title: 'Signature declined',
           description:
             'You either declined or the signature failed. Please try again.',
         });
-        await logout();
+        await logout({ refresh: false });
       }
     },
-    [toast, logout]
+    [toast, logout, router]
   );
 
   const login = useCallback(async () => {
@@ -312,7 +321,7 @@ export function useSafeAuth() {
       // if the provider is set, mean the user is already connected to web3auth
       // otherwise we deconnect the user from next auth if he is connected to sync the state with web3auth
       if (safeProvider) setProvider(safeProvider);
-      else logoutSiwe();
+      else logoutSiwe({ refresh: false });
       console.log({ initProvider: safeProvider });
 
       return () => {
