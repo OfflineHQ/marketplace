@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation';
 import { siteConfig } from '@web/config/site';
 import { Analytics } from '@web/components/Analytics';
 import { ThemeProvider } from '@ui/theme';
+import { AuthProvider } from '@client/auth';
 import { cn } from '@ui/shared';
 import { locales } from '@client/i18n';
 import App from './app';
@@ -106,10 +107,12 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AppNavLayout {...appNavLayout}>
-            {children}
-            {/* <App>{children}</App> */}
-          </AppNavLayout>
+          <AuthProvider>
+            <AppNavLayout {...appNavLayout}>
+              {children}
+              {/* <App>{children}</App> */}
+            </AppNavLayout>
+          </AuthProvider>
         </ThemeProvider>
         <Analytics />
       </body>
