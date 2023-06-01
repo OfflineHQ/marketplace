@@ -8,6 +8,7 @@ import { siteConfig } from '@web/config/site';
 import { Analytics } from '@web/components/Analytics';
 import { ThemeProvider } from '@ui/theme';
 import { AuthProvider } from '@client/auth';
+import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { locales } from '@client/i18n';
 import App from './app';
@@ -112,6 +113,7 @@ export default function RootLayout({
               {children}
               {/* <App>{children}</App> */}
             </AppNavLayout>
+            <Toaster />
           </AuthProvider>
         </ThemeProvider>
         <Analytics />
