@@ -23,7 +23,7 @@ import { LOGIN_MODAL_EVENTS } from '@web3auth/ui';
 import { ethers } from 'ethers';
 import { SiweMessage } from 'siwe';
 import { signIn, signOut, getCsrfToken } from 'next-auth/react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 // import { getCurrentUser } from '@web/lib/session';
 
 import { logger } from '@logger';
@@ -66,6 +66,7 @@ export function useSafeAuth() {
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
     null
   );
+  const [connecting, setConnecting] = useState(false);
   const isDark = useDarkMode();
   const { toast } = useToast();
   const router = useRouter();
@@ -85,12 +86,6 @@ export function useSafeAuth() {
         break;
     }
   }, []);
-
-  // const web3AuthModalVisibilityHandler = useCallback(
-  //   (visible: boolean) => visible,
-  //   []
-  // );
-
   const logoutSiwe = useCallback(
     async ({ refresh }: { refresh?: boolean }) => {
       await signOut({ redirect: false });
@@ -174,12 +169,18 @@ export function useSafeAuth() {
     if (!safeAuth) return;
 
     try {
-      let modalVisibleResolve: any, modalClosedResolved: any;
+      let modalVisibleResolve: any,
+        modalClosedResolved: any,
+        connectedResolved: any;
       // used to detect when the modal is closed during the login process
       const modalVisibilityChanged = new Promise((resolve, _) => {
         modalVisibleResolve = resolve;
       }).then(() => {
         return new Promise((resolve, _) => (modalClosedResolved = resolve));
+      });
+
+      const isConnected = new Promise((resolve, _) => {
+        connectedResolved = resolve;
       });
 
       const web3AuthModalVisibilityHandler = (isVisible: boolean) => {
@@ -190,28 +191,44 @@ export function useSafeAuth() {
         }
       };
 
+      const web3AuthConnectedHandler = () => {
+        connectedResolved('connected');
+      };
+
       safeAuth.subscribe(
         LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
         web3AuthModalVisibilityHandler
       );
 
+      safeAuth.subscribe(ADAPTER_EVENTS.CONNECTED, web3AuthConnectedHandler);
+
+      // launch in background the modal with web3auth
+      safeAuth.signIn();
+
       // here will determine if the user close the modal or not
       // if the user close the modal, web3AuthModalVisibilityHandler will be resolved before
+      // if the user sign in, web3AuthConnectedHandler will be resolved before
       const raceResult = await Promise.race([
-        safeAuth.signIn().then(() => {
-          safeAuth.unsubscribe(
-            LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
-            web3AuthModalVisibilityHandler
-          );
-          return 'signIn';
-        }),
+        isConnected,
         modalVisibilityChanged,
       ]);
 
+      console.log({ raceResult });
+
       // if the user sign in, we want to set the provider
-      if (raceResult === 'signIn') {
+      if (raceResult === 'connected') {
+        // used to force signIn in case the user denied the connection
+        await safeAuth.signIn();
+        console.log('signIn: ', { safeAuth });
         setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
       }
+
+      safeAuth.unsubscribe(
+        LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
+        web3AuthModalVisibilityHandler
+      );
+
+      safeAuth.unsubscribe(ADAPTER_EVENTS.CONNECTED, web3AuthConnectedHandler);
     } catch (error) {
       console.warn({ error });
     }
@@ -222,6 +239,7 @@ export function useSafeAuth() {
     (async () => {
       console.log('PROVIDER: ', provider);
       if (provider) {
+        // not working because don't get this cookie on the client side.
         if (!checkCookie(nextAuthCookieName())) {
           const web3Provider = new ethers.providers.Web3Provider(provider);
           const signer = web3Provider.getSigner();
@@ -307,13 +325,6 @@ export function useSafeAuth() {
         txServiceUrl: safeTxServiceUrl,
       });
 
-      safeAuthKit.subscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
-
-      // safeAuthKit.subscribe(
-      //   LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
-      //   web3AuthModalVisibilityHandler
-      // );
-
       setSafeAuth(safeAuthKit);
 
       const safeProvider: SafeEventEmitterProvider | null =
@@ -324,15 +335,18 @@ export function useSafeAuth() {
       else logoutSiwe({ refresh: false });
       console.log({ initProvider: safeProvider });
 
+      safeAuthKit.subscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
+      // safeAuthKit.subscribe(ADAPTER_EVENTS.ADAPTER_DATA_UPDATED, () => {
+      //   console.log('ADAPTER_DATA_UPDATED');
+      // });
+      safeAuthKit.subscribe(ADAPTER_EVENTS.CONNECTING, () =>
+        setConnecting(true)
+      );
       return () => {
         safeAuthKit.unsubscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
-        // safeAuthKit.unsubscribe(
-        //   LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
-        //   web3AuthModalVisibilityHandler
-        // );
       };
     })();
-    // IMPORTANT: keep only isDark in the dependency array, otherwise it will create an infinite loop
+    // IMPORTANT: keep only isDark in the dependency array, otherwise it could create an infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDark]);
 
