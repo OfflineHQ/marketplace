@@ -8,7 +8,6 @@ import {
   SafeAuthSignInData,
   SafeGetUserInfoResponse,
   Web3AuthModalPack,
-  Web3AuthEventListener,
 } from '@client/safe/auth';
 
 import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
@@ -65,6 +64,17 @@ export interface UseSafeAuthProps {
       title: string;
       description: string;
     };
+    siweStatement: string;
+    errorSigningInWithSiwe: {
+      title: string;
+      description: string;
+      tryAgainButton: string;
+    };
+    siweDeclined: {
+      title: string;
+      description: string;
+      tryAgainButton: string;
+    };
   };
 }
 
@@ -81,22 +91,25 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   const { data: session } = useSession();
   const messages = props.messages;
 
-  const web3AuthErrorHandler = useCallback((error: any) => {
-    // eslint-disable-next-line sonarjs/no-small-switch
-    switch (error?.message) {
-      case 'user closed popup':
-        if (messages?.userClosedPopup)
-          toast({
-            title: messages.userClosedPopup.title,
-            description: messages.userClosedPopup.description,
-          });
-        setConnecting(false);
-        break;
-      default:
-        console.error({ error });
-        break;
-    }
-  }, []);
+  const web3AuthErrorHandler = useCallback(
+    (error: any) => {
+      // eslint-disable-next-line sonarjs/no-small-switch
+      switch (error?.message) {
+        case 'user closed popup':
+          if (messages?.userClosedPopup)
+            toast({
+              title: messages.userClosedPopup.title,
+              description: messages.userClosedPopup.description,
+            });
+          setConnecting(false);
+          break;
+        default:
+          console.error({ error });
+          break;
+      }
+    },
+    [messages?.userClosedPopup, toast]
+  );
   const logoutSiwe = useCallback(
     async ({ refresh }: { refresh?: boolean }) => {
       await signOut({ redirect: false });
@@ -215,7 +228,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         const message = new SiweMessage({
           domain: window.location.host,
           address,
-          statement: 'Sign in with Ethereum to the app.',
+          statement: messages?.siweStatement,
           uri: window.location.origin,
           version: '1',
           chainId: parseInt(chainId as string),
@@ -229,34 +242,49 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         });
         if (signInRes?.error) {
           console.error('Error signing in with SIWE:', signInRes?.error);
-          toast({
-            variant: 'destructive',
-            title: 'Error signing in with your wallet',
-            description:
-              'Something went wrong with the signature. Please try again or contact the support if its still failing.',
-            action: (
-              <ToastAction onClick={login} altText="Try again">
-                Try again
-              </ToastAction>
-            ),
-          });
+          if (messages?.errorSigningInWithSiwe) {
+            toast({
+              variant: 'destructive',
+              title: messages.errorSigningInWithSiwe.title,
+              description: messages.errorSigningInWithSiwe.description,
+              action: (
+                <ToastAction
+                  onClick={login}
+                  altText={messages.errorSigningInWithSiwe.tryAgainButton}
+                >
+                  {messages.errorSigningInWithSiwe.tryAgainButton}
+                </ToastAction>
+              ),
+            });
+          }
           throw new Error('Error signing in with SIWE');
         } else router.refresh();
       } catch (error) {
-        toast({
-          title: 'Signature declined',
-          description:
-            'You either declined or the signature failed. Please try again.',
-          action: (
-            <ToastAction onClick={login} altText="Try again">
-              Try again
-            </ToastAction>
-          ),
-        });
+        if (messages?.siweDeclined) {
+          toast({
+            title: messages.siweDeclined.title,
+            description: messages.siweDeclined.description,
+            action: (
+              <ToastAction
+                onClick={login}
+                altText={messages.siweDeclined.tryAgainButton}
+              >
+                {messages.siweDeclined.tryAgainButton}
+              </ToastAction>
+            ),
+          });
+        }
         throw new Error('Signing in with SIWE declined');
       }
     },
-    [toast, router, login]
+    [
+      messages?.siweStatement,
+      messages?.errorSigningInWithSiwe,
+      messages?.siweDeclined,
+      router,
+      toast,
+      login,
+    ]
   );
 
   // when the provider (wallet) is connected, login to siwe or bypass if cookie is present
