@@ -1,9 +1,13 @@
 import '../styles/globals.css';
 import { Preview, Decorator } from '@storybook/react';
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { parameters } from '../../../storybook.preview.base';
 import { NextIntlClientProvider } from 'next-intl';
-import { messages, locales, defaultLocale } from '@client/i18n';
+import { defaultLocale } from '@client/i18n';
+import messagesEn from '../../../libs/client/i18n/src/messages/en.json';
+import messagesfr from '../../../libs/client/i18n/src/messages/fr.json';
+
+window.STORYBOOK_ENV = true;
 
 export const DarkModeDecorator: Decorator = (Story: any, context: any = {}) => {
   const [dark, setDark] = useState(false);
@@ -39,8 +43,12 @@ export const globalTypes = {
 };
 
 const I18nextStoryDecorator: Decorator = (Story, context) => {
-  let { locale } = context.globals;
-  locale = locale && locales.includes[locale] ? locale : defaultLocale;
+  const { locale: selectedLocale } = context.globals;
+  const locale = selectedLocale || defaultLocale;
+  const messages = {
+    en: messagesEn,
+    fr: messagesfr,
+  };
   return (
     <NextIntlClientProvider locale={locale} messages={messages[locale]}>
       {Story(context)}
@@ -51,7 +59,12 @@ const I18nextStoryDecorator: Decorator = (Story, context) => {
 document.body.classList.add('font-sans');
 
 const preview: Preview = {
-  parameters,
+  parameters: {
+    ...parameters,
+    nextjs: {
+      appDirectory: true,
+    },
+  },
   decorators: [DarkModeDecorator, I18nextStoryDecorator],
 };
 export default preview;

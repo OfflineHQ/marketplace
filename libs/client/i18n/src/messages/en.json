@@ -19,6 +19,21 @@
   "Index": {
     "title": "Hello world!"
   },
+  "Settings": {
+    "title": "Settings",
+    "description": "Customize your experience with the Offline app",
+    "language-text": "Select your language",
+    "language-select-text": {
+      "en": "English",
+      "fr": "Français"
+    },
+    "display-text": "Display mode",
+    "display-select-text": {
+      "light": "Light",
+      "dark": "Dark",
+      "auto": "Automatic"
+    }
+  },
   "Header": {
     "display-text": "Display mode",
     "display-helper-text": "Select a display mode",
