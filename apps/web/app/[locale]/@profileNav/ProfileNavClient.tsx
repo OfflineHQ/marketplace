@@ -115,10 +115,9 @@ export const ProfileNavClient = ({
   return !safeAuth ? (
     <ProfileNavSkeleton />
   ) : (
-    // (!!provider && !safeUser) || connecting
     <ProfileNav
       items={items}
-      isLoading={connecting} // mean web3Auth is connected but waiting for cookie and safe user info
+      isLoading={connecting}
       user={safeUser}
       signInText={signInText}
     />

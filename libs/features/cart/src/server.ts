@@ -1,3 +1,4 @@
 // Use this file to export React server components
 export * from './lib/hello-server';
-export * from './lib/api/getCart';
+export { NoUserCart } from './lib/NoUserCart/NoUserCart';
+// export * from './lib/api/getCart';
