@@ -1,2 +1,3 @@
 // Use this file to export React server components
 export * from './lib/hello-server';
+export { Settings } from './lib/Settings/Settings';
