@@ -42,6 +42,27 @@ export const ProfileNavClient = ({
     });
   }, [logout, toast, profileSectionsText]);
 
+  const commonSections: ProfileNavProps['items'] = [
+    {
+      type: 'item',
+      wrapper: <Link href="/settings" />,
+      icon: <Settings />,
+      className: 'cursor-pointer',
+      text: profileSectionsText.settings,
+    },
+    {
+      type: 'item',
+      icon: <LifeBuoy />,
+      className: 'cursor-pointer',
+      text: profileSectionsText.support,
+      action: () =>
+        toast({
+          title: profileSectionsText.supportTitle,
+          description: profileSectionsText.supportDescription,
+        }),
+    },
+  ];
+
   const items: ProfileNavProps['items'] = useMemo(
     () =>
       !safeUser
@@ -54,25 +75,7 @@ export const ProfileNavClient = ({
               text: profileSectionsText.signIn,
             },
             { type: 'separator' },
-            {
-              type: 'item',
-              wrapper: <Link href="/settings" />,
-              icon: <Settings />,
-              className: 'cursor-pointer',
-              text: profileSectionsText.settings,
-            },
-            { type: 'separator' },
-            {
-              type: 'item',
-              icon: <LifeBuoy />,
-              className: 'cursor-pointer',
-              text: profileSectionsText.support,
-              action: () =>
-                toast({
-                  title: profileSectionsText.supportTitle,
-                  description: profileSectionsText.supportDescription,
-                }),
-            },
+            ...commonSections,
           ]
         : [
             {
@@ -89,17 +92,7 @@ export const ProfileNavClient = ({
               ),
             },
             { type: 'separator' },
-            {
-              type: 'item',
-              icon: <LifeBuoy />,
-              className: 'cursor-pointer',
-              text: profileSectionsText.support,
-              action: () =>
-                toast({
-                  title: profileSectionsText.supportTitle,
-                  description: profileSectionsText.supportDescription,
-                }),
-            },
+            ...commonSections,
             { type: 'separator' },
             {
               type: 'item',
