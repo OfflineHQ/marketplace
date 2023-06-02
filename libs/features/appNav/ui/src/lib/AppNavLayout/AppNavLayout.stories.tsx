@@ -39,35 +39,35 @@ type Story = StoryObj<typeof meta>;
 export const WithNoUser: Story = {
   args: {
     children: 'test',
-    profile: <ProfileNavWithNoUser />,
-    cart: <CartNavEmpty />,
-    pass: <PassNavEmpty />,
+    profileNav: <ProfileNavWithNoUser />,
+    cartNav: <CartNavEmpty />,
+    passNav: <PassNavEmpty />,
   },
 };
 
 export const WithNormalUser: Story = {
   args: {
     children: 'test',
-    profile: <ProfileNavWithNormalUser />,
-    cart: <CartNavEmpty />,
-    pass: <PassNavEmpty />,
+    profileNav: <ProfileNavWithNormalUser />,
+    cartNav: <CartNavEmpty />,
+    passNav: <PassNavEmpty />,
   },
 };
 export const WithFallbackUser: Story = {
   args: {
     children: 'test',
-    profile: <ProfileNavWithFallbackUser />,
-    cart: <CartNavEmpty />,
-    pass: <PassNavEmpty />,
+    profileNav: <ProfileNavWithFallbackUser />,
+    cartNav: <CartNavEmpty />,
+    passNav: <PassNavEmpty />,
   },
 };
 
 export const WithCryptoUser: Story = {
   args: {
     children: 'test',
-    profile: <ProfileNavWithCryptoUser />,
-    cart: <CartNavEmpty />,
-    pass: <PassNavEmpty />,
+    profileNav: <ProfileNavWithCryptoUser />,
+    cartNav: <CartNavEmpty />,
+    passNav: <PassNavEmpty />,
   },
 };
 
@@ -83,28 +83,28 @@ export const WithDarkMode: Story = {
 export const WithCartItems: Story = {
   args: {
     ...WithNormalUser.args,
-    cart: <CartNavWithItems />,
+    cartNav: <CartNavWithItems />,
   },
 };
 
 export const WithPassPing: Story = {
   args: {
     ...WithNormalUser.args,
-    pass: <PassNavWithPing />,
+    passNav: <PassNavWithPing />,
   },
 };
 
 export const WithPassLoading: Story = {
   args: {
     ...WithNormalUser.args,
-    pass: <PassNavLoading />,
+    passNav: <PassNavLoading />,
   },
 };
 
 export const WithPassActive: Story = {
   args: {
     ...WithNormalUser.args,
-    pass: <PassNavWithPing />,
+    passNav: <PassNavWithPing />,
   },
   parameters: {
     nextjs: {
@@ -119,22 +119,22 @@ export const WithPassActive: Story = {
 export const WithNavSectionSkeleton: Story = {
   args: {
     ...WithNormalUser.args,
-    cart: <NavSectionLoading />,
+    cartNav: <NavSectionLoading />,
   },
 };
 
 export const WithProfileNavSkeleton: Story = {
   args: {
     ...WithNormalUser.args,
-    profile: <ProfileNavLoading />,
+    profileNav: <ProfileNavLoading />,
   },
 };
 
 export const WithAllSkeleton: Story = {
   args: {
     ...WithProfileNavSkeleton.args,
-    cart: <NavSectionLoading />,
-    pass: <NavSectionLoading />,
+    cartNav: <NavSectionLoading />,
+    passNav: <NavSectionLoading />,
   },
 };
 
@@ -151,7 +151,7 @@ export const WithMobileLoadingProfile: Story = {
   ...WithMobile,
   args: {
     ...WithMobile.args,
-    profile: <ProfileNavWithNoUserLoading />,
+    profileNav: <ProfileNavWithNoUserLoading />,
   },
 };
 

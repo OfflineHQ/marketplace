@@ -8,6 +8,9 @@ import { SettingsExample } from './examples';
 const meta = {
   component: Settings,
   render: SettingsExample,
+  parameters: {
+    layout: 'fullscreen',
+  },
 } satisfies Meta<typeof Settings>;
 
 export default meta;
