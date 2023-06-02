@@ -25,6 +25,7 @@ interface AuthContextValue {
   logout: ReturnType<typeof useSafeAuth>['logout'];
   loginSiwe: ReturnType<typeof useSafeAuth>['loginSiwe'];
   logoutSiwe: ReturnType<typeof useSafeAuth>['logoutSiwe'];
+  connecting: ReturnType<typeof useSafeAuth>['connecting'];
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);

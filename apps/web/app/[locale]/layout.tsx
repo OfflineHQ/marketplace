@@ -8,6 +8,7 @@ import { siteConfig } from '@web/config/site';
 import { Analytics } from '@web/components/Analytics';
 import { ThemeProvider } from '@ui/theme';
 import { AuthProvider } from '@client/auth';
+import { NextAuthProvider } from '@web/lib/nextAuthProvider';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { locales } from '@client/i18n';
@@ -108,13 +109,15 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AuthProvider>
-            <AppNavLayout {...appNavLayout}>
-              {children}
-              {/* <App>{children}</App> */}
-            </AppNavLayout>
-            <Toaster />
-          </AuthProvider>
+          <NextAuthProvider>
+            <AuthProvider>
+              <AppNavLayout {...appNavLayout}>
+                {children}
+                {/* <App>{children}</App> */}
+              </AppNavLayout>
+              <Toaster />
+            </AuthProvider>
+          </NextAuthProvider>
         </ThemeProvider>
         <Analytics />
       </body>
