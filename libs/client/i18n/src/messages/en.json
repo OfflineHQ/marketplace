@@ -1,4 +1,10 @@
 {
+  "Auth": {
+    "user-closed-popup": {
+      "title": "Sign in error",
+      "description": "The connection to the login provider was closed. Please try again."
+    }
+  },
   "Index": {
     "title": "Hello world!"
   },

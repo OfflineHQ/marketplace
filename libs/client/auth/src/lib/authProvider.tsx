@@ -3,11 +3,11 @@
 import { SessionProvider } from 'next-auth/react';
 
 import React, { createContext, useContext } from 'react';
-import { useSafeAuth } from './safeAuthSetup';
+import { useSafeAuth, type UseSafeAuthProps } from './safeAuthSetup';
 
-type IAppProviderProps = {
+interface AuthProviderProps extends UseSafeAuthProps {
   children?: React.ReactNode;
-};
+}
 
 interface INextAuthProps {
   children: React.ReactNode;
@@ -38,8 +38,8 @@ export const useAuthContext = () => {
   return context;
 };
 
-export const AuthProvider = ({ children }: IAppProviderProps) => {
-  const { safeAuth, ...props } = useSafeAuth();
+export const AuthProvider = ({ children, messages }: AuthProviderProps) => {
+  const { safeAuth, ...props } = useSafeAuth({ messages });
 
   return (
     <AuthContext.Provider

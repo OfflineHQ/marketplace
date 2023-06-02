@@ -1,20 +1,19 @@
 import '@web/styles/globals.css';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
-import { useLocale } from 'next-intl';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { siteConfig } from '@web/config/site';
 import { Analytics } from '@web/components/Analytics';
 import { ThemeProvider } from '@ui/theme';
-import { AuthProvider } from '@client/auth';
-import { NextAuthProvider } from '@web/lib/nextAuthProvider';
+import { AuthProvider, NextAuthProvider } from '@client/auth';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
-import { locales } from '@client/i18n';
-import App from './app';
+import { locales, messages } from '@client/i18n';
+import { useLocale, NextIntlClientProvider, useTranslations } from 'next-intl';
 
 import { AppNavLayout, type AppNavLayoutProps } from '@features/appNav/ui';
+import { pick } from 'remeda';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -98,6 +97,7 @@ export default function RootLayout({
   if (params.locale !== locale) {
     notFound();
   }
+  const t = useTranslations('Auth');
   return (
     <html lang={locale} suppressHydrationWarning>
       <head />
@@ -110,11 +110,15 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextAuthProvider>
-            <AuthProvider>
-              <AppNavLayout {...appNavLayout}>
-                {children}
-                {/* <App>{children}</App> */}
-              </AppNavLayout>
+            <AuthProvider
+              messages={{
+                userClosedPopup: {
+                  title: t('user-closed-popup.title'),
+                  description: t('user-closed-popup.description'),
+                },
+              }}
+            >
+              <AppNavLayout {...appNavLayout}>{children}</AppNavLayout>
               <Toaster />
             </AuthProvider>
           </NextAuthProvider>

@@ -59,7 +59,16 @@ export interface SafeUser
   extends SafeGetUserInfoResponse<Web3AuthModalPack>,
     SafeAuthSignInData {}
 
-export function useSafeAuth() {
+export interface UseSafeAuthProps {
+  messages?: {
+    userClosedPopup: {
+      title: string;
+      description: string;
+    };
+  };
+}
+
+export function useSafeAuth(props: UseSafeAuthProps = {}) {
   const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthModalPack>>();
   const [safeUser, setSafeUser] = useState<SafeUser>();
   const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
@@ -70,16 +79,17 @@ export function useSafeAuth() {
   const { toast } = useToast();
   const router = useRouter();
   const { data: session } = useSession();
+  const messages = props.messages;
 
   const web3AuthErrorHandler = useCallback((error: any) => {
     // eslint-disable-next-line sonarjs/no-small-switch
     switch (error?.message) {
       case 'user closed popup':
-        toast({
-          title: 'Sign in error',
-          description:
-            'The connection to the login provider was closed. Please try again.',
-        });
+        if (messages?.userClosedPopup)
+          toast({
+            title: messages.userClosedPopup.title,
+            description: messages.userClosedPopup.description,
+          });
         setConnecting(false);
         break;
       default:
