@@ -1,3 +1,4 @@
-export default async function NoUserPass() {
-  return <div>NoUser Pass</div>;
+import { NoUserPass } from '@features/pass/server';
+export default async function NoUserPassSection() {
+  return <NoUserPass />;
 }

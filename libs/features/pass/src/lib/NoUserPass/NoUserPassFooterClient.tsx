@@ -12,14 +12,14 @@ interface NoUserPassFooterClientProps {
 export const NoUserPassFooterClient: React.FC<NoUserPassFooterClientProps> = ({
   signInText,
 }) => {
-  const { login, safeAuth, safeUser, provider } = useAuthContext();
+  const { login, safeAuth, connecting } = useAuthContext();
   return !safeAuth ? (
     <ButtonSkeleton className="w-full md:w-1/6" />
   ) : (
     <Button
       onClick={login}
       icon={LogIn}
-      isLoading={!!provider && !safeUser}
+      isLoading={connecting}
       block
       className="w-full md:w-1/6"
     >
