@@ -2,7 +2,7 @@
 // safeAuthSetup.ts
 import { useEffect, useState, useCallback } from 'react';
 import { useDarkMode } from '@ui/hooks';
-import { useToast } from '@ui/components';
+import { useToast, ToastAction } from '@ui/components';
 import {
   SafeAuthKit,
   SafeAuthSignInData,
@@ -22,13 +22,12 @@ import {
 import { LOGIN_MODAL_EVENTS } from '@web3auth/ui';
 import { ethers } from 'ethers';
 import { SiweMessage } from 'siwe';
-import { signIn, signOut, getCsrfToken } from 'next-auth/react';
+import { signIn, signOut, getCsrfToken, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 // import { getCurrentUser } from '@web/lib/session';
 
 import { logger } from '@logger';
-import { isCypressRunning, checkCookie } from '@utils';
-import { nextAuthCookieName } from '@client/next-auth/common';
+import { isCypressRunning } from '@utils';
 
 type ChainConfig = Web3AuthOptions['chainConfig'] & {
   safeTxServiceUrl?: string;
@@ -70,6 +69,7 @@ export function useSafeAuth() {
   const isDark = useDarkMode();
   const { toast } = useToast();
   const router = useRouter();
+  const { data: session } = useSession();
 
   const web3AuthErrorHandler = useCallback((error: any) => {
     // eslint-disable-next-line sonarjs/no-small-switch
@@ -80,6 +80,7 @@ export function useSafeAuth() {
           description:
             'The connection to the login provider was closed. Please try again.',
         });
+        setConnecting(false);
         break;
       default:
         console.error({ error });
@@ -103,6 +104,7 @@ export function useSafeAuth() {
 
       setProvider(null);
       setSafeUser(undefined);
+      setConnecting(false);
     },
     [safeAuth, logoutSiwe]
   );
@@ -120,6 +122,77 @@ export function useSafeAuth() {
     } satisfies SafeUser;
     console.log('Safe User: ', _safeUser);
     setSafeUser(_safeUser);
+    setConnecting(false);
+  }, [safeAuth]);
+
+  const login = useCallback(async () => {
+    if (!safeAuth) return;
+
+    try {
+      let modalVisibleResolve: any,
+        modalClosedResolved: any,
+        connectedResolved: any;
+      // used to detect when the modal is closed during the login process
+      const modalVisibilityChanged = new Promise((resolve, _) => {
+        modalVisibleResolve = resolve;
+      }).then(() => {
+        return new Promise((resolve, _) => (modalClosedResolved = resolve));
+      });
+
+      const isConnected = new Promise((resolve, _) => {
+        connectedResolved = resolve;
+      });
+
+      const web3AuthModalVisibilityHandler = (isVisible: boolean) => {
+        if (isVisible) {
+          modalVisibleResolve();
+        } else {
+          modalClosedResolved();
+          setConnecting(false);
+        }
+      };
+
+      const web3AuthConnectedHandler = () => {
+        connectedResolved('connected');
+      };
+
+      safeAuth.subscribe(
+        LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
+        web3AuthModalVisibilityHandler
+      );
+
+      safeAuth.subscribe(ADAPTER_EVENTS.CONNECTED, web3AuthConnectedHandler);
+
+      // launch in background the modal with web3auth
+      safeAuth.signIn().catch((_error) => null);
+
+      // here will determine if the user close the modal or not
+      // if the user close the modal, web3AuthModalVisibilityHandler will be resolved before
+      // if the user sign in, web3AuthConnectedHandler will be resolved before
+      const raceResult = await Promise.race([
+        isConnected,
+        modalVisibilityChanged,
+      ]);
+
+      console.log({ raceResult });
+
+      // if the user sign in, we want to set the provider
+      if (raceResult === 'connected') {
+        // used to force signIn in case the user denied the connection
+        await safeAuth.signIn();
+        console.log('signIn: ', { safeAuth });
+        setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
+      }
+
+      safeAuth.unsubscribe(
+        LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
+        web3AuthModalVisibilityHandler
+      );
+
+      safeAuth.unsubscribe(ADAPTER_EVENTS.CONNECTED, web3AuthConnectedHandler);
+    } catch (error) {
+      console.warn({ error });
+    }
   }, [safeAuth]);
 
   // signin with siwe to provide a JWT through next-auth
@@ -151,104 +224,51 @@ export function useSafeAuth() {
             title: 'Error signing in with your wallet',
             description:
               'Something went wrong with the signature. Please try again or contact the support if its still failing.',
+            action: (
+              <ToastAction onClick={login} altText="Try again">
+                Try again
+              </ToastAction>
+            ),
           });
+          throw new Error('Error signing in with SIWE');
         } else router.refresh();
       } catch (error) {
         toast({
           title: 'Signature declined',
           description:
             'You either declined or the signature failed. Please try again.',
+          action: (
+            <ToastAction onClick={login} altText="Try again">
+              Try again
+            </ToastAction>
+          ),
         });
-        await logout({ refresh: false });
+        throw new Error('Signing in with SIWE declined');
       }
     },
-    [toast, logout, router]
+    [toast, router, login]
   );
-
-  const login = useCallback(async () => {
-    if (!safeAuth) return;
-
-    try {
-      let modalVisibleResolve: any,
-        modalClosedResolved: any,
-        connectedResolved: any;
-      // used to detect when the modal is closed during the login process
-      const modalVisibilityChanged = new Promise((resolve, _) => {
-        modalVisibleResolve = resolve;
-      }).then(() => {
-        return new Promise((resolve, _) => (modalClosedResolved = resolve));
-      });
-
-      const isConnected = new Promise((resolve, _) => {
-        connectedResolved = resolve;
-      });
-
-      const web3AuthModalVisibilityHandler = (isVisible: boolean) => {
-        if (isVisible) {
-          modalVisibleResolve();
-        } else {
-          modalClosedResolved();
-        }
-      };
-
-      const web3AuthConnectedHandler = () => {
-        connectedResolved('connected');
-      };
-
-      safeAuth.subscribe(
-        LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
-        web3AuthModalVisibilityHandler
-      );
-
-      safeAuth.subscribe(ADAPTER_EVENTS.CONNECTED, web3AuthConnectedHandler);
-
-      // launch in background the modal with web3auth
-      safeAuth.signIn();
-
-      // here will determine if the user close the modal or not
-      // if the user close the modal, web3AuthModalVisibilityHandler will be resolved before
-      // if the user sign in, web3AuthConnectedHandler will be resolved before
-      const raceResult = await Promise.race([
-        isConnected,
-        modalVisibilityChanged,
-      ]);
-
-      console.log({ raceResult });
-
-      // if the user sign in, we want to set the provider
-      if (raceResult === 'connected') {
-        // used to force signIn in case the user denied the connection
-        await safeAuth.signIn();
-        console.log('signIn: ', { safeAuth });
-        setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
-      }
-
-      safeAuth.unsubscribe(
-        LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
-        web3AuthModalVisibilityHandler
-      );
-
-      safeAuth.unsubscribe(ADAPTER_EVENTS.CONNECTED, web3AuthConnectedHandler);
-    } catch (error) {
-      console.warn({ error });
-    }
-  }, [safeAuth]);
 
   // when the provider (wallet) is connected, login to siwe or bypass if cookie is present
   useEffect(() => {
     (async () => {
-      console.log('PROVIDER: ', provider);
-      if (provider) {
-        // not working because don't get this cookie on the client side.
-        if (!checkCookie(nextAuthCookieName())) {
-          const web3Provider = new ethers.providers.Web3Provider(provider);
-          const signer = web3Provider.getSigner();
-          await loginSiwe(signer);
+      try {
+        console.log('PROVIDER: ', provider);
+        if (provider) {
+          console.log('provider connected:', { session });
+          if (!session?.user) {
+            const web3Provider = new ethers.providers.Web3Provider(provider);
+            const signer = web3Provider.getSigner();
+            await loginSiwe(signer);
+          }
+          await setupUserSession();
         }
-        await setupUserSession();
+      } catch (error) {
+        console.warn({ error });
+        await logout({ refresh: false });
       }
     })();
-  }, [provider, loginSiwe]);
+  }, [provider, loginSiwe, logout, session, setupUserSession, connecting]);
 
   useEffect(() => {
     (async () => {
@@ -331,14 +351,13 @@ export function useSafeAuth() {
         safeAuthKit.getProvider() as SafeEventEmitterProvider;
       // if the provider is set, mean the user is already connected to web3auth
       // otherwise we deconnect the user from next auth if he is connected to sync the state with web3auth
-      if (safeProvider) setProvider(safeProvider);
-      else logoutSiwe({ refresh: false });
+      if (safeProvider) {
+        setProvider(safeProvider);
+        setConnecting(true);
+      } else logoutSiwe({ refresh: false });
       console.log({ initProvider: safeProvider });
 
       safeAuthKit.subscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
-      // safeAuthKit.subscribe(ADAPTER_EVENTS.ADAPTER_DATA_UPDATED, () => {
-      //   console.log('ADAPTER_DATA_UPDATED');
-      // });
       safeAuthKit.subscribe(ADAPTER_EVENTS.CONNECTING, () =>
         setConnecting(true)
       );
@@ -358,5 +377,6 @@ export function useSafeAuth() {
     logout,
     loginSiwe,
     logoutSiwe,
+    connecting,
   };
 }

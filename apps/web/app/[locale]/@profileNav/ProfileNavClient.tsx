@@ -30,7 +30,8 @@ export const ProfileNavClient = ({
   signInText,
   profileSectionsText,
 }: ProfileNavClientProps) => {
-  const { safeUser, login, logout, safeAuth, provider } = useAuthContext();
+  const { safeUser, login, logout, safeAuth, provider, connecting } =
+    useAuthContext();
   const { toast } = useToast();
 
   const signOutUserAction = useCallback(async () => {
@@ -114,9 +115,10 @@ export const ProfileNavClient = ({
   return !safeAuth ? (
     <ProfileNavSkeleton />
   ) : (
+    // (!!provider && !safeUser) || connecting
     <ProfileNav
       items={items}
-      isLoading={!!provider && !safeUser} // mean web3Auth is connected but waiting for cookie and safe user info
+      isLoading={connecting} // mean web3Auth is connected but waiting for cookie and safe user info
       user={safeUser}
       signInText={signInText}
     />
