@@ -1,5 +1,8 @@
 import { Button, ButtonProps } from '../button/Button';
-import { DropdownMenu, DropdownMenuTrigger } from '../dropdown-menu/DropdownMenu';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+} from '../dropdown-menu/DropdownMenu';
 import {
   DropdownMenuItems,
   DropdownMenuItemsProps,
@@ -7,7 +10,9 @@ import {
 
 import { Language } from '@ui/icons';
 
-export interface LanguageDropdownProps extends DropdownMenuItemsProps, ButtonProps {}
+export interface LanguageDropdownProps
+  extends DropdownMenuItemsProps,
+    ButtonProps {}
 
 export function LanguageDropdown({ items, ...props }: LanguageDropdownProps) {
   return (
