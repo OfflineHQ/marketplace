@@ -7,7 +7,7 @@ export function NoUserPassExample() {
   return (
     <NextAuthProvider>
       <AuthProvider>
-        <AppNavLayout {...WithNoUser.args} children={<NoUserPass />} />{' '}
+        <AppNavLayout {...WithNoUser.args} children={<NoUserPass />} />
       </AuthProvider>
     </NextAuthProvider>
   );

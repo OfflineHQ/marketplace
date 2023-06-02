@@ -1,11 +1,11 @@
 'use client';
 
 import { LanguageDropdown, type LanguageDropdownProps } from '@ui/components';
-import { useLocale } from 'next-intl';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import { usePathname } from 'next-intl/client';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, useParams } from 'next/navigation';
 import { Check } from '@ui/icons';
+import { defaultLocale } from '@client/i18n';
 
 export interface LanguageDropdownClientProps {
   languageSelectText: {
@@ -20,7 +20,7 @@ export const LanguageDropdownClient: React.FC<LanguageDropdownClientProps> = ({
   languageText,
   className,
 }) => {
-  const locale = useLocale();
+  const locale = useParams().locale || defaultLocale;
   const router = useRouter();
   // need this little hack to avoid issue in storybook
   // eslint-disable-next-line react-hooks/rules-of-hooks

@@ -1,7 +1,10 @@
 'use client';
 
 import { Button, ButtonProps } from '../button/Button';
-import { DropdownMenu, DropdownMenuTrigger } from '../dropdown-menu/DropdownMenu';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+} from '../dropdown-menu/DropdownMenu';
 import {
   DropdownMenuItems,
   DropdownMenuItemsProps,
@@ -10,7 +13,9 @@ import {
 import { Dark, Light } from '@ui/icons';
 import { useDarkMode } from '@ui/hooks';
 
-export interface DisplayDropdownProps extends DropdownMenuItemsProps, ButtonProps {}
+export interface DisplayDropdownProps
+  extends DropdownMenuItemsProps,
+    ButtonProps {}
 
 export function DisplayDropdown({ items, ...props }: DisplayDropdownProps) {
   const isDark = useDarkMode();
@@ -18,7 +23,7 @@ export function DisplayDropdown({ items, ...props }: DisplayDropdownProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
+          variant="outline"
           aria-label={props.helperText as string}
           icon={isDark ? Dark : Light}
           {...props}
