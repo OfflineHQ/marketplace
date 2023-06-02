@@ -53,6 +53,20 @@
       "helper-text": "Go to your cart"
     }
   },
+  "Cart": {
+    "NoUserCart": {
+      "title": "Cart",
+      "description": "You will be able to validate your cart once you are signed in",
+      "sign-in-text": "Sign in"
+    }
+  },
+  "Pass": {
+    "NoUserPass": {
+      "title": "Pass",
+      "description": "You will be able to see your passes once you are signed in",
+      "sign-in-text": "Sign in"
+    }
+  },
   "Organizer": {
     "Event": {
       "details": {
