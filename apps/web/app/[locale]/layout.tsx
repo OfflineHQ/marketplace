@@ -116,6 +116,19 @@ export default function RootLayout({
                   title: t('user-closed-popup.title'),
                   description: t('user-closed-popup.description'),
                 },
+                siweStatement: t('siwe-statement'),
+                errorSigningInWithSiwe: {
+                  title: t('error-signing-in-with-siwe.title'),
+                  description: t('error-signing-in-with-siwe.description'),
+                  tryAgainButton: t(
+                    'error-signing-in-with-siwe.try-again-button'
+                  ),
+                },
+                siweDeclined: {
+                  title: t('siwe-declined.title'),
+                  description: t('siwe-declined.description'),
+                  tryAgainButton: t('siwe-declined.try-again-button'),
+                },
               }}
             >
               <AppNavLayout {...appNavLayout}>{children}</AppNavLayout>

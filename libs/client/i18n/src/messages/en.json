@@ -3,6 +3,17 @@
     "user-closed-popup": {
       "title": "Sign in error",
       "description": "The connection to the login provider was closed. Please try again."
+    },
+    "siwe-statement": "Sign in to the Offline app with your wallet",
+    "error-signing-in-with-siwe": {
+      "title": "Error signing in with your wallet",
+      "description": "Something went wrong with the signature. Please try again or contact the support if its still failing.",
+      "try-again-button": "Try again"
+    },
+    "siwe-declined": {
+      "title": "Connection with your wallet declined",
+      "description": "You declined the signature request to connect to the Offline app. Please try again.",
+      "try-again-button": "Try again"
     }
   },
   "Index": {
