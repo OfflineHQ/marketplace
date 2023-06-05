@@ -1,6 +1,4 @@
 import { GlobalSettings, type GlobalSettingsProps } from './GlobalSettings';
-import { NextIntlClientProvider } from 'next-intl';
-import { messages } from '@client/i18n';
 
 export const globalSettingsProps = {
   languageSelectText: {
@@ -17,9 +15,5 @@ export const globalSettingsProps = {
 };
 
 export const GlobalSettingsExample = (props: GlobalSettingsProps) => {
-  return (
-    <NextIntlClientProvider locale={'en'} messages={messages['en']}>
-      <GlobalSettings {...props} />
-    </NextIntlClientProvider>
-  );
+  return <GlobalSettings {...props} />;
 };

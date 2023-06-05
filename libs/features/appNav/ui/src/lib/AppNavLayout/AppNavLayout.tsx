@@ -17,7 +17,7 @@ export function AppNavLayout(props: AppNavLayoutProps) {
   return (
     <div className="flex h-full w-full flex-col-reverse md:flex-col">
       {/* Navigation for larger screens */}
-      <div className="sticky top-0 z-50 hidden w-full bg-background md:flex">
+      <div className="sticky top-0 z-20 hidden w-full bg-background md:flex">
         <NavigationMenu className="flex-1 justify-start">
           <NavigationMenuList>
             <NavLink href="/" className="min-w-[100px]">
@@ -42,7 +42,7 @@ export function AppNavLayout(props: AppNavLayoutProps) {
       {/* Navigation for mobile screens */}
       <NavigationMenu
         data-testid="mobile-menu"
-        className="fixed bottom-0 z-50 flex w-full md:hidden"
+        className="fixed bottom-0 z-20 flex w-full md:hidden"
       >
         <NavigationMenuList className="flex w-full">
           <div className="w-28 flex-1 whitespace-nowrap text-center">
