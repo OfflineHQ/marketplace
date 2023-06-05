@@ -42,6 +42,9 @@ export const globalTypes = {
   },
 };
 
+// mocked date to always get the same result in tests
+const staticDate = new Date('2023-06-05T00:00:00Z');
+
 const I18nextStoryDecorator: Decorator = (Story, context) => {
   const { locale: selectedLocale } = context.globals;
   const locale = selectedLocale || defaultLocale;
@@ -50,7 +53,11 @@ const I18nextStoryDecorator: Decorator = (Story, context) => {
     fr: messagesfr,
   };
   return (
-    <NextIntlClientProvider locale={locale} messages={messages[locale]}>
+    <NextIntlClientProvider
+      locale={locale}
+      messages={messages[locale]}
+      now={staticDate}
+    >
       {Story(context)}
     </NextIntlClientProvider>
   );
