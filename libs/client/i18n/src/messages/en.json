@@ -34,33 +34,6 @@
       "auto": "Automatic"
     }
   },
-  "Header": {
-    "display-text": "Display mode",
-    "display-helper-text": "Select a display mode",
-    "display-options": {
-      "light": "Light",
-      "dark": "Dark",
-      "auto": "Automatic"
-    },
-    "language-text": "Language",
-    "language-helper-text": "Select a language",
-    "language-options": {
-      "en": "English",
-      "fr": "Français"
-    },
-    "sign-in": "Sign in",
-    "sign-out": {
-      "title": "You have been signed out",
-      "description": "See you soon 👋 !"
-    },
-    "profile-sections": {
-      "my-account": "My Account",
-      "support": "Support",
-      "support-title": "Coming soon",
-      "support-description": "This feature is not available yet",
-      "sign-out": "Sign out"
-    }
-  },
   "AppNav": {
     "Profile": {
       "sign-in": "Sign in",

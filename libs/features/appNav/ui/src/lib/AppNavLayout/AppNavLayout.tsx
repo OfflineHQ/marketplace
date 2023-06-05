@@ -1,5 +1,3 @@
-'use client';
-
 import Logo from './Logo';
 import { NavLink } from '../nav-link/NavLink';
 import { NavigationMenu, NavigationMenuList, Separator } from '@ui/components';

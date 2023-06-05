@@ -1,32 +1,97 @@
 {
-  "Index": {
-    "title": "Bonjour!"
-  },
-  "Header": {
-    "display-text": "Mode d'affichage",
-    "display-helper-text": "Sélectionnez un mode d'affichage",
-    "display-options": {
-      "light": "Clair",
-      "dark": "Sombre",
-      "auto": "Automatique"
+  "Auth": {
+    "user-closed-popup": {
+      "title": "Erreur de connexion",
+      "description": "La connexion avec le fournisseur de connexion a été fermée. Veuillez réessayer."
     },
-    "language-text": "Langue",
-    "language-helper-text": "Sélectionnez une langue",
-    "language-options": {
+    "siwe-statement": "Connectez-vous à l'application Offline avec votre portefeuille",
+    "error-signing-in-with-siwe": {
+      "title": "Erreur de connexion avec votre portefeuille",
+      "description": "Quelque chose s'est mal passé avec la signature. Veuillez réessayer ou contacter le support si cela échoue encore.",
+      "try-again-button": "Réessayer"
+    },
+    "siwe-declined": {
+      "title": "Connexion avec votre portefeuille refusée",
+      "description": "Vous avez refusé la demande de signature pour vous connecter à l'application Offline. Veuillez réessayer.",
+      "try-again-button": "Réessayer"
+    }
+  },
+  "Index": {
+    "title": "Bonjour le monde!"
+  },
+  "Settings": {
+    "title": "Paramètres",
+    "description": "Personnalisez votre expérience avec l'application Offline",
+    "language-text": "Sélectionnez votre langue",
+    "language-select-text": {
       "en": "Anglais",
       "fr": "Français"
     },
-    "sign-in": "Se connecter",
-    "sign-out": {
-      "title": "Vous avez été déconnecté",
-      "description": "À bientôt 👋 !"
+    "display-text": "Mode d'affichage",
+    "display-select-text": {
+      "light": "Clair",
+      "dark": "Sombre",
+      "auto": "Automatique"
+    }
+  },
+  "AppNav": {
+    "Profile": {
+      "sign-in": "Se connecter",
+      "sections-text": {
+        "my-account": "Mon compte",
+        "support": "Assistance",
+        "support-title": "Bientôt disponible",
+        "support-description": "Cette fonctionnalité n'est pas encore disponible",
+        "sign-out": "Se déconnecter",
+        "sign-out-title": "Vous vous êtes déconnecté",
+        "sign-out-description": "À bientôt 👋 !",
+        "sign-in": "Se connecter",
+        "settings": "Paramètres"
+      }
     },
-    "profile-sections": {
-      "my-account": "Mon compte",
-      "support": "Assistance",
-      "support-title": "Bientôt disponible",
-      "support-description": "Cette fonctionnalité n'est pas encore disponible",
-      "sign-out": "Se déconnecter"
+    "Pass": {
+      "text": "Passe",
+      "helper-text": "Aller à votre passe"
+    },
+    "Cart": {
+      "text": "Panier",
+      "helper-text": "Aller à votre panier"
+    }
+  },
+  "Cart": {
+    "NoUserCart": {
+      "title": "Panier",
+      "description": "Vous pourrez valider votre panier une fois que vous êtes connecté",
+      "sign-in-text": "Se connecter"
+    }
+  },
+  "Pass": {
+    "NoUserPass": {
+      "title": "Passe",
+      "description": "Vous pourrez voir vos passes une fois que vous êtes connecté",
+      "sign-in-text": "Se connecter"
+    }
+  },
+  "Organizer": {
+    "Event": {
+      "details": {
+        "title": "Détails de l'événement"
+      },
+      "purchase-button-activator": "Sélectionner les passes",
+      "pass-purchase": {
+        "title": "Sélection de passe",
+        "description": "Sélectionnez les passes que vous souhaitez acheter et validez votre commande",
+        "pass": {
+          "sold-out": "Épuisé"
+        },
+        "purchase-button": "Aller au paiement",
+        "go-back-button": "Retour à l'événement",
+        "see-event-button": "Voir l'événement"
+      }
+    },
+    "EventDates": {
+      "from": "De",
+      "to": "À"
     }
   }
 }
