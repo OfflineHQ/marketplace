@@ -6,6 +6,8 @@ import { usePathname } from 'next-intl/client';
 import { useSearchParams, useRouter, useParams } from 'next/navigation';
 import { Check } from '@ui/icons';
 import { defaultLocale } from '@client/i18n';
+// eslint-disable-next-line import/no-unresolved
+import '@client/types';
 
 export interface LanguageDropdownClientProps {
   languageSelectText: {

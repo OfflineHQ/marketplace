@@ -9,7 +9,7 @@ export default (async function CartNavSection() {
   return <CartNavSectionContent />;
 } as unknown as () => JSX.Element);
 
-export function CartNavSectionContent(
+function CartNavSectionContent(
   props: Pick<CartNavProps, 'ping' | 'isLoading'>
 ) {
   const t = useTranslations('AppNav.Cart');
