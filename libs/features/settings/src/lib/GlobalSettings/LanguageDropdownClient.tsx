@@ -20,7 +20,7 @@ export const LanguageDropdownClient: React.FC<LanguageDropdownClientProps> = ({
   languageText,
   className,
 }) => {
-  const locale = useParams().locale || defaultLocale;
+  const locale = useParams()?.locale || defaultLocale;
   const router = useRouter();
   // need this little hack to avoid issue in storybook
   // eslint-disable-next-line react-hooks/rules-of-hooks
