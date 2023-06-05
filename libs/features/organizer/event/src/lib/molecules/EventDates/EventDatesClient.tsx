@@ -4,11 +4,13 @@ import React from 'react';
 import type { EventDateLocation } from '../../types';
 import { Calendar as CalendarIcon } from '@ui/icons';
 import { Text } from '@ui/components';
-import { useFormatter, useTranslations } from 'next-intl';
+import { useFormatter } from 'next-intl';
 
 export interface EventDatesClientProps {
   eventDateLocations: EventDateLocation[];
   detailed?: boolean;
+  fromText: string;
+  toText: string;
 }
 
 const style = {
@@ -19,9 +21,10 @@ const style = {
 export const EventDatesClient: React.FC<EventDatesClientProps> = ({
   eventDateLocations,
   detailed,
+  fromText,
+  toText,
 }) => {
   const format = useFormatter();
-  const t = useTranslations('Organizer.EventDates');
 
   if (!eventDateLocations.length) return null;
 
@@ -36,7 +39,7 @@ export const EventDatesClient: React.FC<EventDatesClientProps> = ({
       <div className="flex flex-col items-start space-y-4">
         {eventDateLocations.length > 1 && !detailed ? (
           <Text className={`ml-1 flex`}>
-            {t('from')}
+            {fromText}
             <span className={style.date}>
               {formatDateTime(commonDate.dateStart, {
                 weekday: 'short',
@@ -46,7 +49,7 @@ export const EventDatesClient: React.FC<EventDatesClientProps> = ({
                 minute: 'numeric',
               })}{' '}
             </span>
-            {t('to')}
+            {toText}
             <span className={style.date}>
               {formatDateTime(
                 eventDateLocations[eventDateLocations.length - 1].dateEnd,
@@ -70,14 +73,14 @@ export const EventDatesClient: React.FC<EventDatesClientProps> = ({
                   month: 'long',
                 })}{' '}
               </span>
-              {t('from')}
+              {fromText}
               <span className={style.hourMinutes}>
                 {formatDateTime(eventDate.dateStart, {
                   hour: 'numeric',
                   minute: 'numeric',
                 })}{' '}
               </span>
-              {t('to')}
+              {toText}
               <span className={style.hourMinutes}>
                 {formatDateTime(eventDate.dateEnd, {
                   hour: 'numeric',

@@ -20,10 +20,13 @@ function renderWithIntl(
   { locale = 'en', ...renderOptions }: RenderWithProvidersOptions = {}
 ): RenderResult {
   function Wrapper({ children }: { children?: React.ReactNode }) {
+    // mocked date to always get the same result in tests
+    const staticDate = new Date('2023-06-05T00:00:00Z');
     return (
       <NextIntlClientProvider
         locale={locale}
         messages={pick(messages.en, ui.messages || [])}
+        now={staticDate}
       >
         {children}
       </NextIntlClientProvider>
