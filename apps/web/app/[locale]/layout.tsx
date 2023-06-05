@@ -9,11 +9,9 @@ import { ThemeProvider } from '@ui/theme';
 import { AuthProvider, NextAuthProvider } from '@client/auth';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
-import { locales, messages } from '@client/i18n';
-import { useLocale, NextIntlClientProvider, useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { AppNavLayout, type AppNavLayoutProps } from '@features/appNav/ui';
-import { pick } from 'remeda';
 
 const fontSans = FontSans({
   subsets: ['latin'],
