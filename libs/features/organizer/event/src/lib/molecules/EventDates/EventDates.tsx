@@ -1,6 +1,6 @@
 // EventDates.tsx
-import { pick } from 'remeda';
 import React from 'react';
+import { deepPick } from '@utils';
 import { useLocale, NextIntlClientProvider } from 'next-intl';
 import {
   EventDatesClient,
@@ -15,11 +15,10 @@ export const EventDates: React.FC<EventDatesClientProps> = ({
   detailed,
 }) => {
   const locale = useLocale();
+  const localesMessage = messages[(locale as Locale) || defaultLocale];
+  const pickedMessages = deepPick(localesMessage, ['Organizer.EventDates']);
   return (
-    <NextIntlClientProvider
-      locale={locale}
-      messages={pick(messages[(locale as Locale) || defaultLocale], ['Header'])}
-    >
+    <NextIntlClientProvider locale={locale} messages={pickedMessages}>
       <EventDatesClient
         eventDateLocations={eventDateLocations}
         detailed={detailed}

@@ -4,7 +4,7 @@ import React from 'react';
 import type { EventDateLocation } from '../../types';
 import { Calendar as CalendarIcon } from '@ui/icons';
 import { Text } from '@ui/components';
-import { useFormatter } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 
 export interface EventDatesClientProps {
   eventDateLocations: EventDateLocation[];
@@ -21,6 +21,7 @@ export const EventDatesClient: React.FC<EventDatesClientProps> = ({
   detailed,
 }) => {
   const format = useFormatter();
+  const t = useTranslations('Organizer.EventDates');
 
   if (!eventDateLocations.length) return null;
 
@@ -35,7 +36,7 @@ export const EventDatesClient: React.FC<EventDatesClientProps> = ({
       <div className="flex flex-col items-start space-y-4">
         {eventDateLocations.length > 1 && !detailed ? (
           <Text className={`ml-1 flex`}>
-            From{' '}
+            {t('from')}
             <span className={style.date}>
               {formatDateTime(commonDate.dateStart, {
                 weekday: 'short',
@@ -45,7 +46,7 @@ export const EventDatesClient: React.FC<EventDatesClientProps> = ({
                 minute: 'numeric',
               })}{' '}
             </span>
-            To{' '}
+            {t('to')}
             <span className={style.date}>
               {formatDateTime(
                 eventDateLocations[eventDateLocations.length - 1].dateEnd,
@@ -69,14 +70,14 @@ export const EventDatesClient: React.FC<EventDatesClientProps> = ({
                   month: 'long',
                 })}{' '}
               </span>
-              from{' '}
+              {t('from')}
               <span className={style.hourMinutes}>
                 {formatDateTime(eventDate.dateStart, {
                   hour: 'numeric',
                   minute: 'numeric',
                 })}{' '}
               </span>
-              to{' '}
+              {t('to')}
               <span className={style.hourMinutes}>
                 {formatDateTime(eventDate.dateEnd, {
                   hour: 'numeric',

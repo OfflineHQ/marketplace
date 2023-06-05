@@ -1,3 +1,46 @@
+import { stringToPath } from 'remeda';
+import type { NestedValueOf, NestedKeyOf } from '../types';
+
+export function deepMerge(obj1: any, obj2: any): any {
+  const output = Object.assign({}, obj1);
+  if (isObject(obj1) && isObject(obj2)) {
+    Object.keys(obj2).forEach((key) => {
+      if (isObject(obj2[key])) {
+        if (!(key in obj1)) Object.assign(output, { [key]: obj2[key] });
+        else output[key] = deepMerge(obj1[key], obj2[key]);
+      } else {
+        Object.assign(output, { [key]: obj2[key] });
+      }
+    });
+  }
+  return output;
+}
+
+export function isObject(item: any): boolean {
+  return item && typeof item === 'object' && !Array.isArray(item);
+}
+
+export function deepPick<T, P extends NestedKeyOf<T>>(
+  obj: T,
+  paths: P[]
+): NestedValueOf<T, P> {
+  function pickHelper(item: any, path: string[]): any {
+    if (path.length === 0 || item === undefined) {
+      return undefined;
+    }
+    const [head, ...tail] = path;
+    if (tail.length === 0) {
+      return { [head]: item[head] };
+    }
+    return { [head]: pickHelper(item[head], tail) };
+  }
+
+  return paths
+    .map(stringToPath as any)
+    .map((path) => pickHelper(obj, path as string[]))
+    .reduce((acc, val) => deepMerge(acc, val), {});
+}
+
 export interface MyRequestInit extends Omit<RequestInit, 'headers'> {
   headers?: Record<string, string>;
 }
