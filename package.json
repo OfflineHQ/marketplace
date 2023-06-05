@@ -150,7 +150,7 @@
     "react-use": "^17.4.0",
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
-    "remeda": "^1.14.0",
+    "remeda": "^1.19.0",
     "rxjs": "^7.8.1",
     "sharp": "^0.31.3",
     "siwe": "^2.1.4",

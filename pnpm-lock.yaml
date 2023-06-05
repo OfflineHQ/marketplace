@@ -287,8 +287,8 @@ dependencies:
     specifier: 0.13.7
     version: 0.13.7
   remeda:
-    specifier: ^1.14.0
-    version: 1.14.0
+    specifier: ^1.19.0
+    version: 1.19.0
   rxjs:
     specifier: ^7.8.1
     version: 7.8.1
@@ -25592,8 +25592,8 @@ packages:
       unist-util-visit: 2.0.3
     dev: true
 
-  /remeda@1.14.0:
-    resolution: {integrity: sha512-AFPpCRtlYAcSzW4cI8sOw+x+BtbvX6tIwL3lhRxUO9YuPXRe06N1woIMPq/O1cNNy5n4a0TwbIHIciqnswkaQg==}
+  /remeda@1.19.0:
+    resolution: {integrity: sha512-iwZohiXDhC1K+adRI6OB+tYxOfXyX7DaPXQDZrR5s1k7umrkG3Yd2+QDfSrYFlC7oc0IqeUns6RqSjNkERXeLw==}
     dev: false
 
   /remedial@1.0.8:

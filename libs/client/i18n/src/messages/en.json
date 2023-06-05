@@ -115,6 +115,10 @@
         "go-back-button": "Come back to the event",
         "see-event-button": "See the event"
       }
+    },
+    "EventDates": {
+      "from": "From",
+      "to": "To"
     }
   }
 }
