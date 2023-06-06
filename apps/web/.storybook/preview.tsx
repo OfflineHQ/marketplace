@@ -24,6 +24,11 @@ export const DarkModeDecorator: Decorator = (Story: any, context: any = {}) => {
   return dark ? <Story key={dark} /> : <Story />;
 };
 
+const localStorageResetDecorator: Decorator = (Story) => {
+  window.localStorage.clear();
+  return <Story />;
+};
+
 // Create a global variable called locale in storybook
 // and add a dropdown in the toolbar to change your locale
 export const globalTypes = {
@@ -72,6 +77,10 @@ const preview: Preview = {
       appDirectory: true,
     },
   },
-  decorators: [DarkModeDecorator, I18nextStoryDecorator],
+  decorators: [
+    DarkModeDecorator,
+    I18nextStoryDecorator,
+    localStorageResetDecorator,
+  ],
 };
 export default preview;
