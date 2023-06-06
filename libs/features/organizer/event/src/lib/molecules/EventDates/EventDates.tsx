@@ -1,18 +1,17 @@
 // EventDates.tsx
 import React from 'react';
-import { deepPick } from '@utils';
 import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import {
   EventDatesClient,
   type EventDatesClientProps,
 } from './EventDatesClient';
 
-export type EventDatesProps = Exclude<
+export type EventDatesProps = Omit<
   EventDatesClientProps,
   'fromText' | 'toText'
 >;
 
-export const EventDates: React.FC<EventDatesClientProps> = ({
+export const EventDates: React.FC<EventDatesProps> = ({
   eventDateLocations,
   detailed,
 }) => {

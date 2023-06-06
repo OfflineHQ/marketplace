@@ -52,7 +52,9 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
 
   useEffect(() => {
     store?.setPasses(eventSlug, _passes);
-  }, [store, eventSlug, _passes]);
+    // here avoid adding store to the dependencies array to avoid infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventSlug, _passes]);
 
   const handleOnChange = (
     pass: PassPurchaseProps['passes'][0],
