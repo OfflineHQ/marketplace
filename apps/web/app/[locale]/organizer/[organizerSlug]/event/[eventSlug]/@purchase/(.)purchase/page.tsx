@@ -56,6 +56,7 @@ function PurchaseSectionContent({
     // </div>
     <PassPurchase
       passes={passes}
+      eventSlug={eventSlug}
       title={t('pass-purchase.title')}
       description={t('pass-purchase.description')}
       goPaymentText={t('pass-purchase.purchase-button')}

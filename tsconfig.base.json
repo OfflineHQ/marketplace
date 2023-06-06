@@ -29,6 +29,7 @@
       ],
       "@client/safe/auth": ["libs/client/safe/auth/src/index.ts"],
       "@client/siwe/provider": ["libs/client/siwe/provider/src/index.ts"],
+      "@client/store": ["libs/client/store/src/index.ts"],
       "@client/types": ["libs/client/types/src/index.ts"],
       "@client/zustand": ["libs/client/zustand/src/index.ts"],
       "@dlt/types": ["libs/dlt/types/src/index.ts"],
@@ -44,6 +45,9 @@
       ],
       "@features/organizer/event/server": [
         "libs/features/organizer/event/src/server.ts"
+      ],
+      "@features/organizer/event/store": [
+        "libs/features/organizer/event/src/lib/store"
       ],
       "@features/organizer/event/types": [
         "libs/features/organizer/event/src/lib/types"

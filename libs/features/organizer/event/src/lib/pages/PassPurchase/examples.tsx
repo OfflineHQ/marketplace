@@ -13,6 +13,7 @@ export const passPurchaseProps = {
   backButtonText: 'Go back to the event',
   goPaymentText: 'Go to payment',
   title: 'Pass selection',
+  eventSlug: 'dummy_event',
   description: 'Select the passes you want to purchase and validate your order',
 } satisfies PassPurchaseProps;
 export const passPurchasePropsWithLotsOfPasses = {

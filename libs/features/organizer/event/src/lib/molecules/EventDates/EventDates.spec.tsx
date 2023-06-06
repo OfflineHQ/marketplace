@@ -33,7 +33,7 @@ describe('EventDates', () => {
 
   it('renders nothing if dates is an empty array', () => {
     const { container } = renderWithIntl(
-      <EventDates eventDateLocations={[]} />
+      <EventDates eventDateLocations={[]} fromText="" toText="" />
     );
     expect(container.firstChild).toBeNull();
   });

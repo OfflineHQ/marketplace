@@ -11,18 +11,12 @@ import {
   TextSkeleton,
   ButtonSkeleton,
   BoundedNumericStepper,
-  BoundedNumericStepperProps,
   Text,
   Badge,
 } from '@ui/components';
 
-import type { EventPass } from '../../types';
-export interface PassCardProps
-  extends Omit<BoundedNumericStepperProps, 'initialValue' | 'maxVal'>,
-    EventPass {
-  numTickets: number;
-  soldOutText?: string;
-}
+import type { EventPassCart } from '../../types';
+export type PassCardProps = EventPassCart;
 
 export const PassCard: React.FC<PassCardProps> = ({
   name,
