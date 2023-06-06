@@ -4,6 +4,7 @@ import { type PassCardProps, PassCard } from './PassCard';
 import { useState } from 'react';
 
 export const passWithMaxAmount: PassCardProps = {
+  id: '1',
   name: 'General Admission',
   description: 'General Admission to the event',
   price: 1300,
@@ -13,6 +14,7 @@ export const passWithMaxAmount: PassCardProps = {
 };
 
 export const passWithMaxAmountPerUser: PassCardProps = {
+  id: '2',
   name: 'VIP Pass',
   description: 'Access to all areas',
   price: 2500,
@@ -23,6 +25,7 @@ export const passWithMaxAmountPerUser: PassCardProps = {
 };
 
 export const passWithSoldOut: PassCardProps = {
+  id: '3',
   name: 'Student Pass',
   description: 'Discounted pass for students',
   price: 800,

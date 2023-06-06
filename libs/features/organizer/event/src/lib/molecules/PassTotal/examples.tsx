@@ -15,6 +15,7 @@ export const lotsOfPasses = [
   passWithMaxAmountPerUser,
   passWithSoldOut,
   {
+    id: '4',
     name: 'Family Pass',
     description: 'Pass for families with children',
     price: 2000,
@@ -23,6 +24,7 @@ export const lotsOfPasses = [
     currentAmount: 0,
   },
   {
+    id: '5',
     name: 'Early Bird Pass',
     description: 'Discounted pass for early birds',
     price: 1000,
@@ -31,6 +33,7 @@ export const lotsOfPasses = [
     currentAmount: 0,
   },
   {
+    id: '6',
     name: 'Weekend Pass',
     description: 'Pass for the entire weekend',
     price: 3000,
@@ -39,6 +42,7 @@ export const lotsOfPasses = [
     currentAmount: 0,
   },
   {
+    id: '7',
     name: 'Premium Pass',
     description: 'Premium access to all areas',
     price: 5000,

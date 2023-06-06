@@ -1,7 +1,7 @@
 'use client';
 
 // PassPurchase.tsx
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Cart } from '@ui/icons';
 import {
   Button,
@@ -24,6 +24,8 @@ import {
   PassSelectionSkeleton,
 } from '../../organisms/PassSelection/PassSelection';
 import { PassTotal } from '../../molecules/PassTotal/PassTotal';
+import { usePassPurchaseStore } from '../../store/index';
+import { useStore } from '@client/store';
 
 export interface PassPurchaseProps
   extends PassSelectionProps,
@@ -32,6 +34,7 @@ export interface PassPurchaseProps
   title: string;
   description: string;
   soldOutText: string;
+  eventSlug: string;
 }
 
 export const PassPurchase: React.FC<PassPurchaseProps> = ({
@@ -43,16 +46,22 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   backButtonText,
   backButtonLink,
   soldOutText,
+  eventSlug,
 }) => {
-  const [passes, setPasses] = useState(_passes);
+  const store = useStore(usePassPurchaseStore, (state) => state);
 
-  const handleOnChange = (index: number, newNumTickets: number) => {
-    setPasses((currentPasses) =>
-      currentPasses.map((pass, i) =>
-        i === index ? { ...pass, numTickets: newNumTickets } : pass
-      )
-    );
+  useEffect(() => {
+    store?.setPasses(eventSlug, _passes);
+  }, [store, eventSlug, _passes]);
+
+  const handleOnChange = (
+    pass: PassPurchaseProps['passes'][0],
+    newNumTickets: number
+  ) => {
+    store?.updatePass(eventSlug, { ...pass, numTickets: newNumTickets });
   };
+
+  const passes = store?.getPasses(eventSlug) ?? [];
 
   // Check if at least one pass has been selected
   const isPassSelected = passes.reduce(
@@ -71,7 +80,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
           passes={passes.map((pass, index) => ({
             ...pass,
             onChange: (newNumTickets: number) =>
-              handleOnChange(index, newNumTickets),
+              handleOnChange(pass, newNumTickets),
           }))}
           soldOutText={soldOutText}
         />

@@ -1,3 +1,5 @@
+import type { BoundedNumericStepperProps } from '@ui/components';
+
 export interface EventOrganizer {
   id: string; // Assuming UUIDs
   name: string;
@@ -67,6 +69,7 @@ export interface EventPass {
 // Define the data structure for an event
 export interface Event {
   id?: string; // Assuming UUIDs
+  slug?: string; // URL slug used in the URL
   heroImage: string; // URL to the hero image
   title: string;
   description: string;
@@ -84,4 +87,11 @@ export interface Event {
 // Define the props that the EventTemplate component will take
 export interface EventTemplateProps {
   event: Event;
+}
+
+export interface EventPassCart
+  extends Omit<BoundedNumericStepperProps, 'initialValue' | 'maxVal'>,
+    EventPass {
+  numTickets: number;
+  soldOutText?: string;
 }
