@@ -61,6 +61,7 @@ function PurchaseSectionContent({
       title={t('pass-purchase.title')}
       description={t('pass-purchase.description')}
       goPaymentText={t('pass-purchase.purchase-button')}
+      goPaymentLink={{ href: '/cart' }}
       soldOutText={t('pass-purchase.pass.sold-out')}
       backButtonText={t('pass-purchase.see-event-button')}
       backButtonLink={{ href: backRoute }}

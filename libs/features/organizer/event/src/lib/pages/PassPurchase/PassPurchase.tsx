@@ -3,6 +3,7 @@
 // PassPurchase.tsx
 import React, { useEffect } from 'react';
 import { Cart } from '@ui/icons';
+import Link, { type LinkProps } from 'next/link';
 import {
   Button,
   AutoAnimate,
@@ -31,6 +32,7 @@ export interface PassPurchaseProps
   extends PassSelectionProps,
     SheetNavigationProps {
   goPaymentText: string;
+  goPaymentLink: LinkProps;
   title: string;
   description: string;
   soldOutText: string;
@@ -40,6 +42,7 @@ export interface PassPurchaseProps
 export const PassPurchase: React.FC<PassPurchaseProps> = ({
   passes: _passes,
   goPaymentText,
+  goPaymentLink,
   description,
   title,
   size = 'lg',
@@ -98,9 +101,16 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
               className="flex flex-col items-start space-y-2"
             >
               <PassTotal passes={passes} />
-              <Button className="w-full" block icon={Cart}>
-                {goPaymentText}
-              </Button>
+              <Link
+                {...goPaymentLink}
+                legacyBehavior
+                passHref
+                className="w-full justify-center"
+              >
+                <Button className="w-full md:w-1/6" block icon={Cart}>
+                  {goPaymentText}
+                </Button>
+              </Link>
             </SheetFooter>
           </>
         )}

@@ -51,15 +51,13 @@ function PurchaseSectionContent({
       } satisfies PassPurchaseProps['passes'][0])
   );
   return (
-    // <div className="flex min-h-[1024px] w-full min-w-[1080px] bg-blue-600">
-    //   @purchase
-    // </div>
     <PassPurchase
       passes={passes}
       eventSlug={eventSlug}
       title={t('pass-purchase.title')}
       description={t('pass-purchase.description')}
       goPaymentText={t('pass-purchase.purchase-button')}
+      goPaymentLink={{ href: '/cart' }}
       soldOutText={t('pass-purchase.pass.sold-out')}
       backButtonText={t('pass-purchase.go-back-button')}
       backButtonLink={{ href: backRoute }}
