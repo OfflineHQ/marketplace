@@ -53,6 +53,7 @@ function PurchaseSectionContent({
   return (
     <PassPurchase
       passes={passes}
+      organizerSlug={organizerSlug}
       eventSlug={eventSlug}
       title={t('pass-purchase.title')}
       description={t('pass-purchase.description')}

@@ -14,6 +14,7 @@ export const passPurchaseProps = {
   goPaymentText: 'Go to payment',
   goPaymentLink: { href: '/dummy' },
   title: 'Pass selection',
+  organizerSlug: 'dummy_organizer',
   eventSlug: 'dummy_event',
   description: 'Select the passes you want to purchase and validate your order',
 } satisfies PassPurchaseProps;

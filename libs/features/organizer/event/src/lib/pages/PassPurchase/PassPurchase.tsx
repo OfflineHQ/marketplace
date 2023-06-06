@@ -36,6 +36,7 @@ export interface PassPurchaseProps
   title: string;
   description: string;
   soldOutText: string;
+  organizerSlug: string;
   eventSlug: string;
 }
 
@@ -49,6 +50,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   backButtonText,
   backButtonLink,
   soldOutText,
+  organizerSlug,
   eventSlug,
 }) => {
   // useStore here to avoid hydration mismatch
@@ -56,19 +58,23 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   // directly set possible existing passes in the store at page load
   const setPasses = usePassPurchaseStore((state) => state.setPasses);
   useEffect(() => {
-    if (eventSlug) setPasses(eventSlug, _passes);
+    if (eventSlug && organizerSlug)
+      setPasses(organizerSlug, eventSlug, _passes);
     // here avoid adding store to the dependencies array to avoid infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventSlug, _passes]);
+  }, [organizerSlug, eventSlug, _passes]);
 
   const handleOnChange = (
     pass: PassPurchaseProps['passes'][0],
     newNumTickets: number
   ) => {
-    store?.updatePass(eventSlug, { ...pass, numTickets: newNumTickets });
+    store?.updatePass(organizerSlug, eventSlug, {
+      ...pass,
+      numTickets: newNumTickets,
+    });
   };
 
-  const passes = store?.getPasses(eventSlug) ?? [];
+  const passes = store?.getPasses(organizerSlug, eventSlug) ?? [];
 
   // Check if at least one pass has been selected
   const isPassSelected = passes.reduce(
