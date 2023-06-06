@@ -1,13 +1,22 @@
-// lib/slices/createEventPassesSlice.ts
-
 import { StateCreator } from 'zustand';
 import { EventPassCart } from '../types';
 
 export interface EventPassesSlice {
-  passes: Record<string, EventPassCart[]>; // EventPasses will be grouped by eventId
-  updatePass: (eventId: string, pass: EventPassCart) => void;
-  setPasses: (eventId: string, passes: EventPassCart[]) => void;
-  getPasses: (eventId: string) => EventPassCart[] | undefined;
+  passes: Record<string, Record<string, EventPassCart[]>>; // EventPasses will be grouped by organizerSlug -> eventSlug -> passes
+  updatePass: (
+    organizerSlug: string,
+    eventSlug: string,
+    pass: EventPassCart
+  ) => void;
+  setPasses: (
+    organizerSlug: string,
+    eventSlug: string,
+    passes: EventPassCart[]
+  ) => void;
+  getPasses: (
+    organizerSlug: string,
+    eventSlug: string
+  ) => EventPassCart[] | undefined;
 }
 
 export const createEventPassesSlice: StateCreator<EventPassesSlice> = (
@@ -15,32 +24,55 @@ export const createEventPassesSlice: StateCreator<EventPassesSlice> = (
   get
 ) => ({
   passes: {},
-  updatePass: (eventId: string, pass: EventPassCart) => {
+  updatePass: (
+    organizerSlug: string,
+    eventSlug: string,
+    pass: EventPassCart
+  ) => {
     const passes = get().passes;
-    if (!passes[eventId]) {
-      // This event does not exist yet, create it and add the pass
-      passes[eventId] = [pass];
+
+    if (!passes[organizerSlug]) {
+      // This organizer does not exist yet, create it and add the event
+      passes[organizerSlug] = { [eventSlug]: [pass] };
+    } else if (!passes[organizerSlug][eventSlug]) {
+      // The event does not exist yet, create it and add the pass
+      passes[organizerSlug][eventSlug] = [pass];
     } else {
       // The event exists, find the pass
-      const index = passes[eventId].findIndex((p) => p.id === pass.id);
+      const index = passes[organizerSlug][eventSlug].findIndex(
+        (p) => p.id === pass.id
+      );
       if (index !== -1) {
-        // The pass exists, update the number of tickets
-        passes[eventId][index] = pass;
+        // The pass exists, update it
+        passes[organizerSlug][eventSlug][index] = pass;
       } else {
-        // The pass does not exist, add it to the passes array
-        passes[eventId].push(pass);
+        // The pass does not exist, add it
+        passes[organizerSlug][eventSlug].push(pass);
       }
     }
+
     set({ passes });
   },
-  setPasses: (eventId: string, passes: EventPassCart[]) => {
-    const currentPasses = get().passes;
-    console.log('currentPasses', currentPasses, 'passes', passes);
-    currentPasses[eventId] = passes;
-    set({ passes: currentPasses });
-  },
-  getPasses: (eventId: string) => {
+  setPasses: (
+    organizerSlug: string,
+    eventSlug: string,
+    newPasses: EventPassCart[]
+  ) => {
     const passes = get().passes;
-    return passes[eventId];
+
+    if (!passes[organizerSlug]) {
+      passes[organizerSlug] = {};
+    }
+
+    passes[organizerSlug][eventSlug] = newPasses;
+
+    set({ passes });
+  },
+  getPasses: (organizerSlug: string, eventSlug: string) => {
+    const passes = get().passes;
+
+    if (passes[organizerSlug]) {
+      return passes[organizerSlug][eventSlug];
+    }
   },
 });
