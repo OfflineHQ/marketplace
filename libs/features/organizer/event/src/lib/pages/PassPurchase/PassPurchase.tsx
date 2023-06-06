@@ -48,10 +48,12 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   soldOutText,
   eventSlug,
 }) => {
+  // useStore here to avoid hydration mismatch
   const store = useStore(usePassPurchaseStore, (state) => state);
-
+  // directly set possible existing passes in the store at page load
+  const setPasses = usePassPurchaseStore((state) => state.setPasses);
   useEffect(() => {
-    store?.setPasses(eventSlug, _passes);
+    if (eventSlug) setPasses(eventSlug, _passes);
     // here avoid adding store to the dependencies array to avoid infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventSlug, _passes]);
