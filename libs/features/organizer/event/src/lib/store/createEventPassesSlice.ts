@@ -35,6 +35,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSlice> = (
   },
   setPasses: (eventId: string, passes: EventPassCart[]) => {
     const currentPasses = get().passes;
+    console.log('currentPasses', currentPasses, 'passes', passes);
     currentPasses[eventId] = passes;
     set({ passes: currentPasses });
   },

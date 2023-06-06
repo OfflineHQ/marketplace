@@ -1,6 +1,6 @@
 import { PassPurchaseSheetContainer } from '@features/organizer/event';
 
-export default function PurchaseLayout({
+export default function PurchaseTemplate({
   children,
 }: {
   children: React.ReactNode;

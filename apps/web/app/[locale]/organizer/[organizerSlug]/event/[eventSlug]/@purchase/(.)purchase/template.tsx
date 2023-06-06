@@ -3,7 +3,7 @@
 import { PassPurchaseSheetContainer } from '@features/organizer/event';
 import { usePathname } from 'next/navigation';
 
-export default function PurchaseLayout({
+export default function PurchaseTemplate({
   children,
 }: {
   children: React.ReactNode;

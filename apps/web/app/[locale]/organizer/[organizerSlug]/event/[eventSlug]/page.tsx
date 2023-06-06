@@ -1,8 +1,7 @@
 import { getEvent } from '@features/organizer/event/server';
 import type { Event as TEvent } from '@features/organizer/event/types';
-import { Event, type EventProps } from '@features/organizer/event';
+import { Event } from '@features/organizer/event';
 import { useTranslations } from 'next-intl';
-import Link, { type LinkProps } from 'next/link';
 interface EventSectionProps {
   params: {
     eventSlug: string;
@@ -35,16 +34,7 @@ function EventSectionContent({
   eventSlug,
   organizerSlug,
 }: EventSectionContentProps) {
-  console.log({ eventSlug, organizerSlug });
   const t = useTranslations('Organizer.Event');
-  // return (
-  //   <div className="bg-green-600">
-  //     Event page
-  //     <Link href={`/organizer/${organizerSlug}/event/${eventSlug}/purchase`}>
-  //       Purchase
-  //     </Link>
-  //   </div>
-  // );
   return (
     <Event
       {...event}
