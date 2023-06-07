@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { EventPassCart } from '../types';
+import { EventPassCart } from '../../types';
 
 export interface EventPassesSlice {
   passes: Record<string, Record<string, EventPassCart[]>>; // EventPasses will be grouped by organizerSlug -> eventSlug -> passes

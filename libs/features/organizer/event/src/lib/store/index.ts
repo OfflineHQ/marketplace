@@ -1,2 +1,2 @@
-export * from './createEventPassesSlice';
-export * from './passPurchaseStore';
+export * from './lib/createEventPassesSlice';
+export * from './lib/passPurchaseStore';
