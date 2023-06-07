@@ -14,6 +14,7 @@ const aspectRatios = {
 export interface AspectRatioProps {
   variant?: keyof typeof aspectRatios;
   children?: React.ReactNode;
+  className?: string;
 }
 
 const AspectRatio = React.forwardRef<HTMLDivElement, AspectRatioProps>(
