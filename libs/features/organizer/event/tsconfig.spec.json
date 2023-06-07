@@ -7,6 +7,8 @@
   },
   "include": [
     "jest.config.ts",
+    "src/**/examples.tsx",
+    "src/**/*.stories.tsx",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.test.tsx",
@@ -15,11 +17,6 @@
     "src/**/*.spec.js",
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
-    "src/**/*.d.ts",
-    "src/**/*.stories.ts",
-    "src/**/*.stories.js",
-    "src/**/*.stories.jsx",
-    "src/**/*.stories.tsx",
-    "src/**/*.mdx"
+    "src/**/*.d.ts"
   ]
 }
