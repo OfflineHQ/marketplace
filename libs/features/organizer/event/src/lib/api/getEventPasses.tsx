@@ -1,6 +1,6 @@
 import { delayData } from '@test-utils/functions';
 import { EventPass } from '../types';
-import { lotsOfPasses } from '../molecules/PassTotal/examples';
+import { lotsOfPasses } from '@features/organizer/event/examples';
 
 interface GetEventProps {
   organizerSlug: string;

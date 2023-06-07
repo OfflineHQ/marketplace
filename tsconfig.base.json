@@ -43,6 +43,9 @@
       "@features/organizer/event": [
         "libs/features/organizer/event/src/index.ts"
       ],
+      "@features/organizer/event/examples": [
+        "libs/features/organizer/event/src/examples.tsx"
+      ],
       "@features/organizer/event/server": [
         "libs/features/organizer/event/src/server.ts"
       ],
