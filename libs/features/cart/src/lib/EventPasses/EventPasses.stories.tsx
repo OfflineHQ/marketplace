@@ -1,12 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { LocalPassList } from './LocalPassList';
-import { LocalPassListExample } from './examples';
+import { EventPasses } from './EventPasses';
+import { EventPassesExample, eventPassesProps } from './examples';
 
 // Import the stories you want to reuse
 
-const meta: Meta<typeof LocalPassList> = {
-  component: LocalPassList,
+const meta: Meta<typeof EventPasses> = {
+  component: EventPasses,
+  args: eventPassesProps,
+  render: EventPassesExample,
   parameters: {
     layout: 'fullscreen',
   },
@@ -14,10 +16,10 @@ const meta: Meta<typeof LocalPassList> = {
 
 export default meta;
 
-type Story = StoryObj<typeof LocalPassList>;
+type Story = StoryObj<typeof EventPasses>;
 
 export const Default: Story = {
-  render: LocalPassListExample,
+  render: EventPassesExample,
 };
 
 // export const SectionWithNormalUser: Story = {
