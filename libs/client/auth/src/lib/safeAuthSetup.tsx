@@ -310,6 +310,10 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
 
   useEffect(() => {
     (async () => {
+      const logos = {
+        dark: `${process.env.NEXT_PUBLIC_APP_URL}/logo-light.svg`,
+        light: `${process.env.NEXT_PUBLIC_APP_URL}/logo-dark.svg`,
+      };
       console.log('setting safeAuthKit');
       const options: Web3AuthOptions = {
         clientId: process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || '',
@@ -320,7 +324,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         },
         uiConfig: {
           // defaultLanguage: 'de', // todo add language
-          appLogo: isDark ? './logo-light.svg' : './logo-dark.svg',
+          appLogo: isDark ? logos.dark : logos.light,
           theme: isDark ? 'dark' : 'light',
           loginMethodsOrder: [
             'google',
@@ -365,8 +369,8 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
           whiteLabel: {
             // TODO adapt here with Offline branding, https://web3auth.io/docs/sdk/web/openlogin#whitelabel
             name: 'Offline',
-            logoLight: './logo-dark.svg',
-            logoDark: './logo-light.svg',
+            logoLight: logos.light,
+            logoDark: logos.dark,
             dark: isDark,
             // defaultLanguage: 'de', // todo add language
           },
