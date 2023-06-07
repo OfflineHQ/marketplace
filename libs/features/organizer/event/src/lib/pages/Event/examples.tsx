@@ -10,6 +10,7 @@ import { AppNavLayout } from '@features/appNav/ui';
 export const eventProps: EventProps = {
   ...eventHeroProps,
   ...eventDetailsProps,
+  id: 'fake_event_1',
   description: long_description,
   purchaseLink: { href: { pathname: '/dummy' } },
   purchaseText: 'Select passes',

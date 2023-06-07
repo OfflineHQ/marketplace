@@ -25,7 +25,9 @@ import {
 export interface EventProps
   extends EventHeroProps,
     EventDetailsProps,
-    EventFooterClientProps {}
+    EventFooterClientProps {
+  id?: string;
+}
 
 export const Event: React.FC<EventProps> = ({
   description,

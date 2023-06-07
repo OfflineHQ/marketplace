@@ -1,8 +1,12 @@
+import type { Event } from '@features/organizer/event/types';
+
 export enum OwnedEventPassStatus {
   Reserved = 'reserved',
   Purchased = 'purchased',
   Revealed = 'revealed',
 }
+
+export type EventCart = Pick<Event, 'id' | 'title' | 'heroImage' | 'slug'>;
 
 export interface LocalCartItem {
   eventPassId: string; // The original pass type id
