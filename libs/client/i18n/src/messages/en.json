@@ -63,6 +63,11 @@
       "title": "Cart",
       "description": "You will be able to validate your cart once you are signed in",
       "sign-in-text": "Sign in"
+    },
+    "List": {
+      "Event": {
+        "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}"
+      }
     }
   },
   "Pass": {
