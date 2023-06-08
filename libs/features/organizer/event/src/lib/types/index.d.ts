@@ -2,6 +2,7 @@ import type { BoundedNumericStepperProps } from '@ui/components';
 
 export interface EventOrganizer {
   id: string; // Assuming UUIDs
+  slug: string; // URL slug used in the URL
   name: string;
   description: string;
   createdAt?: string; // Timestamps
@@ -50,7 +51,7 @@ export interface PassOption {
 
 // Define the data structure for a pass
 export interface EventPass {
-  id?: string; // Assuming UUIDs
+  id: string; // Assuming UUIDs
   name: string; // User-friendly name of the pass, like "VIP 3-Day Pass"
   type?: string; // Type of the pass, like "Standard", "VIP", "Backstage", etc.
   price: number;
@@ -68,8 +69,8 @@ export interface EventPass {
 
 // Define the data structure for an event
 export interface Event {
-  id?: string; // Assuming UUIDs
-  slug?: string; // URL slug used in the URL
+  id: string; // Assuming UUIDs
+  slug: string; // URL slug used in the URL
   heroImage: string; // URL to the hero image
   title: string;
   description: string;

@@ -6,7 +6,10 @@ export enum OwnedEventPassStatus {
   Revealed = 'revealed',
 }
 
-export type EventCart = Pick<Event, 'id' | 'title' | 'heroImage' | 'slug'>;
+export type EventCart = Pick<
+  Event,
+  'id' | 'title' | 'heroImage' | 'slug' | 'organizer'
+>;
 
 export interface LocalCartItem {
   eventPassId: string; // The original pass type id

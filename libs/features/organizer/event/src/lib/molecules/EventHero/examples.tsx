@@ -4,6 +4,7 @@ import { eventDatesProps } from '../../molecules/EventDates/examples';
 
 const organizer: EventHeroProps['organizer'] = {
   id: '1234',
+  slug: 'test-organizer',
   name: 'Test Organizer',
   description: 'This is a test organizer',
   createdAt: new Date().toISOString(),

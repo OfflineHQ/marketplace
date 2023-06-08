@@ -66,7 +66,9 @@
     },
     "List": {
       "Event": {
-        "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}"
+        "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",
+        "edit": "Edit",
+        "remove": "Remove"
       }
     }
   },

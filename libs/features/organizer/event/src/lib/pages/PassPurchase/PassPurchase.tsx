@@ -113,7 +113,13 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
                 passHref
                 className="w-full justify-center"
               >
-                <Button className="w-full md:w-1/6" block icon={Cart}>
+                <Button
+                  className={`w-full ${
+                    size === 'lg' ? 'md:w-1/3' : 'md:w-1/6'
+                  }`}
+                  block
+                  icon={Cart}
+                >
                   {goPaymentText}
                 </Button>
               </Link>
