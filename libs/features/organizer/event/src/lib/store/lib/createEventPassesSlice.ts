@@ -1,34 +1,31 @@
-import { StateCreator } from 'zustand';
-import { EventPassCart } from '../../types';
+'use client';
 
-export interface EventPassesSlice {
-  passes: Record<string, Record<string, EventPassCart[]>>; // EventPasses will be grouped by organizerSlug -> eventSlug -> passes
-  updatePass: (
-    organizerSlug: string,
-    eventSlug: string,
-    pass: EventPassCart
-  ) => void;
-  setPasses: (
-    organizerSlug: string,
-    eventSlug: string,
-    passes: EventPassCart[]
-  ) => void;
-  getPasses: (
-    organizerSlug: string,
-    eventSlug: string
-  ) => EventPassCart[] | undefined;
+import { StateCreator } from 'zustand';
+import { EventPassCart, AllPassesCart } from '../../types';
+import type { EventSlugs } from '@features/organizer/event/types';
+
+interface UpdatePassProps extends EventSlugs {
+  pass: EventPassCart;
 }
 
-export const createEventPassesSlice: StateCreator<EventPassesSlice> = (
+interface SetPassesProps extends EventSlugs {
+  newPasses: EventPassCart[];
+}
+
+export interface EventPassesSliceProps {
+  passes: AllPassesCart;
+  updatePass: (props: UpdatePassProps) => void;
+  setPasses: (props: SetPassesProps) => void;
+  deletePasses: (props: EventSlugs) => void;
+  getPasses: (props: EventSlugs) => EventPassCart[] | undefined;
+}
+
+export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
   set,
   get
 ) => ({
   passes: {},
-  updatePass: (
-    organizerSlug: string,
-    eventSlug: string,
-    pass: EventPassCart
-  ) => {
+  updatePass: ({ organizerSlug, eventSlug, pass }) => {
     const passes = get().passes;
 
     if (!passes[organizerSlug]) {
@@ -53,11 +50,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSlice> = (
 
     set({ passes });
   },
-  setPasses: (
-    organizerSlug: string,
-    eventSlug: string,
-    newPasses: EventPassCart[]
-  ) => {
+  setPasses: ({ organizerSlug, eventSlug, newPasses }) => {
     const passes = get().passes;
 
     if (!passes[organizerSlug]) {
@@ -68,7 +61,17 @@ export const createEventPassesSlice: StateCreator<EventPassesSlice> = (
 
     set({ passes });
   },
-  getPasses: (organizerSlug: string, eventSlug: string) => {
+  deletePasses: ({ organizerSlug, eventSlug }) => {
+    const passes = get().passes;
+    if (passes[organizerSlug]?.[eventSlug]) {
+      delete passes[organizerSlug][eventSlug];
+    } else
+      throw new Error(
+        `Event passes for ${organizerSlug}/${eventSlug} do not exist`
+      );
+    set({ passes });
+  },
+  getPasses: ({ organizerSlug, eventSlug }) => {
     const passes = get().passes;
 
     if (passes[organizerSlug]) {

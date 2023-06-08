@@ -1,5 +1,10 @@
 import type { BoundedNumericStepperProps } from '@ui/components';
 
+export interface EventSlugs {
+  eventSlug: string;
+  organizerSlug: string;
+}
+
 export interface EventOrganizer {
   id: string; // Assuming UUIDs
   slug: string; // URL slug used in the URL
@@ -96,3 +101,5 @@ export interface EventPassCart
   numTickets: number;
   soldOutText?: string;
 }
+
+export type AllPassesCart = Record<string, Record<string, EventPassCart[]>>; // EventPasses will be grouped by organizerSlug -> eventSlug -> passes
