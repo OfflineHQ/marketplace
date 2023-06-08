@@ -14,6 +14,7 @@ import {
 
 export const eventPassesProps: EventPassesProps = {
   event: eventProps,
+  onDelete: ({ organizerSlug, eventSlug }) => null,
   passes: [passWithMaxAmount, passWithMaxAmountPerUser],
 };
 
