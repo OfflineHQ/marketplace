@@ -1,3 +1,4 @@
+import { Accordion } from '@ui/components';
 import type {
   AllPassesCart,
   EventSlugs,
@@ -16,7 +17,7 @@ export const EventPassList: React.FC<EventPassListProps> = ({
   EventPassServer,
 }) => {
   return (
-    <div className="grid grid-cols-1 gap-4 px-1 md:grid-cols-2 lg:grid-cols-3">
+    <Accordion type="multiple">
       {Object.entries(allPasses || {}).map(([organizerSlug, events]) => (
         <div key={organizerSlug}>
           {Object.entries(events).map(([eventSlug, eventPasses]) => (
@@ -31,6 +32,6 @@ export const EventPassList: React.FC<EventPassListProps> = ({
           ))}
         </div>
       ))}
-    </div>
+    </Accordion>
   );
 };

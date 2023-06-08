@@ -1,4 +1,7 @@
-import { eventHeroProps } from '../../molecules/EventHero/examples';
+import {
+  eventHeroProps,
+  event2HeroProps,
+} from '../../molecules/EventHero/examples';
 import {
   eventDetailsProps,
   long_description,
@@ -15,6 +18,14 @@ export const eventProps: EventProps = {
   description: long_description,
   purchaseLink: { href: { pathname: '/dummy' } },
   purchaseText: 'Select passes',
+};
+
+export const event2Props: EventProps = {
+  ...eventProps,
+  ...event2HeroProps,
+  ...eventDetailsProps,
+  id: 'fake_event_2',
+  slug: 'test-event-2',
 };
 
 export function EventExample(props: EventProps) {

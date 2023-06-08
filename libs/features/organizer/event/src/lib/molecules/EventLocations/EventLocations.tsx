@@ -6,6 +6,7 @@ import React from 'react';
 import type { Location, EventDateLocation } from '../../types';
 import { Location as LocationIcon } from '@ui/icons';
 import { Button } from '@ui/components';
+
 export interface EventLocationsProps {
   eventDateLocations: EventDateLocation[];
   detailed?: boolean;
@@ -18,13 +19,18 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
   if (!eventDateLocations.length) return null;
 
   const handleClick = (location: Location) => {
-    // Generate a Google Maps URL using the placeId.
     const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${location.placeId}`;
-    // Open the URL in a new tab or window.
     window.open(googleMapsUrl, '_blank');
   };
 
   const commonLocation = eventDateLocations[0].location;
+
+  const renderLocation = (location: Location) => {
+    if (location.venue) {
+      return location.venue;
+    }
+    return `${location.city}, ${location.country}`;
+  };
 
   return (
     <div className="flex items-center space-x-1">
@@ -36,7 +42,7 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
             className="text-base font-semibold"
             onClick={() => handleClick(commonLocation)}
           >
-            {commonLocation.city}, {commonLocation.country}
+            {renderLocation(commonLocation)}
           </Button>
         ) : (
           eventDateLocations.map((eventLocation) => (
@@ -46,9 +52,15 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
               className="text-base font-semibold"
               onClick={() => handleClick(eventLocation.location)}
             >
-              {eventLocation.location.street}, {eventLocation.location.city},{' '}
-              {eventLocation.location.state}, {eventLocation.location.country},{' '}
-              {eventLocation.location.postalCode}
+              {detailed
+                ? `${
+                    eventLocation.location.venue ||
+                    eventLocation.location.street
+                  }, 
+              ${eventLocation.location.city}, ${eventLocation.location.state}, 
+              ${eventLocation.location.country}, 
+              ${eventLocation.location.postalCode}`
+                : renderLocation(eventLocation.location)}
             </Button>
           ))
         )}

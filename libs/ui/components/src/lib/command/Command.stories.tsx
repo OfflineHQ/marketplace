@@ -67,7 +67,10 @@ export const CommandCombobox: Story = {
   play: async ({ canvasElement }) => {
     userEvent.click(screen.getByRole('combobox'));
     // check that Next.js item with aria-selected="true"
-    expect(await screen.findByText('Next.js')).toHaveAttribute('aria-selected', 'true');
+    expect(await screen.findByText('Next.js')).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
   },
 };
 

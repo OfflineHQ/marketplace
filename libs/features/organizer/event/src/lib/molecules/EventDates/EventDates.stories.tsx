@@ -1,7 +1,7 @@
 // EventDates.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
 import { EventDates, EventDatesProps } from './EventDates';
-import { eventDatesProps } from './examples';
+import { eventDatesProps, event2DatesProps } from './examples';
 
 const meta = {
   component: EventDates,
@@ -25,5 +25,11 @@ export const OneDate: Story = {
   args: {
     ...eventDatesProps,
     eventDateLocations: [eventDatesProps.eventDateLocations[0]],
+  },
+};
+
+export const OneDateSeveralDays: Story = {
+  args: {
+    ...event2DatesProps,
   },
 };

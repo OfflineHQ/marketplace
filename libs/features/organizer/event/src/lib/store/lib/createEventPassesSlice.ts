@@ -64,13 +64,15 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
   deletePasses: ({ organizerSlug, eventSlug }) => {
     const passes = get().passes;
     if (passes[organizerSlug]?.[eventSlug]) {
-      delete passes[organizerSlug][eventSlug];
+      const newPasses = { ...passes };
+      delete newPasses[organizerSlug][eventSlug];
+      set({ passes: newPasses });
     } else
       throw new Error(
         `Event passes for ${organizerSlug}/${eventSlug} do not exist`
       );
-    set({ passes });
   },
+
   getPasses: ({ organizerSlug, eventSlug }) => {
     const passes = get().passes;
 

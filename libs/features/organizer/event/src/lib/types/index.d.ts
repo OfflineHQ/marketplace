@@ -23,11 +23,12 @@ export interface User {
 }
 
 export interface Location {
-  street: string;
+  street?: string;
   city: string;
   state: string;
   country: string;
   postalCode: string;
+  venue?: string;
   latitude?: number;
   longitude?: number;
   placeId: string; // Google Maps' unique identifier for a place

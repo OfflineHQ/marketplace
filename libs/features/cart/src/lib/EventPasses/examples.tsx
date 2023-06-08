@@ -1,10 +1,5 @@
 import { EventPasses, type EventPassesProps } from './EventPasses';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@ui/components';
+import { Accordion } from '@ui/components';
 import {
   passWithMaxAmount,
   passWithMaxAmountPerUser,

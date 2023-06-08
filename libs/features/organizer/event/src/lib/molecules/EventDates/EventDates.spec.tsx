@@ -5,7 +5,8 @@ import { renderWithIntl } from '@test-utils/react';
 import { EventDates } from './EventDates';
 import * as stories from './EventDates.stories';
 
-const { Default, Detailed, OneDate } = composeStories(stories);
+const { Default, Detailed, OneDate, OneDateSeveralDays } =
+  composeStories(stories);
 
 describe('EventDates', () => {
   it('renders the default component', () => {
@@ -19,9 +20,8 @@ describe('EventDates', () => {
     screen.getByText('Thu, June 1');
     screen.getByText('1:00 AM');
     screen.getByText('9:00 AM');
-    screen.getByText('Fri, June 2');
-    screen.getByText('1:00 PM');
-    screen.getByText('12:00 AM');
+    screen.getByText('Fri, June 2 at 1:00 PM');
+    screen.getByText('Sat, June 3 at 12:00 AM');
   });
 
   it('renders component with one date', () => {
@@ -31,9 +31,15 @@ describe('EventDates', () => {
     screen.getByText('9:00 AM');
   });
 
+  it('renders component with one date and several days', () => {
+    renderWithIntl(<OneDateSeveralDays />);
+    screen.getByText('Tue, September 12 at 7:00 PM');
+    screen.getByText('Thu, September 14 at 11:00 PM');
+  });
+
   it('renders nothing if dates is an empty array', () => {
     const { container } = renderWithIntl(
-      <EventDates eventDateLocations={[]} fromText="" toText="" />
+      <EventDates eventDateLocations={[]} />
     );
     expect(container.firstChild).toBeNull();
   });

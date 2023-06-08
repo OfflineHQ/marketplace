@@ -3,7 +3,12 @@ import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 import { Event, EventSkeleton } from './Event';
-import { eventProps, EventExample, EventLoadingExample } from './examples';
+import {
+  eventProps,
+  event2Props,
+  EventExample,
+  EventLoadingExample,
+} from './examples';
 
 const meta = {
   component: Event,
@@ -19,6 +24,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const Event2: Story = {
+  args: event2Props,
+};
 
 export const Loading: Story = {
   render: () => <EventLoadingExample />,
