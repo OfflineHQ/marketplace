@@ -2,14 +2,11 @@
 import { Button } from '@ui/components';
 import { Delete, Edit } from '@ui/icons';
 import Link from 'next/link';
-
-interface EventSlugs {
-  eventSlug: string;
-  organizerSlug: string;
-}
+import type { EventSlugs } from '@features/organizer/event/types';
+import type { EventPassesSliceProps } from '@features/organizer/event/store';
 
 export interface EventPassesActionsProps extends EventSlugs {
-  onDelete: (props: EventSlugs) => void;
+  onDelete: EventPassesSliceProps['deletePasses'];
   editText: string;
   deleteText: string;
 }

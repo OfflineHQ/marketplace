@@ -59,7 +59,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   const setPasses = usePassPurchaseStore((state) => state.setPasses);
   useEffect(() => {
     if (eventSlug && organizerSlug)
-      setPasses(organizerSlug, eventSlug, _passes);
+      setPasses({ organizerSlug, eventSlug, newPasses: _passes });
     // here avoid adding store to the dependencies array to avoid infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [organizerSlug, eventSlug, _passes]);
@@ -68,13 +68,17 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
     pass: PassPurchaseProps['passes'][0],
     newNumTickets: number
   ) => {
-    store?.updatePass(organizerSlug, eventSlug, {
-      ...pass,
-      numTickets: newNumTickets,
+    store?.updatePass({
+      organizerSlug,
+      eventSlug,
+      pass: {
+        ...pass,
+        numTickets: newNumTickets,
+      },
     });
   };
 
-  const passes = store?.getPasses(organizerSlug, eventSlug) ?? [];
+  const passes = store?.getPasses({ organizerSlug, eventSlug }) ?? [];
 
   // Check if at least one pass has been selected
   const isPassSelected = passes.reduce(

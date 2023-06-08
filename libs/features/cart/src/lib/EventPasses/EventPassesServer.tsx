@@ -1,17 +1,17 @@
 import { getEventCart } from '../api/getEventCart';
 import { EventPasses, type EventPassesProps } from './EventPasses';
 
-export interface EventPassesServerProps {
+export interface EventPassesServerProps
+  extends Pick<EventPassesProps, 'passes' | 'onDelete'> {
   organizerSlug: string;
   eventSlug: string;
-  passes: EventPassesProps['passes'];
 }
 
 export default async function EventPassesServer({
   organizerSlug,
   eventSlug,
-  passes,
+  ...eventPassesProps
 }: EventPassesServerProps) {
   const event = await getEventCart({ organizerSlug, eventSlug });
-  return <EventPasses event={event} passes={passes} />;
+  return <EventPasses event={event} {...eventPassesProps} />;
 }

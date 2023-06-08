@@ -2,10 +2,10 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import {
   createEventPassesSlice,
-  EventPassesSlice,
+  EventPassesSliceProps,
 } from './createEventPassesSlice';
 
-type StoreState = EventPassesSlice;
+type StoreState = EventPassesSliceProps;
 
 export const usePassPurchaseStore = create<StoreState>()(
   persist(

@@ -71,7 +71,8 @@ export const WithLotsOfPasses: Story = {
 export const WithLotsOfPassesSelected: Story = {
   ...WithLotsOfPasses,
   play: async () => {
-    const passCards = screen.getAllByRole('button');
+    expect(await screen.findByText(/Premium pass/i)).toBeInTheDocument();
+    const passCards = await screen.findAllByRole('button');
     expect(passCards).toHaveLength(13); // Nav + Two buttons (increment and decrement) for each PassCard
     passCards[9].click(); // Click the 6th pass increment button
     const cartButton = await screen.findByRole('button', {
