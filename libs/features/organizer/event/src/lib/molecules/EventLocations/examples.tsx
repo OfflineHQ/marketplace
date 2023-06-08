@@ -21,6 +21,15 @@ export const location2: Location = {
   placeId: 'ChIJhRwB-yFawokRv_x-4eLe3WI',
 };
 
+export const location3: Location = {
+  venue: 'Stade de France',
+  city: 'Saint-Denis',
+  state: 'Île-de-France',
+  country: 'France',
+  postalCode: '93216',
+  placeId: 'ChIJyWrRcN1x5kcRMiszHJQu4Qg', // Google Place ID for Stade de France
+};
+
 // Define some sample event date locations
 export const eventDateLocation1: EventDateLocation = {
   id: '1',
@@ -36,7 +45,19 @@ export const eventDateLocation2: EventDateLocation = {
   location: location2,
 };
 
+export const eventDateLocation3: EventDateLocation = {
+  id: '3',
+  dateStart: '2023-09-12T18:00:00Z',
+  dateEnd: '2023-09-14T22:00:00Z',
+  location: location3,
+};
+
 export const eventLocationsProps: EventLocationsProps = {
   eventDateLocations: [eventDateLocation1, eventDateLocation2],
+  detailed: false,
+};
+
+export const event2LocationsProps: EventLocationsProps = {
+  eventDateLocations: [eventDateLocation3],
   detailed: false,
 };

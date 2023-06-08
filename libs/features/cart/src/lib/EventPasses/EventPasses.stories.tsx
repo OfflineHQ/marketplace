@@ -20,9 +20,7 @@ export default meta;
 
 type Story = StoryObj<typeof EventPasses>;
 
-export const Default: Story = {
-  render: EventPassesExample,
-};
+export const Default: Story = {};
 
 export const Opened: Story = {
   play: async () => {

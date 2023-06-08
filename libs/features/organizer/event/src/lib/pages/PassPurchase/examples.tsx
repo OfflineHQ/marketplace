@@ -6,6 +6,7 @@ import {
   type PassPurchaseSkeletonProps,
 } from './PassPurchase';
 import { lotsOfPasses } from '../../molecules/PassTotal/examples';
+import { eventProps } from '../Event/examples';
 import { Sheet } from '@ui/components';
 
 export const passPurchaseProps = {
@@ -14,8 +15,8 @@ export const passPurchaseProps = {
   goPaymentText: 'Go to payment',
   goPaymentLink: { href: '/dummy' },
   title: 'Pass selection',
-  organizerSlug: 'dummy_organizer',
-  eventSlug: 'dummy_event',
+  organizerSlug: eventProps.organizer.slug,
+  eventSlug: eventProps.slug,
   description: 'Select the passes you want to purchase and validate your order',
 } satisfies PassPurchaseProps;
 export const passPurchasePropsWithLotsOfPasses = {

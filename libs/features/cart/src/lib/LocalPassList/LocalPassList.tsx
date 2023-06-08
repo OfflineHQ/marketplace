@@ -14,6 +14,7 @@ export const LocalPassList: React.FC<LocalPassListProps> = ({
 }) => {
   const passes = useStore(usePassPurchaseStore, (state) => state.passes);
   const deletePasses = usePassPurchaseStore((state) => state.deletePasses);
+  console.log({ passes });
   return (
     <EventPassList
       EventPassServer={EventPassServer}

@@ -16,7 +16,8 @@ Object.defineProperty(window, 'open', {
   },
 });
 
-const { Default, Detailed, OneLocation } = composeStories(stories);
+const { Default, Detailed, OneLocation, Venue, VenueDetailed } =
+  composeStories(stories);
 
 describe('EventLocations', () => {
   test('renders EventLocations with initial values', () => {
@@ -57,12 +58,24 @@ describe('EventLocations', () => {
 
   test('renders OneLocation EventLocations', () => {
     render(<OneLocation />);
-    screen.getByText(/New York, NY/i);
+    screen.getByText(/New York, USA/i);
+  });
+
+  test('render Venue EventLocations', () => {
+    render(<Venue />);
+    screen.getByText(/Stade de France/i);
+  });
+
+  test('render Venue Detailed EventLocations', () => {
+    render(<VenueDetailed />);
+    screen.getByText(
+      /Stade de France, Saint-Denis, Île-de-France, France, 93216/i
+    );
   });
 
   test('OneLocation location element opens Google Maps URL on click', () => {
     render(<OneLocation />);
-    const locationElement = screen.getByText(/New York, NY/i);
+    const locationElement = screen.getByText(/New York, USA/i);
     fireEvent.click(locationElement);
     expect(url).toEqual(
       'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJd8BlQ2BZwokRAFUEcm_qrcA'

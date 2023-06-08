@@ -1,7 +1,7 @@
 // EventLocations.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
 import { EventLocations, EventLocationsProps } from './EventLocations';
-import { eventLocationsProps } from './examples';
+import { eventLocationsProps, event2LocationsProps } from './examples';
 
 const meta = {
   component: EventLocations,
@@ -25,5 +25,18 @@ export const OneLocation: Story = {
   args: {
     ...eventLocationsProps,
     eventDateLocations: [eventLocationsProps.eventDateLocations[0]],
+  },
+};
+
+export const Venue: Story = {
+  args: {
+    ...event2LocationsProps,
+  },
+};
+
+export const VenueDetailed: Story = {
+  args: {
+    ...event2LocationsProps,
+    detailed: true,
   },
 };

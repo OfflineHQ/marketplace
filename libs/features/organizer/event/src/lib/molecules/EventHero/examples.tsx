@@ -1,14 +1,25 @@
 import { type EventHeroProps } from './EventHero';
-import { eventLocationsProps } from '../../molecules/EventLocations/examples';
-import { eventDatesProps } from '../../molecules/EventDates/examples';
+import {
+  eventLocationsProps,
+  event2LocationsProps,
+} from '../../molecules/EventLocations/examples';
+import {
+  eventDatesProps,
+  event2DatesProps,
+} from '../../molecules/EventDates/examples';
 
 const organizer: EventHeroProps['organizer'] = {
   id: '1234',
   slug: 'test-organizer',
   name: 'Test Organizer',
   description: 'This is a test organizer',
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
+};
+
+const organizer2: EventHeroProps['organizer'] = {
+  id: '43411',
+  slug: 'test-organizer-2',
+  name: 'Test Organizer 2',
+  description: 'This is a test organizer',
 };
 
 export const eventHeroProps: EventHeroProps = {
@@ -18,4 +29,12 @@ export const eventHeroProps: EventHeroProps = {
   ...eventLocationsProps,
   ...eventDatesProps,
   organizer,
+};
+
+export const event2HeroProps: EventHeroProps = {
+  heroImage: 'https://picsum.photos/id/223/900/900',
+  title: 'World cup 2023',
+  ...event2LocationsProps,
+  ...event2DatesProps,
+  organizer: organizer2,
 };
