@@ -1,3 +1,5 @@
+'use server';
+
 import { Suspense } from 'react';
 import { getEventCart } from '../api/getEventCart';
 import {
