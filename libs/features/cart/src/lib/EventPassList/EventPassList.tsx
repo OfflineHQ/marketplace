@@ -8,13 +8,13 @@ import type { EventPassesServerProps } from '../EventPasses/EventPassesServer';
 export interface EventPassListProps {
   deletePasses: (props: EventSlugs) => void;
   allPasses?: AllPassesCart;
-  EventPassServer: React.FC<EventPassesServerProps>;
+  EventPassesServer: React.FC<EventPassesServerProps>;
 }
 
 export const EventPassList: React.FC<EventPassListProps> = ({
   deletePasses,
   allPasses,
-  EventPassServer,
+  EventPassesServer,
 }) => {
   return (
     <Accordion type="multiple">
@@ -22,7 +22,7 @@ export const EventPassList: React.FC<EventPassListProps> = ({
         <div key={organizerSlug + index}>
           {Object.entries(events).map(([eventSlug, eventPasses], index) => (
             <div key={organizerSlug + eventSlug + index}>
-              <EventPassServer
+              <EventPassesServer
                 onDelete={deletePasses}
                 organizerSlug={organizerSlug}
                 eventSlug={eventSlug}

@@ -14,7 +14,7 @@ export function NoUserCartExample() {
     <NextAuthProvider>
       <AuthProvider>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart EventPassServer={FakeEventPassesServer} />
+          <NoUserCart EventPassesServer={FakeEventPassesServer} />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
@@ -27,7 +27,7 @@ export function NoUserCartLoadingExample() {
     <NextAuthProvider>
       <AuthProvider>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart EventPassServer={FakeEventPassesServerLoading} />
+          <NoUserCart EventPassesServer={FakeEventPassesServerLoading} />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
@@ -39,7 +39,7 @@ export function NoUserCartNoCartExample() {
     <NextAuthProvider>
       <AuthProvider>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart EventPassServer={FakeEventPassesServer} />
+          <NoUserCart EventPassesServer={FakeEventPassesServer} />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>

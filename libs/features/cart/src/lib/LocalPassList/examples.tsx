@@ -39,7 +39,7 @@ export const SetupPassesCartLocal = () => {
 
 export const LocalPassListExample = () => {
   SetupPassesCartLocal();
-  return <LocalPassList EventPassServer={FakeEventPassesServer} />;
+  return <LocalPassList EventPassesServer={FakeEventPassesServer} />;
 };
 
 export const FakeEventPassesServerLoading = ({
@@ -50,5 +50,5 @@ export const FakeEventPassesServerLoading = ({
 
 export const LocalPassListLoadingExample = () => {
   SetupPassesCartLocal();
-  return <LocalPassList EventPassServer={FakeEventPassesServerLoading} />;
+  return <LocalPassList EventPassesServer={FakeEventPassesServerLoading} />;
 };
