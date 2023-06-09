@@ -9,6 +9,32 @@ import {
 } from '../LocalPassList/examples';
 
 export function NoUserCartExample() {
+  SetupPassesCartLocal();
+  return (
+    <NextAuthProvider>
+      <AuthProvider>
+        <AppNavLayout {...WithNoUser.args}>
+          <NoUserCart EventPassServer={FakeEventPassesServer} />
+        </AppNavLayout>
+      </AuthProvider>
+    </NextAuthProvider>
+  );
+}
+
+export function NoUserCartLoadingExample() {
+  SetupPassesCartLocal();
+  return (
+    <NextAuthProvider>
+      <AuthProvider>
+        <AppNavLayout {...WithNoUser.args}>
+          <NoUserCart EventPassServer={FakeEventPassesServerLoading} />
+        </AppNavLayout>
+      </AuthProvider>
+    </NextAuthProvider>
+  );
+}
+
+export function NoUserCartNoCartExample() {
   return (
     <NextAuthProvider>
       <AuthProvider>

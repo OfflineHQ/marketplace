@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { NoUserCart } from './NoUserCart';
-import { NoUserCartExample } from './examples';
+import {
+  NoUserCartExample,
+  NoUserCartLoadingExample,
+  NoUserCartNoCartExample,
+} from './examples';
 
 // Import the stories you want to reuse
 
@@ -20,8 +24,10 @@ export const SectionWithNoUser: Story = {
   render: NoUserCartExample,
 };
 
-// export const SectionWithNormalUser: Story = {
-//   args: {
-//     children: <AppNavLayout {...WithNormalUser.args} />,
-//   },
-// };
+export const SectionWithNoUserLoading: Story = {
+  render: NoUserCartLoadingExample,
+};
+
+export const SectionWithNoUserNoCart: Story = {
+  render: NoUserCartNoCartExample,
+};
