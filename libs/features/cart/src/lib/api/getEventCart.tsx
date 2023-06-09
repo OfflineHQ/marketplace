@@ -1,6 +1,5 @@
 import { delayData } from '@test-utils/functions';
 import { EventCart } from '../types';
-import { eventProps } from '@features/organizer/event/examples';
 
 interface getEventCartProps {
   eventSlug: string;
@@ -13,9 +12,10 @@ export const getEventCart = async ({
 }: getEventCartProps): Promise<EventCart> => {
   // TODO implement
 
+  const event = await fetch(
+    `${process.env.NEXTAUTH_URL}/mocks/event_cart.json`
+  );
   await delayData(2000, null);
-  const _event: EventCart = {
-    ...eventProps,
-  };
-  return _event;
+  console.log('getEventCart', { event });
+  return event as EventCart;
 };
