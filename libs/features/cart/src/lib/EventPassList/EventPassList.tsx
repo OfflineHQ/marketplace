@@ -18,10 +18,10 @@ export const EventPassList: React.FC<EventPassListProps> = ({
 }) => {
   return (
     <Accordion type="multiple">
-      {Object.entries(allPasses || {}).map(([organizerSlug, events]) => (
-        <div key={organizerSlug}>
-          {Object.entries(events).map(([eventSlug, eventPasses]) => (
-            <div key={organizerSlug + eventSlug}>
+      {Object.entries(allPasses || {}).map(([organizerSlug, events], index) => (
+        <div key={organizerSlug + index}>
+          {Object.entries(events).map(([eventSlug, eventPasses], index) => (
+            <div key={organizerSlug + eventSlug + index}>
               <EventPassServer
                 onDelete={deletePasses}
                 organizerSlug={organizerSlug}

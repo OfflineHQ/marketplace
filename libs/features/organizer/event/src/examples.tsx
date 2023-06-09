@@ -4,4 +4,4 @@ export {
   passWithMaxAmountPerUser,
   passWithSoldOut,
 } from './lib/molecules/PassCard/examples';
-export { eventProps } from './lib/pages/Event/examples';
+export { eventProps, event2Props } from './lib/pages/Event/examples';
