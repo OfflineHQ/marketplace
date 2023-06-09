@@ -1,3 +1,5 @@
+'use server';
+
 import { Accordion } from '@ui/components';
 import type {
   AllPassesCart,

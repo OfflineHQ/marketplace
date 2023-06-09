@@ -1,3 +1,5 @@
+'use server';
+
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import {
