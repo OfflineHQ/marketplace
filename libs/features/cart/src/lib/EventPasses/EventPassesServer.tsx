@@ -23,18 +23,19 @@ async function EventPassesFetch({
   return <EventPasses event={event} {...eventPassesProps} />;
 }
 
-export async function EventPassesServer({
-  organizerSlug,
-  eventSlug,
-  ...eventPassesProps
-}: EventPassesServerProps) {
+export async function EventPassesServer(props: EventPassesServerProps) {
   return (
     <Suspense fallback={<EventPassesSkeleton />}>
-      <EventPassesFetch
-        organizerSlug={organizerSlug}
-        eventSlug={eventSlug}
-        {...eventPassesProps}
-      />
+      <EventPassesFetch {...props} />
     </Suspense>
   );
 }
+
+// export async function EventPassesServer({
+//   organizerSlug,
+//   eventSlug,
+//   passes,
+// }: EventPassesServerProps) {
+//   const event = await getEventCart({ organizerSlug, eventSlug });
+//   return <EventPasses event={event} passes={passes} />;
+// }
