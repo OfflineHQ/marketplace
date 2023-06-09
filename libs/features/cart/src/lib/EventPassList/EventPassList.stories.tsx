@@ -2,14 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 
-import { LocalPassList } from './LocalPassList';
-import { LocalPassListExample, LocalPassListLoadingExample } from './examples';
-import { sleep } from '@utils';
+import { EventPassList } from './EventPassList';
+import { EventPassListExample, EventPassListLoadingExample } from './examples';
 
 // Import the stories you want to reuse
 
-const meta: Meta<typeof LocalPassList> = {
-  component: LocalPassList,
+const meta: Meta<typeof EventPassList> = {
+  component: EventPassList,
   parameters: {
     layout: 'fullscreen',
   },
@@ -17,10 +16,10 @@ const meta: Meta<typeof LocalPassList> = {
 
 export default meta;
 
-type Story = StoryObj<typeof LocalPassList>;
+type Story = StoryObj<typeof EventPassList>;
 
 export const Default: Story = {
-  render: LocalPassListExample,
+  render: EventPassListExample,
 };
 
 export const Opened: Story = {
@@ -69,5 +68,5 @@ export const Remove: Story = {
 };
 
 export const Loading: Story = {
-  render: LocalPassListLoadingExample,
+  render: EventPassListLoadingExample,
 };

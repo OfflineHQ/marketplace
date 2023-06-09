@@ -17,7 +17,6 @@ export const getEventCart = cache(
     const data = await fetch(`${getNextAppURL()}/mocks/event_cart.json`);
     const event = await data.json();
     await delayData(2000, null);
-    console.log('getEventCart', { event });
     return event as EventCart;
   }
 );

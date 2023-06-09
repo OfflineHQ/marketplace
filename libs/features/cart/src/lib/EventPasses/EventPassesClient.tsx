@@ -24,7 +24,6 @@ export function EventPassesClient({
     ['EventCart', organizerSlug, eventSlug],
     () => getEventCart({ organizerSlug, eventSlug })
   );
-  console.log('EventPassesClient', { data, passes });
   if (error) {
     console.error(error);
     return null;

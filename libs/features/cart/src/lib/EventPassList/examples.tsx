@@ -1,10 +1,11 @@
-import { LocalPassList } from './LocalPassList';
+import { EventPassList } from './EventPassList';
 import { usePassPurchaseStore } from '@features/organizer/event/store';
 import { eventProps, event2Props } from '@features/organizer/event/examples';
-import type { EventPassesServerProps } from '../EventPasses/EventPassesClient';
+import type { EventPassesClientProps } from '../EventPasses/EventPassesClient';
 import type { EventCart } from '@features/cart/types';
 import { EventPasses, EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { eventPassesProps } from '../EventPasses/examples';
+import { useStore } from '@client/store';
 
 const allPassesEventsCart: Record<string, Record<string, EventCart>> = {};
 allPassesEventsCart[eventProps.organizer.slug] = {};
@@ -12,11 +13,11 @@ allPassesEventsCart[eventProps.organizer.slug][eventProps.slug] = eventProps;
 allPassesEventsCart[event2Props.organizer.slug] = {};
 allPassesEventsCart[event2Props.organizer.slug][event2Props.slug] = event2Props;
 
-export const FakeEventPassesServer = ({
+export const FakeEventPassesFetcher = ({
   organizerSlug,
   eventSlug,
   ...props
-}: EventPassesServerProps) => (
+}: EventPassesClientProps) => (
   <EventPasses
     event={allPassesEventsCart[organizerSlug][eventSlug]}
     {...props}
@@ -35,20 +36,23 @@ export const SetupPassesCartLocal = () => {
     eventSlug: event2Props.slug,
     newPasses: [eventPassesProps.passes[0]],
   });
+  const allPasses = usePassPurchaseStore((state) => state.passes);
+  const deletePasses = usePassPurchaseStore((state) => state.deletePasses);
+  return {
+    allPasses,
+    deletePasses,
+  };
 };
 
-export const LocalPassListExample = () => {
-  SetupPassesCartLocal();
-  return <LocalPassList EventPassesServer={FakeEventPassesServer} />;
+export const EventPassListExample = () => {
+  const props = SetupPassesCartLocal();
+  console.log(props);
+  return (
+    <EventPassList {...props} EventPassesFetcher={FakeEventPassesFetcher} />
+  );
 };
 
-export const FakeEventPassesServerLoading = ({
-  organizerSlug,
-  eventSlug,
-  ...props
-}: EventPassesServerProps) => <EventPassesSkeleton />;
-
-export const LocalPassListLoadingExample = () => {
-  SetupPassesCartLocal();
-  return <LocalPassList EventPassesServer={FakeEventPassesServerLoading} />;
+export const EventPassListLoadingExample = () => {
+  const props = SetupPassesCartLocal();
+  return <EventPassList {...props} EventPassesFetcher={EventPassesSkeleton} />;
 };
