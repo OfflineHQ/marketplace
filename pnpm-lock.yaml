@@ -121,6 +121,9 @@ dependencies:
   '@tailwindcss/typography':
     specifier: ^0.5.9
     version: 0.5.9(tailwindcss@3.3.2)
+  '@tanstack/query-core':
+    specifier: ^4.29.11
+    version: 4.29.11
   '@tanstack/react-query':
     specifier: ^4.29.5
     version: 4.29.5(react-dom@18.2.0)(react-native@0.71.8)(react@18.2.0)
@@ -10451,6 +10454,10 @@ packages:
     dependencies:
       remove-accents: 0.4.2
     dev: true
+
+  /@tanstack/query-core@4.29.11:
+    resolution: {integrity: sha512-8C+hF6SFAb/TlFZyS9FItgNwrw4PMa7YeX+KQYe2ZAiEz6uzg6yIr+QBzPkUwZ/L0bXvGd1sufTm3wotoz+GwQ==}
+    dev: false
 
   /@tanstack/query-core@4.29.5:
     resolution: {integrity: sha512-xXIiyQ/4r9KfaJ3k6kejqcaqFXXBTzN2aOJ5H1J6aTJE9hl/nbgAdfF6oiIu0CD5xowejJEJ6bBg8TO7BN4NuQ==}

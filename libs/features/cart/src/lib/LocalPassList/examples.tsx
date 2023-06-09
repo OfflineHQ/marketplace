@@ -1,7 +1,7 @@
 import { LocalPassList } from './LocalPassList';
 import { usePassPurchaseStore } from '@features/organizer/event/store';
 import { eventProps, event2Props } from '@features/organizer/event/examples';
-import type { EventPassesServerProps } from '../EventPasses/EventPassesServer';
+import type { EventPassesServerProps } from '../EventPasses/EventPassesClient';
 import type { EventCart } from '@features/cart/types';
 import { EventPasses, EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { eventPassesProps } from '../EventPasses/examples';

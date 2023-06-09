@@ -13,16 +13,10 @@ import {
   CardDescription,
 } from '@ui/components';
 import { NoUserCartFooterClient } from './NoUserCartFooterClient';
-import {
-  LocalPassList,
-  type LocalPassListProps,
-} from '../LocalPassList/LocalPassList';
+import { LocalPassList } from '../LocalPassList/LocalPassList';
 
-export type NoUserCartProps = LocalPassListProps;
-
-export const NoUserCart: React.FC<NoUserCartProps> = (props) => {
+export const NoUserCart: React.FC = () => {
   const t = useTranslations('Cart.NoUserCart');
-  // getLocalCart();
   return (
     <section className="container">
       <Card variant="stickyFooter" noBorder>
@@ -32,7 +26,7 @@ export const NoUserCart: React.FC<NoUserCartProps> = (props) => {
             <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
           <CardContent className="px-1">
-            <LocalPassList {...props} />
+            <LocalPassList />
           </CardContent>
         </CardOverflow>
         <CardOverlay />
