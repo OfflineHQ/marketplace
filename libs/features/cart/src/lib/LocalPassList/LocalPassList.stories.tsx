@@ -3,7 +3,7 @@ import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 
 import { LocalPassList } from './LocalPassList';
-import { LocalPassListExample } from './examples';
+import { LocalPassListExample, LocalPassListLoadingExample } from './examples';
 import { sleep } from '@utils';
 
 // Import the stories you want to reuse
@@ -26,36 +26,48 @@ export const Default: Story = {
 export const Opened: Story = {
   ...Default,
   play: async () => {
-    const accordionTrigger = await screen.findByRole('button', {
-      name: /Lorem ipsum/i,
-    });
-    accordionTrigger.click();
+    userEvent.click(
+      await screen.findByRole('button', {
+        name: /Lorem ipsum/i,
+      })
+    );
     await screen.findByText(/2 x/i);
     await screen.findByText(/General Admission/i);
     await screen.findByText(/1 x/i);
     await screen.findByText(/VIP Pass/i);
+    await userEvent.click(
+      await screen.findByRole('button', {
+        name: /World cup/i,
+      })
+    );
+    const removeButtons = await screen.findAllByRole('button', {
+      name: /Remove/i,
+    });
+    expect(removeButtons).toHaveLength(2);
+    return removeButtons;
   },
 };
 
-// export const TestDelete: Story = {
-//   ...Opened,
-//   play: async (context) => {
-//     if (Opened.play) {
-//       await Opened.play(context);
-//       userEvent.click(
-//         screen.getByRole('button', {
-//           name: /Delete/i,
-//         })
-//       );
-//       await sleep(100);
-//       expect(screen.getByText(/General Admission/i)).toBeNull();
-//       expect(screen.findByText(/Lorem ipsum/i)).toBeNull();
-//     }
-//   },
-// };
+export const Remove: Story = {
+  ...Opened,
+  play: async (context) => {
+    if (Opened.play) {
+      const removeButtons = await Opened.play(context);
+      await userEvent.click(removeButtons[0]);
+      expect(
+        await screen.findByRole('button', {
+          name: /World cup/i,
+        })
+      );
+      expect(
+        screen.queryByRole('button', {
+          name: /Lorem ipsum/i,
+        })
+      ).toBeNull();
+    }
+  },
+};
 
-// export const SectionWithNormalUser: Story = {
-//   args: {
-//     children: <AppNavLayout {...WithNormalUser.args} />,
-//   },
-// };
+export const Loading: Story = {
+  render: LocalPassListLoadingExample,
+};

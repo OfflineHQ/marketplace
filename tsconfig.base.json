@@ -10,36 +10,80 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@client/auth": ["libs/client/auth/src/index.ts"],
-      "@client/gql/admin": ["libs/client/gql/admin/src/generated/index.ts"],
-      "@client/gql/thegraph": ["libs/client/gql/thegraph/src/index.ts"],
-      "@client/gql/user": ["libs/client/gql/user/src/generated/index.ts"],
-      "@client/hasura/adapter": ["libs/client/hasura/adapter/src/index.ts"],
-      "@client/hasura/fetcher": ["libs/client/hasura/fetcher/src/index.ts"],
-      "@client/hasura/utils": ["libs/client/hasura/utils/src/index.ts"],
-      "@client/i18n": ["libs/client/i18n/src/index.ts"],
-      "@client/next-auth/common": ["libs/client/next-auth/common/src/index.ts"],
+      "@client/auth": [
+        "libs/client/auth/src/index.ts"
+      ],
+      "@client/gql/admin": [
+        "libs/client/gql/admin/src/generated/index.ts"
+      ],
+      "@client/gql/thegraph": [
+        "libs/client/gql/thegraph/src/index.ts"
+      ],
+      "@client/gql/user": [
+        "libs/client/gql/user/src/generated/index.ts"
+      ],
+      "@client/hasura/adapter": [
+        "libs/client/hasura/adapter/src/index.ts"
+      ],
+      "@client/hasura/fetcher": [
+        "libs/client/hasura/fetcher/src/index.ts"
+      ],
+      "@client/hasura/utils": [
+        "libs/client/hasura/utils/src/index.ts"
+      ],
+      "@client/i18n": [
+        "libs/client/i18n/src/index.ts"
+      ],
+      "@client/next-auth/common": [
+        "libs/client/next-auth/common/src/index.ts"
+      ],
       "@client/next-auth/options": [
         "libs/client/next-auth/options/src/index.ts"
       ],
-      "@client/safe/auth": ["libs/client/safe/auth/src/index.ts"],
-      "@client/siwe/provider": ["libs/client/siwe/provider/src/index.ts"],
-      "@client/store": ["libs/client/store/src/index.ts"],
-      "@client/types": ["libs/client/types/src/index.ts"],
-      "@client/zustand": ["libs/client/zustand/src/index.ts"],
-      "@dlt/types": ["libs/dlt/types/src/index.ts"],
-      "@features/appNav/ui": ["libs/features/appNav/ui/src/index.ts"],
-      "@features/appNav/ui/server": ["libs/features/appNav/ui/src/server.tsx"],
+      "@client/safe/auth": [
+        "libs/client/safe/auth/src/index.ts"
+      ],
+      "@client/siwe/provider": [
+        "libs/client/siwe/provider/src/index.ts"
+      ],
+      "@client/store": [
+        "libs/client/store/src/index.ts"
+      ],
+      "@client/types": [
+        "libs/client/types/src/index.ts"
+      ],
+      "@client/zustand": [
+        "libs/client/zustand/src/index.ts"
+      ],
+      "@dlt/types": [
+        "libs/dlt/types/src/index.ts"
+      ],
+      "@features/appNav/ui": [
+        "libs/features/appNav/ui/src/index.ts"
+      ],
+      "@features/appNav/ui/server": [
+        "libs/features/appNav/ui/src/server.tsx"
+      ],
       "@features/appNav/ui/stories": [
         "libs/features/appNav/ui/src/stories.tsx"
       ],
-      "@features/cart": ["libs/features/cart/src/index.ts"],
-      "@features/cart/server": ["libs/features/cart/src/server.ts"],
+      "@features/cart": [
+        "libs/features/cart/src/index.ts"
+      ],
+      "@features/cart/types": [
+        "libs/features/cart/src/lib/types"
+      ],
+      "@features/cart/server": [
+        "libs/features/cart/src/server.ts"
+      ],
       "@features/organizer/event": [
         "libs/features/organizer/event/src/index.ts"
       ],
@@ -55,37 +99,101 @@
       "@features/organizer/event/types": [
         "libs/features/organizer/event/src/lib/types"
       ],
-      "@features/pass": ["libs/features/pass/src/index.ts"],
-      "@features/pass/server": ["libs/features/pass/src/server.ts"],
-      "@features/settings": ["libs/features/settings/src/index.ts"],
-      "@features/settings/server": ["libs/features/settings/src/server.ts"],
-      "@logger": ["libs/logger/src/index.ts"],
-      "@server/alchemy": ["libs/server/alchemy/src/index.ts"],
-      "@server/api": ["libs/server/api/src/index.ts"],
-      "@server/arbitrum": ["libs/server/arbitrum/src/index.ts"],
-      "@server/common": ["libs/server/common/src/index.ts"],
-      "@server/cryptocurrencies": ["libs/server/cryptocurrencies/src/index.ts"],
-      "@server/ethereum": ["libs/server/ethereum/src/index.ts"],
-      "@server/ethers": ["libs/server/ethers/src/index.ts"],
-      "@server/polygon": ["libs/server/polygon/src/index.ts"],
-      "@server/prisma": ["libs/server/prisma/src/index.ts"],
-      "@server/task": ["libs/server/task/src/index.ts"],
-      "@test-utils/db": ["libs/test-utils/db/src/index.ts"],
-      "@test-utils/functions": ["libs/test-utils/functions/src/index.ts"],
-      "@test-utils/gql": ["libs/test-utils/gql/src/index.ts"],
-      "@test-utils/mocks": ["libs/test-utils/mocks/src/index.ts"],
-      "@test-utils/react": ["libs/test-utils/react/src/index.ts"],
-      "@ui/components": ["libs/ui/components/src/index.ts"],
-      "@ui/hooks": ["libs/ui/hooks/src/index.ts"],
-      "@ui/icons": ["libs/ui/icons/src/index.ts"],
-      "@ui/shared": ["libs/ui/shared/src/index.ts"],
-      "@ui/theme": ["libs/ui/theme/src/index.ts"],
-      "@utils": ["libs/utils/src/index.ts"],
-      "@web/*": ["apps/web/*"],
-      "@workspace": ["libs/workspace/src/index.ts"]
+      "@features/pass": [
+        "libs/features/pass/src/index.ts"
+      ],
+      "@features/pass/server": [
+        "libs/features/pass/src/server.ts"
+      ],
+      "@features/settings": [
+        "libs/features/settings/src/index.ts"
+      ],
+      "@features/settings/server": [
+        "libs/features/settings/src/server.ts"
+      ],
+      "@logger": [
+        "libs/logger/src/index.ts"
+      ],
+      "@server/alchemy": [
+        "libs/server/alchemy/src/index.ts"
+      ],
+      "@server/api": [
+        "libs/server/api/src/index.ts"
+      ],
+      "@server/arbitrum": [
+        "libs/server/arbitrum/src/index.ts"
+      ],
+      "@server/common": [
+        "libs/server/common/src/index.ts"
+      ],
+      "@server/cryptocurrencies": [
+        "libs/server/cryptocurrencies/src/index.ts"
+      ],
+      "@server/ethereum": [
+        "libs/server/ethereum/src/index.ts"
+      ],
+      "@server/ethers": [
+        "libs/server/ethers/src/index.ts"
+      ],
+      "@server/polygon": [
+        "libs/server/polygon/src/index.ts"
+      ],
+      "@server/prisma": [
+        "libs/server/prisma/src/index.ts"
+      ],
+      "@server/task": [
+        "libs/server/task/src/index.ts"
+      ],
+      "@test-utils/db": [
+        "libs/test-utils/db/src/index.ts"
+      ],
+      "@test-utils/functions": [
+        "libs/test-utils/functions/src/index.ts"
+      ],
+      "@test-utils/gql": [
+        "libs/test-utils/gql/src/index.ts"
+      ],
+      "@test-utils/mocks": [
+        "libs/test-utils/mocks/src/index.ts"
+      ],
+      "@test-utils/react": [
+        "libs/test-utils/react/src/index.ts"
+      ],
+      "@ui/components": [
+        "libs/ui/components/src/index.ts"
+      ],
+      "@ui/hooks": [
+        "libs/ui/hooks/src/index.ts"
+      ],
+      "@ui/icons": [
+        "libs/ui/icons/src/index.ts"
+      ],
+      "@ui/shared": [
+        "libs/ui/shared/src/index.ts"
+      ],
+      "@ui/theme": [
+        "libs/ui/theme/src/index.ts"
+      ],
+      "@utils": [
+        "libs/utils/src/index.ts"
+      ],
+      "@web/*": [
+        "apps/web/*"
+      ],
+      "@workspace": [
+        "libs/workspace/src/index.ts"
+      ]
     }
   },
-  "typeRoots": ["types", "node_modules/@types"],
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules", "tmp"]
+  "typeRoots": [
+    "types",
+    "node_modules/@types"
+  ],
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
