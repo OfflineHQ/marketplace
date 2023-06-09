@@ -1,12 +1,12 @@
 import { AuthProvider, NextAuthProvider } from '@client/auth';
-import { WithNoUser, WithNormalUser } from '@features/appNav/ui/stories';
+import { WithNoUser } from '@features/appNav/ui/stories';
+import { EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { AppNavLayout } from '@features/appNav/ui';
 import { NoUserCart } from './NoUserCart';
 import {
   SetupPassesCartLocal,
-  FakeEventPassesServer,
-  FakeEventPassesServerLoading,
-} from '../LocalPassList/examples';
+  FakeEventPassesFetcher,
+} from '../EventPassList/examples';
 
 export function NoUserCartExample() {
   SetupPassesCartLocal();
@@ -14,7 +14,7 @@ export function NoUserCartExample() {
     <NextAuthProvider>
       <AuthProvider>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart EventPassesServer={FakeEventPassesServer} />
+          <NoUserCart EventPassesServer={FakeEventPassesFetcher} />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
@@ -27,7 +27,7 @@ export function NoUserCartLoadingExample() {
     <NextAuthProvider>
       <AuthProvider>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart EventPassesServer={FakeEventPassesServerLoading} />
+          <NoUserCart EventPassesServer={EventPassesSkeleton} />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
@@ -39,7 +39,7 @@ export function NoUserCartNoCartExample() {
     <NextAuthProvider>
       <AuthProvider>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart EventPassesServer={FakeEventPassesServer} />
+          <NoUserCart EventPassesServer={FakeEventPassesFetcher} />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
