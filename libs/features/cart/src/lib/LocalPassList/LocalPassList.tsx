@@ -1,25 +1,16 @@
-'use client';
+import { NextIntlClientProvider, useLocale } from 'next-intl';
+import { LocalPassListClient } from './LocalPassListClient';
+import { deepPick } from '@utils';
+import { messages, defaultLocale, type Locale } from '@client/i18n';
 
-import { usePassPurchaseStore } from '@features/organizer/event/store';
-import { useStore } from '@client/store';
-import {
-  EventPassList,
-  type EventPassListProps,
-} from '../EventPassList/EventPassList';
+export const LocalPassList: React.FC = () => {
+  const _locale = useLocale();
+  const locale: Locale = (_locale as Locale) || defaultLocale;
+  const localeMessages = deepPick(messages[locale], ['Cart.List']);
 
-export type LocalPassListProps = Pick<EventPassListProps, 'EventPassesServer'>;
-
-export const LocalPassList: React.FC<LocalPassListProps> = ({
-  EventPassesServer,
-}) => {
-  const passes = useStore(usePassPurchaseStore, (state) => state.passes);
-  const deletePasses = usePassPurchaseStore((state) => state.deletePasses);
   return (
-    /* TODO add image or animation if cart is empty */
-    <EventPassList
-      EventPassesServer={EventPassesServer}
-      allPasses={passes}
-      deletePasses={deletePasses}
-    />
+    <NextIntlClientProvider locale={locale} messages={localeMessages}>
+      <LocalPassListClient />
+    </NextIntlClientProvider>
   );
 };

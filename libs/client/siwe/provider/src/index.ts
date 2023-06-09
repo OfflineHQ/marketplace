@@ -1,4 +1,4 @@
-import { getNextAppURL } from '@client/next-auth/common';
+import { getNextAppURL } from '@utils';
 import { logger } from '@logger';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { getCsrfToken } from 'next-auth/react';

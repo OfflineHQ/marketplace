@@ -1,22 +1,20 @@
-'use server';
-
 import { Accordion } from '@ui/components';
 import type {
   AllPassesCart,
   EventSlugs,
 } from '@features/organizer/event/types';
-import type { EventPassesServerProps } from '../EventPasses/EventPassesServer';
+import { type EventPassesClientProps } from '../EventPasses/EventPassesClient';
 
 export interface EventPassListProps {
   deletePasses: (props: EventSlugs) => void;
   allPasses?: AllPassesCart;
-  EventPassesServer: React.FC<EventPassesServerProps>;
+  EventPassesFetcher: React.FC<EventPassesClientProps>;
 }
 
 export const EventPassList: React.FC<EventPassListProps> = ({
   deletePasses,
   allPasses,
-  EventPassesServer,
+  EventPassesFetcher,
 }) => {
   return (
     <Accordion type="multiple">
@@ -24,7 +22,7 @@ export const EventPassList: React.FC<EventPassListProps> = ({
         <div key={organizerSlug + index}>
           {Object.entries(events).map(([eventSlug, eventPasses], index) => (
             <div key={organizerSlug + eventSlug + index}>
-              <EventPassesServer
+              <EventPassesFetcher
                 onDelete={deletePasses}
                 organizerSlug={organizerSlug}
                 eventSlug={eventSlug}

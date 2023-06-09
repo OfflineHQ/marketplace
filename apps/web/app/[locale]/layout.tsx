@@ -7,6 +7,7 @@ import { siteConfig } from '@web/config/site';
 import { Analytics } from '@web/components/Analytics';
 import { ThemeProvider } from '@ui/theme';
 import { AuthProvider, NextAuthProvider } from '@client/auth';
+import { ReactQueryProviders } from '@client/react-query';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { useLocale, useTranslations } from 'next-intl';
@@ -129,8 +130,10 @@ export default function RootLayout({
                 },
               }}
             >
-              <AppNavLayout {...appNavLayout}>{children}</AppNavLayout>
-              <Toaster />
+              <ReactQueryProviders>
+                <AppNavLayout {...appNavLayout}>{children}</AppNavLayout>
+                <Toaster />
+              </ReactQueryProviders>
             </AuthProvider>
           </NextAuthProvider>
         </ThemeProvider>

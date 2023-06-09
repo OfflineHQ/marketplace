@@ -6,10 +6,10 @@ import type { JWT, JWTOptions } from 'next-auth/jwt';
 import { adapter } from '@client/hasura/adapter';
 import { SiweProvider } from '@client/siwe/provider';
 import { Roles } from '@client/hasura/utils';
-import { isProd } from '@utils';
+import { isProd, getNextAppURL } from '@utils';
 import { logger } from '@logger';
 import { Provider } from 'next-auth/providers';
-import { getNextAppURL, nextAuthCookieName } from '@client/next-auth/common';
+import { nextAuthCookieName } from '@client/next-auth/common';
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
