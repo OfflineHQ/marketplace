@@ -15,6 +15,7 @@ export const LocalPassList: React.FC<LocalPassListProps> = ({
   const passes = useStore(usePassPurchaseStore, (state) => state.passes);
   const deletePasses = usePassPurchaseStore((state) => state.deletePasses);
   return (
+    /* TODO add image or animation if cart is empty */
     <EventPassList
       EventPassServer={EventPassServer}
       allPasses={passes}

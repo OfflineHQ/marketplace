@@ -11,8 +11,14 @@ import {
   CardDescription,
 } from '@ui/components';
 import { NoUserCartFooterClient } from './NoUserCartFooterClient';
+import {
+  LocalPassList,
+  type LocalPassListProps,
+} from '../LocalPassList/LocalPassList';
 
-export const NoUserCart: React.FC = () => {
+export type NoUserCartProps = LocalPassListProps;
+
+export const NoUserCart: React.FC<NoUserCartProps> = (props) => {
   const t = useTranslations('Cart.NoUserCart');
   // getLocalCart();
   return (
@@ -23,9 +29,8 @@ export const NoUserCart: React.FC = () => {
             <CardTitle>{t('title')}</CardTitle>
             <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
-          <CardContent>
-            {/* TODO add image or animation if cart is empty */}
-            {/* or LocalCartContent component */}
+          <CardContent className="px-1">
+            <LocalPassList {...props} />
           </CardContent>
         </CardOverflow>
         <CardOverlay />
