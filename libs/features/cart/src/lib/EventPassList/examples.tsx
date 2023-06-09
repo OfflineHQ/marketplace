@@ -45,14 +45,23 @@ export const SetupPassesCartLocal = () => {
 };
 
 export const EventPassListExample = () => {
-  const props = SetupPassesCartLocal();
-  console.log(props);
+  const { allPasses, deletePasses } = SetupPassesCartLocal();
   return (
-    <EventPassList {...props} EventPassesFetcher={FakeEventPassesFetcher} />
+    <EventPassList
+      allPasses={allPasses}
+      deletePasses={deletePasses}
+      EventPassesFetcher={FakeEventPassesFetcher}
+    />
   );
 };
 
 export const EventPassListLoadingExample = () => {
-  const props = SetupPassesCartLocal();
-  return <EventPassList {...props} EventPassesFetcher={EventPassesSkeleton} />;
+  const { allPasses, deletePasses } = SetupPassesCartLocal();
+  return (
+    <EventPassList
+      allPasses={allPasses}
+      deletePasses={deletePasses}
+      EventPassesFetcher={EventPassesSkeleton}
+    />
+  );
 };

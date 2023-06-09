@@ -2,10 +2,16 @@
 
 import { usePassPurchaseStore } from '@features/organizer/event/store';
 import { useStore } from '@client/store';
-import { EventPassList } from '../EventPassList/EventPassList';
-import { EventPassesClient } from '../EventPasses/EventPassesClient';
+import {
+  EventPassList,
+  type EventPassListProps,
+} from '../EventPassList/EventPassList';
 
-export const LocalPassListClient: React.FC = () => {
+export type LocalPassListProps = Pick<EventPassListProps, 'EventPassesFetcher'>;
+
+export const LocalPassListClient: React.FC<LocalPassListProps> = ({
+  EventPassesFetcher,
+}) => {
   const passes = useStore(usePassPurchaseStore, (state) => state.passes);
   const deletePasses = usePassPurchaseStore((state) => state.deletePasses);
   return (
@@ -13,7 +19,7 @@ export const LocalPassListClient: React.FC = () => {
     <EventPassList
       allPasses={passes}
       deletePasses={deletePasses}
-      EventPassesFetcher={EventPassesClient}
+      EventPassesFetcher={EventPassesFetcher}
     />
   );
 };

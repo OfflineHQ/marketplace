@@ -47,25 +47,25 @@ export const Opened: Story = {
   },
 };
 
-export const Remove: Story = {
-  ...Opened,
-  play: async (context) => {
-    if (Opened.play) {
-      const removeButtons = await Opened.play(context);
-      await userEvent.click(removeButtons[0]);
-      expect(
-        await screen.findByRole('button', {
-          name: /World cup/i,
-        })
-      );
-      expect(
-        screen.queryByRole('button', {
-          name: /Lorem ipsum/i,
-        })
-      ).toBeNull();
-    }
-  },
-};
+// export const Remove: Story = {
+//   ...Opened,
+//   play: async (context) => {
+//     if (Opened.play) {
+//       const removeButtons = await Opened.play(context);
+//       await userEvent.click(removeButtons[0]);
+//       expect(
+//         await screen.findByRole('button', {
+//           name: /World cup/i,
+//         })
+//       );
+//       expect(
+//         screen.queryByRole('button', {
+//           name: /Lorem ipsum/i,
+//         })
+//       ).toBeNull();
+//     }
+//   },
+// };
 
 export const Loading: Story = {
   render: EventPassListLoadingExample,

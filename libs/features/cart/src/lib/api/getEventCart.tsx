@@ -16,6 +16,8 @@ export const getEventCart = cache(
     // TODO implement
     const data = await fetch(`${getNextAppURL()}/mocks/event_cart.json`);
     const event = await data.json();
+    event.slug = eventSlug;
+    event.organizer.slug = organizerSlug;
     await delayData(2000, null);
     return event as EventCart;
   }
