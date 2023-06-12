@@ -5,6 +5,7 @@ import type { EventPassesClientProps } from '../EventPasses/EventPassesClient';
 import type { EventCart } from '@features/cart/types';
 import { EventPasses, EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { eventPassesProps } from '../EventPasses/examples';
+import { useEffect } from 'react';
 import { useStore } from '@client/store';
 
 const allPassesEventsCart: Record<string, Record<string, EventCart>> = {};
@@ -26,18 +27,20 @@ export const FakeEventPassesFetcher = ({
 
 export const SetupPassesCartLocal = () => {
   const setPasses = usePassPurchaseStore((state) => state.setPasses);
-  setPasses({
-    organizerSlug: eventProps.organizer.slug,
-    eventSlug: eventProps.slug,
-    newPasses: eventPassesProps.passes,
-  });
-  setPasses({
-    organizerSlug: event2Props.organizer.slug,
-    eventSlug: event2Props.slug,
-    newPasses: [eventPassesProps.passes[0]],
-  });
   const allPasses = usePassPurchaseStore((state) => state.passes);
   const deletePasses = usePassPurchaseStore((state) => state.deletePasses);
+  useEffect(() => {
+    setPasses({
+      organizerSlug: eventProps.organizer.slug,
+      eventSlug: eventProps.slug,
+      newPasses: eventPassesProps.passes,
+    });
+    setPasses({
+      organizerSlug: event2Props.organizer.slug,
+      eventSlug: event2Props.slug,
+      newPasses: [eventPassesProps.passes[0]],
+    });
+  }, [setPasses]);
   return {
     allPasses,
     deletePasses,

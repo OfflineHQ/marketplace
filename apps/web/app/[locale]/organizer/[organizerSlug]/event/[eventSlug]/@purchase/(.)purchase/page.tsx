@@ -43,6 +43,7 @@ function PurchaseSectionContent({
   const t = useTranslations('Organizer.Event');
   const backRoute = `/organizer/${organizerSlug}/event/${eventSlug}`;
   // TODO get reserved passes and owned passes from user if connected and change pass props so it respect boundaries. Also need to change pass purchase to handle this.
+  // TODO handle case when coming back from cart and localstorage contains passes, here it is overriding the passes numTickets with 0
   const passes: PassPurchaseProps['passes'] = _passes.map(
     (pass) =>
       ({
