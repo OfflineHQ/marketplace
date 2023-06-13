@@ -25,21 +25,21 @@ export const FakeEventPassesFetcher = ({
 );
 
 export const SetupPassesCartLocal = () => {
-  const setPasses = usePassPurchaseStore((state) => state.setPasses);
+  const setPassesCart = usePassPurchaseStore((state) => state.setPassesCart);
   const allPasses = usePassPurchaseStore((state) => state.passes);
   const deletePasses = usePassPurchaseStore((state) => state.deletePasses);
   useEffect(() => {
-    setPasses({
+    setPassesCart({
       organizerSlug: eventProps.organizer.slug,
       eventSlug: eventProps.slug,
       newPasses: eventPassesProps.passes,
     });
-    setPasses({
+    setPassesCart({
       organizerSlug: event2Props.organizer.slug,
       eventSlug: event2Props.slug,
       newPasses: [eventPassesProps.passes[0]],
     });
-  }, [setPasses]);
+  }, [setPassesCart]);
   return {
     allPasses,
     deletePasses,

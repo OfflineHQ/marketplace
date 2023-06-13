@@ -1,7 +1,6 @@
 'use client';
 
 import { usePassPurchaseStore } from '@features/organizer/event/store';
-import { useStore } from '@client/store';
 import {
   EventPassList,
   type EventPassListProps,
@@ -12,12 +11,14 @@ export type LocalPassListProps = Pick<EventPassListProps, 'EventPassesFetcher'>;
 export const LocalPassListClient: React.FC<LocalPassListProps> = ({
   EventPassesFetcher,
 }) => {
-  const passes = useStore(usePassPurchaseStore, (state) => state.passes);
+  const getAllPassesCart = usePassPurchaseStore(
+    (state) => state.getAllPassesCart
+  );
   const deletePasses = usePassPurchaseStore((state) => state.deletePasses);
   return (
     /* TODO add image or animation if cart is empty */
     <EventPassList
-      allPasses={passes}
+      allPasses={getAllPassesCart()}
       deletePasses={deletePasses}
       EventPassesFetcher={EventPassesFetcher}
     />
