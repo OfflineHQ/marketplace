@@ -47,27 +47,27 @@ export const SectionWithNoUserOpened: Story = {
   },
 };
 
-// export const SectionWithNoUserOpenedRemove: Story = {
-//   ...SectionWithNoUserOpened,
-//   play: async (context) => {
-//     await SectionWithNoUserOpened.play(context);
-//     const removeButtons = await screen.findAllByRole('button', {
-//       name: /Remove/i,
-//     });
-//     expect(removeButtons).toHaveLength(2);
-//     await userEvent.click(removeButtons[0]);
-//     expect(
-//       await screen.findByRole('button', {
-//         name: /World cup/i,
-//       })
-//     );
-//     expect(
-//       screen.queryByRole('button', {
-//         name: /Lorem ipsum/i,
-//       })
-//     ).toBeNull();
-//   },
-// };
+export const SectionWithNoUserOpenedRemove: Story = {
+  ...SectionWithNoUserOpened,
+  play: async (context) => {
+    await SectionWithNoUserOpened.play(context);
+    const removeButtons = await screen.findAllByRole('button', {
+      name: /Remove/i,
+    });
+    expect(removeButtons).toHaveLength(2);
+    await userEvent.click(removeButtons[0]);
+    expect(
+      await screen.findByRole('button', {
+        name: /World cup/i,
+      })
+    );
+    expect(
+      screen.queryByRole('button', {
+        name: /Lorem ipsum/i,
+      })
+    ).toBeNull();
+  },
+};
 export const SectionWithNoUserLoading: Story = {
   render: NoUserCartLoadingExample,
 };
