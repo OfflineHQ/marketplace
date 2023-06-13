@@ -63,6 +63,7 @@ const nextConfig = {
         './**/webpack*',
         './**/rollup*',
         './**/terser*',
+        './**/sharp*',
       ],
     },
     styledComponents: true,
