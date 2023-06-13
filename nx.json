@@ -46,13 +46,6 @@
     "appsDir": "apps",
     "libsDir": "libs"
   },
-  "implicitDependencies": {
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
-    ".eslintrc.json": "*"
-  },
   "extends": "nx/presets/npm.json",
   "namedInputs": {
     "noMarkdown": ["!{projectRoot}/**/*.md"]
