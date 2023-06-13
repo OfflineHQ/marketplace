@@ -10,5 +10,5 @@ export default async function PassLayout({
   noUser,
 }: PassLayoutProps) {
   const user = await getCurrentUser();
-  return user ? passUser : noUser;
+  return <>{user ? passUser : noUser}</>;
 }
