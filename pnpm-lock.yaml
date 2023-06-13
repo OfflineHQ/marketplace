@@ -307,9 +307,6 @@ dependencies:
   style-loader:
     specifier: ^3.3.3
     version: 3.3.3(webpack@5.86.0)
-  styled-jsx:
-    specifier: 5.0.7
-    version: 5.0.7(@babel/core@7.22.5)(react@18.2.0)
   tailwind-merge:
     specifier: ^1.13.1
     version: 1.13.1
@@ -27964,23 +27961,6 @@ packages:
     dependencies:
       hey-listen: 1.0.8
       tslib: 2.5.3
-    dev: false
-
-  /styled-jsx@5.0.7(@babel/core@7.22.5)(react@18.2.0):
-    resolution: {integrity: sha512-b3sUzamS086YLRuvnaDigdAewz1/EFYlHpYBP5mZovKEdQQOIIYq8lApylub3HHZ6xFjV051kkGU7cudJmrXEA==}
-    engines: {node: '>= 12.0.0'}
-    peerDependencies:
-      '@babel/core': '*'
-      babel-plugin-macros: '*'
-      react: '>= 16.8.0 || 17.x.x || ^18.0.0-0'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      babel-plugin-macros:
-        optional: true
-    dependencies:
-      '@babel/core': 7.22.5
-      react: 18.2.0
     dev: false
 
   /styled-jsx@5.1.1(@babel/core@7.22.5)(react@18.2.0):
