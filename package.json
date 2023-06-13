@@ -300,6 +300,7 @@
     "start-server-and-test": "^1.15.4",
     "storybook-addon-swc": "^1.2.0",
     "storybook-dark-mode": "^3.0.0",
+    "styled-jsx": "^5.1.2",
     "swc-loader": "0.1.15",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
