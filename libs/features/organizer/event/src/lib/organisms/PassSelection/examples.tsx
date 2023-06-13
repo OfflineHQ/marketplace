@@ -12,10 +12,10 @@ export const PassSelectionExample = ({
   passes: _passes,
   soldOutText,
 }: PassSelectionProps) => {
-  const [passes, setPasses] = useState(_passes);
+  const [passes, setPassesCart] = useState(_passes);
 
   const handleOnChange = (index: number, newNumTickets: number) => {
-    setPasses((currentPasses) =>
+    setPassesCart((currentPasses) =>
       currentPasses.map((pass, i) =>
         i === index ? { ...pass, numTickets: newNumTickets } : pass
       )

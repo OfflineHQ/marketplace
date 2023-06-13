@@ -43,16 +43,6 @@ export const SelectPasses: Story = {
       name: /Go to payment/i,
     });
     expect(cartButton).toBeInTheDocument();
-  },
-};
-
-export const WithPassesSelected: Story = {
-  play: async () => {
-    const cartButton = screen.getByRole('button', {
-      name: /Go to payment/i,
-    });
-    expect(cartButton).toBeInTheDocument();
-
     const passTotal = screen.getByText(/Total/i);
     expect(passTotal).toBeInTheDocument();
   },

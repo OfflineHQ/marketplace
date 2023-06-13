@@ -59,7 +59,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
   const setPasses = usePassPurchaseStore((state) => state.setPasses);
   useEffect(() => {
     if (eventSlug && organizerSlug)
-      setPasses({ organizerSlug, eventSlug, newPasses: _passes });
+      setPasses({ organizerSlug, eventSlug, passes: _passes });
     // here avoid adding store to the dependencies array to avoid infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [organizerSlug, eventSlug, _passes]);
@@ -68,7 +68,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
     pass: PassPurchaseProps['passes'][0],
     newNumTickets: number
   ) => {
-    store?.updatePass({
+    store?.updatePassCart({
       organizerSlug,
       eventSlug,
       pass: {

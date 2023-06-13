@@ -24,11 +24,14 @@ export const passPurchasePropsWithLotsOfPasses = {
   passes: lotsOfPasses,
 } satisfies PassPurchaseProps;
 
-export const PassPurchaseExample = (props: PassPurchaseProps) => (
-  <Sheet open={true}>
-    <PassPurchase {...props} />
-  </Sheet>
-);
+export const PassPurchaseExample = (props: PassPurchaseProps) => {
+  window.localStorage.clear();
+  return (
+    <Sheet open={true}>
+      <PassPurchase {...props} />
+    </Sheet>
+  );
+};
 
 export const PassPurchaseLoadingExample = (
   props: PassPurchaseSkeletonProps
