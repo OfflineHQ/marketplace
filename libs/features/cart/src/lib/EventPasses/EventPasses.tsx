@@ -63,19 +63,18 @@ export const EventPasses: React.FC<EventPassesProps> = ({
         </div>
       </AccordionTrigger>
       <AccordionContent>
-        <div className="flex flex-col">
+        <div className="mt-3 flex flex-col">
           {passes.map((pass, index) => (
-            <div
-              key={pass.id + index}
-              className="grid grid-cols-2 gap-4 px-2 py-4 md:grid-cols-6"
-            >
-              <div className="flex items-center">
+            <div key={pass.id + index} className="mb-5 flex md:mb-8">
+              <div
+                className={`flex items-center ${layout.imageContainer} h-auto md:h-auto`}
+              >
                 <Text
                   variant="h5"
                   className="font-semibold"
                 >{`${pass.numTickets} x`}</Text>
               </div>
-              <div>
+              <div className="ml-2 flex flex-col md:ml-3">
                 <Text variant="h5" className="pb-2 font-semibold">
                   {pass.name}
                 </Text>
