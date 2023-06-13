@@ -4424,7 +4424,7 @@ packages:
       '@types/js-yaml': 4.0.5
       '@types/json-stable-stringify': 1.0.34
       '@whatwg-node/fetch': 0.8.8
-      chalk: 4.1.2
+      chalk: 4.1.0
       debug: 4.3.4(supports-color@8.1.1)
       dotenv: 16.1.4
       graphql: 16.6.0
@@ -4936,7 +4936,7 @@ packages:
       '@jest/types': 29.5.0
       '@jridgewell/trace-mapping': 0.3.18
       '@types/node': 18.14.2
-      chalk: 4.1.2
+      chalk: 4.1.0
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
       glob: 7.2.3
@@ -6536,7 +6536,7 @@ packages:
       babel-plugin-const-enum: 1.2.0(@babel/core@7.22.5)
       babel-plugin-macros: 2.8.0
       babel-plugin-transform-typescript-metadata: 0.3.2(@babel/core@7.22.5)
-      chalk: 4.1.2
+      chalk: 4.1.0
       fast-glob: 3.2.7
       fs-extra: 11.1.1
       ignore: 5.2.4
@@ -20302,7 +20302,7 @@ packages:
       '@jest/types': 29.5.0
       '@types/node': 18.14.2
       babel-jest: 29.5.0(@babel/core@7.22.5)
-      chalk: 4.1.2
+      chalk: 4.1.0
       ci-info: 3.8.0
       deepmerge: 4.3.1
       glob: 7.2.3
@@ -20696,7 +20696,7 @@ packages:
     resolution: {integrity: sha512-1TzxJ37FQq7J10jPtQjcc+MkCkE3GBpBecsSUWJ0qZNJpmg6m0D9/7II03yJulm3H/fvVjgqLh/k2eYg+ui52w==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      chalk: 4.1.2
+      chalk: 4.1.0
       graceful-fs: 4.2.11
       jest-haste-map: 29.5.0
       jest-pnp-resolver: 1.2.3(jest-resolve@29.5.0)
@@ -20929,7 +20929,7 @@ packages:
     dependencies:
       '@jest/types': 29.5.0
       '@types/node': 18.14.2
-      chalk: 4.1.2
+      chalk: 4.1.0
       ci-info: 3.8.0
       graceful-fs: 4.2.11
       picomatch: 2.3.1
@@ -21897,7 +21897,7 @@ packages:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
     engines: {node: '>=10'}
     dependencies:
-      chalk: 4.1.2
+      chalk: 4.1.0
       is-unicode-supported: 0.1.0
 
   /log-update@4.0.0:
@@ -26631,7 +26631,7 @@ packages:
     peerDependencies:
       postcss: 8.x
     dependencies:
-      chalk: 4.1.2
+      chalk: 4.1.0
       concat-with-sourcemaps: 1.1.0
       cssnano: 5.1.15(postcss@8.4.24)
       import-cwd: 3.0.0
@@ -28637,7 +28637,7 @@ packages:
       typescript: '*'
       webpack: ^5.0.0
     dependencies:
-      chalk: 4.1.2
+      chalk: 4.1.0
       enhanced-resolve: 5.14.1
       micromatch: 4.0.5
       semver: 7.5.1
@@ -28704,7 +28704,7 @@ packages:
     resolution: {integrity: sha512-fw/7265mIWukrSHd0i+wSwx64kYUSAKPfxRDksjKIYTxSAp9W9/xcZVBF4Kl0eqQd5eBpAQ/oQrc5RyM/0c1GQ==}
     engines: {node: '>=10.13.0'}
     dependencies:
-      chalk: 4.1.2
+      chalk: 4.1.0
       enhanced-resolve: 5.14.1
       tsconfig-paths: 4.2.0
     dev: true
@@ -29761,7 +29761,7 @@ packages:
     dependencies:
       acorn: 8.8.2
       acorn-walk: 8.2.0
-      chalk: 4.1.2
+      chalk: 4.1.0
       commander: 7.2.0
       gzip-size: 6.0.0
       lodash: 4.17.21
