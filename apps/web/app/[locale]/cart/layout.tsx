@@ -10,5 +10,5 @@ export default async function CartLayout({
   noUser,
 }: CartLayoutProps) {
   const user = await getCurrentUser();
-  return user ? cartUser : noUser;
+  return <>{user ? cartUser : noUser}</>;
 }

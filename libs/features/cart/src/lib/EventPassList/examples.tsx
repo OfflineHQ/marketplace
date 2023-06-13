@@ -6,7 +6,6 @@ import type { EventCart } from '@features/cart/types';
 import { EventPasses, EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { eventPassesProps } from '../EventPasses/examples';
 import { useEffect } from 'react';
-import { useStore } from '@client/store';
 
 const allPassesEventsCart: Record<string, Record<string, EventCart>> = {};
 allPassesEventsCart[eventProps.organizer.slug] = {};
