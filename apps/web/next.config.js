@@ -54,11 +54,17 @@ const nextConfig = {
   // outputFileTracingRoot needed for monorepo
   output: 'standalone',
   experimental: {
-    // outputFileTracingRoot: path.join(
-    //   __dirname,
-    //   '../../libs/{ui,features,client,utils}'
-    // ),
     outputFileTracingRoot: path.join(__dirname, '../../'),
+    outputFileTracingExcludes: {
+      '*': [
+        '/node_modules/.pnpm/@swc/core-linux-x64-gnu',
+        '/node_modules/.pnpm/@swc/core-linux-x64-musl',
+        '/node_modules/.pnpm/@esbuild',
+        '/node_modules/.pnpm/webpack',
+        '/node_modules/.pnpm/rollup',
+        '/node_modules/.pnpm/terser',
+      ],
+    },
     serverActions: true,
     appDir: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
