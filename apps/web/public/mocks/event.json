@@ -1,0 +1,67 @@
+{
+  "heroImage": "https://picsum.photos/seed/hero/800/450",
+  "title": "Lorem ipsum dolor sit amet",
+  "eventDateLocations": [
+    {
+      "id": "1",
+      "dateStart": "2023-06-01T00:00:00Z",
+      "dateEnd": "2023-06-01T08:00:00Z",
+      "location": {
+        "street": "123 Main St",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "postalCode": "10001",
+        "placeId": "ChIJd8BlQ2BZwokRAFUEcm_qrcA"
+      }
+    },
+    {
+      "id": "2",
+      "dateStart": "2023-06-02T12:00:00Z",
+      "dateEnd": "2023-06-02T23:00:00Z",
+      "location": {
+        "street": "456 Broadway",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "postalCode": "10004",
+        "placeId": "ChIJhRwB-yFawokRv_x-4eLe3WI"
+      }
+    }
+  ],
+  "detailed": false,
+  "organizer": {
+    "id": "1234",
+    "slug": "test-organizer",
+    "name": "Test Organizer",
+    "description": "This is a test organizer"
+  },
+  "detailsTitle": "About",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl.\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl.\n\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\n\n",
+  "id": "fake_event_1",
+  "slug": "test-event-1",
+  "purchaseLink": { "href": { "pathname": "/dummy" } },
+  "purchaseText": "Select passes",
+  "passes": [
+    {
+      "id": "1",
+      "name": "General Admission",
+      "description": "General Admission to the event",
+      "price": 1300,
+      "numTickets": 2,
+      "maxAmount": 7,
+      "currentAmount": 1
+    },
+    {
+      "id": "2",
+      "name": "VIP Pass",
+      "description": "Access to all areas",
+      "price": 2500,
+      "numTickets": 1,
+      "maxAmountPerUser": 3,
+      "maxAmount": 30,
+      "currentAmount": 10
+    }
+  ],
+  "isOngoing": true
+}

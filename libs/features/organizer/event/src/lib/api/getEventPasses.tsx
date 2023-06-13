@@ -1,19 +1,19 @@
 import { delayData } from '@test-utils/functions';
 import { EventPass } from '../types';
-import { lotsOfPasses } from '@features/organizer/event/examples';
+import { cache } from 'react';
+import { getNextAppURL } from '@utils';
 
 interface GetEventProps {
   organizerSlug: string;
   eventSlug: string;
 }
 
-export const getEventPasses = async ({
-  organizerSlug,
-  eventSlug,
-}: GetEventProps): Promise<EventPass[]> => {
-  // TODO implement
-
-  await delayData(4000, null);
-  const passes: EventPass[] = lotsOfPasses.slice(3);
-  return passes;
-};
+export const getEventPasses = cache(
+  async ({ organizerSlug, eventSlug }: GetEventProps): Promise<EventPass[]> => {
+    // TODO implement
+    const data = await fetch(`${getNextAppURL()}/mocks/event_passes.json`);
+    const passes = await data.json();
+    await delayData(3000, null);
+    return passes as EventPass[];
+  }
+);

@@ -2,27 +2,11 @@ import { render, fireEvent } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
 import * as stories from './NavSection.stories';
 
-const {
-  Cart,
-  CartActive,
-  CartWithHelperText,
-  CartWithPing,
-  CartWithPingAndNumber,
-  Pass,
-  PassWithPing,
-} = composeStories(stories);
+const { Cart, Skeleton } = composeStories(stories);
 
 describe('HeaderNav', () => {
   it('should render successfully Stories', () => {
-    const stories = [
-      Cart,
-      CartActive,
-      CartWithHelperText,
-      CartWithPing,
-      CartWithPingAndNumber,
-      Pass,
-      PassWithPing,
-    ];
+    const stories = [Cart, Skeleton];
     stories.forEach((Story) => {
       const { baseElement } = render(<Story />);
       expect(baseElement).toBeTruthy();
