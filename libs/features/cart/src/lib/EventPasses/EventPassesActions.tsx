@@ -19,7 +19,7 @@ export const EventPassesActions: React.FC<EventPassesActionsProps> = ({
   organizerSlug,
 }) => {
   return (
-    <div className="my-4 flex flex-wrap items-center justify-end space-x-6">
+    <div className="mb-4 flex flex-wrap items-center justify-end space-x-6">
       <Link
         className="mt-4 inline-flex"
         passHref
