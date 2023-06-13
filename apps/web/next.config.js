@@ -54,10 +54,11 @@ const nextConfig = {
   // outputFileTracingRoot needed for monorepo
   output: 'standalone',
   experimental: {
-    outputFileTracingRoot: path.join(
-      __dirname,
-      '../../libs/{ui,features,client,utils}'
-    ),
+    // outputFileTracingRoot: path.join(
+    //   __dirname,
+    //   '../../libs/{ui,features,client,utils}'
+    // ),
+    outputFileTracingRoot: path.join(__dirname, '../../'),
     serverActions: true,
     appDir: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
