@@ -78,21 +78,8 @@ const sentryWebpackPluginOptions = {
 };
 
 module.exports = async (phase, context) => {
-  const isProd = process.env.NODE_ENV === 'production';
-  // Use the CDN in production and localhost for development.
-  // assetPrefix: isProd() ? 'https://cdn.mydomain.com' : undefined,
-  const assetPrefix = isProd && phase !== '' ? phase : undefined;
-  const buildId = isProd
-    ? `${assetPrefix.substring(1).replaceAll('/', '-')}`
-    : '';
-
   const addNx = withNx({
     ...nextConfig,
-    assetPrefix,
-    generateBuildId: async () => buildId,
-    publicRuntimeConfig: {
-      assetPrefix,
-    },
   });
 
   let config = await addNx(phase);
