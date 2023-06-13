@@ -36,7 +36,8 @@ export const NoPassSelected: Story = {
 export const SelectPasses: Story = {
   ...NoPassSelected,
   play: async () => {
-    const passCards = screen.getAllByRole('button');
+    expect(await screen.findByText(/VIP Pass/i)).toBeInTheDocument();
+    const passCards = await screen.findAllByRole('button');
     expect(passCards).toHaveLength(5); // Nav + Two buttons (increment and decrement) for each PassCard
     passCards[1].click(); // Click the first pass increment button
     const cartButton = await screen.findByRole('button', {
