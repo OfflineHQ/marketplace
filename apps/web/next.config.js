@@ -57,12 +57,12 @@ const nextConfig = {
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
       '*': [
-        '/node_modules/.pnpm/@swc/core-linux-x64-gnu',
-        '/node_modules/.pnpm/@swc/core-linux-x64-musl',
-        '/node_modules/.pnpm/@esbuild',
-        '/node_modules/.pnpm/webpack',
-        '/node_modules/.pnpm/rollup',
-        '/node_modules/.pnpm/terser',
+        './**/@swc/core-linux-x64-gnu*',
+        './**/@swc/core-linux-x64-musl*',
+        './**/@esbuild*',
+        './**/webpack*',
+        './**/rollup*',
+        './**/terser*',
       ],
     },
     serverActions: true,
