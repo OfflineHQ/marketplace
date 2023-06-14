@@ -39,7 +39,7 @@ const nextConfig = {
   //     transform: '@ui/components/{{ matches.[1] }}/{{member}}',
   //   },
   // },
-  transpilePackages: ['@ui/components', '@ui/theme', '@ui/icons'],
+  transpilePackages: ['@ui/components', '@ui/theme', '@ui/icons', 'styled-jsx'],
   images: {
     remotePatterns: [
       {
