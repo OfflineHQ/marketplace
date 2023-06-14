@@ -360,9 +360,6 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       const openloginAdapter = new OpenloginAdapter({
         loginSettings: {
           mfaLevel: 'default',
-          sessionTime:
-            parseInt(process.env.TOKEN_LIFE_TIME as string) ||
-            30 * 24 * 60 * 60, // 30 days,
         },
         adapterSettings: {
           uxMode: 'popup',
@@ -375,6 +372,8 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
             // defaultLanguage: 'de', // todo add language
           },
         },
+        sessionTime:
+          parseInt(process.env.TOKEN_LIFE_TIME as string) || 30 * 24 * 60 * 60, // 30 days,
       });
 
       const web3AuthModalPack = new Web3AuthModalPack(
