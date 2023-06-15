@@ -16,7 +16,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-const withNextIntl = require('next-intl/plugin')('./i18n.ts');
+const withNextIntl = require('next-intl/plugin')();
 
 const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
   ? null
@@ -57,8 +57,8 @@ const nextConfig = {
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
       '*': [
-        // './**/@swc/core-linux-x64-gnu*',
-        // './**/@swc/core-linux-x64-musl*',
+        './**/@swc/core-linux-x64-gnu*',
+        './**/@swc/core-linux-x64-musl*',
         './**/@esbuild*',
         './**/webpack*',
         './**/rollup*',
