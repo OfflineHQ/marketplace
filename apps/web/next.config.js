@@ -52,20 +52,20 @@ const nextConfig = {
   },
   // optimize build with vercel nft (node file tracing) https://nextjs.org/docs/advanced-features/output-file-tracing
   // outputFileTracingRoot needed for monorepo
-  output: 'standalone',
+  // output: 'standalone',
   experimental: {
-    outputFileTracingRoot: path.join(__dirname, '../../'),
-    outputFileTracingExcludes: {
-      '*': [
-        './**/@swc/core-linux-x64-gnu*',
-        './**/@swc/core-linux-x64-musl*',
-        './**/@esbuild*',
-        './**/webpack*',
-        './**/rollup*',
-        './**/terser*',
-        './**/sharp*',
-      ],
-    },
+    // outputFileTracingRoot: path.join(__dirname, '../../'),
+    // outputFileTracingExcludes: {
+    //   '*': [
+    //     './**/@swc/core-linux-x64-gnu*',
+    //     './**/@swc/core-linux-x64-musl*',
+    //     './**/@esbuild*',
+    //     './**/webpack*',
+    //     './**/rollup*',
+    //     './**/terser*',
+    //     './**/sharp*',
+    //   ],
+    // },
     serverActions: true,
     appDir: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
