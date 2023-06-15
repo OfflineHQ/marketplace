@@ -55,17 +55,17 @@ const nextConfig = {
   // output: 'standalone',
   experimental: {
     // outputFileTracingRoot: path.join(__dirname, '../../'),
-    // outputFileTracingExcludes: {
-    //   '*': [
-    //     './**/@swc/core-linux-x64-gnu*',
-    //     './**/@swc/core-linux-x64-musl*',
-    //     './**/@esbuild*',
-    //     './**/webpack*',
-    //     './**/rollup*',
-    //     './**/terser*',
-    //     './**/sharp*',
-    //   ],
-    // },
+    outputFileTracingExcludes: {
+      '*': [
+        './**/@swc/core-linux-x64-gnu*',
+        './**/@swc/core-linux-x64-musl*',
+        './**/@esbuild*',
+        './**/webpack*',
+        './**/rollup*',
+        './**/terser*',
+        './**/sharp*',
+      ],
+    },
     serverActions: true,
     appDir: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
