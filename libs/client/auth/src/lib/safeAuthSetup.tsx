@@ -16,17 +16,17 @@ import {
   ADAPTER_EVENTS,
   CHAIN_NAMESPACES,
   WALLET_ADAPTERS,
-  SafeEventEmitterProvider,
 } from '@web3auth/base';
 import { LOGIN_MODAL_EVENTS } from '@web3auth/ui';
 import { ethers } from 'ethers';
 import { SiweMessage } from 'siwe';
 import { signIn, signOut, getCsrfToken, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-// import { getCurrentUser } from '@web/lib/session';
+// import { getCurrentUser } from '@web/app/lib/session';
 
 import { logger } from '@logger';
 import { isCypressRunning } from '@utils';
+import { ExternalProvider } from '@ethersproject/providers';
 
 type ChainConfig = Web3AuthOptions['chainConfig'] & {
   safeTxServiceUrl?: string;
@@ -81,9 +81,7 @@ export interface UseSafeAuthProps {
 export function useSafeAuth(props: UseSafeAuthProps = {}) {
   const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthModalPack>>();
   const [safeUser, setSafeUser] = useState<SafeUser>();
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null
-  );
+  const [provider, setProvider] = useState<ExternalProvider | null>(null);
   const [connecting, setConnecting] = useState(false);
   const isDark = useDarkMode();
   const { toast } = useToast();
@@ -203,8 +201,9 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       if (raceResult === 'connected') {
         // used to force signIn in case the user denied the connection
         await safeAuth.signIn();
-        console.log('signIn: ', { safeAuth });
-        setProvider(safeAuth.getProvider() as SafeEventEmitterProvider);
+        const _provider = safeAuth.getProvider();
+        console.log('signIn: ', { safeAuth, _provider });
+        setProvider(_provider);
       }
 
       safeAuth.unsubscribe(
@@ -291,7 +290,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   useEffect(() => {
     (async () => {
       try {
-        console.log('PROVIDER: ', provider);
+        console.log('PROVIDER: ', { provider });
         if (provider) {
           console.log('provider connected:', { session });
           if (!session?.user) {
@@ -388,16 +387,12 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
 
       setSafeAuth(safeAuthKit);
 
-      const safeProvider: SafeEventEmitterProvider | null =
-        safeAuthKit.getProvider() as SafeEventEmitterProvider;
-      // if the provider is set, mean the user is already connected to web3auth
+      const safeProvider: ExternalProvider | null = safeAuthKit.getProvider(); // if the provider is set, mean the user is already connected to web3auth
       // otherwise we deconnect the user from next auth if he is connected to sync the state with web3auth
       if (safeProvider) {
         setProvider(safeProvider);
         setConnecting(true);
       } else logoutSiwe({ refresh: false });
-      console.log({ initProvider: safeProvider });
-
       safeAuthKit.subscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
       safeAuthKit.subscribe(ADAPTER_EVENTS.CONNECTING, () =>
         setConnecting(true)
