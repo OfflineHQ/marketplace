@@ -52,9 +52,9 @@ const nextConfig = {
   },
   // optimize build with vercel nft (node file tracing) https://nextjs.org/docs/advanced-features/output-file-tracing
   // outputFileTracingRoot needed for monorepo
-  // output: 'standalone',
+  output: 'standalone',
   experimental: {
-    // outputFileTracingRoot: path.join(__dirname, '../../'),
+    outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
       '*': [
         './**/@swc/core-linux-x64-gnu*',
