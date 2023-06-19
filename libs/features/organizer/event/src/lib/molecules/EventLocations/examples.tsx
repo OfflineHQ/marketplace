@@ -1,9 +1,9 @@
 // EventLocations/examples.tsx
-import { EventDateLocation, Location } from '../../types';
+import { EventDateLocation, LocationAddress } from '../../types';
 import { type EventLocationsProps } from './EventLocations';
 
 // Define some sample locations
-export const location1: Location = {
+export const location1: LocationAddress = {
   street: '123 Main St',
   city: 'New York',
   state: 'NY',
@@ -12,7 +12,7 @@ export const location1: Location = {
   placeId: 'ChIJd8BlQ2BZwokRAFUEcm_qrcA',
 };
 
-export const location2: Location = {
+export const location2: LocationAddress = {
   street: '456 Broadway',
   city: 'New York',
   state: 'NY',
@@ -21,7 +21,7 @@ export const location2: Location = {
   placeId: 'ChIJhRwB-yFawokRv_x-4eLe3WI',
 };
 
-export const location3: Location = {
+export const location3: LocationAddress = {
   venue: 'Stade de France',
   city: 'Saint-Denis',
   state: 'Île-de-France',

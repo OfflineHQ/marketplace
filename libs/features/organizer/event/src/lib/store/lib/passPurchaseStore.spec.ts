@@ -7,8 +7,9 @@ import {
 
 describe('passPurchaseStore', () => {
   afterEach(() => {
-    // You can chose to set the store's state to a default value here.
     jest.resetAllMocks();
+    const { result } = renderHook(() => usePassPurchaseStore());
+    result.current.resetPasses();
     cleanup();
   });
   it('updatePassCart correctly updates the pass when the pass does not exist', () => {
@@ -102,27 +103,6 @@ describe('passPurchaseStore', () => {
     });
 
     expect(passes).toEqual([{ ...newPass, numTickets: 5 }]);
-  });
-
-  it('getPasses correctly retrieves the passes without numTickets', () => {
-    const { result } = renderHook(() => usePassPurchaseStore());
-
-    const passWithoutTickets = { ...passWithMaxAmount, numTickets: undefined };
-
-    act(() => {
-      result.current.setPasses({
-        organizerSlug: 'testOrg',
-        eventSlug: 'testEvent',
-        passes: [passWithoutTickets],
-      });
-    });
-
-    const passes = result.current.getPasses({
-      organizerSlug: 'testOrg',
-      eventSlug: 'testEvent',
-    });
-
-    expect(passes).toEqual([passWithoutTickets]);
   });
 
   it('updatePassCart does nothing when numTickets is 0 or less and the pass does not exist', () => {

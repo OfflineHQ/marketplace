@@ -3,7 +3,7 @@
 'use client';
 
 import React from 'react';
-import type { Location, EventDateLocation } from '../../types';
+import type { LocationAddress, EventDateLocation } from '../../types';
 import { Location as LocationIcon } from '@ui/icons';
 import { Button } from '@ui/components';
 
@@ -18,14 +18,14 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
 }) => {
   if (!eventDateLocations.length) return null;
 
-  const handleClick = (location: Location) => {
+  const handleClick = (location: LocationAddress) => {
     const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${location.placeId}`;
     window.open(googleMapsUrl, '_blank');
   };
 
   const commonLocation = eventDateLocations[0].location;
 
-  const renderLocation = (location: Location) => {
+  const renderLocation = (location: LocationAddress) => {
     if (location.venue) {
       return location.venue;
     }
