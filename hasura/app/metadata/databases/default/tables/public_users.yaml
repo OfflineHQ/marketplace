@@ -1,44 +1,12 @@
 table:
   name: users
   schema: public
-array_relationships:
-  - name: accounts
-    using:
-      foreign_key_constraint_on:
-        column: userId
-        table:
-          name: accounts
-          schema: public
-  - name: sessions
-    using:
-      foreign_key_constraint_on:
-        column: userId
-        table:
-          name: sessions
-          schema: public
-select_permissions:
-  - role: user
-    permission:
-      columns:
-        - email
-        - emailVerified
-        - firstName
-        - id
-        - image
-        - lastName
-        - name
-      filter:
-        id:
-          _eq: X-Hasura-User-Id
 update_permissions:
   - role: user
     permission:
       columns:
         - email
-        - id
         - image
-        - name
-        - emailVerified
       filter:
         id:
           _eq: X-Hasura-User-Id
