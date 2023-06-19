@@ -50,29 +50,7 @@ services:
       retries: 10
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-  prisma-test-db:
-    container_name: prisma_test_db
-    image: postgres:13
-    command: postgres -c fsync=off -c synchronous_commit=off -c full_page_writes=off -c random_page_cost=1.0
-    env_file:
-      - .env.test.jest
-    ports:
-      - '$PRISMA_DB_PORT:5432'
-    volumes:
-      - prisma_test_db_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER}']
-      interval: 2s
-      timeout: 2s
-      retries: 10
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
-
 volumes:
-  prisma_test_db_data:
-    driver_opts:
-      type: tmpfs
-      device: tmpfs
   test_db_data:
     driver_opts:
       type: tmpfs

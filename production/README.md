@@ -58,8 +58,6 @@ Click on the button below to deploy the web app to Vercel. This will create a ne
     "format:write",
     "test",
     "affected:test",
-    "test-prisma",
-    "affected:test-prisma",
     "test-hasura",
     "affected:test-hasura",
     "affected:test",
