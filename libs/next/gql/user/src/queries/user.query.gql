@@ -1,5 +1,5 @@
-query getUser($id: String!) {
-  users(where: { id: { _eq: $id } }) {
+query getUser($address: String!) {
+  users(where: { address: { _eq: $address } }) {
     ...UserFields
   }
 }
