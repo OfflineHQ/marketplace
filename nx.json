@@ -16,8 +16,6 @@
           "format:write",
           "test",
           "affected:test",
-          "test-prisma",
-          "affected:test-prisma",
           "test-hasura",
           "affected:test-hasura",
           "affected:test",

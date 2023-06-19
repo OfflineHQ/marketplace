@@ -20,8 +20,6 @@ module.exports = {
    * It's recommend you update to the latest format.
    * You can do this by removing snapshotFormat property
    * and running tests with --update-snapshot flag.
-   * Example: "nx affected --targets=test,test-hasura,test-prisma --update-snapshot"
-   * More info: https://jestjs.io/docs/upgrading-to-jest29#snapshot-format
    */
   snapshotFormat: { escapeString: true, printBasicPrototype: true },
 };
