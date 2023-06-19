@@ -1,44 +1,16 @@
-mutation CreateUserWithCredentials(
-  $password: passwords_insert_input!
-  $user: users_insert_input!
-) {
-  insert_users_one(object: $user) {
-    ...UserFields
-  }
-  insert_passwords_one(object: $password) {
-    hash
-  }
-}
-
-mutation UpdateUser($id: String!, $user: users_set_input!) {
+mutation UpdateUser($id: uuid!, $user: users_set_input!) {
   update_users_by_pk(_set: $user, pk_columns: { id: $id }) {
     ...UserFields
   }
 }
-
-query GetUserByAccount($provider: String!, $providerAccountId: String!) {
-  users(
-    where: {
-      _and: {
-        accounts: {
-          provider: { _eq: $provider }
-          providerAccountId: { _eq: $providerAccountId }
-        }
-      }
-    }
-  ) {
-    ...UserFields
-  }
-}
-
 mutation CreateUser($user: users_insert_input!) {
   insert_users_one(object: $user) {
     ...UserFields
   }
 }
 
-query GetUser($id: String!) {
-  users(where: { id: { _eq: $id } }) {
+query GetUser($address: String!) {
+  users(where: { address: { _eq: $address } }) {
     ...UserFields
   }
 }
@@ -46,20 +18,5 @@ query GetUser($id: String!) {
 query GetUserByEmail($email: String!) {
   users(where: { email: { _eq: $email } }) {
     ...UserFields
-  }
-}
-
-query GetUsersAndAccountByEmail($email: String!) {
-  users(where: { email: { _eq: $email } }) {
-    ...UserAndAccountFields
-  }
-}
-
-query GetUserAndPasswordByEmail($email: String!) {
-  users(where: { email: { _eq: $email } }) {
-    ...UserFields
-    passwords {
-      ...PasswordFields
-    }
   }
 }

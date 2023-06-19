@@ -18,17 +18,20 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  float8: any;
-  timestamp: any;
+  uuid: any;
 };
 
-export type BalanceTokenData = {
-  __typename?: 'BalanceTokenData';
-  address?: Maybe<Scalars['String']>;
-  balanceUsd?: Maybe<Scalars['Float']>;
-  decimals?: Maybe<Scalars['Int']>;
-  name?: Maybe<Scalars['String']>;
-  symbol?: Maybe<Scalars['String']>;
+/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['Boolean']>;
+  _gt?: InputMaybe<Scalars['Boolean']>;
+  _gte?: InputMaybe<Scalars['Boolean']>;
+  _in?: InputMaybe<Array<Scalars['Boolean']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['Boolean']>;
+  _lte?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Scalars['Boolean']>;
+  _nin?: InputMaybe<Array<Scalars['Boolean']>>;
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
@@ -64,80 +67,6 @@ export type String_Comparison_Exp = {
   _similar?: InputMaybe<Scalars['String']>;
 };
 
-/** columns and relationships of "Wallet" */
-export type Wallet = {
-  __typename?: 'Wallet';
-  address: Scalars['String'];
-  balanceUsd: Scalars['float8'];
-  createdAt: Scalars['timestamp'];
-  id: Scalars['String'];
-  name?: Maybe<Scalars['String']>;
-  network: Scalars['String'];
-  updatedAt: Scalars['timestamp'];
-};
-
-/** Boolean expression to filter rows from the table "Wallet". All fields are combined with a logical 'AND'. */
-export type Wallet_Bool_Exp = {
-  _and?: InputMaybe<Array<Wallet_Bool_Exp>>;
-  _not?: InputMaybe<Wallet_Bool_Exp>;
-  _or?: InputMaybe<Array<Wallet_Bool_Exp>>;
-  address?: InputMaybe<String_Comparison_Exp>;
-  balanceUsd?: InputMaybe<Float8_Comparison_Exp>;
-  createdAt?: InputMaybe<Timestamp_Comparison_Exp>;
-  id?: InputMaybe<String_Comparison_Exp>;
-  name?: InputMaybe<String_Comparison_Exp>;
-  network?: InputMaybe<String_Comparison_Exp>;
-  updatedAt?: InputMaybe<Timestamp_Comparison_Exp>;
-};
-
-/** Ordering options when selecting data from "Wallet". */
-export type Wallet_Order_By = {
-  address?: InputMaybe<Order_By>;
-  balanceUsd?: InputMaybe<Order_By>;
-  createdAt?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  name?: InputMaybe<Order_By>;
-  network?: InputMaybe<Order_By>;
-  updatedAt?: InputMaybe<Order_By>;
-};
-
-/** select columns of table "Wallet" */
-export const enum Wallet_Select_Column {
-  /** column name */
-  Address = 'address',
-  /** column name */
-  BalanceUsd = 'balanceUsd',
-  /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  Network = 'network',
-  /** column name */
-  UpdatedAt = 'updatedAt',
-}
-
-/** Streaming cursor of the table "Wallet" */
-export type Wallet_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: Wallet_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Wallet_Stream_Cursor_Value_Input = {
-  address?: InputMaybe<Scalars['String']>;
-  balanceUsd?: InputMaybe<Scalars['float8']>;
-  createdAt?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  network?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['timestamp']>;
-};
-
 /** ordering argument of a cursor */
 export const enum Cursor_Ordering {
   /** ascending ordering of the cursor */
@@ -145,61 +74,6 @@ export const enum Cursor_Ordering {
   /** descending ordering of the cursor */
   Desc = 'DESC',
 }
-
-/** Boolean expression to compare columns of type "float8". All fields are combined with logical 'AND'. */
-export type Float8_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['float8']>;
-  _gt?: InputMaybe<Scalars['float8']>;
-  _gte?: InputMaybe<Scalars['float8']>;
-  _in?: InputMaybe<Array<Scalars['float8']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['float8']>;
-  _lte?: InputMaybe<Scalars['float8']>;
-  _neq?: InputMaybe<Scalars['float8']>;
-  _nin?: InputMaybe<Array<Scalars['float8']>>;
-};
-
-/** mutation root */
-export type Mutation_Root = {
-  __typename?: 'mutation_root';
-  /** delete data from the table: "users" */
-  delete_users?: Maybe<Users_Mutation_Response>;
-  /** delete single row from the table: "users" */
-  delete_users_by_pk?: Maybe<Users>;
-  /** update data of the table: "users" */
-  update_users?: Maybe<Users_Mutation_Response>;
-  /** update single row of the table: "users" */
-  update_users_by_pk?: Maybe<Users>;
-  /** update multiples rows of table: "users" */
-  update_users_many?: Maybe<Array<Maybe<Users_Mutation_Response>>>;
-};
-
-/** mutation root */
-export type Mutation_RootDelete_UsersArgs = {
-  where: Users_Bool_Exp;
-};
-
-/** mutation root */
-export type Mutation_RootDelete_Users_By_PkArgs = {
-  id: Scalars['String'];
-};
-
-/** mutation root */
-export type Mutation_RootUpdate_UsersArgs = {
-  _set?: InputMaybe<Users_Set_Input>;
-  where: Users_Bool_Exp;
-};
-
-/** mutation root */
-export type Mutation_RootUpdate_Users_By_PkArgs = {
-  _set?: InputMaybe<Users_Set_Input>;
-  pk_columns: Users_Pk_Columns_Input;
-};
-
-/** mutation root */
-export type Mutation_RootUpdate_Users_ManyArgs = {
-  updates: Array<Users_Updates>;
-};
 
 /** column ordering options */
 export const enum Order_By {
@@ -219,33 +93,10 @@ export const enum Order_By {
 
 export type Query_Root = {
   __typename?: 'query_root';
-  /** fetch data from the table: "Wallet" */
-  Wallet: Array<Wallet>;
-  /** fetch data from the table: "Wallet" using primary key columns */
-  Wallet_by_pk?: Maybe<Wallet>;
-  /** Get balances of token for an address in given network */
-  balancesEIP377?: Maybe<Array<Maybe<BalanceTokenData>>>;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>;
-};
-
-export type Query_RootWalletArgs = {
-  distinct_on?: InputMaybe<Array<Wallet_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Wallet_Order_By>>;
-  where?: InputMaybe<Wallet_Bool_Exp>;
-};
-
-export type Query_RootWallet_By_PkArgs = {
-  id: Scalars['String'];
-};
-
-export type Query_RootBalancesEip377Args = {
-  address: Scalars['String'];
-  network: Scalars['String'];
 };
 
 export type Query_RootUsersArgs = {
@@ -257,41 +108,17 @@ export type Query_RootUsersArgs = {
 };
 
 export type Query_RootUsers_By_PkArgs = {
-  id: Scalars['String'];
+  id: Scalars['uuid'];
 };
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
-  /** fetch data from the table: "Wallet" */
-  Wallet: Array<Wallet>;
-  /** fetch data from the table: "Wallet" using primary key columns */
-  Wallet_by_pk?: Maybe<Wallet>;
-  /** fetch data from the table in a streaming manner : "Wallet" */
-  Wallet_stream: Array<Wallet>;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>;
-  /** fetch data from the table in a streaming manner : "users" */
+  /** fetch data from the table in a streaming manner: "users" */
   users_stream: Array<Users>;
-};
-
-export type Subscription_RootWalletArgs = {
-  distinct_on?: InputMaybe<Array<Wallet_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Wallet_Order_By>>;
-  where?: InputMaybe<Wallet_Bool_Exp>;
-};
-
-export type Subscription_RootWallet_By_PkArgs = {
-  id: Scalars['String'];
-};
-
-export type Subscription_RootWallet_StreamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<Wallet_Stream_Cursor_Input>>;
-  where?: InputMaybe<Wallet_Bool_Exp>;
 };
 
 export type Subscription_RootUsersArgs = {
@@ -303,7 +130,7 @@ export type Subscription_RootUsersArgs = {
 };
 
 export type Subscription_RootUsers_By_PkArgs = {
-  id: Scalars['String'];
+  id: Scalars['uuid'];
 };
 
 export type Subscription_RootUsers_StreamArgs = {
@@ -312,29 +139,13 @@ export type Subscription_RootUsers_StreamArgs = {
   where?: InputMaybe<Users_Bool_Exp>;
 };
 
-/** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
-export type Timestamp_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['timestamp']>;
-  _gt?: InputMaybe<Scalars['timestamp']>;
-  _gte?: InputMaybe<Scalars['timestamp']>;
-  _in?: InputMaybe<Array<Scalars['timestamp']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['timestamp']>;
-  _lte?: InputMaybe<Scalars['timestamp']>;
-  _neq?: InputMaybe<Scalars['timestamp']>;
-  _nin?: InputMaybe<Array<Scalars['timestamp']>>;
-};
-
 /** columns and relationships of "users" */
 export type Users = {
   __typename?: 'users';
-  email?: Maybe<Scalars['String']>;
-  emailVerified?: Maybe<Scalars['timestamp']>;
-  firstName?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
-  image?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
+  address: Scalars['String'];
+  email: Scalars['String'];
+  emailVerified: Scalars['Boolean'];
+  id: Scalars['uuid'];
 };
 
 /** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
@@ -342,66 +153,31 @@ export type Users_Bool_Exp = {
   _and?: InputMaybe<Array<Users_Bool_Exp>>;
   _not?: InputMaybe<Users_Bool_Exp>;
   _or?: InputMaybe<Array<Users_Bool_Exp>>;
+  address?: InputMaybe<String_Comparison_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
-  emailVerified?: InputMaybe<Timestamp_Comparison_Exp>;
-  firstName?: InputMaybe<String_Comparison_Exp>;
-  id?: InputMaybe<String_Comparison_Exp>;
-  image?: InputMaybe<String_Comparison_Exp>;
-  lastName?: InputMaybe<String_Comparison_Exp>;
-  name?: InputMaybe<String_Comparison_Exp>;
-};
-
-/** response of any mutation on the table "users" */
-export type Users_Mutation_Response = {
-  __typename?: 'users_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Users>;
+  emailVerified?: InputMaybe<Boolean_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
 };
 
 /** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
+  address?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   emailVerified?: InputMaybe<Order_By>;
-  firstName?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  image?: InputMaybe<Order_By>;
-  lastName?: InputMaybe<Order_By>;
-  name?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: users */
-export type Users_Pk_Columns_Input = {
-  id: Scalars['String'];
 };
 
 /** select columns of table "users" */
 export const enum Users_Select_Column {
   /** column name */
+  Address = 'address',
+  /** column name */
   Email = 'email',
   /** column name */
   EmailVerified = 'emailVerified',
   /** column name */
-  FirstName = 'firstName',
-  /** column name */
   Id = 'id',
-  /** column name */
-  Image = 'image',
-  /** column name */
-  LastName = 'lastName',
-  /** column name */
-  Name = 'name',
 }
-
-/** input type for updating data in table "users" */
-export type Users_Set_Input = {
-  email?: InputMaybe<Scalars['String']>;
-  emailVerified?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  image?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-};
 
 /** Streaming cursor of the table "users" */
 export type Users_Stream_Cursor_Input = {
@@ -413,54 +189,32 @@ export type Users_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Users_Stream_Cursor_Value_Input = {
+  address?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
-  emailVerified?: InputMaybe<Scalars['timestamp']>;
-  firstName?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
-  image?: InputMaybe<Scalars['String']>;
-  lastName?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  emailVerified?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['uuid']>;
 };
 
-export type Users_Updates = {
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<Users_Set_Input>;
-  where: Users_Bool_Exp;
-};
-
-export type BalancesEip377QueryVariables = Exact<{
-  network: Scalars['String'];
-  address: Scalars['String'];
-}>;
-
-export type BalancesEip377Query = {
-  __typename?: 'query_root';
-  balancesEIP377?: Array<{
-    __typename?: 'BalanceTokenData';
-    address?: string | null;
-    balanceUsd?: number | null;
-    decimals?: number | null;
-    name?: string | null;
-    symbol?: string | null;
-  } | null> | null;
+/** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
+export type Uuid_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['uuid']>;
+  _gt?: InputMaybe<Scalars['uuid']>;
+  _gte?: InputMaybe<Scalars['uuid']>;
+  _in?: InputMaybe<Array<Scalars['uuid']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['uuid']>;
+  _lte?: InputMaybe<Scalars['uuid']>;
+  _neq?: InputMaybe<Scalars['uuid']>;
+  _nin?: InputMaybe<Array<Scalars['uuid']>>;
 };
 
 export type GetUserQueryVariables = Exact<{
-  id: Scalars['String'];
+  address: Scalars['String'];
 }>;
 
 export type GetUserQuery = {
   __typename?: 'query_root';
-  users: Array<{
-    __typename?: 'users';
-    email?: string | null;
-    emailVerified?: any | null;
-    id: string;
-    image?: string | null;
-    name?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
-  }>;
+  users: Array<{ __typename?: 'users'; id: any; email: string }>;
 };
 
 export type GetUserByEmailQueryVariables = Exact<{
@@ -469,98 +223,24 @@ export type GetUserByEmailQueryVariables = Exact<{
 
 export type GetUserByEmailQuery = {
   __typename?: 'query_root';
-  users: Array<{
-    __typename?: 'users';
-    email?: string | null;
-    emailVerified?: any | null;
-    id: string;
-    image?: string | null;
-    name?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
-  }>;
+  users: Array<{ __typename?: 'users'; id: any; email: string }>;
 };
 
 export type UserFieldsFragment = {
   __typename?: 'users';
-  email?: string | null;
-  emailVerified?: any | null;
-  id: string;
-  image?: string | null;
-  name?: string | null;
-  firstName?: string | null;
-  lastName?: string | null;
-};
-
-export type GetWalletsByAddressQueryVariables = Exact<{
-  address: Scalars['String'];
-}>;
-
-export type GetWalletsByAddressQuery = {
-  __typename?: 'query_root';
-  Wallet: Array<{
-    __typename?: 'Wallet';
-    balanceUsd: any;
-    network: string;
-    updatedAt: any;
-  }>;
-};
-
-export type SubscribeWalletsByAddressSubscriptionVariables = Exact<{
-  address: Scalars['String'];
-}>;
-
-export type SubscribeWalletsByAddressSubscription = {
-  __typename?: 'subscription_root';
-  Wallet: Array<{
-    __typename?: 'Wallet';
-    address: string;
-    balanceUsd: any;
-    updatedAt: any;
-    name?: string | null;
-  }>;
+  id: any;
+  email: string;
 };
 
 export const UserFieldsFragmentDoc = `
     fragment UserFields on users {
-  email
-  emailVerified
   id
-  image
-  name
-  firstName
-  lastName
+  email
 }
     `;
-export const BalancesEip377Document = `
-    query balancesEIP377($network: String!, $address: String!) {
-  balancesEIP377(network: $network, address: $address) {
-    address
-    balanceUsd
-    decimals
-    name
-    symbol
-  }
-}
-    `;
-export const useBalancesEip377Query = <
-  TData = BalancesEip377Query,
-  TError = Error
->(
-  variables: BalancesEip377QueryVariables,
-  options?: UseQueryOptions<BalancesEip377Query, TError, TData>
-) =>
-  useQuery<BalancesEip377Query, TError, TData>(
-    ['balancesEIP377', variables],
-    fetchDataReactQuery<BalancesEip377Query, BalancesEip377QueryVariables>(
-      BalancesEip377Document,
-      variables
-    ),
-    options
-  );
 export const GetUserDocument = `
-    query getUser($id: String!) {
-  users(where: {id: {_eq: $id}}) {
+    query getUser($address: String!) {
+  users(where: {address: {_eq: $address}}) {
     ...UserFields
   }
 }
@@ -599,37 +279,3 @@ export const useGetUserByEmailQuery = <
     ),
     options
   );
-export const GetWalletsByAddressDocument = `
-    query getWalletsByAddress($address: String!) {
-  Wallet(where: {address: {_eq: $address}}) {
-    balanceUsd
-    network
-    updatedAt
-  }
-}
-    `;
-export const useGetWalletsByAddressQuery = <
-  TData = GetWalletsByAddressQuery,
-  TError = Error
->(
-  variables: GetWalletsByAddressQueryVariables,
-  options?: UseQueryOptions<GetWalletsByAddressQuery, TError, TData>
-) =>
-  useQuery<GetWalletsByAddressQuery, TError, TData>(
-    ['getWalletsByAddress', variables],
-    fetchDataReactQuery<
-      GetWalletsByAddressQuery,
-      GetWalletsByAddressQueryVariables
-    >(GetWalletsByAddressDocument, variables),
-    options
-  );
-export const SubscribeWalletsByAddressDocument = `
-    subscription subscribeWalletsByAddress($address: String!) {
-  Wallet(where: {address: {_eq: $address}}) {
-    address
-    balanceUsd
-    updatedAt
-    name
-  }
-}
-    `;

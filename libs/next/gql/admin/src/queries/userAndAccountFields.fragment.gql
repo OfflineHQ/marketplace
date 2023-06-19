@@ -1,6 +1,0 @@
-fragment UserAndAccountFields on users {
-  ...UserFields
-  accounts {
-    ...AccountFields
-  }
-}
