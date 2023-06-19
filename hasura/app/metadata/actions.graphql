@@ -1,0 +1,17 @@
+input BalancesEIP377 {
+  network: String!
+  address: String!
+}
+
+type BalancesEIP377Output {
+  balances: [BalanceTokenData]
+}
+
+type BalanceTokenData {
+  address: String
+  name: String
+  symbol: String
+  decimals: Int
+  balanceUsd: Float
+}
+
