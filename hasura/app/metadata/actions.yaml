@@ -1,0 +1,9 @@
+actions: []
+custom_types:
+  enums: []
+  input_objects:
+    - name: BalancesEIP377
+  objects:
+    - name: BalancesEIP377Output
+    - name: BalanceTokenData
+  scalars: []
