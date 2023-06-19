@@ -6,7 +6,7 @@ declare module 'next-auth' {
     id: string;
     // crypto wallet address
     address: string;
-    chainId: number;
+    email?: string;
   }
 
   interface Session {

@@ -3,7 +3,6 @@ import { logger } from '@logger';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { getCsrfToken } from 'next-auth/react';
 import { SiweMessage } from 'siwe';
-import * as Sentry from '@sentry/nextjs';
 
 export const SiweProvider = () =>
   CredentialsProvider({
@@ -32,16 +31,15 @@ export const SiweProvider = () =>
           domain: nextAuthUrl.host,
           nonce,
         });
+        //TODO add api call to get user from backend with siwe.address. If user not found create one with uuid and siwe.address
         console.log({ result, siwe });
         if (result.success) {
           return {
-            id: siwe.address,
+            id: siwe.address, //TODO remove because come from backend user table
             address: siwe.address,
-            chainId: siwe.chainId,
           };
         } else throw new Error('Invalid signature');
       } catch (error) {
-        Sentry.captureException(error);
         console.error({ error });
         return null;
       }
