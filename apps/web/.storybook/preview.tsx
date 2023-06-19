@@ -3,9 +3,9 @@ import { Preview, Decorator } from '@storybook/react';
 import { useEffect, useState } from 'react';
 import { parameters } from '../../../storybook.preview.base';
 import { NextIntlClientProvider } from 'next-intl';
-import { defaultLocale } from '@client/i18n';
-import messagesEn from '../../../libs/client/i18n/src/messages/en.json';
-import messagesfr from '../../../libs/client/i18n/src/messages/fr.json';
+import { defaultLocale } from '@next/i18n';
+import messagesEn from '../../../libs/next/i18n/src/messages/en.json';
+import messagesfr from '../../../libs/next/i18n/src/messages/fr.json';
 
 window.STORYBOOK_ENV = true;
 

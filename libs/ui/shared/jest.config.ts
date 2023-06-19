@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'client-ui-shared',
+  displayName: 'next-ui-shared',
   preset: '../../../jest.preset.js',
   globals: {},
   transform: {

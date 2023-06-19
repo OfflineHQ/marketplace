@@ -5,7 +5,7 @@ import {
   RenderResult,
 } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
-import { messages } from '@client/i18n';
+import { messages } from '@next/i18n';
 
 interface RenderWithProvidersOptions extends Omit<RenderOptions, 'queries'> {
   locale?: string;

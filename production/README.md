@@ -275,7 +275,7 @@ HASURA_GRAPHQL_JWT_SECRET={
             "path": "$.name",
             "default": ""
         },
-        "x-hasura-client-id": {
+        "x-hasura-next-id": {
             "path": "$.clientId",
             "default": ""
         },

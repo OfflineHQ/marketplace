@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'client-ui-theme',
+  displayName: 'next-ui-theme',
   preset: '../../../jest.preset.js',
   globals: {},
   transform: {

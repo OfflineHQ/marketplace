@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { withAuth } from 'next-auth/middleware';
 import createIntlMiddleware from 'next-intl/middleware';
-import { locales, defaultLocale } from '@client/i18n';
+import { locales, defaultLocale } from '@next/i18n';
 
 const authPages = [
   '/dummy', // /user // not working currently

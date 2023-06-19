@@ -2,7 +2,7 @@ import { NextIntlClientProvider, useLocale } from 'next-intl';
 import { LocalPassListClient } from './LocalPassListClient';
 import { EventPassListProps } from '../EventPassList/EventPassList';
 import { deepPick } from '@utils';
-import { messages, defaultLocale, type Locale } from '@client/i18n';
+import { messages, defaultLocale, type Locale } from '@next/i18n';
 
 export type LocalPassListProps = Pick<EventPassListProps, 'EventPassesFetcher'>;
 

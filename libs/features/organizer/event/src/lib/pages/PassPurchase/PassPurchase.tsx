@@ -26,7 +26,7 @@ import {
 } from '../../organisms/PassSelection/PassSelection';
 import { PassTotal } from '../../molecules/PassTotal/PassTotal';
 import { usePassPurchaseStore } from '../../store/index';
-import { useStore } from '@client/store';
+import { useStore } from '@next/store';
 
 export interface PassPurchaseProps
   extends PassSelectionProps,

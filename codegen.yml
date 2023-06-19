@@ -8,14 +8,14 @@ schema:
 
 generates:
   # admin
-  libs/client/gql/admin/src/generated/schema.json:
+  libs/next/gql/admin/src/generated/schema.json:
     plugins:
       - 'introspection'
-  libs/client/gql/admin/src/generated/schema.graphql:
+  libs/next/gql/admin/src/generated/schema.graphql:
     plugins:
       - 'schema-ast'
-  libs/client/gql/admin/src/generated/index.ts:
-    documents: './libs/client/gql/admin/src/queries/**/*.{graphql,gql}'
+  libs/next/gql/admin/src/generated/index.ts:
+    documents: './libs/next/gql/admin/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript':
           constEnums: true
@@ -25,13 +25,13 @@ generates:
           noExport: true
           documentMode: 'string'
       - 'add':
-          content: 'import { fetchData } from "@client/hasura/fetcher";'
+          content: 'import { fetchData } from "@next/hasura/fetcher";'
           placement: 'prepend'
       - 'add':
           content: 'export const adminSdk = getSdk(fetchData({admin:true}));'
           placement: 'append'
   # user
-  libs/client/gql/user/src/generated/schema.json:
+  libs/next/gql/user/src/generated/schema.json:
     plugins:
       - 'introspection'
     schema:
@@ -41,15 +41,15 @@ generates:
             'x-hasura-admin-secret': ${HASURA_ADMIN_SECRET:password}
             'x-hasura-default-role': 'user'
             'x-hasura-role': 'user'
-  libs/client/gql/user/src/generated/schema.graphql:
+  libs/next/gql/user/src/generated/schema.graphql:
     plugins:
       - 'schema-ast'
     schema:
       - *userSchema
-  libs/client/gql/user/src/generated/index.ts:
+  libs/next/gql/user/src/generated/index.ts:
     schema:
       - *userSchema
-    documents: './libs/client/gql/user/src/queries/**/*.{graphql,gql}'
+    documents: './libs/next/gql/user/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript':
           constEnums: true
@@ -57,14 +57,14 @@ generates:
           preResolveTypes: true
       - 'typescript-react-query':
           fetcher:
-            func: '@client/hasura/fetcher#fetchDataReactQuery'
+            func: '@next/hasura/fetcher#fetchDataReactQuery'
             isReactHook: false
           errorType: Error
   # test user
   libs/test-utils/gql/src/generated/test-user.ts:
     schema:
       - *userSchema
-    documents: './libs/client/gql/user/src/queries/**/*.{graphql,gql}'
+    documents: './libs/next/gql/user/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript':
           constEnums: true
@@ -79,7 +79,7 @@ generates:
     # #  TODO: follow up on this issue https://github.com/dotansimha/graphql-code-generator/issues/7700
     # #  ref: https://www.graphql-code-generator.com/plugins/other/hasura-allow-list
     # hasura/app/metadata/query_collections.yaml:
-    #   documents: './libs/client/gql/*/src/queries/**/*.{graphql,gql}'
+    #   documents: './libs/next/gql/*/src/queries/**/*.{graphql,gql}'
     #   plugins:
     #     - 'hasura-allow-list'
     #   hooks:

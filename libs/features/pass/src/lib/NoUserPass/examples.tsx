@@ -1,4 +1,4 @@
-import { AuthProvider, NextAuthProvider } from '@client/auth';
+import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { WithNoUser, WithNormalUser } from '@features/appNav/ui/stories';
 import { AppNavLayout } from '@features/appNav/ui';
 import { NoUserPass } from './NoUserPass';

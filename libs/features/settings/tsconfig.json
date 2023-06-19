@@ -6,7 +6,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "strict": true,
-    "types": ["@client/types"]
+    "types": ["@next/types"]
   },
   "files": [],
   "include": [],
