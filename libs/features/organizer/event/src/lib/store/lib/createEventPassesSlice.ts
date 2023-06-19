@@ -23,6 +23,7 @@ interface SetPassesProps extends EventSlugs {
 
 export interface EventPassesSliceProps {
   passes: AllPassesCart;
+  resetPasses: () => void;
   updatePassCart: (props: UpdatePassCartProps) => void;
   setPasses: (props: SetPassesProps) => void;
   setPassesCart: (props: SetPassesCartProps) => void;
@@ -37,6 +38,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
   get
 ) => ({
   passes: {},
+  resetPasses: () => set({ passes: {} }),
   updatePassCart: ({ organizerSlug, eventSlug, pass }) =>
     set((state) =>
       produce(state, (draft) => {
