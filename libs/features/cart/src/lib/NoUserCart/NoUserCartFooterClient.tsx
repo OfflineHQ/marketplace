@@ -3,7 +3,7 @@
 import { Button, ButtonSkeleton } from '@ui/components';
 import { LogIn } from '@ui/icons';
 import { signIn } from 'next-auth/react';
-import { useAuthContext } from '@client/auth';
+import { useAuthContext } from '@next/auth';
 
 interface NoUserCartFooterClientProps {
   signInText: string;

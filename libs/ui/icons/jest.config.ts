@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'client-ui-icons',
+  displayName: 'next-ui-icons',
   preset: '../../../jest.preset.js',
   transform: {
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nx/react/plugins/jest',

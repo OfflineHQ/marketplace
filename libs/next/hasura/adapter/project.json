@@ -1,0 +1,34 @@
+{
+  "name": "hasura-adapter",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/next/hasura/adapter/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/next/hasura/adapter",
+        "main": "libs/next/hasura/adapter/src/index.ts",
+        "tsConfig": "libs/next/hasura/adapter/tsconfig.lib.json",
+        "assets": ["libs/next/hasura/adapter/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/next/hasura/adapter/**/*.ts"]
+      }
+    },
+    "test-hasura": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/next/hasura/adapter"],
+      "options": {
+        "jestConfig": "libs/next/hasura/adapter/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["data-access; utility"]
+}

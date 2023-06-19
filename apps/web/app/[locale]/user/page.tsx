@@ -1,6 +1,6 @@
 import { Button, Text } from '@ui/components';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@client/next-auth/options';
+import { authOptions } from '@next/next-auth/options';
 import { logger } from '@logger';
 // import { getCurrentUser } from '@web/lib/session';
 

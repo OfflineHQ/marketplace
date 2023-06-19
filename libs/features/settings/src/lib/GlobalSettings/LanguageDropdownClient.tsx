@@ -5,9 +5,9 @@ import { useMemo, useState, useCallback, useEffect } from 'react';
 import { usePathname } from 'next-intl/client';
 import { useSearchParams, useRouter, useParams } from 'next/navigation';
 import { Check } from '@ui/icons';
-import { defaultLocale } from '@client/i18n';
+import { defaultLocale } from '@next/i18n';
 // eslint-disable-next-line import/no-unresolved
-import '@client/types';
+import '@next/types';
 
 export interface LanguageDropdownClientProps {
   languageSelectText: {

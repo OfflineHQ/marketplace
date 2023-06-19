@@ -30,10 +30,13 @@
     "editor.defaultFormatter": "Prisma.prisma"
   },
   "tailwindCSS.experimental.classRegex": [
-    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+    [
+      "cva\\(([^)]*)\\)",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ]
   ],
   "typescript.tsdk": "../../node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "i18n-ally.localesPaths": "libs/client/i18n/src/messages",
+  "i18n-ally.localesPaths": "libs/next/i18n/src/messages",
   "i18n-ally.keystyle": "flat"
 }

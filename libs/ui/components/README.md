@@ -1,7 +1,7 @@
-# client-ui-components
+# next-ui-components
 
 This library was generated with [Nx](https://nx.dev).
 
 ## Running unit tests
 
-Run `nx test client-ui-components` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test next-ui-components` to execute the unit tests via [Jest](https://jestjs.io).

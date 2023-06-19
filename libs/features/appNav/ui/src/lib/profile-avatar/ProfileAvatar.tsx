@@ -6,7 +6,7 @@ import {
   type AvatarProps,
 } from '@ui/components';
 import { emojiAvatarForAddress } from '@ui/shared';
-import type { SafeUser } from '@client/auth';
+import type { SafeUser } from '@next/auth';
 
 export interface ProfileAvatarProps extends Omit<AvatarProps, 'size'> {
   user: SafeUser;

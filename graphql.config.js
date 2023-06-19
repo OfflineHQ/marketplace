@@ -10,7 +10,7 @@ const adminHeaders = {
   'x-hasura-admin-secret': 'password',
 };
 
-const gqlPath = 'libs/client/gql';
+const gqlPath = 'libs/next/gql';
 
 module.exports = {
   projects: {
