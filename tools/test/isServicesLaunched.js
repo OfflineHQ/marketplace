@@ -53,7 +53,7 @@ const isHasuraReady = () => {
 // const isAppReady = () => {
 //   return new Promise(async function (resolve, reject) {
 //     let appReady = false;
-//     const appUrl = `http://localhost:${process.env.CLIENT_PORT}/`;
+//     const appUrl = `http://localhost:${process.env.NEXT_PORT}/`;
 //     while (!appReady) {
 //       try {
 //         const res = await fetch(appUrl);
@@ -75,7 +75,7 @@ const isServicesLaunched = async () => {
   await Promise.allSettled([isHasuraReady(), isHasuraConsoleReady()]);
 
   // // ️️️✅ Best Practice: Speed up during development, if already live then do nothing
-  // let isAppReachable = await portReachable(process.env.CLIENT_PORT);
+  // let isAppReachable = await portReachable(process.env.NEXT_PORT);
   // let isHasuraConsoleReachable = await portReachable(process.env.HASURA_CONSOLE_PORT);
   // if (!isAppReachable || !isHasuraConsoleReachable) {
   //   // if (!isHasuraConsoleReachable) {

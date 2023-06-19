@@ -19,7 +19,7 @@ export default defineConfig({
   e2e: {
     ...nxE2EPreset(__filename),
     chromeWebSecurity: false,
-    baseUrl: `http://localhost:${process.env.CLIENT_PORT}`,
+    baseUrl: `http://localhost:${process.env.NEXT_PORT}`,
     supportFile: 'src/support/e2e.ts',
     setupNodeEvents(on, config) {
       // implement node event listeners here
