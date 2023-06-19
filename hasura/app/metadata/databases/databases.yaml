@@ -12,14 +12,3 @@
         retries: 1
       use_prepared_statements: true
   tables: "!include default/tables/tables.yaml"
-- name: prisma_nestjs_server
-  kind: postgres
-  configuration:
-    connection_info:
-      database_url:
-        from_env: PRISMA_DATABASE_URL_HASURA
-      isolation_level: read-committed
-      use_prepared_statements: false
-  customization:
-    naming_convention: hasura-default
-  tables: "!include prisma_nestjs_server/tables/tables.yaml"

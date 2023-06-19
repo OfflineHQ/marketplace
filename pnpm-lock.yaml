@@ -60,16 +60,16 @@ dependencies:
     version: 1.0.6(@types/react-dom@18.2.4)(@types/react@18.2.11)(react-dom@18.2.0)(react@18.2.0)
   '@safe-global/api-kit':
     specifier: ^1.1.0
-    version: 1.1.0
+    version: 1.1.0(encoding@0.1.13)
   '@safe-global/protocol-kit':
     specifier: ^1.0.1
-    version: 1.0.1
+    version: 1.0.1(encoding@0.1.13)
   '@safe-global/safe-react-components':
     specifier: ^2.0.5
     version: 2.0.5(@mui/material@5.13.5)(react-dom@18.2.0)(react@18.2.0)
   '@sentry/nextjs':
     specifier: ^7.54.0
-    version: 7.54.0(next@13.4.5)(react@18.2.0)(webpack@5.86.0)
+    version: 7.54.0(encoding@0.1.13)(next@13.4.5)(react@18.2.0)(webpack@5.86.0)
   '@sentry/node':
     specifier: ^7.54.0
     version: 7.54.0
@@ -169,9 +169,6 @@ dependencies:
   next-themes:
     specifier: ^0.2.1
     version: 0.2.1(next@13.4.5)(react-dom@18.2.0)(react@18.2.0)
-  node-fetch:
-    specifier: ^2.6.11
-    version: 2.6.11
   nodemailer:
     specifier: ^6.9.3
     version: 6.9.3
@@ -260,40 +257,40 @@ devDependencies:
     version: 14.11.1
   '@graphprotocol/client-cli':
     specifier: ^2.2.22
-    version: 2.2.22(@babel/core@7.22.5)(@envelop/core@3.0.6)(@graphql-mesh/cross-helpers@0.3.4)(@graphql-mesh/store@0.93.1)(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.93.2)(@graphql-tools/delegate@9.0.35)(@graphql-tools/merge@8.4.2)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@9.4.2)(@swc/core@1.3.62)(@types/node@18.14.2)(graphql-tag@2.12.6)(graphql@16.6.0)(react-native@0.71.10)
+    version: 2.2.22(@babel/core@7.22.5)(@envelop/core@3.0.6)(@graphql-mesh/cross-helpers@0.3.4)(@graphql-mesh/store@0.93.1)(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.93.2)(@graphql-tools/delegate@9.0.35)(@graphql-tools/merge@8.4.2)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@9.4.2)(@swc/core@1.3.62)(@types/node@18.14.2)(encoding@0.1.13)(graphql-tag@2.12.6)(graphql@16.6.0)(react-native@0.71.10)
   '@graphql-codegen/add':
     specifier: ^3.2.3
     version: 3.2.3(graphql@16.6.0)
   '@graphql-codegen/cli':
     specifier: ^2.16.5
-    version: 2.16.5(@babel/core@7.22.5)(@swc/core@1.3.62)(@types/node@18.14.2)(graphql@16.6.0)(typescript@5.1.3)
+    version: 2.16.5(@babel/core@7.22.5)(@swc/core@1.3.62)(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)(typescript@5.1.3)
   '@graphql-codegen/client-preset':
     specifier: ^1.3.0
-    version: 1.3.0(graphql@16.6.0)
+    version: 1.3.0(encoding@0.1.13)(graphql@16.6.0)
   '@graphql-codegen/hasura-allow-list':
     specifier: ^2.0.0
     version: 2.0.0(graphql@16.6.0)
   '@graphql-codegen/introspection':
     specifier: ^2.2.3
-    version: 2.2.3(graphql@16.6.0)
+    version: 2.2.3(encoding@0.1.13)(graphql@16.6.0)
   '@graphql-codegen/schema-ast':
     specifier: ^2.6.1
     version: 2.6.1(graphql@16.6.0)
   '@graphql-codegen/typescript':
     specifier: ^2.8.8
-    version: 2.8.8(graphql@16.6.0)
+    version: 2.8.8(encoding@0.1.13)(graphql@16.6.0)
   '@graphql-codegen/typescript-generic-sdk':
     specifier: ^3.1.0
-    version: 3.1.0(graphql-tag@2.12.6)(graphql@16.6.0)
+    version: 3.1.0(encoding@0.1.13)(graphql-tag@2.12.6)(graphql@16.6.0)
   '@graphql-codegen/typescript-operations':
     specifier: ^2.5.13
-    version: 2.5.13(graphql@16.6.0)
+    version: 2.5.13(encoding@0.1.13)(graphql@16.6.0)
   '@graphql-codegen/typescript-react-query':
     specifier: ^4.1.0
-    version: 4.1.0(graphql@16.6.0)
+    version: 4.1.0(encoding@0.1.13)(graphql@16.6.0)
   '@graphql-eslint/eslint-plugin':
     specifier: ^3.19.1
-    version: 3.19.1(@babel/core@7.22.5)(@types/node@18.14.2)(graphql@16.6.0)
+    version: 3.19.1(@babel/core@7.22.5)(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)
   '@next/bundle-analyzer':
     specifier: ^13.4.5
     version: 13.4.5
@@ -350,7 +347,7 @@ devDependencies:
     version: 7.0.0(rollup@2.79.1)
   '@safe-global/auth-kit':
     specifier: ^1.0.0
-    version: 1.0.0(@web3auth/base@5.2.0)(@web3auth/modal@5.2.1)(@web3auth/openlogin-adapter@5.2.1)
+    version: 1.0.0(@web3auth/base@5.2.0)(@web3auth/modal@5.2.1)(@web3auth/openlogin-adapter@5.2.1)(encoding@0.1.13)
   '@storybook/addon-a11y':
     specifier: 7.0.17
     version: 7.0.17(react-dom@18.2.0)(react@18.2.0)
@@ -374,7 +371,7 @@ devDependencies:
     version: 7.0.17
   '@storybook/core-server':
     specifier: 7.0.17
-    version: 7.0.17
+    version: 7.0.17(encoding@0.1.13)
   '@storybook/jest':
     specifier: 0.1.0
     version: 0.1.0
@@ -389,7 +386,7 @@ devDependencies:
     version: 7.0.17(@babel/core@7.22.5)(@swc/core@1.3.62)(esbuild@0.17.19)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.3)
   '@storybook/test-runner':
     specifier: 0.10.0
-    version: 0.10.0(@types/node@18.14.2)(ts-node@10.9.1)
+    version: 0.10.0(@types/node@18.14.2)(encoding@0.1.13)(ts-node@10.9.1)
   '@storybook/testing-library':
     specifier: 0.1.0
     version: 0.1.0
@@ -470,7 +467,7 @@ devDependencies:
     version: 5.2.0(@babel/runtime@7.22.5)
   '@web3auth/modal':
     specifier: ^5.2.1
-    version: 5.2.1(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)(@walletconnect/client@1.8.0)(@walletconnect/types@1.8.0)(react-dom@18.2.0)(react-native@0.71.10)(react@18.2.0)
+    version: 5.2.1(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)(@walletconnect/client@1.8.0)(@walletconnect/types@1.8.0)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.71.10)(react@18.2.0)
   '@web3auth/openlogin-adapter':
     specifier: ^5.2.1
     version: 5.2.1(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)
@@ -495,6 +492,9 @@ devDependencies:
   dotenv-cli:
     specifier: ^6.0.0
     version: 6.0.0
+  encoding:
+    specifier: ^0.1.13
+    version: 0.1.13
   eslint:
     specifier: ~8.15.0
     version: 8.15.0
@@ -548,7 +548,7 @@ devDependencies:
     version: 16.6.0
   graphql-config:
     specifier: ^4.5.0
-    version: 4.5.0(@types/node@18.14.2)(graphql@16.6.0)
+    version: 4.5.0(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)
   husky:
     specifier: ^8.0.3
     version: 8.0.3
@@ -572,10 +572,13 @@ devDependencies:
     version: 13.2.2
   msw:
     specifier: ^1.2.2
-    version: 1.2.2(typescript@5.1.3)
+    version: 1.2.2(encoding@0.1.13)(typescript@5.1.3)
   next-router-mock:
     specifier: ^0.9.6
     version: 0.9.6(next@13.4.5)(react@18.2.0)
+  node-fetch:
+    specifier: ^2.6.11
+    version: 2.6.11(encoding@0.1.13)
   npm-run-all:
     specifier: ^4.1.5
     version: 4.1.5
@@ -661,7 +664,7 @@ packages:
       rfdc: 1.3.0
     dev: true
 
-  /@ardatan/relay-compiler@12.0.0(graphql@16.6.0):
+  /@ardatan/relay-compiler@12.0.0(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-9anThAaj1dQr6IGmzBMcfzOQKTa5artjuPmw8NYK/fiGEMjADbSguBY2FMDykt+QhilR3wc9VA/3yVju7JHg7Q==}
     hasBin: true
     peerDependencies:
@@ -676,13 +679,13 @@ packages:
       babel-preset-fbjs: 3.4.0(@babel/core@7.22.5)
       chalk: 4.1.0
       fb-watchman: 2.0.2
-      fbjs: 3.0.5
+      fbjs: 3.0.5(encoding@0.1.13)
       glob: 7.2.3
       graphql: 16.6.0
       immutable: 3.7.6
       invariant: 2.2.4
       nullthrows: 1.1.1
-      relay-runtime: 12.0.0
+      relay-runtime: 12.0.0(encoding@0.1.13)
       signedsource: 1.0.0
       yargs: 15.4.1
     transitivePeerDependencies:
@@ -690,11 +693,11 @@ packages:
       - supports-color
     dev: true
 
-  /@ardatan/sync-fetch@0.0.1:
+  /@ardatan/sync-fetch@0.0.1(encoding@0.1.13):
     resolution: {integrity: sha512-xhlTqH0m31mnsG0tIP4ETgfSB6gXDaYYsUWTrlUV93fFQPI9dd8hE0Ot6MHLCtqgB32hwJAC3YZMWlXZw7AleA==}
     engines: {node: '>=14'}
     dependencies:
-      node-fetch: 2.6.11
+      node-fetch: 2.6.11(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
     dev: true
@@ -3112,7 +3115,7 @@ packages:
       tslib: 2.5.3
     dev: true
 
-  /@graphprotocol/client-cli@2.2.22(@babel/core@7.22.5)(@envelop/core@3.0.6)(@graphql-mesh/cross-helpers@0.3.4)(@graphql-mesh/store@0.93.1)(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.93.2)(@graphql-tools/delegate@9.0.35)(@graphql-tools/merge@8.4.2)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@9.4.2)(@swc/core@1.3.62)(@types/node@18.14.2)(graphql-tag@2.12.6)(graphql@16.6.0)(react-native@0.71.10):
+  /@graphprotocol/client-cli@2.2.22(@babel/core@7.22.5)(@envelop/core@3.0.6)(@graphql-mesh/cross-helpers@0.3.4)(@graphql-mesh/store@0.93.1)(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.93.2)(@graphql-tools/delegate@9.0.35)(@graphql-tools/merge@8.4.2)(@graphql-tools/utils@9.2.1)(@graphql-tools/wrap@9.4.2)(@swc/core@1.3.62)(@types/node@18.14.2)(encoding@0.1.13)(graphql-tag@2.12.6)(graphql@16.6.0)(react-native@0.71.10):
     resolution: {integrity: sha512-PIi8rFibYZVup+0jb08399RmbGF1ZrqUe6RXzLtKZBT57OWIMWwsFvdJyUAdr8Y8f0rrMn6A+Oy4nP1lf3hc1g==}
     hasBin: true
     peerDependencies:
@@ -3123,8 +3126,8 @@ packages:
       '@graphprotocol/client-auto-type-merging': 1.0.25(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.93.2)(@graphql-tools/delegate@9.0.35)(graphql@16.6.0)
       '@graphprotocol/client-block-tracking': 1.0.14(@graphql-tools/delegate@9.0.35)(graphql@16.6.0)
       '@graphprotocol/client-polling-live': 1.1.1(@envelop/core@3.0.6)(@graphql-tools/merge@8.4.2)(graphql@16.6.0)
-      '@graphql-mesh/cli': 0.82.35(@babel/core@7.22.5)(@swc/core@1.3.62)(@types/node@18.14.2)(graphql-tag@2.12.6)(graphql@16.6.0)(react-native@0.71.10)
-      '@graphql-mesh/graphql': 0.93.1(@graphql-mesh/cross-helpers@0.3.4)(@graphql-mesh/store@0.93.1)(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.93.2)(@graphql-tools/utils@9.2.1)(@types/node@18.14.2)(graphql@16.6.0)(tslib@2.5.3)
+      '@graphql-mesh/cli': 0.82.35(@babel/core@7.22.5)(@swc/core@1.3.62)(@types/node@18.14.2)(encoding@0.1.13)(graphql-tag@2.12.6)(graphql@16.6.0)(react-native@0.71.10)
+      '@graphql-mesh/graphql': 0.93.1(@graphql-mesh/cross-helpers@0.3.4)(@graphql-mesh/store@0.93.1)(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.93.2)(@graphql-tools/utils@9.2.1)(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)(tslib@2.5.3)
       graphql: 16.6.0
       tslib: 2.5.3
     transitivePeerDependencies:
@@ -3174,7 +3177,7 @@ packages:
       tslib: 2.4.1
     dev: true
 
-  /@graphql-codegen/cli@2.16.5(@babel/core@7.22.5)(@swc/core@1.3.62)(@types/node@18.14.2)(graphql@16.6.0)(typescript@5.1.3):
+  /@graphql-codegen/cli@2.16.5(@babel/core@7.22.5)(@swc/core@1.3.62)(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)(typescript@5.1.3):
     resolution: {integrity: sha512-XYPIp+q7fB0xAGSAoRykiTe4oY80VU+z+dw5nuv4mLY0+pv7+pa2C6Nwhdw7a65lXOhFviBApWCCZeqd54SMnA==}
     hasBin: true
     peerDependencies:
@@ -3185,15 +3188,15 @@ packages:
       '@babel/types': 7.22.5
       '@graphql-codegen/core': 2.6.8(graphql@16.6.0)
       '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.6.0)
-      '@graphql-tools/apollo-engine-loader': 7.3.26(graphql@16.6.0)
+      '@graphql-tools/apollo-engine-loader': 7.3.26(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/code-file-loader': 7.3.23(@babel/core@7.22.5)(graphql@16.6.0)
       '@graphql-tools/git-loader': 7.3.0(@babel/core@7.22.5)(graphql@16.6.0)
-      '@graphql-tools/github-loader': 7.3.28(@babel/core@7.22.5)(@types/node@18.14.2)(graphql@16.6.0)
+      '@graphql-tools/github-loader': 7.3.28(@babel/core@7.22.5)(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/graphql-file-loader': 7.5.17(graphql@16.6.0)
       '@graphql-tools/json-file-loader': 7.4.18(graphql@16.6.0)
       '@graphql-tools/load': 7.8.14(graphql@16.6.0)
-      '@graphql-tools/prisma-loader': 7.2.72(@types/node@18.14.2)(graphql@16.6.0)
-      '@graphql-tools/url-loader': 7.17.18(@types/node@18.14.2)(graphql@16.6.0)
+      '@graphql-tools/prisma-loader': 7.2.72(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)
+      '@graphql-tools/url-loader': 7.17.18(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       '@whatwg-node/fetch': 0.6.9(@types/node@18.14.2)
       chalk: 4.1.2
@@ -3203,7 +3206,7 @@ packages:
       debounce: 1.2.1
       detect-indent: 6.1.0
       graphql: 16.6.0
-      graphql-config: 4.5.0(@types/node@18.14.2)(graphql@16.6.0)
+      graphql-config: 4.5.0(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)
       inquirer: 8.2.5
       is-glob: 4.0.3
       json-to-pretty-yaml: 1.2.2
@@ -3230,7 +3233,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@graphql-codegen/client-preset@1.3.0(graphql@16.6.0):
+  /@graphql-codegen/client-preset@1.3.0(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-aUdOvpFszAvDu4TdiucO/Jl1d/spCwZaYLnmrYFD6wKjzLlRAuHiLYV/UEcviTiLNX5vxpJ9lLMnoeuJXnBw2w==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
@@ -3238,12 +3241,12 @@ packages:
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/template': 7.22.5
       '@graphql-codegen/add': 3.2.3(graphql@16.6.0)
-      '@graphql-codegen/gql-tag-operations': 1.6.2(graphql@16.6.0)
+      '@graphql-codegen/gql-tag-operations': 1.6.2(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.6.0)
-      '@graphql-codegen/typed-document-node': 2.3.13(graphql@16.6.0)
-      '@graphql-codegen/typescript': 2.8.8(graphql@16.6.0)
-      '@graphql-codegen/typescript-operations': 2.5.13(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 2.13.8(graphql@16.6.0)
+      '@graphql-codegen/typed-document-node': 2.3.13(encoding@0.1.13)(graphql@16.6.0)
+      '@graphql-codegen/typescript': 2.8.8(encoding@0.1.13)(graphql@16.6.0)
+      '@graphql-codegen/typescript-operations': 2.5.13(encoding@0.1.13)(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 2.13.8(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/documents': 0.1.0(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       '@graphql-typed-document-node/core': 3.1.1(graphql@16.6.0)
@@ -3278,13 +3281,13 @@ packages:
       tslib: 2.5.3
     dev: true
 
-  /@graphql-codegen/gql-tag-operations@1.6.2(graphql@16.6.0):
+  /@graphql-codegen/gql-tag-operations@1.6.2(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-/vUAp1JdBRiLi5Iz+8CXzrRcclkbev3o28ri7Xe8DCHAHNqHTkJZwipJ/V5hdJzQZ5JnlZFCOPiXNmMBaKs8og==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 2.13.8(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 2.13.8(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       auto-bind: 4.0.0
       graphql: 16.6.0
@@ -3305,13 +3308,13 @@ packages:
       yaml: 1.10.2
     dev: true
 
-  /@graphql-codegen/introspection@2.2.3(graphql@16.6.0):
+  /@graphql-codegen/introspection@2.2.3(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-iS0xhy64lapGCsBIBKFpAcymGW+A0LiLSGP9dPl6opZwU1bm/rsahkKvJnc+oCI/xfdQ3Q33zgUKOSCkqmM4Bw==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 2.13.8(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 2.13.8(encoding@0.1.13)(graphql@16.6.0)
       graphql: 16.6.0
       tslib: 2.4.1
     transitivePeerDependencies:
@@ -3383,13 +3386,13 @@ packages:
       tslib: 2.5.3
     dev: true
 
-  /@graphql-codegen/typed-document-node@2.3.13(graphql@16.6.0):
+  /@graphql-codegen/typed-document-node@2.3.13(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-vt1hvBAbYTYUCXblks9KYwR5Ho16hWQljid5xgx77jeVufj5PjnWrOjJfEFKFx17VOM4CKHP8ryoeT4NyjYNWw==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 2.13.8(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 2.13.8(encoding@0.1.13)(graphql@16.6.0)
       auto-bind: 4.0.0
       change-case-all: 1.0.15
       graphql: 16.6.0
@@ -3399,13 +3402,13 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/typed-document-node@4.0.1(graphql@16.6.0):
+  /@graphql-codegen/typed-document-node@4.0.1(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-mQNYCd12JsFSaK6xLry4olY9TdYG7GxQPexU6qU4Om++eKhseGwk2eGmQDRG4Qp8jEDFLMXuHMVUKqMQ1M+F/A==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 4.2.0(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 3.1.1(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 3.1.1(encoding@0.1.13)(graphql@16.6.0)
       auto-bind: 4.0.0
       change-case-all: 1.0.15
       graphql: 16.6.0
@@ -3415,14 +3418,14 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/typescript-generic-sdk@3.1.0(graphql-tag@2.12.6)(graphql@16.6.0):
+  /@graphql-codegen/typescript-generic-sdk@3.1.0(encoding@0.1.13)(graphql-tag@2.12.6)(graphql@16.6.0):
     resolution: {integrity: sha512-nQZi/YGRI1+qCZZsh0V5nz6+hCHSN4OU9tKyOTDsEPyDFnGEukDuRdCH2IZasGn22a3Iu5TUDkgp5w9wEQwGmg==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
       graphql-tag: ^2.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 2.13.1(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 2.13.1(encoding@0.1.13)(graphql@16.6.0)
       auto-bind: 4.0.0
       graphql: 16.6.0
       graphql-tag: 2.12.6(graphql@16.6.0)
@@ -3432,14 +3435,14 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/typescript-operations@2.5.13(graphql@16.6.0):
+  /@graphql-codegen/typescript-operations@2.5.13(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-3vfR6Rx6iZU0JRt29GBkFlrSNTM6t+MSLF86ChvL4d/Jfo/JYAGuB3zNzPhirHYzJPCvLOAx2gy9ID1ltrpYiw==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.6.0)
-      '@graphql-codegen/typescript': 2.8.8(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 2.13.8(graphql@16.6.0)
+      '@graphql-codegen/typescript': 2.8.8(encoding@0.1.13)(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 2.13.8(encoding@0.1.13)(graphql@16.6.0)
       auto-bind: 4.0.0
       graphql: 16.6.0
       tslib: 2.4.1
@@ -3448,14 +3451,14 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/typescript-operations@3.0.4(graphql@16.6.0):
+  /@graphql-codegen/typescript-operations@3.0.4(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-6yE2OL2+WJ1vd5MwFEGXpaxsFGzjAGUytPVHDML3Bi3TwP1F3lnQlIko4untwvHW0JhZEGQ7Ck30H9HjcxpdKA==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 4.2.0(graphql@16.6.0)
-      '@graphql-codegen/typescript': 3.0.4(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 3.1.1(graphql@16.6.0)
+      '@graphql-codegen/typescript': 3.0.4(encoding@0.1.13)(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 3.1.1(encoding@0.1.13)(graphql@16.6.0)
       auto-bind: 4.0.0
       graphql: 16.6.0
       tslib: 2.5.3
@@ -3464,13 +3467,13 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/typescript-react-query@4.1.0(graphql@16.6.0):
+  /@graphql-codegen/typescript-react-query@4.1.0(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-+3Hk+ws6HfCAZl7+5Q4LBkFh3y+2ISuahMYRHIqzqpwNnrthftg8xNx11VH5sabqqjqEmjY3UaP8glP93itPWQ==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 2.13.1(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 2.13.1(encoding@0.1.13)(graphql@16.6.0)
       auto-bind: 4.0.0
       change-case-all: 1.0.15
       graphql: 16.6.0
@@ -3480,14 +3483,14 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/typescript-resolvers@3.2.1(graphql@16.6.0):
+  /@graphql-codegen/typescript-resolvers@3.2.1(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-2ZIHk5J6HTuylse5ZIxw+aega54prHxvj7vM8hiKJ6vejZ94kvVPAq4aWmSFOkZ5lqU3YnM/ZyWfnhT5CUDj1g==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 4.2.0(graphql@16.6.0)
-      '@graphql-codegen/typescript': 3.0.4(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 3.1.1(graphql@16.6.0)
+      '@graphql-codegen/typescript': 3.0.4(encoding@0.1.13)(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 3.1.1(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       auto-bind: 4.0.0
       graphql: 16.6.0
@@ -3497,14 +3500,14 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/typescript@2.8.8(graphql@16.6.0):
+  /@graphql-codegen/typescript@2.8.8(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-A0oUi3Oy6+DormOlrTC4orxT9OBZkIglhbJBcDmk34jAKKUgesukXRd4yOhmTrnbchpXz2T8IAOFB3FWIaK4Rw==}
     peerDependencies:
       graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.6.0)
       '@graphql-codegen/schema-ast': 2.6.1(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 2.13.8(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 2.13.8(encoding@0.1.13)(graphql@16.6.0)
       auto-bind: 4.0.0
       graphql: 16.6.0
       tslib: 2.4.1
@@ -3513,14 +3516,14 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/typescript@3.0.4(graphql@16.6.0):
+  /@graphql-codegen/typescript@3.0.4(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-x4O47447DZrWNtE/l5CU9QzzW4m1RbmCEdijlA3s2flG/y1Ckqdemob4CWfilSm5/tZ3w1junVDY616RDTSvZw==}
     peerDependencies:
       graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 4.2.0(graphql@16.6.0)
       '@graphql-codegen/schema-ast': 3.0.1(graphql@16.6.0)
-      '@graphql-codegen/visitor-plugin-common': 3.1.1(graphql@16.6.0)
+      '@graphql-codegen/visitor-plugin-common': 3.1.1(encoding@0.1.13)(graphql@16.6.0)
       auto-bind: 4.0.0
       graphql: 16.6.0
       tslib: 2.5.3
@@ -3529,14 +3532,14 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/visitor-plugin-common@2.13.1(graphql@16.6.0):
+  /@graphql-codegen/visitor-plugin-common@2.13.1(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-mD9ufZhDGhyrSaWQGrU1Q1c5f01TeWtSWy/cDwXYjJcHIj1Y/DG2x0tOflEfCvh5WcnmHNIw4lzDsg1W7iFJEg==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 2.7.2(graphql@16.6.0)
       '@graphql-tools/optimize': 1.4.0(graphql@16.6.0)
-      '@graphql-tools/relay-operation-optimizer': 6.5.18(graphql@16.6.0)
+      '@graphql-tools/relay-operation-optimizer': 6.5.18(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/utils': 8.13.1(graphql@16.6.0)
       auto-bind: 4.0.0
       change-case-all: 1.0.14
@@ -3550,14 +3553,14 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/visitor-plugin-common@2.13.8(graphql@16.6.0):
+  /@graphql-codegen/visitor-plugin-common@2.13.8(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-IQWu99YV4wt8hGxIbBQPtqRuaWZhkQRG2IZKbMoSvh0vGeWb3dB0n0hSgKaOOxDY+tljtOf9MTcUYvJslQucMQ==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.6.0)
       '@graphql-tools/optimize': 1.4.0(graphql@16.6.0)
-      '@graphql-tools/relay-operation-optimizer': 6.5.18(graphql@16.6.0)
+      '@graphql-tools/relay-operation-optimizer': 6.5.18(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       auto-bind: 4.0.0
       change-case-all: 1.0.15
@@ -3571,14 +3574,14 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-codegen/visitor-plugin-common@3.1.1(graphql@16.6.0):
+  /@graphql-codegen/visitor-plugin-common@3.1.1(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-uAfp+zu/009R3HUAuTK2AamR1bxIltM6rrYYI6EXSmkM3rFtFsLTuJhjUDj98HcUCszJZrADppz8KKLGRUVlNg==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 4.2.0(graphql@16.6.0)
       '@graphql-tools/optimize': 1.4.0(graphql@16.6.0)
-      '@graphql-tools/relay-operation-optimizer': 6.5.18(graphql@16.6.0)
+      '@graphql-tools/relay-operation-optimizer': 6.5.18(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       auto-bind: 4.0.0
       change-case-all: 1.0.15
@@ -3592,7 +3595,7 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-eslint/eslint-plugin@3.19.1(@babel/core@7.22.5)(@types/node@18.14.2)(graphql@16.6.0):
+  /@graphql-eslint/eslint-plugin@3.19.1(@babel/core@7.22.5)(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-8hllEu0dFXDk9poJRN0gIqrGoBblMe1TpRJFx0We+ZKWNQgaxvQ0QGmJPDak+BZV5BcOAM7m/GH2XWDgVB2nQA==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
@@ -3605,7 +3608,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       fast-glob: 3.2.12
       graphql: 16.6.0
-      graphql-config: 4.5.0(@types/node@18.14.2)(graphql@16.6.0)
+      graphql-config: 4.5.0(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)
       graphql-depth-limit: 1.1.0(graphql@16.6.0)
       lodash.lowercase: 4.3.0
       tslib: 2.5.3
@@ -3645,18 +3648,18 @@ packages:
       tslib: 2.5.3
     dev: true
 
-  /@graphql-mesh/cli@0.82.35(@babel/core@7.22.5)(@swc/core@1.3.62)(@types/node@18.14.2)(graphql-tag@2.12.6)(graphql@16.6.0)(react-native@0.71.10):
+  /@graphql-mesh/cli@0.82.35(@babel/core@7.22.5)(@swc/core@1.3.62)(@types/node@18.14.2)(encoding@0.1.13)(graphql-tag@2.12.6)(graphql@16.6.0)(react-native@0.71.10):
     resolution: {integrity: sha512-5IuXpk+Zpg05u6qNPX19VzC5/HCiLdDRF6EPZ3ze57FIRgGA3YsB1CUGga6Ky3inalURYwx0kWqmdjbdKZYx1w==}
     hasBin: true
     peerDependencies:
       graphql: '*'
     dependencies:
       '@graphql-codegen/core': 3.1.0(graphql@16.6.0)
-      '@graphql-codegen/typed-document-node': 4.0.1(graphql@16.6.0)
-      '@graphql-codegen/typescript': 3.0.4(graphql@16.6.0)
-      '@graphql-codegen/typescript-generic-sdk': 3.1.0(graphql-tag@2.12.6)(graphql@16.6.0)
-      '@graphql-codegen/typescript-operations': 3.0.4(graphql@16.6.0)
-      '@graphql-codegen/typescript-resolvers': 3.2.1(graphql@16.6.0)
+      '@graphql-codegen/typed-document-node': 4.0.1(encoding@0.1.13)(graphql@16.6.0)
+      '@graphql-codegen/typescript': 3.0.4(encoding@0.1.13)(graphql@16.6.0)
+      '@graphql-codegen/typescript-generic-sdk': 3.1.0(encoding@0.1.13)(graphql-tag@2.12.6)(graphql@16.6.0)
+      '@graphql-codegen/typescript-operations': 3.0.4(encoding@0.1.13)(graphql@16.6.0)
+      '@graphql-codegen/typescript-resolvers': 3.2.1(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-mesh/config': 0.93.1(@babel/core@7.22.5)(@graphql-mesh/cross-helpers@0.3.4)(@graphql-mesh/runtime@0.93.2)(@graphql-mesh/store@0.93.1)(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.93.2)(@graphql-tools/utils@9.2.1)(graphql@16.6.0)(tslib@2.5.3)
       '@graphql-mesh/cross-helpers': 0.3.4(@graphql-tools/utils@9.2.1)(graphql@16.6.0)(react-native@0.71.10)
       '@graphql-mesh/http': 0.93.2(@graphql-mesh/cross-helpers@0.3.4)(@graphql-mesh/runtime@0.93.2)(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.93.2)(graphql@16.6.0)(tslib@2.5.3)
@@ -3751,7 +3754,7 @@ packages:
       - react-native-windows
     dev: true
 
-  /@graphql-mesh/graphql@0.93.1(@graphql-mesh/cross-helpers@0.3.4)(@graphql-mesh/store@0.93.1)(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.93.2)(@graphql-tools/utils@9.2.1)(@types/node@18.14.2)(graphql@16.6.0)(tslib@2.5.3):
+  /@graphql-mesh/graphql@0.93.1(@graphql-mesh/cross-helpers@0.3.4)(@graphql-mesh/store@0.93.1)(@graphql-mesh/types@0.93.2)(@graphql-mesh/utils@0.93.2)(@graphql-tools/utils@9.2.1)(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)(tslib@2.5.3):
     resolution: {integrity: sha512-1G2/1jkl1VPWhsZsUBwFQI5d9OxxEc+CMxy5ef0qI2WEXqIocOxMhEY53cc+tCSbuXR99rxos+KD/8Z6ZasaOQ==}
     peerDependencies:
       '@graphql-mesh/cross-helpers': ^0.3.4
@@ -3768,7 +3771,7 @@ packages:
       '@graphql-mesh/types': 0.93.2(@graphql-mesh/store@0.93.1)(@graphql-tools/utils@9.2.1)(graphql@16.6.0)(tslib@2.5.3)
       '@graphql-mesh/utils': 0.93.2(@graphql-mesh/cross-helpers@0.3.4)(@graphql-mesh/types@0.93.2)(@graphql-tools/utils@9.2.1)(graphql@16.6.0)(tslib@2.5.3)
       '@graphql-tools/delegate': 9.0.35(graphql@16.6.0)
-      '@graphql-tools/url-loader': 7.17.18(@types/node@18.14.2)(graphql@16.6.0)
+      '@graphql-tools/url-loader': 7.17.18(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       '@graphql-tools/wrap': 9.4.2(graphql@16.6.0)
       graphql: 16.6.0
@@ -3957,12 +3960,12 @@ packages:
       tslib: 2.5.3
     dev: true
 
-  /@graphql-tools/apollo-engine-loader@7.3.26(graphql@16.6.0):
+  /@graphql-tools/apollo-engine-loader@7.3.26(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-h1vfhdJFjnCYn9b5EY1Z91JTF0KB3hHVJNQIsiUV2mpQXZdeOXQoaWeYEKaiI5R6kwBw5PP9B0fv3jfUIG8LyQ==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@ardatan/sync-fetch': 0.0.1
+      '@ardatan/sync-fetch': 0.0.1(encoding@0.1.13)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       '@whatwg-node/fetch': 0.8.8
       graphql: 16.6.0
@@ -4132,12 +4135,12 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-tools/github-loader@7.3.28(@babel/core@7.22.5)(@types/node@18.14.2)(graphql@16.6.0):
+  /@graphql-tools/github-loader@7.3.28(@babel/core@7.22.5)(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-OK92Lf9pmxPQvjUNv05b3tnVhw0JRfPqOf15jZjyQ8BfdEUrJoP32b4dRQQem/wyRL24KY4wOfArJNqzpsbwCA==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@ardatan/sync-fetch': 0.0.1
+      '@ardatan/sync-fetch': 0.0.1(encoding@0.1.13)
       '@graphql-tools/executor-http': 0.1.10(@types/node@18.14.2)(graphql@16.6.0)
       '@graphql-tools/graphql-tag-pluck': 7.5.2(@babel/core@7.22.5)(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
@@ -4236,12 +4239,12 @@ packages:
       tslib: 2.5.3
     dev: true
 
-  /@graphql-tools/prisma-loader@7.2.72(@types/node@18.14.2)(graphql@16.6.0):
+  /@graphql-tools/prisma-loader@7.2.72(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-0a7uV7Fky6yDqd0tI9+XMuvgIo6GAqiVzzzFV4OSLry4AwiQlI3igYseBV7ZVOGhedOTqj/URxjpiv07hRcwag==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@graphql-tools/url-loader': 7.17.18(@types/node@18.14.2)(graphql@16.6.0)
+      '@graphql-tools/url-loader': 7.17.18(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       '@types/js-yaml': 4.0.5
       '@types/json-stable-stringify': 1.0.34
@@ -4250,7 +4253,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       dotenv: 16.1.4
       graphql: 16.6.0
-      graphql-request: 6.1.0(graphql@16.6.0)
+      graphql-request: 6.1.0(encoding@0.1.13)(graphql@16.6.0)
       http-proxy-agent: 6.1.1
       https-proxy-agent: 6.2.1
       jose: 4.14.4
@@ -4268,12 +4271,12 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@graphql-tools/relay-operation-optimizer@6.5.18(graphql@16.6.0):
+  /@graphql-tools/relay-operation-optimizer@6.5.18(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-mc5VPyTeV+LwiM+DNvoDQfPqwQYhPV/cl5jOBjTgSniyaq8/86aODfMkrE2OduhQ5E00hqrkuL2Fdrgk0w1QJg==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@ardatan/relay-compiler': 12.0.0(graphql@16.6.0)
+      '@ardatan/relay-compiler': 12.0.0(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       graphql: 16.6.0
       tslib: 2.5.3
@@ -4322,12 +4325,12 @@ packages:
       tslib: 2.5.3
     dev: true
 
-  /@graphql-tools/url-loader@7.17.18(@types/node@18.14.2)(graphql@16.6.0):
+  /@graphql-tools/url-loader@7.17.18(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-ear0CiyTj04jCVAxi7TvgbnGDIN2HgqzXzwsfcqiVg9cvjT40NcMlZ2P1lZDgqMkZ9oyLTV8Bw6j+SyG6A+xPw==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@ardatan/sync-fetch': 0.0.1
+      '@ardatan/sync-fetch': 0.0.1(encoding@0.1.13)
       '@graphql-tools/delegate': 9.0.35(graphql@16.6.0)
       '@graphql-tools/executor-graphql-ws': 0.0.14(graphql@16.6.0)
       '@graphql-tools/executor-http': 0.1.10(@types/node@18.14.2)(graphql@16.6.0)
@@ -7584,20 +7587,20 @@ packages:
       '@babel/runtime': 7.22.5
     dev: false
 
-  /@react-native-community/cli-clean@10.1.1:
+  /@react-native-community/cli-clean@10.1.1(encoding@0.1.13):
     resolution: {integrity: sha512-iNsrjzjIRv9yb5y309SWJ8NDHdwYtnCpmxZouQDyOljUdC9MwdZ4ChbtA4rwQyAwgOVfS9F/j56ML3Cslmvrxg==}
     dependencies:
-      '@react-native-community/cli-tools': 10.1.1
+      '@react-native-community/cli-tools': 10.1.1(encoding@0.1.13)
       chalk: 4.1.2
       execa: 1.0.0
       prompts: 2.4.2
     transitivePeerDependencies:
       - encoding
 
-  /@react-native-community/cli-config@10.1.1:
+  /@react-native-community/cli-config@10.1.1(encoding@0.1.13):
     resolution: {integrity: sha512-p4mHrjC+s/ayiNVG6T35GdEGdP6TuyBUg5plVGRJfTl8WT6LBfLYLk+fz/iETrEZ/YkhQIsQcEUQC47MqLNHog==}
     dependencies:
-      '@react-native-community/cli-tools': 10.1.1
+      '@react-native-community/cli-tools': 10.1.1(encoding@0.1.13)
       chalk: 4.1.2
       cosmiconfig: 5.2.1
       deepmerge: 3.3.0
@@ -7613,12 +7616,12 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@react-native-community/cli-doctor@10.2.4:
+  /@react-native-community/cli-doctor@10.2.4(encoding@0.1.13):
     resolution: {integrity: sha512-hEtgAqSyIASByhoZlv7WVvdoW4NBdn8vJh/X+dQBRBEXyZk1741/+CtiazwKkuliEhl7cdg4Mg99zgRLCXKAzg==}
     dependencies:
-      '@react-native-community/cli-config': 10.1.1
-      '@react-native-community/cli-platform-ios': 10.2.4
-      '@react-native-community/cli-tools': 10.1.1
+      '@react-native-community/cli-config': 10.1.1(encoding@0.1.13)
+      '@react-native-community/cli-platform-ios': 10.2.4(encoding@0.1.13)
+      '@react-native-community/cli-tools': 10.1.1(encoding@0.1.13)
       chalk: 4.1.2
       command-exists: 1.2.9
       envinfo: 7.8.1
@@ -7635,21 +7638,21 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@react-native-community/cli-hermes@10.2.0:
+  /@react-native-community/cli-hermes@10.2.0(encoding@0.1.13):
     resolution: {integrity: sha512-urfmvNeR8IiO/Sd92UU3xPO+/qI2lwCWQnxOkWaU/i2EITFekE47MD6MZrfVulRVYRi5cuaFqKZO/ccOdOB/vQ==}
     dependencies:
-      '@react-native-community/cli-platform-android': 10.2.0
-      '@react-native-community/cli-tools': 10.1.1
+      '@react-native-community/cli-platform-android': 10.2.0(encoding@0.1.13)
+      '@react-native-community/cli-tools': 10.1.1(encoding@0.1.13)
       chalk: 4.1.2
       hermes-profile-transformer: 0.0.6
       ip: 1.1.8
     transitivePeerDependencies:
       - encoding
 
-  /@react-native-community/cli-platform-android@10.2.0:
+  /@react-native-community/cli-platform-android@10.2.0(encoding@0.1.13):
     resolution: {integrity: sha512-CBenYwGxwFdObZTn1lgxWtMGA5ms2G/ALQhkS+XTAD7KHDrCxFF9yT/fnAjFZKM6vX/1TqGI1RflruXih3kAhw==}
     dependencies:
-      '@react-native-community/cli-tools': 10.1.1
+      '@react-native-community/cli-tools': 10.1.1(encoding@0.1.13)
       chalk: 4.1.2
       execa: 1.0.0
       glob: 7.2.3
@@ -7657,10 +7660,10 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@react-native-community/cli-platform-ios@10.2.1:
+  /@react-native-community/cli-platform-ios@10.2.1(encoding@0.1.13):
     resolution: {integrity: sha512-hz4zu4Y6eyj7D0lnZx8Mf2c2si8y+zh/zUTgCTaPPLzQD8jSZNNBtUUiA1cARm2razpe8marCZ1QbTMAGbf3mg==}
     dependencies:
-      '@react-native-community/cli-tools': 10.1.1
+      '@react-native-community/cli-tools': 10.1.1(encoding@0.1.13)
       chalk: 4.1.2
       execa: 1.0.0
       fast-xml-parser: 4.2.4
@@ -7669,10 +7672,10 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@react-native-community/cli-platform-ios@10.2.4:
+  /@react-native-community/cli-platform-ios@10.2.4(encoding@0.1.13):
     resolution: {integrity: sha512-/6K+jeRhcGojFIJMWMXV2eY5n/In+YUzBr/DKWQOeHBOHkESRNheG310xSAIjgB46YniSSUKhSyeuhalTbm9OQ==}
     dependencies:
-      '@react-native-community/cli-tools': 10.1.1
+      '@react-native-community/cli-tools': 10.1.1(encoding@0.1.13)
       chalk: 4.1.2
       execa: 1.0.0
       fast-xml-parser: 4.2.4
@@ -7681,15 +7684,15 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@react-native-community/cli-plugin-metro@10.2.3(@babel/core@7.22.5):
+  /@react-native-community/cli-plugin-metro@10.2.3(@babel/core@7.22.5)(encoding@0.1.13):
     resolution: {integrity: sha512-jHi2oDuTePmW4NEyVT8JEGNlIYcnFXCSV2ZMp4rnDrUk4TzzyvS3IMvDlESEmG8Kry8rvP0KSUx/hTpy37Sbkw==}
     dependencies:
-      '@react-native-community/cli-server-api': 10.1.1
-      '@react-native-community/cli-tools': 10.1.1
+      '@react-native-community/cli-server-api': 10.1.1(encoding@0.1.13)
+      '@react-native-community/cli-tools': 10.1.1(encoding@0.1.13)
       chalk: 4.1.2
       execa: 1.0.0
-      metro: 0.73.10
-      metro-config: 0.73.10
+      metro: 0.73.10(encoding@0.1.13)
+      metro-config: 0.73.10(encoding@0.1.13)
       metro-core: 0.73.10
       metro-react-native-babel-transformer: 0.73.10(@babel/core@7.22.5)
       metro-resolver: 0.73.10
@@ -7702,11 +7705,11 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@react-native-community/cli-server-api@10.1.1:
+  /@react-native-community/cli-server-api@10.1.1(encoding@0.1.13):
     resolution: {integrity: sha512-NZDo/wh4zlm8as31UEBno2bui8+ufzsZV+KN7QjEJWEM0levzBtxaD+4je0OpfhRIIkhaRm2gl/vVf7OYAzg4g==}
     dependencies:
       '@react-native-community/cli-debugger-ui': 10.0.0
-      '@react-native-community/cli-tools': 10.1.1
+      '@react-native-community/cli-tools': 10.1.1(encoding@0.1.13)
       compression: 1.7.4
       connect: 3.7.0
       errorhandler: 1.5.1
@@ -7720,14 +7723,14 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@react-native-community/cli-tools@10.1.1:
+  /@react-native-community/cli-tools@10.1.1(encoding@0.1.13):
     resolution: {integrity: sha512-+FlwOnZBV+ailEzXjcD8afY2ogFEBeHOw/8+XXzMgPaquU2Zly9B+8W089tnnohO3yfiQiZqkQlElP423MY74g==}
     dependencies:
       appdirsjs: 1.2.7
       chalk: 4.1.2
       find-up: 5.0.0
       mime: 2.6.0
-      node-fetch: 2.6.11
+      node-fetch: 2.6.11(encoding@0.1.13)
       open: 6.4.0
       ora: 5.4.1
       semver: 6.3.0
@@ -7740,19 +7743,19 @@ packages:
     dependencies:
       joi: 17.9.2
 
-  /@react-native-community/cli@10.2.2(@babel/core@7.22.5):
+  /@react-native-community/cli@10.2.2(@babel/core@7.22.5)(encoding@0.1.13):
     resolution: {integrity: sha512-aZVcVIqj+OG6CrliR/Yn8wHxrvyzbFBY9cj7n0MvRw/P54QUru2nNqUTSSbqv0Qaa297yHJbe6kFDojDMSTM8Q==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
-      '@react-native-community/cli-clean': 10.1.1
-      '@react-native-community/cli-config': 10.1.1
+      '@react-native-community/cli-clean': 10.1.1(encoding@0.1.13)
+      '@react-native-community/cli-config': 10.1.1(encoding@0.1.13)
       '@react-native-community/cli-debugger-ui': 10.0.0
-      '@react-native-community/cli-doctor': 10.2.4
-      '@react-native-community/cli-hermes': 10.2.0
-      '@react-native-community/cli-plugin-metro': 10.2.3(@babel/core@7.22.5)
-      '@react-native-community/cli-server-api': 10.1.1
-      '@react-native-community/cli-tools': 10.1.1
+      '@react-native-community/cli-doctor': 10.2.4(encoding@0.1.13)
+      '@react-native-community/cli-hermes': 10.2.0(encoding@0.1.13)
+      '@react-native-community/cli-plugin-metro': 10.2.3(@babel/core@7.22.5)(encoding@0.1.13)
+      '@react-native-community/cli-server-api': 10.1.1(encoding@0.1.13)
+      '@react-native-community/cli-tools': 10.1.1(encoding@0.1.13)
       '@react-native-community/cli-types': 10.0.0
       chalk: 4.1.2
       commander: 9.5.0
@@ -7919,28 +7922,28 @@ packages:
     resolution: {integrity: sha512-RkmuBcqiNioeeBKbgzMlOdreUkJfYaSjwgx9XDgGGpjvWgyaxWvDmZVSN9CS6LjEASadhgPv2BcFp+SeouWXXA==}
     dev: true
 
-  /@safe-global/api-kit@1.1.0:
+  /@safe-global/api-kit@1.1.0(encoding@0.1.13):
     resolution: {integrity: sha512-3HB+Vl3dFunID4kadpAqYQQ9lfIJuCk9pYoJsfSWGeEgOOGFwexg3UtO8hh0JXoIO+bX8pm8x5GEF6pX8HeNTQ==}
     dependencies:
       '@ethersproject/abstract-signer': 5.7.0
-      '@safe-global/safe-core-sdk-types': 2.0.0
-      node-fetch: 2.6.11
+      '@safe-global/safe-core-sdk-types': 2.0.0(encoding@0.1.13)
+      node-fetch: 2.6.11(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
       - supports-color
 
-  /@safe-global/auth-kit@1.0.0(@web3auth/base@5.2.0)(@web3auth/modal@5.2.1)(@web3auth/openlogin-adapter@5.2.1):
+  /@safe-global/auth-kit@1.0.0(@web3auth/base@5.2.0)(@web3auth/modal@5.2.1)(@web3auth/openlogin-adapter@5.2.1)(encoding@0.1.13):
     resolution: {integrity: sha512-XUb3nvYBtUd/MsMRqgt93joKQFeGvR++yh7qnYxAEhUbSxA1+8a5BQIJR6YryzAm5D/5WmkC/NHNpi/i+0fJpA==}
     peerDependencies:
       '@web3auth/base': ^4.3.0
       '@web3auth/modal': ^4.3.1
       '@web3auth/openlogin-adapter': ^4.3.0
     dependencies:
-      '@safe-global/api-kit': 1.1.0
-      '@safe-global/protocol-kit': 1.0.1
+      '@safe-global/api-kit': 1.1.0(encoding@0.1.13)
+      '@safe-global/protocol-kit': 1.0.1(encoding@0.1.13)
       '@walletconnect/client': 1.8.0
       '@web3auth/base': 5.2.0(@babel/runtime@7.22.5)
-      '@web3auth/modal': 5.2.1(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)(@walletconnect/client@1.8.0)(@walletconnect/types@1.8.0)(react-dom@18.2.0)(react-native@0.71.10)(react@18.2.0)
+      '@web3auth/modal': 5.2.1(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)(@walletconnect/client@1.8.0)(@walletconnect/types@1.8.0)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.71.10)(react@18.2.0)
       '@web3auth/openlogin-adapter': 5.2.1(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)
       ethers: 5.7.2
     transitivePeerDependencies:
@@ -7950,7 +7953,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@safe-global/protocol-kit@1.0.1:
+  /@safe-global/protocol-kit@1.0.1(encoding@0.1.13):
     resolution: {integrity: sha512-ZLfFxV6U9f5bJKcCQmrDJq/FzDGz7FMpXOjJ+G90VkaqBme3En73sN1KGd7++VKS7H3ukyM/xetrJs2mtvHlZg==}
     dependencies:
       '@ethersproject/address': 5.7.0
@@ -7959,8 +7962,8 @@ packages:
       '@safe-global/safe-deployments': 1.23.0
       ethereumjs-util: 7.1.5
       semver: 7.5.1
-      web3: 1.10.0
-      web3-core: 1.10.0
+      web3: 1.10.0(encoding@0.1.13)
+      web3-core: 1.10.0(encoding@0.1.13)
       web3-utils: 1.10.0
     transitivePeerDependencies:
       - bufferutil
@@ -7968,13 +7971,13 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@safe-global/safe-core-sdk-types@2.0.0:
+  /@safe-global/safe-core-sdk-types@2.0.0(encoding@0.1.13):
     resolution: {integrity: sha512-9bcGaEuJCRG1ccGxKNjLzJuXMqdJZEFkWi+1vf6UFO8gpmanasvBozMEo6fzUMtDBGgkkStYywhO6Cp0tKyD3Q==}
     dependencies:
       '@ethersproject/bignumber': 5.7.0
       '@ethersproject/contracts': 5.7.0
       '@safe-global/safe-deployments': 1.23.0
-      web3-core: 1.10.0
+      web3-core: 1.10.0(encoding@0.1.13)
       web3-utils: 1.10.0
     transitivePeerDependencies:
       - encoding
@@ -8040,7 +8043,7 @@ packages:
       tslib: 1.14.1
     dev: false
 
-  /@sentry/cli@1.75.2:
+  /@sentry/cli@1.75.2(encoding@0.1.13):
     resolution: {integrity: sha512-CG0CKH4VCKWzEaegouWfCLQt9SFN+AieFESCatJ7zSuJmzF05ywpMusjxqRul6lMwfUhRKjGKOzcRJ1jLsfTBw==}
     engines: {node: '>= 8'}
     hasBin: true
@@ -8048,7 +8051,7 @@ packages:
     dependencies:
       https-proxy-agent: 5.0.1
       mkdirp: 0.5.6
-      node-fetch: 2.6.11
+      node-fetch: 2.6.11(encoding@0.1.13)
       progress: 2.0.3
       proxy-from-env: 1.1.0
       which: 2.0.2
@@ -8076,7 +8079,7 @@ packages:
       tslib: 1.14.1
     dev: false
 
-  /@sentry/nextjs@7.54.0(next@13.4.5)(react@18.2.0)(webpack@5.86.0):
+  /@sentry/nextjs@7.54.0(encoding@0.1.13)(next@13.4.5)(react@18.2.0)(webpack@5.86.0):
     resolution: {integrity: sha512-F+2OinUNq1F4QOUb5mqZZVmW8EkobKsECSpttWbLOKh4/Br37G9H1P3q1/qDUTke9ZMgp57O8acUByLfROp0ag==}
     engines: {node: '>=8'}
     peerDependencies:
@@ -8094,7 +8097,7 @@ packages:
       '@sentry/react': 7.54.0(react@18.2.0)
       '@sentry/types': 7.54.0
       '@sentry/utils': 7.54.0
-      '@sentry/webpack-plugin': 1.20.0
+      '@sentry/webpack-plugin': 1.20.0(encoding@0.1.13)
       chalk: 3.0.0
       next: 13.4.5(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
@@ -8166,11 +8169,11 @@ packages:
       tslib: 1.14.1
     dev: false
 
-  /@sentry/webpack-plugin@1.20.0:
+  /@sentry/webpack-plugin@1.20.0(encoding@0.1.13):
     resolution: {integrity: sha512-Ssj1mJVFsfU6vMCOM2d+h+KQR7QHSfeIP16t4l20Uq/neqWXZUQ2yvQfe4S3BjdbJXz/X4Rw8Hfy1Sd0ocunYw==}
     engines: {node: '>= 8'}
     dependencies:
-      '@sentry/cli': 1.75.2
+      '@sentry/cli': 1.75.2(encoding@0.1.13)
       webpack-sources: 3.2.3
     transitivePeerDependencies:
       - encoding
@@ -8277,7 +8280,7 @@ packages:
       buffer: 6.0.3
     dev: true
 
-  /@solana/web3.js@1.77.3:
+  /@solana/web3.js@1.77.3(encoding@0.1.13):
     resolution: {integrity: sha512-PHaO0BdoiQRPpieC1p31wJsBaxwIOWLh8j2ocXNKX8boCQVldt26Jqm2tZE4KlrvnCIV78owPLv1pEUgqhxZ3w==}
     dependencies:
       '@babel/runtime': 7.22.5
@@ -8292,7 +8295,7 @@ packages:
       buffer: 6.0.3
       fast-stable-stringify: 1.0.0
       jayson: 4.1.0
-      node-fetch: 2.6.11
+      node-fetch: 2.6.11(encoding@0.1.13)
       rpc-websockets: 7.5.1
       superstruct: 0.14.2
     transitivePeerDependencies:
@@ -9069,7 +9072,7 @@ packages:
     resolution: {integrity: sha512-gUBQsbcDmRufmg8LdH7D57c/9BQ+cPi2vBcXdudmxeJFafGwDmLRu1mlv9rxlW4kicn/LZWJjKXtq4XXzF4OGg==}
     dev: true
 
-  /@storybook/core-server@7.0.17:
+  /@storybook/core-server@7.0.17(encoding@0.1.13):
     resolution: {integrity: sha512-Xixp/FVG+Y/aL8exI1fk/f+1X9uwptlnnhDlTMZ3U8aDQsrAEe1/coBTQPUpfhkO6F9FaQQl+Ek4JVP0JihRqQ==}
     dependencies:
       '@aw-web-design/x-default-browser': 1.4.88
@@ -9084,7 +9087,7 @@ packages:
       '@storybook/manager': 7.0.17
       '@storybook/node-logger': 7.0.17
       '@storybook/preview-api': 7.0.17
-      '@storybook/telemetry': 7.0.17
+      '@storybook/telemetry': 7.0.17(encoding@0.1.13)
       '@storybook/types': 7.0.17
       '@types/detect-port': 1.3.3
       '@types/node': 16.18.35
@@ -9102,7 +9105,7 @@ packages:
       globby: 11.1.0
       ip: 2.0.0
       lodash: 4.17.21
-      node-fetch: 2.6.11
+      node-fetch: 2.6.11(encoding@0.1.13)
       open: 8.4.2
       pretty-hrtime: 1.0.3
       prompts: 2.4.2
@@ -9639,7 +9642,7 @@ packages:
       '@storybook/preview-api': 7.0.17
     dev: true
 
-  /@storybook/telemetry@7.0.17:
+  /@storybook/telemetry@7.0.17(encoding@0.1.13):
     resolution: {integrity: sha512-3r/Eei3UjCFqRYkDYqD6OkoVeAByoEHraYUf0EtmWNvQ+itNJn3Lvl0UdluDyWqGPe1u2srAtOOCiNz5EEos2Q==}
     dependencies:
       '@storybook/client-logger': 7.0.17
@@ -9648,7 +9651,7 @@ packages:
       detect-package-manager: 2.0.1
       fetch-retry: 5.0.6
       fs-extra: 11.1.1
-      isomorphic-unfetch: 3.1.0
+      isomorphic-unfetch: 3.1.0(encoding@0.1.13)
       nanoid: 3.3.6
       read-pkg-up: 7.0.1
     transitivePeerDependencies:
@@ -9656,7 +9659,7 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/test-runner@0.10.0(@types/node@18.14.2)(ts-node@10.9.1):
+  /@storybook/test-runner@0.10.0(@types/node@18.14.2)(encoding@0.1.13)(ts-node@10.9.1):
     resolution: {integrity: sha512-37xgdNcba5tJgEZa//S4ooh52hKgXoKvNWC+CZJRksKFlFObzhlCstTo4q9SSkX6LNTXiEj174eZBBa/Yd28JQ==}
     hasBin: true
     dependencies:
@@ -9683,7 +9686,7 @@ packages:
       jest-runner: 28.1.3
       jest-serializer-html: 7.1.0
       jest-watch-typeahead: 2.2.2(jest@28.1.3)
-      node-fetch: 2.6.11
+      node-fetch: 2.6.11(encoding@0.1.13)
       playwright: 1.35.0
       read-pkg-up: 7.0.1
       regenerator-runtime: 0.13.11
@@ -10303,7 +10306,7 @@ packages:
       '@tanstack/query-core': 4.29.11
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-native: 0.71.10(@babel/core@7.22.5)(@babel/preset-env@7.22.5)(react@18.2.0)
+      react-native: 0.71.10(@babel/core@7.22.5)(@babel/preset-env@7.22.5)(encoding@0.1.13)(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
 
   /@testing-library/cypress@9.0.0(cypress@12.14.0):
@@ -10555,14 +10558,14 @@ packages:
     transitivePeerDependencies:
       - '@sentry/types'
 
-  /@toruslabs/solana-embed@0.3.4(@babel/runtime@7.22.5):
+  /@toruslabs/solana-embed@0.3.4(@babel/runtime@7.22.5)(encoding@0.1.13):
     resolution: {integrity: sha512-yj+aBJoBAneap7Jlu9/OOp7irWNuC5CqAhyhVcmb0IjWrCUFnioLdL0U7UfGaqVm/5O0leJh7/Z5Ll+3toWJBg==}
     engines: {node: '>=14.17.0', npm: '>=6.x'}
     peerDependencies:
       '@babel/runtime': 7.x
     dependencies:
       '@babel/runtime': 7.22.5
-      '@solana/web3.js': 1.77.3
+      '@solana/web3.js': 1.77.3(encoding@0.1.13)
       '@toruslabs/base-controllers': 2.9.0(@babel/runtime@7.22.5)
       '@toruslabs/http-helpers': 3.4.0(@babel/runtime@7.22.5)
       '@toruslabs/openlogin-jrpc': 3.2.0(@babel/runtime@7.22.5)
@@ -11768,21 +11771,21 @@ packages:
       - '@sentry/types'
     dev: true
 
-  /@web3auth/modal@5.2.1(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)(@walletconnect/client@1.8.0)(@walletconnect/types@1.8.0)(react-dom@18.2.0)(react-native@0.71.10)(react@18.2.0):
+  /@web3auth/modal@5.2.1(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)(@walletconnect/client@1.8.0)(@walletconnect/types@1.8.0)(encoding@0.1.13)(react-dom@18.2.0)(react-native@0.71.10)(react@18.2.0):
     resolution: {integrity: sha512-i+HVEUUDmH5bHUJoEZrWK4FZpReZj2X9v3PKhX+W0DwxzDt/0nkkPMNJv9L7ow0bC2NfBjbqKRahr6svDqij0A==}
     peerDependencies:
       '@babel/runtime': 7.x
       '@solana/web3.js': ^1.x
     dependencies:
       '@babel/runtime': 7.22.5
-      '@solana/web3.js': 1.77.3
+      '@solana/web3.js': 1.77.3(encoding@0.1.13)
       '@web3auth/base': 5.2.0(@babel/runtime@7.22.5)
       '@web3auth/metamask-adapter': 5.2.0(@babel/runtime@7.22.5)
       '@web3auth/no-modal': 5.2.0(@babel/runtime@7.22.5)
       '@web3auth/openlogin-adapter': 5.2.1(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)
       '@web3auth/phantom-adapter': 5.2.0(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)
       '@web3auth/torus-evm-adapter': 5.2.0(@babel/runtime@7.22.5)
-      '@web3auth/torus-solana-adapter': 5.2.0(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)
+      '@web3auth/torus-solana-adapter': 5.2.0(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)(encoding@0.1.13)
       '@web3auth/ui': 5.2.0(@babel/runtime@7.22.5)(react-dom@18.2.0)(react-native@0.71.10)(react@18.2.0)
       '@web3auth/wallet-connect-v1-adapter': 5.2.0(@babel/runtime@7.22.5)(@walletconnect/client@1.8.0)(@walletconnect/types@1.8.0)
     transitivePeerDependencies:
@@ -11822,7 +11825,7 @@ packages:
       '@solana/web3.js': ^1.x
     dependencies:
       '@babel/runtime': 7.22.5
-      '@solana/web3.js': 1.77.3
+      '@solana/web3.js': 1.77.3(encoding@0.1.13)
       '@toruslabs/openlogin': 3.2.1(@babel/runtime@7.22.5)
       '@toruslabs/openlogin-ed25519': 3.2.0(@babel/runtime@7.22.5)
       '@web3auth/base': 5.2.0(@babel/runtime@7.22.5)
@@ -11847,7 +11850,7 @@ packages:
       '@solana/web3.js': ^1.x
     dependencies:
       '@babel/runtime': 7.22.5
-      '@solana/web3.js': 1.77.3
+      '@solana/web3.js': 1.77.3(encoding@0.1.13)
       '@web3auth/base': 5.2.0(@babel/runtime@7.22.5)
       '@web3auth/base-provider': 5.2.0(@babel/runtime@7.22.5)
       '@web3auth/base-solana-adapter': 5.2.0(@babel/runtime@7.22.5)
@@ -11867,7 +11870,7 @@ packages:
       '@solana/web3.js': ^1.x
     dependencies:
       '@babel/runtime': 7.22.5
-      '@solana/web3.js': 1.77.3
+      '@solana/web3.js': 1.77.3(encoding@0.1.13)
       '@toruslabs/base-controllers': 2.9.0(@babel/runtime@7.22.5)
       '@toruslabs/openlogin-ed25519': 3.2.0(@babel/runtime@7.22.5)
       '@toruslabs/openlogin-jrpc': 3.2.0(@babel/runtime@7.22.5)
@@ -11898,15 +11901,15 @@ packages:
       - '@sentry/types'
     dev: true
 
-  /@web3auth/torus-solana-adapter@5.2.0(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3):
+  /@web3auth/torus-solana-adapter@5.2.0(@babel/runtime@7.22.5)(@solana/web3.js@1.77.3)(encoding@0.1.13):
     resolution: {integrity: sha512-Gl71lKoo+RIq9DaeUiRsc4cVSKsSsjJLCc+7iLSeSiuYnD1BouPKOutrAQngCwdC+DiLjGVNAjq44TsC7Q136Q==}
     peerDependencies:
       '@babel/runtime': ^7.x
       '@solana/web3.js': ^1.x
     dependencies:
       '@babel/runtime': 7.22.5
-      '@solana/web3.js': 1.77.3
-      '@toruslabs/solana-embed': 0.3.4(@babel/runtime@7.22.5)
+      '@solana/web3.js': 1.77.3(encoding@0.1.13)
+      '@toruslabs/solana-embed': 0.3.4(@babel/runtime@7.22.5)(encoding@0.1.13)
       '@web3auth/base': 5.2.0(@babel/runtime@7.22.5)
       '@web3auth/base-provider': 5.2.0(@babel/runtime@7.22.5)
       '@web3auth/base-solana-adapter': 5.2.0(@babel/runtime@7.22.5)
@@ -14515,10 +14518,10 @@ packages:
       cross-spawn: 7.0.3
     dev: true
 
-  /cross-fetch@3.1.6:
+  /cross-fetch@3.1.6(encoding@0.1.13):
     resolution: {integrity: sha512-riRvo06crlE8HiqOwIpQhxwdOk4fOeR7FVM/wXoxchFEqMNUjvbs3bfo4OTgMEMHzppd4DxFBDbyySj8Cv781g==}
     dependencies:
-      node-fetch: 2.6.11
+      node-fetch: 2.6.11(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
 
@@ -15502,6 +15505,11 @@ packages:
   /encodeurl@1.0.2:
     resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}
     engines: {node: '>= 0.8'}
+
+  /encoding@0.1.13:
+    resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
+    dependencies:
+      iconv-lite: 0.6.3
 
   /end-of-stream@1.1.0:
     resolution: {integrity: sha512-EoulkdKF/1xa92q25PbjuDcgJ9RDHYU2Rs3SCIvs2/dSQ3BpmxneNHmA/M7fe60M3PrV7nNGTTNbkK62l6vXiQ==}
@@ -16765,10 +16773,10 @@ packages:
     resolution: {integrity: sha512-b2XGFAFdWZWg0phtAWLHCk836A1Xann+I+Dgd3Gk64MHKZO44FfoD1KxyvbSh0qZsIoXQGGlVztIY+oitJPpRQ==}
     dev: true
 
-  /fbjs@3.0.5:
+  /fbjs@3.0.5(encoding@0.1.13):
     resolution: {integrity: sha512-ztsSx77JBtkuMrEypfhgc3cI0+0h+svqeie7xHbh1k/IKdcydnvadp/mUaGgjAOXQmQSxsqgaRhS3q9fy+1kxg==}
     dependencies:
-      cross-fetch: 3.1.6
+      cross-fetch: 3.1.6(encoding@0.1.13)
       fbjs-css-vars: 1.0.2
       loose-envify: 1.4.0
       object-assign: 4.1.1
@@ -17644,7 +17652,7 @@ packages:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
     dev: true
 
-  /graphql-config@4.5.0(@types/node@18.14.2)(graphql@16.6.0):
+  /graphql-config@4.5.0(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-x6D0/cftpLUJ0Ch1e5sj1TZn6Wcxx4oMfmhaG9shM0DKajA9iR+j1z86GSTQ19fShbGvrSSvbIQsHku6aQ6BBw==}
     engines: {node: '>= 10.0.0'}
     peerDependencies:
@@ -17658,7 +17666,7 @@ packages:
       '@graphql-tools/json-file-loader': 7.4.18(graphql@16.6.0)
       '@graphql-tools/load': 7.8.14(graphql@16.6.0)
       '@graphql-tools/merge': 8.4.2(graphql@16.6.0)
-      '@graphql-tools/url-loader': 7.17.18(@types/node@18.14.2)(graphql@16.6.0)
+      '@graphql-tools/url-loader': 7.17.18(@types/node@18.14.2)(encoding@0.1.13)(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
       cosmiconfig: 8.0.0
       graphql: 16.6.0
@@ -17691,13 +17699,13 @@ packages:
       graphql: 16.6.0
     dev: true
 
-  /graphql-request@6.1.0(graphql@16.6.0):
+  /graphql-request@6.1.0(encoding@0.1.13)(graphql@16.6.0):
     resolution: {integrity: sha512-p+XPfS4q7aIpKVcgmnZKhMNqhltk20hfXtkaIkTfjjmiKMJ5xrt5c743cL03y/K7y1rg3WrIC49xGiEQ4mxdNw==}
     peerDependencies:
       graphql: 14 - 16
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.6.0)
-      cross-fetch: 3.1.6
+      cross-fetch: 3.1.6(encoding@0.1.13)
       graphql: 16.6.0
     transitivePeerDependencies:
       - encoding
@@ -18242,7 +18250,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       safer-buffer: 2.1.2
-    dev: true
 
   /icss-replace-symbols@1.1.0:
     resolution: {integrity: sha512-chIaY3Vh2mh2Q3RGXttaDIzeiPvaVXJ+C4DAh/w3c37SKZ/U6PGMmuicR2EQQp9bKG8zLMCl7I+PtIoOOPp8Gg==}
@@ -18940,10 +18947,10 @@ packages:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
     engines: {node: '>=0.10.0'}
 
-  /isomorphic-unfetch@3.1.0:
+  /isomorphic-unfetch@3.1.0(encoding@0.1.13):
     resolution: {integrity: sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==}
     dependencies:
-      node-fetch: 2.6.11
+      node-fetch: 2.6.11(encoding@0.1.13)
       unfetch: 4.2.0
     transitivePeerDependencies:
       - encoding
@@ -21233,12 +21240,12 @@ packages:
       metro-core: 0.73.10
       rimraf: 3.0.2
 
-  /metro-config@0.73.10:
+  /metro-config@0.73.10(encoding@0.1.13):
     resolution: {integrity: sha512-wIlybd1Z9I8K2KcStTiJxTB7OK529dxFgogNpKCTU/3DxkgAASqSkgXnZP6kVyqjh5EOWAKFe5U6IPic7kXDdQ==}
     dependencies:
       cosmiconfig: 5.2.1
       jest-validate: 26.6.2
-      metro: 0.73.10
+      metro: 0.73.10(encoding@0.1.13)
       metro-cache: 0.73.10
       metro-core: 0.73.10
       metro-runtime: 0.73.10
@@ -21507,7 +21514,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /metro-transform-worker@0.73.10:
+  /metro-transform-worker@0.73.10(encoding@0.1.13):
     resolution: {integrity: sha512-IySvVubudFxahxOljWtP0QIMMpgUrCP0bW16cz2Enof0PdumwmR7uU3dTbNq6S+XTzuMHR+076aIe4VhPAWsIQ==}
     dependencies:
       '@babel/core': 7.22.5
@@ -21515,7 +21522,7 @@ packages:
       '@babel/parser': 7.22.5
       '@babel/types': 7.22.5
       babel-preset-fbjs: 3.4.0(@babel/core@7.22.5)
-      metro: 0.73.10
+      metro: 0.73.10(encoding@0.1.13)
       metro-babel-transformer: 0.73.10
       metro-cache: 0.73.10
       metro-cache-key: 0.73.10
@@ -21529,7 +21536,7 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /metro@0.73.10:
+  /metro@0.73.10(encoding@0.1.13):
     resolution: {integrity: sha512-J2gBhNHFtc/Z48ysF0B/bfTwUwaRDLjNv7egfhQCc+934dpXcjJG2KZFeuybF+CvA9vo4QUi56G2U+RSAJ5tsA==}
     hasBin: true
     dependencies:
@@ -21559,7 +21566,7 @@ packages:
       metro-babel-transformer: 0.73.10
       metro-cache: 0.73.10
       metro-cache-key: 0.73.10
-      metro-config: 0.73.10
+      metro-config: 0.73.10(encoding@0.1.13)
       metro-core: 0.73.10
       metro-file-map: 0.73.10
       metro-hermes-compiler: 0.73.10
@@ -21572,9 +21579,9 @@ packages:
       metro-source-map: 0.73.10
       metro-symbolicate: 0.73.10
       metro-transform-plugins: 0.73.10
-      metro-transform-worker: 0.73.10
+      metro-transform-worker: 0.73.10(encoding@0.1.13)
       mime-types: 2.1.35
-      node-fetch: 2.6.11
+      node-fetch: 2.6.11(encoding@0.1.13)
       nullthrows: 1.1.1
       rimraf: 3.0.2
       serialize-error: 2.1.0
@@ -22074,7 +22081,7 @@ packages:
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  /msw@1.2.2(typescript@5.1.3):
+  /msw@1.2.2(encoding@0.1.13)(typescript@5.1.3):
     resolution: {integrity: sha512-GsW3PE/Es/a1tYThXcM8YHOZ1S1MtivcS3He/LQbbTCx3rbWJYCtWD5XXyJ53KlNPT7O1VI9sCW3xMtgFe8XpQ==}
     engines: {node: '>=14'}
     hasBin: true
@@ -22098,7 +22105,7 @@ packages:
       inquirer: 8.2.5
       is-node-process: 1.2.0
       js-levenshtein: 1.1.6
-      node-fetch: 2.6.11
+      node-fetch: 2.6.11(encoding@0.1.13)
       outvariant: 1.4.0
       path-to-regexp: 6.2.1
       strict-event-emitter: 0.4.6
@@ -22410,7 +22417,7 @@ packages:
     dependencies:
       minimatch: 3.1.2
 
-  /node-fetch@2.6.11:
+  /node-fetch@2.6.11(encoding@0.1.13):
     resolution: {integrity: sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
@@ -22419,6 +22426,7 @@ packages:
       encoding:
         optional: true
     dependencies:
+      encoding: 0.1.13
       whatwg-url: 5.0.0
 
   /node-forge@1.3.1:
@@ -24541,7 +24549,7 @@ packages:
       i18next: 22.5.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-native: 0.71.10(@babel/core@7.22.5)(@babel/preset-env@7.22.5)(react@18.2.0)
+      react-native: 0.71.10(@babel/core@7.22.5)(@babel/preset-env@7.22.5)(encoding@0.1.13)(react@18.2.0)
 
   /react-icons@4.9.0(react@18.2.0):
     resolution: {integrity: sha512-ijUnFr//ycebOqujtqtV9PFS7JjhWg0QU6ykURVHuL4cbofvRCf3f6GMn9+fBktEFQOIVZnuAYLZdiyadRQRFg==}
@@ -24593,7 +24601,7 @@ packages:
         optional: true
     dependencies:
       base-64: 0.1.0
-      react-native: 0.71.10(@babel/core@7.22.5)(@babel/preset-env@7.22.5)(react@18.2.0)
+      react-native: 0.71.10(@babel/core@7.22.5)(@babel/preset-env@7.22.5)(encoding@0.1.13)(react@18.2.0)
       utf8: 3.0.0
     dev: true
 
@@ -24604,7 +24612,7 @@ packages:
     resolution: {integrity: sha512-WJr256xBquk7X2O83QYWKqgLg43Zg3SrgjPc/kr0gCD2LoXA+2L72BW4cmstH12GbGeutqs/eXk3jgDQ2iCSvQ==}
     dev: true
 
-  /react-native@0.71.10(@babel/core@7.22.5)(@babel/preset-env@7.22.5)(react@18.2.0):
+  /react-native@0.71.10(@babel/core@7.22.5)(@babel/preset-env@7.22.5)(encoding@0.1.13)(react@18.2.0):
     resolution: {integrity: sha512-O+sWH9ln7euxhHdooVL8is2FiVc7CfAp2zsKgIRhbq/8lGbJr5ZyT6QkCQK0M8Sx1zNe9puebr+BE8uBFsartg==}
     engines: {node: '>=14'}
     hasBin: true
@@ -24612,9 +24620,9 @@ packages:
       react: 18.2.0
     dependencies:
       '@jest/create-cache-key-function': 29.5.0
-      '@react-native-community/cli': 10.2.2(@babel/core@7.22.5)
-      '@react-native-community/cli-platform-android': 10.2.0
-      '@react-native-community/cli-platform-ios': 10.2.1
+      '@react-native-community/cli': 10.2.2(@babel/core@7.22.5)(encoding@0.1.13)
+      '@react-native-community/cli-platform-android': 10.2.0(encoding@0.1.13)
+      '@react-native-community/cli-platform-ios': 10.2.1(encoding@0.1.13)
       '@react-native/assets': 1.0.0
       '@react-native/normalize-color': 2.1.0
       '@react-native/polyfills': 2.0.0
@@ -25010,11 +25018,11 @@ packages:
     engines: {node: '>= 0.10'}
     dev: true
 
-  /relay-runtime@12.0.0:
+  /relay-runtime@12.0.0(encoding@0.1.13):
     resolution: {integrity: sha512-QU6JKr1tMsry22DXNy9Whsq5rmvwr3LSZiiWV/9+DFpuTWvp+WFhobWMc8TC4OjKFfNhEZy7mOiqUAn5atQtug==}
     dependencies:
       '@babel/runtime': 7.22.5
-      fbjs: 3.0.5
+      fbjs: 3.0.5(encoding@0.1.13)
       invariant: 2.2.4
     transitivePeerDependencies:
       - encoding
@@ -28111,13 +28119,13 @@ packages:
     dependencies:
       eventemitter3: 4.0.4
 
-  /web3-core-requestmanager@1.10.0:
+  /web3-core-requestmanager@1.10.0(encoding@0.1.13):
     resolution: {integrity: sha512-3z/JKE++Os62APml4dvBM+GAuId4h3L9ckUrj7ebEtS2AR0ixyQPbrBodgL91Sv7j7cQ3Y+hllaluqjguxvSaQ==}
     engines: {node: '>=8.0.0'}
     dependencies:
       util: 0.12.5
       web3-core-helpers: 1.10.0
-      web3-providers-http: 1.10.0
+      web3-providers-http: 1.10.0(encoding@0.1.13)
       web3-providers-ipc: 1.10.0
       web3-providers-ws: 1.10.0
     transitivePeerDependencies:
@@ -28131,7 +28139,7 @@ packages:
       eventemitter3: 4.0.4
       web3-core-helpers: 1.10.0
 
-  /web3-core@1.10.0:
+  /web3-core@1.10.0(encoding@0.1.13):
     resolution: {integrity: sha512-fWySwqy2hn3TL89w5TM8wXF1Z2Q6frQTKHWmP0ppRQorEK8NcHJRfeMiv/mQlSKoTS1F6n/nv2uyZsixFycjYQ==}
     engines: {node: '>=8.0.0'}
     dependencies:
@@ -28140,7 +28148,7 @@ packages:
       bignumber.js: 9.1.1
       web3-core-helpers: 1.10.0
       web3-core-method: 1.10.0
-      web3-core-requestmanager: 1.10.0
+      web3-core-requestmanager: 1.10.0(encoding@0.1.13)
       web3-utils: 1.10.0
     transitivePeerDependencies:
       - encoding
@@ -28153,7 +28161,7 @@ packages:
       '@ethersproject/abi': 5.7.0
       web3-utils: 1.10.0
 
-  /web3-eth-accounts@1.10.0:
+  /web3-eth-accounts@1.10.0(encoding@0.1.13):
     resolution: {integrity: sha512-wiq39Uc3mOI8rw24wE2n15hboLE0E9BsQLdlmsL4Zua9diDS6B5abXG0XhFcoNsXIGMWXVZz4TOq3u4EdpXF/Q==}
     engines: {node: '>=8.0.0'}
     dependencies:
@@ -28163,7 +28171,7 @@ packages:
       ethereumjs-util: 7.1.5
       scrypt-js: 3.0.1
       uuid: 9.0.0
-      web3-core: 1.10.0
+      web3-core: 1.10.0(encoding@0.1.13)
       web3-core-helpers: 1.10.0
       web3-core-method: 1.10.0
       web3-utils: 1.10.0
@@ -28171,12 +28179,12 @@ packages:
       - encoding
       - supports-color
 
-  /web3-eth-contract@1.10.0:
+  /web3-eth-contract@1.10.0(encoding@0.1.13):
     resolution: {integrity: sha512-MIC5FOzP/+2evDksQQ/dpcXhSqa/2hFNytdl/x61IeWxhh6vlFeSjq0YVTAyIzdjwnL7nEmZpjfI6y6/Ufhy7w==}
     engines: {node: '>=8.0.0'}
     dependencies:
       '@types/bn.js': 5.1.1
-      web3-core: 1.10.0
+      web3-core: 1.10.0(encoding@0.1.13)
       web3-core-helpers: 1.10.0
       web3-core-method: 1.10.0
       web3-core-promievent: 1.10.0
@@ -28187,17 +28195,17 @@ packages:
       - encoding
       - supports-color
 
-  /web3-eth-ens@1.10.0:
+  /web3-eth-ens@1.10.0(encoding@0.1.13):
     resolution: {integrity: sha512-3hpGgzX3qjgxNAmqdrC2YUQMTfnZbs4GeLEmy8aCWziVwogbuqQZ+Gzdfrym45eOZodk+lmXyLuAdqkNlvkc1g==}
     engines: {node: '>=8.0.0'}
     dependencies:
       content-hash: 2.5.2
       eth-ens-namehash: 2.0.8
-      web3-core: 1.10.0
+      web3-core: 1.10.0(encoding@0.1.13)
       web3-core-helpers: 1.10.0
       web3-core-promievent: 1.10.0
       web3-eth-abi: 1.10.0
-      web3-eth-contract: 1.10.0
+      web3-eth-contract: 1.10.0(encoding@0.1.13)
       web3-utils: 1.10.0
     transitivePeerDependencies:
       - encoding
@@ -28210,57 +28218,57 @@ packages:
       bn.js: 5.2.1
       web3-utils: 1.10.0
 
-  /web3-eth-personal@1.10.0:
+  /web3-eth-personal@1.10.0(encoding@0.1.13):
     resolution: {integrity: sha512-anseKn98w/d703eWq52uNuZi7GhQeVjTC5/svrBWEKob0WZ5kPdo+EZoFN0sp5a5ubbrk/E0xSl1/M5yORMtpg==}
     engines: {node: '>=8.0.0'}
     dependencies:
       '@types/node': 12.20.55
-      web3-core: 1.10.0
+      web3-core: 1.10.0(encoding@0.1.13)
       web3-core-helpers: 1.10.0
       web3-core-method: 1.10.0
-      web3-net: 1.10.0
+      web3-net: 1.10.0(encoding@0.1.13)
       web3-utils: 1.10.0
     transitivePeerDependencies:
       - encoding
       - supports-color
 
-  /web3-eth@1.10.0:
+  /web3-eth@1.10.0(encoding@0.1.13):
     resolution: {integrity: sha512-Z5vT6slNMLPKuwRyKGbqeGYC87OAy8bOblaqRTgg94CXcn/mmqU7iPIlG4506YdcdK3x6cfEDG7B6w+jRxypKA==}
     engines: {node: '>=8.0.0'}
     dependencies:
-      web3-core: 1.10.0
+      web3-core: 1.10.0(encoding@0.1.13)
       web3-core-helpers: 1.10.0
       web3-core-method: 1.10.0
       web3-core-subscriptions: 1.10.0
       web3-eth-abi: 1.10.0
-      web3-eth-accounts: 1.10.0
-      web3-eth-contract: 1.10.0
-      web3-eth-ens: 1.10.0
+      web3-eth-accounts: 1.10.0(encoding@0.1.13)
+      web3-eth-contract: 1.10.0(encoding@0.1.13)
+      web3-eth-ens: 1.10.0(encoding@0.1.13)
       web3-eth-iban: 1.10.0
-      web3-eth-personal: 1.10.0
-      web3-net: 1.10.0
+      web3-eth-personal: 1.10.0(encoding@0.1.13)
+      web3-net: 1.10.0(encoding@0.1.13)
       web3-utils: 1.10.0
     transitivePeerDependencies:
       - encoding
       - supports-color
 
-  /web3-net@1.10.0:
+  /web3-net@1.10.0(encoding@0.1.13):
     resolution: {integrity: sha512-NLH/N3IshYWASpxk4/18Ge6n60GEvWBVeM8inx2dmZJVmRI6SJIlUxbL8jySgiTn3MMZlhbdvrGo8fpUW7a1GA==}
     engines: {node: '>=8.0.0'}
     dependencies:
-      web3-core: 1.10.0
+      web3-core: 1.10.0(encoding@0.1.13)
       web3-core-method: 1.10.0
       web3-utils: 1.10.0
     transitivePeerDependencies:
       - encoding
       - supports-color
 
-  /web3-providers-http@1.10.0:
+  /web3-providers-http@1.10.0(encoding@0.1.13):
     resolution: {integrity: sha512-eNr965YB8a9mLiNrkjAWNAPXgmQWfpBfkkn7tpEFlghfww0u3I0tktMZiaToJVcL2+Xq+81cxbkpeWJ5XQDwOA==}
     engines: {node: '>=8.0.0'}
     dependencies:
       abortcontroller-polyfill: 1.7.5
-      cross-fetch: 3.1.6
+      cross-fetch: 3.1.6(encoding@0.1.13)
       es6-promise: 4.2.8
       web3-core-helpers: 1.10.0
     transitivePeerDependencies:
@@ -28283,15 +28291,15 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /web3-shh@1.10.0:
+  /web3-shh@1.10.0(encoding@0.1.13):
     resolution: {integrity: sha512-uNUUuNsO2AjX41GJARV9zJibs11eq6HtOe6Wr0FtRUcj8SN6nHeYIzwstAvJ4fXA53gRqFMTxdntHEt9aXVjpg==}
     engines: {node: '>=8.0.0'}
     requiresBuild: true
     dependencies:
-      web3-core: 1.10.0
+      web3-core: 1.10.0(encoding@0.1.13)
       web3-core-method: 1.10.0
       web3-core-subscriptions: 1.10.0
-      web3-net: 1.10.0
+      web3-net: 1.10.0(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -28308,17 +28316,17 @@ packages:
       randombytes: 2.1.0
       utf8: 3.0.0
 
-  /web3@1.10.0:
+  /web3@1.10.0(encoding@0.1.13):
     resolution: {integrity: sha512-YfKY9wSkGcM8seO+daR89oVTcbu18NsVfvOngzqMYGUU0pPSQmE57qQDvQzUeoIOHAnXEBNzrhjQJmm8ER0rng==}
     engines: {node: '>=8.0.0'}
     requiresBuild: true
     dependencies:
       web3-bzz: 1.10.0
-      web3-core: 1.10.0
-      web3-eth: 1.10.0
-      web3-eth-personal: 1.10.0
-      web3-net: 1.10.0
-      web3-shh: 1.10.0
+      web3-core: 1.10.0(encoding@0.1.13)
+      web3-eth: 1.10.0(encoding@0.1.13)
+      web3-eth-personal: 1.10.0(encoding@0.1.13)
+      web3-net: 1.10.0(encoding@0.1.13)
+      web3-shh: 1.10.0(encoding@0.1.13)
       web3-utils: 1.10.0
     transitivePeerDependencies:
       - bufferutil
