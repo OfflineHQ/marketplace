@@ -84,47 +84,20 @@ export const authOptions: NextAuthOptions = {
       const {
         token,
         user,
-        account,
-        profile,
-        isNewUser,
       }: {
         token: JWT;
         user?: User;
-        profile?: Profile;
-        account?: Account | null;
-        isNewUser?: boolean;
       } = args;
 
-      logger.debug('jwt callback', { token, user, account });
-      // First time user sign in
-      if (user && account) {
-        return {
-          accessToken: account.access_token,
-          accessTokenExpires:
-            Date.now() + (account?.expires_at as number) * 1000,
-          refreshToken: account.refresh_token,
-          user: { ...user, name: profile?.name },
-          provider: account.provider,
-          providerType: account.type,
-          role: Roles.user,
-        };
-      } else {
-        Object.assign(token, {
-          role: token.user ? Roles.user : Roles.anonymous,
-        });
-      }
-      // Return previous token if the access token has not expired yet
-      if (Date.now() < (token.accessTokenExpires as number)) {
-        return token;
-      }
+      Object.assign(token, {
+        role: token.user ? Roles.user : Roles.anonymous,
+      });
       return token;
-      // Access token has expired, try to update it
-      // return refreshAccessToken(token);
     },
     async session({ session, token }) {
-      logger.debug('session callback', { session, token });
       // needed for hasura claims_map
       session.user = token.user as User;
+      logger.debug('session callback', { session, token });
       return session;
     },
   },

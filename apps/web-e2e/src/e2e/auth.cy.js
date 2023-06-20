@@ -10,7 +10,7 @@ describe.skip('Authentication tests', () => {
   //     mock({
   //       blockchain: 'ethereum',
   //       accounts: {
-  //         return: [users.alpha_admin.address],
+  //         return: [users.alpha_user.address],
   //       },
   //     });
   //     win.ethereum = cy.window().specWindow.window.ethereum;
@@ -18,18 +18,18 @@ describe.skip('Authentication tests', () => {
   // });
 
   it('cypress direct login allow logged user to see his infos', function () {
-    cy.login('alpha_admin');
+    cy.login('alpha_user');
     cy.on('window:before:load', (win) => {
       mock({
         blockchain: 'ethereum',
         accounts: {
-          return: [users.alpha_admin.address],
+          return: [users.alpha_user.address],
         },
       });
       win.ethereum = cy.window().specWindow.window.ethereum;
     });
     cy.visit('/user');
-    cy.findByText(users.alpha_admin.address.slice(0, 3), {
+    cy.findByText(users.alpha_user.address.slice(0, 3), {
       exact: false,
     }).should('be.visible');
   });
