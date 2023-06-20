@@ -17,3 +17,4 @@ _.tar
 _.gz
 _.rar
 \*.7z#
+**/generated/**

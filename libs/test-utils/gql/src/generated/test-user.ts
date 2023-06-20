@@ -237,14 +237,14 @@ export const AccountFieldsFragmentDoc = `
 }
     `;
 const GetAccountDocument = `
-    query getAccount($address: String!) {
+    query GetAccount($address: String!) {
   account(where: {address: {_eq: $address}}) {
     ...AccountFields
   }
 }
     ${AccountFieldsFragmentDoc}`;
 const GetAccountByEmailDocument = `
-    query getAccountByEmail($email: String!) {
+    query GetAccountByEmail($email: String!) {
   account(where: {email: {_eq: $email}}) {
     ...AccountFields
   }
@@ -257,7 +257,7 @@ export type Requester<C = {}, E = unknown> = <R, V>(
 ) => Promise<R> | AsyncIterable<R>;
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
-    getAccount(
+    GetAccount(
       variables: GetAccountQueryVariables,
       options?: C
     ): Promise<GetAccountQuery> {
@@ -267,7 +267,7 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
         options
       ) as Promise<GetAccountQuery>;
     },
-    getAccountByEmail(
+    GetAccountByEmail(
       variables: GetAccountByEmailQueryVariables,
       options?: C
     ): Promise<GetAccountByEmailQuery> {

@@ -19,25 +19,27 @@ describe('user access security tests', () => {
     await deleteAccounts();
   });
   it.skip('user alpha can retrieve his information', async () => {
-    const data = await alphaAdmin.getAccount({ id: alphaAdmin.me.id });
+    const data = await alphaAdmin.GetAccount({
+      address: alphaAdmin.me.address,
+    });
     expect(data.account[0]).toEqual(alphaAdmin.me);
   });
   it('user beta can retrieve his information', async () => {
-    const data = await betaAdmin.getAccount({ id: betaAdmin.me.id });
+    const data = await betaAdmin.GetAccount({ address: betaAdmin.me.address });
     expect(data.account[0]).toEqual(betaAdmin.me);
   });
   it("user beta can't retrieve alpha's information", async () => {
-    const data = await betaAdmin.getAccount({ id: alphaAdmin.me.id });
+    const data = await betaAdmin.GetAccount({ address: alphaAdmin.me.address });
     expect(data.account[0]).toBeUndefined();
   });
   it('user beta can retrieve his information by email', async () => {
-    const data = await betaAdmin.getAccountByEmail({
+    const data = await betaAdmin.GetAccountByEmail({
       email: betaAdmin.me.email as string,
     });
     expect(data.account[0]).toEqual(betaAdmin.me);
   });
   it("user seb can't retrieve beta's information by email", async () => {
-    const data = await sebGoogle.getAccountByEmail({
+    const data = await sebGoogle.GetAccountByEmail({
       email: betaAdmin.me.email as string,
     });
     expect(data.account[0]).toBeUndefined();
