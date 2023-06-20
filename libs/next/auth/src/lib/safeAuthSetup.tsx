@@ -234,10 +234,15 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
           nonce: await getCsrfToken(),
         });
         const signature = await signer?.signMessage(message.prepareMessage());
+        const userInfo = !isCypressRunning()
+          ? await safeAuth?.getUserInfo()
+          : {};
         const signInRes = await signIn('credentials', {
           message: JSON.stringify(message),
           redirect: false,
           signature,
+          address,
+          email: userInfo?.email,
         });
         if (signInRes?.error) {
           console.error('Error signing in with SIWE:', signInRes?.error);
