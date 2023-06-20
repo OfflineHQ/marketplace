@@ -5,9 +5,9 @@ import { createAccount } from './createAccount';
 export const handleAccount = async (
   account: Account_Insert_Input
 ): Promise<Account> => {
-  const _account = await getAccount(account.address);
+  const _account = await getAccount(account.address as string);
   if (!_account) {
-    return createAccount(account);
+    return createAccount(account) as Promise<Account>;
   }
   return _account;
 };
