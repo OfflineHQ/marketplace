@@ -2,7 +2,7 @@ import { isJestRunning, isServerSide } from '@utils';
 import { endpointUrl } from './shared';
 import { logger } from '@logger';
 
-// This fetcher is used for fetching data from Hasura GraphQL API.
+/// This fetcher is used for fetching data from Hasura GraphQL API.
 // The admin mode is used solely for the admin role, it returns an error if the HASURA_ADMIN_SECRET is not set or if it's not called server side
 // Otherwise it include the auth cookie or get the jwt for testing purposes
 type Opts = {
