@@ -77,59 +77,59 @@ export const enum Cursor_Ordering {
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
-  /** delete data from the table: "users" */
-  delete_users?: Maybe<Users_Mutation_Response>;
-  /** delete single row from the table: "users" */
-  delete_users_by_pk?: Maybe<Users>;
-  /** insert data into the table: "users" */
-  insert_users?: Maybe<Users_Mutation_Response>;
-  /** insert a single row into the table: "users" */
-  insert_users_one?: Maybe<Users>;
-  /** update data of the table: "users" */
-  update_users?: Maybe<Users_Mutation_Response>;
-  /** update single row of the table: "users" */
-  update_users_by_pk?: Maybe<Users>;
-  /** update multiples rows of table: "users" */
-  update_users_many?: Maybe<Array<Maybe<Users_Mutation_Response>>>;
+  /** delete data from the table: "user" */
+  delete_user?: Maybe<User_Mutation_Response>;
+  /** delete single row from the table: "user" */
+  delete_user_by_pk?: Maybe<User>;
+  /** insert data into the table: "user" */
+  insert_user?: Maybe<User_Mutation_Response>;
+  /** insert a single row into the table: "user" */
+  insert_user_one?: Maybe<User>;
+  /** update data of the table: "user" */
+  update_user?: Maybe<User_Mutation_Response>;
+  /** update single row of the table: "user" */
+  update_user_by_pk?: Maybe<User>;
+  /** update multiples rows of table: "user" */
+  update_user_many?: Maybe<Array<Maybe<User_Mutation_Response>>>;
 };
 
 /** mutation root */
-export type Mutation_RootDelete_UsersArgs = {
-  where: Users_Bool_Exp;
+export type Mutation_RootDelete_UserArgs = {
+  where: User_Bool_Exp;
 };
 
 /** mutation root */
-export type Mutation_RootDelete_Users_By_PkArgs = {
+export type Mutation_RootDelete_User_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 /** mutation root */
-export type Mutation_RootInsert_UsersArgs = {
-  objects: Array<Users_Insert_Input>;
-  on_conflict?: InputMaybe<Users_On_Conflict>;
+export type Mutation_RootInsert_UserArgs = {
+  objects: Array<User_Insert_Input>;
+  on_conflict?: InputMaybe<User_On_Conflict>;
 };
 
 /** mutation root */
-export type Mutation_RootInsert_Users_OneArgs = {
-  object: Users_Insert_Input;
-  on_conflict?: InputMaybe<Users_On_Conflict>;
+export type Mutation_RootInsert_User_OneArgs = {
+  object: User_Insert_Input;
+  on_conflict?: InputMaybe<User_On_Conflict>;
 };
 
 /** mutation root */
-export type Mutation_RootUpdate_UsersArgs = {
-  _set?: InputMaybe<Users_Set_Input>;
-  where: Users_Bool_Exp;
+export type Mutation_RootUpdate_UserArgs = {
+  _set?: InputMaybe<User_Set_Input>;
+  where: User_Bool_Exp;
 };
 
 /** mutation root */
-export type Mutation_RootUpdate_Users_By_PkArgs = {
-  _set?: InputMaybe<Users_Set_Input>;
-  pk_columns: Users_Pk_Columns_Input;
+export type Mutation_RootUpdate_User_By_PkArgs = {
+  _set?: InputMaybe<User_Set_Input>;
+  pk_columns: User_Pk_Columns_Input;
 };
 
 /** mutation root */
-export type Mutation_RootUpdate_Users_ManyArgs = {
-  updates: Array<Users_Updates>;
+export type Mutation_RootUpdate_User_ManyArgs = {
+  updates: Array<User_Updates>;
 };
 
 /** column ordering options */
@@ -150,123 +150,123 @@ export const enum Order_By {
 
 export type Query_Root = {
   __typename?: 'query_root';
-  /** fetch data from the table: "users" */
-  users: Array<Users>;
-  /** fetch aggregated fields from the table: "users" */
-  users_aggregate: Users_Aggregate;
-  /** fetch data from the table: "users" using primary key columns */
-  users_by_pk?: Maybe<Users>;
+  /** fetch data from the table: "user" */
+  user: Array<User>;
+  /** fetch aggregated fields from the table: "user" */
+  user_aggregate: User_Aggregate;
+  /** fetch data from the table: "user" using primary key columns */
+  user_by_pk?: Maybe<User>;
 };
 
-export type Query_RootUsersArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
+export type Query_RootUserArgs = {
+  distinct_on?: InputMaybe<Array<User_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
+  order_by?: InputMaybe<Array<User_Order_By>>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
-export type Query_RootUsers_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
+export type Query_RootUser_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<User_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
+  order_by?: InputMaybe<Array<User_Order_By>>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
-export type Query_RootUsers_By_PkArgs = {
+export type Query_RootUser_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
-  /** fetch data from the table: "users" */
-  users: Array<Users>;
-  /** fetch aggregated fields from the table: "users" */
-  users_aggregate: Users_Aggregate;
-  /** fetch data from the table: "users" using primary key columns */
-  users_by_pk?: Maybe<Users>;
-  /** fetch data from the table in a streaming manner: "users" */
-  users_stream: Array<Users>;
+  /** fetch data from the table: "user" */
+  user: Array<User>;
+  /** fetch aggregated fields from the table: "user" */
+  user_aggregate: User_Aggregate;
+  /** fetch data from the table: "user" using primary key columns */
+  user_by_pk?: Maybe<User>;
+  /** fetch data from the table in a streaming manner: "user" */
+  user_stream: Array<User>;
 };
 
-export type Subscription_RootUsersArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
+export type Subscription_RootUserArgs = {
+  distinct_on?: InputMaybe<Array<User_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
+  order_by?: InputMaybe<Array<User_Order_By>>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
-export type Subscription_RootUsers_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
+export type Subscription_RootUser_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<User_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Users_Order_By>>;
-  where?: InputMaybe<Users_Bool_Exp>;
+  order_by?: InputMaybe<Array<User_Order_By>>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
-export type Subscription_RootUsers_By_PkArgs = {
+export type Subscription_RootUser_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
-export type Subscription_RootUsers_StreamArgs = {
+export type Subscription_RootUser_StreamArgs = {
   batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<Users_Stream_Cursor_Input>>;
-  where?: InputMaybe<Users_Bool_Exp>;
+  cursor: Array<InputMaybe<User_Stream_Cursor_Input>>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
-/** columns and relationships of "users" */
-export type Users = {
-  __typename?: 'users';
+/** columns and relationships of "user" */
+export type User = {
+  __typename?: 'user';
   address: Scalars['String'];
-  email: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
   emailVerified: Scalars['Boolean'];
   id: Scalars['uuid'];
 };
 
-/** aggregated selection of "users" */
-export type Users_Aggregate = {
-  __typename?: 'users_aggregate';
-  aggregate?: Maybe<Users_Aggregate_Fields>;
-  nodes: Array<Users>;
+/** aggregated selection of "user" */
+export type User_Aggregate = {
+  __typename?: 'user_aggregate';
+  aggregate?: Maybe<User_Aggregate_Fields>;
+  nodes: Array<User>;
 };
 
-/** aggregate fields of "users" */
-export type Users_Aggregate_Fields = {
-  __typename?: 'users_aggregate_fields';
+/** aggregate fields of "user" */
+export type User_Aggregate_Fields = {
+  __typename?: 'user_aggregate_fields';
   count: Scalars['Int'];
-  max?: Maybe<Users_Max_Fields>;
-  min?: Maybe<Users_Min_Fields>;
+  max?: Maybe<User_Max_Fields>;
+  min?: Maybe<User_Min_Fields>;
 };
 
-/** aggregate fields of "users" */
-export type Users_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Users_Select_Column>>;
+/** aggregate fields of "user" */
+export type User_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<User_Select_Column>>;
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
-/** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
-export type Users_Bool_Exp = {
-  _and?: InputMaybe<Array<Users_Bool_Exp>>;
-  _not?: InputMaybe<Users_Bool_Exp>;
-  _or?: InputMaybe<Array<Users_Bool_Exp>>;
+/** Boolean expression to filter rows from the table "user". All fields are combined with a logical 'AND'. */
+export type User_Bool_Exp = {
+  _and?: InputMaybe<Array<User_Bool_Exp>>;
+  _not?: InputMaybe<User_Bool_Exp>;
+  _or?: InputMaybe<Array<User_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
   emailVerified?: InputMaybe<Boolean_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
 };
 
-/** unique or primary key constraints on table "users" */
-export const enum Users_Constraint {
+/** unique or primary key constraints on table "user" */
+export const enum User_Constraint {
   /** unique or primary key constraint on columns "address" */
-  UsersAddressKey = 'users_address_key',
+  UserAddressKey = 'user_address_key',
   /** unique or primary key constraint on columns "id" */
-  UsersPkey = 'users_pkey',
+  UserPkey = 'user_pkey',
 }
 
-/** input type for inserting data into table "users" */
-export type Users_Insert_Input = {
+/** input type for inserting data into table "user" */
+export type User_Insert_Input = {
   address?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['Boolean']>;
@@ -274,52 +274,52 @@ export type Users_Insert_Input = {
 };
 
 /** aggregate max on columns */
-export type Users_Max_Fields = {
-  __typename?: 'users_max_fields';
+export type User_Max_Fields = {
+  __typename?: 'user_max_fields';
   address?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
 };
 
 /** aggregate min on columns */
-export type Users_Min_Fields = {
-  __typename?: 'users_min_fields';
+export type User_Min_Fields = {
+  __typename?: 'user_min_fields';
   address?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
 };
 
-/** response of any mutation on the table "users" */
-export type Users_Mutation_Response = {
-  __typename?: 'users_mutation_response';
+/** response of any mutation on the table "user" */
+export type User_Mutation_Response = {
+  __typename?: 'user_mutation_response';
   /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
-  returning: Array<Users>;
+  returning: Array<User>;
 };
 
-/** on_conflict condition type for table "users" */
-export type Users_On_Conflict = {
-  constraint: Users_Constraint;
-  update_columns?: Array<Users_Update_Column>;
-  where?: InputMaybe<Users_Bool_Exp>;
+/** on_conflict condition type for table "user" */
+export type User_On_Conflict = {
+  constraint: User_Constraint;
+  update_columns?: Array<User_Update_Column>;
+  where?: InputMaybe<User_Bool_Exp>;
 };
 
-/** Ordering options when selecting data from "users". */
-export type Users_Order_By = {
+/** Ordering options when selecting data from "user". */
+export type User_Order_By = {
   address?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   emailVerified?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: users */
-export type Users_Pk_Columns_Input = {
+/** primary key columns input for table: user */
+export type User_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
 
-/** select columns of table "users" */
-export const enum Users_Select_Column {
+/** select columns of table "user" */
+export const enum User_Select_Column {
   /** column name */
   Address = 'address',
   /** column name */
@@ -330,32 +330,32 @@ export const enum Users_Select_Column {
   Id = 'id',
 }
 
-/** input type for updating data in table "users" */
-export type Users_Set_Input = {
+/** input type for updating data in table "user" */
+export type User_Set_Input = {
   address?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['uuid']>;
 };
 
-/** Streaming cursor of the table "users" */
-export type Users_Stream_Cursor_Input = {
+/** Streaming cursor of the table "user" */
+export type User_Stream_Cursor_Input = {
   /** Stream column input with initial value */
-  initial_value: Users_Stream_Cursor_Value_Input;
+  initial_value: User_Stream_Cursor_Value_Input;
   /** cursor ordering */
   ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
-export type Users_Stream_Cursor_Value_Input = {
+export type User_Stream_Cursor_Value_Input = {
   address?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['uuid']>;
 };
 
-/** update columns of table "users" */
-export const enum Users_Update_Column {
+/** update columns of table "user" */
+export const enum User_Update_Column {
   /** column name */
   Address = 'address',
   /** column name */
@@ -366,11 +366,11 @@ export const enum Users_Update_Column {
   Id = 'id',
 }
 
-export type Users_Updates = {
+export type User_Updates = {
   /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<Users_Set_Input>;
+  _set?: InputMaybe<User_Set_Input>;
   /** filter the rows which have to be updated */
-  where: Users_Bool_Exp;
+  where: User_Bool_Exp;
 };
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
@@ -388,31 +388,31 @@ export type Uuid_Comparison_Exp = {
 
 export type UpdateUserMutationVariables = Exact<{
   id: Scalars['uuid'];
-  user: Users_Set_Input;
+  user: User_Set_Input;
 }>;
 
 export type UpdateUserMutation = {
   __typename?: 'mutation_root';
-  update_users_by_pk?: {
-    __typename?: 'users';
+  update_user_by_pk?: {
+    __typename?: 'user';
     id: any;
     address: string;
-    email: string;
+    email?: string | null;
     emailVerified: boolean;
   } | null;
 };
 
 export type CreateUserMutationVariables = Exact<{
-  user: Users_Insert_Input;
+  user: User_Insert_Input;
 }>;
 
 export type CreateUserMutation = {
   __typename?: 'mutation_root';
-  insert_users_one?: {
-    __typename?: 'users';
+  insert_user_one?: {
+    __typename?: 'user';
     id: any;
     address: string;
-    email: string;
+    email?: string | null;
     emailVerified: boolean;
   } | null;
 };
@@ -423,11 +423,11 @@ export type GetUserQueryVariables = Exact<{
 
 export type GetUserQuery = {
   __typename?: 'query_root';
-  users: Array<{
-    __typename?: 'users';
+  user: Array<{
+    __typename?: 'user';
     id: any;
     address: string;
-    email: string;
+    email?: string | null;
     emailVerified: boolean;
   }>;
 };
@@ -438,25 +438,25 @@ export type GetUserByEmailQueryVariables = Exact<{
 
 export type GetUserByEmailQuery = {
   __typename?: 'query_root';
-  users: Array<{
-    __typename?: 'users';
+  user: Array<{
+    __typename?: 'user';
     id: any;
     address: string;
-    email: string;
+    email?: string | null;
     emailVerified: boolean;
   }>;
 };
 
 export type UserFieldsFragment = {
-  __typename?: 'users';
+  __typename?: 'user';
   id: any;
   address: string;
-  email: string;
+  email?: string | null;
   emailVerified: boolean;
 };
 
 export const UserFieldsFragmentDoc = `
-    fragment UserFields on users {
+    fragment UserFields on user {
   id
   address
   email
@@ -464,29 +464,29 @@ export const UserFieldsFragmentDoc = `
 }
     `;
 const UpdateUserDocument = `
-    mutation UpdateUser($id: uuid!, $user: users_set_input!) {
-  update_users_by_pk(_set: $user, pk_columns: {id: $id}) {
+    mutation UpdateUser($id: uuid!, $user: user_set_input!) {
+  update_user_by_pk(_set: $user, pk_columns: {id: $id}) {
     ...UserFields
   }
 }
     ${UserFieldsFragmentDoc}`;
 const CreateUserDocument = `
-    mutation CreateUser($user: users_insert_input!) {
-  insert_users_one(object: $user) {
+    mutation CreateUser($user: user_insert_input!) {
+  insert_user_one(object: $user) {
     ...UserFields
   }
 }
     ${UserFieldsFragmentDoc}`;
 const GetUserDocument = `
     query GetUser($address: String!) {
-  users(where: {address: {_eq: $address}}) {
+  user(where: {address: {_eq: $address}}) {
     ...UserFields
   }
 }
     ${UserFieldsFragmentDoc}`;
 const GetUserByEmailDocument = `
     query GetUserByEmail($email: String!) {
-  users(where: {email: {_eq: $email}}) {
+  user(where: {email: {_eq: $email}}) {
     ...UserFields
   }
 }
