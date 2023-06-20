@@ -239,7 +239,7 @@ export const AccountFieldsFragmentDoc = `
 }
     `;
 export const GetAccountDocument = `
-    query getAccount($address: String!) {
+    query GetAccount($address: String!) {
   account(where: {address: {_eq: $address}}) {
     ...AccountFields
   }
@@ -250,7 +250,7 @@ export const useGetAccountQuery = <TData = GetAccountQuery, TError = Error>(
   options?: UseQueryOptions<GetAccountQuery, TError, TData>
 ) =>
   useQuery<GetAccountQuery, TError, TData>(
-    ['getAccount', variables],
+    ['GetAccount', variables],
     fetchDataReactQuery<GetAccountQuery, GetAccountQueryVariables>(
       GetAccountDocument,
       variables
@@ -258,7 +258,7 @@ export const useGetAccountQuery = <TData = GetAccountQuery, TError = Error>(
     options
   );
 export const GetAccountByEmailDocument = `
-    query getAccountByEmail($email: String!) {
+    query GetAccountByEmail($email: String!) {
   account(where: {email: {_eq: $email}}) {
     ...AccountFields
   }
@@ -272,7 +272,7 @@ export const useGetAccountByEmailQuery = <
   options?: UseQueryOptions<GetAccountByEmailQuery, TError, TData>
 ) =>
   useQuery<GetAccountByEmailQuery, TError, TData>(
-    ['getAccountByEmail', variables],
+    ['GetAccountByEmail', variables],
     fetchDataReactQuery<
       GetAccountByEmailQuery,
       GetAccountByEmailQueryVariables
