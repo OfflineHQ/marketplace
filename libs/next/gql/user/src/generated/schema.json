@@ -1411,8 +1411,8 @@
         "description": null,
         "fields": [
           {
-            "name": "users",
-            "description": "fetch data from the table: \"users\"",
+            "name": "user",
+            "description": "fetch data from the table: \"user\"",
             "args": [
               {
                 "name": "distinct_on",
@@ -1425,7 +1425,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "users_select_column",
+                      "name": "user_select_column",
                       "ofType": null
                     }
                   }
@@ -1469,7 +1469,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "users_order_by",
+                      "name": "user_order_by",
                       "ofType": null
                     }
                   }
@@ -1483,7 +1483,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "users_bool_exp",
+                  "name": "user_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -1502,7 +1502,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "users",
+                    "name": "user",
                     "ofType": null
                   }
                 }
@@ -1512,8 +1512,8 @@
             "deprecationReason": null
           },
           {
-            "name": "users_by_pk",
-            "description": "fetch data from the table: \"users\" using primary key columns",
+            "name": "user_by_pk",
+            "description": "fetch data from the table: \"user\" using primary key columns",
             "args": [
               {
                 "name": "id",
@@ -1534,7 +1534,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "users",
+              "name": "user",
               "ofType": null
             },
             "isDeprecated": false,
@@ -1552,8 +1552,8 @@
         "description": null,
         "fields": [
           {
-            "name": "users",
-            "description": "fetch data from the table: \"users\"",
+            "name": "user",
+            "description": "fetch data from the table: \"user\"",
             "args": [
               {
                 "name": "distinct_on",
@@ -1566,7 +1566,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "users_select_column",
+                      "name": "user_select_column",
                       "ofType": null
                     }
                   }
@@ -1610,7 +1610,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "users_order_by",
+                      "name": "user_order_by",
                       "ofType": null
                     }
                   }
@@ -1624,7 +1624,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "users_bool_exp",
+                  "name": "user_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -1643,7 +1643,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "users",
+                    "name": "user",
                     "ofType": null
                   }
                 }
@@ -1653,8 +1653,8 @@
             "deprecationReason": null
           },
           {
-            "name": "users_by_pk",
-            "description": "fetch data from the table: \"users\" using primary key columns",
+            "name": "user_by_pk",
+            "description": "fetch data from the table: \"user\" using primary key columns",
             "args": [
               {
                 "name": "id",
@@ -1675,15 +1675,15 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "users",
+              "name": "user",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "users_stream",
-            "description": "fetch data from the table in a streaming manner: \"users\"",
+            "name": "user_stream",
+            "description": "fetch data from the table in a streaming manner: \"user\"",
             "args": [
               {
                 "name": "batch_size",
@@ -1712,7 +1712,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "users_stream_cursor_input",
+                      "name": "user_stream_cursor_input",
                       "ofType": null
                     }
                   }
@@ -1726,7 +1726,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "users_bool_exp",
+                  "name": "user_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -1745,7 +1745,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "users",
+                    "name": "user",
                     "ofType": null
                   }
                 }
@@ -1762,8 +1762,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "users",
-        "description": "columns and relationships of \"users\"",
+        "name": "user",
+        "description": "columns and relationships of \"user\"",
         "fields": [
           {
             "name": "address",
@@ -1786,13 +1786,9 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1837,8 +1833,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "users_bool_exp",
-        "description": "Boolean expression to filter rows from the table \"users\". All fields are combined with a logical 'AND'.",
+        "name": "user_bool_exp",
+        "description": "Boolean expression to filter rows from the table \"user\". All fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -1852,7 +1848,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "users_bool_exp",
+                  "name": "user_bool_exp",
                   "ofType": null
                 }
               }
@@ -1866,7 +1862,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "users_bool_exp",
+              "name": "user_bool_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -1884,7 +1880,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "INPUT_OBJECT",
-                  "name": "users_bool_exp",
+                  "name": "user_bool_exp",
                   "ofType": null
                 }
               }
@@ -1948,8 +1944,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "users_order_by",
-        "description": "Ordering options when selecting data from \"users\".",
+        "name": "user_order_by",
+        "description": "Ordering options when selecting data from \"user\".",
         "fields": null,
         "inputFields": [
           {
@@ -2007,8 +2003,8 @@
       },
       {
         "kind": "ENUM",
-        "name": "users_select_column",
-        "description": "select columns of table \"users\"",
+        "name": "user_select_column",
+        "description": "select columns of table \"user\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -2042,8 +2038,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "users_stream_cursor_input",
-        "description": "Streaming cursor of the table \"users\"",
+        "name": "user_stream_cursor_input",
+        "description": "Streaming cursor of the table \"user\"",
         "fields": null,
         "inputFields": [
           {
@@ -2054,7 +2050,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "users_stream_cursor_value_input",
+                "name": "user_stream_cursor_value_input",
                 "ofType": null
               }
             },
@@ -2081,7 +2077,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "users_stream_cursor_value_input",
+        "name": "user_stream_cursor_value_input",
         "description": "Initial value of the column from where the streaming should start",
         "fields": null,
         "inputFields": [

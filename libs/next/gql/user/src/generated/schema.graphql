@@ -112,11 +112,11 @@ enum order_by {
 
 type query_root {
   """
-  fetch data from the table: "users"
+  fetch data from the table: "user"
   """
-  users(
+  user(
     """distinct select on columns"""
-    distinct_on: [users_select_column!]
+    distinct_on: [user_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -125,23 +125,23 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [users_order_by!]
+    order_by: [user_order_by!]
 
     """filter the rows returned"""
-    where: users_bool_exp
-  ): [users!]!
+    where: user_bool_exp
+  ): [user!]!
 
-  """fetch data from the table: "users" using primary key columns"""
-  users_by_pk(id: uuid!): users
+  """fetch data from the table: "user" using primary key columns"""
+  user_by_pk(id: uuid!): user
 }
 
 type subscription_root {
   """
-  fetch data from the table: "users"
+  fetch data from the table: "user"
   """
-  users(
+  user(
     """distinct select on columns"""
-    distinct_on: [users_select_column!]
+    distinct_on: [user_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -150,55 +150,55 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [users_order_by!]
+    order_by: [user_order_by!]
 
     """filter the rows returned"""
-    where: users_bool_exp
-  ): [users!]!
+    where: user_bool_exp
+  ): [user!]!
 
-  """fetch data from the table: "users" using primary key columns"""
-  users_by_pk(id: uuid!): users
+  """fetch data from the table: "user" using primary key columns"""
+  user_by_pk(id: uuid!): user
 
   """
-  fetch data from the table in a streaming manner: "users"
+  fetch data from the table in a streaming manner: "user"
   """
-  users_stream(
+  user_stream(
     """maximum number of rows returned in a single batch"""
     batch_size: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [users_stream_cursor_input]!
+    cursor: [user_stream_cursor_input]!
 
     """filter the rows returned"""
-    where: users_bool_exp
-  ): [users!]!
+    where: user_bool_exp
+  ): [user!]!
 }
 
 """
-columns and relationships of "users"
+columns and relationships of "user"
 """
-type users {
+type user {
   address: String!
-  email: String!
+  email: String
   emailVerified: Boolean!
   id: uuid!
 }
 
 """
-Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "user". All fields are combined with a logical 'AND'.
 """
-input users_bool_exp {
-  _and: [users_bool_exp!]
-  _not: users_bool_exp
-  _or: [users_bool_exp!]
+input user_bool_exp {
+  _and: [user_bool_exp!]
+  _not: user_bool_exp
+  _or: [user_bool_exp!]
   address: String_comparison_exp
   email: String_comparison_exp
   emailVerified: Boolean_comparison_exp
   id: uuid_comparison_exp
 }
 
-"""Ordering options when selecting data from "users"."""
-input users_order_by {
+"""Ordering options when selecting data from "user"."""
+input user_order_by {
   address: order_by
   email: order_by
   emailVerified: order_by
@@ -206,9 +206,9 @@ input users_order_by {
 }
 
 """
-select columns of table "users"
+select columns of table "user"
 """
-enum users_select_column {
+enum user_select_column {
   """column name"""
   address
 
@@ -223,18 +223,18 @@ enum users_select_column {
 }
 
 """
-Streaming cursor of the table "users"
+Streaming cursor of the table "user"
 """
-input users_stream_cursor_input {
+input user_stream_cursor_input {
   """Stream column input with initial value"""
-  initial_value: users_stream_cursor_value_input!
+  initial_value: user_stream_cursor_value_input!
 
   """cursor ordering"""
   ordering: cursor_ordering
 }
 
 """Initial value of the column from where the streaming should start"""
-input users_stream_cursor_value_input {
+input user_stream_cursor_value_input {
   address: String
   email: String
   emailVerified: Boolean

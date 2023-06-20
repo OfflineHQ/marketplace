@@ -1,11 +1,11 @@
 query getUser($address: String!) {
-  users(where: { address: { _eq: $address } }) {
+  user(where: { address: { _eq: $address } }) {
     ...UserFields
   }
 }
 
 query getUserByEmail($email: String!) {
-  users(where: { email: { _eq: $email } }) {
+  user(where: { email: { _eq: $email } }) {
     ...UserFields
   }
 }
