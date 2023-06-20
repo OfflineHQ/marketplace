@@ -60,8 +60,8 @@ generates:
             func: '@next/hasura/fetcher#fetchDataReactQuery'
             isReactHook: false
           errorType: Error
-  # test user
-  libs/test-utils/gql/src/generated/test-user.ts:
+  # test account
+  libs/test-utils/gql/src/generated/test-account.ts:
     schema:
       - *userSchema
     documents: './libs/next/gql/user/src/queries/**/*.{graphql,gql}'

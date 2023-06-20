@@ -7,14 +7,13 @@ import { logger } from '@logger';
 // Otherwise it include the auth cookie or get the jwt for testing purposes
 type Opts = {
   admin?: boolean;
-  jwt?: string;
 };
-export const fetchData = (opts: Opts = { admin: false, jwt: '' }) => {
+export const fetchData = (opts: Opts = { admin: false }) => {
   return async <TResult, TVariables>(
     doc: string,
     variables: TVariables
   ): Promise<TResult> => {
-    const { admin, jwt } = opts;
+    const { admin } = opts;
     const headers: RequestInit['headers'] = {
       'Content-Type': 'application/json',
     };
@@ -25,10 +24,6 @@ export const fetchData = (opts: Opts = { admin: false, jwt: '' }) => {
       if (!process.env.HASURA_ADMIN_SECRET)
         throw new Error('Admin secret env is missing');
       headers['X-Hasura-Admin-Secret'] = process.env.HASURA_ADMIN_SECRET;
-    }
-    // on jest we use the jwt because the cookie is not available on the client side
-    else if (isJestRunning()) {
-      headers['Authorization'] = `Bearer ${jwt}`;
     }
     const res = await fetch(endpointUrl(), {
       method: 'POST',

@@ -573,6 +573,9 @@ devDependencies:
   next-router-mock:
     specifier: ^0.9.6
     version: 0.9.6(next@13.4.5)(react@18.2.0)
+  node-fetch:
+    specifier: ^2.6.11
+    version: 2.6.11(encoding@0.1.13)
   npm-run-all:
     specifier: ^4.1.5
     version: 4.1.5
