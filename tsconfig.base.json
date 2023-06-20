@@ -10,19 +10,32 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@features/appNav/ui": ["libs/features/appNav/ui/src/index.ts"],
-      "@features/appNav/ui/server": ["libs/features/appNav/ui/src/server.tsx"],
+      "@features/appNav/ui": [
+        "libs/features/appNav/ui/src/index.ts"
+      ],
+      "@features/appNav/ui/server": [
+        "libs/features/appNav/ui/src/server.tsx"
+      ],
       "@features/appNav/ui/stories": [
         "libs/features/appNav/ui/src/stories.tsx"
       ],
-      "@features/cart": ["libs/features/cart/src/index.ts"],
-      "@features/cart/server": ["libs/features/cart/src/server.ts"],
-      "@features/cart/types": ["libs/features/cart/src/lib/types"],
+      "@features/cart": [
+        "libs/features/cart/src/index.ts"
+      ],
+      "@features/cart/server": [
+        "libs/features/cart/src/server.ts"
+      ],
+      "@features/cart/types": [
+        "libs/features/cart/src/lib/types"
+      ],
       "@features/organizer/event": [
         "libs/features/organizer/event/src/index.ts"
       ],
@@ -38,43 +51,119 @@
       "@features/organizer/event/types": [
         "libs/features/organizer/event/src/lib/types"
       ],
-      "@features/pass": ["libs/features/pass/src/index.ts"],
-      "@features/pass/server": ["libs/features/pass/src/server.ts"],
-      "@features/settings": ["libs/features/settings/src/index.ts"],
-      "@features/settings/server": ["libs/features/settings/src/server.ts"],
-      "@features/user/api": ["libs/features/account/api/src/index.ts"],
-      "@logger": ["libs/logger/src/index.ts"],
-      "@next/auth": ["libs/next/auth/src/index.ts"],
-      "@next/gql/admin": ["libs/next/gql/admin/src/generated/index.ts"],
-      "@next/gql/user": ["libs/next/gql/user/src/generated/index.ts"],
-      "@next/hasura/adapter": ["libs/next/hasura/adapter/src/index.ts"],
-      "@next/hasura/fetcher": ["libs/next/hasura/fetcher/src/index.ts"],
-      "@next/hasura/utils": ["libs/next/hasura/utils/src/index.ts"],
-      "@next/i18n": ["libs/next/i18n/src/index.ts"],
-      "@next/next-auth/common": ["libs/next/next-auth/common/src/index.ts"],
-      "@next/next-auth/options": ["libs/next/next-auth/options/src/index.ts"],
-      "@next/react-query": ["libs/next/react-query/src/index.ts"],
-      "@next/safe/auth": ["libs/next/safe/auth/src/index.ts"],
-      "@next/siwe/provider": ["libs/next/siwe/provider/src/index.ts"],
-      "@next/store": ["libs/next/store/src/index.ts"],
-      "@next/types": ["libs/next/types/src/index.ts"],
-      "@next/zustand": ["libs/next/zustand/src/index.ts"],
-      "@server/task": ["libs/server/task/src/index.ts"],
-      "@test-utils/db": ["libs/test-utils/db/src/index.ts"],
-      "@test-utils/functions": ["libs/test-utils/functions/src/index.ts"],
-      "@test-utils/gql": ["libs/test-utils/gql/src/index.ts"],
-      "@test-utils/react": ["libs/test-utils/react/src/index.ts"],
-      "@ui/components": ["libs/ui/components/src/index.ts"],
-      "@ui/hooks": ["libs/ui/hooks/src/index.ts"],
-      "@ui/icons": ["libs/ui/icons/src/index.ts"],
-      "@ui/shared": ["libs/ui/shared/src/index.ts"],
-      "@ui/theme": ["libs/ui/theme/src/index.ts"],
-      "@utils": ["libs/utils/src/index.ts"],
-      "@web/*": ["apps/web/*"],
-      "@workspace": ["libs/workspace/src/index.ts"]
+      "@features/pass": [
+        "libs/features/pass/src/index.ts"
+      ],
+      "@features/pass/server": [
+        "libs/features/pass/src/server.ts"
+      ],
+      "@features/settings": [
+        "libs/features/settings/src/index.ts"
+      ],
+      "@features/settings/server": [
+        "libs/features/settings/src/server.ts"
+      ],
+      "@features/account/api": [
+        "libs/features/account/api/src/index.ts"
+      ],
+      "@logger": [
+        "libs/logger/src/index.ts"
+      ],
+      "@next/auth": [
+        "libs/next/auth/src/index.ts"
+      ],
+      "@next/gql/admin": [
+        "libs/next/gql/admin/src/generated/index.ts"
+      ],
+      "@next/gql/user": [
+        "libs/next/gql/user/src/generated/index.ts"
+      ],
+      "@next/hasura/adapter": [
+        "libs/next/hasura/adapter/src/index.ts"
+      ],
+      "@next/hasura/fetcher": [
+        "libs/next/hasura/fetcher/src/index.ts"
+      ],
+      "@next/hasura/utils": [
+        "libs/next/hasura/utils/src/index.ts"
+      ],
+      "@next/i18n": [
+        "libs/next/i18n/src/index.ts"
+      ],
+      "@next/next-auth/common": [
+        "libs/next/next-auth/common/src/index.ts"
+      ],
+      "@next/next-auth/options": [
+        "libs/next/next-auth/options/src/index.ts"
+      ],
+      "@next/react-query": [
+        "libs/next/react-query/src/index.ts"
+      ],
+      "@next/safe/auth": [
+        "libs/next/safe/auth/src/index.ts"
+      ],
+      "@next/siwe/provider": [
+        "libs/next/siwe/provider/src/index.ts"
+      ],
+      "@next/store": [
+        "libs/next/store/src/index.ts"
+      ],
+      "@next/types": [
+        "libs/next/types/src/index.ts"
+      ],
+      "@next/zustand": [
+        "libs/next/zustand/src/index.ts"
+      ],
+      "@server/task": [
+        "libs/server/task/src/index.ts"
+      ],
+      "@test-utils/db": [
+        "libs/test-utils/db/src/index.ts"
+      ],
+      "@test-utils/functions": [
+        "libs/test-utils/functions/src/index.ts"
+      ],
+      "@test-utils/gql": [
+        "libs/test-utils/gql/src/index.ts"
+      ],
+      "@test-utils/react": [
+        "libs/test-utils/react/src/index.ts"
+      ],
+      "@ui/components": [
+        "libs/ui/components/src/index.ts"
+      ],
+      "@ui/hooks": [
+        "libs/ui/hooks/src/index.ts"
+      ],
+      "@ui/icons": [
+        "libs/ui/icons/src/index.ts"
+      ],
+      "@ui/shared": [
+        "libs/ui/shared/src/index.ts"
+      ],
+      "@ui/theme": [
+        "libs/ui/theme/src/index.ts"
+      ],
+      "@utils": [
+        "libs/utils/src/index.ts"
+      ],
+      "@web/*": [
+        "apps/web/*"
+      ],
+      "@workspace": [
+        "libs/workspace/src/index.ts"
+      ]
     }
   },
-  "typeRoots": ["types", "node_modules/@types"],
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules", "tmp"]
+  "typeRoots": [
+    "types",
+    "node_modules/@types"
+  ],
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
