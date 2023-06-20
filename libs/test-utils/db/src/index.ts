@@ -9,7 +9,9 @@ let dbName = '';
 // assigning the right port depending of if jest or cypress is running
 // localhost here because has to be working both in local or on nx cloud. work thanks to extra_hosts on db container
 const client = new Client(
-  `postgres://postgres:password@localhost:${isJestRunning() ? '5454' : '5432'}/postgres`
+  `postgres://postgres:password@localhost:${
+    isJestRunning() ? '5454' : '5432'
+  }/postgres`
 );
 export const dbClient = async (): Promise<Client> => {
   if (!connected) {
@@ -29,19 +31,19 @@ export const createDb = async () => {
 
 export const clearDb = async () => {
   const client = await dbClient();
-  await client.query('TRUNCATE TABLE users, tokens, refresh_tokens, sessions CASCADE;');
+  await client.query('TRUNCATE TABLE account CASCADE;');
 };
 
-export const deleteUsers = async () => {
+export const deleteAccounts = async () => {
   const client = await dbClient();
-  await client.query('TRUNCATE users CASCADE;');
+  await client.query('TRUNCATE TABLE account CASCADE;');
 };
 
-export const deleteUser = async (email: string) => {
+export const deleteAccount = async (email: string) => {
   const client = await dbClient();
-  // sql delete user from users table cascade delete all tokens and sessions
+  // sql delete account from account table cascade delete all tokens and sessions
   await client.query(`
-    DELETE FROM users CASCADE
+    DELETE FROM account CASCADE
     WHERE email = '${email}'
   `);
 };

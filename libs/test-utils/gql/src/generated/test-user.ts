@@ -65,6 +65,62 @@ export type String_Comparison_Exp = {
   _similar?: InputMaybe<Scalars['String']>;
 };
 
+/** An account can represent an user or organizer. It store essential informations and is used as the root class for relationships with other tables */
+export type Account = {
+  __typename?: 'account';
+  address: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
+  emailVerified: Scalars['Boolean'];
+  id: Scalars['uuid'];
+};
+
+/** Boolean expression to filter rows from the table "account". All fields are combined with a logical 'AND'. */
+export type Account_Bool_Exp = {
+  _and?: InputMaybe<Array<Account_Bool_Exp>>;
+  _not?: InputMaybe<Account_Bool_Exp>;
+  _or?: InputMaybe<Array<Account_Bool_Exp>>;
+  address?: InputMaybe<String_Comparison_Exp>;
+  email?: InputMaybe<String_Comparison_Exp>;
+  emailVerified?: InputMaybe<Boolean_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** Ordering options when selecting data from "account". */
+export type Account_Order_By = {
+  address?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  emailVerified?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "account" */
+export const enum Account_Select_Column {
+  /** column name */
+  Address = 'address',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  EmailVerified = 'emailVerified',
+  /** column name */
+  Id = 'id',
+}
+
+/** Streaming cursor of the table "account" */
+export type Account_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Account_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Account_Stream_Cursor_Value_Input = {
+  address?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  emailVerified?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['uuid']>;
+};
+
 /** ordering argument of a cursor */
 export const enum Cursor_Ordering {
   /** ascending ordering of the cursor */
@@ -91,106 +147,50 @@ export const enum Order_By {
 
 export type Query_Root = {
   __typename?: 'query_root';
-  /** fetch data from the table: "user" */
-  user: Array<User>;
-  /** fetch data from the table: "user" using primary key columns */
-  user_by_pk?: Maybe<User>;
+  /** fetch data from the table: "account" */
+  account: Array<Account>;
+  /** fetch data from the table: "account" using primary key columns */
+  account_by_pk?: Maybe<Account>;
 };
 
-export type Query_RootUserArgs = {
-  distinct_on?: InputMaybe<Array<User_Select_Column>>;
+export type Query_RootAccountArgs = {
+  distinct_on?: InputMaybe<Array<Account_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<User_Order_By>>;
-  where?: InputMaybe<User_Bool_Exp>;
+  order_by?: InputMaybe<Array<Account_Order_By>>;
+  where?: InputMaybe<Account_Bool_Exp>;
 };
 
-export type Query_RootUser_By_PkArgs = {
+export type Query_RootAccount_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
-  /** fetch data from the table: "user" */
-  user: Array<User>;
-  /** fetch data from the table: "user" using primary key columns */
-  user_by_pk?: Maybe<User>;
-  /** fetch data from the table in a streaming manner: "user" */
-  user_stream: Array<User>;
+  /** fetch data from the table: "account" */
+  account: Array<Account>;
+  /** fetch data from the table: "account" using primary key columns */
+  account_by_pk?: Maybe<Account>;
+  /** fetch data from the table in a streaming manner: "account" */
+  account_stream: Array<Account>;
 };
 
-export type Subscription_RootUserArgs = {
-  distinct_on?: InputMaybe<Array<User_Select_Column>>;
+export type Subscription_RootAccountArgs = {
+  distinct_on?: InputMaybe<Array<Account_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<User_Order_By>>;
-  where?: InputMaybe<User_Bool_Exp>;
+  order_by?: InputMaybe<Array<Account_Order_By>>;
+  where?: InputMaybe<Account_Bool_Exp>;
 };
 
-export type Subscription_RootUser_By_PkArgs = {
+export type Subscription_RootAccount_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
-export type Subscription_RootUser_StreamArgs = {
+export type Subscription_RootAccount_StreamArgs = {
   batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<User_Stream_Cursor_Input>>;
-  where?: InputMaybe<User_Bool_Exp>;
-};
-
-/** columns and relationships of "user" */
-export type User = {
-  __typename?: 'user';
-  address: Scalars['String'];
-  email?: Maybe<Scalars['String']>;
-  emailVerified: Scalars['Boolean'];
-  id: Scalars['uuid'];
-};
-
-/** Boolean expression to filter rows from the table "user". All fields are combined with a logical 'AND'. */
-export type User_Bool_Exp = {
-  _and?: InputMaybe<Array<User_Bool_Exp>>;
-  _not?: InputMaybe<User_Bool_Exp>;
-  _or?: InputMaybe<Array<User_Bool_Exp>>;
-  address?: InputMaybe<String_Comparison_Exp>;
-  email?: InputMaybe<String_Comparison_Exp>;
-  emailVerified?: InputMaybe<Boolean_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-};
-
-/** Ordering options when selecting data from "user". */
-export type User_Order_By = {
-  address?: InputMaybe<Order_By>;
-  email?: InputMaybe<Order_By>;
-  emailVerified?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-};
-
-/** select columns of table "user" */
-export const enum User_Select_Column {
-  /** column name */
-  Address = 'address',
-  /** column name */
-  Email = 'email',
-  /** column name */
-  EmailVerified = 'emailVerified',
-  /** column name */
-  Id = 'id',
-}
-
-/** Streaming cursor of the table "user" */
-export type User_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: User_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type User_Stream_Cursor_Value_Input = {
-  address?: InputMaybe<Scalars['String']>;
-  email?: InputMaybe<Scalars['String']>;
-  emailVerified?: InputMaybe<Scalars['Boolean']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  cursor: Array<InputMaybe<Account_Stream_Cursor_Input>>;
+  where?: InputMaybe<Account_Bool_Exp>;
 };
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
@@ -206,50 +206,50 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['uuid']>>;
 };
 
-export type GetUserQueryVariables = Exact<{
-  address: Scalars['String'];
-}>;
-
-export type GetUserQuery = {
-  __typename?: 'query_root';
-  user: Array<{ __typename?: 'user'; id: any; email?: string | null }>;
-};
-
-export type GetUserByEmailQueryVariables = Exact<{
-  email: Scalars['String'];
-}>;
-
-export type GetUserByEmailQuery = {
-  __typename?: 'query_root';
-  user: Array<{ __typename?: 'user'; id: any; email?: string | null }>;
-};
-
-export type UserFieldsFragment = {
-  __typename?: 'user';
+export type AccountFieldsFragment = {
+  __typename?: 'account';
   id: any;
   email?: string | null;
 };
 
-export const UserFieldsFragmentDoc = `
-    fragment UserFields on user {
+export type GetAccountQueryVariables = Exact<{
+  address: Scalars['String'];
+}>;
+
+export type GetAccountQuery = {
+  __typename?: 'query_root';
+  account: Array<{ __typename?: 'account'; id: any; email?: string | null }>;
+};
+
+export type GetAccountByEmailQueryVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+export type GetAccountByEmailQuery = {
+  __typename?: 'query_root';
+  account: Array<{ __typename?: 'account'; id: any; email?: string | null }>;
+};
+
+export const AccountFieldsFragmentDoc = `
+    fragment AccountFields on account {
   id
   email
 }
     `;
-const GetUserDocument = `
-    query getUser($address: String!) {
-  user(where: {address: {_eq: $address}}) {
-    ...UserFields
+const GetAccountDocument = `
+    query getAccount($address: String!) {
+  account(where: {address: {_eq: $address}}) {
+    ...AccountFields
   }
 }
-    ${UserFieldsFragmentDoc}`;
-const GetUserByEmailDocument = `
-    query getUserByEmail($email: String!) {
-  user(where: {email: {_eq: $email}}) {
-    ...UserFields
+    ${AccountFieldsFragmentDoc}`;
+const GetAccountByEmailDocument = `
+    query getAccountByEmail($email: String!) {
+  account(where: {email: {_eq: $email}}) {
+    ...AccountFields
   }
 }
-    ${UserFieldsFragmentDoc}`;
+    ${AccountFieldsFragmentDoc}`;
 export type Requester<C = {}, E = unknown> = <R, V>(
   doc: string,
   vars?: V,
@@ -257,25 +257,25 @@ export type Requester<C = {}, E = unknown> = <R, V>(
 ) => Promise<R> | AsyncIterable<R>;
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
-    getUser(
-      variables: GetUserQueryVariables,
+    getAccount(
+      variables: GetAccountQueryVariables,
       options?: C
-    ): Promise<GetUserQuery> {
-      return requester<GetUserQuery, GetUserQueryVariables>(
-        GetUserDocument,
+    ): Promise<GetAccountQuery> {
+      return requester<GetAccountQuery, GetAccountQueryVariables>(
+        GetAccountDocument,
         variables,
         options
-      ) as Promise<GetUserQuery>;
+      ) as Promise<GetAccountQuery>;
     },
-    getUserByEmail(
-      variables: GetUserByEmailQueryVariables,
+    getAccountByEmail(
+      variables: GetAccountByEmailQueryVariables,
       options?: C
-    ): Promise<GetUserByEmailQuery> {
-      return requester<GetUserByEmailQuery, GetUserByEmailQueryVariables>(
-        GetUserByEmailDocument,
+    ): Promise<GetAccountByEmailQuery> {
+      return requester<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>(
+        GetAccountByEmailDocument,
         variables,
         options
-      ) as Promise<GetUserByEmailQuery>;
+      ) as Promise<GetAccountByEmailQuery>;
     },
   };
 }

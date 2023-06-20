@@ -32,7 +32,7 @@ export function adapter(): Adapter {
       await adminSdk.UpdateUser({ id: id as string, user });
       return user as AdapterUser;
     },
-    async deleteUser(userId) {
+    async deleteAccount(userId) {
       return null;
     },
     async linkAccount(account) {

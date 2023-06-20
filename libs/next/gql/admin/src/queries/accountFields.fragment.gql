@@ -1,4 +1,4 @@
-fragment UserFields on user {
+fragment AccountFields on account {
   id
   address
   email

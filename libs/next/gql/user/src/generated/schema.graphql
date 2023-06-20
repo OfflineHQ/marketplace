@@ -80,6 +80,73 @@ input String_comparison_exp {
   _similar: String
 }
 
+"""
+An account can represent an user or organizer. It store essential informations and is used as the root class for relationships with other tables
+"""
+type account {
+  address: String!
+  email: String
+  emailVerified: Boolean!
+  id: uuid!
+}
+
+"""
+Boolean expression to filter rows from the table "account". All fields are combined with a logical 'AND'.
+"""
+input account_bool_exp {
+  _and: [account_bool_exp!]
+  _not: account_bool_exp
+  _or: [account_bool_exp!]
+  address: String_comparison_exp
+  email: String_comparison_exp
+  emailVerified: Boolean_comparison_exp
+  id: uuid_comparison_exp
+}
+
+"""Ordering options when selecting data from "account"."""
+input account_order_by {
+  address: order_by
+  email: order_by
+  emailVerified: order_by
+  id: order_by
+}
+
+"""
+select columns of table "account"
+"""
+enum account_select_column {
+  """column name"""
+  address
+
+  """column name"""
+  email
+
+  """column name"""
+  emailVerified
+
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "account"
+"""
+input account_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: account_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input account_stream_cursor_value_input {
+  address: String
+  email: String
+  emailVerified: Boolean
+  id: uuid
+}
+
 """ordering argument of a cursor"""
 enum cursor_ordering {
   """ascending ordering of the cursor"""
@@ -112,11 +179,11 @@ enum order_by {
 
 type query_root {
   """
-  fetch data from the table: "user"
+  fetch data from the table: "account"
   """
-  user(
+  account(
     """distinct select on columns"""
-    distinct_on: [user_select_column!]
+    distinct_on: [account_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -125,23 +192,23 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [user_order_by!]
+    order_by: [account_order_by!]
 
     """filter the rows returned"""
-    where: user_bool_exp
-  ): [user!]!
+    where: account_bool_exp
+  ): [account!]!
 
-  """fetch data from the table: "user" using primary key columns"""
-  user_by_pk(id: uuid!): user
+  """fetch data from the table: "account" using primary key columns"""
+  account_by_pk(id: uuid!): account
 }
 
 type subscription_root {
   """
-  fetch data from the table: "user"
+  fetch data from the table: "account"
   """
-  user(
+  account(
     """distinct select on columns"""
-    distinct_on: [user_select_column!]
+    distinct_on: [account_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -150,95 +217,28 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [user_order_by!]
+    order_by: [account_order_by!]
 
     """filter the rows returned"""
-    where: user_bool_exp
-  ): [user!]!
+    where: account_bool_exp
+  ): [account!]!
 
-  """fetch data from the table: "user" using primary key columns"""
-  user_by_pk(id: uuid!): user
+  """fetch data from the table: "account" using primary key columns"""
+  account_by_pk(id: uuid!): account
 
   """
-  fetch data from the table in a streaming manner: "user"
+  fetch data from the table in a streaming manner: "account"
   """
-  user_stream(
+  account_stream(
     """maximum number of rows returned in a single batch"""
     batch_size: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [user_stream_cursor_input]!
+    cursor: [account_stream_cursor_input]!
 
     """filter the rows returned"""
-    where: user_bool_exp
-  ): [user!]!
-}
-
-"""
-columns and relationships of "user"
-"""
-type user {
-  address: String!
-  email: String
-  emailVerified: Boolean!
-  id: uuid!
-}
-
-"""
-Boolean expression to filter rows from the table "user". All fields are combined with a logical 'AND'.
-"""
-input user_bool_exp {
-  _and: [user_bool_exp!]
-  _not: user_bool_exp
-  _or: [user_bool_exp!]
-  address: String_comparison_exp
-  email: String_comparison_exp
-  emailVerified: Boolean_comparison_exp
-  id: uuid_comparison_exp
-}
-
-"""Ordering options when selecting data from "user"."""
-input user_order_by {
-  address: order_by
-  email: order_by
-  emailVerified: order_by
-  id: order_by
-}
-
-"""
-select columns of table "user"
-"""
-enum user_select_column {
-  """column name"""
-  address
-
-  """column name"""
-  email
-
-  """column name"""
-  emailVerified
-
-  """column name"""
-  id
-}
-
-"""
-Streaming cursor of the table "user"
-"""
-input user_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: user_stream_cursor_value_input!
-
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input user_stream_cursor_value_input {
-  address: String
-  email: String
-  emailVerified: Boolean
-  id: uuid
+    where: account_bool_exp
+  ): [account!]!
 }
 
 scalar uuid

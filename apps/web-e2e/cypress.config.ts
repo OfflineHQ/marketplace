@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress';
 import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
-import { deleteUser, deleteUsers, seedDb, queryDb } from '@test-utils/db';
+import { deleteAccount, deleteAccounts, seedDb, queryDb } from '@test-utils/db';
 
 const cypressConfigGlobal = {
   defaultCommandTimeout: 15000,
@@ -25,11 +25,11 @@ export default defineConfig({
       // implement node event listeners here
       on('task', {
         async 'db:delete-user'(email: string) {
-          await deleteUser(email);
+          await deleteAccount(email);
           return true;
         },
         async 'db:delete-users'() {
-          await deleteUsers();
+          await deleteAccounts();
           return true;
         },
         async 'db:seed-db'(path: string) {
