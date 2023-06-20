@@ -1,4 +1,4 @@
-import { deleteAccounts } from '@test-utils/db';
+import { deleteAccounts, closeConnection } from '@test-utils/db';
 import { createAccount } from './createAccount';
 
 describe('createAccount test', () => {
@@ -7,6 +7,7 @@ describe('createAccount test', () => {
   });
   afterAll(async () => {
     await deleteAccounts();
+    await closeConnection();
   });
 
   it('should create account', async () => {
