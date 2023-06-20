@@ -1,41 +1,77 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const jwt = require('jsonwebtoken');
-import { getSdk as userSdk } from './generated/test-user';
-import type { User, Sdk } from './generated/test-user';
-import { fetchData } from '@next/hasura/fetcher';
+const fetch = require('node-fetch');
+import { getSdk as userSdk } from './generated/test-account';
+import type { Account, Sdk } from './generated/test-account';
+import { endpointUrl } from '@next/hasura/fetcher';
 
 // setup env variables
 require('dotenv').config({ path: './tools/test/.env.test.jest' });
 
-export const users = {
+// In your accounts sdk file:
+
+type Opts = {
+  admin?: boolean;
+  jwt?: string;
+};
+const fetchDataForTest = (opts: Opts = { jwt: '' }) => {
+  return async <TResult, TVariables>(
+    doc: string,
+    variables: TVariables
+  ): Promise<TResult> => {
+    const { jwt } = opts;
+    const headers: RequestInit['headers'] = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
+    };
+
+    const res = await fetch(endpointUrl(), {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        query: doc,
+        variables,
+      }),
+    });
+    const json = await res.json();
+    if (json.errors) {
+      const { message } = json.errors[0] || 'Error..';
+      throw new Error(message);
+    }
+
+    return json.data;
+  };
+};
+
+export const accounts = {
   seb_google: {
-    id: '20c0bc91e1254445d459fc6ac97206f6bb9223e71c764c49a778f8b84d3fc57f',
-    address: '0xC68bD7C7f656290071E52D1aA617D9cB44677D4D',
+    id: 'ac542c34-1907-451c-94be-5df69a959080',
+    address: '0x1bBEdB07706728A19c9dB82d3c420670D8040591',
     email: 'sebpalluel@gmail.com',
     emailVerified: true,
   },
   alpha_user: {
-    id: '4c2aa03a7dcb06ab7ac2ba0783d2e466a525e1e5794a42b2a0fa9f61fa7a2965',
+    id: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
     address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
     email: 'alpha_user@test.io',
     emailVerified: false,
   },
   beta_user: {
-    id: '1d6dead4e698ddfd4a92cd19afd075611feaedfd149edd7462b80f718e3b2183',
+    id: '76189546-6368-4325-8aad-220e03837b7e',
     address: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
     email: 'beta_user@test.io',
     emailVerified: false,
   },
 };
 
-type UserOptions = {
+type AccountOptions = {
   allowedRoles?: string[];
   defaultRole: string;
   userId: string;
 };
 
 // generate a JWT that includes roles, userId
-const generateJwt = (options: UserOptions): string =>
+const generateJwt = (options: AccountOptions): string =>
   jwt.sign(
     JSON.stringify({
       roles: options.allowedRoles,
@@ -46,41 +82,41 @@ const generateJwt = (options: UserOptions): string =>
   );
 
 // configure the client
-export const sdkClient = (options: UserOptions): Sdk => {
+export const sdkClient = (options: AccountOptions): Sdk => {
   // if we do not provide allowedRoles for the client we assume that the defaultRole is an allowed role
   if ('defaultRole' in options && !options.allowedRoles) {
     options.allowedRoles = [options.defaultRole];
   }
   const jwt = generateJwt(options);
-  return userSdk(fetchData({ jwt }));
+  return userSdk(fetchDataForTest({ jwt }));
 };
 
-export const alphaAdminClient = (): Sdk & { me: User } => {
+export const alphaAdminClient = (): Sdk & { me: Account } => {
   return {
     ...sdkClient({
       defaultRole: 'user',
-      userId: users.alpha_user.id,
+      userId: accounts.alpha_user.id,
     }),
-    me: users.alpha_user,
+    me: accounts.alpha_user,
   };
 };
 
-export const betaAdminClient = (): Sdk & { me: User } => {
+export const betaAdminClient = (): Sdk & { me: Account } => {
   return {
     ...sdkClient({
       defaultRole: 'user',
-      userId: users.beta_user.id,
+      userId: accounts.beta_user.id,
     }),
-    me: users.beta_user,
+    me: accounts.beta_user,
   };
 };
 
-export const sebGoogleClient = (): Sdk & { me: User } => {
+export const sebGoogleClient = (): Sdk & { me: Account } => {
   return {
     ...sdkClient({
       defaultRole: 'user',
-      userId: users.seb_google.id,
+      userId: accounts.seb_google.id,
     }),
-    me: users.seb_google,
+    me: accounts.seb_google,
   };
 };

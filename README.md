@@ -72,7 +72,7 @@ This is the mail-catcher where all the mail are going in dev environment.
 | `libs/ui/theme`                | Contains all the specifications for the global style and component style                                                                                                                                         |
 | `libs/test-utils/db`           | All the utilities relating to the handling of db operations in the context of testing, for example: seeding/deleting                                                                                             |
 | `libs/test-utils/functions`    | All the utility functions common to every test runner                                                                                                                                                            |
-| `libs/test-utils/gql`          | Offers an SDK and different test user clients to be used on tests in order to interact with the Hasura service                                                                                                   |
+| `libs/test-utils/gql`          | Offers an SDK and different test account clients to be used on tests in order to interact with the Hasura service                                                                                                |
 | `libs/server/api`              | API service to query external services (for example: CoinGecko API)                                                                                                                                              |
 | `libs/server/alchemy`          | Low-level service to interact with the Alchemy RPC provider                                                                                                                                                      |
 | `libs/server/arbitrum`         | Service to interact with the Arbitrum RPC provider                                                                                                                                                               |
@@ -223,7 +223,7 @@ Each one have a grapqhl schema and an ast schema generated and specfic sdk.
 
 **User**
 
-The graphql queries definition are defined in `libs/next/gql/user/queries`. We use the React-Query module in order to facilitate the querying the data for the user role in the fontend client. The hasura service will read the auth cookie in order to validate the request. We also generate a generic sdk in order to facilitate testing of user query with jest on `libs/test-utils/gql/src/generated/test-user.ts`where we provide a Bearer JWT instead of a cookie because jest is not capable to provide one.
+The graphql queries definition are defined in `libs/next/gql/user/queries`. We use the React-Query module in order to facilitate the querying the data for the user role in the fontend client. The hasura service will read the auth cookie in order to validate the request. We also generate a generic sdk in order to facilitate testing of user query with jest on `libs/test-utils/gql/src/generated/test-account.ts`where we provide a Bearer JWT instead of a cookie because jest is not capable to provide one.
 
 **Admin**
 

@@ -18,15 +18,19 @@ describe('user access security tests', () => {
   afterAll(async () => {
     await deleteAccounts();
   });
-  it.skip('user alpha can retrieve his information', async () => {
+  it('user alpha can retrieve his information', async () => {
     const data = await alphaAdmin.GetAccount({
       address: alphaAdmin.me.address,
     });
-    expect(data.account[0]).toEqual(alphaAdmin.me);
+    const account = data.account[0];
+    expect(account.id).toEqual(alphaAdmin.me.id);
+    expect(account.email).toEqual(alphaAdmin.me.email);
   });
   it('user beta can retrieve his information', async () => {
     const data = await betaAdmin.GetAccount({ address: betaAdmin.me.address });
-    expect(data.account[0]).toEqual(betaAdmin.me);
+    const account = data.account[0];
+    expect(account.id).toEqual(betaAdmin.me.id);
+    expect(account.email).toEqual(betaAdmin.me.email);
   });
   it("user beta can't retrieve alpha's information", async () => {
     const data = await betaAdmin.GetAccount({ address: alphaAdmin.me.address });
