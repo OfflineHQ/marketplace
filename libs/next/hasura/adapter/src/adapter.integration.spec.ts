@@ -1,4 +1,4 @@
-import { deleteUsers } from '@test-utils/db';
+import { deleteAccounts } from '@test-utils/db';
 import { adapter as HasuraAdapter } from './index';
 import type { AdapterAccount } from 'next-auth/adapters';
 
@@ -10,7 +10,7 @@ describe.skip('hasura Next Auth Adapter', () => {
     emailVerified: null,
     name: 'Alpha Admin',
     image: null,
-    email: 'alpha_admin@test.io',
+    email: 'alpha_user@test.io',
   };
   const account: AdapterAccount = {
     id: '',
@@ -31,7 +31,7 @@ describe.skip('hasura Next Auth Adapter', () => {
   afterAll(async () => {
     // // // ✅ Best Practice: Clean-up resources after each run
     //////
-    await deleteUsers();
+    await deleteAccounts();
   });
   it('should create user and assign an id', async () => {
     const data = await adapter.createUser(user);

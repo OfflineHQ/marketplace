@@ -1,5 +1,5 @@
 table:
-  name: user
+  name: account
   schema: public
 select_permissions:
   - role: user
