@@ -10,3 +10,5 @@ hasura/app/**
 *lock.yaml
 .next
 .next/**
+.vscode/**
+**/generated/**
