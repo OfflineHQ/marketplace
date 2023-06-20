@@ -1,6 +1,5 @@
 import { getNextAppURL } from '@utils';
-import { logger } from '@logger';
-import { handleUser } from '@features/user/api';
+import { handleAccount } from '@features/account/api';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { getCsrfToken } from 'next-auth/react';
 import { SiweMessage } from 'siwe';
@@ -43,7 +42,7 @@ export const SiweProvider = () =>
           nonce,
         });
         if (result.success) {
-          return await handleUser({
+          return await handleAccount({
             address,
             email,
           });
