@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { logger } = require('../../libs/logger/src');
-global.fetch = require('node-fetch');
 
 let retriesLeft = 3;
 

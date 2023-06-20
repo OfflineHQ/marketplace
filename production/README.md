@@ -271,11 +271,7 @@ HASURA_GRAPHQL_JWT_SECRET={
         "type": "Cookie"
     },
     "claims_map": {
-        "x-hasura-username": {
-            "path": "$.name",
-            "default": ""
-        },
-        "x-hasura-next-id": {
+        "x-hasura-client-id": {
             "path": "$.clientId",
             "default": ""
         },
