@@ -84,20 +84,28 @@ export const authOptions: NextAuthOptions = {
       const {
         token,
         user,
+        account,
       }: {
         token: JWT;
         user?: User;
+        account?: Account | null;
       } = args;
 
-      Object.assign(token, {
-        role: token.user ? Roles.user : Roles.anonymous,
-      });
+      // User is connected, set the role for Hasura
+      if (user && account) {
+        logger.debug('set JWT', { token, user, account });
+        return {
+          user,
+          provider: account.provider,
+          providerType: account.type,
+          role: Roles.user,
+        };
+      }
       return token;
     },
     async session({ session, token }) {
       // needed for hasura claims_map
       session.user = token.user as User;
-      logger.debug('session callback', { session, token });
       return session;
     },
   },
