@@ -42,7 +42,7 @@
       "@features/pass/server": ["libs/features/pass/src/server.ts"],
       "@features/settings": ["libs/features/settings/src/index.ts"],
       "@features/settings/server": ["libs/features/settings/src/server.ts"],
-      "@features/user/api": ["libs/features/user/api/src/index.ts"],
+      "@features/user/api": ["libs/features/account/api/src/index.ts"],
       "@logger": ["libs/logger/src/index.ts"],
       "@next/auth": ["libs/next/auth/src/index.ts"],
       "@next/gql/admin": ["libs/next/gql/admin/src/generated/index.ts"],

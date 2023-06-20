@@ -1,32 +1,32 @@
 {
-  "name": "features-user-api",
+  "name": "features-account-api",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/features/user/api/src",
+  "sourceRoot": "libs/features/account/api/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/features/user/api",
-        "tsConfig": "libs/features/user/api/tsconfig.lib.json",
-        "packageJson": "libs/features/user/api/package.json",
-        "main": "libs/features/user/api/src/index.ts",
-        "assets": ["libs/features/user/api/*.md"]
+        "outputPath": "dist/libs/features/account/api",
+        "tsConfig": "libs/features/account/api/tsconfig.lib.json",
+        "packageJson": "libs/features/account/api/package.json",
+        "main": "libs/features/account/api/src/index.ts",
+        "assets": ["libs/features/account/api/*.md"]
       }
     },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/features/user/api/**/*.ts"]
+        "lintFilePatterns": ["libs/features/account/api/**/*.ts"]
       }
     },
-    "test": {
+    "test-hasura": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/features/user/api/jest.config.ts",
+        "jestConfig": "libs/features/account/api/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
