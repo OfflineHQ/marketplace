@@ -1,0 +1,26 @@
+{
+  "name": "test-utils-hasura",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/test-utils/hasura/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/test-utils/hasura",
+        "main": "libs/test-utils/hasura/src/index.ts",
+        "tsConfig": "libs/test-utils/hasura/tsconfig.lib.json",
+        "assets": ["libs/test-utils/hasura/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/test-utils/hasura/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

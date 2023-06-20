@@ -29,6 +29,12 @@ export const createDb = async () => {
   `);
 };
 
+export const closeConnection = async () => {
+  if (connected) {
+    await client.end();
+  }
+};
+
 export const clearDb = async () => {
   const client = await dbClient();
   await client.query('TRUNCATE TABLE account CASCADE;');

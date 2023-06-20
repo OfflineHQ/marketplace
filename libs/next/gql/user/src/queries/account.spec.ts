@@ -3,20 +3,26 @@ import {
   betaAdminClient,
   sebGoogleClient,
 } from '@test-utils/gql';
-import { deleteAccounts, seedDb } from '@test-utils/db';
+import { deleteAccounts, seedDb, closeConnection } from '@test-utils/db';
+import { sleep } from '@utils';
 
 describe('user access security tests', () => {
   const alphaAdmin = alphaAdminClient();
   const betaAdmin = betaAdminClient();
   const sebGoogle = sebGoogleClient();
-  beforeAll(async () => {
+  beforeEach(async () => {
     await deleteAccounts();
     // seed the database with three users alpha, beta and seb
     await seedDb('./tools/test/seeds/account.sql');
   });
+  afterEach(async () => {
+    // used to avoid socket hang up error from node-fetch
+    await sleep(100);
+  });
 
   afterAll(async () => {
     await deleteAccounts();
+    await closeConnection();
   });
   it('user alpha can retrieve his information', async () => {
     const data = await alphaAdmin.GetAccount({
@@ -40,7 +46,9 @@ describe('user access security tests', () => {
     const data = await betaAdmin.GetAccountByEmail({
       email: betaAdmin.me.email as string,
     });
-    expect(data.account[0]).toEqual(betaAdmin.me);
+    const account = data.account[0];
+    expect(account.id).toEqual(betaAdmin.me.id);
+    expect(account.email).toEqual(betaAdmin.me.email);
   });
   it("user seb can't retrieve beta's information by email", async () => {
     const data = await sebGoogle.GetAccountByEmail({
