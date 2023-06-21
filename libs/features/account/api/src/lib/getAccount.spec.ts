@@ -23,7 +23,6 @@ describe('getAccount test', () => {
   it('should get an account by address', async () => {
     const createdAccount = await createAccount(account);
     const fetchedAccount = await getAccount(createdAccount.address);
-    console.log({ fetchedAccount, createdAccount });
     expect(fetchedAccount).not.toBeNull();
     expect(fetchedAccount.address).toEqual(account.address);
     expect(fetchedAccount.email).toEqual(account.email);
