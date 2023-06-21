@@ -1,0 +1,11 @@
+fragment OrganizerFields on Organizer {
+  id
+  slug
+  name
+  description {
+    raw
+  }
+  image {
+    url
+  }
+}
