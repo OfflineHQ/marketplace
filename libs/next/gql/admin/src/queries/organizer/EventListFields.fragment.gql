@@ -1,0 +1,9 @@
+# eslint-disable-next-line @graphql-eslint/no-one-place-fragments
+fragment EventListFields on Event {
+  id
+  slug
+  title
+  heroImage {
+    url
+  }
+}
