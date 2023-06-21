@@ -1,6 +1,18 @@
 table:
   name: account
   schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - organizerId
+        remote_field:
+          organizer:
+            arguments:
+              where:
+                slug: $organizerId
+        remote_schema: Hygraph CMS Remote Schema
+    name: organizer
 select_permissions:
   - role: user
     permission:
