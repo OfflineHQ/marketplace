@@ -44,6 +44,7 @@ services:
     #   dockerfile: Dockerfile
     volumes:
       - ./hasura:/usr/src/hasura
+      - ./.env.local:/usr/src/hasura/app/.env
     env_file:
       - .env.local
     environment:

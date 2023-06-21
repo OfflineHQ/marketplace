@@ -1,1 +1,9 @@
-[]
+- name: Hygraph CMS Remote Schema
+  definition:
+    url: '{{HYGRAPH_CMS_WEBHOOK_READ_URL}}'
+    timeout_seconds: 60
+    customization: {}
+    headers:
+      - name: Authorization
+        value_from_env: HYGRAPH_CMS_READ_TOKEN
+  comment: ""
