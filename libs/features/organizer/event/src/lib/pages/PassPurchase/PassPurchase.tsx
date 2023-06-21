@@ -119,7 +119,7 @@ export const PassPurchase: React.FC<PassPurchaseProps> = ({
               >
                 <Button
                   className={`w-full ${
-                    size === 'lg' ? 'md:w-1/3' : 'md:w-1/6'
+                    size === 'lg' ? 'md:w-1/3' : 'md:w-1/4'
                   }`}
                   block
                   icon={Cart}
