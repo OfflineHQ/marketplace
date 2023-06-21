@@ -2,15 +2,9 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { fetchDataReactQuery } from '@next/hasura/fetcher';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -104,8 +98,8 @@ export const enum Account_Select_Column {
   /** column name */
   EmailVerified = 'emailVerified',
   /** column name */
-  Id = 'id',
-}
+  Id = 'id'
+};
 
 /** Streaming cursor of the table "account" */
 export type Account_Stream_Cursor_Input = {
@@ -128,8 +122,8 @@ export const enum Cursor_Ordering {
   /** ascending ordering of the cursor */
   Asc = 'ASC',
   /** descending ordering of the cursor */
-  Desc = 'DESC',
-}
+  Desc = 'DESC'
+};
 
 /** column ordering options */
 export const enum Order_By {
@@ -144,8 +138,8 @@ export const enum Order_By {
   /** in descending order, nulls first */
   DescNullsFirst = 'desc_nulls_first',
   /** in descending order, nulls last */
-  DescNullsLast = 'desc_nulls_last',
-}
+  DescNullsLast = 'desc_nulls_last'
+};
 
 export type Query_Root = {
   __typename?: 'query_root';
@@ -155,6 +149,7 @@ export type Query_Root = {
   account_by_pk?: Maybe<Account>;
 };
 
+
 export type Query_RootAccountArgs = {
   distinct_on?: InputMaybe<Array<Account_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -162,6 +157,7 @@ export type Query_RootAccountArgs = {
   order_by?: InputMaybe<Array<Account_Order_By>>;
   where?: InputMaybe<Account_Bool_Exp>;
 };
+
 
 export type Query_RootAccount_By_PkArgs = {
   id: Scalars['uuid'];
@@ -177,6 +173,7 @@ export type Subscription_Root = {
   account_stream: Array<Account>;
 };
 
+
 export type Subscription_RootAccountArgs = {
   distinct_on?: InputMaybe<Array<Account_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -185,9 +182,11 @@ export type Subscription_RootAccountArgs = {
   where?: InputMaybe<Account_Bool_Exp>;
 };
 
+
 export type Subscription_RootAccount_By_PkArgs = {
   id: Scalars['uuid'];
 };
+
 
 export type Subscription_RootAccount_StreamArgs = {
   batch_size: Scalars['Int'];
@@ -208,29 +207,21 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['uuid']>>;
 };
 
-export type AccountFieldsFragment = {
-  __typename?: 'account';
-  id: any;
-  email?: string | null;
-};
+export type AccountFieldsFragment = { __typename?: 'account', id: any, email?: string | null };
 
 export type GetAccountQueryVariables = Exact<{
   address: Scalars['String'];
 }>;
 
-export type GetAccountQuery = {
-  __typename?: 'query_root';
-  account: Array<{ __typename?: 'account'; id: any; email?: string | null }>;
-};
+
+export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, email?: string | null }> };
 
 export type GetAccountByEmailQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
 
-export type GetAccountByEmailQuery = {
-  __typename?: 'query_root';
-  account: Array<{ __typename?: 'account'; id: any; email?: string | null }>;
-};
+
+export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, email?: string | null }> };
 
 export const AccountFieldsFragmentDoc = `
     fragment AccountFields on account {
@@ -245,18 +236,18 @@ export const GetAccountDocument = `
   }
 }
     ${AccountFieldsFragmentDoc}`;
-export const useGetAccountQuery = <TData = GetAccountQuery, TError = Error>(
-  variables: GetAccountQueryVariables,
-  options?: UseQueryOptions<GetAccountQuery, TError, TData>
-) =>
-  useQuery<GetAccountQuery, TError, TData>(
-    ['GetAccount', variables],
-    fetchDataReactQuery<GetAccountQuery, GetAccountQueryVariables>(
-      GetAccountDocument,
-      variables
-    ),
-    options
-  );
+export const useGetAccountQuery = <
+      TData = GetAccountQuery,
+      TError = Error
+    >(
+      variables: GetAccountQueryVariables,
+      options?: UseQueryOptions<GetAccountQuery, TError, TData>
+    ) =>
+    useQuery<GetAccountQuery, TError, TData>(
+      ['GetAccount', variables],
+      fetchDataReactQuery<GetAccountQuery, GetAccountQueryVariables>(GetAccountDocument, variables),
+      options
+    );
 export const GetAccountByEmailDocument = `
     query GetAccountByEmail($email: String!) {
   account(where: {email: {_eq: $email}}) {
@@ -265,17 +256,14 @@ export const GetAccountByEmailDocument = `
 }
     ${AccountFieldsFragmentDoc}`;
 export const useGetAccountByEmailQuery = <
-  TData = GetAccountByEmailQuery,
-  TError = Error
->(
-  variables: GetAccountByEmailQueryVariables,
-  options?: UseQueryOptions<GetAccountByEmailQuery, TError, TData>
-) =>
-  useQuery<GetAccountByEmailQuery, TError, TData>(
-    ['GetAccountByEmail', variables],
-    fetchDataReactQuery<
-      GetAccountByEmailQuery,
-      GetAccountByEmailQueryVariables
-    >(GetAccountByEmailDocument, variables),
-    options
-  );
+      TData = GetAccountByEmailQuery,
+      TError = Error
+    >(
+      variables: GetAccountByEmailQueryVariables,
+      options?: UseQueryOptions<GetAccountByEmailQuery, TError, TData>
+    ) =>
+    useQuery<GetAccountByEmailQuery, TError, TData>(
+      ['GetAccountByEmail', variables],
+      fetchDataReactQuery<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables),
+      options
+    );

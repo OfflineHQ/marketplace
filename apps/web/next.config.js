@@ -48,6 +48,12 @@ const nextConfig = {
         port: '',
         pathname: '/seed/hero/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'media.graphassets.com',
+        port: '',
+        pathname: '*',
+      },
     ],
   },
   // optimize build with vercel nft (node file tracing) https://nextjs.org/docs/advanced-features/output-file-tracing

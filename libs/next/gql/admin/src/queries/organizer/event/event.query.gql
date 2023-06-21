@@ -1,0 +1,14 @@
+query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) {
+  event(where: { slug: $slug }, locales: [$locale], stage: $stage) {
+    ...EventListFields
+    description {
+      raw
+    }
+    organizer {
+      ...OrganizerFields
+    }
+    eventDateLocations {
+      ...EventDateLocationsFields
+    }
+  }
+}
