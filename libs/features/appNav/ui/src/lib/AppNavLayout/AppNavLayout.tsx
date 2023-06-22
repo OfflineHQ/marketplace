@@ -40,7 +40,7 @@ export function AppNavLayout(props: AppNavLayoutProps) {
       {/* Navigation for mobile screens */}
       <NavigationMenu
         data-testid="mobile-menu"
-        className="fixed bottom-0 z-20 flex w-full md:hidden"
+        className="fixed bottom-0 z-20 flex w-full bg-background md:hidden"
       >
         <NavigationMenuList className="flex w-full">
           <div className="w-28 flex-1 whitespace-nowrap text-center">

@@ -15,8 +15,6 @@ export const eventProps: EventProps = {
   ...eventDetailsProps,
   id: 'fake_event_1',
   slug: 'test-event-1',
-  purchaseLink: { href: { pathname: '/dummy' } },
-  purchaseText: 'Select passes',
 };
 
 export const event2Props: EventProps = {

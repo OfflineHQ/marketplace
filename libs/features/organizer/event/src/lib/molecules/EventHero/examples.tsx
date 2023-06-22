@@ -12,14 +12,12 @@ const organizer: EventHeroProps['organizer'] = {
   id: '1234',
   slug: 'test-organizer',
   name: 'Test Organizer',
-  description: 'This is a test organizer',
 };
 
 const organizer2: EventHeroProps['organizer'] = {
   id: '43411',
   slug: 'test-organizer-2',
   name: 'Test Organizer 2',
-  description: 'This is a test organizer',
 };
 
 export const eventHeroProps: EventHeroProps = {
@@ -30,6 +28,8 @@ export const eventHeroProps: EventHeroProps = {
   // followers: [],
   ...eventLocationsProps,
   ...eventDatesProps,
+  purchaseLink: { href: { pathname: '/dummy' } },
+  purchaseText: 'Select passes',
   organizer,
 };
 
@@ -40,5 +40,7 @@ export const event2HeroProps: EventHeroProps = {
   title: 'World cup 2023',
   ...event2LocationsProps,
   ...event2DatesProps,
+  purchaseLink: { href: { pathname: '/dummy' } },
+  purchaseText: 'Select passes',
   organizer: organizer2,
 };
