@@ -40,7 +40,7 @@ export const Event: React.FC<EventProps> = ({
     <Card variant="stickyFooter" noBorder className="w-full">
       <CardOverflow>
         <CardHeader>
-          <EventHero {...eventHeroProps} />
+          <EventHero {...eventHeroProps} {...{ purchaseLink, purchaseText }} />
         </CardHeader>
         <EventDetails className="md:mt-4" description={description} />
       </CardOverflow>
