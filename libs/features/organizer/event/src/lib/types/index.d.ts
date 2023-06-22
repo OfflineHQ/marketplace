@@ -1,55 +1,25 @@
 import type { BoundedNumericStepperProps } from '@ui/components';
+import type {
+  GetEventQuery,
+  EventDateLocation as TEventDateLocation,
+  LocationAddress as TLocationAddress,
+  Organizer as TOrganizer,
+} from '@next/gql/admin/types';
 
 export interface EventSlugs {
   eventSlug: string;
   organizerSlug: string;
 }
 
-export interface EventOrganizer {
-  id: string; // Assuming UUIDs
-  slug: string; // URL slug used in the URL
-  name: string;
-  description: string;
-  image: string; // URL to the organizer's image
-  createdAt?: string; // Timestamps
-  updatedAt?: string; // Timestamps
-}
+export type EventOrganizer = NonNullable<
+  NonNullable<GetEventQuery['event']>['organizer']
+>;
 
-export interface User {
-  id: string; // Assuming UUIDs
-  name: string;
-  email: string;
-  createdAt?: string; // Timestamps
-  updatedAt?: string; // Timestamps
-}
+export type LocationAddress = Omit<TLocationAddress, 'stage' | 'id'>;
 
-export interface Address {
-  street?: string;
-  city: string;
-  state?: string;
-  country: string;
-  postalCode: string;
-  venue?: string;
-  placeId?: string; // Google Maps' unique identifier for a place
-}
-
-export interface Coordinates {
-  latitude?: number;
-  longitude?: number;
-}
-
-export interface LocationAddress extends Address {
-  coordinates?: Coordinates;
-}
-
-// Define the data structure for a date and location
-export interface EventDateLocation {
-  id?: string; // Assuming UUIDs
-  dateStart: string; // ISO 8601 datetime string in the event's local timezone
-  dateEnd: string; // ISO 8601 datetime string in the event's local timezone
-  location: LocationAddress;
-  createdAt?: string; // Timestamps
-  updatedAt?: string; // Timestamps
+export interface EventDateLocation
+  extends Omit<TEventDateLocation, 'stage' | 'id' | 'locationAddress'> {
+  locationAddress: LocationAddress;
 }
 
 // Define the data structure for a pass option
@@ -83,30 +53,7 @@ export interface EventPass {
 }
 
 // Define the data structure for an event
-export interface Event {
-  id: string; // Assuming UUIDs
-  slug: string; // URL slug used in the URL
-  heroImage: string; // URL to the hero image
-  title: string;
-  description: string;
-  organizer: EventOrganizer; // Single organizer object
-  organizerId?: string; // Foreign key reference to Organizer
-  eventDateLocationIds?: string[]; // Array of foreign key references
-  passIds?: string[]; // Array of foreign key references
-  eventDateLocations: EventDateLocation[]; // Array of date and location objects
-  public?: boolean; // Whether the event is public (visible to anyone) or private (for instance only to owner of specific NFTs)
-  published?: boolean; // Whether the event is published or not (visible only to organizers)
-  // followers: string[]; // Array of User ids who follow this event
-  isOngoing?: boolean; // Computed field to check if the event is ongoing
-  isOver?: boolean; // Computed field to check if the event is over
-  createdAt?: string; // Timestamps
-  updatedAt?: string; // Timestamps
-}
-
-// Define the props that the EventTemplate component will take
-export interface EventTemplateProps {
-  event: Event;
-}
+export type Event = NonNullable<GetEventQuery['event']>;
 
 export interface EventPassCart
   extends Omit<BoundedNumericStepperProps, 'initialValue' | 'maxVal'>,
