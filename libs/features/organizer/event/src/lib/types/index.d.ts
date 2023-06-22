@@ -1,6 +1,7 @@
 import type { BoundedNumericStepperProps } from '@ui/components';
 import type {
   GetEventQuery,
+  Coordinates as TCoordinates,
   EventDateLocation as TEventDateLocation,
   LocationAddress as TLocationAddress,
   Organizer as TOrganizer,
@@ -9,17 +10,6 @@ import type {
 export interface EventSlugs {
   eventSlug: string;
   organizerSlug: string;
-}
-
-export type EventOrganizer = NonNullable<
-  NonNullable<GetEventQuery['event']>['organizer']
->;
-
-export type LocationAddress = Omit<TLocationAddress, 'stage' | 'id'>;
-
-export interface EventDateLocation
-  extends Omit<TEventDateLocation, 'stage' | 'id' | 'locationAddress'> {
-  locationAddress: LocationAddress;
 }
 
 // Define the data structure for a pass option
@@ -54,6 +44,12 @@ export interface EventPass {
 
 // Define the data structure for an event
 export type Event = NonNullable<GetEventQuery['event']>;
+
+export type EventDateLocation = Event['eventDateLocations'][0];
+
+export type LocationAddress = EventDateLocation['locationAddress'];
+
+export type EventOrganizer = NonNullable<Event['organizer']>;
 
 export interface EventPassCart
   extends Omit<BoundedNumericStepperProps, 'initialValue' | 'maxVal'>,

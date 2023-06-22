@@ -3763,7 +3763,7 @@ type Organizer implements Node {
     """
     locales: [Locale!]
   ): User
-  description: RichText
+  description: OrganizerDescriptionRichText
 
   """Get the document in other stages"""
   documentInStages(
@@ -4035,6 +4035,22 @@ input OrganizerCreateOneInlineInput {
   """Create and connect one Organizer document"""
   create: OrganizerCreateInput
 }
+
+type OrganizerDescriptionRichText {
+  """Returns HTMl representation"""
+  html: String!
+  json: RichTextAST!
+
+  """Returns Markdown representation"""
+  markdown: String!
+  raw: RichTextAST!
+  references(after: String, before: String, first: Int, last: Int, skip: Int): [OrganizerDescriptionRichTextEmbeddedTypes!]!
+
+  """Returns plain-text contents of RichText"""
+  text: String!
+}
+
+union OrganizerDescriptionRichTextEmbeddedTypes = Asset
 
 """An edge in a connection."""
 type OrganizerEdge {
@@ -4923,23 +4939,6 @@ input PassOptionWhereInput {
 """References PassOption record uniquely"""
 input PassOptionWhereUniqueInput {
   id: ID
-}
-
-"""
-Custom type representing a rich text value comprising of raw rich text ast, html, markdown and text values
-"""
-type RichText {
-  """Returns HTMl representation"""
-  html: String!
-
-  """Returns Markdown representation"""
-  markdown: String!
-
-  """Returns AST representation"""
-  raw: RichTextAST!
-
-  """Returns plain-text contents of RichText"""
-  text: String!
 }
 
 """Slate-compatible RichText AST"""

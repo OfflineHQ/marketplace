@@ -26,6 +26,7 @@
     "../../../libs/features/**/*.stories.jsx",
     "../../../libs/features/**/*.stories.tsx",
     "../../../libs/features/**/*.mdx",
+    "../../../libs/next/hygraph/**/*.stories.tsx",
     "*.ts",
     "*.js",
     "../next-env.d.ts",

@@ -34,16 +34,15 @@ export const Event: React.FC<EventProps> = ({
   description,
   purchaseLink,
   purchaseText,
-  detailsTitle,
   ...eventHeroProps
 }) => {
   return (
-    <Card variant="stickyFooter" noBorder>
+    <Card variant="stickyFooter" noBorder className="w-full">
       <CardOverflow>
         <CardHeader>
           <EventHero {...eventHeroProps} />
         </CardHeader>
-        <EventDetails description={description} detailsTitle={detailsTitle} />
+        <EventDetails description={description} />
       </CardOverflow>
       <CardOverlay />
       <CardFooter className="justify-center" variant="sticky">

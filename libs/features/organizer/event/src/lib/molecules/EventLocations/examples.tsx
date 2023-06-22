@@ -7,7 +7,6 @@ export const location1: LocationAddress = {
   coordinates: {
     latitude: 40.7484405,
     longitude: -73.9878531,
-    distance: 0,
   },
   street: '123 Main St',
   city: 'New York',
@@ -21,7 +20,6 @@ export const location2: LocationAddress = {
   coordinates: {
     latitude: 40.7484405,
     longitude: -73.9878531,
-    distance: 0,
   },
   street: '456 Broadway',
   city: 'New York',
@@ -35,7 +33,6 @@ export const location3: LocationAddress = {
   coordinates: {
     latitude: 40.7484405,
     longitude: -73.9878531,
-    distance: 0,
   },
   venue: 'Stade de France',
   city: 'Saint-Denis',

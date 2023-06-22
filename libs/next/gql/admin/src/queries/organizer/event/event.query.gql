@@ -2,7 +2,15 @@ query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) {
   event(where: { slug: $slug }, locales: [$locale], stage: $stage) {
     ...EventListFields
     description {
-      raw
+      json
+      references {
+        ... on Asset {
+          __typename
+          id
+          url
+          mimeType
+        }
+      }
     }
     organizer {
       ...OrganizerFields
