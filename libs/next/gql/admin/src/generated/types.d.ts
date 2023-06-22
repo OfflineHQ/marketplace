@@ -1391,7 +1391,7 @@ export type EventPass = Node & {
   description: Scalars['String'];
   /** Get the document in other stages */
   documentInStages: Array<EventPass>;
-  even?: Maybe<Event>;
+  event?: Maybe<Event>;
   /** List of EventPass versions */
   history: Array<Version>;
   /** The unique identifier */
@@ -1445,7 +1445,7 @@ export type EventPassDocumentInStagesArgs = {
 
 
 /** Define a pass for an event with different options, price, number of passes etc. */
-export type EventPassEvenArgs = {
+export type EventPassEventArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
@@ -1546,7 +1546,7 @@ export type EventPassCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** description input for default locale (en) */
   description: Scalars['String'];
-  even?: InputMaybe<EventCreateOneInlineInput>;
+  event?: InputMaybe<EventCreateOneInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventPassCreateLocalizationsInput>;
   maxAmount: Scalars['Int'];
@@ -1621,7 +1621,7 @@ export type EventPassManyWhereInput = {
   documentInStages_every?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_none?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_some?: InputMaybe<EventPassWhereStageInput>;
-  even?: InputMaybe<EventWhereInput>;
+  event?: InputMaybe<EventWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -1734,7 +1734,7 @@ export const enum EventPassOrderByInput {
 export type EventPassUpdateInput = {
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['String']>;
-  even?: InputMaybe<EventUpdateOneInlineInput>;
+  event?: InputMaybe<EventUpdateOneInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventPassUpdateLocalizationsInput>;
   maxAmount?: InputMaybe<Scalars['Int']>;
@@ -1889,7 +1889,7 @@ export type EventPassWhereInput = {
   documentInStages_every?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_none?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_some?: InputMaybe<EventPassWhereStageInput>;
-  even?: InputMaybe<EventWhereInput>;
+  event?: InputMaybe<EventWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -6036,6 +6036,15 @@ export type GetEventQueryVariables = Exact<{
 
 
 export type GetEventQuery = { __typename?: 'query_root', event?: { __typename?: 'Event', id: string, slug: string, title: string, description: { __typename?: 'EventDescriptionRichText', json: any, references: Array<{ __typename: 'Asset', id: string, url: string, mimeType?: string | null }> }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, image: { __typename?: 'Asset', url: string } } | null, eventDateLocations: Array<{ __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } }>, heroImage: { __typename?: 'Asset', url: string } } | null };
+
+export type GetEventPassesQueryVariables = Exact<{
+  eventSlug: Scalars['String'];
+  locale: Locale;
+  stage: Stage;
+}>;
+
+
+export type GetEventPassesQuery = { __typename?: 'query_root', eventPasses: Array<{ __typename?: 'EventPass', id: string, name: string, maxAmount: number, maxAmountPerUser?: number | null, description: string, price?: { __typename?: 'Money', currency?: Currency | null, amount: number } | null, passOptions: Array<{ __typename?: 'PassOption', name: string, description?: string | null, eventDateLocation: { __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } } }> }> };
 
 export type GetOrganizerQueryVariables = Exact<{
   slug: Scalars['String'];

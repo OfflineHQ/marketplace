@@ -9566,12 +9566,12 @@
             "deprecationReason": null
           },
           {
-            "name": "even",
+            "name": "event",
             "description": null,
             "args": [
               {
                 "name": "forceParentLocale",
-                "description": "Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.\n\nNote that `even` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.\nThe first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.\n\nThis argument will affect any existing locale filtering defined in the query's tree for the subtree.",
+                "description": "Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.\n\nNote that `event` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.\nThe first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.\n\nThis argument will affect any existing locale filtering defined in the query's tree for the subtree.",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Boolean",
@@ -9583,7 +9583,7 @@
               },
               {
                 "name": "locales",
-                "description": "Allows to optionally override locale filtering behaviour in the query's subtree.\n\nNote that `even` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.\nThe first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.\n\nThis argument will overwrite any existing locale filtering defined in the query's tree for the subtree.",
+                "description": "Allows to optionally override locale filtering behaviour in the query's subtree.\n\nNote that `event` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.\nThe first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.\n\nThis argument will overwrite any existing locale filtering defined in the query's tree for the subtree.",
                 "type": {
                   "kind": "LIST",
                   "name": null,
@@ -10456,7 +10456,7 @@
             "deprecationReason": null
           },
           {
-            "name": "even",
+            "name": "event",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -11030,7 +11030,7 @@
             "deprecationReason": null
           },
           {
-            "name": "even",
+            "name": "event",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -11824,7 +11824,7 @@
             "deprecationReason": null
           },
           {
-            "name": "even",
+            "name": "event",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -12982,7 +12982,7 @@
             "deprecationReason": null
           },
           {
-            "name": "even",
+            "name": "event",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
