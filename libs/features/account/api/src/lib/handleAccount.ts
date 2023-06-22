@@ -1,4 +1,4 @@
-import type { Account_Insert_Input } from '@next/gql/admin';
+import type { Account_Insert_Input } from '@next/gql/admin/types';
 import { getAccount, type Account } from './getAccount';
 import { createAccount } from './createAccount';
 

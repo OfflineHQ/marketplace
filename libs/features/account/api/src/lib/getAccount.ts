@@ -1,4 +1,5 @@
-import { adminSdk, type GetAccountQuery } from '@next/gql/admin';
+import { adminSdk } from '@next/gql/admin';
+import type { GetAccountQuery } from '@next/gql/admin/types';
 
 export type Account = GetAccountQuery['account'][number];
 
