@@ -13,13 +13,15 @@ export type EventDetailsProps = {
     json: RichTextFieldProps['content'];
     references?: RichTextFieldProps['references'];
   };
+  className?: string;
 };
 
 export const EventDetails: React.FC<EventDetailsProps> = ({
   description: { json, references },
+  className,
 }) => {
   return (
-    <Card variant="noBorder">
+    <Card variant="noBorder" className={className}>
       <CardContent>
         <RichTextField content={json} references={references} />
       </CardContent>
@@ -27,9 +29,11 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
   );
 };
 
-export const EventDetailsSkeleton: React.FC = () => {
+export const EventDetailsSkeleton: React.FC<{ className?: string }> = ({
+  className,
+}) => {
   return (
-    <Card variant="noBorder">
+    <Card variant="noBorder" className={className}>
       <CardContent>
         <RichTextFieldSkeleton />
       </CardContent>
