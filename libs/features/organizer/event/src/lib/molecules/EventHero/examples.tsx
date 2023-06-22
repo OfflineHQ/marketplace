@@ -12,12 +12,18 @@ const organizer: EventHeroProps['organizer'] = {
   id: '1234',
   slug: 'test-organizer',
   name: 'Test Organizer',
+  image: {
+    url: 'https://picsum.photos/id/424/200/200',
+  },
 };
 
 const organizer2: EventHeroProps['organizer'] = {
   id: '43411',
   slug: 'test-organizer-2',
   name: 'Test Organizer 2',
+  image: {
+    url: 'https://picsum.photos/id/524/200/200',
+  },
 };
 
 export const eventHeroProps: EventHeroProps = {

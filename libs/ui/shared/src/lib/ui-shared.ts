@@ -78,10 +78,21 @@ function hashCode(text: string) {
 
 export function emojiAvatarForAddress(address: string) {
   const resolvedAddress = typeof address === 'string' ? address : '';
-  const avatarIndex = Math.abs(hashCode(resolvedAddress.toLowerCase()) % avatars.length);
+  const avatarIndex = Math.abs(
+    hashCode(resolvedAddress.toLowerCase()) % avatars.length
+  );
   return avatars[avatarIndex ?? 0];
 }
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+export function getInitials(name: string) {
+  const words = name.split(' ');
+  const firstWordInitial = words[0].charAt(0).toUpperCase();
+  const lastWordInitial =
+    words.length > 1 ? words[words.length - 1].charAt(0).toUpperCase() : '';
+
+  return firstWordInitial + lastWordInitial;
 }

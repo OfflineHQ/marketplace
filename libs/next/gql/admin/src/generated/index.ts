@@ -102,7 +102,12 @@ export const EventDateLocationsFieldsFragmentDoc = `
       }
     }
     organizer {
-      ...OrganizerFields
+      id
+      slug
+      name
+      image {
+        url
+      }
     }
     eventDateLocations {
       ...EventDateLocationsFields
@@ -110,7 +115,6 @@ export const EventDateLocationsFieldsFragmentDoc = `
   }
 }
     ${EventListFieldsFragmentDoc}
-${OrganizerFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}`;
  const GetOrganizerDocument = `
     query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) {

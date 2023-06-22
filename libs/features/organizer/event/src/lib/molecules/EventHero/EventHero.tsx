@@ -21,11 +21,19 @@ import {
   type EventHeroButtonClientProps,
 } from './EventHeroButtonClient';
 
+import {
+  EventOrganizerButton,
+  EventOrganizerButtonSkeleton,
+  type EventOrganizerButtonProps,
+} from '../../molecules/EventOrganizerButton/EventOrganizerButton';
+
 export interface EventHeroProps
   extends EventDatesProps,
     EventLocationsProps,
     EventHeroButtonClientProps,
-    Pick<Event, 'heroImage' | 'title' | 'organizer'> {}
+    Pick<Event, 'heroImage' | 'title'> {
+  organizer?: EventOrganizerButtonProps;
+}
 
 const layout = {
   grid: 'grid grid-cols-1 items-center gap-8 md:grid-cols-2',
@@ -59,10 +67,9 @@ export const EventHero: React.FC<EventHeroProps> = ({
           <Text variant="h2" className={layout.text}>
             {title}
           </Text>
-          <Text variant="h4" className={`${layout.text} flex pb-4`}>
-            <div className="font-medium">By</div>
-            <div className="ml-1 tracking-wider">{organizer?.name}</div>
-          </Text>
+          <div className={`${layout.text} flex items-center pb-4`}>
+            {organizer ? <EventOrganizerButton {...organizer} /> : null}
+          </div>
           <EventDates {...locationDatesProps} />
           <EventLocations {...locationDatesProps} />
         </div>
@@ -82,7 +89,7 @@ export const EventHeroSkeleton: React.FC = () => {
         <div className="hidden md:flex" />
         <div className="flex w-full flex-col space-y-8">
           <TextSkeleton variant="h1" />
-          <TextSkeleton variant="h3" />
+          <EventOrganizerButtonSkeleton />
           <div className="w-full space-y-6 pb-6 md:pt-6">
             <TextSkeleton variant="h5" className="w-full md:w-3/4" />
             <TextSkeleton variant="h5" />
