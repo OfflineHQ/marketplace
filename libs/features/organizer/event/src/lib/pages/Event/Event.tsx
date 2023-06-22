@@ -42,7 +42,7 @@ export const Event: React.FC<EventProps> = ({
         <CardHeader>
           <EventHero {...eventHeroProps} />
         </CardHeader>
-        <EventDetails description={description} />
+        <EventDetails className="md:mt-4" description={description} />
       </CardOverflow>
       <CardOverlay />
       <CardFooter className="justify-center" variant="sticky">
@@ -61,7 +61,7 @@ export const EventSkeleton: React.FC = () => {
       <CardHeader>
         <EventHeroSkeleton />
       </CardHeader>
-      <EventDetailsSkeleton />
+      <EventDetailsSkeleton className="md:mt-4" />
       <CardFooter variant="sticky" className="justify-center">
         <ButtonSkeleton className="w-full md:w-1/6" />
       </CardFooter>
