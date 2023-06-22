@@ -4,6 +4,11 @@ import { type EventLocationsProps } from './EventLocations';
 
 // Define some sample locations
 export const location1: LocationAddress = {
+  coordinates: {
+    latitude: 40.7484405,
+    longitude: -73.9878531,
+    distance: 0,
+  },
   street: '123 Main St',
   city: 'New York',
   state: 'NY',
@@ -13,6 +18,11 @@ export const location1: LocationAddress = {
 };
 
 export const location2: LocationAddress = {
+  coordinates: {
+    latitude: 40.7484405,
+    longitude: -73.9878531,
+    distance: 0,
+  },
   street: '456 Broadway',
   city: 'New York',
   state: 'NY',
@@ -22,6 +32,11 @@ export const location2: LocationAddress = {
 };
 
 export const location3: LocationAddress = {
+  coordinates: {
+    latitude: 40.7484405,
+    longitude: -73.9878531,
+    distance: 0,
+  },
   venue: 'Stade de France',
   city: 'Saint-Denis',
   state: 'Île-de-France',
@@ -32,24 +47,21 @@ export const location3: LocationAddress = {
 
 // Define some sample event date locations
 export const eventDateLocation1: EventDateLocation = {
-  id: '1',
   dateStart: '2023-06-01T00:00:00Z',
   dateEnd: '2023-06-01T08:00:00Z',
-  location: location1,
+  locationAddress: location1,
 };
 
 export const eventDateLocation2: EventDateLocation = {
-  id: '2',
   dateStart: '2023-06-02T12:00:00Z',
   dateEnd: '2023-06-02T23:00:00Z',
-  location: location2,
+  locationAddress: location2,
 };
 
 export const eventDateLocation3: EventDateLocation = {
-  id: '3',
   dateStart: '2023-09-12T18:00:00Z',
   dateEnd: '2023-09-14T22:00:00Z',
-  location: location3,
+  locationAddress: location3,
 };
 
 export const eventLocationsProps: EventLocationsProps = {

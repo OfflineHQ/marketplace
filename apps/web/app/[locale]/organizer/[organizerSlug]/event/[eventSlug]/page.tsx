@@ -13,7 +13,12 @@ interface EventSectionProps {
 export default async function EventSection({ params }: EventSectionProps) {
   const { eventSlug, organizerSlug, locale } = params;
 
-  const event = await getEvent({ eventSlug, organizerSlug });
+  const event = await getEvent({ eventSlug, locale });
+  console.log('event', event);
+  if (!event) {
+    // TODO redirect to 404
+    return null;
+  }
   return (
     <EventSectionContent
       event={event}
