@@ -1925,11 +1925,11 @@ type EventPass implements Node {
     """Potential stages that should be returned"""
     stages: [Stage!]! = [DRAFT, PUBLISHED]
   ): [EventPass!]!
-  even(
+  event(
     """
     Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
     
-    Note that `even` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    Note that `event` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
     The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
     
     This argument will affect any existing locale filtering defined in the query's tree for the subtree.
@@ -1939,7 +1939,7 @@ type EventPass implements Node {
     """
     Allows to optionally override locale filtering behaviour in the query's subtree.
     
-    Note that `even` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    Note that `event` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
     The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
     
     This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
@@ -2168,7 +2168,7 @@ input EventPassCreateInput {
 
   """description input for default locale (en)"""
   description: String!
-  even: EventCreateOneInlineInput
+  event: EventCreateOneInlineInput
 
   """
   Inline mutations for managing document localizations excluding the default locale
@@ -2258,7 +2258,7 @@ input EventPassManyWhereInput {
   documentInStages_every: EventPassWhereStageInput
   documentInStages_none: EventPassWhereStageInput
   documentInStages_some: EventPassWhereStageInput
-  even: EventWhereInput
+  event: EventWhereInput
   id: ID
 
   """All values containing the given string."""
@@ -2408,7 +2408,7 @@ enum EventPassOrderByInput {
 input EventPassUpdateInput {
   """description input for default locale (en)"""
   description: String
-  even: EventUpdateOneInlineInput
+  event: EventUpdateOneInlineInput
 
   """Manage document localizations"""
   localizations: EventPassUpdateLocalizationsInput
@@ -2603,7 +2603,7 @@ input EventPassWhereInput {
   documentInStages_every: EventPassWhereStageInput
   documentInStages_none: EventPassWhereStageInput
   documentInStages_some: EventPassWhereStageInput
-  even: EventWhereInput
+  event: EventWhereInput
   id: ID
 
   """All values containing the given string."""

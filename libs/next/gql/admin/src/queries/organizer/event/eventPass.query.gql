@@ -1,0 +1,24 @@
+query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
+  eventPasses(
+    where: { event: { slug: $eventSlug } }
+    locales: [$locale]
+    stage: $stage
+  ) {
+    id
+    name
+    maxAmount
+    maxAmountPerUser
+    description
+    price {
+      currency
+      amount
+    }
+    passOptions {
+      name
+      description
+      eventDateLocation {
+        ...EventDateLocationsFields
+      }
+    }
+  }
+}

@@ -5,6 +5,7 @@ import type {
   EventDateLocation as TEventDateLocation,
   LocationAddress as TLocationAddress,
   Organizer as TOrganizer,
+  GetEventPassesQuery,
 } from '@next/gql/admin/types';
 
 export interface EventSlugs {
@@ -50,6 +51,8 @@ export type EventDateLocation = Event['eventDateLocations'][0];
 export type LocationAddress = EventDateLocation['locationAddress'];
 
 export type EventOrganizer = NonNullable<Event['organizer']>;
+
+export type EventPasses = NonNullable<GetEventPassesQuery['eventPasses']>;
 
 export interface EventPassCart
   extends Omit<BoundedNumericStepperProps, 'initialValue' | 'maxVal'>,
