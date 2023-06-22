@@ -116,6 +116,32 @@ export const EventDateLocationsFieldsFragmentDoc = `
 }
     ${EventListFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}`;
+ const GetEventPassesDocument = `
+    query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
+  eventPasses(
+    where: {event: {slug: $eventSlug}}
+    locales: [$locale]
+    stage: $stage
+  ) {
+    id
+    name
+    maxAmount
+    maxAmountPerUser
+    description
+    price {
+      currency
+      amount
+    }
+    passOptions {
+      name
+      description
+      eventDateLocation {
+        ...EventDateLocationsFields
+      }
+    }
+  }
+}
+    ${EventDateLocationsFieldsFragmentDoc}`;
  const GetOrganizerDocument = `
     query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) {
   organizer(where: {slug: $slug}, locales: [$locale], stage: $stage) {
@@ -140,6 +166,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEvent(variables: GetEventQueryVariables, options?: C): Promise<GetEventQuery> {
       return requester<GetEventQuery, GetEventQueryVariables>(GetEventDocument, variables, options) as Promise<GetEventQuery>;
+    },
+    GetEventPasses(variables: GetEventPassesQueryVariables, options?: C): Promise<GetEventPassesQuery> {
+      return requester<GetEventPassesQuery, GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<GetEventPassesQuery>;
     },
     GetOrganizer(variables: GetOrganizerQueryVariables, options?: C): Promise<GetOrganizerQuery> {
       return requester<GetOrganizerQuery, GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<GetOrganizerQuery>;
