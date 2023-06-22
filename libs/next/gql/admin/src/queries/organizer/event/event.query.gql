@@ -13,7 +13,12 @@ query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) {
       }
     }
     organizer {
-      ...OrganizerFields
+      id
+      slug
+      name
+      image {
+        url
+      }
     }
     eventDateLocations {
       ...EventDateLocationsFields
