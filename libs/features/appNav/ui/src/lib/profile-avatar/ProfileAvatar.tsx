@@ -5,7 +5,7 @@ import {
   AvatarFallback,
   type AvatarProps,
 } from '@ui/components';
-import { emojiAvatarForAddress } from '@ui/shared';
+import { emojiAvatarForAddress, getInitials } from '@ui/shared';
 import type { SafeUser } from '@next/auth';
 
 export interface ProfileAvatarProps extends Omit<AvatarProps, 'size'> {
@@ -28,15 +28,6 @@ function EmojiAvatar({ address, ...props }: EmojiAvatarProps) {
       </AvatarFallback>
     </Avatar>
   );
-}
-
-function getInitials(name: string) {
-  const words = name.split(' ');
-  const firstWordInitial = words[0].charAt(0).toUpperCase();
-  const lastWordInitial =
-    words.length > 1 ? words[words.length - 1].charAt(0).toUpperCase() : '';
-
-  return firstWordInitial + lastWordInitial;
 }
 
 export function ProfileAvatar(props: ProfileAvatarProps) {
