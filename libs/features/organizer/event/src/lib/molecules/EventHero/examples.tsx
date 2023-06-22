@@ -23,7 +23,9 @@ const organizer2: EventHeroProps['organizer'] = {
 };
 
 export const eventHeroProps: EventHeroProps = {
-  heroImage: 'https://picsum.photos/seed/hero/800/450',
+  heroImage: {
+    url: 'https://picsum.photos/seed/hero/800/450',
+  },
   title: 'Lorem ipsum dolor sit amet',
   // followers: [],
   ...eventLocationsProps,
@@ -32,7 +34,9 @@ export const eventHeroProps: EventHeroProps = {
 };
 
 export const event2HeroProps: EventHeroProps = {
-  heroImage: 'https://picsum.photos/id/223/900/900',
+  heroImage: {
+    url: 'https://picsum.photos/id/223/900/900',
+  },
   title: 'World cup 2023',
   ...event2LocationsProps,
   ...event2DatesProps,

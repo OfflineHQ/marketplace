@@ -124,9 +124,9 @@ export const EventDatesClient: React.FC<EventDatesClientProps> = ({
             toText={toText}
           />
         ) : (
-          eventDateLocations.map((eventDate) => (
+          eventDateLocations.map((eventDate, index) => (
             <EventDateComponent
-              key={eventDate.id}
+              key={index}
               dateStart={eventDate.dateStart}
               dateEnd={eventDate.dateEnd}
               fromText={fromText}

@@ -18,18 +18,18 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
 }) => {
   if (!eventDateLocations.length) return null;
 
-  const handleClick = (location: LocationAddress) => {
-    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${location.placeId}`;
+  const handleClick = (locationAddress: LocationAddress) => {
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${locationAddress.placeId}`;
     window.open(googleMapsUrl, '_blank');
   };
 
-  const commonLocation = eventDateLocations[0].location;
+  const commonLocation = eventDateLocations[0].locationAddress;
 
-  const renderLocation = (location: LocationAddress) => {
-    if (location.venue) {
-      return location.venue;
+  const renderLocation = (locationAddress: LocationAddress) => {
+    if (locationAddress.venue) {
+      return locationAddress.venue;
     }
-    return `${location.city}, ${location.country}`;
+    return `${locationAddress.city}, ${locationAddress.country}`;
   };
 
   return (
@@ -45,22 +45,24 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
             {renderLocation(commonLocation)}
           </Button>
         ) : (
-          eventDateLocations.map((eventLocation) => (
+          eventDateLocations.map((eventLocation, index) => (
             <Button
-              key={eventLocation.id}
+              key={index}
               variant="link"
               className="text-base font-semibold"
-              onClick={() => handleClick(eventLocation.location)}
+              onClick={() => handleClick(eventLocation.locationAddress)}
             >
               {detailed
                 ? `${
-                    eventLocation.location.venue ||
-                    eventLocation.location.street
+                    eventLocation.locationAddress.venue ||
+                    eventLocation.locationAddress.street
                   }, 
-              ${eventLocation.location.city}, ${eventLocation.location.state}, 
-              ${eventLocation.location.country}, 
-              ${eventLocation.location.postalCode}`
-                : renderLocation(eventLocation.location)}
+              ${eventLocation.locationAddress.city}, ${
+                    eventLocation.locationAddress.state
+                  }, 
+              ${eventLocation.locationAddress.country}, 
+              ${eventLocation.locationAddress.postalCode}`
+                : renderLocation(eventLocation.locationAddress)}
             </Button>
           ))
         )}

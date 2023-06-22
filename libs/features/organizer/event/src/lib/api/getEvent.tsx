@@ -1,19 +1,19 @@
-import { delayData } from '@test-utils/functions';
-import { Event } from '../types';
 import { cache } from 'react';
-import { getNextAppURL } from '@utils';
+import { adminSdk } from '@next/gql/admin';
+import type { Event } from '@features/organizer/event/types';
 
 interface GetEventProps {
   eventSlug: string;
-  organizerSlug: string;
+  locale: string;
 }
 
 export const getEvent = cache(
-  async ({ eventSlug, organizerSlug }: GetEventProps): Promise<Event> => {
-    // TODO implement
-    const data = await fetch(`${getNextAppURL()}/mocks/event.json`);
-    const event = await data.json();
-    await delayData(2000, null);
-    return event as Event;
+  async ({ eventSlug, locale }: GetEventProps): Promise<Event> => {
+    const data = await adminSdk.GetEvent({
+      slug: eventSlug,
+      locale,
+      stage: process.env.HYGRAPH_STAGE,
+    });
+    return data?.event || null;
   }
 );
