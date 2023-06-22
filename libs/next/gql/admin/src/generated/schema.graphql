@@ -1448,7 +1448,7 @@ type EventDateLocation {
     This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
     """
     locales: [Locale!]
-  ): LocationAddress
+  ): LocationAddress!
 
   """System stage field"""
   stage: Stage!
@@ -1457,7 +1457,7 @@ type EventDateLocation {
 input EventDateLocationCreateInput {
   dateEnd: DateTime!
   dateStart: DateTime!
-  locationAddress: LocationAddressCreateOneInlineInput
+  locationAddress: LocationAddressCreateOneInlineInput!
 }
 
 input EventDateLocationCreateManyInlineInput {
