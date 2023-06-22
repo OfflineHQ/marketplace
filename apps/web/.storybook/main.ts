@@ -12,6 +12,7 @@ module.exports = {
     '../**/*.stories.@(js|jsx|ts|tsx)',
     '../../../libs/features/**/*.stories.@(js|jsx|ts|tsx)',
     '../../../libs/features/**/*.mdx',
+    '../../../libs/next/hygraph/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: [
     '@storybook/addon-essentials',

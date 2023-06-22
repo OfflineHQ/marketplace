@@ -4,7 +4,7 @@ import {
 } from '../../molecules/EventHero/examples';
 import {
   eventDetailsProps,
-  long_description,
+  eventDetails2Props,
 } from '../../molecules/EventDetails/examples';
 import { Event, EventSkeleton, type EventProps } from './Event';
 import { WithNormalUser } from '@features/appNav/ui/stories';
@@ -15,7 +15,6 @@ export const eventProps: EventProps = {
   ...eventDetailsProps,
   id: 'fake_event_1',
   slug: 'test-event-1',
-  description: long_description,
   purchaseLink: { href: { pathname: '/dummy' } },
   purchaseText: 'Select passes',
 };
@@ -23,7 +22,7 @@ export const eventProps: EventProps = {
 export const event2Props: EventProps = {
   ...eventProps,
   ...event2HeroProps,
-  ...eventDetailsProps,
+  ...eventDetails2Props,
   id: 'fake_event_2',
   slug: 'test-event-2',
 };

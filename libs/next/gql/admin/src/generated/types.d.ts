@@ -2739,7 +2739,7 @@ export type Organizer = Node & {
   createdAt: Scalars['DateTime'];
   /** User that created this document */
   createdBy?: Maybe<User>;
-  description?: Maybe<RichText>;
+  description?: Maybe<OrganizerDescriptionRichText>;
   /** Get the document in other stages */
   documentInStages: Array<Organizer>;
   events: Array<Event>;
@@ -2925,6 +2925,30 @@ export type OrganizerCreateOneInlineInput = {
   /** Create and connect one Organizer document */
   create?: InputMaybe<OrganizerCreateInput>;
 };
+
+export type OrganizerDescriptionRichText = {
+  __typename?: 'OrganizerDescriptionRichText';
+  /** Returns HTMl representation */
+  html: Scalars['String'];
+  json: Scalars['RichTextAST'];
+  /** Returns Markdown representation */
+  markdown: Scalars['String'];
+  raw: Scalars['RichTextAST'];
+  references: Array<OrganizerDescriptionRichTextEmbeddedTypes>;
+  /** Returns plain-text contents of RichText */
+  text: Scalars['String'];
+};
+
+
+export type OrganizerDescriptionRichTextReferencesArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+};
+
+export type OrganizerDescriptionRichTextEmbeddedTypes = Asset;
 
 /** An edge in a connection. */
 export type OrganizerEdge = {
@@ -3590,19 +3614,6 @@ export type PassOptionWhereInput = {
 /** References PassOption record uniquely */
 export type PassOptionWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
-};
-
-/** Custom type representing a rich text value comprising of raw rich text ast, html, markdown and text values */
-export type RichText = {
-  __typename?: 'RichText';
-  /** Returns HTMl representation */
-  html: Scalars['String'];
-  /** Returns Markdown representation */
-  markdown: Scalars['String'];
-  /** Returns AST representation */
-  raw: Scalars['RichTextAST'];
-  /** Returns plain-text contents of RichText */
-  text: Scalars['String'];
 };
 
 /** Scheduled Operation system model */
@@ -6013,7 +6024,7 @@ export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array
 
 export type EventListFieldsFragment = { __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string } };
 
-export type OrganizerFieldsFragment = { __typename?: 'Organizer', id: string, slug: string, name: string, description?: { __typename?: 'RichText', raw: any } | null, image: { __typename?: 'Asset', url: string } };
+export type OrganizerFieldsFragment = { __typename?: 'Organizer', id: string, slug: string, name: string, description?: { __typename?: 'OrganizerDescriptionRichText', json: any, references: Array<{ __typename: 'Asset', id: string, url: string, mimeType?: string | null }> } | null, image: { __typename?: 'Asset', url: string } };
 
 export type EventDateLocationsFieldsFragment = { __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } };
 
@@ -6024,7 +6035,7 @@ export type GetEventQueryVariables = Exact<{
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', event?: { __typename?: 'Event', id: string, slug: string, title: string, description: { __typename?: 'EventDescriptionRichText', raw: any }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, description?: { __typename?: 'RichText', raw: any } | null, image: { __typename?: 'Asset', url: string } } | null, eventDateLocations: Array<{ __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } }>, heroImage: { __typename?: 'Asset', url: string } } | null };
+export type GetEventQuery = { __typename?: 'query_root', event?: { __typename?: 'Event', id: string, slug: string, title: string, description: { __typename?: 'EventDescriptionRichText', json: any, references: Array<{ __typename: 'Asset', id: string, url: string, mimeType?: string | null }> }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, description?: { __typename?: 'OrganizerDescriptionRichText', json: any, references: Array<{ __typename: 'Asset', id: string, url: string, mimeType?: string | null }> } | null, image: { __typename?: 'Asset', url: string } } | null, eventDateLocations: Array<{ __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } }>, heroImage: { __typename?: 'Asset', url: string } } | null };
 
 export type GetOrganizerQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -6033,4 +6044,4 @@ export type GetOrganizerQueryVariables = Exact<{
 }>;
 
 
-export type GetOrganizerQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, description?: { __typename?: 'RichText', raw: any } | null, image: { __typename?: 'Asset', url: string } } | null };
+export type GetOrganizerQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, description?: { __typename?: 'OrganizerDescriptionRichText', json: any, references: Array<{ __typename: 'Asset', id: string, url: string, mimeType?: string | null }> } | null, image: { __typename?: 'Asset', url: string } } | null };
