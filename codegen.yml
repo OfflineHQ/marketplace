@@ -14,18 +14,24 @@ generates:
   libs/next/gql/admin/src/generated/schema.graphql:
     plugins:
       - 'schema-ast'
-  libs/next/gql/admin/src/generated/index.ts:
+  libs/next/gql/admin/src/generated/types.d.ts:
     documents: './libs/next/gql/admin/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript':
           constEnums: true
       - 'typescript-operations':
           preResolveTypes: true
+  libs/next/gql/admin/src/generated/index.ts:
+    documents: './libs/next/gql/admin/src/queries/**/*.{graphql,gql}'
+    plugins:
       - 'typescript-generic-sdk':
           noExport: true
           documentMode: 'string'
       - 'add':
           content: 'import { fetchData } from "@next/hasura/fetcher";'
+          placement: 'prepend'
+      - 'add':
+          content: 'import * as types from "./types";'
           placement: 'prepend'
       - 'add':
           content: 'export const adminSdk = getSdk(fetchData({admin:true}));'
@@ -46,7 +52,7 @@ generates:
       - 'schema-ast'
     schema:
       - *userSchema
-  libs/next/gql/user/src/generated/index.ts:
+  libs/next/gql/user/src/generated/typed.d.ts:
     schema:
       - *userSchema
     documents: './libs/next/gql/user/src/queries/**/*.{graphql,gql}'
@@ -55,16 +61,24 @@ generates:
           constEnums: true
       - 'typescript-operations':
           preResolveTypes: true
+  libs/next/gql/user/src/generated/index.ts:
+    schema:
+      - *userSchema
+    documents: './libs/next/gql/user/src/queries/**/*.{graphql,gql}'
+    plugins:
       - 'typescript-react-query':
           fetcher:
             func: '@next/hasura/fetcher#fetchDataReactQuery'
             isReactHook: false
           errorType: Error
-  # test account
+      - 'add':
+          content: 'import * as types from "./types";'
+          placement: 'prepend'
+  # test user account
   libs/test-utils/gql/src/generated/test-account.ts:
     schema:
       - *userSchema
-    documents: './libs/next/gql/user/src/queries/**/*.{graphql,gql}'
+    documents: './libs/next/gql/user/src/queries/account/*.{graphql,gql}'
     plugins:
       - 'typescript':
           constEnums: true
