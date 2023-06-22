@@ -6,7 +6,7 @@ import {
   TextSkeleton,
 } from '@ui/components';
 import Image from 'next/image';
-import { EventOrganizer, Event } from '../../types';
+import { Event } from '../../types';
 import {
   EventDates,
   type EventDatesProps,
@@ -39,7 +39,7 @@ export const EventHero: React.FC<EventHeroProps> = ({
     <div className={layout.grid}>
       <AspectRatio variant="widescreen">
         <Image
-          src={heroImage}
+          src={heroImage.url}
           fill
           className={layout.image}
           style={{ objectFit: 'cover' }}
@@ -52,7 +52,7 @@ export const EventHero: React.FC<EventHeroProps> = ({
         </Text>
         <Text variant="h4" className={`${layout.text} flex`}>
           <div className="font-medium">By</div>
-          <div className="ml-1 tracking-wider">{organizer.name}</div>
+          <div className="ml-1 tracking-wider">{organizer?.name}</div>
         </Text>
         <EventDates {...locationDatesProps} />
         <EventLocations {...locationDatesProps} />
