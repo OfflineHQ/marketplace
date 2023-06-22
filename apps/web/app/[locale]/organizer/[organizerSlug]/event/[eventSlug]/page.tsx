@@ -53,7 +53,6 @@ function EventSectionContent({
         },
       }}
       purchaseText={t('purchase-button-activator')}
-      detailsTitle={t('details.title')}
     />
   );
 }

@@ -3,7 +3,15 @@ fragment OrganizerFields on Organizer {
   slug
   name
   description {
-    raw
+    json
+    references {
+      ... on Asset {
+        __typename
+        id
+        url
+        mimeType
+      }
+    }
   }
   image {
     url

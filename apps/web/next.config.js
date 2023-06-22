@@ -41,18 +41,13 @@ const nextConfig = {
   // },
   transpilePackages: ['@ui/components', '@ui/theme', '@ui/icons', 'styled-jsx'],
   images: {
+    domains: ['media.graphassets.com'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'picsum.photos',
         port: '',
         pathname: '/seed/hero/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'media.graphassets.com',
-        port: '',
-        pathname: '*',
       },
     ],
   },

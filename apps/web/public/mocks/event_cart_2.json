@@ -16,7 +16,6 @@
     "name": "Test Organizer 2",
     "description": "This is a test organizer"
   },
-  "detailsTitle": "About",
   "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae",
   "id": "fake_event_2",
   "slug": "test-event-2",

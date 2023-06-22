@@ -1,32 +1,27 @@
 // EventDetails.tsx
 
 import React from 'react';
+import { Card, CardContent } from '@ui/components';
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitleSkeleton,
-  CardTitle,
-  Text,
-  TextSkeleton,
-} from '@ui/components';
+  RichTextField,
+  RichTextFieldSkeleton,
+  type RichTextFieldProps,
+} from '@next/hygraph';
 
-export interface EventDetailsProps {
-  detailsTitle: string;
-  description: string;
-}
+export type EventDetailsProps = {
+  description: {
+    json: RichTextFieldProps['content'];
+    references?: RichTextFieldProps['references'];
+  };
+};
 
 export const EventDetails: React.FC<EventDetailsProps> = ({
-  detailsTitle,
-  description,
+  description: { json, references },
 }) => {
   return (
     <Card variant="noBorder">
-      <CardHeader>
-        <CardTitle>{detailsTitle}</CardTitle>
-      </CardHeader>
       <CardContent>
-        <Text variant="p">{description}</Text>
+        <RichTextField content={json} references={references} />
       </CardContent>
     </Card>
   );
@@ -35,11 +30,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
 export const EventDetailsSkeleton: React.FC = () => {
   return (
     <Card variant="noBorder">
-      <CardHeader>
-        <CardTitleSkeleton />
-      </CardHeader>
       <CardContent>
-        <TextSkeleton variant="p" />
+        <RichTextFieldSkeleton />
       </CardContent>
     </Card>
   );
