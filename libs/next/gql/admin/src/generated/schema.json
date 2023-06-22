@@ -7026,9 +7026,13 @@
               }
             ],
             "type": {
-              "kind": "OBJECT",
-              "name": "LocationAddress",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "LocationAddress",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -7097,9 +7101,13 @@
             "name": "locationAddress",
             "description": null,
             "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "LocationAddressCreateOneInlineInput",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "LocationAddressCreateOneInlineInput",
+                "ofType": null
+              }
             },
             "defaultValue": null,
             "isDeprecated": false,
