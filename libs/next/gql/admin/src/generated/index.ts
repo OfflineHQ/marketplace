@@ -24,7 +24,15 @@ export const OrganizerFieldsFragmentDoc = `
   slug
   name
   description {
-    raw
+    json
+    references {
+      ... on Asset {
+        __typename
+        id
+        url
+        mimeType
+      }
+    }
   }
   image {
     url
@@ -83,7 +91,15 @@ export const EventDateLocationsFieldsFragmentDoc = `
   event(where: {slug: $slug}, locales: [$locale], stage: $stage) {
     ...EventListFields
     description {
-      raw
+      json
+      references {
+        ... on Asset {
+          __typename
+          id
+          url
+          mimeType
+        }
+      }
     }
     organizer {
       ...OrganizerFields
