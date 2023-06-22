@@ -4,6 +4,7 @@ import {
   Text,
   AspectRatioSkeleton,
   TextSkeleton,
+  ButtonSkeleton,
 } from '@ui/components';
 import Image from 'next/image';
 import { Event } from '../../types';
@@ -15,24 +16,30 @@ import {
   EventLocations,
   type EventLocationsProps,
 } from '../../molecules/EventLocations/EventLocations';
+import {
+  EventHeroButtonClient,
+  type EventHeroButtonClientProps,
+} from './EventHeroButtonClient';
 
 export interface EventHeroProps
   extends EventDatesProps,
     EventLocationsProps,
+    EventHeroButtonClientProps,
     Pick<Event, 'heroImage' | 'title' | 'organizer'> {}
 
 const layout = {
   grid: 'grid grid-cols-1 items-center gap-8 md:grid-cols-2',
   image: 'rounded-sm',
-  textContainer: 'space-y-4 items-start',
+  textContainer: 'md:space-y-4 items-start h-full flex flex-col',
   text: 'mb-4',
-  button: 'self-start',
 };
 
 export const EventHero: React.FC<EventHeroProps> = ({
   heroImage,
   title,
   organizer,
+  purchaseLink,
+  purchaseText,
   ...locationDatesProps
 }) => {
   return (
@@ -47,15 +54,21 @@ export const EventHero: React.FC<EventHeroProps> = ({
         />
       </AspectRatio>
       <div className={layout.textContainer}>
-        <Text variant="h2" className={layout.text}>
-          {title}
-        </Text>
-        <Text variant="h4" className={`${layout.text} flex`}>
-          <div className="font-medium">By</div>
-          <div className="ml-1 tracking-wider">{organizer?.name}</div>
-        </Text>
-        <EventDates {...locationDatesProps} />
-        <EventLocations {...locationDatesProps} />
+        <div className="hidden md:flex" />
+        <div className="flex flex-col space-y-4">
+          <Text variant="h2" className={layout.text}>
+            {title}
+          </Text>
+          <Text variant="h4" className={`${layout.text} flex pb-4`}>
+            <div className="font-medium">By</div>
+            <div className="ml-1 tracking-wider">{organizer?.name}</div>
+          </Text>
+          <EventDates {...locationDatesProps} />
+          <EventLocations {...locationDatesProps} />
+        </div>
+        <div className="hidden w-full grow flex-col justify-end md:flex">
+          <EventHeroButtonClient {...{ purchaseLink, purchaseText }} />
+        </div>
       </div>
     </div>
   );
@@ -65,10 +78,19 @@ export const EventHeroSkeleton: React.FC = () => {
   return (
     <div className={layout.grid}>
       <AspectRatioSkeleton variant="widescreen" className={`${layout.image}`} />
-      <div className="space-y-4">
-        <TextSkeleton variant="h1" />
-        <TextSkeleton variant="h3" />
-        <TextSkeleton variant="p" />
+      <div className={layout.textContainer}>
+        <div className="hidden md:flex" />
+        <div className="flex w-full flex-col space-y-8">
+          <TextSkeleton variant="h1" />
+          <TextSkeleton variant="h3" />
+          <div className="w-full space-y-6 pb-6 md:pt-6">
+            <TextSkeleton variant="h5" className="w-full md:w-3/4" />
+            <TextSkeleton variant="h5" />
+          </div>
+        </div>
+        <div className="hidden w-full grow flex-col justify-end md:flex">
+          <ButtonSkeleton className="w-full" />
+        </div>
       </div>
     </div>
   );
