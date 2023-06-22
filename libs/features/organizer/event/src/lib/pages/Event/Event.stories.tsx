@@ -2,7 +2,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-import { Event, EventSkeleton } from './Event';
+import { Event } from './Event';
 import {
   eventProps,
   event2Props,
@@ -31,4 +31,38 @@ export const Event2: Story = {
 
 export const Loading: Story = {
   render: () => <EventLoadingExample />,
+};
+
+export const WithDarkMode: Story = {
+  parameters: {
+    darkMode: {
+      isDark: true,
+    },
+  },
+  ...Default,
+};
+
+export const WithMobile = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  ...Default,
+};
+export const WithMobileDarkMode = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+    darkMode: {
+      isDark: true,
+    },
+  },
+  ...Default,
+};
+
+export const WithMobileLoading = {
+  ...WithMobile,
+  ...Loading,
 };
