@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const jwt = require('jsonwebtoken');
 const fetch = require('node-fetch');
-import { getSdk as userSdk } from './generated/test-account';
-import type { Account, Sdk } from './generated/test-account';
+import { getSdk as userSdk, type Sdk } from './generated/test-account';
+import type { Account } from '@next/gql/admin/types';
 import { endpointUrl } from '@next/hasura/fetcher';
 
 // setup env variables
@@ -49,19 +49,22 @@ export const accounts = {
     address: '0x1bBEdB07706728A19c9dB82d3c420670D8040591',
     email: 'sebpalluel@gmail.com',
     emailVerified: true,
-  },
+    isOrganizer: true,
+  } satisfies Account,
   alpha_user: {
     id: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
     address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
     email: 'alpha_user@test.io',
     emailVerified: false,
-  },
+    isOrganizer: false,
+  } satisfies Account,
   beta_user: {
     id: '76189546-6368-4325-8aad-220e03837b7e',
     address: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
     email: 'beta_user@test.io',
     emailVerified: false,
-  },
+    isOrganizer: false,
+  } satisfies Account,
 };
 
 type AccountOptions = {
