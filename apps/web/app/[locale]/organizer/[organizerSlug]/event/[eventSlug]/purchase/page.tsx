@@ -1,11 +1,10 @@
 // This Sheet page is rendered when directly accessing the URL to purchase, the event is not displayed
-
+import { NextIntlClientProvider, useLocale } from 'next-intl';
+import { deepPick } from '@utils';
+import { messages, defaultLocale, type Locale } from '@next/i18n';
 import { getEventPasses } from '@features/organizer/event/server';
 import type { EventPass } from '@features/organizer/event/types';
-import {
-  PassPurchase,
-  type PassPurchaseProps,
-} from '@features/organizer/event';
+import { PassPurchaseCard } from '@features/organizer/event';
 import { useTranslations } from 'next-intl';
 
 export interface PurchaseSectionProps {
@@ -20,7 +19,7 @@ export default async function PurchaseSection({
   params,
 }: PurchaseSectionProps) {
   const { eventSlug, organizerSlug, locale } = params;
-  const passes = await getEventPasses({ eventSlug, organizerSlug });
+  const passes = await getEventPasses({ eventSlug, locale });
 
   return (
     <PurchaseSectionContent
@@ -38,34 +37,33 @@ interface PurchaseSectionContentProps {
 }
 
 function PurchaseSectionContent({
-  passes: _passes,
+  passes,
   eventSlug,
   organizerSlug,
 }: PurchaseSectionContentProps) {
-  const t = useTranslations('Organizer.Event');
+  const t = useTranslations('Organizer.Event.PassPurchase');
   const backRoute = `/organizer/${organizerSlug}/event/${eventSlug}`;
   // TODO get reserved passes and owned passes from user if connected and change pass props so it respect boundaries. Also need to change pass purchase to handle this.
-  const passes: PassPurchaseProps['passes'] = _passes.map(
-    (pass) =>
-      ({
-        ...pass,
-        numTickets: 0,
-      } satisfies PassPurchaseProps['passes'][0])
-  );
+
+  const _locale = useLocale();
+  const locale: Locale = (_locale as Locale) || defaultLocale;
+  const localeMessages = deepPick(messages[locale], [
+    'Organizer.Event.PassPurchase',
+  ]);
 
   return (
-    <PassPurchase
-      passes={passes}
-      organizerSlug={organizerSlug}
-      eventSlug={eventSlug}
-      size={'full'}
-      title={t('pass-purchase.title')}
-      description={t('pass-purchase.description')}
-      goPaymentText={t('pass-purchase.purchase-button')}
-      goPaymentLink={{ href: '/cart' }}
-      soldOutText={t('pass-purchase.pass.sold-out')}
-      backButtonText={t('pass-purchase.see-event-button')}
-      backButtonLink={{ href: backRoute }}
-    />
+    <NextIntlClientProvider locale={locale} messages={localeMessages}>
+      <PassPurchaseCard
+        passes={passes}
+        organizerSlug={organizerSlug}
+        eventSlug={eventSlug}
+        title={t('title')}
+        description={t('description')}
+        goPaymentText={t('Footer.purchase-button')}
+        goPaymentLink={{ href: '/cart' }}
+        backButtonText={t('see-event-button')}
+        backButtonLink={{ href: backRoute }}
+      />
+    </NextIntlClientProvider>
   );
 }

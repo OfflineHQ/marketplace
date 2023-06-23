@@ -1,0 +1,9 @@
+query GetEventPassTotalReserved($eventPassId: String!) {
+  eventPassOrder_aggregate(where: { eventPassId: { _eq: $eventPassId } }) {
+    aggregate {
+      sum {
+        quantity
+      }
+    }
+  }
+}

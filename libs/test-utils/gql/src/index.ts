@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 const fetch = require('node-fetch');
 import { getSdk as userSdk, type Sdk } from './generated/test-account';
-import type { Account } from '@gql/admin/types';
+import type { Account } from '@gql/shared/types';
 import { endpointUrl } from '@next/hasura/fetcher';
 
 // setup env variables

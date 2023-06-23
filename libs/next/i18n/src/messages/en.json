@@ -85,15 +85,21 @@
         "title": "Event details"
       },
       "purchase-button-activator": "Select passes",
-      "pass-purchase": {
+      "PassPurchase": {
         "title": "Pass selection",
         "description": "Select the passes you want to purchase and validate your order",
-        "pass": {
+        "Pass": {
           "sold-out": "Sold Out"
         },
-        "purchase-button": "Go to payment",
+        "see-event-button": "See the event",
         "go-back-button": "Come back to the event",
-        "see-event-button": "See the event"
+        "Footer": {
+          "purchase-button": "Go to payment",
+          "total": {
+            "pass-selected": "{totalPasses, plural, =1 {# pass selected} other {# passes selected}}",
+            "price": "Total Price: {totalPrice}"
+          }
+        }
       }
     },
     "EventDates": {

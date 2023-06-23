@@ -1,0 +1,27 @@
+{
+  "name": "gql-anonymous-types",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/gql/anonymous/types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/gql/anonymous/types",
+        "tsConfig": "libs/gql/anonymous/types/tsconfig.lib.json",
+        "packageJson": "libs/gql/anonymous/types/package.json",
+        "main": "libs/gql/anonymous/types/src/index.ts",
+        "assets": ["libs/gql/anonymous/types/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/gql/anonymous/types/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["types"]
+}

@@ -1,6 +1,6 @@
 import { cache } from 'react';
 import { adminSdk } from '@gql/admin/api';
-import type { Locale, Stage } from '@gql/admin/types';
+import type { Locale, Stage } from '@gql/shared/types';
 
 interface GetEventProps {
   eventSlug: string;

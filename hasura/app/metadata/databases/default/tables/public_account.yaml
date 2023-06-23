@@ -10,7 +10,7 @@ remote_relationships:
           organizer:
             arguments:
               where:
-                slug: $organizerId
+                id: $organizerId
         remote_schema: Hygraph CMS Remote Schema
     name: organizer
 select_permissions:

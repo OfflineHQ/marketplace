@@ -9,7 +9,7 @@ import { cn } from '@ui/shared';
 import { Close, ChevronBack } from '@ui/icons';
 import { closeClasses } from '../shared/close';
 import { backClasses } from '../shared/back';
-import { Button, ButtonSkeleton, buttonVariantsCva } from '../button/Button';
+import { ButtonSkeleton, buttonVariantsCva } from '../button/Button';
 import Link, { type LinkProps } from 'next/link';
 
 const Sheet = SheetPrimitive.Root;
@@ -123,6 +123,7 @@ function isFullWidth(
 export interface SheetNavigationProps {
   backButtonText?: string;
   backButtonLink?: LinkProps;
+  backButtonAction?: () => void;
   position?: SheetContentProps['position'];
   size?: SheetContentProps['size'];
 }
@@ -130,6 +131,7 @@ export interface SheetNavigationProps {
 const SheetNavigation: React.FC<SheetNavigationProps> = ({
   backButtonText,
   backButtonLink,
+  backButtonAction,
   position,
   size,
 }) => {
@@ -152,7 +154,11 @@ const SheetNavigation: React.FC<SheetNavigationProps> = ({
         : backButtonText && <div className="pl-2">{backButtonText}</div>;
 
     return (
-      <SheetPrimitive.Close data-testid={testId} className={classNames}>
+      <SheetPrimitive.Close
+        data-testid={testId}
+        className={classNames}
+        onClick={backButtonAction}
+      >
         <Icon /> {buttonText}
       </SheetPrimitive.Close>
     );

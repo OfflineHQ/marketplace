@@ -10,11 +10,12 @@ import {
 } from '@ui/components';
 import Image from 'next/image';
 import type { EventCart } from '../types';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useFormatter } from 'next-intl';
 import {
   EventPassesActions,
   type EventPassesActionsProps,
 } from './EventPassesActions';
+import { formatCurrency } from '@next/currency';
 
 export interface EventPassesProps
   extends Pick<EventPassesActionsProps, 'onDelete'> {
@@ -31,6 +32,57 @@ const layout = {
   imageContainer:
     'relative h-20 w-20 shrink-0 overflow-hidden rounded-sm md:h-40 md:w-40 col-span-1 md:col-span-2',
   button: 'self-start',
+};
+
+const AccordionContentWrapper: React.FC<EventPassesProps> = ({
+  event,
+  passes,
+  onDelete,
+}) => {
+  const t = useTranslations('Cart.List.Event');
+  const format = useFormatter();
+  const enrichedPasses = passes.map((pass) => {
+    const matchingEventPass = event.eventPasses.find(
+      (eventPass) => eventPass.id === pass.id
+    );
+
+    return {
+      ...pass,
+      ...matchingEventPass,
+    };
+  });
+
+  return (
+    <AccordionContent>
+      <div className="mt-3 flex flex-col">
+        {enrichedPasses.map((pass, index) => (
+          <div key={pass.id + index} className="mb-5 flex md:mb-8">
+            <div
+              className={`flex items-center ${layout.imageContainer} h-auto md:h-auto`}
+            >
+              <Text
+                variant="h5"
+                className="font-semibold"
+              >{`${pass.amount} x`}</Text>
+            </div>
+            <div className="ml-2 flex flex-col md:ml-3">
+              <Text variant="h5" className="pb-2 font-semibold">
+                {pass.name}
+              </Text>
+              <Text variant="small">{formatCurrency(format, pass.price)}</Text>
+            </div>
+          </div>
+        ))}
+      </div>
+      <EventPassesActions
+        editText={t('edit')}
+        deleteText={t('remove')}
+        eventSlug={event.slug}
+        organizerSlug={event?.organizer?.slug as string}
+        onDelete={onDelete}
+      />
+    </AccordionContent>
+  );
 };
 
 export const EventPasses: React.FC<EventPassesProps> = ({
@@ -56,42 +108,17 @@ export const EventPasses: React.FC<EventPassesProps> = ({
             <Text variant="h4">{event.title}</Text>
             <Text>
               {t('num-pass', {
-                numPass: passes.reduce((sum, pass) => sum + pass.numTickets, 0),
+                numPass: passes.reduce((sum, pass) => sum + pass.amount, 0),
               })}
             </Text>
           </div>
         </div>
       </AccordionTrigger>
-      <AccordionContent>
-        <div className="mt-3 flex flex-col">
-          {passes.map((pass, index) => (
-            <div key={pass.id + index} className="mb-5 flex md:mb-8">
-              <div
-                className={`flex items-center ${layout.imageContainer} h-auto md:h-auto`}
-              >
-                <Text
-                  variant="h5"
-                  className="font-semibold"
-                >{`${pass.numTickets} x`}</Text>
-              </div>
-              <div className="ml-2 flex flex-col md:ml-3">
-                <Text variant="h5" className="pb-2 font-semibold">
-                  {pass.name}
-                </Text>
-                <Text variant="small">{`$${pass.price}`}</Text>
-                {/* <p className="text-sm text-gray-500">{`$${pass.price}`}</p> */}
-              </div>
-            </div>
-          ))}
-        </div>
-        <EventPassesActions
-          editText={t('edit')}
-          deleteText={t('remove')}
-          eventSlug={event.slug}
-          organizerSlug={event?.organizer?.slug as string}
-          onDelete={onDelete}
-        />
-      </AccordionContent>
+      <AccordionContentWrapper
+        event={event}
+        passes={passes}
+        onDelete={onDelete}
+      />
     </AccordionItem>
   );
 };

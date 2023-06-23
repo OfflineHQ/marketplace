@@ -1,4 +1,3 @@
-import { pick } from 'remeda';
 import {
   render as rtlRender,
   RenderOptions,
@@ -25,7 +24,7 @@ function renderWithIntl(
     return (
       <NextIntlClientProvider
         locale={locale}
-        messages={pick(messages.en, ui.messages || [])}
+        messages={messages.en}
         now={staticDate}
       >
         {children}

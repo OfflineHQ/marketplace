@@ -8,7 +8,11 @@ import type {
   EventPassCart,
   AllPassesCart,
 } from '@features/organizer/event/types';
+import { Money } from '@next/currency';
 
+interface GetPassCartProps extends EventSlugs {
+  eventPassId: string;
+}
 interface UpdatePassCartProps extends EventSlugs {
   pass: EventPassCart;
 }
@@ -17,19 +21,25 @@ interface SetPassesCartProps extends EventSlugs {
   newPasses: EventPassCart[];
 }
 
-interface SetPassesProps extends EventSlugs {
-  passes: EventPass[];
+interface GetPassesCartTotalPriceProps extends EventSlugs {
+  passesData: EventPass[];
+}
+interface getPassDataProps {
+  passCartId: EventPassCart['id'];
+  passesData: EventPass[];
 }
 
 export interface EventPassesSliceProps {
   passes: AllPassesCart;
   resetPasses: () => void;
+  getPassCart: (props: GetPassCartProps) => EventPassCart | undefined;
   updatePassCart: (props: UpdatePassCartProps) => void;
-  setPasses: (props: SetPassesProps) => void;
   setPassesCart: (props: SetPassesCartProps) => void;
-  deletePasses: (props: EventSlugs) => void;
-  getPasses: (props: EventSlugs) => EventPassCart[] | undefined;
+  deletePassesCart: (props: EventSlugs) => void;
   getPassesCart: (props: EventSlugs) => EventPassCart[] | undefined;
+  getPassesCartTotalPrice: (props: GetPassesCartTotalPriceProps) => Money;
+  getPassesCartTotalPasses: (props: EventSlugs) => number;
+  getPassData: (props: getPassDataProps) => EventPass | undefined;
   getAllPassesCart: () => AllPassesCart;
 }
 
@@ -39,8 +49,8 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
 ) => ({
   passes: {},
   resetPasses: () => set({ passes: {} }),
-  updatePassCart: ({ organizerSlug, eventSlug, pass }) =>
-    set((state) =>
+  updatePassCart: ({ organizerSlug, eventSlug, pass }) => {
+    return set((state) =>
       produce(state, (draft) => {
         const passes = draft.passes;
 
@@ -66,31 +76,8 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
 
         draft.passes = passes;
       })
-    ),
-  setPasses: ({ organizerSlug, eventSlug, passes: newPasses }) =>
-    set((state) =>
-      produce(state, (draft) => {
-        const currentPassesCart =
-          get().getPassesCart({ organizerSlug, eventSlug }) || [];
-        const currentPasses = draft.passes;
-
-        if (!currentPasses[organizerSlug]) {
-          currentPasses[organizerSlug] = {};
-        }
-
-        currentPasses[organizerSlug][eventSlug] = newPasses.map((newPass) => {
-          const existingPass = currentPassesCart.find(
-            (pass) => pass.id === newPass.id
-          );
-          return existingPass
-            ? { ...newPass, numTickets: existingPass.numTickets }
-            : { ...newPass, numTickets: 0 };
-        });
-
-        draft.passes = currentPasses;
-      })
-    ),
-
+    );
+  },
   setPassesCart: ({ organizerSlug, eventSlug, newPasses }) =>
     set((state) =>
       produce(state, (draft) => {
@@ -102,7 +89,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
         draft.passes = passes;
       })
     ),
-  deletePasses: ({ organizerSlug, eventSlug }) =>
+  deletePassesCart: ({ organizerSlug, eventSlug }) =>
     set((state) =>
       produce(state, (draft) => {
         const passes = draft.passes;
@@ -116,16 +103,44 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
           );
       })
     ),
-  getPasses: ({ organizerSlug, eventSlug }) => {
+  getPassesCart: ({ organizerSlug, eventSlug }) => {
     const passes = get().passes;
     if (passes[organizerSlug]) {
-      return passes[organizerSlug][eventSlug];
+      return passes[organizerSlug][eventSlug]?.filter((pass) => pass.amount);
     }
   },
-  getPassesCart: ({ organizerSlug, eventSlug }) => {
-    return get()
-      .getPasses({ organizerSlug, eventSlug })
-      ?.filter((pass) => pass.numTickets);
+  getPassCart: ({ organizerSlug, eventSlug, eventPassId }) => {
+    const passes = get().getPassesCart({ organizerSlug, eventSlug });
+    return passes?.find((pass) => pass.id === eventPassId);
+  },
+  getPassData: ({ passCartId, passesData }) => {
+    return passesData.find((pass) => pass.id === passCartId);
+  },
+  getPassesCartTotalPrice: ({ organizerSlug, eventSlug, passesData }) => {
+    let totalAmount = 0;
+    // const totalCurrency: passesData[0].price.currency;
+    const totalCurrency = passesData[0].price.currency;
+    const passesCart = get().getPassesCart({ organizerSlug, eventSlug });
+    if (!passesCart) return { amount: 0, currency: totalCurrency };
+    passesCart.forEach((passCart) => {
+      const passData = get().getPassData({
+        passCartId: passCart.id,
+        passesData,
+      });
+      if (passData) {
+        totalAmount += passCart.amount * passData.price.amount;
+      }
+    });
+    return { amount: totalAmount, currency: totalCurrency };
+  },
+  getPassesCartTotalPasses: ({ organizerSlug, eventSlug }) => {
+    const passesCart = get().getPassesCart({ organizerSlug, eventSlug });
+    if (!passesCart) return 0;
+
+    return passesCart.reduce(
+      (totalPasses, passCart) => totalPasses + passCart.amount,
+      0
+    );
   },
   getAllPassesCart: () => {
     const passes = get().passes;

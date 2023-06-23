@@ -163,6 +163,7 @@ export {
   CardDescriptionSkeleton,
   CardOverlay,
 } from './lib/card/Card';
+export { CardNavBack } from './lib/card/CardNavBack';
 export { Badge } from './lib/badge/Badge';
 export { Progress } from './lib/progress/Progress';
 export { TooltipWrapper, Tooltip } from './lib/tooltip/Tooltip';

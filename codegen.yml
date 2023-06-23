@@ -7,6 +7,11 @@ schema:
         'x-hasura-role': 'admin'
 
 generates:
+  # shared
+  libs/gql/shared/types/src/generated/index.ts:
+    plugins:
+      - 'typescript':
+          constEnums: true
   # admin
   libs/gql/admin/api/src/generated/schema.json:
     plugins:
@@ -16,9 +21,11 @@ generates:
       - 'schema-ast'
   libs/gql/admin/types/src/generated/index.ts:
     documents: './libs/gql/admin/api/src/queries/**/*.{graphql,gql}'
+    preset: import-types
+    presetConfig:
+      typesPath: '@gql/shared/types'
+      importTypesNamespace: 'Types'
     plugins:
-      - 'typescript':
-          constEnums: true
       - 'typescript-operations':
           preResolveTypes: true
   libs/gql/admin/api/src/generated/index.ts:
@@ -54,12 +61,14 @@ generates:
     schema:
       - *userSchema
   libs/gql/user/types/src/generated/index.ts:
+    preset: import-types
+    presetConfig:
+      typesPath: '@gql/shared/types'
+      importTypesNamespace: 'Types'
     schema:
       - *userSchema
     documents: './libs/gql/user/api/src/queries/**/*.{graphql,gql}'
     plugins:
-      - 'typescript':
-          constEnums: true
       - 'typescript-operations':
           preResolveTypes: true
   libs/gql/user/api/src/generated/index.ts:
@@ -89,6 +98,47 @@ generates:
       - 'typescript-generic-sdk':
           noExport: true
           documentMode: 'string'
+  # anonymous
+  libs/gql/anonymous/api/src/generated/schema.json:
+    plugins:
+      - 'introspection'
+    schema:
+      - &anonymousSchema
+        ${NEXT_PUBLIC_HASURA_URL:http://localhost:8080/v1/graphql}:
+          headers:
+            'x-hasura-admin-secret': ${HASURA_ADMIN_SECRET:password}
+            'x-hasura-default-role': 'anonymous'
+            'x-hasura-role': 'anonymous'
+  libs/gql/anonymous/api/src/generated/schema.graphql:
+    plugins:
+      - 'schema-ast'
+    schema:
+      - *anonymousSchema
+  libs/gql/anonymous/types/src/generated/index.ts:
+    preset: import-types
+    presetConfig:
+      typesPath: '@gql/shared/types'
+      importTypesNamespace: 'Types'
+    schema:
+      - *anonymousSchema
+    documents: './libs/gql/anonymous/api/src/queries/**/*.{graphql,gql}'
+    plugins:
+      - 'typescript-operations':
+          preResolveTypes: true
+  libs/gql/anonymous/api/src/generated/index.ts:
+    preset: import-types
+    presetConfig:
+      typesPath: '@gql/anonymous/types'
+      importTypesNamespace: 'Types'
+    schema:
+      - *anonymousSchema
+    documents: './libs/gql/anonymous/api/src/queries/**/*.{graphql,gql}'
+    plugins:
+      - 'typescript-react-query':
+          fetcher:
+            func: '@next/hasura/fetcher#fetchDataReactQuery'
+            isReactHook: false
+          errorType: Error
 
     # ## hasura
     # #  doesn't support yet separated fragments so it fail

@@ -1,0 +1,27 @@
+query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) {
+  event(where: { slug: $slug }, locales: [$locale], stage: $stage) {
+    id
+    slug
+    title
+    heroImage {
+      url
+    }
+    organizer {
+      id
+      slug
+      name
+      image {
+        url
+      }
+    }
+    eventPasses {
+      id
+      name
+      description
+      price {
+        amount
+        currency
+      }
+    }
+  }
+}

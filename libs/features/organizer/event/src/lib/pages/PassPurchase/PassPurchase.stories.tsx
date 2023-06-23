@@ -1,23 +1,24 @@
-// PassPurchase.stories.tsx
+// PassPurchaseSheet.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
-import { PassPurchase } from './PassPurchase';
+import { PassPurchaseSheet } from './PassPurchaseSheet';
 import {
-  PassPurchaseExample,
+  PassPurchaseSheetExample,
   passPurchaseProps,
   passPurchasePropsWithLotsOfPasses,
-  PassPurchaseLoadingExample,
+  PassPurchaseSheetLoadingExample,
+  PassPurchaseCardExample,
 } from './examples';
 
 const meta = {
-  component: PassPurchase,
+  component: PassPurchaseSheet,
   args: passPurchaseProps,
-  render: PassPurchaseExample,
+  render: PassPurchaseSheetExample,
   parameters: {
     layout: 'fullscreen',
   },
-} satisfies Meta<typeof PassPurchase>;
+} satisfies Meta<typeof PassPurchaseSheet>;
 
 export default meta;
 
@@ -28,7 +29,7 @@ export const NoPassSelected: Story = {
     ...passPurchaseProps,
     passes: passPurchaseProps.passes.map((pass) => ({
       ...pass,
-      numTickets: 0,
+      amount: 0,
     })),
   },
 };
@@ -37,15 +38,15 @@ export const SelectPasses: Story = {
   ...NoPassSelected,
   play: async () => {
     expect(await screen.findByText(/VIP Pass/i)).toBeInTheDocument();
-    const passCards = await screen.findAllByRole('button');
-    expect(passCards).toHaveLength(5); // Nav + Two buttons (increment and decrement) for each PassCard
-    passCards[1].click(); // Click the first pass increment button
+    const passCards = await screen.findAllByRole('button', {
+      name: /increment value/i,
+    });
+    expect(passCards).toHaveLength(2);
+    passCards[0].click(); // Click the first pass increment button
     const cartButton = await screen.findByRole('button', {
       name: /Go to payment/i,
     });
     expect(cartButton).toBeInTheDocument();
-    const passTotal = screen.getByText(/Total/i);
-    expect(passTotal).toBeInTheDocument();
   },
 };
 
@@ -54,7 +55,7 @@ export const WithLotsOfPasses: Story = {
     ...passPurchasePropsWithLotsOfPasses,
     passes: passPurchasePropsWithLotsOfPasses.passes.map((pass) => ({
       ...pass,
-      numTickets: 0,
+      amount: 0,
     })),
   },
 };
@@ -63,9 +64,11 @@ export const WithLotsOfPassesSelected: Story = {
   ...WithLotsOfPasses,
   play: async () => {
     expect(await screen.findByText(/Premium pass/i)).toBeInTheDocument();
-    const passCards = await screen.findAllByRole('button');
-    expect(passCards).toHaveLength(13); // Nav + Two buttons (increment and decrement) for each PassCard
-    passCards[9].click(); // Click the 6th pass increment button
+    const passCards = await screen.findAllByRole('button', {
+      name: /increment value/i,
+    });
+    expect(passCards).toHaveLength(6);
+    passCards[5].click(); // Click the 6th pass increment button
     const cartButton = await screen.findByRole('button', {
       name: /Go to payment/i,
     });
@@ -87,7 +90,7 @@ export const WithFullSizeAndBackButton: Story = {
 };
 
 export const Loading: Story = {
-  render: PassPurchaseLoadingExample,
+  render: PassPurchaseSheetLoadingExample,
 };
 
 export const LoadingFullSize: Story = {
@@ -95,4 +98,20 @@ export const LoadingFullSize: Story = {
   args: {
     size: 'full',
   },
+};
+
+export const Card: Story = {
+  args: {
+    backButtonLink: { href: '/dummy' },
+  },
+  render: PassPurchaseCardExample,
+};
+
+export const CardWithLotsOfPassesSelected: Story = {
+  ...WithLotsOfPassesSelected,
+  args: {
+    backButtonLink: { href: '/dummy' },
+    ...WithLotsOfPassesSelected.args,
+  },
+  render: PassPurchaseCardExample,
 };

@@ -47,19 +47,19 @@
       "name": "General Admission",
       "description": "General Admission to the event",
       "price": 1300,
-      "numTickets": 2,
+      "amount": 2,
       "maxAmount": 7,
-      "currentAmount": 1
+      "totalReserved": 1
     },
     {
       "id": "2",
       "name": "VIP Pass",
       "description": "Access to all areas",
       "price": 2500,
-      "numTickets": 1,
+      "amount": 1,
       "maxAmountPerUser": 3,
       "maxAmount": 30,
-      "currentAmount": 10
+      "totalReserved": 10
     }
   ],
   "isOngoing": true

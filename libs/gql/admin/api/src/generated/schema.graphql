@@ -1946,6 +1946,7 @@ type EventPass implements Node {
     """
     locales: [Locale!]
   ): Event
+  eventPassOrderSums: eventPassOrderSums
 
   """List of EventPass versions"""
   history(
@@ -2046,7 +2047,7 @@ type EventPass implements Node {
     This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
     """
     locales: [Locale!]
-  ): Money
+  ): Money!
 
   """The time the document was published. Null on documents in draft stage."""
   publishedAt(
@@ -2180,7 +2181,7 @@ input EventPassCreateInput {
   """name input for default locale (en)"""
   name: String!
   passOptions: PassOptionCreateManyInlineInput
-  price: MoneyCreateOneInlineInput
+  price: MoneyCreateOneInlineInput!
   updatedAt: DateTime
 }
 
@@ -3198,6 +3199,21 @@ input ImageResizeInput {
 input ImageTransformationInput {
   """Resizes the image"""
   resize: ImageResizeInput
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
 }
 
 """Raw JSON value"""
@@ -4603,8 +4619,8 @@ input OrganizerWhereUniqueInput {
 
 """References Organizer record uniquely"""
 input OrganizerWhereUniqueInput_remote_rel_accountorganizer {
-  id: ID
   name: String
+  slug: String
 }
 
 """Information about pagination in a connection."""
@@ -6335,6 +6351,16 @@ type account_mutation_response {
 }
 
 """
+input type for inserting object relation for remote table "account"
+"""
+input account_obj_rel_insert_input {
+  data: account_insert_input!
+
+  """upsert condition"""
+  on_conflict: account_on_conflict
+}
+
+"""
 on_conflict condition type for table "account"
 """
 input account_on_conflict {
@@ -6470,6 +6496,511 @@ enum cursor_ordering {
 
   """descending ordering of the cursor"""
   DESC
+}
+
+"""
+Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account
+"""
+type eventPassOrder {
+  """An object relationship"""
+  account: account
+  accountId: uuid!
+  created_at: timestamptz!
+  eventPass(
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+  ): EventPass
+  eventPassId: String!
+  id: uuid!
+  quantity: Int!
+  status: String!
+  updated_at: timestamptz!
+}
+
+"""Hold the sums for the Event Pass Orders"""
+type eventPassOrderSums {
+  eventPassId: String!
+  totalReserved: Int!
+}
+
+"""
+aggregated selection of "eventPassOrderSums"
+"""
+type eventPassOrderSums_aggregate {
+  aggregate: eventPassOrderSums_aggregate_fields
+  nodes: [eventPassOrderSums!]!
+}
+
+"""
+aggregate fields of "eventPassOrderSums"
+"""
+type eventPassOrderSums_aggregate_fields {
+  avg: eventPassOrderSums_avg_fields
+  count(columns: [eventPassOrderSums_select_column!], distinct: Boolean): Int!
+  max: eventPassOrderSums_max_fields
+  min: eventPassOrderSums_min_fields
+  stddev: eventPassOrderSums_stddev_fields
+  stddev_pop: eventPassOrderSums_stddev_pop_fields
+  stddev_samp: eventPassOrderSums_stddev_samp_fields
+  sum: eventPassOrderSums_sum_fields
+  var_pop: eventPassOrderSums_var_pop_fields
+  var_samp: eventPassOrderSums_var_samp_fields
+  variance: eventPassOrderSums_variance_fields
+}
+
+"""aggregate avg on columns"""
+type eventPassOrderSums_avg_fields {
+  totalReserved: Float
+}
+
+"""
+Boolean expression to filter rows from the table "eventPassOrderSums". All fields are combined with a logical 'AND'.
+"""
+input eventPassOrderSums_bool_exp {
+  _and: [eventPassOrderSums_bool_exp!]
+  _not: eventPassOrderSums_bool_exp
+  _or: [eventPassOrderSums_bool_exp!]
+  eventPassId: String_comparison_exp
+  totalReserved: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "eventPassOrderSums"
+"""
+enum eventPassOrderSums_constraint {
+  """
+  unique or primary key constraint on columns "eventPassId"
+  """
+  eventPassOrderSums_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "eventPassOrderSums"
+"""
+input eventPassOrderSums_inc_input {
+  totalReserved: Int
+}
+
+"""
+input type for inserting data into table "eventPassOrderSums"
+"""
+input eventPassOrderSums_insert_input {
+  eventPassId: String
+  totalReserved: Int
+}
+
+"""aggregate max on columns"""
+type eventPassOrderSums_max_fields {
+  eventPassId: String
+  totalReserved: Int
+}
+
+"""aggregate min on columns"""
+type eventPassOrderSums_min_fields {
+  eventPassId: String
+  totalReserved: Int
+}
+
+"""
+response of any mutation on the table "eventPassOrderSums"
+"""
+type eventPassOrderSums_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [eventPassOrderSums!]!
+}
+
+"""
+on_conflict condition type for table "eventPassOrderSums"
+"""
+input eventPassOrderSums_on_conflict {
+  constraint: eventPassOrderSums_constraint!
+  update_columns: [eventPassOrderSums_update_column!]! = []
+  where: eventPassOrderSums_bool_exp
+}
+
+"""Ordering options when selecting data from "eventPassOrderSums"."""
+input eventPassOrderSums_order_by {
+  eventPassId: order_by
+  totalReserved: order_by
+}
+
+"""primary key columns input for table: eventPassOrderSums"""
+input eventPassOrderSums_pk_columns_input {
+  eventPassId: String!
+}
+
+"""
+select columns of table "eventPassOrderSums"
+"""
+enum eventPassOrderSums_select_column {
+  """column name"""
+  eventPassId
+
+  """column name"""
+  totalReserved
+}
+
+"""
+input type for updating data in table "eventPassOrderSums"
+"""
+input eventPassOrderSums_set_input {
+  eventPassId: String
+  totalReserved: Int
+}
+
+"""aggregate stddev on columns"""
+type eventPassOrderSums_stddev_fields {
+  totalReserved: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type eventPassOrderSums_stddev_pop_fields {
+  totalReserved: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type eventPassOrderSums_stddev_samp_fields {
+  totalReserved: Float
+}
+
+"""
+Streaming cursor of the table "eventPassOrderSums"
+"""
+input eventPassOrderSums_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: eventPassOrderSums_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input eventPassOrderSums_stream_cursor_value_input {
+  eventPassId: String
+  totalReserved: Int
+}
+
+"""aggregate sum on columns"""
+type eventPassOrderSums_sum_fields {
+  totalReserved: Int
+}
+
+"""
+update columns of table "eventPassOrderSums"
+"""
+enum eventPassOrderSums_update_column {
+  """column name"""
+  eventPassId
+
+  """column name"""
+  totalReserved
+}
+
+input eventPassOrderSums_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: eventPassOrderSums_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: eventPassOrderSums_set_input
+
+  """filter the rows which have to be updated"""
+  where: eventPassOrderSums_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type eventPassOrderSums_var_pop_fields {
+  totalReserved: Float
+}
+
+"""aggregate var_samp on columns"""
+type eventPassOrderSums_var_samp_fields {
+  totalReserved: Float
+}
+
+"""aggregate variance on columns"""
+type eventPassOrderSums_variance_fields {
+  totalReserved: Float
+}
+
+"""
+aggregated selection of "eventPassOrder"
+"""
+type eventPassOrder_aggregate {
+  aggregate: eventPassOrder_aggregate_fields
+  nodes: [eventPassOrder!]!
+}
+
+"""
+aggregate fields of "eventPassOrder"
+"""
+type eventPassOrder_aggregate_fields {
+  avg: eventPassOrder_avg_fields
+  count(columns: [eventPassOrder_select_column!], distinct: Boolean): Int!
+  max: eventPassOrder_max_fields
+  min: eventPassOrder_min_fields
+  stddev: eventPassOrder_stddev_fields
+  stddev_pop: eventPassOrder_stddev_pop_fields
+  stddev_samp: eventPassOrder_stddev_samp_fields
+  sum: eventPassOrder_sum_fields
+  var_pop: eventPassOrder_var_pop_fields
+  var_samp: eventPassOrder_var_samp_fields
+  variance: eventPassOrder_variance_fields
+}
+
+"""aggregate avg on columns"""
+type eventPassOrder_avg_fields {
+  quantity: Float
+}
+
+"""
+Boolean expression to filter rows from the table "eventPassOrder". All fields are combined with a logical 'AND'.
+"""
+input eventPassOrder_bool_exp {
+  _and: [eventPassOrder_bool_exp!]
+  _not: eventPassOrder_bool_exp
+  _or: [eventPassOrder_bool_exp!]
+  account: account_bool_exp
+  accountId: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  eventPassId: String_comparison_exp
+  id: uuid_comparison_exp
+  quantity: Int_comparison_exp
+  status: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "eventPassOrder"
+"""
+enum eventPassOrder_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  eventPassOrder_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "eventPassOrder"
+"""
+input eventPassOrder_inc_input {
+  quantity: Int
+}
+
+"""
+input type for inserting data into table "eventPassOrder"
+"""
+input eventPassOrder_insert_input {
+  account: account_obj_rel_insert_input
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  quantity: Int
+  status: String
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type eventPassOrder_max_fields {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  quantity: Int
+  status: String
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type eventPassOrder_min_fields {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  quantity: Int
+  status: String
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "eventPassOrder"
+"""
+type eventPassOrder_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [eventPassOrder!]!
+}
+
+"""
+on_conflict condition type for table "eventPassOrder"
+"""
+input eventPassOrder_on_conflict {
+  constraint: eventPassOrder_constraint!
+  update_columns: [eventPassOrder_update_column!]! = []
+  where: eventPassOrder_bool_exp
+}
+
+"""Ordering options when selecting data from "eventPassOrder"."""
+input eventPassOrder_order_by {
+  account: account_order_by
+  accountId: order_by
+  created_at: order_by
+  eventPassId: order_by
+  id: order_by
+  quantity: order_by
+  status: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: eventPassOrder"""
+input eventPassOrder_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "eventPassOrder"
+"""
+enum eventPassOrder_select_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  id
+
+  """column name"""
+  quantity
+
+  """column name"""
+  status
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "eventPassOrder"
+"""
+input eventPassOrder_set_input {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  quantity: Int
+  status: String
+  updated_at: timestamptz
+}
+
+"""aggregate stddev on columns"""
+type eventPassOrder_stddev_fields {
+  quantity: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type eventPassOrder_stddev_pop_fields {
+  quantity: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type eventPassOrder_stddev_samp_fields {
+  quantity: Float
+}
+
+"""
+Streaming cursor of the table "eventPassOrder"
+"""
+input eventPassOrder_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: eventPassOrder_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input eventPassOrder_stream_cursor_value_input {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  quantity: Int
+  status: String
+  updated_at: timestamptz
+}
+
+"""aggregate sum on columns"""
+type eventPassOrder_sum_fields {
+  quantity: Int
+}
+
+"""
+update columns of table "eventPassOrder"
+"""
+enum eventPassOrder_update_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  id
+
+  """column name"""
+  quantity
+
+  """column name"""
+  status
+
+  """column name"""
+  updated_at
+}
+
+input eventPassOrder_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: eventPassOrder_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: eventPassOrder_set_input
+
+  """filter the rows which have to be updated"""
+  where: eventPassOrder_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type eventPassOrder_var_pop_fields {
+  quantity: Float
+}
+
+"""aggregate var_samp on columns"""
+type eventPassOrder_var_samp_fields {
+  quantity: Float
+}
+
+"""aggregate variance on columns"""
+type eventPassOrder_variance_fields {
+  quantity: Float
 }
 
 """mutation root"""
@@ -6617,6 +7148,45 @@ type mutation_root {
   delete_account_by_pk(id: uuid!): account
 
   """
+  delete data from the table: "eventPassOrder"
+  """
+  delete_eventPassOrder(
+    """filter the rows which have to be deleted"""
+    where: eventPassOrder_bool_exp!
+  ): eventPassOrder_mutation_response
+
+  """
+  delete data from the table: "eventPassOrderSums"
+  """
+  delete_eventPassOrderSums(
+    """filter the rows which have to be deleted"""
+    where: eventPassOrderSums_bool_exp!
+  ): eventPassOrderSums_mutation_response
+
+  """
+  delete single row from the table: "eventPassOrderSums"
+  """
+  delete_eventPassOrderSums_by_pk(eventPassId: String!): eventPassOrderSums
+
+  """
+  delete single row from the table: "eventPassOrder"
+  """
+  delete_eventPassOrder_by_pk(id: uuid!): eventPassOrder
+
+  """
+  delete data from the table: "orderStatusEnum"
+  """
+  delete_orderStatusEnum(
+    """filter the rows which have to be deleted"""
+    where: orderStatusEnum_bool_exp!
+  ): orderStatusEnum_mutation_response
+
+  """
+  delete single row from the table: "orderStatusEnum"
+  """
+  delete_orderStatusEnum_by_pk(value: String!): orderStatusEnum
+
+  """
   insert data into the table: "account"
   """
   insert_account(
@@ -6637,6 +7207,72 @@ type mutation_root {
     """upsert condition"""
     on_conflict: account_on_conflict
   ): account
+
+  """
+  insert data into the table: "eventPassOrder"
+  """
+  insert_eventPassOrder(
+    """the rows to be inserted"""
+    objects: [eventPassOrder_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: eventPassOrder_on_conflict
+  ): eventPassOrder_mutation_response
+
+  """
+  insert data into the table: "eventPassOrderSums"
+  """
+  insert_eventPassOrderSums(
+    """the rows to be inserted"""
+    objects: [eventPassOrderSums_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: eventPassOrderSums_on_conflict
+  ): eventPassOrderSums_mutation_response
+
+  """
+  insert a single row into the table: "eventPassOrderSums"
+  """
+  insert_eventPassOrderSums_one(
+    """the row to be inserted"""
+    object: eventPassOrderSums_insert_input!
+
+    """upsert condition"""
+    on_conflict: eventPassOrderSums_on_conflict
+  ): eventPassOrderSums
+
+  """
+  insert a single row into the table: "eventPassOrder"
+  """
+  insert_eventPassOrder_one(
+    """the row to be inserted"""
+    object: eventPassOrder_insert_input!
+
+    """upsert condition"""
+    on_conflict: eventPassOrder_on_conflict
+  ): eventPassOrder
+
+  """
+  insert data into the table: "orderStatusEnum"
+  """
+  insert_orderStatusEnum(
+    """the rows to be inserted"""
+    objects: [orderStatusEnum_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: orderStatusEnum_on_conflict
+  ): orderStatusEnum_mutation_response
+
+  """
+  insert a single row into the table: "orderStatusEnum"
+  """
+  insert_orderStatusEnum_one(
+    """the row to be inserted"""
+    object: orderStatusEnum_insert_input!
+
+    """upsert condition"""
+    on_conflict: orderStatusEnum_on_conflict
+  ): orderStatusEnum
 
   """Publish one asset"""
   publishAsset(
@@ -7497,6 +8133,102 @@ type mutation_root {
     updates: [account_updates!]!
   ): [account_mutation_response]
 
+  """
+  update data of the table: "eventPassOrder"
+  """
+  update_eventPassOrder(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassOrder_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassOrder_set_input
+
+    """filter the rows which have to be updated"""
+    where: eventPassOrder_bool_exp!
+  ): eventPassOrder_mutation_response
+
+  """
+  update data of the table: "eventPassOrderSums"
+  """
+  update_eventPassOrderSums(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassOrderSums_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassOrderSums_set_input
+
+    """filter the rows which have to be updated"""
+    where: eventPassOrderSums_bool_exp!
+  ): eventPassOrderSums_mutation_response
+
+  """
+  update single row of the table: "eventPassOrderSums"
+  """
+  update_eventPassOrderSums_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassOrderSums_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassOrderSums_set_input
+    pk_columns: eventPassOrderSums_pk_columns_input!
+  ): eventPassOrderSums
+
+  """
+  update multiples rows of table: "eventPassOrderSums"
+  """
+  update_eventPassOrderSums_many(
+    """updates to execute, in order"""
+    updates: [eventPassOrderSums_updates!]!
+  ): [eventPassOrderSums_mutation_response]
+
+  """
+  update single row of the table: "eventPassOrder"
+  """
+  update_eventPassOrder_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassOrder_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassOrder_set_input
+    pk_columns: eventPassOrder_pk_columns_input!
+  ): eventPassOrder
+
+  """
+  update multiples rows of table: "eventPassOrder"
+  """
+  update_eventPassOrder_many(
+    """updates to execute, in order"""
+    updates: [eventPassOrder_updates!]!
+  ): [eventPassOrder_mutation_response]
+
+  """
+  update data of the table: "orderStatusEnum"
+  """
+  update_orderStatusEnum(
+    """sets the columns of the filtered rows to the given values"""
+    _set: orderStatusEnum_set_input
+
+    """filter the rows which have to be updated"""
+    where: orderStatusEnum_bool_exp!
+  ): orderStatusEnum_mutation_response
+
+  """
+  update single row of the table: "orderStatusEnum"
+  """
+  update_orderStatusEnum_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: orderStatusEnum_set_input
+    pk_columns: orderStatusEnum_pk_columns_input!
+  ): orderStatusEnum
+
+  """
+  update multiples rows of table: "orderStatusEnum"
+  """
+  update_orderStatusEnum_many(
+    """updates to execute, in order"""
+    updates: [orderStatusEnum_updates!]!
+  ): [orderStatusEnum_mutation_response]
+
   """Upsert one asset"""
   upsertAsset(upsert: AssetUpsertInput!, where: AssetWhereUniqueInput!): Asset
 
@@ -7508,6 +8240,144 @@ type mutation_root {
 
   """Upsert one organizer"""
   upsertOrganizer(upsert: OrganizerUpsertInput!, where: OrganizerWhereUniqueInput!): Organizer
+}
+
+"""
+columns and relationships of "orderStatusEnum"
+"""
+type orderStatusEnum {
+  value: String!
+}
+
+"""
+aggregated selection of "orderStatusEnum"
+"""
+type orderStatusEnum_aggregate {
+  aggregate: orderStatusEnum_aggregate_fields
+  nodes: [orderStatusEnum!]!
+}
+
+"""
+aggregate fields of "orderStatusEnum"
+"""
+type orderStatusEnum_aggregate_fields {
+  count(columns: [orderStatusEnum_select_column!], distinct: Boolean): Int!
+  max: orderStatusEnum_max_fields
+  min: orderStatusEnum_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "orderStatusEnum". All fields are combined with a logical 'AND'.
+"""
+input orderStatusEnum_bool_exp {
+  _and: [orderStatusEnum_bool_exp!]
+  _not: orderStatusEnum_bool_exp
+  _or: [orderStatusEnum_bool_exp!]
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "orderStatusEnum"
+"""
+enum orderStatusEnum_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  orderStatusEnum_pkey
+}
+
+"""
+input type for inserting data into table "orderStatusEnum"
+"""
+input orderStatusEnum_insert_input {
+  value: String
+}
+
+"""aggregate max on columns"""
+type orderStatusEnum_max_fields {
+  value: String
+}
+
+"""aggregate min on columns"""
+type orderStatusEnum_min_fields {
+  value: String
+}
+
+"""
+response of any mutation on the table "orderStatusEnum"
+"""
+type orderStatusEnum_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [orderStatusEnum!]!
+}
+
+"""
+on_conflict condition type for table "orderStatusEnum"
+"""
+input orderStatusEnum_on_conflict {
+  constraint: orderStatusEnum_constraint!
+  update_columns: [orderStatusEnum_update_column!]! = []
+  where: orderStatusEnum_bool_exp
+}
+
+"""Ordering options when selecting data from "orderStatusEnum"."""
+input orderStatusEnum_order_by {
+  value: order_by
+}
+
+"""primary key columns input for table: orderStatusEnum"""
+input orderStatusEnum_pk_columns_input {
+  value: String!
+}
+
+"""
+select columns of table "orderStatusEnum"
+"""
+enum orderStatusEnum_select_column {
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "orderStatusEnum"
+"""
+input orderStatusEnum_set_input {
+  value: String
+}
+
+"""
+Streaming cursor of the table "orderStatusEnum"
+"""
+input orderStatusEnum_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: orderStatusEnum_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input orderStatusEnum_stream_cursor_value_input {
+  value: String
+}
+
+"""
+update columns of table "orderStatusEnum"
+"""
+enum orderStatusEnum_update_column {
+  """column name"""
+  value
+}
+
+input orderStatusEnum_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: orderStatusEnum_set_input
+
+  """filter the rows which have to be updated"""
+  where: orderStatusEnum_bool_exp!
 }
 
 """column ordering options"""
@@ -7667,6 +8537,94 @@ type query_root {
     where: EventPassWhereUniqueInput!
   ): EventPass
 
+  """
+  fetch data from the table: "eventPassOrder"
+  """
+  eventPassOrder(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrder_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrder_bool_exp
+  ): [eventPassOrder!]!
+
+  """
+  fetch data from the table: "eventPassOrderSums"
+  """
+  eventPassOrderSums(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrderSums_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrderSums_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrderSums_bool_exp
+  ): [eventPassOrderSums!]!
+
+  """
+  fetch aggregated fields from the table: "eventPassOrderSums"
+  """
+  eventPassOrderSums_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrderSums_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrderSums_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrderSums_bool_exp
+  ): eventPassOrderSums_aggregate!
+
+  """
+  fetch data from the table: "eventPassOrderSums" using primary key columns
+  """
+  eventPassOrderSums_by_pk(eventPassId: String!): eventPassOrderSums
+
+  """
+  fetch aggregated fields from the table: "eventPassOrder"
+  """
+  eventPassOrder_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrder_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrder_bool_exp
+  ): eventPassOrder_aggregate!
+
+  """fetch data from the table: "eventPassOrder" using primary key columns"""
+  eventPassOrder_by_pk(id: uuid!): eventPassOrder
+
   """Retrieve document version"""
   eventPassVersion(where: VersionWhereInput!): DocumentVersion
 
@@ -7777,6 +8735,49 @@ type query_root {
     locales: [Locale!]! = [en]
     stage: Stage! = PUBLISHED
   ): Node
+
+  """
+  fetch data from the table: "orderStatusEnum"
+  """
+  orderStatusEnum(
+    """distinct select on columns"""
+    distinct_on: [orderStatusEnum_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderStatusEnum_order_by!]
+
+    """filter the rows returned"""
+    where: orderStatusEnum_bool_exp
+  ): [orderStatusEnum!]!
+
+  """
+  fetch aggregated fields from the table: "orderStatusEnum"
+  """
+  orderStatusEnum_aggregate(
+    """distinct select on columns"""
+    distinct_on: [orderStatusEnum_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderStatusEnum_order_by!]
+
+    """filter the rows returned"""
+    where: orderStatusEnum_bool_exp
+  ): orderStatusEnum_aggregate!
+
+  """fetch data from the table: "orderStatusEnum" using primary key columns"""
+  orderStatusEnum_by_pk(value: String!): orderStatusEnum
 
   """Retrieve a single organizer"""
   organizer(
@@ -8079,6 +9080,179 @@ type subscription_root {
     """filter the rows returned"""
     where: account_bool_exp
   ): [account!]!
+
+  """
+  fetch data from the table: "eventPassOrder"
+  """
+  eventPassOrder(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrder_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrder_bool_exp
+  ): [eventPassOrder!]!
+
+  """
+  fetch data from the table: "eventPassOrderSums"
+  """
+  eventPassOrderSums(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrderSums_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrderSums_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrderSums_bool_exp
+  ): [eventPassOrderSums!]!
+
+  """
+  fetch aggregated fields from the table: "eventPassOrderSums"
+  """
+  eventPassOrderSums_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrderSums_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrderSums_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrderSums_bool_exp
+  ): eventPassOrderSums_aggregate!
+
+  """
+  fetch data from the table: "eventPassOrderSums" using primary key columns
+  """
+  eventPassOrderSums_by_pk(eventPassId: String!): eventPassOrderSums
+
+  """
+  fetch data from the table in a streaming manner: "eventPassOrderSums"
+  """
+  eventPassOrderSums_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [eventPassOrderSums_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: eventPassOrderSums_bool_exp
+  ): [eventPassOrderSums!]!
+
+  """
+  fetch aggregated fields from the table: "eventPassOrder"
+  """
+  eventPassOrder_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrder_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrder_bool_exp
+  ): eventPassOrder_aggregate!
+
+  """fetch data from the table: "eventPassOrder" using primary key columns"""
+  eventPassOrder_by_pk(id: uuid!): eventPassOrder
+
+  """
+  fetch data from the table in a streaming manner: "eventPassOrder"
+  """
+  eventPassOrder_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [eventPassOrder_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: eventPassOrder_bool_exp
+  ): [eventPassOrder!]!
+
+  """
+  fetch data from the table: "orderStatusEnum"
+  """
+  orderStatusEnum(
+    """distinct select on columns"""
+    distinct_on: [orderStatusEnum_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderStatusEnum_order_by!]
+
+    """filter the rows returned"""
+    where: orderStatusEnum_bool_exp
+  ): [orderStatusEnum!]!
+
+  """
+  fetch aggregated fields from the table: "orderStatusEnum"
+  """
+  orderStatusEnum_aggregate(
+    """distinct select on columns"""
+    distinct_on: [orderStatusEnum_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [orderStatusEnum_order_by!]
+
+    """filter the rows returned"""
+    where: orderStatusEnum_bool_exp
+  ): orderStatusEnum_aggregate!
+
+  """fetch data from the table: "orderStatusEnum" using primary key columns"""
+  orderStatusEnum_by_pk(value: String!): orderStatusEnum
+
+  """
+  fetch data from the table in a streaming manner: "orderStatusEnum"
+  """
+  orderStatusEnum_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [orderStatusEnum_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: orderStatusEnum_bool_exp
+  ): [orderStatusEnum!]!
 }
 
 scalar timestamptz

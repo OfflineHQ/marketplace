@@ -10,32 +10,32 @@ import {
   CardDescriptionSkeleton,
   TextSkeleton,
   ButtonSkeleton,
-  BoundedNumericStepper,
   Text,
-  Badge,
 } from '@ui/components';
 
-import type { EventPassCart } from '../../types';
-export type PassCardProps = EventPassCart;
+import { NextIntlClientProvider, useLocale, useFormatter } from 'next-intl';
+import { deepPick } from '@utils';
+import { messages, defaultLocale, type Locale } from '@next/i18n';
+
+import { formatCurrency } from '@next/currency';
+
+import type { EventPass } from '../../types';
+import { PassCardSelect, PassCardSelectProps } from './PassCardSelect';
+
+export interface PassCardProps extends EventPass, PassCardSelectProps {}
 
 export const PassCard: React.FC<PassCardProps> = ({
   name,
   description,
   price,
-  numTickets,
-  maxAmount,
-  maxAmountPerUser,
-  currentAmount,
-  soldOutText,
-  ...boundedNumberProps
+  ...props
 }) => {
-  const maxAvailableTickets = maxAmount - currentAmount;
-  const maxVal =
-    maxAmountPerUser && maxAmountPerUser < maxAvailableTickets
-      ? maxAmountPerUser
-      : maxAvailableTickets;
-
-  // TODO: add chip for when not enough tickets available and if less than 10% of tickets available (for instance 'only 5 tickets left')
+  const format = useFormatter();
+  const _locale = useLocale();
+  const locale: Locale = (_locale as Locale) || defaultLocale;
+  const localeMessages = deepPick(messages[locale], [
+    'Organizer.Event.PassPurchase.Pass',
+  ]);
   return (
     <Card className="flex flex-col justify-between">
       <CardHeader>
@@ -43,18 +43,10 @@ export const PassCard: React.FC<PassCardProps> = ({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter className="flex items-center justify-between">
-        <Text>${price}</Text>
-        <div className="flex gap-1">
-          {!maxVal ? (
-            <Badge variant="secondary">{soldOutText}</Badge>
-          ) : (
-            <BoundedNumericStepper
-              initialValue={numTickets}
-              maxVal={maxVal}
-              {...boundedNumberProps}
-            />
-          )}
-        </div>
+        <Text>{formatCurrency(format, price)}</Text>
+        <NextIntlClientProvider locale={locale} messages={localeMessages}>
+          <PassCardSelect {...props} />
+        </NextIntlClientProvider>
       </CardFooter>
     </Card>
   );

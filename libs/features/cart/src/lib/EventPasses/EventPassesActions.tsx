@@ -6,7 +6,7 @@ import type { EventSlugs } from '@features/organizer/event/types';
 import type { EventPassesSliceProps } from '@features/organizer/event/store';
 
 export interface EventPassesActionsProps extends EventSlugs {
-  onDelete: EventPassesSliceProps['deletePasses'];
+  onDelete: EventPassesSliceProps['deletePassesCart'];
   editText: string;
   deleteText: string;
 }
