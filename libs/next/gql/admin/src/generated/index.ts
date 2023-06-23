@@ -1,4 +1,4 @@
-import * as Types from './types';
+import * as Types from '@next/gql/admin/types';
 
 import { fetchData } from "@next/hasura/fetcher";
 export const AccountFieldsFragmentDoc = `

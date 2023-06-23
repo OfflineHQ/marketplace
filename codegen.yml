@@ -14,7 +14,7 @@ generates:
   libs/next/gql/admin/src/generated/schema.graphql:
     plugins:
       - 'schema-ast'
-  libs/next/gql/admin/src/generated/types.d.ts:
+  libs/next/gql/admin/types/src/generated/index.ts:
     documents: './libs/next/gql/admin/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript':
@@ -24,7 +24,7 @@ generates:
   libs/next/gql/admin/src/generated/index.ts:
     preset: import-types
     presetConfig:
-      typesPath: './types'
+      typesPath: '@next/gql/admin/types'
       importTypesNamespace: 'Types'
     documents: './libs/next/gql/admin/src/queries/**/*.{graphql,gql}'
     plugins:
@@ -53,7 +53,7 @@ generates:
       - 'schema-ast'
     schema:
       - *userSchema
-  libs/next/gql/user/src/generated/types.d.ts:
+  libs/next/gql/user/types/src/generated/index.ts:
     schema:
       - *userSchema
     documents: './libs/next/gql/user/src/queries/**/*.{graphql,gql}'
@@ -65,7 +65,7 @@ generates:
   libs/next/gql/user/src/generated/index.ts:
     preset: import-types
     presetConfig:
-      typesPath: './types'
+      typesPath: '@next/gql/user/types'
       importTypesNamespace: 'Types'
     schema:
       - *userSchema

@@ -1,4 +1,4 @@
-import * as Types from './types';
+import * as Types from '@next/gql/user/types';
 
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { fetchDataReactQuery } from '@next/hasura/fetcher';
