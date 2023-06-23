@@ -1,7 +1,7 @@
 import { cache } from 'react';
-import { adminSdk } from '@next/gql/admin';
+import { adminSdk } from '@gql/admin/api';
 import type { Event } from '@features/organizer/event/types';
-import type { Locale, Stage } from '@next/gql/admin/types';
+import type { Locale, Stage } from '@gql/admin/types';
 
 interface GetEventProps {
   eventSlug: string;
