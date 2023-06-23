@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'next-gql-admin',
+  displayName: 'gql-admin',
   preset: '../../../../jest.preset.js',
   globals: {},
   globalSetup: `${process.cwd()}/tools/test/globalSetupHasura.ts`,

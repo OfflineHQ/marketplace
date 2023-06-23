@@ -3,14 +3,27 @@ import { Accordion } from '@ui/components';
 import {
   passWithMaxAmount,
   passWithMaxAmountPerUser,
-  passWithSoldOut,
+  passWithMaxAmountCart,
+  passWithMaxAmountPerUserCart,
   eventProps,
+  event2Props,
 } from '@features/organizer/event/examples';
+import type { EventCart } from '@features/cart/types';
+
+export const eventPassesCart: EventPassesProps['passes'] = [
+  { ...passWithMaxAmountCart, amount: 1 },
+  { ...passWithMaxAmountPerUserCart, amount: 2 },
+];
+
+export const eventCartProps: EventCart = {
+  ...eventProps,
+  eventPasses: [passWithMaxAmount, passWithMaxAmountPerUser],
+};
 
 export const eventPassesProps: EventPassesProps = {
-  event: eventProps,
+  event: eventCartProps,
   onDelete: ({ organizerSlug, eventSlug }) => null,
-  passes: [passWithMaxAmount, passWithMaxAmountPerUser],
+  passes: eventPassesCart,
 };
 
 export const EventPassesExample = (props: EventPassesProps) => {

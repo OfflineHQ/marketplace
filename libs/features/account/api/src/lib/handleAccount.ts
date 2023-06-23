@@ -1,4 +1,4 @@
-import type { Account_Insert_Input } from '@gql/admin/types';
+import type { Account_Insert_Input } from '@gql/shared/types';
 import { getAccount, type Account } from './getAccount';
 import { createAccount } from './createAccount';
 

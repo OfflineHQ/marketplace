@@ -20,5 +20,8 @@ query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
         ...EventDateLocationsFields
       }
     }
+    eventPassOrderSums {
+      totalReserved
+    }
   }
 }

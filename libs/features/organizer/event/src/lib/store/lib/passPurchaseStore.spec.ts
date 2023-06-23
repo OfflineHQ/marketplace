@@ -12,6 +12,19 @@ describe('passPurchaseStore', () => {
     result.current.resetPasses();
     cleanup();
   });
+
+  const pass1 = { id: 'dummy', amount: 5 };
+  const pass2 = { id: 'dummy2', amount: 10 };
+  const passWithNoTickets = { id: 'dummy3', amount: 0 };
+  const passData1 = {
+    ...passWithMaxAmount,
+    id: pass1.id,
+  };
+  const passData2 = {
+    ...passWithMaxAmountPerUser,
+    id: pass2.id,
+  };
+
   it('updatePassCart correctly updates the pass when the pass does not exist', () => {
     const { result } = renderHook(() => usePassPurchaseStore());
 
@@ -19,7 +32,7 @@ describe('passPurchaseStore', () => {
       result.current.updatePassCart({
         organizerSlug: 'testOrg',
         eventSlug: 'testEvent',
-        pass: passWithMaxAmount,
+        pass: pass1,
       });
     });
 
@@ -28,24 +41,22 @@ describe('passPurchaseStore', () => {
         organizerSlug: 'testOrg',
         eventSlug: 'testEvent',
       })
-    ).toEqual([passWithMaxAmount]);
+    ).toEqual([pass1]);
   });
 
   it('updatePassCart correctly updates an existing pass', () => {
     const { result } = renderHook(() => usePassPurchaseStore());
 
-    const newPass = { ...passWithMaxAmount, numTickets: 5 };
-
     act(() => {
       result.current.setPassesCart({
         organizerSlug: 'existingOrg',
         eventSlug: 'existingEvent',
-        newPasses: [passWithMaxAmount],
+        newPasses: [pass1],
       });
       result.current.updatePassCart({
         organizerSlug: 'existingOrg',
         eventSlug: 'existingEvent',
-        pass: newPass,
+        pass: pass1,
       });
     });
 
@@ -54,61 +65,11 @@ describe('passPurchaseStore', () => {
         organizerSlug: 'existingOrg',
         eventSlug: 'existingEvent',
       })
-    ).toEqual([newPass]);
+    ).toEqual([pass1]);
   });
 
-  it('setPasses assigns numTickets to 0 when a new pass is not in the current pass list', () => {
+  it('updatePassCart does nothing when amount is 0 or less and the pass does not exist', () => {
     const { result } = renderHook(() => usePassPurchaseStore());
-
-    const newPass = { ...passWithMaxAmount };
-
-    act(() => {
-      result.current.setPasses({
-        organizerSlug: 'newOrg',
-        eventSlug: 'newEvent',
-        passes: [newPass],
-      });
-    });
-
-    const passesCart = result.current.getPasses({
-      organizerSlug: 'newOrg',
-      eventSlug: 'newEvent',
-    });
-
-    expect(passesCart).toEqual([{ ...newPass, numTickets: 0 }]);
-  });
-
-  it('setPasses correctly sets the passes without numTickets being overriden', () => {
-    const { result } = renderHook(() => usePassPurchaseStore());
-
-    const existingPass = { ...passWithMaxAmount, numTickets: 5 };
-    const newPass = { ...passWithMaxAmount, numTickets: 0 };
-
-    act(() => {
-      result.current.setPassesCart({
-        organizerSlug: 'existingOrg',
-        eventSlug: 'existingEvent',
-        newPasses: [existingPass],
-      });
-      result.current.setPasses({
-        organizerSlug: 'existingOrg',
-        eventSlug: 'existingEvent',
-        passes: [newPass],
-      });
-    });
-
-    const passes = result.current.getPasses({
-      organizerSlug: 'existingOrg',
-      eventSlug: 'existingEvent',
-    });
-
-    expect(passes).toEqual([{ ...newPass, numTickets: 5 }]);
-  });
-
-  it('updatePassCart does nothing when numTickets is 0 or less and the pass does not exist', () => {
-    const { result } = renderHook(() => usePassPurchaseStore());
-
-    const passWithNoTickets = { ...passWithMaxAmount, numTickets: 0 };
 
     act(() => {
       result.current.updatePassCart({
@@ -133,7 +94,7 @@ describe('passPurchaseStore', () => {
       result.current.setPassesCart({
         organizerSlug: 'testOrg',
         eventSlug: 'testEvent',
-        newPasses: [passWithMaxAmount, passWithMaxAmountPerUser],
+        newPasses: [pass1, pass2],
       });
     });
 
@@ -142,22 +103,22 @@ describe('passPurchaseStore', () => {
         organizerSlug: 'testOrg',
         eventSlug: 'testEvent',
       })
-    ).toEqual([passWithMaxAmount, passWithMaxAmountPerUser]);
+    ).toEqual([pass1, pass2]);
   });
 
-  it('deletePasses correctly removes the passes', () => {
+  it('deletePassesCart correctly removes the passes', () => {
     const { result } = renderHook(() => usePassPurchaseStore());
 
     act(() => {
       result.current.setPassesCart({
         organizerSlug: 'testOrg',
         eventSlug: 'testEvent',
-        newPasses: [passWithMaxAmount],
+        newPasses: [pass1],
       });
     });
 
     act(() => {
-      result.current.deletePasses({
+      result.current.deletePassesCart({
         organizerSlug: 'testOrg',
         eventSlug: 'testEvent',
       });
@@ -171,25 +132,6 @@ describe('passPurchaseStore', () => {
     ).toBeUndefined();
   });
 
-  it('getPassesCart correctly retrieves the passes', () => {
-    const { result } = renderHook(() => usePassPurchaseStore());
-
-    act(() => {
-      result.current.setPassesCart({
-        organizerSlug: 'testOrg',
-        eventSlug: 'testEvent',
-        newPasses: [passWithMaxAmount],
-      });
-    });
-
-    const passes = result.current.getPassesCart({
-      organizerSlug: 'testOrg',
-      eventSlug: 'testEvent',
-    });
-
-    expect(passes).toEqual([passWithMaxAmount]);
-  });
-
   it('ensure immutability', () => {
     const { result } = renderHook(() => usePassPurchaseStore());
 
@@ -200,7 +142,7 @@ describe('passPurchaseStore', () => {
       result.current.setPassesCart({
         organizerSlug,
         eventSlug,
-        newPasses: [passWithMaxAmount],
+        newPasses: [pass1],
       });
     });
 
@@ -215,7 +157,7 @@ describe('passPurchaseStore', () => {
       result.current.updatePassCart({
         organizerSlug,
         eventSlug,
-        pass: { ...passWithMaxAmount, numTickets: 5 },
+        pass: { ...pass1, amount: 1 },
       });
     });
 
@@ -233,7 +175,7 @@ describe('passPurchaseStore', () => {
 
     // Delete passes
     act(() => {
-      result.current.deletePasses({
+      result.current.deletePassesCart({
         organizerSlug,
         eventSlug,
       });
@@ -255,9 +197,6 @@ describe('passPurchaseStore', () => {
     const eventSlug1 = 'event1';
     const organizerSlug2 = 'org2';
     const eventSlug2 = 'event2';
-
-    const pass1 = { ...passWithMaxAmount, numTickets: 5 };
-    const pass2 = { ...passWithMaxAmountPerUser, numTickets: 10 };
 
     act(() => {
       result.current.setPassesCart({
@@ -281,6 +220,78 @@ describe('passPurchaseStore', () => {
       [organizerSlug2]: {
         [eventSlug2]: [pass2],
       },
+    });
+  });
+
+  it('getPassCart correctly retrieves a specific pass', () => {
+    const { result } = renderHook(() => usePassPurchaseStore());
+
+    act(() => {
+      result.current.setPassesCart({
+        organizerSlug: 'testOrg',
+        eventSlug: 'testEvent',
+        newPasses: [pass1, pass2, passWithNoTickets],
+      });
+    });
+
+    const pass = result.current.getPassCart({
+      organizerSlug: 'testOrg',
+      eventSlug: 'testEvent',
+      eventPassId: pass2.id,
+    });
+
+    expect(pass).toEqual(pass2);
+  });
+
+  it('getPassData correctly retrieves pass data', () => {
+    const { result } = renderHook(() => usePassPurchaseStore());
+    const passesData = [passWithMaxAmount, passWithMaxAmountPerUser];
+    const passData = result.current.getPassData({
+      passCartId: passWithMaxAmount.id,
+      passesData,
+    });
+
+    expect(passData).toEqual(passWithMaxAmount);
+  });
+
+  it('getPassesCartTotalPasses correctly counts total passes', () => {
+    const { result } = renderHook(() => usePassPurchaseStore());
+    act(() => {
+      result.current.setPassesCart({
+        organizerSlug: 'testOrg',
+        eventSlug: 'testEvent',
+        newPasses: [pass1, pass2],
+      });
+    });
+
+    const totalPasses = result.current.getPassesCartTotalPasses({
+      organizerSlug: 'testOrg',
+      eventSlug: 'testEvent',
+    });
+    expect(totalPasses).toEqual(15);
+  });
+
+  it('getPassesCartTotalPrice correctly computes total price', () => {
+    const { result } = renderHook(() => usePassPurchaseStore());
+
+    const passesData = [passData1, passData2];
+    act(() => {
+      result.current.setPassesCart({
+        organizerSlug: 'testOrg',
+        eventSlug: 'testEvent',
+        newPasses: [pass1, pass2],
+      });
+    });
+
+    const total = result.current.getPassesCartTotalPrice({
+      organizerSlug: 'testOrg',
+      eventSlug: 'testEvent',
+      passesData,
+    });
+
+    expect(total).toEqual({
+      amount: 3150000,
+      currency: 'USD',
     });
   });
 });

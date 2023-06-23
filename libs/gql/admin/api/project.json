@@ -9,7 +9,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/gql/admin/api",
-        "main": "libs/gql/admin/api/src/generated/index.ts",
+        "main": "libs/gql/admin/api/src/index.ts",
         "tsConfig": "libs/gql/admin/api/tsconfig.lib.json",
         "assets": ["libs/gql/admin/api/*.md"]
       }
