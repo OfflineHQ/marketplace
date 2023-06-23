@@ -1,0 +1,34 @@
+{
+  "name": "gql-admin-api",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/gql/admin/api/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/gql/admin/api",
+        "main": "libs/gql/admin/api/src/generated/index.ts",
+        "tsConfig": "libs/gql/admin/api/tsconfig.lib.json",
+        "assets": ["libs/gql/admin/api/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/gql/user/api/**/*.{ts, gql, graphql}"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/gql/admin/api"],
+      "options": {
+        "jestConfig": "libs/gql/admin/api/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

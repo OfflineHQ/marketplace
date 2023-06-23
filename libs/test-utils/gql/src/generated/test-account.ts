@@ -1,4 +1,4 @@
-import * as Types from '@next/gql/user/types';
+import * as Types from '@gql/user/types';
 
 export const AccountFieldsFragmentDoc = `
     fragment AccountFields on account {

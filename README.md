@@ -223,11 +223,11 @@ Each one have a grapqhl schema and an ast schema generated and specfic sdk.
 
 **User**
 
-The graphql queries definition are defined in `libs/next/gql/user/queries`. We use the React-Query module in order to facilitate the querying the data for the user role in the fontend client. The hasura service will read the auth cookie in order to validate the request. We also generate a generic sdk in order to facilitate testing of user query with jest on `libs/test-utils/gql/src/generated/test-account.ts`where we provide a Bearer JWT instead of a cookie because jest is not capable to provide one.
+The graphql queries definition are defined in `libs/gql/user/api/queries`. We use the React-Query module in order to facilitate the querying the data for the user role in the fontend client. The hasura service will read the auth cookie in order to validate the request. We also generate a generic sdk in order to facilitate testing of user query with jest on `libs/test-utils/gql/src/generated/test-account.ts`where we provide a Bearer JWT instead of a cookie because jest is not capable to provide one.
 
 **Admin**
 
-The graphql queries definition are defined in `libs/next/gql/admin/queries`. We use a generic sdk with a simple fetch query in order to facilitate the querying the data for the admin role. Those queries are made on the server side of the frontend. Hasura will allow the request through the providing of the `X-Hasura-Admin-Secret`.
+The graphql queries definition are defined in `libs/gql/admin/api/queries`. We use a generic sdk with a simple fetch query in order to facilitate the querying the data for the admin role. Those queries are made on the server side of the frontend. Hasura will allow the request through the providing of the `X-Hasura-Admin-Secret`.
 
 ### The Graph: Graph Client
 

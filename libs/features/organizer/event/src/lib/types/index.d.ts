@@ -6,7 +6,7 @@ import type {
   LocationAddress as TLocationAddress,
   Organizer as TOrganizer,
   GetEventPassesQuery,
-} from '@next/gql/admin/types';
+} from '@gql/admin/types';
 
 export interface EventSlugs {
   eventSlug: string;

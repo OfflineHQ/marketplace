@@ -1,0 +1,19 @@
+{
+  "name": "gql-admin-types",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/gql/admin/types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/gql/admin/types",
+        "main": "libs/gql/admin/types/src/generated/index.ts",
+        "tsConfig": "libs/gql/admin/types/tsconfig.lib.json",
+        "assets": ["libs/gql/admin/types/*.md"]
+      }
+    }
+  },
+  "tags": ["types"]
+}
