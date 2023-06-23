@@ -1,4 +1,5 @@
-import * as types from "./types";
+import * as Types from './types';
+
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { fetchDataReactQuery } from '@next/hasura/fetcher';
 export const AccountFieldsFragmentDoc = `
@@ -15,15 +16,15 @@ export const GetAccountDocument = `
 }
     ${AccountFieldsFragmentDoc}`;
 export const useGetAccountQuery = <
-      TData = GetAccountQuery,
+      TData = Types.GetAccountQuery,
       TError = Error
     >(
-      variables: GetAccountQueryVariables,
-      options?: UseQueryOptions<GetAccountQuery, TError, TData>
+      variables: Types.GetAccountQueryVariables,
+      options?: UseQueryOptions<Types.GetAccountQuery, TError, TData>
     ) =>
-    useQuery<GetAccountQuery, TError, TData>(
+    useQuery<Types.GetAccountQuery, TError, TData>(
       ['GetAccount', variables],
-      fetchDataReactQuery<GetAccountQuery, GetAccountQueryVariables>(GetAccountDocument, variables),
+      fetchDataReactQuery<Types.GetAccountQuery, Types.GetAccountQueryVariables>(GetAccountDocument, variables),
       options
     );
 export const GetAccountByEmailDocument = `
@@ -34,14 +35,14 @@ export const GetAccountByEmailDocument = `
 }
     ${AccountFieldsFragmentDoc}`;
 export const useGetAccountByEmailQuery = <
-      TData = GetAccountByEmailQuery,
+      TData = Types.GetAccountByEmailQuery,
       TError = Error
     >(
-      variables: GetAccountByEmailQueryVariables,
-      options?: UseQueryOptions<GetAccountByEmailQuery, TError, TData>
+      variables: Types.GetAccountByEmailQueryVariables,
+      options?: UseQueryOptions<Types.GetAccountByEmailQuery, TError, TData>
     ) =>
-    useQuery<GetAccountByEmailQuery, TError, TData>(
+    useQuery<Types.GetAccountByEmailQuery, TError, TData>(
       ['GetAccountByEmail', variables],
-      fetchDataReactQuery<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables),
+      fetchDataReactQuery<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables),
       options
     );
