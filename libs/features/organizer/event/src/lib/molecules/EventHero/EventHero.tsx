@@ -24,16 +24,13 @@ import {
 import {
   EventOrganizerButton,
   EventOrganizerButtonSkeleton,
-  type EventOrganizerButtonProps,
 } from '../../molecules/EventOrganizerButton/EventOrganizerButton';
 
 export interface EventHeroProps
   extends EventDatesProps,
     EventLocationsProps,
     EventHeroButtonClientProps,
-    Pick<Event, 'heroImage' | 'title'> {
-  organizer?: EventOrganizerButtonProps;
-}
+    Pick<Event, 'heroImage' | 'title' | 'organizer'> {}
 
 const layout = {
   grid: 'grid grid-cols-1 items-center gap-8 md:grid-cols-2',
