@@ -22,6 +22,10 @@ generates:
       - 'typescript-operations':
           preResolveTypes: true
   libs/next/gql/admin/src/generated/index.ts:
+    preset: import-types
+    presetConfig:
+      typesPath: './types'
+      importTypesNamespace: 'Types'
     documents: './libs/next/gql/admin/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript-generic-sdk':
@@ -29,9 +33,6 @@ generates:
           documentMode: 'string'
       - 'add':
           content: 'import { fetchData } from "@next/hasura/fetcher";'
-          placement: 'prepend'
-      - 'add':
-          content: 'import * as types from "./types";'
           placement: 'prepend'
       - 'add':
           content: 'export const adminSdk = getSdk(fetchData({admin:true}));'
@@ -52,7 +53,7 @@ generates:
       - 'schema-ast'
     schema:
       - *userSchema
-  libs/next/gql/user/src/generated/typed.d.ts:
+  libs/next/gql/user/src/generated/types.d.ts:
     schema:
       - *userSchema
     documents: './libs/next/gql/user/src/queries/**/*.{graphql,gql}'
@@ -62,6 +63,10 @@ generates:
       - 'typescript-operations':
           preResolveTypes: true
   libs/next/gql/user/src/generated/index.ts:
+    preset: import-types
+    presetConfig:
+      typesPath: './types'
+      importTypesNamespace: 'Types'
     schema:
       - *userSchema
     documents: './libs/next/gql/user/src/queries/**/*.{graphql,gql}'
@@ -71,19 +76,16 @@ generates:
             func: '@next/hasura/fetcher#fetchDataReactQuery'
             isReactHook: false
           errorType: Error
-      - 'add':
-          content: 'import * as types from "./types";'
-          placement: 'prepend'
   # test user account
   libs/test-utils/gql/src/generated/test-account.ts:
     schema:
       - *userSchema
     documents: './libs/next/gql/user/src/queries/account/*.{graphql,gql}'
+    preset: import-types
+    presetConfig:
+      typesPath: '@next/gql/user/types'
+      importTypesNamespace: 'Types'
     plugins:
-      - 'typescript':
-          constEnums: true
-      - 'typescript-operations':
-          preResolveTypes: true
       - 'typescript-generic-sdk':
           noExport: true
           documentMode: 'string'
