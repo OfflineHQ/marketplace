@@ -45,7 +45,7 @@ export const EventPasses: React.FC<EventPassesProps> = ({
         <div className={layout.grid}>
           <div className={layout.imageContainer}>
             <Image
-              src={event.heroImage}
+              src={event.heroImage.url}
               className={layout.image}
               fill
               style={{ objectFit: 'cover' }}
@@ -88,7 +88,7 @@ export const EventPasses: React.FC<EventPassesProps> = ({
           editText={t('edit')}
           deleteText={t('remove')}
           eventSlug={event.slug}
-          organizerSlug={event.organizer.slug}
+          organizerSlug={event?.organizer?.slug as string}
           onDelete={onDelete}
         />
       </AccordionContent>
