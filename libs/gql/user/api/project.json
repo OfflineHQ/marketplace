@@ -1,0 +1,34 @@
+{
+  "name": "gql-user-api",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/gql/user/api/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/gql/user/api",
+        "main": "libs/gql/user/api/src/generated/index.ts",
+        "tsConfig": "libs/gql/user/api/tsconfig.lib.json",
+        "assets": ["libs/gql/user/api/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/gql/user/api/**/*.{ts, gql, graphql}"]
+      }
+    },
+    "test-hasura": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/gql/user/api"],
+      "options": {
+        "jestConfig": "libs/gql/user/api/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

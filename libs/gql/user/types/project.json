@@ -1,0 +1,19 @@
+{
+  "name": "gql-user-types",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/gql/user/types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/gql/user/types",
+        "main": "libs/gql/user/types/src/index.ts",
+        "tsConfig": "libs/gql/user/types/tsconfig.lib.json",
+        "assets": ["libs/gql/user/types/*.md"]
+      }
+    }
+  },
+  "tags": ["types"]
+}
