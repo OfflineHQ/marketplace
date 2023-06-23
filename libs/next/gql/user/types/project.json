@@ -1,0 +1,19 @@
+{
+  "name": "next-gql-user-types",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/next/gql/user/types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/next/gql/user/types",
+        "main": "libs/next/gql/user/types/src/index.ts",
+        "tsConfig": "libs/next/gql/user/types/tsconfig.lib.json",
+        "assets": ["libs/next/gql/user/types/*.md"]
+      }
+    }
+  },
+  "tags": ["types"]
+}
