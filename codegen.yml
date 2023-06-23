@@ -8,25 +8,25 @@ schema:
 
 generates:
   # admin
-  libs/next/gql/admin/src/generated/schema.json:
+  libs/gql/admin/api/src/generated/schema.json:
     plugins:
       - 'introspection'
-  libs/next/gql/admin/src/generated/schema.graphql:
+  libs/gql/admin/api/src/generated/schema.graphql:
     plugins:
       - 'schema-ast'
-  libs/next/gql/admin/types/src/generated/index.ts:
-    documents: './libs/next/gql/admin/src/queries/**/*.{graphql,gql}'
+  libs/gql/admin/types/src/generated/index.ts:
+    documents: './libs/gql/admin/api/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript':
           constEnums: true
       - 'typescript-operations':
           preResolveTypes: true
-  libs/next/gql/admin/src/generated/index.ts:
+  libs/gql/admin/api/src/generated/index.ts:
     preset: import-types
     presetConfig:
-      typesPath: '@next/gql/admin/types'
+      typesPath: '@gql/admin/types'
       importTypesNamespace: 'Types'
-    documents: './libs/next/gql/admin/src/queries/**/*.{graphql,gql}'
+    documents: './libs/gql/admin/api/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript-generic-sdk':
           noExport: true
@@ -38,7 +38,7 @@ generates:
           content: 'export const adminSdk = getSdk(fetchData({admin:true}));'
           placement: 'append'
   # user
-  libs/next/gql/user/src/generated/schema.json:
+  libs/gql/user/api/src/generated/schema.json:
     plugins:
       - 'introspection'
     schema:
@@ -48,28 +48,28 @@ generates:
             'x-hasura-admin-secret': ${HASURA_ADMIN_SECRET:password}
             'x-hasura-default-role': 'user'
             'x-hasura-role': 'user'
-  libs/next/gql/user/src/generated/schema.graphql:
+  libs/gql/user/api/src/generated/schema.graphql:
     plugins:
       - 'schema-ast'
     schema:
       - *userSchema
-  libs/next/gql/user/types/src/generated/index.ts:
+  libs/gql/user/types/src/generated/index.ts:
     schema:
       - *userSchema
-    documents: './libs/next/gql/user/src/queries/**/*.{graphql,gql}'
+    documents: './libs/gql/user/api/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript':
           constEnums: true
       - 'typescript-operations':
           preResolveTypes: true
-  libs/next/gql/user/src/generated/index.ts:
+  libs/gql/user/api/src/generated/index.ts:
     preset: import-types
     presetConfig:
-      typesPath: '@next/gql/user/types'
+      typesPath: '@gql/user/types'
       importTypesNamespace: 'Types'
     schema:
       - *userSchema
-    documents: './libs/next/gql/user/src/queries/**/*.{graphql,gql}'
+    documents: './libs/gql/user/api/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript-react-query':
           fetcher:
@@ -80,10 +80,10 @@ generates:
   libs/test-utils/gql/src/generated/test-account.ts:
     schema:
       - *userSchema
-    documents: './libs/next/gql/user/src/queries/account/*.{graphql,gql}'
+    documents: './libs/gql/user/api/src/queries/account/*.{graphql,gql}'
     preset: import-types
     presetConfig:
-      typesPath: '@next/gql/user/types'
+      typesPath: '@gql/user/types'
       importTypesNamespace: 'Types'
     plugins:
       - 'typescript-generic-sdk':

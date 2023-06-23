@@ -10,13 +10,13 @@ const adminHeaders = {
   'x-hasura-admin-secret': 'password',
 };
 
-const gqlPath = 'libs/next/gql';
+const gqlPath = 'libs/gql';
 
 module.exports = {
   projects: {
     admin: {
-      schema: `${gqlPath}/admin/src/generated/schema.json`,
-      documents: `${gqlPath}/admin/src/queries/**/*.gql`,
+      schema: `${gqlPath}/admin/api/src/generated/schema.json`,
+      documents: `${gqlPath}/admin/api/src/queries/**/*.gql`,
       extensions: {
         endpoints: {
           default: {
@@ -27,8 +27,8 @@ module.exports = {
       },
     },
     user: {
-      schema: `${gqlPath}/user/src/generated/schema.json`,
-      documents: `${gqlPath}/user/src/queries/**/*.gql`,
+      schema: `${gqlPath}/user/api/src/generated/schema.json`,
+      documents: `${gqlPath}/user/api/src/queries/**/*.gql`,
       extensions: {
         endpoints: {
           default: {
