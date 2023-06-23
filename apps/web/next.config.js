@@ -24,7 +24,7 @@ const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
 
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
+  swcMinify: false,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
@@ -39,7 +39,7 @@ const nextConfig = {
   //     transform: '@ui/components/{{ matches.[1] }}/{{member}}',
   //   },
   // },
-  transpilePackages: ['@ui/components', '@ui/theme', '@ui/icons', 'styled-jsx'],
+  transpilePackages: ['@ui/components', '@ui/theme', '@ui/icons'],
   images: {
     domains: ['media.graphassets.com'],
     remotePatterns: [
@@ -57,15 +57,21 @@ const nextConfig = {
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
-      '*': [
-        './**/@swc/core-linux-x64-gnu*',
-        './**/@swc/core-linux-x64-musl*',
-        './**/@esbuild*',
-        './**/webpack*',
-        './**/rollup*',
-        './**/terser*',
-        './**/sharp*',
-      ],
+      outputFileTracingExcludes: {
+        '*': [
+          './node_modules/@swc/core-linux-x64-gnu',
+          './node_modules/@swc/core-linux-x64-musl',
+        ],
+      },
+      // '*': [
+      //   './**/@swc/core-linux-x64-gnu*',
+      //   './**/@swc/core-linux-x64-musl*',
+      //   './**/@esbuild*',
+      //   './**/webpack*',
+      //   './**/rollup*',
+      //   './**/terser*',
+      //   './**/sharp*',
+      // ],
     },
     serverActions: true,
     appDir: true,

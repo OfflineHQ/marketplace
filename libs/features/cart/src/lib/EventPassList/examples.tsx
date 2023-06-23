@@ -1,17 +1,35 @@
 import { EventPassList } from './EventPassList';
 import { usePassPurchaseStore } from '@features/organizer/event/store';
-import { eventProps, event2Props } from '@features/organizer/event/examples';
+import {
+  eventProps,
+  event2Props,
+  passFamily,
+  passWeekend,
+  passPremium,
+} from '@features/organizer/event/examples';
 import type { EventPassesClientProps } from '../EventPasses/EventPassesClient';
 import type { EventCart } from '@features/cart/types';
 import { EventPasses, EventPassesSkeleton } from '../EventPasses/EventPasses';
-import { eventPassesProps } from '../EventPasses/examples';
+import { eventCartProps, eventPassesCart } from '../EventPasses/examples';
 import { useEffect } from 'react';
 
+const eventCart2Props: EventCart = {
+  ...event2Props,
+  eventPasses: [passFamily, passWeekend, passPremium],
+};
+
+const eventPassesCart2: typeof eventPassesCart = [
+  { id: passPremium.id, amount: 3 },
+  { id: passFamily.id, amount: 2 },
+];
+
 const allPassesEventsCart: Record<string, Record<string, EventCart>> = {};
-allPassesEventsCart[eventProps.organizer.slug] = {};
-allPassesEventsCart[eventProps.organizer.slug][eventProps.slug] = eventProps;
-allPassesEventsCart[event2Props.organizer.slug] = {};
-allPassesEventsCart[event2Props.organizer.slug][event2Props.slug] = event2Props;
+allPassesEventsCart[eventProps?.organizer?.slug || 0] = {};
+allPassesEventsCart[eventCartProps?.organizer?.slug || 0][eventCartProps.slug] =
+  eventCartProps;
+allPassesEventsCart[event2Props?.organizer?.slug || 0] = {};
+allPassesEventsCart[event2Props?.organizer?.slug || 0][event2Props.slug] =
+  eventCart2Props;
 
 export const FakeEventPassesFetcher = ({
   organizerSlug,
@@ -27,42 +45,44 @@ export const FakeEventPassesFetcher = ({
 export const SetupPassesCartLocal = () => {
   const setPassesCart = usePassPurchaseStore((state) => state.setPassesCart);
   const allPasses = usePassPurchaseStore((state) => state.passes);
-  const deletePasses = usePassPurchaseStore((state) => state.deletePasses);
+  const deletePassesCart = usePassPurchaseStore(
+    (state) => state.deletePassesCart
+  );
   useEffect(() => {
     setPassesCart({
-      organizerSlug: eventProps.organizer.slug,
+      organizerSlug: eventProps?.organizer?.slug || '',
       eventSlug: eventProps.slug,
-      newPasses: eventPassesProps.passes,
+      newPasses: [eventPassesCart[0]],
     });
     setPassesCart({
-      organizerSlug: event2Props.organizer.slug,
+      organizerSlug: event2Props?.organizer?.slug || '',
       eventSlug: event2Props.slug,
-      newPasses: [eventPassesProps.passes[0]],
+      newPasses: eventPassesCart2,
     });
   }, [setPassesCart]);
   return {
     allPasses,
-    deletePasses,
+    deletePassesCart,
   };
 };
 
 export const EventPassListExample = () => {
-  const { allPasses, deletePasses } = SetupPassesCartLocal();
+  const { allPasses, deletePassesCart } = SetupPassesCartLocal();
   return (
     <EventPassList
       allPasses={allPasses}
-      deletePasses={deletePasses}
+      deletePassesCart={deletePassesCart}
       EventPassesFetcher={FakeEventPassesFetcher}
     />
   );
 };
 
 export const EventPassListLoadingExample = () => {
-  const { allPasses, deletePasses } = SetupPassesCartLocal();
+  const { allPasses, deletePassesCart } = SetupPassesCartLocal();
   return (
     <EventPassList
       allPasses={allPasses}
-      deletePasses={deletePasses}
+      deletePassesCart={deletePassesCart}
       EventPassesFetcher={EventPassesSkeleton}
     />
   );

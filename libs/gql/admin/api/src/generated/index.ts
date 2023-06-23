@@ -117,6 +117,38 @@ export const EventDateLocationsFieldsFragmentDoc = `
 }
     ${EventListFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}`;
+ const GetEventWithPassesDocument = `
+    query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) {
+  event(where: {slug: $slug}, locales: [$locale], stage: $stage) {
+    id
+    slug
+    title
+    heroImage {
+      url
+    }
+    organizer {
+      id
+      slug
+      name
+      image {
+        url
+      }
+    }
+    eventDateLocations {
+      ...EventDateLocationsFields
+    }
+    eventPasses {
+      id
+      name
+      description
+      price {
+        amount
+        currency
+      }
+    }
+  }
+}
+    ${EventDateLocationsFieldsFragmentDoc}`;
  const GetEventPassesDocument = `
     query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
   eventPasses(
@@ -140,9 +172,23 @@ ${EventDateLocationsFieldsFragmentDoc}`;
         ...EventDateLocationsFields
       }
     }
+    eventPassOrderSums {
+      totalReserved
+    }
   }
 }
     ${EventDateLocationsFieldsFragmentDoc}`;
+ const GetEventPassTotalReservedDocument = `
+    query GetEventPassTotalReserved($eventPassId: String!) {
+  eventPassOrder_aggregate(where: {eventPassId: {_eq: $eventPassId}}) {
+    aggregate {
+      sum {
+        quantity
+      }
+    }
+  }
+}
+    `;
  const GetOrganizerDocument = `
     query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) {
   organizer(where: {slug: $slug}, locales: [$locale], stage: $stage) {
@@ -168,8 +214,14 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEvent(variables: Types.GetEventQueryVariables, options?: C): Promise<Types.GetEventQuery> {
       return requester<Types.GetEventQuery, Types.GetEventQueryVariables>(GetEventDocument, variables, options) as Promise<Types.GetEventQuery>;
     },
+    GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
+      return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;
+    },
     GetEventPasses(variables: Types.GetEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassesQuery> {
       return requester<Types.GetEventPassesQuery, Types.GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<Types.GetEventPassesQuery>;
+    },
+    GetEventPassTotalReserved(variables: Types.GetEventPassTotalReservedQueryVariables, options?: C): Promise<Types.GetEventPassTotalReservedQuery> {
+      return requester<Types.GetEventPassTotalReservedQuery, Types.GetEventPassTotalReservedQueryVariables>(GetEventPassTotalReservedDocument, variables, options) as Promise<Types.GetEventPassTotalReservedQuery>;
     },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;

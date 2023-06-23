@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { getEventCart } from '../api/getEventCart';
 import {
   EventPasses,
@@ -39,6 +38,7 @@ export function EventPassesServer({
   passes,
   onDelete,
 }: EventPassesServerProps) {
+  // TODO replace with sync with EventPassOrders from server (first fetch from server, then sync with client (create or delete). Creation should check if there are enough tickets available. If get error show error message indicating the ticket is sold out)
   const { data, isLoading, isFetching, error } = useQuery(
     ['EventCart', organizerSlug, eventSlug],
     () => getEventCart({ organizerSlug, eventSlug })

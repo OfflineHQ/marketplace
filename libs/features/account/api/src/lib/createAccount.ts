@@ -1,8 +1,6 @@
+import type { Account_Insert_Input } from '@gql/shared/types';
 import { adminSdk } from '@gql/admin/api';
-import type {
-  Account_Insert_Input,
-  CreateAccountMutation,
-} from '@gql/admin/types';
+import type { CreateAccountMutation } from '@gql/admin/types';
 
 export const createAccount = async (
   account: Account_Insert_Input

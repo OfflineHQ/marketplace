@@ -13,6 +13,13 @@
         "tsConfig": "libs/gql/user/types/tsconfig.lib.json",
         "assets": ["libs/gql/user/types/*.md"]
       }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/gql/anonymous/types/**/*.ts"]
+      }
     }
   },
   "tags": ["types"]

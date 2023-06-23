@@ -13,7 +13,7 @@ export const usePassPurchaseStore = create<StoreState>()(
       ...createEventPassesSlice(...a),
     }),
     {
-      name: 'pass-purchase-store',
+      name: 'PassPurchase-store',
     }
   )
 );
