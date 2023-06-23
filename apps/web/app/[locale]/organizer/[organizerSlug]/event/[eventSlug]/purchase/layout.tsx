@@ -1,4 +1,4 @@
-import { PassPurchaseSheetContainer } from '@features/organizer/event';
+import { Card } from '@ui/components';
 
 export default function PurchaseTemplate({
   children,
@@ -6,8 +6,8 @@ export default function PurchaseTemplate({
   children: React.ReactNode;
 }) {
   return (
-    <PassPurchaseSheetContainer open={true} size="full">
+    <Card variant="stickyFooter" noBorder className="container mx-auto h-full">
       {children}
-    </PassPurchaseSheetContainer>
+    </Card>
   );
 }

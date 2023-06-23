@@ -1,42 +1,47 @@
-import { passSelectionProps } from '../../organisms/PassSelection/examples';
+import { passListProps } from '../../organisms/PassList/examples';
 import {
-  PassPurchase,
-  PassPurchaseSkeleton,
-  type PassPurchaseProps,
-  type PassPurchaseSkeletonProps,
-} from './PassPurchase';
+  PassPurchaseSheet,
+  PassPurchaseSheetSkeleton,
+  type PassPurchaseSheetProps,
+  type PassPurchaseSheetSkeletonProps,
+} from './PassPurchaseSheet';
+import { PassPurchaseCard } from './PassPurchaseCard';
 import { lotsOfPasses } from '../../molecules/PassTotal/examples';
 import { eventProps } from '../Event/examples';
 import { Sheet } from '@ui/components';
 
 export const passPurchaseProps = {
-  ...passSelectionProps,
+  ...passListProps,
   backButtonText: 'Go back to the event',
   goPaymentText: 'Go to payment',
   goPaymentLink: { href: '/dummy' },
   title: 'Pass selection',
-  organizerSlug: eventProps.organizer.slug,
+  organizerSlug: eventProps?.organizer?.slug || '',
   eventSlug: eventProps.slug,
   description: 'Select the passes you want to purchase and validate your order',
-} satisfies PassPurchaseProps;
+} satisfies PassPurchaseSheetProps;
 export const passPurchasePropsWithLotsOfPasses = {
   ...passPurchaseProps,
   passes: lotsOfPasses,
-} satisfies PassPurchaseProps;
+} satisfies PassPurchaseSheetProps;
 
-export const PassPurchaseExample = (props: PassPurchaseProps) => {
+export const PassPurchaseSheetExample = (props: PassPurchaseSheetProps) => {
   window.localStorage.clear();
   return (
     <Sheet open={true}>
-      <PassPurchase {...props} />
+      <PassPurchaseSheet {...props} />
     </Sheet>
   );
 };
 
-export const PassPurchaseLoadingExample = (
-  props: PassPurchaseSkeletonProps
+export const PassPurchaseCardExample = (props: PassPurchaseSheetProps) => (
+  <PassPurchaseCard {...props} />
+);
+
+export const PassPurchaseSheetLoadingExample = (
+  props: PassPurchaseSheetSkeletonProps
 ) => (
   <Sheet open={true}>
-    <PassPurchaseSkeleton {...props} />
+    <PassPurchaseSheetSkeleton {...props} />
   </Sheet>
 );

@@ -1,5 +1,5 @@
-import { PassPurchaseSkeleton } from '@features/organizer/event';
+import { PassPurchaseSheetSkeleton } from '@features/organizer/event';
 
 export default function PurchaseLoading() {
-  return <PassPurchaseSkeleton />;
+  return <PassPurchaseSheetSkeleton />;
 }

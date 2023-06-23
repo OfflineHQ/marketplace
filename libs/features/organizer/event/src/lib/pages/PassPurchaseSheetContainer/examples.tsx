@@ -1,5 +1,5 @@
 import { passPurchaseProps } from '../PassPurchase/examples';
-import { PassPurchase } from '../PassPurchase/PassPurchase';
+import { PassPurchaseSheet } from '../PassPurchase/PassPurchaseSheet';
 import {
   PassPurchaseSheetContainer,
   type PassPurchaseSheetContainerProps,
@@ -17,7 +17,7 @@ export const PassPurchaseSheetContainerExample = ({
 }: PassPurchaseSheetContainerProps) => (
   <AppNavLayout {...WithNormalUser.args}>
     <PassPurchaseSheetContainer {...props}>
-      <PassPurchase {...passPurchaseProps} {...props} />
+      <PassPurchaseSheet {...passPurchaseProps} {...props} />
     </PassPurchaseSheetContainer>
   </AppNavLayout>
 );

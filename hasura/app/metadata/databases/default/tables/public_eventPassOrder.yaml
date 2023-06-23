@@ -1,0 +1,40 @@
+table:
+  name: eventPassOrder
+  schema: public
+object_relationships:
+  - name: account
+    using:
+      manual_configuration:
+        column_mapping:
+          accountId: id
+        insertion_order: null
+        remote_table:
+          name: account
+          schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - eventPassId
+        remote_field:
+          eventPass:
+            arguments:
+              where:
+                id: $eventPassId
+        remote_schema: Hygraph CMS Remote Schema
+    name: eventPass
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - eventPassId
+        - quantity
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+        - eventPassId
+        - quantity
+      filter: {}
+      allow_aggregations: true

@@ -1,53 +1,65 @@
 // examples.tsx
-import { type PassTotalProps } from './PassTotal';
+import { PassTotal, type PassTotalProps } from './PassTotal';
+import { usePassPurchaseStore } from '@features/organizer/event/store';
 import {
   passWithMaxAmount,
   passWithMaxAmountPerUser,
   passWithSoldOut,
+  passFamily,
+  passEarlyBird,
+  passWeekend,
+  passPremium,
+  passWithMaxAmountCart,
+  passWithMaxAmountPerUserCart,
 } from '../PassCard/examples';
 
 export const passTotalProps = {
-  passes: [passWithMaxAmount, passWithMaxAmountPerUser],
+  passesData: [passWithMaxAmount, passWithMaxAmountPerUser],
+  organizerSlug: 'organizer-slug',
+  eventSlug: 'event-slug',
 } satisfies PassTotalProps;
 
 export const lotsOfPasses = [
   passWithMaxAmount,
   passWithMaxAmountPerUser,
   passWithSoldOut,
-  {
-    id: '4',
-    name: 'Family Pass',
-    description: 'Pass for families with children',
-    price: 2000,
-    numTickets: 0,
-    maxAmount: 10,
-    currentAmount: 0,
-  },
-  {
-    id: '5',
-    name: 'Early Bird Pass',
-    description: 'Discounted pass for early birds',
-    price: 1000,
-    numTickets: 0,
-    maxAmount: 10,
-    currentAmount: 0,
-  },
-  {
-    id: '6',
-    name: 'Weekend Pass',
-    description: 'Pass for the entire weekend',
-    price: 3000,
-    numTickets: 0,
-    maxAmount: 10,
-    currentAmount: 0,
-  },
-  {
-    id: '7',
-    name: 'Premium Pass',
-    description: 'Premium access to all areas',
-    price: 5000,
-    numTickets: 0,
-    maxAmount: 10,
-    currentAmount: 0,
-  },
-] satisfies PassTotalProps['passes'];
+  passFamily,
+  passEarlyBird,
+  passWeekend,
+  passPremium,
+] satisfies PassTotalProps['passesData'];
+
+export const PassTotalWith1PassExample = ({
+  eventSlug,
+  organizerSlug,
+  ...props
+}: PassTotalProps) => {
+  const resetPasses = usePassPurchaseStore((state) => state.resetPasses);
+  resetPasses();
+  const updatePassCart = usePassPurchaseStore((state) => state.updatePassCart);
+  updatePassCart({
+    organizerSlug,
+    eventSlug,
+    pass: { ...passWithMaxAmountCart, amount: 1 },
+  });
+  return <PassTotal {...{ organizerSlug, eventSlug, ...props }} />;
+};
+
+export const PassTotalWithSeveralPassesExample = ({
+  eventSlug,
+  organizerSlug,
+  ...props
+}: PassTotalProps) => {
+  const updatePassCart = usePassPurchaseStore((state) => state.updatePassCart);
+  updatePassCart({
+    organizerSlug,
+    eventSlug,
+    pass: passWithMaxAmountCart,
+  });
+  updatePassCart({
+    organizerSlug,
+    eventSlug,
+    pass: passWithMaxAmountPerUserCart,
+  });
+  return <PassTotal {...{ organizerSlug, eventSlug, ...props }} />;
+};

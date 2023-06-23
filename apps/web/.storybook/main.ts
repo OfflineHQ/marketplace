@@ -8,11 +8,9 @@ const isCI = !!process.env.GITHUB_EVENT_NAME; // Check if running in CI
 
 module.exports = {
   stories: [
-    '../**/*.mdx',
-    '../**/*.stories.@(js|jsx|ts|tsx)',
-    '../../../libs/features/**/*.stories.@(js|jsx|ts|tsx)',
+    '../../../libs/features/**/*.stories.@(js|ts|tsx)',
     '../../../libs/features/**/*.mdx',
-    '../../../libs/next/hygraph/**/*.stories.@(js|jsx|ts|tsx)',
+    '../../../libs/next/hygraph/**/*.stories.@(js|ts|tsx)',
   ],
   addons: [
     '@storybook/addon-essentials',

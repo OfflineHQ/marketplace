@@ -78,14 +78,14 @@
         "title": "Détails de l'événement"
       },
       "purchase-button-activator": "Sélectionner les passes",
-      "pass-purchase": {
+      "PassPurchase": {
         "title": "Sélection de passe",
         "description": "Sélectionnez les passes que vous souhaitez acheter et validez votre commande",
         "pass": {
           "sold-out": "Épuisé"
         },
-        "purchase-button": "Aller au paiement",
         "go-back-button": "Retour à l'événement",
+        "purchase-button": "Aller au paiement",
         "see-event-button": "Voir l'événement"
       }
     },

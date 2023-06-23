@@ -1,4 +1,5 @@
 import type { Event } from '@features/organizer/event/types';
+import type { GetEventWithPassesQuery } from '@gql/anonymous/types';
 
 export enum OwnedEventPassStatus {
   Reserved = 'reserved',
@@ -6,10 +7,7 @@ export enum OwnedEventPassStatus {
   Revealed = 'revealed',
 }
 
-export type EventCart = Pick<
-  Event,
-  'id' | 'title' | 'heroImage' | 'slug' | 'organizer'
->;
+export type EventCart = NonNullable<GetEventWithPassesQuery['event']>;
 
 export interface LocalCartItem {
   eventPassId: string; // The original pass type id
@@ -70,4 +68,22 @@ export interface BlockchainTransaction {
   status: BlockchainTransactionStatus; // Transaction status
   createdAt?: string; // Timestamps
   updatedAt?: string; // Timestamps
+}
+
+type EventPassOrder = {
+  id: string; // Unique identifier for each order.
+  eventPassId: string; // Foreign key to the EventPass that the order is associated with.
+  quantity: number; // The number of passes ordered.
+  status: OrderStatus; // The status of the order.
+  accountId: string; // Foreign key to the Account that the order is associated with.
+  createdAt?: string; // Timestamps
+  updatedAt?: string; // Timestamps
+};
+
+// Enum for order status.
+enum OrderStatus {
+  PENDING = 'PENDING',
+  CONFIRMED = 'CONFIRMED',
+  CANCELLED = 'CANCELLED',
+  COMPLETED = 'COMPLETED',
 }
