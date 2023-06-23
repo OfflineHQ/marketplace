@@ -1,5 +1,6 @@
+import * as Types from './types';
+
 import { fetchData } from "@next/hasura/fetcher";
-import * as types from "./types";
 export const AccountFieldsFragmentDoc = `
     fragment AccountFields on account {
   id
@@ -152,26 +153,26 @@ ${EventDateLocationsFieldsFragmentDoc}`;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
-    UpdateAccount(variables: UpdateAccountMutationVariables, options?: C): Promise<UpdateAccountMutation> {
-      return requester<UpdateAccountMutation, UpdateAccountMutationVariables>(UpdateAccountDocument, variables, options) as Promise<UpdateAccountMutation>;
+    UpdateAccount(variables: Types.UpdateAccountMutationVariables, options?: C): Promise<Types.UpdateAccountMutation> {
+      return requester<Types.UpdateAccountMutation, Types.UpdateAccountMutationVariables>(UpdateAccountDocument, variables, options) as Promise<Types.UpdateAccountMutation>;
     },
-    CreateAccount(variables: CreateAccountMutationVariables, options?: C): Promise<CreateAccountMutation> {
-      return requester<CreateAccountMutation, CreateAccountMutationVariables>(CreateAccountDocument, variables, options) as Promise<CreateAccountMutation>;
+    CreateAccount(variables: Types.CreateAccountMutationVariables, options?: C): Promise<Types.CreateAccountMutation> {
+      return requester<Types.CreateAccountMutation, Types.CreateAccountMutationVariables>(CreateAccountDocument, variables, options) as Promise<Types.CreateAccountMutation>;
     },
-    GetAccount(variables: GetAccountQueryVariables, options?: C): Promise<GetAccountQuery> {
-      return requester<GetAccountQuery, GetAccountQueryVariables>(GetAccountDocument, variables, options) as Promise<GetAccountQuery>;
+    GetAccount(variables: Types.GetAccountQueryVariables, options?: C): Promise<Types.GetAccountQuery> {
+      return requester<Types.GetAccountQuery, Types.GetAccountQueryVariables>(GetAccountDocument, variables, options) as Promise<Types.GetAccountQuery>;
     },
-    GetAccountByEmail(variables: GetAccountByEmailQueryVariables, options?: C): Promise<GetAccountByEmailQuery> {
-      return requester<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables, options) as Promise<GetAccountByEmailQuery>;
+    GetAccountByEmail(variables: Types.GetAccountByEmailQueryVariables, options?: C): Promise<Types.GetAccountByEmailQuery> {
+      return requester<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables, options) as Promise<Types.GetAccountByEmailQuery>;
     },
-    GetEvent(variables: GetEventQueryVariables, options?: C): Promise<GetEventQuery> {
-      return requester<GetEventQuery, GetEventQueryVariables>(GetEventDocument, variables, options) as Promise<GetEventQuery>;
+    GetEvent(variables: Types.GetEventQueryVariables, options?: C): Promise<Types.GetEventQuery> {
+      return requester<Types.GetEventQuery, Types.GetEventQueryVariables>(GetEventDocument, variables, options) as Promise<Types.GetEventQuery>;
     },
-    GetEventPasses(variables: GetEventPassesQueryVariables, options?: C): Promise<GetEventPassesQuery> {
-      return requester<GetEventPassesQuery, GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<GetEventPassesQuery>;
+    GetEventPasses(variables: Types.GetEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassesQuery> {
+      return requester<Types.GetEventPassesQuery, Types.GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<Types.GetEventPassesQuery>;
     },
-    GetOrganizer(variables: GetOrganizerQueryVariables, options?: C): Promise<GetOrganizerQuery> {
-      return requester<GetOrganizerQuery, GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<GetOrganizerQuery>;
+    GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
+      return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
     }
   };
 }
