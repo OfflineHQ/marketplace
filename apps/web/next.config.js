@@ -24,7 +24,7 @@ const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
 
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: false,
+  swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
