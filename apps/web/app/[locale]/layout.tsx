@@ -11,7 +11,6 @@ import { ReactQueryProviders } from '@next/react-query';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { useLocale, useTranslations } from 'next-intl';
-import StyledJsxRegistry from '../registry';
 
 import { AppNavLayout, type AppNavLayoutProps } from '@features/appNav/ui';
 
@@ -108,38 +107,36 @@ export default function RootLayout({
           fontHeading.variable
         )}
       >
-        <StyledJsxRegistry>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <NextAuthProvider>
-              <AuthProvider
-                messages={{
-                  userClosedPopup: {
-                    title: t('user-closed-popup.title'),
-                    description: t('user-closed-popup.description'),
-                  },
-                  siweStatement: t('siwe-statement'),
-                  errorSigningInWithSiwe: {
-                    title: t('error-signing-in-with-siwe.title'),
-                    description: t('error-signing-in-with-siwe.description'),
-                    tryAgainButton: t(
-                      'error-signing-in-with-siwe.try-again-button'
-                    ),
-                  },
-                  siweDeclined: {
-                    title: t('siwe-declined.title'),
-                    description: t('siwe-declined.description'),
-                    tryAgainButton: t('siwe-declined.try-again-button'),
-                  },
-                }}
-              >
-                <ReactQueryProviders>
-                  <AppNavLayout {...appNavLayout}>{children}</AppNavLayout>
-                  <Toaster />
-                </ReactQueryProviders>
-              </AuthProvider>
-            </NextAuthProvider>
-          </ThemeProvider>
-        </StyledJsxRegistry>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <NextAuthProvider>
+            <AuthProvider
+              messages={{
+                userClosedPopup: {
+                  title: t('user-closed-popup.title'),
+                  description: t('user-closed-popup.description'),
+                },
+                siweStatement: t('siwe-statement'),
+                errorSigningInWithSiwe: {
+                  title: t('error-signing-in-with-siwe.title'),
+                  description: t('error-signing-in-with-siwe.description'),
+                  tryAgainButton: t(
+                    'error-signing-in-with-siwe.try-again-button'
+                  ),
+                },
+                siweDeclined: {
+                  title: t('siwe-declined.title'),
+                  description: t('siwe-declined.description'),
+                  tryAgainButton: t('siwe-declined.try-again-button'),
+                },
+              }}
+            >
+              <ReactQueryProviders>
+                <AppNavLayout {...appNavLayout}>{children}</AppNavLayout>
+                <Toaster />
+              </ReactQueryProviders>
+            </AuthProvider>
+          </NextAuthProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>
