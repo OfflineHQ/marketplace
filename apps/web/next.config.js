@@ -61,8 +61,13 @@ const nextConfig = {
     outputFileTracingExcludes: {
       outputFileTracingExcludes: {
         '*': [
-          './node_modules/@swc/core-linux-x64-gnu',
-          './node_modules/@swc/core-linux-x64-musl',
+          'node_modules/.pnpm/@swc+core-linux-x64-musl',
+          'node_modules/.pnpm/@swc+core-linux-x64-gnu',
+          'node_modules/.pnpm/@esbuild+linux-x64',
+          'node_modules/.pnpm/next@13.4.8_@babel+core',
+          'node_modules/.pnpm/@esbuild+linux-x64',
+          'node_modules/.pnpm/webpack',
+          'node_modules/.pnpm/sass',
         ],
       },
       // '*': [
