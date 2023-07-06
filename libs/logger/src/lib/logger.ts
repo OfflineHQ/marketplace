@@ -1,3 +1,4 @@
+import { isDev } from '@utils';
 import log from 'loglevel';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const chalk = require('chalk');
@@ -14,7 +15,7 @@ const colors = {
 
 type level = 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
 
-if (process.env.NODE_ENV == 'development') {
+if (isDev()) {
   log.setLevel('debug');
 }
 
@@ -24,7 +25,9 @@ prefix.apply(log, {
   format(level: level, name: string, timestamp: string) {
     const color = colors[level];
     // eslint-disable-next-line sonarjs/no-nested-template-literals
-    return `${chalk.gray(`[${timestamp}]`)} ${color(level)} ${chalk.green(`${name}:`)}`;
+    return `${chalk.gray(`[${timestamp}]`)} ${color(level)} ${chalk.green(
+      `${name}:`
+    )}`;
   },
 });
 

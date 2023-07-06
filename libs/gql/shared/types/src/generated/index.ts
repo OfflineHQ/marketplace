@@ -817,6 +817,8 @@ export type Event = Node & {
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<Event>;
+  /** The address of the NFT collection of the Event */
+  nftCollectionAddress: Scalars['String'];
   organizer?: Maybe<Organizer>;
   /** Whether the event is public (visible to anyone) or private (for instance visible only to owner of specific NFTs) */
   public?: Maybe<Scalars['Boolean']>;
@@ -981,6 +983,7 @@ export type EventCreateInput = {
   heroImage: AssetCreateOneInlineInput;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventCreateLocalizationsInput>;
+  nftCollectionAddress: Scalars['String'];
   organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   published: Scalars['Boolean'];
@@ -1298,6 +1301,25 @@ export type EventManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  nftCollectionAddress?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftCollectionAddress_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftCollectionAddress_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftCollectionAddress_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftCollectionAddress_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftCollectionAddress_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftCollectionAddress_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftCollectionAddress_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftCollectionAddress_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftCollectionAddress_starts_with?: InputMaybe<Scalars['String']>;
   organizer?: InputMaybe<OrganizerWhereInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   /** Any other value that exists and is not equal to the given value. */
@@ -1366,6 +1388,8 @@ export const enum EventOrderByInput {
   CreatedAtDesc = 'createdAt_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  NftCollectionAddressAsc = 'nftCollectionAddress_ASC',
+  NftCollectionAddressDesc = 'nftCollectionAddress_DESC',
   PublicAsc = 'public_ASC',
   PublicDesc = 'public_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
@@ -2027,6 +2051,7 @@ export type EventUpdateInput = {
   heroImage?: InputMaybe<AssetUpdateOneInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventUpdateLocalizationsInput>;
+  nftCollectionAddress?: InputMaybe<Scalars['String']>;
   organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   published?: InputMaybe<Scalars['Boolean']>;
@@ -2077,6 +2102,7 @@ export type EventUpdateManyInput = {
   description?: InputMaybe<Scalars['RichTextAST']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<EventUpdateManyLocalizationsInput>;
+  nftCollectionAddress?: InputMaybe<Scalars['String']>;
   public?: InputMaybe<Scalars['Boolean']>;
   published?: InputMaybe<Scalars['Boolean']>;
   /** title input for default locale (en) */
@@ -2201,6 +2227,25 @@ export type EventWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  nftCollectionAddress?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftCollectionAddress_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftCollectionAddress_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftCollectionAddress_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftCollectionAddress_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftCollectionAddress_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftCollectionAddress_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftCollectionAddress_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftCollectionAddress_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftCollectionAddress_starts_with?: InputMaybe<Scalars['String']>;
   organizer?: InputMaybe<OrganizerWhereInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   /** Any other value that exists and is not equal to the given value. */
