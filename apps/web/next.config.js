@@ -26,7 +26,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    // removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole: false,
     styledComponents: false,
   },
   /* could improve performance in dev but @ui components no organized like that.

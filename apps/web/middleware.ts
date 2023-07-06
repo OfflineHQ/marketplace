@@ -18,6 +18,7 @@ const authMiddleware = withAuth(
     const { token } = req.nextauth;
     console.log('token', token);
     const isAuth = !!token;
+    console.log('auth middleware', isAuth, new URL('/', req.url));
     return isAuth
       ? intlMiddleware(req)
       : NextResponse.redirect(new URL('/', req.url));

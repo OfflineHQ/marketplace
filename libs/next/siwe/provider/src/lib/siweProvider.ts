@@ -32,6 +32,7 @@ export const SiweProvider = () =>
     async authorize(credentials, req) {
       try {
         const siwe = new SiweMessage(JSON.parse(credentials?.message || '{}'));
+        console.log('getNextAppURL siwe provider', getNextAppURL());
         const nextAuthUrl = new URL(getNextAppURL());
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const nonce = await getCsrfToken({ req: { headers: req.headers } });
