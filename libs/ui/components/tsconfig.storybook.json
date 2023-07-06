@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "outDir": ""
+  },
+  "types": ["jest", "node", "@testing-library/jest-dom"],
+  "files": [],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.spec.js",
+    "src/**/*.spec.tsx",
+    "src/**/*.spec.jsx"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.tsx",
+    "src/**/*.mdx",
+    "preview.tsx"
+  ]
+}
