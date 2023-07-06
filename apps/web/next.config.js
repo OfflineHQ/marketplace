@@ -27,6 +27,7 @@ const nextConfig = {
   swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
+    styledComponents: false,
   },
   /* could improve performance in dev but @ui components no organized like that.
   See that as ref: https://github.com/knitkode/koine/blob/3046607d655a3cfa1e3b3438f1aef168fbdc6ad5/packages/next/config/index.ts#L251
@@ -34,11 +35,12 @@ const nextConfig = {
   And this thread n
   + this article: https://medium.com/@yashashr/next-js-optimization-for-better-performance-part-1-material-ui-mui-configs-plugins-6fdc48a4e984
   */
-  // modularizeImports: {
-  //   '@ui/components/?(((\\w*)?/?)*)': {
-  //     transform: '@ui/components/{{ matches.[1] }}/{{member}}',
-  //   },
-  // },
+  modularizeImports: {
+    //Need to update structure of @ui/components to make it work
+    // '@ui/components/?(((\\w*)?/?)*)': {
+    //   transform: '@ui/components/{{ matches.[1] }}/{{member}}',
+    // },
+  },
   transpilePackages: ['@ui/components', '@ui/theme', '@ui/icons'],
   images: {
     domains: ['media.graphassets.com'],
