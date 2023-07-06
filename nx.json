@@ -46,25 +46,15 @@
   },
   "extends": "nx/presets/npm.json",
   "namedInputs": {
-    "noMarkdown": [
-      "!{projectRoot}/**/*.md"
-    ]
+    "noMarkdown": ["!{projectRoot}/**/*.md"]
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "noMarkdown",
-        "^noMarkdown"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["noMarkdown", "^noMarkdown"]
     },
     "test": {
-      "inputs": [
-        "noMarkdown",
-        "^noMarkdown"
-      ]
+      "inputs": ["noMarkdown", "^noMarkdown"]
     },
     "build-storybook": {
       "inputs": [
@@ -76,16 +66,10 @@
       ]
     },
     "e2e": {
-      "inputs": [
-        "default",
-        "^default"
-      ]
+      "inputs": ["default", "^default"]
     },
     "lint": {
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json"
-      ]
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
     }
   },
   "generators": {
