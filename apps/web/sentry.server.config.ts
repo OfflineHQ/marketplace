@@ -9,7 +9,7 @@ const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
   : process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
 Sentry.init({
-  environment: process.env.NODE_ENV,
+  environment: process.env.VERCEL_ENV || 'development',
   debug: false,
   enabled: !!SENTRY_DSN,
   dsn: SENTRY_DSN || undefined,
