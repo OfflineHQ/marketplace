@@ -37,6 +37,7 @@ export const jwtOptions: JWTOptions = {
 export const providers: Array<Provider> = [SiweProvider()];
 
 // Authorize cookie for hasura app https://github.com/nextauthjs/next-auth/issues/405#issuecomment-737593528
+console.log('getNextAppURL next auth', getNextAppURL());
 const hostName = new URL(getNextAppURL()).hostname;
 const useSecureCookies = getNextAppURL().startsWith('https://');
 
