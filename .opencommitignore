@@ -18,3 +18,4 @@ _.gz
 _.rar
 \*.7z#
 **/generated/**
+pnpm-lock.yaml
