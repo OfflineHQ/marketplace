@@ -1193,6 +1193,9 @@ type Event implements Node {
     """
     locales: [Locale!]! = [en, fr]
   ): [Event!]!
+
+  """The address of the NFT collection of the Event"""
+  nftCollectionAddress: String!
   organizer(
     """
     Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
@@ -1355,6 +1358,7 @@ input EventCreateInput {
   Inline mutations for managing document localizations excluding the default locale
   """
   localizations: EventCreateLocalizationsInput
+  nftCollectionAddress: String!
   organizer: OrganizerCreateOneInlineInput
   public: Boolean
   published: Boolean!
@@ -1750,6 +1754,34 @@ input EventManyWhereInput {
 
   """All values starting with the given string."""
   id_starts_with: ID
+  nftCollectionAddress: String
+
+  """All values containing the given string."""
+  nftCollectionAddress_contains: String
+
+  """All values ending with the given string."""
+  nftCollectionAddress_ends_with: String
+
+  """All values that are contained in given list."""
+  nftCollectionAddress_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftCollectionAddress_not: String
+
+  """All values not containing the given string."""
+  nftCollectionAddress_not_contains: String
+
+  """All values not ending with the given string"""
+  nftCollectionAddress_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftCollectionAddress_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftCollectionAddress_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftCollectionAddress_starts_with: String
   organizer: OrganizerWhereInput
   public: Boolean
 
@@ -1843,6 +1875,8 @@ enum EventOrderByInput {
   createdAt_DESC
   id_ASC
   id_DESC
+  nftCollectionAddress_ASC
+  nftCollectionAddress_DESC
   public_ASC
   public_DESC
   publishedAt_ASC
@@ -2780,6 +2814,7 @@ input EventUpdateInput {
 
   """Manage document localizations"""
   localizations: EventUpdateLocalizationsInput
+  nftCollectionAddress: String
   organizer: OrganizerUpdateOneInlineInput
   public: Boolean
   published: Boolean
@@ -2842,6 +2877,7 @@ input EventUpdateManyInput {
 
   """Optional updates to localizations"""
   localizations: EventUpdateManyLocalizationsInput
+  nftCollectionAddress: String
   public: Boolean
   published: Boolean
 
@@ -2998,6 +3034,34 @@ input EventWhereInput {
 
   """All values starting with the given string."""
   id_starts_with: ID
+  nftCollectionAddress: String
+
+  """All values containing the given string."""
+  nftCollectionAddress_contains: String
+
+  """All values ending with the given string."""
+  nftCollectionAddress_ends_with: String
+
+  """All values that are contained in given list."""
+  nftCollectionAddress_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftCollectionAddress_not: String
+
+  """All values not containing the given string."""
+  nftCollectionAddress_not_contains: String
+
+  """All values not ending with the given string"""
+  nftCollectionAddress_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftCollectionAddress_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftCollectionAddress_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftCollectionAddress_starts_with: String
   organizer: OrganizerWhereInput
   public: Boolean
 
