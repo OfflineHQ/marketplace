@@ -34,10 +34,7 @@ export const DisplayDropdownClient: React.FC<DisplayDropdownClientProps> = ({
       {
         type: 'item',
         text: displaySelectText['dark'],
-        action: () => {
-          console.log('set dark');
-          setTheme('dark');
-        },
+        action: () => setTheme('dark'),
         icon: <Dark />,
         disabled: theme === 'dark',
       },
