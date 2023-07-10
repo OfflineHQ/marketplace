@@ -1,0 +1,93 @@
+name: 'Deploy preview apps'
+on:
+  pull_request:
+    types: [open, reopen, synchronize]
+
+jobs:
+  deploy-preview:
+		permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get PR sha
+        id: get_pull_request_sha
+        run: |
+          pull_request_sha=$(jq --raw-output .pull_request.base.sha "$GITHUB_EVENT_PATH" | cut -c1-8)
+          echo "PULL_REQUEST_SHA=$pull_request_sha" >> $GITHUB_ENV
+
+      - name: Neon Database Create Branch Action
+        uses: neondatabase/create-branch-action@v3
+        id: create_branch
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          branch_name: ${{ env.PULL_REQUEST_SHA }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+          username: ${{ secrets.PG_USERNAME }}
+          password: ${{ secrets.PG_PASSWORD }}
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Set Hasura GraphQL endpoint to .env
+        run: |
+          echo HASURA_GRAPHQL_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
+          echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
+
+      - name: Build Vercel Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Preview to Vercel
+        id: deploy_vercel
+        run: |
+          preview_url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
+
+			- name: Load environment variables from .env
+			  id: load_env
+			  run: |
+			  	echo "HYGRAPH_CMS_WEBHOOK_READ_URL=$(grep HYGRAPH_CMS_WEBHOOK_READ_URL .env | cut -d '=' -f2)" >> $GITHUB_ENV
+			  	echo "HYGRAPH_CMS_READ_TOKEN=$(grep HYGRAPH_CMS_READ_TOKEN .env | cut -d '=' -f2)" >> $GITHUB_ENV
+			  	echo "HASURA_GRAPHQL_ADMIN_SECRET=$(grep HASURA_GRAPHQL_ADMIN_SECRET .env | cut -d '=' -f2)" >> $GITHUB_ENV
+			
+
+      - name: Create Hasura Cloud preview app
+        id: hasura_cloud_preview
+        uses: hasura/hasura-cloud-preview-apps@v0.1.10
+        with:
+          name: 'marketplace-${{github.env.GITHUB_HEAD_REF}}${{github.event.number}}'
+          hasuraProjectDirectoryPath: hasura/app
+          region: eu-central-1
+          tier: cloud_free_v2
+          hasuraEnv: |
+            HASURA_GRAPHQL_CORS_DOMAINS=${{ env.PREVIEW_URL }}
+            PG_DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb
+            HASURA_GRAPHQL_DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb
+            HYGRAPH_CMS_WEBHOOK_READ_URL=${{ env.HYGRAPH_CMS_WEBHOOK_READ_URL }}
+            HYGRAPH_CMS_READ_TOKEN=${{ env.HYGRAPH_CMS_READ_TOKEN }}
+            HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
+						HASURA_GRAPHQL_ADMIN_SECRET=${{ env.HASURA_GRAPHQL_ADMIN_SECRET }}
+						HASURA_GRAPHQL_JWT_SECRET=${{ secrets.HASURA_GRAPHQL_JWT_SECRET }}
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          HASURA_CLOUD_ACCESS_TOKEN: ${{secrets.HASURA_CLOUD_ACCESS_TOKEN}}
+
+      - name: Comment on Pull Request
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Vercel Preview URL :rocket: : ${{ env.PREVIEW_URL }}
+            Neon branch :elephant: : https://console.neon.tech/app/projects/${{ secrets.NEON_PROJECT_ID }}/branches/${{ steps.create_branch.outputs.branch_id }}
+            Hasura Console :computer: : ${{ steps.hasura_cloud_preview.outputs.consoleURL }}
+			
+			- name: Save PREVIEW_URL as artifact
+        run: echo ${{ env.PREVIEW_URL }} > preview_url.txt
+
+      - name: Upload PREVIEW_URL artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: preview-url-${{ env.PULL_REQUEST_SHA }}
+          path: ./preview_url.txt

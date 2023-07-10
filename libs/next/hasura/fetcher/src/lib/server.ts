@@ -3,7 +3,7 @@ import { endpointUrl } from './shared';
 import { logger } from '@logger';
 
 /// This fetcher is used for fetching data from Hasura GraphQL API.
-// The admin mode is used solely for the admin role, it returns an error if the HASURA_ADMIN_SECRET is not set or if it's not called server side
+// The admin mode is used solely for the admin role, it returns an error if the HASURA_GRAPHQL_ADMIN_SECRET is not set or if it's not called server side
 // Otherwise it include the auth cookie or get the jwt for testing purposes
 type Opts = {
   admin?: boolean;
@@ -21,9 +21,10 @@ export const fetchData = (opts: Opts = { admin: false }) => {
       // forbid calling on client side and allow if jest is running
       if (!isServerSide() && !isJestRunning())
         throw new Error('Admin access is only available on the server');
-      if (!process.env.HASURA_ADMIN_SECRET)
+      if (!process.env.HASURA_GRAPHQL_ADMIN_SECRET)
         throw new Error('Admin secret env is missing');
-      headers['X-Hasura-Admin-Secret'] = process.env.HASURA_ADMIN_SECRET;
+      headers['X-Hasura-Admin-Secret'] =
+        process.env.HASURA_GRAPHQL_ADMIN_SECRET;
     }
     const res = await fetch(endpointUrl(), {
       method: 'POST',

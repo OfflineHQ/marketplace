@@ -2,14 +2,14 @@
 const fetch = require('node-fetch');
 
 const HASURA_ENDPOINT = 'http://localhost:9696/v1/metadata';
-const HASURA_ADMIN_SECRET = 'password';
+const HASURA_GRAPHQL_ADMIN_SECRET = 'password';
 
 export async function reloadHasuraMetadata() {
   const res = await fetch(HASURA_ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-hasura-admin-secret': HASURA_ADMIN_SECRET,
+      'x-hasura-admin-secret': HASURA_GRAPHQL_ADMIN_SECRET,
     },
     body: JSON.stringify({
       type: 'reload_metadata',

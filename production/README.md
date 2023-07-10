@@ -184,7 +184,7 @@ This will add those env variables to your vercel project with the right values:
 ```bash
 HASURA_PROJECT_ENDPOINT
 NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT
-HASURA_ADMIN_SECRET
+HASURA_GRAPHQL_ADMIN_SECRET
 ```
 
 3. Install the [Sentry integration](https://vercel.com/integrations/sentry) and give it access to your Vercel project.
