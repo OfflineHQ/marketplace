@@ -14,7 +14,11 @@ interface INextAuthProps {
 }
 
 export const NextAuthProvider = ({ children }: INextAuthProps) => {
-  return <SessionProvider refetchInterval={0}>{children}</SessionProvider>;
+  return (
+    <SessionProvider refetchInterval={0} refetchOnWindowFocus={false}>
+      {children}
+    </SessionProvider>
+  );
 };
 
 interface AuthContextValue {

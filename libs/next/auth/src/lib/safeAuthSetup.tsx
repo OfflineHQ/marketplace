@@ -195,14 +195,11 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         modalVisibilityChanged,
       ]);
 
-      console.log({ raceResult });
-
       // if the user sign in, we want to set the provider
       if (raceResult === 'connected') {
         // used to force signIn in case the user denied the connection
         await safeAuth.signIn();
         const _provider = safeAuth.getProvider();
-        console.log('signIn: ', { safeAuth, _provider });
         setProvider(_provider);
       }
 
