@@ -41,13 +41,6 @@ jobs:
       - name: Vercel Environment Information
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Load environment variables from .env
-        id: load_env
-        run: |
-          echo "HYGRAPH_CMS_WEBHOOK_READ_URL=$(grep HYGRAPH_CMS_WEBHOOK_READ_URL .env | cut -d '=' -f2)" >> $GITHUB_ENV
-          echo "HYGRAPH_CMS_READ_TOKEN=$(grep HYGRAPH_CMS_READ_TOKEN .env | cut -d '=' -f2)" >> $GITHUB_ENV
-          echo "HASURA_GRAPHQL_ADMIN_SECRET=$(grep HASURA_GRAPHQL_ADMIN_SECRET .env | cut -d '=' -f2)" >> $GITHUB_ENV
-
       - name: Debug Secrets
         run: |
           echo "Length of HASURA_CLOUD_ACCESS_TOKEN: ${#HASURA_CLOUD_ACCESS_TOKEN}"
@@ -58,9 +51,9 @@ jobs:
           echo "Length of HASURA_GRAPHQL_DATABASE_URL: ${#HASURA_GRAPHQL_DATABASE_URL}"
         env:
           HASURA_CLOUD_ACCESS_TOKEN: ${{secrets.HASURA_CLOUD_ACCESS_TOKEN}}
-          HASURA_GRAPHQL_ADMIN_SECRET: ${{env.HASURA_GRAPHQL_ADMIN_SECRET}}
-          HYGRAPH_CMS_WEBHOOK_READ_URL: ${{env.HYGRAPH_CMS_WEBHOOK_READ_URL}}
-          HYGRAPH_CMS_READ_TOKEN: ${{env.HYGRAPH_CMS_READ_TOKEN}}
+          HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
+          HYGRAPH_CMS_WEBHOOK_READ_URL: ${{secrets.HYGRAPH_CMS_WEBHOOK_READ_URL}}
+          HYGRAPH_CMS_READ_TOKEN: ${{secrets.HYGRAPH_CMS_READ_TOKEN}}
           HASURA_GRAPHQL_JWT_SECRET: ${{secrets.HASURA_GRAPHQL_JWT_SECRET}}
           HASURA_GRAPHQL_DATABASE_URL: ${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb
 
@@ -68,17 +61,17 @@ jobs:
         id: hasura_cloud_preview
         uses: hasura/hasura-cloud-preview-apps@v0.1.10
         with:
-          name: 'marketplace-${{github.env.GITHUB_HEAD_REF}}${{github.event.number}}'
+          name: 'marketplace-${{github.event.number}}'
           hasuraProjectDirectoryPath: /hasura/app
           region: eu-central-1
           tier: cloud_free_v2
           hasuraEnv: |
             HASURA_GRAPHQL_CORS_DOMAINS=https://marketplace-*-offline.vercel.app,https://cloud.hasura.io
             HASURA_GRAPHQL_DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb
-            HYGRAPH_CMS_WEBHOOK_READ_URL=${{ env.HYGRAPH_CMS_WEBHOOK_READ_URL }}
-            HYGRAPH_CMS_READ_TOKEN=${{ env.HYGRAPH_CMS_READ_TOKEN }}
+            HYGRAPH_CMS_WEBHOOK_READ_URL=${{ secrets.HYGRAPH_CMS_WEBHOOK_READ_URL }}
+            HYGRAPH_CMS_READ_TOKEN=${{ secrets.HYGRAPH_CMS_READ_TOKEN }}
             HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
-            HASURA_GRAPHQL_ADMIN_SECRET=${{ env.HASURA_GRAPHQL_ADMIN_SECRET }}
+            HASURA_GRAPHQL_ADMIN_SECRET=${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}
             HASURA_GRAPHQL_JWT_SECRET=${{ secrets.HASURA_GRAPHQL_JWT_SECRET }}
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

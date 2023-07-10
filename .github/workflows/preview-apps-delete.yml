@@ -24,7 +24,7 @@ jobs:
       - name: Delete Hasura Cloud Preview App
         uses: hasura/hasura-cloud-preview-apps@v0.1.5
         with:
-          name: 'marketplace-${{github.env.GITHUB_HEAD_REF}}${{github.event.number}}'
+          name: 'marketplace-${{github.event.number}}'
           delete: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}} # ${{ secrets.GITHUB_TOKEN }} is provided by default by GitHub actions
