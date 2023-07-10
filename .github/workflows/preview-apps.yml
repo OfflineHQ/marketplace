@@ -11,7 +11,10 @@ jobs:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
+      - name: Set up environment and cache dependencies
+        uses: sebpalluel/ci/.github/actions/setup-environment@latest
 
       - name: Get PR sha
         id: get_pull_request_sha
