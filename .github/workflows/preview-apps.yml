@@ -70,7 +70,7 @@ jobs:
           region: eu-central-1
           tier: cloud_free_v2
           hasuraEnv: |
-            HASURA_GRAPHQL_CORS_DOMAINS=https://marketplace-*-offline.vercel.app
+            HASURA_GRAPHQL_CORS_DOMAINS=https://marketplace-*-offline.vercel.app,https://cloud.hasura.io
             HASURA_GRAPHQL_DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb
             HYGRAPH_CMS_WEBHOOK_READ_URL=${{ env.HYGRAPH_CMS_WEBHOOK_READ_URL }}
             HYGRAPH_CMS_READ_TOKEN=${{ env.HYGRAPH_CMS_READ_TOKEN }}
