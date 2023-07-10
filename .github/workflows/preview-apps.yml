@@ -1,7 +1,10 @@
-name: 'Deploy preview apps'
+name: Deploy preview apps
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
   deploy-preview:
