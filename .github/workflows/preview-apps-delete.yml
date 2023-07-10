@@ -1,0 +1,49 @@
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  delete-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+			- name: Get PR sha
+        id: get_pull_request_sha
+        run: |
+          pull_request_sha=$(jq --raw-output .pull_request.base.sha "$GITHUB_EVENT_PATH" | cut -c1-8)
+          echo "PULL_REQUEST_SHA=$pull_request_sha" >> $GITHUB_ENV
+
+      - name: Delete Hasura Cloud Preview App
+        uses: hasura/hasura-cloud-preview-apps@v0.1.5
+        with:
+          name: 'marketplace-${{github.env.GITHUB_HEAD_REF}}${{github.event.number}}'
+          delete: true
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}} # ${{ secrets.GITHUB_TOKEN }} is provided by default by GitHub actions
+          HASURA_CLOUD_ACCESS_TOKEN: ${{secrets.HASURA_CLOUD_ACCESS_TOKEN}} # Hasura Cloud access token to contact Hasura Cloud APIs
+				
+			- name: Delete Neon Branch
+				uses: neondatabase/delete-branch-action@beta
+				with:
+					project_id: ${{ secrets.NEON_PROJECT_ID }}
+          branch_name: ${{ env.PULL_REQUEST_SHA }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+
+			- name: Install Vercel CLI
+				run: npm install --global vercel@latest
+
+			- name: Download PREVIEW_URL artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: preview-url-${{ env.PULL_REQUEST_SHA }}
+
+      - name: Get PREVIEW_URL from artifact
+        id: get_preview_url
+        run: |
+          preview_url=$(cat preview_url.txt)
+          echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
+
+
+			- name: Delete Vercel Preview
+				run: vercel remove [${PREVIEW_URL}] --yes --token ${{ secrets.VERCEL_TOKEN }}
