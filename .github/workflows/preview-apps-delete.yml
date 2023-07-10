@@ -1,8 +1,10 @@
 name: Delete preview apps
+
 on:
   pull_request:
     types: [closed]
   workflow_dispatch:
+
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
