@@ -1,9 +1,9 @@
 import { PassNav, type PassNavProps } from '@features/appNav/ui';
 import { useTranslations } from 'next-intl';
-import { getCurrentUser } from '@web/lib/session';
+// import { getCurrentUser } from '@web/lib/session';
 
 export default async function PassNavSection() {
-  const user = await getCurrentUser();
+  // const user = await getCurrentUser();
   // TODO get user passes if connected.
   // const cart = await getCart(getUser);
   return <PassNavSectionContent />;
