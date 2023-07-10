@@ -50,14 +50,12 @@ jobs:
           echo "Length of HASURA_CLOUD_ACCESS_TOKEN: ${#HASURA_CLOUD_ACCESS_TOKEN}"
           echo "Length of HASURA_GRAPHQL_ADMIN_SECRET: ${#HASURA_GRAPHQL_ADMIN_SECRET}"
           echo "Length of HASURA_GRAPHQL_JWT_SECRET: ${#HASURA_GRAPHQL_JWT_SECRET}"
-          echo "Length of PG_DATABASE_URL: ${#PG_DATABASE_URL}"
-          echo "Length of HASURA_GRAPHQL_DATABASE_URL: ${#HASURA_GRAPHQL_DATABASE_URL)}"
+          echo "Length of HASURA_GRAPHQL_DATABASE_URL: ${#HASURA_GRAPHQL_DATABASE_URL}"
         env:
           HASURA_CLOUD_ACCESS_TOKEN: ${{secrets.HASURA_CLOUD_ACCESS_TOKEN}}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
           HASURA_GRAPHQL_JWT_SECRET: ${{secrets.HASURA_GRAPHQL_JWT_SECRET}}
-          PG_DATABASE_URL: ${{secrets.PG_DATABASE_URL}}
-          HASURA_GRAPHQL_DATABASE_URL: ${{secrets.HASURA_GRAPHQL_DATABASE_URL}}
+          HASURA_GRAPHQL_DATABASE_URL: ${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb
 
       - name: Create Hasura Cloud preview app
         id: hasura_cloud_preview
@@ -69,7 +67,6 @@ jobs:
           tier: cloud_free_v2
           hasuraEnv: |
             HASURA_GRAPHQL_CORS_DOMAINS=https://marketplace-*-offline.vercel.app
-            PG_DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb
             HASURA_GRAPHQL_DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb
             HYGRAPH_CMS_WEBHOOK_READ_URL=${{ env.HYGRAPH_CMS_WEBHOOK_READ_URL }}
             HYGRAPH_CMS_READ_TOKEN=${{ env.HYGRAPH_CMS_READ_TOKEN }}
