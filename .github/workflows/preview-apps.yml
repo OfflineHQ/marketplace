@@ -1,7 +1,7 @@
 name: Deploy preview apps
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened]
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -75,8 +75,8 @@ jobs:
             HYGRAPH_CMS_WEBHOOK_READ_URL=${{ env.HYGRAPH_CMS_WEBHOOK_READ_URL }}
             HYGRAPH_CMS_READ_TOKEN=${{ env.HYGRAPH_CMS_READ_TOKEN }}
             HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
-            HASURA_GRAPHQL_ADMIN_SECRET: ${{ env.HASURA_GRAPHQL_ADMIN_SECRET }}
-            HASURA_GRAPHQL_JWT_SECRET: ${{ secrets.HASURA_GRAPHQL_JWT_SECRET }}
+            HASURA_GRAPHQL_ADMIN_SECRET=${{ env.HASURA_GRAPHQL_ADMIN_SECRET }}
+            HASURA_GRAPHQL_JWT_SECRET=${{ secrets.HASURA_GRAPHQL_JWT_SECRET }}
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           HASURA_CLOUD_ACCESS_TOKEN: ${{secrets.HASURA_CLOUD_ACCESS_TOKEN}}
