@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withAuth } from 'next-auth/middleware';
 import createIntlMiddleware from 'next-intl/middleware';
 import { locales, defaultLocale } from '@next/i18n';
+import { nextAuthCookieName } from '@next/next-auth/common';
 
 const authPages = [
-  '/dummy', // /user // not working currently
+  '/user',
   // Add more restricted pages if needed
 ];
 
@@ -15,10 +16,7 @@ const intlMiddleware = createIntlMiddleware({
 
 const authMiddleware = withAuth(
   (req) => {
-    const { token } = req.nextauth;
-    console.log('token', token);
-    const isAuth = !!token;
-    console.log('auth middleware', isAuth, new URL('/', req.url));
+    const isAuth = req.cookies.get(nextAuthCookieName());
     return isAuth
       ? intlMiddleware(req)
       : NextResponse.redirect(new URL('/', req.url));

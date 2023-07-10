@@ -38,7 +38,6 @@ export const DefaultNavigationMenu: Story = {
     await userEvent.click(componentsTrigger);
     await waitForElementToBeRemoved(() => screen.queryByText('Introduction'));
     const componentsContent = await screen.findByText('Hover Card');
-    console.log({ componentsContent });
     expect(componentsContent).toBeVisible();
     await screen.findByText('Tooltip');
   },
