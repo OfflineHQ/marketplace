@@ -1,5 +1,11 @@
-import { isDev } from '@utils';
 import log from 'loglevel';
+
+function isDev() {
+  return (
+    process.env.VERCEL_ENV !== 'production' ||
+    process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production'
+  );
+}
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const chalk = require('chalk');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
