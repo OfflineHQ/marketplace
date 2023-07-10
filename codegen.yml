@@ -52,7 +52,7 @@ generates:
       - &userSchema
         ${NEXT_PUBLIC_HASURA_URL:http://localhost:8080/v1/graphql}:
           headers:
-            'x-hasura-admin-secret': ${HASURA_ADMIN_SECRET:password}
+            'x-hasura-admin-secret': ${HASURA_GRAPHQL_ADMIN_SECRET:password}
             'x-hasura-default-role': 'user'
             'x-hasura-role': 'user'
   libs/gql/user/api/src/generated/schema.graphql:
@@ -106,7 +106,7 @@ generates:
       - &anonymousSchema
         ${NEXT_PUBLIC_HASURA_URL:http://localhost:8080/v1/graphql}:
           headers:
-            'x-hasura-admin-secret': ${HASURA_ADMIN_SECRET:password}
+            'x-hasura-admin-secret': ${HASURA_GRAPHQL_ADMIN_SECRET:password}
             'x-hasura-default-role': 'anonymous'
             'x-hasura-role': 'anonymous'
   libs/gql/anonymous/api/src/generated/schema.graphql:
