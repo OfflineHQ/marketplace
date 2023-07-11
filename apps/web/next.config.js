@@ -78,7 +78,11 @@ const nextConfig = {
       //   './**/sharp*',
       // ],
     },
+    // https://vercel.com/docs/concepts/deployments/skew-protection#enabling-skew-protection
+    useDeploymentId: true,
+    // If use with serverActions is desired
     serverActions: true,
+    useDeploymentIdServerActions: true,
     appDir: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
   },
