@@ -4,7 +4,7 @@ import type { JWT, JWTOptions } from 'next-auth/jwt';
 
 import { SiweProvider } from '@next/siwe/provider';
 import { Roles } from '@next/hasura/utils';
-import { isProd, getNextAppURL } from '@utils';
+import { isProd, getNextAppURL, endpointUrl } from '@utils';
 import { logger } from '@logger';
 import { Provider } from 'next-auth/providers';
 import { nextAuthCookieName } from '@next/next-auth/common';
@@ -37,8 +37,13 @@ export const jwtOptions: JWTOptions = {
 export const providers: Array<Provider> = [SiweProvider()];
 
 // Authorize cookie for hasura app https://github.com/nextauthjs/next-auth/issues/405#issuecomment-737593528
-const hostName = new URL(getNextAppURL()).hostname;
+const hostName = new URL(endpointUrl()).hostname;
 const useSecureCookies = getNextAppURL().startsWith('https://');
+// const domain =
+//   hostName === 'localhost' || !hostName
+//     ? hostName
+//     : '.' + hostName.replace(/^www\./, '');
+const hasuraDomain = hostName;
 
 export const authOptions: NextAuthOptions = {
   cookies: {
@@ -46,14 +51,11 @@ export const authOptions: NextAuthOptions = {
       name: nextAuthCookieName(),
       options: {
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: 'none',
         path: '/',
         secure: useSecureCookies,
         // authorize cookie for subdomain, inc. hasura app (strip www. from hostName)
-        domain:
-          hostName === 'localhost' || !hostName
-            ? hostName
-            : '.' + hostName.replace(/^www\./, ''),
+        domain: hasuraDomain,
       },
     },
   },
