@@ -41,21 +41,28 @@ jobs:
       - name: Vercel Environment Information
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Debug Secrets
+      - name: Save environment variables to a file
         run: |
-          echo "Length of HASURA_CLOUD_ACCESS_TOKEN: ${#HASURA_CLOUD_ACCESS_TOKEN}"
-          echo "Length of HASURA_GRAPHQL_ADMIN_SECRET: ${#HASURA_GRAPHQL_ADMIN_SECRET}"
-          echo "Length of HYGRAPH_CMS_WEBHOOK_READ_URL: ${#HYGRAPH_CMS_WEBHOOK_READ_URL}"
-          echo "Length of HYGRAPH_CMS_READ_TOKEN: ${#HYGRAPH_CMS_READ_TOKEN}"
-          echo "Length of HASURA_GRAPHQL_JWT_SECRET: ${#HASURA_GRAPHQL_JWT_SECRET}"
-          echo "Length of HASURA_GRAPHQL_DATABASE_URL: ${#HASURA_GRAPHQL_DATABASE_URL}"
+          echo "HASURA_CLOUD_ACCESS_TOKEN=$HASURA_CLOUD_ACCESS_TOKEN" >> env_vars.txt
+          echo "HASURA_GRAPHQL_ADMIN_SECRET=$HASURA_GRAPHQL_ADMIN_SECRET" >> env_vars.txt
+          echo "HYGRAPH_CMS_WEBHOOK_READ_URL=$HYGRAPH_CMS_WEBHOOK_READ_URL" >> env_vars.txt
+          echo "HYGRAPH_CMS_READ_TOKEN=$HYGRAPH_CMS_READ_TOKEN" >> env_vars.txt
+          echo "HASURA_GRAPHQL_JWT_SECRET=$HASURA_GRAPHQL_JWT_SECRET" >> env_vars.txt
+          echo "HASURA_GRAPHQL_DATABASE_URL=$HASURA_GRAPHQL_DATABASE_URL" >> env_vars.txt
         env:
           HASURA_CLOUD_ACCESS_TOKEN: ${{secrets.HASURA_CLOUD_ACCESS_TOKEN}}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
           HYGRAPH_CMS_WEBHOOK_READ_URL: ${{secrets.HYGRAPH_CMS_WEBHOOK_READ_URL}}
           HYGRAPH_CMS_READ_TOKEN: ${{secrets.HYGRAPH_CMS_READ_TOKEN}}
           HASURA_GRAPHQL_JWT_SECRET: ${{secrets.HASURA_GRAPHQL_JWT_SECRET}}
-          HASURA_GRAPHQL_DATABASE_URL: ${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb
+          HASURA_GRAPHQL_DATABASE_URL: ${{steps.create_branch.outputs.db_url_with_pooler}}/neondb
+
+      - name: Upload env_vars.txt as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: env-vars
+          path: ./env_vars.txt
+          retention-days: 5 # set the retention period to 5 days
 
       - name: Create Hasura Cloud preview app
         id: hasura_cloud_preview
@@ -63,16 +70,16 @@ jobs:
         with:
           name: 'marketplace-${{github.event.number}}'
           hasuraProjectDirectoryPath: ./hasura/app
-          region: us-west-1
+          region: eu-central-1
           tier: cloud_free
           hasuraEnv: |
             HASURA_GRAPHQL_CORS_DOMAINS=https://marketplace-*-offline.vercel.app,https://cloud.hasura.io
-            HASURA_GRAPHQL_DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb
-            HYGRAPH_CMS_WEBHOOK_READ_URL=${{ secrets.HYGRAPH_CMS_WEBHOOK_READ_URL }}
-            HYGRAPH_CMS_READ_TOKEN=${{ secrets.HYGRAPH_CMS_READ_TOKEN }}
+            HASURA_GRAPHQL_DATABASE_URL=${{steps.create_branch.outputs.db_url_with_pooler}}/neondb
+            HYGRAPH_CMS_WEBHOOK_READ_URL=${{secrets.HYGRAPH_CMS_WEBHOOK_READ_URL}}
+            HYGRAPH_CMS_READ_TOKEN=${{secrets.HYGRAPH_CMS_READ_TOKEN}}
             HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
-            HASURA_GRAPHQL_ADMIN_SECRET=${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}
-            HASURA_GRAPHQL_JWT_SECRET=${{ secrets.HASURA_GRAPHQL_JWT_SECRET }}
+            HASURA_GRAPHQL_ADMIN_SECRET=${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
+            HASURA_GRAPHQL_JWT_SECRET=${{secrets.HASURA_GRAPHQL_JWT_SECRET}}
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           HASURA_CLOUD_ACCESS_TOKEN: ${{secrets.HASURA_CLOUD_ACCESS_TOKEN}}
@@ -83,27 +90,27 @@ jobs:
           echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
 
       - name: Build Vercel Project Artifacts
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token=${{secrets.VERCEL_TOKEN}}
 
       - name: Deploy Preview to Vercel
         id: deploy_vercel
         run: |
-          preview_url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          preview_url=$(vercel deploy --prebuilt --token=${{secrets.VERCEL_TOKEN}})
           echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
 
       - name: Comment on Pull Request
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            Vercel Preview URL :rocket: : ${{ env.PREVIEW_URL }}
-            Neon branch :elephant: : https://console.neon.tech/app/projects/${{ secrets.NEON_PROJECT_ID }}/branches/${{ steps.create_branch.outputs.branch_id }}
-            Hasura Console :computer: : ${{ steps.hasura_cloud_preview.outputs.consoleURL }}
+            Vercel Preview URL :rocket: : ${{env.PREVIEW_URL}}
+            Neon branch :elephant: : https://console.neon.tech/app/projects/${{secrets.NEON_PROJECT_ID}}/branches/${{steps.create_branch.outputs.branch_id}}
+            Hasura Console :computer: : ${{steps.hasura_cloud_preview.outputs.consoleURL}}
 
       - name: Save PREVIEW_URL as artifact
-        run: echo ${{ env.PREVIEW_URL }} > preview_url.txt
+        run: echo ${{env.PREVIEW_URL}} > preview_url.txt
 
       - name: Upload PREVIEW_URL artifact
         uses: actions/upload-artifact@v2
         with:
-          name: preview-url-${{ env.PULL_REQUEST_SHA }}
+          name: preview-url-${{env.PULL_REQUEST_SHA}}
           path: ./preview_url.txt
