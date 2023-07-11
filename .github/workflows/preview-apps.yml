@@ -71,7 +71,7 @@ jobs:
           name: 'marketplace-${{github.event.number}}'
           hasuraProjectDirectoryPath: ./hasura/app
           region: us-west-1
-          tier: cloud_free
+          tier: cloud_free_v2
           hasuraEnv: |
             HASURA_GRAPHQL_CORS_DOMAINS=*
             HASURA_GRAPHQL_DATABASE_URL=${{steps.create_branch.outputs.db_url}}/neondb
