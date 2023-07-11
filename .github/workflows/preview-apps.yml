@@ -71,15 +71,8 @@ jobs:
           name: 'marketplace-${{github.event.number}}'
           hasuraProjectDirectoryPath: ./hasura/app
           region: us-west-1
-          tier: cloud_free_v2
-          hasuraEnv: |
-            HASURA_GRAPHQL_CORS_DOMAINS=*
-            HASURA_GRAPHQL_DATABASE_URL=${{steps.create_branch.outputs.db_url}}/neondb
-            HYGRAPH_CMS_WEBHOOK_READ_URL=${{secrets.HYGRAPH_CMS_WEBHOOK_READ_URL}}
-            HYGRAPH_CMS_READ_TOKEN=${{secrets.HYGRAPH_CMS_READ_TOKEN}}
-            HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
-            HASURA_GRAPHQL_ADMIN_SECRET=${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
-            HASURA_GRAPHQL_JWT_SECRET=${{secrets.HASURA_GRAPHQL_JWT_SECRET}}
+          tier: cloud_free
+          hasuraEnv: 'HASURA_GRAPHQL_CORS_DOMAINS=*;HASURA_GRAPHQL_DATABASE_URL=${{steps.create_branch.outputs.db_url}}/neondb;HYGRAPH_CMS_WEBHOOK_READ_URL=${{secrets.HYGRAPH_CMS_WEBHOOK_READ_URL}};HYGRAPH_CMS_READ_TOKEN=${{secrets.HYGRAPH_CMS_READ_TOKEN}};HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous;HASURA_GRAPHQL_ADMIN_SECRET=${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}};HASURA_GRAPHQL_JWT_SECRET=${{secrets.HASURA_GRAPHQL_JWT_SECRET}}'
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           HASURA_CLOUD_ACCESS_TOKEN: ${{secrets.HASURA_CLOUD_ACCESS_TOKEN}}
