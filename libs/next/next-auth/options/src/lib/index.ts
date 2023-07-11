@@ -4,7 +4,8 @@ import type { JWT, JWTOptions } from 'next-auth/jwt';
 
 import { SiweProvider } from '@next/siwe/provider';
 import { Roles } from '@next/hasura/utils';
-import { isProd, getNextAppURL, endpointUrl } from '@utils';
+import { isProd, getNextAppURL } from '@utils';
+import { endpointUrl } from '@next/hasura/fetcher';
 import { logger } from '@logger';
 import { Provider } from 'next-auth/providers';
 import { nextAuthCookieName } from '@next/next-auth/common';
