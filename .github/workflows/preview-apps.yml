@@ -55,7 +55,7 @@ jobs:
           HYGRAPH_CMS_WEBHOOK_READ_URL: ${{secrets.HYGRAPH_CMS_WEBHOOK_READ_URL}}
           HYGRAPH_CMS_READ_TOKEN: ${{secrets.HYGRAPH_CMS_READ_TOKEN}}
           HASURA_GRAPHQL_JWT_SECRET: ${{secrets.HASURA_GRAPHQL_JWT_SECRET}}
-          HASURA_GRAPHQL_DATABASE_URL: ${{steps.create_branch.outputs.db_url_with_pooler}}/neondb
+          HASURA_GRAPHQL_DATABASE_URL: ${{steps.create_branch.outputs.db_url}}/neondb
 
       - name: Upload env_vars.txt as an artifact
         uses: actions/upload-artifact@v2
@@ -73,8 +73,8 @@ jobs:
           region: us-west-1
           tier: cloud_free
           hasuraEnv: |
-            HASURA_GRAPHQL_CORS_DOMAINS=https://marketplace-*-offline.vercel.app,https://cloud.hasura.io
-            HASURA_GRAPHQL_DATABASE_URL=${{steps.create_branch.outputs.db_url_with_pooler}}/neondb
+            HASURA_GRAPHQL_CORS_DOMAINS=*
+            HASURA_GRAPHQL_DATABASE_URL=${{steps.create_branch.outputs.db_url}}/neondb
             HYGRAPH_CMS_WEBHOOK_READ_URL=${{secrets.HYGRAPH_CMS_WEBHOOK_READ_URL}}
             HYGRAPH_CMS_READ_TOKEN=${{secrets.HYGRAPH_CMS_READ_TOKEN}}
             HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
