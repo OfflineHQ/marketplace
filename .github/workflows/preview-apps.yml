@@ -1,8 +1,8 @@
 name: Deploy preview apps
 
 on:
-  pull_request:
-    types: [opened, reopened, synchronize]
+  # pull_request:
+  #   types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 env:
@@ -63,8 +63,8 @@ jobs:
         with:
           name: 'marketplace-${{github.event.number}}'
           hasuraProjectDirectoryPath: ./hasura/app
-          region: eu-central-1
-          tier: cloud_free_v2
+          region: us-west-1
+          tier: cloud_free
           hasuraEnv: |
             HASURA_GRAPHQL_CORS_DOMAINS=https://marketplace-*-offline.vercel.app,https://cloud.hasura.io
             HASURA_GRAPHQL_DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb
