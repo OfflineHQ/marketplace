@@ -62,7 +62,7 @@ jobs:
         uses: hasura/hasura-cloud-preview-apps@v0.1.10
         with:
           name: 'marketplace-${{github.event.number}}'
-          hasuraProjectDirectoryPath: /hasura/app
+          hasuraProjectDirectoryPath: ./hasura/app
           region: eu-central-1
           tier: cloud_free_v2
           hasuraEnv: |
