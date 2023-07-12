@@ -170,8 +170,8 @@ dependencies:
     specifier: 4.22.1
     version: 4.22.1(next@13.4.9)(nodemailer@6.9.3)(react-dom@18.2.0)(react@18.2.0)
   next-intl:
-    specifier: 2.15.0-beta.5
-    version: 2.15.0-beta.5(next@13.4.9)(react@18.2.0)
+    specifier: 3.0.0-beta.8
+    version: 3.0.0-beta.8(next@13.4.9)(react@18.2.0)
   next-seo:
     specifier: ^5.15.0
     version: 5.15.0(next@13.4.9)(react-dom@18.2.0)(react@18.2.0)
@@ -20468,8 +20468,8 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-intl@2.15.0-beta.5(next@13.4.9)(react@18.2.0):
-    resolution: {integrity: sha512-E6k/+ta9/RVNhQJnHLY+WZbDyygp4mICsqrMCsRyMfuOm9h+uonNmrM8Blc0PiX0plAF6oKc9OtH90/eVaPRYA==}
+  /next-intl@3.0.0-beta.8(next@13.4.9)(react@18.2.0):
+    resolution: {integrity: sha512-5OMoYTREMbJdjK/pSwFmC5dc2Mo5SUvrPI/2wyl5CfCBM18IMmhcWiGjHPxolVpaxwAQ34/2wgym9uPlsyP7SQ==}
     engines: {node: '>=10'}
     peerDependencies:
       next: ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0
