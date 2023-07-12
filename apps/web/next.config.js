@@ -16,7 +16,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-const withNextIntl = require('next-intl/plugin')();
+const withNextIntl = require('next-intl/plugin')('./i18n.ts');
 
 const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
   ? null
@@ -26,9 +26,11 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   compiler: {
-    removeConsole:
-      process.env.VERCEL_ENV === 'production' ||
-      process.env.NEXT_PUBLIC_VERCEL_ENV === 'production',
+    // TODO set back when in 'real' prod. For now useful for debug
+    // removeConsole:
+    //   process.env.VERCEL_ENV === 'production' ||
+    //   process.env.NEXT_PUBLIC_VERCEL_ENV === 'production',
+    removeConsole: false,
     styledComponents: false,
   },
   /* could improve performance in dev but @ui components no organized like that.
@@ -68,15 +70,6 @@ const nextConfig = {
         'node_modules/.pnpm/webpack',
         'node_modules/.pnpm/sass',
       ],
-      // '*': [
-      //   './**/@swc/core-linux-x64-gnu*',
-      //   './**/@swc/core-linux-x64-musl*',
-      //   './**/@esbuild*',
-      //   './**/webpack*',
-      //   './**/rollup*',
-      //   './**/terser*',
-      //   './**/sharp*',
-      // ],
     },
     // https://vercel.com/docs/concepts/deployments/skew-protection#enabling-skew-protection
     useDeploymentId: true,
@@ -86,6 +79,11 @@ const nextConfig = {
     appDir: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
   },
+  sentry: {
+    hideSourceMaps: true,
+    // TODO set back when issue fixed, meanwhile issue in api route will not be reported if not wrapped with withSentry.
+    autoInstrumentServerFunctions: false, // avoid error: error ./middleware.ts Module not found: Can't resolve 'sentry.edge.config.ts'
+  },
 };
 
 const sentryWebpackPluginOptions = {
@@ -94,8 +92,10 @@ const sentryWebpackPluginOptions = {
   // recommended:
   //   release, url, org, project, authToken, configFile, stripPrefix,
   //   urlPrefix, include, ignore
+  org: 'offline-live',
+  project: 'nextjs-marketplace',
+  authToken: process.env.SENTRY_AUTH_TOKEN,
   dryRun: !SENTRY_DSN,
-  hideSourceMaps: true,
   silent: true, // Suppresses all logs
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
@@ -107,8 +107,7 @@ module.exports = async (phase, context) => {
   });
 
   let config = await addNx(phase);
-  // // TODO, set back after fix for: Module not found: Can't resolve '@sentry/utils/esm/buildPolyfills'
-  // config = await withSentryConfig(config, sentryWebpackPluginOptions);
+  config = await withSentryConfig(config, sentryWebpackPluginOptions);
   config = await withBundleAnalyzer(config);
   config = await withNextIntl(config);
   return config;

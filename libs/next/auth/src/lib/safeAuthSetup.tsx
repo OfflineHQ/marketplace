@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useDarkMode } from '@ui/hooks';
 import { useToast, ToastAction } from '@ui/components';
+import { getNextAppURL, isCypressRunning } from '@utils';
 import {
   SafeAuthKit,
   SafeAuthSignInData,
@@ -25,7 +26,6 @@ import { useRouter } from 'next/navigation';
 // import { getCurrentUser } from '@web/app/lib/session';
 
 import { logger } from '@logger';
-import { isCypressRunning } from '@utils';
 import { ExternalProvider } from '@ethersproject/providers';
 
 type ChainConfig = Web3AuthOptions['chainConfig'] & {
@@ -312,8 +312,8 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   useEffect(() => {
     (async () => {
       const logos = {
-        dark: `${process.env.NEXT_PUBLIC_APP_URL}/logo-light.svg`,
-        light: `${process.env.NEXT_PUBLIC_APP_URL}/logo-dark.svg`,
+        dark: `${getNextAppURL()}/logo-light.svg`,
+        light: `${getNextAppURL()}/logo-dark.svg`,
       };
       console.log('setting safeAuthKit');
       const options: Web3AuthOptions = {
