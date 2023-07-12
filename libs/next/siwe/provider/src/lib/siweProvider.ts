@@ -1,7 +1,6 @@
 import { getNextAppURL } from '@utils';
 import { handleAccount } from '@features/account/api';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import type { User } from 'next-auth';
 import { getCsrfToken } from 'next-auth/react';
 import { SiweMessage } from 'siwe';
 
@@ -42,14 +41,25 @@ export const SiweProvider = () =>
           nonce,
         });
         if (result.success) {
-          return (await handleAccount({
-            address: credentials?.address || '',
-            email: credentials?.email || '',
-          })) as User;
-        } else throw new Error('Invalid signature');
+          try {
+            // eslint-disable-next-line sonarjs/prefer-immediate-return
+            const user = await handleAccount({
+              address: credentials?.address || '',
+              email: credentials?.email || '',
+            });
+            return user;
+          } catch (error) {
+            console.error({ error });
+            throw new Error(error);
+          }
+        } else {
+          const error = `Invalid signature: ${JSON.stringify(result.error)}`;
+          console.error({ error });
+          throw new Error(error);
+        }
       } catch (error) {
         console.error({ error });
-        return null;
+        throw new Error(error);
       }
     },
   });
