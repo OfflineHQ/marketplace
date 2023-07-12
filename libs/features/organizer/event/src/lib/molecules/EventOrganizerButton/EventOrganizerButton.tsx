@@ -27,7 +27,7 @@ export const EventOrganizerButton: React.FC<EventOrganizerButtonProps> = ({
       <Button variant="ghost" className={layout.container}>
         <Avatar size="lg" className="m-1">
           <AvatarFallback>{getInitials(name)}</AvatarFallback>
-          <AvatarImage src={image.url} />
+          <AvatarImage src={image?.url} />
         </Avatar>
         <Text variant="h4" className="flex items-center justify-center">
           <div className="tracking-wider">{name}</div>
