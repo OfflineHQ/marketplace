@@ -41,8 +41,19 @@ export const LanguageDropdownClient: React.FC<LanguageDropdownClientProps> = ({
   }, [pathname, searchParams]);
 
   const changeLocale = (newLocale: string) => {
-    const url =
-      currentUrl && currentUrl !== '/' ? newLocale + currentUrl : newLocale;
+    let url;
+    const pathParts = currentUrl.split('/');
+    if (
+      pathParts[1] &&
+      Object.prototype.hasOwnProperty.call(languageSelectText, pathParts[1])
+    ) {
+      // replace existing locale in url
+      pathParts[1] = newLocale;
+      url = pathParts.join('/');
+    } else {
+      // prepend new locale to url
+      url = '/' + newLocale + currentUrl;
+    }
     router.push(url);
   };
 
