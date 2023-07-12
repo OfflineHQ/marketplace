@@ -97,7 +97,7 @@ export const EventPasses: React.FC<EventPassesProps> = ({
         <div className={layout.grid}>
           <div className={layout.imageContainer}>
             <Image
-              src={event.heroImage.url}
+              src={event?.heroImage?.url}
               className={layout.image}
               fill
               style={{ objectFit: 'cover' }}
