@@ -18,7 +18,7 @@ export function AppNavLayout(props: AppNavLayoutProps) {
       <div className="sticky top-0 z-20 hidden w-full bg-background md:flex">
         <NavigationMenu className="flex-1 justify-start">
           <NavigationMenuList>
-            <NavLink href="/" className="min-w-[100px]">
+            <NavLink href="/" className="mx-4 my-2 min-w-[100px] p-0">
               <Logo />
             </NavLink>
           </NavigationMenuList>

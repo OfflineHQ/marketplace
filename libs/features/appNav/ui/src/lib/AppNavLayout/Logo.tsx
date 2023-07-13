@@ -5,6 +5,7 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => (
     id="Layer_1"
     data-name="Layer 1"
     viewBox="0 0 194 90"
+    height="100%" // You can adjust these values as per your needs
     {...props}
   >
     <defs>
