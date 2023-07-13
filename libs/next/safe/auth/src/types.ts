@@ -56,3 +56,8 @@ export type SafeGetUserInfoResponse<TPack> = TPack extends Web3AuthModalPack
 export interface SafeAuthConfig {
   txServiceUrl?: string;
 }
+
+export type AuthKitSignInData = {
+  eoa: string;
+  safes?: string[];
+};

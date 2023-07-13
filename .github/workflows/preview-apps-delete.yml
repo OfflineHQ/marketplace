@@ -47,7 +47,7 @@ jobs:
       - name: Get PREVIEW_URL from cache
         id: get_preview_url
         run: |
-          preview_url=$(cat preview_url.txt)
+          preview_url=$(cat ./preview_url.txt)
           echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
 
       - name: Cache Vercel CLI
