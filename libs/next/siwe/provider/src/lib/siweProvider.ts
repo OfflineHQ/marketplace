@@ -1,5 +1,6 @@
 import { getNextAppURL } from '@utils';
 import { handleAccount } from '@features/account/api';
+import type { User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { getCsrfToken } from 'next-auth/react';
 import { SiweMessage } from 'siwe';
@@ -47,7 +48,7 @@ export const SiweProvider = () =>
               address: credentials?.address || '',
               email: credentials?.email || '',
             });
-            return user;
+            return user as User;
           } catch (error) {
             console.error({ error });
             throw new Error(error);
