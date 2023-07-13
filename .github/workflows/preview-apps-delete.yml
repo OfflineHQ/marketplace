@@ -50,5 +50,19 @@ jobs:
           preview_url=$(cat preview_url.txt)
           echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
 
+      - name: Cache Vercel CLI
+        uses: actions/cache@v2
+        id: cache-vercel
+        with:
+          path: ~/.npm # adjust this path if needed
+          key: vercel-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install Vercel CLI
+        run: |
+          if [ -z "$(npm list -g --depth=0 | grep vercel)" ]
+          then
+            npm install --global vercel@latest
+          fi
+
       - name: Delete Vercel Preview
         run: vercel remove [${{ env.PREVIEW_URL }}] --yes --token ${{ secrets.VERCEL_TOKEN }}
