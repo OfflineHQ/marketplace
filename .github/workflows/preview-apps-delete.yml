@@ -37,15 +37,14 @@ jobs:
           branch_name: ${{ env.PULL_REQUEST_SHA }}
           api_key: ${{ secrets.NEON_API_KEY }}
 
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Download PREVIEW_URL artifact
-        uses: actions/download-artifact@v2
+      - name: Download PREVIEW_URL cache
+        uses: actions/cache@v3
+        id: cache-preview-url
         with:
-          name: preview-url-${{ env.PULL_REQUEST_SHA }}
+          path: ./preview_url.txt
+          key: preview-url-${{ env.PULL_REQUEST_SHA }}
 
-      - name: Get PREVIEW_URL from artifact
+      - name: Get PREVIEW_URL from cache
         id: get_preview_url
         run: |
           preview_url=$(cat preview_url.txt)
