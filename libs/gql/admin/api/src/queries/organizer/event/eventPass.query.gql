@@ -1,7 +1,7 @@
 query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
   eventPasses(
     where: { event: { slug: $eventSlug } }
-    locales: [$locale]
+    locales: [$locale, en]
     stage: $stage
   ) {
     id

@@ -1,5 +1,5 @@
 query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) {
-  event(where: { slug: $slug }, locales: [$locale], stage: $stage) {
+  event(where: { slug: $slug }, locales: [$locale, en], stage: $stage) {
     ...EventListFields
     description {
       json
@@ -27,7 +27,7 @@ query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) {
 }
 
 query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) {
-  event(where: { slug: $slug }, locales: [$locale], stage: $stage) {
+  event(where: { slug: $slug }, locales: [$locale, en], stage: $stage) {
     id
     slug
     title
