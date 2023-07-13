@@ -1,5 +1,5 @@
 query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) {
-  organizer(where: { slug: $slug }, locales: [$locale], stage: $stage) {
+  organizer(where: { slug: $slug }, locales: [$locale, en], stage: $stage) {
     ...OrganizerFields
   }
 }
