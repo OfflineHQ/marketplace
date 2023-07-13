@@ -48,7 +48,7 @@ export const useGetAccountByEmailQuery = <
     );
 export const GetEventWithPassesDocument = `
     query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) {
-  event(where: {slug: $slug}, locales: [$locale], stage: $stage) {
+  event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     id
     slug
     title

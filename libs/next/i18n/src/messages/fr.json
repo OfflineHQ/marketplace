@@ -1,13 +1,13 @@
 {
   "Auth": {
     "user-closed-popup": {
-      "title": "Erreur de connexion",
-      "description": "La connexion avec le fournisseur de connexion a été fermée. Veuillez réessayer."
+      "title": "Erreur lors de la connexion",
+      "description": "La connexion au fournisseur de connexion a été interrompue. Veuillez réessayer."
     },
     "siwe-statement": "Connectez-vous à l'application Offline avec votre portefeuille",
     "error-signing-in-with-siwe": {
-      "title": "Erreur de connexion avec votre portefeuille",
-      "description": "Quelque chose s'est mal passé avec la signature. Veuillez réessayer ou contacter le support si cela échoue encore.",
+      "title": "Erreur lors de la connexion avec votre portefeuille",
+      "description": "Un problème est survenu lors de la signature. Veuillez réessayer ou contacter le support si cela échoue toujours.",
       "try-again-button": "Réessayer"
     },
     "siwe-declined": {
@@ -17,7 +17,7 @@
     }
   },
   "Index": {
-    "title": "Bonjour le monde!"
+    "title": "Bonjour le monde !"
   },
   "Settings": {
     "title": "Paramètres",
@@ -43,32 +43,39 @@
         "support-title": "Bientôt disponible",
         "support-description": "Cette fonctionnalité n'est pas encore disponible",
         "sign-out": "Se déconnecter",
-        "sign-out-title": "Vous vous êtes déconnecté",
+        "sign-out-title": "Vous avez été déconnecté",
         "sign-out-description": "À bientôt 👋 !",
         "sign-in": "Se connecter",
         "settings": "Paramètres"
       }
     },
     "Pass": {
-      "text": "Passe",
-      "helper-text": "Aller à votre passe"
+      "text": "Pass",
+      "helper-text": "Accédez à votre pass"
     },
     "Cart": {
       "text": "Panier",
-      "helper-text": "Aller à votre panier"
+      "helper-text": "Accédez à votre panier"
     }
   },
   "Cart": {
     "NoUserCart": {
       "title": "Panier",
-      "description": "Vous pourrez valider votre panier une fois que vous êtes connecté",
+      "description": "Vous pourrez valider votre panier une fois connecté",
       "sign-in-text": "Se connecter"
+    },
+    "List": {
+      "Event": {
+        "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",
+        "edit": "Modifier",
+        "remove": "Supprimer"
+      }
     }
   },
   "Pass": {
     "NoUserPass": {
-      "title": "Passe",
-      "description": "Vous pourrez voir vos passes une fois que vous êtes connecté",
+      "title": "Pass",
+      "description": "Vous pourrez voir vos passes une fois connecté",
       "sign-in-text": "Se connecter"
     }
   },
@@ -79,14 +86,20 @@
       },
       "purchase-button-activator": "Sélectionner les passes",
       "PassPurchase": {
-        "title": "Sélection de passe",
+        "title": "Sélection de pass",
         "description": "Sélectionnez les passes que vous souhaitez acheter et validez votre commande",
-        "pass": {
+        "Pass": {
           "sold-out": "Épuisé"
         },
-        "go-back-button": "Retour à l'événement",
-        "purchase-button": "Aller au paiement",
-        "see-event-button": "Voir l'événement"
+        "see-event-button": "Voir l'événement",
+        "go-back-button": "Revenir à l'événement",
+        "Footer": {
+          "purchase-button": "Passer au paiement",
+          "total": {
+            "pass-selected": "{totalPasses, plural, =1 {# pass sélectionné} other {# passes sélectionnés}}",
+            "price": "Prix total : {totalPrice}"
+          }
+        }
       }
     },
     "EventDates": {

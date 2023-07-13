@@ -89,7 +89,7 @@ export const EventDateLocationsFieldsFragmentDoc = `
     ${AccountFieldsFragmentDoc}`;
  const GetEventDocument = `
     query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) {
-  event(where: {slug: $slug}, locales: [$locale], stage: $stage) {
+  event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     ...EventListFields
     description {
       json
@@ -119,7 +119,7 @@ export const EventDateLocationsFieldsFragmentDoc = `
 ${EventDateLocationsFieldsFragmentDoc}`;
  const GetEventWithPassesDocument = `
     query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) {
-  event(where: {slug: $slug}, locales: [$locale], stage: $stage) {
+  event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     id
     slug
     title
@@ -153,7 +153,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
   eventPasses(
     where: {event: {slug: $eventSlug}}
-    locales: [$locale]
+    locales: [$locale, en]
     stage: $stage
   ) {
     id
@@ -191,7 +191,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     `;
  const GetOrganizerDocument = `
     query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) {
-  organizer(where: {slug: $slug}, locales: [$locale], stage: $stage) {
+  organizer(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     ...OrganizerFields
   }
 }
