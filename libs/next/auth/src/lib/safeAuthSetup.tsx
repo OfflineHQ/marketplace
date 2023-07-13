@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useDarkMode } from '@ui/hooks';
 import { useToast, ToastAction } from '@ui/components';
-import { getNextAppURL, isCypressRunning } from '@utils';
+import { isCypressRunning } from '@utils';
 import {
   SafeAuthKit,
   SafeAuthSignInData,
@@ -312,8 +312,8 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   useEffect(() => {
     (async () => {
       const logos = {
-        dark: `${getNextAppURL()}/logo-light.svg`,
-        light: `${getNextAppURL()}/logo-dark.svg`,
+        dark: `/logo-light.svg`,
+        light: `/logo-dark.svg`,
       };
       console.log('setting safeAuthKit');
       const options: Web3AuthOptions = {
