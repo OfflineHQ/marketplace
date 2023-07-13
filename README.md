@@ -497,10 +497,10 @@ awk -v ORS='\\n' '1' jwtRS256.key.pub | pbcopy
 { "type": "RS256", "key": "<insert-your-public-key-here>"}
 ```
 
-- Transform private key into a single line to copy to your clipboard to `NEXTAUTH_SECRET` env
+- Copy private key and paste it into `NEXTAUTH_SECRET` env
 
 ```shell
-awk -v ORS='\\n' '1' jwtRS256.key | pbcopy
+cat jwtRS256.key | pbcopy
 ```
 
 Don't forget to add double quotes "" arround so that `\n` are interpreted correctly
