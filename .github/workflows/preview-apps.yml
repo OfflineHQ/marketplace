@@ -34,8 +34,19 @@ jobs:
           username: ${{ secrets.PG_USERNAME }}
           password: ${{ secrets.PG_PASSWORD }}
 
+      - name: Cache Vercel CLI
+        uses: actions/cache@v2
+        id: cache-vercel
+        with:
+          path: ~/.npm # adjust this path if needed
+          key: vercel-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
       - name: Install Vercel CLI
-        run: npm install --global vercel@latest
+        run: |
+          if [ -z "$(npm list -g --depth=0 | grep vercel)" ]
+          then
+            npm install --global vercel@latest
+          fi
 
       - name: Vercel Environment Information
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
