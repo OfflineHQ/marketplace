@@ -110,8 +110,9 @@ jobs:
       - name: Save PREVIEW_URL as artifact
         run: echo ${{env.PREVIEW_URL}} > preview_url.txt
 
-      - name: Upload PREVIEW_URL artifact
-        uses: actions/upload-artifact@v2
+      - name: Save PREVIEW_URL as cache
+        uses: actions/cache@v3
+        id: cache-preview-url
         with:
-          name: preview-url-${{env.PULL_REQUEST_SHA}}
           path: ./preview_url.txt
+          key: preview-url-${{ env.PULL_REQUEST_SHA }}
