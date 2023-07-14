@@ -6387,6 +6387,7 @@ Order with as quantity for Event Pass (linked to Hygraph model EventPass) and as
 type eventPassOrder {
   """An object relationship"""
   account: account
+  created_at: timestamptz!
   eventPass(
     """
     Defines which locales should be returned.
@@ -6401,6 +6402,7 @@ type eventPassOrder {
   ): EventPass
   eventPassId: String!
   quantity: Int!
+  status: String!
 }
 
 """
@@ -6441,27 +6443,35 @@ input eventPassOrder_bool_exp {
   _not: eventPassOrder_bool_exp
   _or: [eventPassOrder_bool_exp!]
   account: account_bool_exp
+  created_at: timestamptz_comparison_exp
   eventPassId: String_comparison_exp
   quantity: Int_comparison_exp
+  status: String_comparison_exp
 }
 
 """aggregate max on columns"""
 type eventPassOrder_max_fields {
+  created_at: timestamptz
   eventPassId: String
   quantity: Int
+  status: String
 }
 
 """aggregate min on columns"""
 type eventPassOrder_min_fields {
+  created_at: timestamptz
   eventPassId: String
   quantity: Int
+  status: String
 }
 
 """Ordering options when selecting data from "eventPassOrder"."""
 input eventPassOrder_order_by {
   account: account_order_by
+  created_at: order_by
   eventPassId: order_by
   quantity: order_by
+  status: order_by
 }
 
 """
@@ -6469,10 +6479,16 @@ select columns of table "eventPassOrder"
 """
 enum eventPassOrder_select_column {
   """column name"""
+  created_at
+
+  """column name"""
   eventPassId
 
   """column name"""
   quantity
+
+  """column name"""
+  status
 }
 
 """aggregate stddev on columns"""
@@ -6503,8 +6519,10 @@ input eventPassOrder_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input eventPassOrder_stream_cursor_value_input {
+  created_at: timestamptz
   eventPassId: String
   quantity: Int
+  status: String
 }
 
 """aggregate sum on columns"""
@@ -8125,6 +8143,23 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassOrder_bool_exp
   ): [eventPassOrder!]!
+}
+
+scalar timestamptz
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
 }
 
 scalar uuid
