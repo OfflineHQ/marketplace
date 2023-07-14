@@ -87,6 +87,35 @@ export const EventDateLocationsFieldsFragmentDoc = `
   }
 }
     ${AccountFieldsFragmentDoc}`;
+ const GetAccountEventPassOrderForEventPassesDocument = `
+    query GetAccountEventPassOrderForEventPasses($accountId: uuid!, $eventPassIds: [String!]) {
+  eventPassOrder(
+    where: {accountId: {_eq: $accountId}, eventPassId: {_in: $eventPassIds}}
+  ) {
+    eventPassId
+    quantity
+    status
+    created_at
+  }
+}
+    `;
+ const UpsertEventPassOrdersDocument = `
+    mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
+  insert_eventPassOrder(
+    objects: $objects
+    on_conflict: {constraint: eventPassOrder_pkey, update_columns: [quantity]}
+  ) {
+    returning {
+      id
+      quantity
+      status
+      eventPassId
+      accountId
+      created_at
+    }
+  }
+}
+    `;
  const GetEventDocument = `
     query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
@@ -210,6 +239,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetAccountByEmail(variables: Types.GetAccountByEmailQueryVariables, options?: C): Promise<Types.GetAccountByEmailQuery> {
       return requester<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables, options) as Promise<Types.GetAccountByEmailQuery>;
+    },
+    GetAccountEventPassOrderForEventPasses(variables: Types.GetAccountEventPassOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetAccountEventPassOrderForEventPassesQuery> {
+      return requester<Types.GetAccountEventPassOrderForEventPassesQuery, Types.GetAccountEventPassOrderForEventPassesQueryVariables>(GetAccountEventPassOrderForEventPassesDocument, variables, options) as Promise<Types.GetAccountEventPassOrderForEventPassesQuery>;
+    },
+    UpsertEventPassOrders(variables: Types.UpsertEventPassOrdersMutationVariables, options?: C): Promise<Types.UpsertEventPassOrdersMutation> {
+      return requester<Types.UpsertEventPassOrdersMutation, Types.UpsertEventPassOrdersMutationVariables>(UpsertEventPassOrdersDocument, variables, options) as Promise<Types.UpsertEventPassOrdersMutation>;
     },
     GetEvent(variables: Types.GetEventQueryVariables, options?: C): Promise<Types.GetEventQuery> {
       return requester<Types.GetEventQuery, Types.GetEventQueryVariables>(GetEventDocument, variables, options) as Promise<Types.GetEventQuery>;

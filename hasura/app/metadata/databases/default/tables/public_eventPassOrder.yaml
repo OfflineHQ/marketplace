@@ -24,17 +24,14 @@ remote_relationships:
         remote_schema: Hygraph CMS Remote Schema
     name: eventPass
 select_permissions:
-  - role: anonymous
-    permission:
-      columns:
-        - eventPassId
-        - quantity
-      filter: {}
-      allow_aggregations: true
   - role: user
     permission:
       columns:
         - eventPassId
+        - status
         - quantity
-      filter: {}
+        - created_at
+      filter:
+        accountId:
+          _eq: X-Hasura-User-Id
       allow_aggregations: true
