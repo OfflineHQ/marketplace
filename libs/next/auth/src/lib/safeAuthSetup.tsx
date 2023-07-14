@@ -220,6 +220,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       try {
         // don't run this function if cypress is running, cannot mock the signature so directly provide the cookie instead
         if (isCypressRunning()) return;
+        console.log('Signing in with SIWE...');
         const address = await signer.getAddress();
         const message = new SiweMessage({
           domain: window.location.host,
@@ -307,7 +308,9 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         await logout({ refresh: false });
       }
     })();
-  }, [provider, loginSiwe, logout, session, setupUserSession, connecting]);
+    // Avoid putting the rest of dependencies in the array, it will cause an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [provider, session?.user]);
 
   useEffect(() => {
     (async () => {
