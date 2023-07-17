@@ -5255,6 +5255,8 @@ export type EventPassPricing_Bool_Exp = {
 
 /** unique or primary key constraints on table "eventPassPricing" */
 export const enum EventPassPricing_Constraint {
+  /** unique or primary key constraint on columns "eventPassId" */
+  EventPassPricingEventPassIdKey = 'eventPassPricing_eventPassId_key',
   /** unique or primary key constraint on columns "id" */
   EventPassPricingPkey = 'eventPassPricing_pkey'
 };

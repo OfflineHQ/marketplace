@@ -7008,6 +7008,11 @@ unique or primary key constraints on table "eventPassPricing"
 """
 enum eventPassPricing_constraint {
   """
+  unique or primary key constraint on columns "eventPassId"
+  """
+  eventPassPricing_eventPassId_key
+
+  """
   unique or primary key constraint on columns "id"
   """
   eventPassPricing_pkey
