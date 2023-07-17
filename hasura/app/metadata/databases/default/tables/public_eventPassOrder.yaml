@@ -11,6 +11,15 @@ object_relationships:
         remote_table:
           name: account
           schema: public
+  - name: eventPassPricing
+    using:
+      manual_configuration:
+        column_mapping:
+          eventPassId: eventPassId
+        insertion_order: null
+        remote_table:
+          name: eventPassPricing
+          schema: public
 remote_relationships:
   - definition:
       to_remote_schema:
@@ -23,15 +32,42 @@ remote_relationships:
                 id: $eventPassId
         remote_schema: Hygraph CMS Remote Schema
     name: eventPass
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      set:
+        accountId: X-Hasura-User-Id
+        status: PENDING
+      columns:
+        - eventPassId
+        - quantity
 select_permissions:
   - role: user
     permission:
       columns:
         - eventPassId
+        - accountId
         - status
         - quantity
         - created_at
+        - updated_at
       filter:
         accountId:
           _eq: X-Hasura-User-Id
       allow_aggregations: true
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - quantity
+      filter:
+        accountId:
+          _eq: X-Hasura-User-Id
+      check: {}
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        accountId:
+          _eq: X-Hasura-User-Id

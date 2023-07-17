@@ -6387,6 +6387,7 @@ Order with as quantity for Event Pass (linked to Hygraph model EventPass) and as
 type eventPassOrder {
   """An object relationship"""
   account: account
+  accountId: uuid!
   created_at: timestamptz!
   eventPass(
     """
@@ -6402,7 +6403,8 @@ type eventPassOrder {
   ): EventPass
   eventPassId: String!
   quantity: Int!
-  status: String!
+  status: orderStatus_enum!
+  updated_at: timestamptz!
 }
 
 """
@@ -6443,41 +6445,95 @@ input eventPassOrder_bool_exp {
   _not: eventPassOrder_bool_exp
   _or: [eventPassOrder_bool_exp!]
   account: account_bool_exp
+  accountId: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
   eventPassId: String_comparison_exp
   quantity: Int_comparison_exp
-  status: String_comparison_exp
+  status: orderStatus_enum_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "eventPassOrder"
+"""
+enum eventPassOrder_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  eventPassOrder_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "eventPassOrder"
+"""
+input eventPassOrder_inc_input {
+  quantity: Int
+}
+
+"""
+input type for inserting data into table "eventPassOrder"
+"""
+input eventPassOrder_insert_input {
+  eventPassId: String
+  quantity: Int
 }
 
 """aggregate max on columns"""
 type eventPassOrder_max_fields {
+  accountId: uuid
   created_at: timestamptz
   eventPassId: String
   quantity: Int
-  status: String
+  updated_at: timestamptz
 }
 
 """aggregate min on columns"""
 type eventPassOrder_min_fields {
+  accountId: uuid
   created_at: timestamptz
   eventPassId: String
   quantity: Int
-  status: String
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "eventPassOrder"
+"""
+type eventPassOrder_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [eventPassOrder!]!
+}
+
+"""
+on_conflict condition type for table "eventPassOrder"
+"""
+input eventPassOrder_on_conflict {
+  constraint: eventPassOrder_constraint!
+  update_columns: [eventPassOrder_update_column!]! = []
+  where: eventPassOrder_bool_exp
 }
 
 """Ordering options when selecting data from "eventPassOrder"."""
 input eventPassOrder_order_by {
   account: account_order_by
+  accountId: order_by
   created_at: order_by
   eventPassId: order_by
   quantity: order_by
   status: order_by
+  updated_at: order_by
 }
 
 """
 select columns of table "eventPassOrder"
 """
 enum eventPassOrder_select_column {
+  """column name"""
+  accountId
+
   """column name"""
   created_at
 
@@ -6489,6 +6545,16 @@ enum eventPassOrder_select_column {
 
   """column name"""
   status
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "eventPassOrder"
+"""
+input eventPassOrder_set_input {
+  quantity: Int
 }
 
 """aggregate stddev on columns"""
@@ -6519,15 +6585,36 @@ input eventPassOrder_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input eventPassOrder_stream_cursor_value_input {
+  accountId: uuid
   created_at: timestamptz
   eventPassId: String
   quantity: Int
-  status: String
+  status: orderStatus_enum
+  updated_at: timestamptz
 }
 
 """aggregate sum on columns"""
 type eventPassOrder_sum_fields {
   quantity: Int
+}
+
+"""
+update columns of table "eventPassOrder"
+"""
+enum eventPassOrder_update_column {
+  """column name"""
+  quantity
+}
+
+input eventPassOrder_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: eventPassOrder_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: eventPassOrder_set_input
+
+  """filter the rows which have to be updated"""
+  where: eventPassOrder_bool_exp!
 }
 
 """aggregate var_pop on columns"""
@@ -6675,6 +6762,36 @@ type mutation_root {
     """Document to delete"""
     where: ScheduledReleaseWhereUniqueInput!
   ): ScheduledRelease
+
+  """
+  delete data from the table: "eventPassOrder"
+  """
+  delete_eventPassOrder(
+    """filter the rows which have to be deleted"""
+    where: eventPassOrder_bool_exp!
+  ): eventPassOrder_mutation_response
+
+  """
+  insert data into the table: "eventPassOrder"
+  """
+  insert_eventPassOrder(
+    """the rows to be inserted"""
+    objects: [eventPassOrder_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: eventPassOrder_on_conflict
+  ): eventPassOrder_mutation_response
+
+  """
+  insert a single row into the table: "eventPassOrder"
+  """
+  insert_eventPassOrder_one(
+    """the row to be inserted"""
+    object: eventPassOrder_insert_input!
+
+    """upsert condition"""
+    on_conflict: eventPassOrder_on_conflict
+  ): eventPassOrder
 
   """Publish one asset"""
   publishAsset(
@@ -7507,6 +7624,28 @@ type mutation_root {
   """Update one scheduledRelease"""
   updateScheduledRelease(data: ScheduledReleaseUpdateInput!, where: ScheduledReleaseWhereUniqueInput!): ScheduledRelease
 
+  """
+  update data of the table: "eventPassOrder"
+  """
+  update_eventPassOrder(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassOrder_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassOrder_set_input
+
+    """filter the rows which have to be updated"""
+    where: eventPassOrder_bool_exp!
+  ): eventPassOrder_mutation_response
+
+  """
+  update multiples rows of table: "eventPassOrder"
+  """
+  update_eventPassOrder_many(
+    """updates to execute, in order"""
+    updates: [eventPassOrder_updates!]!
+  ): [eventPassOrder_mutation_response]
+
   """Upsert one asset"""
   upsertAsset(upsert: AssetUpsertInput!, where: AssetWhereUniqueInput!): Asset
 
@@ -7518,6 +7657,24 @@ type mutation_root {
 
   """Upsert one organizer"""
   upsertOrganizer(upsert: OrganizerUpsertInput!, where: OrganizerWhereUniqueInput!): Organizer
+}
+
+enum orderStatus_enum {
+  CANCELLED
+  COMPLETED
+  CONFIRMED
+  PENDING
+}
+
+"""
+Boolean expression to compare columns of type "orderStatus_enum". All fields are combined with logical 'AND'.
+"""
+input orderStatus_enum_comparison_exp {
+  _eq: orderStatus_enum
+  _in: [orderStatus_enum!]
+  _is_null: Boolean
+  _neq: orderStatus_enum
+  _nin: [orderStatus_enum!]
 }
 
 """column ordering options"""

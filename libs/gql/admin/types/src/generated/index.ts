@@ -37,14 +37,14 @@ export type GetAccountEventPassOrderForEventPassesQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetAccountEventPassOrderForEventPassesQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number, status: string, created_at: any }> };
+export type GetAccountEventPassOrderForEventPassesQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number, status: Types.OrderStatus_Enum, created_at: any }> };
 
 export type UpsertEventPassOrdersMutationVariables = Types.Exact<{
   objects: Array<Types.EventPassOrder_Insert_Input> | Types.EventPassOrder_Insert_Input;
 }>;
 
 
-export type UpsertEventPassOrdersMutation = { __typename?: 'mutation_root', insert_eventPassOrder?: { __typename?: 'eventPassOrder_mutation_response', returning: Array<{ __typename?: 'eventPassOrder', id: any, quantity: number, status: string, eventPassId: string, accountId: any, created_at: any }> } | null };
+export type UpsertEventPassOrdersMutation = { __typename?: 'mutation_root', insert_eventPassOrder?: { __typename?: 'eventPassOrder_mutation_response', returning: Array<{ __typename?: 'eventPassOrder', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId: string, accountId: any, created_at: any }> } | null };
 
 export type EventListFieldsFragment = { __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string } };
 

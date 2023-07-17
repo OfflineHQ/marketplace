@@ -1,0 +1,10 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- INSERT INTO public."currency" (value) VALUES
+-- ('EUR'),
+-- ('USD'),
+-- ('GBP'),
+-- ('CNY'),
+-- ('SGD'),
+-- ('QAR'),
+-- ('AED');

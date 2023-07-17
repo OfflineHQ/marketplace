@@ -1,0 +1,28 @@
+query GetEventPassOrderForEventPasses($eventPassIds: [String!]) {
+  eventPassOrder(where: { eventPassId: { _in: $eventPassIds } }) {
+    eventPassId
+    quantity
+    status
+    created_at
+  }
+}
+
+mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
+  insert_eventPassOrder(
+    objects: $objects
+    on_conflict: { constraint: eventPassOrder_pkey, update_columns: [quantity] }
+  ) {
+    returning {
+      quantity
+      status
+      eventPassId
+      created_at
+    }
+  }
+}
+
+mutation DeleteEventPassOrders($eventPassIds: [String!]) {
+  delete_eventPassOrder(where: { eventPassId: { _in: $eventPassIds } }) {
+    affected_rows
+  }
+}

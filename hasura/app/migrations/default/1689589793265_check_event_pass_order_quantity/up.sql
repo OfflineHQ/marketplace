@@ -18,7 +18,7 @@ BEGIN
 
   -- Fetch the maxAmount and maxAmountPerUser for the eventPassId
   SELECT "maxAmount", "maxAmountPerUser" INTO max_amount, max_amount_per_user
-  FROM "EventPass"
+  FROM "eventPassPricing"
   WHERE "id" = NEW."eventPassId";
 
   -- Check if the total quantity plus the new quantity exceeds the maxAmount or maxAmountPerUser
