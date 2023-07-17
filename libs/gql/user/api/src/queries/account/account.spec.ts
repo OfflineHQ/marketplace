@@ -3,27 +3,34 @@ import {
   betaAdminClient,
   sebGoogleClient,
 } from '@test-utils/gql';
-import { deleteAccounts, seedDb, closeConnection } from '@test-utils/db';
-import { sleep } from '@utils';
+import {
+  deleteAccounts,
+  seedDb,
+  createDbClient,
+  type PgClient,
+} from '@test-utils/db';
 
 describe('user access security tests', () => {
+  let client: PgClient;
   const alphaAdmin = alphaAdminClient();
   const betaAdmin = betaAdminClient();
   const sebGoogle = sebGoogleClient();
-  beforeEach(async () => {
-    await deleteAccounts();
-    // seed the database with three users alpha, beta and seb
-    await seedDb('./tools/test/seeds/account.sql');
-  });
-  afterEach(async () => {
-    // used to avoid socket hang up error from node-fetch
-    await sleep(100);
+
+  beforeAll(async () => {
+    client = await createDbClient();
   });
 
   afterAll(async () => {
-    await deleteAccounts();
-    await closeConnection();
+    await deleteAccounts(client);
+    await client.end();
   });
+
+  beforeEach(async () => {
+    await deleteAccounts(client);
+    // seed the database with three users alpha, beta and seb
+    await seedDb(client, './tools/test/seeds/account.sql');
+  });
+
   it('user alpha can retrieve his information', async () => {
     const data = await alphaAdmin.GetAccount({
       address: alphaAdmin.me.address,
