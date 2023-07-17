@@ -86,6 +86,14 @@ export type CreateEventPassPricingMutationVariables = Types.Exact<{
 
 export type CreateEventPassPricingMutation = { __typename?: 'mutation_root', insert_eventPassPricing_one?: { __typename?: 'eventPassPricing', id: any, eventPassId: string, priceAmount: number, priceCurrency: Types.Currency_Enum, maxAmount: number, maxAmountPerUser?: number | null } | null };
 
+export type UpdateEventPassPricingMutationVariables = Types.Exact<{
+  id: Types.Scalars['uuid'];
+  eventPassPricing: Types.EventPassPricing_Set_Input;
+}>;
+
+
+export type UpdateEventPassPricingMutation = { __typename?: 'mutation_root', update_eventPassPricing_by_pk?: { __typename?: 'eventPassPricing', id: any, eventPassId: string, priceAmount: number, priceCurrency: Types.Currency_Enum, maxAmount: number, maxAmountPerUser?: number | null } | null };
+
 export type GetEventPassTotalReservedQueryVariables = Types.Exact<{
   eventPassId: Types.Scalars['String'];
 }>;

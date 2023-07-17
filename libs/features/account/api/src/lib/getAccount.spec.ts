@@ -1,19 +1,20 @@
 import { getAccount } from './getAccount';
 import { createAccount } from './createAccount';
-import { deleteAccounts, closeConnection } from '@test-utils/db';
+import { deleteAccounts, createDbClient, type PgClient } from '@test-utils/db';
 
 describe('getAccount test', () => {
+  let client: PgClient;
   const account = {
     address: '0x9203',
     email: 'test@safsaf.safsaf',
   };
   beforeAll(async () => {
-    await deleteAccounts();
+    client = await createDbClient();
+    await deleteAccounts(client);
   });
   afterAll(async () => {
-    // Clean up after each test
-    await deleteAccounts();
-    await closeConnection();
+    await deleteAccounts(client);
+    await client.end();
   });
   it('should return null when account does not exist', async () => {
     const nonExistingAddress = '0xNotExisting';

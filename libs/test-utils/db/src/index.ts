@@ -17,6 +17,7 @@ export const createDbClient = async (): Promise<Client> => {
     database: 'postgres',
     password: 'password',
     port: isJestRunning() ? 5454 : 5432,
+    connectionTimeoutMillis: 3000, // wait 3 seconds for connection before timing out
   });
 
   // Connect to the database
