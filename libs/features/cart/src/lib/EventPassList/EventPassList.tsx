@@ -6,12 +6,12 @@ import type {
   EventSlugs,
 } from '@features/organizer/event/types';
 import { EventPassesSkeleton } from '../EventPasses/EventPasses';
-import { type EventPassesClientProps } from '../EventPasses/EventPassesClient';
+import { type EventPassesAnonymousProps } from '../EventPasses/EventPassesAnonymous';
 
 export interface EventPassListProps {
   deletePassesCart: (props: EventSlugs) => void;
   allPasses?: AllPassesCart;
-  EventPassesFetcher: React.FC<EventPassesClientProps>;
+  EventPassesFetcher: React.FC<EventPassesAnonymousProps>;
 }
 
 export const EventPassList: React.FC<EventPassListProps> = ({
