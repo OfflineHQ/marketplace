@@ -24,9 +24,9 @@ export const GetEventWithPassesDocument = `
       id
       name
       description
-      price {
-        amount
-        currency
+      eventPassPricing {
+        priceAmount
+        priceCurrency
       }
     }
   }

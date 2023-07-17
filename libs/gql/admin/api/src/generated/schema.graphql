@@ -962,18 +962,6 @@ input ConnectPositionInput {
 }
 
 """
-Currencies code following the standard ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217)
-"""
-enum Currency {
-  AED
-  CNY
-  EUR
-  QAR
-  SGD
-  USD
-}
-
-"""
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the date-timeformat outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representationof dates and times using the Gregorian calendar.
 """
 scalar DateTime
@@ -1981,6 +1969,7 @@ type EventPass implements Node {
     locales: [Locale!]
   ): Event
   eventPassOrderSums: eventPassOrderSums
+  eventPassPricing: eventPassPricing
 
   """List of EventPass versions"""
   history(
@@ -2017,12 +2006,6 @@ type EventPass implements Node {
     """
     locales: [Locale!]! = [en, fr]
   ): [EventPass!]!
-
-  """Maximum amount for this type of pass"""
-  maxAmount: Int!
-
-  """Maximum amount a user is authorised to purchase for this kind of pass."""
-  maxAmountPerUser: Int
 
   """
   User-friendly name of the pass, like "VIP 3-Day Pass"
@@ -2061,27 +2044,6 @@ type EventPass implements Node {
     skip: Int
     where: PassOptionWhereInput
   ): [PassOption!]!
-  price(
-    """
-    Sets the locale of the resolved parent document as the only locale in the query's subtree.
-    
-    Note that `price` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
-    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
-    
-    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
-    """
-    forceParentLocale: Boolean
-
-    """
-    Allows to optionally override locale filtering behaviour in the query's subtree.
-    
-    Note that `price` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
-    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
-    
-    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
-    """
-    locales: [Locale!]
-  ): Money!
 
   """The time the document was published. Null on documents in draft stage."""
   publishedAt(
@@ -2209,13 +2171,10 @@ input EventPassCreateInput {
   Inline mutations for managing document localizations excluding the default locale
   """
   localizations: EventPassCreateLocalizationsInput
-  maxAmount: Int!
-  maxAmountPerUser: Int
 
   """name input for default locale (en)"""
   name: String!
   passOptions: PassOptionCreateManyInlineInput
-  price: MoneyCreateOneInlineInput!
   updatedAt: DateTime
 }
 
@@ -2322,54 +2281,9 @@ input EventPassManyWhereInput {
 
   """All values starting with the given string."""
   id_starts_with: ID
-  maxAmount: Int
-  maxAmountPerUser: Int
-
-  """All values greater than the given value."""
-  maxAmountPerUser_gt: Int
-
-  """All values greater than or equal the given value."""
-  maxAmountPerUser_gte: Int
-
-  """All values that are contained in given list."""
-  maxAmountPerUser_in: [Int]
-
-  """All values less than the given value."""
-  maxAmountPerUser_lt: Int
-
-  """All values less than or equal the given value."""
-  maxAmountPerUser_lte: Int
-
-  """Any other value that exists and is not equal to the given value."""
-  maxAmountPerUser_not: Int
-
-  """All values that are not contained in given list."""
-  maxAmountPerUser_not_in: [Int]
-
-  """All values greater than the given value."""
-  maxAmount_gt: Int
-
-  """All values greater than or equal the given value."""
-  maxAmount_gte: Int
-
-  """All values that are contained in given list."""
-  maxAmount_in: [Int]
-
-  """All values less than the given value."""
-  maxAmount_lt: Int
-
-  """All values less than or equal the given value."""
-  maxAmount_lte: Int
-
-  """Any other value that exists and is not equal to the given value."""
-  maxAmount_not: Int
-
-  """All values that are not contained in given list."""
-  maxAmount_not_in: [Int]
   passOptions_every: PassOptionWhereInput
   passOptions_none: PassOptionWhereInput
   passOptions_some: PassOptionWhereInput
-  price: MoneyWhereInput
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -2428,10 +2342,6 @@ enum EventPassOrderByInput {
   description_DESC
   id_ASC
   id_DESC
-  maxAmountPerUser_ASC
-  maxAmountPerUser_DESC
-  maxAmount_ASC
-  maxAmount_DESC
   name_ASC
   name_DESC
   publishedAt_ASC
@@ -2447,13 +2357,10 @@ input EventPassUpdateInput {
 
   """Manage document localizations"""
   localizations: EventPassUpdateLocalizationsInput
-  maxAmount: Int
-  maxAmountPerUser: Int
 
   """name input for default locale (en)"""
   name: String
   passOptions: PassOptionUpdateManyInlineInput
-  price: MoneyUpdateOneInlineInput
 }
 
 input EventPassUpdateLocalizationDataInput {
@@ -2509,8 +2416,6 @@ input EventPassUpdateManyInput {
 
   """Optional updates to localizations"""
   localizations: EventPassUpdateManyLocalizationsInput
-  maxAmount: Int
-  maxAmountPerUser: Int
 
   """name input for default locale (en)"""
   name: String
@@ -2667,50 +2572,6 @@ input EventPassWhereInput {
 
   """All values starting with the given string."""
   id_starts_with: ID
-  maxAmount: Int
-  maxAmountPerUser: Int
-
-  """All values greater than the given value."""
-  maxAmountPerUser_gt: Int
-
-  """All values greater than or equal the given value."""
-  maxAmountPerUser_gte: Int
-
-  """All values that are contained in given list."""
-  maxAmountPerUser_in: [Int]
-
-  """All values less than the given value."""
-  maxAmountPerUser_lt: Int
-
-  """All values less than or equal the given value."""
-  maxAmountPerUser_lte: Int
-
-  """Any other value that exists and is not equal to the given value."""
-  maxAmountPerUser_not: Int
-
-  """All values that are not contained in given list."""
-  maxAmountPerUser_not_in: [Int]
-
-  """All values greater than the given value."""
-  maxAmount_gt: Int
-
-  """All values greater than or equal the given value."""
-  maxAmount_gte: Int
-
-  """All values that are contained in given list."""
-  maxAmount_in: [Int]
-
-  """All values less than the given value."""
-  maxAmount_lt: Int
-
-  """All values less than or equal the given value."""
-  maxAmount_lte: Int
-
-  """Any other value that exists and is not equal to the given value."""
-  maxAmount_not: Int
-
-  """All values that are not contained in given list."""
-  maxAmount_not_in: [Int]
   name: String
 
   """All values containing the given string."""
@@ -2742,7 +2603,6 @@ input EventPassWhereInput {
   passOptions_every: PassOptionWhereInput
   passOptions_none: PassOptionWhereInput
   passOptions_some: PassOptionWhereInput
-  price: MoneyWhereInput
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -3649,156 +3509,6 @@ input LocationInput {
 The Long scalar type represents non-fractional signed whole numeric values. Long can represent values between -(2^63) and 2^63 - 1.
 """
 scalar Long
-
-"""
-The 'Money' field captures both currency and amount. The currency is an enumeration type, like 'USD'. The amount is an integer, representing a decimal, in some case with two digits to the right of the decimal point. So, if you choose 'USD' and input '500' as the amount, it equates to $5.00. For Japanese yen which doesn't have cents, 500 would equates to ¥500.
-"""
-type Money {
-  """
-  The amount is an integer, representing a decimal, in some case with two digits to the right of the decimal point. So, if you choose 'USD' and input '500' as the amount, it equates to $5.00. For Japanese yen which doesn't have cents, 500 would equates to ¥500
-  """
-  amount: Int!
-  currency: Currency
-
-  """The unique identifier"""
-  id: ID!
-
-  """System stage field"""
-  stage: Stage!
-}
-
-input MoneyCreateInput {
-  amount: Int!
-  currency: Currency
-}
-
-input MoneyCreateOneInlineInput {
-  """Create and connect one Money document"""
-  create: MoneyCreateInput
-}
-
-input MoneyUpdateInput {
-  amount: Int
-  currency: Currency
-}
-
-input MoneyUpdateOneInlineInput {
-  """Create and connect one Money document"""
-  create: MoneyCreateInput
-
-  """Delete currently connected Money document"""
-  delete: Boolean
-
-  """Update single Money document"""
-  update: MoneyUpdateWithNestedWhereUniqueInput
-
-  """Upsert single Money document"""
-  upsert: MoneyUpsertWithNestedWhereUniqueInput
-}
-
-input MoneyUpdateWithNestedWhereUniqueInput {
-  """Document to update"""
-  data: MoneyUpdateInput!
-
-  """Unique document search"""
-  where: MoneyWhereUniqueInput!
-}
-
-input MoneyUpsertInput {
-  """Create document if it didn't exist"""
-  create: MoneyCreateInput!
-
-  """Update document if it exists"""
-  update: MoneyUpdateInput!
-}
-
-input MoneyUpsertWithNestedWhereUniqueInput {
-  """Upsert data"""
-  data: MoneyUpsertInput!
-
-  """Unique document search"""
-  where: MoneyWhereUniqueInput!
-}
-
-"""Identifies documents"""
-input MoneyWhereInput {
-  """Logical AND on all given filters."""
-  AND: [MoneyWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [MoneyWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [MoneyWhereInput!]
-
-  """Contains search across all appropriate fields."""
-  _search: String
-  amount: Int
-
-  """All values greater than the given value."""
-  amount_gt: Int
-
-  """All values greater than or equal the given value."""
-  amount_gte: Int
-
-  """All values that are contained in given list."""
-  amount_in: [Int]
-
-  """All values less than the given value."""
-  amount_lt: Int
-
-  """All values less than or equal the given value."""
-  amount_lte: Int
-
-  """Any other value that exists and is not equal to the given value."""
-  amount_not: Int
-
-  """All values that are not contained in given list."""
-  amount_not_in: [Int]
-  currency: Currency
-
-  """All values that are contained in given list."""
-  currency_in: [Currency]
-
-  """Any other value that exists and is not equal to the given value."""
-  currency_not: Currency
-
-  """All values that are not contained in given list."""
-  currency_not_in: [Currency]
-  id: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID]
-
-  """Any other value that exists and is not equal to the given value."""
-  id_not: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values not ending with the given string"""
-  id_not_ends_with: ID
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID]
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-}
-
-"""References Money record uniquely"""
-input MoneyWhereUniqueInput {
-  id: ID
-}
 
 """An object with an ID"""
 interface Node {
