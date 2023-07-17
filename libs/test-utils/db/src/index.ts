@@ -4,49 +4,47 @@ import { Client } from 'pg';
 
 const fs = require('fs');
 
-let connected = false;
 let dbName = '';
+
+export type PgClient = Client;
 // assigning the right port depending of if jest or cypress is running
 // localhost here because has to be working both in local or on nx cloud. work thanks to extra_hosts on db container
-const client = new Client(
-  `postgres://postgres:password@localhost:${
-    isJestRunning() ? '5454' : '5432'
-  }/postgres`
-);
-export const dbClient = async (): Promise<Client> => {
-  if (!connected) {
-    await client.connect();
-    connected = true;
-  }
+export const createDbClient = async (): Promise<Client> => {
+  // Create a new client
+  const client = new Client({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'postgres',
+    password: 'password',
+    port: isJestRunning() ? 5454 : 5432,
+  });
+
+  // Connect to the database
+  await client.connect();
+
   return client;
 };
 
-export const createDb = async () => {
-  const client = await dbClient();
+export const createDb = async (client: Client) => {
   dbName = 'test-' + Math.random().toString(36).substring(7);
   await client.query(`
     CREATE DATABASE ${dbName}
   `);
 };
 
-export const closeConnection = async () => {
-  if (connected) {
-    await client.end();
-  }
-};
-
-export const clearDb = async () => {
-  const client = await dbClient();
+export const clearDb = async (client: Client) => {
   await client.query('TRUNCATE TABLE account CASCADE;');
 };
 
-export const deleteAccounts = async () => {
-  const client = await dbClient();
+export const deleteAccounts = async (client: Client) => {
   await client.query('TRUNCATE TABLE account CASCADE;');
 };
 
-export const deleteAccount = async (email: string) => {
-  const client = await dbClient();
+export const deleteTables = async (client: Client, table: string) => {
+  await client.query(`TRUNCATE TABLE ${table} CASCADE;`);
+};
+
+export const deleteAccount = async (client: Client, email: string) => {
   // sql delete account from account table cascade delete all tokens and sessions
   await client.query(`
     DELETE FROM account CASCADE
@@ -54,14 +52,12 @@ export const deleteAccount = async (email: string) => {
   `);
 };
 
-export const seedDb = async (filePath: string) => {
-  const client = await dbClient();
+export const seedDb = async (client: Client, filePath: string) => {
   const dataSql = fs.readFileSync(filePath).toString();
   await client.query(dataSql);
 };
 
-export const queryDb = async (sql: string) => {
-  const client = await dbClient();
+export const queryDb = async (client: Client, sql: string) => {
   await client.query(sql);
 };
 

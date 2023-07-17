@@ -134,16 +134,19 @@
     @apply text-base;
   }
   a {
-    @apply text-primary;
+    @apply text-base;
   }
   a:hover {
     @apply underline;
+    @apply text-primary;
   }
   a:focus {
     @apply underline;
+    @apply text-primary;
   }
   a:active {
     @apply underline;
+    @apply text-primary;
   }
   span {
     @apply text-base;

@@ -36489,6 +36489,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "eventPassPricing_eventPassId_key",
+            "description": "unique or primary key constraint on columns \"eventPassId\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "eventPassPricing_pkey",
             "description": "unique or primary key constraint on columns \"id\"",
             "isDeprecated": false,
