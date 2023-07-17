@@ -1,13 +1,18 @@
-import { deleteAccounts, closeConnection } from '@test-utils/db';
+import { deleteAccounts, createDbClient, type PgClient } from '@test-utils/db';
 import { createAccount } from './createAccount';
 
 describe('createAccount test', () => {
-  beforeEach(async () => {
-    await deleteAccounts();
+  let client: PgClient;
+  beforeAll(async () => {
+    client = await createDbClient();
   });
   afterAll(async () => {
-    await deleteAccounts();
-    await closeConnection();
+    await deleteAccounts(client);
+    await client.end();
+  });
+
+  beforeEach(async () => {
+    await deleteAccounts(client);
   });
 
   it('should create account', async () => {

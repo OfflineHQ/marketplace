@@ -10,3 +10,20 @@ mutation CreateEventPassPricing(
     maxAmountPerUser
   }
 }
+
+mutation UpdateEventPassPricing(
+  $id: uuid!
+  $eventPassPricing: eventPassPricing_set_input!
+) {
+  update_eventPassPricing_by_pk(
+    pk_columns: { id: $id }
+    _set: $eventPassPricing
+  ) {
+    id
+    eventPassId
+    priceAmount
+    priceCurrency
+    maxAmount
+    maxAmountPerUser
+  }
+}

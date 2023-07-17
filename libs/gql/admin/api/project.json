@@ -21,7 +21,7 @@
         "lintFilePatterns": ["libs/gql/user/api/**/*.{ts, gql, graphql}"]
       }
     },
-    "test": {
+    "test-hasura": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/gql/admin/api"],
       "options": {
