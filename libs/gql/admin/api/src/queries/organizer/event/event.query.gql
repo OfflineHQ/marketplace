@@ -49,9 +49,11 @@ query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) {
       id
       name
       description
-      price {
-        amount
-        currency
+      eventPassPricing {
+        priceAmount
+        priceCurrency
+        maxAmount
+        maxAmountPerUser
       }
     }
   }
