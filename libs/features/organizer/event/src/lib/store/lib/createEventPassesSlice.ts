@@ -118,8 +118,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
   },
   getPassesCartTotalPrice: ({ organizerSlug, eventSlug, passesData }) => {
     let totalAmount = 0;
-    // const totalCurrency: passesData[0].price.currency;
-    const totalCurrency = passesData[0].price.currency;
+    const totalCurrency = passesData[0].eventPassPricing?.priceCurrency;
     const passesCart = get().getPassesCart({ organizerSlug, eventSlug });
     if (!passesCart) return { amount: 0, currency: totalCurrency };
     passesCart.forEach((passCart) => {
@@ -128,7 +127,8 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
         passesData,
       });
       if (passData) {
-        totalAmount += passCart.amount * passData.price.amount;
+        totalAmount +=
+          passCart.amount * (passData.eventPassPricing?.priceAmount || 0);
       }
     });
     return { amount: totalAmount, currency: totalCurrency };
