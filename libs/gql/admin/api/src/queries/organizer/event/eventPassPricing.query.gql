@@ -1,0 +1,12 @@
+mutation CreateEventPassPricing(
+  $eventPassPricing: eventPassPricing_insert_input!
+) {
+  insert_eventPassPricing_one(object: $eventPassPricing) {
+    id
+    eventPassId
+    priceAmount
+    priceCurrency
+    maxAmount
+    maxAmountPerUser
+  }
+}
