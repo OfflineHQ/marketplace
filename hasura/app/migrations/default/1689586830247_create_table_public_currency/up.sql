@@ -1,0 +1,1 @@
+CREATE TABLE "public"."currency" ("value" text NOT NULL, PRIMARY KEY ("value") );COMMENT ON TABLE "public"."currency" IS E'Currencies code following the standard ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217)';

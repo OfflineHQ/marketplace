@@ -21,14 +21,14 @@ CREATE TABLE public.account (
     "organizerId" text
 );
 COMMENT ON TABLE public.account IS 'An account can represent an user or organizer. It store essential informations and is used as the root class for relationships with other tables';
-CREATE TABLE public."orderStatusEnum" (
+CREATE TABLE public."orderStatus" (
     value text NOT NULL
 );
 ALTER TABLE ONLY public.account
     ADD CONSTRAINT account_address_key UNIQUE (address);
 ALTER TABLE ONLY public.account
     ADD CONSTRAINT account_pkey PRIMARY KEY (id);
-ALTER TABLE ONLY public."orderStatusEnum"
-    ADD CONSTRAINT "orderStatusEnum_pkey" PRIMARY KEY (value);
+ALTER TABLE ONLY public."orderStatus"
+    ADD CONSTRAINT "orderStatus_pkey" PRIMARY KEY (value);
 CREATE TRIGGER set_public_account_updated_at BEFORE UPDATE ON public.account FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 COMMENT ON TRIGGER set_public_account_updated_at ON public.account IS 'trigger to set value of column "updated_at" to current timestamp on row update';

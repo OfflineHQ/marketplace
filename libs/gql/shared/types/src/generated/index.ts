@@ -4780,6 +4780,147 @@ export type Account_Updates = {
   where: Account_Bool_Exp;
 };
 
+/** Currencies code following the standard ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217) */
+export type Currency = {
+  __typename?: 'currency';
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "currency" */
+export type Currency_Aggregate = {
+  __typename?: 'currency_aggregate';
+  aggregate?: Maybe<Currency_Aggregate_Fields>;
+  nodes: Array<Currency>;
+};
+
+/** aggregate fields of "currency" */
+export type Currency_Aggregate_Fields = {
+  __typename?: 'currency_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Currency_Max_Fields>;
+  min?: Maybe<Currency_Min_Fields>;
+};
+
+
+/** aggregate fields of "currency" */
+export type Currency_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Currency_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "currency". All fields are combined with a logical 'AND'. */
+export type Currency_Bool_Exp = {
+  _and?: InputMaybe<Array<Currency_Bool_Exp>>;
+  _not?: InputMaybe<Currency_Bool_Exp>;
+  _or?: InputMaybe<Array<Currency_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "currency" */
+export const enum Currency_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  CurrencyPkey = 'currency_pkey'
+};
+
+export const enum Currency_Enum {
+  Aed = 'AED',
+  Cny = 'CNY',
+  Eur = 'EUR',
+  Gbp = 'GBP',
+  Qar = 'QAR',
+  Sgd = 'SGD',
+  Usd = 'USD'
+};
+
+/** Boolean expression to compare columns of type "currency_enum". All fields are combined with logical 'AND'. */
+export type Currency_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Currency_Enum>;
+  _in?: InputMaybe<Array<Currency_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Currency_Enum>;
+  _nin?: InputMaybe<Array<Currency_Enum>>;
+};
+
+/** input type for inserting data into table "currency" */
+export type Currency_Insert_Input = {
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Currency_Max_Fields = {
+  __typename?: 'currency_max_fields';
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Currency_Min_Fields = {
+  __typename?: 'currency_min_fields';
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "currency" */
+export type Currency_Mutation_Response = {
+  __typename?: 'currency_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Currency>;
+};
+
+/** on_conflict condition type for table "currency" */
+export type Currency_On_Conflict = {
+  constraint: Currency_Constraint;
+  update_columns?: Array<Currency_Update_Column>;
+  where?: InputMaybe<Currency_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "currency". */
+export type Currency_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: currency */
+export type Currency_Pk_Columns_Input = {
+  value: Scalars['String'];
+};
+
+/** select columns of table "currency" */
+export const enum Currency_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "currency" */
+export type Currency_Set_Input = {
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "currency" */
+export type Currency_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Currency_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Currency_Stream_Cursor_Value_Input = {
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "currency" */
+export const enum Currency_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type Currency_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Currency_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Currency_Bool_Exp;
+};
+
 /** ordering argument of a cursor */
 export const enum Cursor_Ordering {
   /** ascending ordering of the cursor */
@@ -4797,9 +4938,11 @@ export type EventPassOrder = {
   created_at: Scalars['timestamptz'];
   eventPass?: Maybe<EventPass>;
   eventPassId: Scalars['String'];
+  /** An object relationship */
+  eventPassPricing?: Maybe<EventPassPricing>;
   id: Scalars['uuid'];
   quantity: Scalars['Int'];
-  status: Scalars['String'];
+  status: OrderStatus_Enum;
   updated_at: Scalars['timestamptz'];
 };
 
@@ -5052,9 +5195,10 @@ export type EventPassOrder_Bool_Exp = {
   accountId?: InputMaybe<Uuid_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   eventPassId?: InputMaybe<String_Comparison_Exp>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   quantity?: InputMaybe<Int_Comparison_Exp>;
-  status?: InputMaybe<String_Comparison_Exp>;
+  status?: InputMaybe<OrderStatus_Enum_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -5075,9 +5219,10 @@ export type EventPassOrder_Insert_Input = {
   accountId?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
   quantity?: InputMaybe<Scalars['Int']>;
-  status?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<OrderStatus_Enum>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -5089,7 +5234,6 @@ export type EventPassOrder_Max_Fields = {
   eventPassId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   quantity?: Maybe<Scalars['Int']>;
-  status?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -5101,7 +5245,6 @@ export type EventPassOrder_Min_Fields = {
   eventPassId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   quantity?: Maybe<Scalars['Int']>;
-  status?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -5127,6 +5270,7 @@ export type EventPassOrder_Order_By = {
   accountId?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   eventPassId?: InputMaybe<Order_By>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Order_By>;
   id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
@@ -5163,7 +5307,7 @@ export type EventPassOrder_Set_Input = {
   eventPassId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   quantity?: InputMaybe<Scalars['Int']>;
-  status?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<OrderStatus_Enum>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -5200,7 +5344,7 @@ export type EventPassOrder_Stream_Cursor_Value_Input = {
   eventPassId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   quantity?: InputMaybe<Scalars['Int']>;
-  status?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<OrderStatus_Enum>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -5255,6 +5399,298 @@ export type EventPassOrder_Variance_Fields = {
   quantity?: Maybe<Scalars['Float']>;
 };
 
+/** The EventPassPricing table stores pricing information related to each Event Pass. It includes the price amount, the currency in which the price is denoted, and the maximum quantity that can be ordered both overall and per user. Each row in the table represents a unique combination of these attributes for a specific Event Pass. This table is key in managing the sales and availability of Event Passes. */
+export type EventPassPricing = {
+  __typename?: 'eventPassPricing';
+  created_at: Scalars['timestamptz'];
+  eventPassId: Scalars['String'];
+  id: Scalars['uuid'];
+  maxAmount: Scalars['Int'];
+  maxAmountPerUser?: Maybe<Scalars['Int']>;
+  priceAmount: Scalars['Int'];
+  priceCurrency: Currency_Enum;
+  updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "eventPassPricing" */
+export type EventPassPricing_Aggregate = {
+  __typename?: 'eventPassPricing_aggregate';
+  aggregate?: Maybe<EventPassPricing_Aggregate_Fields>;
+  nodes: Array<EventPassPricing>;
+};
+
+/** aggregate fields of "eventPassPricing" */
+export type EventPassPricing_Aggregate_Fields = {
+  __typename?: 'eventPassPricing_aggregate_fields';
+  avg?: Maybe<EventPassPricing_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<EventPassPricing_Max_Fields>;
+  min?: Maybe<EventPassPricing_Min_Fields>;
+  stddev?: Maybe<EventPassPricing_Stddev_Fields>;
+  stddev_pop?: Maybe<EventPassPricing_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<EventPassPricing_Stddev_Samp_Fields>;
+  sum?: Maybe<EventPassPricing_Sum_Fields>;
+  var_pop?: Maybe<EventPassPricing_Var_Pop_Fields>;
+  var_samp?: Maybe<EventPassPricing_Var_Samp_Fields>;
+  variance?: Maybe<EventPassPricing_Variance_Fields>;
+};
+
+
+/** aggregate fields of "eventPassPricing" */
+export type EventPassPricing_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<EventPassPricing_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type EventPassPricing_Avg_Fields = {
+  __typename?: 'eventPassPricing_avg_fields';
+  maxAmount?: Maybe<Scalars['Float']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']>;
+  priceAmount?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "eventPassPricing". All fields are combined with a logical 'AND'. */
+export type EventPassPricing_Bool_Exp = {
+  _and?: InputMaybe<Array<EventPassPricing_Bool_Exp>>;
+  _not?: InputMaybe<EventPassPricing_Bool_Exp>;
+  _or?: InputMaybe<Array<EventPassPricing_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  eventPassId?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  maxAmount?: InputMaybe<Int_Comparison_Exp>;
+  maxAmountPerUser?: InputMaybe<Int_Comparison_Exp>;
+  priceAmount?: InputMaybe<Int_Comparison_Exp>;
+  priceCurrency?: InputMaybe<Currency_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "eventPassPricing" */
+export const enum EventPassPricing_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  EventPassPricingPkey = 'eventPassPricing_pkey'
+};
+
+/** input type for incrementing numeric columns in table "eventPassPricing" */
+export type EventPassPricing_Inc_Input = {
+  maxAmount?: InputMaybe<Scalars['Int']>;
+  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
+  priceAmount?: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "eventPassPricing" */
+export type EventPassPricing_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  maxAmount?: InputMaybe<Scalars['Int']>;
+  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
+  priceAmount?: InputMaybe<Scalars['Int']>;
+  priceCurrency?: InputMaybe<Currency_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type EventPassPricing_Max_Fields = {
+  __typename?: 'eventPassPricing_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  eventPassId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  maxAmount?: Maybe<Scalars['Int']>;
+  maxAmountPerUser?: Maybe<Scalars['Int']>;
+  priceAmount?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type EventPassPricing_Min_Fields = {
+  __typename?: 'eventPassPricing_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  eventPassId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  maxAmount?: Maybe<Scalars['Int']>;
+  maxAmountPerUser?: Maybe<Scalars['Int']>;
+  priceAmount?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "eventPassPricing" */
+export type EventPassPricing_Mutation_Response = {
+  __typename?: 'eventPassPricing_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<EventPassPricing>;
+};
+
+/** input type for inserting object relation for remote table "eventPassPricing" */
+export type EventPassPricing_Obj_Rel_Insert_Input = {
+  data: EventPassPricing_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<EventPassPricing_On_Conflict>;
+};
+
+/** on_conflict condition type for table "eventPassPricing" */
+export type EventPassPricing_On_Conflict = {
+  constraint: EventPassPricing_Constraint;
+  update_columns?: Array<EventPassPricing_Update_Column>;
+  where?: InputMaybe<EventPassPricing_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "eventPassPricing". */
+export type EventPassPricing_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  maxAmount?: InputMaybe<Order_By>;
+  maxAmountPerUser?: InputMaybe<Order_By>;
+  priceAmount?: InputMaybe<Order_By>;
+  priceCurrency?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: eventPassPricing */
+export type EventPassPricing_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "eventPassPricing" */
+export const enum EventPassPricing_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  MaxAmount = 'maxAmount',
+  /** column name */
+  MaxAmountPerUser = 'maxAmountPerUser',
+  /** column name */
+  PriceAmount = 'priceAmount',
+  /** column name */
+  PriceCurrency = 'priceCurrency',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "eventPassPricing" */
+export type EventPassPricing_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  maxAmount?: InputMaybe<Scalars['Int']>;
+  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
+  priceAmount?: InputMaybe<Scalars['Int']>;
+  priceCurrency?: InputMaybe<Currency_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type EventPassPricing_Stddev_Fields = {
+  __typename?: 'eventPassPricing_stddev_fields';
+  maxAmount?: Maybe<Scalars['Float']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']>;
+  priceAmount?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type EventPassPricing_Stddev_Pop_Fields = {
+  __typename?: 'eventPassPricing_stddev_pop_fields';
+  maxAmount?: Maybe<Scalars['Float']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']>;
+  priceAmount?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type EventPassPricing_Stddev_Samp_Fields = {
+  __typename?: 'eventPassPricing_stddev_samp_fields';
+  maxAmount?: Maybe<Scalars['Float']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']>;
+  priceAmount?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "eventPassPricing" */
+export type EventPassPricing_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: EventPassPricing_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EventPassPricing_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  maxAmount?: InputMaybe<Scalars['Int']>;
+  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
+  priceAmount?: InputMaybe<Scalars['Int']>;
+  priceCurrency?: InputMaybe<Currency_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate sum on columns */
+export type EventPassPricing_Sum_Fields = {
+  __typename?: 'eventPassPricing_sum_fields';
+  maxAmount?: Maybe<Scalars['Int']>;
+  maxAmountPerUser?: Maybe<Scalars['Int']>;
+  priceAmount?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "eventPassPricing" */
+export const enum EventPassPricing_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  MaxAmount = 'maxAmount',
+  /** column name */
+  MaxAmountPerUser = 'maxAmountPerUser',
+  /** column name */
+  PriceAmount = 'priceAmount',
+  /** column name */
+  PriceCurrency = 'priceCurrency',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type EventPassPricing_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<EventPassPricing_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<EventPassPricing_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: EventPassPricing_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type EventPassPricing_Var_Pop_Fields = {
+  __typename?: 'eventPassPricing_var_pop_fields';
+  maxAmount?: Maybe<Scalars['Float']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']>;
+  priceAmount?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type EventPassPricing_Var_Samp_Fields = {
+  __typename?: 'eventPassPricing_var_samp_fields';
+  maxAmount?: Maybe<Scalars['Float']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']>;
+  priceAmount?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type EventPassPricing_Variance_Fields = {
+  __typename?: 'eventPassPricing_variance_fields';
+  maxAmount?: Maybe<Scalars['Float']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']>;
+  priceAmount?: Maybe<Scalars['Float']>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -5300,6 +5736,10 @@ export type Mutation_Root = {
   delete_account?: Maybe<Account_Mutation_Response>;
   /** delete single row from the table: "account" */
   delete_account_by_pk?: Maybe<Account>;
+  /** delete data from the table: "currency" */
+  delete_currency?: Maybe<Currency_Mutation_Response>;
+  /** delete single row from the table: "currency" */
+  delete_currency_by_pk?: Maybe<Currency>;
   /** delete data from the table: "eventPassOrder" */
   delete_eventPassOrder?: Maybe<EventPassOrder_Mutation_Response>;
   /** delete data from the table: "eventPassOrderSums" */
@@ -5308,14 +5748,22 @@ export type Mutation_Root = {
   delete_eventPassOrderSums_by_pk?: Maybe<EventPassOrderSums>;
   /** delete single row from the table: "eventPassOrder" */
   delete_eventPassOrder_by_pk?: Maybe<EventPassOrder>;
-  /** delete data from the table: "orderStatusEnum" */
-  delete_orderStatusEnum?: Maybe<OrderStatusEnum_Mutation_Response>;
-  /** delete single row from the table: "orderStatusEnum" */
-  delete_orderStatusEnum_by_pk?: Maybe<OrderStatusEnum>;
+  /** delete data from the table: "eventPassPricing" */
+  delete_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
+  /** delete single row from the table: "eventPassPricing" */
+  delete_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
+  /** delete data from the table: "orderStatus" */
+  delete_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
+  /** delete single row from the table: "orderStatus" */
+  delete_orderStatus_by_pk?: Maybe<OrderStatus>;
   /** insert data into the table: "account" */
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert a single row into the table: "account" */
   insert_account_one?: Maybe<Account>;
+  /** insert data into the table: "currency" */
+  insert_currency?: Maybe<Currency_Mutation_Response>;
+  /** insert a single row into the table: "currency" */
+  insert_currency_one?: Maybe<Currency>;
   /** insert data into the table: "eventPassOrder" */
   insert_eventPassOrder?: Maybe<EventPassOrder_Mutation_Response>;
   /** insert data into the table: "eventPassOrderSums" */
@@ -5324,10 +5772,14 @@ export type Mutation_Root = {
   insert_eventPassOrderSums_one?: Maybe<EventPassOrderSums>;
   /** insert a single row into the table: "eventPassOrder" */
   insert_eventPassOrder_one?: Maybe<EventPassOrder>;
-  /** insert data into the table: "orderStatusEnum" */
-  insert_orderStatusEnum?: Maybe<OrderStatusEnum_Mutation_Response>;
-  /** insert a single row into the table: "orderStatusEnum" */
-  insert_orderStatusEnum_one?: Maybe<OrderStatusEnum>;
+  /** insert data into the table: "eventPassPricing" */
+  insert_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
+  /** insert a single row into the table: "eventPassPricing" */
+  insert_eventPassPricing_one?: Maybe<EventPassPricing>;
+  /** insert data into the table: "orderStatus" */
+  insert_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
+  /** insert a single row into the table: "orderStatus" */
+  insert_orderStatus_one?: Maybe<OrderStatus>;
   /** Publish one asset */
   publishAsset?: Maybe<Asset>;
   /** Publish one event */
@@ -5424,6 +5876,12 @@ export type Mutation_Root = {
   update_account_by_pk?: Maybe<Account>;
   /** update multiples rows of table: "account" */
   update_account_many?: Maybe<Array<Maybe<Account_Mutation_Response>>>;
+  /** update data of the table: "currency" */
+  update_currency?: Maybe<Currency_Mutation_Response>;
+  /** update single row of the table: "currency" */
+  update_currency_by_pk?: Maybe<Currency>;
+  /** update multiples rows of table: "currency" */
+  update_currency_many?: Maybe<Array<Maybe<Currency_Mutation_Response>>>;
   /** update data of the table: "eventPassOrder" */
   update_eventPassOrder?: Maybe<EventPassOrder_Mutation_Response>;
   /** update data of the table: "eventPassOrderSums" */
@@ -5436,12 +5894,18 @@ export type Mutation_Root = {
   update_eventPassOrder_by_pk?: Maybe<EventPassOrder>;
   /** update multiples rows of table: "eventPassOrder" */
   update_eventPassOrder_many?: Maybe<Array<Maybe<EventPassOrder_Mutation_Response>>>;
-  /** update data of the table: "orderStatusEnum" */
-  update_orderStatusEnum?: Maybe<OrderStatusEnum_Mutation_Response>;
-  /** update single row of the table: "orderStatusEnum" */
-  update_orderStatusEnum_by_pk?: Maybe<OrderStatusEnum>;
-  /** update multiples rows of table: "orderStatusEnum" */
-  update_orderStatusEnum_many?: Maybe<Array<Maybe<OrderStatusEnum_Mutation_Response>>>;
+  /** update data of the table: "eventPassPricing" */
+  update_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
+  /** update single row of the table: "eventPassPricing" */
+  update_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
+  /** update multiples rows of table: "eventPassPricing" */
+  update_eventPassPricing_many?: Maybe<Array<Maybe<EventPassPricing_Mutation_Response>>>;
+  /** update data of the table: "orderStatus" */
+  update_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
+  /** update single row of the table: "orderStatus" */
+  update_orderStatus_by_pk?: Maybe<OrderStatus>;
+  /** update multiples rows of table: "orderStatus" */
+  update_orderStatus_many?: Maybe<Array<Maybe<OrderStatus_Mutation_Response>>>;
   /** Upsert one asset */
   upsertAsset?: Maybe<Asset>;
   /** Upsert one event */
@@ -5600,6 +6064,18 @@ export type Mutation_RootDelete_Account_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_CurrencyArgs = {
+  where: Currency_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Currency_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_EventPassOrderArgs = {
   where: EventPassOrder_Bool_Exp;
 };
@@ -5624,13 +6100,25 @@ export type Mutation_RootDelete_EventPassOrder_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_OrderStatusEnumArgs = {
-  where: OrderStatusEnum_Bool_Exp;
+export type Mutation_RootDelete_EventPassPricingArgs = {
+  where: EventPassPricing_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootDelete_OrderStatusEnum_By_PkArgs = {
+export type Mutation_RootDelete_EventPassPricing_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_OrderStatusArgs = {
+  where: OrderStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_OrderStatus_By_PkArgs = {
   value: Scalars['String'];
 };
 
@@ -5646,6 +6134,20 @@ export type Mutation_RootInsert_AccountArgs = {
 export type Mutation_RootInsert_Account_OneArgs = {
   object: Account_Insert_Input;
   on_conflict?: InputMaybe<Account_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_CurrencyArgs = {
+  objects: Array<Currency_Insert_Input>;
+  on_conflict?: InputMaybe<Currency_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Currency_OneArgs = {
+  object: Currency_Insert_Input;
+  on_conflict?: InputMaybe<Currency_On_Conflict>;
 };
 
 
@@ -5678,16 +6180,30 @@ export type Mutation_RootInsert_EventPassOrder_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_OrderStatusEnumArgs = {
-  objects: Array<OrderStatusEnum_Insert_Input>;
-  on_conflict?: InputMaybe<OrderStatusEnum_On_Conflict>;
+export type Mutation_RootInsert_EventPassPricingArgs = {
+  objects: Array<EventPassPricing_Insert_Input>;
+  on_conflict?: InputMaybe<EventPassPricing_On_Conflict>;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsert_OrderStatusEnum_OneArgs = {
-  object: OrderStatusEnum_Insert_Input;
-  on_conflict?: InputMaybe<OrderStatusEnum_On_Conflict>;
+export type Mutation_RootInsert_EventPassPricing_OneArgs = {
+  object: EventPassPricing_Insert_Input;
+  on_conflict?: InputMaybe<EventPassPricing_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_OrderStatusArgs = {
+  objects: Array<OrderStatus_Insert_Input>;
+  on_conflict?: InputMaybe<OrderStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_OrderStatus_OneArgs = {
+  object: OrderStatus_Insert_Input;
+  on_conflict?: InputMaybe<OrderStatus_On_Conflict>;
 };
 
 
@@ -6191,6 +6707,26 @@ export type Mutation_RootUpdate_Account_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_CurrencyArgs = {
+  _set?: InputMaybe<Currency_Set_Input>;
+  where: Currency_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Currency_By_PkArgs = {
+  _set?: InputMaybe<Currency_Set_Input>;
+  pk_columns: Currency_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Currency_ManyArgs = {
+  updates: Array<Currency_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_EventPassOrderArgs = {
   _inc?: InputMaybe<EventPassOrder_Inc_Input>;
   _set?: InputMaybe<EventPassOrder_Set_Input>;
@@ -6235,22 +6771,44 @@ export type Mutation_RootUpdate_EventPassOrder_ManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_OrderStatusEnumArgs = {
-  _set?: InputMaybe<OrderStatusEnum_Set_Input>;
-  where: OrderStatusEnum_Bool_Exp;
+export type Mutation_RootUpdate_EventPassPricingArgs = {
+  _inc?: InputMaybe<EventPassPricing_Inc_Input>;
+  _set?: InputMaybe<EventPassPricing_Set_Input>;
+  where: EventPassPricing_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_OrderStatusEnum_By_PkArgs = {
-  _set?: InputMaybe<OrderStatusEnum_Set_Input>;
-  pk_columns: OrderStatusEnum_Pk_Columns_Input;
+export type Mutation_RootUpdate_EventPassPricing_By_PkArgs = {
+  _inc?: InputMaybe<EventPassPricing_Inc_Input>;
+  _set?: InputMaybe<EventPassPricing_Set_Input>;
+  pk_columns: EventPassPricing_Pk_Columns_Input;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_OrderStatusEnum_ManyArgs = {
-  updates: Array<OrderStatusEnum_Updates>;
+export type Mutation_RootUpdate_EventPassPricing_ManyArgs = {
+  updates: Array<EventPassPricing_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_OrderStatusArgs = {
+  _set?: InputMaybe<OrderStatus_Set_Input>;
+  where: OrderStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_OrderStatus_By_PkArgs = {
+  _set?: InputMaybe<OrderStatus_Set_Input>;
+  pk_columns: OrderStatus_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_OrderStatus_ManyArgs = {
+  updates: Array<OrderStatus_Updates>;
 };
 
 
@@ -6281,126 +6839,142 @@ export type Mutation_RootUpsertOrganizerArgs = {
   where: OrganizerWhereUniqueInput;
 };
 
-/** columns and relationships of "orderStatusEnum" */
-export type OrderStatusEnum = {
-  __typename?: 'orderStatusEnum';
+/** columns and relationships of "orderStatus" */
+export type OrderStatus = {
+  __typename?: 'orderStatus';
   value: Scalars['String'];
 };
 
-/** aggregated selection of "orderStatusEnum" */
-export type OrderStatusEnum_Aggregate = {
-  __typename?: 'orderStatusEnum_aggregate';
-  aggregate?: Maybe<OrderStatusEnum_Aggregate_Fields>;
-  nodes: Array<OrderStatusEnum>;
+/** aggregated selection of "orderStatus" */
+export type OrderStatus_Aggregate = {
+  __typename?: 'orderStatus_aggregate';
+  aggregate?: Maybe<OrderStatus_Aggregate_Fields>;
+  nodes: Array<OrderStatus>;
 };
 
-/** aggregate fields of "orderStatusEnum" */
-export type OrderStatusEnum_Aggregate_Fields = {
-  __typename?: 'orderStatusEnum_aggregate_fields';
+/** aggregate fields of "orderStatus" */
+export type OrderStatus_Aggregate_Fields = {
+  __typename?: 'orderStatus_aggregate_fields';
   count: Scalars['Int'];
-  max?: Maybe<OrderStatusEnum_Max_Fields>;
-  min?: Maybe<OrderStatusEnum_Min_Fields>;
+  max?: Maybe<OrderStatus_Max_Fields>;
+  min?: Maybe<OrderStatus_Min_Fields>;
 };
 
 
-/** aggregate fields of "orderStatusEnum" */
-export type OrderStatusEnum_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<OrderStatusEnum_Select_Column>>;
+/** aggregate fields of "orderStatus" */
+export type OrderStatus_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<OrderStatus_Select_Column>>;
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
-/** Boolean expression to filter rows from the table "orderStatusEnum". All fields are combined with a logical 'AND'. */
-export type OrderStatusEnum_Bool_Exp = {
-  _and?: InputMaybe<Array<OrderStatusEnum_Bool_Exp>>;
-  _not?: InputMaybe<OrderStatusEnum_Bool_Exp>;
-  _or?: InputMaybe<Array<OrderStatusEnum_Bool_Exp>>;
+/** Boolean expression to filter rows from the table "orderStatus". All fields are combined with a logical 'AND'. */
+export type OrderStatus_Bool_Exp = {
+  _and?: InputMaybe<Array<OrderStatus_Bool_Exp>>;
+  _not?: InputMaybe<OrderStatus_Bool_Exp>;
+  _or?: InputMaybe<Array<OrderStatus_Bool_Exp>>;
   value?: InputMaybe<String_Comparison_Exp>;
 };
 
-/** unique or primary key constraints on table "orderStatusEnum" */
-export const enum OrderStatusEnum_Constraint {
+/** unique or primary key constraints on table "orderStatus" */
+export const enum OrderStatus_Constraint {
   /** unique or primary key constraint on columns "value" */
-  OrderStatusEnumPkey = 'orderStatusEnum_pkey'
+  OrderStatusPkey = 'orderStatus_pkey'
 };
 
-/** input type for inserting data into table "orderStatusEnum" */
-export type OrderStatusEnum_Insert_Input = {
+export const enum OrderStatus_Enum {
+  Cancelled = 'CANCELLED',
+  Completed = 'COMPLETED',
+  Confirmed = 'CONFIRMED',
+  Pending = 'PENDING'
+};
+
+/** Boolean expression to compare columns of type "orderStatus_enum". All fields are combined with logical 'AND'. */
+export type OrderStatus_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<OrderStatus_Enum>;
+  _in?: InputMaybe<Array<OrderStatus_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<OrderStatus_Enum>;
+  _nin?: InputMaybe<Array<OrderStatus_Enum>>;
+};
+
+/** input type for inserting data into table "orderStatus" */
+export type OrderStatus_Insert_Input = {
   value?: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
-export type OrderStatusEnum_Max_Fields = {
-  __typename?: 'orderStatusEnum_max_fields';
+export type OrderStatus_Max_Fields = {
+  __typename?: 'orderStatus_max_fields';
   value?: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
-export type OrderStatusEnum_Min_Fields = {
-  __typename?: 'orderStatusEnum_min_fields';
+export type OrderStatus_Min_Fields = {
+  __typename?: 'orderStatus_min_fields';
   value?: Maybe<Scalars['String']>;
 };
 
-/** response of any mutation on the table "orderStatusEnum" */
-export type OrderStatusEnum_Mutation_Response = {
-  __typename?: 'orderStatusEnum_mutation_response';
+/** response of any mutation on the table "orderStatus" */
+export type OrderStatus_Mutation_Response = {
+  __typename?: 'orderStatus_mutation_response';
   /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
-  returning: Array<OrderStatusEnum>;
+  returning: Array<OrderStatus>;
 };
 
-/** on_conflict condition type for table "orderStatusEnum" */
-export type OrderStatusEnum_On_Conflict = {
-  constraint: OrderStatusEnum_Constraint;
-  update_columns?: Array<OrderStatusEnum_Update_Column>;
-  where?: InputMaybe<OrderStatusEnum_Bool_Exp>;
+/** on_conflict condition type for table "orderStatus" */
+export type OrderStatus_On_Conflict = {
+  constraint: OrderStatus_Constraint;
+  update_columns?: Array<OrderStatus_Update_Column>;
+  where?: InputMaybe<OrderStatus_Bool_Exp>;
 };
 
-/** Ordering options when selecting data from "orderStatusEnum". */
-export type OrderStatusEnum_Order_By = {
+/** Ordering options when selecting data from "orderStatus". */
+export type OrderStatus_Order_By = {
   value?: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: orderStatusEnum */
-export type OrderStatusEnum_Pk_Columns_Input = {
+/** primary key columns input for table: orderStatus */
+export type OrderStatus_Pk_Columns_Input = {
   value: Scalars['String'];
 };
 
-/** select columns of table "orderStatusEnum" */
-export const enum OrderStatusEnum_Select_Column {
+/** select columns of table "orderStatus" */
+export const enum OrderStatus_Select_Column {
   /** column name */
   Value = 'value'
 };
 
-/** input type for updating data in table "orderStatusEnum" */
-export type OrderStatusEnum_Set_Input = {
+/** input type for updating data in table "orderStatus" */
+export type OrderStatus_Set_Input = {
   value?: InputMaybe<Scalars['String']>;
 };
 
-/** Streaming cursor of the table "orderStatusEnum" */
-export type OrderStatusEnum_Stream_Cursor_Input = {
+/** Streaming cursor of the table "orderStatus" */
+export type OrderStatus_Stream_Cursor_Input = {
   /** Stream column input with initial value */
-  initial_value: OrderStatusEnum_Stream_Cursor_Value_Input;
+  initial_value: OrderStatus_Stream_Cursor_Value_Input;
   /** cursor ordering */
   ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
-export type OrderStatusEnum_Stream_Cursor_Value_Input = {
+export type OrderStatus_Stream_Cursor_Value_Input = {
   value?: InputMaybe<Scalars['String']>;
 };
 
-/** update columns of table "orderStatusEnum" */
-export const enum OrderStatusEnum_Update_Column {
+/** update columns of table "orderStatus" */
+export const enum OrderStatus_Update_Column {
   /** column name */
   Value = 'value'
 };
 
-export type OrderStatusEnum_Updates = {
+export type OrderStatus_Updates = {
   /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<OrderStatusEnum_Set_Input>;
+  _set?: InputMaybe<OrderStatus_Set_Input>;
   /** filter the rows which have to be updated */
-  where: OrderStatusEnum_Bool_Exp;
+  where: OrderStatus_Bool_Exp;
 };
 
 /** column ordering options */
@@ -6435,6 +7009,12 @@ export type Query_Root = {
   assets: Array<Asset>;
   /** Retrieve multiple assets using the Relay connection interface */
   assetsConnection: AssetConnection;
+  /** fetch data from the table: "currency" */
+  currency: Array<Currency>;
+  /** fetch aggregated fields from the table: "currency" */
+  currency_aggregate: Currency_Aggregate;
+  /** fetch data from the table: "currency" using primary key columns */
+  currency_by_pk?: Maybe<Currency>;
   /** Retrieve a single event */
   event?: Maybe<Event>;
   /** Retrieve a single eventPass */
@@ -6451,6 +7031,12 @@ export type Query_Root = {
   eventPassOrder_aggregate: EventPassOrder_Aggregate;
   /** fetch data from the table: "eventPassOrder" using primary key columns */
   eventPassOrder_by_pk?: Maybe<EventPassOrder>;
+  /** fetch data from the table: "eventPassPricing" */
+  eventPassPricing: Array<EventPassPricing>;
+  /** fetch aggregated fields from the table: "eventPassPricing" */
+  eventPassPricing_aggregate: EventPassPricing_Aggregate;
+  /** fetch data from the table: "eventPassPricing" using primary key columns */
+  eventPassPricing_by_pk?: Maybe<EventPassPricing>;
   /** Retrieve document version */
   eventPassVersion?: Maybe<DocumentVersion>;
   /** Retrieve multiple eventPasses */
@@ -6465,12 +7051,12 @@ export type Query_Root = {
   eventsConnection: EventConnection;
   /** Fetches an object given its ID */
   node?: Maybe<Node>;
-  /** fetch data from the table: "orderStatusEnum" */
-  orderStatusEnum: Array<OrderStatusEnum>;
-  /** fetch aggregated fields from the table: "orderStatusEnum" */
-  orderStatusEnum_aggregate: OrderStatusEnum_Aggregate;
-  /** fetch data from the table: "orderStatusEnum" using primary key columns */
-  orderStatusEnum_by_pk?: Maybe<OrderStatusEnum>;
+  /** fetch data from the table: "orderStatus" */
+  orderStatus: Array<OrderStatus>;
+  /** fetch aggregated fields from the table: "orderStatus" */
+  orderStatus_aggregate: OrderStatus_Aggregate;
+  /** fetch data from the table: "orderStatus" using primary key columns */
+  orderStatus_by_pk?: Maybe<OrderStatus>;
   /** Retrieve a single organizer */
   organizer?: Maybe<Organizer>;
   /** Retrieve document version */
@@ -6561,6 +7147,29 @@ export type Query_RootAssetsConnectionArgs = {
 };
 
 
+export type Query_RootCurrencyArgs = {
+  distinct_on?: InputMaybe<Array<Currency_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Currency_Order_By>>;
+  where?: InputMaybe<Currency_Bool_Exp>;
+};
+
+
+export type Query_RootCurrency_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Currency_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Currency_Order_By>>;
+  where?: InputMaybe<Currency_Bool_Exp>;
+};
+
+
+export type Query_RootCurrency_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
 export type Query_RootEventArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
@@ -6617,6 +7226,29 @@ export type Query_RootEventPassOrder_AggregateArgs = {
 
 
 export type Query_RootEventPassOrder_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootEventPassPricingArgs = {
+  distinct_on?: InputMaybe<Array<EventPassPricing_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassPricing_Order_By>>;
+  where?: InputMaybe<EventPassPricing_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassPricing_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassPricing_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassPricing_Order_By>>;
+  where?: InputMaybe<EventPassPricing_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassPricing_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -6690,25 +7322,25 @@ export type Query_RootNodeArgs = {
 };
 
 
-export type Query_RootOrderStatusEnumArgs = {
-  distinct_on?: InputMaybe<Array<OrderStatusEnum_Select_Column>>;
+export type Query_RootOrderStatusArgs = {
+  distinct_on?: InputMaybe<Array<OrderStatus_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<OrderStatusEnum_Order_By>>;
-  where?: InputMaybe<OrderStatusEnum_Bool_Exp>;
+  order_by?: InputMaybe<Array<OrderStatus_Order_By>>;
+  where?: InputMaybe<OrderStatus_Bool_Exp>;
 };
 
 
-export type Query_RootOrderStatusEnum_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<OrderStatusEnum_Select_Column>>;
+export type Query_RootOrderStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<OrderStatus_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<OrderStatusEnum_Order_By>>;
-  where?: InputMaybe<OrderStatusEnum_Bool_Exp>;
+  order_by?: InputMaybe<Array<OrderStatus_Order_By>>;
+  where?: InputMaybe<OrderStatus_Bool_Exp>;
 };
 
 
-export type Query_RootOrderStatusEnum_By_PkArgs = {
+export type Query_RootOrderStatus_By_PkArgs = {
   value: Scalars['String'];
 };
 
@@ -6859,6 +7491,14 @@ export type Subscription_Root = {
   account_by_pk?: Maybe<Account>;
   /** fetch data from the table in a streaming manner: "account" */
   account_stream: Array<Account>;
+  /** fetch data from the table: "currency" */
+  currency: Array<Currency>;
+  /** fetch aggregated fields from the table: "currency" */
+  currency_aggregate: Currency_Aggregate;
+  /** fetch data from the table: "currency" using primary key columns */
+  currency_by_pk?: Maybe<Currency>;
+  /** fetch data from the table in a streaming manner: "currency" */
+  currency_stream: Array<Currency>;
   /** fetch data from the table: "eventPassOrder" */
   eventPassOrder: Array<EventPassOrder>;
   /** fetch data from the table: "eventPassOrderSums" */
@@ -6875,14 +7515,22 @@ export type Subscription_Root = {
   eventPassOrder_by_pk?: Maybe<EventPassOrder>;
   /** fetch data from the table in a streaming manner: "eventPassOrder" */
   eventPassOrder_stream: Array<EventPassOrder>;
-  /** fetch data from the table: "orderStatusEnum" */
-  orderStatusEnum: Array<OrderStatusEnum>;
-  /** fetch aggregated fields from the table: "orderStatusEnum" */
-  orderStatusEnum_aggregate: OrderStatusEnum_Aggregate;
-  /** fetch data from the table: "orderStatusEnum" using primary key columns */
-  orderStatusEnum_by_pk?: Maybe<OrderStatusEnum>;
-  /** fetch data from the table in a streaming manner: "orderStatusEnum" */
-  orderStatusEnum_stream: Array<OrderStatusEnum>;
+  /** fetch data from the table: "eventPassPricing" */
+  eventPassPricing: Array<EventPassPricing>;
+  /** fetch aggregated fields from the table: "eventPassPricing" */
+  eventPassPricing_aggregate: EventPassPricing_Aggregate;
+  /** fetch data from the table: "eventPassPricing" using primary key columns */
+  eventPassPricing_by_pk?: Maybe<EventPassPricing>;
+  /** fetch data from the table in a streaming manner: "eventPassPricing" */
+  eventPassPricing_stream: Array<EventPassPricing>;
+  /** fetch data from the table: "orderStatus" */
+  orderStatus: Array<OrderStatus>;
+  /** fetch aggregated fields from the table: "orderStatus" */
+  orderStatus_aggregate: OrderStatus_Aggregate;
+  /** fetch data from the table: "orderStatus" using primary key columns */
+  orderStatus_by_pk?: Maybe<OrderStatus>;
+  /** fetch data from the table in a streaming manner: "orderStatus" */
+  orderStatus_stream: Array<OrderStatus>;
 };
 
 
@@ -6913,6 +7561,36 @@ export type Subscription_RootAccount_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<Account_Stream_Cursor_Input>>;
   where?: InputMaybe<Account_Bool_Exp>;
+};
+
+
+export type Subscription_RootCurrencyArgs = {
+  distinct_on?: InputMaybe<Array<Currency_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Currency_Order_By>>;
+  where?: InputMaybe<Currency_Bool_Exp>;
+};
+
+
+export type Subscription_RootCurrency_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Currency_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Currency_Order_By>>;
+  where?: InputMaybe<Currency_Bool_Exp>;
+};
+
+
+export type Subscription_RootCurrency_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootCurrency_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Currency_Stream_Cursor_Input>>;
+  where?: InputMaybe<Currency_Bool_Exp>;
 };
 
 
@@ -6976,33 +7654,63 @@ export type Subscription_RootEventPassOrder_StreamArgs = {
 };
 
 
-export type Subscription_RootOrderStatusEnumArgs = {
-  distinct_on?: InputMaybe<Array<OrderStatusEnum_Select_Column>>;
+export type Subscription_RootEventPassPricingArgs = {
+  distinct_on?: InputMaybe<Array<EventPassPricing_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<OrderStatusEnum_Order_By>>;
-  where?: InputMaybe<OrderStatusEnum_Bool_Exp>;
+  order_by?: InputMaybe<Array<EventPassPricing_Order_By>>;
+  where?: InputMaybe<EventPassPricing_Bool_Exp>;
 };
 
 
-export type Subscription_RootOrderStatusEnum_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<OrderStatusEnum_Select_Column>>;
+export type Subscription_RootEventPassPricing_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassPricing_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<OrderStatusEnum_Order_By>>;
-  where?: InputMaybe<OrderStatusEnum_Bool_Exp>;
+  order_by?: InputMaybe<Array<EventPassPricing_Order_By>>;
+  where?: InputMaybe<EventPassPricing_Bool_Exp>;
 };
 
 
-export type Subscription_RootOrderStatusEnum_By_PkArgs = {
+export type Subscription_RootEventPassPricing_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootEventPassPricing_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<EventPassPricing_Stream_Cursor_Input>>;
+  where?: InputMaybe<EventPassPricing_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrderStatusArgs = {
+  distinct_on?: InputMaybe<Array<OrderStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<OrderStatus_Order_By>>;
+  where?: InputMaybe<OrderStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrderStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<OrderStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<OrderStatus_Order_By>>;
+  where?: InputMaybe<OrderStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrderStatus_By_PkArgs = {
   value: Scalars['String'];
 };
 
 
-export type Subscription_RootOrderStatusEnum_StreamArgs = {
+export type Subscription_RootOrderStatus_StreamArgs = {
   batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<OrderStatusEnum_Stream_Cursor_Input>>;
-  where?: InputMaybe<OrderStatusEnum_Bool_Exp>;
+  cursor: Array<InputMaybe<OrderStatus_Stream_Cursor_Input>>;
+  where?: InputMaybe<OrderStatus_Bool_Exp>;
 };
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */

@@ -1,0 +1,3 @@
+table:
+  name: eventPassPricing
+  schema: public
