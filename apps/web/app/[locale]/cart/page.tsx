@@ -1,12 +1,12 @@
 import { getCurrentUser } from '@web/lib/session';
-import { NoUserCart } from '@features/cart/server';
-import { EventPassesClient } from '@features/cart';
+import { NoUserCart, UserCart } from '@features/cart/server';
+import { EventPassesAnonymous, EventPassesUser } from '@features/cart';
 
 export default async function CartSection() {
   const user = await getCurrentUser();
   return user ? (
-    <div>Cart for user {user.id}</div>
+    <UserCart EventPassesFetcher={EventPassesUser} />
   ) : (
-    <NoUserCart EventPassesFetcher={EventPassesClient} />
+    <NoUserCart EventPassesFetcher={EventPassesAnonymous} />
   );
 }

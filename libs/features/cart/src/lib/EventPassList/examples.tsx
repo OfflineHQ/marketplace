@@ -7,7 +7,7 @@ import {
   passWeekend,
   passPremium,
 } from '@features/organizer/event/examples';
-import type { EventPassesClientProps } from '../EventPasses/EventPassesClient';
+import type { EventPassesAnonymousProps } from '../EventPasses/EventPassesAnonymous';
 import type { EventCart } from '@features/cart/types';
 import { EventPasses, EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { eventCartProps, eventPassesCart } from '../EventPasses/examples';
@@ -35,7 +35,7 @@ export const FakeEventPassesFetcher = ({
   organizerSlug,
   eventSlug,
   ...props
-}: EventPassesClientProps) => (
+}: EventPassesAnonymousProps) => (
   <EventPasses
     event={allPassesEventsCart[organizerSlug][eventSlug]}
     {...props}
