@@ -209,6 +209,30 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${EventDateLocationsFieldsFragmentDoc}`;
+ const CreateEventPassPricingDocument = `
+    mutation CreateEventPassPricing($eventPassPricing: eventPassPricing_insert_input!) {
+  insert_eventPassPricing_one(object: $eventPassPricing) {
+    id
+    eventPassId
+    priceAmount
+    priceCurrency
+    maxAmount
+    maxAmountPerUser
+  }
+}
+    `;
+ const UpdateEventPassPricingDocument = `
+    mutation UpdateEventPassPricing($id: uuid!, $eventPassPricing: eventPassPricing_set_input!) {
+  update_eventPassPricing_by_pk(pk_columns: {id: $id}, _set: $eventPassPricing) {
+    id
+    eventPassId
+    priceAmount
+    priceCurrency
+    maxAmount
+    maxAmountPerUser
+  }
+}
+    `;
  const GetEventPassTotalReservedDocument = `
     query GetEventPassTotalReserved($eventPassId: String!) {
   eventPassOrder_aggregate(where: {eventPassId: {_eq: $eventPassId}}) {
@@ -256,6 +280,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPasses(variables: Types.GetEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassesQuery> {
       return requester<Types.GetEventPassesQuery, Types.GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<Types.GetEventPassesQuery>;
+    },
+    CreateEventPassPricing(variables: Types.CreateEventPassPricingMutationVariables, options?: C): Promise<Types.CreateEventPassPricingMutation> {
+      return requester<Types.CreateEventPassPricingMutation, Types.CreateEventPassPricingMutationVariables>(CreateEventPassPricingDocument, variables, options) as Promise<Types.CreateEventPassPricingMutation>;
+    },
+    UpdateEventPassPricing(variables: Types.UpdateEventPassPricingMutationVariables, options?: C): Promise<Types.UpdateEventPassPricingMutation> {
+      return requester<Types.UpdateEventPassPricingMutation, Types.UpdateEventPassPricingMutationVariables>(UpdateEventPassPricingDocument, variables, options) as Promise<Types.UpdateEventPassPricingMutation>;
     },
     GetEventPassTotalReserved(variables: Types.GetEventPassTotalReservedQueryVariables, options?: C): Promise<Types.GetEventPassTotalReservedQuery> {
       return requester<Types.GetEventPassTotalReservedQuery, Types.GetEventPassTotalReservedQueryVariables>(GetEventPassTotalReservedDocument, variables, options) as Promise<Types.GetEventPassTotalReservedQuery>;
