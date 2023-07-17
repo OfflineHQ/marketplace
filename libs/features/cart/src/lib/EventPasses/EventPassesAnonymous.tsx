@@ -9,17 +9,17 @@ import {
   type EventPassesProps,
 } from './EventPasses';
 
-export interface EventPassesClientProps
+export interface EventPassesAnonymousProps
   extends Pick<EventPassesProps, 'passes' | 'onDelete'> {
   organizerSlug: string;
   eventSlug: string;
 }
-export function EventPassesClient({
+export function EventPassesAnonymous({
   organizerSlug,
   eventSlug,
   passes,
   onDelete,
-}: EventPassesClientProps) {
+}: EventPassesAnonymousProps) {
   const locale = useLocale();
   const { data, isLoading, isFetching, error } = useGetEventWithPassesQuery({
     slug: eventSlug,
