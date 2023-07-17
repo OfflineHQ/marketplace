@@ -24,3 +24,24 @@ export type GetEventWithPassesQueryVariables = Types.Exact<{
 
 
 export type GetEventWithPassesQuery = { __typename?: 'query_root', event?: { __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, image: { __typename?: 'Asset', url: string } } | null, eventPasses: Array<{ __typename?: 'EventPass', id: string, name: string, description: string, price: { __typename?: 'Money', amount: number, currency?: Types.Currency | null } }> } | null };
+
+export type GetEventPassOrderForEventPassesQueryVariables = Types.Exact<{
+  eventPassIds?: Types.InputMaybe<Array<Types.Scalars['String']> | Types.Scalars['String']>;
+}>;
+
+
+export type GetEventPassOrderForEventPassesQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number, status: Types.OrderStatus_Enum, created_at: any }> };
+
+export type UpsertEventPassOrdersMutationVariables = Types.Exact<{
+  objects: Array<Types.EventPassOrder_Insert_Input> | Types.EventPassOrder_Insert_Input;
+}>;
+
+
+export type UpsertEventPassOrdersMutation = { __typename?: 'mutation_root', insert_eventPassOrder?: { __typename?: 'eventPassOrder_mutation_response', returning: Array<{ __typename?: 'eventPassOrder', quantity: number, status: Types.OrderStatus_Enum, eventPassId: string, created_at: any }> } | null };
+
+export type DeleteEventPassOrdersMutationVariables = Types.Exact<{
+  eventPassIds?: Types.InputMaybe<Array<Types.Scalars['String']> | Types.Scalars['String']>;
+}>;
+
+
+export type DeleteEventPassOrdersMutation = { __typename?: 'mutation_root', delete_eventPassOrder?: { __typename?: 'eventPassOrder_mutation_response', affected_rows: number } | null };

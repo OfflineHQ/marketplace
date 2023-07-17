@@ -1,3 +1,4 @@
+# eslint-disable-next-line @graphql-eslint/unique-operation-name
 query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) {
   event(where: { slug: $slug }, locales: [$locale, en], stage: $stage) {
     id
