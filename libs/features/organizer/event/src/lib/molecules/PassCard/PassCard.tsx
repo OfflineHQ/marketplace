@@ -27,7 +27,7 @@ export interface PassCardProps extends EventPass, PassCardSelectProps {}
 export const PassCard: React.FC<PassCardProps> = ({
   name,
   description,
-  price,
+  eventPassPricing,
   ...props
 }) => {
   const format = useFormatter();
@@ -43,9 +43,14 @@ export const PassCard: React.FC<PassCardProps> = ({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter className="flex items-center justify-between">
-        <Text>{formatCurrency(format, price)}</Text>
+        <Text>
+          {formatCurrency(format, {
+            amount: eventPassPricing?.priceAmount || 0,
+            currency: eventPassPricing?.priceCurrency,
+          })}
+        </Text>
         <NextIntlClientProvider locale={locale} messages={localeMessages}>
-          <PassCardSelect {...props} />
+          <PassCardSelect {...props} eventPassPricing={eventPassPricing} />
         </NextIntlClientProvider>
       </CardFooter>
     </Card>

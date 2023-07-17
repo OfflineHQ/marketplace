@@ -14,7 +14,7 @@ export const eventProps: EventProps = {
   ...eventHeroProps,
   ...eventDetailsProps,
   id: 'fake_event_1',
-  slug: 'test-event-1',
+  slug: 'event-slug',
 };
 
 export const event2Props: EventProps = {
@@ -22,7 +22,7 @@ export const event2Props: EventProps = {
   ...event2HeroProps,
   ...eventDetails2Props,
   id: 'fake_event_2',
-  slug: 'test-event-2',
+  slug: 'event-slug-2',
 };
 
 export function EventExample(props: EventProps) {

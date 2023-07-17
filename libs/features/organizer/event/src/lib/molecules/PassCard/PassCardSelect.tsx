@@ -7,12 +7,11 @@ import { useStore } from '@next/store';
 import type { EventPass, EventSlugs } from '../../types';
 
 export interface PassCardSelectProps
-  extends Omit<EventPass, 'price' | 'description' | 'name'>,
+  extends Omit<EventPass, 'description' | 'name'>,
     EventSlugs {}
 
 export const PassCardSelect: React.FC<PassCardSelectProps> = ({
-  maxAmount,
-  maxAmountPerUser,
+  eventPassPricing,
   eventPassOrderSums,
   organizerSlug,
   eventSlug,
@@ -45,10 +44,14 @@ export const PassCardSelect: React.FC<PassCardSelectProps> = ({
   };
 
   const totalReserved = eventPassOrderSums?.totalReserved ?? 0;
-  const maxAvailableTickets = maxAmount - totalReserved;
+  const maxAvailableTickets =
+    (eventPassPricing?.maxAmount || 0) - totalReserved;
   let maxVal = maxAvailableTickets;
-  if (maxAmountPerUser && maxAmountPerUser <= maxAvailableTickets) {
-    maxVal = maxAmountPerUser;
+  if (
+    eventPassPricing?.maxAmountPerUser &&
+    eventPassPricing.maxAmountPerUser <= maxAvailableTickets
+  ) {
+    maxVal = eventPassPricing.maxAmountPerUser;
   }
   return (
     <div className="flex gap-1">
