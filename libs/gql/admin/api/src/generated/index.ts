@@ -170,9 +170,11 @@ ${EventDateLocationsFieldsFragmentDoc}`;
       id
       name
       description
-      price {
-        amount
-        currency
+      eventPassPricing {
+        priceAmount
+        priceCurrency
+        maxAmount
+        maxAmountPerUser
       }
     }
   }
@@ -187,12 +189,12 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   ) {
     id
     name
-    maxAmount
-    maxAmountPerUser
     description
-    price {
-      currency
-      amount
+    eventPassPricing {
+      maxAmount
+      maxAmountPerUser
+      priceAmount
+      priceCurrency
     }
     passOptions {
       name

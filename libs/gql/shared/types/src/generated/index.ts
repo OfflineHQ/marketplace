@@ -718,16 +718,6 @@ export type ConnectPositionInput = {
   start?: InputMaybe<Scalars['Boolean']>;
 };
 
-/** Currencies code following the standard ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217) */
-export const enum Currency {
-  Aed = 'AED',
-  Cny = 'CNY',
-  Eur = 'EUR',
-  Qar = 'QAR',
-  Sgd = 'SGD',
-  Usd = 'USD'
-};
-
 export const enum DocumentFileTypes {
   Doc = 'doc',
   Docx = 'docx',
@@ -1417,6 +1407,7 @@ export type EventPass = Node & {
   documentInStages: Array<EventPass>;
   event?: Maybe<Event>;
   eventPassOrderSums?: Maybe<EventPassOrderSums>;
+  eventPassPricing?: Maybe<EventPassPricing>;
   /** List of EventPass versions */
   history: Array<Version>;
   /** The unique identifier */
@@ -1425,15 +1416,10 @@ export type EventPass = Node & {
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<EventPass>;
-  /** Maximum amount for this type of pass */
-  maxAmount: Scalars['Int'];
-  /** Maximum amount a user is authorised to purchase for this kind of pass. */
-  maxAmountPerUser?: Maybe<Scalars['Int']>;
   /** User-friendly name of the pass, like "VIP 3-Day Pass" */
   name: Scalars['String'];
   /** Define the different pass options. An option is defined for a specific location and timeframe */
   passOptions: Array<PassOption>;
-  price: Money;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -1506,13 +1492,6 @@ export type EventPassPassOptionsArgs = {
 
 
 /** Define a pass for an event with different options, price, number of passes etc. */
-export type EventPassPriceArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  locales?: InputMaybe<Array<Locale>>;
-};
-
-
-/** Define a pass for an event with different options, price, number of passes etc. */
 export type EventPassPublishedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
@@ -1574,12 +1553,9 @@ export type EventPassCreateInput = {
   event?: InputMaybe<EventCreateOneInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventPassCreateLocalizationsInput>;
-  maxAmount: Scalars['Int'];
-  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
   /** name input for default locale (en) */
   name: Scalars['String'];
   passOptions?: InputMaybe<PassOptionCreateManyInlineInput>;
-  price: MoneyCreateOneInlineInput;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -1666,40 +1642,9 @@ export type EventPassManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
-  maxAmount?: InputMaybe<Scalars['Int']>;
-  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
-  /** All values greater than the given value. */
-  maxAmountPerUser_gt?: InputMaybe<Scalars['Int']>;
-  /** All values greater than or equal the given value. */
-  maxAmountPerUser_gte?: InputMaybe<Scalars['Int']>;
-  /** All values that are contained in given list. */
-  maxAmountPerUser_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  /** All values less than the given value. */
-  maxAmountPerUser_lt?: InputMaybe<Scalars['Int']>;
-  /** All values less than or equal the given value. */
-  maxAmountPerUser_lte?: InputMaybe<Scalars['Int']>;
-  /** Any other value that exists and is not equal to the given value. */
-  maxAmountPerUser_not?: InputMaybe<Scalars['Int']>;
-  /** All values that are not contained in given list. */
-  maxAmountPerUser_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  /** All values greater than the given value. */
-  maxAmount_gt?: InputMaybe<Scalars['Int']>;
-  /** All values greater than or equal the given value. */
-  maxAmount_gte?: InputMaybe<Scalars['Int']>;
-  /** All values that are contained in given list. */
-  maxAmount_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  /** All values less than the given value. */
-  maxAmount_lt?: InputMaybe<Scalars['Int']>;
-  /** All values less than or equal the given value. */
-  maxAmount_lte?: InputMaybe<Scalars['Int']>;
-  /** Any other value that exists and is not equal to the given value. */
-  maxAmount_not?: InputMaybe<Scalars['Int']>;
-  /** All values that are not contained in given list. */
-  maxAmount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   passOptions_every?: InputMaybe<PassOptionWhereInput>;
   passOptions_none?: InputMaybe<PassOptionWhereInput>;
   passOptions_some?: InputMaybe<PassOptionWhereInput>;
-  price?: InputMaybe<MoneyWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -1744,10 +1689,6 @@ export const enum EventPassOrderByInput {
   DescriptionDesc = 'description_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
-  MaxAmountPerUserAsc = 'maxAmountPerUser_ASC',
-  MaxAmountPerUserDesc = 'maxAmountPerUser_DESC',
-  MaxAmountAsc = 'maxAmount_ASC',
-  MaxAmountDesc = 'maxAmount_DESC',
   NameAsc = 'name_ASC',
   NameDesc = 'name_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
@@ -1762,12 +1703,9 @@ export type EventPassUpdateInput = {
   event?: InputMaybe<EventUpdateOneInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventPassUpdateLocalizationsInput>;
-  maxAmount?: InputMaybe<Scalars['Int']>;
-  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
   /** name input for default locale (en) */
   name?: InputMaybe<Scalars['String']>;
   passOptions?: InputMaybe<PassOptionUpdateManyInlineInput>;
-  price?: InputMaybe<MoneyUpdateOneInlineInput>;
 };
 
 export type EventPassUpdateLocalizationDataInput = {
@@ -1812,8 +1750,6 @@ export type EventPassUpdateManyInput = {
   description?: InputMaybe<Scalars['String']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<EventPassUpdateManyLocalizationsInput>;
-  maxAmount?: InputMaybe<Scalars['Int']>;
-  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
   /** name input for default locale (en) */
   name?: InputMaybe<Scalars['String']>;
 };
@@ -1934,36 +1870,6 @@ export type EventPassWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
-  maxAmount?: InputMaybe<Scalars['Int']>;
-  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
-  /** All values greater than the given value. */
-  maxAmountPerUser_gt?: InputMaybe<Scalars['Int']>;
-  /** All values greater than or equal the given value. */
-  maxAmountPerUser_gte?: InputMaybe<Scalars['Int']>;
-  /** All values that are contained in given list. */
-  maxAmountPerUser_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  /** All values less than the given value. */
-  maxAmountPerUser_lt?: InputMaybe<Scalars['Int']>;
-  /** All values less than or equal the given value. */
-  maxAmountPerUser_lte?: InputMaybe<Scalars['Int']>;
-  /** Any other value that exists and is not equal to the given value. */
-  maxAmountPerUser_not?: InputMaybe<Scalars['Int']>;
-  /** All values that are not contained in given list. */
-  maxAmountPerUser_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  /** All values greater than the given value. */
-  maxAmount_gt?: InputMaybe<Scalars['Int']>;
-  /** All values greater than or equal the given value. */
-  maxAmount_gte?: InputMaybe<Scalars['Int']>;
-  /** All values that are contained in given list. */
-  maxAmount_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  /** All values less than the given value. */
-  maxAmount_lt?: InputMaybe<Scalars['Int']>;
-  /** All values less than or equal the given value. */
-  maxAmount_lte?: InputMaybe<Scalars['Int']>;
-  /** Any other value that exists and is not equal to the given value. */
-  maxAmount_not?: InputMaybe<Scalars['Int']>;
-  /** All values that are not contained in given list. */
-  maxAmount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   name?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']>;
@@ -1986,7 +1892,6 @@ export type EventPassWhereInput = {
   passOptions_every?: InputMaybe<PassOptionWhereInput>;
   passOptions_none?: InputMaybe<PassOptionWhereInput>;
   passOptions_some?: InputMaybe<PassOptionWhereInput>;
-  price?: InputMaybe<MoneyWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -2664,123 +2569,6 @@ export type LocationAddressWhereUniqueInput = {
 export type LocationInput = {
   latitude: Scalars['Float'];
   longitude: Scalars['Float'];
-};
-
-/** The 'Money' field captures both currency and amount. The currency is an enumeration type, like 'USD'. The amount is an integer, representing a decimal, in some case with two digits to the right of the decimal point. So, if you choose 'USD' and input '500' as the amount, it equates to $5.00. For Japanese yen which doesn't have cents, 500 would equates to ¥500. */
-export type Money = {
-  __typename?: 'Money';
-  /** The amount is an integer, representing a decimal, in some case with two digits to the right of the decimal point. So, if you choose 'USD' and input '500' as the amount, it equates to $5.00. For Japanese yen which doesn't have cents, 500 would equates to ¥500 */
-  amount: Scalars['Int'];
-  currency?: Maybe<Currency>;
-  /** The unique identifier */
-  id: Scalars['ID'];
-  /** System stage field */
-  stage: Stage;
-};
-
-export type MoneyCreateInput = {
-  amount: Scalars['Int'];
-  currency?: InputMaybe<Currency>;
-};
-
-export type MoneyCreateOneInlineInput = {
-  /** Create and connect one Money document */
-  create?: InputMaybe<MoneyCreateInput>;
-};
-
-export type MoneyUpdateInput = {
-  amount?: InputMaybe<Scalars['Int']>;
-  currency?: InputMaybe<Currency>;
-};
-
-export type MoneyUpdateOneInlineInput = {
-  /** Create and connect one Money document */
-  create?: InputMaybe<MoneyCreateInput>;
-  /** Delete currently connected Money document */
-  delete?: InputMaybe<Scalars['Boolean']>;
-  /** Update single Money document */
-  update?: InputMaybe<MoneyUpdateWithNestedWhereUniqueInput>;
-  /** Upsert single Money document */
-  upsert?: InputMaybe<MoneyUpsertWithNestedWhereUniqueInput>;
-};
-
-export type MoneyUpdateWithNestedWhereUniqueInput = {
-  /** Document to update */
-  data: MoneyUpdateInput;
-  /** Unique document search */
-  where: MoneyWhereUniqueInput;
-};
-
-export type MoneyUpsertInput = {
-  /** Create document if it didn't exist */
-  create: MoneyCreateInput;
-  /** Update document if it exists */
-  update: MoneyUpdateInput;
-};
-
-export type MoneyUpsertWithNestedWhereUniqueInput = {
-  /** Upsert data */
-  data: MoneyUpsertInput;
-  /** Unique document search */
-  where: MoneyWhereUniqueInput;
-};
-
-/** Identifies documents */
-export type MoneyWhereInput = {
-  /** Logical AND on all given filters. */
-  AND?: InputMaybe<Array<MoneyWhereInput>>;
-  /** Logical NOT on all given filters combined by AND. */
-  NOT?: InputMaybe<Array<MoneyWhereInput>>;
-  /** Logical OR on all given filters. */
-  OR?: InputMaybe<Array<MoneyWhereInput>>;
-  /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  amount?: InputMaybe<Scalars['Int']>;
-  /** All values greater than the given value. */
-  amount_gt?: InputMaybe<Scalars['Int']>;
-  /** All values greater than or equal the given value. */
-  amount_gte?: InputMaybe<Scalars['Int']>;
-  /** All values that are contained in given list. */
-  amount_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  /** All values less than the given value. */
-  amount_lt?: InputMaybe<Scalars['Int']>;
-  /** All values less than or equal the given value. */
-  amount_lte?: InputMaybe<Scalars['Int']>;
-  /** Any other value that exists and is not equal to the given value. */
-  amount_not?: InputMaybe<Scalars['Int']>;
-  /** All values that are not contained in given list. */
-  amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  currency?: InputMaybe<Currency>;
-  /** All values that are contained in given list. */
-  currency_in?: InputMaybe<Array<InputMaybe<Currency>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  currency_not?: InputMaybe<Currency>;
-  /** All values that are not contained in given list. */
-  currency_not_in?: InputMaybe<Array<InputMaybe<Currency>>>;
-  id?: InputMaybe<Scalars['ID']>;
-  /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
-  /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
-  /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
-  /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
-  /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
-  /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
-  /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-};
-
-/** References Money record uniquely */
-export type MoneyWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
 };
 
 /** An object with an ID */
