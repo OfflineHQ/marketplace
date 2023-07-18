@@ -62,16 +62,12 @@ export const AccountFieldsFragmentDoc = `
   }
 }
     `;
- const UpsertEventPassOrdersDocument = `
-    mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
-  insert_eventPassOrder(
-    objects: $objects
-    on_conflict: {constraint: eventPassOrder_pkey, update_columns: [quantity]}
-  ) {
+ const InsertEventPassPendingOrdersDocument = `
+    mutation InsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!) {
+  insert_eventPassPendingOrder(objects: $objects) {
     returning {
       id
       quantity
-      status
       eventPassId
       created_at
     }
@@ -80,7 +76,7 @@ export const AccountFieldsFragmentDoc = `
     `;
  const DeleteEventPassOrderDocument = `
     mutation DeleteEventPassOrder($eventPassOrderId: uuid!) {
-  delete_eventPassOrder_by_pk(id: $eventPassOrderId) {
+  delete_eventPassPendingOrder_by_pk(id: $eventPassOrderId) {
     id
   }
 }
@@ -100,8 +96,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventPassOrderForEventPasses(variables?: Types.GetEventPassOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassOrderForEventPassesQuery> {
       return requester<Types.GetEventPassOrderForEventPassesQuery, Types.GetEventPassOrderForEventPassesQueryVariables>(GetEventPassOrderForEventPassesDocument, variables, options) as Promise<Types.GetEventPassOrderForEventPassesQuery>;
     },
-    UpsertEventPassOrders(variables: Types.UpsertEventPassOrdersMutationVariables, options?: C): Promise<Types.UpsertEventPassOrdersMutation> {
-      return requester<Types.UpsertEventPassOrdersMutation, Types.UpsertEventPassOrdersMutationVariables>(UpsertEventPassOrdersDocument, variables, options) as Promise<Types.UpsertEventPassOrdersMutation>;
+    InsertEventPassPendingOrders(variables: Types.InsertEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.InsertEventPassPendingOrdersMutation> {
+      return requester<Types.InsertEventPassPendingOrdersMutation, Types.InsertEventPassPendingOrdersMutationVariables>(InsertEventPassPendingOrdersDocument, variables, options) as Promise<Types.InsertEventPassPendingOrdersMutation>;
     },
     DeleteEventPassOrder(variables: Types.DeleteEventPassOrderMutationVariables, options?: C): Promise<Types.DeleteEventPassOrderMutation> {
       return requester<Types.DeleteEventPassOrderMutation, Types.DeleteEventPassOrderMutationVariables>(DeleteEventPassOrderDocument, variables, options) as Promise<Types.DeleteEventPassOrderMutation>;

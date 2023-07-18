@@ -111,34 +111,30 @@ export const useGetEventPassOrderForEventPassesQuery = <
       fetchDataReactQuery<Types.GetEventPassOrderForEventPassesQuery, Types.GetEventPassOrderForEventPassesQueryVariables>(GetEventPassOrderForEventPassesDocument, variables),
       options
     );
-export const UpsertEventPassOrdersDocument = `
-    mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
-  insert_eventPassOrder(
-    objects: $objects
-    on_conflict: {constraint: eventPassOrder_pkey, update_columns: [quantity]}
-  ) {
+export const InsertEventPassPendingOrdersDocument = `
+    mutation InsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!) {
+  insert_eventPassPendingOrder(objects: $objects) {
     returning {
       id
       quantity
-      status
       eventPassId
       created_at
     }
   }
 }
     `;
-export const useUpsertEventPassOrdersMutation = <
+export const useInsertEventPassPendingOrdersMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<Types.UpsertEventPassOrdersMutation, TError, Types.UpsertEventPassOrdersMutationVariables, TContext>) =>
-    useMutation<Types.UpsertEventPassOrdersMutation, TError, Types.UpsertEventPassOrdersMutationVariables, TContext>(
-      ['UpsertEventPassOrders'],
-      (variables?: Types.UpsertEventPassOrdersMutationVariables) => fetchDataReactQuery<Types.UpsertEventPassOrdersMutation, Types.UpsertEventPassOrdersMutationVariables>(UpsertEventPassOrdersDocument, variables)(),
+    >(options?: UseMutationOptions<Types.InsertEventPassPendingOrdersMutation, TError, Types.InsertEventPassPendingOrdersMutationVariables, TContext>) =>
+    useMutation<Types.InsertEventPassPendingOrdersMutation, TError, Types.InsertEventPassPendingOrdersMutationVariables, TContext>(
+      ['InsertEventPassPendingOrders'],
+      (variables?: Types.InsertEventPassPendingOrdersMutationVariables) => fetchDataReactQuery<Types.InsertEventPassPendingOrdersMutation, Types.InsertEventPassPendingOrdersMutationVariables>(InsertEventPassPendingOrdersDocument, variables)(),
       options
     );
 export const DeleteEventPassOrderDocument = `
     mutation DeleteEventPassOrder($eventPassOrderId: uuid!) {
-  delete_eventPassOrder_by_pk(id: $eventPassOrderId) {
+  delete_eventPassPendingOrder_by_pk(id: $eventPassOrderId) {
     id
   }
 }
