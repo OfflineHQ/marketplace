@@ -82,7 +82,6 @@ type EventPassOrder = {
 
 // Enum for order status.
 enum OrderStatus {
-  PENDING = 'PENDING',
   CONFIRMED = 'CONFIRMED',
   CANCELLED = 'CANCELLED',
   COMPLETED = 'COMPLETED',

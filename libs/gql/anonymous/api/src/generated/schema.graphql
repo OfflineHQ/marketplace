@@ -1953,6 +1953,7 @@ type EventPass implements Node {
     """
     locales: [Locale!]
   ): Event
+  eventPassOrderSums: eventPassOrderSums
   eventPassPricing: eventPassPricing
 
   """List of EventPass versions"""
@@ -6011,6 +6012,57 @@ enum cursor_ordering {
   DESC
 }
 
+"""Hold the sums for the Event Pass Orders"""
+type eventPassOrderSums {
+  eventPassId: String!
+  totalReserved: Int!
+}
+
+"""
+Boolean expression to filter rows from the table "eventPassOrderSums". All fields are combined with a logical 'AND'.
+"""
+input eventPassOrderSums_bool_exp {
+  _and: [eventPassOrderSums_bool_exp!]
+  _not: eventPassOrderSums_bool_exp
+  _or: [eventPassOrderSums_bool_exp!]
+  eventPassId: String_comparison_exp
+  totalReserved: Int_comparison_exp
+}
+
+"""Ordering options when selecting data from "eventPassOrderSums"."""
+input eventPassOrderSums_order_by {
+  eventPassId: order_by
+  totalReserved: order_by
+}
+
+"""
+select columns of table "eventPassOrderSums"
+"""
+enum eventPassOrderSums_select_column {
+  """column name"""
+  eventPassId
+
+  """column name"""
+  totalReserved
+}
+
+"""
+Streaming cursor of the table "eventPassOrderSums"
+"""
+input eventPassOrderSums_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: eventPassOrderSums_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input eventPassOrderSums_stream_cursor_value_input {
+  eventPassId: String
+  totalReserved: Int
+}
+
 """
 The EventPassPricing table stores pricing information related to each Event Pass. It includes the price amount, the currency in which the price is denoted, and the maximum quantity that can be ordered both overall and per user. Each row in the table represents a unique combination of these attributes for a specific Event Pass. This table is key in managing the sales and availability of Event Passes.
 """
@@ -7175,6 +7227,31 @@ type query_root {
   ): EventPass
 
   """
+  fetch data from the table: "eventPassOrderSums"
+  """
+  eventPassOrderSums(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrderSums_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrderSums_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrderSums_bool_exp
+  ): [eventPassOrderSums!]!
+
+  """
+  fetch data from the table: "eventPassOrderSums" using primary key columns
+  """
+  eventPassOrderSums_by_pk(eventPassId: String!): eventPassOrderSums
+
+  """
   fetch data from the table: "eventPassPricing"
   """
   eventPassPricing(
@@ -7550,6 +7627,45 @@ type query_root {
 }
 
 type subscription_root {
+  """
+  fetch data from the table: "eventPassOrderSums"
+  """
+  eventPassOrderSums(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrderSums_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrderSums_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrderSums_bool_exp
+  ): [eventPassOrderSums!]!
+
+  """
+  fetch data from the table: "eventPassOrderSums" using primary key columns
+  """
+  eventPassOrderSums_by_pk(eventPassId: String!): eventPassOrderSums
+
+  """
+  fetch data from the table in a streaming manner: "eventPassOrderSums"
+  """
+  eventPassOrderSums_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [eventPassOrderSums_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: eventPassOrderSums_bool_exp
+  ): [eventPassOrderSums!]!
+
   """
   fetch data from the table: "eventPassPricing"
   """

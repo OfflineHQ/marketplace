@@ -1,5 +1,5 @@
 table:
-  name: eventPassOrder
+  name: eventPassPendingOrder
   schema: public
 object_relationships:
   - name: account
@@ -32,17 +32,30 @@ remote_relationships:
                 id: $eventPassId
         remote_schema: Hygraph CMS Remote Schema
     name: eventPass
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      set:
+        accountId: X-Hasura-User-Id
+      columns:
+        - eventPassId
+        - quantity
 select_permissions:
   - role: user
     permission:
       columns:
         - id
         - eventPassId
-        - status
+        - accountId
         - quantity
         - created_at
-        - updated_at
       filter:
         accountId:
           _eq: X-Hasura-User-Id
-      allow_aggregations: true
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        accountId:
+          _eq: X-Hasura-User-Id

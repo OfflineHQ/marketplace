@@ -9,15 +9,13 @@ query GetEventPassOrderForEventPasses($eventPassIds: [String!]) {
   }
 }
 
-mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
-  insert_eventPassOrder(
-    objects: $objects
-    on_conflict: { constraint: eventPassOrder_pkey, update_columns: [quantity] }
-  ) {
+mutation InsertEventPassPendingOrders(
+  $objects: [eventPassPendingOrder_insert_input!]!
+) {
+  insert_eventPassPendingOrder(objects: $objects) {
     returning {
       id
       quantity
-      status
       eventPassId
       created_at
     }
@@ -25,7 +23,7 @@ mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
 }
 
 mutation DeleteEventPassOrder($eventPassOrderId: uuid!) {
-  delete_eventPassOrder_by_pk(id: $eventPassOrderId) {
+  delete_eventPassPendingOrder_by_pk(id: $eventPassOrderId) {
     id
   }
 }
