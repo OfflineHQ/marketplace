@@ -18,9 +18,9 @@
               relationship_type: object
               source: default
               table:
-                name: eventPassOrderSums
+                name: eventPassPricing
                 schema: public
-          name: eventPassOrderSums
+          name: eventPassPricing
         - definition:
             to_source:
               field_mapping:
@@ -28,7 +28,7 @@
               relationship_type: object
               source: default
               table:
-                name: eventPassPricing
+                name: eventPassOrderSums
                 schema: public
-          name: eventPassPricing
+          name: eventPassOrderSums
       type_name: EventPass

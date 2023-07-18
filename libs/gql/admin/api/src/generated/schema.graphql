@@ -6941,6 +6941,286 @@ type eventPassOrder_variance_fields {
 }
 
 """
+Pending Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users.
+"""
+type eventPassPendingOrder {
+  """An object relationship"""
+  account: account
+  accountId: uuid!
+  created_at: timestamptz!
+  eventPass(
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+  ): EventPass
+  eventPassId: String!
+
+  """An object relationship"""
+  eventPassPricing: eventPassPricing
+  id: uuid!
+  quantity: Int!
+}
+
+"""
+aggregated selection of "eventPassPendingOrder"
+"""
+type eventPassPendingOrder_aggregate {
+  aggregate: eventPassPendingOrder_aggregate_fields
+  nodes: [eventPassPendingOrder!]!
+}
+
+"""
+aggregate fields of "eventPassPendingOrder"
+"""
+type eventPassPendingOrder_aggregate_fields {
+  avg: eventPassPendingOrder_avg_fields
+  count(columns: [eventPassPendingOrder_select_column!], distinct: Boolean): Int!
+  max: eventPassPendingOrder_max_fields
+  min: eventPassPendingOrder_min_fields
+  stddev: eventPassPendingOrder_stddev_fields
+  stddev_pop: eventPassPendingOrder_stddev_pop_fields
+  stddev_samp: eventPassPendingOrder_stddev_samp_fields
+  sum: eventPassPendingOrder_sum_fields
+  var_pop: eventPassPendingOrder_var_pop_fields
+  var_samp: eventPassPendingOrder_var_samp_fields
+  variance: eventPassPendingOrder_variance_fields
+}
+
+"""aggregate avg on columns"""
+type eventPassPendingOrder_avg_fields {
+  quantity: Float
+}
+
+"""
+Boolean expression to filter rows from the table "eventPassPendingOrder". All fields are combined with a logical 'AND'.
+"""
+input eventPassPendingOrder_bool_exp {
+  _and: [eventPassPendingOrder_bool_exp!]
+  _not: eventPassPendingOrder_bool_exp
+  _or: [eventPassPendingOrder_bool_exp!]
+  account: account_bool_exp
+  accountId: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  eventPassId: String_comparison_exp
+  eventPassPricing: eventPassPricing_bool_exp
+  id: uuid_comparison_exp
+  quantity: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "eventPassPendingOrder"
+"""
+enum eventPassPendingOrder_constraint {
+  """
+  unique or primary key constraint on columns "accountId", "eventPassId"
+  """
+  eventPassPendingOrder_eventPassId_accountId_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  eventPassPendingOrder_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "eventPassPendingOrder"
+"""
+input eventPassPendingOrder_inc_input {
+  quantity: Int
+}
+
+"""
+input type for inserting data into table "eventPassPendingOrder"
+"""
+input eventPassPendingOrder_insert_input {
+  account: account_obj_rel_insert_input
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  eventPassPricing: eventPassPricing_obj_rel_insert_input
+  id: uuid
+  quantity: Int
+}
+
+"""aggregate max on columns"""
+type eventPassPendingOrder_max_fields {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  quantity: Int
+}
+
+"""aggregate min on columns"""
+type eventPassPendingOrder_min_fields {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  quantity: Int
+}
+
+"""
+response of any mutation on the table "eventPassPendingOrder"
+"""
+type eventPassPendingOrder_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [eventPassPendingOrder!]!
+}
+
+"""
+on_conflict condition type for table "eventPassPendingOrder"
+"""
+input eventPassPendingOrder_on_conflict {
+  constraint: eventPassPendingOrder_constraint!
+  update_columns: [eventPassPendingOrder_update_column!]! = []
+  where: eventPassPendingOrder_bool_exp
+}
+
+"""Ordering options when selecting data from "eventPassPendingOrder"."""
+input eventPassPendingOrder_order_by {
+  account: account_order_by
+  accountId: order_by
+  created_at: order_by
+  eventPassId: order_by
+  eventPassPricing: eventPassPricing_order_by
+  id: order_by
+  quantity: order_by
+}
+
+"""primary key columns input for table: eventPassPendingOrder"""
+input eventPassPendingOrder_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "eventPassPendingOrder"
+"""
+enum eventPassPendingOrder_select_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  id
+
+  """column name"""
+  quantity
+}
+
+"""
+input type for updating data in table "eventPassPendingOrder"
+"""
+input eventPassPendingOrder_set_input {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  quantity: Int
+}
+
+"""aggregate stddev on columns"""
+type eventPassPendingOrder_stddev_fields {
+  quantity: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type eventPassPendingOrder_stddev_pop_fields {
+  quantity: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type eventPassPendingOrder_stddev_samp_fields {
+  quantity: Float
+}
+
+"""
+Streaming cursor of the table "eventPassPendingOrder"
+"""
+input eventPassPendingOrder_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: eventPassPendingOrder_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input eventPassPendingOrder_stream_cursor_value_input {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  quantity: Int
+}
+
+"""aggregate sum on columns"""
+type eventPassPendingOrder_sum_fields {
+  quantity: Int
+}
+
+"""
+update columns of table "eventPassPendingOrder"
+"""
+enum eventPassPendingOrder_update_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  id
+
+  """column name"""
+  quantity
+}
+
+input eventPassPendingOrder_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: eventPassPendingOrder_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: eventPassPendingOrder_set_input
+
+  """filter the rows which have to be updated"""
+  where: eventPassPendingOrder_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type eventPassPendingOrder_var_pop_fields {
+  quantity: Float
+}
+
+"""aggregate var_samp on columns"""
+type eventPassPendingOrder_var_samp_fields {
+  quantity: Float
+}
+
+"""aggregate variance on columns"""
+type eventPassPendingOrder_variance_fields {
+  quantity: Float
+}
+
+"""
 The EventPassPricing table stores pricing information related to each Event Pass. It includes the price amount, the currency in which the price is denoted, and the maximum quantity that can be ordered both overall and per user. Each row in the table represents a unique combination of these attributes for a specific Event Pass. This table is key in managing the sales and availability of Event Passes.
 """
 type eventPassPricing {
@@ -7449,6 +7729,19 @@ type mutation_root {
   delete_eventPassOrder_by_pk(id: uuid!): eventPassOrder
 
   """
+  delete data from the table: "eventPassPendingOrder"
+  """
+  delete_eventPassPendingOrder(
+    """filter the rows which have to be deleted"""
+    where: eventPassPendingOrder_bool_exp!
+  ): eventPassPendingOrder_mutation_response
+
+  """
+  delete single row from the table: "eventPassPendingOrder"
+  """
+  delete_eventPassPendingOrder_by_pk(id: uuid!): eventPassPendingOrder
+
+  """
   delete data from the table: "eventPassPricing"
   """
   delete_eventPassPricing(
@@ -7561,6 +7854,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: eventPassOrder_on_conflict
   ): eventPassOrder
+
+  """
+  insert data into the table: "eventPassPendingOrder"
+  """
+  insert_eventPassPendingOrder(
+    """the rows to be inserted"""
+    objects: [eventPassPendingOrder_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: eventPassPendingOrder_on_conflict
+  ): eventPassPendingOrder_mutation_response
+
+  """
+  insert a single row into the table: "eventPassPendingOrder"
+  """
+  insert_eventPassPendingOrder_one(
+    """the row to be inserted"""
+    object: eventPassPendingOrder_insert_input!
+
+    """upsert condition"""
+    on_conflict: eventPassPendingOrder_on_conflict
+  ): eventPassPendingOrder
 
   """
   insert data into the table: "eventPassPricing"
@@ -8562,6 +8877,40 @@ type mutation_root {
   ): [eventPassOrder_mutation_response]
 
   """
+  update data of the table: "eventPassPendingOrder"
+  """
+  update_eventPassPendingOrder(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassPendingOrder_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassPendingOrder_set_input
+
+    """filter the rows which have to be updated"""
+    where: eventPassPendingOrder_bool_exp!
+  ): eventPassPendingOrder_mutation_response
+
+  """
+  update single row of the table: "eventPassPendingOrder"
+  """
+  update_eventPassPendingOrder_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassPendingOrder_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassPendingOrder_set_input
+    pk_columns: eventPassPendingOrder_pk_columns_input!
+  ): eventPassPendingOrder
+
+  """
+  update multiples rows of table: "eventPassPendingOrder"
+  """
+  update_eventPassPendingOrder_many(
+    """updates to execute, in order"""
+    updates: [eventPassPendingOrder_updates!]!
+  ): [eventPassPendingOrder_mutation_response]
+
+  """
   update data of the table: "eventPassPricing"
   """
   update_eventPassPricing(
@@ -8684,7 +9033,6 @@ enum orderStatus_enum {
   CANCELLED
   COMPLETED
   CONFIRMED
-  PENDING
 }
 
 """
@@ -9079,6 +9427,51 @@ type query_root {
 
   """fetch data from the table: "eventPassOrder" using primary key columns"""
   eventPassOrder_by_pk(id: uuid!): eventPassOrder
+
+  """
+  fetch data from the table: "eventPassPendingOrder"
+  """
+  eventPassPendingOrder(
+    """distinct select on columns"""
+    distinct_on: [eventPassPendingOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassPendingOrder_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassPendingOrder_bool_exp
+  ): [eventPassPendingOrder!]!
+
+  """
+  fetch aggregated fields from the table: "eventPassPendingOrder"
+  """
+  eventPassPendingOrder_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassPendingOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassPendingOrder_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassPendingOrder_bool_exp
+  ): eventPassPendingOrder_aggregate!
+
+  """
+  fetch data from the table: "eventPassPendingOrder" using primary key columns
+  """
+  eventPassPendingOrder_by_pk(id: uuid!): eventPassPendingOrder
 
   """
   fetch data from the table: "eventPassPricing"
@@ -9753,6 +10146,65 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassOrder_bool_exp
   ): [eventPassOrder!]!
+
+  """
+  fetch data from the table: "eventPassPendingOrder"
+  """
+  eventPassPendingOrder(
+    """distinct select on columns"""
+    distinct_on: [eventPassPendingOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassPendingOrder_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassPendingOrder_bool_exp
+  ): [eventPassPendingOrder!]!
+
+  """
+  fetch aggregated fields from the table: "eventPassPendingOrder"
+  """
+  eventPassPendingOrder_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassPendingOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassPendingOrder_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassPendingOrder_bool_exp
+  ): eventPassPendingOrder_aggregate!
+
+  """
+  fetch data from the table: "eventPassPendingOrder" using primary key columns
+  """
+  eventPassPendingOrder_by_pk(id: uuid!): eventPassPendingOrder
+
+  """
+  fetch data from the table in a streaming manner: "eventPassPendingOrder"
+  """
+  eventPassPendingOrder_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [eventPassPendingOrder_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: eventPassPendingOrder_bool_exp
+  ): [eventPassPendingOrder!]!
 
   """
   fetch data from the table: "eventPassPricing"
