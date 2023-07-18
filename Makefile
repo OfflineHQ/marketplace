@@ -26,8 +26,8 @@ clean:	prune
 	@pnpm run clean
 
 db-clean:
-	@docker-compose -f docker-compose.yaml down
-	@docker-compose -f docker-compose.yaml --env-file .env.local up
+	@docker-compose -f docker-compose.yaml down --volumes
+	@docker-compose -f ./tools/test/docker-compose.yml --env-file ./tools/test/.env.test.jest down --volumes
 
 restart-hasura:
 	@docker-compose -f docker-compose.yaml --env-file .env.local restart hasura-engine
