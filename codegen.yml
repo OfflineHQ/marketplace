@@ -71,7 +71,7 @@ generates:
     plugins:
       - 'typescript-operations':
           preResolveTypes: true
-  libs/gql/user/api/src/generated/index.ts:
+  libs/gql/user/api/src/generated/react-query.ts:
     preset: import-types
     presetConfig:
       typesPath: '@gql/user/types'
@@ -85,19 +85,22 @@ generates:
             func: '@next/hasura/fetcher#fetchDataReactQuery'
             isReactHook: false
           errorType: Error
-  # test user account
-  libs/test-utils/gql/src/generated/test-account.ts:
-    schema:
-      - *userSchema
-    documents: './libs/gql/user/api/src/queries/account/*.{graphql,gql}'
+  libs/gql/user/api/src/generated/sdk.ts:
     preset: import-types
     presetConfig:
       typesPath: '@gql/user/types'
       importTypesNamespace: 'Types'
+    documents: './libs/gql/user/api/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript-generic-sdk':
           noExport: true
           documentMode: 'string'
+      - 'add':
+          content: 'import { fetchData } from "@next/hasura/fetcher";'
+          placement: 'prepend'
+      - 'add':
+          content: 'export const userSdk = getSdk(fetchData());'
+          placement: 'append'
   # anonymous
   libs/gql/anonymous/api/src/generated/schema.json:
     plugins:
