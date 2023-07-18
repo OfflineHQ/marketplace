@@ -34,7 +34,7 @@ const fetchDataForTest = (opts: Opts = { jwt: '' }) => {
     });
     const json = await res.json();
     if (json.errors) {
-      const { message } = json.errors[0] || 'Error..';
+      const { message } = json.errors[0] || 'Error';
       throw new Error(message);
     }
 
