@@ -32,16 +32,16 @@ export type GetEventPassOrderForEventPassesQueryVariables = Types.Exact<{
 
 export type GetEventPassOrderForEventPassesQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', id: any, eventPassId: string, quantity: number, status: Types.OrderStatus_Enum, created_at: any, updated_at: any }> };
 
-export type UpsertEventPassOrdersMutationVariables = Types.Exact<{
-  objects: Array<Types.EventPassOrder_Insert_Input> | Types.EventPassOrder_Insert_Input;
+export type InsertEventPassPendingOrdersMutationVariables = Types.Exact<{
+  objects: Array<Types.EventPassPendingOrder_Insert_Input> | Types.EventPassPendingOrder_Insert_Input;
 }>;
 
 
-export type UpsertEventPassOrdersMutation = { __typename?: 'mutation_root', insert_eventPassOrder?: { __typename?: 'eventPassOrder_mutation_response', returning: Array<{ __typename?: 'eventPassOrder', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId: string, created_at: any }> } | null };
+export type InsertEventPassPendingOrdersMutation = { __typename?: 'mutation_root', insert_eventPassPendingOrder?: { __typename?: 'eventPassPendingOrder_mutation_response', returning: Array<{ __typename?: 'eventPassPendingOrder', id: any, quantity: number, eventPassId: string, created_at: any }> } | null };
 
 export type DeleteEventPassOrderMutationVariables = Types.Exact<{
   eventPassOrderId: Types.Scalars['uuid'];
 }>;
 
 
-export type DeleteEventPassOrderMutation = { __typename?: 'mutation_root', delete_eventPassOrder_by_pk?: { __typename?: 'eventPassOrder', id: any } | null };
+export type DeleteEventPassOrderMutation = { __typename?: 'mutation_root', delete_eventPassPendingOrder_by_pk?: { __typename?: 'eventPassPendingOrder', id: any } | null };

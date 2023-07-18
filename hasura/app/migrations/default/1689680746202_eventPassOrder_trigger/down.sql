@@ -1,6 +1,0 @@
--- Could not auto-generate a down migration.
--- Please write an appropriate down migration for the SQL below:
--- CREATE TRIGGER eventPassOrder_trigger
--- BEFORE INSERT OR UPDATE ON "eventPassOrder"
--- FOR EACH ROW
--- EXECUTE PROCEDURE check_event_pass_order_quantity();

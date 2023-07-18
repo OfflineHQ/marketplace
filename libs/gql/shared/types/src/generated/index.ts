@@ -5187,6 +5187,259 @@ export type EventPassOrder_Variance_Fields = {
   quantity?: Maybe<Scalars['Float']>;
 };
 
+/** Pending Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users. */
+export type EventPassPendingOrder = {
+  __typename?: 'eventPassPendingOrder';
+  /** An object relationship */
+  account?: Maybe<Account>;
+  accountId: Scalars['uuid'];
+  created_at: Scalars['timestamptz'];
+  eventPass?: Maybe<EventPass>;
+  eventPassId: Scalars['String'];
+  /** An object relationship */
+  eventPassPricing?: Maybe<EventPassPricing>;
+  id: Scalars['uuid'];
+  quantity: Scalars['Int'];
+};
+
+
+/** Pending Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users. */
+export type EventPassPendingOrderEventPassArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+};
+
+/** aggregated selection of "eventPassPendingOrder" */
+export type EventPassPendingOrder_Aggregate = {
+  __typename?: 'eventPassPendingOrder_aggregate';
+  aggregate?: Maybe<EventPassPendingOrder_Aggregate_Fields>;
+  nodes: Array<EventPassPendingOrder>;
+};
+
+/** aggregate fields of "eventPassPendingOrder" */
+export type EventPassPendingOrder_Aggregate_Fields = {
+  __typename?: 'eventPassPendingOrder_aggregate_fields';
+  avg?: Maybe<EventPassPendingOrder_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<EventPassPendingOrder_Max_Fields>;
+  min?: Maybe<EventPassPendingOrder_Min_Fields>;
+  stddev?: Maybe<EventPassPendingOrder_Stddev_Fields>;
+  stddev_pop?: Maybe<EventPassPendingOrder_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<EventPassPendingOrder_Stddev_Samp_Fields>;
+  sum?: Maybe<EventPassPendingOrder_Sum_Fields>;
+  var_pop?: Maybe<EventPassPendingOrder_Var_Pop_Fields>;
+  var_samp?: Maybe<EventPassPendingOrder_Var_Samp_Fields>;
+  variance?: Maybe<EventPassPendingOrder_Variance_Fields>;
+};
+
+
+/** aggregate fields of "eventPassPendingOrder" */
+export type EventPassPendingOrder_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<EventPassPendingOrder_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type EventPassPendingOrder_Avg_Fields = {
+  __typename?: 'eventPassPendingOrder_avg_fields';
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "eventPassPendingOrder". All fields are combined with a logical 'AND'. */
+export type EventPassPendingOrder_Bool_Exp = {
+  _and?: InputMaybe<Array<EventPassPendingOrder_Bool_Exp>>;
+  _not?: InputMaybe<EventPassPendingOrder_Bool_Exp>;
+  _or?: InputMaybe<Array<EventPassPendingOrder_Bool_Exp>>;
+  account?: InputMaybe<Account_Bool_Exp>;
+  accountId?: InputMaybe<Uuid_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  eventPassId?: InputMaybe<String_Comparison_Exp>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Bool_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  quantity?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "eventPassPendingOrder" */
+export const enum EventPassPendingOrder_Constraint {
+  /** unique or primary key constraint on columns "accountId", "eventPassId" */
+  EventPassPendingOrderEventPassIdAccountIdKey = 'eventPassPendingOrder_eventPassId_accountId_key',
+  /** unique or primary key constraint on columns "id" */
+  EventPassPendingOrderPkey = 'eventPassPendingOrder_pkey'
+};
+
+/** input type for incrementing numeric columns in table "eventPassPendingOrder" */
+export type EventPassPendingOrder_Inc_Input = {
+  quantity?: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "eventPassPendingOrder" */
+export type EventPassPendingOrder_Insert_Input = {
+  account?: InputMaybe<Account_Obj_Rel_Insert_Input>;
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Obj_Rel_Insert_Input>;
+  id?: InputMaybe<Scalars['uuid']>;
+  quantity?: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type EventPassPendingOrder_Max_Fields = {
+  __typename?: 'eventPassPendingOrder_max_fields';
+  accountId?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  eventPassId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  quantity?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type EventPassPendingOrder_Min_Fields = {
+  __typename?: 'eventPassPendingOrder_min_fields';
+  accountId?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  eventPassId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  quantity?: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "eventPassPendingOrder" */
+export type EventPassPendingOrder_Mutation_Response = {
+  __typename?: 'eventPassPendingOrder_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<EventPassPendingOrder>;
+};
+
+/** on_conflict condition type for table "eventPassPendingOrder" */
+export type EventPassPendingOrder_On_Conflict = {
+  constraint: EventPassPendingOrder_Constraint;
+  update_columns?: Array<EventPassPendingOrder_Update_Column>;
+  where?: InputMaybe<EventPassPendingOrder_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "eventPassPendingOrder". */
+export type EventPassPendingOrder_Order_By = {
+  account?: InputMaybe<Account_Order_By>;
+  accountId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Order_By>;
+  id?: InputMaybe<Order_By>;
+  quantity?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: eventPassPendingOrder */
+export type EventPassPendingOrder_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "eventPassPendingOrder" */
+export const enum EventPassPendingOrder_Select_Column {
+  /** column name */
+  AccountId = 'accountId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Quantity = 'quantity'
+};
+
+/** input type for updating data in table "eventPassPendingOrder" */
+export type EventPassPendingOrder_Set_Input = {
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  quantity?: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type EventPassPendingOrder_Stddev_Fields = {
+  __typename?: 'eventPassPendingOrder_stddev_fields';
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type EventPassPendingOrder_Stddev_Pop_Fields = {
+  __typename?: 'eventPassPendingOrder_stddev_pop_fields';
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type EventPassPendingOrder_Stddev_Samp_Fields = {
+  __typename?: 'eventPassPendingOrder_stddev_samp_fields';
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "eventPassPendingOrder" */
+export type EventPassPendingOrder_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: EventPassPendingOrder_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EventPassPendingOrder_Stream_Cursor_Value_Input = {
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  quantity?: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate sum on columns */
+export type EventPassPendingOrder_Sum_Fields = {
+  __typename?: 'eventPassPendingOrder_sum_fields';
+  quantity?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "eventPassPendingOrder" */
+export const enum EventPassPendingOrder_Update_Column {
+  /** column name */
+  AccountId = 'accountId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Quantity = 'quantity'
+};
+
+export type EventPassPendingOrder_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<EventPassPendingOrder_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<EventPassPendingOrder_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: EventPassPendingOrder_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type EventPassPendingOrder_Var_Pop_Fields = {
+  __typename?: 'eventPassPendingOrder_var_pop_fields';
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type EventPassPendingOrder_Var_Samp_Fields = {
+  __typename?: 'eventPassPendingOrder_var_samp_fields';
+  quantity?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type EventPassPendingOrder_Variance_Fields = {
+  __typename?: 'eventPassPendingOrder_variance_fields';
+  quantity?: Maybe<Scalars['Float']>;
+};
+
 /** The EventPassPricing table stores pricing information related to each Event Pass. It includes the price amount, the currency in which the price is denoted, and the maximum quantity that can be ordered both overall and per user. Each row in the table represents a unique combination of these attributes for a specific Event Pass. This table is key in managing the sales and availability of Event Passes. */
 export type EventPassPricing = {
   __typename?: 'eventPassPricing';
@@ -5538,6 +5791,10 @@ export type Mutation_Root = {
   delete_eventPassOrderSums_by_pk?: Maybe<EventPassOrderSums>;
   /** delete single row from the table: "eventPassOrder" */
   delete_eventPassOrder_by_pk?: Maybe<EventPassOrder>;
+  /** delete data from the table: "eventPassPendingOrder" */
+  delete_eventPassPendingOrder?: Maybe<EventPassPendingOrder_Mutation_Response>;
+  /** delete single row from the table: "eventPassPendingOrder" */
+  delete_eventPassPendingOrder_by_pk?: Maybe<EventPassPendingOrder>;
   /** delete data from the table: "eventPassPricing" */
   delete_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** delete single row from the table: "eventPassPricing" */
@@ -5562,6 +5819,10 @@ export type Mutation_Root = {
   insert_eventPassOrderSums_one?: Maybe<EventPassOrderSums>;
   /** insert a single row into the table: "eventPassOrder" */
   insert_eventPassOrder_one?: Maybe<EventPassOrder>;
+  /** insert data into the table: "eventPassPendingOrder" */
+  insert_eventPassPendingOrder?: Maybe<EventPassPendingOrder_Mutation_Response>;
+  /** insert a single row into the table: "eventPassPendingOrder" */
+  insert_eventPassPendingOrder_one?: Maybe<EventPassPendingOrder>;
   /** insert data into the table: "eventPassPricing" */
   insert_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** insert a single row into the table: "eventPassPricing" */
@@ -5684,6 +5945,12 @@ export type Mutation_Root = {
   update_eventPassOrder_by_pk?: Maybe<EventPassOrder>;
   /** update multiples rows of table: "eventPassOrder" */
   update_eventPassOrder_many?: Maybe<Array<Maybe<EventPassOrder_Mutation_Response>>>;
+  /** update data of the table: "eventPassPendingOrder" */
+  update_eventPassPendingOrder?: Maybe<EventPassPendingOrder_Mutation_Response>;
+  /** update single row of the table: "eventPassPendingOrder" */
+  update_eventPassPendingOrder_by_pk?: Maybe<EventPassPendingOrder>;
+  /** update multiples rows of table: "eventPassPendingOrder" */
+  update_eventPassPendingOrder_many?: Maybe<Array<Maybe<EventPassPendingOrder_Mutation_Response>>>;
   /** update data of the table: "eventPassPricing" */
   update_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** update single row of the table: "eventPassPricing" */
@@ -5890,6 +6157,18 @@ export type Mutation_RootDelete_EventPassOrder_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_EventPassPendingOrderArgs = {
+  where: EventPassPendingOrder_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_EventPassPendingOrder_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_EventPassPricingArgs = {
   where: EventPassPricing_Bool_Exp;
 };
@@ -5966,6 +6245,20 @@ export type Mutation_RootInsert_EventPassOrderSums_OneArgs = {
 export type Mutation_RootInsert_EventPassOrder_OneArgs = {
   object: EventPassOrder_Insert_Input;
   on_conflict?: InputMaybe<EventPassOrder_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventPassPendingOrderArgs = {
+  objects: Array<EventPassPendingOrder_Insert_Input>;
+  on_conflict?: InputMaybe<EventPassPendingOrder_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventPassPendingOrder_OneArgs = {
+  object: EventPassPendingOrder_Insert_Input;
+  on_conflict?: InputMaybe<EventPassPendingOrder_On_Conflict>;
 };
 
 
@@ -6561,6 +6854,28 @@ export type Mutation_RootUpdate_EventPassOrder_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_EventPassPendingOrderArgs = {
+  _inc?: InputMaybe<EventPassPendingOrder_Inc_Input>;
+  _set?: InputMaybe<EventPassPendingOrder_Set_Input>;
+  where: EventPassPendingOrder_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassPendingOrder_By_PkArgs = {
+  _inc?: InputMaybe<EventPassPendingOrder_Inc_Input>;
+  _set?: InputMaybe<EventPassPendingOrder_Set_Input>;
+  pk_columns: EventPassPendingOrder_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassPendingOrder_ManyArgs = {
+  updates: Array<EventPassPendingOrder_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_EventPassPricingArgs = {
   _inc?: InputMaybe<EventPassPricing_Inc_Input>;
   _set?: InputMaybe<EventPassPricing_Set_Input>;
@@ -6674,8 +6989,7 @@ export const enum OrderStatus_Constraint {
 export const enum OrderStatus_Enum {
   Cancelled = 'CANCELLED',
   Completed = 'COMPLETED',
-  Confirmed = 'CONFIRMED',
-  Pending = 'PENDING'
+  Confirmed = 'CONFIRMED'
 };
 
 /** Boolean expression to compare columns of type "orderStatus_enum". All fields are combined with logical 'AND'. */
@@ -6821,6 +7135,12 @@ export type Query_Root = {
   eventPassOrder_aggregate: EventPassOrder_Aggregate;
   /** fetch data from the table: "eventPassOrder" using primary key columns */
   eventPassOrder_by_pk?: Maybe<EventPassOrder>;
+  /** fetch data from the table: "eventPassPendingOrder" */
+  eventPassPendingOrder: Array<EventPassPendingOrder>;
+  /** fetch aggregated fields from the table: "eventPassPendingOrder" */
+  eventPassPendingOrder_aggregate: EventPassPendingOrder_Aggregate;
+  /** fetch data from the table: "eventPassPendingOrder" using primary key columns */
+  eventPassPendingOrder_by_pk?: Maybe<EventPassPendingOrder>;
   /** fetch data from the table: "eventPassPricing" */
   eventPassPricing: Array<EventPassPricing>;
   /** fetch aggregated fields from the table: "eventPassPricing" */
@@ -7016,6 +7336,29 @@ export type Query_RootEventPassOrder_AggregateArgs = {
 
 
 export type Query_RootEventPassOrder_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootEventPassPendingOrderArgs = {
+  distinct_on?: InputMaybe<Array<EventPassPendingOrder_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassPendingOrder_Order_By>>;
+  where?: InputMaybe<EventPassPendingOrder_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassPendingOrder_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassPendingOrder_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassPendingOrder_Order_By>>;
+  where?: InputMaybe<EventPassPendingOrder_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassPendingOrder_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -7305,6 +7648,14 @@ export type Subscription_Root = {
   eventPassOrder_by_pk?: Maybe<EventPassOrder>;
   /** fetch data from the table in a streaming manner: "eventPassOrder" */
   eventPassOrder_stream: Array<EventPassOrder>;
+  /** fetch data from the table: "eventPassPendingOrder" */
+  eventPassPendingOrder: Array<EventPassPendingOrder>;
+  /** fetch aggregated fields from the table: "eventPassPendingOrder" */
+  eventPassPendingOrder_aggregate: EventPassPendingOrder_Aggregate;
+  /** fetch data from the table: "eventPassPendingOrder" using primary key columns */
+  eventPassPendingOrder_by_pk?: Maybe<EventPassPendingOrder>;
+  /** fetch data from the table in a streaming manner: "eventPassPendingOrder" */
+  eventPassPendingOrder_stream: Array<EventPassPendingOrder>;
   /** fetch data from the table: "eventPassPricing" */
   eventPassPricing: Array<EventPassPricing>;
   /** fetch aggregated fields from the table: "eventPassPricing" */
@@ -7441,6 +7792,36 @@ export type Subscription_RootEventPassOrder_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<EventPassOrder_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassOrder_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassPendingOrderArgs = {
+  distinct_on?: InputMaybe<Array<EventPassPendingOrder_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassPendingOrder_Order_By>>;
+  where?: InputMaybe<EventPassPendingOrder_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassPendingOrder_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassPendingOrder_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassPendingOrder_Order_By>>;
+  where?: InputMaybe<EventPassPendingOrder_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassPendingOrder_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootEventPassPendingOrder_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<EventPassPendingOrder_Stream_Cursor_Input>>;
+  where?: InputMaybe<EventPassPendingOrder_Bool_Exp>;
 };
 
 
