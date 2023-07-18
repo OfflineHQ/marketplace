@@ -94,13 +94,6 @@ export type UpdateEventPassPricingMutationVariables = Types.Exact<{
 
 export type UpdateEventPassPricingMutation = { __typename?: 'mutation_root', update_eventPassPricing_by_pk?: { __typename?: 'eventPassPricing', id: any, eventPassId: string, priceAmount: number, priceCurrency: Types.Currency_Enum, maxAmount: number, maxAmountPerUser?: number | null } | null };
 
-export type GetEventPassTotalReservedQueryVariables = Types.Exact<{
-  eventPassId: Types.Scalars['String'];
-}>;
-
-
-export type GetEventPassTotalReservedQuery = { __typename?: 'query_root', eventPassOrder_aggregate: { __typename?: 'eventPassOrder_aggregate', aggregate?: { __typename?: 'eventPassOrder_aggregate_fields', sum?: { __typename?: 'eventPassOrder_sum_fields', quantity?: number | null } | null } | null } };
-
 export type GetOrganizerQueryVariables = Types.Exact<{
   slug: Types.Scalars['String'];
   locale: Types.Locale;

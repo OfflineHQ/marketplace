@@ -233,17 +233,6 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
- const GetEventPassTotalReservedDocument = `
-    query GetEventPassTotalReserved($eventPassId: String!) {
-  eventPassOrder_aggregate(where: {eventPassId: {_eq: $eventPassId}}) {
-    aggregate {
-      sum {
-        quantity
-      }
-    }
-  }
-}
-    `;
  const GetOrganizerDocument = `
     query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) {
   organizer(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
@@ -286,9 +275,6 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     UpdateEventPassPricing(variables: Types.UpdateEventPassPricingMutationVariables, options?: C): Promise<Types.UpdateEventPassPricingMutation> {
       return requester<Types.UpdateEventPassPricingMutation, Types.UpdateEventPassPricingMutationVariables>(UpdateEventPassPricingDocument, variables, options) as Promise<Types.UpdateEventPassPricingMutation>;
-    },
-    GetEventPassTotalReserved(variables: Types.GetEventPassTotalReservedQueryVariables, options?: C): Promise<Types.GetEventPassTotalReservedQuery> {
-      return requester<Types.GetEventPassTotalReservedQuery, Types.GetEventPassTotalReservedQueryVariables>(GetEventPassTotalReservedDocument, variables, options) as Promise<Types.GetEventPassTotalReservedQuery>;
     },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
