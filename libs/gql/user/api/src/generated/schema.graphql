@@ -6118,7 +6118,6 @@ Order with as quantity for Event Pass (linked to Hygraph model EventPass) and as
 type eventPassOrder {
   """An object relationship"""
   account: account
-  accountId: uuid!
   created_at: timestamptz!
   eventPass(
     """
@@ -6136,6 +6135,7 @@ type eventPassOrder {
 
   """An object relationship"""
   eventPassPricing: eventPassPricing
+  id: uuid!
   quantity: Int!
   status: orderStatus_enum!
   updated_at: timestamptz!
@@ -6179,10 +6179,10 @@ input eventPassOrder_bool_exp {
   _not: eventPassOrder_bool_exp
   _or: [eventPassOrder_bool_exp!]
   account: account_bool_exp
-  accountId: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
   eventPassId: String_comparison_exp
   eventPassPricing: eventPassPricing_bool_exp
+  id: uuid_comparison_exp
   quantity: Int_comparison_exp
   status: orderStatus_enum_comparison_exp
   updated_at: timestamptz_comparison_exp
@@ -6215,18 +6215,18 @@ input eventPassOrder_insert_input {
 
 """aggregate max on columns"""
 type eventPassOrder_max_fields {
-  accountId: uuid
   created_at: timestamptz
   eventPassId: String
+  id: uuid
   quantity: Int
   updated_at: timestamptz
 }
 
 """aggregate min on columns"""
 type eventPassOrder_min_fields {
-  accountId: uuid
   created_at: timestamptz
   eventPassId: String
+  id: uuid
   quantity: Int
   updated_at: timestamptz
 }
@@ -6254,13 +6254,18 @@ input eventPassOrder_on_conflict {
 """Ordering options when selecting data from "eventPassOrder"."""
 input eventPassOrder_order_by {
   account: account_order_by
-  accountId: order_by
   created_at: order_by
   eventPassId: order_by
   eventPassPricing: eventPassPricing_order_by
+  id: order_by
   quantity: order_by
   status: order_by
   updated_at: order_by
+}
+
+"""primary key columns input for table: eventPassOrder"""
+input eventPassOrder_pk_columns_input {
+  id: uuid!
 }
 
 """
@@ -6268,13 +6273,13 @@ select columns of table "eventPassOrder"
 """
 enum eventPassOrder_select_column {
   """column name"""
-  accountId
-
-  """column name"""
   created_at
 
   """column name"""
   eventPassId
+
+  """column name"""
+  id
 
   """column name"""
   quantity
@@ -6321,9 +6326,9 @@ input eventPassOrder_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input eventPassOrder_stream_cursor_value_input {
-  accountId: uuid
   created_at: timestamptz
   eventPassId: String
+  id: uuid
   quantity: Int
   status: orderStatus_enum
   updated_at: timestamptz
@@ -6580,6 +6585,11 @@ type mutation_root {
     """filter the rows which have to be deleted"""
     where: eventPassOrder_bool_exp!
   ): eventPassOrder_mutation_response
+
+  """
+  delete single row from the table: "eventPassOrder"
+  """
+  delete_eventPassOrder_by_pk(id: uuid!): eventPassOrder
 
   """
   insert data into the table: "eventPassOrder"
@@ -7449,6 +7459,18 @@ type mutation_root {
   ): eventPassOrder_mutation_response
 
   """
+  update single row of the table: "eventPassOrder"
+  """
+  update_eventPassOrder_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassOrder_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassOrder_set_input
+    pk_columns: eventPassOrder_pk_columns_input!
+  ): eventPassOrder
+
+  """
   update multiples rows of table: "eventPassOrder"
   """
   update_eventPassOrder_many(
@@ -7663,6 +7685,9 @@ type query_root {
     """filter the rows returned"""
     where: eventPassOrder_bool_exp
   ): eventPassOrder_aggregate!
+
+  """fetch data from the table: "eventPassOrder" using primary key columns"""
+  eventPassOrder_by_pk(id: uuid!): eventPassOrder
 
   """
   fetch data from the table: "eventPassPricing"
@@ -8116,6 +8141,9 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassOrder_bool_exp
   ): eventPassOrder_aggregate!
+
+  """fetch data from the table: "eventPassOrder" using primary key columns"""
+  eventPassOrder_by_pk(id: uuid!): eventPassOrder
 
   """
   fetch data from the table in a streaming manner: "eventPassOrder"

@@ -90,10 +90,12 @@ export const useGetEventWithPassesQuery = <
 export const GetEventPassOrderForEventPassesDocument = `
     query GetEventPassOrderForEventPasses($eventPassIds: [String!]) {
   eventPassOrder(where: {eventPassId: {_in: $eventPassIds}}) {
+    id
     eventPassId
     quantity
     status
     created_at
+    updated_at
   }
 }
     `;
@@ -116,6 +118,7 @@ export const UpsertEventPassOrdersDocument = `
     on_conflict: {constraint: eventPassOrder_pkey, update_columns: [quantity]}
   ) {
     returning {
+      id
       quantity
       status
       eventPassId
@@ -133,19 +136,19 @@ export const useUpsertEventPassOrdersMutation = <
       (variables?: Types.UpsertEventPassOrdersMutationVariables) => fetchDataReactQuery<Types.UpsertEventPassOrdersMutation, Types.UpsertEventPassOrdersMutationVariables>(UpsertEventPassOrdersDocument, variables)(),
       options
     );
-export const DeleteEventPassOrdersDocument = `
-    mutation DeleteEventPassOrders($eventPassIds: [String!]) {
-  delete_eventPassOrder(where: {eventPassId: {_in: $eventPassIds}}) {
-    affected_rows
+export const DeleteEventPassOrderDocument = `
+    mutation DeleteEventPassOrder($eventPassOrderId: uuid!) {
+  delete_eventPassOrder_by_pk(id: $eventPassOrderId) {
+    id
   }
 }
     `;
-export const useDeleteEventPassOrdersMutation = <
+export const useDeleteEventPassOrderMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<Types.DeleteEventPassOrdersMutation, TError, Types.DeleteEventPassOrdersMutationVariables, TContext>) =>
-    useMutation<Types.DeleteEventPassOrdersMutation, TError, Types.DeleteEventPassOrdersMutationVariables, TContext>(
-      ['DeleteEventPassOrders'],
-      (variables?: Types.DeleteEventPassOrdersMutationVariables) => fetchDataReactQuery<Types.DeleteEventPassOrdersMutation, Types.DeleteEventPassOrdersMutationVariables>(DeleteEventPassOrdersDocument, variables)(),
+    >(options?: UseMutationOptions<Types.DeleteEventPassOrderMutation, TError, Types.DeleteEventPassOrderMutationVariables, TContext>) =>
+    useMutation<Types.DeleteEventPassOrderMutation, TError, Types.DeleteEventPassOrderMutationVariables, TContext>(
+      ['DeleteEventPassOrder'],
+      (variables?: Types.DeleteEventPassOrderMutationVariables) => fetchDataReactQuery<Types.DeleteEventPassOrderMutation, Types.DeleteEventPassOrderMutationVariables>(DeleteEventPassOrderDocument, variables)(),
       options
     );
