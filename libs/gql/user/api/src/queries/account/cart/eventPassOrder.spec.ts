@@ -111,6 +111,70 @@ describe('tests for eventPassOrder', () => {
     const orders = res.insert_eventPassOrder?.returning;
     expect(orders?.length).toBe(4);
   });
+
+  it('should return orders for a user given an eventPassId', async () => {
+    await alphaAdmin.UpsertEventPassOrders({
+      objects: [order1, order2],
+    });
+    const res = await alphaAdmin.GetEventPassOrderForEventPasses({
+      eventPassIds: order1.eventPassId,
+    });
+    const orders = res.eventPassOrder;
+    expect(orders?.length).toBe(1);
+    expect(orders?.[0].eventPassId).toBe(order1.eventPassId);
+    expect(orders?.[0].quantity).toBe(order1.quantity);
+    expect(orders?.[0].status).toBe(OrderStatus_Enum.Pending);
+  });
+
+  it('should return several orders for a user given an eventPassId', async () => {
+    await alphaAdmin.UpsertEventPassOrders({
+      objects: [order1, { ...order1, quantity: 10 }],
+    });
+    const res = await alphaAdmin.GetEventPassOrderForEventPasses({
+      eventPassIds: order1.eventPassId,
+    });
+    const orders = res.eventPassOrder;
+    expect(orders?.length).toBe(2);
+    expect(orders?.[0].eventPassId).toBe(order1.eventPassId);
+    expect(orders?.[0].quantity).toBe(order1.quantity);
+    expect(orders?.[0].status).toBe(OrderStatus_Enum.Pending);
+    expect(orders?.[1].eventPassId).toBe(order1.eventPassId);
+    expect(orders?.[1].quantity).toBe(10);
+    expect(orders?.[1].status).toBe(OrderStatus_Enum.Pending);
+  });
+
+  it("shouldn't return orders for an user given an eventPassId where the user has no orders", async () => {
+    await alphaAdmin.UpsertEventPassOrders({
+      objects: [order1],
+    });
+    const res = await alphaAdmin.GetEventPassOrderForEventPasses({
+      eventPassIds: 'fake-dummy',
+    });
+    const orders = res.eventPassOrder;
+    expect(orders?.length).toBe(0);
+    await betaAdmin.UpsertEventPassOrders({
+      objects: [order2],
+    });
+    const res2 = await alphaAdmin.GetEventPassOrderForEventPasses({
+      eventPassIds: order2.eventPassId,
+    });
+    const orders2 = res2.eventPassOrder;
+    expect(orders2?.length).toBe(0);
+  });
+
+  it('should delete an order successfully', async () => {
+    const res = await alphaAdmin.UpsertEventPassOrders({
+      objects: [order1],
+    });
+    const orders = res.insert_eventPassOrder?.returning;
+    console.log(orders);
+    const eventPassOrderId = orders?.[0].id;
+    const resDelete = await alphaAdmin.DeleteEventPassOrder({
+      eventPassOrderId: eventPassOrderId,
+    });
+    expect(resDelete.delete_eventPassOrder_by_pk?.id).toBe(eventPassOrderId);
+  });
+
   it("should return an error in case eventPassId doesn't have a corresponding eventPassPricing", async () => {
     await expect(
       alphaAdmin.UpsertEventPassOrders({
