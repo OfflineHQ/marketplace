@@ -53,10 +53,12 @@ export const AccountFieldsFragmentDoc = `
  const GetEventPassOrderForEventPassesDocument = `
     query GetEventPassOrderForEventPasses($eventPassIds: [String!]) {
   eventPassOrder(where: {eventPassId: {_in: $eventPassIds}}) {
+    id
     eventPassId
     quantity
     status
     created_at
+    updated_at
   }
 }
     `;
@@ -67,6 +69,7 @@ export const AccountFieldsFragmentDoc = `
     on_conflict: {constraint: eventPassOrder_pkey, update_columns: [quantity]}
   ) {
     returning {
+      id
       quantity
       status
       eventPassId
@@ -75,10 +78,10 @@ export const AccountFieldsFragmentDoc = `
   }
 }
     `;
- const DeleteEventPassOrdersDocument = `
-    mutation DeleteEventPassOrders($eventPassIds: [String!]) {
-  delete_eventPassOrder(where: {eventPassId: {_in: $eventPassIds}}) {
-    affected_rows
+ const DeleteEventPassOrderDocument = `
+    mutation DeleteEventPassOrder($eventPassOrderId: uuid!) {
+  delete_eventPassOrder_by_pk(id: $eventPassOrderId) {
+    id
   }
 }
     `;
@@ -100,8 +103,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     UpsertEventPassOrders(variables: Types.UpsertEventPassOrdersMutationVariables, options?: C): Promise<Types.UpsertEventPassOrdersMutation> {
       return requester<Types.UpsertEventPassOrdersMutation, Types.UpsertEventPassOrdersMutationVariables>(UpsertEventPassOrdersDocument, variables, options) as Promise<Types.UpsertEventPassOrdersMutation>;
     },
-    DeleteEventPassOrders(variables?: Types.DeleteEventPassOrdersMutationVariables, options?: C): Promise<Types.DeleteEventPassOrdersMutation> {
-      return requester<Types.DeleteEventPassOrdersMutation, Types.DeleteEventPassOrdersMutationVariables>(DeleteEventPassOrdersDocument, variables, options) as Promise<Types.DeleteEventPassOrdersMutation>;
+    DeleteEventPassOrder(variables: Types.DeleteEventPassOrderMutationVariables, options?: C): Promise<Types.DeleteEventPassOrderMutation> {
+      return requester<Types.DeleteEventPassOrderMutation, Types.DeleteEventPassOrderMutationVariables>(DeleteEventPassOrderDocument, variables, options) as Promise<Types.DeleteEventPassOrderMutation>;
     }
   };
 }

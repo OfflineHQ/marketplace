@@ -46,8 +46,8 @@ select_permissions:
   - role: user
     permission:
       columns:
+        - id
         - eventPassId
-        - accountId
         - status
         - quantity
         - created_at
