@@ -148,6 +148,29 @@ describe('tests for eventPassPendingOrder user', () => {
     );
   });
 
+  it('should delete orders given eventPassIds successfully', async () => {
+    await alphaAdmin.InsertEventPassPendingOrders({
+      objects: [order1, order2],
+    });
+    await betaAdmin.InsertEventPassPendingOrders({
+      objects: [order1, order2],
+    });
+    const resDelete = await alphaAdmin.DeleteEventPassPendingOrders({
+      eventPassIds: [order1.eventPassId, order2.eventPassId],
+    });
+    expect(resDelete.delete_eventPassPendingOrder?.affected_rows).toBe(2);
+    const res = await alphaAdmin.GetEventPassPendingOrderForEventPasses({
+      eventPassIds: [order1.eventPassId, order2.eventPassId],
+    });
+    const orders = res.eventPassPendingOrder;
+    expect(orders?.length).toBe(0);
+    const resBeta = await betaAdmin.GetEventPassPendingOrderForEventPasses({
+      eventPassIds: [order1.eventPassId, order2.eventPassId],
+    });
+    const ordersBeta = resBeta.eventPassPendingOrder;
+    expect(ordersBeta?.length).toBe(2);
+  });
+
   it('shouldn`t allow insert multiple orders on same eventPassId', async () => {
     await expect(
       alphaAdmin.InsertEventPassPendingOrders({

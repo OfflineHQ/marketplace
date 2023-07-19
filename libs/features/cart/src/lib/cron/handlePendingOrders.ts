@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { adminSdk } from '@gql/admin/api';
-import type { GetEventPassPendingOrdersQuery } from '@gql/admin/types';
 
 export default async function handler() {
   // Fetch all pending orders
