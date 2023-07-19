@@ -79,6 +79,13 @@ export const AccountFieldsFragmentDoc = `
   }
 }
     `;
+ const DeleteEventPassPendingOrdersDocument = `
+    mutation DeleteEventPassPendingOrders($eventPassIds: [String!]!) {
+  delete_eventPassPendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
+    affected_rows
+  }
+}
+    `;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -99,6 +106,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     DeleteEventPassPendingOrder(variables: Types.DeleteEventPassPendingOrderMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrderMutation> {
       return requester<Types.DeleteEventPassPendingOrderMutation, Types.DeleteEventPassPendingOrderMutationVariables>(DeleteEventPassPendingOrderDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrderMutation>;
+    },
+    DeleteEventPassPendingOrders(variables: Types.DeleteEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrdersMutation> {
+      return requester<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrdersMutation>;
     }
   };
 }
