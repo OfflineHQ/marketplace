@@ -37,6 +37,11 @@ const customFetch = (url: URL | RequestInfo, options: any) => {
 // Set fetch to be the global fetch function
 global.fetch = customFetch;
 
+// Set Request, Response, Headers to be global
+global.Request = nodeFetch.Request;
+global.Response = nodeFetch.Response;
+global.Headers = nodeFetch.Headers;
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config({ path: './tools/test/.env.test.jest' });
 jest.mock('@formkit/auto-animate/react');
