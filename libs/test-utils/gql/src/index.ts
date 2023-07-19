@@ -92,7 +92,7 @@ const generateJwt = (options: AccountOptions): string =>
     '3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R'
   );
 
-const usersJwt = {
+export const usersJwt = {
   seb_google: generateJwt({
     defaultRole: 'user',
     userId: accounts.seb_google.id,
