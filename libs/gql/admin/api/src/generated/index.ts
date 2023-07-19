@@ -121,8 +121,10 @@ export const EventDateLocationsFieldsFragmentDoc = `
   eventPassPendingOrder {
     created_at
     id
+    eventPassId
     account {
       email
+      address
     }
     eventPassPricing {
       timeBeforeDelete

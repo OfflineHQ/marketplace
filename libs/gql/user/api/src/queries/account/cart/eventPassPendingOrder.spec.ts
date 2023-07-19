@@ -12,7 +12,7 @@ import {
 } from '@test-utils/db';
 import { type EventPassPendingOrder_Insert_Input } from '@gql/shared/types';
 
-describe('tests for eventPassPendingOrder', () => {
+describe('tests for eventPassPendingOrder user', () => {
   let client: PgClient;
   const eventPass = {
     eventPassId: 'fake-event-pass-1',
