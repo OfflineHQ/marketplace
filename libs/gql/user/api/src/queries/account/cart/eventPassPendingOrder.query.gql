@@ -25,3 +25,9 @@ mutation DeleteEventPassPendingOrder($eventPassPendingOrderId: uuid!) {
     id
   }
 }
+
+mutation DeleteEventPassPendingOrders($eventPassIds: [String!]!) {
+  delete_eventPassPendingOrder(where: { eventPassId: { _in: $eventPassIds } }) {
+    affected_rows
+  }
+}

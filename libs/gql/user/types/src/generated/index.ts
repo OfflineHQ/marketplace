@@ -45,3 +45,10 @@ export type DeleteEventPassPendingOrderMutationVariables = Types.Exact<{
 
 
 export type DeleteEventPassPendingOrderMutation = { __typename?: 'mutation_root', delete_eventPassPendingOrder_by_pk?: { __typename?: 'eventPassPendingOrder', id: any } | null };
+
+export type DeleteEventPassPendingOrdersMutationVariables = Types.Exact<{
+  eventPassIds: Array<Types.Scalars['String']> | Types.Scalars['String'];
+}>;
+
+
+export type DeleteEventPassPendingOrdersMutation = { __typename?: 'mutation_root', delete_eventPassPendingOrder?: { __typename?: 'eventPassPendingOrder_mutation_response', affected_rows: number } | null };
