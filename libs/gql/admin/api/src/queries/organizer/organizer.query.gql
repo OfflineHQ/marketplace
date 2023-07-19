@@ -1,4 +1,4 @@
-query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) {
+query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: { slug: $slug }, locales: [$locale, en], stage: $stage) {
     ...OrganizerFields
   }
