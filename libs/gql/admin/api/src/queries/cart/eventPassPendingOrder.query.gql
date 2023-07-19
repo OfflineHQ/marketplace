@@ -1,0 +1,12 @@
+query GetEventPassPendingOrders {
+  eventPassPendingOrder {
+    created_at
+    id
+    account {
+      email
+    }
+    eventPassPricing {
+      timeBeforeDelete
+    }
+  }
+}

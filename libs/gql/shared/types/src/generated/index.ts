@@ -5450,6 +5450,7 @@ export type EventPassPricing = {
   maxAmountPerUser?: Maybe<Scalars['Int']>;
   priceAmount: Scalars['Int'];
   priceCurrency: Currency_Enum;
+  timeBeforeDelete: Scalars['Int'];
   updated_at: Scalars['timestamptz'];
 };
 
@@ -5489,6 +5490,7 @@ export type EventPassPricing_Avg_Fields = {
   maxAmount?: Maybe<Scalars['Float']>;
   maxAmountPerUser?: Maybe<Scalars['Float']>;
   priceAmount?: Maybe<Scalars['Float']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "eventPassPricing". All fields are combined with a logical 'AND'. */
@@ -5503,6 +5505,7 @@ export type EventPassPricing_Bool_Exp = {
   maxAmountPerUser?: InputMaybe<Int_Comparison_Exp>;
   priceAmount?: InputMaybe<Int_Comparison_Exp>;
   priceCurrency?: InputMaybe<Currency_Enum_Comparison_Exp>;
+  timeBeforeDelete?: InputMaybe<Int_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -5519,6 +5522,7 @@ export type EventPassPricing_Inc_Input = {
   maxAmount?: InputMaybe<Scalars['Int']>;
   maxAmountPerUser?: InputMaybe<Scalars['Int']>;
   priceAmount?: InputMaybe<Scalars['Int']>;
+  timeBeforeDelete?: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "eventPassPricing" */
@@ -5530,6 +5534,7 @@ export type EventPassPricing_Insert_Input = {
   maxAmountPerUser?: InputMaybe<Scalars['Int']>;
   priceAmount?: InputMaybe<Scalars['Int']>;
   priceCurrency?: InputMaybe<Currency_Enum>;
+  timeBeforeDelete?: InputMaybe<Scalars['Int']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -5542,6 +5547,7 @@ export type EventPassPricing_Max_Fields = {
   maxAmount?: Maybe<Scalars['Int']>;
   maxAmountPerUser?: Maybe<Scalars['Int']>;
   priceAmount?: Maybe<Scalars['Int']>;
+  timeBeforeDelete?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -5554,6 +5560,7 @@ export type EventPassPricing_Min_Fields = {
   maxAmount?: Maybe<Scalars['Int']>;
   maxAmountPerUser?: Maybe<Scalars['Int']>;
   priceAmount?: Maybe<Scalars['Int']>;
+  timeBeforeDelete?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -5589,6 +5596,7 @@ export type EventPassPricing_Order_By = {
   maxAmountPerUser?: InputMaybe<Order_By>;
   priceAmount?: InputMaybe<Order_By>;
   priceCurrency?: InputMaybe<Order_By>;
+  timeBeforeDelete?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -5614,6 +5622,8 @@ export const enum EventPassPricing_Select_Column {
   /** column name */
   PriceCurrency = 'priceCurrency',
   /** column name */
+  TimeBeforeDelete = 'timeBeforeDelete',
+  /** column name */
   UpdatedAt = 'updated_at'
 };
 
@@ -5626,6 +5636,7 @@ export type EventPassPricing_Set_Input = {
   maxAmountPerUser?: InputMaybe<Scalars['Int']>;
   priceAmount?: InputMaybe<Scalars['Int']>;
   priceCurrency?: InputMaybe<Currency_Enum>;
+  timeBeforeDelete?: InputMaybe<Scalars['Int']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -5635,6 +5646,7 @@ export type EventPassPricing_Stddev_Fields = {
   maxAmount?: Maybe<Scalars['Float']>;
   maxAmountPerUser?: Maybe<Scalars['Float']>;
   priceAmount?: Maybe<Scalars['Float']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -5643,6 +5655,7 @@ export type EventPassPricing_Stddev_Pop_Fields = {
   maxAmount?: Maybe<Scalars['Float']>;
   maxAmountPerUser?: Maybe<Scalars['Float']>;
   priceAmount?: Maybe<Scalars['Float']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -5651,6 +5664,7 @@ export type EventPassPricing_Stddev_Samp_Fields = {
   maxAmount?: Maybe<Scalars['Float']>;
   maxAmountPerUser?: Maybe<Scalars['Float']>;
   priceAmount?: Maybe<Scalars['Float']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
 /** Streaming cursor of the table "eventPassPricing" */
@@ -5670,6 +5684,7 @@ export type EventPassPricing_Stream_Cursor_Value_Input = {
   maxAmountPerUser?: InputMaybe<Scalars['Int']>;
   priceAmount?: InputMaybe<Scalars['Int']>;
   priceCurrency?: InputMaybe<Currency_Enum>;
+  timeBeforeDelete?: InputMaybe<Scalars['Int']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -5679,6 +5694,7 @@ export type EventPassPricing_Sum_Fields = {
   maxAmount?: Maybe<Scalars['Int']>;
   maxAmountPerUser?: Maybe<Scalars['Int']>;
   priceAmount?: Maybe<Scalars['Int']>;
+  timeBeforeDelete?: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "eventPassPricing" */
@@ -5698,6 +5714,8 @@ export const enum EventPassPricing_Update_Column {
   /** column name */
   PriceCurrency = 'priceCurrency',
   /** column name */
+  TimeBeforeDelete = 'timeBeforeDelete',
+  /** column name */
   UpdatedAt = 'updated_at'
 };
 
@@ -5716,6 +5734,7 @@ export type EventPassPricing_Var_Pop_Fields = {
   maxAmount?: Maybe<Scalars['Float']>;
   maxAmountPerUser?: Maybe<Scalars['Float']>;
   priceAmount?: Maybe<Scalars['Float']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
@@ -5724,6 +5743,7 @@ export type EventPassPricing_Var_Samp_Fields = {
   maxAmount?: Maybe<Scalars['Float']>;
   maxAmountPerUser?: Maybe<Scalars['Float']>;
   priceAmount?: Maybe<Scalars['Float']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
@@ -5732,6 +5752,7 @@ export type EventPassPricing_Variance_Fields = {
   maxAmount?: Maybe<Scalars['Float']>;
   maxAmountPerUser?: Maybe<Scalars['Float']>;
   priceAmount?: Maybe<Scalars['Float']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
 /** mutation root */
