@@ -146,3 +146,19 @@ export const useDeleteEventPassPendingOrderMutation = <
       (variables?: Types.DeleteEventPassPendingOrderMutationVariables) => fetchDataReactQuery<Types.DeleteEventPassPendingOrderMutation, Types.DeleteEventPassPendingOrderMutationVariables>(DeleteEventPassPendingOrderDocument, variables)(),
       options
     );
+export const DeleteEventPassPendingOrdersDocument = `
+    mutation DeleteEventPassPendingOrders($eventPassIds: [String!]!) {
+  delete_eventPassPendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
+    affected_rows
+  }
+}
+    `;
+export const useDeleteEventPassPendingOrdersMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<Types.DeleteEventPassPendingOrdersMutation, TError, Types.DeleteEventPassPendingOrdersMutationVariables, TContext>) =>
+    useMutation<Types.DeleteEventPassPendingOrdersMutation, TError, Types.DeleteEventPassPendingOrdersMutationVariables, TContext>(
+      ['DeleteEventPassPendingOrders'],
+      (variables?: Types.DeleteEventPassPendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables)(),
+      options
+    );
