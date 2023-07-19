@@ -39,4 +39,14 @@ describe('tests for eventPassPendingOrder admin', () => {
     expect(orders?.[0].eventPassPricing).toBeDefined();
     expect(orders?.[0].eventPassPricing?.timeBeforeDelete).toBeDefined();
   });
+  it('should delete selected eventPassPendingOrders with their ids', async () => {
+    const res = await adminSdk.GetEventPassPendingOrders();
+    const orders = res.eventPassPendingOrder;
+    const resDelete = await adminSdk.DeleteEventPassPendingOrders({
+      ids: [orders?.[0].id, orders?.[2].id],
+    });
+    expect(resDelete.delete_eventPassPendingOrder?.affected_rows).toBe(2);
+    const newOrders = await adminSdk.GetEventPassPendingOrders();
+    expect(newOrders.eventPassPendingOrder?.length).toBe(1);
+  });
 });
