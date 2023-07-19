@@ -28,7 +28,7 @@ describe('user access security tests', () => {
   beforeEach(async () => {
     await deleteAccounts(client);
     // seed the database with three users alpha, beta and seb
-    await seedDb(client, './tools/test/seeds/account.sql');
+    await seedDb(client, './hasura/app/seeds/default/account.sql');
   });
 
   it('user alpha can retrieve his information', async () => {
