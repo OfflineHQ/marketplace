@@ -47,7 +47,7 @@ export const useGetAccountByEmailQuery = <
       options
     );
 export const GetEventWithPassesDocument = `
-    query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) {
+    query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     id
     slug
@@ -87,28 +87,26 @@ export const useGetEventWithPassesQuery = <
       fetchDataReactQuery<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables),
       options
     );
-export const GetEventPassOrderForEventPassesDocument = `
-    query GetEventPassOrderForEventPasses($eventPassIds: [String!]) {
-  eventPassOrder(where: {eventPassId: {_in: $eventPassIds}}) {
+export const GetEventPassPendingOrderForEventPassesDocument = `
+    query GetEventPassPendingOrderForEventPasses($eventPassIds: [String!]) {
+  eventPassPendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
     id
     eventPassId
     quantity
-    status
     created_at
-    updated_at
   }
 }
     `;
-export const useGetEventPassOrderForEventPassesQuery = <
-      TData = Types.GetEventPassOrderForEventPassesQuery,
+export const useGetEventPassPendingOrderForEventPassesQuery = <
+      TData = Types.GetEventPassPendingOrderForEventPassesQuery,
       TError = Error
     >(
-      variables?: Types.GetEventPassOrderForEventPassesQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassOrderForEventPassesQuery, TError, TData>
+      variables?: Types.GetEventPassPendingOrderForEventPassesQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassPendingOrderForEventPassesQuery, TError, TData>
     ) =>
-    useQuery<Types.GetEventPassOrderForEventPassesQuery, TError, TData>(
-      variables === undefined ? ['GetEventPassOrderForEventPasses'] : ['GetEventPassOrderForEventPasses', variables],
-      fetchDataReactQuery<Types.GetEventPassOrderForEventPassesQuery, Types.GetEventPassOrderForEventPassesQueryVariables>(GetEventPassOrderForEventPassesDocument, variables),
+    useQuery<Types.GetEventPassPendingOrderForEventPassesQuery, TError, TData>(
+      variables === undefined ? ['GetEventPassPendingOrderForEventPasses'] : ['GetEventPassPendingOrderForEventPasses', variables],
+      fetchDataReactQuery<Types.GetEventPassPendingOrderForEventPassesQuery, Types.GetEventPassPendingOrderForEventPassesQueryVariables>(GetEventPassPendingOrderForEventPassesDocument, variables),
       options
     );
 export const InsertEventPassPendingOrdersDocument = `
@@ -132,19 +130,19 @@ export const useInsertEventPassPendingOrdersMutation = <
       (variables?: Types.InsertEventPassPendingOrdersMutationVariables) => fetchDataReactQuery<Types.InsertEventPassPendingOrdersMutation, Types.InsertEventPassPendingOrdersMutationVariables>(InsertEventPassPendingOrdersDocument, variables)(),
       options
     );
-export const DeleteEventPassOrderDocument = `
-    mutation DeleteEventPassOrder($eventPassOrderId: uuid!) {
-  delete_eventPassPendingOrder_by_pk(id: $eventPassOrderId) {
+export const DeleteEventPassPendingOrderDocument = `
+    mutation DeleteEventPassPendingOrder($eventPassPendingOrderId: uuid!) {
+  delete_eventPassPendingOrder_by_pk(id: $eventPassPendingOrderId) {
     id
   }
 }
     `;
-export const useDeleteEventPassOrderMutation = <
+export const useDeleteEventPassPendingOrderMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<Types.DeleteEventPassOrderMutation, TError, Types.DeleteEventPassOrderMutationVariables, TContext>) =>
-    useMutation<Types.DeleteEventPassOrderMutation, TError, Types.DeleteEventPassOrderMutationVariables, TContext>(
-      ['DeleteEventPassOrder'],
-      (variables?: Types.DeleteEventPassOrderMutationVariables) => fetchDataReactQuery<Types.DeleteEventPassOrderMutation, Types.DeleteEventPassOrderMutationVariables>(DeleteEventPassOrderDocument, variables)(),
+    >(options?: UseMutationOptions<Types.DeleteEventPassPendingOrderMutation, TError, Types.DeleteEventPassPendingOrderMutationVariables, TContext>) =>
+    useMutation<Types.DeleteEventPassPendingOrderMutation, TError, Types.DeleteEventPassPendingOrderMutationVariables, TContext>(
+      ['DeleteEventPassPendingOrder'],
+      (variables?: Types.DeleteEventPassPendingOrderMutationVariables) => fetchDataReactQuery<Types.DeleteEventPassPendingOrderMutation, Types.DeleteEventPassPendingOrderMutationVariables>(DeleteEventPassPendingOrderDocument, variables)(),
       options
     );
