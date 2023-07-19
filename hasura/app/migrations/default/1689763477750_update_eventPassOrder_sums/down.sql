@@ -1,34 +1,43 @@
 -- Could not auto-generate a down migration.
 -- Please write an appropriate down migration for the SQL below:
 -- CREATE OR REPLACE FUNCTION update_eventPassOrder_sums() RETURNS TRIGGER AS $$
+-- DECLARE
+--   target_eventPassId text;
 -- BEGIN
+--   -- Determine whether this is an INSERT/UPDATE or DELETE operation
+--   IF TG_OP = 'DELETE' THEN
+--     target_eventPassId := OLD."eventPassId";
+--   ELSE
+--     target_eventPassId := NEW."eventPassId";
+--   END IF;
+--
 --   -- Update existing record in eventPassOrderSums
 --   UPDATE "eventPassOrderSums"
 --   SET "totalReserved" = (
 --     SELECT COALESCE(SUM(quantity), 0) AS totalReserved
 --     FROM (
 --       SELECT quantity FROM "eventPassOrder"
---       WHERE "eventPassId" = NEW."eventPassId" AND "status" != 'CANCELLED'
+--       WHERE "eventPassId" = target_eventPassId AND "status" != 'CANCELLED'
 --       UNION ALL
 --       SELECT quantity FROM "eventPassPendingOrder"
---       WHERE "eventPassId" = NEW."eventPassId"
+--       WHERE "eventPassId" = target_eventPassId
 --     ) AS combined_orders
 --   )
---   WHERE "eventPassId" = NEW."eventPassId";
+--   WHERE "eventPassId" = target_eventPassId;
 --
 --   -- If eventPassId doesn't exist in eventPassOrderSums, insert it
 --   IF NOT FOUND THEN
 --     INSERT INTO "eventPassOrderSums" ("eventPassId", "totalReserved")
 --     VALUES (
---       NEW."eventPassId",
+--       target_eventPassId,
 --       (
 --         SELECT COALESCE(SUM(quantity), 0) AS totalReserved
 --         FROM (
 --           SELECT quantity FROM "eventPassOrder"
---           WHERE "eventPassId" = NEW."eventPassId" AND "status" != 'CANCELLED'
+--           WHERE "eventPassId" = target_eventPassId AND "status" != 'CANCELLED'
 --           UNION ALL
 --           SELECT quantity FROM "eventPassPendingOrder"
---           WHERE "eventPassId" = NEW."eventPassId"
+--           WHERE "eventPassId" = target_eventPassId
 --         ) AS combined_orders
 --       )
 --     );

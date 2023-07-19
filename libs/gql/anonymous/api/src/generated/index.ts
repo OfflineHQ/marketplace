@@ -4,7 +4,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { fetchDataReactQuery } from '@next/hasura/fetcher';
 
 export const GetEventWithPassesDocument = `
-    query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) {
+    query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     id
     slug
