@@ -12,12 +12,13 @@ import { endpointUrl } from './shared';
 export const fetchDataReactQuery = <TData, TVariables>(
   query: string,
   variables?: TVariables,
-  options?: RequestInit['headers']
+  options: { jwt?: string; headers?: RequestInit['headers'] } = {}
 ): (() => Promise<TData>) => {
   return async () => {
     const headers = {
       'Content-Type': 'application/json',
-      ...(options ?? {}),
+      Authorization: options.jwt ? `Bearer ${options.jwt}` : '',
+      ...(options.headers ?? {}),
     };
     const url = endpointUrl();
     const res = await fetch(url, {
@@ -33,15 +34,7 @@ export const fetchDataReactQuery = <TData, TVariables>(
     const json = await res.json();
 
     if (json.errors) {
-      logger.error(
-        '\n\nerror:\n',
-        json.errors,
-        '\n\nquery:\n',
-        query,
-        '\n\nvariables\n:',
-        variables
-      );
-      const { message } = json.errors[0] || 'Error..';
+      const { message } = json.errors[0] || 'Error';
       throw new Error(message);
     }
 
