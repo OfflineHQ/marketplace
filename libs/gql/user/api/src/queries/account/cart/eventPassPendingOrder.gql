@@ -1,11 +1,9 @@
-query GetEventPassOrderForEventPasses($eventPassIds: [String!]) {
-  eventPassOrder(where: { eventPassId: { _in: $eventPassIds } }) {
+query GetEventPassPendingOrderForEventPasses($eventPassIds: [String!]) {
+  eventPassPendingOrder(where: { eventPassId: { _in: $eventPassIds } }) {
     id
     eventPassId
     quantity
-    status
     created_at
-    updated_at
   }
 }
 
@@ -22,8 +20,8 @@ mutation InsertEventPassPendingOrders(
   }
 }
 
-mutation DeleteEventPassOrder($eventPassOrderId: uuid!) {
-  delete_eventPassPendingOrder_by_pk(id: $eventPassOrderId) {
+mutation DeleteEventPassPendingOrder($eventPassPendingOrderId: uuid!) {
+  delete_eventPassPendingOrder_by_pk(id: $eventPassPendingOrderId) {
     id
   }
 }

@@ -117,7 +117,7 @@ export const EventDateLocationsFieldsFragmentDoc = `
 }
     `;
  const GetEventDocument = `
-    query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) {
+    query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     ...EventListFields
     description {
@@ -147,7 +147,7 @@ export const EventDateLocationsFieldsFragmentDoc = `
     ${EventListFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}`;
  const GetEventWithPassesDocument = `
-    query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) {
+    query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     id
     slug
@@ -234,7 +234,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
 }
     `;
  const GetOrganizerDocument = `
-    query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) {
+    query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     ...OrganizerFields
   }
