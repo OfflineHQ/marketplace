@@ -5,7 +5,7 @@ import {
 } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
 import { messages } from '@next/i18n';
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 interface RenderWithProvidersOptions extends Omit<RenderOptions, 'queries'> {
   locale?: string;
 }
@@ -35,4 +35,29 @@ function renderWithIntl(
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 }
 
-export { renderWithIntl };
+// Create a client specifically for testing
+const queryClientForTest = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false, // Turn off retries
+    },
+  },
+  logger: {
+    log: console.log,
+    warn: console.warn,
+    error: () => null, // Turn off network error logging
+  },
+});
+
+// A wrapper component that provides the QueryClient to your components
+const QueryClientProviderForTest: React.FC = ({
+  children,
+}: {
+  children?: React.ReactNode;
+}) => (
+  <QueryClientProvider client={queryClientForTest}>
+    {children}
+  </QueryClientProvider>
+);
+
+export { renderWithIntl, QueryClientProviderForTest };
