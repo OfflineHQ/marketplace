@@ -1,0 +1,4 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- alter table "public"."eventPassPricing" add column "timeBeforeDelete" integer
+--  not null default '14400';

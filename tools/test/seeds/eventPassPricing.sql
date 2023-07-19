@@ -1,3 +1,0 @@
-SET check_function_bodies = false;
-INSERT INTO public."eventPassPricing" ("eventPassId", created_at, updated_at, id, "maxAmount", "maxAmountPerUser", "priceAmount", "priceCurrency") VALUES ('fake-event-pass-1', '2023-07-17 18:53:23.240091+00', '2023-07-17 18:53:23.240091+00', '49c78d67-e7a6-45f7-b8e2-bfe64ffbcb8c', 100, NULL, 120000, 'EUR');
-INSERT INTO public."eventPassPricing" ("eventPassId", created_at, updated_at, id, "maxAmount", "maxAmountPerUser", "priceAmount", "priceCurrency") VALUES ('fake-event-pass-2', '2023-07-17 18:53:51.122975+00', '2023-07-17 18:53:51.122975+00', '882a6f55-75af-471d-8ed2-a8bb2e776409', 200, 10, 130000, 'EUR');
