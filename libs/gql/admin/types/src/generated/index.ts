@@ -49,7 +49,7 @@ export type UpsertEventPassOrdersMutation = { __typename?: 'mutation_root', inse
 export type GetEventPassPendingOrdersQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type GetEventPassPendingOrdersQuery = { __typename?: 'query_root', eventPassPendingOrder: Array<{ __typename?: 'eventPassPendingOrder', created_at: any, id: any, account?: { __typename?: 'account', email?: string | null } | null, eventPassPricing?: { __typename?: 'eventPassPricing', timeBeforeDelete: number } | null }> };
+export type GetEventPassPendingOrdersQuery = { __typename?: 'query_root', eventPassPendingOrder: Array<{ __typename?: 'eventPassPendingOrder', created_at: any, id: any, eventPassId: string, account?: { __typename?: 'account', email?: string | null, address: string } | null, eventPassPricing?: { __typename?: 'eventPassPricing', timeBeforeDelete: number } | null }> };
 
 export type EventListFieldsFragment = { __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string } };
 
