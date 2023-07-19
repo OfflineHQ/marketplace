@@ -7231,6 +7231,7 @@ type eventPassPricing {
   maxAmountPerUser: Int
   priceAmount: Int!
   priceCurrency: currency_enum!
+  timeBeforeDelete: Int!
   updated_at: timestamptz!
 }
 
@@ -7264,6 +7265,7 @@ type eventPassPricing_avg_fields {
   maxAmount: Float
   maxAmountPerUser: Float
   priceAmount: Float
+  timeBeforeDelete: Float
 }
 
 """
@@ -7280,6 +7282,7 @@ input eventPassPricing_bool_exp {
   maxAmountPerUser: Int_comparison_exp
   priceAmount: Int_comparison_exp
   priceCurrency: currency_enum_comparison_exp
+  timeBeforeDelete: Int_comparison_exp
   updated_at: timestamptz_comparison_exp
 }
 
@@ -7305,6 +7308,7 @@ input eventPassPricing_inc_input {
   maxAmount: Int
   maxAmountPerUser: Int
   priceAmount: Int
+  timeBeforeDelete: Int
 }
 
 """
@@ -7318,6 +7322,7 @@ input eventPassPricing_insert_input {
   maxAmountPerUser: Int
   priceAmount: Int
   priceCurrency: currency_enum
+  timeBeforeDelete: Int
   updated_at: timestamptz
 }
 
@@ -7329,6 +7334,7 @@ type eventPassPricing_max_fields {
   maxAmount: Int
   maxAmountPerUser: Int
   priceAmount: Int
+  timeBeforeDelete: Int
   updated_at: timestamptz
 }
 
@@ -7340,6 +7346,7 @@ type eventPassPricing_min_fields {
   maxAmount: Int
   maxAmountPerUser: Int
   priceAmount: Int
+  timeBeforeDelete: Int
   updated_at: timestamptz
 }
 
@@ -7382,6 +7389,7 @@ input eventPassPricing_order_by {
   maxAmountPerUser: order_by
   priceAmount: order_by
   priceCurrency: order_by
+  timeBeforeDelete: order_by
   updated_at: order_by
 }
 
@@ -7416,6 +7424,9 @@ enum eventPassPricing_select_column {
   priceCurrency
 
   """column name"""
+  timeBeforeDelete
+
+  """column name"""
   updated_at
 }
 
@@ -7430,6 +7441,7 @@ input eventPassPricing_set_input {
   maxAmountPerUser: Int
   priceAmount: Int
   priceCurrency: currency_enum
+  timeBeforeDelete: Int
   updated_at: timestamptz
 }
 
@@ -7438,6 +7450,7 @@ type eventPassPricing_stddev_fields {
   maxAmount: Float
   maxAmountPerUser: Float
   priceAmount: Float
+  timeBeforeDelete: Float
 }
 
 """aggregate stddev_pop on columns"""
@@ -7445,6 +7458,7 @@ type eventPassPricing_stddev_pop_fields {
   maxAmount: Float
   maxAmountPerUser: Float
   priceAmount: Float
+  timeBeforeDelete: Float
 }
 
 """aggregate stddev_samp on columns"""
@@ -7452,6 +7466,7 @@ type eventPassPricing_stddev_samp_fields {
   maxAmount: Float
   maxAmountPerUser: Float
   priceAmount: Float
+  timeBeforeDelete: Float
 }
 
 """
@@ -7474,6 +7489,7 @@ input eventPassPricing_stream_cursor_value_input {
   maxAmountPerUser: Int
   priceAmount: Int
   priceCurrency: currency_enum
+  timeBeforeDelete: Int
   updated_at: timestamptz
 }
 
@@ -7482,6 +7498,7 @@ type eventPassPricing_sum_fields {
   maxAmount: Int
   maxAmountPerUser: Int
   priceAmount: Int
+  timeBeforeDelete: Int
 }
 
 """
@@ -7510,6 +7527,9 @@ enum eventPassPricing_update_column {
   priceCurrency
 
   """column name"""
+  timeBeforeDelete
+
+  """column name"""
   updated_at
 }
 
@@ -7529,6 +7549,7 @@ type eventPassPricing_var_pop_fields {
   maxAmount: Float
   maxAmountPerUser: Float
   priceAmount: Float
+  timeBeforeDelete: Float
 }
 
 """aggregate var_samp on columns"""
@@ -7536,6 +7557,7 @@ type eventPassPricing_var_samp_fields {
   maxAmount: Float
   maxAmountPerUser: Float
   priceAmount: Float
+  timeBeforeDelete: Float
 }
 
 """aggregate variance on columns"""
@@ -7543,6 +7565,7 @@ type eventPassPricing_variance_fields {
   maxAmount: Float
   maxAmountPerUser: Float
   priceAmount: Float
+  timeBeforeDelete: Float
 }
 
 """mutation root"""
