@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 import { getSdk as userSdk, type Sdk } from '@gql/user/api';
 import type { Account } from '@gql/shared/types';
-import { endpointUrl } from '@next/hasura/fetcher';
+import { endpointUrl, fetchDataReactQuery } from '@next/hasura/fetcher';
 
 // setup env variables
 require('dotenv').config({ path: './tools/test/.env.test.jest' });
@@ -42,6 +42,16 @@ const fetchDataForTest = (opts: Opts = { jwt: '' }) => {
   };
 };
 
+export const fetchDataReactQueryForTest = (jwt: string) => {
+  return <TData, TVariables>(
+    query: string,
+    variables?: TVariables,
+    options: { jwt?: string; headers?: RequestInit['headers'] } = {}
+  ) => {
+    return fetchDataReactQuery<TData, TVariables>(query, variables, options);
+  };
+};
+
 export const accounts = {
   seb_google: {
     id: 'ac542c34-1907-451c-94be-5df69a959080',
@@ -67,7 +77,6 @@ export const accounts = {
 };
 
 type AccountOptions = {
-  allowedRoles?: string[];
   defaultRole: string;
   userId: string;
 };
@@ -76,49 +85,45 @@ type AccountOptions = {
 const generateJwt = (options: AccountOptions): string =>
   jwt.sign(
     JSON.stringify({
-      roles: options.allowedRoles,
+      roles: [options.defaultRole],
       userId: options.userId,
     }),
     // private key provided on docker-compose for test
     '3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R'
   );
 
-// configure the client
-export const sdkClient = (options: AccountOptions): Sdk => {
-  // if we do not provide allowedRoles for the client we assume that the defaultRole is an allowed role
-  if ('defaultRole' in options && !options.allowedRoles) {
-    options.allowedRoles = [options.defaultRole];
-  }
-  const jwt = generateJwt(options);
-  return userSdk(fetchDataForTest({ jwt }));
+const usersJwt = {
+  seb_google: generateJwt({
+    defaultRole: 'user',
+    userId: accounts.seb_google.id,
+  }),
+  alpha_user: generateJwt({
+    defaultRole: 'user',
+    userId: accounts.alpha_user.id,
+  }),
+  beta_user: generateJwt({
+    defaultRole: 'user',
+    userId: accounts.beta_user.id,
+  }),
 };
 
 export const alphaAdminClient = (): Sdk & { me: Account } => {
   return {
-    ...sdkClient({
-      defaultRole: 'user',
-      userId: accounts.alpha_user.id,
-    }),
+    ...userSdk(fetchDataForTest({ jwt: usersJwt.alpha_user })),
     me: accounts.alpha_user,
   };
 };
 
 export const betaAdminClient = (): Sdk & { me: Account } => {
   return {
-    ...sdkClient({
-      defaultRole: 'user',
-      userId: accounts.beta_user.id,
-    }),
+    ...userSdk(fetchDataForTest({ jwt: usersJwt.beta_user })),
     me: accounts.beta_user,
   };
 };
 
 export const sebGoogleClient = (): Sdk & { me: Account } => {
   return {
-    ...sdkClient({
-      defaultRole: 'user',
-      userId: accounts.seb_google.id,
-    }),
+    ...userSdk(fetchDataForTest({ jwt: usersJwt.seb_google })),
     me: accounts.seb_google,
   };
 };
