@@ -2,5 +2,11 @@
   "framework": "nextjs",
   "buildCommand": "pnpm nx build web --prod",
   "outputDirectory": "dist/apps/web/.next",
-  "installCommand": "pnpm install"
+  "installCommand": "pnpm install",
+  "crons": [
+    {
+      "path": "./libs/features/cart/src/lib/cron/handlePendingOrders.ts",
+      "schedule": "*/5 * * * *"
+    }
+  ]
 }
