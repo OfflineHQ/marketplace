@@ -30,7 +30,6 @@ export function EventPassesUser({
     ordersIsLoading,
     upsertOrders,
     deleteOrders,
-    syncLocalStorageWithDb,
   } = useEventPassOrders({
     organizerSlug,
     eventSlug,
@@ -45,8 +44,8 @@ export function EventPassesUser({
   };
 
   useEffect(() => {
-    if (passes) syncLocalStorageWithDb();
-  }, [passes]);
+    if (ordersData) upsertOrders(passes);
+  }, [passes, ordersData]);
 
   if (
     eventIsLoading ||

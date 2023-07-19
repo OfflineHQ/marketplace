@@ -1,9 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query';
 import {
   useGetEventWithPassesQuery,
-  useGetEventPassOrderForEventPassesQuery,
-  useUpsertEventPassOrdersMutation,
-  useDeleteEventPassOrdersMutation,
+  useGetEventPassPendingOrderForEventPassesQuery,
+  useInsertEventPassPendingOrdersMutation,
+  useDeleteEventPassPendingOrdersMutation,
 } from '@gql/user/api';
 import { usePassPurchaseStore } from '@features/organizer/event/store';
 import { useStore } from '@next/store';
@@ -37,7 +37,7 @@ export const useEventPassOrders = ({
   const eventPassIds = passes.map((pass) => pass.id);
 
   const { data: ordersData, isLoading: ordersIsLoading } =
-    useGetEventPassOrderForEventPassesQuery(
+    useGetEventPassPendingOrderForEventPassesQuery(
       {
         eventPassIds,
       },
@@ -47,23 +47,58 @@ export const useEventPassOrders = ({
   const mutationOptions = {
     onSuccess: () => {
       queryClient.invalidateQueries([
-        'GetEventPassOrderForEventPasses',
+        'GetEventPassPendingOrderForEventPasses',
         { organizerSlug, eventSlug },
       ]);
     },
   };
 
-  const mutationUpsert = useUpsertEventPassOrdersMutation(mutationOptions);
-  const mutationDelete = useDeleteEventPassOrdersMutation(mutationOptions);
+  const mutationInsert =
+    useInsertEventPassPendingOrdersMutation(mutationOptions);
+  const mutationDelete =
+    useDeleteEventPassPendingOrdersMutation(mutationOptions);
 
-  const upsertOrders = async (orders: EventPassCart[]) => {
+  const upsertOrders = async (passes: EventPassCart[]) => {
     try {
-      return mutationUpsert.mutateAsync({
-        objects: orders.map((order) => ({
-          eventPassId: order.id,
-          quantity: order.amount,
-        })),
-      });
+      if (!ordersData) {
+        throw new Error('ordersData is undefined');
+      }
+      const eventPassIdsSet = new Set(
+        ordersData.eventPassPendingOrder?.map((order) => order.eventPassId)
+      );
+      const passIdsSet = new Set(eventPassIds);
+
+      const ordersToInsert = [];
+      const idsToDelete = [];
+
+      for (const pass of passes) {
+        if (!eventPassIdsSet.has(pass.id)) {
+          ordersToInsert.push({
+            eventPassId: pass.id,
+            quantity: pass.amount,
+          });
+        }
+      }
+
+      for (const eventPassId of eventPassIdsSet) {
+        if (!passIdsSet.has(eventPassId)) {
+          idsToDelete.push(eventPassId);
+        }
+      }
+
+      if (ordersToInsert.length > 0) {
+        await mutationInsert.mutateAsync({
+          objects: ordersToInsert,
+        });
+      }
+
+      if (idsToDelete.length > 0) {
+        await mutationDelete.mutateAsync({
+          eventPassIds: idsToDelete,
+        });
+      }
+
+      return true;
     } catch (error) {
       console.error(error);
       throw error;
@@ -81,12 +116,6 @@ export const useEventPassOrders = ({
     }
   };
 
-  const syncLocalStorageWithDb = async () => {
-    console.log('syncLocalStorageWithDb');
-    const res = await upsertOrders(passes);
-    console.log({ res });
-  };
-
   return {
     eventData,
     eventIsLoading,
@@ -94,6 +123,5 @@ export const useEventPassOrders = ({
     ordersIsLoading,
     upsertOrders,
     deleteOrders,
-    syncLocalStorageWithDb,
   };
 };
