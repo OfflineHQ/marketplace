@@ -13,18 +13,20 @@ describe('tests for eventPassPendingOrder admin', () => {
   beforeAll(async () => {
     client = await createDbClient();
     await deleteAccounts(client);
-    await deleteTables(client, '"eventPassPendingOrder", "eventPassPricing"');
     await seedDb(client, './hasura/app/seeds/default/account.sql');
-    await seedDb(client, './hasura/app/seeds/default/eventPassPricing.sql');
-    await seedDb(
-      client,
-      './hasura/app/seeds/default/eventPassPendingOrder.sql'
-    );
   });
   afterAll(async () => {
     await deleteAccounts(client);
     await deleteTables(client, '"eventPassPendingOrder", "eventPassPricing"');
     await client.end();
+  });
+  beforeEach(async () => {
+    await deleteTables(client, '"eventPassPendingOrder", "eventPassPricing"');
+    await seedDb(client, './hasura/app/seeds/default/eventPassPricing.sql');
+    await seedDb(
+      client,
+      './hasura/app/seeds/default/eventPassPendingOrder.sql'
+    );
   });
 
   it('should retrieve all existing eventPassPendingOrder', async () => {
