@@ -43,7 +43,7 @@ export const useEventPassOrders = ({
       },
       { enabled: !!eventPassIds }
     );
-
+  console.log('ordersData', ordersData, 'eventPassIds', eventPassIds);
   const mutationOptions = {
     onSuccess: () => {
       queryClient.invalidateQueries([

@@ -1,4 +1,9 @@
-import { deleteAccounts, createDbClient, type PgClient } from '@test-utils/db';
+import {
+  deleteAccounts,
+  createDbClient,
+  seedDb,
+  type PgClient,
+} from '@test-utils/db';
 import { createAccount } from './createAccount';
 
 describe('createAccount test', () => {
@@ -13,6 +18,7 @@ describe('createAccount test', () => {
 
   beforeEach(async () => {
     await deleteAccounts(client);
+    await seedDb(client, './hasura/app/seeds/default/account.sql');
   });
 
   it('should create account', async () => {
