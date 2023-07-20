@@ -16,18 +16,12 @@ const queryClientForTest = new QueryClient({
 });
 
 // A wrapper component that provides the QueryClient to your components
-const QueryClientProviderForTest: React.FC = ({
-  children,
-}: {
-  children?: React.ReactNode;
-}) => (
+const QueryClientProviderForTest: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => (
   <QueryClientProvider client={queryClientForTest}>
     {children}
   </QueryClientProvider>
 );
 
-const JwtTestContext = createContext<string | undefined>(undefined);
-
-const useTestJwt = () => useContext(JwtTestContext);
-
-export { QueryClientProviderForTest, JwtTestContext, useTestJwt };
+export { QueryClientProviderForTest };
