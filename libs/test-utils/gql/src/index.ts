@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const jwt = require('jsonwebtoken');
-import { getSdk as userSdk, type Sdk } from '@gql/user/api';
+import { getSdk as userSdk, type Sdk as UserSdk } from '@gql/user/api';
+import {
+  getSdk as anonymousSdk,
+  type Sdk as AnonymousSdk,
+} from '@gql/anonymous/api';
 import type { Account } from '@gql/shared/types';
-import { endpointUrl, fetchDataReactQuery } from '@next/hasura/fetcher';
+import { endpointUrl } from '@next/hasura/shared';
 
 // setup env variables
 require('dotenv').config({ path: './tools/test/.env.test.jest' });
@@ -10,18 +14,18 @@ require('dotenv').config({ path: './tools/test/.env.test.jest' });
 // In your accounts sdk file:
 
 type Opts = {
-  admin?: boolean;
+  anonymous?: boolean;
   jwt?: string;
 };
-const fetchDataForTest = (opts: Opts = { jwt: '' }) => {
+const fetchDataForTest = (opts: Opts = { jwt: '', anonymous: false }) => {
   return async <TResult, TVariables>(
     doc: string,
     variables: TVariables
   ): Promise<TResult> => {
-    const { jwt } = opts;
+    const { jwt, anonymous } = opts;
     const headers: RequestInit['headers'] = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
+      Authorization: !anonymous ? `Bearer ${jwt}` : '',
     };
 
     const res = await fetch(endpointUrl(), {
@@ -39,16 +43,6 @@ const fetchDataForTest = (opts: Opts = { jwt: '' }) => {
     }
 
     return json.data;
-  };
-};
-
-export const fetchDataReactQueryForTest = (jwt: string) => {
-  return <TData, TVariables>(
-    query: string,
-    variables?: TVariables,
-    options: { jwt?: string; headers?: RequestInit['headers'] } = {}
-  ) => {
-    return fetchDataReactQuery<TData, TVariables>(query, variables, options);
   };
 };
 
@@ -107,23 +101,27 @@ export const usersJwt = {
   }),
 };
 
-export const alphaAdminClient = (): Sdk & { me: Account } => {
+export const alphaAdminClient = (): UserSdk & { me: Account } => {
   return {
     ...userSdk(fetchDataForTest({ jwt: usersJwt.alpha_user })),
     me: accounts.alpha_user,
   };
 };
 
-export const betaAdminClient = (): Sdk & { me: Account } => {
+export const betaAdminClient = (): UserSdk & { me: Account } => {
   return {
     ...userSdk(fetchDataForTest({ jwt: usersJwt.beta_user })),
     me: accounts.beta_user,
   };
 };
 
-export const sebGoogleClient = (): Sdk & { me: Account } => {
+export const sebGoogleClient = (): UserSdk & { me: Account } => {
   return {
     ...userSdk(fetchDataForTest({ jwt: usersJwt.seb_google })),
     me: accounts.seb_google,
   };
+};
+
+export const anonymousClient = (): AnonymousSdk => {
+  return anonymousSdk(fetchDataForTest({ anonymous: true }));
 };
