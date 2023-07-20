@@ -1,0 +1,16 @@
+{
+  "name": "test-utils-next-intl",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/test-utils/next-intl/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/test-utils/next-intl/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

@@ -1,14 +1,8 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { useEventPassOrders } from './useEventPassOrders';
 import { usersJwt } from '@test-utils/gql';
-import { QueryClientProviderForTest } from '@test-utils/react';
+import { QueryClientProviderForTest } from '@test-utils/react-query';
 import { Locale } from '@gql/shared/types';
-
-// jest.mock('@next/hasura/fetcher', () => {
-//   return {
-//     fetchDataReactQuery: fetchDataReactQueryForTest(usersJwt.alpha_user),
-//   };
-// });
 
 describe('useEventPassOrders', () => {
   it('should work correctly', async () => {

@@ -1,4 +1,4 @@
-import { renderWithIntl } from '@test-utils/react';
+import { renderWithIntl } from '@test-utils/next-intl';
 import { composeStories } from '@storybook/react';
 import * as stories from './EventHero.stories';
 

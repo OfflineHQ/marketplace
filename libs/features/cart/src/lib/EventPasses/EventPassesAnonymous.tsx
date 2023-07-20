@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { useGetEventWithPassesQuery } from '@gql/anonymous/api';
+import { useGetEventWithPassesQuery } from '@gql/anonymous/react-query';
 import type { Locale, Stage } from '@gql/shared/types';
 import {
   EventPasses,

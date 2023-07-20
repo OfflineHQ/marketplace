@@ -1,9 +1,8 @@
 import * as Types from '@gql/anonymous/types';
 
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { fetchDataReactQuery } from '@next/hasura/fetcher';
+import { fetchData } from "@next/hasura/api";
 
-export const GetEventWithPassesDocument = `
+ const GetEventWithPassesDocument = `
     query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     id
@@ -32,15 +31,13 @@ export const GetEventWithPassesDocument = `
   }
 }
     `;
-export const useGetEventWithPassesQuery = <
-      TData = Types.GetEventWithPassesQuery,
-      TError = Error
-    >(
-      variables: Types.GetEventWithPassesQueryVariables,
-      options?: UseQueryOptions<Types.GetEventWithPassesQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetEventWithPassesQuery, TError, TData>(
-      ['GetEventWithPasses', variables],
-      fetchDataReactQuery<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables),
-      options
-    );
+export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
+export function getSdk<C, E>(requester: Requester<C, E>) {
+  return {
+    GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
+      return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;
+    }
+  };
+}
+export type Sdk = ReturnType<typeof getSdk>;
+export const userSdk = getSdk(fetchData());

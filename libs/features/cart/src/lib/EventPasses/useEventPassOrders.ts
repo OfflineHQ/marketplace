@@ -4,7 +4,7 @@ import {
   useGetEventPassPendingOrderForEventPassesQuery,
   useInsertEventPassPendingOrdersMutation,
   useDeleteEventPassPendingOrdersMutation,
-} from '@gql/user/api';
+} from '@gql/user/react-query';
 import { usePassPurchaseStore } from '@features/organizer/event/store';
 import { useStore } from '@next/store';
 import type {
@@ -68,8 +68,9 @@ export const useEventPassOrders = ({
       );
       const passIdsSet = new Set(eventPassIds);
 
-      const ordersToInsert = [];
-      const idsToDelete = [];
+      const ordersToInsert: { eventPassId: string; quantity: number }[] = [];
+
+      const idsToDelete: string[] = [];
 
       for (const pass of passes) {
         if (!eventPassIdsSet.has(pass.id)) {
