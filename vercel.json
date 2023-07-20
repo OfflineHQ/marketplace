@@ -5,7 +5,7 @@
   "installCommand": "pnpm install",
   "crons": [
     {
-      "path": "./libs/features/cart/src/lib/cron/handlePendingOrders.ts",
+      "path": "/libs/features/cart/src/lib/cron/handlePendingOrders.ts",
       "schedule": "*/5 * * * *"
     }
   ]
