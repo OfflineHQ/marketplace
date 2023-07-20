@@ -41,7 +41,7 @@ jobs:
         pnpm nx format:check --verbose
         ## test relying in prisma + hasura not working in parallel, docker services not available ?
         # pnpm nx affected --target=test-prisma --ci --code-coverage
-        pnpm nx affected --target=test-hasura --ci --code-coverage
+        pnpm nx affected --target=test-hasura --parallel=false --ci --code-coverage
         pnpm nx affected --target=e2e --no-watch
       parallel-commands-on-agents: |
         pnpm affected:lint --parallel=3 &

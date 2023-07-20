@@ -46,7 +46,7 @@ describe('createAccount test', () => {
   });
   it('should throw an error when address is not provided', async () => {
     const account = {
-      email: 'test@safsaf.safsaf',
+      email: 'fake@asfasfqwf.com',
     };
     await expect(createAccount(account as any)).rejects.toThrow();
   });
