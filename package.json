@@ -231,7 +231,7 @@
     "jest-environment-jsdom": "^29.6.0",
     "jest-environment-node": "^29.6.0",
     "jsonc-eslint-parser": "^2.3.0",
-    "jsonwebtoken": "^9.0.1",
+    "jsonwebtoken": "^8.5.1",
     "lint-staged": "^13.2.3",
     "msw": "^1.2.2",
     "next-router-mock": "^0.9.7",
