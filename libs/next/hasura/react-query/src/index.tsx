@@ -3,11 +3,15 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { isServerSide, isDev } from '@utils';
-import { useTestJwt } from '@test-utils/react-query';
-
-import { logger } from '@logger';
+// import { logger } from '@logger';
 
 import { endpointUrl } from '@next/hasura/shared';
+
+declare global {
+  interface Window {
+    jwtTestToken?: string;
+  }
+}
 
 // This fetcher is used for fetching data for react query from Hasura GraphQL API on the client side.
 export const fetchDataReactQuery = <TData, TVariables>(
@@ -15,12 +19,11 @@ export const fetchDataReactQuery = <TData, TVariables>(
   variables?: TVariables,
   options: { headers?: RequestInit['headers'] } = {}
 ): (() => Promise<TData>) => {
-  logger.debug({ query, variables, options }, 'fetchDataReactQuery');
   return async () => {
-    const jwtTest = useTestJwt();
+    const jwtTestToken = window?.jwtTestToken || null;
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: jwtTest ? `Bearer ${jwtTest}` : '',
+      Authorization: jwtTestToken ? `Bearer ${jwtTestToken}` : '',
       ...(options.headers ?? {}),
     };
     const url = endpointUrl();
