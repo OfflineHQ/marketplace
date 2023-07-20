@@ -1,0 +1,16 @@
+{
+  "name": "test-utils-react-query",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/test-utils/react-query/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/test-utils/react-query/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}
