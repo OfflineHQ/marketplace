@@ -76,7 +76,7 @@
         "libs/gql/anonymous/api/src/index.ts"
       ],
       "@gql/anonymous/react-query": [
-        "libs/gql/anonymous/react-query/src/index.ts"
+        "libs/gql/anonymous/react-query/src/index.tsx"
       ],
       "@gql/anonymous/types": [
         "libs/gql/anonymous/types/src/index.ts"
@@ -88,7 +88,7 @@
         "libs/gql/user/api/src/index.ts"
       ],
       "@gql/user/react-query": [
-        "libs/gql/user/react-query/src/index.ts"
+        "libs/gql/user/react-query/src/index.tsx"
       ],
       "@gql/user/types": [
         "libs/gql/user/types/src/index.ts"

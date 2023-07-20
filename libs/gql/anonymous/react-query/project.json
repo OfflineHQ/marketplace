@@ -21,7 +21,7 @@
         "outputPath": "dist/libs/gql/anonymous/react-query",
         "tsConfig": "libs/gql/anonymous/react-query/tsconfig.lib.json",
         "project": "libs/gql/anonymous/react-query/package.json",
-        "entryFile": "libs/gql/anonymous/react-query/src/index.ts",
+        "entryFile": "libs/gql/anonymous/react-query/src/index.tsx",
         "external": ["react", "react-dom", "react/jsx-runtime"],
         "rollupConfig": "@nx/react/plugins/bundle-rollup",
         "compiler": "swc",
