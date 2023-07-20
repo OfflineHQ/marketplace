@@ -4,16 +4,6 @@
   "sourceRoot": "libs/test-utils/gql/src",
   "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nx/js:swc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/libs/test-utils/gql",
-        "main": "libs/test-utils/gql/src/index.ts",
-        "tsConfig": "libs/test-utils/gql/tsconfig.lib.json",
-        "assets": ["libs/test-utils/gql/*.md"]
-      }
-    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],

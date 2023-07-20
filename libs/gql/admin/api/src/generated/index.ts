@@ -1,6 +1,6 @@
 import * as Types from '@gql/admin/types';
 
-import { fetchData } from "@next/hasura/fetcher";
+import { fetchData } from "@next/hasura/api";
 export const AccountFieldsFragmentDoc = `
     fragment AccountFields on account {
   id

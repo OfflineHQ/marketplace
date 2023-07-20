@@ -1,7 +1,7 @@
 // EventDates.spec.tsx
 import { screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
-import { renderWithIntl } from '@test-utils/react';
+import { renderWithIntl } from '@test-utils/next-intl';
 import { EventDates } from './EventDates';
 import * as stories from './EventDates.stories';
 

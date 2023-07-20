@@ -39,7 +39,7 @@ generates:
           noExport: true
           documentMode: 'string'
       - 'add':
-          content: 'import { fetchData } from "@next/hasura/fetcher";'
+          content: 'import { fetchData } from "@next/hasura/api";'
           placement: 'prepend'
       - 'add':
           content: 'export const adminSdk = getSdk(fetchData({admin:true}));'
@@ -71,7 +71,7 @@ generates:
     plugins:
       - 'typescript-operations':
           preResolveTypes: true
-  libs/gql/user/api/src/generated/react-query.ts:
+  libs/gql/user/react-query/src/generated/index.tsx:
     preset: import-types
     presetConfig:
       typesPath: '@gql/user/types'
@@ -82,10 +82,10 @@ generates:
     plugins:
       - 'typescript-react-query':
           fetcher:
-            func: '@next/hasura/fetcher#fetchDataReactQuery'
+            func: '@next/hasura/react-query#fetchDataReactQuery'
             isReactHook: false
           errorType: Error
-  libs/gql/user/api/src/generated/sdk.ts:
+  libs/gql/user/api/src/generated/index.ts:
     preset: import-types
     presetConfig:
       typesPath: '@gql/user/types'
@@ -96,7 +96,7 @@ generates:
           noExport: true
           documentMode: 'string'
       - 'add':
-          content: 'import { fetchData } from "@next/hasura/fetcher";'
+          content: 'import { fetchData } from "@next/hasura/api";'
           placement: 'prepend'
       - 'add':
           content: 'export const userSdk = getSdk(fetchData());'
@@ -133,13 +133,29 @@ generates:
     presetConfig:
       typesPath: '@gql/anonymous/types'
       importTypesNamespace: 'Types'
+    documents: './libs/gql/anonymous/api/src/queries/**/*.{graphql,gql}'
+    plugins:
+      - 'typescript-generic-sdk':
+          noExport: true
+          documentMode: 'string'
+      - 'add':
+          content: 'import { fetchData } from "@next/hasura/api";'
+          placement: 'prepend'
+      - 'add':
+          content: 'export const userSdk = getSdk(fetchData());'
+          placement: 'append'
+  libs/gql/anonymous/react-query/src/generated/index.tsx:
+    preset: import-types
+    presetConfig:
+      typesPath: '@gql/anonymous/types'
+      importTypesNamespace: 'Types'
     schema:
       - *anonymousSchema
     documents: './libs/gql/anonymous/api/src/queries/**/*.{graphql,gql}'
     plugins:
       - 'typescript-react-query':
           fetcher:
-            func: '@next/hasura/fetcher#fetchDataReactQuery'
+            func: '@next/hasura/react-query#fetchDataReactQuery'
             isReactHook: false
           errorType: Error
 
