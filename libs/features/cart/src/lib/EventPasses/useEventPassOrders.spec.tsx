@@ -1,17 +1,22 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { useEventPassOrders } from './useEventPassOrders';
-import { fetchDataReactQueryForTest, usersJwt } from '@test-utils/gql';
+import { usersJwt } from '@test-utils/gql';
 import { QueryClientProviderForTest } from '@test-utils/react';
 import { Locale } from '@gql/shared/types';
 
+// jest.mock('@next/hasura/fetcher', () => {
+//   return {
+//     fetchDataReactQuery: fetchDataReactQueryForTest(usersJwt.alpha_user),
+//   };
+// });
+
 describe('useEventPassOrders', () => {
   it('should work correctly', async () => {
-    jest.mock('@next/hasura/fetcher', () => {
-      return {
-        fetchDataReactQuery: fetchDataReactQueryForTest(usersJwt.alpha_user),
-      };
-    });
-    const { result } = renderHook(
+    const {
+      result: {
+        current: { eventData, ordersData, upsertOrders, deleteOrders },
+      },
+    } = renderHook(
       () =>
         useEventPassOrders({
           organizerSlug: 'test-organizer',
@@ -23,13 +28,10 @@ describe('useEventPassOrders', () => {
     );
 
     await waitFor(() => {
-      // expect(result.current).toEqual({
-      // 	data: {
-      // 		event: {
-      // 			id: 'test-event',
-    });
+      return expect(ordersData).toBeDefined();
 
-    // Add your assertions to test the behavior of the hook
-    // ...
+      // Add your assertions to test the behavior of the hook
+      // ...
+    });
   });
 });
