@@ -6,7 +6,6 @@ import {
   useDeleteEventPassPendingOrdersMutation,
 } from '@gql/user/react-query';
 import { usePassPurchaseStore } from '@features/organizer/event/store';
-import { useStore } from '@next/store';
 import type {
   EventPassCart,
   EventSlugs,
@@ -15,16 +14,15 @@ import type { Locale, Stage } from '@gql/shared/types';
 
 export interface EventPassesSliceProps extends EventSlugs {
   locale: Locale;
-  localPasses: EventPassCart[];
 }
 
 export const useEventPassOrders = ({
   organizerSlug,
   eventSlug,
   locale,
-  localPasses,
 }: EventPassesSliceProps) => {
-  const store = useStore(usePassPurchaseStore, (state) => state);
+  const store = usePassPurchaseStore();
+  // const store = useStore(usePassPurchaseStore, (state) => state);
   const queryClient = useQueryClient();
 
   const { data: eventData, isLoading: eventIsLoading } =
@@ -36,22 +34,16 @@ export const useEventPassOrders = ({
 
   const eventPassIds =
     eventData?.event?.eventPasses.map((pass) => pass.id) || [];
-  const localEventPassIds = localPasses.map((pass) => pass.id);
 
   const { data: ordersData, isLoading: ordersIsLoading } =
-    useGetEventPassPendingOrderForEventPassesQuery(
-      {
-        eventPassIds,
-      },
-      { enabled: !!localEventPassIds }
-    );
+    useGetEventPassPendingOrderForEventPassesQuery({
+      eventPassIds,
+    });
   console.log(
     'ordersData',
     ordersData,
     'eventPassIds',
     eventPassIds,
-    'localEventPassIds',
-    localEventPassIds,
     'ordersIsLoading',
     ordersIsLoading
   );
@@ -74,40 +66,70 @@ export const useEventPassOrders = ({
       if (!ordersData) {
         throw new Error('ordersData is undefined');
       }
-      const eventPassIdsSet = new Set(
-        ordersData.eventPassPendingOrder?.map((order) => order.eventPassId)
+
+      // Mapping of eventPassId to quantity from the local storage
+      const localPassesMap = localPasses.reduce((map, pass) => {
+        map[pass.id] = pass.amount;
+        return map;
+      }, {} as Record<string, number>);
+
+      // Mapping of eventPassId to quantity from the database
+      const dbPassesMap = ordersData.eventPassPendingOrder.reduce(
+        (map, order) => {
+          map[order.eventPassId] = order.quantity;
+          return map;
+        },
+        {} as Record<string, number>
       );
-      const passIdsSet = new Set(localEventPassIds);
 
-      const ordersToInsert: { eventPassId: string; quantity: number }[] = [];
+      // Orders to insert into the database
+      const ordersToInsert = [];
 
-      const idsToDelete: string[] = [];
+      // Orders to delete from the database
+      const idsToDelete = [];
 
+      // Loop over each local pass
       for (const pass of localPasses) {
-        if (!eventPassIdsSet.has(pass.id)) {
-          ordersToInsert.push({
-            eventPassId: pass.id,
-            quantity: pass.amount,
+        const dbQuantity = dbPassesMap[pass.id];
+
+        // If the pass does not exist in the database or if the quantities are different
+        if (dbQuantity === undefined || dbQuantity !== pass.amount) {
+          // Add the pass to the list of orders to insert into the database
+          ordersToInsert.push({ eventPassId: pass.id, quantity: pass.amount });
+
+          // If the pass already exists in the database but with a different quantity, add it to the list of orders to delete
+          if (dbQuantity !== undefined) {
+            idsToDelete.push(pass.id);
+          }
+        }
+      }
+
+      // Loop over each db order
+      for (const order of ordersData.eventPassPendingOrder) {
+        const localQuantity = localPassesMap[order.eventPassId];
+
+        // If the order does not exist in local storage
+        if (localQuantity === undefined) {
+          // Add the order to local storage
+          store.updatePassCart({
+            organizerSlug,
+            eventSlug,
+            pass: {
+              id: order.eventPassId,
+              amount: order.quantity,
+            },
           });
         }
       }
 
-      for (const eventPassId of eventPassIdsSet) {
-        if (!passIdsSet.has(eventPassId)) {
-          idsToDelete.push(eventPassId);
-        }
-      }
-
-      if (ordersToInsert.length > 0) {
-        await mutationInsert.mutateAsync({
-          objects: ordersToInsert,
-        });
-      }
-
+      // Delete orders from the database
       if (idsToDelete.length > 0) {
-        await mutationDelete.mutateAsync({
-          eventPassIds: idsToDelete,
-        });
+        await mutationDelete.mutateAsync({ eventPassIds: idsToDelete });
+      }
+
+      // Insert new orders into the database
+      if (ordersToInsert.length > 0) {
+        await mutationInsert.mutateAsync({ objects: ordersToInsert });
       }
 
       return true;
@@ -117,11 +139,12 @@ export const useEventPassOrders = ({
     }
   };
 
-  const deleteOrders = async () => {
+  const deleteOrders = async (localPasses: EventPassCart[]) => {
     try {
-      return mutationDelete.mutateAsync({
+      await mutationDelete.mutateAsync({
         eventPassIds: localPasses?.map((pass) => pass.id) || [],
       });
+      store.deletePassesCart({ organizerSlug, eventSlug });
     } catch (error) {
       console.error(error);
       throw error;
