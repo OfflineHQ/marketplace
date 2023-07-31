@@ -15,14 +15,14 @@ import type { Locale, Stage } from '@gql/shared/types';
 
 export interface EventPassesSliceProps extends EventSlugs {
   locale: Locale;
-  passes: EventPassCart[];
+  localPasses: EventPassCart[];
 }
 
 export const useEventPassOrders = ({
   organizerSlug,
   eventSlug,
   locale,
-  passes,
+  localPasses,
 }: EventPassesSliceProps) => {
   const store = useStore(usePassPurchaseStore, (state) => state);
   const queryClient = useQueryClient();
@@ -34,20 +34,24 @@ export const useEventPassOrders = ({
       stage: process.env.NEXT_PUBLIC_HYGRAPH_STAGE as Stage,
     });
 
-  const eventPassIds = passes.map((pass) => pass.id);
+  const eventPassIds =
+    eventData?.event?.eventPasses.map((pass) => pass.id) || [];
+  const localEventPassIds = localPasses.map((pass) => pass.id);
 
   const { data: ordersData, isLoading: ordersIsLoading } =
     useGetEventPassPendingOrderForEventPassesQuery(
       {
         eventPassIds,
       },
-      { enabled: !!eventPassIds }
+      { enabled: !!localEventPassIds }
     );
   console.log(
     'ordersData',
     ordersData,
     'eventPassIds',
     eventPassIds,
+    'localEventPassIds',
+    localEventPassIds,
     'ordersIsLoading',
     ordersIsLoading
   );
@@ -65,7 +69,7 @@ export const useEventPassOrders = ({
   const mutationDelete =
     useDeleteEventPassPendingOrdersMutation(mutationOptions);
 
-  const upsertOrders = async (passes: EventPassCart[]) => {
+  const upsertOrders = async (localPasses: EventPassCart[]) => {
     try {
       if (!ordersData) {
         throw new Error('ordersData is undefined');
@@ -73,13 +77,13 @@ export const useEventPassOrders = ({
       const eventPassIdsSet = new Set(
         ordersData.eventPassPendingOrder?.map((order) => order.eventPassId)
       );
-      const passIdsSet = new Set(eventPassIds);
+      const passIdsSet = new Set(localEventPassIds);
 
       const ordersToInsert: { eventPassId: string; quantity: number }[] = [];
 
       const idsToDelete: string[] = [];
 
-      for (const pass of passes) {
+      for (const pass of localPasses) {
         if (!eventPassIdsSet.has(pass.id)) {
           ordersToInsert.push({
             eventPassId: pass.id,
@@ -116,7 +120,7 @@ export const useEventPassOrders = ({
   const deleteOrders = async () => {
     try {
       return mutationDelete.mutateAsync({
-        eventPassIds: passes?.map((pass) => pass.id) || [],
+        eventPassIds: localPasses?.map((pass) => pass.id) || [],
       });
     } catch (error) {
       console.error(error);
