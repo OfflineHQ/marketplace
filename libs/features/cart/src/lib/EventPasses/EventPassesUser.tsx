@@ -33,7 +33,7 @@ export function EventPassesUser({
   } = useEventPassOrders({
     organizerSlug,
     eventSlug,
-    passes,
+    localPasses: passes,
     locale: locale as Locale,
   });
 
