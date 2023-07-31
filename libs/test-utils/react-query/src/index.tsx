@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createContext, useContext } from 'react';
 
 // Create a client specifically for testing
 const queryClientForTest = new QueryClient({

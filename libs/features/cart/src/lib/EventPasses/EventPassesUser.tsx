@@ -33,13 +33,12 @@ export function EventPassesUser({
   } = useEventPassOrders({
     organizerSlug,
     eventSlug,
-    localPasses: passes,
     locale: locale as Locale,
   });
 
   const handleDelete = async (props: EventSlugs) => {
     // TODO implement optimistic delete, first copy from localStorage, then apply onDelete then deleteOrders, if fail then set back to localStorage and show error
-    await deleteOrders();
+    await deleteOrders(passes);
     onDelete(props);
   };
 
