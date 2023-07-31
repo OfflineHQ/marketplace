@@ -11,6 +11,52 @@ import {
   type PgClient,
 } from '@test-utils/db';
 
+// import { useGetEventWithPassesQuery } from '@gql/user/react-query'; // update this import path as per your actual path
+
+jest.mock('@gql/user/react-query', () => ({
+  ...jest.requireActual('@gql/user/react-query'),
+  useGetEventWithPassesQuery: jest.fn(() => ({
+    data: {
+      event: {
+        id: 'test-event-id',
+        slug: 'test-event',
+        title: 'Test Event',
+        heroImage: {
+          url: 'http://test-event.com/hero.jpg',
+        },
+        organizer: {
+          id: 'test-organizer-id',
+          slug: 'test-organizer',
+          name: 'Test Organizer',
+          image: {
+            url: 'http://test-organizer.com/image.jpg',
+          },
+        },
+        eventPasses: [
+          {
+            id: 'fake-event-pass-1',
+            name: 'Fake Event Pass 1',
+            description: 'This is a fake event pass',
+            eventPassPricing: {
+              priceAmount: 120000,
+              priceCurrency: 'EUR',
+            },
+          },
+          {
+            id: 'fake-event-pass-2',
+            name: 'Fake Event Pass 2',
+            description: 'This is a fake event pass',
+            eventPassPricing: {
+              priceAmount: 130000,
+              priceCurrency: 'EUR',
+            },
+          },
+        ],
+      },
+    },
+  })),
+}));
+
 global.window = Object.create(window);
 describe('useEventPassOrders', () => {
   let client: PgClient;
@@ -32,7 +78,33 @@ describe('useEventPassOrders', () => {
       './hasura/app/seeds/default/eventPassPendingOrder.sql'
     );
   });
-  it('should work correctly', async () => {
+  it('Should retrieve existing order for an event from database', async () => {
+    Object.defineProperty(window, 'jwtTestToken', {
+      value: usersJwt.beta_user,
+    });
+    const { result } = renderHook(
+      () =>
+        useEventPassOrders({
+          organizerSlug: 'test-organizer',
+          eventSlug: 'test-event',
+          locale: Locale.En,
+          localPasses: [],
+        }),
+      {
+        wrapper: QueryClientProviderForTest,
+      }
+    );
+
+    await waitFor(() => {
+      expect(result.current.eventData).toBeDefined();
+      expect(result.current.ordersData).toBeDefined();
+      expect(result.current.ordersData?.eventPassPendingOrder.length).toBe(1);
+      expect(
+        result.current.ordersData?.eventPassPendingOrder[0].eventPassId
+      ).toBe('fake-event-pass-1');
+    });
+  });
+  it('Should retrieve multiple existing order for an event from database', async () => {
     Object.defineProperty(window, 'jwtTestToken', {
       value: usersJwt.alpha_user,
     });
@@ -42,7 +114,7 @@ describe('useEventPassOrders', () => {
           organizerSlug: 'test-organizer',
           eventSlug: 'test-event',
           locale: Locale.En,
-          passes: [{ id: 'fake-event-pass-1', amount: 1 }],
+          localPasses: [],
         }),
       {
         wrapper: QueryClientProviderForTest,
@@ -50,11 +122,9 @@ describe('useEventPassOrders', () => {
     );
 
     await waitFor(() => {
-      console.log('checking ordersData:', result.current.ordersData);
+      expect(result.current.eventData).toBeDefined();
       expect(result.current.ordersData).toBeDefined();
-
-      // Add your assertions to test the behavior of the hook
-      // ...
+      expect(result.current.ordersData?.eventPassPendingOrder.length).toBe(2);
     });
   });
 });
