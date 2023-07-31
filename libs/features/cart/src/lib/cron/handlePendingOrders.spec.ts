@@ -14,8 +14,8 @@ describe('Cron job - handlePendingOrders', () => {
     client = await createDbClient();
     await deleteAccounts(client);
     await deleteTables(client, '"eventPassPendingOrder", "eventPassPricing"');
-    await seedDb(client, './hasura/app/seeds/default/account.sql');
-    await seedDb(client, './hasura/app/seeds/default/eventPassPricing.sql');
+    await seedDb(client, './hasura/app/seeds/default/0_account.sql');
+    await seedDb(client, './hasura/app/seeds/default/1_eventPassPricing.sql');
   });
 
   afterAll(async () => {
@@ -28,7 +28,7 @@ describe('Cron job - handlePendingOrders', () => {
     await deleteTables(client, '"eventPassPendingOrder"');
     await seedDb(
       client,
-      './hasura/app/seeds/default/eventPassPendingOrder.sql'
+      './hasura/app/seeds/default/2_eventPassPendingOrder.sql'
     );
   });
 

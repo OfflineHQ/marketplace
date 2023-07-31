@@ -64,6 +64,11 @@
       "description": "Vous pourrez valider votre panier une fois connecté",
       "sign-in-text": "Se connecter"
     },
+    "UserCart": {
+      "title": "Panier",
+      "description": "Validez votre panier pour procéder au paiement",
+      "finalize-button": "Procéder au paiement"
+    },
     "List": {
       "Event": {
         "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",
