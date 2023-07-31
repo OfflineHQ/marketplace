@@ -22,7 +22,7 @@ describe('getAccount test', () => {
   });
   beforeEach(async () => {
     await deleteAccounts(client);
-    await seedDb(client, './hasura/app/seeds/default/account.sql');
+    await seedDb(client, './hasura/app/seeds/default/0_account.sql');
   });
   it('should return null when account does not exist', async () => {
     const nonExistingAddress = '0xNotExisting';

@@ -79,7 +79,7 @@ describe('useEventPassOrders', () => {
   beforeAll(async () => {
     client = await createDbClient();
     await deleteAccounts(client);
-    await seedDb(client, './hasura/app/seeds/default/account.sql');
+    await seedDb(client, './hasura/app/seeds/default/0_account.sql');
   });
   afterAll(async () => {
     await deleteAccounts(client);
@@ -88,10 +88,10 @@ describe('useEventPassOrders', () => {
   });
   beforeEach(async () => {
     await deleteTables(client, '"eventPassPendingOrder", "eventPassPricing"');
-    await seedDb(client, './hasura/app/seeds/default/eventPassPricing.sql');
+    await seedDb(client, './hasura/app/seeds/default/1_eventPassPricing.sql');
     await seedDb(
       client,
-      './hasura/app/seeds/default/eventPassPendingOrder.sql'
+      './hasura/app/seeds/default/2_eventPassPendingOrder.sql'
     );
     mockUpdatePassCart.mockClear();
     mockDeletePassesCart.mockClear();
