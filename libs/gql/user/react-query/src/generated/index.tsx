@@ -109,6 +109,36 @@ export const useGetEventPassPendingOrderForEventPassesQuery = <
       fetchDataReactQuery<Types.GetEventPassPendingOrderForEventPassesQuery, Types.GetEventPassPendingOrderForEventPassesQueryVariables>(GetEventPassPendingOrderForEventPassesDocument, variables),
       options
     );
+export const GetEventPassPendingOrdersDocument = `
+    query GetEventPassPendingOrders {
+  eventPassPendingOrder {
+    id
+    eventPassId
+    quantity
+    created_at
+    eventPass {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+    `;
+export const useGetEventPassPendingOrdersQuery = <
+      TData = Types.GetEventPassPendingOrdersQuery,
+      TError = Error
+    >(
+      variables?: Types.GetEventPassPendingOrdersQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassPendingOrdersQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassPendingOrdersQuery, TError, TData>(
+      variables === undefined ? ['GetEventPassPendingOrders'] : ['GetEventPassPendingOrders', variables],
+      fetchDataReactQuery<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables),
+      options
+    );
 export const InsertEventPassPendingOrdersDocument = `
     mutation InsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!) {
   insert_eventPassPendingOrder(objects: $objects) {

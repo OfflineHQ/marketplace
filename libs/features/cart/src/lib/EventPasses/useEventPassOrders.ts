@@ -39,14 +39,6 @@ export const useEventPassOrders = ({
     useGetEventPassPendingOrderForEventPassesQuery({
       eventPassIds,
     });
-  console.log(
-    'ordersData',
-    ordersData,
-    'eventPassIds',
-    eventPassIds,
-    'ordersIsLoading',
-    ordersIsLoading
-  );
   const mutationOptions = {
     onSuccess: () => {
       queryClient.invalidateQueries([
@@ -103,7 +95,6 @@ export const useEventPassOrders = ({
           }
         }
       }
-
       // Loop over each db order
       for (const order of ordersData.eventPassPendingOrder) {
         const localQuantity = localPassesMap[order.eventPassId];

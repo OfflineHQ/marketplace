@@ -179,6 +179,16 @@ describe('tests for eventPassPendingOrder user', () => {
     ).rejects.toThrow();
   });
 
+  it('should return all user pending orders', async () => {
+    await seedDb(
+      client,
+      './hasura/app/seeds/default/2_eventPassPendingOrder.sql'
+    );
+    const data = await alphaAdmin.GetEventPassPendingOrders();
+    const orders = data.eventPassPendingOrder;
+    expect(orders?.length).toBe(2);
+  });
+
   it("shouldn't allow update of order with new quantity if order already exists", async () => {
     await alphaAdmin.InsertEventPassPendingOrders({
       objects: [order1, order2],
