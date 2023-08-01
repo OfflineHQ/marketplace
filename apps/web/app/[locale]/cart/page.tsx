@@ -7,11 +7,21 @@ import {
 } from '@features/cart';
 import { Suspense } from 'react';
 
-export default async function CartSection() {
+export const dynamic = 'force-dynamic';
+
+interface CartSectionProps {
+  params: {
+    locale: string;
+  };
+}
+
+export default async function CartSection({
+  params: { locale },
+}: CartSectionProps) {
   const user = await getCurrentUser();
   return user ? (
     <Suspense fallback={<EventPassListSkeleton />}>
-      <UserCart EventPassesFetcher={EventPassesUser} />
+      <UserCart EventPassesFetcher={EventPassesUser} locale={locale} />
     </Suspense>
   ) : (
     <NoUserCart EventPassesFetcher={EventPassesAnonymous} />

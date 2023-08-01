@@ -7,13 +7,13 @@ query GetEventPassPendingOrderForEventPasses($eventPassIds: [String!]) {
   }
 }
 
-query GetEventPassPendingOrders {
+query GetEventPassPendingOrders($locale: Locale!, $stage: Stage!) {
   eventPassPendingOrder {
     id
     eventPassId
     quantity
     created_at
-    eventPass {
+    eventPass(locales: [$locale, en], stage: $stage) {
       event {
         slug
         organizer {
