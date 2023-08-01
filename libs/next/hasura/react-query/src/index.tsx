@@ -35,6 +35,8 @@ export const fetchDataReactQuery = <TData, TVariables>(
         query,
         variables,
       }),
+      // we use react query cache, so we don't need to keep cache in nextjs
+      cache: 'no-store',
     });
 
     const json = await res.json();
