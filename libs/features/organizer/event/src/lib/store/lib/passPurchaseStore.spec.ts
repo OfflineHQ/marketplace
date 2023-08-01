@@ -190,7 +190,7 @@ describe('passPurchaseStore', () => {
     // Check immutability after deletion
     expect(postUpdatePasses).not.toEqual(passesAfterDeletion);
   });
-  it('getAllPassesCart correctly retrieves all the passes', () => {
+  it('syncAllPassesCart correctly retrieves all the passes', () => {
     const { result } = renderHook(() => usePassPurchaseStore());
 
     const organizerSlug1 = 'org1';
@@ -211,7 +211,7 @@ describe('passPurchaseStore', () => {
       });
     });
 
-    const allPassesCart = result.current.getAllPassesCart();
+    const allPassesCart = result.current.syncAllPassesCart({});
 
     expect(allPassesCart).toEqual({
       [organizerSlug1]: {

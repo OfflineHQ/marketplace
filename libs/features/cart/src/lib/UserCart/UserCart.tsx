@@ -15,10 +15,24 @@ import {
   LocalPassList,
   type LocalPassListProps,
 } from '../LocalPassList/LocalPassList';
+import { getEventPassPendingOrders } from '../api/getEventPassPendingOrders';
 
 export type UserCartProps = LocalPassListProps;
 
-export const UserCart: React.FC<UserCartProps> = ({ EventPassesFetcher }) => {
+export async function UserCart({ EventPassesFetcher }: UserCartProps) {
+  const userPassPendingOrders = await getEventPassPendingOrders();
+  return (
+    <UserCartSection
+      EventPassesFetcher={EventPassesFetcher}
+      userPassPendingOrders={userPassPendingOrders}
+    />
+  );
+}
+
+const UserCartSection: React.FC<UserCartProps> = ({
+  EventPassesFetcher,
+  userPassPendingOrders,
+}) => {
   const t = useTranslations('Cart.UserCart');
   return (
     <section className="container">
@@ -29,7 +43,10 @@ export const UserCart: React.FC<UserCartProps> = ({ EventPassesFetcher }) => {
             <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
           <CardContent className="px-1">
-            <LocalPassList EventPassesFetcher={EventPassesFetcher} />
+            <LocalPassList
+              EventPassesFetcher={EventPassesFetcher}
+              userPassPendingOrders={userPassPendingOrders}
+            />
           </CardContent>
         </CardOverflow>
         <CardOverlay />
