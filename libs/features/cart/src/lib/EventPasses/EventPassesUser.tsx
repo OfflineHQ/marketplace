@@ -43,8 +43,8 @@ export function EventPassesUser({
   };
 
   useEffect(() => {
-    if (ordersData) upsertOrders(passes);
-  }, [passes, ordersData]);
+    if (ordersData && !ordersIsLoading) upsertOrders(passes);
+  }, [passes, ordersData, ordersIsLoading]);
 
   if (
     eventIsLoading ||

@@ -8,6 +8,7 @@ import type {
   EventPassCart,
   AllPassesCart,
 } from '@features/organizer/event/types';
+import type { UserPassPendingOrder } from '@features/cart/types';
 import { Money } from '@next/currency';
 
 interface GetPassCartProps extends EventSlugs {
@@ -29,6 +30,10 @@ interface getPassDataProps {
   passesData: EventPass[];
 }
 
+interface SyncAllPassesCartProps {
+  userPassPendingOrders?: UserPassPendingOrder[];
+}
+
 export interface EventPassesSliceProps {
   passes: AllPassesCart;
   resetPasses: () => void;
@@ -40,7 +45,7 @@ export interface EventPassesSliceProps {
   getPassesCartTotalPrice: (props: GetPassesCartTotalPriceProps) => Money;
   getPassesCartTotalPasses: (props: EventSlugs) => number;
   getPassData: (props: getPassDataProps) => EventPass | undefined;
-  getAllPassesCart: () => AllPassesCart;
+  syncAllPassesCart: (props: SyncAllPassesCartProps) => AllPassesCart;
 }
 
 export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
@@ -97,10 +102,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
           const newPasses = { ...passes };
           delete newPasses[organizerSlug][eventSlug];
           draft.passes = newPasses;
-        } else
-          throw new Error(
-            `Event passes for ${organizerSlug}/${eventSlug} do not exist`
-          );
+        }
       })
     ),
   getPassesCart: ({ organizerSlug, eventSlug }) => {
@@ -142,7 +144,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
       0
     );
   },
-  getAllPassesCart: () => {
+  syncAllPassesCart: ({ userPassPendingOrders }) => {
     const passes = get().passes;
     const organizerSlugs = Object.keys(passes);
     const eventSlugs = organizerSlugs.map((organizerSlug) =>
@@ -158,6 +160,37 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
         }
       });
     });
+    if (userPassPendingOrders) {
+      // Iterate through userPassPendingOrders and add them if they don't exist
+      userPassPendingOrders.forEach((order) => {
+        const { eventPassId: id, quantity: amount } = order;
+
+        console.log('order', order);
+        // Assuming organizerSlug and eventSlug can be derived from the order
+        const organizerSlug = order.eventPass?.event?.organizer?.slug;
+        const eventSlug = order.eventPass?.event?.slug;
+
+        if (!organizerSlug || !eventSlug) return;
+
+        if (!allPassesCart[organizerSlug]) {
+          allPassesCart[organizerSlug] = {};
+        }
+
+        if (!allPassesCart[organizerSlug][eventSlug]) {
+          allPassesCart[organizerSlug][eventSlug] = [];
+        }
+
+        // Check if this pass already exists
+        const passExists = allPassesCart[organizerSlug][eventSlug].some(
+          (pass) => pass.id === id
+        );
+
+        if (!passExists) {
+          // If it doesn't exist, add it
+          allPassesCart[organizerSlug][eventSlug].push({ id, amount });
+        }
+      });
+    }
     return allPassesCart;
   },
 });

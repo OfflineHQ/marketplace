@@ -60,6 +60,24 @@ export const AccountFieldsFragmentDoc = `
   }
 }
     `;
+ const GetEventPassPendingOrdersDocument = `
+    query GetEventPassPendingOrders {
+  eventPassPendingOrder {
+    id
+    eventPassId
+    quantity
+    created_at
+    eventPass {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+    `;
  const InsertEventPassPendingOrdersDocument = `
     mutation InsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!) {
   insert_eventPassPendingOrder(objects: $objects) {
@@ -100,6 +118,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassPendingOrderForEventPasses(variables?: Types.GetEventPassPendingOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrderForEventPassesQuery> {
       return requester<Types.GetEventPassPendingOrderForEventPassesQuery, Types.GetEventPassPendingOrderForEventPassesQueryVariables>(GetEventPassPendingOrderForEventPassesDocument, variables, options) as Promise<Types.GetEventPassPendingOrderForEventPassesQuery>;
+    },
+    GetEventPassPendingOrders(variables?: Types.GetEventPassPendingOrdersQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersQuery> {
+      return requester<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables, options) as Promise<Types.GetEventPassPendingOrdersQuery>;
     },
     InsertEventPassPendingOrders(variables: Types.InsertEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.InsertEventPassPendingOrdersMutation> {
       return requester<Types.InsertEventPassPendingOrdersMutation, Types.InsertEventPassPendingOrdersMutationVariables>(InsertEventPassPendingOrdersDocument, variables, options) as Promise<Types.InsertEventPassPendingOrdersMutation>;
