@@ -7,6 +7,23 @@ query GetEventPassPendingOrderForEventPasses($eventPassIds: [String!]) {
   }
 }
 
+query GetEventPassPendingOrders {
+  eventPassPendingOrder {
+    id
+    eventPassId
+    quantity
+    created_at
+    eventPass {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+
 mutation InsertEventPassPendingOrders(
   $objects: [eventPassPendingOrder_insert_input!]!
 ) {

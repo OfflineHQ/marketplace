@@ -32,6 +32,11 @@ export type GetEventPassPendingOrderForEventPassesQueryVariables = Types.Exact<{
 
 export type GetEventPassPendingOrderForEventPassesQuery = { __typename?: 'query_root', eventPassPendingOrder: Array<{ __typename?: 'eventPassPendingOrder', id: any, eventPassId: string, quantity: number, created_at: any }> };
 
+export type GetEventPassPendingOrdersQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetEventPassPendingOrdersQuery = { __typename?: 'query_root', eventPassPendingOrder: Array<{ __typename?: 'eventPassPendingOrder', id: any, eventPassId: string, quantity: number, created_at: any, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> };
+
 export type InsertEventPassPendingOrdersMutationVariables = Types.Exact<{
   objects: Array<Types.EventPassPendingOrder_Insert_Input> | Types.EventPassPendingOrder_Insert_Input;
 }>;

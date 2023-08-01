@@ -1,5 +1,6 @@
 import type { Event } from '@features/organizer/event/types';
 import type { GetEventWithPassesQuery } from '@gql/anonymous/types';
+import type { getEventPassPendingOrders } from '@features/cart/server';
 
 export enum OwnedEventPassStatus {
   Reserved = 'reserved',
@@ -8,6 +9,10 @@ export enum OwnedEventPassStatus {
 }
 
 export type EventCart = NonNullable<GetEventWithPassesQuery['event']>;
+
+export type UserPassPendingOrder = Awaited<
+  ReturnType<typeof getEventPassPendingOrders>
+>[0];
 
 export interface LocalCartItem {
   eventPassId: string; // The original pass type id

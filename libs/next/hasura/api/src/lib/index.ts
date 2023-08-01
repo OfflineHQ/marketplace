@@ -1,6 +1,7 @@
 import { isJestRunning, isServerSide } from '@utils';
 import { endpointUrl } from '@next/hasura/shared';
 import { logger } from '@logger';
+import { cookies } from 'next/headers';
 
 /// This fetcher is used for fetching data from Hasura GraphQL API.
 // The admin mode is used solely for the admin role, it returns an error if the HASURA_GRAPHQL_ADMIN_SECRET is not set or if it's not called server side
@@ -25,6 +26,9 @@ export const fetchData = (opts: Opts = { admin: false }) => {
         throw new Error('Admin secret env is missing');
       headers['X-Hasura-Admin-Secret'] =
         process.env.HASURA_GRAPHQL_ADMIN_SECRET;
+    } else if (isServerSide()) {
+      // if server side, include the cookie because it's not sent by default in server side with next
+      headers['Cookie'] = cookies().toString();
     }
     const res = await fetch(endpointUrl(), {
       method: 'POST',
