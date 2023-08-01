@@ -35,15 +35,18 @@ export const useEventPassOrders = ({
   const eventPassIds =
     eventData?.event?.eventPasses.map((pass) => pass.id) || [];
 
-  const { data: ordersData, isLoading: ordersIsLoading } =
-    useGetEventPassPendingOrderForEventPassesQuery({
-      eventPassIds,
-    });
+  const {
+    data: ordersData,
+    isLoading: ordersIsLoading,
+    isFetching: ordersIsFetching,
+  } = useGetEventPassPendingOrderForEventPassesQuery({
+    eventPassIds,
+  });
   const mutationOptions = {
     onSuccess: () => {
       queryClient.invalidateQueries([
         'GetEventPassPendingOrderForEventPasses',
-        { organizerSlug, eventSlug },
+        { eventPassIds },
       ]);
     },
   };
@@ -58,7 +61,9 @@ export const useEventPassOrders = ({
       if (!ordersData) {
         throw new Error('ordersData is undefined');
       }
-
+      if (eventIsLoading) {
+        throw new Error('Event data is still loading');
+      }
       // Mapping of eventPassId to quantity from the local storage
       const localPassesMap = localPasses.reduce((map, pass) => {
         map[pass.id] = pass.amount;
@@ -112,7 +117,6 @@ export const useEventPassOrders = ({
           });
         }
       }
-
       // Delete orders from the database
       if (idsToDelete.length > 0) {
         await mutationDelete.mutateAsync({ eventPassIds: idsToDelete });
@@ -135,7 +139,6 @@ export const useEventPassOrders = ({
       await mutationDelete.mutateAsync({
         eventPassIds: localPasses?.map((pass) => pass.id) || [],
       });
-      store.deletePassesCart({ organizerSlug, eventSlug });
     } catch (error) {
       console.error(error);
       throw error;
@@ -147,6 +150,7 @@ export const useEventPassOrders = ({
     eventIsLoading,
     ordersData,
     ordersIsLoading,
+    ordersIsFetching,
     upsertOrders,
     deleteOrders,
   };

@@ -28,6 +28,7 @@ export function EventPassesUser({
     eventIsLoading,
     ordersData,
     ordersIsLoading,
+    ordersIsFetching,
     upsertOrders,
     deleteOrders,
   } = useEventPassOrders({
@@ -37,14 +38,25 @@ export function EventPassesUser({
   });
 
   const handleDelete = async (props: EventSlugs) => {
-    // TODO implement optimistic delete, first copy from localStorage, then apply onDelete then deleteOrders, if fail then set back to localStorage and show error
     await deleteOrders(passes);
     onDelete(props);
   };
 
   useEffect(() => {
-    if (ordersData && !ordersIsLoading) upsertOrders(passes);
-  }, [passes, ordersData, ordersIsLoading]);
+    // Here make sure that the event data with all the available passes is loaded
+    // Additionally, make sure that the orders data is loaded and is not fetching to sync the local storage with the server and make sure that orders are not duplicated
+    if (
+      ordersData?.eventPassPendingOrder &&
+      !ordersIsFetching &&
+      !eventIsLoading
+    )
+      upsertOrders(passes);
+  }, [
+    passes,
+    ordersData?.eventPassPendingOrder,
+    eventIsLoading,
+    ordersIsFetching,
+  ]);
 
   if (
     eventIsLoading ||

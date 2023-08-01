@@ -6,15 +6,16 @@ import { cookies } from 'next/headers';
 /// This fetcher is used for fetching data from Hasura GraphQL API.
 // The admin mode is used solely for the admin role, it returns an error if the HASURA_GRAPHQL_ADMIN_SECRET is not set or if it's not called server side
 // Otherwise it include the auth cookie or get the jwt for testing purposes
-type Opts = {
+type HasuraOpts = {
   admin?: boolean;
 };
-export const fetchData = (opts: Opts = { admin: false }) => {
+export const fetchData = (hasuraOpts: HasuraOpts = { admin: false }) => {
   return async <TResult, TVariables>(
     doc: string,
-    variables: TVariables
+    variables: TVariables,
+    opts?: unknown
   ): Promise<TResult> => {
-    const { admin } = opts;
+    const { admin } = hasuraOpts;
     const headers: RequestInit['headers'] = {
       'Content-Type': 'application/json',
     };
@@ -38,6 +39,8 @@ export const fetchData = (opts: Opts = { admin: false }) => {
         query: doc,
         variables,
       }),
+      // used for nextjs custom fetch options such as caching
+      ...(opts as Record<string, unknown>),
     });
     const json = await res.json();
     if (json.errors) {
