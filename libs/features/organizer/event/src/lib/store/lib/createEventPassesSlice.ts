@@ -146,6 +146,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
   },
   syncAllPassesCart: ({ userPassPendingOrders }) => {
     const passes = get().passes;
+    console.log('syncAllPassesCart', passes, userPassPendingOrders);
     const organizerSlugs = Object.keys(passes);
     const eventSlugs = organizerSlugs.map((organizerSlug) =>
       Object.keys(passes[organizerSlug])
@@ -161,12 +162,11 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
       });
     });
     if (userPassPendingOrders) {
+      const updatePassCart = get().updatePassCart;
       // Iterate through userPassPendingOrders and add them if they don't exist
       userPassPendingOrders.forEach((order) => {
         const { eventPassId: id, quantity: amount } = order;
 
-        console.log('order', order);
-        // Assuming organizerSlug and eventSlug can be derived from the order
         const organizerSlug = order.eventPass?.event?.organizer?.slug;
         const eventSlug = order.eventPass?.event?.slug;
 
@@ -187,7 +187,9 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
 
         if (!passExists) {
           // If it doesn't exist, add it
+          const newPass = { id, amount };
           allPassesCart[organizerSlug][eventSlug].push({ id, amount });
+          updatePassCart({ organizerSlug, eventSlug, pass: newPass });
         }
       });
     }

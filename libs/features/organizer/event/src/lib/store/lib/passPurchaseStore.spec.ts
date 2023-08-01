@@ -25,6 +25,41 @@ describe('passPurchaseStore', () => {
     id: pass2.id,
   };
 
+  const organizerSlug1 = 'org1';
+  const eventSlug1 = 'event1';
+  const organizerSlug2 = 'org2';
+  const eventSlug2 = 'event2';
+
+  const pendingOrder1 = {
+    id: 'pendingOrder1',
+    eventPassId: pass1.id,
+    quantity: pass1.amount,
+    created_at: new Date().toISOString(),
+    eventPass: {
+      event: {
+        slug: eventSlug1,
+        organizer: {
+          slug: organizerSlug1,
+        },
+      },
+    },
+  };
+
+  const pendingOrder2 = {
+    id: 'pendingOrder2',
+    eventPassId: pass2.id,
+    quantity: pass2.amount,
+    created_at: new Date().toISOString(),
+    eventPass: {
+      event: {
+        slug: eventSlug2,
+        organizer: {
+          slug: organizerSlug2,
+        },
+      },
+    },
+  };
+
   it('updatePassCart correctly updates the pass when the pass does not exist', () => {
     const { result } = renderHook(() => usePassPurchaseStore());
 
@@ -190,13 +225,8 @@ describe('passPurchaseStore', () => {
     // Check immutability after deletion
     expect(postUpdatePasses).not.toEqual(passesAfterDeletion);
   });
-  it('syncAllPassesCart correctly retrieves all the passes', () => {
+  it('syncAllPassesCart correctly retrieves all the passes from local storage', () => {
     const { result } = renderHook(() => usePassPurchaseStore());
-
-    const organizerSlug1 = 'org1';
-    const eventSlug1 = 'event1';
-    const organizerSlug2 = 'org2';
-    const eventSlug2 = 'event2';
 
     act(() => {
       result.current.setPassesCart({
@@ -213,6 +243,89 @@ describe('passPurchaseStore', () => {
 
     const allPassesCart = result.current.syncAllPassesCart({});
 
+    expect(allPassesCart).toEqual({
+      [organizerSlug1]: {
+        [eventSlug1]: [pass1],
+      },
+      [organizerSlug2]: {
+        [eventSlug2]: [pass2],
+      },
+    });
+  });
+
+  it('syncAllPassesCart correctly retrieves all the passes from pending orders and store it in local storage', () => {
+    const { result } = renderHook(() => usePassPurchaseStore());
+
+    const allPassesCart = result.current.syncAllPassesCart({
+      userPassPendingOrders: [pendingOrder1, pendingOrder2],
+    });
+
+    expect(allPassesCart).toEqual({
+      [organizerSlug1]: {
+        [eventSlug1]: [pass1],
+      },
+      [organizerSlug2]: {
+        [eventSlug2]: [pass2],
+      },
+    });
+
+    expect(
+      result.current.getPassesCart({
+        organizerSlug: organizerSlug1,
+        eventSlug: eventSlug1,
+      })
+    ).toEqual([pass1]);
+
+    expect(
+      result.current.getPassesCart({
+        organizerSlug: organizerSlug2,
+        eventSlug: eventSlug2,
+      })
+    ).toEqual([pass2]);
+  });
+
+  it('syncAllPassesCart correctly retrieves all the passes from local storage and pending orders', () => {
+    const { result } = renderHook(() => usePassPurchaseStore());
+
+    act(() => {
+      result.current.setPassesCart({
+        organizerSlug: organizerSlug2,
+        eventSlug: eventSlug2,
+        newPasses: [pass2],
+      });
+    });
+    const allPassesCart = result.current.syncAllPassesCart({
+      userPassPendingOrders: [pendingOrder1],
+    });
+    expect(allPassesCart).toEqual({
+      [organizerSlug1]: {
+        [eventSlug1]: [pass1],
+      },
+      [organizerSlug2]: {
+        [eventSlug2]: [pass2],
+      },
+    });
+  });
+
+  it('syncAllPassesCart correctly retrieves all the passes from local storage and pending orders but keep quantity intact from local storage', () => {
+    const { result } = renderHook(() => usePassPurchaseStore());
+
+    act(() => {
+      result.current.setPassesCart({
+        organizerSlug: organizerSlug1,
+        eventSlug: eventSlug1,
+        newPasses: [pass1],
+      });
+      result.current.setPassesCart({
+        organizerSlug: organizerSlug2,
+        eventSlug: eventSlug2,
+        newPasses: [pass2],
+      });
+    });
+    const newQuantity = 99;
+    const allPassesCart = result.current.syncAllPassesCart({
+      userPassPendingOrders: [{ ...pendingOrder2, quantity: newQuantity }],
+    });
     expect(allPassesCart).toEqual({
       [organizerSlug1]: {
         [eventSlug1]: [pass1],

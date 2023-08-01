@@ -61,13 +61,13 @@ export const AccountFieldsFragmentDoc = `
 }
     `;
  const GetEventPassPendingOrdersDocument = `
-    query GetEventPassPendingOrders {
+    query GetEventPassPendingOrders($locale: Locale!, $stage: Stage!) {
   eventPassPendingOrder {
     id
     eventPassId
     quantity
     created_at
-    eventPass {
+    eventPass(locales: [$locale, en], stage: $stage) {
       event {
         slug
         organizer {
@@ -119,7 +119,7 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventPassPendingOrderForEventPasses(variables?: Types.GetEventPassPendingOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrderForEventPassesQuery> {
       return requester<Types.GetEventPassPendingOrderForEventPassesQuery, Types.GetEventPassPendingOrderForEventPassesQueryVariables>(GetEventPassPendingOrderForEventPassesDocument, variables, options) as Promise<Types.GetEventPassPendingOrderForEventPassesQuery>;
     },
-    GetEventPassPendingOrders(variables?: Types.GetEventPassPendingOrdersQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersQuery> {
+    GetEventPassPendingOrders(variables: Types.GetEventPassPendingOrdersQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersQuery> {
       return requester<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables, options) as Promise<Types.GetEventPassPendingOrdersQuery>;
     },
     InsertEventPassPendingOrders(variables: Types.InsertEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.InsertEventPassPendingOrdersMutation> {

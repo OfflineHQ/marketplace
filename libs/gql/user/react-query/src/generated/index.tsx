@@ -110,13 +110,13 @@ export const useGetEventPassPendingOrderForEventPassesQuery = <
       options
     );
 export const GetEventPassPendingOrdersDocument = `
-    query GetEventPassPendingOrders {
+    query GetEventPassPendingOrders($locale: Locale!, $stage: Stage!) {
   eventPassPendingOrder {
     id
     eventPassId
     quantity
     created_at
-    eventPass {
+    eventPass(locales: [$locale, en], stage: $stage) {
       event {
         slug
         organizer {
@@ -131,11 +131,11 @@ export const useGetEventPassPendingOrdersQuery = <
       TData = Types.GetEventPassPendingOrdersQuery,
       TError = Error
     >(
-      variables?: Types.GetEventPassPendingOrdersQueryVariables,
+      variables: Types.GetEventPassPendingOrdersQueryVariables,
       options?: UseQueryOptions<Types.GetEventPassPendingOrdersQuery, TError, TData>
     ) =>
     useQuery<Types.GetEventPassPendingOrdersQuery, TError, TData>(
-      variables === undefined ? ['GetEventPassPendingOrders'] : ['GetEventPassPendingOrders', variables],
+      ['GetEventPassPendingOrders', variables],
       fetchDataReactQuery<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables),
       options
     );

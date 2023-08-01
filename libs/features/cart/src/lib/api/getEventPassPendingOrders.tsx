@@ -1,7 +1,18 @@
-import { cache } from 'react';
 import { userSdk } from '@gql/user/api';
-// TODO invalidate cache for the GetEventPassPendingOrders query when the user adds or removes an event pass
-export const getEventPassPendingOrders = cache(async () => {
-  const res = await userSdk.GetEventPassPendingOrders();
+import type { Locale, Stage } from '@gql/shared/types';
+
+export interface EventPassPendingOrderProps {
+  locale: string;
+}
+export const getEventPassPendingOrders = async ({
+  locale,
+}: EventPassPendingOrderProps) => {
+  const res = await userSdk.GetEventPassPendingOrders(
+    {
+      locale: locale as Locale,
+      stage: process.env.HYGRAPH_STAGE as Stage,
+    },
+    { cache: 'no-store' }
+  );
   return res.eventPassPendingOrder;
-});
+};
