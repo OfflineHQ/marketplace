@@ -64,7 +64,6 @@ export const useEventPassOrders = ({
       if (eventIsLoading) {
         throw new Error('Event data is still loading');
       }
-      console.log('localPasses', localPasses);
       // Mapping of eventPassId to quantity from the local storage
       const localPassesMap = localPasses.reduce((map, pass) => {
         map[pass.id] = pass.amount;
