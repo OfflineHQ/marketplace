@@ -32,7 +32,7 @@ describe('tests for eventPassPendingOrder admin', () => {
   it('should retrieve all existing eventPassPendingOrder', async () => {
     const res = await adminSdk.GetEventPassPendingOrders();
     const orders = res.eventPassPendingOrder;
-    expect(orders?.length).toBe(3);
+    expect(orders?.length).toBe(5);
     expect(orders?.[0].eventPassId).toBe('fake-event-pass-1');
     expect(orders?.[0].created_at).toBeDefined();
     expect(orders?.[0].id).toBeDefined();
@@ -49,6 +49,6 @@ describe('tests for eventPassPendingOrder admin', () => {
     });
     expect(resDelete.delete_eventPassPendingOrder?.affected_rows).toBe(2);
     const newOrders = await adminSdk.GetEventPassPendingOrders();
-    expect(newOrders.eventPassPendingOrder?.length).toBe(1);
+    expect(newOrders.eventPassPendingOrder?.length).toBe(3);
   });
 });
