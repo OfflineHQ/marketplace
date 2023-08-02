@@ -8,7 +8,7 @@ import { useStore } from '@next/store';
 import Link, { type LinkProps } from 'next/link';
 import { Cart } from '@ui/icons';
 
-import type { EventPass } from '../../types';
+import type { EventPass } from '@features/organizer/event-types';
 export interface PassFooterCardProps {
   passes: EventPass[];
   organizerSlug: string;

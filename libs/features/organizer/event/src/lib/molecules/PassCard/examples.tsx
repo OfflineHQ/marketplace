@@ -1,6 +1,6 @@
 'use client';
 
-import { EventPass, EventPassCart } from '../../types';
+import { EventPass, EventPassCart } from '@features/organizer/event-types';
 import { type PassCardProps, PassCard } from './PassCard';
 import { PassCardSelectProps } from './PassCardSelect';
 import { usePassPurchaseStore } from '@features/organizer/event/store';

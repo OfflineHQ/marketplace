@@ -4,7 +4,7 @@ import {
   PassCardProps,
   PassCardSkeleton,
 } from '../../molecules/PassCard/PassCard';
-import type { EventPass } from '../../types';
+import type { EventPass } from '@features/organizer/event-types';
 
 export interface PassListProps
   extends Pick<PassCardProps, 'eventSlug' | 'organizerSlug'> {

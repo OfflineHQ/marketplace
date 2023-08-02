@@ -1,4 +1,4 @@
-import type { EventPassCart } from '@features/organizer/event/types';
+import type { EventPassCart } from '@features/organizer/event-types';
 import {
   AccordionContent,
   AccordionItem,
@@ -9,7 +9,7 @@ import {
   ButtonSkeleton,
 } from '@ui/components';
 import Image from 'next/image';
-import type { EventCart } from '../types';
+import type { EventCart } from '@features/cart-types';
 import { useTranslations, useFormatter } from 'next-intl';
 import {
   EventPassesActions,
@@ -84,7 +84,7 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
       <EventPassesActions
         editText={t('edit')}
         deleteText={t('remove')}
-        eventSlug={event.slug}
+        eventSlug={event.slug as string}
         organizerSlug={event?.organizer?.slug as string}
         onDelete={onDelete}
       />

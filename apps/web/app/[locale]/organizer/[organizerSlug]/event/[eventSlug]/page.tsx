@@ -1,5 +1,5 @@
 import { getEvent } from '@features/organizer/event/server';
-import type { Event as TEvent } from '@features/organizer/event/types';
+import type { Event as TEvent } from '@features/organizer/event-types';
 import { Event } from '@features/organizer/event';
 import { useTranslations } from 'next-intl';
 interface EventSectionProps {

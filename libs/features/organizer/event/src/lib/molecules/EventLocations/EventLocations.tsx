@@ -3,7 +3,10 @@
 'use client';
 
 import React from 'react';
-import type { LocationAddress, EventDateLocation } from '../../types';
+import type {
+  LocationAddress,
+  EventDateLocation,
+} from '@features/organizer/event-types';
 import { Location as LocationIcon } from '@ui/icons';
 import { Button } from '@ui/components';
 

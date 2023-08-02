@@ -1,0 +1,19 @@
+{
+  "name": "features-organizer-event-types",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/features/organizer/event-types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/features/organizer/event-types",
+        "main": "libs/features/organizer/event-types/src/index.ts",
+        "tsConfig": "libs/features/organizer/event-types/tsconfig.lib.json",
+        "assets": ["libs/features/organizer/event-types/*.md"]
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,19 @@
+{
+  "name": "features-cart-types",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/features/cart-types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/features/cart-types",
+        "main": "libs/features/cart-types/src/index.ts",
+        "tsConfig": "libs/features/cart-types/tsconfig.lib.json",
+        "assets": ["libs/features/cart-types/*.md"]
+      }
+    }
+  },
+  "tags": []
+}

@@ -7,7 +7,7 @@ import {
   ButtonSkeleton,
 } from '@ui/components';
 import Image from 'next/image';
-import { Event } from '../../types';
+import { Event } from '@features/organizer/event-types';
 import {
   EventDates,
   type EventDatesProps,

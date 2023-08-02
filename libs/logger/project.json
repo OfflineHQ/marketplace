@@ -11,8 +11,7 @@
         "outputPath": "dist/libs/logger",
         "main": "libs/logger/src/index.ts",
         "tsConfig": "libs/logger/tsconfig.lib.json",
-        "assets": ["libs/logger/*.md"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["libs/logger/*.md"]
       }
     },
     "lint": {
