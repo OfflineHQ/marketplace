@@ -5,6 +5,7 @@ import { AppNavLayout } from '@features/appNav/ui';
 import { NoUserCart } from './NoUserCart';
 import {
   SetupPassesCartLocal,
+  ResetPassesCartLocal,
   FakeEventPassesFetcher,
 } from '../EventPassList/examples';
 
@@ -35,6 +36,7 @@ export function NoUserCartLoadingExample() {
 }
 
 export function NoUserCartNoCartExample() {
+  ResetPassesCartLocal();
   return (
     <NextAuthProvider>
       <AuthProvider>

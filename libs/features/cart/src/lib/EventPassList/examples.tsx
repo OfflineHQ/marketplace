@@ -66,6 +66,11 @@ export const SetupPassesCartLocal = () => {
   };
 };
 
+export const ResetPassesCartLocal = () => {
+  const resetPasses = usePassPurchaseStore((state) => state.resetPasses);
+  resetPasses();
+};
+
 export const EventPassListExample = () => {
   const { allPasses, deletePassesCart } = SetupPassesCartLocal();
   return (
