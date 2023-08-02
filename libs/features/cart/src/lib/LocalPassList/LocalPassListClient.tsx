@@ -1,8 +1,8 @@
 'use client';
 
 import { usePassPurchaseStore } from '@features/organizer/event/store';
-import type { UserPassPendingOrder } from '@features/cart/types';
-import type { AllPassesCart } from '@features/organizer/event/types';
+import type { UserPassPendingOrder } from '@features/cart-types';
+import type { AllPassesCart } from '@features/organizer/event-types';
 import {
   EventPassList,
   EventPassListSkeleton,

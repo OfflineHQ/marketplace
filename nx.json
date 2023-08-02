@@ -24,9 +24,9 @@
           "build-storybook"
         ],
         "parallel": true,
-        "accessToken": "ZDQ1ZGNjY2YtODBkNy00MzgwLThmNDktOGI3Y2Y1ZWEyOWUyfHJlYWQtd3JpdGU=",
         "canTrackAnalytics": true,
-        "showUsageWarning": true
+        "showUsageWarning": true,
+        "accessToken": "MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU="
       }
     }
   },

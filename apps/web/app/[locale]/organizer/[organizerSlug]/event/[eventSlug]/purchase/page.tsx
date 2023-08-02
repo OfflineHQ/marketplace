@@ -3,7 +3,7 @@ import { NextIntlClientProvider, useLocale } from 'next-intl';
 import { deepPick } from '@utils';
 import { messages, defaultLocale, type Locale } from '@next/i18n';
 import { getEventPasses } from '@features/organizer/event/server';
-import type { EventPass } from '@features/organizer/event/types';
+import type { EventPass } from '@features/organizer/event-types';
 import { PassPurchaseCard } from '@features/organizer/event';
 import { useTranslations } from 'next-intl';
 

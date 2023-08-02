@@ -12,8 +12,7 @@
         "tsConfig": "libs/next/zustand/tsconfig.lib.json",
         "packageJson": "libs/next/zustand/package.json",
         "main": "libs/next/zustand/src/index.ts",
-        "assets": ["libs/next/zustand/*.md"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["libs/next/zustand/*.md"]
       }
     },
     "lint": {

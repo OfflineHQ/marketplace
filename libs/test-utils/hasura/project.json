@@ -11,8 +11,7 @@
         "outputPath": "dist/libs/test-utils/hasura",
         "main": "libs/test-utils/hasura/src/index.ts",
         "tsConfig": "libs/test-utils/hasura/tsconfig.lib.json",
-        "assets": ["libs/test-utils/hasura/*.md"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["libs/test-utils/hasura/*.md"]
       }
     },
     "lint": {

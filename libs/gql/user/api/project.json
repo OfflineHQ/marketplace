@@ -11,8 +11,7 @@
         "outputPath": "dist/libs/gql/user/api",
         "main": "libs/gql/user/api/src/index.ts",
         "tsConfig": "libs/gql/user/api/tsconfig.lib.json",
-        "assets": ["libs/gql/user/api/*.md"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["libs/gql/user/api/*.md"]
       }
     },
     "lint": {

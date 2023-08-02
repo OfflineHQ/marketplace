@@ -8,7 +8,7 @@ import {
   AvatarSkeleton,
 } from '@ui/components';
 import Link from 'next/link';
-import { Event } from '../../types';
+import { Event } from '@features/organizer/event-types';
 import { getInitials } from '@ui/shared';
 
 export type EventOrganizerButtonProps = NonNullable<Event['organizer']>;

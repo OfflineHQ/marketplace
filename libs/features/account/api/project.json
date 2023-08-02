@@ -12,8 +12,7 @@
         "tsConfig": "libs/features/account/api/tsconfig.lib.json",
         "packageJson": "libs/features/account/api/package.json",
         "main": "libs/features/account/api/src/index.ts",
-        "assets": ["libs/features/account/api/*.md"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["libs/features/account/api/*.md"]
       }
     },
     "lint": {

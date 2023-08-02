@@ -8,7 +8,7 @@ import {
   passPremium,
 } from '@features/organizer/event/examples';
 import type { EventPassesAnonymousProps } from '../EventPasses/EventPassesAnonymous';
-import type { EventCart } from '@features/cart/types';
+import type { EventCart } from '@features/cart-types';
 import { EventPasses, EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { eventCartProps, eventPassesCart } from '../EventPasses/examples';
 import { useEffect } from 'react';

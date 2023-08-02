@@ -12,8 +12,7 @@
         "tsConfig": "libs/gql/anonymous/types/tsconfig.lib.json",
         "packageJson": "libs/gql/anonymous/types/package.json",
         "main": "libs/gql/anonymous/types/src/index.ts",
-        "assets": ["libs/gql/anonymous/types/*.md"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["libs/gql/anonymous/types/*.md"]
       }
     },
     "lint": {
