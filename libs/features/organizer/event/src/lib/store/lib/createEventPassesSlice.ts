@@ -7,8 +7,8 @@ import type {
   EventPass,
   EventPassCart,
   AllPassesCart,
-} from '@features/organizer/event/types';
-import type { GetEventPassPendingOrdersQuery } from '@gql/user/types';
+} from '@features/organizer/event-types';
+import { UserPassPendingOrder } from '@features/cart-types';
 import { Money } from '@next/currency';
 
 interface GetPassCartProps extends EventSlugs {
@@ -31,7 +31,7 @@ interface getPassDataProps {
 }
 
 interface SyncAllPassesCartProps {
-  userPassPendingOrders?: GetEventPassPendingOrdersQuery['eventPassPendingOrder'];
+  userPassPendingOrders?: UserPassPendingOrder[];
 }
 
 export interface EventPassesSliceProps {

@@ -8,7 +8,7 @@ import {
   eventProps,
   event2Props,
 } from '@features/organizer/event/examples';
-import type { EventCart } from '@features/cart/types';
+import type { EventCart } from '@features/cart-types';
 
 export const eventPassesCart: EventPassesProps['passes'] = [
   { ...passWithMaxAmountCart, amount: 1 },

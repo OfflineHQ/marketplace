@@ -11,8 +11,7 @@
         "outputPath": "dist/libs/next/safe/auth",
         "main": "libs/next/safe/auth/src/index.ts",
         "tsConfig": "libs/next/safe/auth/tsconfig.lib.json",
-        "assets": ["libs/next/safe/auth/*.md"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["libs/next/safe/auth/*.md"]
       }
     },
     "lint": {

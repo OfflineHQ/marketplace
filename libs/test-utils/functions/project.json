@@ -11,8 +11,7 @@
         "outputPath": "dist/libs/test-utils/functions",
         "main": "libs/test-utils/functions/src/index.ts",
         "tsConfig": "libs/test-utils/functions/tsconfig.lib.json",
-        "assets": ["libs/test-utils/functions/*.md"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["libs/test-utils/functions/*.md"]
       }
     },
     "lint": {

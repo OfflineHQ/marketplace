@@ -9,7 +9,7 @@ import { usePassPurchaseStore } from '@features/organizer/event/store';
 import type {
   EventPassCart,
   EventSlugs,
-} from '@features/organizer/event/types';
+} from '@features/organizer/event-types';
 import type { Locale, Stage } from '@gql/shared/types';
 
 export interface EventPassesSliceProps extends EventSlugs {

@@ -11,8 +11,7 @@
         "outputPath": "dist/libs/ui/theme",
         "main": "libs/ui/theme/src/index.ts",
         "tsConfig": "libs/ui/theme/tsconfig.lib.json",
-        "assets": ["libs/ui/theme/*.md"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["libs/ui/theme/*.md"]
       }
     },
     "lint": {

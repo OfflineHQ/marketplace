@@ -11,8 +11,7 @@
         "outputPath": "dist/libs/ui/shared",
         "main": "libs/ui/shared/src/index.ts",
         "tsConfig": "libs/ui/shared/tsconfig.lib.json",
-        "assets": ["libs/ui/shared/*.md", "libs/ui/shared/src/assets"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["libs/ui/shared/*.md", "libs/ui/shared/src/assets"]
       }
     },
     "lint": {

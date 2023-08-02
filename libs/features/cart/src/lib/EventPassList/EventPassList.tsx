@@ -4,7 +4,7 @@ import { Accordion } from '@ui/components';
 import type {
   AllPassesCart,
   EventSlugs,
-} from '@features/organizer/event/types';
+} from '@features/organizer/event-types';
 import { EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { type EventPassesAnonymousProps } from '../EventPasses/EventPassesAnonymous';
 
