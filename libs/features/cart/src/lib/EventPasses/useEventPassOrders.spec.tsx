@@ -14,10 +14,12 @@ import { act } from 'react-dom/test-utils';
 
 const mockUpdatePassCart = jest.fn();
 const mockDeletePassesCart = jest.fn();
+const mockDeletePassCart = jest.fn();
 jest.mock('@features/organizer/event/store', () => ({
   usePassPurchaseStore: () => ({
     updatePassCart: mockUpdatePassCart,
     deletePassesCart: mockDeletePassesCart,
+    deletePassCart: mockDeletePassCart,
   }),
 }));
 
@@ -326,6 +328,100 @@ describe('useEventPassOrders', () => {
       });
     });
   });
+
+  it("Should delete existing pending order if local storage order get an amount of 0 and also delete this local storage order when it's done", async () => {
+    Object.defineProperty(window, 'jwtTestToken', {
+      value: usersJwt.alpha_user,
+      configurable: true,
+    });
+    const { result } = renderHook(
+      () =>
+        useEventPassOrders({
+          organizerSlug: 'test-organizer',
+          eventSlug: 'test-event',
+          locale: Locale.En,
+        }),
+      {
+        wrapper: QueryClientProviderForTest,
+      }
+    );
+
+    await waitFor(() => {
+      expect(result.current.eventData).toBeDefined();
+      expect(result.current.ordersData).toBeDefined();
+      expect(result.current.ordersData?.eventPassPendingOrder.length).toBe(2);
+    });
+    await act(async () => {
+      await result.current.upsertOrders([
+        {
+          id: 'fake-event-pass-1',
+          amount: 2,
+        },
+        {
+          id: 'fake-event-pass-2',
+          amount: 0,
+        },
+      ]);
+      expect(mockUpdatePassCart).toHaveBeenCalledTimes(0);
+      expect(mockDeleteOrder).toHaveBeenCalledTimes(1);
+      expect(mockDeleteOrder).toHaveBeenCalledWith({
+        eventPassIds: ['fake-event-pass-2'],
+      });
+      expect(mockInsertOrder).toHaveBeenCalledTimes(0);
+      expect(mockDeletePassCart).toHaveBeenCalledTimes(1);
+      expect(mockDeletePassCart).toHaveBeenCalledWith({
+        organizerSlug: 'test-organizer',
+        eventSlug: 'test-event',
+        eventPassId: 'fake-event-pass-2',
+      });
+    });
+  });
+
+  it("Should delete local storage order if get an amount of 0 but not delete order from db if doesn't exist", async () => {
+    Object.defineProperty(window, 'jwtTestToken', {
+      value: usersJwt.beta_user,
+      configurable: true,
+    });
+    const { result } = renderHook(
+      () =>
+        useEventPassOrders({
+          organizerSlug: 'test-organizer',
+          eventSlug: 'test-event',
+          locale: Locale.En,
+        }),
+      {
+        wrapper: QueryClientProviderForTest,
+      }
+    );
+
+    await waitFor(() => {
+      expect(result.current.eventData).toBeDefined();
+      expect(result.current.ordersData).toBeDefined();
+      expect(result.current.ordersData?.eventPassPendingOrder.length).toBe(1);
+    });
+    await act(async () => {
+      await result.current.upsertOrders([
+        {
+          id: 'fake-event-pass-1',
+          amount: 12,
+        },
+        {
+          id: 'fake-event-pass-2',
+          amount: 0,
+        },
+      ]);
+      expect(mockUpdatePassCart).toHaveBeenCalledTimes(0);
+      expect(mockDeleteOrder).toHaveBeenCalledTimes(0);
+      expect(mockInsertOrder).toHaveBeenCalledTimes(0);
+      expect(mockDeletePassCart).toHaveBeenCalledTimes(1);
+      expect(mockDeletePassCart).toHaveBeenCalledWith({
+        organizerSlug: 'test-organizer',
+        eventSlug: 'test-event',
+        eventPassId: 'fake-event-pass-2',
+      });
+    });
+  });
+
   it('Should delete orders correctly from database and local storage', async () => {
     Object.defineProperty(window, 'jwtTestToken', {
       value: usersJwt.alpha_user,
