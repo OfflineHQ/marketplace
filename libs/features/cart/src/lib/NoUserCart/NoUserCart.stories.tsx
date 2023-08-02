@@ -23,6 +23,22 @@ export default meta;
 
 type Story = StoryObj<typeof NoUserCart>;
 
+export const SectionWithNoUserNoCart: Story = {
+  render: NoUserCartNoCartExample,
+  play: async (context) => {
+    expect(
+      screen.queryByRole('button', {
+        name: /Lorem ipsum/i,
+      })
+    ).toBeNull();
+    expect(
+      screen.queryByRole('button', {
+        name: /World Cup/i,
+      })
+    ).toBeNull();
+  },
+};
+
 export const SectionWithNoUser: Story = {
   render: NoUserCartExample,
 };
@@ -70,20 +86,4 @@ export const SectionWithNoUserOpenedRemove: Story = {
 };
 export const SectionWithNoUserLoading: Story = {
   render: NoUserCartLoadingExample,
-};
-
-export const SectionWithNoUserNoCart: Story = {
-  render: NoUserCartNoCartExample,
-  play: async (context) => {
-    expect(
-      screen.queryByRole('button', {
-        name: /Lorem ipsum/i,
-      })
-    ).toBeNull();
-    expect(
-      screen.queryByRole('button', {
-        name: /World Cup/i,
-      })
-    ).toBeNull();
-  },
 };
