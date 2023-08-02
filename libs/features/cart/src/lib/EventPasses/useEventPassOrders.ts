@@ -81,10 +81,11 @@ export const useEventPassOrders = ({
       );
 
       // Orders to insert into the database
-      const ordersToInsert = [];
+      const ordersToInsert: Array<{ eventPassId: string; quantity: number }> =
+        [];
 
       // Orders to delete from the database
-      const idsToDelete = [];
+      const idsToDelete: string[] = [];
 
       // Loop over each local pass
       for (const pass of localPasses) {

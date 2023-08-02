@@ -422,7 +422,7 @@ describe('useEventPassOrders', () => {
     });
   });
 
-  it('Should delete orders correctly from database and local storage', async () => {
+  it('Should delete orders correctly from database but not local storage', async () => {
     Object.defineProperty(window, 'jwtTestToken', {
       value: usersJwt.alpha_user,
       configurable: true,
@@ -459,11 +459,7 @@ describe('useEventPassOrders', () => {
       expect(mockDeleteOrder).toHaveBeenCalledWith({
         eventPassIds: ['fake-event-pass-1', 'fake-event-pass-2'],
       });
-      expect(mockDeletePassesCart).toHaveBeenCalledTimes(1);
-      expect(mockDeletePassesCart).toHaveBeenCalledWith({
-        organizerSlug: 'test-organizer',
-        eventSlug: 'test-event',
-      });
+      expect(mockDeletePassesCart).toHaveBeenCalledTimes(0);
     });
   });
 });
