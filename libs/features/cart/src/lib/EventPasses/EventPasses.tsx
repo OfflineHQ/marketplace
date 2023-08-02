@@ -55,29 +55,31 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
   return (
     <AccordionContent>
       <div className="mt-3 flex flex-col">
-        {enrichedPasses.map((pass, index) => (
-          <div key={pass.id + index} className="mb-5 flex md:mb-8">
-            <div
-              className={`flex items-center ${layout.imageContainer} h-auto md:h-auto`}
-            >
-              <Text
-                variant="h5"
-                className="font-semibold"
-              >{`${pass.amount} x`}</Text>
+        {enrichedPasses.map((pass, index) =>
+          pass.amount ? (
+            <div key={pass.id + index} className="mb-5 flex md:mb-8">
+              <div
+                className={`flex items-center ${layout.imageContainer} h-auto md:h-auto`}
+              >
+                <Text
+                  variant="h5"
+                  className="font-semibold"
+                >{`${pass.amount} x`}</Text>
+              </div>
+              <div className="ml-2 flex flex-col md:ml-3">
+                <Text variant="h5" className="pb-2 font-semibold">
+                  {pass.name}
+                </Text>
+                <Text variant="small">
+                  {formatCurrency(format, {
+                    amount: pass.eventPassPricing?.priceAmount || 0,
+                    currency: pass.eventPassPricing?.priceCurrency,
+                  })}
+                </Text>
+              </div>
             </div>
-            <div className="ml-2 flex flex-col md:ml-3">
-              <Text variant="h5" className="pb-2 font-semibold">
-                {pass.name}
-              </Text>
-              <Text variant="small">
-                {formatCurrency(format, {
-                  amount: pass.eventPassPricing?.priceAmount || 0,
-                  currency: pass.eventPassPricing?.priceCurrency,
-                })}
-              </Text>
-            </div>
-          </div>
-        ))}
+          ) : null
+        )}
       </div>
       <EventPassesActions
         editText={t('edit')}
