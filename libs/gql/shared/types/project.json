@@ -11,7 +11,8 @@
         "outputPath": "dist/libs/gql/shared/types",
         "main": "libs/gql/shared/types/src/index.ts",
         "tsConfig": "libs/gql/shared/types/tsconfig.lib.json",
-        "assets": ["libs/gql/shared/types/*.md"]
+        "assets": ["libs/gql/shared/types/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "lint": {

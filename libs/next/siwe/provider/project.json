@@ -12,7 +12,8 @@
         "tsConfig": "libs/next/siwe/provider/tsconfig.lib.json",
         "packageJson": "libs/next/siwe/provider/package.json",
         "main": "libs/next/siwe/provider/src/index.ts",
-        "assets": ["libs/next/siwe/provider/*.md"]
+        "assets": ["libs/next/siwe/provider/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "lint": {

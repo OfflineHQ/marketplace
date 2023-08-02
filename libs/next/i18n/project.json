@@ -11,7 +11,8 @@
         "outputPath": "dist/libs/next/i18n",
         "main": "libs/next/i18n/src/index.ts",
         "tsConfig": "libs/next/i18n/tsconfig.lib.json",
-        "assets": ["libs/next/i18n/*.md"]
+        "assets": ["libs/next/i18n/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "lint": {
