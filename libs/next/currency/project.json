@@ -11,7 +11,8 @@
         "outputPath": "dist/libs/next/currency",
         "main": "libs/next/currency/src/index.ts",
         "tsConfig": "libs/next/currency/tsconfig.lib.json",
-        "assets": ["libs/next/currency/*.md"]
+        "assets": ["libs/next/currency/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "lint": {
