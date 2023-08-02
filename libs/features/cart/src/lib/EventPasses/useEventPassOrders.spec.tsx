@@ -99,6 +99,7 @@ describe('useEventPassOrders', () => {
     mockDeletePassesCart.mockClear();
     mockInsertOrder.mockClear();
     mockDeleteOrder.mockClear();
+    mockDeletePassCart.mockClear();
   });
   afterEach(() => {
     delete window.jwtTestToken;
