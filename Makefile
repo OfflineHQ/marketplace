@@ -31,3 +31,6 @@ db-clean:
 
 restart-hasura:
 	@docker-compose -f docker-compose.yaml --env-file .env.local restart hasura-engine
+
+reset-nx-cache:
+	@pnpm run nx reset && rm -rf node_modules/.cache/nx dist

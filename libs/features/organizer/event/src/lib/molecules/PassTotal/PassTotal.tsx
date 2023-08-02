@@ -1,7 +1,7 @@
 // PassTotal.tsx
 import React from 'react';
 import { Text } from '@ui/components';
-import type { EventPass, EventSlugs } from '../../types';
+import type { EventPass, EventSlugs } from '@features/organizer/event-types';
 import { useFormatter, useTranslations } from 'next-intl';
 import { formatCurrency } from '@next/currency';
 import { usePassPurchaseStore } from '../../store/index';

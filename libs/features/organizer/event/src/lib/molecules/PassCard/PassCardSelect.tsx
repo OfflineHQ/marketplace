@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { usePassPurchaseStore } from '../../store/index';
 import { useStore } from '@next/store';
 
-import type { EventPass, EventSlugs } from '../../types';
+import type { EventPass, EventSlugs } from '@features/organizer/event-types';
 
 export interface PassCardSelectProps
   extends Omit<EventPass, 'description' | 'name'>,

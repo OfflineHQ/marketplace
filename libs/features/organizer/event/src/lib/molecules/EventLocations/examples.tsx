@@ -1,5 +1,8 @@
 // EventLocations/examples.tsx
-import { EventDateLocation, LocationAddress } from '../../types';
+import {
+  EventDateLocation,
+  LocationAddress,
+} from '@features/organizer/event-types';
 import { type EventLocationsProps } from './EventLocations';
 
 // Define some sample locations

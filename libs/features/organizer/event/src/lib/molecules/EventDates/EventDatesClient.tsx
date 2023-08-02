@@ -3,7 +3,7 @@
 'use client';
 
 import React from 'react';
-import type { EventDateLocation } from '../../types';
+import type { EventDateLocation } from '@features/organizer/event-types';
 import { Calendar as CalendarIcon } from '@ui/icons';
 import { Text } from '@ui/components';
 import { useFormatter } from 'next-intl';

@@ -19,7 +19,7 @@ import { messages, defaultLocale, type Locale } from '@next/i18n';
 
 import { formatCurrency } from '@next/currency';
 
-import type { EventPass } from '../../types';
+import type { EventPass } from '@features/organizer/event-types';
 import { PassCardSelect, PassCardSelectProps } from './PassCardSelect';
 
 export interface PassCardProps extends EventPass, PassCardSelectProps {}

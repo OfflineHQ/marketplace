@@ -12,8 +12,7 @@
         "tsConfig": "libs/next/hasura/api/tsconfig.lib.json",
         "packageJson": "libs/next/hasura/api/package.json",
         "main": "libs/next/hasura/api/src/index.ts",
-        "assets": ["libs/next/hasura/api/*.md"],
-        "updateBuildableProjectDepsInPackageJson": true
+        "assets": ["libs/next/hasura/api/*.md"]
       }
     },
     "lint": {
