@@ -40,6 +40,7 @@ export interface EventPassesSliceProps {
   getPassCart: (props: GetPassCartProps) => EventPassCart | undefined;
   updatePassCart: (props: UpdatePassCartProps) => void;
   setPassesCart: (props: SetPassesCartProps) => void;
+  deletePassCart: (props: GetPassCartProps) => void;
   deletePassesCart: (props: EventSlugs) => void;
   getPassesCart: (props: EventSlugs) => EventPassCart[] | undefined;
   getPassesCartTotalPrice: (props: GetPassesCartTotalPriceProps) => Money;
@@ -105,6 +106,21 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
         }
       })
     ),
+  deletePassCart: ({ organizerSlug, eventSlug, eventPassId }) =>
+    set((state) =>
+      produce(state, (draft) => {
+        const passes = draft.passes;
+        if (passes[organizerSlug]?.[eventSlug]) {
+          const newPasses = { ...passes };
+          const passesCart = newPasses[organizerSlug][eventSlug];
+          const passIndex = passesCart.findIndex((p) => p.id === eventPassId);
+          if (passIndex !== -1) {
+            passesCart.splice(passIndex, 1);
+          }
+          draft.passes = newPasses;
+        }
+      })
+    ),
   getPassesCart: ({ organizerSlug, eventSlug }) => {
     const passes = get().passes;
     if (passes[organizerSlug]) {
@@ -146,21 +162,33 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
   },
   syncAllPassesCart: ({ userPassPendingOrders }) => {
     const passes = get().passes;
-    console.log('syncAllPassesCart', passes, userPassPendingOrders);
     const organizerSlugs = Object.keys(passes);
-    const eventSlugs = organizerSlugs.map((organizerSlug) =>
-      Object.keys(passes[organizerSlug])
-    );
     const allPassesCart: AllPassesCart = {};
-    organizerSlugs.forEach((organizerSlug, organizerIndex) => {
-      eventSlugs[organizerIndex].forEach((eventSlug) => {
-        const passesCart = get().getPassesCart({ organizerSlug, eventSlug });
-        if (passesCart) {
-          allPassesCart[organizerSlug] = {};
+
+    organizerSlugs.forEach((organizerSlug) => {
+      const eventSlugs = Object.keys(passes[organizerSlug]);
+      eventSlugs.forEach((eventSlug) => {
+        const passesCart = passes[organizerSlug][eventSlug];
+        if (passesCart && passesCart.length > 0) {
+          // Ensure there are passes in the event
+          if (!allPassesCart[organizerSlug]) {
+            // Initialize the organizer if it hasn't been added yet
+            allPassesCart[organizerSlug] = {};
+          }
           allPassesCart[organizerSlug][eventSlug] = passesCart;
         }
       });
+
+      // After going through all events, check if the organizer has any events left.
+      // If not, delete the organizer from the object.
+      if (
+        allPassesCart[organizerSlug] &&
+        Object.keys(allPassesCart[organizerSlug]).length === 0
+      ) {
+        delete allPassesCart[organizerSlug];
+      }
     });
+
     if (userPassPendingOrders) {
       const updatePassCart = get().updatePassCart;
       // Iterate through userPassPendingOrders and add them if they don't exist
