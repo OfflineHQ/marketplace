@@ -29,6 +29,7 @@ export const fetchData = (hasuraOpts: HasuraOpts = { admin: false }) => {
         process.env.HASURA_GRAPHQL_ADMIN_SECRET;
     } else if (isServerSide()) {
       // if server side, include the cookie because it's not sent by default in server side with next
+      // TODO check if work with new version of cypress with webpack 5
       headers['Cookie'] = cookies().toString();
     }
     const res = await fetch(endpointUrl(), {

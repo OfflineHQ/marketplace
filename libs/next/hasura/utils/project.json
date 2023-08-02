@@ -11,7 +11,8 @@
         "outputPath": "dist/libs/next/hasura/utils",
         "main": "libs/next/hasura/utils/src/index.ts",
         "tsConfig": "libs/next/hasura/utils/tsconfig.lib.json",
-        "assets": ["libs/next/hasura/utils/*.md"]
+        "assets": ["libs/next/hasura/utils/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "lint": {
