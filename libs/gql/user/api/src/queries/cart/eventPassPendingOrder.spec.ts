@@ -1,8 +1,4 @@
-import {
-  alphaAdminClient,
-  betaAdminClient,
-  sebGoogleClient,
-} from '@test-utils/gql';
+import { alphaAdminClient, betaAdminClient } from '@test-utils/gql';
 import {
   deleteAccounts,
   seedDb,
@@ -10,7 +6,11 @@ import {
   deleteTables,
   type PgClient,
 } from '@test-utils/db';
-import { type EventPassPendingOrder_Insert_Input } from '@gql/shared/types';
+import type {
+  EventPassPendingOrder_Insert_Input,
+  Locale,
+  Stage,
+} from '@gql/shared/types';
 
 describe('tests for eventPassPendingOrder user', () => {
   let client: PgClient;
@@ -32,7 +32,6 @@ describe('tests for eventPassPendingOrder user', () => {
 
   const alphaAdmin = alphaAdminClient();
   const betaAdmin = betaAdminClient();
-  const sebGoogle = sebGoogleClient();
 
   beforeAll(async () => {
     client = await createDbClient();
@@ -171,22 +170,33 @@ describe('tests for eventPassPendingOrder user', () => {
     expect(ordersBeta?.length).toBe(2);
   });
 
+  it('should return all user pending orders', async () => {
+    await seedDb(
+      client,
+      './hasura/app/seeds/default/2_eventPassPendingOrder.sql'
+    );
+    const data = await alphaAdmin.GetEventPassPendingOrders({
+      locale: 'en' as Locale,
+      stage: 'DRAFT' as Stage,
+    });
+    const orders = data.eventPassPendingOrder;
+    expect(orders?.length).toBe(2);
+  });
+
+  it("shouldn't create eventPassPendingOrder with quantity not positive", async () => {
+    await expect(
+      alphaAdmin.InsertEventPassPendingOrders({
+        objects: { ...order1, quantity: 0 },
+      })
+    ).rejects.toThrow();
+  });
+
   it('shouldn`t allow insert multiple orders on same eventPassId', async () => {
     await expect(
       alphaAdmin.InsertEventPassPendingOrders({
         objects: [order1, order1],
       })
     ).rejects.toThrow();
-  });
-
-  it('should return all user pending orders', async () => {
-    await seedDb(
-      client,
-      './hasura/app/seeds/default/2_eventPassPendingOrder.sql'
-    );
-    const data = await alphaAdmin.GetEventPassPendingOrders();
-    const orders = data.eventPassPendingOrder;
-    expect(orders?.length).toBe(2);
   });
 
   it("shouldn't allow update of order with new quantity if order already exists", async () => {

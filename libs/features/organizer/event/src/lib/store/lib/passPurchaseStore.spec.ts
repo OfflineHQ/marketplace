@@ -336,6 +336,81 @@ describe('passPurchaseStore', () => {
     });
   });
 
+  it("syncAllPassesCart doesn't replace local storage order having 0 quantity with existing pending order", () => {
+    const { result } = renderHook(() => usePassPurchaseStore());
+
+    const passWithZeroQuantity = { ...pass2, amount: 0 };
+    act(() => {
+      result.current.setPassesCart({
+        organizerSlug: organizerSlug1,
+        eventSlug: eventSlug1,
+        newPasses: [pass1],
+      });
+      result.current.setPassesCart({
+        organizerSlug: organizerSlug2,
+        eventSlug: eventSlug2,
+        newPasses: [passWithZeroQuantity],
+      });
+    });
+    const allPassesCart = result.current.syncAllPassesCart({
+      userPassPendingOrders: [pendingOrder2],
+    });
+    expect(allPassesCart).toEqual({
+      [organizerSlug1]: {
+        [eventSlug1]: [pass1],
+      },
+      [organizerSlug2]: {
+        [eventSlug2]: [passWithZeroQuantity],
+      },
+    });
+  });
+
+  it('syncAllPassesCart correctly delete event from store is no pass is present', () => {
+    const { result } = renderHook(() => usePassPurchaseStore());
+
+    act(() => {
+      result.current.setPassesCart({
+        organizerSlug: organizerSlug1,
+        eventSlug: eventSlug1,
+        newPasses: [],
+      });
+      result.current.setPassesCart({
+        organizerSlug: organizerSlug1,
+        eventSlug: eventSlug2,
+        newPasses: [pass2],
+      });
+    });
+
+    const allPassesCart = result.current.syncAllPassesCart({});
+
+    expect(allPassesCart).toEqual({
+      [organizerSlug1]: {
+        [eventSlug2]: [pass2],
+      },
+    });
+  });
+
+  it('syncAllPassesCart correctly delete organizer from store is no event with passes present', () => {
+    const { result } = renderHook(() => usePassPurchaseStore());
+
+    act(() => {
+      result.current.setPassesCart({
+        organizerSlug: organizerSlug1,
+        eventSlug: eventSlug1,
+        newPasses: [],
+      });
+      result.current.setPassesCart({
+        organizerSlug: organizerSlug1,
+        eventSlug: eventSlug2,
+        newPasses: [],
+      });
+    });
+
+    const allPassesCart = result.current.syncAllPassesCart({});
+
+    expect(allPassesCart).toEqual({});
+  });
+
   it('getPassCart correctly retrieves a specific pass', () => {
     const { result } = renderHook(() => usePassPurchaseStore());
 
