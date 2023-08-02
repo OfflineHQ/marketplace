@@ -11,7 +11,8 @@
         "outputPath": "dist/libs/gql/admin/types",
         "main": "libs/gql/admin/types/src/generated/index.ts",
         "tsConfig": "libs/gql/admin/types/tsconfig.lib.json",
-        "assets": ["libs/gql/admin/types/*.md"]
+        "assets": ["libs/gql/admin/types/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     }
   },

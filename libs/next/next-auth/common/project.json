@@ -12,7 +12,8 @@
         "tsConfig": "libs/next/next-auth/common/tsconfig.lib.json",
         "packageJson": "libs/next/next-auth/common/package.json",
         "main": "libs/next/next-auth/common/src/index.ts",
-        "assets": ["libs/next/next-auth/common/*.md"]
+        "assets": ["libs/next/next-auth/common/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "lint": {
