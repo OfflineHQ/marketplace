@@ -64,6 +64,7 @@ export const useEventPassOrders = ({
       if (eventIsLoading) {
         throw new Error('Event data is still loading');
       }
+      console.log('localPasses', localPasses);
       // Mapping of eventPassId to quantity from the local storage
       const localPassesMap = localPasses.reduce((map, pass) => {
         map[pass.id] = pass.amount;
@@ -88,15 +89,28 @@ export const useEventPassOrders = ({
       // Loop over each local pass
       for (const pass of localPasses) {
         const dbQuantity = dbPassesMap[pass.id];
-
+        console.log('dbQuantity', dbQuantity, 'pass', pass);
         // If the pass does not exist in the database or if the quantities are different
         if (dbQuantity === undefined || dbQuantity !== pass.amount) {
-          // Add the pass to the list of orders to insert into the database
-          ordersToInsert.push({ eventPassId: pass.id, quantity: pass.amount });
+          // Add the pass to the list of orders to insert into the database, except if amount of local order is 0
+          if (pass.amount > 0)
+            ordersToInsert.push({
+              eventPassId: pass.id,
+              quantity: pass.amount,
+            });
 
           // If the pass already exists in the database but with a different quantity, add it to the list of orders to delete
           if (dbQuantity !== undefined) {
             idsToDelete.push(pass.id);
+          }
+          // if amount from local storage order is 0 delete the order from local storage
+          if (!pass.amount) {
+            console.log('deletePassCart', pass.id);
+            store.deletePassCart({
+              organizerSlug,
+              eventSlug,
+              eventPassId: pass.id,
+            });
           }
         }
       }
