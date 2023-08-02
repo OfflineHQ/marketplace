@@ -89,7 +89,6 @@ export const useEventPassOrders = ({
       // Loop over each local pass
       for (const pass of localPasses) {
         const dbQuantity = dbPassesMap[pass.id];
-        console.log('dbQuantity', dbQuantity, 'pass', pass);
         // If the pass does not exist in the database or if the quantities are different
         if (dbQuantity === undefined || dbQuantity !== pass.amount) {
           // Add the pass to the list of orders to insert into the database, except if amount of local order is 0
@@ -105,7 +104,6 @@ export const useEventPassOrders = ({
           }
           // if amount from local storage order is 0 delete the order from local storage
           if (!pass.amount) {
-            console.log('deletePassCart', pass.id);
             store.deletePassCart({
               organizerSlug,
               eventSlug,
