@@ -1,0 +1,11 @@
+fragment EventPassOwnedFields on eventPassOwned {
+  id
+  eventPassId
+  address
+  isRevealed
+  transactionHash
+  timeStamp
+  chainId
+  contractAddress
+  tokenId
+}

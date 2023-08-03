@@ -2,6 +2,7 @@
 - "!include public_currency.yaml"
 - "!include public_eventPassOrder.yaml"
 - "!include public_eventPassOrderSums.yaml"
+- "!include public_eventPassOwned.yaml"
 - "!include public_eventPassPendingOrder.yaml"
 - "!include public_eventPassPricing.yaml"
 - "!include public_orderStatus.yaml"

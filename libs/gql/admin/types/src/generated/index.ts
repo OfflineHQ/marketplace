@@ -114,3 +114,12 @@ export type GetOrganizerQueryVariables = Types.Exact<{
 
 
 export type GetOrganizerQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, description?: { __typename?: 'OrganizerDescriptionRichText', json: any, references: Array<{ __typename: 'Asset', id: string, url: string, mimeType?: string | null }> } | null, image: { __typename?: 'Asset', url: string } } | null };
+
+export type EventPassOwnedFieldsFragment = { __typename?: 'eventPassOwned', id: any, eventPassId: string, address: string, isRevealed: boolean, transactionHash: string, timeStamp: any, chainId: string, contractAddress: string, tokenId: any };
+
+export type SetEventPassOwnedRevealedMutationVariables = Types.Exact<{
+  id: Types.Scalars['uuid'];
+}>;
+
+
+export type SetEventPassOwnedRevealedMutation = { __typename?: 'mutation_root', update_eventPassOwned_by_pk?: { __typename?: 'eventPassOwned', id: any } | null };

@@ -6263,6 +6263,23 @@ input account_updates {
   where: account_bool_exp!
 }
 
+scalar bigint
+
+"""
+Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'.
+"""
+input bigint_comparison_exp {
+  _eq: bigint
+  _gt: bigint
+  _gte: bigint
+  _in: [bigint!]
+  _is_null: Boolean
+  _lt: bigint
+  _lte: bigint
+  _neq: bigint
+  _nin: [bigint!]
+}
+
 """
 Currencies code following the standard ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217)
 """
@@ -6941,7 +6958,337 @@ type eventPassOrder_variance_fields {
 }
 
 """
-Pending Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users.
+The eventPassOwned model represents a Non-Fungible Token (NFT) or Pass associated with a specific Event Pass and is currently held by a wallet address. Given the nature of NFTs, they can be transferred to any existing or future account. Our blockchain indexer and RPC service handle the responsibility of updating this model to reflect the current address that possesses this NFT/Pass.  The primary purpose of this model is to indicate whether the Pass has been revealed or not while maintaining an updated list of NFT ownership for each user on our platform. This allows us to track if the user owning the NFT at a particular time has accessed the QR Code associated with it. If the Pass is not marked as 'revealed', it provides assurance to potential buyers that the QR Code has remained confidential, thereby guaranteeing their access to the event.  However, it's important to note that, while this system generally functions effectively, additional checks should be put in place for critical features like the reveal process to prevent any potential misuse or fraudulent activities.
+"""
+type eventPassOwned {
+  address: String!
+  chainId: String!
+  contractAddress: String!
+  eventPass(
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+  ): EventPass
+  eventPassId: String!
+
+  """An object relationship"""
+  eventPassPricing: eventPassPricing
+  id: uuid!
+  isRevealed: Boolean!
+  timeStamp: timestamptz!
+  tokenId: bigint!
+  transactionHash: String!
+}
+
+"""
+aggregated selection of "eventPassOwned"
+"""
+type eventPassOwned_aggregate {
+  aggregate: eventPassOwned_aggregate_fields
+  nodes: [eventPassOwned!]!
+}
+
+"""
+aggregate fields of "eventPassOwned"
+"""
+type eventPassOwned_aggregate_fields {
+  avg: eventPassOwned_avg_fields
+  count(columns: [eventPassOwned_select_column!], distinct: Boolean): Int!
+  max: eventPassOwned_max_fields
+  min: eventPassOwned_min_fields
+  stddev: eventPassOwned_stddev_fields
+  stddev_pop: eventPassOwned_stddev_pop_fields
+  stddev_samp: eventPassOwned_stddev_samp_fields
+  sum: eventPassOwned_sum_fields
+  var_pop: eventPassOwned_var_pop_fields
+  var_samp: eventPassOwned_var_samp_fields
+  variance: eventPassOwned_variance_fields
+}
+
+"""aggregate avg on columns"""
+type eventPassOwned_avg_fields {
+  tokenId: Float
+}
+
+"""
+Boolean expression to filter rows from the table "eventPassOwned". All fields are combined with a logical 'AND'.
+"""
+input eventPassOwned_bool_exp {
+  _and: [eventPassOwned_bool_exp!]
+  _not: eventPassOwned_bool_exp
+  _or: [eventPassOwned_bool_exp!]
+  address: String_comparison_exp
+  chainId: String_comparison_exp
+  contractAddress: String_comparison_exp
+  eventPassId: String_comparison_exp
+  eventPassPricing: eventPassPricing_bool_exp
+  id: uuid_comparison_exp
+  isRevealed: Boolean_comparison_exp
+  timeStamp: timestamptz_comparison_exp
+  tokenId: bigint_comparison_exp
+  transactionHash: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "eventPassOwned"
+"""
+enum eventPassOwned_constraint {
+  """
+  unique or primary key constraint on columns "tokenId", "contractAddress", "chainId"
+  """
+  eventPassOwned_contractAddress_tokenId_chainId_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  eventPassOwned_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "eventPassOwned"
+"""
+input eventPassOwned_inc_input {
+  tokenId: bigint
+}
+
+"""
+input type for inserting data into table "eventPassOwned"
+"""
+input eventPassOwned_insert_input {
+  address: String
+  chainId: String
+  contractAddress: String
+  eventPassId: String
+  eventPassPricing: eventPassPricing_obj_rel_insert_input
+  id: uuid
+  isRevealed: Boolean
+  timeStamp: timestamptz
+  tokenId: bigint
+  transactionHash: String
+}
+
+"""aggregate max on columns"""
+type eventPassOwned_max_fields {
+  address: String
+  chainId: String
+  contractAddress: String
+  eventPassId: String
+  id: uuid
+  timeStamp: timestamptz
+  tokenId: bigint
+  transactionHash: String
+}
+
+"""aggregate min on columns"""
+type eventPassOwned_min_fields {
+  address: String
+  chainId: String
+  contractAddress: String
+  eventPassId: String
+  id: uuid
+  timeStamp: timestamptz
+  tokenId: bigint
+  transactionHash: String
+}
+
+"""
+response of any mutation on the table "eventPassOwned"
+"""
+type eventPassOwned_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [eventPassOwned!]!
+}
+
+"""
+on_conflict condition type for table "eventPassOwned"
+"""
+input eventPassOwned_on_conflict {
+  constraint: eventPassOwned_constraint!
+  update_columns: [eventPassOwned_update_column!]! = []
+  where: eventPassOwned_bool_exp
+}
+
+"""Ordering options when selecting data from "eventPassOwned"."""
+input eventPassOwned_order_by {
+  address: order_by
+  chainId: order_by
+  contractAddress: order_by
+  eventPassId: order_by
+  eventPassPricing: eventPassPricing_order_by
+  id: order_by
+  isRevealed: order_by
+  timeStamp: order_by
+  tokenId: order_by
+  transactionHash: order_by
+}
+
+"""primary key columns input for table: eventPassOwned"""
+input eventPassOwned_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "eventPassOwned"
+"""
+enum eventPassOwned_select_column {
+  """column name"""
+  address
+
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  id
+
+  """column name"""
+  isRevealed
+
+  """column name"""
+  timeStamp
+
+  """column name"""
+  tokenId
+
+  """column name"""
+  transactionHash
+}
+
+"""
+input type for updating data in table "eventPassOwned"
+"""
+input eventPassOwned_set_input {
+  address: String
+  chainId: String
+  contractAddress: String
+  eventPassId: String
+  id: uuid
+  isRevealed: Boolean
+  timeStamp: timestamptz
+  tokenId: bigint
+  transactionHash: String
+}
+
+"""aggregate stddev on columns"""
+type eventPassOwned_stddev_fields {
+  tokenId: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type eventPassOwned_stddev_pop_fields {
+  tokenId: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type eventPassOwned_stddev_samp_fields {
+  tokenId: Float
+}
+
+"""
+Streaming cursor of the table "eventPassOwned"
+"""
+input eventPassOwned_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: eventPassOwned_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input eventPassOwned_stream_cursor_value_input {
+  address: String
+  chainId: String
+  contractAddress: String
+  eventPassId: String
+  id: uuid
+  isRevealed: Boolean
+  timeStamp: timestamptz
+  tokenId: bigint
+  transactionHash: String
+}
+
+"""aggregate sum on columns"""
+type eventPassOwned_sum_fields {
+  tokenId: bigint
+}
+
+"""
+update columns of table "eventPassOwned"
+"""
+enum eventPassOwned_update_column {
+  """column name"""
+  address
+
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  id
+
+  """column name"""
+  isRevealed
+
+  """column name"""
+  timeStamp
+
+  """column name"""
+  tokenId
+
+  """column name"""
+  transactionHash
+}
+
+input eventPassOwned_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: eventPassOwned_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: eventPassOwned_set_input
+
+  """filter the rows which have to be updated"""
+  where: eventPassOwned_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type eventPassOwned_var_pop_fields {
+  tokenId: Float
+}
+
+"""aggregate var_samp on columns"""
+type eventPassOwned_var_samp_fields {
+  tokenId: Float
+}
+
+"""aggregate variance on columns"""
+type eventPassOwned_variance_fields {
+  tokenId: Float
+}
+
+"""
+Pending Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account. 
+  Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users.
 """
 type eventPassPendingOrder {
   """An object relationship"""
@@ -7752,6 +8099,19 @@ type mutation_root {
   delete_eventPassOrder_by_pk(id: uuid!): eventPassOrder
 
   """
+  delete data from the table: "eventPassOwned"
+  """
+  delete_eventPassOwned(
+    """filter the rows which have to be deleted"""
+    where: eventPassOwned_bool_exp!
+  ): eventPassOwned_mutation_response
+
+  """
+  delete single row from the table: "eventPassOwned"
+  """
+  delete_eventPassOwned_by_pk(id: uuid!): eventPassOwned
+
+  """
   delete data from the table: "eventPassPendingOrder"
   """
   delete_eventPassPendingOrder(
@@ -7877,6 +8237,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: eventPassOrder_on_conflict
   ): eventPassOrder
+
+  """
+  insert data into the table: "eventPassOwned"
+  """
+  insert_eventPassOwned(
+    """the rows to be inserted"""
+    objects: [eventPassOwned_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: eventPassOwned_on_conflict
+  ): eventPassOwned_mutation_response
+
+  """
+  insert a single row into the table: "eventPassOwned"
+  """
+  insert_eventPassOwned_one(
+    """the row to be inserted"""
+    object: eventPassOwned_insert_input!
+
+    """upsert condition"""
+    on_conflict: eventPassOwned_on_conflict
+  ): eventPassOwned
 
   """
   insert data into the table: "eventPassPendingOrder"
@@ -8900,6 +9282,40 @@ type mutation_root {
   ): [eventPassOrder_mutation_response]
 
   """
+  update data of the table: "eventPassOwned"
+  """
+  update_eventPassOwned(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassOwned_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassOwned_set_input
+
+    """filter the rows which have to be updated"""
+    where: eventPassOwned_bool_exp!
+  ): eventPassOwned_mutation_response
+
+  """
+  update single row of the table: "eventPassOwned"
+  """
+  update_eventPassOwned_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassOwned_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassOwned_set_input
+    pk_columns: eventPassOwned_pk_columns_input!
+  ): eventPassOwned
+
+  """
+  update multiples rows of table: "eventPassOwned"
+  """
+  update_eventPassOwned_many(
+    """updates to execute, in order"""
+    updates: [eventPassOwned_updates!]!
+  ): [eventPassOwned_mutation_response]
+
+  """
   update data of the table: "eventPassPendingOrder"
   """
   update_eventPassPendingOrder(
@@ -9450,6 +9866,49 @@ type query_root {
 
   """fetch data from the table: "eventPassOrder" using primary key columns"""
   eventPassOrder_by_pk(id: uuid!): eventPassOrder
+
+  """
+  fetch data from the table: "eventPassOwned"
+  """
+  eventPassOwned(
+    """distinct select on columns"""
+    distinct_on: [eventPassOwned_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOwned_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOwned_bool_exp
+  ): [eventPassOwned!]!
+
+  """
+  fetch aggregated fields from the table: "eventPassOwned"
+  """
+  eventPassOwned_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassOwned_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOwned_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOwned_bool_exp
+  ): eventPassOwned_aggregate!
+
+  """fetch data from the table: "eventPassOwned" using primary key columns"""
+  eventPassOwned_by_pk(id: uuid!): eventPassOwned
 
   """
   fetch data from the table: "eventPassPendingOrder"
@@ -10169,6 +10628,63 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassOrder_bool_exp
   ): [eventPassOrder!]!
+
+  """
+  fetch data from the table: "eventPassOwned"
+  """
+  eventPassOwned(
+    """distinct select on columns"""
+    distinct_on: [eventPassOwned_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOwned_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOwned_bool_exp
+  ): [eventPassOwned!]!
+
+  """
+  fetch aggregated fields from the table: "eventPassOwned"
+  """
+  eventPassOwned_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassOwned_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOwned_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOwned_bool_exp
+  ): eventPassOwned_aggregate!
+
+  """fetch data from the table: "eventPassOwned" using primary key columns"""
+  eventPassOwned_by_pk(id: uuid!): eventPassOwned
+
+  """
+  fetch data from the table in a streaming manner: "eventPassOwned"
+  """
+  eventPassOwned_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [eventPassOwned_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: eventPassOwned_bool_exp
+  ): [eventPassOwned!]!
 
   """
   fetch data from the table: "eventPassPendingOrder"

@@ -8,6 +8,19 @@ export const AccountFieldsFragmentDoc = `
   email
 }
     `;
+export const EventPassOwnedFieldsFragmentDoc = `
+    fragment EventPassOwnedFields on eventPassOwned {
+  id
+  eventPassId
+  address
+  isRevealed
+  transactionHash
+  timeStamp
+  chainId
+  contractAddress
+  tokenId
+}
+    `;
 export const GetAccountDocument = `
     query GetAccount($address: String!) {
   account(where: {address: {_eq: $address}}) {
@@ -190,5 +203,100 @@ export const useDeleteEventPassPendingOrdersMutation = <
     useMutation<Types.DeleteEventPassPendingOrdersMutation, TError, Types.DeleteEventPassPendingOrdersMutationVariables, TContext>(
       ['DeleteEventPassPendingOrders'],
       (variables?: Types.DeleteEventPassPendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables)(),
+      options
+    );
+export const GetEventPassOwnedDocument = `
+    query GetEventPassOwned($locale: Locale!, $stage: Stage!) {
+  eventPassOwned {
+    ...EventPassOwnedFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+    ${EventPassOwnedFieldsFragmentDoc}`;
+export const useGetEventPassOwnedQuery = <
+      TData = Types.GetEventPassOwnedQuery,
+      TError = Error
+    >(
+      variables: Types.GetEventPassOwnedQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassOwnedQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassOwnedQuery, TError, TData>(
+      ['GetEventPassOwned', variables],
+      fetchDataReactQuery<Types.GetEventPassOwnedQuery, Types.GetEventPassOwnedQueryVariables>(GetEventPassOwnedDocument, variables),
+      options
+    );
+export const GetEventPassOwnedByIdDocument = `
+    query GetEventPassOwnedById($id: uuid!, $locale: Locale!, $stage: Stage!) {
+  eventPassOwned_by_pk(id: $id) {
+    ...EventPassOwnedFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+    ${EventPassOwnedFieldsFragmentDoc}`;
+export const useGetEventPassOwnedByIdQuery = <
+      TData = Types.GetEventPassOwnedByIdQuery,
+      TError = Error
+    >(
+      variables: Types.GetEventPassOwnedByIdQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassOwnedByIdQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassOwnedByIdQuery, TError, TData>(
+      ['GetEventPassOwnedById', variables],
+      fetchDataReactQuery<Types.GetEventPassOwnedByIdQuery, Types.GetEventPassOwnedByIdQueryVariables>(GetEventPassOwnedByIdDocument, variables),
+      options
+    );
+export const GetEventPassOwnedWithDetailsDocument = `
+    query GetEventPassOwnedWithDetails($locale: Locale!, $stage: Stage!) {
+  eventPassOwned {
+    ...EventPassOwnedFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      name
+      description
+      eventPassPricing {
+        priceAmount
+        priceCurrency
+      }
+      event {
+        title
+        slug
+        heroImage {
+          url
+        }
+        organizer {
+          name
+          slug
+          image {
+            url
+          }
+        }
+      }
+    }
+  }
+}
+    ${EventPassOwnedFieldsFragmentDoc}`;
+export const useGetEventPassOwnedWithDetailsQuery = <
+      TData = Types.GetEventPassOwnedWithDetailsQuery,
+      TError = Error
+    >(
+      variables: Types.GetEventPassOwnedWithDetailsQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassOwnedWithDetailsQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassOwnedWithDetailsQuery, TError, TData>(
+      ['GetEventPassOwnedWithDetails', variables],
+      fetchDataReactQuery<Types.GetEventPassOwnedWithDetailsQuery, Types.GetEventPassOwnedWithDetailsQueryVariables>(GetEventPassOwnedWithDetailsDocument, variables),
       options
     );
