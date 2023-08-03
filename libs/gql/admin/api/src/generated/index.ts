@@ -59,6 +59,19 @@ export const EventDateLocationsFieldsFragmentDoc = `
   dateEnd
 }
     `;
+export const EventPassOwnedFieldsFragmentDoc = `
+    fragment EventPassOwnedFields on eventPassOwned {
+  id
+  eventPassId
+  address
+  isRevealed
+  transactionHash
+  timeStamp
+  chainId
+  contractAddress
+  tokenId
+}
+    `;
  const UpdateAccountDocument = `
     mutation UpdateAccount($id: uuid!, $account: account_set_input!) {
   update_account_by_pk(_set: $account, pk_columns: {id: $id}) {
@@ -263,6 +276,13 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${OrganizerFieldsFragmentDoc}`;
+ const SetEventPassOwnedRevealedDocument = `
+    mutation SetEventPassOwnedRevealed($id: uuid!) {
+  update_eventPassOwned_by_pk(pk_columns: {id: $id}, _set: {isRevealed: true}) {
+    id
+  }
+}
+    `;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -307,6 +327,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
+    },
+    SetEventPassOwnedRevealed(variables: Types.SetEventPassOwnedRevealedMutationVariables, options?: C): Promise<Types.SetEventPassOwnedRevealedMutation> {
+      return requester<Types.SetEventPassOwnedRevealedMutation, Types.SetEventPassOwnedRevealedMutationVariables>(SetEventPassOwnedRevealedDocument, variables, options) as Promise<Types.SetEventPassOwnedRevealedMutation>;
     }
   };
 }
