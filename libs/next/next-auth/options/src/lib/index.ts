@@ -1,11 +1,13 @@
+// eslint-disable-next-line import/no-unresolved
+import '@next/types';
+
 import * as jsonwebtoken from 'jsonwebtoken';
-import type { NextAuthOptions, User, Account, Profile } from 'next-auth';
-import type { JWT, JWTOptions } from 'next-auth/jwt';
+import type { NextAuthOptions, User, Account } from 'next-auth';
+import type { JWTOptions, JWT } from 'next-auth/jwt';
 
 import { SiweProvider } from '@next/siwe/provider';
 import { Roles } from '@next/hasura/utils';
 import { isProd, getNextAppURL } from '@utils';
-import { logger } from '@logger';
 import { Provider } from 'next-auth/providers';
 import { nextAuthCookieName } from '@next/next-auth/common';
 
@@ -40,7 +42,7 @@ export const providers: Array<Provider> = [SiweProvider()];
 const hostName = new URL(getNextAppURL()).hostname;
 const useSecureCookies = getNextAppURL().startsWith('https://');
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
   cookies: {
     sessionToken: {
       name: nextAuthCookieName(),
@@ -91,14 +93,43 @@ export const authOptions: NextAuthOptions = {
         account?: Account | null;
       } = args;
 
-      // User is connected, set the role for Hasura
+      // User is connected, set the role for Hasura + Upload.js permissions to secure access to the user's pass
       if (user && account) {
-        logger.debug('set JWT', { token, user, account });
+        token.access = {
+          pathPermissions: [
+            {
+              match: {
+                path: `/${process.env.UPLOAD_PATH_PREFIX}/users/${user.address}`,
+                scope: 'Children',
+              },
+              permissions: {
+                read: {
+                  file: {
+                    downloadFile: ['*'],
+                    getFileDetails: true,
+                  },
+                },
+                write: {
+                  file: {
+                    createFile: false,
+                    deleteFile: false,
+                    overwriteFile: false,
+                  },
+                },
+              },
+            },
+          ],
+          tagPermissions: {
+            write: [''],
+          },
+        };
+
         return {
           user,
           provider: account.provider,
           providerType: account.type,
           role: Roles.user,
+          access: token.access,
         };
       }
       return token;
@@ -109,4 +140,4 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-};
+} satisfies NextAuthOptions;

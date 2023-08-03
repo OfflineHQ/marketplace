@@ -60,3 +60,30 @@ export type DeleteEventPassPendingOrdersMutationVariables = Types.Exact<{
 
 
 export type DeleteEventPassPendingOrdersMutation = { __typename?: 'mutation_root', delete_eventPassPendingOrder?: { __typename?: 'eventPassPendingOrder_mutation_response', affected_rows: number } | null };
+
+export type EventPassOwnedFieldsFragment = { __typename?: 'eventPassOwned', id: any, eventPassId: string, address: string, isRevealed: boolean, transactionHash: string, timeStamp: any, chainId: string, contractAddress: string, tokenId: any };
+
+export type GetEventPassOwnedQueryVariables = Types.Exact<{
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type GetEventPassOwnedQuery = { __typename?: 'query_root', eventPassOwned: Array<{ __typename?: 'eventPassOwned', id: any, eventPassId: string, address: string, isRevealed: boolean, transactionHash: string, timeStamp: any, chainId: string, contractAddress: string, tokenId: any, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> };
+
+export type GetEventPassOwnedByIdQueryVariables = Types.Exact<{
+  id: Types.Scalars['uuid'];
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type GetEventPassOwnedByIdQuery = { __typename?: 'query_root', eventPassOwned_by_pk?: { __typename?: 'eventPassOwned', id: any, eventPassId: string, address: string, isRevealed: boolean, transactionHash: string, timeStamp: any, chainId: string, contractAddress: string, tokenId: any, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null } | null };
+
+export type GetEventPassOwnedWithDetailsQueryVariables = Types.Exact<{
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type GetEventPassOwnedWithDetailsQuery = { __typename?: 'query_root', eventPassOwned: Array<{ __typename?: 'eventPassOwned', id: any, eventPassId: string, address: string, isRevealed: boolean, transactionHash: string, timeStamp: any, chainId: string, contractAddress: string, tokenId: any, eventPass?: { __typename?: 'EventPass', name: string, description: string, eventPassPricing?: { __typename?: 'eventPassPricing', priceAmount: number, priceCurrency: Types.Currency_Enum } | null, event?: { __typename?: 'Event', title: string, slug: string, heroImage: { __typename?: 'Asset', url: string }, organizer?: { __typename?: 'Organizer', name: string, slug: string, image: { __typename?: 'Asset', url: string } } | null } | null } | null }> };

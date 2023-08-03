@@ -1,0 +1,29 @@
+{
+  "name": "features-pass-types",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/features/pass-types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/features/pass-types",
+        "main": "libs/features/pass-types/src/index.ts",
+        "tsConfig": "libs/features/pass-types/tsconfig.lib.json",
+        "assets": ["libs/features/pass-types/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/features/pass-types/**/*.ts",
+          "libs/features/pass-types/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

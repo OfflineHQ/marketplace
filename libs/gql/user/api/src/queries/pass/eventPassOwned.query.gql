@@ -1,0 +1,55 @@
+query GetEventPassOwned($locale: Locale!, $stage: Stage!) {
+  eventPassOwned {
+    ...EventPassOwnedFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+
+query GetEventPassOwnedById($id: uuid!, $locale: Locale!, $stage: Stage!) {
+  eventPassOwned_by_pk(id: $id) {
+    ...EventPassOwnedFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+
+query GetEventPassOwnedWithDetails($locale: Locale!, $stage: Stage!) {
+  eventPassOwned {
+    ...EventPassOwnedFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      name
+      description
+      eventPassPricing {
+        priceAmount
+        priceCurrency
+      }
+      event {
+        title
+        slug
+        heroImage {
+          url
+        }
+        organizer {
+          name
+          slug
+          image {
+            url
+          }
+        }
+      }
+    }
+  }
+}

@@ -7,6 +7,19 @@ export const AccountFieldsFragmentDoc = `
   email
 }
     `;
+export const EventPassOwnedFieldsFragmentDoc = `
+    fragment EventPassOwnedFields on eventPassOwned {
+  id
+  eventPassId
+  address
+  isRevealed
+  transactionHash
+  timeStamp
+  chainId
+  contractAddress
+  tokenId
+}
+    `;
  const GetAccountDocument = `
     query GetAccount($address: String!) {
   account(where: {address: {_eq: $address}}) {
@@ -104,6 +117,65 @@ export const AccountFieldsFragmentDoc = `
   }
 }
     `;
+ const GetEventPassOwnedDocument = `
+    query GetEventPassOwned($locale: Locale!, $stage: Stage!) {
+  eventPassOwned {
+    ...EventPassOwnedFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+    ${EventPassOwnedFieldsFragmentDoc}`;
+ const GetEventPassOwnedByIdDocument = `
+    query GetEventPassOwnedById($id: uuid!, $locale: Locale!, $stage: Stage!) {
+  eventPassOwned_by_pk(id: $id) {
+    ...EventPassOwnedFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+    ${EventPassOwnedFieldsFragmentDoc}`;
+ const GetEventPassOwnedWithDetailsDocument = `
+    query GetEventPassOwnedWithDetails($locale: Locale!, $stage: Stage!) {
+  eventPassOwned {
+    ...EventPassOwnedFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      name
+      description
+      eventPassPricing {
+        priceAmount
+        priceCurrency
+      }
+      event {
+        title
+        slug
+        heroImage {
+          url
+        }
+        organizer {
+          name
+          slug
+          image {
+            url
+          }
+        }
+      }
+    }
+  }
+}
+    ${EventPassOwnedFieldsFragmentDoc}`;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -130,6 +202,15 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     DeleteEventPassPendingOrders(variables: Types.DeleteEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrdersMutation> {
       return requester<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrdersMutation>;
+    },
+    GetEventPassOwned(variables: Types.GetEventPassOwnedQueryVariables, options?: C): Promise<Types.GetEventPassOwnedQuery> {
+      return requester<Types.GetEventPassOwnedQuery, Types.GetEventPassOwnedQueryVariables>(GetEventPassOwnedDocument, variables, options) as Promise<Types.GetEventPassOwnedQuery>;
+    },
+    GetEventPassOwnedById(variables: Types.GetEventPassOwnedByIdQueryVariables, options?: C): Promise<Types.GetEventPassOwnedByIdQuery> {
+      return requester<Types.GetEventPassOwnedByIdQuery, Types.GetEventPassOwnedByIdQueryVariables>(GetEventPassOwnedByIdDocument, variables, options) as Promise<Types.GetEventPassOwnedByIdQuery>;
+    },
+    GetEventPassOwnedWithDetails(variables: Types.GetEventPassOwnedWithDetailsQueryVariables, options?: C): Promise<Types.GetEventPassOwnedWithDetailsQuery> {
+      return requester<Types.GetEventPassOwnedWithDetailsQuery, Types.GetEventPassOwnedWithDetailsQueryVariables>(GetEventPassOwnedWithDetailsDocument, variables, options) as Promise<Types.GetEventPassOwnedWithDetailsQuery>;
     }
   };
 }

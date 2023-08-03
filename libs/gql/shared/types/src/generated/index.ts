@@ -14,6 +14,7 @@ export type Scalars = {
   Json: any;
   Long: any;
   RichTextAST: any;
+  bigint: any;
   timestamptz: any;
   uuid: any;
 };
@@ -4568,6 +4569,19 @@ export type Account_Updates = {
   where: Account_Bool_Exp;
 };
 
+/** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
+export type Bigint_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['bigint']>;
+  _gt?: InputMaybe<Scalars['bigint']>;
+  _gte?: InputMaybe<Scalars['bigint']>;
+  _in?: InputMaybe<Array<Scalars['bigint']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['bigint']>;
+  _lte?: InputMaybe<Scalars['bigint']>;
+  _neq?: InputMaybe<Scalars['bigint']>;
+  _nin?: InputMaybe<Array<Scalars['bigint']>>;
+};
+
 /** Currencies code following the standard ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217) */
 export type Currency = {
   __typename?: 'currency';
@@ -5187,7 +5201,304 @@ export type EventPassOrder_Variance_Fields = {
   quantity?: Maybe<Scalars['Float']>;
 };
 
-/** Pending Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users. */
+/** The eventPassOwned model represents a Non-Fungible Token (NFT) or Pass associated with a specific Event Pass and is currently held by a wallet address. Given the nature of NFTs, they can be transferred to any existing or future account. Our blockchain indexer and RPC service handle the responsibility of updating this model to reflect the current address that possesses this NFT/Pass.  The primary purpose of this model is to indicate whether the Pass has been revealed or not while maintaining an updated list of NFT ownership for each user on our platform. This allows us to track if the user owning the NFT at a particular time has accessed the QR Code associated with it. If the Pass is not marked as 'revealed', it provides assurance to potential buyers that the QR Code has remained confidential, thereby guaranteeing their access to the event.  However, it's important to note that, while this system generally functions effectively, additional checks should be put in place for critical features like the reveal process to prevent any potential misuse or fraudulent activities. */
+export type EventPassOwned = {
+  __typename?: 'eventPassOwned';
+  address: Scalars['String'];
+  chainId: Scalars['String'];
+  contractAddress: Scalars['String'];
+  eventPass?: Maybe<EventPass>;
+  eventPassId: Scalars['String'];
+  /** An object relationship */
+  eventPassPricing?: Maybe<EventPassPricing>;
+  id: Scalars['uuid'];
+  isRevealed: Scalars['Boolean'];
+  timeStamp: Scalars['timestamptz'];
+  tokenId: Scalars['bigint'];
+  transactionHash: Scalars['String'];
+};
+
+
+/** The eventPassOwned model represents a Non-Fungible Token (NFT) or Pass associated with a specific Event Pass and is currently held by a wallet address. Given the nature of NFTs, they can be transferred to any existing or future account. Our blockchain indexer and RPC service handle the responsibility of updating this model to reflect the current address that possesses this NFT/Pass.  The primary purpose of this model is to indicate whether the Pass has been revealed or not while maintaining an updated list of NFT ownership for each user on our platform. This allows us to track if the user owning the NFT at a particular time has accessed the QR Code associated with it. If the Pass is not marked as 'revealed', it provides assurance to potential buyers that the QR Code has remained confidential, thereby guaranteeing their access to the event.  However, it's important to note that, while this system generally functions effectively, additional checks should be put in place for critical features like the reveal process to prevent any potential misuse or fraudulent activities. */
+export type EventPassOwnedEventPassArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+};
+
+/** aggregated selection of "eventPassOwned" */
+export type EventPassOwned_Aggregate = {
+  __typename?: 'eventPassOwned_aggregate';
+  aggregate?: Maybe<EventPassOwned_Aggregate_Fields>;
+  nodes: Array<EventPassOwned>;
+};
+
+/** aggregate fields of "eventPassOwned" */
+export type EventPassOwned_Aggregate_Fields = {
+  __typename?: 'eventPassOwned_aggregate_fields';
+  avg?: Maybe<EventPassOwned_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<EventPassOwned_Max_Fields>;
+  min?: Maybe<EventPassOwned_Min_Fields>;
+  stddev?: Maybe<EventPassOwned_Stddev_Fields>;
+  stddev_pop?: Maybe<EventPassOwned_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<EventPassOwned_Stddev_Samp_Fields>;
+  sum?: Maybe<EventPassOwned_Sum_Fields>;
+  var_pop?: Maybe<EventPassOwned_Var_Pop_Fields>;
+  var_samp?: Maybe<EventPassOwned_Var_Samp_Fields>;
+  variance?: Maybe<EventPassOwned_Variance_Fields>;
+};
+
+
+/** aggregate fields of "eventPassOwned" */
+export type EventPassOwned_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<EventPassOwned_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type EventPassOwned_Avg_Fields = {
+  __typename?: 'eventPassOwned_avg_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "eventPassOwned". All fields are combined with a logical 'AND'. */
+export type EventPassOwned_Bool_Exp = {
+  _and?: InputMaybe<Array<EventPassOwned_Bool_Exp>>;
+  _not?: InputMaybe<EventPassOwned_Bool_Exp>;
+  _or?: InputMaybe<Array<EventPassOwned_Bool_Exp>>;
+  address?: InputMaybe<String_Comparison_Exp>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  eventPassId?: InputMaybe<String_Comparison_Exp>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Bool_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  isRevealed?: InputMaybe<Boolean_Comparison_Exp>;
+  timeStamp?: InputMaybe<Timestamptz_Comparison_Exp>;
+  tokenId?: InputMaybe<Bigint_Comparison_Exp>;
+  transactionHash?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "eventPassOwned" */
+export const enum EventPassOwned_Constraint {
+  /** unique or primary key constraint on columns "tokenId", "contractAddress", "chainId" */
+  EventPassOwnedContractAddressTokenIdChainIdKey = 'eventPassOwned_contractAddress_tokenId_chainId_key',
+  /** unique or primary key constraint on columns "id" */
+  EventPassOwnedPkey = 'eventPassOwned_pkey'
+};
+
+/** input type for incrementing numeric columns in table "eventPassOwned" */
+export type EventPassOwned_Inc_Input = {
+  tokenId?: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "eventPassOwned" */
+export type EventPassOwned_Insert_Input = {
+  address?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Obj_Rel_Insert_Input>;
+  id?: InputMaybe<Scalars['uuid']>;
+  isRevealed?: InputMaybe<Scalars['Boolean']>;
+  timeStamp?: InputMaybe<Scalars['timestamptz']>;
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  transactionHash?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EventPassOwned_Max_Fields = {
+  __typename?: 'eventPassOwned_max_fields';
+  address?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']>;
+  contractAddress?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  timeStamp?: Maybe<Scalars['timestamptz']>;
+  tokenId?: Maybe<Scalars['bigint']>;
+  transactionHash?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type EventPassOwned_Min_Fields = {
+  __typename?: 'eventPassOwned_min_fields';
+  address?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']>;
+  contractAddress?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  timeStamp?: Maybe<Scalars['timestamptz']>;
+  tokenId?: Maybe<Scalars['bigint']>;
+  transactionHash?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "eventPassOwned" */
+export type EventPassOwned_Mutation_Response = {
+  __typename?: 'eventPassOwned_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<EventPassOwned>;
+};
+
+/** on_conflict condition type for table "eventPassOwned" */
+export type EventPassOwned_On_Conflict = {
+  constraint: EventPassOwned_Constraint;
+  update_columns?: Array<EventPassOwned_Update_Column>;
+  where?: InputMaybe<EventPassOwned_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "eventPassOwned". */
+export type EventPassOwned_Order_By = {
+  address?: InputMaybe<Order_By>;
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Order_By>;
+  id?: InputMaybe<Order_By>;
+  isRevealed?: InputMaybe<Order_By>;
+  timeStamp?: InputMaybe<Order_By>;
+  tokenId?: InputMaybe<Order_By>;
+  transactionHash?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: eventPassOwned */
+export type EventPassOwned_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "eventPassOwned" */
+export const enum EventPassOwned_Select_Column {
+  /** column name */
+  Address = 'address',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsRevealed = 'isRevealed',
+  /** column name */
+  TimeStamp = 'timeStamp',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TransactionHash = 'transactionHash'
+};
+
+/** input type for updating data in table "eventPassOwned" */
+export type EventPassOwned_Set_Input = {
+  address?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  isRevealed?: InputMaybe<Scalars['Boolean']>;
+  timeStamp?: InputMaybe<Scalars['timestamptz']>;
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  transactionHash?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type EventPassOwned_Stddev_Fields = {
+  __typename?: 'eventPassOwned_stddev_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type EventPassOwned_Stddev_Pop_Fields = {
+  __typename?: 'eventPassOwned_stddev_pop_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type EventPassOwned_Stddev_Samp_Fields = {
+  __typename?: 'eventPassOwned_stddev_samp_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "eventPassOwned" */
+export type EventPassOwned_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: EventPassOwned_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EventPassOwned_Stream_Cursor_Value_Input = {
+  address?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  isRevealed?: InputMaybe<Scalars['Boolean']>;
+  timeStamp?: InputMaybe<Scalars['timestamptz']>;
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  transactionHash?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate sum on columns */
+export type EventPassOwned_Sum_Fields = {
+  __typename?: 'eventPassOwned_sum_fields';
+  tokenId?: Maybe<Scalars['bigint']>;
+};
+
+/** update columns of table "eventPassOwned" */
+export const enum EventPassOwned_Update_Column {
+  /** column name */
+  Address = 'address',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsRevealed = 'isRevealed',
+  /** column name */
+  TimeStamp = 'timeStamp',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TransactionHash = 'transactionHash'
+};
+
+export type EventPassOwned_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<EventPassOwned_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<EventPassOwned_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: EventPassOwned_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type EventPassOwned_Var_Pop_Fields = {
+  __typename?: 'eventPassOwned_var_pop_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type EventPassOwned_Var_Samp_Fields = {
+  __typename?: 'eventPassOwned_var_samp_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type EventPassOwned_Variance_Fields = {
+  __typename?: 'eventPassOwned_variance_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/**
+ * Pending Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account.
+ *   Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users.
+ */
 export type EventPassPendingOrder = {
   __typename?: 'eventPassPendingOrder';
   /** An object relationship */
@@ -5203,7 +5514,10 @@ export type EventPassPendingOrder = {
 };
 
 
-/** Pending Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users. */
+/**
+ * Pending Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account.
+ *   Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users.
+ */
 export type EventPassPendingOrderEventPassArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
@@ -5812,6 +6126,10 @@ export type Mutation_Root = {
   delete_eventPassOrderSums_by_pk?: Maybe<EventPassOrderSums>;
   /** delete single row from the table: "eventPassOrder" */
   delete_eventPassOrder_by_pk?: Maybe<EventPassOrder>;
+  /** delete data from the table: "eventPassOwned" */
+  delete_eventPassOwned?: Maybe<EventPassOwned_Mutation_Response>;
+  /** delete single row from the table: "eventPassOwned" */
+  delete_eventPassOwned_by_pk?: Maybe<EventPassOwned>;
   /** delete data from the table: "eventPassPendingOrder" */
   delete_eventPassPendingOrder?: Maybe<EventPassPendingOrder_Mutation_Response>;
   /** delete single row from the table: "eventPassPendingOrder" */
@@ -5840,6 +6158,10 @@ export type Mutation_Root = {
   insert_eventPassOrderSums_one?: Maybe<EventPassOrderSums>;
   /** insert a single row into the table: "eventPassOrder" */
   insert_eventPassOrder_one?: Maybe<EventPassOrder>;
+  /** insert data into the table: "eventPassOwned" */
+  insert_eventPassOwned?: Maybe<EventPassOwned_Mutation_Response>;
+  /** insert a single row into the table: "eventPassOwned" */
+  insert_eventPassOwned_one?: Maybe<EventPassOwned>;
   /** insert data into the table: "eventPassPendingOrder" */
   insert_eventPassPendingOrder?: Maybe<EventPassPendingOrder_Mutation_Response>;
   /** insert a single row into the table: "eventPassPendingOrder" */
@@ -5966,6 +6288,12 @@ export type Mutation_Root = {
   update_eventPassOrder_by_pk?: Maybe<EventPassOrder>;
   /** update multiples rows of table: "eventPassOrder" */
   update_eventPassOrder_many?: Maybe<Array<Maybe<EventPassOrder_Mutation_Response>>>;
+  /** update data of the table: "eventPassOwned" */
+  update_eventPassOwned?: Maybe<EventPassOwned_Mutation_Response>;
+  /** update single row of the table: "eventPassOwned" */
+  update_eventPassOwned_by_pk?: Maybe<EventPassOwned>;
+  /** update multiples rows of table: "eventPassOwned" */
+  update_eventPassOwned_many?: Maybe<Array<Maybe<EventPassOwned_Mutation_Response>>>;
   /** update data of the table: "eventPassPendingOrder" */
   update_eventPassPendingOrder?: Maybe<EventPassPendingOrder_Mutation_Response>;
   /** update single row of the table: "eventPassPendingOrder" */
@@ -6178,6 +6506,18 @@ export type Mutation_RootDelete_EventPassOrder_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_EventPassOwnedArgs = {
+  where: EventPassOwned_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_EventPassOwned_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_EventPassPendingOrderArgs = {
   where: EventPassPendingOrder_Bool_Exp;
 };
@@ -6266,6 +6606,20 @@ export type Mutation_RootInsert_EventPassOrderSums_OneArgs = {
 export type Mutation_RootInsert_EventPassOrder_OneArgs = {
   object: EventPassOrder_Insert_Input;
   on_conflict?: InputMaybe<EventPassOrder_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventPassOwnedArgs = {
+  objects: Array<EventPassOwned_Insert_Input>;
+  on_conflict?: InputMaybe<EventPassOwned_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventPassOwned_OneArgs = {
+  object: EventPassOwned_Insert_Input;
+  on_conflict?: InputMaybe<EventPassOwned_On_Conflict>;
 };
 
 
@@ -6875,6 +7229,28 @@ export type Mutation_RootUpdate_EventPassOrder_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_EventPassOwnedArgs = {
+  _inc?: InputMaybe<EventPassOwned_Inc_Input>;
+  _set?: InputMaybe<EventPassOwned_Set_Input>;
+  where: EventPassOwned_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassOwned_By_PkArgs = {
+  _inc?: InputMaybe<EventPassOwned_Inc_Input>;
+  _set?: InputMaybe<EventPassOwned_Set_Input>;
+  pk_columns: EventPassOwned_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassOwned_ManyArgs = {
+  updates: Array<EventPassOwned_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_EventPassPendingOrderArgs = {
   _inc?: InputMaybe<EventPassPendingOrder_Inc_Input>;
   _set?: InputMaybe<EventPassPendingOrder_Set_Input>;
@@ -7156,6 +7532,12 @@ export type Query_Root = {
   eventPassOrder_aggregate: EventPassOrder_Aggregate;
   /** fetch data from the table: "eventPassOrder" using primary key columns */
   eventPassOrder_by_pk?: Maybe<EventPassOrder>;
+  /** fetch data from the table: "eventPassOwned" */
+  eventPassOwned: Array<EventPassOwned>;
+  /** fetch aggregated fields from the table: "eventPassOwned" */
+  eventPassOwned_aggregate: EventPassOwned_Aggregate;
+  /** fetch data from the table: "eventPassOwned" using primary key columns */
+  eventPassOwned_by_pk?: Maybe<EventPassOwned>;
   /** fetch data from the table: "eventPassPendingOrder" */
   eventPassPendingOrder: Array<EventPassPendingOrder>;
   /** fetch aggregated fields from the table: "eventPassPendingOrder" */
@@ -7357,6 +7739,29 @@ export type Query_RootEventPassOrder_AggregateArgs = {
 
 
 export type Query_RootEventPassOrder_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootEventPassOwnedArgs = {
+  distinct_on?: InputMaybe<Array<EventPassOwned_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassOwned_Order_By>>;
+  where?: InputMaybe<EventPassOwned_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassOwned_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassOwned_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassOwned_Order_By>>;
+  where?: InputMaybe<EventPassOwned_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassOwned_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -7669,6 +8074,14 @@ export type Subscription_Root = {
   eventPassOrder_by_pk?: Maybe<EventPassOrder>;
   /** fetch data from the table in a streaming manner: "eventPassOrder" */
   eventPassOrder_stream: Array<EventPassOrder>;
+  /** fetch data from the table: "eventPassOwned" */
+  eventPassOwned: Array<EventPassOwned>;
+  /** fetch aggregated fields from the table: "eventPassOwned" */
+  eventPassOwned_aggregate: EventPassOwned_Aggregate;
+  /** fetch data from the table: "eventPassOwned" using primary key columns */
+  eventPassOwned_by_pk?: Maybe<EventPassOwned>;
+  /** fetch data from the table in a streaming manner: "eventPassOwned" */
+  eventPassOwned_stream: Array<EventPassOwned>;
   /** fetch data from the table: "eventPassPendingOrder" */
   eventPassPendingOrder: Array<EventPassPendingOrder>;
   /** fetch aggregated fields from the table: "eventPassPendingOrder" */
@@ -7813,6 +8226,36 @@ export type Subscription_RootEventPassOrder_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<EventPassOrder_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassOrder_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassOwnedArgs = {
+  distinct_on?: InputMaybe<Array<EventPassOwned_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassOwned_Order_By>>;
+  where?: InputMaybe<EventPassOwned_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassOwned_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassOwned_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassOwned_Order_By>>;
+  where?: InputMaybe<EventPassOwned_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassOwned_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootEventPassOwned_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<EventPassOwned_Stream_Cursor_Input>>;
+  where?: InputMaybe<EventPassOwned_Bool_Exp>;
 };
 
 
