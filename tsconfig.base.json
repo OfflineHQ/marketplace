@@ -39,9 +39,12 @@
         "libs/features/organizer/event/src/lib/store"
       ],
       "@features/pass": ["libs/features/pass/src/index.ts"],
+      "@features/pass-types": ["libs/features/pass-types/src/index.ts"],
       "@features/pass/server": ["libs/features/pass/src/server.ts"],
       "@features/settings": ["libs/features/settings/src/index.ts"],
       "@features/settings/server": ["libs/features/settings/src/server.ts"],
+      "@file-upload/admin": ["libs/file-upload/admin/src/index.ts"],
+      "@file-upload/user": ["libs/file-upload/user/src/index.ts"],
       "@gql/admin/api": ["libs/gql/admin/api/src/index.ts"],
       "@gql/admin/types": ["libs/gql/admin/types/src/index.ts"],
       "@gql/anonymous/api": ["libs/gql/anonymous/api/src/index.ts"],

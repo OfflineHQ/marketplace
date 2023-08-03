@@ -1,0 +1,44 @@
+{
+  "name": "file-upload-admin",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/file-upload/admin/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/file-upload/admin",
+        "tsConfig": "libs/file-upload/admin/tsconfig.lib.json",
+        "packageJson": "libs/file-upload/admin/package.json",
+        "main": "libs/file-upload/admin/src/index.ts",
+        "assets": ["libs/file-upload/admin/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/file-upload/admin/**/*.ts",
+          "libs/file-upload/admin/package.json"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/file-upload/admin/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

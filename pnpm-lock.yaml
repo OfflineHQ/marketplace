@@ -103,6 +103,9 @@ dependencies:
   '@web3auth/ui':
     specifier: ^5.2.0
     version: 5.2.0(@babel/runtime@7.22.6)(react-dom@18.2.0)(react@18.2.0)
+  async-retry:
+    specifier: ^1.3.3
+    version: 1.3.3
   autoprefixer:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.24)
@@ -232,6 +235,9 @@ dependencies:
   tslib:
     specifier: ^2.6.0
     version: 2.6.0
+  upload-js-full:
+    specifier: ^2.21.0
+    version: 2.21.0
   uuid:
     specifier: ^8.3.2
     version: 8.3.2
@@ -13936,6 +13942,12 @@ packages:
     dependencies:
       tslib: 2.6.0
 
+  /async-retry@1.3.3:
+    resolution: {integrity: sha512-wfr/jstw9xNi/0teMHrRW7dsz3Lt5ARhYNZ2ewpadnhaIp5mbALhOAP+EAdsC7t4Z6wqsDVv9+W6gm1Dk9mEyw==}
+    dependencies:
+      retry: 0.13.1
+    dev: false
+
   /async@2.6.4:
     resolution: {integrity: sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==}
     dependencies:
@@ -25577,7 +25589,6 @@ packages:
   /retry@0.13.1:
     resolution: {integrity: sha512-XQBQ3I8W1Cge0Seh+6gjj03LbmRFWuoszgK9ooCpwYIrhhoO80pfq4cUkU5DkknwfOfFteRwlZ56PYOGYyFWdg==}
     engines: {node: '>= 4'}
-    dev: true
 
   /reusify@1.0.4:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
@@ -27859,6 +27870,10 @@ packages:
       browserslist: 4.21.9
       escalade: 3.1.1
       picocolors: 1.0.0
+
+  /upload-js-full@2.21.0:
+    resolution: {integrity: sha512-RCkvYfOR0qrZ6YOZR7USzjjmVIWqtvIG/JZ68L4dY1xQsQGPh3FCChFy5paNn0Z69Dp3BBqZQcoLiKdU9v6l5A==}
+    dev: false
 
   /upper-case-first@2.0.2:
     resolution: {integrity: sha512-514ppYHBaKwfJRK/pNC6c/OxfGa0obSnAl106u97Ed0I625Nin96KAjttZF6ZL3e1XLtphxnqrOi9iWgm+u+bg==}
