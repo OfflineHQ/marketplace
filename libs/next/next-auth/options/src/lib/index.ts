@@ -99,7 +99,7 @@ export const authOptions = {
           pathPermissions: [
             {
               match: {
-                path: `/${process.env.UPLOAD_PATH_PREFIX}/users/${user.address}`,
+                path: `/${process.env.UPLOAD_PATH_PREFIX}/${process.env.UPLOAD_PATH_ENTITY_FOLDER}/${user.address}`,
                 scope: 'Children',
               },
               permissions: {
