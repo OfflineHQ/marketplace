@@ -11,7 +11,7 @@ jest.mock('@gql/user/api');
 jest.mock('@gql/admin/api');
 jest.mock('@file-upload/admin');
 
-const mockEventPassOwned = {
+export const mockEventPassOwned = {
   eventPassId: 'test-id',
   address: 'test-address',
   tokenId: 'test-token',
