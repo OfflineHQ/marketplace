@@ -4,7 +4,9 @@ type GetPassOrganizer = {
   eventPassId: string;
   tokenId: string;
 };
-type GetPassUser = GetPassOrganizer;
+interface GetPassUser extends GetPassOrganizer {
+  address: string;
+}
 
 export const getPassOrganizer = ({
   organizerSlug,
@@ -16,10 +18,11 @@ export const getPassOrganizer = ({
 };
 
 export const getPassUser = ({
+  address,
   organizerSlug,
   eventSlug,
   eventPassId,
   tokenId,
 }: GetPassUser) => {
-  return `/${process.env.UPLOAD_PATH_PREFIX}/users/${organizerSlug}/events/${eventSlug}/${eventPassId}/${eventSlug}-${eventPassId}-${tokenId}`;
+  return `/${process.env.UPLOAD_PATH_PREFIX}/users/${address}/${organizerSlug}/events/${eventSlug}/${eventPassId}/${eventSlug}-${eventPassId}-${tokenId}`;
 };

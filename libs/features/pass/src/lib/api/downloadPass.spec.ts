@@ -53,7 +53,7 @@ describe('downloadPass functions', () => {
       const result = await getEventPassRevealedFilePath('valid-id');
       // Your assertion here
       expect(result).toEqual(
-        '/local/users/test-organizer/events/test-slug/test-id/test-slug-test-id-test-token'
+        '/local/users/test-address/test-organizer/events/test-slug/test-id/test-slug-test-id-test-token'
       );
     });
 
