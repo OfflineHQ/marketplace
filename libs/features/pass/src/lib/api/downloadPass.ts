@@ -27,6 +27,7 @@ export const getEventPassRevealedFilePath = async (id: string) => {
     throw new Error('Organizer for event not found');
   const { slug: organizerSlug } = eventPass.event.organizer;
   return getPassUser({
+    address: eventPassOwned.address,
     organizerSlug,
     eventSlug,
     eventPassId,

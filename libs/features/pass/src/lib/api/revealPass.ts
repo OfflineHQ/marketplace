@@ -38,6 +38,7 @@ export const eventPassTransferQRCode = async (
     tokenId,
   });
   const fileDest = getPassUser({
+    address,
     organizerSlug,
     eventSlug,
     eventPassId,
