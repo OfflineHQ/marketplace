@@ -13,3 +13,8 @@ export type EventPassOwned = NonNullable<
 export type EventPassOwnedWithDetails = NonNullable<
   GetEventPassOwnedWithDetailsQuery['eventPassOwned'][0]
 >;
+
+export type BatchTransferInput = {
+  formerOwnerAddress: string;
+  eventPassOwned: EventPassOwnedById;
+};
