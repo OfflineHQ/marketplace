@@ -1,0 +1,187 @@
+import {
+  Alchemy,
+  Network,
+  type GetNftsForOwnerOptions as _GetNftsForOwnerOptions,
+  OwnedNftsResponse,
+  OwnedNft,
+  GetNftsForContractOptions,
+  GetBaseNftsForContractOptions,
+  BaseNft,
+  Nft,
+  GetTransfersForContractOptions,
+  TransferredNft,
+} from 'alchemy-sdk';
+
+interface GetNftsForOwnerOptions
+  extends Omit<_GetNftsForOwnerOptions, 'contractAddresses'> {
+  contractAddresses?: string[];
+}
+
+// Helper function to fetch all pages concurrently
+export async function fetchAllPages<T>(
+  fetchPage: (
+    pageKey?: string
+  ) => Promise<{ items: T[]; nextPageKey?: string }>,
+  batchSize = 5, // Number of pages to fetch in parallel
+  maxBatches = 20 // Maximum number of batches to avoid infinite loops
+): Promise<T[]> {
+  const allItems: T[] = [];
+
+  const initialData = await fetchPage();
+  allItems.push(...initialData.items);
+
+  let nextPageKey = initialData.nextPageKey;
+  let batchCount = 0;
+
+  while (nextPageKey && batchCount < maxBatches) {
+    const batchPromises: Promise<{ items: T[]; nextPageKey?: string }>[] = [];
+
+    for (let i = 0; i < batchSize && nextPageKey; i++) {
+      batchPromises.push(fetchPage(nextPageKey));
+      nextPageKey = undefined; // Clear the nextPageKey to avoid adding more promises in this batch than intended
+    }
+
+    const results = await Promise.allSettled(batchPromises);
+
+    for (const result of results) {
+      if (result.status === 'fulfilled') {
+        allItems.push(...result.value.items);
+        nextPageKey = result.value.nextPageKey;
+      } else {
+        // Handle rejected promise if needed
+        console.error(result.reason);
+      }
+    }
+
+    batchCount++;
+  }
+
+  if (batchCount === maxBatches) {
+    throw new Error(
+      'Reached maximum number of fetch batches. Possible infinite loop.'
+    );
+  }
+
+  return allItems;
+}
+
+export class AlchemyWrapper {
+  private alchemy: Alchemy;
+
+  constructor() {
+    const apiKey = process.env.ALCHEMY_API_KEY;
+    let network: Network;
+    switch (process.env.CHAIN) {
+      case 'goerli':
+        network = Network.ETH_GOERLI;
+        break;
+      case 'sepolia':
+        network = Network.ETH_SEPOLIA;
+        break;
+      case 'matic':
+        network = Network.MATIC_MAINNET;
+        break;
+      case 'mumbai':
+        network = Network.MATIC_MUMBAI;
+        break;
+      default:
+        network = Network.MATIC_MUMBAI;
+        break;
+    }
+
+    this.alchemy = new Alchemy({ apiKey, network });
+  }
+
+  async verifyNftOwnershipOnCollection(
+    owner: string,
+    contractAddress: string
+  ): Promise<boolean> {
+    try {
+      return await this.alchemy.nft.verifyNftOwnership(owner, contractAddress);
+    } catch (error) {
+      console.error(`Verifying NFT ownership failed: ${error.message}`, error);
+      throw error;
+    }
+  }
+
+  async getNftsForOwner(
+    ownerAddress: string,
+    options: GetNftsForOwnerOptions
+  ): Promise<OwnedNftsResponse> {
+    if (!options.contractAddresses || !options.contractAddresses.length) {
+      throw new Error('At least one contract address must be provided.');
+    }
+
+    let OwnedNftsResponse: OwnedNftsResponse;
+    const ownedNfts = await fetchAllPages<OwnedNft>(async (pageKey) => {
+      const pageOptions = { ...options, pageKey };
+      const response = await this.alchemy.nft.getNftsForOwner(
+        ownerAddress,
+        pageOptions
+      );
+      if (!OwnedNftsResponse) {
+        OwnedNftsResponse = response;
+      }
+      return {
+        items: response.ownedNfts,
+        nextPageKey: response.pageKey,
+      };
+    });
+
+    return {
+      ...OwnedNftsResponse,
+      ownedNfts,
+    };
+  }
+
+  async fetchAllNftsWithMetadata(
+    contractAddress: string,
+    options?: GetNftsForContractOptions
+  ): Promise<Nft[]> {
+    const nfts: Nft[] = [];
+    const nftsIterable = this.alchemy.nft.getNftsForContractIterator(
+      contractAddress,
+      options
+    ) as AsyncIterable<Nft>;
+
+    for await (const nft of nftsIterable) {
+      nfts.push(nft);
+    }
+
+    return nfts;
+  }
+
+  async fetchAllNftsWithoutMetadata(
+    contractAddress: string,
+    options?: GetBaseNftsForContractOptions
+  ): Promise<BaseNft[]> {
+    const nfts: BaseNft[] = [];
+    const nftsIterable = this.alchemy.nft.getNftsForContractIterator(
+      contractAddress,
+      options
+    ) as unknown as AsyncIterable<BaseNft>;
+
+    for await (const nft of nftsIterable) {
+      nfts.push(nft);
+    }
+
+    return nfts;
+  }
+
+  async getTransfersForContract(
+    contractAddress: string,
+    options?: GetTransfersForContractOptions
+  ): Promise<TransferredNft[]> {
+    return fetchAllPages<TransferredNft>(async (pageKey?: string) => {
+      const pageOptions = { ...options, pageKey };
+      const response = await this.alchemy.nft.getTransfersForContract(
+        contractAddress,
+        pageOptions
+      );
+      return {
+        items: response.nfts,
+        nextPageKey: response.pageKey,
+      };
+    });
+  }
+}
