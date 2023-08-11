@@ -1,0 +1,30 @@
+{
+  "heroImage": "https://picsum.photos/seed/hero/800/450",
+  "title": "Lorem ipsum dolor sit amet",
+  "eventDateLocations": [
+    {
+      "id": "1",
+      "dateStart": "2023-06-01T00:00:00Z",
+      "dateEnd": "2023-06-01T08:00:00Z",
+      "location": "{city: \"New York\", country: \"USA\", placeId: \"ChIJd8…}"
+    },
+    {
+      "id": "2",
+      "dateStart": "2023-06-02T12:00:00Z",
+      "dateEnd": "2023-06-02T23:00:00Z",
+      "location": "{city: \"New York\", country: \"USA\", placeId: \"ChIJhR…}"
+    }
+  ],
+  "detailed": false,
+  "organizer": {
+    "id": "1234",
+    "slug": "test-organizer-1",
+    "name": "Test Organizer 1",
+    "description": "This is a test organizer"
+  },
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, liber...",
+  "id": "fake_event_1",
+  "slug": "test-event-1",
+  "purchaseLink": "{href: {…}}",
+  "purchaseText": "Select passes"
+}
