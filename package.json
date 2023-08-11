@@ -72,6 +72,7 @@
     "@vercel/analytics": "^0.1.11",
     "@web3auth/mpc-core-kit": "^0.3.1",
     "@web3auth/ui": "^5.2.0",
+    "alchemy-sdk": "3.0.0-beta.0",
     "async-retry": "^1.3.3",
     "autoprefixer": "^10.4.14",
     "chalk": "4.1.0",
