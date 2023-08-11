@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 142 76% 36%;
+    --success-foreground: 142 76% 36%;
+    --success-border: 142 70% 45%;
+
+    --info: 221 83% 53%;
+    --info-foreground: 221 83% 53%;
+    --info-border: 211 96% 78%;
+
+    --failure: 0 72% 50%;
+    --failure-foreground: 0 72% 50%;
+    --failure-border: 0 84% 60%;
+
+    --warning: 40 96% 40%;
+    --warning-foreground: 40 96% 40%;
+    --warning-border: 45 93% 47%;
+
+    --ring: 215 20.2% 65.1%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 142 70% 45%;
+    --success-foreground: 142 70% 45%;
+    --success-border: 142 71% 29%;
+
+    --info: 217 91% 59%;
+    --info-foreground: 217 91% 59%;
+    --info-border: 224 76% 48%;
+
+    --failure: 0 84% 60%;
+    --failure-foreground: 0 84% 60%;
+    --failure-border: 0 73% 41%;
+
+    --warning: 45 93% 47%;
+    --warning-foreground: 45 93% 47%;
+    --warning-border: 35 91% 32%;
+
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
+
+    color-scheme: dark;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+  h1 {
+    @apply text-4xl font-bold;
+  }
+  h2 {
+    @apply text-3xl font-bold;
+  }
+  h3 {
+    @apply text-2xl font-bold;
+  }
+  h4 {
+    @apply text-xl font-bold;
+  }
+  h5 {
+    @apply text-lg font-bold;
+  }
+  h6 {
+    @apply text-base font-bold;
+  }
+  p {
+    @apply text-base;
+  }
+  a {
+    @apply text-base;
+  }
+  a:hover {
+    @apply underline;
+    @apply text-primary;
+  }
+  a:focus {
+    @apply underline;
+    @apply text-primary;
+  }
+  a:active {
+    @apply underline;
+    @apply text-primary;
+  }
+  span {
+    @apply text-base;
+  }
+  small {
+    @apply text-sm;
+  }
+}
+
+@layer utilities {
+  .step {
+    counter-increment: step;
+  }
+
+  .step:before {
+    @apply absolute w-8 h-8 bg-muted rounded-full font-medium text-center text-base inline-flex items-center justify-center -indent-px;
+    @apply ml-[-41px];
+    content: counter(step);
+  }
+}
+
+.container {
+  @apply mx-auto px-0;
+  max-width: 2160px;
+}
+
+@media (max-width: 640px) {
+  .container {
+    @apply px-0;
+  }
+}
+
+body {
+  @apply h-full font-sans antialiased;
+}
+
+.font-sans {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Web3AuthUIModal */
+
+.w3a-parent-container #w3a-modal .w3a-header__logo img {
+  height: auto !important;
+  width: 6rem !important;
+}
+
+.w3a-parent-container #w3a-modal .w3a-modal__loader-app-logo {
+  width: 10rem !important;
+  height: 8rem;
+}
+.w3a-parent-container #w3a-modal .w3a-modal__loader-app-logo img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  max-width: 100% !important;
+}
+/*  */
+
+body,
+html,
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+body,
+html,
+#storybook-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
