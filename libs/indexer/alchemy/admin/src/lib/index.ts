@@ -10,6 +10,10 @@ import {
   Nft,
   GetTransfersForContractOptions as _GetTransfersForContractOptions,
   TransferredNft,
+  WebhookType,
+  NftActivityWebhook,
+  NftWebhookParams,
+  GetAllWebhooksResponse,
 } from 'alchemy-sdk';
 
 interface GetNftsForOwnerOptions
@@ -76,6 +80,7 @@ export async function fetchAllPages<T>(
 
 export class AlchemyWrapper {
   private alchemy: Alchemy;
+  network: Network;
 
   constructor() {
     const apiKey = process.env.ALCHEMY_API_KEY;
@@ -97,9 +102,11 @@ export class AlchemyWrapper {
         network = Network.MATIC_MUMBAI;
         break;
     }
-
+    this.network = network;
     this.alchemy = new Alchemy({ apiKey, network });
   }
+
+  // NFT API
 
   async verifyNftOwnershipOnCollection(
     owner: string,
@@ -214,5 +221,51 @@ export class AlchemyWrapper {
     }
 
     return nfts;
+  }
+
+  // Notify API
+
+  async createNftActivityWebhook(
+    webhookUrl: string,
+    filters: NftWebhookParams['filters']
+  ): Promise<NftActivityWebhook> {
+    const params = {
+      network: this.network,
+      filters,
+    } satisfies NftWebhookParams;
+    try {
+      return await this.alchemy.notify.createWebhook(
+        webhookUrl,
+        WebhookType.NFT_ACTIVITY,
+        params
+      );
+    } catch (error) {
+      console.error(
+        `Creating NFT activity webhook failed: ${error.message}`,
+        error
+      );
+      throw error;
+    }
+  }
+
+  async deleteNftActivityWebhook(webhookId: string): Promise<void> {
+    try {
+      await this.alchemy.notify.deleteWebhook(webhookId);
+    } catch (error) {
+      console.error(
+        `Deleting NFT activity webhook failed: ${error.message}`,
+        error
+      );
+      throw error;
+    }
+  }
+
+  async getAllWebhooks(): Promise<GetAllWebhooksResponse> {
+    try {
+      return await this.alchemy.notify.getAllWebhooks();
+    } catch (error) {
+      console.error(`Fetching all webhooks failed: ${error.message}`, error);
+      throw error;
+    }
   }
 }
