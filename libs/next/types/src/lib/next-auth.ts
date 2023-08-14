@@ -53,6 +53,7 @@ declare module 'next-auth' {
     // crypto wallet address
     address: string;
     email?: string;
+    isOrganizer: boolean;
   }
 
   interface Session {
