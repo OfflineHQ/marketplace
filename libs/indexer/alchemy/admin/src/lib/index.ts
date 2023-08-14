@@ -8,13 +8,22 @@ import {
   GetBaseNftsForContractOptions,
   BaseNft,
   Nft,
-  GetTransfersForContractOptions,
+  GetTransfersForContractOptions as _GetTransfersForContractOptions,
   TransferredNft,
 } from 'alchemy-sdk';
 
 interface GetNftsForOwnerOptions
   extends Omit<_GetNftsForOwnerOptions, 'contractAddresses'> {
   contractAddresses?: string[];
+}
+
+interface GetTransfersForContractOptions
+  extends Omit<
+    _GetTransfersForContractOptions,
+    'fromBlock' | 'toBlock' | 'pageKey'
+  > {
+  fromBlock: _GetTransfersForContractOptions['fromBlock'];
+  toBlock: _GetTransfersForContractOptions['toBlock'];
 }
 
 // Helper function to fetch all pages concurrently
@@ -104,6 +113,23 @@ export class AlchemyWrapper {
     }
   }
 
+  async verifyNftOwnershipOnCollections(
+    owner: string,
+    contractAddresses: string[]
+  ): Promise<{
+    [contractAddresses: string]: boolean;
+  }> {
+    try {
+      return await this.alchemy.nft.verifyNftOwnership(
+        owner,
+        contractAddresses
+      );
+    } catch (error) {
+      console.error(`Verifying NFT ownership failed: ${error.message}`, error);
+      throw error;
+    }
+  }
+
   async getNftsForOwner(
     ownerAddress: string,
     options: GetNftsForOwnerOptions
@@ -112,13 +138,14 @@ export class AlchemyWrapper {
       throw new Error('At least one contract address must be provided.');
     }
 
-    let OwnedNftsResponse: OwnedNftsResponse;
+    let OwnedNftsResponse: OwnedNftsResponse | undefined;
     const ownedNfts = await fetchAllPages<OwnedNft>(async (pageKey) => {
       const pageOptions = { ...options, pageKey };
       const response = await this.alchemy.nft.getNftsForOwner(
         ownerAddress,
         pageOptions
       );
+      // here we set the OwnedNftsResponse to the first response we get back because successive page will have the same result except for the items in `ownedNfts`
       if (!OwnedNftsResponse) {
         OwnedNftsResponse = response;
       }
@@ -128,10 +155,31 @@ export class AlchemyWrapper {
       };
     });
 
+    if (!OwnedNftsResponse) {
+      throw new Error('Failed to fetch NFTs for owner.');
+    }
+
     return {
       ...OwnedNftsResponse,
       ownedNfts,
     };
+  }
+
+  async getTransfersForContract(
+    contractAddress: string,
+    options?: GetTransfersForContractOptions
+  ): Promise<TransferredNft[]> {
+    return fetchAllPages<TransferredNft>(async (pageKey?: string) => {
+      const pageOptions = { ...options, pageKey };
+      const response = await this.alchemy.nft.getTransfersForContract(
+        contractAddress,
+        pageOptions
+      );
+      return {
+        items: response.nfts,
+        nextPageKey: response.pageKey,
+      };
+    });
   }
 
   async fetchAllNftsWithMetadata(
@@ -166,22 +214,5 @@ export class AlchemyWrapper {
     }
 
     return nfts;
-  }
-
-  async getTransfersForContract(
-    contractAddress: string,
-    options?: GetTransfersForContractOptions
-  ): Promise<TransferredNft[]> {
-    return fetchAllPages<TransferredNft>(async (pageKey?: string) => {
-      const pageOptions = { ...options, pageKey };
-      const response = await this.alchemy.nft.getTransfersForContract(
-        contractAddress,
-        pageOptions
-      );
-      return {
-        items: response.nfts,
-        nextPageKey: response.pageKey,
-      };
-    });
   }
 }
