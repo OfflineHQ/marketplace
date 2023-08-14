@@ -128,7 +128,7 @@ export const authOptions = {
           user,
           provider: account.provider,
           providerType: account.type,
-          role: Roles.user,
+          role: Roles.user, //TODO : maybe Roles.organizer
           access: token.access,
         };
       }
