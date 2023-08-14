@@ -1,11 +1,87 @@
-import { useAuthContext } from '@next/auth';
-import { Button, useToast } from '@ui/components';
-import React, { useMemo, useCallback } from 'react';
+import {
+  ProfileAvatarProps,
+  ProfileAvatar,
+} from 'libs/features/appNav/ui/src/lib/profile-avatar/ProfileAvatar';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuItems,
+  DropdownMenuItemsProps,
+  Button,
+  AvatarSkeleton,
+  TextSkeleton,
+  Spinner,
+  AutoAnimate,
+} from '@ui/components';
+import { OutlineUserCircle, QrCode } from '@ui/icons';
+import { truncateEmailString, truncateString } from '@utils';
 
-export default async function Blabla(signInUserAction) {
+export interface ProfileNavProps
+  extends Omit<ProfileAvatarProps, 'user'>,
+    DropdownMenuItemsProps {
+  user?: ProfileAvatarProps['user'];
+  isLoading?: boolean;
+}
+
+export function ProfileNav({
+  user,
+  items,
+  isLoading,
+  ...props
+}: ProfileNavProps) {
+  const email = user?.email || '';
+  const eoa = user?.eoa || '';
+
   return (
-    <>
-      <Button onClick={signInUserAction}>Login</Button>
-    </>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          {...props}
+          className="inline-flex h-16 w-fit p-0 md:h-12"
+        >
+          {user ? (
+            <div className="flex h-16 w-16 flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:space-y-0 md:px-4">
+              <AutoAnimate className="flex items-center">
+                {isLoading ? (
+                  <Spinner size="xl" variant="ghost" className="md:mr-2" />
+                ) : (
+                  <ProfileAvatar user={user} className="relative bottom-10" />
+                )}
+              </AutoAnimate>
+              <span className="hidden items-center justify-center pl-2 md:flex">
+                {email
+                  ? truncateEmailString(email, 12)
+                  : truncateString(eoa, 16)}
+              </span>
+            </div>
+          ) : (
+            <div className="mt-3 flex h-16 flex-col items-center space-y-0 px-4 md:mt-0 md:flex-row md:space-x-2">
+              <AutoAnimate className="flex items-center">
+                {isLoading ? (
+                  <Spinner size="xl" variant="ghost" className="md:mr-2" />
+                ) : (
+                  <OutlineUserCircle size="xl" />
+                )}
+              </AutoAnimate>
+              {/* <QrCode size="lg" /> */}
+              <div className="pb-1 font-semibold md:pb-0"> Test houhou</div>
+            </div>
+          )}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuItems items={items} />
+    </DropdownMenu>
   );
 }
+
+export function ProfileNavSkeleton() {
+  return (
+    <div className="relative inline-block items-center justify-center opacity-100 md:flex">
+      <AvatarSkeleton className="h-12 w-12 md:mx-5" />
+      <TextSkeleton className="mr-5 hidden md:flex" />
+    </div>
+  );
+}
+
+export default ProfileNav;
