@@ -1,35 +1,75 @@
 'use client';
 
-import { useAuthContext } from '@next/auth';
-import { Button, useToast } from '@ui/components';
 import React, { useMemo, useCallback } from 'react';
-import Blabla from './login/page';
+import { LogIn, Settings, LifeBuoy, LogOut } from '@ui/icons';
+import { useToast } from '@ui/components';
+import { useAuthContext } from '@next/auth';
+import Link from 'next/link';
+import {
+  ProfileNav,
+  ProfileNavSkeleton,
+  type ProfileNavProps,
+} from '@features/appNav/ui';
 
-export default function Home() {
-  const { safeUser, login, logout, safeAuth, provider, connecting } =
-    useAuthContext();
+export interface ProfileNavClientProps {
+  signInText: string;
+  profileSectionsText: {
+    myAccount: string;
+    support: string;
+    supportTitle: string;
+    supportDescription: string;
+    signOut: string;
+    signOutTitle: string;
+    signOutDescription: string;
+    signIn: string;
+    settings: string;
+  };
+}
+
+export const ProfileNavClient = () => {
+  const { safeUser, login, logout, safeAuth, connecting } = useAuthContext();
   const { toast } = useToast();
 
   const signOutUserAction = useCallback(async () => {
     await logout({ refresh: true });
     toast({
-      title: 'Sign out',
-      description: 'Thank you for coming <3',
+      title: 'Sign In',
+      description: 'Sign In',
     });
   }, [logout, toast]);
 
-  const signInUserAction = useCallback(async () => {
-    console.log('COUCOUUUUUUU');
-    await login();
-    toast({
-      title: 'Sign in',
-      description: 'Thank you for coming <3',
-    });
-  }, [login, toast]);
+  const items: ProfileNavProps['items'] = useMemo(
+    () =>
+      !safeUser
+        ? [
+            {
+              type: 'item',
+              icon: <LogIn />,
+              className: 'cursor-pointer font-semibold',
+              action: login,
+              text: 'Sign In',
+            },
+          ]
+        : [
+            {
+              type: 'item',
+              icon: <LogOut />,
+              className: 'cursor-pointer',
+              action: signOutUserAction,
+              text: 'Sign In',
+            },
+          ],
+    [safeUser, signOutUserAction, login]
+  );
 
-  return (
+  return !safeAuth ? (
+    <ProfileNavSkeleton />
+  ) : (
     <>
-      <Blabla signInUserAction={signInUserAction} />
+      <ProfileNav items={items} isLoading={connecting} user={safeUser} />
+      <div className="grid h-screen place-items-center">
+        Welcome to the Offline Dashboard {safeUser?.name}
+      </div>
     </>
   );
-}
+};
