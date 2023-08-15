@@ -58020,7 +58020,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "bigint",
                 "ofType": null
               }
             },
@@ -59090,7 +59090,7 @@
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -59269,7 +59269,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -59603,7 +59603,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -60355,7 +60355,7 @@
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -60783,7 +60783,7 @@
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
