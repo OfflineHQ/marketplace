@@ -156,6 +156,8 @@ export async function nftActivity(
   const nftCollectionsInfos = await extractNftsCollectionInfoFromDb(
     contractAddress
   );
+  const nftTransfers = extractNftTransfersFromEvent(alchemyWebhookEvent);
+  // await getNftTransfersMetadata(nftTransfers, nftCollectionsInfos);
 
   return new Response(null, { status: 200 });
 }

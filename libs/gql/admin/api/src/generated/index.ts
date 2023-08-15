@@ -26,6 +26,21 @@ export const NftTransferFieldsFragmentDoc = `
   contractAddress
 }
     `;
+export const NftTransferFieldsFragmentDoc = `
+    fragment NftTransferFields on nftTransfer {
+  fromAddress
+  toAddress
+  chainId
+  blockNumber
+  eventId
+  organizerId
+  eventPassId
+  tokenId
+  created_at
+  id
+  contractAddress
+}
+    `;
 export const EventListFieldsFragmentDoc = `
     fragment EventListFields on Event {
   id
