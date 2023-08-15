@@ -1,0 +1,24 @@
+query GetNftTransferByTxHash($txHash: String!, $chainId: String!) {
+  nftTransfer(
+    where: { transactionHash: { _eq: $txHash }, chainId: { _eq: $chainId } }
+  ) {
+    ...NftTransferFields
+  }
+}
+
+query GetNftTransferByTokenIdAndCollection(
+  $tokenId: bigint!
+  $contractAddress: String!
+  $chainId: String!
+) {
+  nftTransfer(
+    where: {
+      tokenId: { _eq: $tokenId }
+      contractAddress: { _eq: $contractAddress }
+      chainId: { _eq: $chainId }
+    }
+    order_by: { blockNumber: desc }
+  ) {
+    ...NftTransferFields
+  }
+}

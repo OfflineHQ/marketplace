@@ -3,12 +3,13 @@ import {
   addAlchemyContextToRequest,
 } from './utils';
 import { adminSdk } from '@gql/admin/api';
-import type { Stage } from '@gql/shared/types';
+import type { Stage, NftTransfer } from '@gql/shared/types';
 import { WebhookType } from 'alchemy-sdk';
 import type {
   AlchemyNFTActivityEvent,
   AlchemyRequest,
-  NftTransfer,
+  NftTransferWithoutMetadata,
+  NftTransferNotCreated,
 } from './types';
 import { headers } from 'next/headers';
 
@@ -49,24 +50,49 @@ const extractNftsCollectionInfoFromDb = async (contractAddress: string) => {
 };
 
 const extractNftTransfersFromEvent = (
-  alchemyWebhookEvent: AlchemyNFTActivityEvent,
+  alchemyWebhookEvent: AlchemyNFTActivityEvent
+) => {
+  const nftActivities = alchemyWebhookEvent.event.activity;
+  let nftTransfers: NftTransferWithoutMetadata[];
+  if (!nftActivities?.length) {
+    throw new Error('No nft activities found in event');
+  }
+  for (const activity of nftActivities) {
+    const {
+      fromAddress,
+      toAddress,
+      contractAddress,
+      blockNumber,
+      erc721TokenId,
+      network,
+    } = activity;
+    const { transactionHash, removed } = activity.log;
+    if (removed) {
+      console.error(
+        `NFT transfer: ${transactionHash} in ${network} for ${contractAddress} collection, fromAddress ${fromAddress} toAddress ${toAddress} with erc721TokenId ${erc721TokenId} was removed likely due to a reorg`
+      );
+    } else {
+      nftTransfers.push({
+        fromAddress,
+        toAddress,
+        contractAddress,
+        blockNumber: blockNumber,
+        tokenId: erc721TokenId,
+        chainId: network,
+        transactionHash,
+      });
+    }
+  }
+  return nftTransfers;
+};
+
+const getNftTransfersMetadata = async (
+  nftTransfers: NftTransferWithoutMetadata[],
   nftCollectionsInfos: Awaited<
     ReturnType<typeof extractNftsCollectionInfoFromDb>
   >
 ) => {
   const { eventId, organizerId, eventPassesIds } = nftCollectionsInfos;
-  const nftActivities = alchemyWebhookEvent.event.activity;
-  let nftTransfers: NftTransfer[];
-  // const nfts = alchemyWebhookEvent.data.nfts;
-  // const nftsToInsert = nfts.map((nft) => ({
-  //   ...nft,
-  //   eventId,
-  //   organizerId,
-  //   eventPassesIds,
-  //   contractAddress: nft.contract.address,
-  //   tokenId: nft.token_id,
-  // }));
-  // return nftsToInsert;
 };
 
 export async function nftActivity(
@@ -92,6 +118,8 @@ export async function nftActivity(
   const nftCollectionsInfos = await extractNftsCollectionInfoFromDb(
     contractAddress
   );
+  const nftTransfers = extractNftTransfersFromEvent(alchemyWebhookEvent);
+  // await getNftTransfersMetadata(nftTransfers, nftCollectionsInfos);
 
   return new Response(null, { status: 200 });
 }
