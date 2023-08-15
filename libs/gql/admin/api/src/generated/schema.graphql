@@ -3248,6 +3248,11 @@ input EventWhereUniqueInput {
   slug: String
 }
 
+"""References Event record uniquely"""
+input EventWhereUniqueInput_remote_rel_eventNftCollectionevent {
+  slug: String
+}
+
 enum ImageFit {
   """
   Resizes the image to fit within the specified parameters without distorting, cropping, or changing the aspect ratio.
@@ -12559,6 +12564,51 @@ type query_root {
   """fetch data from the table: "eventParameters" using primary key columns"""
   eventParameters_by_pk(id: uuid!): eventParameters
 
+  """
+  fetch data from the table: "eventNftCollection"
+  """
+  eventNftCollection(
+    """distinct select on columns"""
+    distinct_on: [eventNftCollection_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventNftCollection_order_by!]
+
+    """filter the rows returned"""
+    where: eventNftCollection_bool_exp
+  ): [eventNftCollection!]!
+
+  """
+  fetch aggregated fields from the table: "eventNftCollection"
+  """
+  eventNftCollection_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventNftCollection_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventNftCollection_order_by!]
+
+    """filter the rows returned"""
+    where: eventNftCollection_bool_exp
+  ): eventNftCollection_aggregate!
+
+  """
+  fetch data from the table: "eventNftCollection" using primary key columns
+  """
+  eventNftCollection_by_pk(contractAddress: String!): eventNftCollection
+
   """Retrieve a single eventPass"""
   eventPass(
     """
@@ -13550,6 +13600,65 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassNft_bool_exp
   ): [eventPassNft!]!
+
+  """
+  fetch data from the table: "eventNftCollection"
+  """
+  eventNftCollection(
+    """distinct select on columns"""
+    distinct_on: [eventNftCollection_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventNftCollection_order_by!]
+
+    """filter the rows returned"""
+    where: eventNftCollection_bool_exp
+  ): [eventNftCollection!]!
+
+  """
+  fetch aggregated fields from the table: "eventNftCollection"
+  """
+  eventNftCollection_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventNftCollection_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventNftCollection_order_by!]
+
+    """filter the rows returned"""
+    where: eventNftCollection_bool_exp
+  ): eventNftCollection_aggregate!
+
+  """
+  fetch data from the table: "eventNftCollection" using primary key columns
+  """
+  eventNftCollection_by_pk(contractAddress: String!): eventNftCollection
+
+  """
+  fetch data from the table in a streaming manner: "eventNftCollection"
+  """
+  eventNftCollection_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [eventNftCollection_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: eventNftCollection_bool_exp
+  ): [eventNftCollection!]!
 
   """
   fetch data from the table: "eventPassOrder"

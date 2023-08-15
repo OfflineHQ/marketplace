@@ -309,6 +309,26 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+
+
+ const GetEventNftCollectionByContractAddressWithMinimalEventPassesDocument = `
+    query GetEventNftCollectionByContractAddressWithMinimalEventPasses($contractAddress: String!, $stage: Stage!) {
+  eventNftCollection_by_pk(contractAddress: $contractAddress) {
+    contractAddress
+    chainId
+    activityWebhookId
+    event(where: {}, locales: [en], stage: $stage) {
+      id
+      eventPasses {
+        id
+      }
+      organizer {
+        id
+      }
+    }
+  }
+}
+    `;
  const GetEventPassesDocument = `
     query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
   eventPasses(
@@ -472,6 +492,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventWithFromOrganizerId(variables: Types.GetEventWithFromOrganizerIdQueryVariables, options?: C): Promise<Types.GetEventWithFromOrganizerIdQuery> {
       return requester<Types.GetEventWithFromOrganizerIdQuery, Types.GetEventWithFromOrganizerIdQueryVariables>(GetEventWithFromOrganizerIdDocument, variables, options) as Promise<Types.GetEventWithFromOrganizerIdQuery>;
+    },
+      GetEventNftCollectionByContractAddressWithMinimalEventPasses(variables: Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables, options?: C): Promise<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery> {
+      return requester<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery, Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables>(GetEventNftCollectionByContractAddressWithMinimalEventPassesDocument, variables, options) as Promise<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery>;
     },
     GetEventPasses(variables: Types.GetEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassesQuery> {
       return requester<Types.GetEventPassesQuery, Types.GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<Types.GetEventPassesQuery>;
