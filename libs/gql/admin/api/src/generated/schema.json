@@ -57589,7 +57589,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "bigint",
                 "ofType": null
               }
             },
@@ -57599,6 +57599,22 @@
           {
             "name": "contractAddress",
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -58631,7 +58647,7 @@
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -58641,6 +58657,18 @@
           {
             "name": "contractAddress",
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
+            "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -58786,7 +58814,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -58795,6 +58823,18 @@
           {
             "name": "contractAddress",
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
+            "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -59096,7 +59136,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -59105,6 +59145,18 @@
           {
             "name": "contractAddress",
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
+            "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -59824,7 +59876,7 @@
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -59834,6 +59886,18 @@
           {
             "name": "contractAddress",
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
+            "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -60228,7 +60292,7 @@
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -60238,6 +60302,18 @@
           {
             "name": "contractAddress",
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
+            "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "String",

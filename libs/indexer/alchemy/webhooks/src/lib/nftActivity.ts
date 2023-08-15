@@ -7,7 +7,8 @@ import { WebhookType } from 'alchemy-sdk';
 import type {
   AlchemyNFTActivityEvent,
   AlchemyRequest,
-  NftTransfer,
+  NftTransferWithoutMetadata,
+  NftTransferNotCreated,
 } from './types';
 import { headers } from 'next/headers';
 import { EventPassNftWrapper } from '@nft/eventPass';
@@ -81,6 +82,8 @@ export async function nftActivity(req: AlchemyRequest, eventId: string) {
   const chainId = alchemy.convertNetworkToChainId(
     alchemyWebhookEvent.event.activity[0].network
   );
+  const nftTransfers = extractNftTransfersFromEvent(alchemyWebhookEvent);
+  // await getNftTransfersMetadata(nftTransfers, nftCollectionsInfos);
 
   const nftTransfersFromEvent =
     extractNftTransfersFromEvent(alchemyWebhookEvent);

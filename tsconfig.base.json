@@ -83,6 +83,7 @@
       "@nft/eventPass": ["libs/nft/eventPass/src/index.ts"],
       "@nft/types": ["libs/nft/types/src/index.ts"],
       "@nft/thirdweb": ["libs/nft/thirdweb/src/index.ts"],
+      "@nft/types": ["libs/nft/types/src/index.ts"],
       "@server/task": ["libs/server/task/src/index.ts"],
       "@test-utils/db": ["libs/test-utils/db/src/index.ts"],
       "@test-utils/functions": ["libs/test-utils/functions/src/index.ts"],
