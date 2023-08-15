@@ -143,5 +143,9 @@ export async function nftActivity(
   // );
   // await getNftTransfersMetadata(nftTransfers, nftCollectionsInfos);
 
+  const nftCollectionsInfos = await extractNftsCollectionInfoFromDb(
+    contractAddress
+  );
+
   return new Response(null, { status: 200 });
 }
