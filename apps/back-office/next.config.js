@@ -112,3 +112,10 @@ module.exports = async (phase, context) => {
   config = await withNextIntl(config);
   return config;
 };
+
+module.exports = {
+  env: {
+    NEXT_PORT: 1789,
+    NEXTAUTH_URL: 'http://localhost:1789',
+  },
+};
