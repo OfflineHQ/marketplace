@@ -58044,6 +58044,22 @@
             "deprecationReason": null
           },
           {
+            "name": "contractAddress",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "created_at",
             "description": null,
             "args": [],
@@ -59094,6 +59110,18 @@
             "deprecationReason": null
           },
           {
+            "name": "contractAddress",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "created_at",
             "description": null,
             "type": {
@@ -59250,6 +59278,18 @@
           {
             "name": "contractAddress",
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
+            "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -59572,6 +59612,18 @@
           {
             "name": "contractAddress",
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
+            "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -60323,6 +60375,18 @@
             "deprecationReason": null
           },
           {
+            "name": "contractAddress",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "created_at",
             "description": null,
             "type": {
@@ -60729,6 +60793,18 @@
           {
             "name": "contractAddress",
             "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
+            "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "String",
