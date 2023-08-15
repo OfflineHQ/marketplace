@@ -103,7 +103,10 @@ export async function nftActivity(
   const signature = headers().get('x-alchemy-signature') as string;
   addAlchemyContextToRequest(req, body, signature);
   if (
-    !isValidSignatureForAlchemyRequest(req, process.env.ALCHEMY_SIGNING_KEY)
+    !isValidSignatureForAlchemyRequest(
+      req,
+      process.env.ALCHEMY_SIGNING_KEY as string
+    )
   ) {
     return new Response('Signature validation failed, unauthorized!', {
       status: 403,
