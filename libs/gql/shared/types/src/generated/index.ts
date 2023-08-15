@@ -808,8 +808,6 @@ export type Event = Node & {
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<Event>;
-  /** The address of the NFT collection of the Event */
-  nftCollectionAddress: Scalars['String'];
   organizer?: Maybe<Organizer>;
   /** Whether the event is public (visible to anyone) or private (for instance visible only to owner of specific NFTs) */
   public?: Maybe<Scalars['Boolean']>;
@@ -974,7 +972,6 @@ export type EventCreateInput = {
   heroImage: AssetCreateOneInlineInput;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventCreateLocalizationsInput>;
-  nftCollectionAddress: Scalars['String'];
   organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   published: Scalars['Boolean'];
@@ -1292,25 +1289,6 @@ export type EventManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
-  nftCollectionAddress?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  nftCollectionAddress_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  nftCollectionAddress_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  nftCollectionAddress_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  nftCollectionAddress_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  nftCollectionAddress_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  nftCollectionAddress_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  nftCollectionAddress_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  nftCollectionAddress_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  nftCollectionAddress_starts_with?: InputMaybe<Scalars['String']>;
   organizer?: InputMaybe<OrganizerWhereInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   /** Any other value that exists and is not equal to the given value. */
@@ -1379,8 +1357,6 @@ export const enum EventOrderByInput {
   CreatedAtDesc = 'createdAt_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
-  NftCollectionAddressAsc = 'nftCollectionAddress_ASC',
-  NftCollectionAddressDesc = 'nftCollectionAddress_DESC',
   PublicAsc = 'public_ASC',
   PublicDesc = 'public_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
@@ -1957,7 +1933,6 @@ export type EventUpdateInput = {
   heroImage?: InputMaybe<AssetUpdateOneInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventUpdateLocalizationsInput>;
-  nftCollectionAddress?: InputMaybe<Scalars['String']>;
   organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   published?: InputMaybe<Scalars['Boolean']>;
@@ -2008,7 +1983,6 @@ export type EventUpdateManyInput = {
   description?: InputMaybe<Scalars['RichTextAST']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<EventUpdateManyLocalizationsInput>;
-  nftCollectionAddress?: InputMaybe<Scalars['String']>;
   public?: InputMaybe<Scalars['Boolean']>;
   published?: InputMaybe<Scalars['Boolean']>;
   /** title input for default locale (en) */
@@ -2133,25 +2107,6 @@ export type EventWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
-  nftCollectionAddress?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  nftCollectionAddress_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  nftCollectionAddress_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  nftCollectionAddress_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  nftCollectionAddress_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  nftCollectionAddress_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  nftCollectionAddress_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  nftCollectionAddress_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  nftCollectionAddress_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  nftCollectionAddress_starts_with?: InputMaybe<Scalars['String']>;
   organizer?: InputMaybe<OrganizerWhereInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   /** Any other value that exists and is not equal to the given value. */
@@ -2251,6 +2206,11 @@ export type EventWhereStageInput = {
 /** References Event record uniquely */
 export type EventWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
+  slug?: InputMaybe<Scalars['String']>;
+};
+
+/** References Event record uniquely */
+export type EventWhereUniqueInput_Remote_Rel_EventNftCollectionevent = {
   slug?: InputMaybe<Scalars['String']>;
 };
 
@@ -4731,6 +4691,177 @@ export const enum Cursor_Ordering {
   Desc = 'DESC'
 };
 
+/** The eventNftCollection model is designed to store metadata associated with NFT collections linked to specific events. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT collections. Additionally, this table integrates infrastructure-specific details, like the activityWebhookId, which aids in monitoring and processing events or changes related to the NFT collections in our platform. By centralizing this information, our system can effectively manage, reference, and interact with NFT collections tied to particular events. */
+export type EventNftCollection = {
+  __typename?: 'eventNftCollection';
+  activityWebhookId: Scalars['String'];
+  chainId: Scalars['String'];
+  contractAddress: Scalars['String'];
+  event?: Maybe<Event>;
+  eventId: Scalars['String'];
+};
+
+
+/** The eventNftCollection model is designed to store metadata associated with NFT collections linked to specific events. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT collections. Additionally, this table integrates infrastructure-specific details, like the activityWebhookId, which aids in monitoring and processing events or changes related to the NFT collections in our platform. By centralizing this information, our system can effectively manage, reference, and interact with NFT collections tied to particular events. */
+export type EventNftCollectionEventArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: EventWhereUniqueInput_Remote_Rel_EventNftCollectionevent;
+};
+
+/** aggregated selection of "eventNftCollection" */
+export type EventNftCollection_Aggregate = {
+  __typename?: 'eventNftCollection_aggregate';
+  aggregate?: Maybe<EventNftCollection_Aggregate_Fields>;
+  nodes: Array<EventNftCollection>;
+};
+
+/** aggregate fields of "eventNftCollection" */
+export type EventNftCollection_Aggregate_Fields = {
+  __typename?: 'eventNftCollection_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<EventNftCollection_Max_Fields>;
+  min?: Maybe<EventNftCollection_Min_Fields>;
+};
+
+
+/** aggregate fields of "eventNftCollection" */
+export type EventNftCollection_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "eventNftCollection". All fields are combined with a logical 'AND'. */
+export type EventNftCollection_Bool_Exp = {
+  _and?: InputMaybe<Array<EventNftCollection_Bool_Exp>>;
+  _not?: InputMaybe<EventNftCollection_Bool_Exp>;
+  _or?: InputMaybe<Array<EventNftCollection_Bool_Exp>>;
+  activityWebhookId?: InputMaybe<String_Comparison_Exp>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  eventId?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "eventNftCollection" */
+export const enum EventNftCollection_Constraint {
+  /** unique or primary key constraint on columns "activityWebhookId" */
+  EventNftCollectionActivityWebhookIdKey = 'eventNftCollection_activityWebhookId_key',
+  /** unique or primary key constraint on columns "eventId" */
+  EventNftCollectionEventIdKey = 'eventNftCollection_eventId_key',
+  /** unique or primary key constraint on columns "contractAddress" */
+  EventNftCollectionPkey = 'eventNftCollection_pkey'
+};
+
+/** input type for inserting data into table "eventNftCollection" */
+export type EventNftCollection_Insert_Input = {
+  activityWebhookId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EventNftCollection_Max_Fields = {
+  __typename?: 'eventNftCollection_max_fields';
+  activityWebhookId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']>;
+  contractAddress?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type EventNftCollection_Min_Fields = {
+  __typename?: 'eventNftCollection_min_fields';
+  activityWebhookId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']>;
+  contractAddress?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "eventNftCollection" */
+export type EventNftCollection_Mutation_Response = {
+  __typename?: 'eventNftCollection_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<EventNftCollection>;
+};
+
+/** on_conflict condition type for table "eventNftCollection" */
+export type EventNftCollection_On_Conflict = {
+  constraint: EventNftCollection_Constraint;
+  update_columns?: Array<EventNftCollection_Update_Column>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "eventNftCollection". */
+export type EventNftCollection_Order_By = {
+  activityWebhookId?: InputMaybe<Order_By>;
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: eventNftCollection */
+export type EventNftCollection_Pk_Columns_Input = {
+  contractAddress: Scalars['String'];
+};
+
+/** select columns of table "eventNftCollection" */
+export const enum EventNftCollection_Select_Column {
+  /** column name */
+  ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  EventId = 'eventId'
+};
+
+/** input type for updating data in table "eventNftCollection" */
+export type EventNftCollection_Set_Input = {
+  activityWebhookId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "eventNftCollection" */
+export type EventNftCollection_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: EventNftCollection_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EventNftCollection_Stream_Cursor_Value_Input = {
+  activityWebhookId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "eventNftCollection" */
+export const enum EventNftCollection_Update_Column {
+  /** column name */
+  ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  EventId = 'eventId'
+};
+
+export type EventNftCollection_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<EventNftCollection_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: EventNftCollection_Bool_Exp;
+};
+
 /** Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account */
 export type EventPassOrder = {
   __typename?: 'eventPassOrder';
@@ -6118,6 +6249,10 @@ export type Mutation_Root = {
   delete_currency?: Maybe<Currency_Mutation_Response>;
   /** delete single row from the table: "currency" */
   delete_currency_by_pk?: Maybe<Currency>;
+  /** delete data from the table: "eventNftCollection" */
+  delete_eventNftCollection?: Maybe<EventNftCollection_Mutation_Response>;
+  /** delete single row from the table: "eventNftCollection" */
+  delete_eventNftCollection_by_pk?: Maybe<EventNftCollection>;
   /** delete data from the table: "eventPassOrder" */
   delete_eventPassOrder?: Maybe<EventPassOrder_Mutation_Response>;
   /** delete data from the table: "eventPassOrderSums" */
@@ -6138,6 +6273,10 @@ export type Mutation_Root = {
   delete_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** delete single row from the table: "eventPassPricing" */
   delete_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
+  /** delete data from the table: "nftTransfer" */
+  delete_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
+  /** delete single row from the table: "nftTransfer" */
+  delete_nftTransfer_by_pk?: Maybe<NftTransfer>;
   /** delete data from the table: "orderStatus" */
   delete_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** delete single row from the table: "orderStatus" */
@@ -6150,6 +6289,10 @@ export type Mutation_Root = {
   insert_currency?: Maybe<Currency_Mutation_Response>;
   /** insert a single row into the table: "currency" */
   insert_currency_one?: Maybe<Currency>;
+  /** insert data into the table: "eventNftCollection" */
+  insert_eventNftCollection?: Maybe<EventNftCollection_Mutation_Response>;
+  /** insert a single row into the table: "eventNftCollection" */
+  insert_eventNftCollection_one?: Maybe<EventNftCollection>;
   /** insert data into the table: "eventPassOrder" */
   insert_eventPassOrder?: Maybe<EventPassOrder_Mutation_Response>;
   /** insert data into the table: "eventPassOrderSums" */
@@ -6170,6 +6313,10 @@ export type Mutation_Root = {
   insert_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** insert a single row into the table: "eventPassPricing" */
   insert_eventPassPricing_one?: Maybe<EventPassPricing>;
+  /** insert data into the table: "nftTransfer" */
+  insert_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
+  /** insert a single row into the table: "nftTransfer" */
+  insert_nftTransfer_one?: Maybe<NftTransfer>;
   /** insert data into the table: "orderStatus" */
   insert_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** insert a single row into the table: "orderStatus" */
@@ -6276,6 +6423,12 @@ export type Mutation_Root = {
   update_currency_by_pk?: Maybe<Currency>;
   /** update multiples rows of table: "currency" */
   update_currency_many?: Maybe<Array<Maybe<Currency_Mutation_Response>>>;
+  /** update data of the table: "eventNftCollection" */
+  update_eventNftCollection?: Maybe<EventNftCollection_Mutation_Response>;
+  /** update single row of the table: "eventNftCollection" */
+  update_eventNftCollection_by_pk?: Maybe<EventNftCollection>;
+  /** update multiples rows of table: "eventNftCollection" */
+  update_eventNftCollection_many?: Maybe<Array<Maybe<EventNftCollection_Mutation_Response>>>;
   /** update data of the table: "eventPassOrder" */
   update_eventPassOrder?: Maybe<EventPassOrder_Mutation_Response>;
   /** update data of the table: "eventPassOrderSums" */
@@ -6306,6 +6459,12 @@ export type Mutation_Root = {
   update_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
   /** update multiples rows of table: "eventPassPricing" */
   update_eventPassPricing_many?: Maybe<Array<Maybe<EventPassPricing_Mutation_Response>>>;
+  /** update data of the table: "nftTransfer" */
+  update_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
+  /** update single row of the table: "nftTransfer" */
+  update_nftTransfer_by_pk?: Maybe<NftTransfer>;
+  /** update multiples rows of table: "nftTransfer" */
+  update_nftTransfer_many?: Maybe<Array<Maybe<NftTransfer_Mutation_Response>>>;
   /** update data of the table: "orderStatus" */
   update_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** update single row of the table: "orderStatus" */
@@ -6482,6 +6641,18 @@ export type Mutation_RootDelete_Currency_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_EventNftCollectionArgs = {
+  where: EventNftCollection_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_EventNftCollection_By_PkArgs = {
+  contractAddress: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_EventPassOrderArgs = {
   where: EventPassOrder_Bool_Exp;
 };
@@ -6542,6 +6713,18 @@ export type Mutation_RootDelete_EventPassPricing_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_NftTransferArgs = {
+  where: NftTransfer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_NftTransfer_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_OrderStatusArgs = {
   where: OrderStatus_Bool_Exp;
 };
@@ -6578,6 +6761,20 @@ export type Mutation_RootInsert_CurrencyArgs = {
 export type Mutation_RootInsert_Currency_OneArgs = {
   object: Currency_Insert_Input;
   on_conflict?: InputMaybe<Currency_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventNftCollectionArgs = {
+  objects: Array<EventNftCollection_Insert_Input>;
+  on_conflict?: InputMaybe<EventNftCollection_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventNftCollection_OneArgs = {
+  object: EventNftCollection_Insert_Input;
+  on_conflict?: InputMaybe<EventNftCollection_On_Conflict>;
 };
 
 
@@ -6648,6 +6845,20 @@ export type Mutation_RootInsert_EventPassPricingArgs = {
 export type Mutation_RootInsert_EventPassPricing_OneArgs = {
   object: EventPassPricing_Insert_Input;
   on_conflict?: InputMaybe<EventPassPricing_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftTransferArgs = {
+  objects: Array<NftTransfer_Insert_Input>;
+  on_conflict?: InputMaybe<NftTransfer_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftTransfer_OneArgs = {
+  object: NftTransfer_Insert_Input;
+  on_conflict?: InputMaybe<NftTransfer_On_Conflict>;
 };
 
 
@@ -7185,6 +7396,26 @@ export type Mutation_RootUpdate_Currency_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_EventNftCollectionArgs = {
+  _set?: InputMaybe<EventNftCollection_Set_Input>;
+  where: EventNftCollection_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventNftCollection_By_PkArgs = {
+  _set?: InputMaybe<EventNftCollection_Set_Input>;
+  pk_columns: EventNftCollection_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventNftCollection_ManyArgs = {
+  updates: Array<EventNftCollection_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_EventPassOrderArgs = {
   _inc?: InputMaybe<EventPassOrder_Inc_Input>;
   _set?: InputMaybe<EventPassOrder_Set_Input>;
@@ -7295,6 +7526,28 @@ export type Mutation_RootUpdate_EventPassPricing_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_NftTransferArgs = {
+  _inc?: InputMaybe<NftTransfer_Inc_Input>;
+  _set?: InputMaybe<NftTransfer_Set_Input>;
+  where: NftTransfer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftTransfer_By_PkArgs = {
+  _inc?: InputMaybe<NftTransfer_Inc_Input>;
+  _set?: InputMaybe<NftTransfer_Set_Input>;
+  pk_columns: NftTransfer_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftTransfer_ManyArgs = {
+  updates: Array<NftTransfer_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_OrderStatusArgs = {
   _set?: InputMaybe<OrderStatus_Set_Input>;
   where: OrderStatus_Bool_Exp;
@@ -7339,6 +7592,311 @@ export type Mutation_RootUpsertEventPassArgs = {
 export type Mutation_RootUpsertOrganizerArgs = {
   upsert: OrganizerUpsertInput;
   where: OrganizerWhereUniqueInput;
+};
+
+/** The nftTransfer model is built to record and chronicle the transfer of NFTs between addresses. This model is crucial in tracing the movement of an NFT, especially when validating that an event pass has reached its intended recipient. Such a system facilitates debugging and reduces the need for excessive querying of our indexer. Entries in this table are populated through two primary avenues: either via an activity webhook responding to real-time NFT transfers or through a regular cron job as a failsafe, ensuring data integrity even if the webhook fails to capture certain events. */
+export type NftTransfer = {
+  __typename?: 'nftTransfer';
+  blockNumber: Scalars['String'];
+  chainId: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  eventId: Scalars['String'];
+  eventPassId: Scalars['String'];
+  fromAddress: Scalars['String'];
+  id: Scalars['uuid'];
+  organizerId: Scalars['String'];
+  toAddress: Scalars['String'];
+  tokenId: Scalars['bigint'];
+  transactionHash: Scalars['String'];
+};
+
+/** aggregated selection of "nftTransfer" */
+export type NftTransfer_Aggregate = {
+  __typename?: 'nftTransfer_aggregate';
+  aggregate?: Maybe<NftTransfer_Aggregate_Fields>;
+  nodes: Array<NftTransfer>;
+};
+
+/** aggregate fields of "nftTransfer" */
+export type NftTransfer_Aggregate_Fields = {
+  __typename?: 'nftTransfer_aggregate_fields';
+  avg?: Maybe<NftTransfer_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<NftTransfer_Max_Fields>;
+  min?: Maybe<NftTransfer_Min_Fields>;
+  stddev?: Maybe<NftTransfer_Stddev_Fields>;
+  stddev_pop?: Maybe<NftTransfer_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<NftTransfer_Stddev_Samp_Fields>;
+  sum?: Maybe<NftTransfer_Sum_Fields>;
+  var_pop?: Maybe<NftTransfer_Var_Pop_Fields>;
+  var_samp?: Maybe<NftTransfer_Var_Samp_Fields>;
+  variance?: Maybe<NftTransfer_Variance_Fields>;
+};
+
+
+/** aggregate fields of "nftTransfer" */
+export type NftTransfer_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<NftTransfer_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type NftTransfer_Avg_Fields = {
+  __typename?: 'nftTransfer_avg_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "nftTransfer". All fields are combined with a logical 'AND'. */
+export type NftTransfer_Bool_Exp = {
+  _and?: InputMaybe<Array<NftTransfer_Bool_Exp>>;
+  _not?: InputMaybe<NftTransfer_Bool_Exp>;
+  _or?: InputMaybe<Array<NftTransfer_Bool_Exp>>;
+  blockNumber?: InputMaybe<String_Comparison_Exp>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  eventId?: InputMaybe<String_Comparison_Exp>;
+  eventPassId?: InputMaybe<String_Comparison_Exp>;
+  fromAddress?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  toAddress?: InputMaybe<String_Comparison_Exp>;
+  tokenId?: InputMaybe<Bigint_Comparison_Exp>;
+  transactionHash?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "nftTransfer" */
+export const enum NftTransfer_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  NftTransferPkey = 'nftTransfer_pkey'
+};
+
+/** input type for incrementing numeric columns in table "nftTransfer" */
+export type NftTransfer_Inc_Input = {
+  tokenId?: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "nftTransfer" */
+export type NftTransfer_Insert_Input = {
+  blockNumber?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  fromAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
+  toAddress?: InputMaybe<Scalars['String']>;
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  transactionHash?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type NftTransfer_Max_Fields = {
+  __typename?: 'nftTransfer_max_fields';
+  blockNumber?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  eventId?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']>;
+  fromAddress?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizerId?: Maybe<Scalars['String']>;
+  toAddress?: Maybe<Scalars['String']>;
+  tokenId?: Maybe<Scalars['bigint']>;
+  transactionHash?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type NftTransfer_Min_Fields = {
+  __typename?: 'nftTransfer_min_fields';
+  blockNumber?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  eventId?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']>;
+  fromAddress?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizerId?: Maybe<Scalars['String']>;
+  toAddress?: Maybe<Scalars['String']>;
+  tokenId?: Maybe<Scalars['bigint']>;
+  transactionHash?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "nftTransfer" */
+export type NftTransfer_Mutation_Response = {
+  __typename?: 'nftTransfer_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<NftTransfer>;
+};
+
+/** on_conflict condition type for table "nftTransfer" */
+export type NftTransfer_On_Conflict = {
+  constraint: NftTransfer_Constraint;
+  update_columns?: Array<NftTransfer_Update_Column>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "nftTransfer". */
+export type NftTransfer_Order_By = {
+  blockNumber?: InputMaybe<Order_By>;
+  chainId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  fromAddress?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  toAddress?: InputMaybe<Order_By>;
+  tokenId?: InputMaybe<Order_By>;
+  transactionHash?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: nftTransfer */
+export type NftTransfer_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "nftTransfer" */
+export const enum NftTransfer_Select_Column {
+  /** column name */
+  BlockNumber = 'blockNumber',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  FromAddress = 'fromAddress',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  ToAddress = 'toAddress',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TransactionHash = 'transactionHash'
+};
+
+/** input type for updating data in table "nftTransfer" */
+export type NftTransfer_Set_Input = {
+  blockNumber?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  fromAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
+  toAddress?: InputMaybe<Scalars['String']>;
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  transactionHash?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type NftTransfer_Stddev_Fields = {
+  __typename?: 'nftTransfer_stddev_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type NftTransfer_Stddev_Pop_Fields = {
+  __typename?: 'nftTransfer_stddev_pop_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type NftTransfer_Stddev_Samp_Fields = {
+  __typename?: 'nftTransfer_stddev_samp_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "nftTransfer" */
+export type NftTransfer_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: NftTransfer_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type NftTransfer_Stream_Cursor_Value_Input = {
+  blockNumber?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  fromAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
+  toAddress?: InputMaybe<Scalars['String']>;
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  transactionHash?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate sum on columns */
+export type NftTransfer_Sum_Fields = {
+  __typename?: 'nftTransfer_sum_fields';
+  tokenId?: Maybe<Scalars['bigint']>;
+};
+
+/** update columns of table "nftTransfer" */
+export const enum NftTransfer_Update_Column {
+  /** column name */
+  BlockNumber = 'blockNumber',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  FromAddress = 'fromAddress',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  ToAddress = 'toAddress',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TransactionHash = 'transactionHash'
+};
+
+export type NftTransfer_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<NftTransfer_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<NftTransfer_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: NftTransfer_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type NftTransfer_Var_Pop_Fields = {
+  __typename?: 'nftTransfer_var_pop_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type NftTransfer_Var_Samp_Fields = {
+  __typename?: 'nftTransfer_var_samp_fields';
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type NftTransfer_Variance_Fields = {
+  __typename?: 'nftTransfer_variance_fields';
+  tokenId?: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "orderStatus" */
@@ -7518,6 +8076,12 @@ export type Query_Root = {
   currency_by_pk?: Maybe<Currency>;
   /** Retrieve a single event */
   event?: Maybe<Event>;
+  /** fetch data from the table: "eventNftCollection" */
+  eventNftCollection: Array<EventNftCollection>;
+  /** fetch aggregated fields from the table: "eventNftCollection" */
+  eventNftCollection_aggregate: EventNftCollection_Aggregate;
+  /** fetch data from the table: "eventNftCollection" using primary key columns */
+  eventNftCollection_by_pk?: Maybe<EventNftCollection>;
   /** Retrieve a single eventPass */
   eventPass?: Maybe<EventPass>;
   /** fetch data from the table: "eventPassOrder" */
@@ -7562,6 +8126,12 @@ export type Query_Root = {
   events: Array<Event>;
   /** Retrieve multiple events using the Relay connection interface */
   eventsConnection: EventConnection;
+  /** fetch data from the table: "nftTransfer" */
+  nftTransfer: Array<NftTransfer>;
+  /** fetch aggregated fields from the table: "nftTransfer" */
+  nftTransfer_aggregate: NftTransfer_Aggregate;
+  /** fetch data from the table: "nftTransfer" using primary key columns */
+  nftTransfer_by_pk?: Maybe<NftTransfer>;
   /** Fetches an object given its ID */
   node?: Maybe<Node>;
   /** fetch data from the table: "orderStatus" */
@@ -7687,6 +8257,29 @@ export type Query_RootEventArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
   where: EventWhereUniqueInput;
+};
+
+
+export type Query_RootEventNftCollectionArgs = {
+  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+};
+
+
+export type Query_RootEventNftCollection_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+};
+
+
+export type Query_RootEventNftCollection_By_PkArgs = {
+  contractAddress: Scalars['String'];
 };
 
 
@@ -7874,6 +8467,29 @@ export type Query_RootEventsConnectionArgs = {
 };
 
 
+export type Query_RootNftTransferArgs = {
+  distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+
+export type Query_RootNftTransfer_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+
+export type Query_RootNftTransfer_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Query_RootNodeArgs = {
   id: Scalars['ID'];
   locales?: Array<Locale>;
@@ -8058,6 +8674,14 @@ export type Subscription_Root = {
   currency_by_pk?: Maybe<Currency>;
   /** fetch data from the table in a streaming manner: "currency" */
   currency_stream: Array<Currency>;
+  /** fetch data from the table: "eventNftCollection" */
+  eventNftCollection: Array<EventNftCollection>;
+  /** fetch aggregated fields from the table: "eventNftCollection" */
+  eventNftCollection_aggregate: EventNftCollection_Aggregate;
+  /** fetch data from the table: "eventNftCollection" using primary key columns */
+  eventNftCollection_by_pk?: Maybe<EventNftCollection>;
+  /** fetch data from the table in a streaming manner: "eventNftCollection" */
+  eventNftCollection_stream: Array<EventNftCollection>;
   /** fetch data from the table: "eventPassOrder" */
   eventPassOrder: Array<EventPassOrder>;
   /** fetch data from the table: "eventPassOrderSums" */
@@ -8098,6 +8722,14 @@ export type Subscription_Root = {
   eventPassPricing_by_pk?: Maybe<EventPassPricing>;
   /** fetch data from the table in a streaming manner: "eventPassPricing" */
   eventPassPricing_stream: Array<EventPassPricing>;
+  /** fetch data from the table: "nftTransfer" */
+  nftTransfer: Array<NftTransfer>;
+  /** fetch aggregated fields from the table: "nftTransfer" */
+  nftTransfer_aggregate: NftTransfer_Aggregate;
+  /** fetch data from the table: "nftTransfer" using primary key columns */
+  nftTransfer_by_pk?: Maybe<NftTransfer>;
+  /** fetch data from the table in a streaming manner: "nftTransfer" */
+  nftTransfer_stream: Array<NftTransfer>;
   /** fetch data from the table: "orderStatus" */
   orderStatus: Array<OrderStatus>;
   /** fetch aggregated fields from the table: "orderStatus" */
@@ -8166,6 +8798,36 @@ export type Subscription_RootCurrency_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<Currency_Stream_Cursor_Input>>;
   where?: InputMaybe<Currency_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventNftCollectionArgs = {
+  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventNftCollection_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventNftCollection_By_PkArgs = {
+  contractAddress: Scalars['String'];
+};
+
+
+export type Subscription_RootEventNftCollection_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<EventNftCollection_Stream_Cursor_Input>>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
 };
 
 
@@ -8316,6 +8978,36 @@ export type Subscription_RootEventPassPricing_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<EventPassPricing_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassPricing_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftTransferArgs = {
+  distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftTransfer_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftTransfer_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootNftTransfer_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<NftTransfer_Stream_Cursor_Input>>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
 };
 
 
