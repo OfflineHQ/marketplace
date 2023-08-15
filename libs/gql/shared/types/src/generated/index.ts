@@ -7723,8 +7723,9 @@ export type Mutation_RootUpsertOrganizerArgs = {
 /** The nftTransfer model is built to record and chronicle the transfer of NFTs between addresses. This model is crucial in tracing the movement of an NFT, especially when validating that an event pass has reached its intended recipient. Such a system facilitates debugging and reduces the need for excessive querying of our indexer. Entries in this table are populated through two primary avenues: either via an activity webhook responding to real-time NFT transfers or through a regular cron job as a failsafe, ensuring data integrity even if the webhook fails to capture certain events. */
 export type NftTransfer = {
   __typename?: 'nftTransfer';
-  blockNumber: Scalars['String'];
+  blockNumber: Scalars['bigint'];
   chainId: Scalars['String'];
+  contractAddress: Scalars['String'];
   created_at: Scalars['timestamptz'];
   eventId: Scalars['String'];
   eventPassId: Scalars['String'];
@@ -7769,6 +7770,7 @@ export type NftTransfer_Aggregate_FieldsCountArgs = {
 /** aggregate avg on columns */
 export type NftTransfer_Avg_Fields = {
   __typename?: 'nftTransfer_avg_fields';
+  blockNumber?: Maybe<Scalars['Float']>;
   tokenId?: Maybe<Scalars['Float']>;
 };
 
@@ -7777,8 +7779,9 @@ export type NftTransfer_Bool_Exp = {
   _and?: InputMaybe<Array<NftTransfer_Bool_Exp>>;
   _not?: InputMaybe<NftTransfer_Bool_Exp>;
   _or?: InputMaybe<Array<NftTransfer_Bool_Exp>>;
-  blockNumber?: InputMaybe<String_Comparison_Exp>;
+  blockNumber?: InputMaybe<Bigint_Comparison_Exp>;
   chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   eventId?: InputMaybe<String_Comparison_Exp>;
   eventPassId?: InputMaybe<String_Comparison_Exp>;
@@ -7798,13 +7801,15 @@ export const enum NftTransfer_Constraint {
 
 /** input type for incrementing numeric columns in table "nftTransfer" */
 export type NftTransfer_Inc_Input = {
+  blockNumber?: InputMaybe<Scalars['bigint']>;
   tokenId?: InputMaybe<Scalars['bigint']>;
 };
 
 /** input type for inserting data into table "nftTransfer" */
 export type NftTransfer_Insert_Input = {
-  blockNumber?: InputMaybe<Scalars['String']>;
+  blockNumber?: InputMaybe<Scalars['bigint']>;
   chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   eventId?: InputMaybe<Scalars['String']>;
   eventPassId?: InputMaybe<Scalars['String']>;
@@ -7819,8 +7824,9 @@ export type NftTransfer_Insert_Input = {
 /** aggregate max on columns */
 export type NftTransfer_Max_Fields = {
   __typename?: 'nftTransfer_max_fields';
-  blockNumber?: Maybe<Scalars['String']>;
+  blockNumber?: Maybe<Scalars['bigint']>;
   chainId?: Maybe<Scalars['String']>;
+  contractAddress?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   eventId?: Maybe<Scalars['String']>;
   eventPassId?: Maybe<Scalars['String']>;
@@ -7835,8 +7841,9 @@ export type NftTransfer_Max_Fields = {
 /** aggregate min on columns */
 export type NftTransfer_Min_Fields = {
   __typename?: 'nftTransfer_min_fields';
-  blockNumber?: Maybe<Scalars['String']>;
+  blockNumber?: Maybe<Scalars['bigint']>;
   chainId?: Maybe<Scalars['String']>;
+  contractAddress?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   eventId?: Maybe<Scalars['String']>;
   eventPassId?: Maybe<Scalars['String']>;
@@ -7868,6 +7875,7 @@ export type NftTransfer_On_Conflict = {
 export type NftTransfer_Order_By = {
   blockNumber?: InputMaybe<Order_By>;
   chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   eventId?: InputMaybe<Order_By>;
   eventPassId?: InputMaybe<Order_By>;
@@ -7891,6 +7899,8 @@ export const enum NftTransfer_Select_Column {
   /** column name */
   ChainId = 'chainId',
   /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   EventId = 'eventId',
@@ -7912,8 +7922,9 @@ export const enum NftTransfer_Select_Column {
 
 /** input type for updating data in table "nftTransfer" */
 export type NftTransfer_Set_Input = {
-  blockNumber?: InputMaybe<Scalars['String']>;
+  blockNumber?: InputMaybe<Scalars['bigint']>;
   chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   eventId?: InputMaybe<Scalars['String']>;
   eventPassId?: InputMaybe<Scalars['String']>;
@@ -7928,18 +7939,21 @@ export type NftTransfer_Set_Input = {
 /** aggregate stddev on columns */
 export type NftTransfer_Stddev_Fields = {
   __typename?: 'nftTransfer_stddev_fields';
+  blockNumber?: Maybe<Scalars['Float']>;
   tokenId?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type NftTransfer_Stddev_Pop_Fields = {
   __typename?: 'nftTransfer_stddev_pop_fields';
+  blockNumber?: Maybe<Scalars['Float']>;
   tokenId?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type NftTransfer_Stddev_Samp_Fields = {
   __typename?: 'nftTransfer_stddev_samp_fields';
+  blockNumber?: Maybe<Scalars['Float']>;
   tokenId?: Maybe<Scalars['Float']>;
 };
 
@@ -7953,8 +7967,9 @@ export type NftTransfer_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type NftTransfer_Stream_Cursor_Value_Input = {
-  blockNumber?: InputMaybe<Scalars['String']>;
+  blockNumber?: InputMaybe<Scalars['bigint']>;
   chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   eventId?: InputMaybe<Scalars['String']>;
   eventPassId?: InputMaybe<Scalars['String']>;
@@ -7969,6 +7984,7 @@ export type NftTransfer_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type NftTransfer_Sum_Fields = {
   __typename?: 'nftTransfer_sum_fields';
+  blockNumber?: Maybe<Scalars['bigint']>;
   tokenId?: Maybe<Scalars['bigint']>;
 };
 
@@ -7978,6 +7994,8 @@ export const enum NftTransfer_Update_Column {
   BlockNumber = 'blockNumber',
   /** column name */
   ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -8010,18 +8028,21 @@ export type NftTransfer_Updates = {
 /** aggregate var_pop on columns */
 export type NftTransfer_Var_Pop_Fields = {
   __typename?: 'nftTransfer_var_pop_fields';
+  blockNumber?: Maybe<Scalars['Float']>;
   tokenId?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type NftTransfer_Var_Samp_Fields = {
   __typename?: 'nftTransfer_var_samp_fields';
+  blockNumber?: Maybe<Scalars['Float']>;
   tokenId?: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type NftTransfer_Variance_Fields = {
   __typename?: 'nftTransfer_variance_fields';
+  blockNumber?: Maybe<Scalars['Float']>;
   tokenId?: Maybe<Scalars['Float']>;
 };
 

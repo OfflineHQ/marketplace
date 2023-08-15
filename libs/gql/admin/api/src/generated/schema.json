@@ -51842,7 +51842,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "bigint",
                 "ofType": null
               }
             },
@@ -51851,6 +51851,22 @@
           },
           {
             "name": "chainId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
             "description": null,
             "args": [],
             "type": {
@@ -52248,6 +52264,18 @@
         "description": "aggregate avg on columns",
         "fields": [
           {
+            "name": "blockNumber",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": null,
             "args": [],
@@ -52328,7 +52356,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "String_comparison_exp",
+              "name": "bigint_comparison_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -52337,6 +52365,18 @@
           },
           {
             "name": "chainId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -52484,6 +52524,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "blockNumber",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": null,
             "type": {
@@ -52511,7 +52563,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -52520,6 +52572,18 @@
           },
           {
             "name": "chainId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -52654,7 +52718,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -52662,6 +52726,18 @@
           },
           {
             "name": "chainId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
             "description": null,
             "args": [],
             "type": {
@@ -52797,7 +52873,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "isDeprecated": false,
@@ -52805,6 +52881,18 @@
           },
           {
             "name": "chainId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
             "description": null,
             "args": [],
             "type": {
@@ -53074,6 +53162,18 @@
             "deprecationReason": null
           },
           {
+            "name": "contractAddress",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "created_at",
             "description": null,
             "type": {
@@ -53234,6 +53334,12 @@
             "deprecationReason": null
           },
           {
+            "name": "contractAddress",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "created_at",
             "description": "column name",
             "isDeprecated": false,
@@ -53301,7 +53407,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -53310,6 +53416,18 @@
           },
           {
             "name": "chainId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -53439,6 +53557,18 @@
         "description": "aggregate stddev on columns",
         "fields": [
           {
+            "name": "blockNumber",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": null,
             "args": [],
@@ -53462,6 +53592,18 @@
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
+            "name": "blockNumber",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": null,
             "args": [],
@@ -53484,6 +53626,18 @@
         "name": "nftTransfer_stddev_samp_fields",
         "description": "aggregate stddev_samp on columns",
         "fields": [
+          {
+            "name": "blockNumber",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "tokenId",
             "description": null,
@@ -53552,7 +53706,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "bigint",
               "ofType": null
             },
             "defaultValue": null,
@@ -53561,6 +53715,18 @@
           },
           {
             "name": "chainId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -53690,6 +53856,18 @@
         "description": "aggregate sum on columns",
         "fields": [
           {
+            "name": "blockNumber",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": null,
             "args": [],
@@ -53723,6 +53901,12 @@
           },
           {
             "name": "chainId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contractAddress",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -53841,6 +54025,18 @@
         "description": "aggregate var_pop on columns",
         "fields": [
           {
+            "name": "blockNumber",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": null,
             "args": [],
@@ -53864,6 +54060,18 @@
         "description": "aggregate var_samp on columns",
         "fields": [
           {
+            "name": "blockNumber",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": null,
             "args": [],
@@ -53886,6 +54094,18 @@
         "name": "nftTransfer_variance_fields",
         "description": "aggregate variance on columns",
         "fields": [
+          {
+            "name": "blockNumber",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "tokenId",
             "description": null,

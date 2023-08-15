@@ -1,0 +1,13 @@
+fragment NftTransferFields on nftTransfer {
+  fromAddress
+  toAddress
+  chainId
+  blockNumber
+  eventId
+  organizerId
+  eventPassId
+  tokenId
+  created_at
+  id
+  contractAddress
+}
