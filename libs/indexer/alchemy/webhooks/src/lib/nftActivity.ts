@@ -53,7 +53,7 @@ const extractNftTransfersFromEvent = (
   alchemyWebhookEvent: AlchemyNFTActivityEvent
 ) => {
   const nftActivities = alchemyWebhookEvent.event.activity;
-  let nftTransfers: NftTransferWithoutMetadata[];
+  const nftTransfers: NftTransferWithoutMetadata[] = [];
   if (!nftActivities?.length) {
     throw new Error('No nft activities found in event');
   }
