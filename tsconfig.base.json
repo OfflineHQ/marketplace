@@ -57,6 +57,9 @@
       "@gql/user/react-query": ["libs/gql/user/react-query/src/index.ts"],
       "@gql/user/types": ["libs/gql/user/types/src/index.ts"],
       "@indexer/alchemy/admin": ["libs/indexer/alchemy/admin/src/index.ts"],
+      "@indexer/alchemy/webhooks": [
+        "libs/indexer/alchemy/webhooks/src/index.ts"
+      ],
       "@logger": ["libs/logger/src/index.ts"],
       "@next/auth": ["libs/next/auth/src/index.ts"],
       "@next/currency": ["libs/next/currency/src/index.ts"],
