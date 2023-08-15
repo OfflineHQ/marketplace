@@ -1,0 +1,19 @@
+query GetEventNftCollectionByContractAddressWithMinimalEventPasses(
+  $contractAddress: String!
+  $stage: Stage!
+) {
+  eventNftCollection_by_pk(contractAddress: $contractAddress) {
+    contractAddress
+    chainId
+    activityWebhookId
+    event(where: {}, locales: [en], stage: $stage) {
+      id
+      eventPasses {
+        id
+      }
+      organizer {
+        id
+      }
+    }
+  }
+}

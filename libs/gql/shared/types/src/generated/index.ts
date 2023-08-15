@@ -2358,6 +2358,11 @@ export type EventWhereUniqueInput = {
   slug?: InputMaybe<Scalars['String']>;
 };
 
+/** References Event record uniquely */
+export type EventWhereUniqueInput_Remote_Rel_EventNftCollectionevent = {
+  slug?: InputMaybe<Scalars['String']>;
+};
+
 export const enum ImageFit {
   /** Resizes the image to fit within the specified parameters without distorting, cropping, or changing the aspect ratio. */
   Clip = 'clip',

@@ -114,8 +114,15 @@ export type GetEventWithFromOrganizerIdQueryVariables = Types.Exact<{
   stage: Types.Stage;
 }>;
 
+export type GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables = Types.Exact<{
+  contractAddress: Types.Scalars['String'];
+  stage: Types.Stage;
+}>;
+
 
 export type GetEventWithFromOrganizerIdQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', events: Array<{ __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string } }> } | null };
+
+export type GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery = { __typename?: 'query_root', eventNftCollection_by_pk?: { __typename?: 'eventNftCollection', contractAddress: string, chainId: string, activityWebhookId: string, event?: { __typename?: 'Event', id: string, eventPasses: Array<{ __typename?: 'EventPass', id: string }>, organizer?: { __typename?: 'Organizer', id: string } | null } | null } | null };
 
 export type GetEventPassesQueryVariables = Types.Exact<{
   eventSlug: Types.Scalars['String'];
