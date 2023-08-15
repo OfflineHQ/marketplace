@@ -58,6 +58,25 @@ export type DeleteEventPassPendingOrdersMutationVariables = Types.Exact<{
 
 export type DeleteEventPassPendingOrdersMutation = { __typename?: 'mutation_root', delete_eventPassPendingOrder?: { __typename?: 'eventPassPendingOrder_mutation_response', affected_rows: number } | null };
 
+export type NftTransferFieldsFragment = { __typename?: 'nftTransfer', fromAddress: string, toAddress: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId: string, tokenId: any, created_at: any, id: any, contractAddress: string };
+
+export type GetNftTransferByTxHashQueryVariables = Types.Exact<{
+  txHash: Types.Scalars['String'];
+  chainId: Types.Scalars['String'];
+}>;
+
+
+export type GetNftTransferByTxHashQuery = { __typename?: 'query_root', nftTransfer: Array<{ __typename?: 'nftTransfer', fromAddress: string, toAddress: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId: string, tokenId: any, created_at: any, id: any, contractAddress: string }> };
+
+export type GetNftTransferByTokenIdAndCollectionQueryVariables = Types.Exact<{
+  tokenId: Types.Scalars['bigint'];
+  contractAddress: Types.Scalars['String'];
+  chainId: Types.Scalars['String'];
+}>;
+
+
+export type GetNftTransferByTokenIdAndCollectionQuery = { __typename?: 'query_root', nftTransfer: Array<{ __typename?: 'nftTransfer', fromAddress: string, toAddress: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId: string, tokenId: any, created_at: any, id: any, contractAddress: string }> };
+
 export type EventListFieldsFragment = { __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string } };
 
 export type OrganizerFieldsFragment = { __typename?: 'Organizer', id: string, slug: string, name: string, description?: { __typename?: 'OrganizerDescriptionRichText', json: any, references: Array<{ __typename: 'Asset', id: string, url: string, mimeType?: string | null }> } | null, image: { __typename?: 'Asset', url: string } };

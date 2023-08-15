@@ -9,6 +9,21 @@ export const AccountFieldsFragmentDoc = `
   emailVerified
 }
     `;
+export const NftTransferFieldsFragmentDoc = `
+    fragment NftTransferFields on nftTransfer {
+  fromAddress
+  toAddress
+  chainId
+  blockNumber
+  eventId
+  organizerId
+  eventPassId
+  tokenId
+  created_at
+  id
+  contractAddress
+}
+    `;
 export const EventListFieldsFragmentDoc = `
     fragment EventListFields on Event {
   id
@@ -152,6 +167,23 @@ export const EventPassOwnedFieldsFragmentDoc = `
   }
 }
     `;
+ const GetNftTransferByTxHashDocument = `
+    query GetNftTransferByTxHash($txHash: String!, $chainId: String!) {
+  nftTransfer(where: {transactionHash: {_eq: $txHash}, chainId: {_eq: $chainId}}) {
+    ...NftTransferFields
+  }
+}
+    ${NftTransferFieldsFragmentDoc}`;
+ const GetNftTransferByTokenIdAndCollectionDocument = `
+    query GetNftTransferByTokenIdAndCollection($tokenId: bigint!, $contractAddress: String!, $chainId: String!) {
+  nftTransfer(
+    where: {tokenId: {_eq: $tokenId}, contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}}
+    order_by: {blockNumber: desc}
+  ) {
+    ...NftTransferFields
+  }
+}
+    ${NftTransferFieldsFragmentDoc}`;
  const GetEventDocument = `
     query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
@@ -327,6 +359,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     DeleteEventPassPendingOrders(variables: Types.DeleteEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrdersMutation> {
       return requester<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrdersMutation>;
+    },
+    GetNftTransferByTxHash(variables: Types.GetNftTransferByTxHashQueryVariables, options?: C): Promise<Types.GetNftTransferByTxHashQuery> {
+      return requester<Types.GetNftTransferByTxHashQuery, Types.GetNftTransferByTxHashQueryVariables>(GetNftTransferByTxHashDocument, variables, options) as Promise<Types.GetNftTransferByTxHashQuery>;
+    },
+    GetNftTransferByTokenIdAndCollection(variables: Types.GetNftTransferByTokenIdAndCollectionQueryVariables, options?: C): Promise<Types.GetNftTransferByTokenIdAndCollectionQuery> {
+      return requester<Types.GetNftTransferByTokenIdAndCollectionQuery, Types.GetNftTransferByTokenIdAndCollectionQueryVariables>(GetNftTransferByTokenIdAndCollectionDocument, variables, options) as Promise<Types.GetNftTransferByTokenIdAndCollectionQuery>;
     },
     GetEvent(variables: Types.GetEventQueryVariables, options?: C): Promise<Types.GetEventQuery> {
       return requester<Types.GetEventQuery, Types.GetEventQueryVariables>(GetEventDocument, variables, options) as Promise<Types.GetEventQuery>;
