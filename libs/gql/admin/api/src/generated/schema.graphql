@@ -3216,6 +3216,11 @@ input EventWhereUniqueInput {
   slug: String
 }
 
+"""References Event record uniquely"""
+input EventWhereUniqueInput_remote_rel_eventNftCollectionevent {
+  slug: String
+}
+
 enum ImageFit {
   """
   Resizes the image to fit within the specified parameters without distorting, cropping, or changing the aspect ratio.
@@ -6583,6 +6588,209 @@ enum cursor_ordering {
 }
 
 """
+The eventNftCollection model is designed to store metadata associated with NFT collections linked to specific events. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT collections. Additionally, this table integrates infrastructure-specific details, like the activityWebhookId, which aids in monitoring and processing events or changes related to the NFT collections in our platform. By centralizing this information, our system can effectively manage, reference, and interact with NFT collections tied to particular events.
+"""
+type eventNftCollection {
+  activityWebhookId: String!
+  chainId: String!
+  contractAddress: String!
+  event(
+    """
+    Defines which locales should be returned.
+    
+    Note that `Event` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: EventWhereUniqueInput_remote_rel_eventNftCollectionevent!
+  ): Event
+  eventId: String!
+}
+
+"""
+aggregated selection of "eventNftCollection"
+"""
+type eventNftCollection_aggregate {
+  aggregate: eventNftCollection_aggregate_fields
+  nodes: [eventNftCollection!]!
+}
+
+"""
+aggregate fields of "eventNftCollection"
+"""
+type eventNftCollection_aggregate_fields {
+  count(columns: [eventNftCollection_select_column!], distinct: Boolean): Int!
+  max: eventNftCollection_max_fields
+  min: eventNftCollection_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "eventNftCollection". All fields are combined with a logical 'AND'.
+"""
+input eventNftCollection_bool_exp {
+  _and: [eventNftCollection_bool_exp!]
+  _not: eventNftCollection_bool_exp
+  _or: [eventNftCollection_bool_exp!]
+  activityWebhookId: String_comparison_exp
+  chainId: String_comparison_exp
+  contractAddress: String_comparison_exp
+  eventId: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "eventNftCollection"
+"""
+enum eventNftCollection_constraint {
+  """
+  unique or primary key constraint on columns "activityWebhookId"
+  """
+  eventNftCollection_activityWebhookId_key
+
+  """
+  unique or primary key constraint on columns "eventId"
+  """
+  eventNftCollection_eventId_key
+
+  """
+  unique or primary key constraint on columns "contractAddress"
+  """
+  eventNftCollection_pkey
+}
+
+"""
+input type for inserting data into table "eventNftCollection"
+"""
+input eventNftCollection_insert_input {
+  activityWebhookId: String
+  chainId: String
+  contractAddress: String
+  eventId: String
+}
+
+"""aggregate max on columns"""
+type eventNftCollection_max_fields {
+  activityWebhookId: String
+  chainId: String
+  contractAddress: String
+  eventId: String
+}
+
+"""aggregate min on columns"""
+type eventNftCollection_min_fields {
+  activityWebhookId: String
+  chainId: String
+  contractAddress: String
+  eventId: String
+}
+
+"""
+response of any mutation on the table "eventNftCollection"
+"""
+type eventNftCollection_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [eventNftCollection!]!
+}
+
+"""
+on_conflict condition type for table "eventNftCollection"
+"""
+input eventNftCollection_on_conflict {
+  constraint: eventNftCollection_constraint!
+  update_columns: [eventNftCollection_update_column!]! = []
+  where: eventNftCollection_bool_exp
+}
+
+"""Ordering options when selecting data from "eventNftCollection"."""
+input eventNftCollection_order_by {
+  activityWebhookId: order_by
+  chainId: order_by
+  contractAddress: order_by
+  eventId: order_by
+}
+
+"""primary key columns input for table: eventNftCollection"""
+input eventNftCollection_pk_columns_input {
+  contractAddress: String!
+}
+
+"""
+select columns of table "eventNftCollection"
+"""
+enum eventNftCollection_select_column {
+  """column name"""
+  activityWebhookId
+
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  eventId
+}
+
+"""
+input type for updating data in table "eventNftCollection"
+"""
+input eventNftCollection_set_input {
+  activityWebhookId: String
+  chainId: String
+  contractAddress: String
+  eventId: String
+}
+
+"""
+Streaming cursor of the table "eventNftCollection"
+"""
+input eventNftCollection_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: eventNftCollection_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input eventNftCollection_stream_cursor_value_input {
+  activityWebhookId: String
+  chainId: String
+  contractAddress: String
+  eventId: String
+}
+
+"""
+update columns of table "eventNftCollection"
+"""
+enum eventNftCollection_update_column {
+  """column name"""
+  activityWebhookId
+
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  eventId
+}
+
+input eventNftCollection_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: eventNftCollection_set_input
+
+  """filter the rows which have to be updated"""
+  where: eventNftCollection_bool_exp!
+}
+
+"""
 Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account
 """
 type eventPassOrder {
@@ -8207,6 +8415,19 @@ type mutation_root {
   delete_currency_by_pk(value: String!): currency
 
   """
+  delete data from the table: "eventNftCollection"
+  """
+  delete_eventNftCollection(
+    """filter the rows which have to be deleted"""
+    where: eventNftCollection_bool_exp!
+  ): eventNftCollection_mutation_response
+
+  """
+  delete single row from the table: "eventNftCollection"
+  """
+  delete_eventNftCollection_by_pk(contractAddress: String!): eventNftCollection
+
+  """
   delete data from the table: "eventPassOrder"
   """
   delete_eventPassOrder(
@@ -8272,6 +8493,19 @@ type mutation_root {
   delete_eventPassPricing_by_pk(id: uuid!): eventPassPricing
 
   """
+  delete data from the table: "nftTransfer"
+  """
+  delete_nftTransfer(
+    """filter the rows which have to be deleted"""
+    where: nftTransfer_bool_exp!
+  ): nftTransfer_mutation_response
+
+  """
+  delete single row from the table: "nftTransfer"
+  """
+  delete_nftTransfer_by_pk(id: uuid!): nftTransfer
+
+  """
   delete data from the table: "orderStatus"
   """
   delete_orderStatus(
@@ -8327,6 +8561,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: currency_on_conflict
   ): currency
+
+  """
+  insert data into the table: "eventNftCollection"
+  """
+  insert_eventNftCollection(
+    """the rows to be inserted"""
+    objects: [eventNftCollection_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: eventNftCollection_on_conflict
+  ): eventNftCollection_mutation_response
+
+  """
+  insert a single row into the table: "eventNftCollection"
+  """
+  insert_eventNftCollection_one(
+    """the row to be inserted"""
+    object: eventNftCollection_insert_input!
+
+    """upsert condition"""
+    on_conflict: eventNftCollection_on_conflict
+  ): eventNftCollection
 
   """
   insert data into the table: "eventPassOrder"
@@ -8437,6 +8693,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: eventPassPricing_on_conflict
   ): eventPassPricing
+
+  """
+  insert data into the table: "nftTransfer"
+  """
+  insert_nftTransfer(
+    """the rows to be inserted"""
+    objects: [nftTransfer_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: nftTransfer_on_conflict
+  ): nftTransfer_mutation_response
+
+  """
+  insert a single row into the table: "nftTransfer"
+  """
+  insert_nftTransfer_one(
+    """the row to be inserted"""
+    object: nftTransfer_insert_input!
+
+    """upsert condition"""
+    on_conflict: nftTransfer_on_conflict
+  ): nftTransfer
 
   """
   insert data into the table: "orderStatus"
@@ -9348,6 +9626,34 @@ type mutation_root {
   ): [currency_mutation_response]
 
   """
+  update data of the table: "eventNftCollection"
+  """
+  update_eventNftCollection(
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventNftCollection_set_input
+
+    """filter the rows which have to be updated"""
+    where: eventNftCollection_bool_exp!
+  ): eventNftCollection_mutation_response
+
+  """
+  update single row of the table: "eventNftCollection"
+  """
+  update_eventNftCollection_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventNftCollection_set_input
+    pk_columns: eventNftCollection_pk_columns_input!
+  ): eventNftCollection
+
+  """
+  update multiples rows of table: "eventNftCollection"
+  """
+  update_eventNftCollection_many(
+    """updates to execute, in order"""
+    updates: [eventNftCollection_updates!]!
+  ): [eventNftCollection_mutation_response]
+
+  """
   update data of the table: "eventPassOrder"
   """
   update_eventPassOrder(
@@ -9518,6 +9824,40 @@ type mutation_root {
   ): [eventPassPricing_mutation_response]
 
   """
+  update data of the table: "nftTransfer"
+  """
+  update_nftTransfer(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: nftTransfer_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: nftTransfer_set_input
+
+    """filter the rows which have to be updated"""
+    where: nftTransfer_bool_exp!
+  ): nftTransfer_mutation_response
+
+  """
+  update single row of the table: "nftTransfer"
+  """
+  update_nftTransfer_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: nftTransfer_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: nftTransfer_set_input
+    pk_columns: nftTransfer_pk_columns_input!
+  ): nftTransfer
+
+  """
+  update multiples rows of table: "nftTransfer"
+  """
+  update_nftTransfer_many(
+    """updates to execute, in order"""
+    updates: [nftTransfer_updates!]!
+  ): [nftTransfer_mutation_response]
+
+  """
   update data of the table: "orderStatus"
   """
   update_orderStatus(
@@ -9556,6 +9896,342 @@ type mutation_root {
 
   """Upsert one organizer"""
   upsertOrganizer(upsert: OrganizerUpsertInput!, where: OrganizerWhereUniqueInput!): Organizer
+}
+
+"""
+The nftTransfer model is built to record and chronicle the transfer of NFTs between addresses. This model is crucial in tracing the movement of an NFT, especially when validating that an event pass has reached its intended recipient. Such a system facilitates debugging and reduces the need for excessive querying of our indexer. Entries in this table are populated through two primary avenues: either via an activity webhook responding to real-time NFT transfers or through a regular cron job as a failsafe, ensuring data integrity even if the webhook fails to capture certain events.
+"""
+type nftTransfer {
+  blockNumber: String!
+  chainId: String!
+  created_at: timestamptz!
+  eventId: String!
+  eventPassId: String!
+  fromAddress: String!
+  id: uuid!
+  organizerId: String!
+  toAddress: String!
+  tokenId: bigint!
+  transactionHash: String!
+}
+
+"""
+aggregated selection of "nftTransfer"
+"""
+type nftTransfer_aggregate {
+  aggregate: nftTransfer_aggregate_fields
+  nodes: [nftTransfer!]!
+}
+
+"""
+aggregate fields of "nftTransfer"
+"""
+type nftTransfer_aggregate_fields {
+  avg: nftTransfer_avg_fields
+  count(columns: [nftTransfer_select_column!], distinct: Boolean): Int!
+  max: nftTransfer_max_fields
+  min: nftTransfer_min_fields
+  stddev: nftTransfer_stddev_fields
+  stddev_pop: nftTransfer_stddev_pop_fields
+  stddev_samp: nftTransfer_stddev_samp_fields
+  sum: nftTransfer_sum_fields
+  var_pop: nftTransfer_var_pop_fields
+  var_samp: nftTransfer_var_samp_fields
+  variance: nftTransfer_variance_fields
+}
+
+"""aggregate avg on columns"""
+type nftTransfer_avg_fields {
+  tokenId: Float
+}
+
+"""
+Boolean expression to filter rows from the table "nftTransfer". All fields are combined with a logical 'AND'.
+"""
+input nftTransfer_bool_exp {
+  _and: [nftTransfer_bool_exp!]
+  _not: nftTransfer_bool_exp
+  _or: [nftTransfer_bool_exp!]
+  blockNumber: String_comparison_exp
+  chainId: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  eventId: String_comparison_exp
+  eventPassId: String_comparison_exp
+  fromAddress: String_comparison_exp
+  id: uuid_comparison_exp
+  organizerId: String_comparison_exp
+  toAddress: String_comparison_exp
+  tokenId: bigint_comparison_exp
+  transactionHash: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "nftTransfer"
+"""
+enum nftTransfer_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  nftTransfer_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "nftTransfer"
+"""
+input nftTransfer_inc_input {
+  tokenId: bigint
+}
+
+"""
+input type for inserting data into table "nftTransfer"
+"""
+input nftTransfer_insert_input {
+  blockNumber: String
+  chainId: String
+  created_at: timestamptz
+  eventId: String
+  eventPassId: String
+  fromAddress: String
+  id: uuid
+  organizerId: String
+  toAddress: String
+  tokenId: bigint
+  transactionHash: String
+}
+
+"""aggregate max on columns"""
+type nftTransfer_max_fields {
+  blockNumber: String
+  chainId: String
+  created_at: timestamptz
+  eventId: String
+  eventPassId: String
+  fromAddress: String
+  id: uuid
+  organizerId: String
+  toAddress: String
+  tokenId: bigint
+  transactionHash: String
+}
+
+"""aggregate min on columns"""
+type nftTransfer_min_fields {
+  blockNumber: String
+  chainId: String
+  created_at: timestamptz
+  eventId: String
+  eventPassId: String
+  fromAddress: String
+  id: uuid
+  organizerId: String
+  toAddress: String
+  tokenId: bigint
+  transactionHash: String
+}
+
+"""
+response of any mutation on the table "nftTransfer"
+"""
+type nftTransfer_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [nftTransfer!]!
+}
+
+"""
+on_conflict condition type for table "nftTransfer"
+"""
+input nftTransfer_on_conflict {
+  constraint: nftTransfer_constraint!
+  update_columns: [nftTransfer_update_column!]! = []
+  where: nftTransfer_bool_exp
+}
+
+"""Ordering options when selecting data from "nftTransfer"."""
+input nftTransfer_order_by {
+  blockNumber: order_by
+  chainId: order_by
+  created_at: order_by
+  eventId: order_by
+  eventPassId: order_by
+  fromAddress: order_by
+  id: order_by
+  organizerId: order_by
+  toAddress: order_by
+  tokenId: order_by
+  transactionHash: order_by
+}
+
+"""primary key columns input for table: nftTransfer"""
+input nftTransfer_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "nftTransfer"
+"""
+enum nftTransfer_select_column {
+  """column name"""
+  blockNumber
+
+  """column name"""
+  chainId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventId
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  fromAddress
+
+  """column name"""
+  id
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  toAddress
+
+  """column name"""
+  tokenId
+
+  """column name"""
+  transactionHash
+}
+
+"""
+input type for updating data in table "nftTransfer"
+"""
+input nftTransfer_set_input {
+  blockNumber: String
+  chainId: String
+  created_at: timestamptz
+  eventId: String
+  eventPassId: String
+  fromAddress: String
+  id: uuid
+  organizerId: String
+  toAddress: String
+  tokenId: bigint
+  transactionHash: String
+}
+
+"""aggregate stddev on columns"""
+type nftTransfer_stddev_fields {
+  tokenId: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type nftTransfer_stddev_pop_fields {
+  tokenId: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type nftTransfer_stddev_samp_fields {
+  tokenId: Float
+}
+
+"""
+Streaming cursor of the table "nftTransfer"
+"""
+input nftTransfer_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: nftTransfer_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input nftTransfer_stream_cursor_value_input {
+  blockNumber: String
+  chainId: String
+  created_at: timestamptz
+  eventId: String
+  eventPassId: String
+  fromAddress: String
+  id: uuid
+  organizerId: String
+  toAddress: String
+  tokenId: bigint
+  transactionHash: String
+}
+
+"""aggregate sum on columns"""
+type nftTransfer_sum_fields {
+  tokenId: bigint
+}
+
+"""
+update columns of table "nftTransfer"
+"""
+enum nftTransfer_update_column {
+  """column name"""
+  blockNumber
+
+  """column name"""
+  chainId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventId
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  fromAddress
+
+  """column name"""
+  id
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  toAddress
+
+  """column name"""
+  tokenId
+
+  """column name"""
+  transactionHash
+}
+
+input nftTransfer_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: nftTransfer_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: nftTransfer_set_input
+
+  """filter the rows which have to be updated"""
+  where: nftTransfer_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type nftTransfer_var_pop_fields {
+  tokenId: Float
+}
+
+"""aggregate var_samp on columns"""
+type nftTransfer_var_samp_fields {
+  tokenId: Float
+}
+
+"""aggregate variance on columns"""
+type nftTransfer_variance_fields {
+  tokenId: Float
 }
 
 """
@@ -9898,6 +10574,51 @@ type query_root {
     where: EventWhereUniqueInput!
   ): Event
 
+  """
+  fetch data from the table: "eventNftCollection"
+  """
+  eventNftCollection(
+    """distinct select on columns"""
+    distinct_on: [eventNftCollection_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventNftCollection_order_by!]
+
+    """filter the rows returned"""
+    where: eventNftCollection_bool_exp
+  ): [eventNftCollection!]!
+
+  """
+  fetch aggregated fields from the table: "eventNftCollection"
+  """
+  eventNftCollection_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventNftCollection_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventNftCollection_order_by!]
+
+    """filter the rows returned"""
+    where: eventNftCollection_bool_exp
+  ): eventNftCollection_aggregate!
+
+  """
+  fetch data from the table: "eventNftCollection" using primary key columns
+  """
+  eventNftCollection_by_pk(contractAddress: String!): eventNftCollection
+
   """Retrieve a single eventPass"""
   eventPass(
     """
@@ -10227,6 +10948,49 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: EventWhereInput
   ): EventConnection!
+
+  """
+  fetch data from the table: "nftTransfer"
+  """
+  nftTransfer(
+    """distinct select on columns"""
+    distinct_on: [nftTransfer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [nftTransfer_order_by!]
+
+    """filter the rows returned"""
+    where: nftTransfer_bool_exp
+  ): [nftTransfer!]!
+
+  """
+  fetch aggregated fields from the table: "nftTransfer"
+  """
+  nftTransfer_aggregate(
+    """distinct select on columns"""
+    distinct_on: [nftTransfer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [nftTransfer_order_by!]
+
+    """filter the rows returned"""
+    where: nftTransfer_bool_exp
+  ): nftTransfer_aggregate!
+
+  """fetch data from the table: "nftTransfer" using primary key columns"""
+  nftTransfer_by_pk(id: uuid!): nftTransfer
 
   """Fetches an object given its ID"""
   node(
@@ -10648,6 +11412,65 @@ type subscription_root {
   ): [currency!]!
 
   """
+  fetch data from the table: "eventNftCollection"
+  """
+  eventNftCollection(
+    """distinct select on columns"""
+    distinct_on: [eventNftCollection_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventNftCollection_order_by!]
+
+    """filter the rows returned"""
+    where: eventNftCollection_bool_exp
+  ): [eventNftCollection!]!
+
+  """
+  fetch aggregated fields from the table: "eventNftCollection"
+  """
+  eventNftCollection_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventNftCollection_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventNftCollection_order_by!]
+
+    """filter the rows returned"""
+    where: eventNftCollection_bool_exp
+  ): eventNftCollection_aggregate!
+
+  """
+  fetch data from the table: "eventNftCollection" using primary key columns
+  """
+  eventNftCollection_by_pk(contractAddress: String!): eventNftCollection
+
+  """
+  fetch data from the table in a streaming manner: "eventNftCollection"
+  """
+  eventNftCollection_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [eventNftCollection_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: eventNftCollection_bool_exp
+  ): [eventNftCollection!]!
+
+  """
   fetch data from the table: "eventPassOrder"
   """
   eventPassOrder(
@@ -10937,6 +11760,63 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassPricing_bool_exp
   ): [eventPassPricing!]!
+
+  """
+  fetch data from the table: "nftTransfer"
+  """
+  nftTransfer(
+    """distinct select on columns"""
+    distinct_on: [nftTransfer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [nftTransfer_order_by!]
+
+    """filter the rows returned"""
+    where: nftTransfer_bool_exp
+  ): [nftTransfer!]!
+
+  """
+  fetch aggregated fields from the table: "nftTransfer"
+  """
+  nftTransfer_aggregate(
+    """distinct select on columns"""
+    distinct_on: [nftTransfer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [nftTransfer_order_by!]
+
+    """filter the rows returned"""
+    where: nftTransfer_bool_exp
+  ): nftTransfer_aggregate!
+
+  """fetch data from the table: "nftTransfer" using primary key columns"""
+  nftTransfer_by_pk(id: uuid!): nftTransfer
+
+  """
+  fetch data from the table in a streaming manner: "nftTransfer"
+  """
+  nftTransfer_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [nftTransfer_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: nftTransfer_bool_exp
+  ): [nftTransfer!]!
 
   """
   fetch data from the table: "orderStatus"
