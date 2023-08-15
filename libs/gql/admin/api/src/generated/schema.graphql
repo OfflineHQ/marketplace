@@ -9704,8 +9704,9 @@ type mutation_root {
 The nftTransfer model is built to record and chronicle the transfer of NFTs between addresses. This model is crucial in tracing the movement of an NFT, especially when validating that an event pass has reached its intended recipient. Such a system facilitates debugging and reduces the need for excessive querying of our indexer. Entries in this table are populated through two primary avenues: either via an activity webhook responding to real-time NFT transfers or through a regular cron job as a failsafe, ensuring data integrity even if the webhook fails to capture certain events.
 """
 type nftTransfer {
-  blockNumber: String!
+  blockNumber: bigint!
   chainId: String!
+  contractAddress: String!
   created_at: timestamptz!
   eventId: String!
   eventPassId: String!
@@ -9744,6 +9745,7 @@ type nftTransfer_aggregate_fields {
 
 """aggregate avg on columns"""
 type nftTransfer_avg_fields {
+  blockNumber: Float
   tokenId: Float
 }
 
@@ -9754,8 +9756,9 @@ input nftTransfer_bool_exp {
   _and: [nftTransfer_bool_exp!]
   _not: nftTransfer_bool_exp
   _or: [nftTransfer_bool_exp!]
-  blockNumber: String_comparison_exp
+  blockNumber: bigint_comparison_exp
   chainId: String_comparison_exp
+  contractAddress: String_comparison_exp
   created_at: timestamptz_comparison_exp
   eventId: String_comparison_exp
   eventPassId: String_comparison_exp
@@ -9781,6 +9784,7 @@ enum nftTransfer_constraint {
 input type for incrementing numeric columns in table "nftTransfer"
 """
 input nftTransfer_inc_input {
+  blockNumber: bigint
   tokenId: bigint
 }
 
@@ -9788,8 +9792,9 @@ input nftTransfer_inc_input {
 input type for inserting data into table "nftTransfer"
 """
 input nftTransfer_insert_input {
-  blockNumber: String
+  blockNumber: bigint
   chainId: String
+  contractAddress: String
   created_at: timestamptz
   eventId: String
   eventPassId: String
@@ -9803,8 +9808,9 @@ input nftTransfer_insert_input {
 
 """aggregate max on columns"""
 type nftTransfer_max_fields {
-  blockNumber: String
+  blockNumber: bigint
   chainId: String
+  contractAddress: String
   created_at: timestamptz
   eventId: String
   eventPassId: String
@@ -9818,8 +9824,9 @@ type nftTransfer_max_fields {
 
 """aggregate min on columns"""
 type nftTransfer_min_fields {
-  blockNumber: String
+  blockNumber: bigint
   chainId: String
+  contractAddress: String
   created_at: timestamptz
   eventId: String
   eventPassId: String
@@ -9855,6 +9862,7 @@ input nftTransfer_on_conflict {
 input nftTransfer_order_by {
   blockNumber: order_by
   chainId: order_by
+  contractAddress: order_by
   created_at: order_by
   eventId: order_by
   eventPassId: order_by
@@ -9880,6 +9888,9 @@ enum nftTransfer_select_column {
 
   """column name"""
   chainId
+
+  """column name"""
+  contractAddress
 
   """column name"""
   created_at
@@ -9913,8 +9924,9 @@ enum nftTransfer_select_column {
 input type for updating data in table "nftTransfer"
 """
 input nftTransfer_set_input {
-  blockNumber: String
+  blockNumber: bigint
   chainId: String
+  contractAddress: String
   created_at: timestamptz
   eventId: String
   eventPassId: String
@@ -9928,16 +9940,19 @@ input nftTransfer_set_input {
 
 """aggregate stddev on columns"""
 type nftTransfer_stddev_fields {
+  blockNumber: Float
   tokenId: Float
 }
 
 """aggregate stddev_pop on columns"""
 type nftTransfer_stddev_pop_fields {
+  blockNumber: Float
   tokenId: Float
 }
 
 """aggregate stddev_samp on columns"""
 type nftTransfer_stddev_samp_fields {
+  blockNumber: Float
   tokenId: Float
 }
 
@@ -9954,8 +9969,9 @@ input nftTransfer_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input nftTransfer_stream_cursor_value_input {
-  blockNumber: String
+  blockNumber: bigint
   chainId: String
+  contractAddress: String
   created_at: timestamptz
   eventId: String
   eventPassId: String
@@ -9969,6 +9985,7 @@ input nftTransfer_stream_cursor_value_input {
 
 """aggregate sum on columns"""
 type nftTransfer_sum_fields {
+  blockNumber: bigint
   tokenId: bigint
 }
 
@@ -9981,6 +9998,9 @@ enum nftTransfer_update_column {
 
   """column name"""
   chainId
+
+  """column name"""
+  contractAddress
 
   """column name"""
   created_at
@@ -10023,16 +10043,19 @@ input nftTransfer_updates {
 
 """aggregate var_pop on columns"""
 type nftTransfer_var_pop_fields {
+  blockNumber: Float
   tokenId: Float
 }
 
 """aggregate var_samp on columns"""
 type nftTransfer_var_samp_fields {
+  blockNumber: Float
   tokenId: Float
 }
 
 """aggregate variance on columns"""
 type nftTransfer_variance_fields {
+  blockNumber: Float
   tokenId: Float
 }
 
