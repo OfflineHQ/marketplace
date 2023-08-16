@@ -33,8 +33,8 @@ export const ProfileNavClient = () => {
   const signOutUserAction = useCallback(async () => {
     await logout({ refresh: true });
     toast({
-      title: 'Sign In',
-      description: 'Sign In',
+      title: 'Successfully sign out',
+      description: 'See you soon',
     });
   }, [logout, toast]);
 
@@ -56,7 +56,7 @@ export const ProfileNavClient = () => {
               icon: <LogOut />,
               className: 'cursor-pointer',
               action: signOutUserAction,
-              text: 'Sign In',
+              text: 'Sign out',
             },
           ],
     [safeUser, signOutUserAction, login]
