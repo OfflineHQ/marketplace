@@ -94,7 +94,7 @@ export function getNextAppURL(): string {
       vercelURL = process.env.VERCEL_URL
         ? `https://${process.env.VERCEL_URL}`
         : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-    return vercelURL || 'http://localhost:1789' || 'http://localhost:8888'; //TODO: change this
+    return vercelURL || (process.env.NEXTAUTH_URL as string);
   }
 }
 
