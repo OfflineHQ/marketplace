@@ -84,6 +84,15 @@ export type GetNftTransferByTokenIdAndCollectionQueryVariables = Types.Exact<{
 
 export type GetNftTransferByTokenIdAndCollectionQuery = { __typename?: 'query_root', nftTransfer: Array<{ __typename?: 'nftTransfer', id: any, contractAddress: string, fromAddress: string, toAddress: string, transactionHash: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId: string, tokenId: any, created_at: any }> };
 
+export type GetNftByCollectionAndTokenIdsQueryVariables = Types.Exact<{
+  contractAddress: Types.Scalars['String'];
+  chainId: Types.Scalars['String'];
+  tokenIds: Array<Types.Scalars['bigint']> | Types.Scalars['bigint'];
+}>;
+
+
+export type GetNftByCollectionAndTokenIdsQuery = { __typename?: 'query_root', nftWithMetadata: Array<{ __typename?: 'nftWithMetadata', tokenId: any, eventId: string, eventPassId: string, organizerId: string }> };
+
 export type EventListFieldsFragment = { __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string } };
 
 export type OrganizerFieldsFragment = { __typename?: 'Organizer', id: string, slug: string, name: string, description?: { __typename?: 'OrganizerDescriptionRichText', json: any, references: Array<{ __typename: 'Asset', id: string, url: string, mimeType?: string | null }> } | null, image: { __typename?: 'Asset', url: string } };
