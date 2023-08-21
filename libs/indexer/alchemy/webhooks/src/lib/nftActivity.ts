@@ -13,43 +13,48 @@ import type {
 } from './types';
 import { headers } from 'next/headers';
 
-const extractNftsCollectionInfoFromDb = async (contractAddress: string) => {
-  const res =
-    await adminSdk.GetEventNftCollectionByContractAddressWithMinimalEventPasses(
-      {
-        contractAddress,
-        stage: process.env.HYGRAPH_STAGE as Stage,
-      }
-    );
-  const eventPassNftCollection = res.eventNftCollection_by_pk;
-  if (!eventPassNftCollection) {
-    throw new Error('Event pass nft collection not found on database');
-  }
-  if (!eventPassNftCollection.event) {
-    throw new Error('Event pass nft collection has no event');
-  }
-  const eventId = eventPassNftCollection.event.id;
-  if (!eventPassNftCollection.event.organizer) {
-    throw new Error('Event pass nft collection has no organizer');
-  }
-  const organizerId = eventPassNftCollection.event.organizer.id;
-  if (
-    !eventPassNftCollection.event.eventPasses ||
-    !eventPassNftCollection.event.eventPasses.length
-  ) {
-    throw new Error('Event pass nft collection has no event passes');
-  }
-  const eventPassesIds = eventPassNftCollection.event.eventPasses.map(
-    (pass) => pass.id
-  );
-  return {
-    eventId,
-    organizerId,
-    eventPassesIds,
-  };
-};
+// export const extractNftsCollectionInfoFromDb = async (
+//   contractAddress: string
+// ) => {
+//   const res =
+//     await adminSdk.GetEventNftCollectionByContractAddressWithMinimalEventPasses(
+//       {
+//         contractAddress,
+//         stage: process.env.HYGRAPH_STAGE as Stage,
+//       }
+//     );
+//   const eventPassNftCollection = res.eventNftCollection_by_pk;
+//   if (!eventPassNftCollection) {
+//     throw new Error('Event pass nft collection not found on database');
+//   }
+//   if (!eventPassNftCollection.event) {
+//     throw new Error('Event pass nft collection has no event');
+//   }
+//   const eventId = eventPassNftCollection.event.id;
+//   if (!eventPassNftCollection.event.organizer) {
+//     throw new Error('Event pass nft collection has no organizer');
+//   }
+//   const organizerId = eventPassNftCollection.event.organizer.id;
+//   if (
+//     !eventPassNftCollection.event.eventPasses ||
+//     !eventPassNftCollection.event.eventPasses.length
+//   ) {
+//     throw new Error('Event pass nft collection has no event passes');
+//   }
+//   const eventPassesIds = eventPassNftCollection.event.eventPasses.map(
+//     (pass) => pass.id
+//   );
 
-const extractNftTransfersFromEvent = (
+//   return {
+//     eventId,
+//     organizerId,
+//     chainId: eventPassNftCollection.chainId,
+//     contractAddress: eventPassNftCollection.contractAddress,
+//     eventPassesIds,
+//   };
+// };
+
+export const extractNftTransfersFromEvent = (
   alchemyWebhookEvent: AlchemyNFTActivityEvent
 ) => {
   const nftActivities = alchemyWebhookEvent.event.activity;
@@ -76,9 +81,9 @@ const extractNftTransfersFromEvent = (
         fromAddress,
         toAddress,
         contractAddress,
-        blockNumber: blockNumber,
-        tokenId: erc721TokenId,
-        chainId: network,
+        blockNumber: blockNumber, // TODO: convert to bigint
+        tokenId: erc721TokenId, // TODO: convert to bigint
+        chainId: network, // TODO: convert to chainId hex string
         transactionHash,
       });
     }
@@ -86,13 +91,22 @@ const extractNftTransfersFromEvent = (
   return nftTransfers;
 };
 
-const getNftTransfersMetadata = async (
+export const getNftTransfersMetadata = async (
   nftTransfers: NftTransferWithoutMetadata[],
-  nftCollectionsInfos: Awaited<
-    ReturnType<typeof extractNftsCollectionInfoFromDb>
-  >
+  contractAddress: string,
+  chainId: string
+  // nftCollectionsInfos: Awaited<
+  //   ReturnType<typeof extractNftsCollectionInfoFromDb>
+  // >
 ) => {
-  const { eventId, organizerId, eventPassesIds } = nftCollectionsInfos;
+  // const { eventId, organizerId, eventPassesIds } = nftCollectionsInfos;
+  const nftTransfersWithMetadata: NftTransfer[] = [];
+  const res = await adminSdk.GetNftByCollectionAndTokenIds({
+    contractAddress,
+    chainId,
+    tokenIds: nftTransfers.map((t) => t.tokenId),
+  });
+  const nfts = res.nftWithMetadata;
 };
 
 export async function nftActivity(
@@ -117,11 +131,16 @@ export async function nftActivity(
   if (alchemyWebhookEvent.type !== WebhookType.NFT_ACTIVITY) {
     throw new Error('Invalid webhook type. Expected NFT_ACTIVITY.');
   }
+  const chainId = alchemyWebhookEvent.event.activity[0].network; // TODO: convert to chainId hex string
 
-  const nftCollectionsInfos = await extractNftsCollectionInfoFromDb(
-    contractAddress
-  );
-  const nftTransfers = extractNftTransfersFromEvent(alchemyWebhookEvent);
+  // const nftCollectionsInfos = await extractNftsCollectionInfoFromDb(
+  //   contractAddress
+  // );
+  // const nftTransfers = extractNftTransfersFromEvent(
+  //   alchemyWebhookEvent,
+  //   contractAddress,
+  //   chainId
+  // );
   // await getNftTransfersMetadata(nftTransfers, nftCollectionsInfos);
 
   return new Response(null, { status: 200 });

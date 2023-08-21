@@ -7,4 +7,5 @@
 - "!include public_eventPassPendingOrder.yaml"
 - "!include public_eventPassPricing.yaml"
 - "!include public_nftTransfer.yaml"
+- "!include public_nftWithMetadata.yaml"
 - "!include public_orderStatus.yaml"
