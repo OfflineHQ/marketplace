@@ -52566,7 +52566,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -53295,7 +53295,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -53461,7 +53461,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -53628,7 +53628,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -54175,7 +54175,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -54486,7 +54486,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "type": {
               "kind": "SCALAR",
               "name": "String",
