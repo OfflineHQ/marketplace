@@ -5230,7 +5230,9 @@ export const enum EventPassNftContract_Constraint {
 /** input type for inserting data into table "eventPassNftContract" */
 export type EventPassNftContract_Insert_Input = {
   chainId?: InputMaybe<Scalars['String']>;
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
   contractAddress?: InputMaybe<Scalars['String']>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
   eventId?: InputMaybe<Scalars['String']>;
   eventPassId?: InputMaybe<Scalars['String']>;
   eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
@@ -7242,6 +7244,10 @@ export type Mutation_Root = {
   delete_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
   /** delete single row from the table: "nftTransfer" */
   delete_nftTransfer_by_pk?: Maybe<NftTransfer>;
+  /** delete data from the table: "nftWithMetadata" */
+  delete_nftWithMetadata?: Maybe<NftWithMetadata_Mutation_Response>;
+  /** delete single row from the table: "nftWithMetadata" */
+  delete_nftWithMetadata_by_pk?: Maybe<NftWithMetadata>;
   /** delete data from the table: "orderStatus" */
   delete_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** delete single row from the table: "orderStatus" */
@@ -7286,6 +7292,10 @@ export type Mutation_Root = {
   insert_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
   /** insert a single row into the table: "nftTransfer" */
   insert_nftTransfer_one?: Maybe<NftTransfer>;
+  /** insert data into the table: "nftWithMetadata" */
+  insert_nftWithMetadata?: Maybe<NftWithMetadata_Mutation_Response>;
+  /** insert a single row into the table: "nftWithMetadata" */
+  insert_nftWithMetadata_one?: Maybe<NftWithMetadata>;
   /** insert data into the table: "orderStatus" */
   insert_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** insert a single row into the table: "orderStatus" */
@@ -7438,6 +7448,12 @@ export type Mutation_Root = {
   update_nftTransfer_by_pk?: Maybe<NftTransfer>;
   /** update multiples rows of table: "nftTransfer" */
   update_nftTransfer_many?: Maybe<Array<Maybe<NftTransfer_Mutation_Response>>>;
+  /** update data of the table: "nftWithMetadata" */
+  update_nftWithMetadata?: Maybe<NftWithMetadata_Mutation_Response>;
+  /** update single row of the table: "nftWithMetadata" */
+  update_nftWithMetadata_by_pk?: Maybe<NftWithMetadata>;
+  /** update multiples rows of table: "nftWithMetadata" */
+  update_nftWithMetadata_many?: Maybe<Array<Maybe<NftWithMetadata_Mutation_Response>>>;
   /** update data of the table: "orderStatus" */
   update_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** update single row of the table: "orderStatus" */
@@ -7704,6 +7720,18 @@ export type Mutation_RootDelete_NftTransfer_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_NftWithMetadataArgs = {
+  where: NftWithMetadata_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_NftWithMetadata_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_OrderStatusArgs = {
   where: OrderStatus_Bool_Exp;
 };
@@ -7852,6 +7880,20 @@ export type Mutation_RootInsert_NftTransferArgs = {
 export type Mutation_RootInsert_NftTransfer_OneArgs = {
   object: NftTransfer_Insert_Input;
   on_conflict?: InputMaybe<NftTransfer_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftWithMetadataArgs = {
+  objects: Array<NftWithMetadata_Insert_Input>;
+  on_conflict?: InputMaybe<NftWithMetadata_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftWithMetadata_OneArgs = {
+  object: NftWithMetadata_Insert_Input;
+  on_conflict?: InputMaybe<NftWithMetadata_On_Conflict>;
 };
 
 
@@ -8560,6 +8602,38 @@ export type Mutation_RootUpdate_NftTransfer_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_NftTransfer_ManyArgs = {
   updates: Array<NftTransfer_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftWithMetadataArgs = {
+  _append?: InputMaybe<NftWithMetadata_Append_Input>;
+  _delete_at_path?: InputMaybe<NftWithMetadata_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<NftWithMetadata_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<NftWithMetadata_Delete_Key_Input>;
+  _inc?: InputMaybe<NftWithMetadata_Inc_Input>;
+  _prepend?: InputMaybe<NftWithMetadata_Prepend_Input>;
+  _set?: InputMaybe<NftWithMetadata_Set_Input>;
+  where: NftWithMetadata_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftWithMetadata_By_PkArgs = {
+  _append?: InputMaybe<NftWithMetadata_Append_Input>;
+  _delete_at_path?: InputMaybe<NftWithMetadata_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<NftWithMetadata_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<NftWithMetadata_Delete_Key_Input>;
+  _inc?: InputMaybe<NftWithMetadata_Inc_Input>;
+  _prepend?: InputMaybe<NftWithMetadata_Prepend_Input>;
+  _set?: InputMaybe<NftWithMetadata_Set_Input>;
+  pk_columns: NftWithMetadata_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftWithMetadata_ManyArgs = {
+  updates: Array<NftWithMetadata_Updates>;
 };
 
 
@@ -9407,6 +9481,12 @@ export type Query_Root = {
   nftTransfer_aggregate: NftTransfer_Aggregate;
   /** fetch data from the table: "nftTransfer" using primary key columns */
   nftTransfer_by_pk?: Maybe<NftTransfer>;
+  /** fetch data from the table: "nftWithMetadata" */
+  nftWithMetadata: Array<NftWithMetadata>;
+  /** fetch aggregated fields from the table: "nftWithMetadata" */
+  nftWithMetadata_aggregate: NftWithMetadata_Aggregate;
+  /** fetch data from the table: "nftWithMetadata" using primary key columns */
+  nftWithMetadata_by_pk?: Maybe<NftWithMetadata>;
   /** Fetches an object given its ID */
   node?: Maybe<Node>;
   /** fetch data from the table: "orderStatus" */
@@ -9783,6 +9863,29 @@ export type Query_RootNftTransfer_By_PkArgs = {
 };
 
 
+export type Query_RootNftWithMetadataArgs = {
+  distinct_on?: InputMaybe<Array<NftWithMetadata_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftWithMetadata_Order_By>>;
+  where?: InputMaybe<NftWithMetadata_Bool_Exp>;
+};
+
+
+export type Query_RootNftWithMetadata_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftWithMetadata_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftWithMetadata_Order_By>>;
+  where?: InputMaybe<NftWithMetadata_Bool_Exp>;
+};
+
+
+export type Query_RootNftWithMetadata_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Query_RootNodeArgs = {
   id: Scalars['ID'];
   locales?: Array<Locale>;
@@ -10027,6 +10130,14 @@ export type Subscription_Root = {
   nftTransfer_by_pk?: Maybe<NftTransfer>;
   /** fetch data from the table in a streaming manner: "nftTransfer" */
   nftTransfer_stream: Array<NftTransfer>;
+  /** fetch data from the table: "nftWithMetadata" */
+  nftWithMetadata: Array<NftWithMetadata>;
+  /** fetch aggregated fields from the table: "nftWithMetadata" */
+  nftWithMetadata_aggregate: NftWithMetadata_Aggregate;
+  /** fetch data from the table: "nftWithMetadata" using primary key columns */
+  nftWithMetadata_by_pk?: Maybe<NftWithMetadata>;
+  /** fetch data from the table in a streaming manner: "nftWithMetadata" */
+  nftWithMetadata_stream: Array<NftWithMetadata>;
   /** fetch data from the table: "orderStatus" */
   orderStatus: Array<OrderStatus>;
   /** fetch aggregated fields from the table: "orderStatus" */
@@ -10330,6 +10441,36 @@ export type Subscription_RootNftTransfer_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<NftTransfer_Stream_Cursor_Input>>;
   where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftWithMetadataArgs = {
+  distinct_on?: InputMaybe<Array<NftWithMetadata_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftWithMetadata_Order_By>>;
+  where?: InputMaybe<NftWithMetadata_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftWithMetadata_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftWithMetadata_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftWithMetadata_Order_By>>;
+  where?: InputMaybe<NftWithMetadata_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftWithMetadata_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootNftWithMetadata_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<NftWithMetadata_Stream_Cursor_Input>>;
+  where?: InputMaybe<NftWithMetadata_Bool_Exp>;
 };
 
 

@@ -9771,6 +9771,19 @@ type mutation_root {
   delete_nftTransfer_by_pk(id: uuid!): nftTransfer
 
   """
+  delete data from the table: "nftWithMetadata"
+  """
+  delete_nftWithMetadata(
+    """filter the rows which have to be deleted"""
+    where: nftWithMetadata_bool_exp!
+  ): nftWithMetadata_mutation_response
+
+  """
+  delete single row from the table: "nftWithMetadata"
+  """
+  delete_nftWithMetadata_by_pk(id: uuid!): nftWithMetadata
+
+  """
   delete data from the table: "orderStatus"
   """
   delete_orderStatus(
@@ -10002,6 +10015,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: nftTransfer_on_conflict
   ): nftTransfer
+
+  """
+  insert data into the table: "nftWithMetadata"
+  """
+  insert_nftWithMetadata(
+    """the rows to be inserted"""
+    objects: [nftWithMetadata_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: nftWithMetadata_on_conflict
+  ): nftWithMetadata_mutation_response
+
+  """
+  insert a single row into the table: "nftWithMetadata"
+  """
+  insert_nftWithMetadata_one(
+    """the row to be inserted"""
+    object: nftWithMetadata_insert_input!
+
+    """upsert condition"""
+    on_conflict: nftWithMetadata_on_conflict
+  ): nftWithMetadata
 
   """
   insert data into the table: "orderStatus"
@@ -11204,6 +11239,82 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [nftTransfer_updates!]!
   ): [nftTransfer_mutation_response]
+
+  """
+  update data of the table: "nftWithMetadata"
+  """
+  update_nftWithMetadata(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: nftWithMetadata_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: nftWithMetadata_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: nftWithMetadata_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: nftWithMetadata_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: nftWithMetadata_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: nftWithMetadata_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: nftWithMetadata_set_input
+
+    """filter the rows which have to be updated"""
+    where: nftWithMetadata_bool_exp!
+  ): nftWithMetadata_mutation_response
+
+  """
+  update single row of the table: "nftWithMetadata"
+  """
+  update_nftWithMetadata_by_pk(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: nftWithMetadata_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: nftWithMetadata_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: nftWithMetadata_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: nftWithMetadata_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: nftWithMetadata_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: nftWithMetadata_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: nftWithMetadata_set_input
+    pk_columns: nftWithMetadata_pk_columns_input!
+  ): nftWithMetadata
+
+  """
+  update multiples rows of table: "nftWithMetadata"
+  """
+  update_nftWithMetadata_many(
+    """updates to execute, in order"""
+    updates: [nftWithMetadata_updates!]!
+  ): [nftWithMetadata_mutation_response]
 
   """
   update data of the table: "orderStatus"
@@ -12607,7 +12718,12 @@ type query_root {
   """
   fetch data from the table: "eventNftCollection" using primary key columns
   """
-  eventNftCollection_by_pk(contractAddress: String!): eventNftCollection
+  eventNftCollection_by_pk(
+    """
+    Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
+    """
+    contractAddress: String!
+  ): eventNftCollection
 
   """Retrieve a single eventPass"""
   eventPass(
@@ -13021,6 +13137,49 @@ type query_root {
 
   """fetch data from the table: "nftTransfer" using primary key columns"""
   nftTransfer_by_pk(id: uuid!): nftTransfer
+
+  """
+  fetch data from the table: "nftWithMetadata"
+  """
+  nftWithMetadata(
+    """distinct select on columns"""
+    distinct_on: [nftWithMetadata_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [nftWithMetadata_order_by!]
+
+    """filter the rows returned"""
+    where: nftWithMetadata_bool_exp
+  ): [nftWithMetadata!]!
+
+  """
+  fetch aggregated fields from the table: "nftWithMetadata"
+  """
+  nftWithMetadata_aggregate(
+    """distinct select on columns"""
+    distinct_on: [nftWithMetadata_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [nftWithMetadata_order_by!]
+
+    """filter the rows returned"""
+    where: nftWithMetadata_bool_exp
+  ): nftWithMetadata_aggregate!
+
+  """fetch data from the table: "nftWithMetadata" using primary key columns"""
+  nftWithMetadata_by_pk(id: uuid!): nftWithMetadata
 
   """Fetches an object given its ID"""
   node(
@@ -13644,7 +13803,12 @@ type subscription_root {
   """
   fetch data from the table: "eventNftCollection" using primary key columns
   """
-  eventNftCollection_by_pk(contractAddress: String!): eventNftCollection
+  eventNftCollection_by_pk(
+    """
+    Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
+    """
+    contractAddress: String!
+  ): eventNftCollection
 
   """
   fetch data from the table in a streaming manner: "eventNftCollection"
@@ -13950,6 +14114,63 @@ type subscription_root {
     """filter the rows returned"""
     where: nftTransfer_bool_exp
   ): [nftTransfer!]!
+
+  """
+  fetch data from the table: "nftWithMetadata"
+  """
+  nftWithMetadata(
+    """distinct select on columns"""
+    distinct_on: [nftWithMetadata_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [nftWithMetadata_order_by!]
+
+    """filter the rows returned"""
+    where: nftWithMetadata_bool_exp
+  ): [nftWithMetadata!]!
+
+  """
+  fetch aggregated fields from the table: "nftWithMetadata"
+  """
+  nftWithMetadata_aggregate(
+    """distinct select on columns"""
+    distinct_on: [nftWithMetadata_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [nftWithMetadata_order_by!]
+
+    """filter the rows returned"""
+    where: nftWithMetadata_bool_exp
+  ): nftWithMetadata_aggregate!
+
+  """fetch data from the table: "nftWithMetadata" using primary key columns"""
+  nftWithMetadata_by_pk(id: uuid!): nftWithMetadata
+
+  """
+  fetch data from the table in a streaming manner: "nftWithMetadata"
+  """
+  nftWithMetadata_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [nftWithMetadata_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: nftWithMetadata_bool_exp
+  ): [nftWithMetadata!]!
 
   """
   fetch data from the table: "orderStatus"
