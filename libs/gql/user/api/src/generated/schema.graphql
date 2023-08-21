@@ -169,6 +169,35 @@ type Asset implements Node {
 
   """The mime type of the file"""
   mimeType: String
+  nftImageEventPass(
+    after: String
+    before: String
+    first: Int
+
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `nftImageEventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+    last: Int
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `nftImageEventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+    orderBy: EventPassOrderByInput
+    skip: Int
+    where: EventPassWhereInput
+  ): [EventPass!]!
 
   """The time the document was published. Null on documents in draft stage."""
   publishedAt(
@@ -297,6 +326,7 @@ input AssetCreateInput {
   """
   localizations: AssetCreateLocalizationsInput
   mimeType: String
+  nftImageEventPass: EventPassCreateManyInlineInput
   size: Float
   updatedAt: DateTime
   width: Float
@@ -414,6 +444,9 @@ input AssetManyWhereInput {
   imageOrganizer_every: OrganizerWhereInput
   imageOrganizer_none: OrganizerWhereInput
   imageOrganizer_some: OrganizerWhereInput
+  nftImageEventPass_every: EventPassWhereInput
+  nftImageEventPass_none: EventPassWhereInput
+  nftImageEventPass_some: EventPassWhereInput
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -507,6 +540,7 @@ input AssetUpdateInput {
   """Manage document localizations"""
   localizations: AssetUpdateLocalizationsInput
   mimeType: String
+  nftImageEventPass: EventPassUpdateManyInlineInput
   size: Float
   width: Float
 }
@@ -805,6 +839,9 @@ input AssetWhereInput {
 
   """All values starting with the given string."""
   mimeType_starts_with: String
+  nftImageEventPass_every: EventPassWhereInput
+  nftImageEventPass_none: EventPassWhereInput
+  nftImageEventPass_some: EventPassWhereInput
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -1979,6 +2016,41 @@ type EventPass implements Node {
   name: String!
 
   """
+  Fixed description pertaining to the NFT. This content is static and non-localizable.
+  """
+  nftDescription: String!
+
+  """
+  Permanent image representing the NFT. Advised resolution is 350 x 350 pixels. Image content is non-changeable and cannot be localized.
+  """
+  nftImage(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `nftImage` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `nftImage` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): Asset!
+
+  """
+  Permanent name associated with the NFT. Cannot be changed or localized.
+  """
+  nftName: String!
+
+  """
   Define the different pass options. An option is defined for a specific location and timeframe
   """
   passOptions(
@@ -2140,6 +2212,9 @@ input EventPassCreateInput {
 
   """name input for default locale (en)"""
   name: String!
+  nftDescription: String!
+  nftImage: AssetCreateOneInlineInput!
+  nftName: String!
   passOptions: PassOptionCreateManyInlineInput
   updatedAt: DateTime
 }
@@ -2247,6 +2322,63 @@ input EventPassManyWhereInput {
 
   """All values starting with the given string."""
   id_starts_with: ID
+  nftDescription: String
+
+  """All values containing the given string."""
+  nftDescription_contains: String
+
+  """All values ending with the given string."""
+  nftDescription_ends_with: String
+
+  """All values that are contained in given list."""
+  nftDescription_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftDescription_not: String
+
+  """All values not containing the given string."""
+  nftDescription_not_contains: String
+
+  """All values not ending with the given string"""
+  nftDescription_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftDescription_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftDescription_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftDescription_starts_with: String
+  nftImage: AssetWhereInput
+  nftName: String
+
+  """All values containing the given string."""
+  nftName_contains: String
+
+  """All values ending with the given string."""
+  nftName_ends_with: String
+
+  """All values that are contained in given list."""
+  nftName_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftName_not: String
+
+  """All values not containing the given string."""
+  nftName_not_contains: String
+
+  """All values not ending with the given string"""
+  nftName_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftName_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftName_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftName_starts_with: String
   passOptions_every: PassOptionWhereInput
   passOptions_none: PassOptionWhereInput
   passOptions_some: PassOptionWhereInput
@@ -2310,6 +2442,10 @@ enum EventPassOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  nftDescription_ASC
+  nftDescription_DESC
+  nftName_ASC
+  nftName_DESC
   publishedAt_ASC
   publishedAt_DESC
   updatedAt_ASC
@@ -2326,6 +2462,9 @@ input EventPassUpdateInput {
 
   """name input for default locale (en)"""
   name: String
+  nftDescription: String
+  nftImage: AssetUpdateOneInlineInput
+  nftName: String
   passOptions: PassOptionUpdateManyInlineInput
 }
 
@@ -2385,6 +2524,8 @@ input EventPassUpdateManyInput {
 
   """name input for default locale (en)"""
   name: String
+  nftDescription: String
+  nftName: String
 }
 
 input EventPassUpdateManyLocalizationDataInput {
@@ -2566,6 +2707,63 @@ input EventPassWhereInput {
 
   """All values starting with the given string."""
   name_starts_with: String
+  nftDescription: String
+
+  """All values containing the given string."""
+  nftDescription_contains: String
+
+  """All values ending with the given string."""
+  nftDescription_ends_with: String
+
+  """All values that are contained in given list."""
+  nftDescription_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftDescription_not: String
+
+  """All values not containing the given string."""
+  nftDescription_not_contains: String
+
+  """All values not ending with the given string"""
+  nftDescription_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftDescription_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftDescription_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftDescription_starts_with: String
+  nftImage: AssetWhereInput
+  nftName: String
+
+  """All values containing the given string."""
+  nftName_contains: String
+
+  """All values ending with the given string."""
+  nftName_ends_with: String
+
+  """All values that are contained in given list."""
+  nftName_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftName_not: String
+
+  """All values not containing the given string."""
+  nftName_not_contains: String
+
+  """All values not ending with the given string"""
+  nftName_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftName_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftName_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftName_starts_with: String
   passOptions_every: PassOptionWhereInput
   passOptions_none: PassOptionWhereInput
   passOptions_some: PassOptionWhereInput
