@@ -57997,39 +57997,7 @@
           },
           {
             "name": "chainId",
-            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "bigint",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "bigint",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -58045,7 +58013,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -59075,31 +59043,7 @@
           },
           {
             "name": "chainId",
-            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -59111,7 +59055,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -59253,31 +59197,7 @@
           },
           {
             "name": "chainId",
-            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -59289,7 +59209,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -59587,31 +59507,7 @@
           },
           {
             "name": "chainId",
-            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -59623,7 +59519,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -60340,31 +60236,7 @@
           },
           {
             "name": "chainId",
-            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -60376,7 +60248,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -60768,31 +60640,7 @@
           },
           {
             "name": "chainId",
-            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
-            "type": {
-              "kind": "SCALAR",
-              "name": "bigint",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contractAddress",
-            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
+            "description": null,
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -60804,7 +60652,7 @@
           },
           {
             "name": "contractAddress",
-            "description": null,
+            "description": "Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.",
             "type": {
               "kind": "SCALAR",
               "name": "String",
