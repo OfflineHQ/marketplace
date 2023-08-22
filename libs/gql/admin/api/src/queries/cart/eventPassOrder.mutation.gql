@@ -1,0 +1,15 @@
+mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
+  insert_eventPassOrder(
+    objects: $objects
+    on_conflict: { constraint: eventPassOrder_pkey, update_columns: [quantity] }
+  ) {
+    returning {
+      id
+      quantity
+      status
+      eventPassId
+      accountId
+      created_at
+    }
+  }
+}

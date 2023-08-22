@@ -1,6 +1,9 @@
 fragment NftTransferFields on nftTransfer {
+  id
+  contractAddress
   fromAddress
   toAddress
+  transactionHash
   chainId
   blockNumber
   eventId
@@ -8,6 +11,4 @@ fragment NftTransferFields on nftTransfer {
   eventPassId
   tokenId
   created_at
-  id
-  contractAddress
 }

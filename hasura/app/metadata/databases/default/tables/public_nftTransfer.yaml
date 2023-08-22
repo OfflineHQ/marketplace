@@ -1,3 +1,22 @@
 table:
   name: nftTransfer
   schema: public
+select_permissions:
+  - role: organizer
+    permission:
+      columns:
+        - contractAddress
+        - fromAddress
+        - toAddress
+        - transactionHash
+        - chainId
+        - blockNumber
+        - eventId
+        - organizerId
+        - eventPassId
+        - tokenId
+        - id
+        - created_at
+      filter:
+        organizerId:
+          _eq: X-Hasura-User-Id

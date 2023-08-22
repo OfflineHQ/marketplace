@@ -1,0 +1,10 @@
+mutation UpdateAccount($id: uuid!, $account: account_set_input!) {
+  update_account_by_pk(_set: $account, pk_columns: { id: $id }) {
+    ...AccountFields
+  }
+}
+mutation CreateAccount($account: account_insert_input!) {
+  insert_account_one(object: $account) {
+    ...AccountFields
+  }
+}

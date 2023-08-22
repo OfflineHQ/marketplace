@@ -14,26 +14,21 @@ export const transferPassQrCodeBatch = async (
 
   // Construct the source and destination paths
   for (const input of transferInputs) {
-    const { eventPassId, address, tokenId, eventPass } = input.eventPassOwned;
-    if (!eventPass?.event)
-      throw new Error('Event not found for ' + eventPassId);
-    const { slug: eventSlug } = eventPass.event;
-    if (!eventPass?.event?.organizer)
-      throw new Error('Organizer for event not found for ' + eventPassId);
-    const { slug: organizerSlug } = eventPass.event.organizer;
+    const { currentOwnerAddress, tokenId, eventId, eventPassId, organizerId } =
+      input.eventPassNft;
 
     const fileOrigin = getPassUser({
       address: input.formerOwnerAddress,
-      organizerSlug,
-      eventSlug,
+      organizerId,
+      eventId,
       eventPassId,
       tokenId,
     });
 
     const fileDest = getPassUser({
-      address,
-      organizerSlug,
-      eventSlug,
+      address: currentOwnerAddress,
+      organizerId,
+      eventId,
       eventPassId,
       tokenId,
     });

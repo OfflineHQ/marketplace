@@ -1,7 +1,7 @@
 import { transferPassQrCodeBatch } from './transferPassQrCodeBatch';
 import { FileWrapper } from '@file-upload/admin';
 import type { BatchTransferInput } from '@features/pass-types';
-import { mockEventPassOwned } from './revealPass.spec';
+import { mockEventPassNft } from './revealPass.spec';
 
 jest.mock('@file-upload/admin');
 
@@ -12,7 +12,7 @@ describe('transferPassQrCodeBatch', () => {
 
   const mockInput: BatchTransferInput = {
     formerOwnerAddress: '0xFormerOwner',
-    eventPassOwned: mockEventPassOwned,
+    eventPassNft: mockEventPassNft,
   };
 
   it('should copy and delete files successfully', async () => {
@@ -26,32 +26,18 @@ describe('transferPassQrCodeBatch', () => {
     ).toHaveBeenCalledTimes(1);
   });
 
-  it('should throw an error if event is not found', async () => {
-    const faultyInput = {
-      ...mockInput,
-      eventPassOwned: {
-        ...mockInput.eventPassOwned,
-        eventPass: undefined,
-      },
-    };
-
-    await expect(transferPassQrCodeBatch([faultyInput])).rejects.toThrow(
-      'Event not found for test-id'
-    );
-  });
-
   const mockInputs: BatchTransferInput[] = [
     {
       formerOwnerAddress: '0xFormerOwner1',
-      eventPassOwned: mockEventPassOwned,
+      eventPassNft: mockEventPassNft,
     },
     {
       formerOwnerAddress: '0xFormerOwner2',
-      eventPassOwned: { ...mockEventPassOwned, eventPassId: 'test-id-2' },
+      eventPassNft: { ...mockEventPassNft, eventPassId: 'test-id-2' },
     },
     {
       formerOwnerAddress: '0xFormerOwner3',
-      eventPassOwned: { ...mockEventPassOwned, eventPassId: 'test-id-3' },
+      eventPassNft: { ...mockEventPassNft, eventPassId: 'test-id-3' },
     },
   ];
 
@@ -66,21 +52,21 @@ describe('transferPassQrCodeBatch', () => {
     ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
       {
         destination:
-          '/local/users/test-address/test-organizer/events/test-slug/test-id/test-slug-test-id-test-token',
+          '/local/users/test-address/test-organizer/events/test-event/test-id/test-event-test-id-12421',
         source:
-          '/local/users/0xFormerOwner1/test-organizer/events/test-slug/test-id/test-slug-test-id-test-token',
+          '/local/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421',
       },
       {
         destination:
-          '/local/users/test-address/test-organizer/events/test-slug/test-id-2/test-slug-test-id-2-test-token',
+          '/local/users/test-address/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421',
         source:
-          '/local/users/0xFormerOwner2/test-organizer/events/test-slug/test-id-2/test-slug-test-id-2-test-token',
+          '/local/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421',
       },
       {
         destination:
-          '/local/users/test-address/test-organizer/events/test-slug/test-id-3/test-slug-test-id-3-test-token',
+          '/local/users/test-address/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421',
         source:
-          '/local/users/0xFormerOwner3/test-organizer/events/test-slug/test-id-3/test-slug-test-id-3-test-token',
+          '/local/users/0xFormerOwner3/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421',
       },
     ]);
 
@@ -90,28 +76,10 @@ describe('transferPassQrCodeBatch', () => {
     expect(
       FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
     ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
-      '/local/users/0xFormerOwner1/test-organizer/events/test-slug/test-id/test-slug-test-id-test-token',
-      '/local/users/0xFormerOwner2/test-organizer/events/test-slug/test-id-2/test-slug-test-id-2-test-token',
-      '/local/users/0xFormerOwner3/test-organizer/events/test-slug/test-id-3/test-slug-test-id-3-test-token',
+      '/local/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421',
+      '/local/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421',
+      '/local/users/0xFormerOwner3/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421',
     ]);
-  });
-
-  it('should throw an error if organizer for event is not found', async () => {
-    const faultyInput = {
-      ...mockInput,
-      eventPassOwned: {
-        ...mockInput.eventPassOwned,
-        eventPass: {
-          event: {
-            slug: 'mockEventSlug',
-          },
-        },
-      },
-    };
-
-    await expect(transferPassQrCodeBatch([faultyInput])).rejects.toThrow(
-      'Organizer for event not found for test-id'
-    );
   });
 
   it('should throw an error if copying files fails', async () => {

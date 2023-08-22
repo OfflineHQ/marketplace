@@ -1,0 +1,80 @@
+table:
+  name: eventPassNft
+  schema: public
+object_relationships:
+  - name: eventPassPricing
+    using:
+      manual_configuration:
+        column_mapping:
+          eventPassId: eventPassId
+        insertion_order: null
+        remote_table:
+          name: eventPassPricing
+          schema: public
+  - name: lastNftTransfer
+    using:
+      manual_configuration:
+        column_mapping:
+          lastNftTransferId: id
+        insertion_order: null
+        remote_table:
+          name: nftTransfer
+          schema: public
+array_relationships:
+  - name: nftTransfers
+    using:
+      manual_configuration:
+        column_mapping:
+          chainId: chainId
+          contractAddress: contractAddress
+          tokenId: tokenId
+        insertion_order: null
+        remote_table:
+          name: nftTransfer
+          schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - eventPassId
+        remote_field:
+          eventPass:
+            arguments:
+              where:
+                id: $eventPassId
+        remote_schema: Hygraph CMS Remote Schema
+    name: eventPass
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - contractAddress
+        - tokenId
+        - metadata
+        - chainId
+        - eventPassId
+        - currentOwnerAddress
+        - isRevealed
+      filter: {}
+      limit: 1
+  - role: user
+    permission:
+      columns:
+        - contractAddress
+        - tokenId
+        - metadata
+        - error
+        - tokenUri
+        - chainId
+        - eventId
+        - eventPassId
+        - organizerId
+        - currentOwnerAddress
+        - lastNftTransferId
+        - isRevealed
+        - id
+        - created_at
+        - updated_at
+      filter:
+        currentOwnerAddress:
+          _eq: X-Hasura-User-address

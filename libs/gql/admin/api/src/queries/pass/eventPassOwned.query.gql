@@ -1,8 +1,0 @@
-mutation SetEventPassOwnedRevealed($id: uuid!) {
-  update_eventPassOwned_by_pk(
-    pk_columns: { id: $id }
-    _set: { isRevealed: true }
-  ) {
-    id
-  }
-}

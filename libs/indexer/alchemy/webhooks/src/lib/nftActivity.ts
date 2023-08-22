@@ -13,47 +13,6 @@ import type {
 } from './types';
 import { headers } from 'next/headers';
 
-// export const extractNftsCollectionInfoFromDb = async (
-//   contractAddress: string
-// ) => {
-//   const res =
-//     await adminSdk.GetEventNftCollectionByContractAddressWithMinimalEventPasses(
-//       {
-//         contractAddress,
-//         stage: process.env.HYGRAPH_STAGE as Stage,
-//       }
-//     );
-//   const eventPassNftCollection = res.eventNftCollection_by_pk;
-//   if (!eventPassNftCollection) {
-//     throw new Error('Event pass nft collection not found on database');
-//   }
-//   if (!eventPassNftCollection.event) {
-//     throw new Error('Event pass nft collection has no event');
-//   }
-//   const eventId = eventPassNftCollection.event.id;
-//   if (!eventPassNftCollection.event.organizer) {
-//     throw new Error('Event pass nft collection has no organizer');
-//   }
-//   const organizerId = eventPassNftCollection.event.organizer.id;
-//   if (
-//     !eventPassNftCollection.event.eventPasses ||
-//     !eventPassNftCollection.event.eventPasses.length
-//   ) {
-//     throw new Error('Event pass nft collection has no event passes');
-//   }
-//   const eventPassesIds = eventPassNftCollection.event.eventPasses.map(
-//     (pass) => pass.id
-//   );
-
-//   return {
-//     eventId,
-//     organizerId,
-//     chainId: eventPassNftCollection.chainId,
-//     contractAddress: eventPassNftCollection.contractAddress,
-//     eventPassesIds,
-//   };
-// };
-
 export const extractNftTransfersFromEvent = (
   alchemyWebhookEvent: AlchemyNFTActivityEvent
 ) => {
@@ -91,23 +50,90 @@ export const extractNftTransfersFromEvent = (
   return nftTransfers;
 };
 
-export const getNftTransfersMetadata = async (
+export const getEventPassNftTransfersMetadata = async (
   nftTransfers: NftTransferWithoutMetadata[],
   contractAddress: string,
   chainId: string
-  // nftCollectionsInfos: Awaited<
-  //   ReturnType<typeof extractNftsCollectionInfoFromDb>
-  // >
 ) => {
-  // const { eventId, organizerId, eventPassesIds } = nftCollectionsInfos;
-  const nftTransfersWithMetadata: NftTransfer[] = [];
-  const res = await adminSdk.GetNftByCollectionAndTokenIds({
+  const res = await adminSdk.GetEventPassNftByCollectionAndTokenIds({
     contractAddress,
     chainId,
     tokenIds: nftTransfers.map((t) => t.tokenId),
   });
-  const nfts = res.nftWithMetadata;
+  const eventPassNft = res.eventPassNft;
+
+  return nftTransfers.reduce((acc, nft) => {
+    const nftWithMetadata = eventPassNft.find((n) => n.tokenId === nft.tokenId);
+    if (!nftWithMetadata) {
+      console.error(
+        `Metadata not found for this token ! Skipping execution for this transfer: ${nft.transactionHash} in ${nft.chainId} for ${nft.contractAddress} collection, fromAddress ${nft.fromAddress} toAddress ${nft.toAddress} with erc721TokenId ${nft.tokenId}. This is a critical error that should be investigated.`
+      );
+      return acc; // Skip this item and continue with the next one
+    }
+    const { eventId, eventPassId, organizerId } = nftWithMetadata;
+    return [
+      ...acc,
+      {
+        ...nft,
+        eventId,
+        eventPassId,
+        organizerId,
+      } satisfies NftTransferNotCreated,
+    ];
+  }, [] as NftTransferNotCreated[]);
 };
+
+export const upsertNftTransfers = async (
+  nftTransfers: NftTransferNotCreated[]
+) => {
+  const res = await adminSdk.UpsertNftTransfer({
+    objects: nftTransfers,
+  });
+  if (!res.insert_nftTransfer) {
+    throw new Error('Failed to upsert NftTransfer');
+  }
+  return res.insert_nftTransfer.returning satisfies NftTransfer[];
+};
+
+export const UpdateEventPassNftFromNftTransfer = async (
+  nftTransfers: NftTransfer[]
+) => {
+  const res = await adminSdk.UpdateEventPassNftFromNftTransfer({
+    updates: nftTransfers.map((transfer) => {
+      const { chainId, contractAddress, tokenId, toAddress, id } = transfer;
+      return {
+        where: {
+          contractAddress: { _eq: contractAddress },
+          tokenId: { _eq: tokenId },
+          chainId: { _eq: chainId },
+        },
+        _set: {
+          currentOwnerAddress: toAddress,
+          lastNftTransferId: id,
+        },
+      };
+    }),
+  });
+
+  if (!res.update_eventPassNft_many) {
+    throw new Error('Failed to update eventPassNft');
+  }
+
+  return res.update_eventPassNft_many
+    .map((nftRes) => {
+      if (!nftRes?.returning || !nftRes.returning?.length) {
+        console.error(
+          'No returning data for an update on eventPassNft, this is likely an error'
+        );
+        return null;
+      }
+      return nftRes.returning[0];
+    })
+    .filter((item) => item !== null);
+};
+
+// export const applyQrCodeBatchTransfer = async (
+//   eventPassNfts:
 
 export async function nftActivity(
   req: AlchemyRequest,
@@ -133,15 +159,16 @@ export async function nftActivity(
   }
   const chainId = alchemyWebhookEvent.event.activity[0].network; // TODO: convert to chainId hex string
 
-  // const nftCollectionsInfos = await extractNftsCollectionInfoFromDb(
-  //   contractAddress
-  // );
-  // const nftTransfers = extractNftTransfersFromEvent(
-  //   alchemyWebhookEvent,
-  //   contractAddress,
-  //   chainId
-  // );
-  // await getNftTransfersMetadata(nftTransfers, nftCollectionsInfos);
+  const nftTransfersFromEvent =
+    extractNftTransfersFromEvent(alchemyWebhookEvent);
+  const NftTransfersNotCreated = await getEventPassNftTransfersMetadata(
+    nftTransfersFromEvent,
+    contractAddress,
+    chainId
+  );
+
+  const nftTransfers = await upsertNftTransfers(NftTransfersNotCreated);
+  await UpdateEventPassNftFromNftTransfer(nftTransfers);
 
   return new Response(null, { status: 200 });
 }
