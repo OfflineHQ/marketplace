@@ -1,9 +1,9 @@
-query GetNftByCollectionAndTokenIds(
+query GetEventPassNftByCollectionAndTokenIds(
   $contractAddress: String!
   $chainId: String!
   $tokenIds: [bigint!]!
 ) @cached {
-  nftWithMetadata(
+  eventPassNft(
     where: {
       contractAddress: { _eq: $contractAddress }
       chainId: { _eq: $chainId }

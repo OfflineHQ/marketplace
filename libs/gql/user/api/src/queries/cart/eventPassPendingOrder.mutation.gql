@@ -1,0 +1,24 @@
+mutation InsertEventPassPendingOrders(
+  $objects: [eventPassPendingOrder_insert_input!]!
+) {
+  insert_eventPassPendingOrder(objects: $objects) {
+    returning {
+      id
+      quantity
+      eventPassId
+      created_at
+    }
+  }
+}
+
+mutation DeleteEventPassPendingOrder($eventPassPendingOrderId: uuid!) {
+  delete_eventPassPendingOrder_by_pk(id: $eventPassPendingOrderId) {
+    id
+  }
+}
+
+mutation DeleteEventPassPendingOrders($eventPassIds: [String!]!) {
+  delete_eventPassPendingOrder(where: { eventPassId: { _in: $eventPassIds } }) {
+    affected_rows
+  }
+}

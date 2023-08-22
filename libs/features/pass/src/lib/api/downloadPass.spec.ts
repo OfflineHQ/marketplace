@@ -3,7 +3,7 @@ import { userSdk } from '@gql/user/api';
 import { FileDownloader } from '@file-upload/user';
 import { isServerSide } from '@utils';
 import { cookies } from 'next/headers';
-import { mockEventPassOwned } from './revealPass.spec';
+import { mockEventPassNft } from './revealPass.spec';
 
 // Mocking the dependencies
 jest.mock('@gql/user/api');
@@ -35,8 +35,8 @@ jest.mock('@file-upload/user', () => ({
   }),
 }));
 
-const mockEventPassOwnedRevealed = {
-  ...mockEventPassOwned,
+const mockEventPassNftRevealed = {
+  ...mockEventPassNft,
   isRevealed: true,
 };
 
@@ -47,19 +47,19 @@ describe('downloadPass functions', () => {
 
   describe('getEventPassRevealedFilePath', () => {
     it('returns correct path when all data is available', async () => {
-      (userSdk.GetEventPassOwnedById as jest.Mock).mockResolvedValue({
-        eventPassOwned_by_pk: mockEventPassOwnedRevealed,
+      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+        eventPassNft_by_pk: mockEventPassNftRevealed,
       });
       const result = await getEventPassRevealedFilePath('valid-id');
       // Your assertion here
       expect(result).toEqual(
-        '/local/users/test-address/test-organizer/events/test-slug/test-id/test-slug-test-id-test-token'
+        '/local/users/test-address/test-organizer/events/test-event/test-id/test-event-test-id-12421'
       );
     });
 
     it('throws error if event pass is not owned by user', async () => {
-      (userSdk.GetEventPassOwnedById as jest.Mock).mockResolvedValue({
-        eventPassOwned_by_pk: null,
+      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+        eventPassNft_by_pk: null,
       });
 
       await expect(getEventPassRevealedFilePath('valid-id')).rejects.toThrow(
@@ -68,8 +68,8 @@ describe('downloadPass functions', () => {
     });
 
     it('throws error if event pass is not revealed', async () => {
-      (userSdk.GetEventPassOwnedById as jest.Mock).mockResolvedValue({
-        eventPassOwned_by_pk: mockEventPassOwned,
+      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+        eventPassNft_by_pk: mockEventPassNft,
       });
 
       await expect(getEventPassRevealedFilePath('valid-id')).rejects.toThrow(
@@ -104,8 +104,8 @@ describe('downloadPass functions', () => {
       };
       (isServerSide as jest.Mock).mockReturnValue(true);
       mockCookiesGet.mockReturnValue('sample-jwt-token'); // Mock JWT cookie
-      (userSdk.GetEventPassOwnedById as jest.Mock).mockResolvedValue({
-        eventPassOwned_by_pk: mockEventPassOwnedRevealed,
+      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+        eventPassNft_by_pk: mockEventPassNftRevealed,
       });
       downloadFileMock.mockResolvedValue(mockBlob); // Mock FileDownloader's response
 
@@ -116,8 +116,8 @@ describe('downloadPass functions', () => {
     it('calls downloadFile with display action when on client side and JWT cookie is found', async () => {
       (isServerSide as jest.Mock).mockReturnValue(false); // Mock client side
       mockCookiesGet.mockReturnValue('sample-jwt-token'); // Mock JWT cookie
-      (userSdk.GetEventPassOwnedById as jest.Mock).mockResolvedValue({
-        eventPassOwned_by_pk: mockEventPassOwnedRevealed,
+      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+        eventPassNft_by_pk: mockEventPassNftRevealed,
       });
 
       const mockBlob = {
@@ -140,8 +140,8 @@ describe('downloadPass functions', () => {
     it('propagates error from FileDownloader', async () => {
       (isServerSide as jest.Mock).mockReturnValue(true);
       mockCookiesGet.mockReturnValue('sample-jwt-token'); // Mock JWT cookie
-      (userSdk.GetEventPassOwnedById as jest.Mock).mockResolvedValue({
-        eventPassOwned_by_pk: mockEventPassOwnedRevealed,
+      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+        eventPassNft_by_pk: mockEventPassNftRevealed,
       });
       downloadFileMock.mockRejectedValue(new Error('File download error')); // Mock error from FileDownloader
 

@@ -11,8 +11,11 @@ export const AccountFieldsFragmentDoc = `
     `;
 export const NftTransferFieldsFragmentDoc = `
     fragment NftTransferFields on nftTransfer {
+  id
+  contractAddress
   fromAddress
   toAddress
+  transactionHash
   chainId
   blockNumber
   eventId
@@ -20,8 +23,6 @@ export const NftTransferFieldsFragmentDoc = `
   eventPassId
   tokenId
   created_at
-  id
-  contractAddress
 }
     `;
 export const EventListFieldsFragmentDoc = `
@@ -74,19 +75,6 @@ export const EventDateLocationsFieldsFragmentDoc = `
   dateEnd
 }
     `;
-export const EventPassOwnedFieldsFragmentDoc = `
-    fragment EventPassOwnedFields on eventPassOwned {
-  id
-  eventPassId
-  address
-  isRevealed
-  transactionHash
-  timeStamp
-  chainId
-  contractAddress
-  tokenId
-}
-    `;
  const UpdateAccountDocument = `
     mutation UpdateAccount($id: uuid!, $account: account_set_input!) {
   update_account_by_pk(_set: $account, pk_columns: {id: $id}) {
@@ -115,18 +103,6 @@ export const EventPassOwnedFieldsFragmentDoc = `
   }
 }
     ${AccountFieldsFragmentDoc}`;
- const GetAccountEventPassOrderForEventPassesDocument = `
-    query GetAccountEventPassOrderForEventPasses($accountId: uuid!, $eventPassIds: [String!]) {
-  eventPassOrder(
-    where: {accountId: {_eq: $accountId}, eventPassId: {_in: $eventPassIds}}
-  ) {
-    eventPassId
-    quantity
-    status
-    created_at
-  }
-}
-    `;
  const UpsertEventPassOrdersDocument = `
     mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
   insert_eventPassOrder(
@@ -141,6 +117,25 @@ export const EventPassOwnedFieldsFragmentDoc = `
       accountId
       created_at
     }
+  }
+}
+    `;
+ const GetAccountEventPassOrderForEventPassesDocument = `
+    query GetAccountEventPassOrderForEventPasses($accountId: uuid!, $eventPassIds: [String!]) {
+  eventPassOrder(
+    where: {accountId: {_eq: $accountId}, eventPassId: {_in: $eventPassIds}}
+  ) {
+    eventPassId
+    quantity
+    status
+    created_at
+  }
+}
+    `;
+ const DeleteEventPassPendingOrdersDocument = `
+    mutation DeleteEventPassPendingOrders($ids: [uuid!]!) {
+  delete_eventPassPendingOrder(where: {id: {_in: $ids}}) {
+    affected_rows
   }
 }
     `;
@@ -160,13 +155,19 @@ export const EventPassOwnedFieldsFragmentDoc = `
   }
 }
     `;
- const DeleteEventPassPendingOrdersDocument = `
-    mutation DeleteEventPassPendingOrders($ids: [uuid!]!) {
-  delete_eventPassPendingOrder(where: {id: {_in: $ids}}) {
+ const UpsertNftTransferDocument = `
+    mutation UpsertNftTransfer($objects: [nftTransfer_insert_input!]!) {
+  insert_nftTransfer(
+    objects: $objects
+    on_conflict: {constraint: nft_transfer_unique_transfer, update_columns: []}
+  ) {
     affected_rows
+    returning {
+      ...NftTransferFields
+    }
   }
 }
-    `;
+    ${NftTransferFieldsFragmentDoc}`;
  const GetNftTransferByTxHashDocument = `
     query GetNftTransferByTxHash($txHash: String!, $chainId: String!) {
   nftTransfer(where: {transactionHash: {_eq: $txHash}, chainId: {_eq: $chainId}}) {
@@ -184,18 +185,6 @@ export const EventPassOwnedFieldsFragmentDoc = `
   }
 }
     ${NftTransferFieldsFragmentDoc}`;
- const GetNftByCollectionAndTokenIdsDocument = `
-    query GetNftByCollectionAndTokenIds($contractAddress: String!, $chainId: String!, $tokenIds: [bigint!]!) @cached {
-  nftWithMetadata(
-    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, tokenId: {_in: $tokenIds}}
-  ) {
-    tokenId
-    eventId
-    eventPassId
-    organizerId
-  }
-}
-    `;
  const GetEventDocument = `
     query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
@@ -260,24 +249,6 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${EventDateLocationsFieldsFragmentDoc}`;
- const GetEventNftCollectionByContractAddressWithMinimalEventPassesDocument = `
-    query GetEventNftCollectionByContractAddressWithMinimalEventPasses($contractAddress: String!, $stage: Stage!) {
-  eventNftCollection_by_pk(contractAddress: $contractAddress) {
-    contractAddress
-    chainId
-    activityWebhookId
-    event(where: {}, locales: [en], stage: $stage) {
-      id
-      eventPasses {
-        id
-      }
-      organizer {
-        id
-      }
-    }
-  }
-}
-    `;
  const GetEventPassesDocument = `
     query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
   eventPasses(
@@ -307,6 +278,43 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${EventDateLocationsFieldsFragmentDoc}`;
+ const UpdateEventPassNftFromNftTransferDocument = `
+    mutation UpdateEventPassNftFromNftTransfer($updates: [eventPassNft_updates!]!) {
+  update_eventPassNft_many(updates: $updates) {
+    affected_rows
+    returning {
+      id
+      isRevealed
+      currentOwnerAddress
+      eventId
+      eventPassId
+      organizerId
+      lastNftTransfer {
+        fromAddress
+      }
+    }
+  }
+}
+    `;
+ const SetEventPassNftRevealedDocument = `
+    mutation SetEventPassNftRevealed($id: uuid!) {
+  update_eventPassNft_by_pk(pk_columns: {id: $id}, _set: {isRevealed: true}) {
+    id
+  }
+}
+    `;
+ const GetEventPassNftByCollectionAndTokenIdsDocument = `
+    query GetEventPassNftByCollectionAndTokenIds($contractAddress: String!, $chainId: String!, $tokenIds: [bigint!]!) @cached {
+  eventPassNft(
+    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, tokenId: {_in: $tokenIds}}
+  ) {
+    tokenId
+    eventId
+    eventPassId
+    organizerId
+  }
+}
+    `;
  const CreateEventPassPricingDocument = `
     mutation CreateEventPassPricing($eventPassPricing: eventPassPricing_insert_input!) {
   insert_eventPassPricing_one(object: $eventPassPricing) {
@@ -338,13 +346,6 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${OrganizerFieldsFragmentDoc}`;
- const SetEventPassOwnedRevealedDocument = `
-    mutation SetEventPassOwnedRevealed($id: uuid!) {
-  update_eventPassOwned_by_pk(pk_columns: {id: $id}, _set: {isRevealed: true}) {
-    id
-  }
-}
-    `;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -360,17 +361,20 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetAccountByEmail(variables: Types.GetAccountByEmailQueryVariables, options?: C): Promise<Types.GetAccountByEmailQuery> {
       return requester<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables, options) as Promise<Types.GetAccountByEmailQuery>;
     },
+    UpsertEventPassOrders(variables: Types.UpsertEventPassOrdersMutationVariables, options?: C): Promise<Types.UpsertEventPassOrdersMutation> {
+      return requester<Types.UpsertEventPassOrdersMutation, Types.UpsertEventPassOrdersMutationVariables>(UpsertEventPassOrdersDocument, variables, options) as Promise<Types.UpsertEventPassOrdersMutation>;
+    },
     GetAccountEventPassOrderForEventPasses(variables: Types.GetAccountEventPassOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetAccountEventPassOrderForEventPassesQuery> {
       return requester<Types.GetAccountEventPassOrderForEventPassesQuery, Types.GetAccountEventPassOrderForEventPassesQueryVariables>(GetAccountEventPassOrderForEventPassesDocument, variables, options) as Promise<Types.GetAccountEventPassOrderForEventPassesQuery>;
     },
-    UpsertEventPassOrders(variables: Types.UpsertEventPassOrdersMutationVariables, options?: C): Promise<Types.UpsertEventPassOrdersMutation> {
-      return requester<Types.UpsertEventPassOrdersMutation, Types.UpsertEventPassOrdersMutationVariables>(UpsertEventPassOrdersDocument, variables, options) as Promise<Types.UpsertEventPassOrdersMutation>;
+    DeleteEventPassPendingOrders(variables: Types.DeleteEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrdersMutation> {
+      return requester<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrdersMutation>;
     },
     GetEventPassPendingOrders(variables?: Types.GetEventPassPendingOrdersQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersQuery> {
       return requester<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables, options) as Promise<Types.GetEventPassPendingOrdersQuery>;
     },
-    DeleteEventPassPendingOrders(variables: Types.DeleteEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrdersMutation> {
-      return requester<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrdersMutation>;
+    UpsertNftTransfer(variables: Types.UpsertNftTransferMutationVariables, options?: C): Promise<Types.UpsertNftTransferMutation> {
+      return requester<Types.UpsertNftTransferMutation, Types.UpsertNftTransferMutationVariables>(UpsertNftTransferDocument, variables, options) as Promise<Types.UpsertNftTransferMutation>;
     },
     GetNftTransferByTxHash(variables: Types.GetNftTransferByTxHashQueryVariables, options?: C): Promise<Types.GetNftTransferByTxHashQuery> {
       return requester<Types.GetNftTransferByTxHashQuery, Types.GetNftTransferByTxHashQueryVariables>(GetNftTransferByTxHashDocument, variables, options) as Promise<Types.GetNftTransferByTxHashQuery>;
@@ -378,20 +382,23 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetNftTransferByTokenIdAndCollection(variables: Types.GetNftTransferByTokenIdAndCollectionQueryVariables, options?: C): Promise<Types.GetNftTransferByTokenIdAndCollectionQuery> {
       return requester<Types.GetNftTransferByTokenIdAndCollectionQuery, Types.GetNftTransferByTokenIdAndCollectionQueryVariables>(GetNftTransferByTokenIdAndCollectionDocument, variables, options) as Promise<Types.GetNftTransferByTokenIdAndCollectionQuery>;
     },
-    GetNftByCollectionAndTokenIds(variables: Types.GetNftByCollectionAndTokenIdsQueryVariables, options?: C): Promise<Types.GetNftByCollectionAndTokenIdsQuery> {
-      return requester<Types.GetNftByCollectionAndTokenIdsQuery, Types.GetNftByCollectionAndTokenIdsQueryVariables>(GetNftByCollectionAndTokenIdsDocument, variables, options) as Promise<Types.GetNftByCollectionAndTokenIdsQuery>;
-    },
     GetEvent(variables: Types.GetEventQueryVariables, options?: C): Promise<Types.GetEventQuery> {
       return requester<Types.GetEventQuery, Types.GetEventQueryVariables>(GetEventDocument, variables, options) as Promise<Types.GetEventQuery>;
     },
     GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
       return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;
     },
-    GetEventNftCollectionByContractAddressWithMinimalEventPasses(variables: Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables, options?: C): Promise<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery> {
-      return requester<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery, Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables>(GetEventNftCollectionByContractAddressWithMinimalEventPassesDocument, variables, options) as Promise<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery>;
-    },
     GetEventPasses(variables: Types.GetEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassesQuery> {
       return requester<Types.GetEventPassesQuery, Types.GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<Types.GetEventPassesQuery>;
+    },
+    UpdateEventPassNftFromNftTransfer(variables: Types.UpdateEventPassNftFromNftTransferMutationVariables, options?: C): Promise<Types.UpdateEventPassNftFromNftTransferMutation> {
+      return requester<Types.UpdateEventPassNftFromNftTransferMutation, Types.UpdateEventPassNftFromNftTransferMutationVariables>(UpdateEventPassNftFromNftTransferDocument, variables, options) as Promise<Types.UpdateEventPassNftFromNftTransferMutation>;
+    },
+    SetEventPassNftRevealed(variables: Types.SetEventPassNftRevealedMutationVariables, options?: C): Promise<Types.SetEventPassNftRevealedMutation> {
+      return requester<Types.SetEventPassNftRevealedMutation, Types.SetEventPassNftRevealedMutationVariables>(SetEventPassNftRevealedDocument, variables, options) as Promise<Types.SetEventPassNftRevealedMutation>;
+    },
+    GetEventPassNftByCollectionAndTokenIds(variables: Types.GetEventPassNftByCollectionAndTokenIdsQueryVariables, options?: C): Promise<Types.GetEventPassNftByCollectionAndTokenIdsQuery> {
+      return requester<Types.GetEventPassNftByCollectionAndTokenIdsQuery, Types.GetEventPassNftByCollectionAndTokenIdsQueryVariables>(GetEventPassNftByCollectionAndTokenIdsDocument, variables, options) as Promise<Types.GetEventPassNftByCollectionAndTokenIdsQuery>;
     },
     CreateEventPassPricing(variables: Types.CreateEventPassPricingMutationVariables, options?: C): Promise<Types.CreateEventPassPricingMutation> {
       return requester<Types.CreateEventPassPricingMutation, Types.CreateEventPassPricingMutationVariables>(CreateEventPassPricingDocument, variables, options) as Promise<Types.CreateEventPassPricingMutation>;
@@ -401,9 +408,6 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
-    },
-    SetEventPassOwnedRevealed(variables: Types.SetEventPassOwnedRevealedMutationVariables, options?: C): Promise<Types.SetEventPassOwnedRevealedMutation> {
-      return requester<Types.SetEventPassOwnedRevealedMutation, Types.SetEventPassOwnedRevealedMutationVariables>(SetEventPassOwnedRevealedDocument, variables, options) as Promise<Types.SetEventPassOwnedRevealedMutation>;
     }
   };
 }

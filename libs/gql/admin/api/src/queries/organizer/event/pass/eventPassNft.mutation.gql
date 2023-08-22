@@ -1,0 +1,25 @@
+mutation UpdateEventPassNftFromNftTransfer($updates: [eventPassNft_updates!]!) {
+  update_eventPassNft_many(updates: $updates) {
+    affected_rows
+    returning {
+      id
+      isRevealed
+      currentOwnerAddress
+      eventId
+      eventPassId
+      organizerId
+      lastNftTransfer {
+        fromAddress
+      }
+    }
+  }
+}
+
+mutation SetEventPassNftRevealed($id: uuid!) {
+  update_eventPassNft_by_pk(
+    pk_columns: { id: $id }
+    _set: { isRevealed: true }
+  ) {
+    id
+  }
+}
