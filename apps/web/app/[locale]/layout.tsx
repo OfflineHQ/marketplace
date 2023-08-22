@@ -93,7 +93,7 @@ export default function RootLayout({
 }: RootLayoutProps) {
   const locale = useLocale();
   // Show a 404 error if the user requests an unknown locale
-  if (params.locale !== locale) {
+  if (params?.locale !== locale) {
     notFound();
   }
   const t = useTranslations('Auth');

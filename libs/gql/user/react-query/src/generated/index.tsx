@@ -8,17 +8,15 @@ export const AccountFieldsFragmentDoc = `
   email
 }
     `;
-export const EventPassOwnedFieldsFragmentDoc = `
-    fragment EventPassOwnedFields on eventPassOwned {
+export const EventPassNftFieldsFragmentDoc = `
+    fragment EventPassNftFields on eventPassNft {
   id
-  eventPassId
-  address
-  isRevealed
-  transactionHash
-  timeStamp
-  chainId
-  contractAddress
   tokenId
+  eventId
+  eventPassId
+  organizerId
+  isRevealed
+  currentOwnerAddress
 }
     `;
 export const GetAccountDocument = `
@@ -100,58 +98,6 @@ export const useGetEventWithPassesQuery = <
       fetchDataReactQuery<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables),
       options
     );
-export const GetEventPassPendingOrderForEventPassesDocument = `
-    query GetEventPassPendingOrderForEventPasses($eventPassIds: [String!]) {
-  eventPassPendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
-    id
-    eventPassId
-    quantity
-    created_at
-  }
-}
-    `;
-export const useGetEventPassPendingOrderForEventPassesQuery = <
-      TData = Types.GetEventPassPendingOrderForEventPassesQuery,
-      TError = Error
-    >(
-      variables?: Types.GetEventPassPendingOrderForEventPassesQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassPendingOrderForEventPassesQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetEventPassPendingOrderForEventPassesQuery, TError, TData>(
-      variables === undefined ? ['GetEventPassPendingOrderForEventPasses'] : ['GetEventPassPendingOrderForEventPasses', variables],
-      fetchDataReactQuery<Types.GetEventPassPendingOrderForEventPassesQuery, Types.GetEventPassPendingOrderForEventPassesQueryVariables>(GetEventPassPendingOrderForEventPassesDocument, variables),
-      options
-    );
-export const GetEventPassPendingOrdersDocument = `
-    query GetEventPassPendingOrders($locale: Locale!, $stage: Stage!) {
-  eventPassPendingOrder {
-    id
-    eventPassId
-    quantity
-    created_at
-    eventPass(locales: [$locale, en], stage: $stage) {
-      event {
-        slug
-        organizer {
-          slug
-        }
-      }
-    }
-  }
-}
-    `;
-export const useGetEventPassPendingOrdersQuery = <
-      TData = Types.GetEventPassPendingOrdersQuery,
-      TError = Error
-    >(
-      variables: Types.GetEventPassPendingOrdersQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassPendingOrdersQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetEventPassPendingOrdersQuery, TError, TData>(
-      ['GetEventPassPendingOrders', variables],
-      fetchDataReactQuery<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables),
-      options
-    );
 export const InsertEventPassPendingOrdersDocument = `
     mutation InsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!) {
   insert_eventPassPendingOrder(objects: $objects) {
@@ -205,37 +151,35 @@ export const useDeleteEventPassPendingOrdersMutation = <
       (variables?: Types.DeleteEventPassPendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables)(),
       options
     );
-export const GetEventPassOwnedDocument = `
-    query GetEventPassOwned($locale: Locale!, $stage: Stage!) {
-  eventPassOwned {
-    ...EventPassOwnedFields
-    eventPass(locales: [$locale, en], stage: $stage) {
-      event {
-        slug
-        organizer {
-          slug
-        }
-      }
-    }
+export const GetEventPassPendingOrderForEventPassesDocument = `
+    query GetEventPassPendingOrderForEventPasses($eventPassIds: [String!]) {
+  eventPassPendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
+    id
+    eventPassId
+    quantity
+    created_at
   }
 }
-    ${EventPassOwnedFieldsFragmentDoc}`;
-export const useGetEventPassOwnedQuery = <
-      TData = Types.GetEventPassOwnedQuery,
+    `;
+export const useGetEventPassPendingOrderForEventPassesQuery = <
+      TData = Types.GetEventPassPendingOrderForEventPassesQuery,
       TError = Error
     >(
-      variables: Types.GetEventPassOwnedQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassOwnedQuery, TError, TData>
+      variables?: Types.GetEventPassPendingOrderForEventPassesQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassPendingOrderForEventPassesQuery, TError, TData>
     ) =>
-    useQuery<Types.GetEventPassOwnedQuery, TError, TData>(
-      ['GetEventPassOwned', variables],
-      fetchDataReactQuery<Types.GetEventPassOwnedQuery, Types.GetEventPassOwnedQueryVariables>(GetEventPassOwnedDocument, variables),
+    useQuery<Types.GetEventPassPendingOrderForEventPassesQuery, TError, TData>(
+      variables === undefined ? ['GetEventPassPendingOrderForEventPasses'] : ['GetEventPassPendingOrderForEventPasses', variables],
+      fetchDataReactQuery<Types.GetEventPassPendingOrderForEventPassesQuery, Types.GetEventPassPendingOrderForEventPassesQueryVariables>(GetEventPassPendingOrderForEventPassesDocument, variables),
       options
     );
-export const GetEventPassOwnedByIdDocument = `
-    query GetEventPassOwnedById($id: uuid!, $locale: Locale!, $stage: Stage!) {
-  eventPassOwned_by_pk(id: $id) {
-    ...EventPassOwnedFields
+export const GetEventPassPendingOrdersDocument = `
+    query GetEventPassPendingOrders($locale: Locale!, $stage: Stage!) {
+  eventPassPendingOrder {
+    id
+    eventPassId
+    quantity
+    created_at
     eventPass(locales: [$locale, en], stage: $stage) {
       event {
         slug
@@ -246,57 +190,35 @@ export const GetEventPassOwnedByIdDocument = `
     }
   }
 }
-    ${EventPassOwnedFieldsFragmentDoc}`;
-export const useGetEventPassOwnedByIdQuery = <
-      TData = Types.GetEventPassOwnedByIdQuery,
+    `;
+export const useGetEventPassPendingOrdersQuery = <
+      TData = Types.GetEventPassPendingOrdersQuery,
       TError = Error
     >(
-      variables: Types.GetEventPassOwnedByIdQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassOwnedByIdQuery, TError, TData>
+      variables: Types.GetEventPassPendingOrdersQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassPendingOrdersQuery, TError, TData>
     ) =>
-    useQuery<Types.GetEventPassOwnedByIdQuery, TError, TData>(
-      ['GetEventPassOwnedById', variables],
-      fetchDataReactQuery<Types.GetEventPassOwnedByIdQuery, Types.GetEventPassOwnedByIdQueryVariables>(GetEventPassOwnedByIdDocument, variables),
+    useQuery<Types.GetEventPassPendingOrdersQuery, TError, TData>(
+      ['GetEventPassPendingOrders', variables],
+      fetchDataReactQuery<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables),
       options
     );
-export const GetEventPassOwnedWithDetailsDocument = `
-    query GetEventPassOwnedWithDetails($locale: Locale!, $stage: Stage!) {
-  eventPassOwned {
-    ...EventPassOwnedFields
-    eventPass(locales: [$locale, en], stage: $stage) {
-      name
-      description
-      eventPassPricing {
-        priceAmount
-        priceCurrency
-      }
-      event {
-        title
-        slug
-        heroImage {
-          url
-        }
-        organizer {
-          name
-          slug
-          image {
-            url
-          }
-        }
-      }
-    }
+export const GetEventPassNftByIdDocument = `
+    query GetEventPassNftById($id: uuid!) {
+  eventPassNft_by_pk(id: $id) {
+    ...EventPassNftFields
   }
 }
-    ${EventPassOwnedFieldsFragmentDoc}`;
-export const useGetEventPassOwnedWithDetailsQuery = <
-      TData = Types.GetEventPassOwnedWithDetailsQuery,
+    ${EventPassNftFieldsFragmentDoc}`;
+export const useGetEventPassNftByIdQuery = <
+      TData = Types.GetEventPassNftByIdQuery,
       TError = Error
     >(
-      variables: Types.GetEventPassOwnedWithDetailsQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassOwnedWithDetailsQuery, TError, TData>
+      variables: Types.GetEventPassNftByIdQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassNftByIdQuery, TError, TData>
     ) =>
-    useQuery<Types.GetEventPassOwnedWithDetailsQuery, TError, TData>(
-      ['GetEventPassOwnedWithDetails', variables],
-      fetchDataReactQuery<Types.GetEventPassOwnedWithDetailsQuery, Types.GetEventPassOwnedWithDetailsQueryVariables>(GetEventPassOwnedWithDetailsDocument, variables),
+    useQuery<Types.GetEventPassNftByIdQuery, TError, TData>(
+      ['GetEventPassNftById', variables],
+      fetchDataReactQuery<Types.GetEventPassNftByIdQuery, Types.GetEventPassNftByIdQueryVariables>(GetEventPassNftByIdDocument, variables),
       options
     );

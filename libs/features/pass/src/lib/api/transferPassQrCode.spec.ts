@@ -1,6 +1,6 @@
 import { transferPassQrCode } from './transferPassQrCode'; // adjust the path accordingly
 import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
-import { mockEventPassOwned } from './revealPass.spec';
+import { mockEventPassNft } from './revealPass.spec';
 
 jest.mock('@file-upload/admin');
 
@@ -11,32 +11,10 @@ describe('transferPassQrCode', () => {
       status: FileCopyStatus.Copied,
     });
 
-    await transferPassQrCode(mockFormerOwnerAddress, mockEventPassOwned);
+    await transferPassQrCode(mockFormerOwnerAddress, mockEventPassNft);
 
     expect(FileWrapper.prototype.copyFile).toBeCalled();
     expect(FileWrapper.prototype.deleteFile).toBeCalled();
-  });
-
-  it('should throw error if event is not found', async () => {
-    const invalidEventPass = { ...mockEventPassOwned, eventPass: null };
-    await expect(
-      transferPassQrCode(mockFormerOwnerAddress, invalidEventPass)
-    ).rejects.toThrow('Event not found');
-  });
-
-  it('should throw error if organizer for event is not found', async () => {
-    const invalidEventPass = {
-      ...mockEventPassOwned,
-      eventPass: {
-        event: {
-          slug: 'test-slug',
-          organizer: null,
-        },
-      },
-    };
-    await expect(
-      transferPassQrCode(mockFormerOwnerAddress, invalidEventPass)
-    ).rejects.toThrow('Organizer for event not found');
   });
 
   it('should throw error if file copy is unsuccessful', async () => {
@@ -44,7 +22,7 @@ describe('transferPassQrCode', () => {
       status: FileCopyStatus.FileNotFound,
     });
     await expect(
-      transferPassQrCode(mockFormerOwnerAddress, mockEventPassOwned)
+      transferPassQrCode(mockFormerOwnerAddress, mockEventPassNft)
     ).rejects.toThrow(FileCopyStatus.FileNotFound);
   });
 
@@ -56,7 +34,7 @@ describe('transferPassQrCode', () => {
       new Error('DeleteFailed')
     );
     await expect(
-      transferPassQrCode(mockFormerOwnerAddress, mockEventPassOwned)
+      transferPassQrCode(mockFormerOwnerAddress, mockEventPassNft)
     ).rejects.toThrow('DeleteFailed');
   });
 });

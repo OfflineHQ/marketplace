@@ -1,0 +1,5 @@
+query GetEventPassNftById($id: uuid!) {
+  eventPassNft_by_pk(id: $id) {
+    ...EventPassNftFields
+  }
+}

@@ -7,29 +7,21 @@ import { nextAuthCookieName } from '@next/next-auth/common';
 import { getPassUser } from './common';
 
 export const getEventPassRevealedFilePath = async (id: string) => {
-  const res = await userSdk.GetEventPassOwnedById(
+  const res = await userSdk.GetEventPassNftById(
     {
       id,
-      locale: Locale.En,
-      stage: isServerSide()
-        ? (process.env.HYGRAPH_STAGE as Stage)
-        : (process.env.NEXT_PUBLIC_HYGRAPH_STAGE as Stage),
     },
     { cache: 'no-store' }
   );
-  const eventPassOwned = res.eventPassOwned_by_pk;
-  if (!eventPassOwned) throw new Error('Event Pass not owned by user');
-  if (!eventPassOwned.isRevealed) throw new Error('Event Pass is not revealed');
-  const { eventPassId, address, tokenId, eventPass } = eventPassOwned;
-  if (!eventPass?.event) throw new Error('Event not found');
-  const { slug: eventSlug } = eventPass.event;
-  if (!eventPass?.event?.organizer)
-    throw new Error('Organizer for event not found');
-  const { slug: organizerSlug } = eventPass.event.organizer;
+  const eventPassNft = res.eventPassNft_by_pk;
+  if (!eventPassNft) throw new Error('Event Pass not owned by user');
+  if (!eventPassNft.isRevealed) throw new Error('Event Pass is not revealed');
+  const { currentOwnerAddress, tokenId, eventId, eventPassId, organizerId } =
+    eventPassNft;
   return getPassUser({
-    address: eventPassOwned.address,
-    organizerSlug,
-    eventSlug,
+    address: currentOwnerAddress,
+    eventId,
+    organizerId,
     eventPassId,
     tokenId,
   });
