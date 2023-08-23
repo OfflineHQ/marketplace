@@ -93,7 +93,7 @@ async function EventSectionContent(props: EventSectionContentProps) {
               </CardOverflow>
               <CardOverlay />
               <CardFooter variant="sticky">
-                <Button className="w-full">Deploy</Button>
+                <Button className="w-full"> Deploy</Button>
               </CardFooter>
             </Card>
           ))}
