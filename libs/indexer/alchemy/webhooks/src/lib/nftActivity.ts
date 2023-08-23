@@ -36,15 +36,18 @@ export const extractNftTransfersFromEvent = (
         `NFT transfer: ${transactionHash} in ${network} for ${contractAddress} collection, fromAddress ${fromAddress} toAddress ${toAddress} with erc721TokenId ${erc721TokenId} was removed likely due to a reorg`
       );
     } else {
-      nftTransfers.push({
-        fromAddress,
-        toAddress,
-        contractAddress,
-        blockNumber: hexToBigInt(blockNumber),
-        tokenId: hexToBigInt(erc721TokenId),
-        chainId: alchemy.convertNetworkToChainId(network).toString(),
-        transactionHash,
-      });
+      if (!erc721TokenId) {
+        console.error(`No erc721TokenId found for ${transactionHash}`);
+      } else
+        nftTransfers.push({
+          fromAddress,
+          toAddress,
+          contractAddress,
+          blockNumber: hexToBigInt(blockNumber),
+          tokenId: hexToBigInt(erc721TokenId),
+          chainId: alchemy.convertNetworkToChainId(network).toString(),
+          transactionHash,
+        });
     }
   }
   return nftTransfers;

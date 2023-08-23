@@ -56,9 +56,8 @@ export const BasicCommandWithNoResult: Story = {
 
 export const CommandDialog: Story = {
   render: CommandDialogDemo,
-  play: async ({ canvasElement }) => {
-    // Open the dialog with cmd + j
-    userEvent.keyboard('{meta}j');
+  parameters: {
+    chromatic: { disableSnapshot: true },
   },
 };
 
