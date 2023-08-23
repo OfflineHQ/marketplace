@@ -70,29 +70,46 @@ export async function nftActivity(
   const alchemyWebhookEvent: AlchemyNFTActivityEvent = JSON.parse(body);
 
   if (alchemyWebhookEvent.type !== WebhookType.NFT_ACTIVITY) {
-    throw new Error('Invalid webhook type. Expected NFT_ACTIVITY.');
+    return new Response('Invalid webhook type. Expected NFT_ACTIVITY.', {
+      status: 400,
+    });
   }
-  const chainId = alchemyWebhookEvent.event.activity[0].network; // TODO: convert to chainId hex string
+  const chainId = alchemy
+    .convertNetworkToChainId(alchemyWebhookEvent.event.activity[0].network)
+    .toString();
 
   const nftTransfersFromEvent =
     extractNftTransfersFromEvent(alchemyWebhookEvent);
   if (nftTransfersFromEvent.length) {
     const eventPassNftWrapper = new EventPassNftWrapper();
-    const NftTransfersNotCreated =
-      await eventPassNftWrapper.getEventPassNftTransfersMetadata(
-        nftTransfersFromEvent,
-        contractAddress,
-        chainId
-      );
+    try {
+      const NftTransfersNotCreated =
+        await eventPassNftWrapper.getEventPassNftTransfersMetadata(
+          nftTransfersFromEvent,
+          contractAddress,
+          chainId
+        );
 
-    const nftTransfers = await eventPassNftWrapper.upsertNftTransfers(
-      NftTransfersNotCreated
-    );
-    const updatedNfts =
-      await eventPassNftWrapper.updateEventPassNftFromNftTransfer(nftTransfers);
-    await eventPassNftWrapper.applyQrCodeBatchTransferForNewOwner(updatedNfts);
+      const nftTransfers = await eventPassNftWrapper.upsertNftTransfers(
+        NftTransfersNotCreated
+      );
+      const updatedNfts =
+        await eventPassNftWrapper.updateEventPassNftFromNftTransfer(
+          nftTransfers
+        );
+      await eventPassNftWrapper.applyQrCodeBatchTransferForNewOwner(
+        updatedNfts
+      );
+    } catch (e) {
+      console.error(e);
+      return new Response('Error processing nft transfers', {
+        status: 500,
+      });
+    }
   } else {
-    throw new Error('No nft transfers found in event');
+    return new Response('No nft transfers found in event', {
+      status: 500,
+    });
   }
   return new Response(null, { status: 200 });
 }
