@@ -227,4 +227,48 @@ describe('nftActivity', () => {
     expect(updateEventPassNftFromNftTransferSpy).toHaveBeenCalled();
     expect(applyQrCodeBatchTransferForNewOwnerSpy).toHaveBeenCalled();
   });
+  it('should return error 403 from invalid signature', async () => {
+    // Override the validation to return false
+    (isValidSignatureForAlchemyRequest as jest.Mock).mockReturnValueOnce(false);
+
+    const response = await nftActivity(mockAlchemyRequest, 'contractAddress');
+
+    expect(response.status).toEqual(403);
+  });
+
+  it('should return error 500 from eventPassNftWrapper', async () => {
+    // Force an error in one of the EventPassNftWrapper methods
+    getEventPassNftTransfersMetadataSpy.mockRejectedValue(
+      new Error('Test error')
+    );
+
+    const response = await nftActivity(mockAlchemyRequest, 'contractAddress');
+
+    expect(response.status).toEqual(500);
+  });
+
+  // it('should return error 500 when nftTransfersFromEvent.length is empty', async () => {
+  //   // Override extractNftTransfersFromEvent to return an empty array
+  //   jest.spyOn(module, 'extractNftTransfersFromEvent').mockReturnValue([]);
+
+  //   const response = await nftActivity(mockAlchemyRequest, 'contractAddress');
+
+  //   expect(response.status).toEqual(500);
+  //   expect(response.statusText).toEqual('No nft transfers found in event');
+  // });
+
+  it('should return error 400 for incorrect webhook type', async () => {
+    const invalidWebhookEvent = {
+      ...mockAlchemyNftActivityEvent,
+      type: WebhookType.NFT_METADATA_UPDATE, // Invalid type
+    };
+
+    mockAlchemyRequest.text = jest
+      .fn()
+      .mockResolvedValueOnce(JSON.stringify(invalidWebhookEvent));
+
+    const response = await nftActivity(mockAlchemyRequest, 'contractAddress');
+
+    expect(response.status).toEqual(400);
+  });
 });
