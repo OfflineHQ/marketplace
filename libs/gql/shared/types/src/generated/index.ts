@@ -15,6 +15,7 @@ export type Scalars = {
   Long: any;
   RichTextAST: any;
   bigint: any;
+  jsonb: any;
   timestamptz: any;
   uuid: any;
 };
@@ -821,6 +822,7 @@ export type Event = Node & {
    * This is only for information purpose but it should match your 'Event Pass' locations and dates
    */
   eventDateLocations: Array<EventDateLocation>;
+  eventNftCollection?: Maybe<EventNftCollection>;
   eventPasses: Array<EventPass>;
   heroImage: Asset;
   /** List of Event versions */
@@ -2332,6 +2334,11 @@ export type EventWhereStageInput = {
 /** References Event record uniquely */
 export type EventWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
+  slug?: InputMaybe<Scalars['String']>;
+};
+
+/** References Event record uniquely */
+export type EventWhereUniqueInput_Remote_Rel_EventNftCollectionevent = {
   slug?: InputMaybe<Scalars['String']>;
 };
 
@@ -4812,6 +4819,202 @@ export const enum Cursor_Ordering {
   Desc = 'DESC'
 };
 
+/** The eventNftCollection model is designed to store metadata associated with NFT collections linked to specific events. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT collections. Additionally, this table integrates infrastructure-specific details, like the activityWebhookId, which aids in monitoring and processing events or changes related to the NFT collections in our platform. By centralizing this information, our system can effectively manage, reference, and interact with NFT collections tied to particular events. */
+export type EventNftCollection = {
+  __typename?: 'eventNftCollection';
+  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+  activityWebhookId: Scalars['String'];
+  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId: Scalars['String'];
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress: Scalars['String'];
+  event?: Maybe<Event>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+  eventId: Scalars['String'];
+};
+
+
+/** The eventNftCollection model is designed to store metadata associated with NFT collections linked to specific events. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT collections. Additionally, this table integrates infrastructure-specific details, like the activityWebhookId, which aids in monitoring and processing events or changes related to the NFT collections in our platform. By centralizing this information, our system can effectively manage, reference, and interact with NFT collections tied to particular events. */
+export type EventNftCollectionEventArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: EventWhereUniqueInput_Remote_Rel_EventNftCollectionevent;
+};
+
+/** aggregated selection of "eventNftCollection" */
+export type EventNftCollection_Aggregate = {
+  __typename?: 'eventNftCollection_aggregate';
+  aggregate?: Maybe<EventNftCollection_Aggregate_Fields>;
+  nodes: Array<EventNftCollection>;
+};
+
+/** aggregate fields of "eventNftCollection" */
+export type EventNftCollection_Aggregate_Fields = {
+  __typename?: 'eventNftCollection_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<EventNftCollection_Max_Fields>;
+  min?: Maybe<EventNftCollection_Min_Fields>;
+};
+
+
+/** aggregate fields of "eventNftCollection" */
+export type EventNftCollection_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "eventNftCollection". All fields are combined with a logical 'AND'. */
+export type EventNftCollection_Bool_Exp = {
+  _and?: InputMaybe<Array<EventNftCollection_Bool_Exp>>;
+  _not?: InputMaybe<EventNftCollection_Bool_Exp>;
+  _or?: InputMaybe<Array<EventNftCollection_Bool_Exp>>;
+  activityWebhookId?: InputMaybe<String_Comparison_Exp>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  eventId?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "eventNftCollection" */
+export const enum EventNftCollection_Constraint {
+  /** unique or primary key constraint on columns "activityWebhookId" */
+  EventNftCollectionActivityWebhookIdKey = 'eventNftCollection_activityWebhookId_key',
+  /** unique or primary key constraint on columns "eventId" */
+  EventNftCollectionEventIdKey = 'eventNftCollection_eventId_key',
+  /** unique or primary key constraint on columns "contractAddress" */
+  EventNftCollectionPkey = 'eventNftCollection_pkey'
+};
+
+/** input type for inserting data into table "eventNftCollection" */
+export type EventNftCollection_Insert_Input = {
+  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+  activityWebhookId?: InputMaybe<Scalars['String']>;
+  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+  eventId?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EventNftCollection_Max_Fields = {
+  __typename?: 'eventNftCollection_max_fields';
+  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+  activityWebhookId?: Maybe<Scalars['String']>;
+  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: Maybe<Scalars['String']>;
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+  eventId?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type EventNftCollection_Min_Fields = {
+  __typename?: 'eventNftCollection_min_fields';
+  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+  activityWebhookId?: Maybe<Scalars['String']>;
+  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: Maybe<Scalars['String']>;
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+  eventId?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "eventNftCollection" */
+export type EventNftCollection_Mutation_Response = {
+  __typename?: 'eventNftCollection_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<EventNftCollection>;
+};
+
+/** on_conflict condition type for table "eventNftCollection" */
+export type EventNftCollection_On_Conflict = {
+  constraint: EventNftCollection_Constraint;
+  update_columns?: Array<EventNftCollection_Update_Column>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "eventNftCollection". */
+export type EventNftCollection_Order_By = {
+  activityWebhookId?: InputMaybe<Order_By>;
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: eventNftCollection */
+export type EventNftCollection_Pk_Columns_Input = {
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress: Scalars['String'];
+};
+
+/** select columns of table "eventNftCollection" */
+export const enum EventNftCollection_Select_Column {
+  /** column name */
+  ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  EventId = 'eventId'
+};
+
+/** input type for updating data in table "eventNftCollection" */
+export type EventNftCollection_Set_Input = {
+  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+  activityWebhookId?: InputMaybe<Scalars['String']>;
+  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+  eventId?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "eventNftCollection" */
+export type EventNftCollection_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: EventNftCollection_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EventNftCollection_Stream_Cursor_Value_Input = {
+  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+  activityWebhookId?: InputMaybe<Scalars['String']>;
+  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+  eventId?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "eventNftCollection" */
+export const enum EventNftCollection_Update_Column {
+  /** column name */
+  ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  EventId = 'eventId'
+};
+
+export type EventNftCollection_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<EventNftCollection_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: EventNftCollection_Bool_Exp;
+};
+
 /** Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account */
 export type EventPassOrder = {
   __typename?: 'eventPassOrder';
@@ -6150,6 +6353,34 @@ export type EventPassPricing_Variance_Fields = {
   timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
+export type Jsonb_Cast_Exp = {
+  String?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
+export type Jsonb_Comparison_Exp = {
+  _cast?: InputMaybe<Jsonb_Cast_Exp>;
+  /** is the column contained in the given json value */
+  _contained_in?: InputMaybe<Scalars['jsonb']>;
+  /** does the column contain the given json value at the top level */
+  _contains?: InputMaybe<Scalars['jsonb']>;
+  _eq?: InputMaybe<Scalars['jsonb']>;
+  _gt?: InputMaybe<Scalars['jsonb']>;
+  _gte?: InputMaybe<Scalars['jsonb']>;
+  /** does the string exist as a top-level key in the column */
+  _has_key?: InputMaybe<Scalars['String']>;
+  /** do all of these strings exist as top-level keys in the column */
+  _has_keys_all?: InputMaybe<Array<Scalars['String']>>;
+  /** do any of these strings exist as top-level keys in the column */
+  _has_keys_any?: InputMaybe<Array<Scalars['String']>>;
+  _in?: InputMaybe<Array<Scalars['jsonb']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['jsonb']>;
+  _lte?: InputMaybe<Scalars['jsonb']>;
+  _neq?: InputMaybe<Scalars['jsonb']>;
+  _nin?: InputMaybe<Array<Scalars['jsonb']>>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -6199,6 +6430,10 @@ export type Mutation_Root = {
   delete_currency?: Maybe<Currency_Mutation_Response>;
   /** delete single row from the table: "currency" */
   delete_currency_by_pk?: Maybe<Currency>;
+  /** delete data from the table: "eventNftCollection" */
+  delete_eventNftCollection?: Maybe<EventNftCollection_Mutation_Response>;
+  /** delete single row from the table: "eventNftCollection" */
+  delete_eventNftCollection_by_pk?: Maybe<EventNftCollection>;
   /** delete data from the table: "eventPassOrder" */
   delete_eventPassOrder?: Maybe<EventPassOrder_Mutation_Response>;
   /** delete data from the table: "eventPassOrderSums" */
@@ -6219,6 +6454,14 @@ export type Mutation_Root = {
   delete_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** delete single row from the table: "eventPassPricing" */
   delete_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
+  /** delete data from the table: "nftTransfer" */
+  delete_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
+  /** delete single row from the table: "nftTransfer" */
+  delete_nftTransfer_by_pk?: Maybe<NftTransfer>;
+  /** delete data from the table: "nftWithMetadata" */
+  delete_nftWithMetadata?: Maybe<NftWithMetadata_Mutation_Response>;
+  /** delete single row from the table: "nftWithMetadata" */
+  delete_nftWithMetadata_by_pk?: Maybe<NftWithMetadata>;
   /** delete data from the table: "orderStatus" */
   delete_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** delete single row from the table: "orderStatus" */
@@ -6231,6 +6474,10 @@ export type Mutation_Root = {
   insert_currency?: Maybe<Currency_Mutation_Response>;
   /** insert a single row into the table: "currency" */
   insert_currency_one?: Maybe<Currency>;
+  /** insert data into the table: "eventNftCollection" */
+  insert_eventNftCollection?: Maybe<EventNftCollection_Mutation_Response>;
+  /** insert a single row into the table: "eventNftCollection" */
+  insert_eventNftCollection_one?: Maybe<EventNftCollection>;
   /** insert data into the table: "eventPassOrder" */
   insert_eventPassOrder?: Maybe<EventPassOrder_Mutation_Response>;
   /** insert data into the table: "eventPassOrderSums" */
@@ -6251,6 +6498,14 @@ export type Mutation_Root = {
   insert_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** insert a single row into the table: "eventPassPricing" */
   insert_eventPassPricing_one?: Maybe<EventPassPricing>;
+  /** insert data into the table: "nftTransfer" */
+  insert_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
+  /** insert a single row into the table: "nftTransfer" */
+  insert_nftTransfer_one?: Maybe<NftTransfer>;
+  /** insert data into the table: "nftWithMetadata" */
+  insert_nftWithMetadata?: Maybe<NftWithMetadata_Mutation_Response>;
+  /** insert a single row into the table: "nftWithMetadata" */
+  insert_nftWithMetadata_one?: Maybe<NftWithMetadata>;
   /** insert data into the table: "orderStatus" */
   insert_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** insert a single row into the table: "orderStatus" */
@@ -6357,6 +6612,12 @@ export type Mutation_Root = {
   update_currency_by_pk?: Maybe<Currency>;
   /** update multiples rows of table: "currency" */
   update_currency_many?: Maybe<Array<Maybe<Currency_Mutation_Response>>>;
+  /** update data of the table: "eventNftCollection" */
+  update_eventNftCollection?: Maybe<EventNftCollection_Mutation_Response>;
+  /** update single row of the table: "eventNftCollection" */
+  update_eventNftCollection_by_pk?: Maybe<EventNftCollection>;
+  /** update multiples rows of table: "eventNftCollection" */
+  update_eventNftCollection_many?: Maybe<Array<Maybe<EventNftCollection_Mutation_Response>>>;
   /** update data of the table: "eventPassOrder" */
   update_eventPassOrder?: Maybe<EventPassOrder_Mutation_Response>;
   /** update data of the table: "eventPassOrderSums" */
@@ -6387,6 +6648,18 @@ export type Mutation_Root = {
   update_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
   /** update multiples rows of table: "eventPassPricing" */
   update_eventPassPricing_many?: Maybe<Array<Maybe<EventPassPricing_Mutation_Response>>>;
+  /** update data of the table: "nftTransfer" */
+  update_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
+  /** update single row of the table: "nftTransfer" */
+  update_nftTransfer_by_pk?: Maybe<NftTransfer>;
+  /** update multiples rows of table: "nftTransfer" */
+  update_nftTransfer_many?: Maybe<Array<Maybe<NftTransfer_Mutation_Response>>>;
+  /** update data of the table: "nftWithMetadata" */
+  update_nftWithMetadata?: Maybe<NftWithMetadata_Mutation_Response>;
+  /** update single row of the table: "nftWithMetadata" */
+  update_nftWithMetadata_by_pk?: Maybe<NftWithMetadata>;
+  /** update multiples rows of table: "nftWithMetadata" */
+  update_nftWithMetadata_many?: Maybe<Array<Maybe<NftWithMetadata_Mutation_Response>>>;
   /** update data of the table: "orderStatus" */
   update_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** update single row of the table: "orderStatus" */
@@ -6563,6 +6836,18 @@ export type Mutation_RootDelete_Currency_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_EventNftCollectionArgs = {
+  where: EventNftCollection_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_EventNftCollection_By_PkArgs = {
+  contractAddress: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_EventPassOrderArgs = {
   where: EventPassOrder_Bool_Exp;
 };
@@ -6623,6 +6908,30 @@ export type Mutation_RootDelete_EventPassPricing_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_NftTransferArgs = {
+  where: NftTransfer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_NftTransfer_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_NftWithMetadataArgs = {
+  where: NftWithMetadata_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_NftWithMetadata_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_OrderStatusArgs = {
   where: OrderStatus_Bool_Exp;
 };
@@ -6659,6 +6968,20 @@ export type Mutation_RootInsert_CurrencyArgs = {
 export type Mutation_RootInsert_Currency_OneArgs = {
   object: Currency_Insert_Input;
   on_conflict?: InputMaybe<Currency_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventNftCollectionArgs = {
+  objects: Array<EventNftCollection_Insert_Input>;
+  on_conflict?: InputMaybe<EventNftCollection_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventNftCollection_OneArgs = {
+  object: EventNftCollection_Insert_Input;
+  on_conflict?: InputMaybe<EventNftCollection_On_Conflict>;
 };
 
 
@@ -6729,6 +7052,34 @@ export type Mutation_RootInsert_EventPassPricingArgs = {
 export type Mutation_RootInsert_EventPassPricing_OneArgs = {
   object: EventPassPricing_Insert_Input;
   on_conflict?: InputMaybe<EventPassPricing_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftTransferArgs = {
+  objects: Array<NftTransfer_Insert_Input>;
+  on_conflict?: InputMaybe<NftTransfer_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftTransfer_OneArgs = {
+  object: NftTransfer_Insert_Input;
+  on_conflict?: InputMaybe<NftTransfer_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftWithMetadataArgs = {
+  objects: Array<NftWithMetadata_Insert_Input>;
+  on_conflict?: InputMaybe<NftWithMetadata_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftWithMetadata_OneArgs = {
+  object: NftWithMetadata_Insert_Input;
+  on_conflict?: InputMaybe<NftWithMetadata_On_Conflict>;
 };
 
 
@@ -7266,6 +7617,26 @@ export type Mutation_RootUpdate_Currency_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_EventNftCollectionArgs = {
+  _set?: InputMaybe<EventNftCollection_Set_Input>;
+  where: EventNftCollection_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventNftCollection_By_PkArgs = {
+  _set?: InputMaybe<EventNftCollection_Set_Input>;
+  pk_columns: EventNftCollection_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventNftCollection_ManyArgs = {
+  updates: Array<EventNftCollection_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_EventPassOrderArgs = {
   _inc?: InputMaybe<EventPassOrder_Inc_Input>;
   _set?: InputMaybe<EventPassOrder_Set_Input>;
@@ -7376,6 +7747,60 @@ export type Mutation_RootUpdate_EventPassPricing_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_NftTransferArgs = {
+  _inc?: InputMaybe<NftTransfer_Inc_Input>;
+  _set?: InputMaybe<NftTransfer_Set_Input>;
+  where: NftTransfer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftTransfer_By_PkArgs = {
+  _inc?: InputMaybe<NftTransfer_Inc_Input>;
+  _set?: InputMaybe<NftTransfer_Set_Input>;
+  pk_columns: NftTransfer_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftTransfer_ManyArgs = {
+  updates: Array<NftTransfer_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftWithMetadataArgs = {
+  _append?: InputMaybe<NftWithMetadata_Append_Input>;
+  _delete_at_path?: InputMaybe<NftWithMetadata_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<NftWithMetadata_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<NftWithMetadata_Delete_Key_Input>;
+  _inc?: InputMaybe<NftWithMetadata_Inc_Input>;
+  _prepend?: InputMaybe<NftWithMetadata_Prepend_Input>;
+  _set?: InputMaybe<NftWithMetadata_Set_Input>;
+  where: NftWithMetadata_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftWithMetadata_By_PkArgs = {
+  _append?: InputMaybe<NftWithMetadata_Append_Input>;
+  _delete_at_path?: InputMaybe<NftWithMetadata_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<NftWithMetadata_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<NftWithMetadata_Delete_Key_Input>;
+  _inc?: InputMaybe<NftWithMetadata_Inc_Input>;
+  _prepend?: InputMaybe<NftWithMetadata_Prepend_Input>;
+  _set?: InputMaybe<NftWithMetadata_Set_Input>;
+  pk_columns: NftWithMetadata_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftWithMetadata_ManyArgs = {
+  updates: Array<NftWithMetadata_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_OrderStatusArgs = {
   _set?: InputMaybe<OrderStatus_Set_Input>;
   where: OrderStatus_Bool_Exp;
@@ -7420,6 +7845,868 @@ export type Mutation_RootUpsertEventPassArgs = {
 export type Mutation_RootUpsertOrganizerArgs = {
   upsert: OrganizerUpsertInput;
   where: OrganizerWhereUniqueInput;
+};
+
+/** The nftTransfer model is built to record and chronicle the transfer of NFTs between addresses. This model is crucial in tracing the movement of an NFT, especially when validating that an event pass has reached its intended recipient. Such a system facilitates debugging and reduces the need for excessive querying of our indexer. Entries in this table are populated through two primary avenues: either via an activity webhook responding to real-time NFT transfers or through a regular cron job as a failsafe, ensuring data integrity even if the webhook fails to capture certain events. */
+export type NftTransfer = {
+  __typename?: 'nftTransfer';
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber: Scalars['bigint'];
+  /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
+  chainId: Scalars['String'];
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
+  eventId: Scalars['String'];
+  /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
+  eventPassId: Scalars['String'];
+  /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFT's movement. */
+  fromAddress: Scalars['String'];
+  id: Scalars['uuid'];
+  /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
+  organizerId: Scalars['String'];
+  /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
+  toAddress: Scalars['String'];
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId: Scalars['bigint'];
+  /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
+  transactionHash: Scalars['String'];
+};
+
+/** aggregated selection of "nftTransfer" */
+export type NftTransfer_Aggregate = {
+  __typename?: 'nftTransfer_aggregate';
+  aggregate?: Maybe<NftTransfer_Aggregate_Fields>;
+  nodes: Array<NftTransfer>;
+};
+
+/** aggregate fields of "nftTransfer" */
+export type NftTransfer_Aggregate_Fields = {
+  __typename?: 'nftTransfer_aggregate_fields';
+  avg?: Maybe<NftTransfer_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<NftTransfer_Max_Fields>;
+  min?: Maybe<NftTransfer_Min_Fields>;
+  stddev?: Maybe<NftTransfer_Stddev_Fields>;
+  stddev_pop?: Maybe<NftTransfer_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<NftTransfer_Stddev_Samp_Fields>;
+  sum?: Maybe<NftTransfer_Sum_Fields>;
+  var_pop?: Maybe<NftTransfer_Var_Pop_Fields>;
+  var_samp?: Maybe<NftTransfer_Var_Samp_Fields>;
+  variance?: Maybe<NftTransfer_Variance_Fields>;
+};
+
+
+/** aggregate fields of "nftTransfer" */
+export type NftTransfer_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<NftTransfer_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type NftTransfer_Avg_Fields = {
+  __typename?: 'nftTransfer_avg_fields';
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: Maybe<Scalars['Float']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "nftTransfer". All fields are combined with a logical 'AND'. */
+export type NftTransfer_Bool_Exp = {
+  _and?: InputMaybe<Array<NftTransfer_Bool_Exp>>;
+  _not?: InputMaybe<NftTransfer_Bool_Exp>;
+  _or?: InputMaybe<Array<NftTransfer_Bool_Exp>>;
+  blockNumber?: InputMaybe<Bigint_Comparison_Exp>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  eventId?: InputMaybe<String_Comparison_Exp>;
+  eventPassId?: InputMaybe<String_Comparison_Exp>;
+  fromAddress?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  toAddress?: InputMaybe<String_Comparison_Exp>;
+  tokenId?: InputMaybe<Bigint_Comparison_Exp>;
+  transactionHash?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "nftTransfer" */
+export const enum NftTransfer_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  NftTransferPkey = 'nftTransfer_pkey'
+};
+
+/** input type for incrementing numeric columns in table "nftTransfer" */
+export type NftTransfer_Inc_Input = {
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: InputMaybe<Scalars['bigint']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "nftTransfer" */
+export type NftTransfer_Insert_Input = {
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: InputMaybe<Scalars['bigint']>;
+  /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
+  eventId?: InputMaybe<Scalars['String']>;
+  /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
+  eventPassId?: InputMaybe<Scalars['String']>;
+  /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFT's movement. */
+  fromAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
+  organizerId?: InputMaybe<Scalars['String']>;
+  /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
+  toAddress?: InputMaybe<Scalars['String']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
+  transactionHash?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type NftTransfer_Max_Fields = {
+  __typename?: 'nftTransfer_max_fields';
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: Maybe<Scalars['bigint']>;
+  /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
+  chainId?: Maybe<Scalars['String']>;
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
+  eventId?: Maybe<Scalars['String']>;
+  /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
+  eventPassId?: Maybe<Scalars['String']>;
+  /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFT's movement. */
+  fromAddress?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
+  organizerId?: Maybe<Scalars['String']>;
+  /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
+  toAddress?: Maybe<Scalars['String']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: Maybe<Scalars['bigint']>;
+  /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
+  transactionHash?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type NftTransfer_Min_Fields = {
+  __typename?: 'nftTransfer_min_fields';
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: Maybe<Scalars['bigint']>;
+  /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
+  chainId?: Maybe<Scalars['String']>;
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
+  eventId?: Maybe<Scalars['String']>;
+  /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
+  eventPassId?: Maybe<Scalars['String']>;
+  /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFT's movement. */
+  fromAddress?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
+  organizerId?: Maybe<Scalars['String']>;
+  /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
+  toAddress?: Maybe<Scalars['String']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: Maybe<Scalars['bigint']>;
+  /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
+  transactionHash?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "nftTransfer" */
+export type NftTransfer_Mutation_Response = {
+  __typename?: 'nftTransfer_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<NftTransfer>;
+};
+
+/** on_conflict condition type for table "nftTransfer" */
+export type NftTransfer_On_Conflict = {
+  constraint: NftTransfer_Constraint;
+  update_columns?: Array<NftTransfer_Update_Column>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "nftTransfer". */
+export type NftTransfer_Order_By = {
+  blockNumber?: InputMaybe<Order_By>;
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  fromAddress?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  toAddress?: InputMaybe<Order_By>;
+  tokenId?: InputMaybe<Order_By>;
+  transactionHash?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: nftTransfer */
+export type NftTransfer_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "nftTransfer" */
+export const enum NftTransfer_Select_Column {
+  /** column name */
+  BlockNumber = 'blockNumber',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  FromAddress = 'fromAddress',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  ToAddress = 'toAddress',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TransactionHash = 'transactionHash'
+};
+
+/** input type for updating data in table "nftTransfer" */
+export type NftTransfer_Set_Input = {
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: InputMaybe<Scalars['bigint']>;
+  /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
+  eventId?: InputMaybe<Scalars['String']>;
+  /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
+  eventPassId?: InputMaybe<Scalars['String']>;
+  /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFT's movement. */
+  fromAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
+  organizerId?: InputMaybe<Scalars['String']>;
+  /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
+  toAddress?: InputMaybe<Scalars['String']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
+  transactionHash?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type NftTransfer_Stddev_Fields = {
+  __typename?: 'nftTransfer_stddev_fields';
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: Maybe<Scalars['Float']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type NftTransfer_Stddev_Pop_Fields = {
+  __typename?: 'nftTransfer_stddev_pop_fields';
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: Maybe<Scalars['Float']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type NftTransfer_Stddev_Samp_Fields = {
+  __typename?: 'nftTransfer_stddev_samp_fields';
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: Maybe<Scalars['Float']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "nftTransfer" */
+export type NftTransfer_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: NftTransfer_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type NftTransfer_Stream_Cursor_Value_Input = {
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: InputMaybe<Scalars['bigint']>;
+  /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
+  eventId?: InputMaybe<Scalars['String']>;
+  /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
+  eventPassId?: InputMaybe<Scalars['String']>;
+  /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFT's movement. */
+  fromAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
+  organizerId?: InputMaybe<Scalars['String']>;
+  /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
+  toAddress?: InputMaybe<Scalars['String']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
+  transactionHash?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate sum on columns */
+export type NftTransfer_Sum_Fields = {
+  __typename?: 'nftTransfer_sum_fields';
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: Maybe<Scalars['bigint']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: Maybe<Scalars['bigint']>;
+};
+
+/** update columns of table "nftTransfer" */
+export const enum NftTransfer_Update_Column {
+  /** column name */
+  BlockNumber = 'blockNumber',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  FromAddress = 'fromAddress',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  ToAddress = 'toAddress',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TransactionHash = 'transactionHash'
+};
+
+export type NftTransfer_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<NftTransfer_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<NftTransfer_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: NftTransfer_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type NftTransfer_Var_Pop_Fields = {
+  __typename?: 'nftTransfer_var_pop_fields';
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: Maybe<Scalars['Float']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type NftTransfer_Var_Samp_Fields = {
+  __typename?: 'nftTransfer_var_samp_fields';
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: Maybe<Scalars['Float']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type NftTransfer_Variance_Fields = {
+  __typename?: 'nftTransfer_variance_fields';
+  /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain's history. */
+  blockNumber?: Maybe<Scalars['Float']>;
+  /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** The nftWithMetadata model is designed to consolidate and store the metadata associated with each NFT. It leverages a structure resembling the alchemy-sdk, ensuring streamlined data extraction and management. This model centralizes fixed metadata, enabling the system to retrieve NFT details without frequently querying external APIs. Furthermore, the table is intended to integrate seamlessly with the existing nftTransfer model, providing a holistic view of each NFT's journey and characteristics within the platform. */
+export type NftWithMetadata = {
+  __typename?: 'nftWithMetadata';
+  /** Denotes the specific blockchain or network of the NFT */
+  chainId: Scalars['String'];
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  /** The address currently holding the NFT, allowing tracking of ownership */
+  currentOwnerAddress: Scalars['String'];
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: Maybe<Scalars['String']>;
+  /** A reference to the event associated with the NFT */
+  eventId: Scalars['String'];
+  /** Directly relates to a specific Event Pass within the system */
+  eventPassId: Scalars['String'];
+  id: Scalars['uuid'];
+  /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT. */
+  lastNftTransfer?: Maybe<Scalars['uuid']>;
+  /** The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT. */
+  metadata: Scalars['jsonb'];
+  /** Ties the NFT to a specific organizer within the platform */
+  organizerId: Scalars['String'];
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId: Scalars['bigint'];
+  /** The designated URI for the NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: Maybe<Scalars['String']>;
+  updated_at: Scalars['timestamptz'];
+};
+
+
+/** The nftWithMetadata model is designed to consolidate and store the metadata associated with each NFT. It leverages a structure resembling the alchemy-sdk, ensuring streamlined data extraction and management. This model centralizes fixed metadata, enabling the system to retrieve NFT details without frequently querying external APIs. Furthermore, the table is intended to integrate seamlessly with the existing nftTransfer model, providing a holistic view of each NFT's journey and characteristics within the platform. */
+export type NftWithMetadataMetadataArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregated selection of "nftWithMetadata" */
+export type NftWithMetadata_Aggregate = {
+  __typename?: 'nftWithMetadata_aggregate';
+  aggregate?: Maybe<NftWithMetadata_Aggregate_Fields>;
+  nodes: Array<NftWithMetadata>;
+};
+
+/** aggregate fields of "nftWithMetadata" */
+export type NftWithMetadata_Aggregate_Fields = {
+  __typename?: 'nftWithMetadata_aggregate_fields';
+  avg?: Maybe<NftWithMetadata_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<NftWithMetadata_Max_Fields>;
+  min?: Maybe<NftWithMetadata_Min_Fields>;
+  stddev?: Maybe<NftWithMetadata_Stddev_Fields>;
+  stddev_pop?: Maybe<NftWithMetadata_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<NftWithMetadata_Stddev_Samp_Fields>;
+  sum?: Maybe<NftWithMetadata_Sum_Fields>;
+  var_pop?: Maybe<NftWithMetadata_Var_Pop_Fields>;
+  var_samp?: Maybe<NftWithMetadata_Var_Samp_Fields>;
+  variance?: Maybe<NftWithMetadata_Variance_Fields>;
+};
+
+
+/** aggregate fields of "nftWithMetadata" */
+export type NftWithMetadata_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<NftWithMetadata_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type NftWithMetadata_Append_Input = {
+  /** The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT. */
+  metadata?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type NftWithMetadata_Avg_Fields = {
+  __typename?: 'nftWithMetadata_avg_fields';
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "nftWithMetadata". All fields are combined with a logical 'AND'. */
+export type NftWithMetadata_Bool_Exp = {
+  _and?: InputMaybe<Array<NftWithMetadata_Bool_Exp>>;
+  _not?: InputMaybe<NftWithMetadata_Bool_Exp>;
+  _or?: InputMaybe<Array<NftWithMetadata_Bool_Exp>>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  currentOwnerAddress?: InputMaybe<String_Comparison_Exp>;
+  error?: InputMaybe<String_Comparison_Exp>;
+  eventId?: InputMaybe<String_Comparison_Exp>;
+  eventPassId?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  lastNftTransfer?: InputMaybe<Uuid_Comparison_Exp>;
+  metadata?: InputMaybe<Jsonb_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  tokenId?: InputMaybe<Bigint_Comparison_Exp>;
+  tokenUri?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "nftWithMetadata" */
+export const enum NftWithMetadata_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  NftWithMetadataPkey = 'nftWithMetadata_pkey'
+};
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type NftWithMetadata_Delete_At_Path_Input = {
+  /** The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT. */
+  metadata?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type NftWithMetadata_Delete_Elem_Input = {
+  /** The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT. */
+  metadata?: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type NftWithMetadata_Delete_Key_Input = {
+  /** The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT. */
+  metadata?: InputMaybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "nftWithMetadata" */
+export type NftWithMetadata_Inc_Input = {
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "nftWithMetadata" */
+export type NftWithMetadata_Insert_Input = {
+  /** Denotes the specific blockchain or network of the NFT */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** The address currently holding the NFT, allowing tracking of ownership */
+  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: InputMaybe<Scalars['String']>;
+  /** A reference to the event associated with the NFT */
+  eventId?: InputMaybe<Scalars['String']>;
+  /** Directly relates to a specific Event Pass within the system */
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT. */
+  lastNftTransfer?: InputMaybe<Scalars['uuid']>;
+  /** The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT. */
+  metadata?: InputMaybe<Scalars['jsonb']>;
+  /** Ties the NFT to a specific organizer within the platform */
+  organizerId?: InputMaybe<Scalars['String']>;
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  /** The designated URI for the NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type NftWithMetadata_Max_Fields = {
+  __typename?: 'nftWithMetadata_max_fields';
+  /** Denotes the specific blockchain or network of the NFT */
+  chainId?: Maybe<Scalars['String']>;
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** The address currently holding the NFT, allowing tracking of ownership */
+  currentOwnerAddress?: Maybe<Scalars['String']>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: Maybe<Scalars['String']>;
+  /** A reference to the event associated with the NFT */
+  eventId?: Maybe<Scalars['String']>;
+  /** Directly relates to a specific Event Pass within the system */
+  eventPassId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT. */
+  lastNftTransfer?: Maybe<Scalars['uuid']>;
+  /** Ties the NFT to a specific organizer within the platform */
+  organizerId?: Maybe<Scalars['String']>;
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['bigint']>;
+  /** The designated URI for the NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type NftWithMetadata_Min_Fields = {
+  __typename?: 'nftWithMetadata_min_fields';
+  /** Denotes the specific blockchain or network of the NFT */
+  chainId?: Maybe<Scalars['String']>;
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** The address currently holding the NFT, allowing tracking of ownership */
+  currentOwnerAddress?: Maybe<Scalars['String']>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: Maybe<Scalars['String']>;
+  /** A reference to the event associated with the NFT */
+  eventId?: Maybe<Scalars['String']>;
+  /** Directly relates to a specific Event Pass within the system */
+  eventPassId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT. */
+  lastNftTransfer?: Maybe<Scalars['uuid']>;
+  /** Ties the NFT to a specific organizer within the platform */
+  organizerId?: Maybe<Scalars['String']>;
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['bigint']>;
+  /** The designated URI for the NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "nftWithMetadata" */
+export type NftWithMetadata_Mutation_Response = {
+  __typename?: 'nftWithMetadata_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<NftWithMetadata>;
+};
+
+/** on_conflict condition type for table "nftWithMetadata" */
+export type NftWithMetadata_On_Conflict = {
+  constraint: NftWithMetadata_Constraint;
+  update_columns?: Array<NftWithMetadata_Update_Column>;
+  where?: InputMaybe<NftWithMetadata_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "nftWithMetadata". */
+export type NftWithMetadata_Order_By = {
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  currentOwnerAddress?: InputMaybe<Order_By>;
+  error?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  lastNftTransfer?: InputMaybe<Order_By>;
+  metadata?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  tokenId?: InputMaybe<Order_By>;
+  tokenUri?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: nftWithMetadata */
+export type NftWithMetadata_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type NftWithMetadata_Prepend_Input = {
+  /** The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT. */
+  metadata?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "nftWithMetadata" */
+export const enum NftWithMetadata_Select_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CurrentOwnerAddress = 'currentOwnerAddress',
+  /** column name */
+  Error = 'error',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LastNftTransfer = 'lastNftTransfer',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TokenUri = 'tokenUri',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "nftWithMetadata" */
+export type NftWithMetadata_Set_Input = {
+  /** Denotes the specific blockchain or network of the NFT */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** The address currently holding the NFT, allowing tracking of ownership */
+  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: InputMaybe<Scalars['String']>;
+  /** A reference to the event associated with the NFT */
+  eventId?: InputMaybe<Scalars['String']>;
+  /** Directly relates to a specific Event Pass within the system */
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT. */
+  lastNftTransfer?: InputMaybe<Scalars['uuid']>;
+  /** The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT. */
+  metadata?: InputMaybe<Scalars['jsonb']>;
+  /** Ties the NFT to a specific organizer within the platform */
+  organizerId?: InputMaybe<Scalars['String']>;
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  /** The designated URI for the NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type NftWithMetadata_Stddev_Fields = {
+  __typename?: 'nftWithMetadata_stddev_fields';
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type NftWithMetadata_Stddev_Pop_Fields = {
+  __typename?: 'nftWithMetadata_stddev_pop_fields';
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type NftWithMetadata_Stddev_Samp_Fields = {
+  __typename?: 'nftWithMetadata_stddev_samp_fields';
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "nftWithMetadata" */
+export type NftWithMetadata_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: NftWithMetadata_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type NftWithMetadata_Stream_Cursor_Value_Input = {
+  /** Denotes the specific blockchain or network of the NFT */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** The address currently holding the NFT, allowing tracking of ownership */
+  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: InputMaybe<Scalars['String']>;
+  /** A reference to the event associated with the NFT */
+  eventId?: InputMaybe<Scalars['String']>;
+  /** Directly relates to a specific Event Pass within the system */
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT. */
+  lastNftTransfer?: InputMaybe<Scalars['uuid']>;
+  /** The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT. */
+  metadata?: InputMaybe<Scalars['jsonb']>;
+  /** Ties the NFT to a specific organizer within the platform */
+  organizerId?: InputMaybe<Scalars['String']>;
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']>;
+  /** The designated URI for the NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate sum on columns */
+export type NftWithMetadata_Sum_Fields = {
+  __typename?: 'nftWithMetadata_sum_fields';
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['bigint']>;
+};
+
+/** update columns of table "nftWithMetadata" */
+export const enum NftWithMetadata_Update_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CurrentOwnerAddress = 'currentOwnerAddress',
+  /** column name */
+  Error = 'error',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LastNftTransfer = 'lastNftTransfer',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TokenUri = 'tokenUri',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type NftWithMetadata_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<NftWithMetadata_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<NftWithMetadata_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<NftWithMetadata_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<NftWithMetadata_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<NftWithMetadata_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<NftWithMetadata_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<NftWithMetadata_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: NftWithMetadata_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type NftWithMetadata_Var_Pop_Fields = {
+  __typename?: 'nftWithMetadata_var_pop_fields';
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type NftWithMetadata_Var_Samp_Fields = {
+  __typename?: 'nftWithMetadata_var_samp_fields';
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type NftWithMetadata_Variance_Fields = {
+  __typename?: 'nftWithMetadata_variance_fields';
+  /** The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "orderStatus" */
@@ -7599,6 +8886,12 @@ export type Query_Root = {
   currency_by_pk?: Maybe<Currency>;
   /** Retrieve a single event */
   event?: Maybe<Event>;
+  /** fetch data from the table: "eventNftCollection" */
+  eventNftCollection: Array<EventNftCollection>;
+  /** fetch aggregated fields from the table: "eventNftCollection" */
+  eventNftCollection_aggregate: EventNftCollection_Aggregate;
+  /** fetch data from the table: "eventNftCollection" using primary key columns */
+  eventNftCollection_by_pk?: Maybe<EventNftCollection>;
   /** Retrieve a single eventPass */
   eventPass?: Maybe<EventPass>;
   /** fetch data from the table: "eventPassOrder" */
@@ -7643,6 +8936,18 @@ export type Query_Root = {
   events: Array<Event>;
   /** Retrieve multiple events using the Relay connection interface */
   eventsConnection: EventConnection;
+  /** fetch data from the table: "nftTransfer" */
+  nftTransfer: Array<NftTransfer>;
+  /** fetch aggregated fields from the table: "nftTransfer" */
+  nftTransfer_aggregate: NftTransfer_Aggregate;
+  /** fetch data from the table: "nftTransfer" using primary key columns */
+  nftTransfer_by_pk?: Maybe<NftTransfer>;
+  /** fetch data from the table: "nftWithMetadata" */
+  nftWithMetadata: Array<NftWithMetadata>;
+  /** fetch aggregated fields from the table: "nftWithMetadata" */
+  nftWithMetadata_aggregate: NftWithMetadata_Aggregate;
+  /** fetch data from the table: "nftWithMetadata" using primary key columns */
+  nftWithMetadata_by_pk?: Maybe<NftWithMetadata>;
   /** Fetches an object given its ID */
   node?: Maybe<Node>;
   /** fetch data from the table: "orderStatus" */
@@ -7768,6 +9073,29 @@ export type Query_RootEventArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
   where: EventWhereUniqueInput;
+};
+
+
+export type Query_RootEventNftCollectionArgs = {
+  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+};
+
+
+export type Query_RootEventNftCollection_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+};
+
+
+export type Query_RootEventNftCollection_By_PkArgs = {
+  contractAddress: Scalars['String'];
 };
 
 
@@ -7955,6 +9283,52 @@ export type Query_RootEventsConnectionArgs = {
 };
 
 
+export type Query_RootNftTransferArgs = {
+  distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+
+export type Query_RootNftTransfer_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+
+export type Query_RootNftTransfer_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootNftWithMetadataArgs = {
+  distinct_on?: InputMaybe<Array<NftWithMetadata_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftWithMetadata_Order_By>>;
+  where?: InputMaybe<NftWithMetadata_Bool_Exp>;
+};
+
+
+export type Query_RootNftWithMetadata_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftWithMetadata_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftWithMetadata_Order_By>>;
+  where?: InputMaybe<NftWithMetadata_Bool_Exp>;
+};
+
+
+export type Query_RootNftWithMetadata_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Query_RootNodeArgs = {
   id: Scalars['ID'];
   locales?: Array<Locale>;
@@ -8139,6 +9513,14 @@ export type Subscription_Root = {
   currency_by_pk?: Maybe<Currency>;
   /** fetch data from the table in a streaming manner: "currency" */
   currency_stream: Array<Currency>;
+  /** fetch data from the table: "eventNftCollection" */
+  eventNftCollection: Array<EventNftCollection>;
+  /** fetch aggregated fields from the table: "eventNftCollection" */
+  eventNftCollection_aggregate: EventNftCollection_Aggregate;
+  /** fetch data from the table: "eventNftCollection" using primary key columns */
+  eventNftCollection_by_pk?: Maybe<EventNftCollection>;
+  /** fetch data from the table in a streaming manner: "eventNftCollection" */
+  eventNftCollection_stream: Array<EventNftCollection>;
   /** fetch data from the table: "eventPassOrder" */
   eventPassOrder: Array<EventPassOrder>;
   /** fetch data from the table: "eventPassOrderSums" */
@@ -8179,6 +9561,22 @@ export type Subscription_Root = {
   eventPassPricing_by_pk?: Maybe<EventPassPricing>;
   /** fetch data from the table in a streaming manner: "eventPassPricing" */
   eventPassPricing_stream: Array<EventPassPricing>;
+  /** fetch data from the table: "nftTransfer" */
+  nftTransfer: Array<NftTransfer>;
+  /** fetch aggregated fields from the table: "nftTransfer" */
+  nftTransfer_aggregate: NftTransfer_Aggregate;
+  /** fetch data from the table: "nftTransfer" using primary key columns */
+  nftTransfer_by_pk?: Maybe<NftTransfer>;
+  /** fetch data from the table in a streaming manner: "nftTransfer" */
+  nftTransfer_stream: Array<NftTransfer>;
+  /** fetch data from the table: "nftWithMetadata" */
+  nftWithMetadata: Array<NftWithMetadata>;
+  /** fetch aggregated fields from the table: "nftWithMetadata" */
+  nftWithMetadata_aggregate: NftWithMetadata_Aggregate;
+  /** fetch data from the table: "nftWithMetadata" using primary key columns */
+  nftWithMetadata_by_pk?: Maybe<NftWithMetadata>;
+  /** fetch data from the table in a streaming manner: "nftWithMetadata" */
+  nftWithMetadata_stream: Array<NftWithMetadata>;
   /** fetch data from the table: "orderStatus" */
   orderStatus: Array<OrderStatus>;
   /** fetch aggregated fields from the table: "orderStatus" */
@@ -8247,6 +9645,36 @@ export type Subscription_RootCurrency_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<Currency_Stream_Cursor_Input>>;
   where?: InputMaybe<Currency_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventNftCollectionArgs = {
+  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventNftCollection_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventNftCollection_By_PkArgs = {
+  contractAddress: Scalars['String'];
+};
+
+
+export type Subscription_RootEventNftCollection_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<EventNftCollection_Stream_Cursor_Input>>;
+  where?: InputMaybe<EventNftCollection_Bool_Exp>;
 };
 
 
@@ -8397,6 +9825,66 @@ export type Subscription_RootEventPassPricing_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<EventPassPricing_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassPricing_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftTransferArgs = {
+  distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftTransfer_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftTransfer_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootNftTransfer_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<NftTransfer_Stream_Cursor_Input>>;
+  where?: InputMaybe<NftTransfer_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftWithMetadataArgs = {
+  distinct_on?: InputMaybe<Array<NftWithMetadata_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftWithMetadata_Order_By>>;
+  where?: InputMaybe<NftWithMetadata_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftWithMetadata_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftWithMetadata_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<NftWithMetadata_Order_By>>;
+  where?: InputMaybe<NftWithMetadata_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftWithMetadata_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootNftWithMetadata_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<NftWithMetadata_Stream_Cursor_Input>>;
+  where?: InputMaybe<NftWithMetadata_Bool_Exp>;
 };
 
 

@@ -1,6 +1,6 @@
 import * as Types from '@gql/shared/types';
 
-export type AccountFieldsFragment = { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean };
+export type AccountFieldsFragment = { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null };
 
 export type UpdateAccountMutationVariables = Types.Exact<{
   id: Types.Scalars['uuid'];
@@ -8,28 +8,28 @@ export type UpdateAccountMutationVariables = Types.Exact<{
 }>;
 
 
-export type UpdateAccountMutation = { __typename?: 'mutation_root', update_account_by_pk?: { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean } | null };
+export type UpdateAccountMutation = { __typename?: 'mutation_root', update_account_by_pk?: { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null } | null };
 
 export type CreateAccountMutationVariables = Types.Exact<{
   account: Types.Account_Insert_Input;
 }>;
 
 
-export type CreateAccountMutation = { __typename?: 'mutation_root', insert_account_one?: { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean } | null };
+export type CreateAccountMutation = { __typename?: 'mutation_root', insert_account_one?: { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null } | null };
 
 export type GetAccountQueryVariables = Types.Exact<{
   address: Types.Scalars['String'];
 }>;
 
 
-export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean }> };
+export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null }> };
 
 export type GetAccountByEmailQueryVariables = Types.Exact<{
   email: Types.Scalars['String'];
 }>;
 
 
-export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean }> };
+export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null }> };
 
 export type GetAccountEventPassOrderForEventPassesQueryVariables = Types.Exact<{
   accountId: Types.Scalars['uuid'];
@@ -57,6 +57,34 @@ export type DeleteEventPassPendingOrdersMutationVariables = Types.Exact<{
 
 
 export type DeleteEventPassPendingOrdersMutation = { __typename?: 'mutation_root', delete_eventPassPendingOrder?: { __typename?: 'eventPassPendingOrder_mutation_response', affected_rows: number } | null };
+
+export type NftTransferFieldsFragment = { __typename?: 'nftTransfer', fromAddress: string, toAddress: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId: string, tokenId: any, created_at: any, id: any, contractAddress: string };
+
+export type GetNftTransferByTxHashQueryVariables = Types.Exact<{
+  txHash: Types.Scalars['String'];
+  chainId: Types.Scalars['String'];
+}>;
+
+
+export type GetNftTransferByTxHashQuery = { __typename?: 'query_root', nftTransfer: Array<{ __typename?: 'nftTransfer', fromAddress: string, toAddress: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId: string, tokenId: any, created_at: any, id: any, contractAddress: string }> };
+
+export type GetNftTransferByTokenIdAndCollectionQueryVariables = Types.Exact<{
+  tokenId: Types.Scalars['bigint'];
+  contractAddress: Types.Scalars['String'];
+  chainId: Types.Scalars['String'];
+}>;
+
+
+export type GetNftTransferByTokenIdAndCollectionQuery = { __typename?: 'query_root', nftTransfer: Array<{ __typename?: 'nftTransfer', fromAddress: string, toAddress: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId: string, tokenId: any, created_at: any, id: any, contractAddress: string }> };
+
+export type GetNftByCollectionAndTokenIdsQueryVariables = Types.Exact<{
+  contractAddress: Types.Scalars['String'];
+  chainId: Types.Scalars['String'];
+  tokenIds: Array<Types.Scalars['bigint']> | Types.Scalars['bigint'];
+}>;
+
+
+export type GetNftByCollectionAndTokenIdsQuery = { __typename?: 'query_root', nftWithMetadata: Array<{ __typename?: 'nftWithMetadata', tokenId: any, eventId: string, eventPassId: string, organizerId: string }> };
 
 export type EventListFieldsFragment = { __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string } };
 
@@ -90,6 +118,23 @@ export type GetEventWithFromOrganizerIdQueryVariables = Types.Exact<{
 
 
 export type GetEventWithFromOrganizerIdQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', events: Array<{ __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string } }> } | null };
+
+export type GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables = Types.Exact<{
+  contractAddress: Types.Scalars['String'];
+  stage: Types.Stage;
+}>;
+
+
+export type GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery = { __typename?: 'query_root', eventNftCollection_by_pk?: { __typename?: 'eventNftCollection', contractAddress: string, chainId: string, activityWebhookId: string, event?: { __typename?: 'Event', id: string, eventPasses: Array<{ __typename?: 'EventPass', id: string }>, organizer?: { __typename?: 'Organizer', id: string } | null } | null } | null };
+
+export type EventNftCollectionFieldsFragment = { __typename?: 'eventNftCollection', contractAddress: string, chainId: string, eventId: string, activityWebhookId: string };
+
+export type CreateEventNftCollectionMutationVariables = Types.Exact<{
+  object: Types.EventNftCollection_Insert_Input;
+}>;
+
+
+export type CreateEventNftCollectionMutation = { __typename?: 'mutation_root', insert_eventNftCollection_one?: { __typename?: 'eventNftCollection', contractAddress: string, chainId: string, eventId: string, activityWebhookId: string } | null };
 
 export type GetEventPassesQueryVariables = Types.Exact<{
   eventSlug: Types.Scalars['String'];

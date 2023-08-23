@@ -1,0 +1,18 @@
+query GetNftByCollectionAndTokenIds(
+  $contractAddress: String!
+  $chainId: String!
+  $tokenIds: [bigint!]!
+) @cached {
+  nftWithMetadata(
+    where: {
+      contractAddress: { _eq: $contractAddress }
+      chainId: { _eq: $chainId }
+      tokenId: { _in: $tokenIds }
+    }
+  ) {
+    tokenId
+    eventId
+    eventPassId
+    organizerId
+  }
+}
