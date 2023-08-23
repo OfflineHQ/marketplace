@@ -122,7 +122,7 @@ export type UpdateEventPassNftFromNftTransferMutationVariables = Types.Exact<{
 }>;
 
 
-export type UpdateEventPassNftFromNftTransferMutation = { __typename?: 'mutation_root', update_eventPassNft_many?: Array<{ __typename?: 'eventPassNft_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'eventPassNft', id: any, isRevealed: boolean, currentOwnerAddress: string, eventId: string, eventPassId: string, organizerId: string, lastNftTransfer?: { __typename?: 'nftTransfer', fromAddress: string } | null }> } | null> | null };
+export type UpdateEventPassNftFromNftTransferMutation = { __typename?: 'mutation_root', update_eventPassNft_many?: Array<{ __typename?: 'eventPassNft_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'eventPassNft', id: any, isRevealed: boolean, currentOwnerAddress: string, eventId: string, eventPassId: string, organizerId: string, tokenId: any, lastNftTransfer?: { __typename?: 'nftTransfer', fromAddress: string } | null }> } | null> | null };
 
 export type SetEventPassNftRevealedMutationVariables = Types.Exact<{
   id: Types.Scalars['uuid'];

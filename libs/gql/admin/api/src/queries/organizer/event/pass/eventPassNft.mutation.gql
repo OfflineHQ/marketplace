@@ -8,6 +8,7 @@ mutation UpdateEventPassNftFromNftTransfer($updates: [eventPassNft_updates!]!) {
       eventId
       eventPassId
       organizerId
+      tokenId
       lastNftTransfer {
         fromAddress
       }

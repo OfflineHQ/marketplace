@@ -1,0 +1,44 @@
+{
+  "name": "nft-eventPass",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nft/eventPass/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/nft/eventPass",
+        "tsConfig": "libs/nft/eventPass/tsconfig.lib.json",
+        "packageJson": "libs/nft/eventPass/package.json",
+        "main": "libs/nft/eventPass/src/index.ts",
+        "assets": ["libs/nft/eventPass/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/nft/eventPass/**/*.ts",
+          "libs/nft/eventPass/package.json"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/nft/eventPass/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

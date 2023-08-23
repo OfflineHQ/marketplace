@@ -289,6 +289,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
       eventId
       eventPassId
       organizerId
+      tokenId
       lastNftTransfer {
         fromAddress
       }

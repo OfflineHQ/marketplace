@@ -1,5 +1,4 @@
 import { WebhookType } from 'alchemy-sdk';
-import type { NftTransfer } from '@gql/shared/types';
 
 export interface AlchemyWebhookEvent {
   webhookId: string;
@@ -51,10 +50,3 @@ export interface AlchemyRequest extends Request {
     signature: string;
   };
 }
-
-export type NftTransferNotCreated = Omit<NftTransfer, 'id' | 'created_at'>;
-
-export type NftTransferWithoutMetadata = Omit<
-  NftTransferNotCreated,
-  'eventId' | 'organizerId' | 'eventPassId'
->;
