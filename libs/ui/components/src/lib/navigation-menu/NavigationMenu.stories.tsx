@@ -28,14 +28,14 @@ export const DefaultNavigationMenu: Story = {
     const gettingStartedTrigger = await screen.findByRole('button', {
       name: 'Getting started',
     });
-    await userEvent.click(gettingStartedTrigger);
+    await userEvent.hover(gettingStartedTrigger);
     const gettingStartedContent = await screen.findByText('Introduction');
     expect(gettingStartedContent).toBeVisible();
 
     const componentsTrigger = await screen.findByRole('button', {
       name: 'Components',
     });
-    await userEvent.click(componentsTrigger);
+    await userEvent.hover(componentsTrigger);
     await waitForElementToBeRemoved(() => screen.queryByText('Introduction'));
     const componentsContent = await screen.findByText('Hover Card');
     expect(componentsContent).toBeVisible();
