@@ -99,13 +99,42 @@ export class AlchemyWrapper {
         network = Network.MATIC_MUMBAI;
         break;
       default:
-        network = Network.MATIC_MUMBAI;
-        break;
+        throw new Error(`Unsupported network: ${process.env.CHAIN}`);
     }
     this.network = network;
     this.alchemy = new Alchemy({ apiKey, network });
   }
 
+  convertNetworkToChainId(network: Network): number {
+    switch (network) {
+      case Network.ETH_MAINNET:
+        return 1;
+      case Network.ETH_GOERLI:
+        return 5;
+      case Network.ETH_SEPOLIA:
+        return 11155111;
+      case Network.OPT_MAINNET:
+        return 69;
+      case Network.OPT_GOERLI:
+        return 420;
+      case Network.ARB_MAINNET:
+        return 42161;
+      case Network.ARB_GOERLI:
+        return 421613;
+      case Network.MATIC_MAINNET:
+        return 137;
+      case Network.MATIC_MUMBAI:
+        return 80001;
+      case Network.ASTAR_MAINNET:
+        return 592;
+      case Network.POLYGONZKEVM_MAINNET:
+        return 1101;
+      case Network.POLYGONZKEVM_TESTNET:
+        return 1442;
+      default:
+        throw new Error(`Unsupported network: ${network}`);
+    }
+  }
   // NFT API
 
   async verifyNftOwnershipOnCollection(

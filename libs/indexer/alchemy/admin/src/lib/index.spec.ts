@@ -1,5 +1,5 @@
 import { AlchemyWrapper, fetchAllPages } from './index';
-import { WebhookType } from 'alchemy-sdk';
+import { WebhookType, Network } from 'alchemy-sdk';
 
 describe('fetchAllPages', () => {
   it('should retrieve all items across multiple pages', async () => {
@@ -87,6 +87,54 @@ describe('AlchemyWrapper', () => {
 
   beforeEach(() => {
     alchemyWrapper = new AlchemyWrapper();
+  });
+
+  describe('convertNetworkToChainId', () => {
+    it('should convert networks to correct chainIds', () => {
+      expect(alchemyWrapper.convertNetworkToChainId(Network.ETH_MAINNET)).toBe(
+        1
+      );
+      expect(alchemyWrapper.convertNetworkToChainId(Network.ETH_GOERLI)).toBe(
+        5
+      );
+      expect(alchemyWrapper.convertNetworkToChainId(Network.ETH_SEPOLIA)).toBe(
+        11155111
+      );
+      expect(alchemyWrapper.convertNetworkToChainId(Network.OPT_MAINNET)).toBe(
+        69
+      );
+      expect(alchemyWrapper.convertNetworkToChainId(Network.OPT_GOERLI)).toBe(
+        420
+      );
+      expect(alchemyWrapper.convertNetworkToChainId(Network.ARB_MAINNET)).toBe(
+        42161
+      );
+      expect(alchemyWrapper.convertNetworkToChainId(Network.ARB_GOERLI)).toBe(
+        421613
+      );
+      expect(
+        alchemyWrapper.convertNetworkToChainId(Network.MATIC_MAINNET)
+      ).toBe(137);
+      expect(alchemyWrapper.convertNetworkToChainId(Network.MATIC_MUMBAI)).toBe(
+        80001
+      );
+      expect(
+        alchemyWrapper.convertNetworkToChainId(Network.ASTAR_MAINNET)
+      ).toBe(592);
+      expect(
+        alchemyWrapper.convertNetworkToChainId(Network.POLYGONZKEVM_MAINNET)
+      ).toBe(1101);
+      expect(
+        alchemyWrapper.convertNetworkToChainId(Network.POLYGONZKEVM_TESTNET)
+      ).toBe(1442);
+    });
+
+    it('should throw an error for an unsupported network', () => {
+      // @ts-ignore
+      expect(() =>
+        alchemyWrapper.convertNetworkToChainId('unsupported-network' as Network)
+      ).toThrow('Unsupported network: unsupported-network');
+    });
   });
   describe('getNftsForOwner', () => {
     it('should retrieve all NFTs for owner across multiple pages', async () => {
