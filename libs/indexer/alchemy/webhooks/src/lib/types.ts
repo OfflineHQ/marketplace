@@ -1,4 +1,6 @@
-import { WebhookType } from 'alchemy-sdk';
+import { WebhookType, Network } from 'alchemy-sdk';
+
+export type AlchemyNetwork = Network;
 
 export interface AlchemyWebhookEvent {
   webhookId: string;
@@ -14,8 +16,8 @@ export interface AlchemyNFTActivityEvent extends AlchemyWebhookEvent {
   };
 }
 
-interface Activity {
-  network: string;
+export interface Activity {
+  network: AlchemyNetwork;
   fromAddress: string;
   toAddress: string;
   contractAddress: string;
