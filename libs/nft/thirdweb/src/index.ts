@@ -1,7 +1,15 @@
+'use client';
+
 import { ExternalProvider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
-const contractTx = '0xd487927483a8F71cc6106914C66614EC3E010C1d';
+import { createEventNftCollection } from '@features/organizer/event/server';
+
+type nftsMetadata = {
+  name: string;
+  description: string;
+  image: string;
+};
 
 class nftCollection {
   sdk: ThirdwebSDK;
@@ -10,12 +18,15 @@ class nftCollection {
     const web3Provider = new ethers.providers.Web3Provider(provider);
     const signer = web3Provider.getSigner();
     this.sdk = ThirdwebSDK.fromSigner(signer, 'goerli', {
+      //TODO: networkId to env.
       clientId: '***REMOVED***',
     });
   }
 
-  async deployACollection(name: string) {
+  async deployACollection(name: string, eventId: string) {
     const address = await this.sdk.wallet.getAddress();
+    const chainId = await this.sdk.wallet.getChainId(); // TODO to hex
+
     const txResult = await this.sdk.deployer.deployBuiltInContract(
       'nft-collection',
       {
@@ -24,13 +35,31 @@ class nftCollection {
         voting_token_address: address,
       }
     );
+    return await createEventNftCollection({
+      chainId: chainId,
+      contractAddress: txResult,
+      eventId: eventId,
+    });
   }
 
-  async getContractFromTx(tx: string) {
-    const contract = await this.sdk.getContract(tx);
-    console.log(contract);
-    const metadata = await contract.metadata.get();
-    console.log(metadata);
+  async batchMint(contractAddress: string, metadatas: Array<nftsMetadata>) {
+    const address = await this.sdk.wallet.getAddress();
+    const contract = await this.sdk.getContract(contractAddress);
+
+    const tx = await contract.erc721.mintBatchTo(address, metadatas);
+    const transactionReceipt = tx[0].receipt;
+
+    console.log(transactionReceipt);
+    tx.forEach((t) => {
+      console.log(t.id);
+    });
+    // Loop to create eventPassNft with hasura
+  }
+
+  async getNftsFromContractAddress(contractAddress: string) {
+    const contract = await this.sdk.getContract(contractAddress);
+
+    return await contract.erc721.getAll();
   }
 }
 

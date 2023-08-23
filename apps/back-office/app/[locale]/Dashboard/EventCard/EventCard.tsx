@@ -14,6 +14,7 @@ import {
   AvatarImage,
   AvatarFallback,
 } from '@ui/components';
+import { getCurrentUser } from '@web/lib/session';
 
 interface EventCard {
   __typename?: 'Event' | undefined;
@@ -42,6 +43,8 @@ export interface EventSectionContentProps {
 async function EventSectionContent(props: EventSectionContentProps) {
   const events = props.events;
   const empty = !events.length;
+  const user = await getCurrentUser();
+  console.log('test', user);
 
   console.log('length', events.length);
 
