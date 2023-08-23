@@ -4,7 +4,7 @@ import type {
   NftTransferWithoutMetadata,
   NftTransferNotCreated,
 } from '@nft/types';
-import { transferPassQrCodeBatch } from '@features/pass/server';
+import { transferPassQrCodeBatch } from '@features/pass-api';
 
 export class EventPassNftWrapper {
   private adminSdk: typeof adminSdk;
@@ -103,7 +103,7 @@ export class EventPassNftWrapper {
           console.error(
             `lastNftTransfer is null for revealed eventPassNft with id ${eventPassNft.id}. This is likely an error`
           );
-        nftFileTransfers.push(eventPassNft);
+        else nftFileTransfers.push(eventPassNft);
       }
     }
     if (nftFileTransfers.length === 0) return;

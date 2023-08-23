@@ -39,6 +39,7 @@
         "libs/features/organizer/event/src/lib/store"
       ],
       "@features/pass": ["libs/features/pass/src/index.ts"],
+      "@features/pass-api": ["libs/features/pass-api/src/index.ts"],
       "@features/pass-types": ["libs/features/pass-types/src/index.ts"],
       "@features/pass/server": ["libs/features/pass/src/server.ts"],
       "@features/settings": ["libs/features/settings/src/index.ts"],
