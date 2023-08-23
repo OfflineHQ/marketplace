@@ -14,6 +14,7 @@ import { locales } from '@next/i18n';
 import { useLocale, useTranslations } from 'next-intl';
 import { AppNavLayout, type AppNavLayoutProps } from '@features/appNav/ui';
 import { ProfileNavClient } from './ProfileNavClient/ProfileNavClient';
+import { Dashboard } from './Dashboard/Dashboard';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -131,7 +132,7 @@ export default function RootLayout({
               }}
             >
               <ReactQueryProviders>
-                <ProfileNavClient> </ProfileNavClient>
+                <Dashboard />
                 <Toaster />
               </ReactQueryProviders>
             </AuthProvider>

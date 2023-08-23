@@ -51,6 +51,7 @@ export type Asset = Node & {
   localizations: Array<Asset>;
   /** The mime type of the file */
   mimeType?: Maybe<Scalars['String']>;
+  nftImageEventPass: Array<EventPass>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -136,6 +137,20 @@ export type AssetLocalizationsArgs = {
 
 
 /** Asset system model */
+export type AssetNftImageEventPassArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<EventPassOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<EventPassWhereInput>;
+};
+
+
+/** Asset system model */
 export type AssetPublishedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
@@ -199,6 +214,7 @@ export type AssetCreateInput = {
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<AssetCreateLocalizationsInput>;
   mimeType?: InputMaybe<Scalars['String']>;
+  nftImageEventPass?: InputMaybe<EventPassCreateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   width?: InputMaybe<Scalars['Float']>;
@@ -296,6 +312,9 @@ export type AssetManyWhereInput = {
   imageOrganizer_every?: InputMaybe<OrganizerWhereInput>;
   imageOrganizer_none?: InputMaybe<OrganizerWhereInput>;
   imageOrganizer_some?: InputMaybe<OrganizerWhereInput>;
+  nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
+  nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
+  nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -373,6 +392,7 @@ export type AssetUpdateInput = {
   /** Manage document localizations */
   localizations?: InputMaybe<AssetUpdateLocalizationsInput>;
   mimeType?: InputMaybe<Scalars['String']>;
+  nftImageEventPass?: InputMaybe<EventPassUpdateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']>;
   width?: InputMaybe<Scalars['Float']>;
 };
@@ -603,6 +623,9 @@ export type AssetWhereInput = {
   mimeType_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   mimeType_starts_with?: InputMaybe<Scalars['String']>;
+  nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
+  nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
+  nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -808,8 +831,6 @@ export type Event = Node & {
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<Event>;
-  /** The address of the NFT collection of the Event */
-  nftCollectionAddress: Scalars['String'];
   organizer?: Maybe<Organizer>;
   /** Whether the event is public (visible to anyone) or private (for instance visible only to owner of specific NFTs) */
   public?: Maybe<Scalars['Boolean']>;
@@ -974,7 +995,6 @@ export type EventCreateInput = {
   heroImage: AssetCreateOneInlineInput;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventCreateLocalizationsInput>;
-  nftCollectionAddress: Scalars['String'];
   organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   published: Scalars['Boolean'];
@@ -1292,25 +1312,6 @@ export type EventManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
-  nftCollectionAddress?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  nftCollectionAddress_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  nftCollectionAddress_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  nftCollectionAddress_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  nftCollectionAddress_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  nftCollectionAddress_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  nftCollectionAddress_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  nftCollectionAddress_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  nftCollectionAddress_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  nftCollectionAddress_starts_with?: InputMaybe<Scalars['String']>;
   organizer?: InputMaybe<OrganizerWhereInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   /** Any other value that exists and is not equal to the given value. */
@@ -1379,8 +1380,6 @@ export const enum EventOrderByInput {
   CreatedAtDesc = 'createdAt_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
-  NftCollectionAddressAsc = 'nftCollectionAddress_ASC',
-  NftCollectionAddressDesc = 'nftCollectionAddress_DESC',
   PublicAsc = 'public_ASC',
   PublicDesc = 'public_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
@@ -1419,6 +1418,12 @@ export type EventPass = Node & {
   localizations: Array<EventPass>;
   /** User-friendly name of the pass, like "VIP 3-Day Pass" */
   name: Scalars['String'];
+  /** Fixed description pertaining to the NFT. This content is static and non-localizable. */
+  nftDescription: Scalars['String'];
+  /** Permanent image representing the NFT. Advised resolution is 350 x 350 pixels. Image content is non-changeable and cannot be localized. */
+  nftImage: Asset;
+  /** Permanent name associated with the NFT. Cannot be changed or localized. */
+  nftName: Scalars['String'];
   /** Define the different pass options. An option is defined for a specific location and timeframe */
   passOptions: Array<PassOption>;
   /** The time the document was published. Null on documents in draft stage. */
@@ -1475,6 +1480,13 @@ export type EventPassHistoryArgs = {
 export type EventPassLocalizationsArgs = {
   includeCurrent?: Scalars['Boolean'];
   locales?: Array<Locale>;
+};
+
+
+/** Define a pass for an event with different options, price, number of passes etc. */
+export type EventPassNftImageArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
 };
 
 
@@ -1556,6 +1568,9 @@ export type EventPassCreateInput = {
   localizations?: InputMaybe<EventPassCreateLocalizationsInput>;
   /** name input for default locale (en) */
   name: Scalars['String'];
+  nftDescription: Scalars['String'];
+  nftImage: AssetCreateOneInlineInput;
+  nftName: Scalars['String'];
   passOptions?: InputMaybe<PassOptionCreateManyInlineInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
@@ -1643,6 +1658,45 @@ export type EventPassManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftDescription_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']>;
   passOptions_every?: InputMaybe<PassOptionWhereInput>;
   passOptions_none?: InputMaybe<PassOptionWhereInput>;
   passOptions_some?: InputMaybe<PassOptionWhereInput>;
@@ -1692,6 +1746,10 @@ export const enum EventPassOrderByInput {
   IdDesc = 'id_DESC',
   NameAsc = 'name_ASC',
   NameDesc = 'name_DESC',
+  NftDescriptionAsc = 'nftDescription_ASC',
+  NftDescriptionDesc = 'nftDescription_DESC',
+  NftNameAsc = 'nftName_ASC',
+  NftNameDesc = 'nftName_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
@@ -1706,6 +1764,9 @@ export type EventPassUpdateInput = {
   localizations?: InputMaybe<EventPassUpdateLocalizationsInput>;
   /** name input for default locale (en) */
   name?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
+  nftName?: InputMaybe<Scalars['String']>;
   passOptions?: InputMaybe<PassOptionUpdateManyInlineInput>;
 };
 
@@ -1753,6 +1814,8 @@ export type EventPassUpdateManyInput = {
   localizations?: InputMaybe<EventPassUpdateManyLocalizationsInput>;
   /** name input for default locale (en) */
   name?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']>;
 };
 
 export type EventPassUpdateManyLocalizationDataInput = {
@@ -1890,6 +1953,45 @@ export type EventPassWhereInput = {
   name_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   name_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftDescription_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']>;
   passOptions_every?: InputMaybe<PassOptionWhereInput>;
   passOptions_none?: InputMaybe<PassOptionWhereInput>;
   passOptions_some?: InputMaybe<PassOptionWhereInput>;
@@ -1957,7 +2059,6 @@ export type EventUpdateInput = {
   heroImage?: InputMaybe<AssetUpdateOneInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventUpdateLocalizationsInput>;
-  nftCollectionAddress?: InputMaybe<Scalars['String']>;
   organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   published?: InputMaybe<Scalars['Boolean']>;
@@ -2008,7 +2109,6 @@ export type EventUpdateManyInput = {
   description?: InputMaybe<Scalars['RichTextAST']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<EventUpdateManyLocalizationsInput>;
-  nftCollectionAddress?: InputMaybe<Scalars['String']>;
   public?: InputMaybe<Scalars['Boolean']>;
   published?: InputMaybe<Scalars['Boolean']>;
   /** title input for default locale (en) */
@@ -2133,25 +2233,6 @@ export type EventWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
-  nftCollectionAddress?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  nftCollectionAddress_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  nftCollectionAddress_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  nftCollectionAddress_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Any other value that exists and is not equal to the given value. */
-  nftCollectionAddress_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  nftCollectionAddress_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  nftCollectionAddress_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  nftCollectionAddress_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  nftCollectionAddress_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  nftCollectionAddress_starts_with?: InputMaybe<Scalars['String']>;
   organizer?: InputMaybe<OrganizerWhereInput>;
   public?: InputMaybe<Scalars['Boolean']>;
   /** Any other value that exists and is not equal to the given value. */
