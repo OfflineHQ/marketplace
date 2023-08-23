@@ -82,6 +82,15 @@ export type GetEventWithPassesQueryVariables = Types.Exact<{
 
 export type GetEventWithPassesQuery = { __typename?: 'query_root', event?: { __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, image: { __typename?: 'Asset', url: string } } | null, eventDateLocations: Array<{ __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } }>, eventPasses: Array<{ __typename?: 'EventPass', id: string, name: string, description: string, eventPassPricing?: { __typename?: 'eventPassPricing', priceAmount: number, priceCurrency: Types.Currency_Enum, maxAmount: number, maxAmountPerUser?: number | null } | null }> } | null };
 
+export type GetEventWithFromOrganizerIdQueryVariables = Types.Exact<{
+  id: Types.Scalars['ID'];
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type GetEventWithFromOrganizerIdQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', events: Array<{ __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string } }> } | null };
+
 export type GetEventPassesQueryVariables = Types.Exact<{
   eventSlug: Types.Scalars['String'];
   locale: Types.Locale;
