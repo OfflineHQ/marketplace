@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
+import {
+  screen,
+  userEvent,
+  waitForElementToBeRemoved,
+} from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 
 import { EventPassList } from './EventPassList';
@@ -70,16 +74,16 @@ export const Remove: Story = {
       name: /Remove/i,
     });
     userEvent.click(removeButtons[0]);
+    await waitForElementToBeRemoved(() =>
+      screen.queryByRole('button', {
+        name: /Lorem ipsum/i,
+      })
+    );
     expect(
       await screen.findByRole('button', {
         name: /World cup/i,
       })
     );
-    expect(
-      screen.queryByRole('button', {
-        name: /Lorem ipsum/i,
-      })
-    ).toBeNull();
   },
 };
 
