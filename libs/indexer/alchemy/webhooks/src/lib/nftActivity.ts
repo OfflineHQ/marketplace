@@ -7,7 +7,12 @@ import { WebhookType } from 'alchemy-sdk';
 import type { AlchemyNFTActivityEvent, AlchemyRequest } from './types';
 import { headers } from 'next/headers';
 import { EventPassNftWrapper } from '@nft/eventPass';
+import { hexToBigInt } from '@utils';
+import { AlchemyWrapper } from '@indexer/alchemy/admin';
 
+const alchemy = new AlchemyWrapper();
+
+// https://docs.alchemy.com/reference/nft-activity-webhook
 export const extractNftTransfersFromEvent = (
   alchemyWebhookEvent: AlchemyNFTActivityEvent
 ) => {
@@ -35,9 +40,9 @@ export const extractNftTransfersFromEvent = (
         fromAddress,
         toAddress,
         contractAddress,
-        blockNumber: blockNumber, // TODO: convert to bigint
-        tokenId: erc721TokenId, // TODO: convert to bigint
-        chainId: network, // TODO: convert to chainId hex string
+        blockNumber: hexToBigInt(blockNumber),
+        tokenId: hexToBigInt(erc721TokenId),
+        chainId: alchemy.convertNetworkToChainId(network).toString(),
         transactionHash,
       });
     }
@@ -69,21 +74,25 @@ export async function nftActivity(
   }
   const chainId = alchemyWebhookEvent.event.activity[0].network; // TODO: convert to chainId hex string
 
-  const eventPassNftWrapper = new EventPassNftWrapper();
   const nftTransfersFromEvent =
     extractNftTransfersFromEvent(alchemyWebhookEvent);
-  const NftTransfersNotCreated =
-    await eventPassNftWrapper.getEventPassNftTransfersMetadata(
-      nftTransfersFromEvent,
-      contractAddress,
-      chainId
-    );
+  if (nftTransfersFromEvent.length) {
+    const eventPassNftWrapper = new EventPassNftWrapper();
+    const NftTransfersNotCreated =
+      await eventPassNftWrapper.getEventPassNftTransfersMetadata(
+        nftTransfersFromEvent,
+        contractAddress,
+        chainId
+      );
 
-  const nftTransfers = await eventPassNftWrapper.upsertNftTransfers(
-    NftTransfersNotCreated
-  );
-  const updatedNfts =
-    await eventPassNftWrapper.updateEventPassNftFromNftTransfer(nftTransfers);
-  await eventPassNftWrapper.applyQrCodeBatchTransferForNewOwner(updatedNfts);
+    const nftTransfers = await eventPassNftWrapper.upsertNftTransfers(
+      NftTransfersNotCreated
+    );
+    const updatedNfts =
+      await eventPassNftWrapper.updateEventPassNftFromNftTransfer(nftTransfers);
+    await eventPassNftWrapper.applyQrCodeBatchTransferForNewOwner(updatedNfts);
+  } else {
+    throw new Error('No nft transfers found in event');
+  }
   return new Response(null, { status: 200 });
 }
