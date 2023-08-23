@@ -11,23 +11,9 @@ import {
   type ProfileNavProps,
 } from '@features/appNav/ui';
 
-export interface ProfileNavClientProps {
-  signInText: string;
-  profileSectionsText: {
-    myAccount: string;
-    support: string;
-    supportTitle: string;
-    supportDescription: string;
-    signOut: string;
-    signOutTitle: string;
-    signOutDescription: string;
-    signIn: string;
-    settings: string;
-  };
-}
-
 export const ProfileNavClient = () => {
-  const { safeUser, login, logout, safeAuth, connecting } = useAuthContext();
+  const { safeUser, login, logout, safeAuth, provider, connecting } =
+    useAuthContext();
   const { toast } = useToast();
 
   const signOutUserAction = useCallback(async () => {
@@ -67,9 +53,6 @@ export const ProfileNavClient = () => {
   ) : (
     <>
       <ProfileNav items={items} isLoading={connecting} user={safeUser} />
-      <div className="grid h-screen place-items-center">
-        Welcome to the Offline Dashboard {safeUser?.name}
-      </div>
     </>
   );
 };
