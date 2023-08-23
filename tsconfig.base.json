@@ -78,6 +78,7 @@
       "@next/store": ["libs/next/store/src/index.ts"],
       "@next/types": ["libs/next/types/src/index.ts"],
       "@next/zustand": ["libs/next/zustand/src/index.ts"],
+      "@nft/eventPass": ["libs/nft/eventPass/src/index.ts"],
       "@nft/types": ["libs/nft/types/src/index.ts"],
       "@server/task": ["libs/server/task/src/index.ts"],
       "@test-utils/db": ["libs/test-utils/db/src/index.ts"],
