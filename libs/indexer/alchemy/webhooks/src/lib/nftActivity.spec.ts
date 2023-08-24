@@ -61,7 +61,7 @@ const mockActivity2: Activity = {
   network: Network.ETH_SEPOLIA,
   fromAddress: 'fromAddress2',
   toAddress: 'toAddress2',
-  contractAddress: 'contractAddress',
+  contractAddress: 'contractAddress2',
   blockNumber: '0x78b78e',
   erc721TokenId: '0x1242141243e',
   hash: 'transactionHash2',
@@ -151,7 +151,7 @@ describe('extractNftTransfersFromEvent', () => {
       {
         fromAddress: 'fromAddress2',
         toAddress: 'toAddress2',
-        contractAddress: 'contractAddress',
+        contractAddress: 'contractAddress2',
         blockNumber: 7911310n,
         tokenId: 1254688367678n,
         chainId: '11155111',
@@ -184,7 +184,7 @@ describe('extractNftTransfersFromEvent', () => {
       {
         fromAddress: 'fromAddress2',
         toAddress: 'toAddress2',
-        contractAddress: 'contractAddress',
+        contractAddress: 'contractAddress2',
         blockNumber: 7911310n,
         tokenId: 1254688367678n,
         chainId: '11155111',
@@ -218,7 +218,7 @@ describe('extractNftTransfersFromEvent', () => {
 
 describe('nftActivity', () => {
   it('happy path with several nft activity being processed', async () => {
-    const response = await nftActivity(mockAlchemyRequest, 'contractAddress');
+    const response = await nftActivity(mockAlchemyRequest, 'fake-event-1');
     expect(response.status).toEqual(200);
     expect(isValidSignatureForAlchemyRequest).toHaveBeenCalled();
     // Expect calls to EventPassNftWrapper methods
@@ -231,7 +231,7 @@ describe('nftActivity', () => {
     // Override the validation to return false
     (isValidSignatureForAlchemyRequest as jest.Mock).mockReturnValueOnce(false);
 
-    const response = await nftActivity(mockAlchemyRequest, 'contractAddress');
+    const response = await nftActivity(mockAlchemyRequest, 'fake-event-1');
 
     expect(response.status).toEqual(403);
   });
@@ -242,7 +242,7 @@ describe('nftActivity', () => {
       new Error('Test error')
     );
 
-    const response = await nftActivity(mockAlchemyRequest, 'contractAddress');
+    const response = await nftActivity(mockAlchemyRequest, 'fake-event-1');
 
     expect(response.status).toEqual(500);
   });
@@ -251,7 +251,7 @@ describe('nftActivity', () => {
   //   // Override extractNftTransfersFromEvent to return an empty array
   //   jest.spyOn(module, 'extractNftTransfersFromEvent').mockReturnValue([]);
 
-  //   const response = await nftActivity(mockAlchemyRequest, 'contractAddress');
+  //   const response = await nftActivity(mockAlchemyRequest, 'fake-event-1');
 
   //   expect(response.status).toEqual(500);
   //   expect(response.statusText).toEqual('No nft transfers found in event');
@@ -267,7 +267,7 @@ describe('nftActivity', () => {
       .fn()
       .mockResolvedValueOnce(JSON.stringify(invalidWebhookEvent));
 
-    const response = await nftActivity(mockAlchemyRequest, 'contractAddress');
+    const response = await nftActivity(mockAlchemyRequest, 'fake-event-1');
 
     expect(response.status).toEqual(400);
   });
