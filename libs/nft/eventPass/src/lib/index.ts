@@ -14,11 +14,13 @@ export class EventPassNftWrapper {
   }
   async getEventPassNftTransfersMetadata(
     nftTransfers: NftTransferWithoutMetadata[],
-    contractAddress: string,
     chainId: string
   ) {
-    const res = await this.adminSdk.GetEventPassNftByCollectionAndTokenIds({
-      contractAddress,
+    const contractAddresses: string[] = [
+      ...new Set(nftTransfers.map((transfer) => transfer.contractAddress)),
+    ];
+    const res = await this.adminSdk.GetEventPassNftByContractsAndTokenIds({
+      contractAddresses,
       chainId,
       tokenIds: nftTransfers.map((t) => t.tokenId),
     });

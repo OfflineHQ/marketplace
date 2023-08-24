@@ -25,7 +25,7 @@ const nftTransfersWithoutMetadata = [
   {
     tokenId: '456',
     chainId: '1',
-    contractAddress: '0xAddress',
+    contractAddress: '0xAddress2',
     fromAddress: '0xFrom',
     toAddress: '0xTo',
     blockNumber: '1000',
@@ -99,13 +99,12 @@ describe('EventPassNftWrapper', () => {
         ],
       };
 
-      adminSdk.GetEventPassNftByCollectionAndTokenIds = jest
+      adminSdk.GetEventPassNftByContractsAndTokenIds = jest
         .fn()
         .mockResolvedValue(mockResponse);
 
       const result = await wrapper.getEventPassNftTransfersMetadata(
         nftTransferWithoutMetadata,
-        '0xAddress',
         '1'
       );
 
@@ -117,9 +116,9 @@ describe('EventPassNftWrapper', () => {
       ]);
 
       expect(
-        adminSdk.GetEventPassNftByCollectionAndTokenIds
+        adminSdk.GetEventPassNftByContractsAndTokenIds
       ).toHaveBeenCalledWith({
-        contractAddress: '0xAddress',
+        contractAddresses: ['0xAddress'],
         chainId: '1',
         tokenIds: ['123'],
       });
@@ -139,13 +138,12 @@ describe('EventPassNftWrapper', () => {
         ],
       };
 
-      adminSdk.GetEventPassNftByCollectionAndTokenIds = jest
+      adminSdk.GetEventPassNftByContractsAndTokenIds = jest
         .fn()
         .mockResolvedValue(mockResponse);
 
       const result = await wrapper.getEventPassNftTransfersMetadata(
         nftTransfersWithoutMetadata,
-        '0xAddress',
         '1'
       );
 
@@ -161,31 +159,30 @@ describe('EventPassNftWrapper', () => {
       ]);
 
       expect(
-        adminSdk.GetEventPassNftByCollectionAndTokenIds
+        adminSdk.GetEventPassNftByContractsAndTokenIds
       ).toHaveBeenCalledWith({
-        contractAddress: '0xAddress',
+        contractAddresses: ['0xAddress', '0xAddress2'],
         chainId: '1',
         tokenIds: ['123', '456'],
       });
     });
 
-    it('should throw an error if GetEventPassNftByCollectionAndTokenIds fails', async () => {
-      adminSdk.GetEventPassNftByCollectionAndTokenIds = jest
+    it('should throw an error if GetEventPassNftByContractsAndTokenIds fails', async () => {
+      adminSdk.GetEventPassNftByContractsAndTokenIds = jest
         .fn()
         .mockRejectedValue(new Error('Fetching error'));
 
       await expect(
         wrapper.getEventPassNftTransfersMetadata(
           nftTransfersWithoutMetadata,
-          '0xAddress',
           '1'
         )
       ).rejects.toThrow('Fetching error');
 
       expect(
-        adminSdk.GetEventPassNftByCollectionAndTokenIds
+        adminSdk.GetEventPassNftByContractsAndTokenIds
       ).toHaveBeenCalledWith({
-        contractAddress: '0xAddress',
+        contractAddresses: ['0xAddress', '0xAddress2'],
         chainId: '1',
         tokenIds: ['123', '456'],
       });
@@ -202,7 +199,7 @@ describe('EventPassNftWrapper', () => {
         ],
       };
 
-      adminSdk.GetEventPassNftByCollectionAndTokenIds = jest
+      adminSdk.GetEventPassNftByContractsAndTokenIds = jest
         .fn()
         .mockResolvedValue(mockResponse);
 
@@ -211,7 +208,6 @@ describe('EventPassNftWrapper', () => {
 
       const result = await wrapper.getEventPassNftTransfersMetadata(
         nftTransfersWithoutMetadata,
-        '0xAddress',
         '1'
       );
 
@@ -224,9 +220,9 @@ describe('EventPassNftWrapper', () => {
       ]);
 
       expect(
-        adminSdk.GetEventPassNftByCollectionAndTokenIds
+        adminSdk.GetEventPassNftByContractsAndTokenIds
       ).toHaveBeenCalledWith({
-        contractAddress: '0xAddress',
+        contractAddresses: ['0xAddress', '0xAddress2'],
         chainId: '1',
         tokenIds: ['123', '456'],
       });

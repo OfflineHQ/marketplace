@@ -53,10 +53,7 @@ export const extractNftTransfersFromEvent = (
   return nftTransfers;
 };
 
-export async function nftActivity(
-  req: AlchemyRequest,
-  contractAddress: string
-) {
+export async function nftActivity(req: AlchemyRequest, eventId: string) {
   const body = await req.text();
   const signature = headers().get('x-alchemy-signature') as string;
   addAlchemyContextToRequest(req, body, signature);
@@ -89,7 +86,6 @@ export async function nftActivity(
       const NftTransfersNotCreated =
         await eventPassNftWrapper.getEventPassNftTransfersMetadata(
           nftTransfersFromEvent,
-          contractAddress,
           chainId
         );
 
