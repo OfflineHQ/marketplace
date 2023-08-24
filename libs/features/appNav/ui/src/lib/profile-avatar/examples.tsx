@@ -6,7 +6,7 @@ export const cryptoUserSession = {
 } satisfies ProfileAvatarProps['user'];
 
 export const normalUserSession = {
-  eoa: '0x1bBEdB07706728A19c9dB82d3c420670D8040591',
+  eoa: '0x1bBEdB07706728A19c9dB82d3c420670D8040592',
   safes: [],
   email: 'johndoe@example.com',
   name: 'John Doe',
