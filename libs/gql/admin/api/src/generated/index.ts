@@ -304,10 +304,10 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
- const GetEventPassNftByCollectionAndTokenIdsDocument = `
-    query GetEventPassNftByCollectionAndTokenIds($contractAddress: String!, $chainId: String!, $tokenIds: [bigint!]!) @cached {
+ const GetEventPassNftByContractsAndTokenIdsDocument = `
+    query GetEventPassNftByContractsAndTokenIds($contractAddresses: [String!]!, $chainId: String!, $tokenIds: [bigint!]!) @cached {
   eventPassNft(
-    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, tokenId: {_in: $tokenIds}}
+    where: {contractAddress: {_in: $contractAddresses}, chainId: {_eq: $chainId}, tokenId: {_in: $tokenIds}}
   ) {
     tokenId
     eventId
@@ -398,8 +398,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     SetEventPassNftRevealed(variables: Types.SetEventPassNftRevealedMutationVariables, options?: C): Promise<Types.SetEventPassNftRevealedMutation> {
       return requester<Types.SetEventPassNftRevealedMutation, Types.SetEventPassNftRevealedMutationVariables>(SetEventPassNftRevealedDocument, variables, options) as Promise<Types.SetEventPassNftRevealedMutation>;
     },
-    GetEventPassNftByCollectionAndTokenIds(variables: Types.GetEventPassNftByCollectionAndTokenIdsQueryVariables, options?: C): Promise<Types.GetEventPassNftByCollectionAndTokenIdsQuery> {
-      return requester<Types.GetEventPassNftByCollectionAndTokenIdsQuery, Types.GetEventPassNftByCollectionAndTokenIdsQueryVariables>(GetEventPassNftByCollectionAndTokenIdsDocument, variables, options) as Promise<Types.GetEventPassNftByCollectionAndTokenIdsQuery>;
+    GetEventPassNftByContractsAndTokenIds(variables: Types.GetEventPassNftByContractsAndTokenIdsQueryVariables, options?: C): Promise<Types.GetEventPassNftByContractsAndTokenIdsQuery> {
+      return requester<Types.GetEventPassNftByContractsAndTokenIdsQuery, Types.GetEventPassNftByContractsAndTokenIdsQueryVariables>(GetEventPassNftByContractsAndTokenIdsDocument, variables, options) as Promise<Types.GetEventPassNftByContractsAndTokenIdsQuery>;
     },
     CreateEventPassPricing(variables: Types.CreateEventPassPricingMutationVariables, options?: C): Promise<Types.CreateEventPassPricingMutation> {
       return requester<Types.CreateEventPassPricingMutation, Types.CreateEventPassPricingMutationVariables>(CreateEventPassPricingDocument, variables, options) as Promise<Types.CreateEventPassPricingMutation>;

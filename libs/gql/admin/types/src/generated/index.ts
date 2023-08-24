@@ -131,14 +131,14 @@ export type SetEventPassNftRevealedMutationVariables = Types.Exact<{
 
 export type SetEventPassNftRevealedMutation = { __typename?: 'mutation_root', update_eventPassNft_by_pk?: { __typename?: 'eventPassNft', id: any } | null };
 
-export type GetEventPassNftByCollectionAndTokenIdsQueryVariables = Types.Exact<{
-  contractAddress: Types.Scalars['String'];
+export type GetEventPassNftByContractsAndTokenIdsQueryVariables = Types.Exact<{
+  contractAddresses: Array<Types.Scalars['String']> | Types.Scalars['String'];
   chainId: Types.Scalars['String'];
   tokenIds: Array<Types.Scalars['bigint']> | Types.Scalars['bigint'];
 }>;
 
 
-export type GetEventPassNftByCollectionAndTokenIdsQuery = { __typename?: 'query_root', eventPassNft: Array<{ __typename?: 'eventPassNft', tokenId: any, eventId: string, eventPassId: string, organizerId: string }> };
+export type GetEventPassNftByContractsAndTokenIdsQuery = { __typename?: 'query_root', eventPassNft: Array<{ __typename?: 'eventPassNft', tokenId: any, eventId: string, eventPassId: string, organizerId: string }> };
 
 export type CreateEventPassPricingMutationVariables = Types.Exact<{
   eventPassPricing: Types.EventPassPricing_Insert_Input;

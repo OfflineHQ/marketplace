@@ -5,14 +5,16 @@ import { getNextAppURL } from '@utils';
 const alchemy = new AlchemyWrapper();
 
 type CreateNftActivityWebhook = {
-  nftCollectionAddress: string;
+  eventId: string;
+  nftCollectionAddresses: string[];
 };
 
 export const createNftActivityWebhookForEvent = async ({
-  nftCollectionAddress,
+  eventId,
+  nftCollectionAddresses,
 }: CreateNftActivityWebhook) => {
-  return await alchemy.createNftActivityWebhook(
-    `${getNextAppURL()}/api/webhooks/nft_activity/${nftCollectionAddress}`,
-    [{ contractAddress: nftCollectionAddress }]
+  return alchemy.createNftActivityWebhook(
+    `${getNextAppURL()}/api/webhooks/nft_activity/${eventId}`,
+    nftCollectionAddresses.map((contractAddress) => ({ contractAddress }))
   );
 };
