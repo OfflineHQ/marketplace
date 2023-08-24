@@ -3,6 +3,7 @@ import type {
   NftTransfer,
   NftTransferWithoutMetadata,
   NftTransferNotCreated,
+  EventPassNftAfterMutation,
 } from '@nft/types';
 import { transferPassQrCodeBatch } from '@features/pass-api';
 
@@ -78,41 +79,35 @@ export class EventPassNftWrapper {
       throw new Error('Failed to update eventPassNft');
     }
 
-    return res.update_eventPassNft_many
-      .map((nftRes) => {
-        if (!nftRes?.returning || !nftRes.returning?.length) {
-          console.error(
-            'No returning data for an update on eventPassNft, this is likely an error'
-          );
-          return null;
-        }
-        return nftRes.returning[0];
-      })
-      .filter((item) => item !== null);
+    return res.update_eventPassNft_many.reduce((result, nftRes) => {
+      if (!nftRes?.returning || !nftRes.returning?.length) {
+        console.error(
+          'No returning data for an update on eventPassNft, this is likely an error'
+        );
+        return result;
+      }
+      return [...result, nftRes.returning[0]];
+    }, [] as EventPassNftAfterMutation[]);
   }
   // we handle the transfer of the QR code from the old owner to the new owner for each nft that has been revealed
   async applyQrCodeBatchTransferForNewOwner(
-    eventPassNfts: Awaited<
-      ReturnType<typeof this.updateEventPassNftFromNftTransfer>
-    >
+    eventPassNfts: EventPassNftAfterMutation[]
   ) {
-    const nftFileTransfers: typeof eventPassNfts = [];
+    const nftFileTransfers: Parameters<typeof transferPassQrCodeBatch>[0] = [];
     for (const eventPassNft of eventPassNfts) {
       if (eventPassNft.isRevealed) {
         if (!eventPassNft.lastNftTransfer)
           console.error(
             `lastNftTransfer is null for revealed eventPassNft with id ${eventPassNft.id}. This is likely an error`
           );
-        else nftFileTransfers.push(eventPassNft);
+        else
+          nftFileTransfers.push({
+            formerOwnerAddress: eventPassNft.lastNftTransfer.fromAddress,
+            eventPassNft,
+          });
       }
     }
     if (nftFileTransfers.length === 0) return;
-    const transferInputs = nftFileTransfers.map((nft) => {
-      return {
-        formerOwnerAddress: nft.lastNftTransfer.fromAddress,
-        eventPassNft: nft,
-      };
-    });
-    await transferPassQrCodeBatch(transferInputs);
+    await transferPassQrCodeBatch(nftFileTransfers);
   }
 }

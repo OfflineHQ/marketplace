@@ -1,7 +1,8 @@
 import { EventPassNftWrapper } from './index';
 import { adminSdk } from '@gql/admin/api';
-import type { UpdateEventPassNftFromNftTransferMutation } from '@gql/admin/types';
 import { transferPassQrCodeBatch } from '@features/pass-api';
+import { UpdateEventPassNftFromNftTransferMutation } from '@gql/admin/types';
+import type { EventPassNftAfterMutation } from '@nft/types';
 
 jest.mock('@features/pass-api', () => ({
   transferPassQrCodeBatch: jest.fn(),
@@ -61,7 +62,7 @@ const eventPassNft1 = {
   id: 'some-uuid',
   isRevealed: false,
   currentOwnerAddress: '0xFrom',
-} satisfies UpdateEventPassNftFromNftTransferMutation['update_eventPassNft_many'][0]['returning'][0];
+} satisfies EventPassNftAfterMutation;
 
 const eventPassNft2 = {
   ...eventPass2,
@@ -70,7 +71,7 @@ const eventPassNft2 = {
   isRevealed: true,
   currentOwnerAddress: '0xTo',
   lastNftTransfer: { fromAddress: '0xFrom' },
-} satisfies UpdateEventPassNftFromNftTransferMutation['update_eventPassNft_many'][0]['returning'][0];
+} satisfies EventPassNftAfterMutation;
 
 const eventPassNfts = [eventPassNft1, eventPassNft2];
 
