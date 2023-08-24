@@ -47,9 +47,9 @@ const fetchDataForTest = (opts: Opts = { jwt: '', anonymous: false }) => {
 };
 
 export const accounts = {
-  seb_google: {
+  google_user: {
     id: 'ac542c34-1907-451c-94be-5df69a959080',
-    address: '0x1bBEdB07706728A19c9dB82d3c420670D8040591',
+    address: '0x1bBEdB07706728A19c9dB82d3c420670D8040592',
     email: 'sebpalluel@gmail.com',
     emailVerified: true,
     isOrganizer: true,
@@ -87,9 +87,9 @@ const generateJwt = (options: AccountOptions): string =>
   );
 
 export const usersJwt = {
-  seb_google: generateJwt({
+  google_user: generateJwt({
     defaultRole: 'user',
-    userId: accounts.seb_google.id,
+    userId: accounts.google_user.id,
   }),
   alpha_user: generateJwt({
     defaultRole: 'user',
@@ -117,8 +117,8 @@ export const betaAdminClient = (): UserSdk & { me: Account } => {
 
 export const sebGoogleClient = (): UserSdk & { me: Account } => {
   return {
-    ...userSdk(fetchDataForTest({ jwt: usersJwt.seb_google })),
-    me: accounts.seb_google,
+    ...userSdk(fetchDataForTest({ jwt: usersJwt.google_user })),
+    me: accounts.google_user,
   };
 };
 
