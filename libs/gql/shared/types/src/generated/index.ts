@@ -822,8 +822,8 @@ export type Event = Node & {
    * This is only for information purpose but it should match your 'Event Pass' locations and dates
    */
   eventDateLocations: Array<EventDateLocation>;
-  eventNftCollection: Array<EventNftCollection>;
-  eventNftCollection_aggregate: EventNftCollection_Aggregate;
+  eventParameters: Array<EventParameters>;
+  eventParameters_aggregate: EventParameters_Aggregate;
   eventPasses: Array<EventPass>;
   heroImage: Asset;
   /** List of Event versions */
@@ -892,22 +892,22 @@ export type EventEventDateLocationsArgs = {
 
 
 /** Root event model */
-export type EventEventNftCollectionArgs = {
-  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+export type EventEventParametersArgs = {
+  distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
-  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+  order_by?: InputMaybe<Array<EventParameters_Order_By>>;
+  where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
 
 /** Root event model */
-export type EventEventNftCollection_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+export type EventEventParameters_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
-  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+  order_by?: InputMaybe<Array<EventParameters_Order_By>>;
+  where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
 
@@ -2355,11 +2355,6 @@ export type EventWhereStageInput = {
 /** References Event record uniquely */
 export type EventWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
-  slug?: InputMaybe<Scalars['String']>;
-};
-
-/** References Event record uniquely */
-export type EventWhereUniqueInput_Remote_Rel_EventNftCollectionevent = {
   slug?: InputMaybe<Scalars['String']>;
 };
 
@@ -4840,211 +4835,182 @@ export const enum Cursor_Ordering {
   Desc = 'DESC'
 };
 
-/** The eventNftCollection model is designed to store metadata associated with NFT collections linked to specific events. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT collections. Additionally, this table integrates infrastructure-specific details, like the activityWebhookId, which aids in monitoring and processing events or changes related to the NFT collections in our platform. By centralizing this information, our system can effectively manage, reference, and interact with NFT collections tied to particular events. */
-export type EventNftCollection = {
-  __typename?: 'eventNftCollection';
-  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
-  activityWebhookId: Scalars['String'];
-  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId: Scalars['String'];
-  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
-  contractAddress: Scalars['String'];
-  event?: Maybe<Event>;
-  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+/** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
+export type EventParameters = {
+  __typename?: 'eventParameters';
+  activityWebhookId?: Maybe<Scalars['String']>;
   eventId: Scalars['String'];
+  /** An array relationship */
+  eventPassNftContracts: Array<EventPassNftContract>;
+  /** An aggregate relationship */
+  eventPassNftContracts_aggregate: EventPassNftContract_Aggregate;
   id: Scalars['uuid'];
 };
 
 
-/** The eventNftCollection model is designed to store metadata associated with NFT collections linked to specific events. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT collections. Additionally, this table integrates infrastructure-specific details, like the activityWebhookId, which aids in monitoring and processing events or changes related to the NFT collections in our platform. By centralizing this information, our system can effectively manage, reference, and interact with NFT collections tied to particular events. */
-export type EventNftCollectionEventArgs = {
-  locales?: Array<Locale>;
-  stage?: Stage;
-  where: EventWhereUniqueInput_Remote_Rel_EventNftCollectionevent;
+/** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
+export type EventParametersEventPassNftContractsArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
+  where?: InputMaybe<EventPassNftContract_Bool_Exp>;
 };
 
-/** aggregated selection of "eventNftCollection" */
-export type EventNftCollection_Aggregate = {
-  __typename?: 'eventNftCollection_aggregate';
-  aggregate?: Maybe<EventNftCollection_Aggregate_Fields>;
-  nodes: Array<EventNftCollection>;
+
+/** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
+export type EventParametersEventPassNftContracts_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
+  where?: InputMaybe<EventPassNftContract_Bool_Exp>;
 };
 
-/** aggregate fields of "eventNftCollection" */
-export type EventNftCollection_Aggregate_Fields = {
-  __typename?: 'eventNftCollection_aggregate_fields';
+/** aggregated selection of "eventParameters" */
+export type EventParameters_Aggregate = {
+  __typename?: 'eventParameters_aggregate';
+  aggregate?: Maybe<EventParameters_Aggregate_Fields>;
+  nodes: Array<EventParameters>;
+};
+
+/** aggregate fields of "eventParameters" */
+export type EventParameters_Aggregate_Fields = {
+  __typename?: 'eventParameters_aggregate_fields';
   count: Scalars['Int'];
-  max?: Maybe<EventNftCollection_Max_Fields>;
-  min?: Maybe<EventNftCollection_Min_Fields>;
+  max?: Maybe<EventParameters_Max_Fields>;
+  min?: Maybe<EventParameters_Min_Fields>;
 };
 
 
-/** aggregate fields of "eventNftCollection" */
-export type EventNftCollection_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+/** aggregate fields of "eventParameters" */
+export type EventParameters_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<EventParameters_Select_Column>>;
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
-/** Boolean expression to filter rows from the table "eventNftCollection". All fields are combined with a logical 'AND'. */
-export type EventNftCollection_Bool_Exp = {
-  _and?: InputMaybe<Array<EventNftCollection_Bool_Exp>>;
-  _not?: InputMaybe<EventNftCollection_Bool_Exp>;
-  _or?: InputMaybe<Array<EventNftCollection_Bool_Exp>>;
+/** Boolean expression to filter rows from the table "eventParameters". All fields are combined with a logical 'AND'. */
+export type EventParameters_Bool_Exp = {
+  _and?: InputMaybe<Array<EventParameters_Bool_Exp>>;
+  _not?: InputMaybe<EventParameters_Bool_Exp>;
+  _or?: InputMaybe<Array<EventParameters_Bool_Exp>>;
   activityWebhookId?: InputMaybe<String_Comparison_Exp>;
-  chainId?: InputMaybe<String_Comparison_Exp>;
-  contractAddress?: InputMaybe<String_Comparison_Exp>;
   eventId?: InputMaybe<String_Comparison_Exp>;
+  eventPassNftContracts?: InputMaybe<EventPassNftContract_Bool_Exp>;
+  eventPassNftContracts_aggregate?: InputMaybe<EventPassNftContract_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
 };
 
-/** unique or primary key constraints on table "eventNftCollection" */
-export const enum EventNftCollection_Constraint {
+/** unique or primary key constraints on table "eventParameters" */
+export const enum EventParameters_Constraint {
   /** unique or primary key constraint on columns "activityWebhookId" */
-  EventNftCollectionActivityWebhookIdKey = 'eventNftCollection_activityWebhookId_key',
-  /** unique or primary key constraint on columns "contractAddress", "chainId" */
-  EventNftCollectionContractAddressChainIdKey = 'eventNftCollection_contractAddress_chainId_key',
+  EventParametersActivityWebhookIdKey = 'eventParameters_activityWebhookId_key',
+  /** unique or primary key constraint on columns "eventId" */
+  EventParametersEventIdKey = 'eventParameters_eventId_key',
   /** unique or primary key constraint on columns "id" */
-  EventNftCollectionPkey = 'eventNftCollection_pkey'
+  EventParametersPkey = 'eventParameters_pkey'
 };
 
-/** input type for inserting data into table "eventNftCollection" */
-export type EventNftCollection_Insert_Input = {
-  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+/** input type for inserting data into table "eventParameters" */
+export type EventParameters_Insert_Input = {
   activityWebhookId?: InputMaybe<Scalars['String']>;
-  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId?: InputMaybe<Scalars['String']>;
-  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
   eventId?: InputMaybe<Scalars['String']>;
+  eventPassNftContracts?: InputMaybe<EventPassNftContract_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
 };
 
 /** aggregate max on columns */
-export type EventNftCollection_Max_Fields = {
-  __typename?: 'eventNftCollection_max_fields';
-  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+export type EventParameters_Max_Fields = {
+  __typename?: 'eventParameters_max_fields';
   activityWebhookId?: Maybe<Scalars['String']>;
-  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId?: Maybe<Scalars['String']>;
-  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
-  contractAddress?: Maybe<Scalars['String']>;
-  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
   eventId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
 };
 
 /** aggregate min on columns */
-export type EventNftCollection_Min_Fields = {
-  __typename?: 'eventNftCollection_min_fields';
-  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+export type EventParameters_Min_Fields = {
+  __typename?: 'eventParameters_min_fields';
   activityWebhookId?: Maybe<Scalars['String']>;
-  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId?: Maybe<Scalars['String']>;
-  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
-  contractAddress?: Maybe<Scalars['String']>;
-  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
   eventId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
 };
 
-/** response of any mutation on the table "eventNftCollection" */
-export type EventNftCollection_Mutation_Response = {
-  __typename?: 'eventNftCollection_mutation_response';
+/** response of any mutation on the table "eventParameters" */
+export type EventParameters_Mutation_Response = {
+  __typename?: 'eventParameters_mutation_response';
   /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
-  returning: Array<EventNftCollection>;
+  returning: Array<EventParameters>;
 };
 
-/** on_conflict condition type for table "eventNftCollection" */
-export type EventNftCollection_On_Conflict = {
-  constraint: EventNftCollection_Constraint;
-  update_columns?: Array<EventNftCollection_Update_Column>;
-  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+/** on_conflict condition type for table "eventParameters" */
+export type EventParameters_On_Conflict = {
+  constraint: EventParameters_Constraint;
+  update_columns?: Array<EventParameters_Update_Column>;
+  where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
-/** Ordering options when selecting data from "eventNftCollection". */
-export type EventNftCollection_Order_By = {
+/** Ordering options when selecting data from "eventParameters". */
+export type EventParameters_Order_By = {
   activityWebhookId?: InputMaybe<Order_By>;
-  chainId?: InputMaybe<Order_By>;
-  contractAddress?: InputMaybe<Order_By>;
   eventId?: InputMaybe<Order_By>;
+  eventPassNftContracts_aggregate?: InputMaybe<EventPassNftContract_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: eventNftCollection */
-export type EventNftCollection_Pk_Columns_Input = {
+/** primary key columns input for table: eventParameters */
+export type EventParameters_Pk_Columns_Input = {
   id: Scalars['uuid'];
 };
 
-/** select columns of table "eventNftCollection" */
-export const enum EventNftCollection_Select_Column {
+/** select columns of table "eventParameters" */
+export const enum EventParameters_Select_Column {
   /** column name */
   ActivityWebhookId = 'activityWebhookId',
-  /** column name */
-  ChainId = 'chainId',
-  /** column name */
-  ContractAddress = 'contractAddress',
   /** column name */
   EventId = 'eventId',
   /** column name */
   Id = 'id'
 };
 
-/** input type for updating data in table "eventNftCollection" */
-export type EventNftCollection_Set_Input = {
-  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+/** input type for updating data in table "eventParameters" */
+export type EventParameters_Set_Input = {
   activityWebhookId?: InputMaybe<Scalars['String']>;
-  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId?: InputMaybe<Scalars['String']>;
-  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
   eventId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
 };
 
-/** Streaming cursor of the table "eventNftCollection" */
-export type EventNftCollection_Stream_Cursor_Input = {
+/** Streaming cursor of the table "eventParameters" */
+export type EventParameters_Stream_Cursor_Input = {
   /** Stream column input with initial value */
-  initial_value: EventNftCollection_Stream_Cursor_Value_Input;
+  initial_value: EventParameters_Stream_Cursor_Value_Input;
   /** cursor ordering */
   ordering?: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
-export type EventNftCollection_Stream_Cursor_Value_Input = {
-  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+export type EventParameters_Stream_Cursor_Value_Input = {
   activityWebhookId?: InputMaybe<Scalars['String']>;
-  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId?: InputMaybe<Scalars['String']>;
-  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
   eventId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
 };
 
-/** update columns of table "eventNftCollection" */
-export const enum EventNftCollection_Update_Column {
+/** update columns of table "eventParameters" */
+export const enum EventParameters_Update_Column {
   /** column name */
   ActivityWebhookId = 'activityWebhookId',
-  /** column name */
-  ChainId = 'chainId',
-  /** column name */
-  ContractAddress = 'contractAddress',
   /** column name */
   EventId = 'eventId',
   /** column name */
   Id = 'id'
 };
 
-export type EventNftCollection_Updates = {
+export type EventParameters_Updates = {
   /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<EventNftCollection_Set_Input>;
+  _set?: InputMaybe<EventParameters_Set_Input>;
   /** filter the rows which have to be updated */
-  where: EventNftCollection_Bool_Exp;
+  where: EventParameters_Bool_Exp;
 };
 
 /** The eventPassNft model is designed to consolidate and store the metadata associated with each event pass NFT. It centralizes fixed metadata, enabling the system to retrieve NFT details without frequently querying external APIs. It integrates with the existing nftTransfer model, providing a holistic view of each event pass NFT's journey and characteristics within the platform. */
@@ -5121,11 +5087,326 @@ export type EventPassNftNftTransfers_AggregateArgs = {
   where?: InputMaybe<NftTransfer_Bool_Exp>;
 };
 
+/** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
+export type EventPassNftContract = {
+  __typename?: 'eventPassNftContract';
+  chainId: Scalars['String'];
+  contractAddress: Scalars['String'];
+  eventId: Scalars['String'];
+  eventPassId: Scalars['String'];
+  /** An array relationship */
+  eventPassNfts: Array<EventPassNft>;
+  /** An aggregate relationship */
+  eventPassNfts_aggregate: EventPassNft_Aggregate;
+  /** An object relationship */
+  eventPassOrderSums?: Maybe<EventPassOrderSums>;
+  /** An array relationship */
+  eventPassOrders: Array<EventPassOrder>;
+  /** An aggregate relationship */
+  eventPassOrders_aggregate: EventPassOrder_Aggregate;
+  /** An object relationship */
+  eventPassPricing?: Maybe<EventPassPricing>;
+  id: Scalars['uuid'];
+  organizerId: Scalars['String'];
+};
+
+
+/** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
+export type EventPassNftContractEventPassNftsArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
+  where?: InputMaybe<EventPassNft_Bool_Exp>;
+};
+
+
+/** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
+export type EventPassNftContractEventPassNfts_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
+  where?: InputMaybe<EventPassNft_Bool_Exp>;
+};
+
+
+/** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
+export type EventPassNftContractEventPassOrdersArgs = {
+  distinct_on?: InputMaybe<Array<EventPassOrder_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassOrder_Order_By>>;
+  where?: InputMaybe<EventPassOrder_Bool_Exp>;
+};
+
+
+/** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
+export type EventPassNftContractEventPassOrders_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassOrder_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassOrder_Order_By>>;
+  where?: InputMaybe<EventPassOrder_Bool_Exp>;
+};
+
+/** aggregated selection of "eventPassNftContract" */
+export type EventPassNftContract_Aggregate = {
+  __typename?: 'eventPassNftContract_aggregate';
+  aggregate?: Maybe<EventPassNftContract_Aggregate_Fields>;
+  nodes: Array<EventPassNftContract>;
+};
+
+export type EventPassNftContract_Aggregate_Bool_Exp = {
+  count?: InputMaybe<EventPassNftContract_Aggregate_Bool_Exp_Count>;
+};
+
+export type EventPassNftContract_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<EventPassNftContract_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "eventPassNftContract" */
+export type EventPassNftContract_Aggregate_Fields = {
+  __typename?: 'eventPassNftContract_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<EventPassNftContract_Max_Fields>;
+  min?: Maybe<EventPassNftContract_Min_Fields>;
+};
+
+
+/** aggregate fields of "eventPassNftContract" */
+export type EventPassNftContract_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "eventPassNftContract" */
+export type EventPassNftContract_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<EventPassNftContract_Max_Order_By>;
+  min?: InputMaybe<EventPassNftContract_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "eventPassNftContract" */
+export type EventPassNftContract_Arr_Rel_Insert_Input = {
+  data: Array<EventPassNftContract_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<EventPassNftContract_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "eventPassNftContract". All fields are combined with a logical 'AND'. */
+export type EventPassNftContract_Bool_Exp = {
+  _and?: InputMaybe<Array<EventPassNftContract_Bool_Exp>>;
+  _not?: InputMaybe<EventPassNftContract_Bool_Exp>;
+  _or?: InputMaybe<Array<EventPassNftContract_Bool_Exp>>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  eventId?: InputMaybe<String_Comparison_Exp>;
+  eventPassId?: InputMaybe<String_Comparison_Exp>;
+  eventPassNfts?: InputMaybe<EventPassNft_Bool_Exp>;
+  eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Bool_Exp>;
+  eventPassOrderSums?: InputMaybe<EventPassOrderSums_Bool_Exp>;
+  eventPassOrders?: InputMaybe<EventPassOrder_Bool_Exp>;
+  eventPassOrders_aggregate?: InputMaybe<EventPassOrder_Aggregate_Bool_Exp>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Bool_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "eventPassNftContract" */
+export const enum EventPassNftContract_Constraint {
+  /** unique or primary key constraint on columns "contractAddress", "chainId" */
+  EventPassNftContractContractAddressChainIdKey = 'eventPassNftContract_contractAddress_chainId_key'
+};
+
+/** input type for inserting data into table "eventPassNftContract" */
+export type EventPassNftContract_Insert_Input = {
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
+  eventPassOrderSums?: InputMaybe<EventPassOrderSums_Obj_Rel_Insert_Input>;
+  eventPassOrders?: InputMaybe<EventPassOrder_Arr_Rel_Insert_Input>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Obj_Rel_Insert_Input>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EventPassNftContract_Max_Fields = {
+  __typename?: 'eventPassNftContract_max_fields';
+  chainId?: Maybe<Scalars['String']>;
+  contractAddress?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizerId?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "eventPassNftContract" */
+export type EventPassNftContract_Max_Order_By = {
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type EventPassNftContract_Min_Fields = {
+  __typename?: 'eventPassNftContract_min_fields';
+  chainId?: Maybe<Scalars['String']>;
+  contractAddress?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizerId?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "eventPassNftContract" */
+export type EventPassNftContract_Min_Order_By = {
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "eventPassNftContract" */
+export type EventPassNftContract_Mutation_Response = {
+  __typename?: 'eventPassNftContract_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<EventPassNftContract>;
+};
+
+/** on_conflict condition type for table "eventPassNftContract" */
+export type EventPassNftContract_On_Conflict = {
+  constraint: EventPassNftContract_Constraint;
+  update_columns?: Array<EventPassNftContract_Update_Column>;
+  where?: InputMaybe<EventPassNftContract_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "eventPassNftContract". */
+export type EventPassNftContract_Order_By = {
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Order_By>;
+  eventPassOrderSums?: InputMaybe<EventPassOrderSums_Order_By>;
+  eventPassOrders_aggregate?: InputMaybe<EventPassOrder_Aggregate_Order_By>;
+  eventPassPricing?: InputMaybe<EventPassPricing_Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "eventPassNftContract" */
+export const enum EventPassNftContract_Select_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId'
+};
+
+/** input type for updating data in table "eventPassNftContract" */
+export type EventPassNftContract_Set_Input = {
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "eventPassNftContract" */
+export type EventPassNftContract_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: EventPassNftContract_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EventPassNftContract_Stream_Cursor_Value_Input = {
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "eventPassNftContract" */
+export const enum EventPassNftContract_Update_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId'
+};
+
+export type EventPassNftContract_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<EventPassNftContract_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: EventPassNftContract_Bool_Exp;
+};
+
 /** aggregated selection of "eventPassNft" */
 export type EventPassNft_Aggregate = {
   __typename?: 'eventPassNft_aggregate';
   aggregate?: Maybe<EventPassNft_Aggregate_Fields>;
   nodes: Array<EventPassNft>;
+};
+
+export type EventPassNft_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<EventPassNft_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<EventPassNft_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<EventPassNft_Aggregate_Bool_Exp_Count>;
+};
+
+export type EventPassNft_Aggregate_Bool_Exp_Bool_And = {
+  arguments: EventPassNft_Select_Column_EventPassNft_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<EventPassNft_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type EventPassNft_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: EventPassNft_Select_Column_EventPassNft_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<EventPassNft_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type EventPassNft_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<EventPassNft_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<EventPassNft_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "eventPassNft" */
@@ -5151,10 +5432,32 @@ export type EventPassNft_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "eventPassNft" */
+export type EventPassNft_Aggregate_Order_By = {
+  avg?: InputMaybe<EventPassNft_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<EventPassNft_Max_Order_By>;
+  min?: InputMaybe<EventPassNft_Min_Order_By>;
+  stddev?: InputMaybe<EventPassNft_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<EventPassNft_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<EventPassNft_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<EventPassNft_Sum_Order_By>;
+  var_pop?: InputMaybe<EventPassNft_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<EventPassNft_Var_Samp_Order_By>;
+  variance?: InputMaybe<EventPassNft_Variance_Order_By>;
+};
+
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type EventPassNft_Append_Input = {
   /** The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT. */
   metadata?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** input type for inserting array relation for remote table "eventPassNft" */
+export type EventPassNft_Arr_Rel_Insert_Input = {
+  data: Array<EventPassNft_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<EventPassNft_On_Conflict>;
 };
 
 /** aggregate avg on columns */
@@ -5162,6 +5465,12 @@ export type EventPassNft_Avg_Fields = {
   __typename?: 'eventPassNft_avg_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "eventPassNft" */
+export type EventPassNft_Avg_Order_By = {
+  /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "eventPassNft". All fields are combined with a logical 'AND'. */
@@ -5286,6 +5595,33 @@ export type EventPassNft_Max_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
+/** order by max() on columns of table "eventPassNft" */
+export type EventPassNft_Max_Order_By = {
+  /** Denotes the specific blockchain or network of the event pass NFT */
+  chainId?: InputMaybe<Order_By>;
+  /** Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  /** The address currently holding the event pass NFT, allowing tracking of ownership */
+  currentOwnerAddress?: InputMaybe<Order_By>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: InputMaybe<Order_By>;
+  /** A reference to the event associated with the event pass NFT */
+  eventId?: InputMaybe<Order_By>;
+  /** Directly relates to a specific Event Pass within the system */
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
+  lastNftTransferId?: InputMaybe<Order_By>;
+  /** Ties the event pass NFT to a specific organizer within the platform */
+  organizerId?: InputMaybe<Order_By>;
+  /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Order_By>;
+  /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type EventPassNft_Min_Fields = {
   __typename?: 'eventPassNft_min_fields';
@@ -5312,6 +5648,33 @@ export type EventPassNft_Min_Fields = {
   /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
   tokenUri?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "eventPassNft" */
+export type EventPassNft_Min_Order_By = {
+  /** Denotes the specific blockchain or network of the event pass NFT */
+  chainId?: InputMaybe<Order_By>;
+  /** Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  /** The address currently holding the event pass NFT, allowing tracking of ownership */
+  currentOwnerAddress?: InputMaybe<Order_By>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: InputMaybe<Order_By>;
+  /** A reference to the event associated with the event pass NFT */
+  eventId?: InputMaybe<Order_By>;
+  /** Directly relates to a specific Event Pass within the system */
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
+  lastNftTransferId?: InputMaybe<Order_By>;
+  /** Ties the event pass NFT to a specific organizer within the platform */
+  organizerId?: InputMaybe<Order_By>;
+  /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Order_By>;
+  /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "eventPassNft" */
@@ -5397,6 +5760,18 @@ export const enum EventPassNft_Select_Column {
   UpdatedAt = 'updated_at'
 };
 
+/** select "eventPassNft_aggregate_bool_exp_bool_and_arguments_columns" columns of table "eventPassNft" */
+export const enum EventPassNft_Select_Column_EventPassNft_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsRevealed = 'isRevealed'
+};
+
+/** select "eventPassNft_aggregate_bool_exp_bool_or_arguments_columns" columns of table "eventPassNft" */
+export const enum EventPassNft_Select_Column_EventPassNft_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsRevealed = 'isRevealed'
+};
+
 /** input type for updating data in table "eventPassNft" */
 export type EventPassNft_Set_Input = {
   /** Denotes the specific blockchain or network of the event pass NFT */
@@ -5435,6 +5810,12 @@ export type EventPassNft_Stddev_Fields = {
   tokenId?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev() on columns of table "eventPassNft" */
+export type EventPassNft_Stddev_Order_By = {
+  /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_pop on columns */
 export type EventPassNft_Stddev_Pop_Fields = {
   __typename?: 'eventPassNft_stddev_pop_fields';
@@ -5442,11 +5823,23 @@ export type EventPassNft_Stddev_Pop_Fields = {
   tokenId?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev_pop() on columns of table "eventPassNft" */
+export type EventPassNft_Stddev_Pop_Order_By = {
+  /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_samp on columns */
 export type EventPassNft_Stddev_Samp_Fields = {
   __typename?: 'eventPassNft_stddev_samp_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "eventPassNft" */
+export type EventPassNft_Stddev_Samp_Order_By = {
+  /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "eventPassNft" */
@@ -5493,6 +5886,12 @@ export type EventPassNft_Sum_Fields = {
   __typename?: 'eventPassNft_sum_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: Maybe<Scalars['bigint']>;
+};
+
+/** order by sum() on columns of table "eventPassNft" */
+export type EventPassNft_Sum_Order_By = {
+  /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "eventPassNft" */
@@ -5555,6 +5954,12 @@ export type EventPassNft_Var_Pop_Fields = {
   tokenId?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_pop() on columns of table "eventPassNft" */
+export type EventPassNft_Var_Pop_Order_By = {
+  /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Order_By>;
+};
+
 /** aggregate var_samp on columns */
 export type EventPassNft_Var_Samp_Fields = {
   __typename?: 'eventPassNft_var_samp_fields';
@@ -5562,11 +5967,23 @@ export type EventPassNft_Var_Samp_Fields = {
   tokenId?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_samp() on columns of table "eventPassNft" */
+export type EventPassNft_Var_Samp_Order_By = {
+  /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Order_By>;
+};
+
 /** aggregate variance on columns */
 export type EventPassNft_Variance_Fields = {
   __typename?: 'eventPassNft_variance_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "eventPassNft" */
+export type EventPassNft_Variance_Order_By = {
+  /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Order_By>;
 };
 
 /** Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account */
@@ -5685,6 +6102,13 @@ export type EventPassOrderSums_Mutation_Response = {
   returning: Array<EventPassOrderSums>;
 };
 
+/** input type for inserting object relation for remote table "eventPassOrderSums" */
+export type EventPassOrderSums_Obj_Rel_Insert_Input = {
+  data: EventPassOrderSums_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<EventPassOrderSums_On_Conflict>;
+};
+
 /** on_conflict condition type for table "eventPassOrderSums" */
 export type EventPassOrderSums_On_Conflict = {
   constraint: EventPassOrderSums_Constraint;
@@ -5797,6 +6221,17 @@ export type EventPassOrder_Aggregate = {
   nodes: Array<EventPassOrder>;
 };
 
+export type EventPassOrder_Aggregate_Bool_Exp = {
+  count?: InputMaybe<EventPassOrder_Aggregate_Bool_Exp_Count>;
+};
+
+export type EventPassOrder_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<EventPassOrder_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<EventPassOrder_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "eventPassOrder" */
 export type EventPassOrder_Aggregate_Fields = {
   __typename?: 'eventPassOrder_aggregate_fields';
@@ -5820,10 +6255,37 @@ export type EventPassOrder_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "eventPassOrder" */
+export type EventPassOrder_Aggregate_Order_By = {
+  avg?: InputMaybe<EventPassOrder_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<EventPassOrder_Max_Order_By>;
+  min?: InputMaybe<EventPassOrder_Min_Order_By>;
+  stddev?: InputMaybe<EventPassOrder_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<EventPassOrder_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<EventPassOrder_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<EventPassOrder_Sum_Order_By>;
+  var_pop?: InputMaybe<EventPassOrder_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<EventPassOrder_Var_Samp_Order_By>;
+  variance?: InputMaybe<EventPassOrder_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "eventPassOrder" */
+export type EventPassOrder_Arr_Rel_Insert_Input = {
+  data: Array<EventPassOrder_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<EventPassOrder_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type EventPassOrder_Avg_Fields = {
   __typename?: 'eventPassOrder_avg_fields';
   quantity?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "eventPassOrder" */
+export type EventPassOrder_Avg_Order_By = {
+  quantity?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "eventPassOrder". All fields are combined with a logical 'AND'. */
@@ -5877,6 +6339,16 @@ export type EventPassOrder_Max_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
+/** order by max() on columns of table "eventPassOrder" */
+export type EventPassOrder_Max_Order_By = {
+  accountId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  quantity?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type EventPassOrder_Min_Fields = {
   __typename?: 'eventPassOrder_min_fields';
@@ -5886,6 +6358,16 @@ export type EventPassOrder_Min_Fields = {
   id?: Maybe<Scalars['uuid']>;
   quantity?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "eventPassOrder" */
+export type EventPassOrder_Min_Order_By = {
+  accountId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  quantity?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "eventPassOrder" */
@@ -5957,16 +6439,31 @@ export type EventPassOrder_Stddev_Fields = {
   quantity?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev() on columns of table "eventPassOrder" */
+export type EventPassOrder_Stddev_Order_By = {
+  quantity?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_pop on columns */
 export type EventPassOrder_Stddev_Pop_Fields = {
   __typename?: 'eventPassOrder_stddev_pop_fields';
   quantity?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev_pop() on columns of table "eventPassOrder" */
+export type EventPassOrder_Stddev_Pop_Order_By = {
+  quantity?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_samp on columns */
 export type EventPassOrder_Stddev_Samp_Fields = {
   __typename?: 'eventPassOrder_stddev_samp_fields';
   quantity?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "eventPassOrder" */
+export type EventPassOrder_Stddev_Samp_Order_By = {
+  quantity?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "eventPassOrder" */
@@ -5992,6 +6489,11 @@ export type EventPassOrder_Stream_Cursor_Value_Input = {
 export type EventPassOrder_Sum_Fields = {
   __typename?: 'eventPassOrder_sum_fields';
   quantity?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "eventPassOrder" */
+export type EventPassOrder_Sum_Order_By = {
+  quantity?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "eventPassOrder" */
@@ -6027,16 +6529,31 @@ export type EventPassOrder_Var_Pop_Fields = {
   quantity?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_pop() on columns of table "eventPassOrder" */
+export type EventPassOrder_Var_Pop_Order_By = {
+  quantity?: InputMaybe<Order_By>;
+};
+
 /** aggregate var_samp on columns */
 export type EventPassOrder_Var_Samp_Fields = {
   __typename?: 'eventPassOrder_var_samp_fields';
   quantity?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_samp() on columns of table "eventPassOrder" */
+export type EventPassOrder_Var_Samp_Order_By = {
+  quantity?: InputMaybe<Order_By>;
+};
+
 /** aggregate variance on columns */
 export type EventPassOrder_Variance_Fields = {
   __typename?: 'eventPassOrder_variance_fields';
   quantity?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "eventPassOrder" */
+export type EventPassOrder_Variance_Order_By = {
+  quantity?: InputMaybe<Order_By>;
 };
 
 /**
@@ -6690,12 +7207,14 @@ export type Mutation_Root = {
   delete_currency?: Maybe<Currency_Mutation_Response>;
   /** delete single row from the table: "currency" */
   delete_currency_by_pk?: Maybe<Currency>;
-  /** delete data from the table: "eventNftCollection" */
-  delete_eventNftCollection?: Maybe<EventNftCollection_Mutation_Response>;
-  /** delete single row from the table: "eventNftCollection" */
-  delete_eventNftCollection_by_pk?: Maybe<EventNftCollection>;
+  /** delete data from the table: "eventParameters" */
+  delete_eventParameters?: Maybe<EventParameters_Mutation_Response>;
+  /** delete single row from the table: "eventParameters" */
+  delete_eventParameters_by_pk?: Maybe<EventParameters>;
   /** delete data from the table: "eventPassNft" */
   delete_eventPassNft?: Maybe<EventPassNft_Mutation_Response>;
+  /** delete data from the table: "eventPassNftContract" */
+  delete_eventPassNftContract?: Maybe<EventPassNftContract_Mutation_Response>;
   /** delete single row from the table: "eventPassNft" */
   delete_eventPassNft_by_pk?: Maybe<EventPassNft>;
   /** delete data from the table: "eventPassOrder" */
@@ -6730,12 +7249,16 @@ export type Mutation_Root = {
   insert_currency?: Maybe<Currency_Mutation_Response>;
   /** insert a single row into the table: "currency" */
   insert_currency_one?: Maybe<Currency>;
-  /** insert data into the table: "eventNftCollection" */
-  insert_eventNftCollection?: Maybe<EventNftCollection_Mutation_Response>;
-  /** insert a single row into the table: "eventNftCollection" */
-  insert_eventNftCollection_one?: Maybe<EventNftCollection>;
+  /** insert data into the table: "eventParameters" */
+  insert_eventParameters?: Maybe<EventParameters_Mutation_Response>;
+  /** insert a single row into the table: "eventParameters" */
+  insert_eventParameters_one?: Maybe<EventParameters>;
   /** insert data into the table: "eventPassNft" */
   insert_eventPassNft?: Maybe<EventPassNft_Mutation_Response>;
+  /** insert data into the table: "eventPassNftContract" */
+  insert_eventPassNftContract?: Maybe<EventPassNftContract_Mutation_Response>;
+  /** insert a single row into the table: "eventPassNftContract" */
+  insert_eventPassNftContract_one?: Maybe<EventPassNftContract>;
   /** insert a single row into the table: "eventPassNft" */
   insert_eventPassNft_one?: Maybe<EventPassNft>;
   /** insert data into the table: "eventPassOrder" */
@@ -6864,14 +7387,18 @@ export type Mutation_Root = {
   update_currency_by_pk?: Maybe<Currency>;
   /** update multiples rows of table: "currency" */
   update_currency_many?: Maybe<Array<Maybe<Currency_Mutation_Response>>>;
-  /** update data of the table: "eventNftCollection" */
-  update_eventNftCollection?: Maybe<EventNftCollection_Mutation_Response>;
-  /** update single row of the table: "eventNftCollection" */
-  update_eventNftCollection_by_pk?: Maybe<EventNftCollection>;
-  /** update multiples rows of table: "eventNftCollection" */
-  update_eventNftCollection_many?: Maybe<Array<Maybe<EventNftCollection_Mutation_Response>>>;
+  /** update data of the table: "eventParameters" */
+  update_eventParameters?: Maybe<EventParameters_Mutation_Response>;
+  /** update single row of the table: "eventParameters" */
+  update_eventParameters_by_pk?: Maybe<EventParameters>;
+  /** update multiples rows of table: "eventParameters" */
+  update_eventParameters_many?: Maybe<Array<Maybe<EventParameters_Mutation_Response>>>;
   /** update data of the table: "eventPassNft" */
   update_eventPassNft?: Maybe<EventPassNft_Mutation_Response>;
+  /** update data of the table: "eventPassNftContract" */
+  update_eventPassNftContract?: Maybe<EventPassNftContract_Mutation_Response>;
+  /** update multiples rows of table: "eventPassNftContract" */
+  update_eventPassNftContract_many?: Maybe<Array<Maybe<EventPassNftContract_Mutation_Response>>>;
   /** update single row of the table: "eventPassNft" */
   update_eventPassNft_by_pk?: Maybe<EventPassNft>;
   /** update multiples rows of table: "eventPassNft" */
@@ -7082,13 +7609,13 @@ export type Mutation_RootDelete_Currency_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_EventNftCollectionArgs = {
-  where: EventNftCollection_Bool_Exp;
+export type Mutation_RootDelete_EventParametersArgs = {
+  where: EventParameters_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootDelete_EventNftCollection_By_PkArgs = {
+export type Mutation_RootDelete_EventParameters_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -7096,6 +7623,12 @@ export type Mutation_RootDelete_EventNftCollection_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootDelete_EventPassNftArgs = {
   where: EventPassNft_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_EventPassNftContractArgs = {
+  where: EventPassNftContract_Bool_Exp;
 };
 
 
@@ -7206,16 +7739,16 @@ export type Mutation_RootInsert_Currency_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_EventNftCollectionArgs = {
-  objects: Array<EventNftCollection_Insert_Input>;
-  on_conflict?: InputMaybe<EventNftCollection_On_Conflict>;
+export type Mutation_RootInsert_EventParametersArgs = {
+  objects: Array<EventParameters_Insert_Input>;
+  on_conflict?: InputMaybe<EventParameters_On_Conflict>;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsert_EventNftCollection_OneArgs = {
-  object: EventNftCollection_Insert_Input;
-  on_conflict?: InputMaybe<EventNftCollection_On_Conflict>;
+export type Mutation_RootInsert_EventParameters_OneArgs = {
+  object: EventParameters_Insert_Input;
+  on_conflict?: InputMaybe<EventParameters_On_Conflict>;
 };
 
 
@@ -7223,6 +7756,20 @@ export type Mutation_RootInsert_EventNftCollection_OneArgs = {
 export type Mutation_RootInsert_EventPassNftArgs = {
   objects: Array<EventPassNft_Insert_Input>;
   on_conflict?: InputMaybe<EventPassNft_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventPassNftContractArgs = {
+  objects: Array<EventPassNftContract_Insert_Input>;
+  on_conflict?: InputMaybe<EventPassNftContract_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventPassNftContract_OneArgs = {
+  object: EventPassNftContract_Insert_Input;
+  on_conflict?: InputMaybe<EventPassNftContract_On_Conflict>;
 };
 
 
@@ -7837,22 +8384,22 @@ export type Mutation_RootUpdate_Currency_ManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_EventNftCollectionArgs = {
-  _set?: InputMaybe<EventNftCollection_Set_Input>;
-  where: EventNftCollection_Bool_Exp;
+export type Mutation_RootUpdate_EventParametersArgs = {
+  _set?: InputMaybe<EventParameters_Set_Input>;
+  where: EventParameters_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_EventNftCollection_By_PkArgs = {
-  _set?: InputMaybe<EventNftCollection_Set_Input>;
-  pk_columns: EventNftCollection_Pk_Columns_Input;
+export type Mutation_RootUpdate_EventParameters_By_PkArgs = {
+  _set?: InputMaybe<EventParameters_Set_Input>;
+  pk_columns: EventParameters_Pk_Columns_Input;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_EventNftCollection_ManyArgs = {
-  updates: Array<EventNftCollection_Updates>;
+export type Mutation_RootUpdate_EventParameters_ManyArgs = {
+  updates: Array<EventParameters_Updates>;
 };
 
 
@@ -7866,6 +8413,19 @@ export type Mutation_RootUpdate_EventPassNftArgs = {
   _prepend?: InputMaybe<EventPassNft_Prepend_Input>;
   _set?: InputMaybe<EventPassNft_Set_Input>;
   where: EventPassNft_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassNftContractArgs = {
+  _set?: InputMaybe<EventPassNftContract_Set_Input>;
+  where: EventPassNftContract_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassNftContract_ManyArgs = {
+  updates: Array<EventPassNftContract_Updates>;
 };
 
 
@@ -8784,14 +9344,18 @@ export type Query_Root = {
   currency_by_pk?: Maybe<Currency>;
   /** Retrieve a single event */
   event?: Maybe<Event>;
-  eventNftCollection: Array<EventNftCollection>;
-  eventNftCollection_aggregate: EventNftCollection_Aggregate;
-  /** fetch data from the table: "eventNftCollection" using primary key columns */
-  eventNftCollection_by_pk?: Maybe<EventNftCollection>;
+  eventParameters: Array<EventParameters>;
+  eventParameters_aggregate: EventParameters_Aggregate;
+  /** fetch data from the table: "eventParameters" using primary key columns */
+  eventParameters_by_pk?: Maybe<EventParameters>;
   /** Retrieve a single eventPass */
   eventPass?: Maybe<EventPass>;
   /** fetch data from the table: "eventPassNft" */
   eventPassNft: Array<EventPassNft>;
+  /** fetch data from the table: "eventPassNftContract" */
+  eventPassNftContract: Array<EventPassNftContract>;
+  /** fetch aggregated fields from the table: "eventPassNftContract" */
+  eventPassNftContract_aggregate: EventPassNftContract_Aggregate;
   /** fetch aggregated fields from the table: "eventPassNft" */
   eventPassNft_aggregate: EventPassNft_Aggregate;
   /** fetch data from the table: "eventPassNft" using primary key columns */
@@ -8966,25 +9530,25 @@ export type Query_RootEventArgs = {
 };
 
 
-export type Query_RootEventNftCollectionArgs = {
-  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+export type Query_RootEventParametersArgs = {
+  distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
-  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+  order_by?: InputMaybe<Array<EventParameters_Order_By>>;
+  where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
 
-export type Query_RootEventNftCollection_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+export type Query_RootEventParameters_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
-  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+  order_by?: InputMaybe<Array<EventParameters_Order_By>>;
+  where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
 
-export type Query_RootEventNftCollection_By_PkArgs = {
+export type Query_RootEventParameters_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -9002,6 +9566,24 @@ export type Query_RootEventPassNftArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassNftContractArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
+  where?: InputMaybe<EventPassNftContract_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassNftContract_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
+  where?: InputMaybe<EventPassNftContract_Bool_Exp>;
 };
 
 
@@ -9380,14 +9962,20 @@ export type Subscription_Root = {
   currency_by_pk?: Maybe<Currency>;
   /** fetch data from the table in a streaming manner: "currency" */
   currency_stream: Array<Currency>;
-  eventNftCollection: Array<EventNftCollection>;
-  eventNftCollection_aggregate: EventNftCollection_Aggregate;
-  /** fetch data from the table: "eventNftCollection" using primary key columns */
-  eventNftCollection_by_pk?: Maybe<EventNftCollection>;
-  /** fetch data from the table in a streaming manner: "eventNftCollection" */
-  eventNftCollection_stream: Array<EventNftCollection>;
+  eventParameters: Array<EventParameters>;
+  eventParameters_aggregate: EventParameters_Aggregate;
+  /** fetch data from the table: "eventParameters" using primary key columns */
+  eventParameters_by_pk?: Maybe<EventParameters>;
+  /** fetch data from the table in a streaming manner: "eventParameters" */
+  eventParameters_stream: Array<EventParameters>;
   /** fetch data from the table: "eventPassNft" */
   eventPassNft: Array<EventPassNft>;
+  /** fetch data from the table: "eventPassNftContract" */
+  eventPassNftContract: Array<EventPassNftContract>;
+  /** fetch aggregated fields from the table: "eventPassNftContract" */
+  eventPassNftContract_aggregate: EventPassNftContract_Aggregate;
+  /** fetch data from the table in a streaming manner: "eventPassNftContract" */
+  eventPassNftContract_stream: Array<EventPassNftContract>;
   /** fetch aggregated fields from the table: "eventPassNft" */
   eventPassNft_aggregate: EventPassNft_Aggregate;
   /** fetch data from the table: "eventPassNft" using primary key columns */
@@ -9505,33 +10093,33 @@ export type Subscription_RootCurrency_StreamArgs = {
 };
 
 
-export type Subscription_RootEventNftCollectionArgs = {
-  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+export type Subscription_RootEventParametersArgs = {
+  distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
-  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+  order_by?: InputMaybe<Array<EventParameters_Order_By>>;
+  where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
 
-export type Subscription_RootEventNftCollection_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<EventNftCollection_Select_Column>>;
+export type Subscription_RootEventParameters_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventNftCollection_Order_By>>;
-  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+  order_by?: InputMaybe<Array<EventParameters_Order_By>>;
+  where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
 
-export type Subscription_RootEventNftCollection_By_PkArgs = {
+export type Subscription_RootEventParameters_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
 
-export type Subscription_RootEventNftCollection_StreamArgs = {
+export type Subscription_RootEventParameters_StreamArgs = {
   batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<EventNftCollection_Stream_Cursor_Input>>;
-  where?: InputMaybe<EventNftCollection_Bool_Exp>;
+  cursor: Array<InputMaybe<EventParameters_Stream_Cursor_Input>>;
+  where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
 
@@ -9541,6 +10129,31 @@ export type Subscription_RootEventPassNftArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassNftContractArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
+  where?: InputMaybe<EventPassNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassNftContract_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
+  where?: InputMaybe<EventPassNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassNftContract_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<EventPassNftContract_Stream_Cursor_Input>>;
+  where?: InputMaybe<EventPassNftContract_Bool_Exp>;
 };
 
 
