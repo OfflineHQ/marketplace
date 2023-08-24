@@ -4,11 +4,11 @@ import { usersJwt } from '@test-utils/gql';
 import { QueryClientProviderForTest } from '@test-utils/react-query';
 import { Locale } from '@gql/shared/types';
 import {
-  deleteAccounts,
   createDbClient,
   deleteTables,
   seedDb,
   type PgClient,
+  applySeeds,
 } from '@test-utils/db';
 import { act } from 'react-dom/test-utils';
 
@@ -80,21 +80,20 @@ describe('useEventPassOrders', () => {
   let client: PgClient;
   beforeAll(async () => {
     client = await createDbClient();
-    await deleteAccounts(client);
-    await seedDb(client, './hasura/app/seeds/default/0_account.sql');
+    await deleteTables(client, ['account']);
+    await seedDb(client, 'account');
   });
   afterAll(async () => {
-    await deleteAccounts(client);
-    await deleteTables(client, '"eventPassPendingOrder", "eventPassPricing"');
+    await deleteTables(client, [
+      'account',
+      'eventPassPendingOrder',
+      'eventPassPricing',
+    ]);
     await client.end();
   });
   beforeEach(async () => {
-    await deleteTables(client, '"eventPassPendingOrder", "eventPassPricing"');
-    await seedDb(client, './hasura/app/seeds/default/1_eventPassPricing.sql');
-    await seedDb(
-      client,
-      './hasura/app/seeds/default/2_eventPassPendingOrder.sql'
-    );
+    await deleteTables(client, ['eventPassPendingOrder', 'eventPassPricing']);
+    await applySeeds(client, ['eventPassPricing', 'eventPassPendingOrder']);
     mockUpdatePassCart.mockClear();
     mockDeletePassesCart.mockClear();
     mockInsertOrder.mockClear();

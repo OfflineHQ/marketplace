@@ -1,10 +1,10 @@
 import { alphaAdminClient, betaAdminClient } from '@test-utils/gql';
 import {
-  deleteAccounts,
   seedDb,
   createDbClient,
   deleteTables,
   type PgClient,
+  applySeeds,
 } from '@test-utils/db';
 import type {
   EventPassPendingOrder_Insert_Input,
@@ -35,18 +35,23 @@ describe('tests for eventPassPendingOrder user', () => {
 
   beforeAll(async () => {
     client = await createDbClient();
-    await deleteAccounts(client);
-    await deleteTables(client, '"eventPassPendingOrder", "eventPassPricing"');
-    await seedDb(client, './hasura/app/seeds/default/0_account.sql');
-    await seedDb(client, './hasura/app/seeds/default/1_eventPassPricing.sql');
+    await deleteTables(client, [
+      'account',
+      'eventPassPendingOrder',
+      'eventPassPricing',
+    ]);
+    await applySeeds(client, ['account', 'eventPassPricing']);
   });
   afterAll(async () => {
-    await deleteAccounts(client);
-    await deleteTables(client, '"eventPassPendingOrder", "eventPassPricing"');
+    await deleteTables(client, [
+      'account',
+      'eventPassPendingOrder',
+      'eventPassPricing',
+    ]);
     await client.end();
   });
   afterEach(async () => {
-    await deleteTables(client, '"eventPassPendingOrder"');
+    await deleteTables(client, ['eventPassPendingOrder']);
   });
 
   it('should create eventPassPendingOrder', async () => {
@@ -171,10 +176,7 @@ describe('tests for eventPassPendingOrder user', () => {
   });
 
   it('should return all user pending orders', async () => {
-    await seedDb(
-      client,
-      './hasura/app/seeds/default/2_eventPassPendingOrder.sql'
-    );
+    await seedDb(client, 'eventPassPendingOrder');
     const data = await alphaAdmin.GetEventPassPendingOrders({
       locale: 'en' as Locale,
       stage: 'DRAFT' as Stage,
