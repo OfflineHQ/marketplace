@@ -24,22 +24,22 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
       on('task', {
-        async 'db:delete-user'(email: string) {
-          await deleteAccount(email);
-          return true;
-        },
-        async 'db:delete-users'() {
-          await deleteAccounts();
-          return true;
-        },
-        async 'db:seed-db'(path: string) {
-          await seedDb(path);
-          return true;
-        },
-        async 'db:query-db'(sql: string) {
-          await queryDb(sql);
-          return true;
-        },
+        // async 'db:delete-user'(email: string) {
+        //   await deleteAccount(email);
+        //   return true;
+        // },
+        // async 'db:delete-users'() {
+        //   await deleteAccounts();
+        //   return true;
+        // },
+        // async 'db:seed-db'(path: string) {
+        //   await seedDb(path);
+        //   return true;
+        // },
+        // async 'db:query-db'(sql: string) {
+        //   await queryDb(sql);
+        //   return true;
+        // },
         //...
       });
       return config;

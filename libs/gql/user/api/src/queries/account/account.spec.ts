@@ -4,7 +4,7 @@ import {
   sebGoogleClient,
 } from '@test-utils/gql';
 import {
-  deleteAccounts,
+  deleteTables,
   seedDb,
   createDbClient,
   type PgClient,
@@ -21,14 +21,14 @@ describe('user access security tests', () => {
   });
 
   afterAll(async () => {
-    await deleteAccounts(client);
+    await deleteTables(client, ['account']);
     await client.end();
   });
 
   beforeEach(async () => {
-    await deleteAccounts(client);
+    await deleteTables(client, ['account']);
     // seed the database with three users alpha, beta and seb
-    await seedDb(client, './hasura/app/seeds/default/0_account.sql');
+    await seedDb(client, 'account');
   });
 
   it('user alpha can retrieve his information', async () => {

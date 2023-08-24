@@ -1,7 +1,7 @@
 import { getAccount } from './getAccount';
 import { createAccount } from './createAccount';
 import {
-  deleteAccounts,
+  deleteTables,
   createDbClient,
   seedDb,
   type PgClient,
@@ -17,12 +17,12 @@ describe('getAccount test', () => {
     client = await createDbClient();
   });
   afterAll(async () => {
-    await deleteAccounts(client);
+    await deleteTables(client, ['account']);
     await client.end();
   });
   beforeEach(async () => {
-    await deleteAccounts(client);
-    await seedDb(client, './hasura/app/seeds/default/0_account.sql');
+    await deleteTables(client, ['account']);
+    await seedDb(client, 'account');
   });
   it('should return null when account does not exist', async () => {
     const nonExistingAddress = '0xNotExisting';

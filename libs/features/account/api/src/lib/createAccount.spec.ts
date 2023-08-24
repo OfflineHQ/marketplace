@@ -1,6 +1,6 @@
 import {
-  deleteAccounts,
   createDbClient,
+  deleteTables,
   seedDb,
   type PgClient,
 } from '@test-utils/db';
@@ -12,13 +12,13 @@ describe('createAccount test', () => {
     client = await createDbClient();
   });
   afterAll(async () => {
-    await deleteAccounts(client);
+    await deleteTables(client, ['account']);
     await client.end();
   });
 
   beforeEach(async () => {
-    await deleteAccounts(client);
-    await seedDb(client, './hasura/app/seeds/default/0_account.sql');
+    await deleteTables(client, ['account']);
+    await seedDb(client, 'account');
   });
 
   it('should create account', async () => {

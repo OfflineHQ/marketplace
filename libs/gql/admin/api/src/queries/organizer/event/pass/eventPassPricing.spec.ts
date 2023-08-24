@@ -29,14 +29,14 @@ describe('eventPassPricing order integration tests', () => {
 
   beforeAll(async () => {
     client = await createDbClient();
-    await deleteTables(client, '"eventPassPricing"');
+    await deleteTables(client, ['eventPassPricing']);
   });
   afterAll(async () => {
     await client.end();
   });
   afterEach(async () => {
     // await closeConnection();
-    await deleteTables(client, '"eventPassPricing"');
+    await deleteTables(client, ['eventPassPricing']);
   });
   it('create eventPassPricing successfully', async () => {
     const res = await adminSdk.CreateEventPassPricing({ eventPassPricing });
