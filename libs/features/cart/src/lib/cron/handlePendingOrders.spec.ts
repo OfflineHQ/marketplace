@@ -1,10 +1,10 @@
 import handler from './handlePendingOrders';
 import {
   createDbClient,
-  deleteAccounts,
   deleteTables,
   seedDb,
   type PgClient,
+  applySeeds,
 } from '@test-utils/db';
 
 describe('Cron job - handlePendingOrders', () => {
@@ -12,24 +12,26 @@ describe('Cron job - handlePendingOrders', () => {
 
   beforeAll(async () => {
     client = await createDbClient();
-    await deleteAccounts(client);
-    await deleteTables(client, '"eventPassPendingOrder", "eventPassPricing"');
-    await seedDb(client, './hasura/app/seeds/default/0_account.sql');
-    await seedDb(client, './hasura/app/seeds/default/1_eventPassPricing.sql');
+    await deleteTables(client, [
+      'account',
+      'eventPassPendingOrder',
+      'eventPassPricing',
+    ]);
+    await applySeeds(client, ['account', 'eventPassPricing']);
   });
 
   afterAll(async () => {
-    await deleteAccounts(client);
-    await deleteTables(client, '"eventPassPendingOrder", "eventPassPricing"');
+    await deleteTables(client, [
+      'account',
+      'eventPassPendingOrder',
+      'eventPassPricing',
+    ]);
     await client.end();
   });
 
   beforeEach(async () => {
-    await deleteTables(client, '"eventPassPendingOrder"');
-    await seedDb(
-      client,
-      './hasura/app/seeds/default/2_eventPassPendingOrder.sql'
-    );
+    await deleteTables(client, ['eventPassPendingOrder']);
+    await seedDb(client, 'eventPassPendingOrder');
   });
 
   beforeEach(() => {
