@@ -61,29 +61,4 @@ COMMENT ON COLUMN "public"."eventPassNft"."isRevealed" IS E'Indicates whether th
 ALTER TABLE "public"."eventPassNft"
 ADD CONSTRAINT event_pass_nft_unique_nft UNIQUE ("contractAddress", "tokenId", "chainId");
 
-DROP table "public"."eventNftCollection";
-
-CREATE TABLE "public"."eventNftCollection" (
-  "id" uuid NOT NULL DEFAULT gen_random_uuid(),
-  "contractAddress" text NOT NULL,
-  "chainId" text NOT NULL,
-  "eventId" text NOT NULL,
-  "activityWebhookId" text NOT NULL,
-  PRIMARY KEY ("id"),
-  UNIQUE ("contractAddress", "chainId"),
-  UNIQUE ("activityWebhookId")
-);
-
-COMMENT ON TABLE "public"."eventNftCollection" IS E'The eventNftCollection model is designed to store metadata associated with NFT collections linked to specific events. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT collections. Additionally, this table integrates infrastructure-specific details, like the activityWebhookId, which aids in monitoring and processing events or changes related to the NFT collections in our platform. By centralizing this information, our system can effectively manage, reference, and interact with NFT collections tied to particular events.';
-
-COMMENT ON COLUMN "public"."eventNftCollection"."contractAddress" IS E'Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT\'s existence and behavior on the blockchain.';
-
-COMMENT ON COLUMN "public"."eventNftCollection"."chainId" IS E'Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.';
-
-COMMENT ON COLUMN "public"."eventNftCollection"."eventId" IS E'A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.';
-
-COMMENT ON COLUMN "public"."eventNftCollection"."activityWebhookId" IS E'Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform.';
-
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
 DROP table "public"."eventPassOwned";
