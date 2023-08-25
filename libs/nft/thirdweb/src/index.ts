@@ -1,5 +1,3 @@
-'use client';
-
 import { ExternalProvider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
@@ -27,26 +25,17 @@ class nftCollection {
     const address = await this.sdk.wallet.getAddress();
     const chainId = await this.sdk.wallet.getChainId(); // TODO to hex
 
-    const txResult = await this.sdk.deployer.deployBuiltInContract(
-      'nft-collection',
-      {
-        name,
-        primary_sale_recipient: address,
-        voting_token_address: address,
-      }
-    );
-    return await createEventNftCollection({
-      chainId: chainId,
-      contractAddress: txResult,
-      eventId: eventId,
+    const txResult = await this.sdk.deployer.deployBuiltInContract('nft-drop', {
+      name,
+      primary_sale_recipient: address,
+      voting_token_address: address,
     });
   }
 
   async batchMint(contractAddress: string, metadatas: Array<nftsMetadata>) {
-    const address = await this.sdk.wallet.getAddress();
     const contract = await this.sdk.getContract(contractAddress);
 
-    const tx = await contract.erc721.mintBatchTo(address, metadatas);
+    const tx = await contract.erc721.lazyMint(metadatas);
     const transactionReceipt = tx[0].receipt;
 
     console.log(transactionReceipt);
