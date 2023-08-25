@@ -77,10 +77,10 @@ export class EventPassNftWrapper {
       }),
     });
 
-    let update_eventPassNft_many = [];
+    let update_eventPassNft_many: typeof res.update_eventPassNft_many = [];
     if (Array.isArray(res.update_eventPassNft_many)) {
       update_eventPassNft_many = res.update_eventPassNft_many;
-    } else if (res.update_eventPassNft_many !== null) {
+    } else if (res.update_eventPassNft_many) {
       update_eventPassNft_many = [res.update_eventPassNft_many];
     } else {
       throw new Error('Failed to update eventPassNft');
