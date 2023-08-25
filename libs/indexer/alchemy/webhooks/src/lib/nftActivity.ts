@@ -96,7 +96,6 @@ export async function nftActivity(req: AlchemyRequest, eventId: string) {
           }
         );
       }
-      console.log({ NftTransfersNotCreated });
       const nftTransfers = await eventPassNftWrapper.upsertNftTransfers(
         NftTransfersNotCreated
       );
