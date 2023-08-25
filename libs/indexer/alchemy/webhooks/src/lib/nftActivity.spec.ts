@@ -17,7 +17,11 @@ jest.mock('./utils', () => ({
 // Spy on the methods
 const getEventPassNftTransfersMetadataSpy = jest
   .spyOn(EventPassNftWrapper.prototype, 'getEventPassNftTransfersMetadata')
-  .mockResolvedValue([]);
+  .mockResolvedValue([
+    {
+      dummy: 'fromAddress',
+    } as any,
+  ]);
 
 const upsertNftTransfersSpy = jest
   .spyOn(EventPassNftWrapper.prototype, 'upsertNftTransfers')
@@ -215,6 +219,17 @@ describe('nftActivity', () => {
     expect(updateEventPassNftFromNftTransferSpy).toHaveBeenCalled();
     expect(applyQrCodeBatchTransferForNewOwnerSpy).toHaveBeenCalled();
   });
+  it('should return error 500 when getEventPassNftTransfersMetadata returns empty array', async () => {
+    getEventPassNftTransfersMetadataSpy.mockResolvedValue([]);
+
+    const response = await nftActivity(
+      createMockAlchemyRequest([mockActivity, mockActivity2]),
+      'fake-event-1'
+    );
+
+    expect(response.status).toEqual(500);
+  });
+
   it('should return error 403 from invalid signature', async () => {
     // Override the validation to return false
     (isValidSignatureForAlchemyRequest as jest.Mock).mockReturnValueOnce(false);
