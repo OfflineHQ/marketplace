@@ -1,15 +1,12 @@
 import { nftActivity, extractNftTransfersFromEvent } from './nftActivity';
-import type {
-  AlchemyNFTActivityEvent,
-  Activity,
-  AlchemyRequest,
-} from './types';
+import type { AlchemyNFTActivityEvent, Activity } from './types';
 import { EventPassNftWrapper } from '@nft/eventPass';
 import {
   isValidSignatureForAlchemyRequest,
   addAlchemyContextToRequest,
 } from './utils';
 import { WebhookType, Network } from 'alchemy-sdk';
+import { createMockAlchemyRequest } from './testUtils';
 
 // Mock implementations
 jest.mock('./utils', () => ({
@@ -79,7 +76,7 @@ const mockActivity2: Activity = {
   },
 };
 
-const mockAlchemyNftActivityEvent: AlchemyNFTActivityEvent = {
+export const mockAlchemyNftActivityEvent: AlchemyNFTActivityEvent = {
   webhookId: 'webhookId',
   id: 'id',
   createdAt: new Date(),
@@ -88,18 +85,6 @@ const mockAlchemyNftActivityEvent: AlchemyNFTActivityEvent = {
     activity: [mockActivity],
   },
 };
-
-const mockAlchemyRequest: AlchemyRequest = {
-  alchemy: {
-    rawBody: JSON.stringify(mockAlchemyNftActivityEvent),
-    signature: 'mock-signature',
-  },
-  text: jest
-    .fn()
-    .mockResolvedValue(JSON.stringify(mockAlchemyNftActivityEvent)),
-  headers: null as unknown as Headers,
-  // ... other properties of the AlchemyRequest object if needed
-} as unknown as AlchemyRequest; // Cast to AlchemyRequest type
 
 // Create a mock Headers object
 const mockHeaders: Headers = {
@@ -218,7 +203,10 @@ describe('extractNftTransfersFromEvent', () => {
 
 describe('nftActivity', () => {
   it('happy path with several nft activity being processed', async () => {
-    const response = await nftActivity(mockAlchemyRequest, 'fake-event-1');
+    const response = await nftActivity(
+      createMockAlchemyRequest([mockActivity, mockActivity2]),
+      'fake-event-1'
+    );
     expect(response.status).toEqual(200);
     expect(isValidSignatureForAlchemyRequest).toHaveBeenCalled();
     // Expect calls to EventPassNftWrapper methods
@@ -231,7 +219,10 @@ describe('nftActivity', () => {
     // Override the validation to return false
     (isValidSignatureForAlchemyRequest as jest.Mock).mockReturnValueOnce(false);
 
-    const response = await nftActivity(mockAlchemyRequest, 'fake-event-1');
+    const response = await nftActivity(
+      createMockAlchemyRequest([mockActivity, mockActivity2]),
+      'fake-event-1'
+    );
 
     expect(response.status).toEqual(403);
   });
@@ -242,7 +233,10 @@ describe('nftActivity', () => {
       new Error('Test error')
     );
 
-    const response = await nftActivity(mockAlchemyRequest, 'fake-event-1');
+    const response = await nftActivity(
+      createMockAlchemyRequest([mockActivity, mockActivity2]),
+      'fake-event-1'
+    );
 
     expect(response.status).toEqual(500);
   });
@@ -251,7 +245,7 @@ describe('nftActivity', () => {
   //   // Override extractNftTransfersFromEvent to return an empty array
   //   jest.spyOn(module, 'extractNftTransfersFromEvent').mockReturnValue([]);
 
-  //   const response = await nftActivity(mockAlchemyRequest, 'fake-event-1');
+  //   const response = await nftActivity(createMockAlchemyRequest([mockActivity, mockActivity2]), 'fake-event-1');
 
   //   expect(response.status).toEqual(500);
   //   expect(response.statusText).toEqual('No nft transfers found in event');
@@ -263,6 +257,10 @@ describe('nftActivity', () => {
       type: WebhookType.NFT_METADATA_UPDATE, // Invalid type
     };
 
+    const mockAlchemyRequest = createMockAlchemyRequest([
+      mockActivity,
+      mockActivity2,
+    ]);
     mockAlchemyRequest.text = jest
       .fn()
       .mockResolvedValueOnce(JSON.stringify(invalidWebhookEvent));
