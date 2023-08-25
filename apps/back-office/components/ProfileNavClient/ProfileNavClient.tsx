@@ -12,8 +12,7 @@ import {
 } from '@features/appNav/ui';
 
 export const ProfileNavClient = () => {
-  const { safeUser, login, logout, safeAuth, provider, connecting } =
-    useAuthContext();
+  const { safeUser, login, logout, safeAuth, connecting } = useAuthContext();
   const { toast } = useToast();
 
   const signOutUserAction = useCallback(async () => {

@@ -4,10 +4,6 @@ import { OrganizerDashboard } from '@features/organizer/dashboard';
 
 export async function Dashboard() {
   const user = await getCurrentUser();
-  console.log(user);
-  if (user) {
-    console.log(user.organizerId);
-  }
 
   return (
     <>
