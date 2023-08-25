@@ -12,8 +12,12 @@ export const endpointUrl = (): string => {
 };
 
 // Used to convert BigInt to string when sending to Hasura to avoid JSON parse error
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+interface BigInt {
+  /** Convert to BigInt to string form in JSON.stringify */
+  toJSON: () => string;
+}
 // @ts-ignore: Unreachable code error
-BigInt.prototype.toJSON = function (): number {
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+BigInt.prototype.toJSON = function () {
   return this.toString();
 };
