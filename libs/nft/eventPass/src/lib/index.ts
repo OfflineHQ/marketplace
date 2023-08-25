@@ -16,6 +16,7 @@ export class EventPassNftWrapper {
     nftTransfers: NftTransferWithoutMetadata[],
     chainId: string
   ) {
+    console.log({ nftTransfers });
     const contractAddresses: string[] = [
       ...new Set(nftTransfers.map((transfer) => transfer.contractAddress)),
     ];

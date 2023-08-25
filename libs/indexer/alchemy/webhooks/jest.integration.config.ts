@@ -10,5 +10,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../../../coverage/libs/indexer/alchemy/webhooks',
-  testMatch: ['**/*.integration.spec.ts'],
+  testMatch: ['**/*.integration.test.ts'],
 };
