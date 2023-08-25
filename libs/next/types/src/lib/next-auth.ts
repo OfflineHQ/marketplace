@@ -54,6 +54,7 @@ declare module 'next-auth' {
     address: string;
     email?: string;
     isOrganizer: boolean;
+    organizerId?: string;
   }
 
   interface Session {
