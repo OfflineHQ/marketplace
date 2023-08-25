@@ -16,7 +16,6 @@ export class EventPassNftWrapper {
     nftTransfers: NftTransferWithoutMetadata[],
     chainId: string
   ) {
-    console.log({ nftTransfers });
     const contractAddresses: string[] = [
       ...new Set(nftTransfers.map((transfer) => transfer.contractAddress)),
     ];
@@ -29,7 +28,7 @@ export class EventPassNftWrapper {
 
     return nftTransfers.reduce((acc, nft) => {
       const nftWithMetadata = eventPassNft.find(
-        (n) => n.tokenId === nft.tokenId
+        (n) => n.tokenId == nft.tokenId // here avoid exact match because we want to compare bigint with number
       );
       if (!nftWithMetadata) {
         console.error(
@@ -110,6 +109,7 @@ export class EventPassNftWrapper {
           });
       }
     }
+    console.log({ nftFileTransfers });
     if (nftFileTransfers.length === 0) return;
     await transferPassQrCodeBatch(nftFileTransfers);
   }

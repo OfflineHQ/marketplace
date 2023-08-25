@@ -12,16 +12,7 @@ import { WebhookType, Network } from 'alchemy-sdk';
 import type { Activity } from './types';
 
 // Mock the FileWrapper module
-jest.mock('@file-upload/admin', () => {
-  return {
-    FileWrapper: jest.fn().mockImplementation(() => {
-      return {
-        copyFileBatchWithRetry: jest.fn(),
-        deleteFilesBatchWithRetry: jest.fn(),
-      };
-    }),
-  };
-});
+jest.mock('@file-upload/admin');
 jest.mock('./utils', () => ({
   isValidSignatureForAlchemyRequest: jest.fn().mockReturnValue(true),
   addAlchemyContextToRequest: jest.fn(),
@@ -113,7 +104,7 @@ describe('nftActivity integration test', () => {
     await client.end();
   });
 
-  it('happy path with several nft activity being processed - test case 1', async () => {
+  it('happy path with several nft activity being processed - no need to transfer QR code file', async () => {
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity]),
       'fake-event-1'
@@ -122,12 +113,16 @@ describe('nftActivity integration test', () => {
     // Assert that the response is correct
     expect(response.status).toEqual(200);
 
-    // Assert that the methods were called
-    expect(fileWrapper.copyFileBatchWithRetry).toHaveBeenCalled();
-    expect(fileWrapper.deleteFilesBatchWithRetry).toHaveBeenCalled();
+    // Assert that the methods were not called
+    expect(
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+    ).not.toHaveBeenCalled();
+    expect(
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+    ).not.toHaveBeenCalled();
   });
 
-  it('happy path with several nft activity being processed - test case 2', async () => {
+  it('happy path with several nft activity being processed - transfer of QR code file', async () => {
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity2]),
       'fake-event-1'
@@ -137,8 +132,22 @@ describe('nftActivity integration test', () => {
     expect(response.status).toEqual(200);
 
     // Assert that the methods were called
-    expect(fileWrapper.copyFileBatchWithRetry).toHaveBeenCalled();
-    expect(fileWrapper.deleteFilesBatchWithRetry).toHaveBeenCalled();
+    expect(
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+    ).toHaveBeenCalledTimes(1);
+    expect(
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+    ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
+      {
+        source:
+          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
+        destination:
+          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
+      },
+    ]);
+    expect(
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+    ).toHaveBeenCalledTimes(1);
   });
 
   // ... add more test cases as needed
