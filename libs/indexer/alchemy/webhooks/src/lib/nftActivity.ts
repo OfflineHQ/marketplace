@@ -88,6 +88,15 @@ export async function nftActivity(req: AlchemyRequest, eventId: string) {
           nftTransfersFromEvent,
           chainId
         );
+      if (!NftTransfersNotCreated.length) {
+        return new Response(
+          'Error, not finding any NFT corresponding to the NFT transfer',
+          {
+            status: 500,
+          }
+        );
+      }
+      console.log({ NftTransfersNotCreated });
       const nftTransfers = await eventPassNftWrapper.upsertNftTransfers(
         NftTransfersNotCreated
       );
