@@ -311,11 +311,14 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     query GetEventWithFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {id: $id}, locales: [$locale, en], stage: $stage) {
     events {
-      id
       slug
       title
+      id
       heroImage {
         url
+      }
+      eventNftCollection {
+        contractAddress
       }
     }
   }
