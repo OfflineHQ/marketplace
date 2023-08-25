@@ -10,3 +10,10 @@ export const endpointUrl = (): string => {
   if (!url) url = 'http://localhost:8080/v1/graphql';
   return url;
 };
+
+// Used to convert BigInt to string when sending to Hasura to avoid JSON parse error
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: Unreachable code error
+BigInt.prototype.toJSON = function (): number {
+  return this.toString();
+};

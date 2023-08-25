@@ -83,13 +83,11 @@ export async function nftActivity(req: AlchemyRequest, eventId: string) {
   if (nftTransfersFromEvent.length) {
     const eventPassNftWrapper = new EventPassNftWrapper();
     try {
-      console.log('nftTransfersFromEvent', nftTransfersFromEvent);
       const NftTransfersNotCreated =
         await eventPassNftWrapper.getEventPassNftTransfersMetadata(
           nftTransfersFromEvent,
           chainId
         );
-      console.log('NftTransfersNotCreated', NftTransfersNotCreated);
       const nftTransfers = await eventPassNftWrapper.upsertNftTransfers(
         NftTransfersNotCreated
       );
