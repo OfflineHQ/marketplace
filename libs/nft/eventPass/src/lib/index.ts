@@ -77,14 +77,19 @@ export class EventPassNftWrapper {
       }),
     });
 
-    if (!res.update_eventPassNft_many) {
+    let update_eventPassNft_many = [];
+    if (Array.isArray(res.update_eventPassNft_many)) {
+      update_eventPassNft_many = res.update_eventPassNft_many;
+    } else if (res.update_eventPassNft_many !== null) {
+      update_eventPassNft_many = [res.update_eventPassNft_many];
+    } else {
       throw new Error('Failed to update eventPassNft');
     }
-
-    return res.update_eventPassNft_many.reduce((result, nftRes) => {
+    return update_eventPassNft_many.reduce((result, nftRes, index) => {
       if (!nftRes?.returning || !nftRes.returning?.length) {
         console.error(
-          'No returning data for an update on eventPassNft, this is likely an error'
+          `No returning data for an update on eventPassNft, this is likely an error or a NFT that is missing. Please investigate ! Failed transfer:`,
+          nftTransfers[index]
         );
         return result;
       }
@@ -109,7 +114,6 @@ export class EventPassNftWrapper {
           });
       }
     }
-    console.log({ nftFileTransfers });
     if (nftFileTransfers.length === 0) return;
     await transferPassQrCodeBatch(nftFileTransfers);
   }

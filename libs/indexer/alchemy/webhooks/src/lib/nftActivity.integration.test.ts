@@ -63,6 +63,33 @@ const mockActivity2 = {
   erc721TokenId: '0x3090', // from eventPassNft seed `12432` in decimal
 } satisfies Activity;
 
+const mockActivity3 = {
+  network: Network.ETH_SEPOLIA,
+  fromAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
+  toAddress: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
+  contractAddress: '0xfakecontractaddress2',
+  blockNumber: '0x78b78124214',
+  hash: 'transactionHash',
+  category: 'erc721',
+  log: {
+    address: 'address',
+    topics: [],
+    data: 'data',
+    blockNumber: '0x78b78124214',
+    transactionHash: 'transactionHash',
+    transactionIndex: 'transactionIndex',
+    blockHash: 'blockHash',
+    logIndex: 'logIndex',
+    removed: false,
+  },
+  erc721TokenId: '0x5A271C00', // from eventPassNft seed `1512512512` in decimal
+} satisfies Activity;
+
+const mockActivity4NoNft = {
+  ...mockActivity3,
+  contractAddress: '0xfakecontractaddress3',
+} satisfies Activity;
+
 // ... add more mock data as needed
 
 // Create a mock Headers object
@@ -98,9 +125,17 @@ describe('nftActivity integration test', () => {
       () => Promise.resolve()
     );
   });
-
-  afterAll(async () => {
+  afterEach(async () => {
+    // jest.resetAllMocks();
     await deleteAllTables(client);
+    await applySeeds(client, [
+      'account',
+      'eventPassNftContract',
+      'eventParameters',
+      'eventPassNft',
+    ]);
+  });
+  afterAll(async () => {
     await client.end();
   });
 
@@ -110,10 +145,8 @@ describe('nftActivity integration test', () => {
       'fake-event-1'
     );
 
-    // Assert that the response is correct
     expect(response.status).toEqual(200);
 
-    // Assert that the methods were not called
     expect(
       FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
     ).not.toHaveBeenCalled();
@@ -124,14 +157,12 @@ describe('nftActivity integration test', () => {
 
   it('happy path with several nft activity being processed - transfer of QR code file', async () => {
     const response = await nftActivity(
-      createMockAlchemyRequest([mockActivity2]),
+      createMockAlchemyRequest([mockActivity, mockActivity2]),
       'fake-event-1'
     );
 
-    // Assert that the response is correct
     expect(response.status).toEqual(200);
 
-    // Assert that the methods were called
     expect(
       FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
     ).toHaveBeenCalledTimes(1);
@@ -148,6 +179,79 @@ describe('nftActivity integration test', () => {
     expect(
       FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
     ).toHaveBeenCalledTimes(1);
+    expect(
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+    ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
+      '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
+    ]);
+  });
+
+  it('happy path with several nft activity being processed - from different contractAddress', async () => {
+    const response = await nftActivity(
+      createMockAlchemyRequest([mockActivity, mockActivity2, mockActivity3]),
+      'fake-event-1'
+    );
+
+    expect(response.status).toEqual(200);
+
+    expect(
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+    ).toHaveBeenCalledTimes(2);
+    expect(
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+    ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
+      {
+        source:
+          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
+        destination:
+          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
+      },
+      {
+        destination:
+          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/fake-organizer-1/events/fake-event-1/fake-event-pass-2/fake-event-1-fake-event-pass-2-1512512512',
+        source:
+          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/fake-organizer-1/events/fake-event-1/fake-event-pass-2/fake-event-1-fake-event-pass-2-1512512512',
+      },
+    ]);
+    expect(
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+    ).toHaveBeenCalledTimes(2);
+    expect(
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+    ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
+      '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
+      '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/fake-organizer-1/events/fake-event-1/fake-event-pass-2/fake-event-1-fake-event-pass-2-1512512512',
+    ]);
+  });
+
+  it('should log errors in case one NFT not found in DB', async () => {
+    const consoleSpy = jest.spyOn(console, 'error');
+    const response = await nftActivity(
+      createMockAlchemyRequest([mockActivity, mockActivity4NoNft]),
+      'fake-event-1'
+    );
+    expect(response.status).toEqual(200);
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    expect(consoleSpy).toHaveBeenNthCalledWith(
+      1,
+      expect.stringContaining(mockActivity4NoNft.contractAddress)
+    );
+    consoleSpy.mockRestore();
+  });
+
+  it('should return error in case no NFT found in DB', async () => {
+    const consoleSpy = jest.spyOn(console, 'error');
+    const response = await nftActivity(
+      createMockAlchemyRequest([mockActivity4NoNft]),
+      'fake-event-1'
+    );
+    expect(response.status).toEqual(500);
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    expect(consoleSpy).toHaveBeenNthCalledWith(
+      1,
+      expect.stringContaining(mockActivity4NoNft.contractAddress)
+    );
+    consoleSpy.mockRestore();
   });
 
   // ... add more test cases as needed
