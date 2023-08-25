@@ -16,21 +16,32 @@ class nftCollection {
 
   async deployACollection(name: string) {
     const address = await this.sdk.wallet.getAddress();
-    const txResult = await this.sdk.deployer.deployBuiltInContract(
-      'nft-collection',
-      {
-        name,
-        primary_sale_recipient: address,
-        voting_token_address: address,
-      }
-    );
+    const chainId = await this.sdk.wallet.getChainId(); // TODO to hex
+
+    const txResult = await this.sdk.deployer.deployBuiltInContract('nft-drop', {
+      name,
+      primary_sale_recipient: address,
+      voting_token_address: address,
+    });
   }
 
-  async getContractFromTx(tx: string) {
-    const contract = await this.sdk.getContract(tx);
-    console.log(contract);
-    const metadata = await contract.metadata.get();
-    console.log(metadata);
+  async batchMint(contractAddress: string, metadatas: Array<nftsMetadata>) {
+    const contract = await this.sdk.getContract(contractAddress);
+
+    const tx = await contract.erc721.lazyMint(metadatas);
+    const transactionReceipt = tx[0].receipt;
+
+    console.log(transactionReceipt);
+    tx.forEach((t) => {
+      console.log(t.id);
+    });
+    // Loop to create eventPassNft with hasura
+  }
+
+  async getNftsFromContractAddress(contractAddress: string) {
+    const contract = await this.sdk.getContract(contractAddress);
+
+    return await contract.erc721.getAll();
   }
 }
 
