@@ -123,6 +123,7 @@ export type GetEventWithFromOrganizerIdQueryVariables = Types.Exact<{
   stage: Types.Stage;
 }>;
 
+
 export type GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables = Types.Exact<{
   contractAddress: Types.Scalars['String'];
   stage: Types.Stage;
