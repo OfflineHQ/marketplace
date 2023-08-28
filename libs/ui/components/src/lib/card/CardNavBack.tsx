@@ -16,7 +16,7 @@ export const CardNavBack: React.FC<CardNavBackProps> = ({
   href,
   variant = 'ghost',
 }) => (
-  <Link {...href} legacyBehavior>
+  <Link {...href}>
     <Button variant={variant} icon={ChevronBack}>
       {text}
     </Button>
