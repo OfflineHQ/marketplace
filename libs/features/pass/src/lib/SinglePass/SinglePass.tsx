@@ -48,7 +48,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
             } as React.CSSProperties
           }
           // eslint-disable-next-line tailwindcss/no-custom-classname
-          className="flex-col bg-overlay-background md:max-h-[400px]"
+          className="bg-overlay-background flex-col md:max-h-[400px]"
         >
           <div className="absolute z-10 mt-3 pl-3">
             <CardNavBack
