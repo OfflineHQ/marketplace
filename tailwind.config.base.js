@@ -3,6 +3,8 @@ const { fontFamily } = require('tailwindcss/defaultTheme');
 const typography = require('@tailwindcss/typography');
 const forms = require('@tailwindcss/forms');
 const animate = require('tailwindcss-animate');
+const gradients = require('tailwindcss-gradients');
+const plugin = require('tailwindcss/plugin');
 
 /**
  * @type {import('@types/tailwindcss/tailwind-config').TailwindConfig}
@@ -110,5 +112,24 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [animate, typography, forms],
+  plugins: [
+    animate,
+    typography,
+    forms,
+    gradients,
+    plugin(function ({ addUtilities, theme, e, variants }) {
+      const colors = theme('colors');
+      const utilities = Object.entries(colors).map(
+        ([colorName, colorValue]) => ({
+          // eslint-disable-next-line sonarjs/no-nested-template-literals
+          [`.${e(`bg-overlay-${colorName}`)}`]: {
+            background: `linear-gradient(var(--overlay-angle, 0deg), ${colorValue}, transparent), var(--overlay-image)`,
+            'background-position': 'center',
+            'background-size': 'cover',
+          },
+        })
+      );
+      addUtilities(utilities, variants('backgroundColor'));
+    }),
+  ],
 };

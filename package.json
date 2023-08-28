@@ -116,6 +116,7 @@
     "tailwind-merge": "^1.13.2",
     "tailwindcss": "^3.3.2",
     "tailwindcss-animate": "^1.0.6",
+    "tailwindcss-gradients": "^3.0.0",
     "tslib": "^2.6.0",
     "upload-js-full": "^2.21.0",
     "uuid": "^8.3.2",
