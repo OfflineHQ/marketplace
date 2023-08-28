@@ -8,6 +8,25 @@ export const AccountFieldsFragmentDoc = `
   email
 }
     `;
+export const EventDateLocationsFieldsFragmentDoc = `
+    fragment EventDateLocationsFields on EventDateLocation {
+  locationAddress {
+    coordinates {
+      latitude
+      longitude
+    }
+    city
+    country
+    placeId
+    postalCode
+    state
+    street
+    venue
+  }
+  dateStart
+  dateEnd
+}
+    `;
 export const EventPassNftFieldsFragmentDoc = `
     fragment EventPassNftFields on eventPassNft {
   id
@@ -204,12 +223,56 @@ export const useGetEventPassPendingOrdersQuery = <
       options
     );
 export const GetEventPassNftByIdDocument = `
-    query GetEventPassNftById($id: uuid!) {
+    query GetEventPassNftById($id: uuid!, $locale: Locale!, $stage: Stage!) @cached {
   eventPassNft_by_pk(id: $id) {
     ...EventPassNftFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      name
+      nftImage {
+        url
+      }
+      description
+      passOptions {
+        name
+        description
+        eventDateLocation {
+          ...EventDateLocationsFields
+        }
+      }
+      eventPassPricing {
+        priceAmount
+        priceCurrency
+      }
+      event {
+        title
+        slug
+        heroImage {
+          url
+        }
+        description {
+          json
+          references {
+            ... on Asset {
+              __typename
+              id
+              url
+              mimeType
+            }
+          }
+        }
+        organizer {
+          slug
+          name
+          image {
+            url
+          }
+        }
+      }
+    }
   }
 }
-    ${EventPassNftFieldsFragmentDoc}`;
+    ${EventPassNftFieldsFragmentDoc}
+${EventDateLocationsFieldsFragmentDoc}`;
 export const useGetEventPassNftByIdQuery = <
       TData = Types.GetEventPassNftByIdQuery,
       TError = Error

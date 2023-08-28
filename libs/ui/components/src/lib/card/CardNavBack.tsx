@@ -8,11 +8,16 @@ import { Button } from '../button/Button';
 export interface CardNavBackProps {
   text: string;
   href: LinkProps;
+  variant?: 'default' | 'ghost' | 'secondary';
 }
 
-export const CardNavBack: React.FC<CardNavBackProps> = ({ text, href }) => (
-  <Link {...href}>
-    <Button variant="ghost" icon={ChevronBack}>
+export const CardNavBack: React.FC<CardNavBackProps> = ({
+  text,
+  href,
+  variant = 'ghost',
+}) => (
+  <Link {...href} legacyBehavior>
+    <Button variant={variant} icon={ChevronBack}>
       {text}
     </Button>
   </Link>
