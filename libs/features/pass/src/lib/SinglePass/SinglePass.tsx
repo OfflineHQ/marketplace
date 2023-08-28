@@ -79,7 +79,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
           </CardHeader>
         </div>
         <CardContent>
-          <div className="flex flex-col space-y-4">
+          <div className="hidden md:flex md:flex-col md:space-y-4">
             <CardTitle>{eventPassNft.eventPass?.name}</CardTitle>{' '}
             <CardDescription>
               {eventPassNft.eventPass?.description}
