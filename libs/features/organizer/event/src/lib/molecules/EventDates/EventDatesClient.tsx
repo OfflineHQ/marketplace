@@ -38,8 +38,10 @@ const EventDateComponent: React.FC<{
 
   if (isSameDay(startDate, endDate)) {
     return (
-      <div className="grid grid-cols-4 gap-4">
-        <Text className={`col-span-2 flex items-center ${style.date}`}>
+      <div className="grid grid-flow-row-dense grid-cols-3 grid-rows-1 gap-4">
+        <Text
+          className={`col-auto ml-1 flex w-fit space-x-2 pr-2 ${style.date}`}
+        >
           {formatDateTime(dateStart, {
             weekday: 'short',
             day: 'numeric',
@@ -47,33 +49,45 @@ const EventDateComponent: React.FC<{
           })}
         </Text>
         <div className="col-span-2">
-          <Text className="flex space-x-2">
-            <span>{fromText}</span>
-            <span className={style.hourMinutes}>
-              {formatDateTime(dateStart, {
-                hour: 'numeric',
-                minute: 'numeric',
-              })}
-            </span>
-          </Text>
-          <Text className="flex space-x-2">
-            <span>{toText}</span>
-            <span className={style.hourMinutes}>
-              {formatDateTime(dateEnd, {
-                hour: 'numeric',
-                minute: 'numeric',
-              })}
-            </span>
-          </Text>
+          <div className="grid grid-flow-row-dense grid-cols-3 grid-rows-2 gap-2">
+            <div className="col-auto flex w-fit space-x-2 pr-2">
+              <Text>{fromText}</Text>
+            </div>
+            <div className="col-span-2 flex space-x-2">
+              <Text className="flex space-x-2">
+                <span className={style.hourMinutes}>
+                  {formatDateTime(dateStart, {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })}
+                </span>
+              </Text>
+            </div>
+            <div className="col-auto flex w-fit space-x-2 pr-2">
+              <Text>{toText}</Text>
+            </div>
+            <div className="col-span-2 flex space-x-2">
+              <Text className="flex space-x-2">
+                <span className={style.hourMinutes}>
+                  {formatDateTime(dateEnd, {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })}
+                </span>
+              </Text>
+            </div>
+          </div>
         </div>
       </div>
     );
   } else {
     return (
-      <div className="grid grid-cols-2 gap-4">
-        <Text className="flex space-x-2">
-          <span>{fromText}</span>
-          <span className={style.date}>
+      <div className="grid grid-flow-row-dense grid-cols-4 grid-rows-2 gap-4">
+        <div className="col-auto ml-1 flex w-fit space-x-2 pr-2">
+          <Text>{fromText}</Text>
+        </div>
+        <div className="col-span-3 flex space-x-2">
+          <Text className={style.date}>
             {formatDateTime(dateStart, {
               weekday: 'short',
               day: 'numeric',
@@ -81,11 +95,13 @@ const EventDateComponent: React.FC<{
               hour: 'numeric',
               minute: 'numeric',
             })}
-          </span>
-        </Text>
-        <Text className="flex space-x-2">
-          <span>{toText}</span>
-          <span className={style.date}>
+          </Text>
+        </div>
+        <div className="col-auto ml-1 flex w-fit space-x-2 pr-2">
+          <Text>{toText}</Text>
+        </div>
+        <div className="col-span-3 flex space-x-2">
+          <Text className={style.date}>
             {formatDateTime(dateEnd, {
               weekday: 'short',
               day: 'numeric',
@@ -93,8 +109,8 @@ const EventDateComponent: React.FC<{
               hour: 'numeric',
               minute: 'numeric',
             })}
-          </span>
-        </Text>
+          </Text>
+        </div>
       </div>
     );
   }

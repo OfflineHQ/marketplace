@@ -5,12 +5,13 @@ import { type PassCardProps, PassCard } from './PassCard';
 import { PassCardSelectProps } from './PassCardSelect';
 import { usePassPurchaseStore } from '@features/organizer/event/store';
 import { Currency_Enum } from '@gql/shared/types';
+import { passOptionsFestival } from '../PassOptions/examples';
 
 export const passWithMaxAmount: EventPass = {
   id: '1',
   name: 'General Admission',
   description: 'General Admission to the event',
-  passOptions: [],
+  passOptions: passOptionsFestival,
   eventPassPricing: {
     maxAmount: 7,
     priceCurrency: Currency_Enum.Usd,
