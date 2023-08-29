@@ -35,14 +35,26 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
     return `${locationAddress.city}, ${locationAddress.country}`;
   };
 
+  const renderDetailedLocation = (locationAddress: LocationAddress) => {
+    const locationParts = [
+      locationAddress.venue,
+      locationAddress.street,
+      locationAddress.city,
+      locationAddress.state,
+      locationAddress.country,
+      locationAddress.postalCode,
+    ].filter(Boolean);
+    return locationParts.join(', ');
+  };
+
   return (
-    <div className="flex items-center space-x-1">
+    <div className="flex flex-1 items-center space-x-1">
       <LocationIcon size="lg" flex />
-      <div className="flex flex-col items-start space-y-0">
+      <div className="flex flex-1 flex-col items-start space-y-0">
         {eventDateLocations.length > 1 && !detailed ? (
           <Button
             variant="link"
-            className="text-base font-semibold"
+            className="h-auto text-base font-semibold"
             onClick={() => handleClick(commonLocation)}
           >
             {renderLocation(commonLocation)}
@@ -50,21 +62,13 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
         ) : (
           eventDateLocations.map((eventLocation, index) => (
             <Button
-              key={index}
               variant="link"
-              className="text-base font-semibold"
+              className="h-auto text-left text-base font-semibold"
+              key={index}
               onClick={() => handleClick(eventLocation.locationAddress)}
             >
               {detailed
-                ? `${
-                    eventLocation.locationAddress.venue ||
-                    eventLocation.locationAddress.street
-                  }, 
-              ${eventLocation.locationAddress.city}, ${
-                    eventLocation.locationAddress.state
-                  }, 
-              ${eventLocation.locationAddress.country}, 
-              ${eventLocation.locationAddress.postalCode}`
+                ? renderDetailedLocation(eventLocation.locationAddress)
                 : renderLocation(eventLocation.locationAddress)}
             </Button>
           ))
@@ -72,4 +76,6 @@ export const EventLocations: React.FC<EventLocationsProps> = ({
       </div>
     </div>
   );
+
+  // ... other code
 };

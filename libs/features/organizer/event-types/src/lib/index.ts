@@ -32,3 +32,5 @@ export interface EventPassCart extends Pick<EventPass, 'id'> {
 }
 
 export type AllPassesCart = Record<string, Record<string, EventPassCart[]>>; // EventPasses will be grouped by organizerSlug -> eventSlug -> passes
+
+export type PassOption = EventPass['passOptions'][0];

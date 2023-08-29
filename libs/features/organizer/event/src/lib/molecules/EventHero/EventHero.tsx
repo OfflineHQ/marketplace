@@ -36,7 +36,7 @@ const layout = {
   grid: 'grid grid-cols-1 items-center gap-8 md:grid-cols-2',
   image: 'rounded-sm',
   textContainer: 'md:space-y-4 items-start h-full flex flex-col',
-  text: 'mb-4',
+  text: 'mb-2 md:mb-4',
 };
 
 export const EventHero: React.FC<EventHeroProps> = ({
@@ -64,7 +64,7 @@ export const EventHero: React.FC<EventHeroProps> = ({
           <Text variant="h2" className={layout.text}>
             {title}
           </Text>
-          <div className={`${layout.text} flex items-center pb-4`}>
+          <div className={`${layout.text} flex items-center pb-2 md:pb-4`}>
             {organizer ? <EventOrganizerButton {...organizer} /> : null}
           </div>
           <EventDates {...locationDatesProps} />
