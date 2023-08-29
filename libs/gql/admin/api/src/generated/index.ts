@@ -7,8 +7,10 @@ export const AccountFieldsFragmentDoc = `
   address
   email
   emailVerified
+  organizerId
 }
     `;
+
 export const NftTransferFieldsFragmentDoc = `
     fragment NftTransferFields on nftTransfer {
   fromAddress
