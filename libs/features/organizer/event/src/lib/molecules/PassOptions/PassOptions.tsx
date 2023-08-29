@@ -14,11 +14,15 @@ import { EventLocations } from '../EventLocations/EventLocations';
 
 interface PassOptionsProps {
   passOptions: PassOption[];
+  className?: string;
 }
 
-export const PassOptions: React.FC<PassOptionsProps> = ({ passOptions }) => {
+export const PassOptions: React.FC<PassOptionsProps> = ({
+  passOptions,
+  className,
+}) => {
   return (
-    <Accordion type="multiple">
+    <Accordion type="multiple" className={className}>
       {passOptions.map(({ name, description, eventDateLocation }, index) => (
         <AccordionItem key={index} value={`item-${index}`}>
           <AccordionTrigger>
