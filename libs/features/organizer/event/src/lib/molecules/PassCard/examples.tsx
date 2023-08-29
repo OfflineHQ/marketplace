@@ -5,13 +5,21 @@ import { type PassCardProps, PassCard } from './PassCard';
 import { PassCardSelectProps } from './PassCardSelect';
 import { usePassPurchaseStore } from '@features/organizer/event/store';
 import { Currency_Enum } from '@gql/shared/types';
-import { passOptionsFestival } from '../PassOptions/examples';
+import {
+  passOptionsFestival,
+  passOptionsHolidays,
+  passOptionsFormula1,
+  passOptionsFootball,
+} from '../PassOptions/examples';
 
 export const passWithMaxAmount: EventPass = {
   id: '1',
   name: 'General Admission',
   description: 'General Admission to the event',
   passOptions: passOptionsFestival,
+  nftImage: {
+    url: 'https://picsum.photos/id/620/350/350',
+  },
   eventPassPricing: {
     maxAmount: 7,
     priceCurrency: Currency_Enum.Usd,
@@ -31,7 +39,10 @@ export const passWithMaxAmountPerUser: EventPass = {
   id: '2',
   name: 'VIP Pass',
   description: 'Access to all areas',
-  passOptions: [],
+  nftImage: {
+    url: 'https://picsum.photos/id/621/450/350',
+  },
+  passOptions: passOptionsHolidays,
   eventPassPricing: {
     maxAmountPerUser: 3,
     maxAmount: 30,
@@ -52,7 +63,10 @@ export const passWithSoldOut: EventPass = {
   id: '3',
   name: 'Student Pass',
   description: 'Discounted pass for students',
-  passOptions: [],
+  nftImage: {
+    url: 'https://picsum.photos/id/622/350/350',
+  },
+  passOptions: passOptionsFormula1,
   eventPassPricing: {
     maxAmount: 10,
     priceCurrency: Currency_Enum.Usd,
@@ -72,6 +86,9 @@ export const passWithSkeleton: EventPass = {
     priceCurrency: Currency_Enum.Usd,
     priceAmount: 0,
   },
+  nftImage: {
+    url: 'https://picsum.photos/id/623/350/350',
+  },
   passOptions: [],
   eventPassOrderSums: {
     totalReserved: 0,
@@ -86,6 +103,9 @@ export const passFamily: EventPass = {
     maxAmount: 10,
     priceCurrency: Currency_Enum.Usd,
     priceAmount: 200000,
+  },
+  nftImage: {
+    url: 'https://picsum.photos/id/702/350/350',
   },
   passOptions: [],
   eventPassOrderSums: {
@@ -102,6 +122,9 @@ export const passEarlyBird: EventPass = {
     priceCurrency: Currency_Enum.Usd,
     priceAmount: 100000,
   },
+  nftImage: {
+    url: 'https://picsum.photos/id/625/350/350',
+  },
   passOptions: [],
   eventPassOrderSums: {
     totalReserved: 4,
@@ -116,6 +139,9 @@ export const passWeekend: EventPass = {
     maxAmount: 10,
     priceCurrency: Currency_Enum.Usd,
     priceAmount: 300000,
+  },
+  nftImage: {
+    url: 'https://picsum.photos/id/626/350/350',
   },
   passOptions: [],
   eventPassOrderSums: {
@@ -132,7 +158,10 @@ export const passPremium: EventPass = {
     priceCurrency: Currency_Enum.Usd,
     priceAmount: 500000,
   },
-  passOptions: [],
+  nftImage: {
+    url: 'https://picsum.photos/id/627/350/350',
+  },
+  passOptions: passOptionsFootball,
   eventPassOrderSums: {
     totalReserved: 20,
   },
