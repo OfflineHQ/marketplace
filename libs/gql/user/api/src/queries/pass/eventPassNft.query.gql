@@ -21,6 +21,10 @@ query GetEventPassNftById($id: uuid!, $locale: Locale!, $stage: Stage!)
       }
       event {
         slug
+        title
+        heroImage {
+          url
+        }
         organizer {
           id
           slug
