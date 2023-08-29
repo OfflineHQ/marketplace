@@ -10,7 +10,7 @@ import { AppNavLayout } from '@features/appNav/ui';
 
 export const eventPassNft1 = {
   id: 'dummy',
-  tokenId: '12',
+  tokenId: '1224',
   eventId: eventProps.id,
   eventPassId: passWithMaxAmount.id,
   organizerId: eventProps?.organizer?.id ?? '',

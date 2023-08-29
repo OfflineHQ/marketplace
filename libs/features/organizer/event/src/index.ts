@@ -10,3 +10,6 @@ export {
 } from './lib/pages/PassPurchase/PassPurchaseCard';
 
 export { PassPurchaseSheetContainer } from './lib/pages/PassPurchaseSheetContainer/PassPurchaseSheetContainer';
+export { EventDates } from './lib/molecules/EventDates/EventDates';
+export { EventLocations } from './lib/molecules/EventLocations/EventLocations';
+export { EventOrganizerButton } from './lib/molecules/EventOrganizerButton/EventOrganizerButton';
