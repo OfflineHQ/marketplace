@@ -21,6 +21,7 @@ import { formatCurrency } from '@next/currency';
 
 import type { EventPass } from '@features/organizer/event-types';
 import { PassCardSelect, PassCardSelectProps } from './PassCardSelect';
+import { PassOptions } from '../PassOptions/PassOptions';
 
 export interface PassCardProps extends EventPass, PassCardSelectProps {}
 
@@ -28,6 +29,7 @@ export const PassCard: React.FC<PassCardProps> = ({
   name,
   description,
   eventPassPricing,
+  passOptions,
   ...props
 }) => {
   const format = useFormatter();
@@ -41,6 +43,7 @@ export const PassCard: React.FC<PassCardProps> = ({
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>{description}</CardDescription>
+        <PassOptions passOptions={passOptions || []} />
       </CardHeader>
       <CardFooter className="flex items-center justify-between">
         <Text>

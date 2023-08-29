@@ -14,7 +14,7 @@ import { getInitials } from '@ui/shared';
 export type EventOrganizerButtonProps = NonNullable<Event['organizer']>;
 
 const layout = {
-  container: 'inline-flex h-14 items-center space-x-3 p-0 pr-2 md:h-16 md:pr-4',
+  container: 'flex h-14 items-center space-x-3 p-0 pr-2 md:h-16',
 };
 
 export const EventOrganizerButton: React.FC<EventOrganizerButtonProps> = ({
@@ -29,7 +29,7 @@ export const EventOrganizerButton: React.FC<EventOrganizerButtonProps> = ({
           <AvatarFallback>{getInitials(name)}</AvatarFallback>
           <AvatarImage src={image?.url} />
         </Avatar>
-        <Text variant="h4" className="flex items-center justify-center">
+        <Text variant="h5" className="flex items-center justify-center">
           <div className="tracking-wider">{name}</div>
         </Text>
       </Button>
