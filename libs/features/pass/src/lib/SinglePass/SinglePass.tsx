@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations, useFormatter } from 'next-intl';
 import {
   Card,
   CardHeader,
@@ -13,15 +13,12 @@ import {
   CardDescription,
   AspectRatio,
   CardNavBack,
+  Label,
 } from '@ui/components';
 import Image from 'next/image';
 import { EventPassNft } from '@features/pass-types';
-import {
-  EventDates,
-  EventLocations,
-  EventOrganizerButton,
-  PassOptions,
-} from '@features/organizer/event';
+import { EventOrganizerButton, PassOptions } from '@features/organizer/event';
+import { formatCurrency } from '@next/currency';
 import type { User } from 'next-auth';
 
 export interface SinglePassProps {
@@ -29,19 +26,12 @@ export interface SinglePassProps {
   user?: User;
 }
 
-const layout = {
-  gridWithImage:
-    'bg-overlay-background w-full grid grid-cols-1 items-center gap-8 md:grid-cols-2',
-  image: 'rounded-sm',
-  textContainer: 'md:space-y-4 items-start h-full flex flex-col',
-  text: 'mb-4',
-};
-
 export const SinglePass: React.FC<SinglePassProps> = ({
   eventPassNft,
   user,
 }) => {
   const t = useTranslations('Pass.SinglePass');
+  const format = useFormatter();
   // getLocalCart();
   const backgroundImage = eventPassNft?.eventPass?.event?.heroImage.url || '';
   return (
@@ -64,19 +54,18 @@ export const SinglePass: React.FC<SinglePassProps> = ({
             />
           </div>
           <CardHeader>
-            <AspectRatio
-              variant="square"
-              className="m-6 mt-10 md:mx-auto md:mt-12 md:max-h-[300px] md:max-w-[300px]"
-            >
-              <Image
-                className="rounded-sm"
-                src={eventPassNft?.eventPass?.nftImage.url || ''}
-                fill
-                style={{ objectFit: 'cover' }}
-                alt={eventPassNft?.eventPass?.event?.title || ''}
-              />
-            </AspectRatio>
-            <div className="flex flex-col space-y-4 md:hidden">
+            <div className="mx-auto mt-10 flex max-h-[380px] w-full max-w-[350px]">
+              <AspectRatio variant="square">
+                <Image
+                  className="rounded-sm"
+                  src={eventPassNft?.eventPass?.nftImage.url || ''}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  alt={eventPassNft?.eventPass?.event?.title || ''}
+                />
+              </AspectRatio>
+            </div>
+            <div className="flex flex-col space-y-4 pt-4 md:hidden">
               <Text variant="h2">
                 {t('title', {
                   title: eventPassNft.eventPass?.name,
@@ -88,7 +77,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
           </CardHeader>
         </div>
         <CardContent className="md:relative md:space-y-4">
-          <div className="hidden md:flex md:flex-col md:space-y-4">
+          <div className="hidden flex-col space-y-4 pt-10 md:flex">
             <Text variant="h2">
               {t('title', {
                 title: eventPassNft.eventPass?.name,
@@ -96,6 +85,17 @@ export const SinglePass: React.FC<SinglePassProps> = ({
               })}
             </Text>
             <Text variant="p">{eventPassNft.eventPass?.description}</Text>
+          </div>
+          <div className="flex pb-4 text-end md:pt-4">
+            <Label className="mr-3">{t('sold-for')}</Label>
+            <Text className="font-semibold">
+              {formatCurrency(format, {
+                amount:
+                  eventPassNft.eventPass?.eventPassPricing?.priceAmount || 0,
+                currency:
+                  eventPassNft.eventPass?.eventPassPricing?.priceCurrency,
+              })}
+            </Text>
           </div>
           <div className="flex pb-4">
             {eventPassNft.eventPass?.event?.organizer ? (
