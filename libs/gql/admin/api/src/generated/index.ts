@@ -10,21 +10,7 @@ export const AccountFieldsFragmentDoc = `
   organizerId
 }
     `;
-export const NftTransferFieldsFragmentDoc = `
-    fragment NftTransferFields on nftTransfer {
-  fromAddress
-  toAddress
-  chainId
-  blockNumber
-  eventId
-  organizerId
-  eventPassId
-  tokenId
-  created_at
-  id
-  contractAddress
-}
-    `;
+
 export const NftTransferFieldsFragmentDoc = `
     fragment NftTransferFields on nftTransfer {
   fromAddress
