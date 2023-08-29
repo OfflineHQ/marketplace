@@ -16,6 +16,12 @@ import {
 } from '@ui/components';
 import Image from 'next/image';
 import { EventPassNft } from '@features/pass-types';
+import {
+  EventDates,
+  EventLocations,
+  EventOrganizerButton,
+  PassOptions,
+} from '@features/organizer/event';
 import type { User } from 'next-auth';
 
 export interface SinglePassProps {
@@ -35,7 +41,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
   eventPassNft,
   user,
 }) => {
-  const t = useTranslations('Pass.NoUserPass');
+  const t = useTranslations('Pass.SinglePass');
   // getLocalCart();
   const backgroundImage = eventPassNft?.eventPass?.event?.heroImage.url || '';
   return (
@@ -48,7 +54,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
             } as React.CSSProperties
           }
           // eslint-disable-next-line tailwindcss/no-custom-classname
-          className="bg-overlay-background flex-col md:max-h-[400px]"
+          className="flex-col bg-overlay-background md:max-h-[400px]"
         >
           <div className="absolute z-10 mt-3 pl-3">
             <CardNavBack
@@ -71,20 +77,36 @@ export const SinglePass: React.FC<SinglePassProps> = ({
               />
             </AspectRatio>
             <div className="flex flex-col space-y-4 md:hidden">
-              <CardTitle>{eventPassNft.eventPass?.name}</CardTitle>{' '}
-              <CardDescription>
-                {eventPassNft.eventPass?.description}
-              </CardDescription>
+              <Text variant="h2">
+                {t('title', {
+                  title: eventPassNft.eventPass?.name,
+                  number: eventPassNft.tokenId,
+                })}
+              </Text>
+              <Text variant="p">{eventPassNft.eventPass?.description}</Text>
             </div>
           </CardHeader>
         </div>
-        <CardContent>
+        <CardContent className="md:relative md:space-y-4">
           <div className="hidden md:flex md:flex-col md:space-y-4">
-            <CardTitle>{eventPassNft.eventPass?.name}</CardTitle>{' '}
-            <CardDescription>
-              {eventPassNft.eventPass?.description}
-            </CardDescription>
+            <Text variant="h2">
+              {t('title', {
+                title: eventPassNft.eventPass?.name,
+                number: eventPassNft.tokenId,
+              })}
+            </Text>
+            <Text variant="p">{eventPassNft.eventPass?.description}</Text>
           </div>
+          <div className="flex pb-4">
+            {eventPassNft.eventPass?.event?.organizer ? (
+              <EventOrganizerButton
+                {...eventPassNft.eventPass.event.organizer}
+              />
+            ) : null}
+          </div>
+          <PassOptions
+            passOptions={eventPassNft.eventPass?.passOptions || []}
+          />
         </CardContent>
       </CardOverflow>
       {/* <CardOverlay /> */}
