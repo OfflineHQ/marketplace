@@ -7,7 +7,7 @@ import { useStore } from '@next/store';
 import type { EventPass, EventSlugs } from '@features/organizer/event-types';
 
 export interface PassCardSelectProps
-  extends Omit<EventPass, 'description' | 'name' | 'passOptions'>,
+  extends Omit<EventPass, 'description' | 'name' | 'passOptions' | 'nftImage'>,
     EventSlugs {}
 
 export const PassCardSelect: React.FC<PassCardSelectProps> = ({

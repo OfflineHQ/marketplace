@@ -19,13 +19,13 @@ export const PassList: React.FC<PassListProps> = ({
   organizerSlug,
 }) => (
   <div
-    className={`grid grid-cols-1 gap-4 px-1 md:grid-cols-2 lg:grid-cols-3 ${className}`}
+    className={`grid auto-rows-min grid-cols-1 gap-4 px-1 md:grid-cols-2 lg:grid-cols-3 ${className}`}
   >
     {passes.map(({ id, ...passProps }) => (
       <PassCard
         {...passProps}
         id={id}
-        key={id}
+        key={`${id}-${eventSlug}-${organizerSlug}`}
         eventSlug={eventSlug}
         organizerSlug={organizerSlug}
       />
