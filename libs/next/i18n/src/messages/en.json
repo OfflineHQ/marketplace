@@ -82,6 +82,9 @@
       "title": "Pass",
       "description": "You will be able to see your passes once you are signed in",
       "sign-in-text": "Sign in"
+    },
+    "SinglePass": {
+      "title": "{title} #{number, number}"
     }
   },
   "Organizer": {

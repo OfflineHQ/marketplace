@@ -244,23 +244,9 @@ export const GetEventPassNftByIdDocument = `
         priceCurrency
       }
       event {
-        title
         slug
-        heroImage {
-          url
-        }
-        description {
-          json
-          references {
-            ... on Asset {
-              __typename
-              id
-              url
-              mimeType
-            }
-          }
-        }
         organizer {
+          id
           slug
           name
           image {
