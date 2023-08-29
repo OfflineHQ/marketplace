@@ -259,6 +259,9 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     id
     name
     description
+    nftImage {
+      url
+    }
     eventPassPricing {
       maxAmount
       maxAmountPerUser

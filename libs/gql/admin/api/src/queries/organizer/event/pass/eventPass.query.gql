@@ -7,6 +7,9 @@ query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
     id
     name
     description
+    nftImage {
+      url
+    }
     eventPassPricing {
       maxAmount
       maxAmountPerUser
