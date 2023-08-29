@@ -245,6 +245,10 @@ export const GetEventPassNftByIdDocument = `
       }
       event {
         slug
+        title
+        heroImage {
+          url
+        }
         organizer {
           id
           slug

@@ -84,7 +84,8 @@
       "sign-in-text": "Sign in"
     },
     "SinglePass": {
-      "title": "{title} #{number, number}"
+      "title": "{title} #{number, number}",
+      "sold-for": "Sold for:"
     }
   },
   "Organizer": {
