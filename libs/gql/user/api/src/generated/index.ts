@@ -157,6 +157,10 @@ export const EventPassNftFieldsFragmentDoc = `
       }
       event {
         slug
+        title
+        heroImage {
+          url
+        }
         organizer {
           id
           slug
