@@ -12,9 +12,8 @@ import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { locales } from '@next/i18n';
 import { useLocale, useTranslations } from 'next-intl';
-import { AppNavLayout, type AppNavLayoutProps } from '@features/appNav/ui';
-import { ProfileNavClient } from './ProfileNavClient/ProfileNavClient';
-import { Dashboard } from './Dashboard/Dashboard';
+import { ProfileNavClient } from '../../components/ProfileNavClient/ProfileNavClient';
+import { Dashboard } from './Dashboard/page';
 
 const fontSans = FontSans({
   subsets: ['latin'],
