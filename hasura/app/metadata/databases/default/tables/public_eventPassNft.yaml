@@ -52,7 +52,9 @@ select_permissions:
         - tokenId
         - metadata
         - chainId
+        - eventId
         - eventPassId
+        - organizerId
         - currentOwnerAddress
         - isRevealed
       filter: {}
@@ -72,9 +74,7 @@ select_permissions:
         - currentOwnerAddress
         - lastNftTransferId
         - isRevealed
-        - id
         - created_at
         - updated_at
-      filter:
-        currentOwnerAddress:
-          _eq: X-Hasura-User-address
+      filter: {}
+      limit: 100

@@ -31801,6 +31801,22 @@
             "deprecationReason": null
           },
           {
+            "name": "eventId",
+            "description": "A reference to the event associated with the event pass NFT",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "eventPass",
             "description": null,
             "args": [
@@ -31927,6 +31943,22 @@
             "deprecationReason": null
           },
           {
+            "name": "organizerId",
+            "description": "Ties the event pass NFT to a specific organizer within the platform",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": "The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.",
             "args": [],
@@ -32043,6 +32075,18 @@
             "deprecationReason": null
           },
           {
+            "name": "eventId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "eventPassId",
             "description": null,
             "type": {
@@ -32084,6 +32128,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "jsonb_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "organizerId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -32150,6 +32206,18 @@
             "deprecationReason": null
           },
           {
+            "name": "eventId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "eventPassId",
             "description": null,
             "type": {
@@ -32187,6 +32255,18 @@
           },
           {
             "name": "metadata",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "organizerId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -32241,6 +32321,12 @@
             "deprecationReason": null
           },
           {
+            "name": "eventId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "eventPassId",
             "description": "column name",
             "isDeprecated": false,
@@ -32254,6 +32340,12 @@
           },
           {
             "name": "metadata",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "organizerId",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -32349,6 +32441,18 @@
             "deprecationReason": null
           },
           {
+            "name": "eventId",
+            "description": "A reference to the event associated with the event pass NFT",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "eventPassId",
             "description": "Directly relates to a specific Event Pass within the system",
             "type": {
@@ -32378,6 +32482,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "organizerId",
+            "description": "Ties the event pass NFT to a specific organizer within the platform",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
