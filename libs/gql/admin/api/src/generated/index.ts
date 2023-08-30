@@ -75,6 +75,52 @@ export const EventDateLocationsFieldsFragmentDoc = `
   dateEnd
 }
     `;
+export const EventPassFieldsFragmentDoc = `
+    fragment EventPassFields on EventPass {
+  name
+  nftImage {
+    url
+  }
+  description
+  passOptions {
+    name
+    description
+    eventDateLocation {
+      ...EventDateLocationsFields
+    }
+  }
+  eventPassPricing {
+    priceAmount
+    priceCurrency
+  }
+  event {
+    slug
+    title
+    heroImage {
+      url
+    }
+    organizer {
+      id
+      slug
+      name
+      image {
+        url
+      }
+    }
+  }
+}
+    ${EventDateLocationsFieldsFragmentDoc}`;
+export const EventPassNftFieldsFragmentDoc = `
+    fragment EventPassNftFields on eventPassNft {
+  id
+  tokenId
+  eventId
+  eventPassId
+  organizerId
+  isRevealed
+  currentOwnerAddress
+}
+    `;
  const UpdateAccountDocument = `
     mutation UpdateAccount($id: uuid!, $account: account_set_input!) {
   update_account_by_pk(_set: $account, pk_columns: {id: $id}) {
@@ -350,6 +396,24 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${OrganizerFieldsFragmentDoc}`;
+ const GetEventPassNftByIdDocument = `
+    query GetEventPassNftById($id: uuid!, $locale: Locale!, $stage: Stage!) @cached {
+  eventPassNft_by_pk(id: $id) {
+    ...EventPassNftFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      ...EventPassFields
+    }
+  }
+}
+    ${EventPassNftFieldsFragmentDoc}
+${EventPassFieldsFragmentDoc}`;
+ const GetEventPassNftByIdMinimalDocument = `
+    query GetEventPassNftByIdMinimal($id: uuid!) {
+  eventPassNft_by_pk(id: $id) {
+    ...EventPassNftFields
+  }
+}
+    ${EventPassNftFieldsFragmentDoc}`;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -412,6 +476,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
+    },
+    GetEventPassNftById(variables: Types.GetEventPassNftByIdQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdQuery> {
+      return requester<Types.GetEventPassNftByIdQuery, Types.GetEventPassNftByIdQueryVariables>(GetEventPassNftByIdDocument, variables, options) as Promise<Types.GetEventPassNftByIdQuery>;
+    },
+    GetEventPassNftByIdMinimal(variables: Types.GetEventPassNftByIdMinimalQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdMinimalQuery> {
+      return requester<Types.GetEventPassNftByIdMinimalQuery, Types.GetEventPassNftByIdMinimalQueryVariables>(GetEventPassNftByIdMinimalDocument, variables, options) as Promise<Types.GetEventPassNftByIdMinimalQuery>;
     }
   };
 }

@@ -1,12 +1,12 @@
 import { getEventPassRevealedFilePath, downloadPass } from './downloadPass';
-import { userSdk } from '@gql/user/api';
+import { adminSdk } from '@gql/admin/api';
 import { FileDownloader } from '@file-upload/user';
 import { isServerSide } from '@utils';
 import { cookies } from 'next/headers';
 import { mockEventPassNft } from './revealPass.spec';
 
 // Mocking the dependencies
-jest.mock('@gql/user/api');
+jest.mock('@gql/admin/api');
 jest.mock('@file-upload/user');
 jest.mock('@utils');
 jest.mock('next/headers');
@@ -17,6 +17,11 @@ jest.mock('@next/next-auth/common', () => ({
   nextAuthCookieName: jest
     .fn()
     .mockReturnValue('__Secure-next-auth.session-token'),
+}));
+
+jest.mock('@utils', () => ({
+  ...jest.requireActual('@utils'),
+  isServerSide: jest.fn(),
 }));
 
 // Mock cookies function
@@ -47,7 +52,7 @@ describe('downloadPass functions', () => {
 
   describe('getEventPassRevealedFilePath', () => {
     it('returns correct path when all data is available', async () => {
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue({
         eventPassNft_by_pk: mockEventPassNftRevealed,
       });
       const result = await getEventPassRevealedFilePath('valid-id');
@@ -58,7 +63,7 @@ describe('downloadPass functions', () => {
     });
 
     it('throws error if event pass is not owned by user', async () => {
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue({
         eventPassNft_by_pk: null,
       });
 
@@ -68,7 +73,7 @@ describe('downloadPass functions', () => {
     });
 
     it('throws error if event pass is not revealed', async () => {
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue({
         eventPassNft_by_pk: mockEventPassNft,
       });
 
@@ -104,7 +109,7 @@ describe('downloadPass functions', () => {
       };
       (isServerSide as jest.Mock).mockReturnValue(true);
       mockCookiesGet.mockReturnValue('sample-jwt-token'); // Mock JWT cookie
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue({
         eventPassNft_by_pk: mockEventPassNftRevealed,
       });
       downloadFileMock.mockResolvedValue(mockBlob); // Mock FileDownloader's response
@@ -116,7 +121,7 @@ describe('downloadPass functions', () => {
     it('calls downloadFile with display action when on client side and JWT cookie is found', async () => {
       (isServerSide as jest.Mock).mockReturnValue(false); // Mock client side
       mockCookiesGet.mockReturnValue('sample-jwt-token'); // Mock JWT cookie
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue({
         eventPassNft_by_pk: mockEventPassNftRevealed,
       });
 
@@ -140,7 +145,7 @@ describe('downloadPass functions', () => {
     it('propagates error from FileDownloader', async () => {
       (isServerSide as jest.Mock).mockReturnValue(true);
       mockCookiesGet.mockReturnValue('sample-jwt-token'); // Mock JWT cookie
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue({
         eventPassNft_by_pk: mockEventPassNftRevealed,
       });
       downloadFileMock.mockRejectedValue(new Error('File download error')); // Mock error from FileDownloader

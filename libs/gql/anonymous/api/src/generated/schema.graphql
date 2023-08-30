@@ -6194,6 +6194,9 @@ type eventPassNft {
   The address currently holding the event pass NFT, allowing tracking of ownership
   """
   currentOwnerAddress: String!
+
+  """A reference to the event associated with the event pass NFT"""
+  eventId: String!
   eventPass(
     """
     Defines which locales should be returned.
@@ -6226,6 +6229,9 @@ type eventPassNft {
     path: String
   ): jsonb!
 
+  """Ties the event pass NFT to a specific organizer within the platform"""
+  organizerId: String!
+
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
   """
@@ -6242,10 +6248,12 @@ input eventPassNft_bool_exp {
   chainId: String_comparison_exp
   contractAddress: String_comparison_exp
   currentOwnerAddress: String_comparison_exp
+  eventId: String_comparison_exp
   eventPassId: String_comparison_exp
   eventPassPricing: eventPassPricing_bool_exp
   isRevealed: Boolean_comparison_exp
   metadata: jsonb_comparison_exp
+  organizerId: String_comparison_exp
   tokenId: bigint_comparison_exp
 }
 
@@ -6254,10 +6262,12 @@ input eventPassNft_order_by {
   chainId: order_by
   contractAddress: order_by
   currentOwnerAddress: order_by
+  eventId: order_by
   eventPassId: order_by
   eventPassPricing: eventPassPricing_order_by
   isRevealed: order_by
   metadata: order_by
+  organizerId: order_by
   tokenId: order_by
 }
 
@@ -6275,6 +6285,9 @@ enum eventPassNft_select_column {
   currentOwnerAddress
 
   """column name"""
+  eventId
+
+  """column name"""
   eventPassId
 
   """column name"""
@@ -6282,6 +6295,9 @@ enum eventPassNft_select_column {
 
   """column name"""
   metadata
+
+  """column name"""
+  organizerId
 
   """column name"""
   tokenId
@@ -6313,6 +6329,9 @@ input eventPassNft_stream_cursor_value_input {
   """
   currentOwnerAddress: String
 
+  """A reference to the event associated with the event pass NFT"""
+  eventId: String
+
   """Directly relates to a specific Event Pass within the system"""
   eventPassId: String
 
@@ -6325,6 +6344,9 @@ input eventPassNft_stream_cursor_value_input {
   The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT.
   """
   metadata: jsonb
+
+  """Ties the event pass NFT to a specific organizer within the platform"""
+  organizerId: String
 
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
