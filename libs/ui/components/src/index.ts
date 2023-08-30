@@ -108,6 +108,7 @@ export {
   AlertDialogAction,
   AlertDialogCancel,
 } from './lib/alert-dialog/AlertDialog';
+export { Alert, AlertTitle, AlertDescription } from './lib/alert/Alert';
 export {
   Command,
   CommandDialog,
