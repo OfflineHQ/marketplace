@@ -52534,7 +52534,11 @@
           },
           {
             "name": "chainId",
+<<<<<<< HEAD
             "description": null,
+=======
+            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
+>>>>>>> b13fc028 (add: event pass deploy and lazyMint)
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -53255,7 +53259,11 @@
           },
           {
             "name": "chainId",
+<<<<<<< HEAD
             "description": null,
+=======
+            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
+>>>>>>> b13fc028 (add: event pass deploy and lazyMint)
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -53409,7 +53417,11 @@
           },
           {
             "name": "chainId",
+<<<<<<< HEAD
             "description": null,
+=======
+            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
+>>>>>>> b13fc028 (add: event pass deploy and lazyMint)
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -53564,7 +53576,7 @@
           },
           {
             "name": "chainId",
-            "description": null,
+            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -54099,7 +54111,11 @@
           },
           {
             "name": "chainId",
+<<<<<<< HEAD
             "description": null,
+=======
+            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
+>>>>>>> b13fc028 (add: event pass deploy and lazyMint)
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -54398,7 +54414,11 @@
           },
           {
             "name": "chainId",
+<<<<<<< HEAD
             "description": null,
+=======
+            "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
+>>>>>>> b13fc028 (add: event pass deploy and lazyMint)
             "type": {
               "kind": "SCALAR",
               "name": "String",
