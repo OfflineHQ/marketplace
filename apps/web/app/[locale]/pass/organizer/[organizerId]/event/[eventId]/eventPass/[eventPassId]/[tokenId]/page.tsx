@@ -1,6 +1,6 @@
 import { SinglePass } from '@features/pass/server';
 import { EventPassNft } from '@features/pass-types';
-import { getCurrentUser } from '@web/lib/session';
+import { getCurrentUser } from '@next/next-auth/user';
 import {
   getEventPassNftByTokenReferenceUser,
   getEventPassNftByTokenReferenceAnonymous,

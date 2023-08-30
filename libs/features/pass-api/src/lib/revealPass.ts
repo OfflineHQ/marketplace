@@ -1,8 +1,11 @@
+// eslint-disable-next-line import/no-unresolved
+import '@next/types';
+
 import { adminSdk } from '@gql/admin/api';
 import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
 import type { EventPassNftByIdMinimal } from '@features/pass-types';
 import { getPassOrganizer, getPassUser } from './common';
-import { getCurrentUser } from '@web/lib/session';
+import { getCurrentUser } from '@next/next-auth/user';
 
 const fileWrapper = new FileWrapper();
 
