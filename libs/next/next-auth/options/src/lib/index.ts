@@ -124,12 +124,12 @@ export const authOptions = {
           },
         };
 
-        if (process.env.APP === 'WEB') {
+        if (process.env.APP === 'BACKOFFICE') {
           return {
             user,
             provider: account.provider,
             providerType: account.type,
-            role: Roles.user,
+            role: Roles.organizer,
             access: token.access,
           };
         }
@@ -138,7 +138,7 @@ export const authOptions = {
           user,
           provider: account.provider,
           providerType: account.type,
-          role: Roles.organizer,
+          role: Roles.user,
           access: token.access,
         };
       }
