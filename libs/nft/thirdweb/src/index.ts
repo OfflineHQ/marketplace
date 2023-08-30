@@ -1,3 +1,5 @@
+'use client';
+
 import { ExternalProvider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
