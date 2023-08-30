@@ -27,3 +27,9 @@ mutation UpdateEventPassPricing(
     maxAmountPerUser
   }
 }
+
+query GetEventPassesMaxAmount($eventPassId: String) {
+  eventPassPricing(where: { eventPassId: { _eq: $eventPassId } }) {
+    maxAmount
+  }
+}
