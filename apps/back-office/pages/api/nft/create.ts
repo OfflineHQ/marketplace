@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     const data = JSON.parse(req.body);
     const eventNftCollection = await createEventNftCollection({
       contractAddress: data.props.contractAddress,
-      eventId: data.props.id,
+      eventPassId: data.props.id,
       chainId: data.props.chainId,
       activityWebhookId: 'test.url', // TODO call the function to create an activityWebhook
     });

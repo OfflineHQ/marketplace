@@ -64,14 +64,11 @@ query GetEventWithFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!)
 @cached {
   organizer(where: { id: $id }, locales: [$locale, en], stage: $stage) {
     events {
-      slug
       title
       id
+      slug
       heroImage {
         url
-      }
-      eventNftCollection {
-        contractAddress
       }
       eventPasses {
         name
@@ -82,6 +79,12 @@ query GetEventWithFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!)
           url
         }
         nftDescription
+        eventPassPricing {
+          maxAmount
+        }
+        eventNftCollection {
+          contractAddress
+        }
       }
     }
   }

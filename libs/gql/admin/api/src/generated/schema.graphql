@@ -1147,7 +1147,6 @@ type Event implements Node {
     skip: Int
     where: EventDateLocationWhereInput
   ): [EventDateLocation!]!
-  eventNftCollection: eventNftCollection
   eventPasses(
     after: String
     before: String
@@ -1972,6 +1971,7 @@ type EventPass implements Node {
     """
     locales: [Locale!]
   ): Event
+  eventNftCollection: eventNftCollection
   eventPassOrderSums: eventPassOrderSums
   eventPassPricing: eventPassPricing
 
@@ -3214,11 +3214,6 @@ input EventWhereStageInput {
 """References Event record uniquely"""
 input EventWhereUniqueInput {
   id: ID
-  slug: String
-}
-
-"""References Event record uniquely"""
-input EventWhereUniqueInput_remote_rel_eventNftCollectionevent {
   slug: String
 }
 
@@ -6606,24 +6601,23 @@ type eventNftCollection {
   Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
   """
   contractAddress: String!
-  event(
+  eventPass(
     """
     Defines which locales should be returned.
     
-    Note that `Event` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
     The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
     
     This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
     """
     locales: [Locale!]! = [en]
     stage: Stage! = PUBLISHED
-    where: EventWhereUniqueInput_remote_rel_eventNftCollectionevent!
-  ): Event
+  ): EventPass
 
   """
   A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
   """
-  eventId: String!
+  eventPassId: String!
 }
 
 """
@@ -6653,7 +6647,7 @@ input eventNftCollection_bool_exp {
   activityWebhookId: String_comparison_exp
   chainId: String_comparison_exp
   contractAddress: String_comparison_exp
-  eventId: String_comparison_exp
+  eventPassId: String_comparison_exp
 }
 
 """
@@ -6666,7 +6660,7 @@ enum eventNftCollection_constraint {
   eventNftCollection_activityWebhookId_key
 
   """
-  unique or primary key constraint on columns "eventId"
+  unique or primary key constraint on columns "eventPassId"
   """
   eventNftCollection_eventId_key
 
@@ -6698,7 +6692,7 @@ input eventNftCollection_insert_input {
   """
   A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
   """
-  eventId: String
+  eventPassId: String
 }
 
 """aggregate max on columns"""
@@ -6721,7 +6715,7 @@ type eventNftCollection_max_fields {
   """
   A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
   """
-  eventId: String
+  eventPassId: String
 }
 
 """aggregate min on columns"""
@@ -6744,7 +6738,7 @@ type eventNftCollection_min_fields {
   """
   A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
   """
-  eventId: String
+  eventPassId: String
 }
 
 """
@@ -6772,7 +6766,7 @@ input eventNftCollection_order_by {
   activityWebhookId: order_by
   chainId: order_by
   contractAddress: order_by
-  eventId: order_by
+  eventPassId: order_by
 }
 
 """primary key columns input for table: eventNftCollection"""
@@ -6797,7 +6791,7 @@ enum eventNftCollection_select_column {
   contractAddress
 
   """column name"""
-  eventId
+  eventPassId
 }
 
 """
@@ -6822,7 +6816,7 @@ input eventNftCollection_set_input {
   """
   A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
   """
-  eventId: String
+  eventPassId: String
 }
 
 """
@@ -6856,7 +6850,7 @@ input eventNftCollection_stream_cursor_value_input {
   """
   A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
   """
-  eventId: String
+  eventPassId: String
 }
 
 """
@@ -6873,7 +6867,7 @@ enum eventNftCollection_update_column {
   contractAddress
 
   """column name"""
-  eventId
+  eventPassId
 }
 
 input eventNftCollection_updates {

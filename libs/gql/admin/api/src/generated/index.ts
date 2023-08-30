@@ -25,21 +25,6 @@ export const NftTransferFieldsFragmentDoc = `
   contractAddress
 }
     `;
-export const NftTransferFieldsFragmentDoc = `
-    fragment NftTransferFields on nftTransfer {
-  fromAddress
-  toAddress
-  chainId
-  blockNumber
-  eventId
-  organizerId
-  eventPassId
-  tokenId
-  created_at
-  id
-  contractAddress
-}
-    `;
 export const EventListFieldsFragmentDoc = `
     fragment EventListFields on Event {
   id
@@ -94,7 +79,7 @@ export const EventNftCollectionFieldsFragmentDoc = `
     fragment EventNftCollectionFields on eventNftCollection {
   contractAddress
   chainId
-  eventId
+  eventPassId
   activityWebhookId
 }
     `;
@@ -288,14 +273,11 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     query GetEventWithFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {id: $id}, locales: [$locale, en], stage: $stage) {
     events {
-      slug
       title
       id
+      slug
       heroImage {
         url
-      }
-      eventNftCollection {
-        contractAddress
       }
       eventPasses {
         name
@@ -306,6 +288,12 @@ ${EventDateLocationsFieldsFragmentDoc}`;
           url
         }
         nftDescription
+        eventPassPricing {
+          maxAmount
+        }
+        eventNftCollection {
+          contractAddress
+        }
       }
     }
   }
@@ -314,16 +302,14 @@ ${EventDateLocationsFieldsFragmentDoc}`;
  const GetEventNftCollectionByContractAddressWithMinimalEventPassesDocument = `
     query GetEventNftCollectionByContractAddressWithMinimalEventPasses($contractAddress: String!, $stage: Stage!) {
   eventNftCollection_by_pk(contractAddress: $contractAddress) {
-    contractAddress
-    chainId
     activityWebhookId
-    event(where: {}, locales: [en], stage: $stage) {
-      id
-      eventPasses {
-        id
-      }
-      organizer {
-        id
+    chainId
+    contractAddress
+    eventPass {
+      event {
+        organizer {
+          id
+        }
       }
     }
   }

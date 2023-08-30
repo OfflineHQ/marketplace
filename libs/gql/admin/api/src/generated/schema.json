@@ -5848,18 +5848,6 @@
             "deprecationReason": null
           },
           {
-            "name": "eventNftCollection",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "eventNftCollection",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "eventPasses",
             "description": null,
             "args": [
@@ -9807,6 +9795,18 @@
             "type": {
               "kind": "OBJECT",
               "name": "Event",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "eventNftCollection",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "eventNftCollection",
               "ofType": null
             },
             "isDeprecated": false,
@@ -16303,29 +16303,6 @@
             "isDeprecated": false,
             "deprecationReason": null
           },
-          {
-            "name": "slug",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "EventWhereUniqueInput_remote_rel_eventNftCollectionevent",
-        "description": "References Event record uniquely",
-        "fields": null,
-        "inputFields": [
           {
             "name": "slug",
             "description": null,
@@ -33987,12 +33964,12 @@
             "deprecationReason": null
           },
           {
-            "name": "event",
+            "name": "eventPass",
             "description": null,
             "args": [
               {
                 "name": "locales",
-                "description": "Defines which locales should be returned.\n\nNote that `Event` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.\nThe first locale matching the provided list will be returned, entries with non matching locales will be filtered out.\n\nThis argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.",
+                "description": "Defines which locales should be returned.\n\nNote that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.\nThe first locale matching the provided list will be returned, entries with non matching locales will be filtered out.\n\nThis argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -34029,34 +34006,18 @@
                 "defaultValue": "PUBLISHED",
                 "isDeprecated": false,
                 "deprecationReason": null
-              },
-              {
-                "name": "where",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "EventWhereUniqueInput_remote_rel_eventNftCollectionevent",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
               }
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "Event",
+              "name": "EventPass",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "eventId",
+            "name": "eventPassId",
             "description": "A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.",
             "args": [],
             "type": {
@@ -34303,7 +34264,7 @@
             "deprecationReason": null
           },
           {
-            "name": "eventId",
+            "name": "eventPassId",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -34335,7 +34296,7 @@
           },
           {
             "name": "eventNftCollection_eventId_key",
-            "description": "unique or primary key constraint on columns \"eventId\"",
+            "description": "unique or primary key constraint on columns \"eventPassId\"",
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -34391,7 +34352,7 @@
             "deprecationReason": null
           },
           {
-            "name": "eventId",
+            "name": "eventPassId",
             "description": "A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.",
             "type": {
               "kind": "SCALAR",
@@ -34449,7 +34410,7 @@
             "deprecationReason": null
           },
           {
-            "name": "eventId",
+            "name": "eventPassId",
             "description": "A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.",
             "args": [],
             "type": {
@@ -34508,7 +34469,7 @@
             "deprecationReason": null
           },
           {
-            "name": "eventId",
+            "name": "eventPassId",
             "description": "A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.",
             "args": [],
             "type": {
@@ -34682,7 +34643,7 @@
             "deprecationReason": null
           },
           {
-            "name": "eventId",
+            "name": "eventPassId",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -34752,7 +34713,7 @@
             "deprecationReason": null
           },
           {
-            "name": "eventId",
+            "name": "eventPassId",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -34803,7 +34764,7 @@
             "deprecationReason": null
           },
           {
-            "name": "eventId",
+            "name": "eventPassId",
             "description": "A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.",
             "type": {
               "kind": "SCALAR",
@@ -34901,7 +34862,7 @@
             "deprecationReason": null
           },
           {
-            "name": "eventId",
+            "name": "eventPassId",
             "description": "A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.",
             "type": {
               "kind": "SCALAR",
@@ -34944,7 +34905,7 @@
             "deprecationReason": null
           },
           {
-            "name": "eventId",
+            "name": "eventPassId",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -52534,14 +52495,7 @@
           },
           {
             "name": "chainId",
-<<<<<<< HEAD
-            "description": null,
-=======
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
-<<<<<<< HEAD
->>>>>>> b13fc028 (add: event pass deploy and lazyMint)
-=======
->>>>>>> b13fc028bbdfbe2aaf7efffca50510c16f6a3645
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -53262,14 +53216,7 @@
           },
           {
             "name": "chainId",
-<<<<<<< HEAD
-            "description": null,
-=======
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
-<<<<<<< HEAD
->>>>>>> b13fc028 (add: event pass deploy and lazyMint)
-=======
->>>>>>> b13fc028bbdfbe2aaf7efffca50510c16f6a3645
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -53423,14 +53370,7 @@
           },
           {
             "name": "chainId",
-<<<<<<< HEAD
-            "description": null,
-=======
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
-<<<<<<< HEAD
->>>>>>> b13fc028 (add: event pass deploy and lazyMint)
-=======
->>>>>>> b13fc028bbdfbe2aaf7efffca50510c16f6a3645
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -54120,14 +54060,7 @@
           },
           {
             "name": "chainId",
-<<<<<<< HEAD
-            "description": null,
-=======
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
-<<<<<<< HEAD
->>>>>>> b13fc028 (add: event pass deploy and lazyMint)
-=======
->>>>>>> b13fc028bbdfbe2aaf7efffca50510c16f6a3645
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -54426,14 +54359,7 @@
           },
           {
             "name": "chainId",
-<<<<<<< HEAD
-            "description": null,
-=======
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
-<<<<<<< HEAD
->>>>>>> b13fc028 (add: event pass deploy and lazyMint)
-=======
->>>>>>> b13fc028bbdfbe2aaf7efffca50510c16f6a3645
             "type": {
               "kind": "SCALAR",
               "name": "String",

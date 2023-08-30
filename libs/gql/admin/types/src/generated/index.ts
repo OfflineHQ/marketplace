@@ -117,7 +117,7 @@ export type GetEventWithFromOrganizerIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetEventWithFromOrganizerIdQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', events: Array<{ __typename?: 'Event', slug: string, title: string, id: string, heroImage: { __typename?: 'Asset', url: string }, eventNftCollection?: { __typename?: 'eventNftCollection', contractAddress: string } | null, eventPasses: Array<{ __typename?: 'EventPass', name: string, id: string, description: string, nftName: string, nftDescription: string, nftImage: { __typename?: 'Asset', url: string } }> }> } | null };
+export type GetEventWithFromOrganizerIdQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', events: Array<{ __typename?: 'Event', title: string, id: string, slug: string, heroImage: { __typename?: 'Asset', url: string }, eventPasses: Array<{ __typename?: 'EventPass', name: string, id: string, description: string, nftName: string, nftDescription: string, nftImage: { __typename?: 'Asset', url: string }, eventPassPricing?: { __typename?: 'eventPassPricing', maxAmount: number } | null, eventNftCollection?: { __typename?: 'eventNftCollection', contractAddress: string } | null }> }> } | null };
 
 export type GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables = Types.Exact<{
   contractAddress: Types.Scalars['String'];
@@ -125,16 +125,16 @@ export type GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVar
 }>;
 
 
-export type GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery = { __typename?: 'query_root', eventNftCollection_by_pk?: { __typename?: 'eventNftCollection', contractAddress: string, chainId: string, activityWebhookId: string, event?: { __typename?: 'Event', id: string, eventPasses: Array<{ __typename?: 'EventPass', id: string }>, organizer?: { __typename?: 'Organizer', id: string } | null } | null } | null };
+export type GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery = { __typename?: 'query_root', eventNftCollection_by_pk?: { __typename?: 'eventNftCollection', activityWebhookId: string, chainId: string, contractAddress: string, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', organizer?: { __typename?: 'Organizer', id: string } | null } | null } | null } | null };
 
-export type EventNftCollectionFieldsFragment = { __typename?: 'eventNftCollection', contractAddress: string, chainId: string, eventId: string, activityWebhookId: string };
+export type EventNftCollectionFieldsFragment = { __typename?: 'eventNftCollection', contractAddress: string, chainId: string, eventPassId: string, activityWebhookId: string };
 
 export type CreateEventNftCollectionMutationVariables = Types.Exact<{
   object: Types.EventNftCollection_Insert_Input;
 }>;
 
 
-export type CreateEventNftCollectionMutation = { __typename?: 'mutation_root', insert_eventNftCollection_one?: { __typename?: 'eventNftCollection', contractAddress: string, chainId: string, eventId: string, activityWebhookId: string } | null };
+export type CreateEventNftCollectionMutation = { __typename?: 'mutation_root', insert_eventNftCollection_one?: { __typename?: 'eventNftCollection', contractAddress: string, chainId: string, eventPassId: string, activityWebhookId: string } | null };
 
 export type GetEventPassesQueryVariables = Types.Exact<{
   eventSlug: Types.Scalars['String'];
