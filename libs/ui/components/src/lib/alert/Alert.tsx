@@ -12,6 +12,11 @@ const alertVariants = cva(
         default: 'bg-background text-foreground',
         destructive:
           'border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive',
+        success:
+          'border-success/50 text-success dark:border-success [&>svg]:text-success',
+        warning:
+          'border-warning/50 text-warning dark:border-warning [&>svg]:text-warning',
+        info: 'border-info/50 text-info dark:border-info [&>svg]:text-info',
       },
     },
     defaultVariants: {
@@ -25,14 +30,20 @@ interface AlertProps
     VariantProps<typeof alertVariants> {}
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant, ...props }, ref) => (
-    <div
-      ref={ref}
-      role="alert"
-      className={cn(alertVariants({ variant }), className)}
-      {...props}
-    />
-  )
+  ({ className, variant = 'default', children, ...props }, ref) => {
+    const IconComponent = statusVariantIcons[variant || 'default'];
+    return (
+      <div
+        ref={ref}
+        role="alert"
+        className={cn(alertVariants({ variant }), className)}
+        {...props}
+      >
+        {IconComponent && <IconComponent />}
+        {children}
+      </div>
+    );
+  }
 );
 Alert.displayName = 'Alert';
 
@@ -61,4 +72,4 @@ const AlertDescription = React.forwardRef<
 ));
 AlertDescription.displayName = 'AlertDescription';
 
-export { Alert, AlertTitle, AlertDescription };
+export { Alert, AlertTitle, AlertDescription, type AlertProps };
