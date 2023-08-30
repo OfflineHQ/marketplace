@@ -73,6 +73,16 @@ query GetEventWithFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!)
       eventNftCollection {
         contractAddress
       }
+      eventPasses {
+        name
+        id
+        description
+        nftName
+        nftImage {
+          url
+        }
+        nftDescription
+      }
     }
   }
 }
