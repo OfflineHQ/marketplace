@@ -9,7 +9,8 @@ interface OrganizerDashboardProps {
 
 export async function OrganizerDashboard(props: OrganizerDashboardProps) {
   const user = props.user;
-  const organizerId = user.organizerId || '';
+  const organizerId = user.organizerId;
+
   const events = (
     await getEventsFromOrganizerId({
       id: organizerId,
