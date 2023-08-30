@@ -46,7 +46,7 @@ export function EventCards(props: EventCardsProps) {
   const { safeUser, provider } = useAuthContext();
 
   return (
-    <div className={styles['container']}>
+    <div>
       {empty ? (
         <p>No events for this organizer yet.</p>
       ) : safeUser && provider ? (
