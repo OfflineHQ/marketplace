@@ -3,9 +3,11 @@ import {
   eventPassTransferQRCode,
   revealPass,
 } from './revealPass'; // adjust the path if necessary
-import { userSdk } from '@gql/user/api';
 import { adminSdk } from '@gql/admin/api';
 import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
+import * as session from '@web/lib/session';
+
+jest.mock('@web/lib/session');
 
 jest.mock('@gql/user/api');
 jest.mock('@gql/admin/api');
@@ -33,13 +35,17 @@ describe('revealPass.ts tests', () => {
     const mockResponse = {
       eventPassNft_by_pk: {
         isRevealed: false,
+        currentOwnerAddress: 'test-address',
       },
     };
 
     beforeEach(() => {
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue(
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue(
         mockResponse
       );
+      (session.getCurrentUser as jest.Mock).mockResolvedValue({
+        address: 'test-address',
+      });
     });
 
     it('should return the event pass for a valid id', async () => {
@@ -48,8 +54,8 @@ describe('revealPass.ts tests', () => {
     });
 
     it('should throw an error if the event pass is not owned by the user', async () => {
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
-        eventPassNft_by_pk: null,
+      (session.getCurrentUser as jest.Mock).mockResolvedValue({
+        address: 'different-address',
       });
       await expect(eventPassCheck('invalid-id')).rejects.toThrow(
         'Event Pass not owned by user'
@@ -57,9 +63,10 @@ describe('revealPass.ts tests', () => {
     });
 
     it('should throw an error if the event pass is already revealed', async () => {
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue({
         eventPassNft_by_pk: {
           isRevealed: true,
+          currentOwnerAddress: 'test-address',
         },
       });
       await expect(eventPassCheck('revealed-id')).rejects.toThrow(
@@ -94,14 +101,14 @@ describe('revealPass.ts tests', () => {
   describe('revealPass', () => {
     jest.mock('@gql/user/api', () => ({
       ...jest.requireActual('@gql/user/api'),
-      userSdk: {
-        ...jest.requireActual('@gql/user/api').userSdk,
-        GetEventPassNftById: jest.fn(),
+      adminSdk: {
+        ...jest.requireActual('@gql/user/api').adminSdk,
+        GetEventPassNftByIdMinimal: jest.fn(),
       },
     }));
 
     it('should reveal the pass correctly', async () => {
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue({
         eventPassNft_by_pk: mockEventPassNft,
       });
       (FileWrapper.prototype.copyFile as jest.Mock).mockResolvedValue({
@@ -112,7 +119,7 @@ describe('revealPass.ts tests', () => {
     });
 
     it('should propagate error from eventPassCheck', async () => {
-      (userSdk.GetEventPassNftById as jest.Mock).mockRejectedValue(
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockRejectedValue(
         new Error('Error from eventPassCheck')
       );
       await expect(revealPass('invalid-id')).rejects.toThrow(
@@ -121,7 +128,7 @@ describe('revealPass.ts tests', () => {
     });
 
     it('should propagate error from eventPassTransferQRCode', async () => {
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue({
         eventPassNft_by_pk: mockEventPassNft,
       });
       (FileWrapper.prototype.copyFile as jest.Mock).mockRejectedValue(
@@ -133,7 +140,7 @@ describe('revealPass.ts tests', () => {
     });
 
     it("should propagate error from eventPassTransferQRCode if file doesn't exist", async () => {
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue({
         eventPassNft_by_pk: mockEventPassNft,
       });
       (FileWrapper.prototype.copyFile as jest.Mock).mockResolvedValue({
@@ -145,7 +152,7 @@ describe('revealPass.ts tests', () => {
     });
 
     it('should propagate error from SetEventPassNftRevealed', async () => {
-      (userSdk.GetEventPassNftById as jest.Mock).mockResolvedValue({
+      (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue({
         eventPassNft_by_pk: mockEventPassNft,
       });
       (FileWrapper.prototype.copyFile as jest.Mock).mockResolvedValue({

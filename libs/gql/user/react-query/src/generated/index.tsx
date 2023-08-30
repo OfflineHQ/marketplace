@@ -27,9 +27,43 @@ export const EventDateLocationsFieldsFragmentDoc = `
   dateEnd
 }
     `;
+export const EventPassFieldsFragmentDoc = `
+    fragment EventPassFields on EventPass {
+  name
+  nftImage {
+    url
+  }
+  description
+  passOptions {
+    name
+    description
+    eventDateLocation {
+      ...EventDateLocationsFields
+    }
+  }
+  eventPassPricing {
+    priceAmount
+    priceCurrency
+  }
+  event {
+    slug
+    title
+    heroImage {
+      url
+    }
+    organizer {
+      id
+      slug
+      name
+      image {
+        url
+      }
+    }
+  }
+}
+    ${EventDateLocationsFieldsFragmentDoc}`;
 export const EventPassNftFieldsFragmentDoc = `
     fragment EventPassNftFields on eventPassNft {
-  id
   tokenId
   eventId
   eventPassId
@@ -222,56 +256,28 @@ export const useGetEventPassPendingOrdersQuery = <
       fetchDataReactQuery<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables),
       options
     );
-export const GetEventPassNftByIdDocument = `
-    query GetEventPassNftById($id: uuid!, $locale: Locale!, $stage: Stage!) @cached {
-  eventPassNft_by_pk(id: $id) {
+export const GetEventPassNftByTokenReferenceDocument = `
+    query GetEventPassNftByTokenReference($organizerId: String!, $eventId: String!, $eventPassId: String!, $tokenId: bigint!, $chainId: String!, $locale: Locale!, $stage: Stage!) @cached {
+  eventPassNft(
+    where: {organizerId: {_eq: $organizerId}, eventId: {_eq: $eventId}, eventPassId: {_eq: $eventPassId}, tokenId: {_eq: $tokenId}, chainId: {_eq: $chainId}}
+  ) {
     ...EventPassNftFields
     eventPass(locales: [$locale, en], stage: $stage) {
-      name
-      nftImage {
-        url
-      }
-      description
-      passOptions {
-        name
-        description
-        eventDateLocation {
-          ...EventDateLocationsFields
-        }
-      }
-      eventPassPricing {
-        priceAmount
-        priceCurrency
-      }
-      event {
-        slug
-        title
-        heroImage {
-          url
-        }
-        organizer {
-          id
-          slug
-          name
-          image {
-            url
-          }
-        }
-      }
+      ...EventPassFields
     }
   }
 }
     ${EventPassNftFieldsFragmentDoc}
-${EventDateLocationsFieldsFragmentDoc}`;
-export const useGetEventPassNftByIdQuery = <
-      TData = Types.GetEventPassNftByIdQuery,
+${EventPassFieldsFragmentDoc}`;
+export const useGetEventPassNftByTokenReferenceQuery = <
+      TData = Types.GetEventPassNftByTokenReferenceQuery,
       TError = Error
     >(
-      variables: Types.GetEventPassNftByIdQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassNftByIdQuery, TError, TData>
+      variables: Types.GetEventPassNftByTokenReferenceQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>
     ) =>
-    useQuery<Types.GetEventPassNftByIdQuery, TError, TData>(
-      ['GetEventPassNftById', variables],
-      fetchDataReactQuery<Types.GetEventPassNftByIdQuery, Types.GetEventPassNftByIdQueryVariables>(GetEventPassNftByIdDocument, variables),
+    useQuery<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>(
+      ['GetEventPassNftByTokenReference', variables],
+      fetchDataReactQuery<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables),
       options
     );
