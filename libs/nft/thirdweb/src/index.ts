@@ -1,9 +1,8 @@
 import { ExternalProvider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
-import { createEventNftCollection } from '@features/organizer/event/server';
 
-type nftsMetadata = {
+export type nftsMetadata = {
   name: string;
   description: string;
   image: string;
@@ -21,28 +20,44 @@ class nftCollection {
     });
   }
 
-  async deployACollection(name: string, eventId: string) {
+  async deployACollection(
+    name: string,
+    eventPassId: string,
+    metadata: nftsMetadata
+  ) {
     const address = await this.sdk.wallet.getAddress();
-    const chainId = await this.sdk.wallet.getChainId(); // TODO to hex
+    const chainId = await this.sdk.wallet.getChainId();
+    const hexChainId = ethers.utils.hexlify(chainId); // TODO to hex
 
     const txResult = await this.sdk.deployer.deployBuiltInContract('nft-drop', {
       name,
       primary_sale_recipient: address,
       voting_token_address: address,
     });
-  }
 
-  async batchMint(contractAddress: string, metadatas: Array<nftsMetadata>) {
-    const contract = await this.sdk.getContract(contractAddress);
-
-    const tx = await contract.erc721.lazyMint(metadatas);
-    const transactionReceipt = tx[0].receipt;
-
-    console.log(transactionReceipt);
-    tx.forEach((t) => {
-      console.log(t.id);
+    const resCreate = await fetch('/api/nft/create', {
+      method: 'POST',
+      body: JSON.stringify({
+        props: {
+          contractAddress: txResult,
+          id: eventPassId,
+          chainId: hexChainId,
+        },
+      }),
     });
-    // Loop to create eventPassNft with hasura
+
+    if (resCreate.status !== 200) {
+      return;
+    }
+
+    const res = await fetch(`/api/nft/getMaxAmount?id=${eventPassId}`);
+    const maxAmount = await res.json();
+
+    const contract = await this.sdk.getContract(txResult);
+
+    const metadatas = Array(maxAmount).fill(metadata);
+    await contract.erc721.lazyMint(metadatas);
+    console.log(txResult);
   }
 
   async getNftsFromContractAddress(contractAddress: string) {
