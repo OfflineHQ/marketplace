@@ -31,8 +31,6 @@
                 name: eventPassOrderSums
                 schema: public
           name: eventPassOrderSums
-      type_name: EventPass
-    - relationships:
         - definition:
             to_source:
               field_mapping:

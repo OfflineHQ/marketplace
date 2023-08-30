@@ -1429,6 +1429,7 @@ export type EventPass = Node & {
   /** Get the document in other stages */
   documentInStages: Array<EventPass>;
   event?: Maybe<Event>;
+  eventNftCollection?: Maybe<EventNftCollection>;
   eventPassOrderSums?: Maybe<EventPassOrderSums>;
   eventPassPricing?: Maybe<EventPassPricing>;
   /** List of EventPass versions */
@@ -2355,11 +2356,6 @@ export type EventWhereStageInput = {
 /** References Event record uniquely */
 export type EventWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
-  slug?: InputMaybe<Scalars['String']>;
-};
-
-/** References Event record uniquely */
-export type EventWhereUniqueInput_Remote_Rel_EventNftCollectionevent = {
   slug?: InputMaybe<Scalars['String']>;
 };
 

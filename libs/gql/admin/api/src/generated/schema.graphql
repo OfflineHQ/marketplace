@@ -2003,6 +2003,7 @@ type EventPass implements Node {
     """
     locales: [Locale!]
   ): Event
+  eventNftCollection: eventNftCollection
   eventPassOrderSums: eventPassOrderSums
   eventPassPricing: eventPassPricing
 
@@ -3245,11 +3246,6 @@ input EventWhereStageInput {
 """References Event record uniquely"""
 input EventWhereUniqueInput {
   id: ID
-  slug: String
-}
-
-"""References Event record uniquely"""
-input EventWhereUniqueInput_remote_rel_eventNftCollectionevent {
   slug: String
 }
 
@@ -6705,7 +6701,7 @@ enum eventParameters_constraint {
   eventParameters_activityWebhookId_key
 
   """
-  unique or primary key constraint on columns "eventId"
+  unique or primary key constraint on columns "eventPassId"
   """
   eventParameters_eventId_key
 

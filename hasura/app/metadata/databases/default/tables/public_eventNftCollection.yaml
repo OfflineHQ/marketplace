@@ -5,11 +5,11 @@ remote_relationships:
   - definition:
       to_remote_schema:
         lhs_fields:
-          - eventId
+          - eventPassId
         remote_field:
-          event:
+          eventPass:
             arguments:
               where:
-                id: $eventId
+                id: $eventPassId
         remote_schema: Hygraph CMS Remote Schema
-    name: event
+    name: eventPass
