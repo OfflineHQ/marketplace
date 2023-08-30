@@ -6307,7 +6307,6 @@ type eventPassNft {
 
   """An object relationship"""
   eventPassPricing: eventPassPricing
-  id: uuid!
 
   """
   Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform.
@@ -6357,7 +6356,6 @@ input eventPassNft_bool_exp {
   eventId: String_comparison_exp
   eventPassId: String_comparison_exp
   eventPassPricing: eventPassPricing_bool_exp
-  id: uuid_comparison_exp
   isRevealed: Boolean_comparison_exp
   lastNftTransferId: uuid_comparison_exp
   metadata: jsonb_comparison_exp
@@ -6377,7 +6375,6 @@ input eventPassNft_order_by {
   eventId: order_by
   eventPassId: order_by
   eventPassPricing: eventPassPricing_order_by
-  id: order_by
   isRevealed: order_by
   lastNftTransferId: order_by
   metadata: order_by
@@ -6411,9 +6408,6 @@ enum eventPassNft_select_column {
 
   """column name"""
   eventPassId
-
-  """column name"""
-  id
 
   """column name"""
   isRevealed
@@ -6474,7 +6468,6 @@ input eventPassNft_stream_cursor_value_input {
 
   """Directly relates to a specific Event Pass within the system"""
   eventPassId: String
-  id: uuid
 
   """
   Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform.
@@ -8184,9 +8177,6 @@ type query_root {
     where: eventPassNft_bool_exp
   ): [eventPassNft!]!
 
-  """fetch data from the table: "eventPassNft" using primary key columns"""
-  eventPassNft_by_pk(id: uuid!): eventPassNft
-
   """
   fetch data from the table: "eventPassOrder"
   """
@@ -8712,9 +8702,6 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassNft_bool_exp
   ): [eventPassNft!]!
-
-  """fetch data from the table: "eventPassNft" using primary key columns"""
-  eventPassNft_by_pk(id: uuid!): eventPassNft
 
   """
   fetch data from the table in a streaming manner: "eventPassNft"

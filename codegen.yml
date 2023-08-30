@@ -142,7 +142,7 @@ generates:
           content: 'import { fetchData } from "@next/hasura/api";'
           placement: 'prepend'
       - 'add':
-          content: 'export const userSdk = getSdk(fetchData());'
+          content: 'export const anonymousSdk = getSdk(fetchData());'
           placement: 'append'
   libs/gql/anonymous/react-query/src/generated/index.tsx:
     preset: import-types

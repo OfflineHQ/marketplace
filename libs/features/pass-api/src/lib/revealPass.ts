@@ -1,26 +1,29 @@
-import { userSdk } from '@gql/user/api';
 import { adminSdk } from '@gql/admin/api';
 import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
-import type { EventPassNftById } from '@features/pass-types';
+import type { EventPassNftByIdMinimal } from '@features/pass-types';
 import { getPassOrganizer, getPassUser } from './common';
+import { getCurrentUser } from '@web/lib/session';
 
 const fileWrapper = new FileWrapper();
 
 export const eventPassCheck = async (id: string) => {
-  const res = await userSdk.GetEventPassNftById(
+  const user = await getCurrentUser();
+  const res = await adminSdk.GetEventPassNftByIdMinimal(
     {
       id,
     },
     { cache: 'no-store' }
   );
   const eventPassNft = res.eventPassNft_by_pk;
-  if (!eventPassNft) throw new Error('Event Pass not owned by user');
+  if (!eventPassNft || eventPassNft.currentOwnerAddress != user.address)
+    throw new Error('Event Pass not owned by user');
   if (eventPassNft.isRevealed) throw new Error('Event Pass already revealed');
+  // TODO: backstop in case a transfer of this nft is in progress
   return eventPassNft;
 };
 
 export const eventPassTransferQRCode = async (
-  eventPassNft: EventPassNftById
+  eventPassNft: EventPassNftByIdMinimal
 ) => {
   const { currentOwnerAddress, tokenId, eventId, eventPassId, organizerId } =
     eventPassNft;

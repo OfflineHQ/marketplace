@@ -1,5 +1,4 @@
-import { userSdk } from '@gql/user/api';
-import { Locale, type Stage } from '@gql/shared/types';
+import { adminSdk } from '@gql/admin/api';
 import { FileDownloader } from '@file-upload/user';
 import { isServerSide } from '@utils';
 import { cookies } from 'next/headers';
@@ -7,7 +6,7 @@ import { nextAuthCookieName } from '@next/next-auth/common';
 import { getPassUser } from './common';
 
 export const getEventPassRevealedFilePath = async (id: string) => {
-  const res = await userSdk.GetEventPassNftById(
+  const res = await adminSdk.GetEventPassNftByIdMinimal(
     {
       id,
     },
