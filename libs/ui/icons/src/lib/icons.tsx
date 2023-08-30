@@ -26,7 +26,8 @@ import {
   HiCalendar,
 } from 'react-icons/hi2';
 import { BiCircle, BiHelpCircle, BiXCircle } from 'react-icons/bi';
-import { BsTags, BsQrCode, BsQrCodeScan } from 'react-icons/bs';
+import { BsTags, BsQrCode, BsQrCodeScan, BsDownload } from 'react-icons/bs';
+import { RxMagicWand } from 'react-icons/rx';
 import {
   AiFillCheckCircle,
   AiOutlineCheck,
@@ -77,6 +78,8 @@ const createWrappedIcon =
   (IconComponent: ReactIcon, label: string) => (props: IconProps) =>
     <AccessibleIcon IconComponent={IconComponent} label={label} {...props} />;
 
+export const Reveal = createWrappedIcon(RxMagicWand, 'Reveal');
+
 export const ChevronBack = createWrappedIcon(IoChevronBack, 'Go Back');
 
 export const Check = createWrappedIcon(HiCheck, 'Check');
@@ -86,6 +89,7 @@ export const OutlineSearch = createWrappedIcon(
 );
 export const QrCode = createWrappedIcon(BsQrCode, 'Qr Code');
 export const QrCodeScan = createWrappedIcon(BsQrCodeScan, 'Qr Code Scan');
+export const Download = createWrappedIcon(BsDownload, 'Download');
 export const OutlineArrowRight = createWrappedIcon(
   HiOutlineArrowRight,
   'Outline Arrow Right'
