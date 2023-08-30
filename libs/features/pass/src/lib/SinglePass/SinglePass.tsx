@@ -1,4 +1,5 @@
 import { useTranslations, useFormatter } from 'next-intl';
+import { useMemo } from 'react';
 import {
   Card,
   CardHeader,
@@ -14,6 +15,9 @@ import {
   AspectRatio,
   CardNavBack,
   Label,
+  Alert,
+  AlertDescription,
+  AlertTitle,
 } from '@ui/components';
 import Image from 'next/image';
 import { EventPassNft } from '@features/pass-types';
@@ -32,7 +36,10 @@ export const SinglePass: React.FC<SinglePassProps> = ({
 }) => {
   const t = useTranslations('Pass.SinglePass');
   const format = useFormatter();
-  // getLocalCart();
+  const isOwner = useMemo(
+    () => user?.address === eventPassNft.currentOwnerAddress,
+    [user, eventPassNft]
+  );
   const backgroundImage = eventPassNft?.eventPass?.event?.heroImage.url || '';
   return (
     <Card variant="stickyFooter" noBorder className="w-full">

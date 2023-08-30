@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
+import { statusVariantIcons } from '../shared/statusVariant';
 
 import { cn } from '@ui/shared';
 
@@ -52,8 +53,12 @@ const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('text-sm [&_p]:leading-relaxed', className)} {...props} />
+  <div
+    ref={ref}
+    className={cn('text-sm [&_p]:leading-relaxed', className)}
+    {...props}
+  />
 ));
 AlertDescription.displayName = 'AlertDescription';
 
-export { Alert, AlertTitle, AlertDescription, AlertProps };
+export { Alert, AlertTitle, AlertDescription };
