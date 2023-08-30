@@ -1,6 +1,6 @@
 import { PassNav, type PassNavProps } from '@features/appNav/ui';
 import { useTranslations } from 'next-intl';
-// import { getCurrentUser } from '@web/lib/session';
+// import { getCurrentUser } from '@next/next-auth/user';;
 
 export default async function PassNavSection() {
   // const user = await getCurrentUser();

@@ -23,7 +23,6 @@ import { ethers } from 'ethers';
 import { SiweMessage } from 'siwe';
 import { signIn, signOut, getCsrfToken, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-// import { getCurrentUser } from '@web/app/lib/session';
 
 import { ExternalProvider } from '@ethersproject/providers';
 
