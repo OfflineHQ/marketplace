@@ -82,6 +82,22 @@
       "title": "Pass",
       "description": "Vous pourrez voir vos passes une fois connecté",
       "sign-in-text": "Se connecter"
+    },
+    "SinglePass": {
+      "title": "{title} #{number, number}",
+      "sold-for": "Vendu pour :",
+      "see-event-button": "Voir l'événement",
+      "back-event-button": "Revenir à l'événement",
+      "download-button": "Télécharger le pass",
+      "reveal-button": "Révéler le pass",
+      "IsPassRevealedAlert": {
+        "owner-unrevealed-title": "Action Requise : Pass Non Révélé",
+        "owner-unrevealed-description": "Vous n'avez pas encore accédé à votre pass numérique. Pour assister à l'événement, veuillez révéler votre pass d'accès.",
+        "buyer-revealed-title": "Attention : Pass Déjà Révélé",
+        "buyer-revealed-description": "Le propriétaire original a déjà révélé le pass. Assurez-vous de faire confiance au vendeur car vous ne serez pas le premier à avoir accès à ce pass.",
+        "buyer-unrevealed-title": "Sûr à Acheter : Pass Non Révélé",
+        "buyer-unrevealed-description": "Ce pass d'accès est encore caché. Vous pouvez l'acheter sans vous soucier de son utilisation antérieure."
+      }
     }
   },
   "Organizer": {

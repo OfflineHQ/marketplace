@@ -85,7 +85,19 @@
     },
     "SinglePass": {
       "title": "{title} #{number, number}",
-      "sold-for": "Sold for:"
+      "sold-for": "Sold for:",
+      "see-event-button": "See the event",
+      "back-event-button": "Come back to the event",
+      "download-button": "Download the pass",
+      "reveal-button": "Reveal the pass",
+      "IsPassRevealedAlert": {
+        "owner-unrevealed-title": "Action Required: Unrevealed Pass",
+        "owner-unrevealed-description": "You haven't accessed your digital pass yet. To attend the event, please reveal your access pass.",
+        "buyer-revealed-title": "Caution: Pass Already Revealed",
+        "buyer-revealed-description": "The original owner has already revealed the pass. Make sure you trust the seller as you won't be the first to have access to this pass.",
+        "buyer-unrevealed-title": "Safe to Buy: Unrevealed Pass",
+        "buyer-unrevealed-description": "This access pass is still hidden. You can buy it without worrying about prior use."
+      }
     }
   },
   "Organizer": {
