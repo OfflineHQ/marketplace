@@ -25,15 +25,16 @@ import { signIn, signOut, getCsrfToken, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 // import { getCurrentUser } from '@web/app/lib/session';
 
-import { logger } from '@logger';
 import { ExternalProvider } from '@ethersproject/providers';
 
 type ChainConfig = Web3AuthOptions['chainConfig'] & {
   safeTxServiceUrl?: string;
 };
 
+// safeTxServiceUrl: https://forum.safe.global/t/announcement-to-all-builders-using-safe-services/3225
+
 const chainConfigs: Record<string, ChainConfig> = {
-  goerli: {
+  '5': {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     rpcTarget:
       'https://eth-goerli.g.alchemy.com/v2/XGWYfxudDv5ACSpZegVCjkgSrskOpG3v',
@@ -45,14 +46,23 @@ const chainConfigs: Record<string, ChainConfig> = {
     safeTxServiceUrl: 'https://safe-transaction-goerli.safe.global',
     decimals: 18,
   },
+  '11155111': {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    rpcTarget: 'https://eth-sepolia.g.alchemy.com/v2/OUR_API_KEY', // TODO add an alchemy app
+    chainId: '0xaa36a7',
+    displayName: 'Ethereum Sepolia',
+    blockExplorer: 'https://sepolia.etherscan.io/',
+    ticker: 'ETH',
+    tickerName: 'SepoliaETH',
+    safeTxServiceUrl: '', // not existing yet
+    decimals: 18,
+  },
   // Add other chains here
 };
 
 const { safeTxServiceUrl, chainId, ...chainConfig } = (chainConfigs[
   process.env.NEXT_PUBLIC_CHAIN as string
-] || chainConfigs.goerli) as ChainConfig; // Default to goerli if no matching config
-
-logger.debug('CHAIN CONFIG: ', chainConfig);
+] || chainConfigs['5']) as ChainConfig; // Default to goerli if no matching config
 
 export interface SafeUser
   extends SafeGetUserInfoResponse<Web3AuthModalPack>,
