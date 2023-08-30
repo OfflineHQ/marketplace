@@ -92,41 +92,41 @@ describe('AlchemyWrapper', () => {
   describe('convertNetworkToChainId', () => {
     it('should convert networks to correct chainIds', () => {
       expect(alchemyWrapper.convertNetworkToChainId(Network.ETH_MAINNET)).toBe(
-        1
+        '1'
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.ETH_GOERLI)).toBe(
-        5
+        '5'
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.ETH_SEPOLIA)).toBe(
-        11155111
+        '11155111'
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.OPT_MAINNET)).toBe(
-        69
+        '69'
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.OPT_GOERLI)).toBe(
-        420
+        '420'
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.ARB_MAINNET)).toBe(
-        42161
+        '42161'
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.ARB_GOERLI)).toBe(
-        421613
+        '421613'
       );
       expect(
         alchemyWrapper.convertNetworkToChainId(Network.MATIC_MAINNET)
-      ).toBe(137);
+      ).toBe('137');
       expect(alchemyWrapper.convertNetworkToChainId(Network.MATIC_MUMBAI)).toBe(
-        80001
+        '80001'
       );
       expect(
         alchemyWrapper.convertNetworkToChainId(Network.ASTAR_MAINNET)
-      ).toBe(592);
+      ).toBe('592');
       expect(
         alchemyWrapper.convertNetworkToChainId(Network.POLYGONZKEVM_MAINNET)
-      ).toBe(1101);
+      ).toBe('1101');
       expect(
         alchemyWrapper.convertNetworkToChainId(Network.POLYGONZKEVM_TESTNET)
-      ).toBe(1442);
+      ).toBe('1442');
     });
 
     it('should throw an error for an unsupported network', () => {

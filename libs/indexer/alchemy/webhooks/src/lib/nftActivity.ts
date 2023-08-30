@@ -74,9 +74,9 @@ export async function nftActivity(req: AlchemyRequest, eventId: string) {
       status: 400,
     });
   }
-  const chainId = alchemy
-    .convertNetworkToChainId(alchemyWebhookEvent.event.activity[0].network)
-    .toString();
+  const chainId = alchemy.convertNetworkToChainId(
+    alchemyWebhookEvent.event.activity[0].network
+  );
 
   const nftTransfersFromEvent =
     extractNftTransfersFromEvent(alchemyWebhookEvent);
