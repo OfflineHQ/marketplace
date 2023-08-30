@@ -52538,7 +52538,10 @@
             "description": null,
 =======
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
+<<<<<<< HEAD
 >>>>>>> b13fc028 (add: event pass deploy and lazyMint)
+=======
+>>>>>>> b13fc028bbdfbe2aaf7efffca50510c16f6a3645
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -53263,7 +53266,10 @@
             "description": null,
 =======
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
+<<<<<<< HEAD
 >>>>>>> b13fc028 (add: event pass deploy and lazyMint)
+=======
+>>>>>>> b13fc028bbdfbe2aaf7efffca50510c16f6a3645
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -53421,7 +53427,10 @@
             "description": null,
 =======
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
+<<<<<<< HEAD
 >>>>>>> b13fc028 (add: event pass deploy and lazyMint)
+=======
+>>>>>>> b13fc028bbdfbe2aaf7efffca50510c16f6a3645
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -54115,7 +54124,10 @@
             "description": null,
 =======
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
+<<<<<<< HEAD
 >>>>>>> b13fc028 (add: event pass deploy and lazyMint)
+=======
+>>>>>>> b13fc028bbdfbe2aaf7efffca50510c16f6a3645
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -54418,7 +54430,10 @@
             "description": null,
 =======
             "description": "Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.",
+<<<<<<< HEAD
 >>>>>>> b13fc028 (add: event pass deploy and lazyMint)
+=======
+>>>>>>> b13fc028bbdfbe2aaf7efffca50510c16f6a3645
             "type": {
               "kind": "SCALAR",
               "name": "String",
