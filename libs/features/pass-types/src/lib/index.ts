@@ -1,8 +1,9 @@
+import type { GetEventPassNftByTokenReferenceQuery } from '@gql/user/types';
+
 import type {
   GetEventPassNftByIdQuery,
   GetEventPassNftByIdMinimalQuery,
-  GetEventPassNftByTokenReferenceQuery,
-} from '@gql/user/types';
+} from '@gql/admin/types';
 
 export type EventPassNftById = NonNullable<
   GetEventPassNftByIdQuery['eventPassNft_by_pk']

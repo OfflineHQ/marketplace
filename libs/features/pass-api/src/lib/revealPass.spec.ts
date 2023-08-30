@@ -5,9 +5,9 @@ import {
 } from './revealPass'; // adjust the path if necessary
 import { adminSdk } from '@gql/admin/api';
 import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
-import * as session from '@web/lib/session';
+import { getCurrentUser } from '@next/next-auth/user';
 
-jest.mock('@web/lib/session');
+jest.mock('@next/next-auth/user');
 
 jest.mock('@gql/user/api');
 jest.mock('@gql/admin/api');
@@ -43,7 +43,7 @@ describe('revealPass.ts tests', () => {
       (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue(
         mockResponse
       );
-      (session.getCurrentUser as jest.Mock).mockResolvedValue({
+      (getCurrentUser as jest.Mock).mockResolvedValue({
         address: 'test-address',
       });
     });
@@ -54,7 +54,7 @@ describe('revealPass.ts tests', () => {
     });
 
     it('should throw an error if the event pass is not owned by the user', async () => {
-      (session.getCurrentUser as jest.Mock).mockResolvedValue({
+      (getCurrentUser as jest.Mock).mockResolvedValue({
         address: 'different-address',
       });
       await expect(eventPassCheck('invalid-id')).rejects.toThrow(
