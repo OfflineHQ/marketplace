@@ -22,14 +22,11 @@ import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
 type Event = {
   __typename?: 'Event' | undefined;
   id: string;
-  slug: string;
   title: string;
+  slug: string;
   heroImage: {
     __typename?: 'Asset' | undefined;
     url: string;
-  };
-  eventNftCollection?: {
-    contractAddress: string;
   };
   eventPasses?: [
     {
@@ -41,21 +38,25 @@ type Event = {
         url: string;
       };
       nftDescription: string;
+      eventPassPricing?: {
+        maxAmount: number;
+      };
+      eventNftCollection?: {
+        contractAddress: string;
+      };
     }
   ];
 };
 
 /* eslint-disable-next-line */
 interface EventCardsProps {
-  events: [Event];
+  events: Event[];
 }
 
 export function EventCards(props: EventCardsProps) {
   const events = props.events;
   const empty = !events?.length;
   const { safeUser, provider } = useAuthContext();
-
-  console.log(events);
 
   return (
     <div className={styles['container']}>
@@ -79,10 +80,16 @@ type EventPass = {
     url: string;
   };
   nftDescription: string;
+  eventPassPricing?: {
+    maxAmount: number;
+  };
+  eventNftCollection?: {
+    contractAddress: string;
+  };
 };
 
 interface EventCardProps {
-  events: [Event];
+  events: Event[];
   provider: ExternalProvider;
 }
 
@@ -90,15 +97,21 @@ function EventCard(props: EventCardProps) {
   const events = props.events;
   const provider = props.provider;
   const sdk = new nftCollection(provider);
+  console.log(events);
 
-  async function deploy(title: string, id: string, metadata: nftsMetadata) {
-    await sdk.deployACollection(title, id, metadata);
+  async function deploy(
+    title: string,
+    id: string,
+    maxAmount: number,
+    metadata: nftsMetadata
+  ) {
+    await sdk.deployACollection(title, id, maxAmount, metadata);
   }
 
   return (
     <div className="grid grid-cols-4 gap-8 md:grid-cols-2 lg:grid-cols-4">
-      {events.map((event) => (
-        <div>
+      {events.map((event, index) => (
+        <div key={index}>
           {event.eventPasses && event.eventPasses.length
             ? event.eventPasses.map((eventPass: EventPass, index: number) => (
                 <Card
@@ -122,18 +135,46 @@ function EventCard(props: EventCardProps) {
                   </CardHeader>
                   <CardOverlay />
                   <CardFooter variant="sticky">
-                    <Button
-                      className="w-full"
-                      onClick={async () => {
-                        await deploy(eventPass.name, eventPass.id, {
-                          name: eventPass.nftName,
-                          description: eventPass.nftDescription,
-                          image: eventPass.nftImage.url,
-                        });
-                      }}
-                    >
-                      Deploy
-                    </Button>
+                    {!eventPass.eventPassPricing?.maxAmount ? (
+                      <p>No eventPassPricing for this eventPass</p>
+                    ) : (
+                      <div>
+                        {!eventPass.eventNftCollection ? (
+                          <Button
+                            className="w-full"
+                            onClick={async () => {
+                              await deploy(
+                                eventPass.name,
+                                eventPass.id,
+                                eventPass.eventPassPricing?.maxAmount || 0,
+                                {
+                                  name: eventPass.nftName,
+                                  description: eventPass.nftDescription,
+                                  image:
+                                    eventPass.nftImage === null
+                                      ? ''
+                                      : eventPass.nftImage.url,
+                                }
+                              );
+                            }}
+                          >
+                            Deploy
+                          </Button>
+                        ) : (
+                          <Button
+                            className="w-full"
+                            onClick={async () => {
+                              navigator.clipboard.writeText(
+                                eventPass.eventNftCollection?.contractAddress ||
+                                  ''
+                              );
+                            }}
+                          >
+                            Copy contract address
+                          </Button>
+                        )}
+                      </div>
+                    )}
                   </CardFooter>
                 </Card>
               ))

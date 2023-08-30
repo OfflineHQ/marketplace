@@ -15,5 +15,9 @@ export async function OrganizerDashboard(props: OrganizerDashboardProps) {
     locale: defaultLocale,
   });
 
-  return <EventCards events={events} />;
+  return events && events.length > 0 ? (
+    <EventCards events={events} />
+  ) : (
+    <p>No event at the moment for {organizerId}</p>
+  );
 }

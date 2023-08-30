@@ -22,8 +22,12 @@ class nftCollection {
   async deployACollection(
     name: string,
     eventPassId: string,
+    maxAmount: number,
     metadata: nftsMetadata
   ) {
+    if (maxAmount === 0) {
+      return;
+    }
     const address = await this.sdk.wallet.getAddress();
     const chainId = await this.sdk.wallet.getChainId();
     const hexChainId = ethers.utils.hexlify(chainId); // TODO to hex
@@ -49,20 +53,11 @@ class nftCollection {
       return;
     }
 
-    const res = await fetch(`/api/nft/getMaxAmount?id=${eventPassId}`);
-    const maxAmount = await res.json();
-
     const contract = await this.sdk.getContract(txResult);
 
     const metadatas = Array(maxAmount).fill(metadata);
     await contract.erc721.lazyMint(metadatas);
     console.log(txResult);
-  }
-
-  async getNftsFromContractAddress(contractAddress: string) {
-    const contract = await this.sdk.getContract(contractAddress);
-
-    return await contract.erc721.getAll();
   }
 }
 
