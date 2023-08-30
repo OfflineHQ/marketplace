@@ -3,7 +3,6 @@ import { defaultLocale } from '@next/i18n';
 import { User } from 'next-auth/core/types';
 import { EventCards } from './EventCard';
 
-/* eslint-disable-next-line */
 interface OrganizerDashboardProps {
   user: User;
 }

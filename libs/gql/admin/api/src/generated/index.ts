@@ -10,7 +10,6 @@ export const AccountFieldsFragmentDoc = `
   organizerId
 }
     `;
-
 export const NftTransferFieldsFragmentDoc = `
     fragment NftTransferFields on nftTransfer {
   id
@@ -337,6 +336,16 @@ ${EventDateLocationsFieldsFragmentDoc}`;
       eventNftCollection {
         contractAddress
       }
+      eventPasses {
+        name
+        id
+        description
+        nftName
+        nftImage {
+          url
+        }
+        nftDescription
+      }
     }
   }
 }
@@ -455,6 +464,13 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetEventPassesMaxAmountDocument = `
+    query GetEventPassesMaxAmount($eventPassId: String) {
+  eventPassPricing(where: {eventPassId: {_eq: $eventPassId}}) {
+    maxAmount
+  }
+}
+    `;
  const GetOrganizerDocument = `
     query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
@@ -554,6 +570,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     UpdateEventPassPricing(variables: Types.UpdateEventPassPricingMutationVariables, options?: C): Promise<Types.UpdateEventPassPricingMutation> {
       return requester<Types.UpdateEventPassPricingMutation, Types.UpdateEventPassPricingMutationVariables>(UpdateEventPassPricingDocument, variables, options) as Promise<Types.UpdateEventPassPricingMutation>;
+    },
+    GetEventPassesMaxAmount(variables?: Types.GetEventPassesMaxAmountQueryVariables, options?: C): Promise<Types.GetEventPassesMaxAmountQuery> {
+      return requester<Types.GetEventPassesMaxAmountQuery, Types.GetEventPassesMaxAmountQueryVariables>(GetEventPassesMaxAmountDocument, variables, options) as Promise<Types.GetEventPassesMaxAmountQuery>;
     },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
