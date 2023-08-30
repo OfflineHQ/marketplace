@@ -308,8 +308,8 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${EventDateLocationsFieldsFragmentDoc}`;
- const GetEventWithFromOrganizerIdDocument = `
-    query GetEventWithFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
+ const GetEventFromOrganizerIdDocument = `
+    query GetEventFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {id: $id}, locales: [$locale, en], stage: $stage) {
     events {
       title
@@ -533,8 +533,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
       return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;
     },
-    GetEventWithFromOrganizerId(variables: Types.GetEventWithFromOrganizerIdQueryVariables, options?: C): Promise<Types.GetEventWithFromOrganizerIdQuery> {
-      return requester<Types.GetEventWithFromOrganizerIdQuery, Types.GetEventWithFromOrganizerIdQueryVariables>(GetEventWithFromOrganizerIdDocument, variables, options) as Promise<Types.GetEventWithFromOrganizerIdQuery>;
+    GetEventFromOrganizerId(variables: Types.GetEventFromOrganizerIdQueryVariables, options?: C): Promise<Types.GetEventFromOrganizerIdQuery> {
+      return requester<Types.GetEventFromOrganizerIdQuery, Types.GetEventFromOrganizerIdQueryVariables>(GetEventFromOrganizerIdDocument, variables, options) as Promise<Types.GetEventFromOrganizerIdQuery>;
     },
       GetEventNftCollectionByContractAddressWithMinimalEventPasses(variables: Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables, options?: C): Promise<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery> {
       return requester<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery, Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables>(GetEventNftCollectionByContractAddressWithMinimalEventPassesDocument, variables, options) as Promise<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery>;
