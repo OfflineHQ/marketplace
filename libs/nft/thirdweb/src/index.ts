@@ -32,7 +32,6 @@ class nftCollection {
     }
     const address = await this.sdk.wallet.getAddress();
     const chainId = await this.sdk.wallet.getChainId();
-    const hexChainId = ethers.utils.hexlify(chainId); // TODO to hex
 
     const txResult = await this.sdk.deployer.deployBuiltInContract('nft-drop', {
       name,
@@ -46,7 +45,7 @@ class nftCollection {
         props: {
           contractAddress: txResult,
           id: eventPassId,
-          chainId: hexChainId,
+          chainId: chainId,
         },
       }),
     });
