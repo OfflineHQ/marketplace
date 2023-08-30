@@ -1,6 +1,6 @@
 import { CartNav, type CartNavProps } from '@features/appNav/ui';
 import { useTranslations } from 'next-intl';
-import { getCurrentUser } from '@web/lib/session';
+import { getCurrentUser } from '@next/next-auth/user';
 
 export default async function CartNavSection() {
   const user = await getCurrentUser();

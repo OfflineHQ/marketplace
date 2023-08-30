@@ -1,5 +1,5 @@
 import { NoUserPass } from '@features/pass/server';
-import { getCurrentUser } from '@web/lib/session';
+import { getCurrentUser } from '@next/next-auth/user';
 
 export default async function PassSection() {
   const user = await getCurrentUser();

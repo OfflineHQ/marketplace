@@ -1,4 +1,4 @@
-import { getCurrentUser } from '@web/lib/session';
+import { getCurrentUser } from '@next/next-auth/user';
 import { NoUserCart, UserCart } from '@features/cart/server';
 import {
   EventPassesAnonymous,
