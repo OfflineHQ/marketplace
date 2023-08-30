@@ -1,7 +1,6 @@
 'use client';
 
 import { useAuthContext } from '@next/auth';
-import styles from './dashboard.module.css';
 import {
   Card,
   CardDescription,
