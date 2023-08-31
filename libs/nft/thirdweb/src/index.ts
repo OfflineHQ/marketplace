@@ -26,6 +26,8 @@ class nftCollection {
     name: string,
     eventPassId: string,
     maxAmount: number,
+    eventId: string,
+    organizerId: string,
     metadata: nftsMetadata
   ) {
     if (maxAmount === 0) {
@@ -46,7 +48,9 @@ class nftCollection {
         props: {
           contractAddress: txResult,
           id: eventPassId,
-          chainId: chainId,
+          chainId: chainId.toString(),
+          eventId: eventId,
+          organizerId: organizerId,
         },
       }),
     });

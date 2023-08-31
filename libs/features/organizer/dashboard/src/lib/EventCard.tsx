@@ -31,17 +31,19 @@ type Event = {
     nftImage: { url: string };
     nftDescription: string;
     eventPassPricing?: { maxAmount: number } | undefined;
-    eventNftCollection?: { contractAddress: string } | undefined;
+    eventPassNftContract?: { contractAddress: string } | undefined;
   }[];
 };
 
 /* eslint-disable-next-line */
 interface EventCardsProps {
   events: Event[];
+  organizerId: string;
 }
 
 export function EventCards(props: EventCardsProps) {
   const events = props.events;
+  const organizerId = props.organizerId;
   const empty = !events?.length;
   const { safeUser, provider } = useAuthContext();
 
@@ -50,7 +52,11 @@ export function EventCards(props: EventCardsProps) {
       {empty ? (
         <p>No events for this organizer yet.</p>
       ) : safeUser && provider ? (
-        <EventCard events={events} provider={provider} />
+        <EventCard
+          events={events}
+          provider={provider}
+          organizerId={organizerId}
+        />
       ) : (
         <p>Provider is not ready.</p>
       )}
@@ -70,7 +76,7 @@ type EventPass = {
   eventPassPricing?: {
     maxAmount: number;
   };
-  eventNftCollection?: {
+  eventPassNftContract?: {
     contractAddress: string;
   };
 };
@@ -78,12 +84,14 @@ type EventPass = {
 interface EventCardProps {
   events: Event[];
   provider: ExternalProvider;
+  organizerId: string;
 }
 
 type DeployFunction = (
   title: string,
   id: string,
   maxAmount: number,
+  eventId: string,
   metadata: nftsMetadata
 ) => Promise<void>;
 
@@ -116,7 +124,7 @@ function renderEventPass(
           <p>No eventPassPricing for this eventPass</p>
         ) : (
           <div>
-            {!eventPass.eventNftCollection ? (
+            {!eventPass.eventPassNftContract ? (
               <Button
                 className="w-full"
                 onClick={async () => {
@@ -124,6 +132,7 @@ function renderEventPass(
                     eventPass.name,
                     eventPass.id,
                     eventPass.eventPassPricing?.maxAmount || 0,
+                    event.id,
                     {
                       name: eventPass.nftName,
                       description: eventPass.nftDescription,
@@ -142,7 +151,7 @@ function renderEventPass(
                 className="w-full"
                 onClick={async () => {
                   navigator.clipboard.writeText(
-                    eventPass.eventNftCollection?.contractAddress || ''
+                    eventPass.eventPassNftContract?.contractAddress || ''
                   );
                 }}
               >
@@ -159,6 +168,7 @@ function renderEventPass(
 function EventCard(props: EventCardProps) {
   const events = props.events;
   const provider = props.provider;
+  const organizerId = props.organizerId;
   const sdk = new nftCollection(provider);
   console.log(events);
 
@@ -166,9 +176,17 @@ function EventCard(props: EventCardProps) {
     title: string,
     id: string,
     maxAmount: number,
+    eventId: string,
     metadata: nftsMetadata
   ) {
-    await sdk.deployACollection(title, id, maxAmount, metadata);
+    await sdk.deployACollection(
+      title,
+      id,
+      maxAmount,
+      eventId,
+      organizerId,
+      metadata
+    );
   }
 
   return (

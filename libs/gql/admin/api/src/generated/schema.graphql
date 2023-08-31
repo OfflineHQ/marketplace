@@ -1971,7 +1971,7 @@ type EventPass implements Node {
     """
     locales: [Locale!]
   ): Event
-  eventNftCollection: eventNftCollection
+  eventPassNftContract: eventPassNftContract
   eventPassOrderSums: eventPassOrderSums
   eventPassPricing: eventPassPricing
 
@@ -6586,38 +6586,46 @@ enum cursor_ordering {
 """
 The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling.
 """
-type eventNftCollection {
-  """
-  Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform.
-  """
-  activityWebhookId: String!
+type eventParameters {
+  activityWebhookId: String
+  eventId: String!
 
-  """
-  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
-  """
-  chainId: String!
+  """An array relationship"""
+  eventPassNftContracts(
+    """distinct select on columns"""
+    distinct_on: [eventPassNftContract_select_column!]
 
-  """
-  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
-  """
-  contractAddress: String!
-  eventPass(
-    """
-    Defines which locales should be returned.
-    
-    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
-    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
-    
-    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
-    """
-    locales: [Locale!]! = [en]
-    stage: Stage! = PUBLISHED
-  ): EventPass
+    """limit the number of rows returned"""
+    limit: Int
 
-  """
-  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
-  """
-  eventPassId: String!
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNftContract_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNftContract_bool_exp
+  ): [eventPassNftContract!]!
+
+  """An aggregate relationship"""
+  eventPassNftContracts_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassNftContract_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNftContract_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNftContract_bool_exp
+  ): eventPassNftContract_aggregate!
+  id: uuid!
 }
 
 """
@@ -6645,9 +6653,10 @@ input eventParameters_bool_exp {
   _not: eventParameters_bool_exp
   _or: [eventParameters_bool_exp!]
   activityWebhookId: String_comparison_exp
-  chainId: String_comparison_exp
-  contractAddress: String_comparison_exp
-  eventPassId: String_comparison_exp
+  eventId: String_comparison_exp
+  eventPassNftContracts: eventPassNftContract_bool_exp
+  eventPassNftContracts_aggregate: eventPassNftContract_aggregate_bool_exp
+  id: uuid_comparison_exp
 }
 
 """
@@ -6660,7 +6669,7 @@ enum eventParameters_constraint {
   eventParameters_activityWebhookId_key
 
   """
-  unique or primary key constraint on columns "eventPassId"
+  unique or primary key constraint on columns "eventId"
   """
   eventParameters_eventId_key
 
@@ -6675,61 +6684,23 @@ input type for inserting data into table "eventParameters"
 """
 input eventParameters_insert_input {
   activityWebhookId: String
-
-  """
-  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
-  """
-  chainId: String
-
-  """
-  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
-  """
-  contractAddress: String
-
-  """
-  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
-  """
-  eventPassId: String
+  eventId: String
+  eventPassNftContracts: eventPassNftContract_arr_rel_insert_input
+  id: uuid
 }
 
 """aggregate max on columns"""
 type eventParameters_max_fields {
   activityWebhookId: String
-
-  """
-  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
-  """
-  chainId: String
-
-  """
-  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
-  """
-  contractAddress: String
-
-  """
-  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
-  """
-  eventPassId: String
+  eventId: String
+  id: uuid
 }
 
 """aggregate min on columns"""
 type eventParameters_min_fields {
   activityWebhookId: String
-
-  """
-  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
-  """
-  chainId: String
-
-  """
-  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
-  """
-  contractAddress: String
-
-  """
-  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
-  """
-  eventPassId: String
+  eventId: String
+  id: uuid
 }
 
 """
@@ -6755,9 +6726,9 @@ input eventParameters_on_conflict {
 """Ordering options when selecting data from "eventParameters"."""
 input eventParameters_order_by {
   activityWebhookId: order_by
-  chainId: order_by
-  contractAddress: order_by
-  eventPassId: order_by
+  eventId: order_by
+  eventPassNftContracts_aggregate: eventPassNftContract_aggregate_order_by
+  id: order_by
 }
 
 """primary key columns input for table: eventParameters"""
@@ -6773,13 +6744,10 @@ enum eventParameters_select_column {
   activityWebhookId
 
   """column name"""
-  chainId
+  eventId
 
   """column name"""
-  contractAddress
-
-  """column name"""
-  eventPassId
+  id
 }
 
 """
@@ -6787,21 +6755,8 @@ input type for updating data in table "eventParameters"
 """
 input eventParameters_set_input {
   activityWebhookId: String
-
-  """
-  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
-  """
-  chainId: String
-
-  """
-  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
-  """
-  contractAddress: String
-
-  """
-  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
-  """
-  eventPassId: String
+  eventId: String
+  id: uuid
 }
 
 """
@@ -6818,21 +6773,8 @@ input eventParameters_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input eventParameters_stream_cursor_value_input {
   activityWebhookId: String
-
-  """
-  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
-  """
-  chainId: String
-
-  """
-  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
-  """
-  contractAddress: String
-
-  """
-  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
-  """
-  eventPassId: String
+  eventId: String
+  id: uuid
 }
 
 """
@@ -7247,7 +7189,16 @@ enum eventPassNftContract_select_column {
   contractAddress
 
   """column name"""
+  eventId
+
+  """column name"""
   eventPassId
+
+  """column name"""
+  id
+
+  """column name"""
+  organizerId
 }
 
 """
@@ -12314,6 +12265,669 @@ input nftTransfer_variance_order_by {
 }
 
 """
+The nftWithMetadata model is designed to consolidate and store the metadata associated with each NFT. It leverages a structure resembling the alchemy-sdk, ensuring streamlined data extraction and management. This model centralizes fixed metadata, enabling the system to retrieve NFT details without frequently querying external APIs. Furthermore, the table is intended to integrate seamlessly with the existing nftTransfer model, providing a holistic view of each NFT's journey and characteristics within the platform.
+"""
+type nftWithMetadata {
+  """Denotes the specific blockchain or network of the NFT"""
+  chainId: String!
+
+  """
+  Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  """
+  contractAddress: String!
+  created_at: timestamptz!
+
+  """The address currently holding the NFT, allowing tracking of ownership"""
+  currentOwnerAddress: String!
+
+  """
+  Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process.
+  """
+  error: String
+
+  """A reference to the event associated with the NFT"""
+  eventId: String!
+
+  """Directly relates to a specific Event Pass within the system"""
+  eventPassId: String!
+  id: uuid!
+
+  """
+  Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT.
+  """
+  lastNftTransfer: uuid
+
+  """
+  The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT.
+  """
+  metadata(
+    """JSON select path"""
+    path: String
+  ): jsonb!
+
+  """Ties the NFT to a specific organizer within the platform"""
+  organizerId: String!
+
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: bigint!
+
+  """
+  The designated URI for the NFT's metadata blob, providing a stable reference for data extraction.
+  """
+  tokenUri: String
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "nftWithMetadata"
+"""
+type nftWithMetadata_aggregate {
+  aggregate: nftWithMetadata_aggregate_fields
+  nodes: [nftWithMetadata!]!
+}
+
+"""
+aggregate fields of "nftWithMetadata"
+"""
+type nftWithMetadata_aggregate_fields {
+  avg: nftWithMetadata_avg_fields
+  count(columns: [nftWithMetadata_select_column!], distinct: Boolean): Int!
+  max: nftWithMetadata_max_fields
+  min: nftWithMetadata_min_fields
+  stddev: nftWithMetadata_stddev_fields
+  stddev_pop: nftWithMetadata_stddev_pop_fields
+  stddev_samp: nftWithMetadata_stddev_samp_fields
+  sum: nftWithMetadata_sum_fields
+  var_pop: nftWithMetadata_var_pop_fields
+  var_samp: nftWithMetadata_var_samp_fields
+  variance: nftWithMetadata_variance_fields
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input nftWithMetadata_append_input {
+  """
+  The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT.
+  """
+  metadata: jsonb
+}
+
+"""aggregate avg on columns"""
+type nftWithMetadata_avg_fields {
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: Float
+}
+
+"""
+Boolean expression to filter rows from the table "nftWithMetadata". All fields are combined with a logical 'AND'.
+"""
+input nftWithMetadata_bool_exp {
+  _and: [nftWithMetadata_bool_exp!]
+  _not: nftWithMetadata_bool_exp
+  _or: [nftWithMetadata_bool_exp!]
+  chainId: String_comparison_exp
+  contractAddress: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  currentOwnerAddress: String_comparison_exp
+  error: String_comparison_exp
+  eventId: String_comparison_exp
+  eventPassId: String_comparison_exp
+  id: uuid_comparison_exp
+  lastNftTransfer: uuid_comparison_exp
+  metadata: jsonb_comparison_exp
+  organizerId: String_comparison_exp
+  tokenId: bigint_comparison_exp
+  tokenUri: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "nftWithMetadata"
+"""
+enum nftWithMetadata_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  nftWithMetadata_pkey
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input nftWithMetadata_delete_at_path_input {
+  """
+  The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT.
+  """
+  metadata: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input nftWithMetadata_delete_elem_input {
+  """
+  The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT.
+  """
+  metadata: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input nftWithMetadata_delete_key_input {
+  """
+  The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT.
+  """
+  metadata: String
+}
+
+"""
+input type for incrementing numeric columns in table "nftWithMetadata"
+"""
+input nftWithMetadata_inc_input {
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: bigint
+}
+
+"""
+input type for inserting data into table "nftWithMetadata"
+"""
+input nftWithMetadata_insert_input {
+  """Denotes the specific blockchain or network of the NFT"""
+  chainId: String
+
+  """
+  Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The address currently holding the NFT, allowing tracking of ownership"""
+  currentOwnerAddress: String
+
+  """
+  Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process.
+  """
+  error: String
+
+  """A reference to the event associated with the NFT"""
+  eventId: String
+
+  """Directly relates to a specific Event Pass within the system"""
+  eventPassId: String
+  id: uuid
+
+  """
+  Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT.
+  """
+  lastNftTransfer: uuid
+
+  """
+  The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT.
+  """
+  metadata: jsonb
+
+  """Ties the NFT to a specific organizer within the platform"""
+  organizerId: String
+
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: bigint
+
+  """
+  The designated URI for the NFT's metadata blob, providing a stable reference for data extraction.
+  """
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type nftWithMetadata_max_fields {
+  """Denotes the specific blockchain or network of the NFT"""
+  chainId: String
+
+  """
+  Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The address currently holding the NFT, allowing tracking of ownership"""
+  currentOwnerAddress: String
+
+  """
+  Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process.
+  """
+  error: String
+
+  """A reference to the event associated with the NFT"""
+  eventId: String
+
+  """Directly relates to a specific Event Pass within the system"""
+  eventPassId: String
+  id: uuid
+
+  """
+  Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT.
+  """
+  lastNftTransfer: uuid
+
+  """Ties the NFT to a specific organizer within the platform"""
+  organizerId: String
+
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: bigint
+
+  """
+  The designated URI for the NFT's metadata blob, providing a stable reference for data extraction.
+  """
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type nftWithMetadata_min_fields {
+  """Denotes the specific blockchain or network of the NFT"""
+  chainId: String
+
+  """
+  Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The address currently holding the NFT, allowing tracking of ownership"""
+  currentOwnerAddress: String
+
+  """
+  Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process.
+  """
+  error: String
+
+  """A reference to the event associated with the NFT"""
+  eventId: String
+
+  """Directly relates to a specific Event Pass within the system"""
+  eventPassId: String
+  id: uuid
+
+  """
+  Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT.
+  """
+  lastNftTransfer: uuid
+
+  """Ties the NFT to a specific organizer within the platform"""
+  organizerId: String
+
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: bigint
+
+  """
+  The designated URI for the NFT's metadata blob, providing a stable reference for data extraction.
+  """
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "nftWithMetadata"
+"""
+type nftWithMetadata_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [nftWithMetadata!]!
+}
+
+"""
+on_conflict condition type for table "nftWithMetadata"
+"""
+input nftWithMetadata_on_conflict {
+  constraint: nftWithMetadata_constraint!
+  update_columns: [nftWithMetadata_update_column!]! = []
+  where: nftWithMetadata_bool_exp
+}
+
+"""Ordering options when selecting data from "nftWithMetadata"."""
+input nftWithMetadata_order_by {
+  chainId: order_by
+  contractAddress: order_by
+  created_at: order_by
+  currentOwnerAddress: order_by
+  error: order_by
+  eventId: order_by
+  eventPassId: order_by
+  id: order_by
+  lastNftTransfer: order_by
+  metadata: order_by
+  organizerId: order_by
+  tokenId: order_by
+  tokenUri: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: nftWithMetadata"""
+input nftWithMetadata_pk_columns_input {
+  id: uuid!
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input nftWithMetadata_prepend_input {
+  """
+  The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT.
+  """
+  metadata: jsonb
+}
+
+"""
+select columns of table "nftWithMetadata"
+"""
+enum nftWithMetadata_select_column {
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  created_at
+
+  """column name"""
+  currentOwnerAddress
+
+  """column name"""
+  error
+
+  """column name"""
+  eventId
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  id
+
+  """column name"""
+  lastNftTransfer
+
+  """column name"""
+  metadata
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  tokenId
+
+  """column name"""
+  tokenUri
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "nftWithMetadata"
+"""
+input nftWithMetadata_set_input {
+  """Denotes the specific blockchain or network of the NFT"""
+  chainId: String
+
+  """
+  Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The address currently holding the NFT, allowing tracking of ownership"""
+  currentOwnerAddress: String
+
+  """
+  Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process.
+  """
+  error: String
+
+  """A reference to the event associated with the NFT"""
+  eventId: String
+
+  """Directly relates to a specific Event Pass within the system"""
+  eventPassId: String
+  id: uuid
+
+  """
+  Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT.
+  """
+  lastNftTransfer: uuid
+
+  """
+  The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT.
+  """
+  metadata: jsonb
+
+  """Ties the NFT to a specific organizer within the platform"""
+  organizerId: String
+
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: bigint
+
+  """
+  The designated URI for the NFT's metadata blob, providing a stable reference for data extraction.
+  """
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""aggregate stddev on columns"""
+type nftWithMetadata_stddev_fields {
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type nftWithMetadata_stddev_pop_fields {
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type nftWithMetadata_stddev_samp_fields {
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: Float
+}
+
+"""
+Streaming cursor of the table "nftWithMetadata"
+"""
+input nftWithMetadata_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: nftWithMetadata_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input nftWithMetadata_stream_cursor_value_input {
+  """Denotes the specific blockchain or network of the NFT"""
+  chainId: String
+
+  """
+  Identifies the smart contract associated with the NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The address currently holding the NFT, allowing tracking of ownership"""
+  currentOwnerAddress: String
+
+  """
+  Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process.
+  """
+  error: String
+
+  """A reference to the event associated with the NFT"""
+  eventId: String
+
+  """Directly relates to a specific Event Pass within the system"""
+  eventPassId: String
+  id: uuid
+
+  """
+  Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this NFT.
+  """
+  lastNftTransfer: uuid
+
+  """
+  The structured metadata parsed from the raw token URI. This contains a variety of details regarding the NFT.
+  """
+  metadata: jsonb
+
+  """Ties the NFT to a specific organizer within the platform"""
+  organizerId: String
+
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: bigint
+
+  """
+  The designated URI for the NFT's metadata blob, providing a stable reference for data extraction.
+  """
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""aggregate sum on columns"""
+type nftWithMetadata_sum_fields {
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: bigint
+}
+
+"""
+update columns of table "nftWithMetadata"
+"""
+enum nftWithMetadata_update_column {
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  created_at
+
+  """column name"""
+  currentOwnerAddress
+
+  """column name"""
+  error
+
+  """column name"""
+  eventId
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  id
+
+  """column name"""
+  lastNftTransfer
+
+  """column name"""
+  metadata
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  tokenId
+
+  """column name"""
+  tokenUri
+
+  """column name"""
+  updated_at
+}
+
+input nftWithMetadata_updates {
+  """append existing jsonb value of filtered columns with new jsonb value"""
+  _append: nftWithMetadata_append_input
+
+  """
+  delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+  """
+  _delete_at_path: nftWithMetadata_delete_at_path_input
+
+  """
+  delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+  """
+  _delete_elem: nftWithMetadata_delete_elem_input
+
+  """
+  delete key/value pair or string element. key/value pairs are matched based on their key value
+  """
+  _delete_key: nftWithMetadata_delete_key_input
+
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: nftWithMetadata_inc_input
+
+  """prepend existing jsonb value of filtered columns with new jsonb value"""
+  _prepend: nftWithMetadata_prepend_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: nftWithMetadata_set_input
+
+  """filter the rows which have to be updated"""
+  where: nftWithMetadata_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type nftWithMetadata_var_pop_fields {
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: Float
+}
+
+"""aggregate var_samp on columns"""
+type nftWithMetadata_var_samp_fields {
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: Float
+}
+
+"""aggregate variance on columns"""
+type nftWithMetadata_variance_fields {
+  """
+  The unique identifier of the NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: Float
+}
+
+"""
 columns and relationships of "orderStatus"
 """
 type orderStatus {
@@ -12652,6 +13266,10 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: EventWhereUniqueInput!
   ): Event
+
+  """
+  fetch data from the table: "eventParameters"
+  """
   eventParameters(
     """distinct select on columns"""
     distinct_on: [eventParameters_select_column!]
@@ -12668,6 +13286,10 @@ type query_root {
     """filter the rows returned"""
     where: eventParameters_bool_exp
   ): [eventParameters!]!
+
+  """
+  fetch aggregated fields from the table: "eventParameters"
+  """
   eventParameters_aggregate(
     """distinct select on columns"""
     distinct_on: [eventParameters_select_column!]
@@ -12687,56 +13309,6 @@ type query_root {
 
   """fetch data from the table: "eventParameters" using primary key columns"""
   eventParameters_by_pk(id: uuid!): eventParameters
-
-  """
-  fetch data from the table: "eventNftCollection"
-  """
-  eventNftCollection(
-    """distinct select on columns"""
-    distinct_on: [eventNftCollection_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventNftCollection_order_by!]
-
-    """filter the rows returned"""
-    where: eventNftCollection_bool_exp
-  ): [eventNftCollection!]!
-
-  """
-  fetch aggregated fields from the table: "eventNftCollection"
-  """
-  eventNftCollection_aggregate(
-    """distinct select on columns"""
-    distinct_on: [eventNftCollection_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventNftCollection_order_by!]
-
-    """filter the rows returned"""
-    where: eventNftCollection_bool_exp
-  ): eventNftCollection_aggregate!
-
-  """
-  fetch data from the table: "eventNftCollection" using primary key columns
-  """
-  eventNftCollection_by_pk(
-    """
-    Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
-    """
-    contractAddress: String!
-  ): eventNftCollection
 
   """Retrieve a single eventPass"""
   eventPass(
@@ -13612,6 +14184,10 @@ type subscription_root {
     """filter the rows returned"""
     where: currency_bool_exp
   ): [currency!]!
+
+  """
+  fetch data from the table: "eventParameters"
+  """
   eventParameters(
     """distinct select on columns"""
     distinct_on: [eventParameters_select_column!]
@@ -13628,6 +14204,10 @@ type subscription_root {
     """filter the rows returned"""
     where: eventParameters_bool_exp
   ): [eventParameters!]!
+
+  """
+  fetch aggregated fields from the table: "eventParameters"
+  """
   eventParameters_aggregate(
     """distinct select on columns"""
     distinct_on: [eventParameters_select_column!]
@@ -13772,70 +14352,6 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassNft_bool_exp
   ): [eventPassNft!]!
-
-  """
-  fetch data from the table: "eventNftCollection"
-  """
-  eventNftCollection(
-    """distinct select on columns"""
-    distinct_on: [eventNftCollection_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventNftCollection_order_by!]
-
-    """filter the rows returned"""
-    where: eventNftCollection_bool_exp
-  ): [eventNftCollection!]!
-
-  """
-  fetch aggregated fields from the table: "eventNftCollection"
-  """
-  eventNftCollection_aggregate(
-    """distinct select on columns"""
-    distinct_on: [eventNftCollection_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventNftCollection_order_by!]
-
-    """filter the rows returned"""
-    where: eventNftCollection_bool_exp
-  ): eventNftCollection_aggregate!
-
-  """
-  fetch data from the table: "eventNftCollection" using primary key columns
-  """
-  eventNftCollection_by_pk(
-    """
-    Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
-    """
-    contractAddress: String!
-  ): eventNftCollection
-
-  """
-  fetch data from the table in a streaming manner: "eventNftCollection"
-  """
-  eventNftCollection_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [eventNftCollection_stream_cursor_input]!
-
-    """filter the rows returned"""
-    where: eventNftCollection_bool_exp
-  ): [eventNftCollection!]!
 
   """
   fetch data from the table: "eventPassOrder"

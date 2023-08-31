@@ -9,7 +9,7 @@ interface getEventsFromOrganizerIdProps {
 
 export const getEventsFromOrganizerId = cache(
   async ({ id, locale }: getEventsFromOrganizerIdProps) => {
-    const data = await adminSdk.GetEventFromOrganizerId({
+    const data = await adminSdk.GetEventsFromOrganizerId({
       id: id,
       locale: locale as Locale,
       stage: process.env.HYGRAPH_STAGE as Stage,
