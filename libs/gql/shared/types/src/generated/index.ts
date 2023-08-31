@@ -822,8 +822,6 @@ export type Event = Node & {
    * This is only for information purpose but it should match your 'Event Pass' locations and dates
    */
   eventDateLocations: Array<EventDateLocation>;
-  eventParameters: Array<EventParameters>;
-  eventParameters_aggregate: EventParameters_Aggregate;
   eventPasses: Array<EventPass>;
   heroImage: Asset;
   /** List of Event versions */
@@ -4836,26 +4834,25 @@ export const enum Cursor_Ordering {
   Desc = 'DESC'
 };
 
-/** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
-export type EventParameters = {
-  __typename?: 'eventParameters';
-  activityWebhookId?: Maybe<Scalars['String']>;
-  eventId: Scalars['String'];
-  /** An array relationship */
-  eventPassNftContracts: Array<EventPassNftContract>;
-  /** An aggregate relationship */
-  eventPassNftContracts_aggregate: EventPassNftContract_Aggregate;
-  id: Scalars['uuid'];
+/** The eventNftCollection model is designed to store metadata associated with NFT collections linked to specific events. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT collections. Additionally, this table integrates infrastructure-specific details, like the activityWebhookId, which aids in monitoring and processing events or changes related to the NFT collections in our platform. By centralizing this information, our system can effectively manage, reference, and interact with NFT collections tied to particular events. */
+export type EventNftCollection = {
+  __typename?: 'eventNftCollection';
+  /** Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform. */
+  activityWebhookId: Scalars['String'];
+  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId: Scalars['String'];
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress: Scalars['String'];
+  eventPass?: Maybe<EventPass>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+  eventPassId: Scalars['String'];
 };
 
 
-/** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
-export type EventParametersEventPassNftContractsArgs = {
-  distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
-  where?: InputMaybe<EventPassNftContract_Bool_Exp>;
+/** The eventNftCollection model is designed to store metadata associated with NFT collections linked to specific events. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT collections. Additionally, this table integrates infrastructure-specific details, like the activityWebhookId, which aids in monitoring and processing events or changes related to the NFT collections in our platform. By centralizing this information, our system can effectively manage, reference, and interact with NFT collections tied to particular events. */
+export type EventNftCollectionEventPassArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
 };
 
 
@@ -4896,44 +4893,54 @@ export type EventParameters_Bool_Exp = {
   _not?: InputMaybe<EventParameters_Bool_Exp>;
   _or?: InputMaybe<Array<EventParameters_Bool_Exp>>;
   activityWebhookId?: InputMaybe<String_Comparison_Exp>;
-  eventId?: InputMaybe<String_Comparison_Exp>;
-  eventPassNftContracts?: InputMaybe<EventPassNftContract_Bool_Exp>;
-  eventPassNftContracts_aggregate?: InputMaybe<EventPassNftContract_Aggregate_Bool_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  eventPassId?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "eventParameters" */
 export const enum EventParameters_Constraint {
   /** unique or primary key constraint on columns "activityWebhookId" */
-  EventParametersActivityWebhookIdKey = 'eventParameters_activityWebhookId_key',
-  /** unique or primary key constraint on columns "eventId" */
-  EventParametersEventIdKey = 'eventParameters_eventId_key',
-  /** unique or primary key constraint on columns "id" */
-  EventParametersPkey = 'eventParameters_pkey'
+  EventNftCollectionActivityWebhookIdKey = 'eventNftCollection_activityWebhookId_key',
+  /** unique or primary key constraint on columns "eventPassId" */
+  EventNftCollectionEventIdKey = 'eventNftCollection_eventId_key',
+  /** unique or primary key constraint on columns "contractAddress" */
+  EventNftCollectionPkey = 'eventNftCollection_pkey'
 };
 
 /** input type for inserting data into table "eventParameters" */
 export type EventParameters_Insert_Input = {
   activityWebhookId?: InputMaybe<Scalars['String']>;
-  eventId?: InputMaybe<Scalars['String']>;
-  eventPassNftContracts?: InputMaybe<EventPassNftContract_Arr_Rel_Insert_Input>;
-  id?: InputMaybe<Scalars['uuid']>;
+  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+  eventPassId?: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
 export type EventParameters_Max_Fields = {
   __typename?: 'eventParameters_max_fields';
   activityWebhookId?: Maybe<Scalars['String']>;
-  eventId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
+  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: Maybe<Scalars['String']>;
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+  eventPassId?: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
 export type EventParameters_Min_Fields = {
   __typename?: 'eventParameters_min_fields';
   activityWebhookId?: Maybe<Scalars['String']>;
-  eventId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
+  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: Maybe<Scalars['String']>;
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+  eventPassId?: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "eventParameters" */
@@ -4955,9 +4962,9 @@ export type EventParameters_On_Conflict = {
 /** Ordering options when selecting data from "eventParameters". */
 export type EventParameters_Order_By = {
   activityWebhookId?: InputMaybe<Order_By>;
-  eventId?: InputMaybe<Order_By>;
-  eventPassNftContracts_aggregate?: InputMaybe<EventPassNftContract_Aggregate_Order_By>;
-  id?: InputMaybe<Order_By>;
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: eventParameters */
@@ -4972,14 +4979,20 @@ export const enum EventParameters_Select_Column {
   /** column name */
   EventId = 'eventId',
   /** column name */
-  Id = 'id'
+  ContractAddress = 'contractAddress',
+  /** column name */
+  EventPassId = 'eventPassId'
 };
 
 /** input type for updating data in table "eventParameters" */
 export type EventParameters_Set_Input = {
   activityWebhookId?: InputMaybe<Scalars['String']>;
-  eventId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
+  eventPassId?: InputMaybe<Scalars['String']>;
 };
 
 /** Streaming cursor of the table "eventParameters" */
@@ -5229,14 +5242,7 @@ export type EventPassNftContract_Insert_Input = {
   /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain. */
   contractAddress?: InputMaybe<Scalars['String']>;
   /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
-  eventId?: InputMaybe<Scalars['String']>;
   eventPassId?: InputMaybe<Scalars['String']>;
-  eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
-  eventPassOrderSums?: InputMaybe<EventPassOrderSums_Obj_Rel_Insert_Input>;
-  eventPassOrders?: InputMaybe<EventPassOrder_Arr_Rel_Insert_Input>;
-  eventPassPricing?: InputMaybe<EventPassPricing_Obj_Rel_Insert_Input>;
-  id?: InputMaybe<Scalars['uuid']>;
-  organizerId?: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
@@ -5318,13 +5324,7 @@ export const enum EventPassNftContract_Select_Column {
   /** column name */
   ContractAddress = 'contractAddress',
   /** column name */
-  EventId = 'eventId',
-  /** column name */
-  EventPassId = 'eventPassId',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  OrganizerId = 'organizerId'
+  EventPassId = 'eventPassId'
 };
 
 /** input type for updating data in table "eventPassNftContract" */

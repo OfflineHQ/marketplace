@@ -1147,38 +1147,6 @@ type Event implements Node {
     skip: Int
     where: EventDateLocationWhereInput
   ): [EventDateLocation!]!
-  eventParameters(
-    """distinct select on columns"""
-    distinct_on: [eventParameters_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventParameters_order_by!]
-
-    """filter the rows returned"""
-    where: eventParameters_bool_exp
-  ): [eventParameters!]!
-  eventParameters_aggregate(
-    """distinct select on columns"""
-    distinct_on: [eventParameters_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventParameters_order_by!]
-
-    """filter the rows returned"""
-    where: eventParameters_bool_exp
-  ): eventParameters_aggregate!
   eventPasses(
     after: String
     before: String
@@ -6618,46 +6586,38 @@ enum cursor_ordering {
 """
 The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling.
 """
-type eventParameters {
-  activityWebhookId: String
-  eventId: String!
+type eventNftCollection {
+  """
+  Designates the unique identifier for the activity webhook related to the NFT collection. This is crucial for real-time monitoring and processing of events or changes associated with the NFT collection on the platform.
+  """
+  activityWebhookId: String!
 
-  """An array relationship"""
-  eventPassNftContracts(
-    """distinct select on columns"""
-    distinct_on: [eventPassNftContract_select_column!]
+  """
+  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
+  """
+  chainId: String!
 
-    """limit the number of rows returned"""
-    limit: Int
+  """
+  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
+  """
+  contractAddress: String!
+  eventPass(
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+  ): EventPass
 
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassNftContract_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassNftContract_bool_exp
-  ): [eventPassNftContract!]!
-
-  """An aggregate relationship"""
-  eventPassNftContracts_aggregate(
-    """distinct select on columns"""
-    distinct_on: [eventPassNftContract_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassNftContract_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassNftContract_bool_exp
-  ): eventPassNftContract_aggregate!
-  id: uuid!
+  """
+  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
+  """
+  eventPassId: String!
 }
 
 """
@@ -6685,10 +6645,9 @@ input eventParameters_bool_exp {
   _not: eventParameters_bool_exp
   _or: [eventParameters_bool_exp!]
   activityWebhookId: String_comparison_exp
-  eventId: String_comparison_exp
-  eventPassNftContracts: eventPassNftContract_bool_exp
-  eventPassNftContracts_aggregate: eventPassNftContract_aggregate_bool_exp
-  id: uuid_comparison_exp
+  chainId: String_comparison_exp
+  contractAddress: String_comparison_exp
+  eventPassId: String_comparison_exp
 }
 
 """
@@ -6716,23 +6675,61 @@ input type for inserting data into table "eventParameters"
 """
 input eventParameters_insert_input {
   activityWebhookId: String
-  eventId: String
-  eventPassNftContracts: eventPassNftContract_arr_rel_insert_input
-  id: uuid
+
+  """
+  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
+  """
+  chainId: String
+
+  """
+  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
+  """
+  contractAddress: String
+
+  """
+  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
+  """
+  eventPassId: String
 }
 
 """aggregate max on columns"""
 type eventParameters_max_fields {
   activityWebhookId: String
-  eventId: String
-  id: uuid
+
+  """
+  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
+  """
+  chainId: String
+
+  """
+  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
+  """
+  contractAddress: String
+
+  """
+  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
+  """
+  eventPassId: String
 }
 
 """aggregate min on columns"""
 type eventParameters_min_fields {
   activityWebhookId: String
-  eventId: String
-  id: uuid
+
+  """
+  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
+  """
+  chainId: String
+
+  """
+  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
+  """
+  contractAddress: String
+
+  """
+  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
+  """
+  eventPassId: String
 }
 
 """
@@ -6758,9 +6755,9 @@ input eventParameters_on_conflict {
 """Ordering options when selecting data from "eventParameters"."""
 input eventParameters_order_by {
   activityWebhookId: order_by
-  eventId: order_by
-  eventPassNftContracts_aggregate: eventPassNftContract_aggregate_order_by
-  id: order_by
+  chainId: order_by
+  contractAddress: order_by
+  eventPassId: order_by
 }
 
 """primary key columns input for table: eventParameters"""
@@ -6776,10 +6773,13 @@ enum eventParameters_select_column {
   activityWebhookId
 
   """column name"""
-  eventId
+  chainId
 
   """column name"""
-  id
+  contractAddress
+
+  """column name"""
+  eventPassId
 }
 
 """
@@ -6787,8 +6787,21 @@ input type for updating data in table "eventParameters"
 """
 input eventParameters_set_input {
   activityWebhookId: String
-  eventId: String
-  id: uuid
+
+  """
+  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
+  """
+  chainId: String
+
+  """
+  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
+  """
+  contractAddress: String
+
+  """
+  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
+  """
+  eventPassId: String
 }
 
 """
@@ -6805,8 +6818,21 @@ input eventParameters_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input eventParameters_stream_cursor_value_input {
   activityWebhookId: String
-  eventId: String
-  id: uuid
+
+  """
+  Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment.
+  """
+  chainId: String
+
+  """
+  Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFT's existence and behavior on the blockchain.
+  """
+  contractAddress: String
+
+  """
+  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
+  """
+  eventPassId: String
 }
 
 """
@@ -7221,16 +7247,7 @@ enum eventPassNftContract_select_column {
   contractAddress
 
   """column name"""
-  eventId
-
-  """column name"""
   eventPassId
-
-  """column name"""
-  id
-
-  """column name"""
-  organizerId
 }
 
 """
