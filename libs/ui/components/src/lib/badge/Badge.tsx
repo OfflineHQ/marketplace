@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 import * as React from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@ui/shared';
@@ -23,6 +24,8 @@ const badgeVariants = {
   green: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
   yellow:
     'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+  orange:
+    'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
   indigo:
     'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300',
   purple:
@@ -39,7 +42,7 @@ const badgeVariantsCva = cva(
     },
     defaultVariants: {
       variant: 'default',
-      size: 'sm',
+      size: 'default',
     },
   }
 );
@@ -47,7 +50,7 @@ const badgeVariantsCva = cva(
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLSpanElement>,
     VariantProps<typeof badgeVariantsCva> {
-  icon?: React.FC<IconProps>;
+  icon?: React.ReactElement<IconProps>;
 }
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
@@ -63,7 +66,13 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         ref={ref}
         {...props}
       >
-        {Icon && <Icon size={size} className={iconOnly ? '' : iconClasses} />}
+        {Icon && (
+          <Icon.type
+            size={size}
+            className={iconOnly ? '' : iconClasses}
+            {...Icon.props}
+          />
+        )}
         {children && <span>{children}</span>}
       </span>
     );
@@ -71,4 +80,36 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 );
 Badge.displayName = 'Badge';
 
-export { Badge, badgeSizes, badgeVariants, badgeVariantsCva };
+const SkeletonSizes = {
+  sm: 'h-4 w-16',
+  default: 'h-5 w-20',
+  lg: 'h-7 w-24',
+};
+
+const badgeSkeletonVariantsCva = cva(
+  'max-w-full shrink-0 animate-pulse rounded-full bg-muted',
+  {
+    variants: {
+      size: SkeletonSizes,
+    },
+    defaultVariants: {
+      size: 'default',
+    },
+  }
+);
+
+export interface BadgeSkeletonProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof badgeSkeletonVariantsCva> {}
+
+const BadgeSkeleton: React.FC<BadgeSkeletonProps> = ({
+  size = 'default',
+  className,
+  ...props
+}) => {
+  const classNames = cn(badgeSkeletonVariantsCva({ size }), className);
+
+  return <div className={classNames} {...props} />;
+};
+
+export { Badge, BadgeSkeleton, badgeSizes, badgeVariants, badgeVariantsCva };

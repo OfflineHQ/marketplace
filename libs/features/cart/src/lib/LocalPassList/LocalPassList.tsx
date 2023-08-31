@@ -8,22 +8,16 @@ import { messages, defaultLocale, type Locale } from '@next/i18n';
 
 export type LocalPassListProps = Pick<
   LocalPassListClientProps,
-  'EventPassesFetcher' | 'userPassPendingOrders'
+  'EventPassesFetcher' | 'userPassPendingOrders' | 'noCartImage'
 >;
 
-export const LocalPassList: React.FC<LocalPassListProps> = ({
-  EventPassesFetcher,
-  userPassPendingOrders,
-}) => {
+export const LocalPassList: React.FC<LocalPassListProps> = (props) => {
   const _locale = useLocale();
   const locale: Locale = (_locale as Locale) || defaultLocale;
   const localeMessages = deepPick(messages[locale], ['Cart.List']);
   return (
     <NextIntlClientProvider locale={locale} messages={localeMessages}>
-      <LocalPassListClient
-        EventPassesFetcher={EventPassesFetcher}
-        userPassPendingOrders={userPassPendingOrders}
-      />
+      <LocalPassListClient {...props} />
     </NextIntlClientProvider>
   );
 };

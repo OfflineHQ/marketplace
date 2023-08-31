@@ -1,8 +1,10 @@
+/* eslint-disable react/jsx-pascal-case */
 import * as React from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 import { statusVariantIcons } from '../shared/statusVariant';
 
 import { cn } from '@ui/shared';
+import { TextSkeleton } from '../text/Text';
 
 const alertVariants = cva(
   'relative w-full rounded-lg border p-4 [&:has(svg)]:pl-11 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground',
@@ -39,7 +41,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         className={cn(alertVariants({ variant }), className)}
         {...props}
       >
-        {IconComponent && <IconComponent />}
+        {IconComponent && <IconComponent.type {...IconComponent.props} />}
         {children}
       </div>
     );
@@ -72,4 +74,13 @@ const AlertDescription = React.forwardRef<
 ));
 AlertDescription.displayName = 'AlertDescription';
 
-export { Alert, AlertTitle, AlertDescription, type AlertProps };
+const AlertSkeleton: React.FC = () => {
+  return (
+    <Alert className="space-y-4">
+      <TextSkeleton variant="h4" />
+      <TextSkeleton variant="p" />
+    </Alert>
+  );
+};
+
+export { Alert, AlertTitle, AlertDescription, AlertSkeleton, type AlertProps };

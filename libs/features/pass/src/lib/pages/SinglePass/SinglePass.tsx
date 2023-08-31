@@ -14,6 +14,11 @@ import {
   CardDescription,
   AspectRatio,
   CardNavBack,
+  CardNavBackSkeleton,
+  AspectRatioSkeleton,
+  TextSkeleton,
+  AlertSkeleton,
+  Separator,
   Label,
 } from '@ui/components';
 import { Download, Reveal } from '@ui/icons';
@@ -22,7 +27,7 @@ import { EventPassNft } from '@features/pass-types';
 import { EventOrganizerButton, PassOptions } from '@features/organizer/event';
 import { formatCurrency } from '@next/currency';
 import type { User } from 'next-auth';
-import { IsPassRevealedAlert } from './IsPassRevealedAlert';
+import { IsPassRevealedAlert } from '../../molecules/IsPassRevealedAlert/IsPassRevealedAlert';
 
 export interface SinglePassProps {
   eventPassNft: EventPassNft;
@@ -72,7 +77,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
               <AspectRatio variant="square">
                 <Image
                   className="rounded-sm"
-                  src={eventPassNft?.eventPass?.nftImage.url || ''}
+                  src={eventPassNft?.eventPass?.nftImage?.url || ''}
                   fill
                   style={{ objectFit: 'cover' }}
                   alt={eventPassNft?.eventPass?.event?.title || ''}
@@ -86,11 +91,10 @@ export const SinglePass: React.FC<SinglePassProps> = ({
                   number: eventPassNft.tokenId,
                 })}
               </Text>
-              <Text variant="p">{eventPassNft.eventPass?.description}</Text>
             </div>
           </CardHeader>
         </div>
-        <CardContent className="md:relative md:space-y-4">
+        <CardContent className="space-y-2 md:relative md:space-y-4">
           <div className="hidden flex-col space-y-4 pt-10 md:flex">
             <Text variant="h2">
               {t('title', {
@@ -98,9 +102,14 @@ export const SinglePass: React.FC<SinglePassProps> = ({
                 number: eventPassNft.tokenId,
               })}
             </Text>
-            <Text variant="p">{eventPassNft.eventPass?.description}</Text>
           </div>
-          <div className="flex pb-4 text-end md:pt-4">
+          <div className="md:w-[50%] md:pt-2">
+            <IsPassRevealedAlert
+              isOwner={isOwner}
+              isRevealed={eventPassNft.isRevealed}
+            />
+          </div>
+          <div className="flex pb-2 pt-4 text-end">
             <Label className="mr-3">{t('sold-for')}</Label>
             <Text className="font-semibold">
               {formatCurrency(format, {
@@ -111,12 +120,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
               })}
             </Text>
           </div>
-          <div className="flex pb-4">
-            <IsPassRevealedAlert
-              isOwner={isOwner}
-              isRevealed={eventPassNft.isRevealed}
-            />
-          </div>
+
           <div className="flex pb-4">
             {eventPassNft.eventPass?.event?.organizer ? (
               <EventOrganizerButton
@@ -124,6 +128,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
               />
             ) : null}
           </div>
+          <Text variant="p">{eventPassNft.eventPass?.description}</Text>
           <PassOptions
             passOptions={eventPassNft.eventPass?.passOptions || []}
           />
@@ -147,6 +152,36 @@ export const SinglePass: React.FC<SinglePassProps> = ({
             {/* In case user connected and is owner of the pass, put call to action button 'Reveal Pass' or 'Download Pass'/'Add to Google/Apple Wallet' */}
           </CardFooter>
         </>
+      ) : null}
+    </Card>
+  );
+};
+
+export const SinglePassSkeleton: React.FC<{ isOwner?: boolean }> = ({
+  isOwner = false,
+}) => {
+  return (
+    <Card variant="stickyFooter" noBorder className="w-full">
+      <CardOverflow>
+        <CardNavBackSkeleton />
+        <CardHeader>
+          <div className="mx-auto mt-10 flex max-h-[380px] w-full max-w-[350px]">
+            <AspectRatioSkeleton variant="square" className="mx-auto my-2" />
+          </div>
+        </CardHeader>
+        <CardContent className="relative space-y-4">
+          <TextSkeleton variant="h2" />
+          <Separator />
+          <TextSkeleton variant="p" />
+          <TextSkeleton />
+          <AlertSkeleton />
+          <ButtonSkeleton />
+        </CardContent>
+      </CardOverflow>
+      {isOwner ? (
+        <CardFooter className="justify-center" variant="sticky">
+          <ButtonSkeleton />
+        </CardFooter>
       ) : null}
     </Card>
   );

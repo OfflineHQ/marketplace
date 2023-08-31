@@ -1,6 +1,6 @@
 import {
-  alphaAdminClient,
-  betaAdminClient,
+  alphaUserClient,
+  betaUserClient,
   sebGoogleClient,
 } from '@test-utils/gql';
 import {
@@ -12,8 +12,8 @@ import {
 
 describe('user access security tests', () => {
   let client: PgClient;
-  const alphaAdmin = alphaAdminClient();
-  const betaAdmin = betaAdminClient();
+  const alphaUser = alphaUserClient();
+  const betaUser = betaUserClient();
   const sebGoogle = sebGoogleClient();
 
   beforeAll(async () => {
@@ -27,39 +27,39 @@ describe('user access security tests', () => {
 
   beforeEach(async () => {
     await deleteTables(client, ['account']);
-    // seed the database with three users alpha, beta and seb
+    // seed the database with three users alpha, beta and google
     await seedDb(client, 'account');
   });
 
   it('user alpha can retrieve his information', async () => {
-    const data = await alphaAdmin.GetAccount({
-      address: alphaAdmin.me.address,
+    const data = await alphaUser.GetAccount({
+      address: alphaUser.me.address,
     });
     const account = data.account[0];
-    expect(account.id).toEqual(alphaAdmin.me.id);
-    expect(account.email).toEqual(alphaAdmin.me.email);
+    expect(account.id).toEqual(alphaUser.me.id);
+    expect(account.email).toEqual(alphaUser.me.email);
   });
   it('user beta can retrieve his information', async () => {
-    const data = await betaAdmin.GetAccount({ address: betaAdmin.me.address });
+    const data = await betaUser.GetAccount({ address: betaUser.me.address });
     const account = data.account[0];
-    expect(account.id).toEqual(betaAdmin.me.id);
-    expect(account.email).toEqual(betaAdmin.me.email);
+    expect(account.id).toEqual(betaUser.me.id);
+    expect(account.email).toEqual(betaUser.me.email);
   });
   it("user beta can't retrieve alpha's information", async () => {
-    const data = await betaAdmin.GetAccount({ address: alphaAdmin.me.address });
+    const data = await betaUser.GetAccount({ address: alphaUser.me.address });
     expect(data.account[0]).toBeUndefined();
   });
   it('user beta can retrieve his information by email', async () => {
-    const data = await betaAdmin.GetAccountByEmail({
-      email: betaAdmin.me.email as string,
+    const data = await betaUser.GetAccountByEmail({
+      email: betaUser.me.email as string,
     });
     const account = data.account[0];
-    expect(account.id).toEqual(betaAdmin.me.id);
-    expect(account.email).toEqual(betaAdmin.me.email);
+    expect(account.id).toEqual(betaUser.me.id);
+    expect(account.email).toEqual(betaUser.me.email);
   });
   it("user seb can't retrieve beta's information by email", async () => {
     const data = await sebGoogle.GetAccountByEmail({
-      email: betaAdmin.me.email as string,
+      email: betaUser.me.email as string,
     });
     expect(data.account[0]).toBeUndefined();
   });

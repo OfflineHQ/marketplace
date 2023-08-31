@@ -4,7 +4,11 @@ import {
   passPremium,
   event2Props,
 } from '@features/organizer/event/examples';
-import { SinglePass, type SinglePassProps } from './SinglePass';
+import {
+  SinglePass,
+  SinglePassSkeleton,
+  type SinglePassProps,
+} from './SinglePass';
 import type { User } from 'next-auth';
 
 import { WithNoUser, WithNormalUser } from '@features/appNav/ui/stories';
@@ -66,5 +70,11 @@ export function SinglePassOwnerExample(props: SinglePassProps) {
       {...WithNormalUser.args}
       children={<SinglePass {...props} />}
     />
+  );
+}
+
+export function SinglePassSkeletonExample() {
+  return (
+    <AppNavLayout {...WithNoUser.args} children={<SinglePassSkeleton />} />
   );
 }

@@ -118,7 +118,7 @@ export const AllbuttonVariantsWithIconComponent: React.FC<
         key={variant}
         size={size}
         variant={variant as keyof typeof buttonVariants}
-        icon={OutlineArrowRight}
+        icon={<OutlineArrowRight />}
       >
         {variant} with Icon
       </ButtonDemo>
@@ -135,7 +135,7 @@ export const AllbuttonSizesWithIconComponent: React.FC<
         key={size}
         size={size as keyof typeof buttonSizes}
         variant={variant}
-        icon={OutlineArrowRight}
+        icon={<OutlineArrowRight />}
       >
         {size} with Icon
       </ButtonDemo>
@@ -152,7 +152,7 @@ export const AllbuttonSizesWithIconRightComponent: React.FC<
         key={size}
         size={size as keyof typeof buttonSizes}
         variant={variant}
-        iconRight={OutlineArrowRight}
+        iconRight={<OutlineArrowRight />}
       >
         {size} with Icon Right
       </ButtonDemo>

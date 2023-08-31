@@ -6,6 +6,7 @@ import {
   TextSkeleton,
   Separator,
   Text,
+  Badge,
   ButtonSkeleton,
 } from '@ui/components';
 import Image from 'next/image';
@@ -113,11 +114,11 @@ export const EventPasses: React.FC<EventPassesProps> = ({
           </div>
           <div className={layout.textContainer}>
             <Text variant="h4">{event.title}</Text>
-            <Text>
+            <Badge variant="secondary">
               {t('num-pass', {
                 numPass: passes.reduce((sum, pass) => sum + pass.amount, 0),
               })}
-            </Text>
+            </Badge>
           </div>
         </div>
       </AccordionTrigger>

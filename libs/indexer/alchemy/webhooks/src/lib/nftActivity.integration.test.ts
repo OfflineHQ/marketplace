@@ -20,7 +20,7 @@ jest.mock('./utils', () => ({
 
 // Specific mock data for each test case
 const mockActivity = {
-  network: Network.ETH_SEPOLIA,
+  network: Network.ETH_GOERLI,
   fromAddress: '0x1bBEdB07706728A19c9dB82d3c420670D8040592', // from account seed
   toAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D', // to account seed
   contractAddress: '0xfakecontractaddress1', // from eventPassNftContract seed
@@ -42,7 +42,7 @@ const mockActivity = {
 } satisfies Activity;
 
 const mockActivity2 = {
-  network: Network.ETH_SEPOLIA,
+  network: Network.ETH_GOERLI,
   fromAddress: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F', // from account seed
   toAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D', // to account seed
   contractAddress: '0xfakecontractaddress1', // from eventPassNftContract seed
@@ -64,7 +64,7 @@ const mockActivity2 = {
 } satisfies Activity;
 
 const mockActivity3 = {
-  network: Network.ETH_SEPOLIA,
+  network: Network.ETH_GOERLI,
   fromAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
   toAddress: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
   contractAddress: '0xfakecontractaddress2',
@@ -142,7 +142,7 @@ describe('nftActivity integration test', () => {
   it('happy path with several nft activity being processed - no need to transfer QR code file', async () => {
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity]),
-      'fake-event-1'
+      'clizzpvidao620buvxit1ynko'
     );
 
     expect(response.status).toEqual(200);
@@ -158,7 +158,7 @@ describe('nftActivity integration test', () => {
   it('happy path with several nft activity being processed - transfer of QR code file', async () => {
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
-      'fake-event-1'
+      'clizzpvidao620buvxit1ynko'
     );
 
     expect(response.status).toEqual(200);
@@ -171,9 +171,9 @@ describe('nftActivity integration test', () => {
     ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
       {
         source:
-          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
+          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
         destination:
-          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
+          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
       },
     ]);
     expect(
@@ -182,14 +182,14 @@ describe('nftActivity integration test', () => {
     expect(
       FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
     ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
-      '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
+      '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
     ]);
   });
 
   it('happy path with several nft activity being processed - from different contractAddress', async () => {
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2, mockActivity3]),
-      'fake-event-1'
+      'clizzpvidao620buvxit1ynko'
     );
 
     expect(response.status).toEqual(200);
@@ -202,15 +202,15 @@ describe('nftActivity integration test', () => {
     ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
       {
         source:
-          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
+          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
         destination:
-          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
+          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
       },
       {
         destination:
-          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/fake-organizer-1/events/fake-event-1/fake-event-pass-2/fake-event-1-fake-event-pass-2-1512512512',
+          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/fake-event-pass-2/clizzpvidao620buvxit1ynko-fake-event-pass-2-1512512512',
         source:
-          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/fake-organizer-1/events/fake-event-1/fake-event-pass-2/fake-event-1-fake-event-pass-2-1512512512',
+          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/fake-event-pass-2/clizzpvidao620buvxit1ynko-fake-event-pass-2-1512512512',
       },
     ]);
     expect(
@@ -219,8 +219,8 @@ describe('nftActivity integration test', () => {
     expect(
       FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
     ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
-      '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/fake-organizer-1/events/fake-event-1/fake-event-pass-1/fake-event-1-fake-event-pass-1-12432',
-      '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/fake-organizer-1/events/fake-event-1/fake-event-pass-2/fake-event-1-fake-event-pass-2-1512512512',
+      '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
+      '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/fake-event-pass-2/clizzpvidao620buvxit1ynko-fake-event-pass-2-1512512512',
     ]);
   });
 
@@ -228,7 +228,7 @@ describe('nftActivity integration test', () => {
     const consoleSpy = jest.spyOn(console, 'error');
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity4NoNft]),
-      'fake-event-1'
+      'clizzpvidao620buvxit1ynko'
     );
     expect(response.status).toEqual(200);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
@@ -243,7 +243,7 @@ describe('nftActivity integration test', () => {
     const consoleSpy = jest.spyOn(console, 'error');
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity4NoNft]),
-      'fake-event-1'
+      'clizzpvidao620buvxit1ynko'
     );
     expect(response.status).toEqual(500);
     expect(consoleSpy).toHaveBeenCalledTimes(1);

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 import * as React from 'react';
 import { cn } from '@ui/shared';
 import { cva, VariantProps } from 'class-variance-authority';
@@ -30,13 +31,20 @@ const inputCVA = cva(
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputCVA> {
-  icon?: React.FC<IconProps>;
-  rightIcon?: React.FC<IconProps>;
+  icon?: React.ReactElement<IconProps>;
+  rightIcon?: React.ReactElement<IconProps>;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
-    { className, size, variant = 'default', icon: Icon, rightIcon: RightIcon, ...props },
+    {
+      className,
+      size,
+      variant = 'default',
+      icon: Icon,
+      rightIcon: RightIcon,
+      ...props
+    },
     ref
   ) => {
     const DefaultRightIcon = statusVariantIcons[variant || 'default'];
@@ -51,7 +59,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div className="relative">
         {Icon && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-            <Icon color={variant} />
+            <Icon.type color={variant} {...Icon.props} />
           </div>
         )}
         <input className={inputClasses} ref={ref} {...props} />
@@ -59,7 +67,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <div
             className={`absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400`}
           >
-            <RightIconComponent color={variant} />
+            <RightIconComponent.type
+              color={variant}
+              {...RightIconComponent.props}
+            />
           </div>
         )}
       </div>

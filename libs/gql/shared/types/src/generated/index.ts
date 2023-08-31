@@ -15,6 +15,7 @@ export type Scalars = {
   Long: any;
   RichTextAST: any;
   bigint: any;
+  date: any;
   jsonb: any;
   timestamptz: any;
   uuid: any;
@@ -2359,6 +2360,16 @@ export type EventWhereUniqueInput = {
   slug?: InputMaybe<Scalars['String']>;
 };
 
+/** References Event record uniquely */
+export type EventWhereUniqueInput_Remote_Rel_EventParametersevent = {
+  slug?: InputMaybe<Scalars['String']>;
+};
+
+/** References Event record uniquely */
+export type EventWhereUniqueInput_Remote_Rel_EventPassNftevent = {
+  slug?: InputMaybe<Scalars['String']>;
+};
+
 export const enum ImageFit {
   /** Resizes the image to fit within the specified parameters without distorting, cropping, or changing the aspect ratio. */
   Clip = 'clip',
@@ -3320,6 +3331,18 @@ export type OrganizerWhereUniqueInput = {
 
 /** References Organizer record uniquely */
 export type OrganizerWhereUniqueInput_Remote_Rel_Accountorganizer = {
+  name?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']>;
+};
+
+/** References Organizer record uniquely */
+export type OrganizerWhereUniqueInput_Remote_Rel_EventParametersorganizer = {
+  name?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']>;
+};
+
+/** References Organizer record uniquely */
+export type OrganizerWhereUniqueInput_Remote_Rel_EventPassNftorganizer = {
   name?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
 };
@@ -4836,16 +4859,46 @@ export const enum Cursor_Ordering {
   Desc = 'DESC'
 };
 
+/** Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'. */
+export type Date_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['date']>;
+  _gt?: InputMaybe<Scalars['date']>;
+  _gte?: InputMaybe<Scalars['date']>;
+  _in?: InputMaybe<Array<Scalars['date']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['date']>;
+  _lte?: InputMaybe<Scalars['date']>;
+  _neq?: InputMaybe<Scalars['date']>;
+  _nin?: InputMaybe<Array<Scalars['date']>>;
+};
+
 /** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
 export type EventParameters = {
   __typename?: 'eventParameters';
   activityWebhookId?: Maybe<Scalars['String']>;
+  dateEnd?: Maybe<Scalars['date']>;
+  dateStart?: Maybe<Scalars['date']>;
+  event?: Maybe<Event>;
   eventId: Scalars['String'];
   /** An array relationship */
   eventPassNftContracts: Array<EventPassNftContract>;
   /** An aggregate relationship */
   eventPassNftContracts_aggregate: EventPassNftContract_Aggregate;
+  /** An array relationship */
+  eventPassNfts: Array<EventPassNft>;
+  /** An aggregate relationship */
+  eventPassNfts_aggregate: EventPassNft_Aggregate;
   id: Scalars['uuid'];
+  organizer?: Maybe<Organizer>;
+  organizerId: Scalars['String'];
+};
+
+
+/** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
+export type EventParametersEventArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: EventWhereUniqueInput_Remote_Rel_EventParametersevent;
 };
 
 
@@ -4866,6 +4919,34 @@ export type EventParametersEventPassNftContracts_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
+};
+
+
+/** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
+export type EventParametersEventPassNftsArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
+  where?: InputMaybe<EventPassNft_Bool_Exp>;
+};
+
+
+/** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
+export type EventParametersEventPassNfts_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
+  where?: InputMaybe<EventPassNft_Bool_Exp>;
+};
+
+
+/** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
+export type EventParametersOrganizerArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: OrganizerWhereUniqueInput_Remote_Rel_EventParametersorganizer;
 };
 
 /** aggregated selection of "eventParameters" */
@@ -4896,10 +4977,15 @@ export type EventParameters_Bool_Exp = {
   _not?: InputMaybe<EventParameters_Bool_Exp>;
   _or?: InputMaybe<Array<EventParameters_Bool_Exp>>;
   activityWebhookId?: InputMaybe<String_Comparison_Exp>;
+  dateEnd?: InputMaybe<Date_Comparison_Exp>;
+  dateStart?: InputMaybe<Date_Comparison_Exp>;
   eventId?: InputMaybe<String_Comparison_Exp>;
   eventPassNftContracts?: InputMaybe<EventPassNftContract_Bool_Exp>;
   eventPassNftContracts_aggregate?: InputMaybe<EventPassNftContract_Aggregate_Bool_Exp>;
+  eventPassNfts?: InputMaybe<EventPassNft_Bool_Exp>;
+  eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "eventParameters" */
@@ -4915,25 +5001,35 @@ export const enum EventParameters_Constraint {
 /** input type for inserting data into table "eventParameters" */
 export type EventParameters_Insert_Input = {
   activityWebhookId?: InputMaybe<Scalars['String']>;
+  dateEnd?: InputMaybe<Scalars['date']>;
+  dateStart?: InputMaybe<Scalars['date']>;
   eventId?: InputMaybe<Scalars['String']>;
   eventPassNftContracts?: InputMaybe<EventPassNftContract_Arr_Rel_Insert_Input>;
+  eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
 export type EventParameters_Max_Fields = {
   __typename?: 'eventParameters_max_fields';
   activityWebhookId?: Maybe<Scalars['String']>;
+  dateEnd?: Maybe<Scalars['date']>;
+  dateStart?: Maybe<Scalars['date']>;
   eventId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  organizerId?: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
 export type EventParameters_Min_Fields = {
   __typename?: 'eventParameters_min_fields';
   activityWebhookId?: Maybe<Scalars['String']>;
+  dateEnd?: Maybe<Scalars['date']>;
+  dateStart?: Maybe<Scalars['date']>;
   eventId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  organizerId?: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "eventParameters" */
@@ -4943,6 +5039,13 @@ export type EventParameters_Mutation_Response = {
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<EventParameters>;
+};
+
+/** input type for inserting object relation for remote table "eventParameters" */
+export type EventParameters_Obj_Rel_Insert_Input = {
+  data: EventParameters_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<EventParameters_On_Conflict>;
 };
 
 /** on_conflict condition type for table "eventParameters" */
@@ -4955,9 +5058,13 @@ export type EventParameters_On_Conflict = {
 /** Ordering options when selecting data from "eventParameters". */
 export type EventParameters_Order_By = {
   activityWebhookId?: InputMaybe<Order_By>;
+  dateEnd?: InputMaybe<Order_By>;
+  dateStart?: InputMaybe<Order_By>;
   eventId?: InputMaybe<Order_By>;
   eventPassNftContracts_aggregate?: InputMaybe<EventPassNftContract_Aggregate_Order_By>;
+  eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: eventParameters */
@@ -4970,16 +5077,25 @@ export const enum EventParameters_Select_Column {
   /** column name */
   ActivityWebhookId = 'activityWebhookId',
   /** column name */
+  DateEnd = 'dateEnd',
+  /** column name */
+  DateStart = 'dateStart',
+  /** column name */
   EventId = 'eventId',
   /** column name */
-  Id = 'id'
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId'
 };
 
 /** input type for updating data in table "eventParameters" */
 export type EventParameters_Set_Input = {
   activityWebhookId?: InputMaybe<Scalars['String']>;
+  dateEnd?: InputMaybe<Scalars['date']>;
+  dateStart?: InputMaybe<Scalars['date']>;
   eventId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
 };
 
 /** Streaming cursor of the table "eventParameters" */
@@ -4993,8 +5109,11 @@ export type EventParameters_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type EventParameters_Stream_Cursor_Value_Input = {
   activityWebhookId?: InputMaybe<Scalars['String']>;
+  dateEnd?: InputMaybe<Scalars['date']>;
+  dateStart?: InputMaybe<Scalars['date']>;
   eventId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
 };
 
 /** update columns of table "eventParameters" */
@@ -5002,9 +5121,15 @@ export const enum EventParameters_Update_Column {
   /** column name */
   ActivityWebhookId = 'activityWebhookId',
   /** column name */
+  DateEnd = 'dateEnd',
+  /** column name */
+  DateStart = 'dateStart',
+  /** column name */
   EventId = 'eventId',
   /** column name */
-  Id = 'id'
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId'
 };
 
 export type EventParameters_Updates = {
@@ -5026,11 +5151,16 @@ export type EventPassNft = {
   currentOwnerAddress?: Maybe<Scalars['String']>;
   /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
   error?: Maybe<Scalars['String']>;
+  event?: Maybe<Event>;
   /** A reference to the event associated with the event pass NFT */
   eventId: Scalars['String'];
+  /** An object relationship */
+  eventParameters?: Maybe<EventParameters>;
   eventPass?: Maybe<EventPass>;
   /** Directly relates to a specific Event Pass within the system */
   eventPassId: Scalars['String'];
+  /** An object relationship */
+  eventPassNftContract?: Maybe<EventPassNftContract>;
   /** An object relationship */
   eventPassPricing?: Maybe<EventPassPricing>;
   id: Scalars['uuid'];
@@ -5046,6 +5176,7 @@ export type EventPassNft = {
   nftTransfers: Array<NftTransfer>;
   /** An aggregate relationship */
   nftTransfers_aggregate: NftTransfer_Aggregate;
+  organizer?: Maybe<Organizer>;
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId: Scalars['String'];
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
@@ -5053,6 +5184,14 @@ export type EventPassNft = {
   /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
   tokenUri?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
+};
+
+
+/** The eventPassNft model is designed to consolidate and store the metadata associated with each event pass NFT. It centralizes fixed metadata, enabling the system to retrieve NFT details without frequently querying external APIs. It integrates with the existing nftTransfer model, providing a holistic view of each event pass NFT's journey and characteristics within the platform. */
+export type EventPassNftEventArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: EventWhereUniqueInput_Remote_Rel_EventPassNftevent;
 };
 
 
@@ -5088,12 +5227,21 @@ export type EventPassNftNftTransfers_AggregateArgs = {
   where?: InputMaybe<NftTransfer_Bool_Exp>;
 };
 
+
+/** The eventPassNft model is designed to consolidate and store the metadata associated with each event pass NFT. It centralizes fixed metadata, enabling the system to retrieve NFT details without frequently querying external APIs. It integrates with the existing nftTransfer model, providing a holistic view of each event pass NFT's journey and characteristics within the platform. */
+export type EventPassNftOrganizerArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: OrganizerWhereUniqueInput_Remote_Rel_EventPassNftorganizer;
+};
+
 /** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
 export type EventPassNftContract = {
   __typename?: 'eventPassNftContract';
   chainId: Scalars['String'];
   contractAddress: Scalars['String'];
   eventId: Scalars['String'];
+  eventPass?: Maybe<EventPass>;
   eventPassId: Scalars['String'];
   /** An array relationship */
   eventPassNfts: Array<EventPassNft>;
@@ -5109,6 +5257,13 @@ export type EventPassNftContract = {
   eventPassPricing?: Maybe<EventPassPricing>;
   id: Scalars['uuid'];
   organizerId: Scalars['String'];
+};
+
+
+/** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
+export type EventPassNftContractEventPassArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
 };
 
 
@@ -5286,6 +5441,13 @@ export type EventPassNftContract_Mutation_Response = {
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<EventPassNftContract>;
+};
+
+/** input type for inserting object relation for remote table "eventPassNftContract" */
+export type EventPassNftContract_Obj_Rel_Insert_Input = {
+  data: EventPassNftContract_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<EventPassNftContract_On_Conflict>;
 };
 
 /** on_conflict condition type for table "eventPassNftContract" */
@@ -5485,7 +5647,9 @@ export type EventPassNft_Bool_Exp = {
   currentOwnerAddress?: InputMaybe<String_Comparison_Exp>;
   error?: InputMaybe<String_Comparison_Exp>;
   eventId?: InputMaybe<String_Comparison_Exp>;
+  eventParameters?: InputMaybe<EventParameters_Bool_Exp>;
   eventPassId?: InputMaybe<String_Comparison_Exp>;
+  eventPassNftContract?: InputMaybe<EventPassNftContract_Bool_Exp>;
   eventPassPricing?: InputMaybe<EventPassPricing_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   isRevealed?: InputMaybe<Boolean_Comparison_Exp>;
@@ -5547,8 +5711,10 @@ export type EventPassNft_Insert_Input = {
   error?: InputMaybe<Scalars['String']>;
   /** A reference to the event associated with the event pass NFT */
   eventId?: InputMaybe<Scalars['String']>;
+  eventParameters?: InputMaybe<EventParameters_Obj_Rel_Insert_Input>;
   /** Directly relates to a specific Event Pass within the system */
   eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassNftContract?: InputMaybe<EventPassNftContract_Obj_Rel_Insert_Input>;
   eventPassPricing?: InputMaybe<EventPassPricing_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
@@ -5702,7 +5868,9 @@ export type EventPassNft_Order_By = {
   currentOwnerAddress?: InputMaybe<Order_By>;
   error?: InputMaybe<Order_By>;
   eventId?: InputMaybe<Order_By>;
+  eventParameters?: InputMaybe<EventParameters_Order_By>;
   eventPassId?: InputMaybe<Order_By>;
+  eventPassNftContract?: InputMaybe<EventPassNftContract_Order_By>;
   eventPassPricing?: InputMaybe<EventPassPricing_Order_By>;
   id?: InputMaybe<Order_By>;
   isRevealed?: InputMaybe<Order_By>;
