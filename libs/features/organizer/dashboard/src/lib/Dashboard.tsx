@@ -25,7 +25,7 @@ export async function OrganizerDashboard(props: OrganizerDashboardProps) {
   }));
 
   return events && events.length > 0 ? (
-    <EventCards events={events} />
+    <EventCards events={events} organizerId={organizerId} />
   ) : (
     <p>No event at the moment for {organizerId}</p>
   );

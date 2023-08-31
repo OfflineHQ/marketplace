@@ -60,7 +60,7 @@ query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!)
   }
 }
 
-query GetEventFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!)
+query GetEventsFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!)
 @cached {
   organizer(where: { id: $id }, locales: [$locale, en], stage: $stage) {
     events {
@@ -82,7 +82,7 @@ query GetEventFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!)
         eventPassPricing {
           maxAmount
         }
-        eventNftCollection {
+        eventPassNftContract {
           contractAddress
         }
       }

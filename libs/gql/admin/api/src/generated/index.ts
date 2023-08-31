@@ -57,6 +57,15 @@ export const OrganizerFieldsFragmentDoc = `
   }
 }
     `;
+export const EventPassNftContractFieldsFragmentDoc = `
+    fragment EventPassNftContractFields on eventPassNftContract {
+  chainId
+  contractAddress
+  eventId
+  eventPassId
+  organizerId
+}
+    `;
 export const EventDateLocationsFieldsFragmentDoc = `
     fragment EventDateLocationsFields on EventDateLocation {
   locationAddress {
@@ -76,16 +85,43 @@ export const EventDateLocationsFieldsFragmentDoc = `
   dateEnd
 }
     `;
-export const EventNftCollectionFieldsFragmentDoc = `
-    fragment EventNftCollectionFields on eventNftCollection {
-  contractAddress
-  chainId
-  eventPassId
-  activityWebhookId
+export const EventPassFieldsFragmentDoc = `
+    fragment EventPassFields on EventPass {
+  name
+  nftImage {
+    url
+  }
+  description
+  passOptions {
+    name
+    description
+    eventDateLocation {
+      ...EventDateLocationsFields
+    }
+  }
+  eventPassPricing {
+    priceAmount
+    priceCurrency
+  }
+  event {
+    slug
+    title
+    heroImage {
+      url
+    }
+    organizer {
+      id
+      slug
+      name
+      image {
+        url
+      }
+    }
+  }
 }
-    `;
-export const EventPassOwnedFieldsFragmentDoc = `
-    fragment EventPassOwnedFields on eventPassOwned {
+    ${EventDateLocationsFieldsFragmentDoc}`;
+export const EventPassNftFieldsFragmentDoc = `
+    fragment EventPassNftFields on eventPassNft {
   id
   tokenId
   eventId
@@ -281,8 +317,8 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${EventDateLocationsFieldsFragmentDoc}`;
- const GetEventFromOrganizerIdDocument = `
-    query GetEventFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
+ const GetEventsFromOrganizerIdDocument = `
+    query GetEventsFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {id: $id}, locales: [$locale, en], stage: $stage) {
     events {
       title
@@ -303,7 +339,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
         eventPassPricing {
           maxAmount
         }
-        eventNftCollection {
+        eventPassNftContract {
           contractAddress
         }
       }
@@ -311,29 +347,13 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
- const GetEventNftCollectionByContractAddressWithMinimalEventPassesDocument = `
-    query GetEventNftCollectionByContractAddressWithMinimalEventPasses($contractAddress: String!, $stage: Stage!) {
-  eventNftCollection_by_pk(contractAddress: $contractAddress) {
-    activityWebhookId
-    chainId
-    contractAddress
-    eventPass {
-      event {
-        organizer {
-          id
-        }
-      }
-    }
+ const CreateEventPassNftContractDocument = `
+    mutation CreateEventPassNftContract($object: eventPassNftContract_insert_input!) {
+  insert_eventPassNftContract_one(object: $object) {
+    ...EventPassNftContractFields
   }
 }
-    `;
- const CreateEventNftCollectionDocument = `
-    mutation CreateEventNftCollection($object: eventNftCollection_insert_input!) {
-  insert_eventNftCollection_one(object: $object) {
-    ...EventNftCollectionFields
-  }
-}
-    ${EventNftCollectionFieldsFragmentDoc}`;
+    ${EventPassNftContractFieldsFragmentDoc}`;
  const GetEventPassesDocument = `
     query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
   eventPasses(
@@ -496,12 +516,6 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetNftTransferByTokenIdAndCollection(variables: Types.GetNftTransferByTokenIdAndCollectionQueryVariables, options?: C): Promise<Types.GetNftTransferByTokenIdAndCollectionQuery> {
       return requester<Types.GetNftTransferByTokenIdAndCollectionQuery, Types.GetNftTransferByTokenIdAndCollectionQueryVariables>(GetNftTransferByTokenIdAndCollectionDocument, variables, options) as Promise<Types.GetNftTransferByTokenIdAndCollectionQuery>;
     },
-    GetNftTransferByTxHash(variables: Types.GetNftTransferByTxHashQueryVariables, options?: C): Promise<Types.GetNftTransferByTxHashQuery> {
-      return requester<Types.GetNftTransferByTxHashQuery, Types.GetNftTransferByTxHashQueryVariables>(GetNftTransferByTxHashDocument, variables, options) as Promise<Types.GetNftTransferByTxHashQuery>;
-    },
-    GetNftTransferByTokenIdAndCollection(variables: Types.GetNftTransferByTokenIdAndCollectionQueryVariables, options?: C): Promise<Types.GetNftTransferByTokenIdAndCollectionQuery> {
-      return requester<Types.GetNftTransferByTokenIdAndCollectionQuery, Types.GetNftTransferByTokenIdAndCollectionQueryVariables>(GetNftTransferByTokenIdAndCollectionDocument, variables, options) as Promise<Types.GetNftTransferByTokenIdAndCollectionQuery>;
-    },
     GetNftByCollectionAndTokenIds(variables: Types.GetNftByCollectionAndTokenIdsQueryVariables, options?: C): Promise<Types.GetNftByCollectionAndTokenIdsQuery> {
       return requester<Types.GetNftByCollectionAndTokenIdsQuery, Types.GetNftByCollectionAndTokenIdsQueryVariables>(GetNftByCollectionAndTokenIdsDocument, variables, options) as Promise<Types.GetNftByCollectionAndTokenIdsQuery>;
     },
@@ -511,14 +525,11 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
       return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;
     },
-    GetEventFromOrganizerId(variables: Types.GetEventFromOrganizerIdQueryVariables, options?: C): Promise<Types.GetEventFromOrganizerIdQuery> {
-      return requester<Types.GetEventFromOrganizerIdQuery, Types.GetEventFromOrganizerIdQueryVariables>(GetEventFromOrganizerIdDocument, variables, options) as Promise<Types.GetEventFromOrganizerIdQuery>;
+    GetEventsFromOrganizerId(variables: Types.GetEventsFromOrganizerIdQueryVariables, options?: C): Promise<Types.GetEventsFromOrganizerIdQuery> {
+      return requester<Types.GetEventsFromOrganizerIdQuery, Types.GetEventsFromOrganizerIdQueryVariables>(GetEventsFromOrganizerIdDocument, variables, options) as Promise<Types.GetEventsFromOrganizerIdQuery>;
     },
-    GetEventNftCollectionByContractAddressWithMinimalEventPasses(variables: Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables, options?: C): Promise<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery> {
-      return requester<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery, Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQueryVariables>(GetEventNftCollectionByContractAddressWithMinimalEventPassesDocument, variables, options) as Promise<Types.GetEventNftCollectionByContractAddressWithMinimalEventPassesQuery>;
-    },
-    CreateEventNftCollection(variables: Types.CreateEventNftCollectionMutationVariables, options?: C): Promise<Types.CreateEventNftCollectionMutation> {
-      return requester<Types.CreateEventNftCollectionMutation, Types.CreateEventNftCollectionMutationVariables>(CreateEventNftCollectionDocument, variables, options) as Promise<Types.CreateEventNftCollectionMutation>;
+    CreateEventPassNftContract(variables: Types.CreateEventPassNftContractMutationVariables, options?: C): Promise<Types.CreateEventPassNftContractMutation> {
+      return requester<Types.CreateEventPassNftContractMutation, Types.CreateEventPassNftContractMutationVariables>(CreateEventPassNftContractDocument, variables, options) as Promise<Types.CreateEventPassNftContractMutation>;
     },
     GetEventPasses(variables: Types.GetEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassesQuery> {
       return requester<Types.GetEventPassesQuery, Types.GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<Types.GetEventPassesQuery>;

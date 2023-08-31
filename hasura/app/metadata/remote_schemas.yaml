@@ -38,9 +38,9 @@
               relationship_type: object
               source: default
               table:
-                name: eventParameters
+                name: eventPassNftContract
                 schema: public
-          name: eventNftCollection
+          name: eventPassNftContract
       type_name: EventPass
     - relationships: []
       type_name: Event

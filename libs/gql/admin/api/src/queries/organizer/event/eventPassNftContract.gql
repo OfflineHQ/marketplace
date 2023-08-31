@@ -1,0 +1,15 @@
+fragment EventPassNftContractFields on eventPassNftContract {
+  chainId
+  contractAddress
+  eventId
+  eventPassId
+  organizerId
+}
+
+mutation CreateEventPassNftContract(
+  $object: eventPassNftContract_insert_input!
+) {
+  insert_eventPassNftContract_one(object: $object) {
+    ...EventPassNftContractFields
+  }
+}
