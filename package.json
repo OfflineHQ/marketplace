@@ -208,6 +208,7 @@
     "@web3auth/modal": "^5.2.1",
     "@web3auth/openlogin-adapter": "^5.2.1",
     "axe-playwright": "^1.2.3",
+    "babel-jest": "^29.4.1",
     "babel-loader": "^9.1.2",
     "chromatic": "^6.19.9",
     "cross-env": "^7.0.3",

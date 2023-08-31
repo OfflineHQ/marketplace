@@ -1,4 +1,4 @@
-import { getCurrentUser } from '@web/lib/session';
+import { getCurrentUser } from '@next/next-auth/user';
 import { ProfileNavClient } from '../../../components/ProfileNavClient/ProfileNavClient';
 import { OrganizerDashboard } from '@features/organizer/dashboard';
 
@@ -7,7 +7,7 @@ export async function Dashboard() {
 
   return (
     <>
-      <ProfileNavClient> </ProfileNavClient>
+      <ProfileNavClient />
       {user ? (
         <div>
           {user.organizerId ? (

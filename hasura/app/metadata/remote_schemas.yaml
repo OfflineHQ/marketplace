@@ -34,11 +34,13 @@
         - definition:
             to_source:
               field_mapping:
-                id: eventId
-              relationship_type: array
+                id: eventPassId
+              relationship_type: object
               source: default
               table:
                 name: eventParameters
                 schema: public
-          name: eventParameters
+          name: eventNftCollection
+      type_name: EventPass
+    - relationships: []
       type_name: Event

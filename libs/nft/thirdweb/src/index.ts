@@ -17,6 +17,7 @@ class nftCollection {
     const web3Provider = new ethers.providers.Web3Provider(provider);
     const signer = web3Provider.getSigner();
     this.sdk = ThirdwebSDK.fromSigner(signer, 'goerli', {
+      //TODO: networkId to env.
       clientId: '3ce7c20950e008cb1d6138a4a06d7e7f',
     });
   }
