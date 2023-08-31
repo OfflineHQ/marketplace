@@ -168,6 +168,86 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
+ const GetPassedEventsWithEventPassNftsDocument = `
+    query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: date!, $locale: Locale!, $stage: Stage!) {
+  eventParameters(
+    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_lt: $currentDate}}
+    order_by: {dateEnd: desc}
+  ) {
+    dateStart
+    dateEnd
+    eventPassNftContracts(
+      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+    ) {
+      eventPass(locales: [$locale, en], stage: $stage) {
+        name
+        id
+        nftImage {
+          url
+        }
+      }
+      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+        isRevealed
+        tokenId
+      }
+    }
+    organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      name
+      image {
+        url
+      }
+    }
+    event(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      title
+      heroImage {
+        url
+      }
+    }
+  }
+}
+    `;
+ const GetUpcomingEventsWithEventPassNftsDocument = `
+    query GetUpcomingEventsWithEventPassNfts($address: String!, $currentDate: date!, $locale: Locale!, $stage: Stage!) {
+  eventParameters(
+    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_gte: $currentDate}}
+    order_by: {dateStart: asc}
+  ) {
+    dateStart
+    dateEnd
+    eventPassNftContracts(
+      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+    ) {
+      eventPass(locales: [$locale, en], stage: $stage) {
+        name
+        nftImage {
+          url
+        }
+        id
+      }
+      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+        isRevealed
+        tokenId
+      }
+    }
+    organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      name
+      image {
+        url
+      }
+    }
+    event(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      title
+      heroImage {
+        url
+      }
+    }
+  }
+}
+    `;
  const GetEventPassNftByTokenReferenceDocument = `
     query GetEventPassNftByTokenReference($organizerId: String!, $eventId: String!, $eventPassId: String!, $tokenId: bigint!, $chainId: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPassNft(
@@ -207,6 +287,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassPendingOrders(variables: Types.GetEventPassPendingOrdersQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersQuery> {
       return requester<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables, options) as Promise<Types.GetEventPassPendingOrdersQuery>;
+    },
+    GetPassedEventsWithEventPassNfts(variables: Types.GetPassedEventsWithEventPassNftsQueryVariables, options?: C): Promise<Types.GetPassedEventsWithEventPassNftsQuery> {
+      return requester<Types.GetPassedEventsWithEventPassNftsQuery, Types.GetPassedEventsWithEventPassNftsQueryVariables>(GetPassedEventsWithEventPassNftsDocument, variables, options) as Promise<Types.GetPassedEventsWithEventPassNftsQuery>;
+    },
+    GetUpcomingEventsWithEventPassNfts(variables: Types.GetUpcomingEventsWithEventPassNftsQueryVariables, options?: C): Promise<Types.GetUpcomingEventsWithEventPassNftsQuery> {
+      return requester<Types.GetUpcomingEventsWithEventPassNftsQuery, Types.GetUpcomingEventsWithEventPassNftsQueryVariables>(GetUpcomingEventsWithEventPassNftsDocument, variables, options) as Promise<Types.GetUpcomingEventsWithEventPassNftsQuery>;
     },
     GetEventPassNftByTokenReference(variables: Types.GetEventPassNftByTokenReferenceQueryVariables, options?: C): Promise<Types.GetEventPassNftByTokenReferenceQuery> {
       return requester<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables, options) as Promise<Types.GetEventPassNftByTokenReferenceQuery>;

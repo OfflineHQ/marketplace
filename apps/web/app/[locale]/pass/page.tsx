@@ -1,7 +1,24 @@
-import { NoUserPass } from '@features/pass/server';
-import { getCurrentUser } from '@next/next-auth/user';
+import { getUpcomingEventsWithEventPassNfts } from '@features/pass-api';
+import type { Locale } from '@gql/shared/types';
+import { UserPassList } from '@features/pass/server';
+interface PassTabComingSoonProps {
+  params: {
+    locale: Locale;
+  };
+}
 
-export default async function PassSection() {
-  const user = await getCurrentUser();
-  return user ? <div>Pass for user {user.id}</div> : <NoUserPass />;
+export default async function PassTabComingSoon({
+  params: { locale },
+}: PassTabComingSoonProps) {
+  const events = await getUpcomingEventsWithEventPassNfts({
+    locale,
+    currentDate: new Date().toUTCString(),
+  });
+  return (
+    <UserPassList
+      eventsParameters={events}
+      noPassImage="./empty-pass.svg"
+      passActions={() => []}
+    />
+  );
 }

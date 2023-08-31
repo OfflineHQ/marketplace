@@ -1,7 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Award } from '@ui/icons';
 
-import { Badge, BadgeProps, badgeVariants, badgeSizes } from './Badge';
+import {
+  Badge,
+  BadgeProps,
+  BadgeSkeleton,
+  type BadgeSkeletonProps,
+  badgeVariants,
+  badgeSizes,
+} from './Badge';
 
 const variantOptions = Object.keys(badgeVariants);
 const sizeOptions = Object.keys(badgeSizes);
@@ -35,14 +42,18 @@ export const DefaultBadge: Story = {
 
 export const IconOnly: Story = {
   args: {
-    icon: Award,
+    icon: <Award />,
   },
 };
 
 const AllVariantsComponent: React.FC = () => (
   <>
     {variantOptions.map((variant) => (
-      <Badge key={variant} variant={variant as keyof typeof badgeVariants}>
+      <Badge
+        key={variant}
+        variant={variant as keyof typeof badgeVariants}
+        className="mb-2"
+      >
         {variant}
       </Badge>
     ))}
@@ -61,7 +72,7 @@ export const AllVariants = {
 const AllSizesComponent: React.FC = () => (
   <>
     {sizeOptions.map((size) => (
-      <Badge key={size} size={size as keyof typeof badgeSizes}>
+      <Badge key={size} size={size as keyof typeof badgeSizes} className="mb-2">
         {size}
       </Badge>
     ))}
@@ -80,7 +91,12 @@ export const AllSizes = {
 const AllVariantsWithIconComponent: React.FC = () => (
   <>
     {variantOptions.map((variant) => (
-      <Badge key={variant} variant={variant as keyof typeof badgeVariants} icon={Award}>
+      <Badge
+        key={variant}
+        variant={variant as keyof typeof badgeVariants}
+        icon={<Award />}
+        className="mb-2"
+      >
         {variant} with Icon
       </Badge>
     ))}
@@ -99,7 +115,12 @@ export const AllVariantsWithIcon = {
 const AllSizesWithIconComponent: React.FC = () => (
   <>
     {sizeOptions.map((size) => (
-      <Badge key={size} size={size as keyof typeof badgeSizes} icon={Award}>
+      <Badge
+        key={size}
+        size={size as keyof typeof badgeSizes}
+        icon={<Award />}
+        className="mb-2"
+      >
         {size} with Icon
       </Badge>
     ))}
@@ -108,6 +129,27 @@ const AllSizesWithIconComponent: React.FC = () => (
 
 export const AllSizesWithIcon = {
   render: AllSizesWithIconComponent,
+  argTypes: {
+    size: {
+      control: false,
+    },
+  },
+};
+
+const AllSkeletonSizesComponent: React.FC = () => (
+  <>
+    {sizeOptions.map((size) => (
+      <BadgeSkeleton
+        key={size}
+        size={size as keyof typeof badgeSizes}
+        className="mb-2"
+      />
+    ))}
+  </>
+);
+
+export const AllSkeletonSizes = {
+  render: AllSkeletonSizesComponent,
   argTypes: {
     size: {
       control: false,

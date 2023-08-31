@@ -1147,6 +1147,22 @@ type Event implements Node {
     skip: Int
     where: EventDateLocationWhereInput
   ): [EventDateLocation!]!
+  eventParameters(
+    """distinct select on columns"""
+    distinct_on: [eventParameters_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventParameters_order_by!]
+
+    """filter the rows returned"""
+    where: eventParameters_bool_exp
+  ): [eventParameters!]!
   eventPasses(
     after: String
     before: String
@@ -1971,6 +1987,7 @@ type EventPass implements Node {
     """
     locales: [Locale!]
   ): Event
+  eventPassNftContract: eventPassNftContract
   eventPassOrderSums: eventPassOrderSums
   eventPassPricing: eventPassPricing
 
@@ -3213,6 +3230,16 @@ input EventWhereStageInput {
 """References Event record uniquely"""
 input EventWhereUniqueInput {
   id: ID
+  slug: String
+}
+
+"""References Event record uniquely"""
+input EventWhereUniqueInput_remote_rel_eventParametersevent {
+  slug: String
+}
+
+"""References Event record uniquely"""
+input EventWhereUniqueInput_remote_rel_eventPassNftevent {
   slug: String
 }
 
@@ -4527,6 +4554,18 @@ input OrganizerWhereUniqueInput {
 
 """References Organizer record uniquely"""
 input OrganizerWhereUniqueInput_remote_rel_accountorganizer {
+  name: String
+  slug: String
+}
+
+"""References Organizer record uniquely"""
+input OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer {
+  name: String
+  slug: String
+}
+
+"""References Organizer record uniquely"""
+input OrganizerWhereUniqueInput_remote_rel_eventPassNftorganizer {
   name: String
   slug: String
 }
@@ -6264,6 +6303,156 @@ enum cursor_ordering {
   DESC
 }
 
+scalar date
+
+"""
+Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'.
+"""
+input date_comparison_exp {
+  _eq: date
+  _gt: date
+  _gte: date
+  _in: [date!]
+  _is_null: Boolean
+  _lt: date
+  _lte: date
+  _neq: date
+  _nin: [date!]
+}
+
+"""
+The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling.
+"""
+type eventParameters {
+  dateEnd: date
+  dateStart: date
+  event(
+    """
+    Defines which locales should be returned.
+    
+    Note that `Event` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: EventWhereUniqueInput_remote_rel_eventParametersevent!
+  ): Event
+  eventId: String!
+
+  """An array relationship"""
+  eventPassNftContracts(
+    """distinct select on columns"""
+    distinct_on: [eventPassNftContract_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNftContract_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNftContract_bool_exp
+  ): [eventPassNftContract!]!
+
+  """An array relationship"""
+  eventPassNfts(
+    """distinct select on columns"""
+    distinct_on: [eventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNft_bool_exp
+  ): [eventPassNft!]!
+  organizer(
+    """
+    Defines which locales should be returned.
+    
+    Note that `Organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer!
+  ): Organizer
+  organizerId: String!
+}
+
+"""
+Boolean expression to filter rows from the table "eventParameters". All fields are combined with a logical 'AND'.
+"""
+input eventParameters_bool_exp {
+  _and: [eventParameters_bool_exp!]
+  _not: eventParameters_bool_exp
+  _or: [eventParameters_bool_exp!]
+  dateEnd: date_comparison_exp
+  dateStart: date_comparison_exp
+  eventId: String_comparison_exp
+  eventPassNftContracts: eventPassNftContract_bool_exp
+  eventPassNfts: eventPassNft_bool_exp
+  organizerId: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "eventParameters"."""
+input eventParameters_order_by {
+  dateEnd: order_by
+  dateStart: order_by
+  eventId: order_by
+  eventPassNftContracts_aggregate: eventPassNftContract_aggregate_order_by
+  eventPassNfts_aggregate: eventPassNft_aggregate_order_by
+  organizerId: order_by
+}
+
+"""
+select columns of table "eventParameters"
+"""
+enum eventParameters_select_column {
+  """column name"""
+  dateEnd
+
+  """column name"""
+  dateStart
+
+  """column name"""
+  eventId
+
+  """column name"""
+  organizerId
+}
+
+"""
+Streaming cursor of the table "eventParameters"
+"""
+input eventParameters_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: eventParameters_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input eventParameters_stream_cursor_value_input {
+  dateEnd: date
+  dateStart: date
+  eventId: String
+  organizerId: String
+}
+
 """
 The eventPassNft model is designed to consolidate and store the metadata associated with each event pass NFT. It centralizes fixed metadata, enabling the system to retrieve NFT details without frequently querying external APIs. It integrates with the existing nftTransfer model, providing a holistic view of each event pass NFT's journey and characteristics within the platform.
 """
@@ -6286,9 +6475,25 @@ type eventPassNft {
   Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process.
   """
   error: String
+  event(
+    """
+    Defines which locales should be returned.
+    
+    Note that `Event` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: EventWhereUniqueInput_remote_rel_eventPassNftevent!
+  ): Event
 
   """A reference to the event associated with the event pass NFT"""
   eventId: String!
+
+  """An object relationship"""
+  eventParameters: eventParameters
   eventPass(
     """
     Defines which locales should be returned.
@@ -6304,6 +6509,9 @@ type eventPassNft {
 
   """Directly relates to a specific Event Pass within the system"""
   eventPassId: String!
+
+  """An object relationship"""
+  eventPassNftContract: eventPassNftContract
 
   """An object relationship"""
   eventPassPricing: eventPassPricing
@@ -6325,6 +6533,19 @@ type eventPassNft {
     """JSON select path"""
     path: String
   ): jsonb!
+  organizer(
+    """
+    Defines which locales should be returned.
+    
+    Note that `Organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: OrganizerWhereUniqueInput_remote_rel_eventPassNftorganizer!
+  ): Organizer
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String!
@@ -6342,6 +6563,201 @@ type eventPassNft {
 }
 
 """
+The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes.
+"""
+type eventPassNftContract {
+  eventId: String!
+  eventPass(
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+  ): EventPass
+  eventPassId: String!
+
+  """An array relationship"""
+  eventPassNfts(
+    """distinct select on columns"""
+    distinct_on: [eventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNft_bool_exp
+  ): [eventPassNft!]!
+
+  """An object relationship"""
+  eventPassOrderSums: eventPassOrderSums
+
+  """An array relationship"""
+  eventPassOrders(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrder_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrder_bool_exp
+  ): [eventPassOrder!]!
+
+  """An aggregate relationship"""
+  eventPassOrders_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassOrder_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassOrder_bool_exp
+  ): eventPassOrder_aggregate!
+
+  """An object relationship"""
+  eventPassPricing: eventPassPricing
+  organizerId: String!
+}
+
+"""
+order by aggregate values of table "eventPassNftContract"
+"""
+input eventPassNftContract_aggregate_order_by {
+  count: order_by
+  max: eventPassNftContract_max_order_by
+  min: eventPassNftContract_min_order_by
+}
+
+"""
+Boolean expression to filter rows from the table "eventPassNftContract". All fields are combined with a logical 'AND'.
+"""
+input eventPassNftContract_bool_exp {
+  _and: [eventPassNftContract_bool_exp!]
+  _not: eventPassNftContract_bool_exp
+  _or: [eventPassNftContract_bool_exp!]
+  eventId: String_comparison_exp
+  eventPassId: String_comparison_exp
+  eventPassNfts: eventPassNft_bool_exp
+  eventPassOrderSums: eventPassOrderSums_bool_exp
+  eventPassOrders: eventPassOrder_bool_exp
+  eventPassOrders_aggregate: eventPassOrder_aggregate_bool_exp
+  eventPassPricing: eventPassPricing_bool_exp
+  organizerId: String_comparison_exp
+}
+
+"""
+order by max() on columns of table "eventPassNftContract"
+"""
+input eventPassNftContract_max_order_by {
+  eventId: order_by
+  eventPassId: order_by
+  organizerId: order_by
+}
+
+"""
+order by min() on columns of table "eventPassNftContract"
+"""
+input eventPassNftContract_min_order_by {
+  eventId: order_by
+  eventPassId: order_by
+  organizerId: order_by
+}
+
+"""Ordering options when selecting data from "eventPassNftContract"."""
+input eventPassNftContract_order_by {
+  eventId: order_by
+  eventPassId: order_by
+  eventPassNfts_aggregate: eventPassNft_aggregate_order_by
+  eventPassOrderSums: eventPassOrderSums_order_by
+  eventPassOrders_aggregate: eventPassOrder_aggregate_order_by
+  eventPassPricing: eventPassPricing_order_by
+  organizerId: order_by
+}
+
+"""
+select columns of table "eventPassNftContract"
+"""
+enum eventPassNftContract_select_column {
+  """column name"""
+  eventId
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  organizerId
+}
+
+"""
+Streaming cursor of the table "eventPassNftContract"
+"""
+input eventPassNftContract_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: eventPassNftContract_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input eventPassNftContract_stream_cursor_value_input {
+  eventId: String
+  eventPassId: String
+  organizerId: String
+}
+
+"""
+order by aggregate values of table "eventPassNft"
+"""
+input eventPassNft_aggregate_order_by {
+  avg: eventPassNft_avg_order_by
+  count: order_by
+  max: eventPassNft_max_order_by
+  min: eventPassNft_min_order_by
+  stddev: eventPassNft_stddev_order_by
+  stddev_pop: eventPassNft_stddev_pop_order_by
+  stddev_samp: eventPassNft_stddev_samp_order_by
+  sum: eventPassNft_sum_order_by
+  var_pop: eventPassNft_var_pop_order_by
+  var_samp: eventPassNft_var_samp_order_by
+  variance: eventPassNft_variance_order_by
+}
+
+"""
+order by avg() on columns of table "eventPassNft"
+"""
+input eventPassNft_avg_order_by {
+  """
+  The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: order_by
+}
+
+"""
 Boolean expression to filter rows from the table "eventPassNft". All fields are combined with a logical 'AND'.
 """
 input eventPassNft_bool_exp {
@@ -6354,7 +6770,9 @@ input eventPassNft_bool_exp {
   currentOwnerAddress: String_comparison_exp
   error: String_comparison_exp
   eventId: String_comparison_exp
+  eventParameters: eventParameters_bool_exp
   eventPassId: String_comparison_exp
+  eventPassNftContract: eventPassNftContract_bool_exp
   eventPassPricing: eventPassPricing_bool_exp
   isRevealed: Boolean_comparison_exp
   lastNftTransferId: uuid_comparison_exp
@@ -6365,6 +6783,104 @@ input eventPassNft_bool_exp {
   updated_at: timestamptz_comparison_exp
 }
 
+"""
+order by max() on columns of table "eventPassNft"
+"""
+input eventPassNft_max_order_by {
+  """Denotes the specific blockchain or network of the event pass NFT"""
+  chainId: order_by
+
+  """
+  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  """
+  contractAddress: order_by
+  created_at: order_by
+
+  """
+  The address currently holding the event pass NFT, allowing tracking of ownership
+  """
+  currentOwnerAddress: order_by
+
+  """
+  Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process.
+  """
+  error: order_by
+
+  """A reference to the event associated with the event pass NFT"""
+  eventId: order_by
+
+  """Directly relates to a specific Event Pass within the system"""
+  eventPassId: order_by
+
+  """
+  Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT.
+  """
+  lastNftTransferId: order_by
+
+  """Ties the event pass NFT to a specific organizer within the platform"""
+  organizerId: order_by
+
+  """
+  The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: order_by
+
+  """
+  The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction.
+  """
+  tokenUri: order_by
+  updated_at: order_by
+}
+
+"""
+order by min() on columns of table "eventPassNft"
+"""
+input eventPassNft_min_order_by {
+  """Denotes the specific blockchain or network of the event pass NFT"""
+  chainId: order_by
+
+  """
+  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  """
+  contractAddress: order_by
+  created_at: order_by
+
+  """
+  The address currently holding the event pass NFT, allowing tracking of ownership
+  """
+  currentOwnerAddress: order_by
+
+  """
+  Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process.
+  """
+  error: order_by
+
+  """A reference to the event associated with the event pass NFT"""
+  eventId: order_by
+
+  """Directly relates to a specific Event Pass within the system"""
+  eventPassId: order_by
+
+  """
+  Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT.
+  """
+  lastNftTransferId: order_by
+
+  """Ties the event pass NFT to a specific organizer within the platform"""
+  organizerId: order_by
+
+  """
+  The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: order_by
+
+  """
+  The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction.
+  """
+  tokenUri: order_by
+  updated_at: order_by
+}
+
 """Ordering options when selecting data from "eventPassNft"."""
 input eventPassNft_order_by {
   chainId: order_by
@@ -6373,7 +6889,9 @@ input eventPassNft_order_by {
   currentOwnerAddress: order_by
   error: order_by
   eventId: order_by
+  eventParameters: eventParameters_order_by
   eventPassId: order_by
+  eventPassNftContract: eventPassNftContract_order_by
   eventPassPricing: eventPassPricing_order_by
   isRevealed: order_by
   lastNftTransferId: order_by
@@ -6429,6 +6947,36 @@ enum eventPassNft_select_column {
 
   """column name"""
   updated_at
+}
+
+"""
+order by stddev() on columns of table "eventPassNft"
+"""
+input eventPassNft_stddev_order_by {
+  """
+  The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: order_by
+}
+
+"""
+order by stddev_pop() on columns of table "eventPassNft"
+"""
+input eventPassNft_stddev_pop_order_by {
+  """
+  The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: order_by
+}
+
+"""
+order by stddev_samp() on columns of table "eventPassNft"
+"""
+input eventPassNft_stddev_samp_order_by {
+  """
+  The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: order_by
 }
 
 """
@@ -6497,6 +7045,46 @@ input eventPassNft_stream_cursor_value_input {
   """
   tokenUri: String
   updated_at: timestamptz
+}
+
+"""
+order by sum() on columns of table "eventPassNft"
+"""
+input eventPassNft_sum_order_by {
+  """
+  The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: order_by
+}
+
+"""
+order by var_pop() on columns of table "eventPassNft"
+"""
+input eventPassNft_var_pop_order_by {
+  """
+  The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: order_by
+}
+
+"""
+order by var_samp() on columns of table "eventPassNft"
+"""
+input eventPassNft_var_samp_order_by {
+  """
+  The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: order_by
+}
+
+"""
+order by variance() on columns of table "eventPassNft"
+"""
+input eventPassNft_variance_order_by {
+  """
+  The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
+  """
+  tokenId: order_by
 }
 
 """
@@ -6587,6 +7175,17 @@ type eventPassOrder_aggregate {
   nodes: [eventPassOrder!]!
 }
 
+input eventPassOrder_aggregate_bool_exp {
+  count: eventPassOrder_aggregate_bool_exp_count
+}
+
+input eventPassOrder_aggregate_bool_exp_count {
+  arguments: [eventPassOrder_select_column!]
+  distinct: Boolean
+  filter: eventPassOrder_bool_exp
+  predicate: Int_comparison_exp!
+}
+
 """
 aggregate fields of "eventPassOrder"
 """
@@ -6604,9 +7203,33 @@ type eventPassOrder_aggregate_fields {
   variance: eventPassOrder_variance_fields
 }
 
+"""
+order by aggregate values of table "eventPassOrder"
+"""
+input eventPassOrder_aggregate_order_by {
+  avg: eventPassOrder_avg_order_by
+  count: order_by
+  max: eventPassOrder_max_order_by
+  min: eventPassOrder_min_order_by
+  stddev: eventPassOrder_stddev_order_by
+  stddev_pop: eventPassOrder_stddev_pop_order_by
+  stddev_samp: eventPassOrder_stddev_samp_order_by
+  sum: eventPassOrder_sum_order_by
+  var_pop: eventPassOrder_var_pop_order_by
+  var_samp: eventPassOrder_var_samp_order_by
+  variance: eventPassOrder_variance_order_by
+}
+
 """aggregate avg on columns"""
 type eventPassOrder_avg_fields {
   quantity: Float
+}
+
+"""
+order by avg() on columns of table "eventPassOrder"
+"""
+input eventPassOrder_avg_order_by {
+  quantity: order_by
 }
 
 """
@@ -6635,6 +7258,17 @@ type eventPassOrder_max_fields {
   updated_at: timestamptz
 }
 
+"""
+order by max() on columns of table "eventPassOrder"
+"""
+input eventPassOrder_max_order_by {
+  created_at: order_by
+  eventPassId: order_by
+  id: order_by
+  quantity: order_by
+  updated_at: order_by
+}
+
 """aggregate min on columns"""
 type eventPassOrder_min_fields {
   created_at: timestamptz
@@ -6642,6 +7276,17 @@ type eventPassOrder_min_fields {
   id: uuid
   quantity: Int
   updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "eventPassOrder"
+"""
+input eventPassOrder_min_order_by {
+  created_at: order_by
+  eventPassId: order_by
+  id: order_by
+  quantity: order_by
+  updated_at: order_by
 }
 
 """Ordering options when selecting data from "eventPassOrder"."""
@@ -6684,14 +7329,35 @@ type eventPassOrder_stddev_fields {
   quantity: Float
 }
 
+"""
+order by stddev() on columns of table "eventPassOrder"
+"""
+input eventPassOrder_stddev_order_by {
+  quantity: order_by
+}
+
 """aggregate stddev_pop on columns"""
 type eventPassOrder_stddev_pop_fields {
   quantity: Float
 }
 
+"""
+order by stddev_pop() on columns of table "eventPassOrder"
+"""
+input eventPassOrder_stddev_pop_order_by {
+  quantity: order_by
+}
+
 """aggregate stddev_samp on columns"""
 type eventPassOrder_stddev_samp_fields {
   quantity: Float
+}
+
+"""
+order by stddev_samp() on columns of table "eventPassOrder"
+"""
+input eventPassOrder_stddev_samp_order_by {
+  quantity: order_by
 }
 
 """
@@ -6720,9 +7386,23 @@ type eventPassOrder_sum_fields {
   quantity: Int
 }
 
+"""
+order by sum() on columns of table "eventPassOrder"
+"""
+input eventPassOrder_sum_order_by {
+  quantity: order_by
+}
+
 """aggregate var_pop on columns"""
 type eventPassOrder_var_pop_fields {
   quantity: Float
+}
+
+"""
+order by var_pop() on columns of table "eventPassOrder"
+"""
+input eventPassOrder_var_pop_order_by {
+  quantity: order_by
 }
 
 """aggregate var_samp on columns"""
@@ -6730,9 +7410,23 @@ type eventPassOrder_var_samp_fields {
   quantity: Float
 }
 
+"""
+order by var_samp() on columns of table "eventPassOrder"
+"""
+input eventPassOrder_var_samp_order_by {
+  quantity: order_by
+}
+
 """aggregate variance on columns"""
 type eventPassOrder_variance_fields {
   quantity: Float
+}
+
+"""
+order by variance() on columns of table "eventPassOrder"
+"""
+input eventPassOrder_variance_order_by {
+  quantity: order_by
 }
 
 """
@@ -8141,6 +8835,22 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: EventWhereUniqueInput!
   ): Event
+  eventParameters(
+    """distinct select on columns"""
+    distinct_on: [eventParameters_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventParameters_order_by!]
+
+    """filter the rows returned"""
+    where: eventParameters_bool_exp
+  ): [eventParameters!]!
 
   """Retrieve a single eventPass"""
   eventPass(
@@ -8176,6 +8886,26 @@ type query_root {
     """filter the rows returned"""
     where: eventPassNft_bool_exp
   ): [eventPassNft!]!
+
+  """
+  fetch data from the table: "eventPassNftContract"
+  """
+  eventPassNftContract(
+    """distinct select on columns"""
+    distinct_on: [eventPassNftContract_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNftContract_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNftContract_bool_exp
+  ): [eventPassNftContract!]!
 
   """
   fetch data from the table: "eventPassOrder"
@@ -8682,6 +9412,36 @@ type subscription_root {
     """filter the rows returned"""
     where: account_bool_exp
   ): [account!]!
+  eventParameters(
+    """distinct select on columns"""
+    distinct_on: [eventParameters_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventParameters_order_by!]
+
+    """filter the rows returned"""
+    where: eventParameters_bool_exp
+  ): [eventParameters!]!
+
+  """
+  fetch data from the table in a streaming manner: "eventParameters"
+  """
+  eventParameters_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [eventParameters_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: eventParameters_bool_exp
+  ): [eventParameters!]!
 
   """
   fetch data from the table: "eventPassNft"
@@ -8702,6 +9462,40 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassNft_bool_exp
   ): [eventPassNft!]!
+
+  """
+  fetch data from the table: "eventPassNftContract"
+  """
+  eventPassNftContract(
+    """distinct select on columns"""
+    distinct_on: [eventPassNftContract_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNftContract_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNftContract_bool_exp
+  ): [eventPassNftContract!]!
+
+  """
+  fetch data from the table in a streaming manner: "eventPassNftContract"
+  """
+  eventPassNftContract_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [eventPassNftContract_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: eventPassNftContract_bool_exp
+  ): [eventPassNftContract!]!
 
   """
   fetch data from the table in a streaming manner: "eventPassNft"

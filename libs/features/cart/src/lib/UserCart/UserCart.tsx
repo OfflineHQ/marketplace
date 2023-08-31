@@ -21,12 +21,17 @@ export interface UserCartProps extends LocalPassListProps {
   locale: string;
 }
 
-export async function UserCart({ EventPassesFetcher, locale }: UserCartProps) {
+export async function UserCart({
+  EventPassesFetcher,
+  locale,
+  noCartImage,
+}: UserCartProps) {
   const userPassPendingOrders = await getEventPassPendingOrders({ locale });
   return (
     <UserCartSection
       EventPassesFetcher={EventPassesFetcher}
       userPassPendingOrders={userPassPendingOrders}
+      noCartImage={noCartImage}
     />
   );
 }
@@ -36,6 +41,7 @@ type UserCartSectionProps = LocalPassListProps;
 const UserCartSection: React.FC<UserCartSectionProps> = ({
   EventPassesFetcher,
   userPassPendingOrders,
+  noCartImage,
 }) => {
   const t = useTranslations('Cart.UserCart');
   return (
@@ -50,6 +56,7 @@ const UserCartSection: React.FC<UserCartSectionProps> = ({
             <LocalPassList
               EventPassesFetcher={EventPassesFetcher}
               userPassPendingOrders={userPassPendingOrders}
+              noCartImage={noCartImage}
             />
           </CardContent>
         </CardOverflow>

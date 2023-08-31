@@ -256,6 +256,110 @@ export const useGetEventPassPendingOrdersQuery = <
       fetchDataReactQuery<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables),
       options
     );
+export const GetPassedEventsWithEventPassNftsDocument = `
+    query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: date!, $locale: Locale!, $stage: Stage!) {
+  eventParameters(
+    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_lt: $currentDate}}
+    order_by: {dateEnd: desc}
+  ) {
+    dateStart
+    dateEnd
+    eventPassNftContracts(
+      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+    ) {
+      eventPass(locales: [$locale, en], stage: $stage) {
+        name
+        id
+        nftImage {
+          url
+        }
+      }
+      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+        isRevealed
+        tokenId
+      }
+    }
+    organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      name
+      image {
+        url
+      }
+    }
+    event(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      title
+      heroImage {
+        url
+      }
+    }
+  }
+}
+    `;
+export const useGetPassedEventsWithEventPassNftsQuery = <
+      TData = Types.GetPassedEventsWithEventPassNftsQuery,
+      TError = Error
+    >(
+      variables: Types.GetPassedEventsWithEventPassNftsQueryVariables,
+      options?: UseQueryOptions<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>(
+      ['GetPassedEventsWithEventPassNfts', variables],
+      fetchDataReactQuery<Types.GetPassedEventsWithEventPassNftsQuery, Types.GetPassedEventsWithEventPassNftsQueryVariables>(GetPassedEventsWithEventPassNftsDocument, variables),
+      options
+    );
+export const GetUpcomingEventsWithEventPassNftsDocument = `
+    query GetUpcomingEventsWithEventPassNfts($address: String!, $currentDate: date!, $locale: Locale!, $stage: Stage!) {
+  eventParameters(
+    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_gte: $currentDate}}
+    order_by: {dateStart: asc}
+  ) {
+    dateStart
+    dateEnd
+    eventPassNftContracts(
+      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+    ) {
+      eventPass(locales: [$locale, en], stage: $stage) {
+        name
+        nftImage {
+          url
+        }
+        id
+      }
+      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+        isRevealed
+        tokenId
+      }
+    }
+    organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      name
+      image {
+        url
+      }
+    }
+    event(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      title
+      heroImage {
+        url
+      }
+    }
+  }
+}
+    `;
+export const useGetUpcomingEventsWithEventPassNftsQuery = <
+      TData = Types.GetUpcomingEventsWithEventPassNftsQuery,
+      TError = Error
+    >(
+      variables: Types.GetUpcomingEventsWithEventPassNftsQueryVariables,
+      options?: UseQueryOptions<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>(
+      ['GetUpcomingEventsWithEventPassNfts', variables],
+      fetchDataReactQuery<Types.GetUpcomingEventsWithEventPassNftsQuery, Types.GetUpcomingEventsWithEventPassNftsQueryVariables>(GetUpcomingEventsWithEventPassNftsDocument, variables),
+      options
+    );
 export const GetEventPassNftByTokenReferenceDocument = `
     query GetEventPassNftByTokenReference($organizerId: String!, $eventId: String!, $eventPassId: String!, $tokenId: bigint!, $chainId: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPassNft(

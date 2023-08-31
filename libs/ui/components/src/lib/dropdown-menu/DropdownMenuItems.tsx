@@ -30,9 +30,22 @@ interface MenuItem {
 interface DropdownMenuItemsProps {
   items: MenuItem[];
   className?: string;
+  setLoading: (loading: boolean) => void;
 }
 
-const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({ items, className }) => {
+const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
+  items,
+  className,
+  setLoading,
+}) => {
+  const handleAction = async (action: (() => void) | undefined) => {
+    if (setLoading) setLoading(true);
+    try {
+      if (action) await action();
+    } finally {
+      if (setLoading) setLoading(false);
+    }
+  };
   return (
     <DropdownMenuContent className={cn('w-56', className)}>
       {items.map((item, index) => {
@@ -55,12 +68,15 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({ items, className 
               <DropdownMenuGroup key={index}>
                 <DropdownMenuItem
                   disabled={item.disabled}
-                  onSelect={item.action}
+                  onSelect={() => handleAction(item.action)}
                   wrapper={item.wrapper}
                   className={item.className}
                 >
                   {item.icon &&
-                    React.cloneElement(item.icon, { size: 'sm', marginRight: 'default' })}
+                    React.cloneElement(item.icon, {
+                      size: 'sm',
+                      marginRight: 'default',
+                    })}
                   <span>{item.text}</span>
                   {item.shortcut && (
                     <DropdownMenuShortcut>{item.shortcut}</DropdownMenuShortcut>
@@ -83,7 +99,10 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({ items, className 
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
                     <DropdownMenuSubContent>
-                      <DropdownMenuItems items={item.subItems || []} />
+                      <DropdownMenuItems
+                        items={item.subItems || []}
+                        setLoading={setLoading}
+                      />
                     </DropdownMenuSubContent>
                   </DropdownMenuPortal>
                 </DropdownMenuSub>

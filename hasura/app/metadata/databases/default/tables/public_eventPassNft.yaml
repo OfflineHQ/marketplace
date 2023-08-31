@@ -2,6 +2,27 @@ table:
   name: eventPassNft
   schema: public
 object_relationships:
+  - name: eventParameters
+    using:
+      manual_configuration:
+        column_mapping:
+          eventId: eventId
+        insertion_order: null
+        remote_table:
+          name: eventParameters
+          schema: public
+  - name: eventPassNftContract
+    using:
+      manual_configuration:
+        column_mapping:
+          chainId: chainId
+          contractAddress: contractAddress
+          eventId: eventId
+          eventPassId: eventPassId
+        insertion_order: null
+        remote_table:
+          name: eventPassNftContract
+          schema: public
   - name: eventPassPricing
     using:
       manual_configuration:
@@ -36,6 +57,17 @@ remote_relationships:
   - definition:
       to_remote_schema:
         lhs_fields:
+          - eventId
+        remote_field:
+          event:
+            arguments:
+              where:
+                id: $eventId
+        remote_schema: Hygraph CMS Remote Schema
+    name: event
+  - definition:
+      to_remote_schema:
+        lhs_fields:
           - eventPassId
         remote_field:
           eventPass:
@@ -44,6 +76,17 @@ remote_relationships:
                 id: $eventPassId
         remote_schema: Hygraph CMS Remote Schema
     name: eventPass
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - organizerId
+        remote_field:
+          organizer:
+            arguments:
+              where:
+                id: $organizerId
+        remote_schema: Hygraph CMS Remote Schema
+    name: organizer
 select_permissions:
   - role: anonymous
     permission:

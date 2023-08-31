@@ -9,15 +9,20 @@ import {
   type EventPassListProps,
 } from '../EventPassList/EventPassList';
 import { useState, useEffect } from 'react';
+import Image, { StaticImageData } from 'next/image';
+import { useTranslations } from 'next-intl';
+import { Alert } from '@ui/components';
 
 export interface LocalPassListClientProps
   extends Pick<EventPassListProps, 'EventPassesFetcher'> {
   userPassPendingOrders?: UserPassPendingOrder[];
+  noCartImage: string | StaticImageData;
 }
 
 export const LocalPassListClient: React.FC<LocalPassListClientProps> = ({
   EventPassesFetcher,
   userPassPendingOrders,
+  noCartImage,
 }) => {
   const syncAllPassesCart = usePassPurchaseStore(
     (state) => state.syncAllPassesCart
@@ -38,14 +43,27 @@ export const LocalPassListClient: React.FC<LocalPassListClientProps> = ({
     setAllPassesCart(syncAllPassesCart({ userPassPendingOrders }) || {});
   }, [userPassPendingOrders]);
 
-  // const allPassesCart = store?.syncAllPassesCart({ userPassPendingOrders });
+  const isCartEmpty = Object.values(allPassesCart || {}).every((organizer) =>
+    Object.values(organizer).every((event) => event.length === 0)
+  );
+  const t = useTranslations('Cart.List');
   return allPassesCart ? (
-    /* TODO add image or animation if cart is empty */
-    <EventPassList
-      allPasses={allPassesCart}
-      deletePassesCart={deletePassesCartAndUpdateStore}
-      EventPassesFetcher={EventPassesFetcher}
-    />
+    !isCartEmpty ? (
+      <EventPassList
+        allPasses={allPassesCart}
+        deletePassesCart={deletePassesCartAndUpdateStore}
+        EventPassesFetcher={EventPassesFetcher}
+      />
+    ) : (
+      <div className="m-5 flex flex-col items-center">
+        <Alert variant="info" className="w-max">
+          {t('no-cart')}
+        </Alert>
+        <div className="relative h-80 w-80 grow">
+          <Image fill src={noCartImage} alt={t('no-cart')} />
+        </div>
+      </div>
+    )
   ) : (
     <EventPassListSkeleton />
   );

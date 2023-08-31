@@ -3249,6 +3249,16 @@ input EventWhereUniqueInput {
   slug: String
 }
 
+"""References Event record uniquely"""
+input EventWhereUniqueInput_remote_rel_eventParametersevent {
+  slug: String
+}
+
+"""References Event record uniquely"""
+input EventWhereUniqueInput_remote_rel_eventPassNftevent {
+  slug: String
+}
+
 enum ImageFit {
   """
   Resizes the image to fit within the specified parameters without distorting, cropping, or changing the aspect ratio.
@@ -4560,6 +4570,18 @@ input OrganizerWhereUniqueInput {
 
 """References Organizer record uniquely"""
 input OrganizerWhereUniqueInput_remote_rel_accountorganizer {
+  name: String
+  slug: String
+}
+
+"""References Organizer record uniquely"""
+input OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer {
+  name: String
+  slug: String
+}
+
+"""References Organizer record uniquely"""
+input OrganizerWhereUniqueInput_remote_rel_eventPassNftorganizer {
   name: String
   slug: String
 }
@@ -6615,11 +6637,43 @@ enum cursor_ordering {
   DESC
 }
 
+scalar date
+
+"""
+Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'.
+"""
+input date_comparison_exp {
+  _eq: date
+  _gt: date
+  _gte: date
+  _in: [date!]
+  _is_null: Boolean
+  _lt: date
+  _lte: date
+  _neq: date
+  _nin: [date!]
+}
+
 """
 The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling.
 """
 type eventParameters {
   activityWebhookId: String
+  dateEnd: date
+  dateStart: date
+  event(
+    """
+    Defines which locales should be returned.
+    
+    Note that `Event` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: EventWhereUniqueInput_remote_rel_eventParametersevent!
+  ): Event
   eventId: String!
 
   """An array relationship"""
@@ -6657,7 +6711,57 @@ type eventParameters {
     """filter the rows returned"""
     where: eventPassNftContract_bool_exp
   ): eventPassNftContract_aggregate!
+
+  """An array relationship"""
+  eventPassNfts(
+    """distinct select on columns"""
+    distinct_on: [eventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNft_bool_exp
+  ): [eventPassNft!]!
+
+  """An aggregate relationship"""
+  eventPassNfts_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNft_bool_exp
+  ): eventPassNft_aggregate!
   id: uuid!
+  organizer(
+    """
+    Defines which locales should be returned.
+    
+    Note that `Organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer!
+  ): Organizer
+  organizerId: String!
 }
 
 """
@@ -6685,10 +6789,15 @@ input eventParameters_bool_exp {
   _not: eventParameters_bool_exp
   _or: [eventParameters_bool_exp!]
   activityWebhookId: String_comparison_exp
+  dateEnd: date_comparison_exp
+  dateStart: date_comparison_exp
   eventId: String_comparison_exp
   eventPassNftContracts: eventPassNftContract_bool_exp
   eventPassNftContracts_aggregate: eventPassNftContract_aggregate_bool_exp
+  eventPassNfts: eventPassNft_bool_exp
+  eventPassNfts_aggregate: eventPassNft_aggregate_bool_exp
   id: uuid_comparison_exp
+  organizerId: String_comparison_exp
 }
 
 """
@@ -6716,23 +6825,33 @@ input type for inserting data into table "eventParameters"
 """
 input eventParameters_insert_input {
   activityWebhookId: String
+  dateEnd: date
+  dateStart: date
   eventId: String
   eventPassNftContracts: eventPassNftContract_arr_rel_insert_input
+  eventPassNfts: eventPassNft_arr_rel_insert_input
   id: uuid
+  organizerId: String
 }
 
 """aggregate max on columns"""
 type eventParameters_max_fields {
   activityWebhookId: String
+  dateEnd: date
+  dateStart: date
   eventId: String
   id: uuid
+  organizerId: String
 }
 
 """aggregate min on columns"""
 type eventParameters_min_fields {
   activityWebhookId: String
+  dateEnd: date
+  dateStart: date
   eventId: String
   id: uuid
+  organizerId: String
 }
 
 """
@@ -6747,6 +6866,16 @@ type eventParameters_mutation_response {
 }
 
 """
+input type for inserting object relation for remote table "eventParameters"
+"""
+input eventParameters_obj_rel_insert_input {
+  data: eventParameters_insert_input!
+
+  """upsert condition"""
+  on_conflict: eventParameters_on_conflict
+}
+
+"""
 on_conflict condition type for table "eventParameters"
 """
 input eventParameters_on_conflict {
@@ -6758,9 +6887,13 @@ input eventParameters_on_conflict {
 """Ordering options when selecting data from "eventParameters"."""
 input eventParameters_order_by {
   activityWebhookId: order_by
+  dateEnd: order_by
+  dateStart: order_by
   eventId: order_by
   eventPassNftContracts_aggregate: eventPassNftContract_aggregate_order_by
+  eventPassNfts_aggregate: eventPassNft_aggregate_order_by
   id: order_by
+  organizerId: order_by
 }
 
 """primary key columns input for table: eventParameters"""
@@ -6776,10 +6909,19 @@ enum eventParameters_select_column {
   activityWebhookId
 
   """column name"""
+  dateEnd
+
+  """column name"""
+  dateStart
+
+  """column name"""
   eventId
 
   """column name"""
   id
+
+  """column name"""
+  organizerId
 }
 
 """
@@ -6787,8 +6929,11 @@ input type for updating data in table "eventParameters"
 """
 input eventParameters_set_input {
   activityWebhookId: String
+  dateEnd: date
+  dateStart: date
   eventId: String
   id: uuid
+  organizerId: String
 }
 
 """
@@ -6805,8 +6950,11 @@ input eventParameters_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input eventParameters_stream_cursor_value_input {
   activityWebhookId: String
+  dateEnd: date
+  dateStart: date
   eventId: String
   id: uuid
+  organizerId: String
 }
 
 """
@@ -6817,10 +6965,19 @@ enum eventParameters_update_column {
   activityWebhookId
 
   """column name"""
+  dateEnd
+
+  """column name"""
+  dateStart
+
+  """column name"""
   eventId
 
   """column name"""
   id
+
+  """column name"""
+  organizerId
 }
 
 input eventParameters_updates {
@@ -6853,9 +7010,25 @@ type eventPassNft {
   Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process.
   """
   error: String
+  event(
+    """
+    Defines which locales should be returned.
+    
+    Note that `Event` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: EventWhereUniqueInput_remote_rel_eventPassNftevent!
+  ): Event
 
   """A reference to the event associated with the event pass NFT"""
   eventId: String!
+
+  """An object relationship"""
+  eventParameters: eventParameters
   eventPass(
     """
     Defines which locales should be returned.
@@ -6871,6 +7044,9 @@ type eventPassNft {
 
   """Directly relates to a specific Event Pass within the system"""
   eventPassId: String!
+
+  """An object relationship"""
+  eventPassNftContract: eventPassNftContract
 
   """An object relationship"""
   eventPassPricing: eventPassPricing
@@ -6932,6 +7108,19 @@ type eventPassNft {
     """filter the rows returned"""
     where: nftTransfer_bool_exp
   ): nftTransfer_aggregate!
+  organizer(
+    """
+    Defines which locales should be returned.
+    
+    Note that `Organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: OrganizerWhereUniqueInput_remote_rel_eventPassNftorganizer!
+  ): Organizer
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String!
@@ -6955,6 +7144,18 @@ type eventPassNftContract {
   chainId: String!
   contractAddress: String!
   eventId: String!
+  eventPass(
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+  ): EventPass
   eventPassId: String!
 
   """An array relationship"""
@@ -7188,6 +7389,16 @@ type eventPassNftContract_mutation_response {
 }
 
 """
+input type for inserting object relation for remote table "eventPassNftContract"
+"""
+input eventPassNftContract_obj_rel_insert_input {
+  data: eventPassNftContract_insert_input!
+
+  """upsert condition"""
+  on_conflict: eventPassNftContract_on_conflict
+}
+
+"""
 on_conflict condition type for table "eventPassNftContract"
 """
 input eventPassNftContract_on_conflict {
@@ -7415,7 +7626,9 @@ input eventPassNft_bool_exp {
   currentOwnerAddress: String_comparison_exp
   error: String_comparison_exp
   eventId: String_comparison_exp
+  eventParameters: eventParameters_bool_exp
   eventPassId: String_comparison_exp
+  eventPassNftContract: eventPassNftContract_bool_exp
   eventPassPricing: eventPassPricing_bool_exp
   id: uuid_comparison_exp
   isRevealed: Boolean_comparison_exp
@@ -7515,9 +7728,11 @@ input eventPassNft_insert_input {
 
   """A reference to the event associated with the event pass NFT"""
   eventId: String
+  eventParameters: eventParameters_obj_rel_insert_input
 
   """Directly relates to a specific Event Pass within the system"""
   eventPassId: String
+  eventPassNftContract: eventPassNftContract_obj_rel_insert_input
   eventPassPricing: eventPassPricing_obj_rel_insert_input
   id: uuid
 
@@ -7777,7 +7992,9 @@ input eventPassNft_order_by {
   currentOwnerAddress: order_by
   error: order_by
   eventId: order_by
+  eventParameters: eventParameters_order_by
   eventPassId: order_by
+  eventPassNftContract: eventPassNftContract_order_by
   eventPassPricing: eventPassPricing_order_by
   id: order_by
   isRevealed: order_by
