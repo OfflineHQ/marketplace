@@ -47,6 +47,17 @@ module.exports = {
       ...config.resolve.fallback, // This spreads the existing fallback configuration if there is any
       url: false,
     };
+    // This modifies the existing image rule to exclude `.svg` files
+    // since we handle those with `@svgr/webpack`.
+    const imageRule = config.module.rules.find((rule) =>
+      rule.test?.test('.svg')
+    );
+    imageRule.exclude = /\.svg$/;
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack', 'url-loader'],
+    });
+    //
     // Add tsconfig-paths-webpack-plugin to the resolve.plugins array
     config.resolve.plugins = [
       ...(config.resolve.plugins || []),

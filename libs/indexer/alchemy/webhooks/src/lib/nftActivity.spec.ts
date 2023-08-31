@@ -36,7 +36,7 @@ const applyQrCodeBatchTransferForNewOwnerSpy = jest
   .mockResolvedValue();
 
 const mockActivity: Activity = {
-  network: Network.ETH_SEPOLIA,
+  network: Network.ETH_GOERLI,
   fromAddress: 'fromAddress',
   toAddress: 'toAddress',
   contractAddress: 'contractAddress',
@@ -59,7 +59,7 @@ const mockActivity: Activity = {
 };
 
 const mockActivity2: Activity = {
-  network: Network.ETH_SEPOLIA,
+  network: Network.ETH_GOERLI,
   fromAddress: 'fromAddress2',
   toAddress: 'toAddress2',
   contractAddress: 'contractAddress2',
@@ -112,7 +112,7 @@ describe('extractNftTransfersFromEvent', () => {
         blockNumber: 7911758n,
         tokenId:
           19357893896360757362909707998697759599119570929526790658166113146556033007617n,
-        chainId: '11155111',
+        chainId: '5',
         transactionHash: 'transactionHash',
       },
     ]);
@@ -134,7 +134,7 @@ describe('extractNftTransfersFromEvent', () => {
         blockNumber: 7911758n,
         tokenId:
           19357893896360757362909707998697759599119570929526790658166113146556033007617n,
-        chainId: '11155111',
+        chainId: '5',
         transactionHash: 'transactionHash',
       },
       {
@@ -143,7 +143,7 @@ describe('extractNftTransfersFromEvent', () => {
         contractAddress: 'contractAddress2',
         blockNumber: 7911310n,
         tokenId: 1254688367678n,
-        chainId: '11155111',
+        chainId: '5',
         transactionHash: 'transactionHash2',
       },
     ]);
@@ -176,7 +176,7 @@ describe('extractNftTransfersFromEvent', () => {
         contractAddress: 'contractAddress2',
         blockNumber: 7911310n,
         tokenId: 1254688367678n,
-        chainId: '11155111',
+        chainId: '5',
         transactionHash: 'transactionHash2',
       },
     ]);
@@ -209,7 +209,7 @@ describe('nftActivity', () => {
   it('happy path with several nft activity being processed', async () => {
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
-      'fake-event-1'
+      'clizzpvidao620buvxit1ynko'
     );
     expect(response.status).toEqual(200);
     expect(isValidSignatureForAlchemyRequest).toHaveBeenCalled();
@@ -224,7 +224,7 @@ describe('nftActivity', () => {
 
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
-      'fake-event-1'
+      'clizzpvidao620buvxit1ynko'
     );
 
     expect(response.status).toEqual(500);
@@ -236,7 +236,7 @@ describe('nftActivity', () => {
 
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
-      'fake-event-1'
+      'clizzpvidao620buvxit1ynko'
     );
 
     expect(response.status).toEqual(403);
@@ -250,7 +250,7 @@ describe('nftActivity', () => {
 
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
-      'fake-event-1'
+      'clizzpvidao620buvxit1ynko'
     );
 
     expect(response.status).toEqual(500);
@@ -260,7 +260,7 @@ describe('nftActivity', () => {
   //   // Override extractNftTransfersFromEvent to return an empty array
   //   jest.spyOn(module, 'extractNftTransfersFromEvent').mockReturnValue([]);
 
-  //   const response = await nftActivity(createMockAlchemyRequest([mockActivity, mockActivity2]), 'fake-event-1');
+  //   const response = await nftActivity(createMockAlchemyRequest([mockActivity, mockActivity2]), 'clizzpvidao620buvxit1ynko');
 
   //   expect(response.status).toEqual(500);
   //   expect(response.statusText).toEqual('No nft transfers found in event');
@@ -280,7 +280,10 @@ describe('nftActivity', () => {
       .fn()
       .mockResolvedValueOnce(JSON.stringify(invalidWebhookEvent));
 
-    const response = await nftActivity(mockAlchemyRequest, 'fake-event-1');
+    const response = await nftActivity(
+      mockAlchemyRequest,
+      'clizzpvidao620buvxit1ynko'
+    );
 
     expect(response.status).toEqual(400);
   });

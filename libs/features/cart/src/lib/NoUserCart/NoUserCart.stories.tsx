@@ -8,7 +8,6 @@ import {
   NoUserCartLoadingExample,
   NoUserCartNoCartExample,
 } from './examples';
-import { Opened } from '../EventPassList/EventPassList.stories';
 
 // Import the stories you want to reuse
 

@@ -59,7 +59,5 @@ global.TextEncoder = require('util').TextEncoder;
 // Fix issue where `import { cache } from 'react';` not found
 jest.mock('react', () => ({
   ...jest.requireActual('react'), // This will keep the original functionalities of 'react'
-  cache: jest.fn(() => {
-    /* mock implementation */
-  }),
+  cache: jest.fn((fn) => fn), // return the original function
 }));

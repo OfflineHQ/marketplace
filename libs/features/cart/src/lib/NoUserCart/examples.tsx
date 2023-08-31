@@ -8,6 +8,8 @@ import {
   ResetPassesCartLocal,
   FakeEventPassesFetcher,
 } from '../EventPassList/examples';
+// @ts-ignore
+import EmptyCartImage from './empty-cart.svg';
 
 export function NoUserCartExample() {
   SetupPassesCartLocal();
@@ -15,7 +17,10 @@ export function NoUserCartExample() {
     <NextAuthProvider>
       <AuthProvider>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart EventPassesFetcher={FakeEventPassesFetcher} />
+          <NoUserCart
+            EventPassesFetcher={FakeEventPassesFetcher}
+            noCartImage={EmptyCartImage}
+          />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
@@ -28,7 +33,10 @@ export function NoUserCartLoadingExample() {
     <NextAuthProvider>
       <AuthProvider>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart EventPassesFetcher={EventPassesSkeleton} />
+          <NoUserCart
+            EventPassesFetcher={EventPassesSkeleton}
+            noCartImage={EmptyCartImage}
+          />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
@@ -41,7 +49,10 @@ export function NoUserCartNoCartExample() {
     <NextAuthProvider>
       <AuthProvider>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart EventPassesFetcher={FakeEventPassesFetcher} />
+          <NoUserCart
+            EventPassesFetcher={FakeEventPassesFetcher}
+            noCartImage={EmptyCartImage}
+          />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>

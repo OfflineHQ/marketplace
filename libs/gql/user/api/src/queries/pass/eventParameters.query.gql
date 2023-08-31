@@ -1,0 +1,93 @@
+query GetPassedEventsWithEventPassNfts(
+  $address: String!
+  $currentDate: date!
+  $locale: Locale!
+  $stage: Stage!
+) {
+  eventParameters(
+    where: {
+      eventPassNfts: { currentOwnerAddress: { _eq: $address } }
+      dateEnd: { _lt: $currentDate }
+    }
+    order_by: { dateEnd: desc }
+  ) {
+    dateStart
+    dateEnd
+    eventPassNftContracts(
+      where: { eventPassNfts: { currentOwnerAddress: { _eq: $address } } }
+    ) {
+      eventPass(locales: [$locale, en], stage: $stage) {
+        name
+        id
+        nftImage {
+          url
+        }
+      }
+      eventPassNfts(where: { currentOwnerAddress: { _eq: $address } }) {
+        isRevealed
+        tokenId
+      }
+    }
+    organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      name
+      image {
+        url
+      }
+    }
+    event(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      title
+      heroImage {
+        url
+      }
+    }
+  }
+}
+
+query GetUpcomingEventsWithEventPassNfts(
+  $address: String!
+  $currentDate: date!
+  $locale: Locale!
+  $stage: Stage!
+) {
+  eventParameters(
+    where: {
+      eventPassNfts: { currentOwnerAddress: { _eq: $address } }
+      dateEnd: { _gte: $currentDate }
+    }
+    order_by: { dateStart: asc }
+  ) {
+    dateStart
+    dateEnd
+    eventPassNftContracts(
+      where: { eventPassNfts: { currentOwnerAddress: { _eq: $address } } }
+    ) {
+      eventPass(locales: [$locale, en], stage: $stage) {
+        name
+        nftImage {
+          url
+        }
+        id
+      }
+      eventPassNfts(where: { currentOwnerAddress: { _eq: $address } }) {
+        isRevealed
+        tokenId
+      }
+    }
+    organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      name
+      image {
+        url
+      }
+    }
+    event(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      title
+      heroImage {
+        url
+      }
+    }
+  }
+}

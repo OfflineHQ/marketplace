@@ -41,14 +41,14 @@ export const Default: Story = {
 export const WithIcon: Story = {
   args: {
     ...Default.args,
-    icon: OutlineSearch,
+    icon: <OutlineSearch />,
   },
 };
 
 export const WithRightIcon: Story = {
   args: {
     ...Default.args,
-    rightIcon: OutlineSearch,
+    rightIcon: <OutlineSearch />,
   },
 };
 

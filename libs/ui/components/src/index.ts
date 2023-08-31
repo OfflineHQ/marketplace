@@ -55,6 +55,10 @@ export {
   DropdownMenuItems,
   type DropdownMenuItemsProps,
 } from './lib/dropdown-menu/DropdownMenuItems';
+export {
+  DropdownMenuActions,
+  type DropdownMenuActionsProps,
+} from './lib/dropdown-menu/DropdownMenuActions';
 export { AutoAnimate } from './lib/auto-animate/AutoAnimate';
 export { Checkbox } from './lib/checkbox/Checkbox';
 export { CheckboxWithText } from './lib/checkbox/CheckboxWithText';
@@ -108,7 +112,12 @@ export {
   AlertDialogAction,
   AlertDialogCancel,
 } from './lib/alert-dialog/AlertDialog';
-export { Alert, AlertTitle, AlertDescription } from './lib/alert/Alert';
+export {
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  AlertSkeleton,
+} from './lib/alert/Alert';
 export {
   Command,
   CommandDialog,
@@ -164,8 +173,8 @@ export {
   CardDescriptionSkeleton,
   CardOverlay,
 } from './lib/card/Card';
-export { CardNavBack } from './lib/card/CardNavBack';
-export { Badge } from './lib/badge/Badge';
+export { CardNavBack, CardNavBackSkeleton } from './lib/card/CardNavBack';
+export { Badge, BadgeSkeleton } from './lib/badge/Badge';
 export { Progress } from './lib/progress/Progress';
 export { TooltipWrapper, Tooltip } from './lib/tooltip/Tooltip';
 export {
@@ -173,3 +182,5 @@ export {
   BoundedNumericStepper,
 } from './lib/bounded-numeric-stepper/BoundedNumericStepper';
 export { Ping, type PingProps } from './lib/Ping/Ping';
+
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './lib/tabs/Tabs';

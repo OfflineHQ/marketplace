@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 'use client';
 
 import * as React from 'react';
@@ -82,7 +83,11 @@ const AlertDialogHeader: React.FC<AlertDialogHeaderProps> = ({
     >
       {IconComponent && (
         <div className="flex w-full justify-center sm:w-auto sm:justify-start">
-          <IconComponent color={variant} size="xl" />
+          <IconComponent.type
+            color={variant}
+            size="xl"
+            {...IconComponent.props}
+          />
         </div>
       )}
       <div className="w-full sm:w-auto">{children}</div>
@@ -128,27 +133,29 @@ const AlertDialogDescription = React.forwardRef<
     {...props}
   />
 ));
-AlertDialogDescription.displayName = AlertDialogPrimitive.Description.displayName;
+AlertDialogDescription.displayName =
+  AlertDialogPrimitive.Description.displayName;
 
 interface AlertDialogActionProps
   extends React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>,
     AlertDialogVariants {}
 
-const AlertDialogAction = React.forwardRef<HTMLButtonElement, AlertDialogActionProps>(
-  ({ className, variant = 'default', ...props }, ref) => {
-    const buttonClasses = buttonVariantsCva({
-      variant: variant === 'success' ? 'default' : variant,
-      className,
-    });
-    return (
-      <AlertDialogPrimitive.Action
-        ref={ref}
-        className={cn(buttonClasses, 'font-semibold')}
-        {...props}
-      />
-    );
-  }
-);
+const AlertDialogAction = React.forwardRef<
+  HTMLButtonElement,
+  AlertDialogActionProps
+>(({ className, variant = 'default', ...props }, ref) => {
+  const buttonClasses = buttonVariantsCva({
+    variant: variant === 'success' ? 'default' : variant,
+    className,
+  });
+  return (
+    <AlertDialogPrimitive.Action
+      ref={ref}
+      className={cn(buttonClasses, 'font-semibold')}
+      {...props}
+    />
+  );
+});
 AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
 
 const AlertDialogCancel = React.forwardRef<
@@ -157,7 +164,11 @@ const AlertDialogCancel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Cancel
     ref={ref}
-    className={cn(buttonVariantsCva({ variant: 'outline' }), 'mt-2 sm:mt-0', className)}
+    className={cn(
+      buttonVariantsCva({ variant: 'outline' }),
+      'mt-2 sm:mt-0',
+      className
+    )}
     {...props}
   />
 ));

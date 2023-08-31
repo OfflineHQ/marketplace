@@ -70,7 +70,7 @@ export const DefaultButton = {
 export const ButtonWithOnlyIcon: Story = {
   args: {
     children: undefined,
-    icon: Settings,
+    icon: <Settings />,
     variant: 'ghost',
   },
 } satisfies Story;
@@ -135,6 +135,18 @@ export const AllbuttonSizesLoading = {
   argTypes: {
     size: {
       control: false,
+    },
+  },
+};
+
+export const AllbuttonSizesLoadingWithMobile = {
+  ...AllbuttonSizesLoading,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+    chromatic: {
+      disableSnapshot: true,
     },
   },
 };

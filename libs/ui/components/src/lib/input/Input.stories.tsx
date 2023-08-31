@@ -34,14 +34,14 @@ export const DefaultInput: Story = {
 export const InputWithIcon: Story = {
   args: {
     placeholder: 'Input with Icon',
-    icon: OutlineSearch,
+    icon: <OutlineSearch />,
   },
 };
 
 export const InputWithRightIcon: Story = {
   args: {
     placeholder: 'Input with Right Icon',
-    rightIcon: OutlineSearch,
+    rightIcon: <OutlineSearch />,
   },
 };
 
