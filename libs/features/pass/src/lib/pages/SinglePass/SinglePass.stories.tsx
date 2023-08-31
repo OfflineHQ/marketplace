@@ -4,6 +4,7 @@ import { expect } from '@storybook/jest';
 
 import { SinglePass } from './SinglePass';
 import {
+  SinglePassSkeletonExample,
   eventPassNft1,
   eventPassNft2,
   SinglePassNoUserExample,
@@ -38,6 +39,40 @@ export const NotRevealedPass: Story = {
   },
 };
 
+export const Loading: Story = {
+  render: SinglePassSkeletonExample,
+};
+
+export const LoadingMobile: Story = {
+  ...Loading,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+export const NotRevealedPassWithMobile: Story = {
+  ...NotRevealedPass,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+export const NotRevealedPassWithMobileDarkMode: Story = {
+  ...NotRevealedPass,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+    darkMode: {
+      isDark: true,
+    },
+  },
+};
+
 export const RevealedPass: Story = {
   ...NotRevealedPass,
   args: {
@@ -47,6 +82,15 @@ export const RevealedPass: Story = {
     screen.getByText(/caution/i);
     screen.getByRole('button', { name: /event/i });
     screen.getByRole('button', { name: /Test Organizer 2/i });
+  },
+};
+
+export const RevealedPassWithMobile: Story = {
+  ...RevealedPass,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
 };
 
@@ -63,6 +107,27 @@ export const OwnerNotRevealedPass: Story = {
   },
 };
 
+export const OwnerNotRevealedPassWithMobile: Story = {
+  ...OwnerNotRevealedPass,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+export const OwnerNotRevealedPassWithMobileDarkMode: Story = {
+  ...OwnerNotRevealedPass,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+    darkMode: {
+      isDark: true,
+    },
+  },
+};
+
 export const OwnerRevealedPass: Story = {
   ...OwnerNotRevealedPass,
   args: {
@@ -75,6 +140,32 @@ export const OwnerRevealedPass: Story = {
     screen.getByRole('button', { name: /download/i });
   },
 };
+
+export const OwnerRevealedPassWithMobile: Story = {
+  ...OwnerRevealedPass,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+export const OwnerRevealedPassWithMobileDarkMode: Story = {
+  ...OwnerRevealedPass,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+    darkMode: {
+      isDark: true,
+    },
+  },
+};
+
+// export const SectionWithUser: Story = {
+//   render: UserPassExample,
+// };
+//
 
 // export const SectionWithNormalUser: Story = {
 //   args: {

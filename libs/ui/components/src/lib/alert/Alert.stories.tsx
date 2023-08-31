@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Alert } from './Alert';
+import { Alert, AlertSkeleton } from './Alert';
 import {
   AlertDemo,
   AlertDestructive,
@@ -50,4 +50,8 @@ export const Info: Story = {
   args: {
     variant: 'info',
   },
+};
+
+export const Loading: Story = {
+  render: () => <AlertSkeleton />,
 };

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 'use client';
 
 import { useState } from 'react';
@@ -89,11 +90,60 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariantsCva> {
   isLoading?: boolean;
-  icon?: React.FC<IconProps>;
-  iconRight?: React.FC<IconProps>;
+  icon?: React.ReactElement<IconProps>;
+  iconRight?: React.ReactElement<IconProps>;
   helperText?: React.ReactNode;
 }
 
+interface ButtonContentProps extends ButtonProps {
+  loading: boolean;
+  isIconOnly: boolean;
+  LeftIcon?: React.ReactElement<IconProps>;
+  RightIcon?: React.ReactElement<IconProps>;
+}
+
+// Define the ButtonContent component
+const ButtonContent: React.FC<ButtonContentProps> = ({
+  loading,
+  size,
+  variant,
+  isIconOnly,
+  LeftIcon,
+  RightIcon,
+  children,
+}) => {
+  const _iconLeft = iconCVA({
+    size,
+    marginRight: !isIconOnly ? size : null,
+    margin: isIconOnly ? size : null,
+  });
+  const _iconRight = iconCVA({
+    size,
+    marginLeft: !isIconOnly ? size : null,
+    margin: isIconOnly ? size : null,
+  });
+
+  return (
+    <>
+      {loading ? (
+        <Spinner
+          className={`${_iconLeft} max-h-fit max-w-fit`}
+          variant={variant}
+          size={size}
+        />
+      ) : null}
+      {LeftIcon && !loading ? (
+        <LeftIcon.type className={_iconLeft} {...LeftIcon.props} />
+      ) : null}
+      {typeof children !== 'undefined' && children}
+      {RightIcon ? (
+        <RightIcon.type className={_iconRight} {...RightIcon.props} />
+      ) : null}
+    </>
+  );
+};
+
+// Use the ButtonContent component in the Button component
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
@@ -128,29 +178,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         }
       }
     };
-    const content = () => {
-      const [LeftIcon, RightIcon] = [icon, iconRight];
-      const _iconLeft = iconCVA({
-        size,
-        marginRight: !isIconOnly ? size : null,
-        margin: isIconOnly ? size : null,
-      });
-      const _iconRight = iconCVA({
-        size,
-        marginLeft: !isIconOnly ? size : null,
-        margin: isIconOnly ? size : null,
-      });
-      return (
-        <>
-          {_loading ? (
-            <Spinner className={_iconLeft} variant={variant} size={size} />
-          ) : null}
-          {LeftIcon && !_loading ? <LeftIcon className={_iconLeft} /> : null}
-          {typeof children !== 'undefined' && children}
-          {RightIcon ? <RightIcon className={_iconRight} /> : null}
-        </>
-      );
-    };
+
     const loadingClasses = _loading ? 'cursor-not-allowed' : '';
     const buttonClasses = buttonVariantsCva({
       variant,
@@ -159,6 +187,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       block: !!block,
       className,
     });
+
     return (
       <TooltipWrapper helperText={helperText}>
         <button
@@ -167,7 +196,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {...props}
           onClick={handleClick}
         >
-          {content()}
+          <ButtonContent
+            loading={_loading}
+            size={size}
+            variant={variant}
+            isIconOnly={isIconOnly}
+            LeftIcon={icon}
+            RightIcon={iconRight}
+          >
+            {children}
+          </ButtonContent>
         </button>
       </TooltipWrapper>
     );

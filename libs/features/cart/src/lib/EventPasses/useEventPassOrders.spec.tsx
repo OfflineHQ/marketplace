@@ -52,7 +52,7 @@ jest.mock('@gql/user/react-query', () => ({
         },
         eventPasses: [
           {
-            id: 'fake-event-pass-1',
+            id: 'clj8raobj7g8l0aw3bfw6dny4',
             name: 'Fake Event Pass 1',
             description: 'This is a fake event pass',
             eventPassPricing: {
@@ -126,7 +126,7 @@ describe('useEventPassOrders', () => {
       expect(result.current.ordersData?.eventPassPendingOrder.length).toBe(1);
       expect(
         result.current.ordersData?.eventPassPendingOrder[0].eventPassId
-      ).toBe('fake-event-pass-1');
+      ).toBe('clj8raobj7g8l0aw3bfw6dny4');
     });
   });
   it('Should retrieve multiple existing order for an event from database', async () => {
@@ -181,7 +181,7 @@ describe('useEventPassOrders', () => {
         organizerSlug: 'test-organizer',
         eventSlug: 'test-event',
         pass: {
-          id: 'fake-event-pass-1',
+          id: 'clj8raobj7g8l0aw3bfw6dny4',
           amount: 12,
         },
       });
@@ -212,20 +212,20 @@ describe('useEventPassOrders', () => {
     await act(async () => {
       await result.current.upsertOrders([
         {
-          id: 'fake-event-pass-1',
+          id: 'clj8raobj7g8l0aw3bfw6dny4',
           amount: 1,
         },
       ]);
       expect(mockUpdatePassCart).toHaveBeenCalledTimes(0);
       expect(mockDeleteOrder).toHaveBeenCalledTimes(1);
       expect(mockDeleteOrder).toHaveBeenCalledWith({
-        eventPassIds: ['fake-event-pass-1'],
+        eventPassIds: ['clj8raobj7g8l0aw3bfw6dny4'],
       });
       expect(mockInsertOrder).toHaveBeenCalledTimes(1);
       expect(mockInsertOrder).toHaveBeenCalledWith({
         objects: [
           {
-            eventPassId: 'fake-event-pass-1',
+            eventPassId: 'clj8raobj7g8l0aw3bfw6dny4',
             quantity: 1,
           },
         ],
@@ -257,7 +257,7 @@ describe('useEventPassOrders', () => {
     await act(async () => {
       await result.current.upsertOrders([
         {
-          id: 'fake-event-pass-1',
+          id: 'clj8raobj7g8l0aw3bfw6dny4',
           amount: 12,
         },
         {
@@ -312,7 +312,7 @@ describe('useEventPassOrders', () => {
         organizerSlug: 'test-organizer',
         eventSlug: 'test-event',
         pass: {
-          id: 'fake-event-pass-1',
+          id: 'clj8raobj7g8l0aw3bfw6dny4',
           amount: 12,
         },
       });
@@ -354,7 +354,7 @@ describe('useEventPassOrders', () => {
     await act(async () => {
       await result.current.upsertOrders([
         {
-          id: 'fake-event-pass-1',
+          id: 'clj8raobj7g8l0aw3bfw6dny4',
           amount: 2,
         },
         {
@@ -402,7 +402,7 @@ describe('useEventPassOrders', () => {
     await act(async () => {
       await result.current.upsertOrders([
         {
-          id: 'fake-event-pass-1',
+          id: 'clj8raobj7g8l0aw3bfw6dny4',
           amount: 12,
         },
         {
@@ -447,7 +447,7 @@ describe('useEventPassOrders', () => {
     await act(async () => {
       await result.current.deleteOrders([
         {
-          id: 'fake-event-pass-1',
+          id: 'clj8raobj7g8l0aw3bfw6dny4',
           amount: 12,
         },
         {
@@ -457,7 +457,7 @@ describe('useEventPassOrders', () => {
       ]);
       expect(mockDeleteOrder).toHaveBeenCalledTimes(1);
       expect(mockDeleteOrder).toHaveBeenCalledWith({
-        eventPassIds: ['fake-event-pass-1', 'fake-event-pass-2'],
+        eventPassIds: ['clj8raobj7g8l0aw3bfw6dny4', 'fake-event-pass-2'],
       });
       expect(mockDeletePassesCart).toHaveBeenCalledTimes(0);
     });

@@ -32,7 +32,7 @@ describe('tests for eventPassPendingOrder admin', () => {
     const res = await adminSdk.GetEventPassPendingOrders();
     const orders = res.eventPassPendingOrder;
     expect(orders?.length).toBe(5);
-    expect(orders?.[0].eventPassId).toBe('fake-event-pass-1');
+    expect(orders?.[0].eventPassId).toBe('clj8raobj7g8l0aw3bfw6dny4');
     expect(orders?.[0].created_at).toBeDefined();
     expect(orders?.[0].id).toBeDefined();
     expect(orders?.[0].account).toBeDefined();

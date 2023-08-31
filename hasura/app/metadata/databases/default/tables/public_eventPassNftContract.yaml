@@ -42,3 +42,23 @@ array_relationships:
         remote_table:
           name: eventPassOrder
           schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - eventPassId
+        remote_field:
+          eventPass:
+            arguments:
+              where:
+                id: $eventPassId
+        remote_schema: Hygraph CMS Remote Schema
+    name: eventPass
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - eventId
+        - eventPassId
+        - organizerId
+      filter: {}

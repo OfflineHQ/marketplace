@@ -64,11 +64,15 @@ interface TextProps
   extends React.HTMLAttributes<HTMLElement>,
     VariantProps<typeof textVariantClasses> {}
 
-const Text: React.FC<TextProps> = ({ variant = 'span', ...props }) => {
+const Text: React.FC<TextProps> = ({
+  variant = 'span',
+  className,
+  ...props
+}) => {
   const Component = variant as AllowedHtmlElements;
-  const className = cn(textVariantClasses({ variant }), props.className);
+  const classes = cn(textVariantClasses({ variant }), className);
 
-  return <Component className={className} {...props} />;
+  return <Component className={classes} {...props} />;
 };
 
 interface TextSkeletonProps

@@ -67,6 +67,26 @@ export type EventPassFieldsFragment = { __typename?: 'EventPass', name: string, 
 
 export type EventPassNftFieldsFragment = { __typename?: 'eventPassNft', tokenId: any, eventId: string, eventPassId: string, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null };
 
+export type GetPassedEventsWithEventPassNftsQueryVariables = Types.Exact<{
+  address: Types.Scalars['String'];
+  currentDate: Types.Scalars['date'];
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type GetPassedEventsWithEventPassNftsQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, eventPassNftContracts: Array<{ __typename?: 'eventPassNftContract', eventPass?: { __typename?: 'EventPass', name: string, id: string, nftImage: { __typename?: 'Asset', url: string } } | null, eventPassNfts: Array<{ __typename?: 'eventPassNft', isRevealed: boolean, tokenId: any }> }>, organizer?: { __typename?: 'Organizer', slug: string, name: string, image: { __typename?: 'Asset', url: string } } | null, event?: { __typename?: 'Event', slug: string, title: string, heroImage: { __typename?: 'Asset', url: string } } | null }> };
+
+export type GetUpcomingEventsWithEventPassNftsQueryVariables = Types.Exact<{
+  address: Types.Scalars['String'];
+  currentDate: Types.Scalars['date'];
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type GetUpcomingEventsWithEventPassNftsQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, eventPassNftContracts: Array<{ __typename?: 'eventPassNftContract', eventPass?: { __typename?: 'EventPass', name: string, id: string, nftImage: { __typename?: 'Asset', url: string } } | null, eventPassNfts: Array<{ __typename?: 'eventPassNft', isRevealed: boolean, tokenId: any }> }>, organizer?: { __typename?: 'Organizer', slug: string, name: string, image: { __typename?: 'Asset', url: string } } | null, event?: { __typename?: 'Event', slug: string, title: string, heroImage: { __typename?: 'Asset', url: string } } | null }> };
+
 export type GetEventPassNftByTokenReferenceQueryVariables = Types.Exact<{
   organizerId: Types.Scalars['String'];
   eventId: Types.Scalars['String'];

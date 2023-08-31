@@ -1,4 +1,4 @@
-// WrappedIcons.tsx
+import { FC } from 'react';
 import { AccessibleIcon } from './AccessibleIcon';
 import { IconProps } from './variants';
 import {
@@ -24,9 +24,16 @@ import {
   HiOutlineLanguage,
   HiOutlineCalendarDays,
   HiCalendar,
+  HiMagnifyingGlassPlus,
 } from 'react-icons/hi2';
 import { BiCircle, BiHelpCircle, BiXCircle } from 'react-icons/bi';
-import { BsTags, BsQrCode, BsQrCodeScan, BsDownload } from 'react-icons/bs';
+import {
+  BsTags,
+  BsQrCode,
+  BsQrCodeScan,
+  BsDownload,
+  BsThreeDotsVertical,
+} from 'react-icons/bs';
 import { RxMagicWand } from 'react-icons/rx';
 import {
   AiFillCheckCircle,
@@ -64,6 +71,7 @@ import {
   FiSmile,
   FiMoreHorizontal,
   FiEdit,
+  FiSend,
 } from 'react-icons/fi';
 
 import { TbSunMoon } from 'react-icons/tb';
@@ -74,116 +82,360 @@ import type { IconType as ReactIcon } from 'react-icons';
 
 export type IconType = ReactIcon;
 
-const createWrappedIcon =
-  (IconComponent: ReactIcon, label: string) => (props: IconProps) =>
-    <AccessibleIcon IconComponent={IconComponent} label={label} {...props} />;
+export const Reveal: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RxMagicWand} label={'Reveal'} {...props} />
+);
 
-export const Reveal = createWrappedIcon(RxMagicWand, 'Reveal');
+export const ChevronBack: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={IoChevronBack} label={'Go Back'} {...props} />
+);
 
-export const ChevronBack = createWrappedIcon(IoChevronBack, 'Go Back');
+export const SeeDetails: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiMagnifyingGlassPlus}
+    label={'See Details'}
+    {...props}
+  />
+);
+export const Check: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={HiCheck} label={'Check'} {...props} />
+);
 
-export const Check = createWrappedIcon(HiCheck, 'Check');
-export const OutlineSearch = createWrappedIcon(
-  HiOutlineSearch,
-  'Outline Search'
+export const OutlineSearch: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiOutlineSearch}
+    label={'Outline Search'}
+    {...props}
+  />
 );
-export const QrCode = createWrappedIcon(BsQrCode, 'Qr Code');
-export const QrCodeScan = createWrappedIcon(BsQrCodeScan, 'Qr Code Scan');
-export const Download = createWrappedIcon(BsDownload, 'Download');
-export const OutlineArrowRight = createWrappedIcon(
-  HiOutlineArrowRight,
-  'Outline Arrow Right'
-);
-export const Plus = createWrappedIcon(HiPlus, 'Plus');
-export const Minus = createWrappedIcon(HiMinus, 'Minus');
-export const Language = createWrappedIcon(HiOutlineLanguage, 'Language');
-export const ChevronDown = createWrappedIcon(
-  HiOutlineChevronDown,
-  'Chevron Down'
-);
-export const ChevronRight = createWrappedIcon(
-  HiOutlineChevronRight,
-  'Chevron Right'
-);
-export const OutlineCalendarDays = createWrappedIcon(
-  HiOutlineCalendarDays,
-  'Outline Calendar Days'
-);
-export const Calendar = createWrappedIcon(HiCalendar, 'Calendar');
-export const Circle = createWrappedIcon(BiCircle, 'Circle');
-export const Calculator = createWrappedIcon(HiOutlineCalculator, 'Calculator');
-export const Light = createWrappedIcon(HiOutlineSun, 'Light');
-export const Dark = createWrappedIcon(HiOutlineMoon, 'Dark');
-export const FillWarning = createWrappedIcon(IoWarning, 'Fill Warning');
-export const OutlineWarning = createWrappedIcon(
-  IoWarningOutline,
-  'Outline Warning'
-);
-export const FillSuccess = createWrappedIcon(AiFillCheckCircle, 'Fill Success');
-export const OutlineSuccess = createWrappedIcon(
-  AiOutlineCheck,
-  'Outline Success'
-);
-export const OutlineSuccessCircle = createWrappedIcon(
-  AiOutlineCheckCircle,
-  'Outline Success Circle'
-);
-export const Cart = createWrappedIcon(AiOutlineShoppingCart, 'Cart');
 
-export const DarkLight = createWrappedIcon(TbSunMoon, 'Dark Light Auto');
+export const QrCode: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={BsQrCode} label={'Qr Code'} {...props} />
+);
+export const QrCodeScan: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={BsQrCodeScan}
+    label={'Qr Code Scan'}
+    {...props}
+  />
+);
 
-export const FillInfo = createWrappedIcon(AiFillInfoCircle, 'Fill Info');
-export const OutlineError = createWrappedIcon(MdOutlineError, 'Outline Error');
-export const BellRing = createWrappedIcon(
-  MdOutlineNotificationsActive,
-  'Bell Ring'
+export const MenuActions: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={BsThreeDotsVertical}
+    label={'Menu Actions'}
+    {...props}
+  />
 );
-export const Bell = createWrappedIcon(MdOutlineNotificationsNone, 'Bell');
-export const FillMoon = createWrappedIcon(RiMoonFill, 'Fill Moon');
-export const Sun = createWrappedIcon(RiSunLine, 'Sun');
-export const Award = createWrappedIcon(FiAward, 'Award');
-export const CreditCard = createWrappedIcon(AiOutlineCreditCard, 'Credit Card');
-export const LifeBuoy = createWrappedIcon(FiLifeBuoy, 'Life Buoy');
-export const LogOut = createWrappedIcon(FiLogOut, 'Log Out');
-export const LogIn = createWrappedIcon(FiLogIn, 'Log In');
-export const Mail = createWrappedIcon(AiOutlineMail, 'Mail');
-export const MessageSquare = createWrappedIcon(
-  FiMessageSquare,
-  'Message Square'
-);
-export const OutlinePlusCircle = createWrappedIcon(
-  HiOutlinePlusCircle,
-  'Outline Plus Circle'
-);
-export const Menu = createWrappedIcon(AiOutlineMenu, 'Menu');
-export const Settings = createWrappedIcon(FiSettings, 'Settings');
-export const OutlineUserCircle = createWrappedIcon(
-  HiOutlineUserCircle,
-  'Outline User Circle'
-);
-export const User = createWrappedIcon(HiOutlineUser, 'User');
-export const UserAdd = createWrappedIcon(HiOutlineUserAdd, 'User Add');
-export const Users = createWrappedIcon(HiOutlineUsers, 'Users');
-export const Close = createWrappedIcon(MdOutlineClose, 'Close');
 
-export const Smile = createWrappedIcon(FiSmile, 'Smile');
-export const ChevronsUpDown = createWrappedIcon(
-  HiChevronUpDown,
-  'Chevrons Up Down'
+export const Download: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={BsDownload} label={'Download'} {...props} />
 );
-export const ArrowUpCircle = createWrappedIcon(
-  HiOutlineArrowUpCircle,
-  'Arrow Up Circle'
-);
-export const HelpCircle = createWrappedIcon(BiHelpCircle, 'Help Circle');
-export const XCircle = createWrappedIcon(BiXCircle, 'X Circle');
-export const MoreHorizontal = createWrappedIcon(
-  FiMoreHorizontal,
-  'More Horizontal'
-);
-export const Edit = createWrappedIcon(FiEdit, 'Edit');
-export const Tags = createWrappedIcon(BsTags, 'Tags');
 
-export const Delete = createWrappedIcon(AiOutlineDelete, 'Delete');
+export const OutlineArrowRight: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiOutlineArrowRight}
+    label={'Outline Arrow Right'}
+    {...props}
+  />
+);
 
-export const Location = createWrappedIcon(IoLocationOutline, 'Location');
+export const Plus: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={HiPlus} label={'Plus'} {...props} />
+);
+
+export const Minus: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={HiMinus} label={'Minus'} {...props} />
+);
+
+export const Language: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiOutlineLanguage}
+    label={'Language'}
+    {...props}
+  />
+);
+
+export const ChevronDown: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiOutlineChevronDown}
+    label={'Chevron Down'}
+    {...props}
+  />
+);
+
+export const ChevronRight: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiOutlineChevronRight}
+    label={'Chevron Right'}
+    {...props}
+  />
+);
+
+export const OutlineCalendarDays: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiOutlineCalendarDays}
+    label={'Outline Calendar Days'}
+    {...props}
+  />
+);
+
+export const Calendar: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={HiCalendar} label={'Calendar'} {...props} />
+);
+
+export const Circle: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={BiCircle} label={'Circle'} {...props} />
+);
+
+export const Calculator: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiOutlineCalculator}
+    label={'Calculator'}
+    {...props}
+  />
+);
+
+export const Light: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={HiOutlineSun} label={'Light'} {...props} />
+);
+
+export const Dark: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={HiOutlineMoon} label={'Dark'} {...props} />
+);
+
+export const FillWarning: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={IoWarning} label={'Fill Warning'} {...props} />
+);
+
+export const OutlineWarning: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={IoWarningOutline}
+    label={'Outline Warning'}
+    {...props}
+  />
+);
+
+export const FillSuccess: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={AiFillCheckCircle}
+    label={'Fill Success'}
+    {...props}
+  />
+);
+
+export const OutlineSuccess: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={AiOutlineCheck}
+    label={'Outline Success'}
+    {...props}
+  />
+);
+
+export const OutlineSuccessCircle: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={AiOutlineCheckCircle}
+    label={'Outline Success Circle'}
+    {...props}
+  />
+);
+
+export const Cart: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={AiOutlineShoppingCart}
+    label={'Cart'}
+    {...props}
+  />
+);
+
+export const DarkLight: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={TbSunMoon}
+    label={'Dark Light Auto'}
+    {...props}
+  />
+);
+
+export const FillInfo: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={AiFillInfoCircle}
+    label={'Fill Info'}
+    {...props}
+  />
+);
+
+export const OutlineError: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={MdOutlineError}
+    label={'Outline Error'}
+    {...props}
+  />
+);
+
+export const BellRing: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={MdOutlineNotificationsActive}
+    label={'Bell Ring'}
+    {...props}
+  />
+);
+
+export const Bell: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={MdOutlineNotificationsNone}
+    label={'Bell'}
+    {...props}
+  />
+);
+
+export const FillMoon: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiMoonFill} label={'Fill Moon'} {...props} />
+);
+
+export const Sun: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiSunLine} label={'Sun'} {...props} />
+);
+
+export const Award: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={FiAward} label={'Award'} {...props} />
+);
+
+export const CreditCard: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={AiOutlineCreditCard}
+    label={'Credit Card'}
+    {...props}
+  />
+);
+
+export const LifeBuoy: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={FiLifeBuoy} label={'Life Buoy'} {...props} />
+);
+
+export const LogOut: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={FiLogOut} label={'Log Out'} {...props} />
+);
+
+export const LogIn: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={FiLogIn} label={'Log In'} {...props} />
+);
+
+export const Mail: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={AiOutlineMail} label={'Mail'} {...props} />
+);
+
+export const MessageSquare: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={FiMessageSquare}
+    label={'Message Square'}
+    {...props}
+  />
+);
+
+export const OutlinePlusCircle: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiOutlinePlusCircle}
+    label={'Outline Plus Circle'}
+    {...props}
+  />
+);
+
+export const Menu: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={AiOutlineMenu} label={'Menu'} {...props} />
+);
+
+export const Settings: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={FiSettings} label={'Settings'} {...props} />
+);
+
+export const OutlineUserCircle: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiOutlineUserCircle}
+    label={'Outline User Circle'}
+    {...props}
+  />
+);
+
+export const User: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={HiOutlineUser} label={'User'} {...props} />
+);
+
+export const UserAdd: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiOutlineUserAdd}
+    label={'User Add'}
+    {...props}
+  />
+);
+
+export const Users: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={HiOutlineUsers} label={'Users'} {...props} />
+);
+
+export const Close: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={MdOutlineClose} label={'Close'} {...props} />
+);
+
+export const Delete: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={AiOutlineDelete} label={'Delete'} {...props} />
+);
+
+export const Send: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={FiSend} label={'Send'} {...props} />
+);
+
+export const Tags: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={BsTags} label={'Tags'} {...props} />
+);
+
+export const Edit: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={FiEdit} label={'Edit'} {...props} />
+);
+
+export const MoreHorizontal: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={FiMoreHorizontal}
+    label={'More Horizontal'}
+    {...props}
+  />
+);
+
+export const XCircle: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={BiXCircle} label={'X Circle'} {...props} />
+);
+
+export const HelpCircle: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={BiHelpCircle}
+    label={'Help Circle'}
+    {...props}
+  />
+);
+
+export const ArrowUpCircle: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiOutlineArrowUpCircle}
+    label={'Arrow Up Circle'}
+    {...props}
+  />
+);
+
+export const ChevronsUpDown: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={HiChevronUpDown}
+    label={'Chevrons Up Down'}
+    {...props}
+  />
+);
+
+export const Smile: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={FiSmile} label={'Smile'} {...props} />
+);
+
+export const Location: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={IoLocationOutline}
+    label={'Location'}
+    {...props}
+  />
+);

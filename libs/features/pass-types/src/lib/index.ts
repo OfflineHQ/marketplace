@@ -1,4 +1,8 @@
-import type { GetEventPassNftByTokenReferenceQuery } from '@gql/user/types';
+import type {
+  GetEventPassNftByTokenReferenceQuery,
+  GetPassedEventsWithEventPassNftsQuery,
+  GetUpcomingEventsWithEventPassNftsQuery,
+} from '@gql/user/types';
 
 import type {
   GetEventPassNftByIdQuery,
@@ -28,3 +32,13 @@ export type BatchTransferInput = {
 };
 
 export type EventPassNft = EventPassNftByTokenReference | EventPassNftById;
+
+export type EventPassed = NonNullable<
+  GetPassedEventsWithEventPassNftsQuery['eventParameters']
+>[number];
+
+export type EventUpcoming = NonNullable<
+  GetUpcomingEventsWithEventPassNftsQuery['eventParameters']
+>[number];
+
+export type EventWithEventPassNfts = EventPassed | EventUpcoming;

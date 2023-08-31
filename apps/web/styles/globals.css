@@ -149,7 +149,7 @@
     @apply text-primary;
   }
   span {
-    @apply text-base;
+    /* @apply text-base; */
   }
   small {
     @apply text-sm;

@@ -8,6 +8,7 @@ const variants = {
   default: 'border shadow-sm',
   noBorder: '',
   stickyFooter: 'relative border shadow-sm flex flex-col h-full',
+  distinct: 'border shadow-md bg-muted rounded-sm text-card-muted-foreground',
 };
 
 const cardVariantsCva = cva('rounded-lg bg-card text-card-foreground', {

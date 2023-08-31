@@ -70,6 +70,7 @@
       "finalize-button": "Proceed to payment"
     },
     "List": {
+      "no-cart": "You don't have anything in your cart yet",
       "Event": {
         "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",
         "edit": "Edit",
@@ -78,6 +79,28 @@
     }
   },
   "Pass": {
+    "UserPass": {
+      "title": "Pass",
+      "no-pass": "You don't have any pass yet",
+      "coming-soon": "Coming soon",
+      "past": "Past",
+      "DateRange": {
+        "from": "From",
+        "to": "To"
+      },
+      "UserPassEvent": {
+        "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",
+        "num-pass-not-revealed": "x{numPassNotRevealed} not revealed",
+        "num-pass-revealed": "x{numPassRevealed} revealed"
+      },
+      "UserPassEventContent": {
+        "download-passes-button": "Download {numPass, plural, =1 {# pass} other {# passes}}",
+        "pass-number": "Pass #{number, number}",
+        "revealed": "Revealed",
+        "not-revealed": "Not revealed",
+        "actions-helper-text": "Choose an action for this pass"
+      }
+    },
     "NoUserPass": {
       "title": "Pass",
       "description": "You will be able to see your passes once you are signed in",

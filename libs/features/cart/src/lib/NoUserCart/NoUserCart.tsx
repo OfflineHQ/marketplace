@@ -20,6 +20,7 @@ export type NoUserCartProps = LocalPassListProps;
 
 export const NoUserCart: React.FC<NoUserCartProps> = ({
   EventPassesFetcher,
+  noCartImage,
 }) => {
   const t = useTranslations('Cart.NoUserCart');
   return (
@@ -31,7 +32,10 @@ export const NoUserCart: React.FC<NoUserCartProps> = ({
             <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
           <CardContent className="px-1">
-            <LocalPassList EventPassesFetcher={EventPassesFetcher} />
+            <LocalPassList
+              EventPassesFetcher={EventPassesFetcher}
+              noCartImage={noCartImage}
+            />
           </CardContent>
         </CardOverflow>
         <CardOverlay />

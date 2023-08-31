@@ -101,14 +101,14 @@ export const usersJwt = {
   }),
 };
 
-export const alphaAdminClient = (): UserSdk & { me: Account } => {
+export const alphaUserClient = (): UserSdk & { me: Account } => {
   return {
     ...userSdk(fetchDataForTest({ jwt: usersJwt.alpha_user })),
     me: accounts.alpha_user,
   };
 };
 
-export const betaAdminClient = (): UserSdk & { me: Account } => {
+export const betaUserClient = (): UserSdk & { me: Account } => {
   return {
     ...userSdk(fetchDataForTest({ jwt: usersJwt.beta_user })),
     me: accounts.beta_user,

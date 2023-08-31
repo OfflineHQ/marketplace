@@ -146,7 +146,7 @@
     @apply underline;
   }
   span {
-    @apply text-base;
+    /* @apply text-base; */
   }
   small {
     @apply text-sm;

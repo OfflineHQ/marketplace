@@ -16,15 +16,18 @@ export type StatusVariantState =
   | 'disabled';
 
 // Omit disabled from the list of variants
-export type StatusVariant = Omit<Record<StatusVariantState, string>, 'disabled'>;
+export type StatusVariant = Omit<
+  Record<StatusVariantState, string>,
+  'disabled'
+>;
 
 const statusVariantIcons = {
   default: null,
-  info: FillInfo,
-  destructive: OutlineWarning,
-  failure: OutlineError,
-  warning: FillWarning,
-  success: OutlineSuccess,
+  info: <FillInfo />,
+  destructive: <OutlineWarning />,
+  failure: <OutlineError />,
+  warning: <FillWarning />,
+  success: <OutlineSuccess />,
 };
 
 const statusBorderVariants = {

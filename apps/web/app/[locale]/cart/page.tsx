@@ -21,9 +21,16 @@ export default async function CartSection({
   const user = await getCurrentUser();
   return user ? (
     <Suspense fallback={<EventPassListSkeleton />}>
-      <UserCart EventPassesFetcher={EventPassesUser} locale={locale} />
+      <UserCart
+        EventPassesFetcher={EventPassesUser}
+        locale={locale}
+        noCartImage="/empty-cart.svg"
+      />
     </Suspense>
   ) : (
-    <NoUserCart EventPassesFetcher={EventPassesAnonymous} />
+    <NoUserCart
+      EventPassesFetcher={EventPassesAnonymous}
+      noCartImage="/empty-cart.svg"
+    />
   );
 }
