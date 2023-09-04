@@ -23,6 +23,9 @@
       "@features/cart": ["libs/features/cart/src/index.ts"],
       "@features/cart-types": ["libs/features/cart-types/src/index.ts"],
       "@features/cart/server": ["libs/features/cart/src/server.ts"],
+      "@features/organizer/dashboard": [
+        "libs/features/organizer/dashboard/src/index.ts"
+      ],
       "@features/organizer/event": [
         "libs/features/organizer/event/src/index.ts"
       ],
@@ -37,9 +40,6 @@
       ],
       "@features/organizer/event/store": [
         "libs/features/organizer/event/src/lib/store"
-      ],
-      "@features/organizer/dashboard": [
-        "libs/features/organizer/dashboard/src/index.ts"
       ],
       "@features/pass": ["libs/features/pass/src/index.ts"],
       "@features/pass-api": ["libs/features/pass-api/src/index.ts"],
@@ -84,8 +84,8 @@
       "@next/types": ["libs/next/types/src/index.ts"],
       "@next/zustand": ["libs/next/zustand/src/index.ts"],
       "@nft/eventPass": ["libs/nft/eventPass/src/index.ts"],
-      "@nft/types": ["libs/nft/types/src/index.ts"],
       "@nft/thirdweb": ["libs/nft/thirdweb/src/index.ts"],
+      "@nft/types": ["libs/nft/types/src/index.ts"],
       "@server/task": ["libs/server/task/src/index.ts"],
       "@test-utils/db": ["libs/test-utils/db/src/index.ts"],
       "@test-utils/functions": ["libs/test-utils/functions/src/index.ts"],
