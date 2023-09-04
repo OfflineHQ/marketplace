@@ -1,0 +1,28 @@
+{
+  "heroImage": "https://picsum.photos/id/223/900/900",
+  "title": "World cup 2023",
+  "eventDateLocations": [
+    {
+      "id": "3",
+      "dateStart": "2023-09-12T18:00:00Z",
+      "dateEnd": "2023-09-14T22:00:00Z",
+      "location": "{city: \"Saint-Denis\", country: \"France\", placeId: \"…}"
+    }
+  ],
+  "detailed": false,
+  "organizer": {
+    "id": "43411",
+    "slug": "test-organizer-2",
+    "name": "Test Organizer 2",
+    "description": "This is a test organizer"
+  },
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae",
+  "id": "fake_event_2",
+  "slug": "test-event-2",
+  "purchaseLink": {
+    "href": {
+      "pathname": "/dummy"
+    }
+  },
+  "purchaseText": "Select passes"
+}

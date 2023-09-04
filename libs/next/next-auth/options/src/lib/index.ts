@@ -124,6 +124,16 @@ export const authOptions = {
           },
         };
 
+        if (process.env.APP === 'BACKOFFICE') {
+          return {
+            user,
+            provider: account.provider,
+            providerType: account.type,
+            role: Roles.organizer,
+            access: token.access,
+          };
+        }
+
         return {
           user,
           provider: account.provider,

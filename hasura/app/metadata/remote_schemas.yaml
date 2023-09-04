@@ -31,6 +31,16 @@
                 name: eventPassOrderSums
                 schema: public
           name: eventPassOrderSums
+        - definition:
+            to_source:
+              field_mapping:
+                id: eventPassId
+              relationship_type: object
+              source: default
+              table:
+                name: eventPassNftContract
+                schema: public
+          name: eventPassNftContract
       type_name: EventPass
     - relationships:
         - definition:

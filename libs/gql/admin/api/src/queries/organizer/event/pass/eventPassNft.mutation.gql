@@ -24,3 +24,29 @@ mutation SetEventPassNftRevealed($id: uuid!) {
     id
   }
 }
+
+mutation InsertEventPassNfts($objects : [eventPassNft_insert_input!]!) {
+  insert_eventPassNft(objects: $objects) {
+    affected_rows
+    returning {
+      contractAddress
+			tokenId
+			metadata
+			error
+			tokenUri
+			chainId
+			eventId
+			eventPassId
+			organizerId
+			currentOwnerAddress
+			lastNftTransferId
+			isRevealed
+			id
+			created_at
+			updated_at
+    }
+  }
+}
+    
+    
+
