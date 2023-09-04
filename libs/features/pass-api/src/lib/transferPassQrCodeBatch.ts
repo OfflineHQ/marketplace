@@ -26,7 +26,7 @@ export const transferPassQrCodeBatch = async (
     });
 
     const fileDest = getPassUser({
-      address: currentOwnerAddress,
+      address: currentOwnerAddress as string,
       organizerId,
       eventId,
       eventPassId,
