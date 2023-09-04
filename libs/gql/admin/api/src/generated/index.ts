@@ -57,15 +57,6 @@ export const OrganizerFieldsFragmentDoc = `
   }
 }
     `;
-export const EventPassNftContractFieldsFragmentDoc = `
-    fragment EventPassNftContractFields on eventPassNftContract {
-  chainId
-  contractAddress
-  eventId
-  eventPassId
-  organizerId
-}
-    `;
 export const EventDateLocationsFieldsFragmentDoc = `
     fragment EventDateLocationsFields on EventDateLocation {
   locationAddress {
@@ -432,10 +423,14 @@ ${EventDateLocationsFieldsFragmentDoc}`;
  const CreateEventPassNftContractDocument = `
     mutation CreateEventPassNftContract($object: eventPassNftContract_insert_input!) {
   insert_eventPassNftContract_one(object: $object) {
-    ...EventPassNftContractFields
+    chainId
+    contractAddress
+    eventId
+    eventPassId
+    organizerId
   }
 }
-    ${EventPassNftContractFieldsFragmentDoc}`;
+    `;
  const CreateEventPassPricingDocument = `
     mutation CreateEventPassPricing($eventPassPricing: eventPassPricing_insert_input!) {
   insert_eventPassPricing_one(object: $eventPassPricing) {

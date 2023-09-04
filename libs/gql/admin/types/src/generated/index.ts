@@ -156,8 +156,6 @@ export type GetEventPassNftByContractsAndTokenIdsQueryVariables = Types.Exact<{
 
 export type GetEventPassNftByContractsAndTokenIdsQuery = { __typename?: 'query_root', eventPassNft: Array<{ __typename?: 'eventPassNft', tokenId: any, eventId: string, eventPassId: string, organizerId: string }> };
 
-export type EventPassNftContractFieldsFragment = { __typename?: 'eventPassNftContract', chainId: string, contractAddress: string, eventId: string, eventPassId: string, organizerId: string };
-
 export type CreateEventPassNftContractMutationVariables = Types.Exact<{
   object: Types.EventPassNftContract_Insert_Input;
 }>;
