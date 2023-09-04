@@ -8,7 +8,6 @@ export type NftsMetadata = {
   name: string;
   description: string;
   image: string;
-  external_url: string;
 };
 
 class NftCollection {
@@ -69,7 +68,7 @@ class NftCollection {
         name: metadata.name,
         description: metadata.description,
         image: metadata.image,
-        external_url: `${window.location.origin}/${organizerId}/${eventSlug}/${eventPassId}/${i}`,
+        external_url: `https://www.offline.live/pass/organizer/${organizerId}/event/${eventId}/eventPass/${eventPassId}/${i}`,
       };
     });
     const results = await contract.erc721.lazyMint(metadatas);
@@ -102,4 +101,4 @@ class NftCollection {
   }
 }
 
-export default nftCollection;
+export default NftCollection;
