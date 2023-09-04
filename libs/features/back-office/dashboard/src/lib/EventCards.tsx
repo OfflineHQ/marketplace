@@ -15,11 +15,8 @@ import {
 } from '@ui/components';
 import NftCollection, { type NftsMetadata } from '@nft/thirdweb';
 import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
-import type {
-  EventFromOrganizer as TEvent,
-  EventPass as TEventPass,
-} from '@features/organizer/event-types';
-/* eslint-disable-next-line */
+import type { EventFromOrganizer as TEvent } from '@features/back-office/dashboard-types';
+
 interface EventCardsProps {
   events: TEvent[];
   organizerId: string;
