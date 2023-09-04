@@ -1429,6 +1429,7 @@ export type EventPass = Node & {
   /** Get the document in other stages */
   documentInStages: Array<EventPass>;
   event?: Maybe<Event>;
+  eventPassNftContract?: Maybe<EventPassNftContract>;
   eventPassOrderSums?: Maybe<EventPassOrderSums>;
   eventPassPricing?: Maybe<EventPassPricing>;
   /** List of EventPass versions */
