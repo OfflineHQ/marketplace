@@ -1,4 +1,4 @@
-import { createEventPassNfts } from '@features/organizer/event/server';
+import { createEventPassNfts } from '@features/back-office/dashboard/server';
 
 export default async function handler(req, res) {
   try {

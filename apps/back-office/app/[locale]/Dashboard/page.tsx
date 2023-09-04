@@ -1,6 +1,6 @@
 import { getCurrentUser } from '@next/next-auth/user';
 import { ProfileNavClient } from '../../../components/ProfileNavClient/ProfileNavClient';
-import { OrganizerDashboard } from '@features/back-office/organizer/dashboard';
+import { OrganizerDashboard } from '@features/back-office/dashboard';
 
 export async function Dashboard() {
   const user = await getCurrentUser();
