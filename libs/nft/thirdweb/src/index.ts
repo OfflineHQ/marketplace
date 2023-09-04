@@ -34,7 +34,8 @@ class nftCollection {
       return;
     }
     const address = await this.sdk.wallet.getAddress();
-    const chainId = await this.sdk.wallet.getChainId();
+    const chainIdNumber = await this.sdk.wallet.getChainId();
+    const chainId = chainIdNumber.toString();
 
     const txResult = await this.sdk.deployer.deployBuiltInContract('nft-drop', {
       name,
@@ -48,7 +49,7 @@ class nftCollection {
         props: {
           contractAddress: txResult,
           id: eventPassId,
-          chainId: chainId.toString(),
+          chainId: chainId,
           eventId: eventId,
           organizerId: organizerId,
         },
@@ -61,9 +62,41 @@ class nftCollection {
 
     const contract = await this.sdk.getContract(txResult);
 
-    const metadatas = Array(maxAmount).fill(metadata);
-    await contract.erc721.lazyMint(metadatas);
+    const metadatas = Array.from({ length: maxAmount }).map((_, i) => {
+      return {
+        name: metadata.name,
+        description: metadata.description,
+        image: metadata.image,
+        external_url: `/test/test/${eventPassId}/${i}`,
+      };
+    });
+    const results = await contract.erc721.lazyMint(metadatas);
     console.log(txResult);
+    const hasuraMetadatas = await Promise.all(
+      metadatas.map(async (m, i) => {
+        const data = await results[i].data();
+        return {
+          metadata: m,
+          chainId: chainId,
+          tokenId: data.id,
+          tokenUri: data.uri,
+          organizerId: organizerId,
+          eventId: eventId,
+          eventPassId: eventPassId,
+          contractAddress: txResult,
+        };
+      })
+    );
+    console.log('hasuraMetadas : ', hasuraMetadatas);
+
+    const resNfts = await fetch('/api/nft/nfts', {
+      method: 'POST',
+      body: JSON.stringify({
+        props: {
+          hasuraMetadatas,
+        },
+      }),
+    });
   }
 }
 

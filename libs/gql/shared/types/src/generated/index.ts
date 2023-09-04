@@ -5001,7 +5001,7 @@ export type EventPassNft = {
   contractAddress: Scalars['String'];
   created_at: Scalars['timestamptz'];
   /** The address currently holding the event pass NFT, allowing tracking of ownership */
-  currentOwnerAddress: Scalars['String'];
+  currentOwnerAddress?: Maybe<Scalars['String']>;
   /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
   error?: Maybe<Scalars['String']>;
   /** A reference to the event associated with the event pass NFT */
