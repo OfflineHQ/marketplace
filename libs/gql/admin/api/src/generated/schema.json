@@ -9995,6 +9995,18 @@
             "deprecationReason": null
           },
           {
+            "name": "eventPassNftContract",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "eventPassNftContract",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "eventPassOrderSums",
             "description": null,
             "args": [],

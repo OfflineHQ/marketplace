@@ -1,0 +1,142 @@
+{
+  "name": "back-office",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/back-office",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/back-office",
+        "postcssConfig": "apps/back-office/postcss.config.js",
+        "debug": true
+      },
+      "assets": [
+        {
+          "input": "libs/ui/shared/src/assets",
+          "glob": "**/*",
+          "output": "assets"
+        }
+      ],
+      "configurations": {
+        "development": {
+          "outputPath": "apps/back-office"
+        },
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "back-office:build",
+        "hmr": true,
+        "port": 1789,
+        "dev": true,
+        "assets": [
+          {
+            "input": "libs/ui/shared/src/assets",
+            "glob": "**/*",
+            "output": "assets"
+          }
+        ]
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "back-office:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "back-office:build:production",
+          "dev": false
+        }
+      }
+    },
+    "is-services-launched": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["node tools/test/isServicesLaunched.js"],
+        "readyWhen": "Services ready"
+      }
+    },
+    "serve-e2e": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "nx is-services-launched back-office",
+          "nx serve back-office"
+        ],
+        "readyWhen": "Services ready"
+      }
+    },
+    "export": {
+      "executor": "@nx/next:export",
+      "options": {
+        "buildTarget": "back-office:build:production"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/back-office"],
+      "options": {
+        "jestConfig": "apps/back-office/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/back-office/**/*.{ts,tsx,js,jsx,gql,graphql}"
+        ]
+      }
+    },
+    "gql": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "npx graphql-codegen --config codegen.yml -r dotenv/config -e .env.local "
+          }
+        ]
+      }
+    },
+    "storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "port": 4401,
+        "quiet": true,
+        "configDir": "apps/back-office/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nx/storybook:build",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "configDir": "apps/back-office/.storybook",
+        "outputDir": "dist/storybook/back-office",
+        "webpackStatsJson": true
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "test-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "test-storybook -c apps/back-office/.storybook --url=http://localhost:4401"
+      }
+    }
+  },
+  "tags": []
+}
