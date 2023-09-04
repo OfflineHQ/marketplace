@@ -28,7 +28,8 @@
     "../../libs/next/types/**/*.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts",
-    "../../apps/back-office/.next/types/**/*.ts"
+    "../../apps/back-office/.next/types/**/*.ts",
+    "../../dist/apps/back-office/.next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

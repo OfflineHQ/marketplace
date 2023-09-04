@@ -16,7 +16,7 @@ import {
 import NftCollection, { type NftsMetadata } from '@nft/thirdweb';
 import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
 import type {
-  Event as TEvent,
+  EventFromOrganizer as TEvent,
   EventPass as TEventPass,
 } from '@features/organizer/event-types';
 /* eslint-disable-next-line */
@@ -64,7 +64,7 @@ type DeployFunction = (
 ) => Promise<void>;
 
 function renderEventPass(
-  eventPass: TEventPass,
+  eventPass: TEvent['eventPasses'][0],
   event: TEvent,
   deploy: DeployFunction
 ) {
@@ -172,7 +172,7 @@ function EventCard(props: EventCardProps) {
       {events.map((event: TEvent, idx: number) => (
         <div key={idx}>
           {event.eventPasses && event.eventPasses.length
-            ? event.eventPasses.map((eventPass: TEventPass) =>
+            ? event.eventPasses.map((eventPass) =>
                 renderEventPass(eventPass, event, deploy)
               )
             : null}
