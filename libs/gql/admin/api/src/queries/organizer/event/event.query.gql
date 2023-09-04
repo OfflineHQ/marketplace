@@ -59,3 +59,33 @@ query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!)
     }
   }
 }
+
+query GetEventsFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!)
+@cached {
+  organizer(where: { id: $id }, locales: [$locale, en], stage: $stage) {
+    events {
+      title
+      id
+      slug
+      heroImage {
+        url
+      }
+      eventPasses {
+        name
+        id
+        description
+        nftName
+        nftImage {
+          url
+        }
+        nftDescription
+        eventPassPricing {
+          maxAmount
+        }
+        eventPassNftContract {
+          contractAddress
+        }
+      }
+    }
+  }
+}

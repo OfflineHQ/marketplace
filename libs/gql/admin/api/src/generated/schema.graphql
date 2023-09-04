@@ -2003,6 +2003,7 @@ type EventPass implements Node {
     """
     locales: [Locale!]
   ): Event
+  eventPassNftContract: eventPassNftContract
   eventPassOrderSums: eventPassOrderSums
   eventPassPricing: eventPassPricing
 
