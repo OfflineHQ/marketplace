@@ -6847,7 +6847,7 @@ type eventPassNft {
   """
   The address currently holding the event pass NFT, allowing tracking of ownership
   """
-  currentOwnerAddress: String!
+  currentOwnerAddress: String
 
   """
   Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process.
