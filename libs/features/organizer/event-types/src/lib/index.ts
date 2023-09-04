@@ -1,18 +1,5 @@
 // import type { BoundedNumericStepperProps } from '@ui/components';
-import type {
-  GetEventQuery,
-  GetEventPassesQuery,
-  GetEventsFromOrganizerIdQuery,
-} from '@gql/admin/types';
-// import type {
-//   Coordinates as TCoordinates,
-//   EventDateLocation as TEventDateLocation,
-//   LocationAddress as TLocationAddress,
-//   Organizer as TOrganizer,
-//   Currency as TCurrency,
-//   Locale as TLocale,
-// } from '@gql/shared/types';
-
+import type { GetEventQuery, GetEventPassesQuery } from '@gql/admin/types';
 export interface EventSlugs {
   eventSlug: string;
   organizerSlug: string;
@@ -38,7 +25,3 @@ export interface EventPassCart extends Pick<EventPass, 'id'> {
 export type AllPassesCart = Record<string, Record<string, EventPassCart[]>>; // EventPasses will be grouped by organizerSlug -> eventSlug -> passes
 
 export type PassOption = EventPass['passOptions'][0];
-
-export type EventFromOrganizer = NonNullable<
-  NonNullable<GetEventsFromOrganizerIdQuery['organizer']>['events']
->[0];
