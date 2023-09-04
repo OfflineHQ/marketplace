@@ -13,4 +13,3 @@ mutation CreateEventPassNftContract(
     ...EventPassNftContractFields
   }
 }
-

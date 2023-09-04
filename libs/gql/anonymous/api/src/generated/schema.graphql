@@ -6193,7 +6193,7 @@ type eventPassNft {
   """
   The address currently holding the event pass NFT, allowing tracking of ownership
   """
-  currentOwnerAddress: String!
+  currentOwnerAddress: String
 
   """A reference to the event associated with the event pass NFT"""
   eventId: String!
