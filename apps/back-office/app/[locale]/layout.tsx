@@ -14,6 +14,7 @@ import { locales } from '@next/i18n';
 import { useLocale, useTranslations } from 'next-intl';
 import { ProfileNavClient } from '../../components/ProfileNavClient/ProfileNavClient';
 import { Dashboard } from './Dashboard/page';
+import { type AppNavLayoutProps } from '@features/appNav/ui';
 
 const fontSans = FontSans({
   subsets: ['latin'],
