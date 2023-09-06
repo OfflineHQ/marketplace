@@ -109,6 +109,7 @@
     "react-hook-form": "^7.45.1",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.10.1",
+    "react-uploader": "^3.41.0",
     "react-use": "^17.4.0",
     "remeda": "^1.23.0",
     "server-only": "^0.0.1",
@@ -120,6 +121,7 @@
     "tailwindcss-gradients": "^3.0.0",
     "tslib": "^2.6.0",
     "upload-js-full": "^2.21.0",
+    "uploader": "^3.48.0",
     "uuid": "^8.3.2",
     "zod": "^3.21.4",
     "zustand": "^4.3.9"

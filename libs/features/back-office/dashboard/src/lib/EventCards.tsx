@@ -16,6 +16,14 @@ import {
 import NftCollection, { type NftsMetadata } from '@nft/thirdweb';
 import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
 import type { EventFromOrganizer as TEvent } from '@features/back-office/dashboard-types';
+import { UploadDropzone } from 'react-uploader';
+import { UploadWrapper } from '@file-upload/admin';
+import { Uploader } from 'uploader';
+import { useState } from 'react';
+import { error } from 'console'; // Replace "free" with your API key.
+import { GetOrganizerSlug } from './getOrganizerSlug';
+
+const uploader = Uploader({ apiKey: 'free' });
 
 interface EventCardsProps {
   events: TEvent[];
@@ -60,11 +68,31 @@ type DeployFunction = (
   metadata: NftsMetadata
 ) => Promise<void>;
 
-function renderEventPass(
+function RenderEventPass(
   eventPass: TEvent['eventPasses'][0],
   event: TEvent,
-  deploy: DeployFunction
+  deploy: DeployFunction,
+  organizerId: string
 ) {
+  const [filesNumber, setFilesNumber] = useState(0);
+  const [organizerSlug, setOrganizerSlug] = useState('');
+
+  const uploaderOptions = {
+    multi: true,
+
+    //path: {
+    //  folderPath: `/${env}/organizers/${organizerSlug}/${event.slug}/${eventPass.id}/`,
+    //},
+
+    showFinishButton: true,
+
+    styles: {
+      colors: {
+        primary: '#377dff',
+      },
+    },
+  };
+
   return (
     <Card
       className="w-full items-center justify-center md:w-[380px]"
@@ -124,6 +152,34 @@ function renderEventPass(
                 Copy contract address
               </Button>
             )}
+            <p>
+              {filesNumber}/{eventPass.eventPassPricing?.maxAmount}
+            </p>
+            <UploadDropzone
+              uploader={uploader}
+              options={uploaderOptions}
+              onUpdate={async (files) => {
+                if (organizerSlug === '') {
+                  const res = await GetOrganizerSlug(organizerId);
+                  console.log(res);
+                  //setOrganizerSlug(res);
+                }
+                files
+                  .map((x) => {
+                    console.log(x);
+                    return x.fileUrl;
+                  })
+                  .join('\n');
+                setFilesNumber(files.length);
+              }}
+              onComplete={(files) => {
+                if (eventPass.eventPassPricing?.maxAmount === filesNumber) {
+                  alert(files.map((x) => x.fileUrl).join('\n'));
+                } else {
+                  alert('Not enough QR codes.');
+                }
+              }}
+            />
           </div>
         )}
       </CardFooter>
@@ -170,7 +226,7 @@ function EventCard(props: EventCardProps) {
         <div key={idx}>
           {event.eventPasses && event.eventPasses.length
             ? event.eventPasses.map((eventPass) =>
-                renderEventPass(eventPass, event, deploy)
+                RenderEventPass(eventPass, event, deploy, organizerId)
               )
             : null}
         </div>
