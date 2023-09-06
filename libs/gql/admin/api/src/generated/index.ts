@@ -462,6 +462,13 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${OrganizerFieldsFragmentDoc}`;
+ const GetOrganizerFromIdDocument = `
+    query GetOrganizerFromId($id: ID!, $stage: Stage!) @cached {
+  organizer(where: {id: $id}, stage: $stage) {
+    ...OrganizerFields
+  }
+}
+    ${OrganizerFieldsFragmentDoc}`;
  const GetEventPassNftByIdDocument = `
     query GetEventPassNftById($id: uuid!, $locale: Locale!, $stage: Stage!) @cached {
   eventPassNft_by_pk(id: $id) {
@@ -551,6 +558,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
+    },
+    GetOrganizerFromId(variables: Types.GetOrganizerFromIdQueryVariables, options?: C): Promise<Types.GetOrganizerFromIdQuery> {
+      return requester<Types.GetOrganizerFromIdQuery, Types.GetOrganizerFromIdQueryVariables>(GetOrganizerFromIdDocument, variables, options) as Promise<Types.GetOrganizerFromIdQuery>;
     },
     GetEventPassNftById(variables: Types.GetEventPassNftByIdQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdQuery> {
       return requester<Types.GetEventPassNftByIdQuery, Types.GetEventPassNftByIdQueryVariables>(GetEventPassNftByIdDocument, variables, options) as Promise<Types.GetEventPassNftByIdQuery>;
