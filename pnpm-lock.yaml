@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@dinero.js/currencies':
     specifier: 2.0.0-alpha.14
@@ -214,6 +218,9 @@ dependencies:
   react-icons:
     specifier: ^4.10.1
     version: 4.10.1(react@18.2.0)
+  react-uploader:
+    specifier: ^3.41.0
+    version: 3.41.0(react@18.2.0)
   react-use:
     specifier: ^17.4.0
     version: 17.4.0(react-dom@18.2.0)(react@18.2.0)
@@ -247,6 +254,9 @@ dependencies:
   upload-js-full:
     specifier: ^2.21.0
     version: 2.21.0
+  uploader:
+    specifier: ^3.48.0
+    version: 3.48.0
   uuid:
     specifier: ^8.3.2
     version: 8.3.2
@@ -3543,6 +3553,7 @@ packages:
 
   /@emotion/memoize@0.7.4:
     resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -12374,6 +12385,10 @@ packages:
       '@typescript-eslint/types': 5.61.0
       eslint-visitor-keys: 3.4.1
     dev: true
+
+  /@upload-io/upload-api-client-upload-js@2.18.0:
+    resolution: {integrity: sha512-yPwsRCecXSilYn4q5ZDD4fyI2PVyUcLimv2LQcfpV3hRyzc8t82NuWHYEYpRZa5K68zxw2RljDf30geT1vJN9g==}
+    dev: false
 
   /@vercel/analytics@0.1.11(react@18.2.0):
     resolution: {integrity: sha512-mj5CPR02y0BRs1tN3oZcBNAX9a8NxsIUl9vElDPcqxnMfP0RbRc9fI9Ud7+QDg/1Izvt5uMumsr+6YsmVHcyuw==}
@@ -23467,6 +23482,7 @@ packages:
   /pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -24478,6 +24494,10 @@ packages:
     resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
     engines: {node: '>= 0.6.0'}
 
+  /progress-smoother@1.7.0:
+    resolution: {integrity: sha512-ZIbSbPQ8SnEf5Sa0If9lfvn5URyrZfgTTh5DM+04j1GafiLIaWDWW+1AkYXzGl7JQvzAvCy5E1ZPOgx8XORyew==}
+    dev: false
+
   /progress@2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
@@ -24525,6 +24545,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -24993,6 +25014,16 @@ packages:
     dependencies:
       react: 18.2.0
       tslib: 2.6.0
+    dev: false
+
+  /react-uploader@3.41.0(react@18.2.0):
+    resolution: {integrity: sha512-v8feURMOIrkKK4ekKGcC5on9SVV1JpE6DFDveqrACB5hLN5ViCYPX8k0DJmi285kxzWru5+js3LXtlzMXJUZ1g==}
+    peerDependencies:
+      react: '>=16.3.0'
+    dependencies:
+      lodash.isequal: 4.5.0
+      react: 18.2.0
+      uploader: 3.48.0
     dev: false
 
   /react-use@17.4.0(react-dom@18.2.0)(react@18.2.0):
@@ -27735,6 +27766,21 @@ packages:
 
   /upload-js-full@2.21.0:
     resolution: {integrity: sha512-RCkvYfOR0qrZ6YOZR7USzjjmVIWqtvIG/JZ68L4dY1xQsQGPh3FCChFy5paNn0Z69Dp3BBqZQcoLiKdU9v6l5A==}
+    dev: false
+
+  /upload-js@2.23.0:
+    resolution: {integrity: sha512-qxiJYYYtHc1DqrWcfb8iv4kejZFv+0FGYVo9Kqb/hQ+2ljs24VOU6qd5g6XDfLAe7bOe+EpOoNPdBaWQUt7Kzw==}
+    dependencies:
+      '@upload-io/upload-api-client-upload-js': 2.18.0
+      progress-smoother: 1.7.0
+    dev: false
+
+  /uploader@3.48.0:
+    resolution: {integrity: sha512-WeIUUf0dO3sfyYrukqvJdO38ZW4ZPurzcLvi24sEUYG2t4wWbum3EL1+lCEu6cATAIQjez3NLPv5dkiLA7GZrw==}
+    dependencies:
+      classnames: 2.3.2
+      preact: 10.16.0
+      upload-js: 2.23.0
     dev: false
 
   /upper-case-first@2.0.2:
