@@ -17,13 +17,11 @@ import NftCollection, { type NftsMetadata } from '@nft/thirdweb';
 import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
 import type { EventFromOrganizer as TEvent } from '@features/back-office/dashboard-types';
 import { UploadDropzone } from 'react-uploader';
-import { UploadWrapper } from '@file-upload/admin';
-import { Uploader } from 'uploader';
 import { useState } from 'react';
-import { error } from 'console'; // Replace "free" with your API key.
-import { GetOrganizerSlug } from './getOrganizerSlug';
+import { renameFolderQrCodes } from './getOrganizerSlug';
+import { Uploader } from 'uploader';
 
-const uploader = Uploader({ apiKey: 'free' });
+const uploader = Uploader({ apiKey: 'public_FW25bfk2iEyHhseeT4oxi4TCkKCE' });
 
 interface EventCardsProps {
   events: TEvent[];
@@ -75,15 +73,15 @@ function RenderEventPass(
   organizerId: string
 ) {
   const [filesNumber, setFilesNumber] = useState(0);
-  const [organizerSlug, setOrganizerSlug] = useState('');
+  const path = `/${process.env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX}/organizers/${organizerId}/events/${event.id}/${eventPass.id}`;
 
   const uploaderOptions = {
     multi: true,
 
-    //path: {
-    //  folderPath: `/${env}/organizers/${organizerSlug}/${event.slug}/${eventPass.id}/`,
-    //},
-
+    path: {
+      folderPath: path,
+    },
+    maxFileCount: eventPass.eventPassPricing?.maxAmount,
     showFinishButton: true,
 
     styles: {
@@ -95,7 +93,7 @@ function RenderEventPass(
 
   return (
     <Card
-      className="w-full items-center justify-center md:w-[380px]"
+      className="w-full items-center justify-center md:w-[800px]"
       key={eventPass.id}
     >
       <CardHeader>
@@ -159,11 +157,6 @@ function RenderEventPass(
               uploader={uploader}
               options={uploaderOptions}
               onUpdate={async (files) => {
-                if (organizerSlug === '') {
-                  const res = await GetOrganizerSlug(organizerId);
-                  console.log(res);
-                  //setOrganizerSlug(res);
-                }
                 files
                   .map((x) => {
                     console.log(x);
@@ -173,13 +166,18 @@ function RenderEventPass(
                 setFilesNumber(files.length);
               }}
               onComplete={(files) => {
-                if (eventPass.eventPassPricing?.maxAmount === filesNumber) {
-                  alert(files.map((x) => x.fileUrl).join('\n'));
-                } else {
-                  alert('Not enough QR codes.');
-                }
+                alert(files.map((x) => x.fileUrl).join('\n'));
               }}
+              width="800px"
             />
+            <Button
+              className="w-full"
+              onClick={async () => {
+                await renameFolderQrCodes(path, event.id, eventPass.id);
+              }}
+            >
+              Rename QR codes
+            </Button>
           </div>
         )}
       </CardFooter>
