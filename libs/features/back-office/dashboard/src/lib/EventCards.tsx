@@ -18,7 +18,7 @@ import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
 import type { EventFromOrganizer as TEvent } from '@features/back-office/dashboard-types';
 import { UploadDropzone } from 'react-uploader';
 import { useState } from 'react';
-import { renameFolderQrCodes } from './getOrganizerSlug';
+import { renameFolderQrCodes } from './renameFolderQrCodes';
 import { Uploader } from 'uploader';
 
 const uploader = Uploader({ apiKey: 'public_FW25bfk2iEyHhseeT4oxi4TCkKCE' });
