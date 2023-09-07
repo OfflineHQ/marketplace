@@ -10,3 +10,4 @@ generated
 hasura/app/**
 .next/**
 .next
+.swcrc
