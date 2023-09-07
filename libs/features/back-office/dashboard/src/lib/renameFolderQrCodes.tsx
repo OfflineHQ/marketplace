@@ -1,12 +1,14 @@
 'use server';
 
 import { FileWrapper, FolderWrapper } from '@file-upload/admin';
+import { revalidatePath } from 'next/cache';
 
 export async function renameFolderQrCodes(
   folderPath: string,
   eventId: string,
   eventPassId: string
 ) {
+  revalidatePath('/');
   const folder = new FolderWrapper();
   const upload = new FileWrapper();
 
