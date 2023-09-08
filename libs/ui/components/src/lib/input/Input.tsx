@@ -59,7 +59,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div className="relative">
         {Icon && (
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-            <Icon.type color={variant} {...Icon.props} />
+            <Icon.type {...Icon.props} color={variant} />
           </div>
         )}
         <input className={inputClasses} ref={ref} {...props} />
