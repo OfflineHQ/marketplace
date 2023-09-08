@@ -24,6 +24,7 @@ query GetPassedEventsWithEventPassNfts(
         }
       }
       eventPassNfts(where: { currentOwnerAddress: { _eq: $address } }) {
+        id
         isRevealed
         tokenId
       }
@@ -73,6 +74,7 @@ query GetUpcomingEventsWithEventPassNfts(
         }
       }
       eventPassNfts(where: { currentOwnerAddress: { _eq: $address } }) {
+        id
         isRevealed
         tokenId
       }

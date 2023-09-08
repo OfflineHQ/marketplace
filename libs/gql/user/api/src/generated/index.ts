@@ -187,6 +187,7 @@ export const EventPassNftFieldsFragmentDoc = `
         }
       }
       eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+        id
         isRevealed
         tokenId
       }
@@ -229,6 +230,7 @@ export const EventPassNftFieldsFragmentDoc = `
         }
       }
       eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+        id
         isRevealed
         tokenId
       }

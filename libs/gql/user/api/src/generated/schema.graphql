@@ -6515,6 +6515,7 @@ type eventPassNft {
 
   """An object relationship"""
   eventPassPricing: eventPassPricing
+  id: uuid!
 
   """
   Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform.
@@ -6774,6 +6775,7 @@ input eventPassNft_bool_exp {
   eventPassId: String_comparison_exp
   eventPassNftContract: eventPassNftContract_bool_exp
   eventPassPricing: eventPassPricing_bool_exp
+  id: uuid_comparison_exp
   isRevealed: Boolean_comparison_exp
   lastNftTransferId: uuid_comparison_exp
   metadata: jsonb_comparison_exp
@@ -6811,6 +6813,7 @@ input eventPassNft_max_order_by {
 
   """Directly relates to a specific Event Pass within the system"""
   eventPassId: order_by
+  id: order_by
 
   """
   Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT.
@@ -6860,6 +6863,7 @@ input eventPassNft_min_order_by {
 
   """Directly relates to a specific Event Pass within the system"""
   eventPassId: order_by
+  id: order_by
 
   """
   Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT.
@@ -6893,6 +6897,7 @@ input eventPassNft_order_by {
   eventPassId: order_by
   eventPassNftContract: eventPassNftContract_order_by
   eventPassPricing: eventPassPricing_order_by
+  id: order_by
   isRevealed: order_by
   lastNftTransferId: order_by
   metadata: order_by
@@ -6926,6 +6931,9 @@ enum eventPassNft_select_column {
 
   """column name"""
   eventPassId
+
+  """column name"""
+  id
 
   """column name"""
   isRevealed
@@ -7016,6 +7024,7 @@ input eventPassNft_stream_cursor_value_input {
 
   """Directly relates to a specific Event Pass within the system"""
   eventPassId: String
+  id: uuid
 
   """
   Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform.
@@ -8907,6 +8916,9 @@ type query_root {
     where: eventPassNftContract_bool_exp
   ): [eventPassNftContract!]!
 
+  """fetch data from the table: "eventPassNft" using primary key columns"""
+  eventPassNft_by_pk(id: uuid!): eventPassNft
+
   """
   fetch data from the table: "eventPassOrder"
   """
@@ -9496,6 +9508,9 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassNftContract_bool_exp
   ): [eventPassNftContract!]!
+
+  """fetch data from the table: "eventPassNft" using primary key columns"""
+  eventPassNft_by_pk(id: uuid!): eventPassNft
 
   """
   fetch data from the table in a streaming manner: "eventPassNft"
