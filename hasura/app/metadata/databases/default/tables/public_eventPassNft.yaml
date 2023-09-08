@@ -117,6 +117,7 @@ select_permissions:
         - currentOwnerAddress
         - lastNftTransferId
         - isRevealed
+        - id
         - created_at
         - updated_at
       filter: {}

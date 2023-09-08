@@ -275,6 +275,7 @@ export const GetPassedEventsWithEventPassNftsDocument = `
         }
       }
       eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+        id
         isRevealed
         tokenId
       }
@@ -329,6 +330,7 @@ export const GetUpcomingEventsWithEventPassNftsDocument = `
         }
       }
       eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+        id
         isRevealed
         tokenId
       }
