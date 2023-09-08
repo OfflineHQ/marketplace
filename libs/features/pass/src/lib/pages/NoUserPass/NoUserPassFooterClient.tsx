@@ -18,7 +18,7 @@ export const NoUserPassFooterClient: React.FC<NoUserPassFooterClientProps> = ({
   ) : (
     <Button
       onClick={login}
-      icon={LogIn}
+      icon={<LogIn />}
       isLoading={connecting}
       block
       className="w-full md:w-1/6"

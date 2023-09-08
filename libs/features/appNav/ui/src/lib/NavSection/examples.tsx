@@ -9,7 +9,7 @@ export const cartNavProps: NavSectionProps = {
 
 export function NavSectionDemo(
   props: NavSectionProps,
-  Icon: React.FC<IconProps>,
+  Icon: React.ReactElement<IconProps>,
   text: string
 ) {
   return (
