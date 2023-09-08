@@ -77,7 +77,10 @@ export const SinglePass: React.FC<SinglePassProps> = ({
               <AspectRatio variant="square">
                 <Image
                   className="rounded-sm"
-                  src={eventPassNft?.eventPass?.nftImage?.url || ''}
+                  src={
+                    eventPassNft?.eventPass?.nftImage?.url ||
+                    '/image-placeholder.svg'
+                  }
                   fill
                   style={{ objectFit: 'cover' }}
                   alt={eventPassNft?.eventPass?.event?.title || ''}

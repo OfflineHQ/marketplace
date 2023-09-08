@@ -55,7 +55,7 @@ export const UserPassEventContent: React.FC<UserPassEventContentProps> = ({
               <Image
                 src={
                   eventPassNftContract.eventPass?.nftImage?.url ||
-                  '/not-found.svg'
+                  '/image-placeholder.svg'
                 }
                 fill
                 style={{ objectFit: 'cover' }}
