@@ -25,7 +25,7 @@ export function DisplayDropdown({ items, ...props }: DisplayDropdownProps) {
         <Button
           variant="outline"
           aria-label={props.helperText as string}
-          icon={isDark ? Dark : Light}
+          icon={isDark ? <Dark /> : <Light />}
           {...props}
         />
       </DropdownMenuTrigger>

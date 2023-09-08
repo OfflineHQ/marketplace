@@ -21,7 +21,7 @@ export function LanguageDropdown({ items, ...props }: LanguageDropdownProps) {
         <Button
           variant="outline"
           aria-label={props.helperText as string}
-          icon={Language}
+          icon={<Language />}
           {...props}
         />
       </DropdownMenuTrigger>

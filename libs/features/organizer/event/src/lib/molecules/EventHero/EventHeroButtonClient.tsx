@@ -16,7 +16,7 @@ export const EventHeroButtonClient: React.FC<EventHeroButtonClientProps> = ({
 }) => {
   return (
     <Link {...purchaseLink} legacyBehavior passHref>
-      <Button icon={QrCode} block variant="secondary" className="px-8">
+      <Button icon={<QrCode />} block variant="secondary" className="px-8">
         {purchaseText}
       </Button>
     </Link>
