@@ -17,15 +17,12 @@ import {
   EventDetailsSkeleton,
   type EventDetailsProps,
 } from '../../molecules/EventDetails/EventDetails';
-import {
-  EventFooterClient,
-  type EventFooterClientProps,
-} from './EventFooterClient';
+import { EventFooter, type EventFooterProps } from './EventFooter';
 
 export interface EventProps
   extends EventHeroProps,
     EventDetailsProps,
-    EventFooterClientProps {
+    EventFooterProps {
   id: string;
   slug: string;
 }
@@ -46,10 +43,7 @@ export const Event: React.FC<EventProps> = ({
       </CardOverflow>
       <CardOverlay />
       <CardFooter className="justify-center" variant="sticky">
-        <EventFooterClient
-          purchaseLink={purchaseLink}
-          purchaseText={purchaseText}
-        />
+        <EventFooter purchaseLink={purchaseLink} purchaseText={purchaseText} />
       </CardFooter>
     </Card>
   );
