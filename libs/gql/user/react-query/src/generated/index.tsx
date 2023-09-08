@@ -268,8 +268,8 @@ export const GetPassedEventsWithEventPassNftsDocument = `
       where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
     ) {
       eventPass(locales: [$locale, en], stage: $stage) {
-        name
         id
+        name
         nftImage {
           url
         }
@@ -280,6 +280,7 @@ export const GetPassedEventsWithEventPassNftsDocument = `
       }
     }
     organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      id
       slug
       name
       image {
@@ -287,6 +288,7 @@ export const GetPassedEventsWithEventPassNftsDocument = `
       }
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
+      id
       slug
       title
       heroImage {
@@ -320,11 +322,11 @@ export const GetUpcomingEventsWithEventPassNftsDocument = `
       where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
     ) {
       eventPass(locales: [$locale, en], stage: $stage) {
+        id
         name
         nftImage {
           url
         }
-        id
       }
       eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
         isRevealed
@@ -332,6 +334,7 @@ export const GetUpcomingEventsWithEventPassNftsDocument = `
       }
     }
     organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      id
       slug
       name
       image {
@@ -339,6 +342,7 @@ export const GetUpcomingEventsWithEventPassNftsDocument = `
       }
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
+      id
       slug
       title
       heroImage {

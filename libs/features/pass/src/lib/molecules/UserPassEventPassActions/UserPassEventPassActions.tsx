@@ -5,6 +5,7 @@ import {
 import { Download, Reveal, SeeDetails, Send } from '@ui/icons';
 import type { EventWithEventPassNfts } from '@features/pass-types';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 export type UserPassEventPassActionsFunctionsProps = {
   actionsFunctions: {
@@ -19,15 +20,21 @@ export interface UserPassEventPassActionsProps
   eventPassNft: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts'][0];
   eventPass: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPass'];
   event: EventWithEventPassNfts['event'];
+  organizer: EventWithEventPassNfts['organizer'];
 }
 
 export const UserPassEventPassActions: React.FC<
   UserPassEventPassActionsProps
-> = ({ eventPassNft, eventPass, event, actionsFunctions }) => {
+> = ({ eventPassNft, eventPass, event, organizer, actionsFunctions }) => {
   const t = useTranslations('Pass.UserPass.UserPassEventPassActions');
   const items: DropdownMenuActionsProps['items'] = [
     {
       type: 'item',
+      wrapper: (
+        <Link
+          href={`/pass/organizer/${organizer.id}/event/${event.id}/eventPass/${eventPass.id}/${eventPassNft.tokenId}`}
+        />
+      ),
       icon: <SeeDetails />,
       text: t('see-details'),
     },
