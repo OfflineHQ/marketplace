@@ -95,7 +95,7 @@ function CardNotifications(
       </CardOverflow>
       <CardOverlay />
       <CardFooter variant="sticky">
-        <Button className="w-full" icon={Check}>
+        <Button className="w-full" icon={<Check />}>
           Mark all as read
         </Button>
       </CardFooter>

@@ -45,7 +45,7 @@ export const DropdownMenuActions: React.FC<DropdownMenuActionsProps> = ({
           <Button
             variant="outline"
             className={buttonClassName}
-            icon={MenuActions}
+            icon={<MenuActions />}
             isLoading={isLoading || loading}
             helperText={helperText}
           />

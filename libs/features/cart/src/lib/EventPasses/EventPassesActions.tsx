@@ -25,7 +25,7 @@ export const EventPassesActions: React.FC<EventPassesActionsProps> = ({
         passHref
         href={`/organizer/${organizerSlug}/event/${eventSlug}/purchase`}
       >
-        <Button variant="outline" icon={Edit}>
+        <Button variant="outline" icon={<Edit />}>
           {editText}
         </Button>
       </Link>
@@ -33,7 +33,7 @@ export const EventPassesActions: React.FC<EventPassesActionsProps> = ({
       <Button
         variant="destructive"
         className="mt-4"
-        icon={Delete}
+        icon={<Delete />}
         onClick={() => onDelete({ eventSlug, organizerSlug })}
       >
         {deleteText}

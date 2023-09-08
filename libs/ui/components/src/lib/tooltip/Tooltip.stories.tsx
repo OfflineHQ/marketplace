@@ -16,7 +16,7 @@ const meta = {
   render: () => (
     <div className="flex">
       <Tooltip content="Add to library">
-        <Button icon={Plus} variant="outline" />
+        <Button icon={<Plus />} variant="outline" />
       </Tooltip>
     </div>
   ),

@@ -15,7 +15,7 @@ export function PopoverDemo() {
     <div className="flex">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" icon={Settings} />
+          <Button variant="ghost" icon={<Settings />} />
         </PopoverTrigger>
         <PopoverContent className="w-80">
           <PopoverHeader>
@@ -36,7 +36,7 @@ export function PopoverDemoWithNoHeader() {
     <div className="flex">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="ghost" icon={Settings} />
+          <Button variant="ghost" icon={<Settings />} />
         </PopoverTrigger>
         <PopoverContent className="w-80">
           <TextInputWithLeftLabels label="dummy" size="sm" />
