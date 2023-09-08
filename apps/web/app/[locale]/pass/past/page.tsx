@@ -1,8 +1,7 @@
 import { getPassedEventsWithEventPassNfts } from '@features/pass-api';
 import type { Locale } from '@gql/shared/types';
 import { getCurrentUser } from '@next/next-auth/user';
-import { UserPassList } from '@features/pass/server';
-import { useTranslations } from 'next-intl';
+import { UserPassList, revealPass, downloadPass } from '@features/pass/server';
 
 interface PassTabsPastProps {
   params: {
@@ -14,9 +13,8 @@ function PassTabContent({
   events,
 }: Awaited<ReturnType<typeof getPassedEventsWithEventPassNfts>> | null) {
   const actionsFunctions = {
-    downloadPass: () => null,
-    revealPass: () => null,
-    sendPass: () => null,
+    downloadPass,
+    revealPass,
   };
   return (
     <UserPassList

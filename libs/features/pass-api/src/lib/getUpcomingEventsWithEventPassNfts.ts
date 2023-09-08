@@ -16,11 +16,14 @@ export const getUpcomingEventsWithEventPassNfts = cache(
   async (props: GetUpcomingEventsWithEventPassNftsUserProps) => {
     const user = await getCurrentUser();
     if (!user) throw new Error('User not logged in');
-    const data = await userSdk.GetUpcomingEventsWithEventPassNfts({
-      ...props,
-      address: user.address,
-      stage: process.env.HYGRAPH_STAGE as Stage,
-    });
+    const data = await userSdk.GetUpcomingEventsWithEventPassNfts(
+      {
+        ...props,
+        address: user.address,
+        stage: process.env.HYGRAPH_STAGE as Stage,
+      },
+      { next: { tags: ['userEventPassNfts'] } }
+    );
     return data?.eventParameters;
   }
 );
