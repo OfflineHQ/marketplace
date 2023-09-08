@@ -33,7 +33,7 @@ const layout = {
 
 export const UserPassEvent: React.FC<UserPassEventProps> = ({
   eventParameters,
-  passActions,
+  actionsFunctions,
 }) => {
   const t = useTranslations('Pass.UserPass.UserPassEvent');
   let numPass = 0;
@@ -95,7 +95,7 @@ export const UserPassEvent: React.FC<UserPassEventProps> = ({
       </AccordionTrigger>
       <UserPassEventContent
         eventParameters={eventParameters}
-        passActions={passActions}
+        actionsFunctions={actionsFunctions}
       />
     </AccordionItem>
   );

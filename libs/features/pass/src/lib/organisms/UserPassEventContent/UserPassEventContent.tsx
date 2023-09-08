@@ -19,29 +19,24 @@ import {
   type DropdownMenuActionsProps,
 } from '@ui/components';
 import Image from 'next/image';
+import { Download } from '@ui/icons';
 import { useTranslations } from 'next-intl';
-import { Download, Reveal } from '@ui/icons';
+import {
+  UserPassEventPassActions,
+  type UserPassEventPassActionsFunctionsProps,
+} from '../../molecules/UserPassEventPassActions/UserPassEventPassActions';
 
-export type eventPassActionsProps = {
-  eventPassNft: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts'][0];
-  eventPass: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPass'];
-  event: EventWithEventPassNfts['event'];
-};
-
-export type eventPassActions = (
-  props: eventPassActionsProps
-) => DropdownMenuActionsProps['items'];
-
-export interface UserPassEventContentProps {
+export interface UserPassEventContentProps
+  extends UserPassEventPassActionsFunctionsProps {
   eventParameters: EventWithEventPassNfts;
-  passActions: eventPassActions;
 }
 
 export const UserPassEventContent: React.FC<UserPassEventContentProps> = ({
   eventParameters,
-  passActions,
+  actionsFunctions,
 }) => {
   const t = useTranslations('Pass.UserPass.UserPassEventContent');
+
   return (
     <AccordionContent className="grid grid-cols-1 gap-y-4 md:grid-cols-4 md:gap-4">
       {eventParameters.eventPassNftContracts.map((eventPassNftContract) => (
@@ -81,13 +76,11 @@ export const UserPassEventContent: React.FC<UserPassEventContentProps> = ({
                     </Badge>
                   )}
                   <div className="flex grow justify-end">
-                    <DropdownMenuActions
-                      helperText={t('actions-helper-text')}
-                      items={passActions({
-                        eventPassNft,
-                        eventPass: eventPassNftContract.eventPass,
-                        event: eventParameters.event,
-                      })}
+                    <UserPassEventPassActions
+                      eventPassNft={eventPassNft}
+                      eventPass={eventPassNftContract.eventPass}
+                      event={eventParameters.event}
+                      actionsFunctions={actionsFunctions}
                     />
                   </div>
                 </div>
