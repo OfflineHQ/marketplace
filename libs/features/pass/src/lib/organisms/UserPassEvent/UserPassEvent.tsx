@@ -58,7 +58,10 @@ export const UserPassEvent: React.FC<UserPassEventProps> = ({
         <div className={layout.grid}>
           <div className={layout.imageContainer}>
             <Image
-              src={eventParameters.event?.heroImage?.url as string}
+              src={
+                eventParameters.event?.heroImage?.url ||
+                '/image-placeholder.svg'
+              }
               className={layout.image}
               fill
               style={{ objectFit: 'cover' }}
