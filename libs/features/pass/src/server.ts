@@ -13,3 +13,4 @@ export {
 
 export { revealPass } from './lib/actions/revealPass';
 export { downloadPass } from './lib/actions/downloadPass';
+export { batchDownloadOrReveal } from './lib/actions/batchDownloadOrReveal';
