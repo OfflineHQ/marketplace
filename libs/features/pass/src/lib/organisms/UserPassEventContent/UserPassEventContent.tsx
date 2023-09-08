@@ -53,7 +53,10 @@ export const UserPassEventContent: React.FC<UserPassEventContentProps> = ({
           <CardHeader className="space-y-4">
             <AspectRatio variant="classic">
               <Image
-                src={eventPassNftContract.eventPass?.nftImage?.url as string}
+                src={
+                  eventPassNftContract.eventPass?.nftImage?.url ||
+                  '/not-found.svg'
+                }
                 fill
                 style={{ objectFit: 'cover' }}
                 alt={eventPassNftContract.eventPass?.name as string}
@@ -95,7 +98,7 @@ export const UserPassEventContent: React.FC<UserPassEventContentProps> = ({
             ))}
           </CardContent>
           <CardFooter>
-            <Button className="w-full" icon={Download} block>
+            <Button className="w-full" icon={<Download />} block>
               {t('download-passes-button', {
                 numPass: eventPassNftContract.eventPassNfts.length,
               })}

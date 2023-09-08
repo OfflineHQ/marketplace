@@ -142,7 +142,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
               className={`w-full md:w-1/3`}
               block
               onClick={eventPassNft.isRevealed ? downloadPass : revealPass}
-              icon={eventPassNft.isRevealed ? Download : Reveal}
+              icon={eventPassNft.isRevealed ? <Download /> : <Reveal />}
             >
               {eventPassNft.isRevealed
                 ? t('download-button')

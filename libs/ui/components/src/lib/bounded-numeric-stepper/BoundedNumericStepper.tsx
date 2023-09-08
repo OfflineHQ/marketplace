@@ -43,7 +43,7 @@ export const BoundedNumericStepper: React.FC<BoundedNumericStepperProps> = ({
   return (
     <div className="flex items-center">
       <Button
-        icon={Minus}
+        icon={<Minus />}
         onClick={decrement}
         disabled={value === minVal}
         helperText={helperTextDecrement}
@@ -56,7 +56,7 @@ export const BoundedNumericStepper: React.FC<BoundedNumericStepperProps> = ({
       </Text>
 
       <Button
-        icon={Plus}
+        icon={<Plus />}
         onClick={increment}
         disabled={value === maxVal}
         helperText={helperTextIncrement}
