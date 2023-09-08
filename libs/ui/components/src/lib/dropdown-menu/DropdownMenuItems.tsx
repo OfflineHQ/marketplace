@@ -12,6 +12,7 @@ import {
   DropdownMenuSubTrigger,
 } from './DropdownMenu';
 import { cn } from '@ui/shared';
+import { iconCVA } from '@ui/icons';
 
 interface MenuItem {
   type: 'label' | 'separator' | 'item' | 'sub' | 'children';
@@ -46,9 +47,13 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
       if (setLoading) setLoading(false);
     }
   };
+  const iconClasses = iconCVA({
+    size: 'sm',
+    marginRight: 'default',
+  });
   return (
     <DropdownMenuContent className={cn('w-56', className)}>
-      {items.map((item, index) => {
+      {items.map(({ icon, ...item }, index) => {
         switch (item.type) {
           case 'separator':
             return <DropdownMenuSeparator key={index} />;
@@ -72,11 +77,9 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
                   wrapper={item.wrapper}
                   className={item.className}
                 >
-                  {item.icon &&
-                    React.cloneElement(item.icon, {
-                      size: 'sm',
-                      marginRight: 'default',
-                    })}
+                  {icon && (
+                    <icon.type {...icon.props} className={iconClasses} />
+                  )}
                   <span>{item.text}</span>
                   {item.shortcut && (
                     <DropdownMenuShortcut>{item.shortcut}</DropdownMenuShortcut>
@@ -90,11 +93,9 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
               <DropdownMenuGroup key={index}>
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger>
-                    {item.icon &&
-                      React.cloneElement(item.icon, {
-                        size: 'sm',
-                        marginRight: 'default',
-                      })}
+                    {item.icon && (
+                      <icon.type {...icon.props} className={iconClasses} />
+                    )}
                     <span>{item.text}</span>
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>

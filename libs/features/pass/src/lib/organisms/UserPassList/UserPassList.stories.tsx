@@ -12,7 +12,7 @@ import {
   eventParameters2,
   UserPassListExample,
   UserPassListSkeletonExample,
-  passActions,
+  actionsFunctions,
 } from './examples';
 
 const meta: Meta<typeof UserPassList> = {
@@ -22,7 +22,7 @@ const meta: Meta<typeof UserPassList> = {
   },
   args: {
     eventsParameters: [eventParameters],
-    passActions,
+    actionsFunctions,
   },
 };
 
