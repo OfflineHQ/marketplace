@@ -51,7 +51,7 @@ export const EventHero: React.FC<EventHeroProps> = ({
     <div className={layout.grid}>
       <AspectRatio variant="widescreen">
         <Image
-          src={heroImage?.url}
+          src={heroImage?.url || '/image-placeholder.svg'}
           fill
           className={layout.image}
           style={{ objectFit: 'cover' }}

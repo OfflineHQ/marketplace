@@ -56,7 +56,7 @@ export const PassCard: React.FC<PassCardProps> = ({
           <AspectRatio variant="square">
             <Image
               className="rounded-sm"
-              src={nftImage?.url || ''}
+              src={nftImage?.url || '/image-placeholder.svg'}
               fill
               style={{ objectFit: 'cover' }}
               alt={name}
