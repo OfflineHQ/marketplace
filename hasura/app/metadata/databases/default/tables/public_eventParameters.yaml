@@ -24,12 +24,12 @@ remote_relationships:
   - definition:
       to_remote_schema:
         lhs_fields:
-          - id
+          - eventId
         remote_field:
           event:
             arguments:
               where:
-                id: $id
+                id: $eventId
         remote_schema: Hygraph CMS Remote Schema
     name: event
   - definition:

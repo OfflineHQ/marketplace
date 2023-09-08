@@ -17,7 +17,7 @@ export default async function PassTabComingSoon({
   return (
     <UserPassList
       eventsParameters={events}
-      noPassImage="./empty-pass.svg"
+      noPassImage="/empty-pass.svg"
       passActions={() => []}
     />
   );
