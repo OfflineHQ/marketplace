@@ -10,3 +10,6 @@ export {
   UserPassList,
   UserPassListSkeleton,
 } from './lib/organisms/UserPassList/UserPassList';
+
+export { revealPass } from './lib/actions/revealPass';
+export { downloadPass } from './lib/actions/downloadPass';

@@ -1,6 +1,6 @@
 import { getUpcomingEventsWithEventPassNfts } from '@features/pass-api';
 import type { Locale } from '@gql/shared/types';
-import { UserPassList } from '@features/pass/server';
+import { UserPassList, revealPass, downloadPass } from '@features/pass/server';
 interface PassTabComingSoonProps {
   params: {
     locale: Locale;
@@ -15,8 +15,8 @@ export default async function PassTabComingSoon({
     currentDate: new Date().toUTCString(),
   });
   const actionsFunctions = {
-    downloadPass: () => null,
-    revealPass: () => null,
+    downloadPass,
+    revealPass,
   };
   return (
     <UserPassList

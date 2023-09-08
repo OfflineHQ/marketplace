@@ -9,8 +9,8 @@ import Link from 'next/link';
 
 export type UserPassEventPassActionsFunctionsProps = {
   actionsFunctions: {
-    downloadPass: () => void;
-    revealPass: () => void;
+    downloadPass: (id: string) => void;
+    revealPass: (id: string) => void;
     sendPass?: () => void;
   };
 };
@@ -39,17 +39,30 @@ export const UserPassEventPassActions: React.FC<
       text: t('see-details'),
     },
   ];
+
+  async function downloadPass() {
+    'use server';
+    return actionsFunctions.downloadPass(eventPassNft.id);
+  }
+
+  async function revealPass() {
+    'use server';
+    return actionsFunctions.revealPass(eventPassNft.id);
+  }
+
   if (eventPassNft?.isRevealed) {
     items.push({
       type: 'item',
       icon: <Download />,
       text: t('download-pass'),
+      action: downloadPass,
     });
   } else {
     items.push({
       type: 'item',
       icon: <Reveal />,
       text: t('reveal-pass'),
+      action: revealPass,
     });
   }
   items.push({
