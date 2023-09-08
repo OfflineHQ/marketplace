@@ -17,8 +17,8 @@ query GetPassedEventsWithEventPassNfts(
       where: { eventPassNfts: { currentOwnerAddress: { _eq: $address } } }
     ) {
       eventPass(locales: [$locale, en], stage: $stage) {
-        name
         id
+        name
         nftImage {
           url
         }
@@ -29,6 +29,7 @@ query GetPassedEventsWithEventPassNfts(
       }
     }
     organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      id
       slug
       name
       image {
@@ -36,6 +37,7 @@ query GetPassedEventsWithEventPassNfts(
       }
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
+      id
       slug
       title
       heroImage {
@@ -64,11 +66,11 @@ query GetUpcomingEventsWithEventPassNfts(
       where: { eventPassNfts: { currentOwnerAddress: { _eq: $address } } }
     ) {
       eventPass(locales: [$locale, en], stage: $stage) {
+        id
         name
         nftImage {
           url
         }
-        id
       }
       eventPassNfts(where: { currentOwnerAddress: { _eq: $address } }) {
         isRevealed
@@ -76,6 +78,7 @@ query GetUpcomingEventsWithEventPassNfts(
       }
     }
     organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      id
       slug
       name
       image {
@@ -83,6 +86,7 @@ query GetUpcomingEventsWithEventPassNfts(
       }
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
+      id
       slug
       title
       heroImage {

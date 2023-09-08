@@ -80,6 +80,7 @@ export const UserPassEventContent: React.FC<UserPassEventContentProps> = ({
                       eventPassNft={eventPassNft}
                       eventPass={eventPassNftContract.eventPass}
                       event={eventParameters.event}
+                      organizer={eventParameters.organizer}
                       actionsFunctions={actionsFunctions}
                     />
                   </div>
