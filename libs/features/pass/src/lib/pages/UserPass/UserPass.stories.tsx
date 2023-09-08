@@ -5,7 +5,7 @@ import { UserPassExample } from './examples';
 import {
   UserPassListExample,
   UserPassListSkeletonExample,
-  passActions,
+  actionsFunctions,
   eventParameters,
   eventParameters2,
 } from '../../organisms/UserPassList/examples';
@@ -22,7 +22,7 @@ const meta: Meta<typeof UserPass> = {
     children: (
       <UserPassListExample
         noPassImage={EmptyPassImage}
-        passActions={passActions}
+        actionsFunctions={actionsFunctions}
         eventsParameters={[eventParameters, eventParameters2]}
       />
     ),
@@ -69,7 +69,7 @@ export const WithUserNoData: Story = {
     children: (
       <UserPassListExample
         noPassImage={EmptyPassImage}
-        passActions={passActions}
+        actionsFunctions={actionsFunctions}
         eventsParameters={[]}
       />
     ),

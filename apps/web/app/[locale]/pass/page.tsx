@@ -14,11 +14,16 @@ export default async function PassTabComingSoon({
     locale,
     currentDate: new Date().toUTCString(),
   });
+  const actionsFunctions = {
+    downloadPass: () => null,
+    revealPass: () => null,
+    sendPass: () => null,
+  };
   return (
     <UserPassList
       eventsParameters={events}
+      actionsFunctions={actionsFunctions}
       noPassImage="/empty-pass.svg"
-      passActions={() => []}
     />
   );
 }
