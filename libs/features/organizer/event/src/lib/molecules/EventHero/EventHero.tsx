@@ -16,10 +16,7 @@ import {
   EventLocations,
   type EventLocationsProps,
 } from '../../molecules/EventLocations/EventLocations';
-import {
-  EventHeroButtonClient,
-  type EventHeroButtonClientProps,
-} from './EventHeroButtonClient';
+import { EventHeroButton, type EventHeroButtonProps } from './EventHeroButton';
 
 import {
   EventOrganizerButton,
@@ -29,7 +26,7 @@ import {
 export interface EventHeroProps
   extends EventDatesProps,
     EventLocationsProps,
-    EventHeroButtonClientProps,
+    EventHeroButtonProps,
     Pick<Event, 'heroImage' | 'title' | 'organizer'> {}
 
 const layout = {
@@ -71,7 +68,7 @@ export const EventHero: React.FC<EventHeroProps> = ({
           <EventLocations {...locationDatesProps} />
         </div>
         <div className="hidden w-full grow flex-col justify-end md:flex">
-          <EventHeroButtonClient {...{ purchaseLink, purchaseText }} />
+          <EventHeroButton {...{ purchaseLink, purchaseText }} />
         </div>
       </div>
     </div>
