@@ -13,13 +13,13 @@ import {
 export interface UserPassListProps
   extends Pick<NoPassPlaceholderProps, 'noPassImage'> {
   eventsParameters: UserPassEventProps['eventParameters'][];
-  passActions: UserPassEventProps['passActions'];
+  actionsFunctions: UserPassEventProps['actionsFunctions'];
 }
 
 export const UserPassList: React.FC<UserPassListProps> = ({
   eventsParameters,
   noPassImage,
-  passActions,
+  actionsFunctions,
 }) => {
   const t = useTranslations('Pass.UserPass');
   return eventsParameters.length ? (
@@ -31,7 +31,7 @@ export const UserPassList: React.FC<UserPassListProps> = ({
         <div key={eventParameters.event?.slug}>
           <UserPassEvent
             eventParameters={eventParameters}
-            passActions={passActions}
+            actionsFunctions={actionsFunctions}
           />
         </div>
       ))}

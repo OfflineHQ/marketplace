@@ -97,8 +97,14 @@
         "download-passes-button": "Download {numPass, plural, =1 {# pass} other {# passes}}",
         "pass-number": "Pass #{number, number}",
         "revealed": "Revealed",
-        "not-revealed": "Not revealed",
-        "actions-helper-text": "Choose an action for this pass"
+        "not-revealed": "Not revealed"
+      },
+      "UserPassEventPassActions": {
+        "helper-text": "Choose an action for this pass",
+        "see-details": "See details",
+        "download-pass": "Download",
+        "reveal-pass": "Reveal",
+        "send-pass": "Send"
       }
     },
     "NoUserPass": {
