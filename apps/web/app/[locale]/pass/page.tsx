@@ -17,7 +17,6 @@ export default async function PassTabComingSoon({
   const actionsFunctions = {
     downloadPass: () => null,
     revealPass: () => null,
-    sendPass: () => null,
   };
   return (
     <UserPassList
