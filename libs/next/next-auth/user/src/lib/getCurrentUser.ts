@@ -1,3 +1,4 @@
+'use server';
 // import { cookies, headers } from 'next/headers';
 import { getServerSession as originalGetServerSession } from 'next-auth';
 import { authOptions } from '@next/next-auth/options';
