@@ -2,10 +2,11 @@ import { getEventsFromOrganizerId } from '@features/back-office/dashboard-api';
 import { defaultLocale } from '@next/i18n';
 import { User } from 'next-auth/core/types';
 import { EventCards } from './EventCards';
+import { Uploader } from 'uploader';
+import { getNextAppURL } from '@utils';
 
 interface OrganizerDashboardProps {
   user: User;
-  jwt: string;
 }
 
 export async function OrganizerDashboard(props: OrganizerDashboardProps) {
@@ -17,8 +18,21 @@ export async function OrganizerDashboard(props: OrganizerDashboardProps) {
     locale: defaultLocale,
   });
 
+  const uploader = Uploader({
+    apiKey: (process.env.UPLOAD_PUBLIC_API_KEY ||
+      process.env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY) as string,
+  });
+
+  uploader.beginAuthSession(`${getNextAppURL()}/api/jwt)`, () =>
+    Promise.resolve({})
+  );
+
   return events && events.length > 0 ? (
-    <EventCards events={events} organizerId={organizerId as string} jwt={jwt} />
+    <EventCards
+      events={events}
+      organizerId={organizerId as string}
+      uploader={uploader}
+    />
   ) : (
     <p>No event at the moment for {organizerId}</p>
   );
