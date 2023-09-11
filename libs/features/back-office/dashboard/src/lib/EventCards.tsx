@@ -17,14 +17,14 @@ import {
 import NftCollection, { type NftsMetadata } from '@nft/thirdweb';
 import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
 import type { EventFromOrganizer as TEvent } from '@features/back-office/dashboard-types';
-import { getEventPassOrganizerFolderPath } from '@features/pass-api';
+import { getEventPassOrganizerFolderPath } from '@features/pass-common';
 import { UploadDropzone } from 'react-uploader';
 import { useEffect, useState } from 'react';
 import {
   checkFolder,
   checkFolderLength,
   renameFolderQrCodes,
-} from '@features/back-office/dashboard-api';
+} from './actions/renameFolderQrCodes';
 import { Uploader } from 'uploader';
 
 const uploader = Uploader({
