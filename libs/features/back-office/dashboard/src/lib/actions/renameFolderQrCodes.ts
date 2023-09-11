@@ -4,7 +4,7 @@ import { FileWrapper, FolderWrapper } from '@file-upload/admin';
 import { revalidatePath } from 'next/cache';
 
 export async function checkFolderLength(folderPath: string, maxAmount: number) {
-  revalidatePath('/');
+  revalidatePath('/dashboard');
   const folder = new FolderWrapper();
 
   const list = await folder.listFolder({
@@ -35,7 +35,7 @@ export async function checkFolder(
   eventPassId: string,
   maxAmount: number
 ) {
-  revalidatePath('/');
+  revalidatePath('/dashboard');
   const folder = new FolderWrapper();
 
   const list = await folder.listFolder({
@@ -79,7 +79,7 @@ export async function renameFolderQrCodes(
   eventPassId: string,
   maxAmount: number
 ) {
-  revalidatePath('/');
+  revalidatePath('/dashboard');
   const folder = new FolderWrapper();
   const upload = new FileWrapper();
 

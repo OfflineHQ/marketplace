@@ -99,5 +99,6 @@
     }
   },
   "defaultProject": "web",
+  "defaultAffected": ["web", "back-office"],
   "defaultBase": "main"
 }
