@@ -1,4 +1,4 @@
-import { createEventPassNftContract } from '@features/back-office/dashboard/server';
+import { createEventPassNftContract } from '@features/back-office/dashboard-api';
 
 export default async function handler(req, res) {
   try {

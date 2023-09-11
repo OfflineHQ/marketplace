@@ -1,12 +1,25 @@
-type GetPassOrganizer = {
+type GetEventPassOrganizerFolderPath = {
   organizerId: string;
   eventId: string;
   eventPassId: string;
-  tokenId: string;
 };
+
+interface GetPassOrganizer extends GetEventPassOrganizerFolderPath {
+  tokenId: string;
+}
 interface GetPassUser extends GetPassOrganizer {
   address: string;
 }
+
+export const getEventPassOrganizerFolderPath = ({
+  organizerId,
+  eventId,
+  eventPassId,
+}: GetEventPassOrganizerFolderPath) => {
+  return `/${
+    process.env.UPLOAD_PATH_PREFIX || process.env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX
+  }/organizers/${organizerId}/events/${eventId}/${eventPassId}`;
+};
 
 export const getPassOrganizer = ({
   organizerId,
@@ -14,7 +27,11 @@ export const getPassOrganizer = ({
   eventPassId,
   tokenId,
 }: GetPassOrganizer) => {
-  return `/${process.env.UPLOAD_PATH_PREFIX}/organizers/${organizerId}/events/${eventId}/${eventPassId}/${eventId}-${eventPassId}-${tokenId}`;
+  return `${getEventPassOrganizerFolderPath({
+    organizerId,
+    eventId,
+    eventPassId,
+  })}/${eventId}-${eventPassId}-${tokenId}`;
 };
 
 export const getPassUser = ({
@@ -24,5 +41,7 @@ export const getPassUser = ({
   eventPassId,
   tokenId,
 }: GetPassUser) => {
-  return `/${process.env.UPLOAD_PATH_PREFIX}/users/${address}/${organizerId}/events/${eventId}/${eventPassId}/${eventId}-${eventPassId}-${tokenId}`;
+  return `/${
+    process.env.UPLOAD_PATH_PREFIX || process.env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX
+  }/users/${address}/${organizerId}/events/${eventId}/${eventPassId}/${eventId}-${eventPassId}-${tokenId}`;
 };
