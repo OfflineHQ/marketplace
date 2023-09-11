@@ -92,6 +92,7 @@
       "@next/siwe/provider": ["libs/next/siwe/provider/src/index.ts"],
       "@next/store": ["libs/next/store/src/index.ts"],
       "@next/types": ["libs/next/types/src/index.ts"],
+      "@next/uploader-provider": ["libs/next/uploader-provider/src/index.ts"],
       "@next/zustand": ["libs/next/zustand/src/index.ts"],
       "@nft/eventPass": ["libs/nft/eventPass/src/index.ts"],
       "@nft/thirdweb": ["libs/nft/thirdweb/src/index.ts"],

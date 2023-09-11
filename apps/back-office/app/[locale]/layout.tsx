@@ -14,6 +14,7 @@ import { locales } from '@next/i18n';
 import { useLocale, useTranslations } from 'next-intl';
 import { ProfileNavClient } from '../../components/ProfileNavClient/ProfileNavClient';
 import { type AppNavLayoutProps } from '@features/appNav/ui';
+import { UploaderProvider } from '@next/uploader-provider';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -82,10 +83,13 @@ export default function RootLayout({
                 },
               }}
             >
-              <ReactQueryProviders>
-                {children}
-                <Toaster />
-              </ReactQueryProviders>
+              <UploaderProvider>
+                <ReactQueryProviders>
+                  <ProfileNavClient />
+                  {children}
+                  <Toaster />
+                </ReactQueryProviders>
+              </UploaderProvider>
             </AuthProvider>
           </NextAuthProvider>
         </ThemeProvider>

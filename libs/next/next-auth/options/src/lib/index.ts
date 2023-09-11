@@ -7,7 +7,7 @@ import type { JWTOptions, JWT } from 'next-auth/jwt';
 
 import { SiweProvider } from '@next/siwe/provider';
 import { Roles } from '@next/hasura/utils';
-import { isProd, getNextAppURL } from '@utils';
+import { isProd, getNextAppURL, isBackOffice } from '@utils';
 import { Provider } from 'next-auth/providers';
 import { nextAuthCookieName } from '@next/next-auth/common';
 
@@ -18,13 +18,76 @@ import { nextAuthCookieName } from '@next/next-auth/common';
 //   return token;
 // };
 
+const getJwtAccessOptions = (user: JWT['user']): JWT['access'] => {
+  if (isBackOffice()) {
+    return {
+      pathPermissions: [
+        {
+          match: {
+            path: `/${process.env.UPLOAD_PATH_PREFIX}/organizers/${user.organizerId}`,
+            scope: 'Grandchildren+',
+          },
+          permissions: {
+            read: {
+              file: {
+                downloadFile: ['*'],
+                getFileDetails: true,
+              },
+            },
+            write: {
+              file: {
+                createFile: true,
+                deleteFile: true,
+                overwriteFile: true,
+              },
+            },
+          },
+        },
+      ],
+    };
+  } else
+    return {
+      pathPermissions: [
+        {
+          match: {
+            path: `/${process.env.UPLOAD_PATH_PREFIX}/users/${user.address}`,
+            scope: 'Grandchildren+',
+          },
+          permissions: {
+            read: {
+              file: {
+                downloadFile: ['*'],
+                getFileDetails: true,
+              },
+            },
+            write: {
+              file: {
+                createFile: false,
+                deleteFile: false,
+                overwriteFile: false,
+              },
+            },
+          },
+        },
+      ],
+    };
+};
+
 export const jwtOptions: JWTOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,
   maxAge: parseInt(process.env.TOKEN_LIFE_TIME as string) || 30 * 24 * 60 * 60, // 30 days
-  encode: async ({ secret, token: payload }) =>
-    jsonwebtoken.sign(payload!, secret, {
+  encode: async ({ secret, token: payload, maxAge }) => {
+    if (payload) {
+      if (!payload?.sub) payload.sub = payload?.user?.id;
+      if (maxAge && !payload.exp) {
+        const now = (payload.iat as number) || Math.floor(Date.now() / 1000);
+        payload.exp = now + maxAge;
+      }
+    }
+    return jsonwebtoken.sign(payload!, secret, {
       algorithm: 'RS256',
-    }),
+    });
+  },
   decode: async ({ secret, token }) => {
     const decodedToken = jsonwebtoken.verify(token!, secret, {
       algorithms: ['RS256'],
@@ -92,39 +155,10 @@ export const authOptions = {
         user?: User;
         account?: Account | null;
       } = args;
-
-      // User is connected, set the role for Hasura + Upload.js permissions to secure access to the user's pass
+      // User is connected, set the role for Hasura + Upload.js permissions to secure access to the user's pass or organizer folder
       if (user && account) {
-        token.access = {
-          pathPermissions: [
-            {
-              match: {
-                path: `/${process.env.UPLOAD_PATH_PREFIX}/${process.env.UPLOAD_PATH_ENTITY_FOLDER}/${user.address}`,
-                scope: 'Children',
-              },
-              permissions: {
-                read: {
-                  file: {
-                    downloadFile: ['*'],
-                    getFileDetails: true,
-                  },
-                },
-                write: {
-                  file: {
-                    createFile: false,
-                    deleteFile: false,
-                    overwriteFile: false,
-                  },
-                },
-              },
-            },
-          ],
-          tagPermissions: {
-            write: [''],
-          },
-        };
-
-        if (process.env.APP === 'BACKOFFICE') {
+        token.access = getJwtAccessOptions(user);
+        if (isBackOffice()) {
           return {
             user,
             provider: account.provider,
