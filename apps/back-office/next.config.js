@@ -98,7 +98,7 @@ const sentryWebpackPluginOptions = {
   //   release, url, org, project, authToken, configFile, stripPrefix,
   //   urlPrefix, include, ignore
   org: 'offline-live',
-  project: 'nextjs-marketplace',
+  project: 'nextjs-back-office',
   authToken: process.env.SENTRY_AUTH_TOKEN,
   dryRun: !SENTRY_DSN,
   silent: true, // Suppresses all logs
