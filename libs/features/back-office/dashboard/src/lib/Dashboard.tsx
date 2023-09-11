@@ -5,6 +5,7 @@ import { EventCards } from './EventCards';
 
 interface OrganizerDashboardProps {
   user: User;
+  jwt: string;
 }
 
 export async function OrganizerDashboard(props: OrganizerDashboardProps) {
@@ -17,7 +18,7 @@ export async function OrganizerDashboard(props: OrganizerDashboardProps) {
   });
 
   return events && events.length > 0 ? (
-    <EventCards events={events} organizerId={organizerId as string} />
+    <EventCards events={events} organizerId={organizerId as string} jwt={jwt} />
   ) : (
     <p>No event at the moment for {organizerId}</p>
   );
