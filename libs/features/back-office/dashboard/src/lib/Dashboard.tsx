@@ -1,4 +1,4 @@
-import { getEventsFromOrganizerId } from '@features/back-office/dashboard/server';
+import { getEventsFromOrganizerId } from '@features/back-office/dashboard-api';
 import { defaultLocale } from '@next/i18n';
 import { User } from 'next-auth/core/types';
 import { EventCards } from './EventCards';

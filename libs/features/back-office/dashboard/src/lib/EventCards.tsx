@@ -17,13 +17,14 @@ import {
 import NftCollection, { type NftsMetadata } from '@nft/thirdweb';
 import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
 import type { EventFromOrganizer as TEvent } from '@features/back-office/dashboard-types';
+import { getEventPassOrganizerFolderPath } from '@features/pass-api';
 import { UploadDropzone } from 'react-uploader';
 import { useEffect, useState } from 'react';
 import {
   checkFolder,
   checkFolderLength,
   renameFolderQrCodes,
-} from './renameFolderQrCodes';
+} from '@features/back-office/dashboard-api';
 import { Uploader } from 'uploader';
 
 const uploader = Uploader({
@@ -80,7 +81,11 @@ function RenderEventPass(
   organizerId: string
 ) {
   const [filesNumber, setFilesNumber] = useState(0);
-  const path = `/${process.env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX}/organizers/${organizerId}/events/${event.id}/${eventPass.id}`;
+  const path = getEventPassOrganizerFolderPath({
+    organizerId,
+    eventId: event.id,
+    eventPassId: eventPass.id,
+  });
   const toast = useToast();
   const [showUpload, setShowUpload] = useState(false);
 
