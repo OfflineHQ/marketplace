@@ -187,35 +187,36 @@ function RenderEventPass(
                 Copy contract address
               </Button>
             )}
-            <p>
-              {filesNumber}/{eventPass.eventPassPricing?.maxAmount}
-            </p>
+            <p></p>
             {!showUpload ? (
               filesNumber !== eventPass.eventPassPricing.maxAmount ? (
-                <UploadDropzone
-                  uploader={uploader}
-                  options={uploaderOptions}
-                  onUpdate={async (files) => {
-                    files
-                      .map((x) => {
-                        console.log(x);
-                        return x.fileUrl;
-                      })
-                      .join('\n');
-                    setFilesNumber(
-                      (
-                        await checkFolderLength(
-                          path,
-                          eventPass.eventPassPricing?.maxAmount || 0
-                        )
-                      ).length
-                    );
-                  }}
-                  onComplete={(files) => {
-                    alert(files.map((x) => x.fileUrl).join('\n'));
-                  }}
-                  width="800px"
-                />
+                <>
+                  {filesNumber}/{eventPass.eventPassPricing?.maxAmount}
+                  <UploadDropzone
+                    uploader={uploader}
+                    options={uploaderOptions}
+                    onUpdate={async (files) => {
+                      files
+                        .map((x) => {
+                          console.log(x);
+                          return x.fileUrl;
+                        })
+                        .join('\n');
+                      setFilesNumber(
+                        (
+                          await checkFolderLength(
+                            path,
+                            eventPass.eventPassPricing?.maxAmount || 0
+                          )
+                        ).length
+                      );
+                    }}
+                    onComplete={(files) => {
+                      alert(files.map((x) => x.fileUrl).join('\n'));
+                    }}
+                    width="800px"
+                  />
+                </>
               ) : (
                 <Button
                   className="w-full"
