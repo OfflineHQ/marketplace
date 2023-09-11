@@ -25,21 +25,15 @@ import {
   checkFolderLength,
   renameFolderQrCodes,
 } from './actions/renameFolderQrCodes';
-import { Uploader } from 'uploader';
-
-const uploader = Uploader({
-  apiKey: process.env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY || '',
-});
+import type { UploadWidgetConfig, UploaderInterface } from 'uploader';
 
 interface EventCardsProps {
   events: TEvent[];
   organizerId: string;
-  jwt: string;
+  uploader: UploaderInterface;
 }
 
-export function EventCards(props: EventCardsProps) {
-  const events = props.events;
-  const organizerId = props.organizerId;
+export function EventCards({ events, ...props }: EventCardsProps) {
   const empty = !events?.length;
   const { safeUser, provider } = useAuthContext();
 
@@ -48,11 +42,7 @@ export function EventCards(props: EventCardsProps) {
       {empty ? (
         <p>No events for this organizer yet.</p>
       ) : safeUser && provider ? (
-        <EventCard
-          events={events}
-          provider={provider}
-          organizerId={organizerId}
-        />
+        <EventCard events={events} provider={provider} {...props} />
       ) : (
         <p>Provider is not ready.</p>
       )}
@@ -60,10 +50,8 @@ export function EventCards(props: EventCardsProps) {
   );
 }
 
-interface EventCardProps {
-  events: TEvent[];
+interface EventCardProps extends EventCardsProps {
   provider: ExternalProvider;
-  organizerId: string;
 }
 
 type DeployFunction = (
@@ -75,12 +63,21 @@ type DeployFunction = (
   metadata: NftsMetadata
 ) => Promise<void>;
 
-function RenderEventPass(
-  eventPass: TEvent['eventPasses'][0],
-  event: TEvent,
-  deploy: DeployFunction,
-  organizerId: string
-) {
+interface EventPassContentProps {
+  eventPass: TEvent['eventPasses'][0];
+  event: TEvent;
+  deploy: DeployFunction;
+  organizerId: string;
+  uploader: UploaderInterface;
+}
+
+function EventPassContent({
+  organizerId,
+  event,
+  eventPass,
+  deploy,
+  uploader,
+}: EventPassContentProps) {
   const [filesNumber, setFilesNumber] = useState(0);
   const path = getEventPassOrganizerFolderPath({
     organizerId,
@@ -132,7 +129,7 @@ function RenderEventPass(
         primary: '#377dff',
       },
     },
-  };
+  } satisfies UploadWidgetConfig;
 
   return (
     <Card
@@ -265,10 +262,12 @@ function RenderEventPass(
   );
 }
 
-function EventCard(props: EventCardProps) {
-  const events = props.events;
-  const provider = props.provider;
-  const organizerId = props.organizerId;
+function EventCard({
+  events,
+  provider,
+  organizerId,
+  uploader,
+}: EventCardProps) {
   const sdk = new NftCollection(provider);
 
   async function deploy(
@@ -304,7 +303,13 @@ function EventCard(props: EventCardProps) {
         <div key={idx}>
           {event.eventPasses && event.eventPasses.length
             ? event.eventPasses.map((eventPass) =>
-                RenderEventPass(eventPass, event, deploy, organizerId)
+                EventPassContent({
+                  eventPass,
+                  event,
+                  deploy,
+                  organizerId,
+                  uploader,
+                })
               )
             : null}
         </div>
