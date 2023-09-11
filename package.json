@@ -65,6 +65,7 @@
     "@sentry/nextjs": "^7.59.3",
     "@sentry/node": "^7.59.3",
     "@sentry/tracing": "^7.59.3",
+    "@sentry/utils": "^7.68.0",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
     "@tanstack/query-core": "^4.29.19",
