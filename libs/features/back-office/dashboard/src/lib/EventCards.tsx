@@ -12,16 +12,23 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
+  useToast,
 } from '@ui/components';
 import NftCollection, { type NftsMetadata } from '@nft/thirdweb';
 import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
 import type { EventFromOrganizer as TEvent } from '@features/back-office/dashboard-types';
 import { UploadDropzone } from 'react-uploader';
-import { useState } from 'react';
-import { renameFolderQrCodes } from './renameFolderQrCodes';
+import { useEffect, useState } from 'react';
+import {
+  checkFolder,
+  checkFolderLength,
+  renameFolderQrCodes,
+} from './renameFolderQrCodes';
 import { Uploader } from 'uploader';
 
-const uploader = Uploader({ apiKey: 'public_FW25bfk2iEyHhseeT4oxi4TCkKCE' });
+const uploader = Uploader({
+  apiKey: process.env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY || '',
+});
 
 interface EventCardsProps {
   events: TEvent[];
@@ -74,12 +81,42 @@ function RenderEventPass(
 ) {
   const [filesNumber, setFilesNumber] = useState(0);
   const path = `/${process.env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX}/organizers/${organizerId}/events/${event.id}/${eventPass.id}`;
+  const toast = useToast();
+  const [showUpload, setShowUpload] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const status = await checkFolderLength(
+        path,
+        eventPass.eventPassPricing?.maxAmount || 0
+      );
+      setFilesNumber(status.length);
+      return await checkFolder(
+        path,
+        event.id,
+        eventPass.id,
+        eventPass.eventPassPricing?.maxAmount || 0
+      );
+    };
+
+    fetchData().then((result) => setShowUpload(result));
+  }, [path, event.id, eventPass.id, eventPass.eventPassPricing?.maxAmount]);
 
   const uploaderOptions = {
     multi: true,
 
     path: {
       folderPath: path,
+    },
+    onPreUpload: async (File: File) => {
+      const status = await checkFolderLength(
+        path,
+        eventPass.eventPassPricing?.maxAmount || 0
+      );
+
+      if (status.isEqual) {
+        return { errorMessage: 'Already enough files.' };
+      }
     },
     maxFileCount: eventPass.eventPassPricing?.maxAmount,
     showFinishButton: true,
@@ -153,31 +190,67 @@ function RenderEventPass(
             <p>
               {filesNumber}/{eventPass.eventPassPricing?.maxAmount}
             </p>
-            <UploadDropzone
-              uploader={uploader}
-              options={uploaderOptions}
-              onUpdate={async (files) => {
-                files
-                  .map((x) => {
-                    console.log(x);
-                    return x.fileUrl;
-                  })
-                  .join('\n');
-                setFilesNumber(files.length);
-              }}
-              onComplete={(files) => {
-                alert(files.map((x) => x.fileUrl).join('\n'));
-              }}
-              width="800px"
-            />
-            <Button
-              className="w-full"
-              onClick={async () => {
-                await renameFolderQrCodes(path, event.id, eventPass.id);
-              }}
-            >
-              Rename QR codes
-            </Button>
+            {!showUpload ? (
+              filesNumber !== eventPass.eventPassPricing.maxAmount ? (
+                <UploadDropzone
+                  uploader={uploader}
+                  options={uploaderOptions}
+                  onUpdate={async (files) => {
+                    files
+                      .map((x) => {
+                        console.log(x);
+                        return x.fileUrl;
+                      })
+                      .join('\n');
+                    setFilesNumber(
+                      (
+                        await checkFolderLength(
+                          path,
+                          eventPass.eventPassPricing?.maxAmount || 0
+                        )
+                      ).length
+                    );
+                  }}
+                  onComplete={(files) => {
+                    alert(files.map((x) => x.fileUrl).join('\n'));
+                  }}
+                  width="800px"
+                />
+              ) : (
+                <Button
+                  className="w-full"
+                  onClick={async () => {
+                    const status = await checkFolderLength(
+                      path,
+                      eventPass.eventPassPricing?.maxAmount || 0
+                    );
+                    if (status.isEqual) {
+                      const res = await renameFolderQrCodes(
+                        path,
+                        event.id,
+                        eventPass.id,
+                        eventPass.eventPassPricing?.maxAmount || 0
+                      );
+                      toast.toast({
+                        title: 'Rename',
+                        description: res,
+                      });
+                    } else {
+                      toast.toast({
+                        title: 'Rename',
+                        description: `Error : ${
+                          status.length
+                        } files but should be ${
+                          eventPass.eventPassPricing?.maxAmount || 0
+                        }`,
+                      });
+                    }
+                  }}
+                >
+                  Rename QR codes
+                </Button>
+              )
+            ) : null}
           </div>
         )}
       </CardFooter>
