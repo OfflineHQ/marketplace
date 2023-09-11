@@ -34,6 +34,7 @@ const uploader = Uploader({
 interface EventCardsProps {
   events: TEvent[];
   organizerId: string;
+  jwt: string;
 }
 
 export function EventCards(props: EventCardsProps) {
