@@ -28,10 +28,12 @@
     "../../libs/next/types/**/*.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts",
+    "../../dist/apps/back-office/.next/types/**/*.ts",
     "../../apps/back-office/.next/types/**/*.ts",
     "../../dist/apps/back-office/.next/types/**/*.ts"
   ],
   "exclude": [
+    "../../dist/apps/back-office/.next/types/**/*.ts",
     "node_modules",
     "jest.config.ts",
     "**/*.stories.ts",
