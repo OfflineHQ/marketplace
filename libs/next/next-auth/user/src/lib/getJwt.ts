@@ -3,12 +3,13 @@
 import { getToken } from 'next-auth/jwt';
 import { headers, cookies } from 'next/headers';
 import * as jsonwebtoken from 'jsonwebtoken';
+import type { JWT } from 'next-auth/jwt';
 
 export const getJwt = async ({
   raw,
 }: {
   raw: boolean;
-}): Promise<jsonwebtoken.JwtPayload | string> => {
+}): Promise<JWT | string> => {
   const secret = process.env.NEXTAUTH_SECRET;
   const jwt = await getToken({
     req: {
@@ -25,5 +26,5 @@ export const getJwt = async ({
   if (raw) return jwt;
   return jsonwebtoken.verify(jwt as string, secret as string, {
     algorithms: ['RS256'],
-  });
+  }) as JWT;
 };

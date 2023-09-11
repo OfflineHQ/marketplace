@@ -114,6 +114,10 @@ export function isPreviewOrPRDeployment(): boolean {
   );
 }
 
+export function isBackOffice(): boolean {
+  return process.env.APP === 'BACKOFFICE';
+}
+
 export function truncateString(str: string, maxChars: number): string {
   if (maxChars < 5) {
     throw new Error(
