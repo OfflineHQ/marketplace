@@ -1,6 +1,6 @@
 import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
 import type { EventPassNftById } from '@features/pass-types';
-import { getPassUser } from './common';
+import { getPassUser } from '@features/pass-common';
 
 const fileWrapper = new FileWrapper();
 
