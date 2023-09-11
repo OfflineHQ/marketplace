@@ -35,29 +35,34 @@ interface PathPermission {
 
 interface Access {
   pathPermissions: PathPermission[];
-  tagPermissions: {
+  tagPermissions?: {
     write: string[];
   };
+}
+
+interface AppUser {
+  id: string;
+  // crypto wallet address
+  address: string;
+  email?: string;
+  organizerId?: string;
 }
 
 declare module 'next-auth/jwt' {
   interface JWT extends DefaultJWT {
     access?: Access;
+    user: AppUser;
   }
 }
 
 // Extend the JWT type
 declare module 'next-auth' {
-  interface User {
-    id: string;
-    // crypto wallet address
-    address: string;
+  interface User extends AppUser {
     email?: string;
-    organizerId?: string;
   }
 
   interface Session {
-    user: User;
+    user: AppUser;
   }
 }
 

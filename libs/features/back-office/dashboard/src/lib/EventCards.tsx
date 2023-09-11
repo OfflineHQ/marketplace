@@ -26,23 +26,29 @@ import {
   renameFolderQrCodes,
 } from './actions/renameFolderQrCodes';
 import type { UploadWidgetConfig, UploaderInterface } from 'uploader';
+import { useUploader } from '@next/uploader-provider';
 
-interface EventCardsProps {
+export interface EventCardsProps {
   events: TEvent[];
   organizerId: string;
-  uploader: UploaderInterface;
 }
 
 export function EventCards({ events, ...props }: EventCardsProps) {
   const empty = !events?.length;
   const { safeUser, provider } = useAuthContext();
+  const { uploader } = useUploader();
 
   return (
     <div>
       {empty ? (
         <p>No events for this organizer yet.</p>
       ) : safeUser && provider ? (
-        <EventCard events={events} provider={provider} {...props} />
+        <EventCard
+          events={events}
+          provider={provider}
+          uploader={uploader}
+          {...props}
+        />
       ) : (
         <p>Provider is not ready.</p>
       )}
@@ -52,6 +58,7 @@ export function EventCards({ events, ...props }: EventCardsProps) {
 
 interface EventCardProps extends EventCardsProps {
   provider: ExternalProvider;
+  uploader: EventPassContentProps['uploader'];
 }
 
 type DeployFunction = (
@@ -68,7 +75,7 @@ interface EventPassContentProps {
   event: TEvent;
   deploy: DeployFunction;
   organizerId: string;
-  uploader: UploaderInterface;
+  uploader: UploaderInterface | null;
 }
 
 function EventPassContent({
@@ -78,6 +85,7 @@ function EventPassContent({
   deploy,
   uploader,
 }: EventPassContentProps) {
+  console.log(eventPass);
   const [filesNumber, setFilesNumber] = useState(0);
   const path = getEventPassOrganizerFolderPath({
     organizerId,
@@ -195,30 +203,32 @@ function EventPassContent({
               filesNumber !== eventPass.eventPassPricing.maxAmount ? (
                 <>
                   {filesNumber}/{eventPass.eventPassPricing?.maxAmount}
-                  <UploadDropzone
-                    uploader={uploader}
-                    options={uploaderOptions}
-                    onUpdate={async (files) => {
-                      files
-                        .map((x) => {
-                          console.log(x);
-                          return x.fileUrl;
-                        })
-                        .join('\n');
-                      setFilesNumber(
-                        (
-                          await checkFolderLength(
-                            path,
-                            eventPass.eventPassPricing?.maxAmount || 0
-                          )
-                        ).length
-                      );
-                    }}
-                    onComplete={(files) => {
-                      alert(files.map((x) => x.fileUrl).join('\n'));
-                    }}
-                    width="800px"
-                  />
+                  {uploader && (
+                    <UploadDropzone
+                      uploader={uploader}
+                      options={uploaderOptions}
+                      onUpdate={async (files) => {
+                        files
+                          .map((x) => {
+                            console.log(x);
+                            return x.fileUrl;
+                          })
+                          .join('\n');
+                        setFilesNumber(
+                          (
+                            await checkFolderLength(
+                              path,
+                              eventPass.eventPassPricing?.maxAmount || 0
+                            )
+                          ).length
+                        );
+                      }}
+                      onComplete={(files) => {
+                        alert(files.map((x) => x.fileUrl).join('\n'));
+                      }}
+                      width="800px"
+                    />
+                  )}
                 </>
               ) : (
                 <Button
