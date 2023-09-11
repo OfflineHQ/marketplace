@@ -4,7 +4,7 @@ import '@next/types';
 import { adminSdk } from '@gql/admin/api';
 import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
 import type { EventPassNftByIdMinimal } from '@features/pass-types';
-import { getPassOrganizer, getPassUser } from './common';
+import { getPassOrganizer, getPassUser } from '@features/pass-common';
 import { getCurrentUser } from '@next/next-auth/user';
 
 const fileWrapper = new FileWrapper();

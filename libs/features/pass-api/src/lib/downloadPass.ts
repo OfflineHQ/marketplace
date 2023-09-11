@@ -3,7 +3,7 @@ import { FileDownloader } from '@file-upload/user';
 import { isServerSide } from '@utils';
 import { cookies } from 'next/headers';
 import { nextAuthCookieName } from '@next/next-auth/common';
-import { getPassUser } from './common';
+import { getPassUser } from '@features/pass-common';
 
 export const getEventPassRevealedFilePath = async (id: string) => {
   const res = await adminSdk.GetEventPassNftByIdMinimal(
