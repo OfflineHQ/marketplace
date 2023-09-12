@@ -33,12 +33,11 @@ export interface EventCardsProps {
   organizerId: string;
 }
 
-export function EventCards({ props }: EventCardsProps) {
+export function EventCards(props: EventCardsProps) {
   const { safeUser, provider } = useAuthContext();
   const { uploader } = useUploader();
 
-  return;
-  safeUser && provider ? (
+  return safeUser && provider ? (
     <EventCard provider={provider} uploader={uploader} {...props} />
   ) : (
     <p>Provider is not ready.</p>
