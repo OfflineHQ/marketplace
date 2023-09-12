@@ -12,9 +12,11 @@ export default async function Dashboard({
   params: { locale },
 }: DashboardProps) {
   const user = await getCurrentUser();
-  const organizerId = user?.organizerId || '';
+  if (!user) return;
+  const organizerId = user.organizerId || '';
+  if (!organizerId) return;
   const events = await getEventsFromOrganizerId({
-    id: user?.organizerId as string,
+    id: user.organizerId as string,
     locale,
   });
   return <OrganizerDashboard events={events} organizerId={organizerId} />;
