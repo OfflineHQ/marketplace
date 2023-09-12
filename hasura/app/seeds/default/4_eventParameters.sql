@@ -8,7 +8,8 @@ INSERT INTO
 		"activityWebhookId",
 		"dateStart",
 		"dateEnd",
-		"organizerId"
+		"organizerId",
+		"timezone"
 	)
 VALUES
 	(
@@ -17,5 +18,6 @@ VALUES
 		'fake-webhook-id',
 		'2023-08-24 08:35:47.155813+01',
 		'2023-08-25 12:00:00.155813+01',
-		'clizzky8kap2t0bw7wka9a2id'
+		'clizzky8kap2t0bw7wka9a2id',
+		'Europe/London'
 	);

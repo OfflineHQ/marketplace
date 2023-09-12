@@ -9,3 +9,4 @@
 - "!include public_eventPassPricing.yaml"
 - "!include public_nftTransfer.yaml"
 - "!include public_orderStatus.yaml"
+- "!include public_timezone.yaml"
