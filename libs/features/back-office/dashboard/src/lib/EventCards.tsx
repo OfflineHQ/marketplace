@@ -33,26 +33,15 @@ export interface EventCardsProps {
   organizerId: string;
 }
 
-export function EventCards({ events, ...props }: EventCardsProps) {
-  const empty = !events?.length;
+export function EventCards({ props }: EventCardsProps) {
   const { safeUser, provider } = useAuthContext();
   const { uploader } = useUploader();
 
-  return (
-    <div>
-      {empty ? (
-        <p>No events for this organizer yet.</p>
-      ) : safeUser && provider ? (
-        <EventCard
-          events={events}
-          provider={provider}
-          uploader={uploader}
-          {...props}
-        />
-      ) : (
-        <p>Provider is not ready.</p>
-      )}
-    </div>
+  return;
+  safeUser && provider ? (
+    <EventCard provider={provider} uploader={uploader} {...props} />
+  ) : (
+    <p>Provider is not ready.</p>
   );
 }
 
