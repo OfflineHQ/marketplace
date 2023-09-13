@@ -4,6 +4,8 @@
 -- ALTER TABLE "public"."eventParameters"
 -- ADD COLUMN "dateStart" timestamp without time zone,
 -- ADD COLUMN "dateEnd" timestamp without time zone,
+-- ADD COLUMN "dateSaleStart" timestamp without time zone,
+-- ADD COLUMN "dateSaleEnd" timestamp without time zone,
 -- ADD COLUMN "timezone" text,
 -- ADD COLUMN "organizerId" text NOT NULL;
 --
