@@ -26,6 +26,17 @@ clean:	prune
 	@pnpm run clean
 
 db-clean:
+	@node ./tools/deleteAllData.js
+
+seed-hasura:
+	@docker-compose exec -T hasura-console bash -c "cd /usr/src/hasura/app && hasura seeds apply --database-name=default"
+
+reset-db-and-seeds: db-clean seed-hasura
+
+db-clean-test:
+	@DB_PORT=5454 node ./tools/deleteAllData.js
+
+reset-docker:
 	@docker-compose -f docker-compose.yaml down --volumes
 	@docker-compose -f ./tools/test/docker-compose.yml --env-file ./tools/test/.env.test.jest down --volumes
 
