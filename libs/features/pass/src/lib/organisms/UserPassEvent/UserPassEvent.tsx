@@ -76,6 +76,7 @@ export const UserPassEvent: React.FC<UserPassEventProps> = ({
               className="py-2"
               dateStart={eventParameters.dateStart}
               dateEnd={eventParameters.dateEnd}
+              timezone={eventParameters.timezone as string}
             />
             <div className={layout.passesTextContainer}>
               <Badge variant="outline">{t('num-pass', { numPass })}</Badge>

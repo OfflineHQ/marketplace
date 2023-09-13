@@ -257,13 +257,14 @@ export const useGetEventPassPendingOrdersQuery = <
       options
     );
 export const GetPassedEventsWithEventPassNftsDocument = `
-    query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: date!, $locale: Locale!, $stage: Stage!) {
+    query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
     where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_lt: $currentDate}}
     order_by: {dateEnd: desc}
   ) {
     dateStart
     dateEnd
+    timezone
     eventPassNftContracts(
       where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
     ) {
@@ -312,13 +313,14 @@ export const useGetPassedEventsWithEventPassNftsQuery = <
       options
     );
 export const GetUpcomingEventsWithEventPassNftsDocument = `
-    query GetUpcomingEventsWithEventPassNfts($address: String!, $currentDate: date!, $locale: Locale!, $stage: Stage!) {
+    query GetUpcomingEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
     where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_gte: $currentDate}}
     order_by: {dateStart: asc}
   ) {
     dateStart
     dateEnd
+    timezone
     eventPassNftContracts(
       where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
     ) {
