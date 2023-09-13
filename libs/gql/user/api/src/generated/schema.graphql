@@ -6303,29 +6303,14 @@ enum cursor_ordering {
   DESC
 }
 
-scalar date
-
-"""
-Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'.
-"""
-input date_comparison_exp {
-  _eq: date
-  _gt: date
-  _gte: date
-  _in: [date!]
-  _is_null: Boolean
-  _lt: date
-  _lte: date
-  _neq: date
-  _nin: [date!]
-}
-
 """
 The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling.
 """
 type eventParameters {
-  dateEnd: date
-  dateStart: date
+  dateEnd: timestamp
+  dateSaleEnd: timestamp
+  dateSaleStart: timestamp
+  dateStart: timestamp
   event(
     """
     Defines which locales should be returned.
@@ -6390,6 +6375,7 @@ type eventParameters {
     where: OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer!
   ): Organizer
   organizerId: String!
+  timezone: String
 }
 
 """
@@ -6399,22 +6385,28 @@ input eventParameters_bool_exp {
   _and: [eventParameters_bool_exp!]
   _not: eventParameters_bool_exp
   _or: [eventParameters_bool_exp!]
-  dateEnd: date_comparison_exp
-  dateStart: date_comparison_exp
+  dateEnd: timestamp_comparison_exp
+  dateSaleEnd: timestamp_comparison_exp
+  dateSaleStart: timestamp_comparison_exp
+  dateStart: timestamp_comparison_exp
   eventId: String_comparison_exp
   eventPassNftContracts: eventPassNftContract_bool_exp
   eventPassNfts: eventPassNft_bool_exp
   organizerId: String_comparison_exp
+  timezone: String_comparison_exp
 }
 
 """Ordering options when selecting data from "eventParameters"."""
 input eventParameters_order_by {
   dateEnd: order_by
+  dateSaleEnd: order_by
+  dateSaleStart: order_by
   dateStart: order_by
   eventId: order_by
   eventPassNftContracts_aggregate: eventPassNftContract_aggregate_order_by
   eventPassNfts_aggregate: eventPassNft_aggregate_order_by
   organizerId: order_by
+  timezone: order_by
 }
 
 """
@@ -6425,6 +6417,12 @@ enum eventParameters_select_column {
   dateEnd
 
   """column name"""
+  dateSaleEnd
+
+  """column name"""
+  dateSaleStart
+
+  """column name"""
   dateStart
 
   """column name"""
@@ -6432,6 +6430,9 @@ enum eventParameters_select_column {
 
   """column name"""
   organizerId
+
+  """column name"""
+  timezone
 }
 
 """
@@ -6447,10 +6448,13 @@ input eventParameters_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input eventParameters_stream_cursor_value_input {
-  dateEnd: date
-  dateStart: date
+  dateEnd: timestamp
+  dateSaleEnd: timestamp
+  dateSaleStart: timestamp
+  dateStart: timestamp
   eventId: String
   organizerId: String
+  timezone: String
 }
 
 """
@@ -9694,6 +9698,23 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassPricing_bool_exp
   ): [eventPassPricing!]!
+}
+
+scalar timestamp
+
+"""
+Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'.
+"""
+input timestamp_comparison_exp {
+  _eq: timestamp
+  _gt: timestamp
+  _gte: timestamp
+  _in: [timestamp!]
+  _is_null: Boolean
+  _lt: timestamp
+  _lte: timestamp
+  _neq: timestamp
+  _nin: [timestamp!]
 }
 
 scalar timestamptz
