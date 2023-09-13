@@ -18,9 +18,6 @@ socat TCP-LISTEN:9693,fork,reuseaddr,bind=hasura-console TCP:127.0.0.1:9693 &
     # Apply metadata changes
     $HASURA_PATH metadata apply || exit 1
 
-    # Apply seeds
-    $HASURA_PATH seeds apply --database-name=default || exit 1
-
     # Run console if specified
     if [[ -v HASURA_RUN_CONSOLE ]]; then
         echo "Starting console..."
