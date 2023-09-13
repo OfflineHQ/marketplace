@@ -50,5 +50,8 @@ select_permissions:
         - eventId
         - dateStart
         - dateEnd
+        - dateSaleStart
+        - dateSaleEnd
+        - timezone
         - organizerId
       filter: {}

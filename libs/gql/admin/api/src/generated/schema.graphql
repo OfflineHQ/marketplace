@@ -6637,30 +6637,15 @@ enum cursor_ordering {
   DESC
 }
 
-scalar date
-
-"""
-Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'.
-"""
-input date_comparison_exp {
-  _eq: date
-  _gt: date
-  _gte: date
-  _in: [date!]
-  _is_null: Boolean
-  _lt: date
-  _lte: date
-  _neq: date
-  _nin: [date!]
-}
-
 """
 The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling.
 """
 type eventParameters {
   activityWebhookId: String
-  dateEnd: date
-  dateStart: date
+  dateEnd: timestamp
+  dateSaleEnd: timestamp
+  dateSaleStart: timestamp
+  dateStart: timestamp
   event(
     """
     Defines which locales should be returned.
@@ -6762,6 +6747,7 @@ type eventParameters {
     where: OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer!
   ): Organizer
   organizerId: String!
+  timezone: String
 }
 
 """
@@ -6789,8 +6775,10 @@ input eventParameters_bool_exp {
   _not: eventParameters_bool_exp
   _or: [eventParameters_bool_exp!]
   activityWebhookId: String_comparison_exp
-  dateEnd: date_comparison_exp
-  dateStart: date_comparison_exp
+  dateEnd: timestamp_comparison_exp
+  dateSaleEnd: timestamp_comparison_exp
+  dateSaleStart: timestamp_comparison_exp
+  dateStart: timestamp_comparison_exp
   eventId: String_comparison_exp
   eventPassNftContracts: eventPassNftContract_bool_exp
   eventPassNftContracts_aggregate: eventPassNftContract_aggregate_bool_exp
@@ -6798,6 +6786,7 @@ input eventParameters_bool_exp {
   eventPassNfts_aggregate: eventPassNft_aggregate_bool_exp
   id: uuid_comparison_exp
   organizerId: String_comparison_exp
+  timezone: String_comparison_exp
 }
 
 """
@@ -6825,33 +6814,42 @@ input type for inserting data into table "eventParameters"
 """
 input eventParameters_insert_input {
   activityWebhookId: String
-  dateEnd: date
-  dateStart: date
+  dateEnd: timestamp
+  dateSaleEnd: timestamp
+  dateSaleStart: timestamp
+  dateStart: timestamp
   eventId: String
   eventPassNftContracts: eventPassNftContract_arr_rel_insert_input
   eventPassNfts: eventPassNft_arr_rel_insert_input
   id: uuid
   organizerId: String
+  timezone: String
 }
 
 """aggregate max on columns"""
 type eventParameters_max_fields {
   activityWebhookId: String
-  dateEnd: date
-  dateStart: date
+  dateEnd: timestamp
+  dateSaleEnd: timestamp
+  dateSaleStart: timestamp
+  dateStart: timestamp
   eventId: String
   id: uuid
   organizerId: String
+  timezone: String
 }
 
 """aggregate min on columns"""
 type eventParameters_min_fields {
   activityWebhookId: String
-  dateEnd: date
-  dateStart: date
+  dateEnd: timestamp
+  dateSaleEnd: timestamp
+  dateSaleStart: timestamp
+  dateStart: timestamp
   eventId: String
   id: uuid
   organizerId: String
+  timezone: String
 }
 
 """
@@ -6888,12 +6886,15 @@ input eventParameters_on_conflict {
 input eventParameters_order_by {
   activityWebhookId: order_by
   dateEnd: order_by
+  dateSaleEnd: order_by
+  dateSaleStart: order_by
   dateStart: order_by
   eventId: order_by
   eventPassNftContracts_aggregate: eventPassNftContract_aggregate_order_by
   eventPassNfts_aggregate: eventPassNft_aggregate_order_by
   id: order_by
   organizerId: order_by
+  timezone: order_by
 }
 
 """primary key columns input for table: eventParameters"""
@@ -6912,6 +6913,12 @@ enum eventParameters_select_column {
   dateEnd
 
   """column name"""
+  dateSaleEnd
+
+  """column name"""
+  dateSaleStart
+
+  """column name"""
   dateStart
 
   """column name"""
@@ -6922,6 +6929,9 @@ enum eventParameters_select_column {
 
   """column name"""
   organizerId
+
+  """column name"""
+  timezone
 }
 
 """
@@ -6929,11 +6939,14 @@ input type for updating data in table "eventParameters"
 """
 input eventParameters_set_input {
   activityWebhookId: String
-  dateEnd: date
-  dateStart: date
+  dateEnd: timestamp
+  dateSaleEnd: timestamp
+  dateSaleStart: timestamp
+  dateStart: timestamp
   eventId: String
   id: uuid
   organizerId: String
+  timezone: String
 }
 
 """
@@ -6950,11 +6963,14 @@ input eventParameters_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input eventParameters_stream_cursor_value_input {
   activityWebhookId: String
-  dateEnd: date
-  dateStart: date
+  dateEnd: timestamp
+  dateSaleEnd: timestamp
+  dateSaleStart: timestamp
+  dateStart: timestamp
   eventId: String
   id: uuid
   organizerId: String
+  timezone: String
 }
 
 """
@@ -6968,6 +6984,12 @@ enum eventParameters_update_column {
   dateEnd
 
   """column name"""
+  dateSaleEnd
+
+  """column name"""
+  dateSaleStart
+
+  """column name"""
   dateStart
 
   """column name"""
@@ -6978,6 +7000,9 @@ enum eventParameters_update_column {
 
   """column name"""
   organizerId
+
+  """column name"""
+  timezone
 }
 
 input eventParameters_updates {
@@ -9997,6 +10022,19 @@ type mutation_root {
   delete_orderStatus_by_pk(value: String!): orderStatus
 
   """
+  delete data from the table: "timezone"
+  """
+  delete_timezone(
+    """filter the rows which have to be deleted"""
+    where: timezone_bool_exp!
+  ): timezone_mutation_response
+
+  """
+  delete single row from the table: "timezone"
+  """
+  delete_timezone_by_pk(value: String!): timezone
+
+  """
   insert data into the table: "account"
   """
   insert_account(
@@ -10237,6 +10275,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: orderStatus_on_conflict
   ): orderStatus
+
+  """
+  insert data into the table: "timezone"
+  """
+  insert_timezone(
+    """the rows to be inserted"""
+    objects: [timezone_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: timezone_on_conflict
+  ): timezone_mutation_response
+
+  """
+  insert a single row into the table: "timezone"
+  """
+  insert_timezone_one(
+    """the row to be inserted"""
+    object: timezone_insert_input!
+
+    """upsert condition"""
+    on_conflict: timezone_on_conflict
+  ): timezone
 
   """Publish one asset"""
   publishAsset(
@@ -11445,6 +11505,34 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [orderStatus_updates!]!
   ): [orderStatus_mutation_response]
+
+  """
+  update data of the table: "timezone"
+  """
+  update_timezone(
+    """sets the columns of the filtered rows to the given values"""
+    _set: timezone_set_input
+
+    """filter the rows which have to be updated"""
+    where: timezone_bool_exp!
+  ): timezone_mutation_response
+
+  """
+  update single row of the table: "timezone"
+  """
+  update_timezone_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: timezone_set_input
+    pk_columns: timezone_pk_columns_input!
+  ): timezone
+
+  """
+  update multiples rows of table: "timezone"
+  """
+  update_timezone_many(
+    """updates to execute, in order"""
+    updates: [timezone_updates!]!
+  ): [timezone_mutation_response]
 
   """Upsert one asset"""
   upsertAsset(upsert: AssetUpsertInput!, where: AssetWhereUniqueInput!): Asset
@@ -13434,6 +13522,49 @@ type query_root {
     where: ScheduledReleaseWhereInput
   ): ScheduledReleaseConnection!
 
+  """
+  fetch data from the table: "timezone"
+  """
+  timezone(
+    """distinct select on columns"""
+    distinct_on: [timezone_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timezone_order_by!]
+
+    """filter the rows returned"""
+    where: timezone_bool_exp
+  ): [timezone!]!
+
+  """
+  fetch aggregated fields from the table: "timezone"
+  """
+  timezone_aggregate(
+    """distinct select on columns"""
+    distinct_on: [timezone_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timezone_order_by!]
+
+    """filter the rows returned"""
+    where: timezone_bool_exp
+  ): timezone_aggregate!
+
+  """fetch data from the table: "timezone" using primary key columns"""
+  timezone_by_pk(value: String!): timezone
+
   """Retrieve a single user"""
   user(
     """
@@ -14116,6 +14247,80 @@ type subscription_root {
     """filter the rows returned"""
     where: orderStatus_bool_exp
   ): [orderStatus!]!
+
+  """
+  fetch data from the table: "timezone"
+  """
+  timezone(
+    """distinct select on columns"""
+    distinct_on: [timezone_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timezone_order_by!]
+
+    """filter the rows returned"""
+    where: timezone_bool_exp
+  ): [timezone!]!
+
+  """
+  fetch aggregated fields from the table: "timezone"
+  """
+  timezone_aggregate(
+    """distinct select on columns"""
+    distinct_on: [timezone_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [timezone_order_by!]
+
+    """filter the rows returned"""
+    where: timezone_bool_exp
+  ): timezone_aggregate!
+
+  """fetch data from the table: "timezone" using primary key columns"""
+  timezone_by_pk(value: String!): timezone
+
+  """
+  fetch data from the table in a streaming manner: "timezone"
+  """
+  timezone_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [timezone_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: timezone_bool_exp
+  ): [timezone!]!
+}
+
+scalar timestamp
+
+"""
+Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'.
+"""
+input timestamp_comparison_exp {
+  _eq: timestamp
+  _gt: timestamp
+  _gte: timestamp
+  _in: [timestamp!]
+  _is_null: Boolean
+  _lt: timestamp
+  _lte: timestamp
+  _neq: timestamp
+  _nin: [timestamp!]
 }
 
 scalar timestamptz
@@ -14133,6 +14338,142 @@ input timestamptz_comparison_exp {
   _lte: timestamptz
   _neq: timestamptz
   _nin: [timestamptz!]
+}
+
+"""IANA Time Zones fetched from pg_timezone_names in PostgreSQL"""
+type timezone {
+  value: String!
+}
+
+"""
+aggregated selection of "timezone"
+"""
+type timezone_aggregate {
+  aggregate: timezone_aggregate_fields
+  nodes: [timezone!]!
+}
+
+"""
+aggregate fields of "timezone"
+"""
+type timezone_aggregate_fields {
+  count(columns: [timezone_select_column!], distinct: Boolean): Int!
+  max: timezone_max_fields
+  min: timezone_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "timezone". All fields are combined with a logical 'AND'.
+"""
+input timezone_bool_exp {
+  _and: [timezone_bool_exp!]
+  _not: timezone_bool_exp
+  _or: [timezone_bool_exp!]
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "timezone"
+"""
+enum timezone_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  timezone_pkey
+}
+
+"""
+input type for inserting data into table "timezone"
+"""
+input timezone_insert_input {
+  value: String
+}
+
+"""aggregate max on columns"""
+type timezone_max_fields {
+  value: String
+}
+
+"""aggregate min on columns"""
+type timezone_min_fields {
+  value: String
+}
+
+"""
+response of any mutation on the table "timezone"
+"""
+type timezone_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [timezone!]!
+}
+
+"""
+on_conflict condition type for table "timezone"
+"""
+input timezone_on_conflict {
+  constraint: timezone_constraint!
+  update_columns: [timezone_update_column!]! = []
+  where: timezone_bool_exp
+}
+
+"""Ordering options when selecting data from "timezone"."""
+input timezone_order_by {
+  value: order_by
+}
+
+"""primary key columns input for table: timezone"""
+input timezone_pk_columns_input {
+  value: String!
+}
+
+"""
+select columns of table "timezone"
+"""
+enum timezone_select_column {
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "timezone"
+"""
+input timezone_set_input {
+  value: String
+}
+
+"""
+Streaming cursor of the table "timezone"
+"""
+input timezone_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: timezone_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input timezone_stream_cursor_value_input {
+  value: String
+}
+
+"""
+update columns of table "timezone"
+"""
+enum timezone_update_column {
+  """column name"""
+  value
+}
+
+input timezone_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: timezone_set_input
+
+  """filter the rows which have to be updated"""
+  where: timezone_bool_exp!
 }
 
 scalar uuid
