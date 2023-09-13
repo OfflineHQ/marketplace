@@ -15,8 +15,8 @@ export type Scalars = {
   Long: any;
   RichTextAST: any;
   bigint: any;
-  date: any;
   jsonb: any;
+  timestamp: any;
   timestamptz: any;
   uuid: any;
 };
@@ -4859,25 +4859,14 @@ export const enum Cursor_Ordering {
   Desc = 'DESC'
 };
 
-/** Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'. */
-export type Date_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['date']>;
-  _gt?: InputMaybe<Scalars['date']>;
-  _gte?: InputMaybe<Scalars['date']>;
-  _in?: InputMaybe<Array<Scalars['date']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['date']>;
-  _lte?: InputMaybe<Scalars['date']>;
-  _neq?: InputMaybe<Scalars['date']>;
-  _nin?: InputMaybe<Array<Scalars['date']>>;
-};
-
 /** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
 export type EventParameters = {
   __typename?: 'eventParameters';
   activityWebhookId?: Maybe<Scalars['String']>;
-  dateEnd?: Maybe<Scalars['date']>;
-  dateStart?: Maybe<Scalars['date']>;
+  dateEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleStart?: Maybe<Scalars['timestamp']>;
+  dateStart?: Maybe<Scalars['timestamp']>;
   event?: Maybe<Event>;
   eventId: Scalars['String'];
   /** An array relationship */
@@ -4891,6 +4880,7 @@ export type EventParameters = {
   id: Scalars['uuid'];
   organizer?: Maybe<Organizer>;
   organizerId: Scalars['String'];
+  timezone?: Maybe<Scalars['String']>;
 };
 
 
@@ -4977,8 +4967,10 @@ export type EventParameters_Bool_Exp = {
   _not?: InputMaybe<EventParameters_Bool_Exp>;
   _or?: InputMaybe<Array<EventParameters_Bool_Exp>>;
   activityWebhookId?: InputMaybe<String_Comparison_Exp>;
-  dateEnd?: InputMaybe<Date_Comparison_Exp>;
-  dateStart?: InputMaybe<Date_Comparison_Exp>;
+  dateEnd?: InputMaybe<Timestamp_Comparison_Exp>;
+  dateSaleEnd?: InputMaybe<Timestamp_Comparison_Exp>;
+  dateSaleStart?: InputMaybe<Timestamp_Comparison_Exp>;
+  dateStart?: InputMaybe<Timestamp_Comparison_Exp>;
   eventId?: InputMaybe<String_Comparison_Exp>;
   eventPassNftContracts?: InputMaybe<EventPassNftContract_Bool_Exp>;
   eventPassNftContracts_aggregate?: InputMaybe<EventPassNftContract_Aggregate_Bool_Exp>;
@@ -4986,6 +4978,7 @@ export type EventParameters_Bool_Exp = {
   eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
+  timezone?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "eventParameters" */
@@ -5001,35 +4994,44 @@ export const enum EventParameters_Constraint {
 /** input type for inserting data into table "eventParameters" */
 export type EventParameters_Insert_Input = {
   activityWebhookId?: InputMaybe<Scalars['String']>;
-  dateEnd?: InputMaybe<Scalars['date']>;
-  dateStart?: InputMaybe<Scalars['date']>;
+  dateEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleStart?: InputMaybe<Scalars['timestamp']>;
+  dateStart?: InputMaybe<Scalars['timestamp']>;
   eventId?: InputMaybe<Scalars['String']>;
   eventPassNftContracts?: InputMaybe<EventPassNftContract_Arr_Rel_Insert_Input>;
   eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  timezone?: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
 export type EventParameters_Max_Fields = {
   __typename?: 'eventParameters_max_fields';
   activityWebhookId?: Maybe<Scalars['String']>;
-  dateEnd?: Maybe<Scalars['date']>;
-  dateStart?: Maybe<Scalars['date']>;
+  dateEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleStart?: Maybe<Scalars['timestamp']>;
+  dateStart?: Maybe<Scalars['timestamp']>;
   eventId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   organizerId?: Maybe<Scalars['String']>;
+  timezone?: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
 export type EventParameters_Min_Fields = {
   __typename?: 'eventParameters_min_fields';
   activityWebhookId?: Maybe<Scalars['String']>;
-  dateEnd?: Maybe<Scalars['date']>;
-  dateStart?: Maybe<Scalars['date']>;
+  dateEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleStart?: Maybe<Scalars['timestamp']>;
+  dateStart?: Maybe<Scalars['timestamp']>;
   eventId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   organizerId?: Maybe<Scalars['String']>;
+  timezone?: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "eventParameters" */
@@ -5059,12 +5061,15 @@ export type EventParameters_On_Conflict = {
 export type EventParameters_Order_By = {
   activityWebhookId?: InputMaybe<Order_By>;
   dateEnd?: InputMaybe<Order_By>;
+  dateSaleEnd?: InputMaybe<Order_By>;
+  dateSaleStart?: InputMaybe<Order_By>;
   dateStart?: InputMaybe<Order_By>;
   eventId?: InputMaybe<Order_By>;
   eventPassNftContracts_aggregate?: InputMaybe<EventPassNftContract_Aggregate_Order_By>;
   eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  timezone?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: eventParameters */
@@ -5079,23 +5084,32 @@ export const enum EventParameters_Select_Column {
   /** column name */
   DateEnd = 'dateEnd',
   /** column name */
+  DateSaleEnd = 'dateSaleEnd',
+  /** column name */
+  DateSaleStart = 'dateSaleStart',
+  /** column name */
   DateStart = 'dateStart',
   /** column name */
   EventId = 'eventId',
   /** column name */
   Id = 'id',
   /** column name */
-  OrganizerId = 'organizerId'
+  OrganizerId = 'organizerId',
+  /** column name */
+  Timezone = 'timezone'
 };
 
 /** input type for updating data in table "eventParameters" */
 export type EventParameters_Set_Input = {
   activityWebhookId?: InputMaybe<Scalars['String']>;
-  dateEnd?: InputMaybe<Scalars['date']>;
-  dateStart?: InputMaybe<Scalars['date']>;
+  dateEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleStart?: InputMaybe<Scalars['timestamp']>;
+  dateStart?: InputMaybe<Scalars['timestamp']>;
   eventId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  timezone?: InputMaybe<Scalars['String']>;
 };
 
 /** Streaming cursor of the table "eventParameters" */
@@ -5109,11 +5123,14 @@ export type EventParameters_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type EventParameters_Stream_Cursor_Value_Input = {
   activityWebhookId?: InputMaybe<Scalars['String']>;
-  dateEnd?: InputMaybe<Scalars['date']>;
-  dateStart?: InputMaybe<Scalars['date']>;
+  dateEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleStart?: InputMaybe<Scalars['timestamp']>;
+  dateStart?: InputMaybe<Scalars['timestamp']>;
   eventId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  timezone?: InputMaybe<Scalars['String']>;
 };
 
 /** update columns of table "eventParameters" */
@@ -5123,13 +5140,19 @@ export const enum EventParameters_Update_Column {
   /** column name */
   DateEnd = 'dateEnd',
   /** column name */
+  DateSaleEnd = 'dateSaleEnd',
+  /** column name */
+  DateSaleStart = 'dateSaleStart',
+  /** column name */
   DateStart = 'dateStart',
   /** column name */
   EventId = 'eventId',
   /** column name */
   Id = 'id',
   /** column name */
-  OrganizerId = 'organizerId'
+  OrganizerId = 'organizerId',
+  /** column name */
+  Timezone = 'timezone'
 };
 
 export type EventParameters_Updates = {
@@ -7410,6 +7433,10 @@ export type Mutation_Root = {
   delete_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** delete single row from the table: "orderStatus" */
   delete_orderStatus_by_pk?: Maybe<OrderStatus>;
+  /** delete data from the table: "timezone" */
+  delete_timezone?: Maybe<Timezone_Mutation_Response>;
+  /** delete single row from the table: "timezone" */
+  delete_timezone_by_pk?: Maybe<Timezone>;
   /** insert data into the table: "account" */
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert a single row into the table: "account" */
@@ -7454,6 +7481,10 @@ export type Mutation_Root = {
   insert_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** insert a single row into the table: "orderStatus" */
   insert_orderStatus_one?: Maybe<OrderStatus>;
+  /** insert data into the table: "timezone" */
+  insert_timezone?: Maybe<Timezone_Mutation_Response>;
+  /** insert a single row into the table: "timezone" */
+  insert_timezone_one?: Maybe<Timezone>;
   /** Publish one asset */
   publishAsset?: Maybe<Asset>;
   /** Publish one event */
@@ -7608,6 +7639,12 @@ export type Mutation_Root = {
   update_orderStatus_by_pk?: Maybe<OrderStatus>;
   /** update multiples rows of table: "orderStatus" */
   update_orderStatus_many?: Maybe<Array<Maybe<OrderStatus_Mutation_Response>>>;
+  /** update data of the table: "timezone" */
+  update_timezone?: Maybe<Timezone_Mutation_Response>;
+  /** update single row of the table: "timezone" */
+  update_timezone_by_pk?: Maybe<Timezone>;
+  /** update multiples rows of table: "timezone" */
+  update_timezone_many?: Maybe<Array<Maybe<Timezone_Mutation_Response>>>;
   /** Upsert one asset */
   upsertAsset?: Maybe<Asset>;
   /** Upsert one event */
@@ -7880,6 +7917,18 @@ export type Mutation_RootDelete_OrderStatus_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_TimezoneArgs = {
+  where: Timezone_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Timezone_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_AccountArgs = {
   objects: Array<Account_Insert_Input>;
   on_conflict?: InputMaybe<Account_On_Conflict>;
@@ -8030,6 +8079,20 @@ export type Mutation_RootInsert_OrderStatusArgs = {
 export type Mutation_RootInsert_OrderStatus_OneArgs = {
   object: OrderStatus_Insert_Input;
   on_conflict?: InputMaybe<OrderStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_TimezoneArgs = {
+  objects: Array<Timezone_Insert_Input>;
+  on_conflict?: InputMaybe<Timezone_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Timezone_OneArgs = {
+  object: Timezone_Insert_Input;
+  on_conflict?: InputMaybe<Timezone_On_Conflict>;
 };
 
 
@@ -8744,6 +8807,26 @@ export type Mutation_RootUpdate_OrderStatus_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_OrderStatus_ManyArgs = {
   updates: Array<OrderStatus_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_TimezoneArgs = {
+  _set?: InputMaybe<Timezone_Set_Input>;
+  where: Timezone_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Timezone_By_PkArgs = {
+  _set?: InputMaybe<Timezone_Set_Input>;
+  pk_columns: Timezone_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Timezone_ManyArgs = {
+  updates: Array<Timezone_Updates>;
 };
 
 
@@ -9599,6 +9682,12 @@ export type Query_Root = {
   scheduledReleases: Array<ScheduledRelease>;
   /** Retrieve multiple scheduledReleases using the Relay connection interface */
   scheduledReleasesConnection: ScheduledReleaseConnection;
+  /** fetch data from the table: "timezone" */
+  timezone: Array<Timezone>;
+  /** fetch aggregated fields from the table: "timezone" */
+  timezone_aggregate: Timezone_Aggregate;
+  /** fetch data from the table: "timezone" using primary key columns */
+  timezone_by_pk?: Maybe<Timezone>;
   /** Retrieve a single user */
   user?: Maybe<User>;
   /** Retrieve multiple users */
@@ -10081,6 +10170,29 @@ export type Query_RootScheduledReleasesConnectionArgs = {
 };
 
 
+export type Query_RootTimezoneArgs = {
+  distinct_on?: InputMaybe<Array<Timezone_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Timezone_Order_By>>;
+  where?: InputMaybe<Timezone_Bool_Exp>;
+};
+
+
+export type Query_RootTimezone_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Timezone_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Timezone_Order_By>>;
+  where?: InputMaybe<Timezone_Bool_Exp>;
+};
+
+
+export type Query_RootTimezone_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
 export type Query_RootUserArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
@@ -10199,6 +10311,14 @@ export type Subscription_Root = {
   orderStatus_by_pk?: Maybe<OrderStatus>;
   /** fetch data from the table in a streaming manner: "orderStatus" */
   orderStatus_stream: Array<OrderStatus>;
+  /** fetch data from the table: "timezone" */
+  timezone: Array<Timezone>;
+  /** fetch aggregated fields from the table: "timezone" */
+  timezone_aggregate: Timezone_Aggregate;
+  /** fetch data from the table: "timezone" using primary key columns */
+  timezone_by_pk?: Maybe<Timezone>;
+  /** fetch data from the table in a streaming manner: "timezone" */
+  timezone_stream: Array<Timezone>;
 };
 
 
@@ -10526,6 +10646,49 @@ export type Subscription_RootOrderStatus_StreamArgs = {
   where?: InputMaybe<OrderStatus_Bool_Exp>;
 };
 
+
+export type Subscription_RootTimezoneArgs = {
+  distinct_on?: InputMaybe<Array<Timezone_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Timezone_Order_By>>;
+  where?: InputMaybe<Timezone_Bool_Exp>;
+};
+
+
+export type Subscription_RootTimezone_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Timezone_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Timezone_Order_By>>;
+  where?: InputMaybe<Timezone_Bool_Exp>;
+};
+
+
+export type Subscription_RootTimezone_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootTimezone_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Timezone_Stream_Cursor_Input>>;
+  where?: InputMaybe<Timezone_Bool_Exp>;
+};
+
+/** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
+export type Timestamp_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['timestamp']>;
+  _gt?: InputMaybe<Scalars['timestamp']>;
+  _gte?: InputMaybe<Scalars['timestamp']>;
+  _in?: InputMaybe<Array<Scalars['timestamp']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['timestamp']>;
+  _lte?: InputMaybe<Scalars['timestamp']>;
+  _neq?: InputMaybe<Scalars['timestamp']>;
+  _nin?: InputMaybe<Array<Scalars['timestamp']>>;
+};
+
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['timestamptz']>;
@@ -10537,6 +10700,128 @@ export type Timestamptz_Comparison_Exp = {
   _lte?: InputMaybe<Scalars['timestamptz']>;
   _neq?: InputMaybe<Scalars['timestamptz']>;
   _nin?: InputMaybe<Array<Scalars['timestamptz']>>;
+};
+
+/** IANA Time Zones fetched from pg_timezone_names in PostgreSQL */
+export type Timezone = {
+  __typename?: 'timezone';
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "timezone" */
+export type Timezone_Aggregate = {
+  __typename?: 'timezone_aggregate';
+  aggregate?: Maybe<Timezone_Aggregate_Fields>;
+  nodes: Array<Timezone>;
+};
+
+/** aggregate fields of "timezone" */
+export type Timezone_Aggregate_Fields = {
+  __typename?: 'timezone_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Timezone_Max_Fields>;
+  min?: Maybe<Timezone_Min_Fields>;
+};
+
+
+/** aggregate fields of "timezone" */
+export type Timezone_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Timezone_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "timezone". All fields are combined with a logical 'AND'. */
+export type Timezone_Bool_Exp = {
+  _and?: InputMaybe<Array<Timezone_Bool_Exp>>;
+  _not?: InputMaybe<Timezone_Bool_Exp>;
+  _or?: InputMaybe<Array<Timezone_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "timezone" */
+export const enum Timezone_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  TimezonePkey = 'timezone_pkey'
+};
+
+/** input type for inserting data into table "timezone" */
+export type Timezone_Insert_Input = {
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Timezone_Max_Fields = {
+  __typename?: 'timezone_max_fields';
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Timezone_Min_Fields = {
+  __typename?: 'timezone_min_fields';
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "timezone" */
+export type Timezone_Mutation_Response = {
+  __typename?: 'timezone_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Timezone>;
+};
+
+/** on_conflict condition type for table "timezone" */
+export type Timezone_On_Conflict = {
+  constraint: Timezone_Constraint;
+  update_columns?: Array<Timezone_Update_Column>;
+  where?: InputMaybe<Timezone_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "timezone". */
+export type Timezone_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: timezone */
+export type Timezone_Pk_Columns_Input = {
+  value: Scalars['String'];
+};
+
+/** select columns of table "timezone" */
+export const enum Timezone_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "timezone" */
+export type Timezone_Set_Input = {
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "timezone" */
+export type Timezone_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Timezone_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Timezone_Stream_Cursor_Value_Input = {
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "timezone" */
+export const enum Timezone_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type Timezone_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Timezone_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Timezone_Bool_Exp;
 };
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */

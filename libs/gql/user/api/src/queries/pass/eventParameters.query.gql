@@ -1,6 +1,6 @@
 query GetPassedEventsWithEventPassNfts(
   $address: String!
-  $currentDate: date!
+  $currentDate: timestamp!
   $locale: Locale!
   $stage: Stage!
 ) {
@@ -13,6 +13,7 @@ query GetPassedEventsWithEventPassNfts(
   ) {
     dateStart
     dateEnd
+    timezone
     eventPassNftContracts(
       where: { eventPassNfts: { currentOwnerAddress: { _eq: $address } } }
     ) {
@@ -50,7 +51,7 @@ query GetPassedEventsWithEventPassNfts(
 
 query GetUpcomingEventsWithEventPassNfts(
   $address: String!
-  $currentDate: date!
+  $currentDate: timestamp!
   $locale: Locale!
   $stage: Stage!
 ) {
@@ -63,6 +64,7 @@ query GetUpcomingEventsWithEventPassNfts(
   ) {
     dateStart
     dateEnd
+    timezone
     eventPassNftContracts(
       where: { eventPassNfts: { currentOwnerAddress: { _eq: $address } } }
     ) {
