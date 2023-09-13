@@ -69,7 +69,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         {Icon && (
           <Icon.type
             size={size}
-            className={iconOnly ? '' : iconClasses}
+            className={cn(iconOnly ? '' : iconClasses, Icon.props.className)}
             {...Icon.props}
           />
         )}

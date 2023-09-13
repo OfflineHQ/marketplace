@@ -133,11 +133,17 @@ const ButtonContent: React.FC<ButtonContentProps> = ({
         />
       ) : null}
       {LeftIcon && !loading ? (
-        <LeftIcon.type {...LeftIcon.props} className={_iconLeft} />
+        <LeftIcon.type
+          {...LeftIcon.props}
+          className={cn(_iconLeft, LeftIcon.props.className)}
+        />
       ) : null}
       {typeof children !== 'undefined' && children}
       {RightIcon ? (
-        <RightIcon.type {...RightIcon.props} className={_iconRight} />
+        <RightIcon.type
+          {...RightIcon.props}
+          className={cn(_iconRight, RightIcon.props.className)}
+        />
       ) : null}
     </>
   );
