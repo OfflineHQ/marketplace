@@ -2,26 +2,28 @@
 
 import { useFormatter } from 'next-intl';
 import React, { FC } from 'react';
-import { Text } from '@ui/components';
 import { Calendar as CalendarIcon } from '@ui/icons';
 import { cn } from '@ui/shared';
+import {
+  UserTimezoneInfoHover,
+  type UserTimezoneInfoHoverProps,
+} from './UserTimezoneInfoHover';
+import { DateRangeContent } from './DateRangeContent';
 
-export interface DateRangeClientProps {
-  dateStart: Date;
-  dateEnd: Date;
-  fromText: string;
-  toText: string;
-  className?: string;
+export interface DateRangeClientProps
+  extends Omit<UserTimezoneInfoHoverProps, 'userTimezone'> {
+  timezone: string;
 }
 
 export const DateRangeClient: FC<DateRangeClientProps> = ({
   dateStart,
   dateEnd,
-  fromText,
-  toText,
+  timezone,
   className,
+  ...textProps
 }) => {
   const format = useFormatter();
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   const formattedStart = format.dateTime(new Date(dateStart), {
     weekday: 'short',
@@ -30,6 +32,7 @@ export const DateRangeClient: FC<DateRangeClientProps> = ({
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
+    timeZone: timezone,
   });
 
   const formattedEnd = format.dateTime(new Date(dateEnd), {
@@ -39,28 +42,34 @@ export const DateRangeClient: FC<DateRangeClientProps> = ({
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
+    timeZone: timezone,
   });
 
   return (
     // <Text variant="span" className="text-info">
     //   {formattedStart} - {formattedEnd}
     // </Text>
-    <div className={cn('my-2 flex items-center space-x-4', className)}>
+    <div
+      className={cn(
+        `my-2 flex items-center space-x-${userTimezone !== timezone ? 2 : 4}`,
+        className
+      )}
+    >
       <CalendarIcon size="lg" flex />
-      <div className="grid grid-flow-row-dense grid-cols-4 grid-rows-2 gap-1.5 md:gap-3">
-        <div className="col-auto flex w-fit space-x-2 pr-2">
-          <Text>{fromText}</Text>
-        </div>
-        <div className="col-span-3 flex space-x-2">
-          <Text className="text-base font-semibold">{formattedStart}</Text>
-        </div>
-        <div className="col-auto flex w-fit space-x-2 pr-2">
-          <Text>{toText}</Text>
-        </div>
-        <div className="col-span-3 flex space-x-2">
-          <Text className="text-base font-semibold">{formattedEnd}</Text>
-        </div>
-      </div>
+      {userTimezone !== timezone && (
+        <UserTimezoneInfoHover
+          className="md:mr-2"
+          dateStart={dateStart}
+          dateEnd={dateEnd}
+          userTimezone={userTimezone}
+          {...textProps}
+        />
+      )}
+      <DateRangeContent
+        formattedStart={formattedStart}
+        formattedEnd={formattedEnd}
+        {...textProps}
+      />
     </div>
   );
 };
