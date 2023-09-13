@@ -78,7 +78,10 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
                   className={item.className}
                 >
                   {icon && (
-                    <icon.type {...icon.props} className={iconClasses} />
+                    <icon.type
+                      {...icon.props}
+                      className={cn(iconClasses, icon.props.className)}
+                    />
                   )}
                   <span>{item.text}</span>
                   {item.shortcut && (
@@ -93,8 +96,11 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
               <DropdownMenuGroup key={index}>
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger>
-                    {item.icon && (
-                      <icon.type {...icon.props} className={iconClasses} />
+                    {icon && (
+                      <icon.type
+                        {...icon.props}
+                        className={cn(iconClasses, icon.props.className)}
+                      />
                     )}
                     <span>{item.text}</span>
                   </DropdownMenuSubTrigger>
