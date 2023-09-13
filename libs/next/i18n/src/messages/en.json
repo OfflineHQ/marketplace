@@ -86,7 +86,8 @@
       "past": "Past",
       "DateRange": {
         "from": "From",
-        "to": "To"
+        "to": "To",
+        "in-your-timezone": "In your own time zone"
       },
       "UserPassEvent": {
         "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",

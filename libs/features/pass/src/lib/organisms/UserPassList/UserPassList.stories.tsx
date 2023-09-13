@@ -57,6 +57,7 @@ export const WithMultipleEvents: Story = {
   args: {
     eventsParameters: [eventParameters, eventParameters2],
   },
+  play: async () => undefined,
 };
 
 export const WithSkeleton: Story = {
