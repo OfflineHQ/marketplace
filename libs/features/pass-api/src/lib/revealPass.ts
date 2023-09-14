@@ -50,6 +50,7 @@ export const eventPassTransferQRCode = async (
     },
     accountId: process.env.UPLOAD_ACCOUNT_ID as string,
   });
+  console.log('resCopy', resCopy);
   if (resCopy.status !== FileCopyStatus.Copied) throw new Error(resCopy.status);
   // TODO: evaluate if need to delete file from organizer space or not ?
   // const resDelete = await fileWrapper.deleteFile({
@@ -60,6 +61,7 @@ export const eventPassTransferQRCode = async (
 
 export const revealPass = async (id: string) => {
   const eventPass = await eventPassCheck(id);
+  console.log('eventPass', eventPass);
   await eventPassTransferQRCode(eventPass);
   await adminSdk.SetEventPassNftRevealed({ id });
 };

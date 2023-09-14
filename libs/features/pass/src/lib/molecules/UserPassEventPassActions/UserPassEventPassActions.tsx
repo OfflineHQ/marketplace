@@ -7,7 +7,7 @@ import { Download, Reveal, SeeDetails, Send } from '@ui/icons';
 import type { EventWithEventPassNfts } from '@features/pass-types';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import type { ErrorWithMessageAndCode } from '@utils';
+import type { ErrorWithMessage } from '@utils';
 
 export type UserPassEventPassActionsFunctionsProps = {
   actionsFunctions: {
@@ -34,7 +34,7 @@ export const UserPassEventPassActions: React.FC<
       type: 'item',
       wrapper: (
         <Link
-          href={`/pass/organizer/${organizer?.id}/event/${event?.id}/eventPass/${eventPass.id}/${eventPassNft.tokenId}`}
+          href={`/pass/organizer/${organizer?.id}/event/${event?.id}/eventPass/${eventPass?.id}/${eventPassNft?.tokenId}`}
         />
       ),
       icon: <SeeDetails />,
@@ -45,6 +45,34 @@ export const UserPassEventPassActions: React.FC<
   async function downloadPass() {
     'use server';
     return actionsFunctions.downloadPass(eventPassNft.id);
+  }
+
+  const downloadPassToastErrors = {
+    title: t('action-download-toast-error-title'),
+    description: t('action-download-toast-error-description'),
+  };
+
+  const downloadPassToastSuccessMessages = {
+    title: t('action-download-toast-success-title'),
+    description: t('action-download-toast-success-description'),
+  };
+
+  async function downloadPassToastError(
+    error: ErrorWithMessage
+  ): Promise<ToastT> {
+    'use server';
+    return {
+      title: downloadPassToastErrors.title,
+      description: error?.message
+        ? downloadPassToastErrors.description + ' ' + error.message
+        : downloadPassToastErrors.description,
+      variant: 'destructive',
+    };
+  }
+
+  async function downloadPassToastSuccess(props: unknown): Promise<ToastT> {
+    'use server';
+    return downloadPassToastSuccessMessages;
   }
 
   async function revealPass() {
@@ -58,15 +86,27 @@ export const UserPassEventPassActions: React.FC<
   };
 
   async function revealPassToastError(
-    error: ErrorWithMessageAndCode
+    error: ErrorWithMessage
   ): Promise<ToastT> {
     'use server';
-    console.error('UserPassEventPassActions', error);
     // TODO: handle error, in case get error code and message display message in toast
     return {
-      ...revealPassToastErrors,
+      title: revealPassToastErrors.title,
+      description: error?.message
+        ? revealPassToastErrors.description + ' ' + error.message
+        : revealPassToastErrors.description,
       variant: 'destructive',
     };
+  }
+
+  const revealPassToastSuccessMessages = {
+    title: t('action-reveal-toast-success-title'),
+    description: t('action-reveal-toast-success-description'),
+  };
+
+  async function revealPassToastSuccess(props: unknown): Promise<ToastT> {
+    'use server';
+    return revealPassToastSuccessMessages;
   }
 
   if (eventPassNft?.isRevealed) {
@@ -75,6 +115,8 @@ export const UserPassEventPassActions: React.FC<
       icon: <Download />,
       text: t('download-pass'),
       action: downloadPass,
+      toastError: downloadPassToastError,
+      toastSuccess: downloadPassToastSuccess,
     });
   } else {
     items.push({
@@ -83,6 +125,7 @@ export const UserPassEventPassActions: React.FC<
       text: t('reveal-pass'),
       action: revealPass,
       toastError: revealPassToastError,
+      toastSuccess: revealPassToastSuccess,
     });
   }
   items.push({
