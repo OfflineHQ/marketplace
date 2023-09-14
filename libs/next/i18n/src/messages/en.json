@@ -94,18 +94,28 @@
         "num-pass-not-revealed": "x{numPassNotRevealed} not revealed",
         "num-pass-revealed": "x{numPassRevealed} revealed"
       },
-      "UserPassEventContent": {
+      "UserPassEventCard": {
         "download-passes-button": "Download {numPass, plural, =1 {# pass} other {# passes}}",
         "pass-number": "Pass #{number, number}",
         "revealed": "Revealed",
-        "not-revealed": "Not revealed"
+        "not-revealed": "Not revealed",
+        "dialog-title": "{numPassNotRevealed, plural, =1 {# pass not revealed} other {# passes not revealed}}",
+        "dialog-description": "To reveal {numPassNotRevealed, plural, =0 {it} =1 {it} other {them}} would imply that the pass has been shown.<br></br>{numPassNotRevealed, plural, =0 {It} =1 {It} other {They}} will be marked as such in case {numPassNotRevealed, plural, =0 {it's} =1 {it's} other {they're}} re-sold on the secondary market, making {numPassNotRevealed, plural, =0 {it} =1 {it} other {them}} harder to sell.<br></br><br></br>Are you sure you want to reveal {numPassNotRevealed, plural, =0 {it} =1 {it} other {them}}?",
+        "dialog-confirm-button": "Yes, reveal {numPassNotRevealed, plural, =0 {it} =1 {it} other {them}}",
+        "dialog-cancel-button": "Cancel",
+        "dialog-toast-success-title": "Pass reveal successful",
+        "dialog-toast-success-description": "{numPass, plural, =1 {The pass has been revealed and downloaded successfully} other {The # passes have been revealed and downloaded successfully}}",
+        "dialog-toast-error-title": "{numPass, plural, =1 {Error revealing and downloading the pass} other {Errors revealing and downloading the passes}}",
+        "dialog-toast-error-description": "{numPass, plural, =1 {There was an error revealing and downloading the pass. {errorMessage}} other {There were errors revealing and downloading the # passes. {errorMessage}}}"
       },
       "UserPassEventPassActions": {
         "helper-text": "Choose an action for this pass",
         "see-details": "See details",
         "download-pass": "Download",
         "reveal-pass": "Reveal",
-        "send-pass": "Send"
+        "send-pass": "Send",
+        "action-reveal-toast-error-title": "Error revealing the pass",
+        "action-reveal-toast-error-description": "Something went wrong while revealing the pass. Please try again."
       }
     },
     "NoUserPass": {
