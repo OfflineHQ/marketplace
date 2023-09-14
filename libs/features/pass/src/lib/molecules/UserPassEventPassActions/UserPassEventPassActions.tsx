@@ -1,11 +1,13 @@
 import {
   DropdownMenuActions,
   type DropdownMenuActionsProps,
+  type ToastT,
 } from '@ui/components';
 import { Download, Reveal, SeeDetails, Send } from '@ui/icons';
 import type { EventWithEventPassNfts } from '@features/pass-types';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import type { ErrorWithMessageAndCode } from '@utils';
 
 export type UserPassEventPassActionsFunctionsProps = {
   actionsFunctions: {
@@ -32,7 +34,7 @@ export const UserPassEventPassActions: React.FC<
       type: 'item',
       wrapper: (
         <Link
-          href={`/pass/organizer/${organizer.id}/event/${event.id}/eventPass/${eventPass.id}/${eventPassNft.tokenId}`}
+          href={`/pass/organizer/${organizer?.id}/event/${event?.id}/eventPass/${eventPass.id}/${eventPassNft.tokenId}`}
         />
       ),
       icon: <SeeDetails />,
@@ -50,6 +52,23 @@ export const UserPassEventPassActions: React.FC<
     return actionsFunctions.revealPass(eventPassNft.id);
   }
 
+  const revealPassToastErrors = {
+    title: t('action-reveal-toast-error-title'),
+    description: t('action-reveal-toast-error-description'),
+  };
+
+  async function revealPassToastError(
+    error: ErrorWithMessageAndCode
+  ): Promise<ToastT> {
+    'use server';
+    console.error('UserPassEventPassActions', error);
+    // TODO: handle error, in case get error code and message display message in toast
+    return {
+      ...revealPassToastErrors,
+      variant: 'destructive',
+    };
+  }
+
   if (eventPassNft?.isRevealed) {
     items.push({
       type: 'item',
@@ -63,6 +82,7 @@ export const UserPassEventPassActions: React.FC<
       icon: <Reveal />,
       text: t('reveal-pass'),
       action: revealPass,
+      toastError: revealPassToastError,
     });
   }
   items.push({
