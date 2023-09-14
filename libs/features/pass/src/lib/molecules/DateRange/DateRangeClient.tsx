@@ -15,13 +15,13 @@ export interface DateRangeClientProps
   timezone: string;
 }
 
-export const DateRangeClient: FC<DateRangeClientProps> = ({
+export default function DateRangeClient({
   dateStart,
   dateEnd,
   timezone,
   className,
   ...textProps
-}) => {
+}: DateRangeClientProps) {
   const format = useFormatter();
   const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -46,9 +46,6 @@ export const DateRangeClient: FC<DateRangeClientProps> = ({
   });
 
   return (
-    // <Text variant="span" className="text-info">
-    //   {formattedStart} - {formattedEnd}
-    // </Text>
     <div
       className={cn(
         `my-2 flex items-center space-x-${userTimezone !== timezone ? 2 : 4}`,
@@ -72,4 +69,4 @@ export const DateRangeClient: FC<DateRangeClientProps> = ({
       />
     </div>
   );
-};
+}
