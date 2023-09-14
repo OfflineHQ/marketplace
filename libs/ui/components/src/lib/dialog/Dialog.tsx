@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import type { DialogProps } from '@radix-ui/react-dialog';
 import { Close } from '@ui/icons';
 import { closeClasses } from '../shared/close';
 
@@ -102,7 +103,7 @@ const DialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
+      'flex flex-col-reverse space-y-2 space-y-reverse sm:flex-row sm:justify-end sm:space-x-2 md:space-y-0',
       className
     )}
     {...props}
@@ -145,4 +146,5 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  type DialogProps,
 };

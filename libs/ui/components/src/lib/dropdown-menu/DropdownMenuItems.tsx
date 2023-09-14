@@ -13,25 +13,16 @@ import {
 } from './DropdownMenu';
 import { cn } from '@ui/shared';
 import { iconCVA } from '@ui/icons';
+import {
+  DropdownMenuItemClient,
+  type DropdownMenuItemClientProps,
+  MenuItem,
+} from './DropdownMenuItemClient';
 
-interface MenuItem {
-  type: 'label' | 'separator' | 'item' | 'sub' | 'children';
-  text?: string;
-  children?: React.ReactNode;
-  wrapper?: React.ReactElement;
-  icon?: React.ReactElement;
-  action?: () => void;
-  shortcut?: string;
-  disabled?: boolean;
-  subItems?: MenuItem[];
-  current?: boolean;
-  className?: string;
-}
-
-interface DropdownMenuItemsProps {
+interface DropdownMenuItemsProps
+  extends Pick<DropdownMenuItemClientProps, 'setLoading'> {
   items: MenuItem[];
   className?: string;
-  setLoading: (loading: boolean) => void;
 }
 
 const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
@@ -39,18 +30,11 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
   className,
   setLoading,
 }) => {
-  const handleAction = async (action: (() => void) | undefined) => {
-    if (setLoading) setLoading(true);
-    try {
-      if (action) await action();
-    } finally {
-      if (setLoading) setLoading(false);
-    }
-  };
   const iconClasses = iconCVA({
     size: 'sm',
     marginRight: 'default',
   });
+
   return (
     <DropdownMenuContent className={cn('w-56', className)}>
       {items.map(({ icon, ...item }, index) => {
@@ -71,23 +55,12 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
           case 'item':
             return (
               <DropdownMenuGroup key={index}>
-                <DropdownMenuItem
-                  disabled={item.disabled}
-                  onSelect={() => handleAction(item.action)}
-                  wrapper={item.wrapper}
-                  className={item.className}
-                >
-                  {icon && (
-                    <icon.type
-                      {...icon.props}
-                      className={cn(iconClasses, icon.props.className)}
-                    />
-                  )}
-                  <span>{item.text}</span>
-                  {item.shortcut && (
-                    <DropdownMenuShortcut>{item.shortcut}</DropdownMenuShortcut>
-                  )}
-                </DropdownMenuItem>
+                <DropdownMenuItemClient
+                  icon={icon}
+                  item={item}
+                  setLoading={setLoading}
+                  iconClasses={iconClasses}
+                />
               </DropdownMenuGroup>
             );
 
