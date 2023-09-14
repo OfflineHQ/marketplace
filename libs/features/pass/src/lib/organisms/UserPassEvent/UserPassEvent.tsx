@@ -1,6 +1,7 @@
 import {
   AccordionItem,
   AccordionTrigger,
+  AccordionContent,
   TextSkeleton,
   Separator,
   Text,
@@ -10,14 +11,17 @@ import {
 } from '@ui/components';
 import { DateRange } from '../../molecules/DateRange/DateRange';
 import {
-  UserPassEventContent,
-  type UserPassEventContentProps,
-} from '../UserPassEventContent/UserPassEventContent';
+  UserPassEventCard,
+  type UserPassEventCardProps,
+} from '../UserPassEventCard/UserPassEventCard';
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
-export type UserPassEventProps = UserPassEventContentProps;
+export type UserPassEventProps = Omit<
+  UserPassEventCardProps,
+  'numPassNotRevealed' | 'eventPassNftContract'
+>;
 
 const layout = {
   triggerContainer: 'flex space-x-3',
@@ -33,7 +37,7 @@ const layout = {
 
 export const UserPassEvent: React.FC<UserPassEventProps> = ({
   eventParameters,
-  actionsFunctions,
+  ...props
 }) => {
   const t = useTranslations('Pass.UserPass.UserPassEvent');
   let numPass = 0;
@@ -94,10 +98,15 @@ export const UserPassEvent: React.FC<UserPassEventProps> = ({
           </div>
         </div>
       </AccordionTrigger>
-      <UserPassEventContent
-        eventParameters={eventParameters}
-        actionsFunctions={actionsFunctions}
-      />
+      <AccordionContent className="grid grid-cols-1 gap-y-4 md:grid-cols-4 md:gap-4">
+        {eventParameters.eventPassNftContracts.map((eventPassNftContract) => (
+          <UserPassEventCard
+            eventPassNftContract={eventPassNftContract}
+            eventParameters={eventParameters}
+            {...props}
+          />
+        ))}
+      </AccordionContent>
     </AccordionItem>
   );
 };
