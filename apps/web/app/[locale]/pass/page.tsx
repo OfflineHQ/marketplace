@@ -1,6 +1,7 @@
 import { getUpcomingEventsWithEventPassNfts } from '@features/pass-api';
 import type { Locale } from '@gql/shared/types';
-import { UserPassList, revealPass, downloadPass } from '@features/pass/server';
+import { UserPassList } from '@features/pass/server';
+import { revealPass, downloadPass } from '@features/pass-actions';
 interface PassTabComingSoonProps {
   params: {
     locale: Locale;

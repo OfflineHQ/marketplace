@@ -9,8 +9,5 @@ export { NoPassPlaceholder } from './lib/molecules/NoPassPlaceholder/NoPassPlace
 export {
   UserPassList,
   UserPassListSkeleton,
+  type UserPassListProps,
 } from './lib/organisms/UserPassList/UserPassList';
-
-export { revealPass } from './lib/actions/revealPass';
-export { downloadPass } from './lib/actions/downloadPass';
-export { batchDownloadOrReveal } from './lib/actions/batchDownloadOrReveal';

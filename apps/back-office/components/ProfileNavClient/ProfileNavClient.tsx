@@ -4,7 +4,6 @@ import React, { useMemo, useCallback } from 'react';
 import { LogIn, Settings, LifeBuoy, LogOut } from '@ui/icons';
 import { useToast } from '@ui/components';
 import { useAuthContext } from '@next/auth';
-import Link from 'next/link';
 import {
   ProfileNav,
   ProfileNavSkeleton,

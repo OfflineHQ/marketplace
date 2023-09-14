@@ -1,7 +1,7 @@
 import { getPassedEventsWithEventPassNfts } from '@features/pass-api';
 import type { Locale } from '@gql/shared/types';
-import { getCurrentUser } from '@next/next-auth/user';
-import { UserPassList, revealPass, downloadPass } from '@features/pass/server';
+import { UserPassList } from '@features/pass/server';
+import { revealPass, downloadPass } from '@features/pass-actions';
 
 interface PassTabsPastProps {
   params: {
@@ -9,9 +9,13 @@ interface PassTabsPastProps {
   };
 }
 
-function PassTabContent({
-  events,
-}: Awaited<ReturnType<typeof getPassedEventsWithEventPassNfts>> | null) {
+export default async function PassTabPast({
+  params: { locale },
+}: PassTabsPastProps) {
+  const events = await getPassedEventsWithEventPassNfts({
+    locale,
+    currentDate: new Date().toUTCString(),
+  });
   const actionsFunctions = {
     downloadPass,
     revealPass,
@@ -19,25 +23,8 @@ function PassTabContent({
   return (
     <UserPassList
       eventsParameters={events}
-      noPassImage="/empty-pass.svg"
       actionsFunctions={actionsFunctions}
+      noPassImage="/empty-pass.svg"
     />
   );
-}
-
-export default async function PassTabPast({
-  params: { locale },
-}: PassTabsPastProps) {
-  const user = await getCurrentUser();
-  let events: Awaited<
-    ReturnType<typeof getPassedEventsWithEventPassNfts>
-  > | null = null;
-  if (!user) {
-    return null;
-  }
-  events = await getPassedEventsWithEventPassNfts({
-    locale,
-    currentDate: new Date().toUTCString(),
-  });
-  return <PassTabContent events={events} />;
 }
