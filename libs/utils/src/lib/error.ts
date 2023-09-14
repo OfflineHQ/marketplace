@@ -1,26 +1,18 @@
-export type ErrorWithMessageAndCode = {
+export type ErrorWithMessage = {
   message: string;
-  code?: number | number;
 };
 
-function isErrorWithMessageAndCode(
-  error: unknown
-): error is ErrorWithMessageAndCode {
+function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
   return (
     typeof error === 'object' &&
     error !== null &&
     'message' in error &&
-    typeof (error as Record<string, unknown>).message === 'string' &&
-    'code' in error &&
-    (typeof (error as Record<string, unknown>).code === 'string' ||
-      typeof (error as Record<string, unknown>).code === 'number')
+    typeof (error as Record<string, unknown>).message === 'string'
   );
 }
 
-function toErrorWithMessageAndCode(
-  maybeError: unknown
-): ErrorWithMessageAndCode {
-  if (isErrorWithMessageAndCode(maybeError)) return maybeError;
+function toErrorWithMessage(maybeError: unknown): ErrorWithMessage {
+  if (isErrorWithMessage(maybeError)) return maybeError;
 
   try {
     return new Error(JSON.stringify(maybeError));
@@ -32,10 +24,5 @@ function toErrorWithMessageAndCode(
 }
 
 export function getErrorMessage(error: unknown) {
-  return toErrorWithMessageAndCode(error).message;
-}
-
-export function getErrorCode(error: unknown): number | undefined {
-  const errorCode = toErrorWithMessageAndCode(error).code;
-  return errorCode !== undefined ? parseInt(String(errorCode)) : undefined;
+  return toErrorWithMessage(error).message;
 }
