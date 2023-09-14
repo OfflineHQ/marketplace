@@ -13,7 +13,7 @@ export {
   ToastAction,
 } from './lib/toast/Toast';
 export { Toaster } from './lib/toast/Toaster';
-export { useToast } from './lib/toast/useToast';
+export { useToast, type ToastT } from './lib/toast/useToast';
 export { Spinner } from './lib/spinner/Spinner';
 export { Separator } from './lib/separator/Separator';
 export {
@@ -137,6 +137,7 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  type DialogProps,
 } from './lib/dialog/Dialog';
 export {
   Sheet,
