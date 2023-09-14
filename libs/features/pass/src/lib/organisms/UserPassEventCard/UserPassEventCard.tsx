@@ -13,7 +13,6 @@ import {
   Separator,
 } from '@ui/components';
 import Image from 'next/image';
-import { Download } from '@ui/icons';
 import { useTranslations } from 'next-intl';
 import {
   UserPassEventPassActions,
@@ -23,6 +22,10 @@ import {
   RevealPassesDialog,
   type RevealPassesDialogProps,
 } from '../RevealPassesDialog/RevealPassesDialog';
+import { Download } from '@ui/icons';
+import { batchDownloadOrReveal } from '@features/pass-actions';
+
+import { DownloadButtonClient } from './DownloadButtonClient';
 
 export interface UserPassEventCardProps
   extends UserPassEventPassActionsFunctionsProps,
@@ -104,11 +107,27 @@ export const UserPassEventCard: React.FC<UserPassEventCardProps> = ({
             </Button>
           </RevealPassesDialog>
         ) : (
-          <Button className="w-full" icon={<Download />} block>
-            {t('download-passes-button', {
+          <DownloadButtonClient
+            buttonTxt={t('download-passes-button', {
               numPass: eventPassNftContract.eventPassNfts.length,
             })}
-          </Button>
+            eventPassNftContract={eventPassNftContract}
+            batchDownloadOrReveal={batchDownloadOrReveal}
+            buttonToastTxt={{
+              successTitle: t('download-passes-toast-success-title', {
+                numPass: eventPassNftContract.eventPassNfts.length,
+              }),
+              successComment: t('download-passes-toast-success-comment', {
+                numPass: eventPassNftContract.eventPassNfts.length,
+              }),
+              errorTitle: t('download-passes-toast-error-title', {
+                numPass: eventPassNftContract.eventPassNfts.length,
+              }),
+              errorComment: t('download-passes-toast-error-comment', {
+                numPass: eventPassNftContract.eventPassNfts.length,
+              }),
+            }}
+          />
         )}
       </CardFooter>
     </Card>

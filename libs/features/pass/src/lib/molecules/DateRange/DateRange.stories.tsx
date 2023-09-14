@@ -6,7 +6,7 @@ import {
   within,
 } from '@storybook/testing-library';
 
-import { DateRange } from './DateRange';
+import { DateRange, DateRangeSkeleton } from './DateRange';
 import { dateRangeProps, dateRangeProps2 } from './examples';
 
 const meta: Meta<typeof DateRange> = {
@@ -36,4 +36,8 @@ export const WithNewYorkDates: Story = {
     userEvent.click(button);
     screen.findByText(/In your own time zone/i);
   },
+};
+
+export const Loading: Story = {
+  render: () => <DateRangeSkeleton />,
 };
