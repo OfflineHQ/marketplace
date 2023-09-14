@@ -115,7 +115,13 @@
         "reveal-pass": "Reveal",
         "send-pass": "Send",
         "action-reveal-toast-error-title": "Error revealing the pass",
-        "action-reveal-toast-error-description": "Something went wrong while revealing the pass. Please try again."
+        "action-reveal-toast-error-description": "Something went wrong while revealing the pass. Please try again.",
+        "action-reveal-toast-success-title": "Pass revealed",
+        "action-reveal-toast-success-description": "The pass has been revealed and downloaded successfully",
+        "action-download-toast-error-title": "Error downloading the pass",
+        "action-download-toast-error-description": "Something went wrong while downloading the pass. Please try again.",
+        "action-download-toast-success-title": "Pass downloaded",
+        "action-download-toast-success-description": "The pass has been downloaded successfully"
       }
     },
     "NoUserPass": {

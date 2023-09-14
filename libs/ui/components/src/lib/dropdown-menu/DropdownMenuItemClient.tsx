@@ -4,16 +4,12 @@ import { DropdownMenuItem, DropdownMenuShortcut } from './DropdownMenu';
 import { useToast, type ToastT } from '../toast/useToast';
 import { iconCVA } from '@ui/icons';
 import { cn } from '@ui/shared';
-import {
-  getErrorMessage,
-  getErrorCode,
-  type ErrorWithMessageAndCode,
-} from '@utils';
+import { getErrorMessage, type ErrorWithMessage } from '@utils';
 
 export interface HandleActionProps {
   action?: (() => void) | undefined;
   toastSuccess?: (res: unknown) => Promise<ToastT>;
-  toastError?: (error: ErrorWithMessageAndCode) => Promise<ToastT>;
+  toastError?: (error: ErrorWithMessage) => Promise<ToastT>;
 }
 
 export interface MenuItem extends HandleActionProps {
@@ -48,7 +44,6 @@ export const DropdownMenuItemClient: React.FC<DropdownMenuItemClientProps> = ({
     toastSuccess,
     toastError,
   }: HandleActionProps) => {
-    console.log('handleAction', action, toastSuccess, toastError);
     if (setLoading) setLoading(true);
     try {
       let res: any = null;
@@ -61,7 +56,6 @@ export const DropdownMenuItemClient: React.FC<DropdownMenuItemClientProps> = ({
       if (toastError) {
         const toastErrorRes = await toastError({
           message: getErrorMessage(error),
-          code: getErrorCode(error),
         });
         toast(toastErrorRes);
       }
