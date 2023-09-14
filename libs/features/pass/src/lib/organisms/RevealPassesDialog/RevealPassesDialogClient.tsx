@@ -44,6 +44,10 @@ export const RevealPassesDialogClient: React.FC<
   const handleAction = async () => {
     const numPass = eventPassNftContract.eventPassNfts.length;
     try {
+      console.log(
+        'eventPassNftContract.eventPassNfts',
+        eventPassNftContract.eventPassNfts
+      );
       await batchDownloadOrReveal(eventPassNftContract.eventPassNfts);
       setOpen(false);
       toast({
