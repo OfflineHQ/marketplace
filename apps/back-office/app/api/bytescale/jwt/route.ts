@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
       algorithm: 'RS256',
     }
   );
-  console.log('jwt', jwt);
+  //console.log('jwt', jwt);
   return new NextResponse(jwt, {
     status: 200,
     headers: {
