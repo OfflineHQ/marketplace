@@ -20,6 +20,7 @@ export const UserPassList: React.FC<UserPassListProps> = ({
   eventsParameters,
   noPassImage,
   actionsFunctions,
+  batchDownloadOrReveal,
 }) => {
   const t = useTranslations('Pass.UserPass');
   return eventsParameters.length ? (
@@ -32,6 +33,7 @@ export const UserPassList: React.FC<UserPassListProps> = ({
           <UserPassEvent
             eventParameters={eventParameters}
             actionsFunctions={actionsFunctions}
+            batchDownloadOrReveal={batchDownloadOrReveal}
           />
         </div>
       ))}

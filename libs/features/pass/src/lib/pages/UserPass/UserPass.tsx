@@ -41,19 +41,19 @@ export const UserPass: React.FC<UserPassProps> = ({
             children
           ) : (
             <Tabs
-              value={activeTab || 'coming-soon'}
+              value={activeTab || 'upcoming'}
               className="mx-auto flex h-full w-full flex-col md:max-w-[1420px]"
             >
               <TabsList className="grid w-full grid-cols-2">
                 <Link href="/pass" legacyBehavior>
-                  <TabsTrigger value="coming-soon">{comingSoon}</TabsTrigger>
+                  <TabsTrigger value="upcoming">{comingSoon}</TabsTrigger>
                 </Link>
                 <Link href="/pass/past" legacyBehavior>
                   <TabsTrigger value="past">{past}</TabsTrigger>
                 </Link>
               </TabsList>
               <TabsContent
-                value={activeTab || 'coming-soon'}
+                value={activeTab || 'upcoming'}
                 className="h-full overflow-auto"
               >
                 {children}

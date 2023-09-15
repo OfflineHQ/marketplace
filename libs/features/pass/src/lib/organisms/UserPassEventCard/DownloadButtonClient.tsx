@@ -43,7 +43,7 @@ export const DownloadButtonClient: React.FC<DownloadButtonClientProps> = ({
     }
   };
   return (
-    <Button className="w-full" icon={<Download />} block action={handleAction}>
+    <Button className="w-full" icon={<Download />} block onClick={handleAction}>
       {buttonTxt}
     </Button>
   );
