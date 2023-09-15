@@ -74,7 +74,8 @@
         "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",
         "edit": "Modifier",
         "remove": "Supprimer"
-      }
+      },
+      "no-cart": "Vous n'avez encore rien dans votre panier"
     }
   },
   "Pass": {
@@ -98,6 +99,55 @@
         "buyer-unrevealed-title": "Sûr à Acheter : Pass Non Révélé",
         "buyer-unrevealed-description": "Ce pass d'accès est encore caché. Vous pouvez l'acheter sans vous soucier de son utilisation antérieure."
       }
+    },
+    "UserPass": {
+      "UserPassEvent": {
+        "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",
+        "num-pass-not-revealed": "x{numPassNotRevealed} non révélé",
+        "num-pass-revealed": "x{numPassRevealed} révélé"
+      },
+      "DateRange": {
+        "from": "De",
+        "to": "Pour",
+        "in-your-timezone": "Dans votre propre fuseau horaire"
+      },
+      "UserPassEventCard": {
+        "dialog-cancel-button": "Annuler",
+        "dialog-confirm-button": "Oui, révélez {numPassNotRevealed, plural, =0 {le} =1 {le} other {les}}",
+        "dialog-description": "Révéler {numPassNotRevealed, plural, =0 {le} =1 {le} other {les}} impliquerait que le pass a été montré.<br></br>{numPassNotRevealed, plural, =0 {Il} =1 {Il} other {Ils}} seront marqués comme tels au cas où ils seraient revendus sur le marché secondaire, rendant leur vente plus difficile.<br></br><br></br>Êtes-vous sûr de vouloir révéler {numPassNotRevealed, plural, =0 {celui-ci} =1{celui-ci} other{ceux-ci}} ?",
+        "dialog-title": "{numPassNotRevealed, plural, =1 {# pass non révélée} other {# passes non révélées}}",
+        "dialog-toast-error-description": "{numPass, plural, =1 {Une erreur s'est produite lors de la révélation et du téléchargement du pass. {errorMessage}} other {Des erreurs se sont produites lors de la révélation et du téléchargement des # passes. {errorMessage}}}",
+        "dialog-toast-error-title": "{numPass, plural, =1 {Erreur de révélation et de téléchargement du pass} other {Erreurs de révélation et de téléchargement des passes}}",
+        "dialog-toast-success-description": "{numPass, plural, =1 {Le pass a été révélé et téléchargé avec succès} other {Les # passes ont été révélés et téléchargés avec succès}}",
+        "dialog-toast-success-title": "Révélation du pass réussie",
+        "download-passes-button": "Télécharger {numPass, plural, =1 {# pass} other {# passes}}",
+        "download-passes-toast-error-comment": "{numPass, plural, =1 {Une erreur s'est produite lors du téléchargement du pass.} other {Des erreurs se sont produites lors du téléchargement des # passes.}}",
+        "download-passes-toast-error-title": "{numPass, plural, =1 {Erreur lors du téléchargement du pass} other {Erreurs lors du téléchargement des passes}}",
+        "download-passes-toast-success-comment": "{numPass, plural, =1 {Le pass a été téléchargé avec succès} other {Les # passes ont été téléchargés avec succès}}",
+        "download-passes-toast-success-title": "{numPass, plural, =1 {Téléchargement du pass réussi} other {# Passes téléchargés avec succès}}",
+        "not-revealed": "Non révélé",
+        "pass-number": "Pass #{number, number}",
+        "revealed": "Révélé"
+      },
+      "UserPassEventPassActions": {
+        "action-download-toast-error-description": "Un problème est survenu lors du téléchargement du pass. Veuillez réessayer.",
+        "action-download-toast-error-title": "Erreur lors du téléchargement du pass",
+        "action-download-toast-success-description": "Le pass a été téléchargé avec succès",
+        "action-download-toast-success-title": "Pass téléchargé",
+        "action-reveal-toast-error-description": "Un problème est survenu lors de la révélation du pass. Veuillez réessayer.",
+        "action-reveal-toast-error-title": "Erreur lors de la révélation du pass",
+        "action-reveal-toast-success-description": "Le pass a été révélé et téléchargé avec succès.",
+        "action-reveal-toast-success-title": "Pass révélé",
+        "download-pass": "Télécharger",
+        "helper-text": "Choisissez une action pour ce pass",
+        "reveal-pass": "Révéler",
+        "see-details": "Voir les détails",
+        "send-pass": "Envoyer"
+      },
+      "no-pass": "Vous n'avez pas encore de pass.",
+      "past": "Passé",
+      "title": "Pass",
+      "upcoming": "À venir"
     }
   },
   "Organizer": {
