@@ -1,7 +1,11 @@
 import { getPassedEventsWithEventPassNfts } from '@features/pass-api';
 import type { Locale } from '@gql/shared/types';
 import { UserPassList } from '@features/pass/server';
-import { revealPass, downloadPass } from '@features/pass-actions';
+import {
+  revealPass,
+  downloadPass,
+  batchDownloadOrReveal,
+} from '@features/pass-actions';
 
 interface PassTabsPastProps {
   params: {
@@ -24,6 +28,7 @@ export default async function PassTabPast({
     <UserPassList
       eventsParameters={events}
       actionsFunctions={actionsFunctions}
+      batchDownloadOrReveal={batchDownloadOrReveal}
       noPassImage="/empty-pass.svg"
     />
   );
