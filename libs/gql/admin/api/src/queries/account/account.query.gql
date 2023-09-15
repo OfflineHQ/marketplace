@@ -9,3 +9,9 @@ query GetAccountByEmail($email: String!) {
     ...AccountFields
   }
 }
+
+query GetAccountById($id: uuid!) {
+  account(where: { id: { _eq: $id } }) {
+    address
+  }
+}

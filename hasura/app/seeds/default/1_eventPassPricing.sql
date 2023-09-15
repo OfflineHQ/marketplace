@@ -101,4 +101,27 @@ VALUES
 		14400
 	);
 
-;
+INSERT INTO
+	public."eventPassPricing" (
+		"eventPassId",
+		created_at,
+		updated_at,
+		id,
+		"maxAmount",
+		"maxAmountPerUser",
+		"priceAmount",
+		"priceCurrency",
+		"timeBeforeDelete"
+	)
+VALUES
+	(
+		'cljhacja42h990but6yliuhza',
+		'2023-07-31 15:56:29.383202+00',
+		'2023-07-31 15:56:29.383202+00',
+		'effe8e84-164d-4943-8d01-f78566a50990',
+		20,
+		1,
+		16250,
+		'EUR',
+		14400
+	);

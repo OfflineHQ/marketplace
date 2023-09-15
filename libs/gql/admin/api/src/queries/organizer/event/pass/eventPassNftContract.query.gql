@@ -1,0 +1,5 @@
+query GetContractAddressFromEventPassId($eventPassId: String) @cached {
+  eventPassNftContract(where: { eventPassId: { _eq: $eventPassId } }) {
+    contractAddress
+  }
+}
