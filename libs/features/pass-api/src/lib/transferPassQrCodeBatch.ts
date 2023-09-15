@@ -17,6 +17,9 @@ export const transferPassQrCodeBatch = async (
     const { currentOwnerAddress, tokenId, eventId, eventPassId, organizerId } =
       input.eventPassNft;
 
+    if (!currentOwnerAddress)
+      throw new Error('The pass is not owned by anyone');
+
     const fileOrigin = getPassUser({
       address: input.formerOwnerAddress,
       organizerId,
@@ -26,7 +29,7 @@ export const transferPassQrCodeBatch = async (
     });
 
     const fileDest = getPassUser({
-      address: currentOwnerAddress as string,
+      address: currentOwnerAddress,
       organizerId,
       eventId,
       eventPassId,

@@ -11,6 +11,7 @@ const fileWrapper = new FileWrapper();
 
 export const eventPassCheck = async (id: string) => {
   const user = await getCurrentUser();
+  if (!user) throw new Error('User not logged in');
   const res = await adminSdk.GetEventPassNftByIdMinimal(
     {
       id,
@@ -30,6 +31,7 @@ export const eventPassTransferQRCode = async (
 ) => {
   const { currentOwnerAddress, tokenId, eventId, eventPassId, organizerId } =
     eventPassNft;
+  if (!currentOwnerAddress) throw new Error('The pass is not owned by anyone');
   const fileOrigin = getPassOrganizer({
     organizerId,
     eventId,

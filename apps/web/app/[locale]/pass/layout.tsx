@@ -1,12 +1,9 @@
-import { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { UserPass, NoUserPass } from '@features/pass';
 import { getCurrentUser } from '@next/next-auth/user';
 
-interface PassLayoutProps {
-  children: ReactNode;
-  past: ReactNode;
-  getUser?: boolean;
+export interface PassLayoutProps {
+  children: React.ReactNode;
 }
 
 export default async function PassLayout(props: PassLayoutProps) {
@@ -14,7 +11,11 @@ export default async function PassLayout(props: PassLayoutProps) {
   return <PassLayoutContent {...props} getUser={!!user} />;
 }
 
-function PassLayoutContent({ children, past, getUser }: PassLayoutProps) {
+interface PassLayoutContentProps extends PassLayoutProps {
+  getUser: boolean;
+}
+
+function PassLayoutContent({ children, getUser }: PassLayoutContentProps) {
   const t = useTranslations('Pass.NoUserPass');
   const tUserPass = useTranslations('Pass.UserPass');
   return getUser ? (
@@ -23,7 +24,7 @@ function PassLayoutContent({ children, past, getUser }: PassLayoutProps) {
       comingSoon={tUserPass('upcoming')}
       past={tUserPass('past')}
     >
-      {children || past}
+      {children}
     </UserPass>
   ) : (
     <NoUserPass
