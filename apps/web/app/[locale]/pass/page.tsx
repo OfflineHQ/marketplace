@@ -1,16 +1,20 @@
 import { getUpcomingEventsWithEventPassNfts } from '@features/pass-api';
 import type { Locale } from '@gql/shared/types';
 import { UserPassList } from '@features/pass/server';
-import { revealPass, downloadPass } from '@features/pass-actions';
-interface PassTabComingSoonProps {
+import {
+  revealPass,
+  downloadPass,
+  batchDownloadOrReveal,
+} from '@features/pass-actions';
+interface PassTabUpcomingProps {
   params: {
     locale: Locale;
   };
 }
 
-export default async function PassTabComingSoon({
+export default async function PassTabUpcoming({
   params: { locale },
-}: PassTabComingSoonProps) {
+}: PassTabUpcomingProps) {
   const events = await getUpcomingEventsWithEventPassNfts({
     locale,
     currentDate: new Date().toUTCString(),
@@ -23,6 +27,7 @@ export default async function PassTabComingSoon({
     <UserPassList
       eventsParameters={events}
       actionsFunctions={actionsFunctions}
+      batchDownloadOrReveal={batchDownloadOrReveal}
       noPassImage="/empty-pass.svg"
     />
   );

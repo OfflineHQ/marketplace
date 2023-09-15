@@ -82,7 +82,7 @@
     "UserPass": {
       "title": "Pass",
       "no-pass": "You don't have any pass yet",
-      "coming-soon": "Coming soon",
+      "upcoming": "Upcoming",
       "past": "Past",
       "DateRange": {
         "from": "From",
