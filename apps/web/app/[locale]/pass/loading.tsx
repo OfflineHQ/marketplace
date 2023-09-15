@@ -1,5 +1,5 @@
 import { UserPassListSkeleton } from '@features/pass/server';
 
-export default function PassTabComingSoonLoading() {
+export default function PassTabUpcomingLoading() {
   return <UserPassListSkeleton />;
 }

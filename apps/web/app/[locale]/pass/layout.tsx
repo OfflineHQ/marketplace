@@ -20,7 +20,7 @@ function PassLayoutContent({ children, past, getUser }: PassLayoutProps) {
   return getUser ? (
     <UserPass
       title={tUserPass('title')}
-      comingSoon={tUserPass('coming-soon')}
+      comingSoon={tUserPass('upcoming')}
       past={tUserPass('past')}
     >
       {children || past}
