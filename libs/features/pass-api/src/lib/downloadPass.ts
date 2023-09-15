@@ -17,6 +17,7 @@ export const getEventPassRevealedFilePath = async (id: string) => {
   if (!eventPassNft.isRevealed) throw new Error('Event Pass is not revealed');
   const { currentOwnerAddress, tokenId, eventId, eventPassId, organizerId } =
     eventPassNft;
+  if (!currentOwnerAddress) throw new Error('The pass is not owned by anyone');
   return getPassUser({
     address: currentOwnerAddress,
     eventId,
