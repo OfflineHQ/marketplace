@@ -106,7 +106,11 @@
         "dialog-toast-success-title": "Pass reveal successful",
         "dialog-toast-success-description": "{numPass, plural, =1 {The pass has been revealed and downloaded successfully} other {The # passes have been revealed and downloaded successfully}}",
         "dialog-toast-error-title": "{numPass, plural, =1 {Error revealing and downloading the pass} other {Errors revealing and downloading the passes}}",
-        "dialog-toast-error-description": "{numPass, plural, =1 {There was an error revealing and downloading the pass. {errorMessage}} other {There were errors revealing and downloading the # passes. {errorMessage}}}"
+        "dialog-toast-error-description": "{numPass, plural, =1 {There was an error revealing and downloading the pass. {errorMessage}} other {There were errors revealing and downloading the # passes. {errorMessage}}}",
+        "download-passes-toast-success-title": "{numPass, plural, =1 {Pass download successful} other {# Passes download successful}}",
+        "download-passes-toast-success-comment": "{numPass, plural, =1 {The pass has been downloaded successfully} other {The # passes have been downloaded successfully}}",
+        "download-passes-toast-error-title": "{numPass, plural, =1 {Error downloading the pass} other {Errors downloading the passes}}",
+        "download-passes-toast-error-comment": "{numPass, plural, =1 {There was an error downloading the pass.} other {There were errors downloading the # passes.}}"
       },
       "UserPassEventPassActions": {
         "helper-text": "Choose an action for this pass",

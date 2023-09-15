@@ -38,5 +38,13 @@
   "typescript.tsdk": "../../node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "i18n-ally.localesPaths": "libs/next/i18n/src/messages",
-  "i18n-ally.keystyle": "flat"
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.namespace": true,
+  "i18n-ally.translate.engines": [
+    "openai",
+    "deepl",
+    "google",
+  ],
+  "i18n-ally.translate.openai.apiKey": "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",
+  "i18n-ally.translate.openai.apiModel": "gpt-3.5-turbo"
 }

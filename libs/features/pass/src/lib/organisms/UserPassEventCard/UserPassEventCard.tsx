@@ -28,7 +28,10 @@ import { DownloadButtonClient } from './DownloadButtonClient';
 
 export interface UserPassEventCardProps
   extends UserPassEventPassActionsFunctionsProps,
-    Pick<RevealPassesDialogProps, 'eventPassNftContract'> {
+    Pick<
+      RevealPassesDialogProps,
+      'eventPassNftContract' | 'batchDownloadOrReveal'
+    > {
   eventParameters: EventWithEventPassNfts;
 }
 
