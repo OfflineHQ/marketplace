@@ -14,6 +14,7 @@ export interface UserPassListProps
   extends Pick<NoPassPlaceholderProps, 'noPassImage'> {
   eventsParameters: UserPassEventProps['eventParameters'][];
   actionsFunctions: UserPassEventProps['actionsFunctions'];
+  batchDownloadOrReveal: UserPassEventProps['batchDownloadOrReveal'];
 }
 
 export const UserPassList: React.FC<UserPassListProps> = ({
