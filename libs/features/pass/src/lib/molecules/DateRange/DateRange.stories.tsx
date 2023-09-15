@@ -7,12 +7,12 @@ import {
 } from '@storybook/testing-library';
 
 import { DateRange, DateRangeSkeleton } from './DateRange';
-import { dateRangeProps, dateRangeProps2 } from './examples';
+import { dateRangeProps, dateRangeProps2, DateRangeExample } from './examples';
 
 const meta: Meta<typeof DateRange> = {
   component: DateRange,
   args: dateRangeProps,
-  render: (props) => <DateRange {...props} />,
+  render: (props) => <DateRangeExample {...props} />,
 };
 
 export default meta;
@@ -21,16 +21,16 @@ type Story = StoryObj<typeof DateRange>;
 
 export const WithParisDates: Story = {
   play: async ({ canvasElement }) => {
-    screen.getByText(/Fri, Jan 1, 2021, 9:00 PM/i);
-    screen.getByText(/Sun, Jan 3, 2021, 12:00 PM/i);
+    screen.getByText(/Fri, Jan 1, 2021, 10:00 PM/i);
+    screen.getByText(/Sun, Jan 3, 2021, 1:00 PM/i);
   },
 };
 
 export const WithNewYorkDates: Story = {
   args: dateRangeProps2,
   play: async ({ canvasElement }) => {
-    screen.getByText(/Thu, Feb 18, 2021, 6:00 AM/i);
-    screen.getByText(/Tue, Jan 19, 2021, 6:00 AM/i);
+    screen.getByText(/Thu, Feb 18, 2021, 7:00 AM/i);
+    screen.getByText(/Tue, Jan 19, 2021, 7:00 AM/i);
     // Get the button by its aria-label
     const button = screen.getByLabelText('Fill Info');
     userEvent.click(button);
