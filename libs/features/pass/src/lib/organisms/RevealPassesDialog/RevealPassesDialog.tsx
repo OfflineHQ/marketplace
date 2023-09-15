@@ -5,12 +5,8 @@ import {
   RevealPassesDialogClient,
   type RevealPassesDialogClientProps,
 } from './RevealPassesDialogClient';
-import { batchDownloadOrReveal } from '@features/pass-actions';
 
-export type RevealPassesDialogProps = Omit<
-  RevealPassesDialogClientProps,
-  'batchDownloadOrReveal'
->;
+export type RevealPassesDialogProps = Omit<RevealPassesDialogClientProps>;
 
 export const RevealPassesDialog: React.FC<RevealPassesDialogProps> = (
   props
@@ -22,10 +18,7 @@ export const RevealPassesDialog: React.FC<RevealPassesDialogProps> = (
   ]);
   return (
     <NextIntlClientProvider locale={locale} messages={localeMessages}>
-      <RevealPassesDialogClient
-        {...props}
-        batchDownloadOrReveal={batchDownloadOrReveal}
-      />
+      <RevealPassesDialogClient {...props} />
     </NextIntlClientProvider>
   );
 };
