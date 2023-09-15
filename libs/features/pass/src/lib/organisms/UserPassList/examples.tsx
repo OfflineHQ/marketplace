@@ -22,3 +22,7 @@ export const actionsFunctions = {
     await sleep(1000);
   },
 } satisfies UserPassListProps['actionsFunctions'];
+
+export async function batchDownloadOrReveal() {
+  await sleep(500);
+}
