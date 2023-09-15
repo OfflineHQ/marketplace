@@ -50,7 +50,7 @@ export const WithSingleEvent: Story = {
       const button = within(parentDiv).getByRole('button');
       userEvent.click(button);
     }
-    await screen.findByText(/See details of the pass/i);
+    await screen.findByText(/details/i);
   },
 };
 

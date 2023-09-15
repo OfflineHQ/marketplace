@@ -6,7 +6,7 @@ import {
   type RevealPassesDialogClientProps,
 } from './RevealPassesDialogClient';
 
-export type RevealPassesDialogProps = Omit<RevealPassesDialogClientProps>;
+export type RevealPassesDialogProps = RevealPassesDialogClientProps;
 
 export const RevealPassesDialog: React.FC<RevealPassesDialogProps> = (
   props
