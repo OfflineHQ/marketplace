@@ -38,3 +38,22 @@ VALUES
 		'fake-event-pass-2',
 		'clizzky8kap2t0bw7wka9a2id'
 	);
+
+INSERT INTO
+	public."eventPassNftContract" (
+		id,
+		"chainId",
+		"contractAddress",
+		"eventId",
+		"eventPassId",
+		"organizerId"
+	)
+VALUES
+	(
+		'7b8840fe-637d-4271-aff3-7fec489eaab0',
+		'5',
+		'0x3E45A57ff6bf3bF55F167FCe657001F8ddE3fbC5',
+		'cljha7l3u2fcr0bw1d7hkynpr',
+		'cljhacja42h990but6yliuhza',
+		'cljha48gt2ezx0bw13ujz2fwr'
+	);

@@ -47,3 +47,17 @@ mutation InsertEventPassNfts($objects: [eventPassNft_insert_input!]!) {
     }
   }
 }
+
+mutation ClaimEventPassNfts($updates: [eventPassNft_updates!]!) {
+  update_eventPassNft_many(updates: $updates) {
+    affected_rows
+    returning {
+      id
+      currentOwnerAddress
+      eventId
+      eventPassId
+      organizerId
+      tokenId
+    }
+  }
+}
