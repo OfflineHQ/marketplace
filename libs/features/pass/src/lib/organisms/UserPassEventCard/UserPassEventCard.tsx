@@ -23,7 +23,6 @@ import {
   type RevealPassesDialogProps,
 } from '../RevealPassesDialog/RevealPassesDialog';
 import { Download } from '@ui/icons';
-import { batchDownloadOrReveal } from '@features/pass-actions';
 
 import { DownloadButtonClient } from './DownloadButtonClient';
 
@@ -37,6 +36,7 @@ export const UserPassEventCard: React.FC<UserPassEventCardProps> = ({
   eventParameters,
   eventPassNftContract,
   actionsFunctions,
+  batchDownloadOrReveal,
 }) => {
   const t = useTranslations('Pass.UserPass.UserPassEventCard');
 
@@ -99,6 +99,7 @@ export const UserPassEventCard: React.FC<UserPassEventCardProps> = ({
           <RevealPassesDialog
             eventPassNftContract={eventPassNftContract}
             numPassNotRevealed={numPassNotRevealed}
+            batchDownloadOrReveal={batchDownloadOrReveal}
           >
             <Button className="w-full" icon={<Download />} block>
               {t('download-passes-button', {
