@@ -13,6 +13,7 @@ import {
   UserPassListExample,
   UserPassListSkeletonExample,
   actionsFunctions,
+  batchDownloadOrReveal,
 } from './examples';
 
 const meta: Meta<typeof UserPassList> = {
@@ -23,6 +24,7 @@ const meta: Meta<typeof UserPassList> = {
   args: {
     eventsParameters: [eventParameters],
     actionsFunctions,
+    batchDownloadOrReveal,
   },
 };
 

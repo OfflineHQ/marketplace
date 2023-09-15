@@ -6,6 +6,7 @@ import {
   userEvent,
   within,
   waitFor,
+  waitForElementToBeRemoved,
 } from '@storybook/testing-library';
 import { sleep } from '@utils';
 
@@ -15,6 +16,7 @@ import {
   UserPassListExample,
   UserPassListSkeletonExample,
   actionsFunctions,
+  batchDownloadOrReveal,
   eventParameters,
   eventParameters2,
 } from '../../organisms/UserPassList/examples';
@@ -32,6 +34,7 @@ const meta: Meta<typeof UserPass> = {
       <UserPassListExample
         noPassImage={EmptyPassImage}
         actionsFunctions={actionsFunctions}
+        batchDownloadOrReveal={batchDownloadOrReveal}
         eventsParameters={[eventParameters, eventParameters2]}
       />
     ),
@@ -75,6 +78,7 @@ export const WithUserDarkModeMobileWithTimezoneDialog: Story = {
     children: (
       <UserPassListExample
         noPassImage={EmptyPassImage}
+        batchDownloadOrReveal={batchDownloadOrReveal}
         actionsFunctions={actionsFunctions}
         eventsParameters={[eventParameters2]}
       />
@@ -92,6 +96,7 @@ export const WithUserNoData: Story = {
     children: (
       <UserPassListExample
         noPassImage={EmptyPassImage}
+        batchDownloadOrReveal={batchDownloadOrReveal}
         actionsFunctions={actionsFunctions}
         eventsParameters={[]}
       />
@@ -120,5 +125,149 @@ export const WithUserWithMobileLoading: Story = {
     viewport: {
       defaultViewport: 'mobile1',
     },
+  },
+};
+
+async function clickOnBatchDownloadButton() {
+  const batchDownloadButton = screen.getByRole('button', {
+    name: /Download 2 passes/i,
+  });
+  userEvent.click(batchDownloadButton);
+}
+
+export const DownloadPassesSuccess: Story = {
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+    },
+  },
+  play: async ({ canvasElement }) => {
+    await clickOnBatchDownloadButton();
+    // Check for a toast on success
+    const toastElement = await screen.findByRole('status');
+    expect(toastElement).not.toHaveClass('destructive');
+  },
+};
+
+export const DownloadPassesError: Story = {
+  ...DownloadPassesSuccess,
+  args: {
+    children: (
+      <UserPassListExample
+        noPassImage={EmptyPassImage}
+        actionsFunctions={actionsFunctions}
+        batchDownloadOrReveal={async () => {
+          throw new Error('Error');
+        }}
+        eventsParameters={[eventParameters, eventParameters2]}
+      />
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    await clickOnBatchDownloadButton();
+    // Check for a toast on error
+    const toastElement = await screen.findByRole('alert');
+    expect(toastElement).toHaveClass('destructive');
+  },
+};
+
+async function clickOnDownloadButton() {
+  const pass3Text = screen.getByText(/#3/i);
+  const parentDiv = pass3Text.parentElement;
+  if (parentDiv) {
+    const button = within(parentDiv).getByRole('button');
+    userEvent.click(button);
+  }
+  const allMenus = await screen.findAllByRole('menu');
+  const openMenu = allMenus.find(
+    (menu) => menu.getAttribute('data-state') === 'open'
+  );
+  const downloadButton = within(openMenu).getByText('Download');
+  await userEvent.click(downloadButton);
+}
+
+export const DownloadOnePassSuccess: Story = {
+  ...DownloadPassesSuccess,
+  play: async ({ canvasElement }) => {
+    await clickOnDownloadButton();
+    expect(await screen.findByRole('status')).toBeInTheDocument();
+    // Check for a toast on success
+    const toastDescription = await screen.findByText(/Pass downloaded/i);
+    expect(toastDescription).toBeVisible();
+  },
+};
+
+export const DownloadOnePassError: Story = {
+  ...DownloadPassesSuccess,
+  args: {
+    children: (
+      <UserPassListExample
+        noPassImage={EmptyPassImage}
+        actionsFunctions={{
+          ...actionsFunctions,
+          downloadPass: async () => {
+            throw new Error('Error');
+          },
+        }}
+        batchDownloadOrReveal={batchDownloadOrReveal}
+        eventsParameters={[eventParameters, eventParameters2]}
+      />
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    await clickOnDownloadButton();
+    expect(await screen.findByRole('status')).toBeInTheDocument();
+    // Check for a toast on error
+    const toastElement = await screen.findByRole('alert');
+    expect(toastElement).toHaveClass('destructive');
+    expect(toastElement).toHaveTextContent(/Error/i);
+  },
+};
+
+async function clickOnRevealButton() {
+  const pass3Text = screen.getByText(/#1,198/i);
+  const parentDiv = pass3Text.parentElement;
+  if (parentDiv) {
+    const button = within(parentDiv).getByRole('button');
+    userEvent.click(button);
+  }
+  const revealButton = await screen.findByLabelText('Reveal');
+  await userEvent.click(revealButton);
+  expect(await screen.findByRole('status')).toBeInTheDocument();
+}
+
+export const RevealOnePassSuccess: Story = {
+  ...DownloadPassesSuccess,
+  play: async ({ canvasElement }) => {
+    await clickOnRevealButton();
+    // Check for a toast on success
+    const toastDescription = await screen.findByText(/Pass revealed/i);
+    expect(toastDescription).toBeVisible();
+  },
+};
+
+export const RevealOnePassError: Story = {
+  ...DownloadPassesSuccess,
+  args: {
+    children: (
+      <UserPassListExample
+        noPassImage={EmptyPassImage}
+        actionsFunctions={{
+          ...actionsFunctions,
+          revealPass: async () => {
+            throw new Error('Error');
+          },
+        }}
+        batchDownloadOrReveal={batchDownloadOrReveal}
+        eventsParameters={[eventParameters, eventParameters2]}
+      />
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    await clickOnRevealButton();
+    // Check for a toast on error
+    const toastElement = await screen.findByRole('alert');
+    expect(toastElement).toHaveClass('destructive');
+    expect(toastElement).toHaveTextContent(/Error/i);
   },
 };
