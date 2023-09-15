@@ -31,6 +31,13 @@ export type GetAccountByEmailQueryVariables = Types.Exact<{
 
 export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null }> };
 
+export type GetAccountByIdQueryVariables = Types.Exact<{
+  id: Types.Scalars['uuid'];
+}>;
+
+
+export type GetAccountByIdQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', address: string }> };
+
 export type UpsertEventPassOrdersMutationVariables = Types.Exact<{
   objects: Array<Types.EventPassOrder_Insert_Input> | Types.EventPassOrder_Insert_Input;
 }>;
@@ -147,6 +154,13 @@ export type InsertEventPassNftsMutationVariables = Types.Exact<{
 
 export type InsertEventPassNftsMutation = { __typename?: 'mutation_root', insert_eventPassNft?: { __typename?: 'eventPassNft_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'eventPassNft', contractAddress: string, tokenId: any, metadata: any, error?: string | null, tokenUri?: string | null, chainId: string, eventId: string, eventPassId: string, organizerId: string, currentOwnerAddress?: string | null, lastNftTransferId?: any | null, isRevealed: boolean, id: any, created_at: any, updated_at: any }> } | null };
 
+export type ClaimEventPassNftsMutationVariables = Types.Exact<{
+  updates: Array<Types.EventPassNft_Updates> | Types.EventPassNft_Updates;
+}>;
+
+
+export type ClaimEventPassNftsMutation = { __typename?: 'mutation_root', update_eventPassNft_many?: Array<{ __typename?: 'eventPassNft_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'eventPassNft', id: any, currentOwnerAddress?: string | null, eventId: string, eventPassId: string, organizerId: string, tokenId: any }> } | null> | null };
+
 export type GetEventPassNftByContractsAndTokenIdsQueryVariables = Types.Exact<{
   contractAddresses: Array<Types.Scalars['String']> | Types.Scalars['String'];
   chainId: Types.Scalars['String'];
@@ -162,6 +176,13 @@ export type CreateEventPassNftContractMutationVariables = Types.Exact<{
 
 
 export type CreateEventPassNftContractMutation = { __typename?: 'mutation_root', insert_eventPassNftContract_one?: { __typename?: 'eventPassNftContract', chainId: string, contractAddress: string, eventId: string, eventPassId: string, organizerId: string } | null };
+
+export type GetContractAddressFromEventPassIdQueryVariables = Types.Exact<{
+  eventPassId?: Types.InputMaybe<Types.Scalars['String']>;
+}>;
+
+
+export type GetContractAddressFromEventPassIdQuery = { __typename?: 'query_root', eventPassNftContract: Array<{ __typename?: 'eventPassNftContract', contractAddress: string }> };
 
 export type CreateEventPassPricingMutationVariables = Types.Exact<{
   eventPassPricing: Types.EventPassPricing_Insert_Input;

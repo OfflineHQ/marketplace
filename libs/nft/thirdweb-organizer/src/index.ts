@@ -98,6 +98,7 @@ class NftCollection {
         },
       }),
     });
+    console.log(resNfts);
   }
 }
 

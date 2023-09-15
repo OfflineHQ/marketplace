@@ -1,18 +1,17 @@
 {
-  "name": "nft-thirdweb",
+  "name": "nft-thirdweb-admin",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/nft/thirdweb/src",
+  "sourceRoot": "libs/nft/thirdweb-admin/src",
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/js:swc",
+      "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/nft/thirdweb",
-        "tsConfig": "libs/nft/thirdweb/tsconfig.lib.json",
-        "packageJson": "libs/nft/thirdweb/package.json",
-        "main": "libs/nft/thirdweb/src/index.ts",
-        "assets": ["libs/nft/thirdweb/*.md"]
+        "outputPath": "dist/libs/nft/thirdweb-admin",
+        "main": "libs/nft/thirdweb-admin/src/index.ts",
+        "tsConfig": "libs/nft/thirdweb-admin/tsconfig.lib.json",
+        "assets": ["libs/nft/thirdweb-admin/*.md"]
       }
     },
     "lint": {
@@ -20,8 +19,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "libs/nft/thirdweb/**/*.ts",
-          "libs/nft/thirdweb/package.json"
+          "libs/nft/thirdweb-admin/**/*.ts",
+          "libs/nft/thirdweb-admin/package.json"
         ]
       }
     },
@@ -29,7 +28,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/nft/thirdweb/jest.config.ts",
+        "jestConfig": "libs/nft/thirdweb-admin/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

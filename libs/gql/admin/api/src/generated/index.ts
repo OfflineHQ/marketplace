@@ -150,6 +150,13 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     ${AccountFieldsFragmentDoc}`;
+ const GetAccountByIdDocument = `
+    query GetAccountById($id: uuid!) {
+  account(where: {id: {_eq: $id}}) {
+    address
+  }
+}
+    `;
  const UpsertEventPassOrdersDocument = `
     mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
   insert_eventPassOrder(
@@ -408,6 +415,21 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+ const ClaimEventPassNftsDocument = `
+    mutation ClaimEventPassNfts($updates: [eventPassNft_updates!]!) {
+  update_eventPassNft_many(updates: $updates) {
+    affected_rows
+    returning {
+      id
+      currentOwnerAddress
+      eventId
+      eventPassId
+      organizerId
+      tokenId
+    }
+  }
+}
+    `;
  const GetEventPassNftByContractsAndTokenIdsDocument = `
     query GetEventPassNftByContractsAndTokenIds($contractAddresses: [String!]!, $chainId: String!, $tokenIds: [bigint!]!) @cached {
   eventPassNft(
@@ -428,6 +450,13 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     eventId
     eventPassId
     organizerId
+  }
+}
+    `;
+ const GetContractAddressFromEventPassIdDocument = `
+    query GetContractAddressFromEventPassId($eventPassId: String) @cached {
+  eventPassNftContract(where: {eventPassId: {_eq: $eventPassId}}) {
+    contractAddress
   }
 }
     `;
@@ -495,6 +524,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetAccountByEmail(variables: Types.GetAccountByEmailQueryVariables, options?: C): Promise<Types.GetAccountByEmailQuery> {
       return requester<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables, options) as Promise<Types.GetAccountByEmailQuery>;
     },
+    GetAccountById(variables: Types.GetAccountByIdQueryVariables, options?: C): Promise<Types.GetAccountByIdQuery> {
+      return requester<Types.GetAccountByIdQuery, Types.GetAccountByIdQueryVariables>(GetAccountByIdDocument, variables, options) as Promise<Types.GetAccountByIdQuery>;
+    },
     UpsertEventPassOrders(variables: Types.UpsertEventPassOrdersMutationVariables, options?: C): Promise<Types.UpsertEventPassOrdersMutation> {
       return requester<Types.UpsertEventPassOrdersMutation, Types.UpsertEventPassOrdersMutationVariables>(UpsertEventPassOrdersDocument, variables, options) as Promise<Types.UpsertEventPassOrdersMutation>;
     },
@@ -537,11 +569,17 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     InsertEventPassNfts(variables: Types.InsertEventPassNftsMutationVariables, options?: C): Promise<Types.InsertEventPassNftsMutation> {
       return requester<Types.InsertEventPassNftsMutation, Types.InsertEventPassNftsMutationVariables>(InsertEventPassNftsDocument, variables, options) as Promise<Types.InsertEventPassNftsMutation>;
     },
+    ClaimEventPassNfts(variables: Types.ClaimEventPassNftsMutationVariables, options?: C): Promise<Types.ClaimEventPassNftsMutation> {
+      return requester<Types.ClaimEventPassNftsMutation, Types.ClaimEventPassNftsMutationVariables>(ClaimEventPassNftsDocument, variables, options) as Promise<Types.ClaimEventPassNftsMutation>;
+    },
     GetEventPassNftByContractsAndTokenIds(variables: Types.GetEventPassNftByContractsAndTokenIdsQueryVariables, options?: C): Promise<Types.GetEventPassNftByContractsAndTokenIdsQuery> {
       return requester<Types.GetEventPassNftByContractsAndTokenIdsQuery, Types.GetEventPassNftByContractsAndTokenIdsQueryVariables>(GetEventPassNftByContractsAndTokenIdsDocument, variables, options) as Promise<Types.GetEventPassNftByContractsAndTokenIdsQuery>;
     },
     CreateEventPassNftContract(variables: Types.CreateEventPassNftContractMutationVariables, options?: C): Promise<Types.CreateEventPassNftContractMutation> {
       return requester<Types.CreateEventPassNftContractMutation, Types.CreateEventPassNftContractMutationVariables>(CreateEventPassNftContractDocument, variables, options) as Promise<Types.CreateEventPassNftContractMutation>;
+    },
+    GetContractAddressFromEventPassId(variables?: Types.GetContractAddressFromEventPassIdQueryVariables, options?: C): Promise<Types.GetContractAddressFromEventPassIdQuery> {
+      return requester<Types.GetContractAddressFromEventPassIdQuery, Types.GetContractAddressFromEventPassIdQueryVariables>(GetContractAddressFromEventPassIdDocument, variables, options) as Promise<Types.GetContractAddressFromEventPassIdQuery>;
     },
     CreateEventPassPricing(variables: Types.CreateEventPassPricingMutationVariables, options?: C): Promise<Types.CreateEventPassPricingMutation> {
       return requester<Types.CreateEventPassPricingMutation, Types.CreateEventPassPricingMutationVariables>(CreateEventPassPricingDocument, variables, options) as Promise<Types.CreateEventPassPricingMutation>;
