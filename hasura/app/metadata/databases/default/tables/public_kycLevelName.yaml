@@ -1,0 +1,4 @@
+table:
+  name: kycLevelName
+  schema: public
+is_enum: true

@@ -1,6 +1,8 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.organizeImports": true,
+    "source.addMissingImports": true,
+    "source.fixAll": true
   },
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
@@ -20,11 +22,9 @@
     "yaml",
     "toml"
   ],
+  "eslint.packageManager": "pnpm",
   "files.associations": {
     "*.gql": "graphql"
-  },
-  "[sql]": {
-    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
   },
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
@@ -35,7 +35,7 @@
       "[\"'`]([^\"'`]*).*?[\"'`]"
     ]
   ],
-  "typescript.tsdk": "../../node_modules/.pnpm/typescript@4.9.5/node_modules/typescript/lib",
+  "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "i18n-ally.localesPaths": "libs/next/i18n/src/messages",
   "i18n-ally.keystyle": "nested",

@@ -6202,6 +6202,9 @@ type account {
   emailVerified: Boolean!
   id: uuid!
   isOrganizer: Boolean!
+
+  """An object relationship"""
+  kyc: kyc
   organizer(
     """
     Defines which locales should be returned.
@@ -6249,6 +6252,7 @@ input account_bool_exp {
   emailVerified: Boolean_comparison_exp
   id: uuid_comparison_exp
   isOrganizer: Boolean_comparison_exp
+  kyc: kyc_bool_exp
   organizerId: String_comparison_exp
   updated_at: timestamptz_comparison_exp
 }
@@ -6278,6 +6282,7 @@ input account_insert_input {
   emailVerified: Boolean
   id: uuid
   isOrganizer: Boolean
+  kyc: kyc_obj_rel_insert_input
   organizerId: String
   updated_at: timestamptz
 }
@@ -6340,6 +6345,7 @@ input account_order_by {
   emailVerified: order_by
   id: order_by
   isOrganizer: order_by
+  kyc: kyc_order_by
   organizerId: order_by
   updated_at: order_by
 }
@@ -9752,6 +9758,618 @@ input jsonb_comparison_exp {
   _nin: [jsonb!]
 }
 
+"""
+columns and relationships of "kyc"
+"""
+type kyc {
+  """Unique identifier for the applicant provided by Sumsub."""
+  applicantId: String!
+
+  """
+  The date and time when the applicant was created in Sumsub. Stored in UTC timestamp.
+  """
+  createDate: timestamptz!
+
+  """UUID referencing to the user ID in the existing accounts table."""
+  externalUserId: uuid!
+
+  """Level of KYC verification, which refers to kycLevelName."""
+  levelName: kycLevelName_enum
+
+  """Status of the applicant’s review in Sumsub, which refers to kycStatus."""
+  reviewStatus: kycStatus_enum
+
+  """Timestamp automatically updated whenever the kyc row changes."""
+  updated_at: timestamptz
+}
+
+"""KYC levels representing the level of verification for the applicant."""
+type kycLevelName {
+  """Level name for KYC verification."""
+  value: String!
+}
+
+"""
+aggregated selection of "kycLevelName"
+"""
+type kycLevelName_aggregate {
+  aggregate: kycLevelName_aggregate_fields
+  nodes: [kycLevelName!]!
+}
+
+"""
+aggregate fields of "kycLevelName"
+"""
+type kycLevelName_aggregate_fields {
+  count(columns: [kycLevelName_select_column!], distinct: Boolean): Int!
+  max: kycLevelName_max_fields
+  min: kycLevelName_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "kycLevelName". All fields are combined with a logical 'AND'.
+"""
+input kycLevelName_bool_exp {
+  _and: [kycLevelName_bool_exp!]
+  _not: kycLevelName_bool_exp
+  _or: [kycLevelName_bool_exp!]
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "kycLevelName"
+"""
+enum kycLevelName_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  kycLevelName_pkey
+}
+
+enum kycLevelName_enum {
+  advanced_kyc_level
+  basic_kyc_level
+}
+
+"""
+Boolean expression to compare columns of type "kycLevelName_enum". All fields are combined with logical 'AND'.
+"""
+input kycLevelName_enum_comparison_exp {
+  _eq: kycLevelName_enum
+  _in: [kycLevelName_enum!]
+  _is_null: Boolean
+  _neq: kycLevelName_enum
+  _nin: [kycLevelName_enum!]
+}
+
+"""
+input type for inserting data into table "kycLevelName"
+"""
+input kycLevelName_insert_input {
+  """Level name for KYC verification."""
+  value: String
+}
+
+"""aggregate max on columns"""
+type kycLevelName_max_fields {
+  """Level name for KYC verification."""
+  value: String
+}
+
+"""aggregate min on columns"""
+type kycLevelName_min_fields {
+  """Level name for KYC verification."""
+  value: String
+}
+
+"""
+response of any mutation on the table "kycLevelName"
+"""
+type kycLevelName_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [kycLevelName!]!
+}
+
+"""
+on_conflict condition type for table "kycLevelName"
+"""
+input kycLevelName_on_conflict {
+  constraint: kycLevelName_constraint!
+  update_columns: [kycLevelName_update_column!]! = []
+  where: kycLevelName_bool_exp
+}
+
+"""Ordering options when selecting data from "kycLevelName"."""
+input kycLevelName_order_by {
+  value: order_by
+}
+
+"""primary key columns input for table: kycLevelName"""
+input kycLevelName_pk_columns_input {
+  """Level name for KYC verification."""
+  value: String!
+}
+
+"""
+select columns of table "kycLevelName"
+"""
+enum kycLevelName_select_column {
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "kycLevelName"
+"""
+input kycLevelName_set_input {
+  """Level name for KYC verification."""
+  value: String
+}
+
+"""
+Streaming cursor of the table "kycLevelName"
+"""
+input kycLevelName_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: kycLevelName_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input kycLevelName_stream_cursor_value_input {
+  """Level name for KYC verification."""
+  value: String
+}
+
+"""
+update columns of table "kycLevelName"
+"""
+enum kycLevelName_update_column {
+  """column name"""
+  value
+}
+
+input kycLevelName_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: kycLevelName_set_input
+
+  """filter the rows which have to be updated"""
+  where: kycLevelName_bool_exp!
+}
+
+"""Statuses of Know Your Customer (KYC) processes."""
+type kycStatus {
+  """Status value."""
+  value: String!
+}
+
+"""
+aggregated selection of "kycStatus"
+"""
+type kycStatus_aggregate {
+  aggregate: kycStatus_aggregate_fields
+  nodes: [kycStatus!]!
+}
+
+"""
+aggregate fields of "kycStatus"
+"""
+type kycStatus_aggregate_fields {
+  count(columns: [kycStatus_select_column!], distinct: Boolean): Int!
+  max: kycStatus_max_fields
+  min: kycStatus_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "kycStatus". All fields are combined with a logical 'AND'.
+"""
+input kycStatus_bool_exp {
+  _and: [kycStatus_bool_exp!]
+  _not: kycStatus_bool_exp
+  _or: [kycStatus_bool_exp!]
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "kycStatus"
+"""
+enum kycStatus_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  kycStatus_pkey
+}
+
+enum kycStatus_enum {
+  completed
+  init
+  onHold
+  pending
+  prechecked
+  queued
+}
+
+"""
+Boolean expression to compare columns of type "kycStatus_enum". All fields are combined with logical 'AND'.
+"""
+input kycStatus_enum_comparison_exp {
+  _eq: kycStatus_enum
+  _in: [kycStatus_enum!]
+  _is_null: Boolean
+  _neq: kycStatus_enum
+  _nin: [kycStatus_enum!]
+}
+
+"""
+input type for inserting data into table "kycStatus"
+"""
+input kycStatus_insert_input {
+  """Status value."""
+  value: String
+}
+
+"""aggregate max on columns"""
+type kycStatus_max_fields {
+  """Status value."""
+  value: String
+}
+
+"""aggregate min on columns"""
+type kycStatus_min_fields {
+  """Status value."""
+  value: String
+}
+
+"""
+response of any mutation on the table "kycStatus"
+"""
+type kycStatus_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [kycStatus!]!
+}
+
+"""
+on_conflict condition type for table "kycStatus"
+"""
+input kycStatus_on_conflict {
+  constraint: kycStatus_constraint!
+  update_columns: [kycStatus_update_column!]! = []
+  where: kycStatus_bool_exp
+}
+
+"""Ordering options when selecting data from "kycStatus"."""
+input kycStatus_order_by {
+  value: order_by
+}
+
+"""primary key columns input for table: kycStatus"""
+input kycStatus_pk_columns_input {
+  """Status value."""
+  value: String!
+}
+
+"""
+select columns of table "kycStatus"
+"""
+enum kycStatus_select_column {
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "kycStatus"
+"""
+input kycStatus_set_input {
+  """Status value."""
+  value: String
+}
+
+"""
+Streaming cursor of the table "kycStatus"
+"""
+input kycStatus_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: kycStatus_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input kycStatus_stream_cursor_value_input {
+  """Status value."""
+  value: String
+}
+
+"""
+update columns of table "kycStatus"
+"""
+enum kycStatus_update_column {
+  """column name"""
+  value
+}
+
+input kycStatus_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: kycStatus_set_input
+
+  """filter the rows which have to be updated"""
+  where: kycStatus_bool_exp!
+}
+
+"""
+aggregated selection of "kyc"
+"""
+type kyc_aggregate {
+  aggregate: kyc_aggregate_fields
+  nodes: [kyc!]!
+}
+
+"""
+aggregate fields of "kyc"
+"""
+type kyc_aggregate_fields {
+  count(columns: [kyc_select_column!], distinct: Boolean): Int!
+  max: kyc_max_fields
+  min: kyc_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "kyc". All fields are combined with a logical 'AND'.
+"""
+input kyc_bool_exp {
+  _and: [kyc_bool_exp!]
+  _not: kyc_bool_exp
+  _or: [kyc_bool_exp!]
+  applicantId: String_comparison_exp
+  createDate: timestamptz_comparison_exp
+  externalUserId: uuid_comparison_exp
+  levelName: kycLevelName_enum_comparison_exp
+  reviewStatus: kycStatus_enum_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "kyc"
+"""
+enum kyc_constraint {
+  """
+  unique or primary key constraint on columns "externalUserId"
+  """
+  kyc_externalUserId_key
+
+  """
+  unique or primary key constraint on columns "externalUserId"
+  """
+  kyc_pkey
+}
+
+"""
+input type for inserting data into table "kyc"
+"""
+input kyc_insert_input {
+  """Unique identifier for the applicant provided by Sumsub."""
+  applicantId: String
+
+  """
+  The date and time when the applicant was created in Sumsub. Stored in UTC timestamp.
+  """
+  createDate: timestamptz
+
+  """UUID referencing to the user ID in the existing accounts table."""
+  externalUserId: uuid
+
+  """Level of KYC verification, which refers to kycLevelName."""
+  levelName: kycLevelName_enum
+
+  """Status of the applicant’s review in Sumsub, which refers to kycStatus."""
+  reviewStatus: kycStatus_enum
+
+  """Timestamp automatically updated whenever the kyc row changes."""
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type kyc_max_fields {
+  """Unique identifier for the applicant provided by Sumsub."""
+  applicantId: String
+
+  """
+  The date and time when the applicant was created in Sumsub. Stored in UTC timestamp.
+  """
+  createDate: timestamptz
+
+  """UUID referencing to the user ID in the existing accounts table."""
+  externalUserId: uuid
+
+  """Timestamp automatically updated whenever the kyc row changes."""
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type kyc_min_fields {
+  """Unique identifier for the applicant provided by Sumsub."""
+  applicantId: String
+
+  """
+  The date and time when the applicant was created in Sumsub. Stored in UTC timestamp.
+  """
+  createDate: timestamptz
+
+  """UUID referencing to the user ID in the existing accounts table."""
+  externalUserId: uuid
+
+  """Timestamp automatically updated whenever the kyc row changes."""
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "kyc"
+"""
+type kyc_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [kyc!]!
+}
+
+"""
+input type for inserting object relation for remote table "kyc"
+"""
+input kyc_obj_rel_insert_input {
+  data: kyc_insert_input!
+
+  """upsert condition"""
+  on_conflict: kyc_on_conflict
+}
+
+"""
+on_conflict condition type for table "kyc"
+"""
+input kyc_on_conflict {
+  constraint: kyc_constraint!
+  update_columns: [kyc_update_column!]! = []
+  where: kyc_bool_exp
+}
+
+"""Ordering options when selecting data from "kyc"."""
+input kyc_order_by {
+  applicantId: order_by
+  createDate: order_by
+  externalUserId: order_by
+  levelName: order_by
+  reviewStatus: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: kyc"""
+input kyc_pk_columns_input {
+  """UUID referencing to the user ID in the existing accounts table."""
+  externalUserId: uuid!
+}
+
+"""
+select columns of table "kyc"
+"""
+enum kyc_select_column {
+  """column name"""
+  applicantId
+
+  """column name"""
+  createDate
+
+  """column name"""
+  externalUserId
+
+  """column name"""
+  levelName
+
+  """column name"""
+  reviewStatus
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "kyc"
+"""
+input kyc_set_input {
+  """Unique identifier for the applicant provided by Sumsub."""
+  applicantId: String
+
+  """
+  The date and time when the applicant was created in Sumsub. Stored in UTC timestamp.
+  """
+  createDate: timestamptz
+
+  """UUID referencing to the user ID in the existing accounts table."""
+  externalUserId: uuid
+
+  """Level of KYC verification, which refers to kycLevelName."""
+  levelName: kycLevelName_enum
+
+  """Status of the applicant’s review in Sumsub, which refers to kycStatus."""
+  reviewStatus: kycStatus_enum
+
+  """Timestamp automatically updated whenever the kyc row changes."""
+  updated_at: timestamptz
+}
+
+"""
+Streaming cursor of the table "kyc"
+"""
+input kyc_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: kyc_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input kyc_stream_cursor_value_input {
+  """Unique identifier for the applicant provided by Sumsub."""
+  applicantId: String
+
+  """
+  The date and time when the applicant was created in Sumsub. Stored in UTC timestamp.
+  """
+  createDate: timestamptz
+
+  """UUID referencing to the user ID in the existing accounts table."""
+  externalUserId: uuid
+
+  """Level of KYC verification, which refers to kycLevelName."""
+  levelName: kycLevelName_enum
+
+  """Status of the applicant’s review in Sumsub, which refers to kycStatus."""
+  reviewStatus: kycStatus_enum
+
+  """Timestamp automatically updated whenever the kyc row changes."""
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "kyc"
+"""
+enum kyc_update_column {
+  """column name"""
+  applicantId
+
+  """column name"""
+  createDate
+
+  """column name"""
+  externalUserId
+
+  """column name"""
+  levelName
+
+  """column name"""
+  reviewStatus
+
+  """column name"""
+  updated_at
+}
+
+input kyc_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: kyc_set_input
+
+  """filter the rows which have to be updated"""
+  where: kyc_bool_exp!
+}
+
 """mutation root"""
 type mutation_root {
   """Create one asset"""
@@ -9996,6 +10614,54 @@ type mutation_root {
   delete_eventPassPricing_by_pk(id: uuid!): eventPassPricing
 
   """
+  delete data from the table: "kyc"
+  """
+  delete_kyc(
+    """filter the rows which have to be deleted"""
+    where: kyc_bool_exp!
+  ): kyc_mutation_response
+
+  """
+  delete data from the table: "kycLevelName"
+  """
+  delete_kycLevelName(
+    """filter the rows which have to be deleted"""
+    where: kycLevelName_bool_exp!
+  ): kycLevelName_mutation_response
+
+  """
+  delete single row from the table: "kycLevelName"
+  """
+  delete_kycLevelName_by_pk(
+    """Level name for KYC verification."""
+    value: String!
+  ): kycLevelName
+
+  """
+  delete data from the table: "kycStatus"
+  """
+  delete_kycStatus(
+    """filter the rows which have to be deleted"""
+    where: kycStatus_bool_exp!
+  ): kycStatus_mutation_response
+
+  """
+  delete single row from the table: "kycStatus"
+  """
+  delete_kycStatus_by_pk(
+    """Status value."""
+    value: String!
+  ): kycStatus
+
+  """
+  delete single row from the table: "kyc"
+  """
+  delete_kyc_by_pk(
+    """UUID referencing to the user ID in the existing accounts table."""
+    externalUserId: uuid!
+  ): kyc
+
+  """
   delete data from the table: "nftTransfer"
   """
   delete_nftTransfer(
@@ -10231,6 +10897,72 @@ type mutation_root {
     """upsert condition"""
     on_conflict: eventPassPricing_on_conflict
   ): eventPassPricing
+
+  """
+  insert data into the table: "kyc"
+  """
+  insert_kyc(
+    """the rows to be inserted"""
+    objects: [kyc_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: kyc_on_conflict
+  ): kyc_mutation_response
+
+  """
+  insert data into the table: "kycLevelName"
+  """
+  insert_kycLevelName(
+    """the rows to be inserted"""
+    objects: [kycLevelName_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: kycLevelName_on_conflict
+  ): kycLevelName_mutation_response
+
+  """
+  insert a single row into the table: "kycLevelName"
+  """
+  insert_kycLevelName_one(
+    """the row to be inserted"""
+    object: kycLevelName_insert_input!
+
+    """upsert condition"""
+    on_conflict: kycLevelName_on_conflict
+  ): kycLevelName
+
+  """
+  insert data into the table: "kycStatus"
+  """
+  insert_kycStatus(
+    """the rows to be inserted"""
+    objects: [kycStatus_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: kycStatus_on_conflict
+  ): kycStatus_mutation_response
+
+  """
+  insert a single row into the table: "kycStatus"
+  """
+  insert_kycStatus_one(
+    """the row to be inserted"""
+    object: kycStatus_insert_input!
+
+    """upsert condition"""
+    on_conflict: kycStatus_on_conflict
+  ): kycStatus
+
+  """
+  insert a single row into the table: "kyc"
+  """
+  insert_kyc_one(
+    """the row to be inserted"""
+    object: kyc_insert_input!
+
+    """upsert condition"""
+    on_conflict: kyc_on_conflict
+  ): kyc
 
   """
   insert data into the table: "nftTransfer"
@@ -11443,6 +12175,90 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [eventPassPricing_updates!]!
   ): [eventPassPricing_mutation_response]
+
+  """
+  update data of the table: "kyc"
+  """
+  update_kyc(
+    """sets the columns of the filtered rows to the given values"""
+    _set: kyc_set_input
+
+    """filter the rows which have to be updated"""
+    where: kyc_bool_exp!
+  ): kyc_mutation_response
+
+  """
+  update data of the table: "kycLevelName"
+  """
+  update_kycLevelName(
+    """sets the columns of the filtered rows to the given values"""
+    _set: kycLevelName_set_input
+
+    """filter the rows which have to be updated"""
+    where: kycLevelName_bool_exp!
+  ): kycLevelName_mutation_response
+
+  """
+  update single row of the table: "kycLevelName"
+  """
+  update_kycLevelName_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: kycLevelName_set_input
+    pk_columns: kycLevelName_pk_columns_input!
+  ): kycLevelName
+
+  """
+  update multiples rows of table: "kycLevelName"
+  """
+  update_kycLevelName_many(
+    """updates to execute, in order"""
+    updates: [kycLevelName_updates!]!
+  ): [kycLevelName_mutation_response]
+
+  """
+  update data of the table: "kycStatus"
+  """
+  update_kycStatus(
+    """sets the columns of the filtered rows to the given values"""
+    _set: kycStatus_set_input
+
+    """filter the rows which have to be updated"""
+    where: kycStatus_bool_exp!
+  ): kycStatus_mutation_response
+
+  """
+  update single row of the table: "kycStatus"
+  """
+  update_kycStatus_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: kycStatus_set_input
+    pk_columns: kycStatus_pk_columns_input!
+  ): kycStatus
+
+  """
+  update multiples rows of table: "kycStatus"
+  """
+  update_kycStatus_many(
+    """updates to execute, in order"""
+    updates: [kycStatus_updates!]!
+  ): [kycStatus_mutation_response]
+
+  """
+  update single row of the table: "kyc"
+  """
+  update_kyc_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: kyc_set_input
+    pk_columns: kyc_pk_columns_input!
+  ): kyc
+
+  """
+  update multiples rows of table: "kyc"
+  """
+  update_kyc_many(
+    """updates to execute, in order"""
+    updates: [kyc_updates!]!
+  ): [kyc_mutation_response]
 
   """
   update data of the table: "nftTransfer"
@@ -13238,6 +14054,144 @@ type query_root {
   ): EventConnection!
 
   """
+  fetch data from the table: "kyc"
+  """
+  kyc(
+    """distinct select on columns"""
+    distinct_on: [kyc_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kyc_order_by!]
+
+    """filter the rows returned"""
+    where: kyc_bool_exp
+  ): [kyc!]!
+
+  """
+  fetch data from the table: "kycLevelName"
+  """
+  kycLevelName(
+    """distinct select on columns"""
+    distinct_on: [kycLevelName_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kycLevelName_order_by!]
+
+    """filter the rows returned"""
+    where: kycLevelName_bool_exp
+  ): [kycLevelName!]!
+
+  """
+  fetch aggregated fields from the table: "kycLevelName"
+  """
+  kycLevelName_aggregate(
+    """distinct select on columns"""
+    distinct_on: [kycLevelName_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kycLevelName_order_by!]
+
+    """filter the rows returned"""
+    where: kycLevelName_bool_exp
+  ): kycLevelName_aggregate!
+
+  """fetch data from the table: "kycLevelName" using primary key columns"""
+  kycLevelName_by_pk(
+    """Level name for KYC verification."""
+    value: String!
+  ): kycLevelName
+
+  """
+  fetch data from the table: "kycStatus"
+  """
+  kycStatus(
+    """distinct select on columns"""
+    distinct_on: [kycStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kycStatus_order_by!]
+
+    """filter the rows returned"""
+    where: kycStatus_bool_exp
+  ): [kycStatus!]!
+
+  """
+  fetch aggregated fields from the table: "kycStatus"
+  """
+  kycStatus_aggregate(
+    """distinct select on columns"""
+    distinct_on: [kycStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kycStatus_order_by!]
+
+    """filter the rows returned"""
+    where: kycStatus_bool_exp
+  ): kycStatus_aggregate!
+
+  """fetch data from the table: "kycStatus" using primary key columns"""
+  kycStatus_by_pk(
+    """Status value."""
+    value: String!
+  ): kycStatus
+
+  """
+  fetch aggregated fields from the table: "kyc"
+  """
+  kyc_aggregate(
+    """distinct select on columns"""
+    distinct_on: [kyc_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kyc_order_by!]
+
+    """filter the rows returned"""
+    where: kyc_bool_exp
+  ): kyc_aggregate!
+
+  """fetch data from the table: "kyc" using primary key columns"""
+  kyc_by_pk(
+    """UUID referencing to the user ID in the existing accounts table."""
+    externalUserId: uuid!
+  ): kyc
+
+  """
   fetch data from the table: "nftTransfer"
   """
   nftTransfer(
@@ -14135,6 +15089,186 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassPricing_bool_exp
   ): [eventPassPricing!]!
+
+  """
+  fetch data from the table: "kyc"
+  """
+  kyc(
+    """distinct select on columns"""
+    distinct_on: [kyc_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kyc_order_by!]
+
+    """filter the rows returned"""
+    where: kyc_bool_exp
+  ): [kyc!]!
+
+  """
+  fetch data from the table: "kycLevelName"
+  """
+  kycLevelName(
+    """distinct select on columns"""
+    distinct_on: [kycLevelName_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kycLevelName_order_by!]
+
+    """filter the rows returned"""
+    where: kycLevelName_bool_exp
+  ): [kycLevelName!]!
+
+  """
+  fetch aggregated fields from the table: "kycLevelName"
+  """
+  kycLevelName_aggregate(
+    """distinct select on columns"""
+    distinct_on: [kycLevelName_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kycLevelName_order_by!]
+
+    """filter the rows returned"""
+    where: kycLevelName_bool_exp
+  ): kycLevelName_aggregate!
+
+  """fetch data from the table: "kycLevelName" using primary key columns"""
+  kycLevelName_by_pk(
+    """Level name for KYC verification."""
+    value: String!
+  ): kycLevelName
+
+  """
+  fetch data from the table in a streaming manner: "kycLevelName"
+  """
+  kycLevelName_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [kycLevelName_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: kycLevelName_bool_exp
+  ): [kycLevelName!]!
+
+  """
+  fetch data from the table: "kycStatus"
+  """
+  kycStatus(
+    """distinct select on columns"""
+    distinct_on: [kycStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kycStatus_order_by!]
+
+    """filter the rows returned"""
+    where: kycStatus_bool_exp
+  ): [kycStatus!]!
+
+  """
+  fetch aggregated fields from the table: "kycStatus"
+  """
+  kycStatus_aggregate(
+    """distinct select on columns"""
+    distinct_on: [kycStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kycStatus_order_by!]
+
+    """filter the rows returned"""
+    where: kycStatus_bool_exp
+  ): kycStatus_aggregate!
+
+  """fetch data from the table: "kycStatus" using primary key columns"""
+  kycStatus_by_pk(
+    """Status value."""
+    value: String!
+  ): kycStatus
+
+  """
+  fetch data from the table in a streaming manner: "kycStatus"
+  """
+  kycStatus_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [kycStatus_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: kycStatus_bool_exp
+  ): [kycStatus!]!
+
+  """
+  fetch aggregated fields from the table: "kyc"
+  """
+  kyc_aggregate(
+    """distinct select on columns"""
+    distinct_on: [kyc_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kyc_order_by!]
+
+    """filter the rows returned"""
+    where: kyc_bool_exp
+  ): kyc_aggregate!
+
+  """fetch data from the table: "kyc" using primary key columns"""
+  kyc_by_pk(
+    """UUID referencing to the user ID in the existing accounts table."""
+    externalUserId: uuid!
+  ): kyc
+
+  """
+  fetch data from the table in a streaming manner: "kyc"
+  """
+  kyc_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [kyc_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: kyc_bool_exp
+  ): [kyc!]!
 
   """
   fetch data from the table: "nftTransfer"

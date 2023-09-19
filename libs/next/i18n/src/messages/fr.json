@@ -177,5 +177,14 @@
       "from": "Du",
       "to": "Au"
     }
+  },
+  "KYC": {
+    "Button": {
+      "text": "Vérifiez votre identité"
+    },
+    "Dialog": {
+      "title": "Vérifiez votre identité",
+      "description": "Pour accéder à des expériences exclusives et des avantages, nous avons besoin de quelques détails de votre part.<br></br>Ne vous inquiétez pas, c'est rapide et sécurisé."
+    }
   }
 }

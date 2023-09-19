@@ -1,5 +1,6 @@
 /// <reference types="next-auth" />
 
+import type { Kyc } from '@gql/shared/types';
 import { DefaultJWT } from 'next-auth/jwt';
 
 // Define your additional types here
@@ -40,12 +41,13 @@ interface Access {
   };
 }
 
-interface AppUser {
+export interface AppUser {
   id: string;
   // crypto wallet address
   address: string;
   email?: string;
   organizerId?: string;
+  kyc?: Pick<Kyc, 'applicantId' | 'reviewStatus' | 'levelName'>;
 }
 
 declare module 'next-auth/jwt' {

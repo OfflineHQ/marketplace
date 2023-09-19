@@ -1,11 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getJwt } from '@next/next-auth/user';
 import * as jsonwebtoken from 'jsonwebtoken';
 import { JWT } from 'next-auth/jwt';
-
-export const config = {
-  runtime: 'edge',
-};
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
   const { iat, exp, access, sub } = (await getJwt({ raw: false })) as JWT;

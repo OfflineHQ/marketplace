@@ -1,28 +1,28 @@
 'use client';
 // safeAuthSetup.ts
-import { useEffect, useState, useCallback } from 'react';
-import { useDarkMode } from '@ui/hooks';
-import { useToast, ToastAction } from '@ui/components';
-import { isCypressRunning } from '@utils';
 import {
   SafeAuthKit,
   SafeAuthSignInData,
   SafeGetUserInfoResponse,
   Web3AuthModalPack,
 } from '@next/safe/auth';
+import { ToastAction, useToast } from '@ui/components';
+import { useDarkMode } from '@ui/hooks';
+import { isCypressRunning } from '@utils';
+import { useCallback, useEffect, useState } from 'react';
 
-import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
-import { Web3AuthOptions } from '@web3auth/modal';
 import {
   ADAPTER_EVENTS,
   CHAIN_NAMESPACES,
   WALLET_ADAPTERS,
 } from '@web3auth/base';
+import { Web3AuthOptions } from '@web3auth/modal';
+import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
 import { LOGIN_MODAL_EVENTS } from '@web3auth/ui';
 import { ethers } from 'ethers';
-import { SiweMessage } from 'siwe';
-import { signIn, signOut, getCsrfToken, useSession } from 'next-auth/react';
+import { getCsrfToken, signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { SiweMessage } from 'siwe';
 
 import { ExternalProvider } from '@ethersproject/providers';
 

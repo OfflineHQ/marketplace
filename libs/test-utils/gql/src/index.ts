@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const jwt = require('jsonwebtoken');
-import { getSdk as userSdk, type Sdk as UserSdk } from '@gql/user/api';
 import {
   getSdk as anonymousSdk,
   type Sdk as AnonymousSdk,
 } from '@gql/anonymous/api';
-import type { Account } from '@gql/shared/types';
+import { KycLevelName_Enum, KycStatus_Enum } from '@gql/shared/types';
+import { getSdk as userSdk, type Sdk as UserSdk } from '@gql/user/api';
 import { endpointUrl } from '@next/hasura/shared';
+import type { AppUser } from '@next/types';
 
 // setup env variables
 require('dotenv').config({ path: './tools/test/.env.test.jest' });
@@ -50,24 +51,28 @@ export const accounts = {
   google_user: {
     id: 'ac542c34-1907-451c-94be-5df69a959080',
     address: '0x1bBEdB07706728A19c9dB82d3c420670D8040592',
-    email: 'sebpalluel@gmail.com',
-    emailVerified: true,
-    isOrganizer: true,
-  } satisfies Account,
+    email: 'googl_user@gmail.com',
+  } satisfies AppUser,
   alpha_user: {
     id: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
     address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
     email: 'alpha_user@test.io',
-    emailVerified: false,
-    isOrganizer: false,
-  } satisfies Account,
+    kyc: {
+      applicantId: '64d5f7a58f241166d756ba33',
+      reviewStatus: KycStatus_Enum.Completed,
+      levelName: KycLevelName_Enum.BasicKycLevel,
+    },
+  } satisfies AppUser,
   beta_user: {
     id: '76189546-6368-4325-8aad-220e03837b7e',
     address: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
-    email: 'beta_user@test.io',
-    emailVerified: false,
-    isOrganizer: false,
-  } satisfies Account,
+  } satisfies AppUser,
+  organizer_user: {
+    id: '9660cf3b-65ec-4ac5-a671-7eac4d93a842',
+    address: '0x1bBEdB07706728A19c9dB82d3c420670D8040592',
+    email: 'test@offline.live',
+    organizerId: 'clizzky8kap2t0bw7wka9a2id',
+  } satisfies AppUser,
 };
 
 type AccountOptions = {
@@ -101,21 +106,21 @@ export const usersJwt = {
   }),
 };
 
-export const alphaUserClient = (): UserSdk & { me: Account } => {
+export const alphaUserClient = (): UserSdk & { me: AppUser } => {
   return {
     ...userSdk(fetchDataForTest({ jwt: usersJwt.alpha_user })),
     me: accounts.alpha_user,
   };
 };
 
-export const betaUserClient = (): UserSdk & { me: Account } => {
+export const betaUserClient = (): UserSdk & { me: AppUser } => {
   return {
     ...userSdk(fetchDataForTest({ jwt: usersJwt.beta_user })),
     me: accounts.beta_user,
   };
 };
 
-export const sebGoogleClient = (): UserSdk & { me: Account } => {
+export const googleUserClient = (): UserSdk & { me: AppUser } => {
   return {
     ...userSdk(fetchDataForTest({ jwt: usersJwt.google_user })),
     me: accounts.google_user,
