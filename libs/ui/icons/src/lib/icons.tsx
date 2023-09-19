@@ -1,86 +1,96 @@
 import { FC } from 'react';
-import { AccessibleIcon } from './AccessibleIcon';
-import { IconProps } from './variants';
-import {
-  HiCheck,
-  HiOutlineSearch,
-  HiOutlineArrowRight,
-  HiPlus,
-  HiMinus,
-  HiOutlineChevronDown,
-  HiOutlineChevronRight,
-  HiOutlinePlusCircle,
-  HiOutlineUserCircle,
-  HiOutlineUser,
-  HiOutlineUserAdd,
-  HiOutlineUsers,
-  HiOutlineCalculator,
-  HiOutlineSun,
-  HiOutlineMoon,
-} from 'react-icons/hi';
-import {
-  HiOutlineArrowUpCircle,
-  HiChevronUpDown,
-  HiOutlineLanguage,
-  HiOutlineCalendarDays,
-  HiCalendar,
-  HiMagnifyingGlassPlus,
-} from 'react-icons/hi2';
-import { BiCircle, BiHelpCircle, BiXCircle } from 'react-icons/bi';
-import {
-  BsTags,
-  BsQrCode,
-  BsQrCodeScan,
-  BsDownload,
-  BsThreeDotsVertical,
-} from 'react-icons/bs';
-import { RxMagicWand } from 'react-icons/rx';
 import {
   AiFillCheckCircle,
-  AiOutlineCheck,
   AiFillInfoCircle,
-  AiOutlineCreditCard,
-  AiOutlineMail,
+  AiOutlineCheck,
   AiOutlineCheckCircle,
+  AiOutlineCreditCard,
   AiOutlineDelete,
+  AiOutlineMail,
   AiOutlineMenu,
   AiOutlineShoppingCart,
 } from 'react-icons/ai';
+import { BiCircle, BiHelpCircle, BiXCircle } from 'react-icons/bi';
+import {
+  BsDownload,
+  BsQrCode,
+  BsQrCodeScan,
+  BsTags,
+  BsThreeDotsVertical,
+} from 'react-icons/bs';
+import {
+  HiCheck,
+  HiMinus,
+  HiOutlineArrowRight,
+  HiOutlineCalculator,
+  HiOutlineChevronDown,
+  HiOutlineChevronRight,
+  HiOutlineMoon,
+  HiOutlinePlusCircle,
+  HiOutlineSearch,
+  HiOutlineSun,
+  HiOutlineUser,
+  HiOutlineUserAdd,
+  HiOutlineUserCircle,
+  HiOutlineUsers,
+  HiPlus,
+} from 'react-icons/hi';
+import {
+  HiCalendar,
+  HiChevronUpDown,
+  HiMagnifyingGlassPlus,
+  HiOutlineArrowUpCircle,
+  HiOutlineCalendarDays,
+  HiOutlineLanguage,
+} from 'react-icons/hi2';
+import { RxMagicWand } from 'react-icons/rx';
+import { AccessibleIcon } from './AccessibleIcon';
+import { IconProps } from './variants';
 
 import {
+  IoChevronBack,
+  IoLocationOutline,
   IoWarning,
   IoWarningOutline,
-  IoLocationOutline,
-  IoChevronBack,
 } from 'react-icons/io5';
 
 import {
-  MdOutlineError,
+  FiAward,
+  FiEdit,
+  FiLifeBuoy,
+  FiLogIn,
+  FiLogOut,
+  FiMessageSquare,
+  FiMoreHorizontal,
+  FiSend,
+  FiSettings,
+  FiSmile,
+} from 'react-icons/fi';
+import {
   MdOutlineClose,
+  MdOutlineError,
   MdOutlineNotificationsActive,
   MdOutlineNotificationsNone,
 } from 'react-icons/md';
 import { RiMoonFill, RiSunLine } from 'react-icons/ri';
-import {
-  FiAward,
-  FiLifeBuoy,
-  FiLogOut,
-  FiLogIn,
-  FiMessageSquare,
-  FiSettings,
-  FiSmile,
-  FiMoreHorizontal,
-  FiEdit,
-  FiSend,
-} from 'react-icons/fi';
 
 import { TbSunMoon } from 'react-icons/tb';
+
+import { PiIdentificationCardLight } from 'react-icons/pi';
 
 // import and export IconType
 
 import type { IconType as ReactIcon } from 'react-icons';
 
 export type IconType = ReactIcon;
+
+export const UserIdentification: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={PiIdentificationCardLight}
+    label={'User identification'}
+    {...props}
+  />
+);
 
 export const Reveal: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={RxMagicWand} label={'Reveal'} {...props} />

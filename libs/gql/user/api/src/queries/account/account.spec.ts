@@ -1,20 +1,20 @@
 import {
-  alphaUserClient,
-  betaUserClient,
-  sebGoogleClient,
-} from '@test-utils/gql';
-import {
+  createDbClient,
   deleteTables,
   seedDb,
-  createDbClient,
   type PgClient,
 } from '@test-utils/db';
+import {
+  alphaUserClient,
+  betaUserClient,
+  googleUserClient,
+} from '@test-utils/gql';
 
 describe('user access security tests', () => {
   let client: PgClient;
   const alphaUser = alphaUserClient();
   const betaUser = betaUserClient();
-  const sebGoogle = sebGoogleClient();
+  const googleUser = googleUserClient();
 
   beforeAll(async () => {
     client = await createDbClient();
@@ -43,23 +43,31 @@ describe('user access security tests', () => {
     const data = await betaUser.GetAccount({ address: betaUser.me.address });
     const account = data.account[0];
     expect(account.id).toEqual(betaUser.me.id);
-    expect(account.email).toEqual(betaUser.me.email);
+    expect(account.email).toEqual('');
   });
   it("user beta can't retrieve alpha's information", async () => {
     const data = await betaUser.GetAccount({ address: alphaUser.me.address });
     expect(data.account[0]).toBeUndefined();
   });
-  it('user beta can retrieve his information by email', async () => {
+  it('user alpha can retrieve his information by email', async () => {
+    const data = await alphaUser.GetAccountByEmail({
+      email: alphaUser.me.email as string,
+    });
+    const account = data.account[0];
+    expect(account.id).toEqual(alphaUser.me.id);
+    expect(account.email).toEqual(alphaUser.me.email);
+  });
+  it('user beta can retrieve his information by email even if has no email', async () => {
     const data = await betaUser.GetAccountByEmail({
-      email: betaUser.me.email as string,
+      email: '',
     });
     const account = data.account[0];
     expect(account.id).toEqual(betaUser.me.id);
-    expect(account.email).toEqual(betaUser.me.email);
+    expect(account.email).toEqual('');
   });
-  it("user seb can't retrieve beta's information by email", async () => {
-    const data = await sebGoogle.GetAccountByEmail({
-      email: betaUser.me.email as string,
+  it("user google can't retrieve alpha's information by email", async () => {
+    const data = await googleUser.GetAccountByEmail({
+      email: alphaUser.me.email as string,
     });
     expect(data.account[0]).toBeUndefined();
   });

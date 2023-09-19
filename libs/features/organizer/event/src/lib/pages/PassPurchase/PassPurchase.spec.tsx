@@ -1,13 +1,14 @@
 // PassPurchase.spec.tsx
-import { screen, fireEvent } from '@testing-library/react';
-import { renderWithIntl } from '@test-utils/next-intl';
 import { composeStories } from '@storybook/react';
+import { renderWithIntl } from '@test-utils/next-intl';
+import { screen } from '@testing-library/react';
 import * as stories from './PassPurchase.stories';
 
 const { NoPassSelected, SelectPasses, WithFullSizeAndBackButton } =
   composeStories(stories);
 
 jest.mock('next/navigation', () => ({
+  ...jest.requireActual('next/navigation'),
   useRouter: () => ({
     back: jest.fn(),
   }),

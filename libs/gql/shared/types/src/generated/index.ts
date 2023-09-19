@@ -4486,6 +4486,8 @@ export type Account = {
   emailVerified: Scalars['Boolean'];
   id: Scalars['uuid'];
   isOrganizer: Scalars['Boolean'];
+  /** An object relationship */
+  kyc?: Maybe<Kyc>;
   organizer?: Maybe<Organizer>;
   organizerId?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -4532,6 +4534,7 @@ export type Account_Bool_Exp = {
   emailVerified?: InputMaybe<Boolean_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   isOrganizer?: InputMaybe<Boolean_Comparison_Exp>;
+  kyc?: InputMaybe<Kyc_Bool_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
@@ -4552,6 +4555,7 @@ export type Account_Insert_Input = {
   emailVerified?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['uuid']>;
   isOrganizer?: InputMaybe<Scalars['Boolean']>;
+  kyc?: InputMaybe<Kyc_Obj_Rel_Insert_Input>;
   organizerId?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
@@ -4609,6 +4613,7 @@ export type Account_Order_By = {
   emailVerified?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   isOrganizer?: InputMaybe<Order_By>;
+  kyc?: InputMaybe<Kyc_Order_By>;
   organizerId?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
@@ -7350,6 +7355,516 @@ export type Jsonb_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['jsonb']>>;
 };
 
+/** columns and relationships of "kyc" */
+export type Kyc = {
+  __typename?: 'kyc';
+  /** Unique identifier for the applicant provided by Sumsub. */
+  applicantId: Scalars['String'];
+  /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
+  createDate: Scalars['timestamptz'];
+  /** UUID referencing to the user ID in the existing accounts table. */
+  externalUserId: Scalars['uuid'];
+  /** Level of KYC verification, which refers to kycLevelName. */
+  levelName?: Maybe<KycLevelName_Enum>;
+  /** Status of the applicant’s review in Sumsub, which refers to kycStatus. */
+  reviewStatus?: Maybe<KycStatus_Enum>;
+  /** Timestamp automatically updated whenever the kyc row changes. */
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** KYC levels representing the level of verification for the applicant. */
+export type KycLevelName = {
+  __typename?: 'kycLevelName';
+  /** Level name for KYC verification. */
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "kycLevelName" */
+export type KycLevelName_Aggregate = {
+  __typename?: 'kycLevelName_aggregate';
+  aggregate?: Maybe<KycLevelName_Aggregate_Fields>;
+  nodes: Array<KycLevelName>;
+};
+
+/** aggregate fields of "kycLevelName" */
+export type KycLevelName_Aggregate_Fields = {
+  __typename?: 'kycLevelName_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<KycLevelName_Max_Fields>;
+  min?: Maybe<KycLevelName_Min_Fields>;
+};
+
+
+/** aggregate fields of "kycLevelName" */
+export type KycLevelName_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<KycLevelName_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "kycLevelName". All fields are combined with a logical 'AND'. */
+export type KycLevelName_Bool_Exp = {
+  _and?: InputMaybe<Array<KycLevelName_Bool_Exp>>;
+  _not?: InputMaybe<KycLevelName_Bool_Exp>;
+  _or?: InputMaybe<Array<KycLevelName_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "kycLevelName" */
+export const enum KycLevelName_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  KycLevelNamePkey = 'kycLevelName_pkey'
+};
+
+export const enum KycLevelName_Enum {
+  AdvancedKycLevel = 'advanced_kyc_level',
+  BasicKycLevel = 'basic_kyc_level'
+};
+
+/** Boolean expression to compare columns of type "kycLevelName_enum". All fields are combined with logical 'AND'. */
+export type KycLevelName_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<KycLevelName_Enum>;
+  _in?: InputMaybe<Array<KycLevelName_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<KycLevelName_Enum>;
+  _nin?: InputMaybe<Array<KycLevelName_Enum>>;
+};
+
+/** input type for inserting data into table "kycLevelName" */
+export type KycLevelName_Insert_Input = {
+  /** Level name for KYC verification. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type KycLevelName_Max_Fields = {
+  __typename?: 'kycLevelName_max_fields';
+  /** Level name for KYC verification. */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type KycLevelName_Min_Fields = {
+  __typename?: 'kycLevelName_min_fields';
+  /** Level name for KYC verification. */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "kycLevelName" */
+export type KycLevelName_Mutation_Response = {
+  __typename?: 'kycLevelName_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<KycLevelName>;
+};
+
+/** on_conflict condition type for table "kycLevelName" */
+export type KycLevelName_On_Conflict = {
+  constraint: KycLevelName_Constraint;
+  update_columns?: Array<KycLevelName_Update_Column>;
+  where?: InputMaybe<KycLevelName_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "kycLevelName". */
+export type KycLevelName_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: kycLevelName */
+export type KycLevelName_Pk_Columns_Input = {
+  /** Level name for KYC verification. */
+  value: Scalars['String'];
+};
+
+/** select columns of table "kycLevelName" */
+export const enum KycLevelName_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "kycLevelName" */
+export type KycLevelName_Set_Input = {
+  /** Level name for KYC verification. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "kycLevelName" */
+export type KycLevelName_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: KycLevelName_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type KycLevelName_Stream_Cursor_Value_Input = {
+  /** Level name for KYC verification. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "kycLevelName" */
+export const enum KycLevelName_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type KycLevelName_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<KycLevelName_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: KycLevelName_Bool_Exp;
+};
+
+/** Statuses of Know Your Customer (KYC) processes. */
+export type KycStatus = {
+  __typename?: 'kycStatus';
+  /** Status value. */
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "kycStatus" */
+export type KycStatus_Aggregate = {
+  __typename?: 'kycStatus_aggregate';
+  aggregate?: Maybe<KycStatus_Aggregate_Fields>;
+  nodes: Array<KycStatus>;
+};
+
+/** aggregate fields of "kycStatus" */
+export type KycStatus_Aggregate_Fields = {
+  __typename?: 'kycStatus_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<KycStatus_Max_Fields>;
+  min?: Maybe<KycStatus_Min_Fields>;
+};
+
+
+/** aggregate fields of "kycStatus" */
+export type KycStatus_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<KycStatus_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "kycStatus". All fields are combined with a logical 'AND'. */
+export type KycStatus_Bool_Exp = {
+  _and?: InputMaybe<Array<KycStatus_Bool_Exp>>;
+  _not?: InputMaybe<KycStatus_Bool_Exp>;
+  _or?: InputMaybe<Array<KycStatus_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "kycStatus" */
+export const enum KycStatus_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  KycStatusPkey = 'kycStatus_pkey'
+};
+
+export const enum KycStatus_Enum {
+  Completed = 'completed',
+  Init = 'init',
+  OnHold = 'onHold',
+  Pending = 'pending',
+  Prechecked = 'prechecked',
+  Queued = 'queued'
+};
+
+/** Boolean expression to compare columns of type "kycStatus_enum". All fields are combined with logical 'AND'. */
+export type KycStatus_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<KycStatus_Enum>;
+  _in?: InputMaybe<Array<KycStatus_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<KycStatus_Enum>;
+  _nin?: InputMaybe<Array<KycStatus_Enum>>;
+};
+
+/** input type for inserting data into table "kycStatus" */
+export type KycStatus_Insert_Input = {
+  /** Status value. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type KycStatus_Max_Fields = {
+  __typename?: 'kycStatus_max_fields';
+  /** Status value. */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type KycStatus_Min_Fields = {
+  __typename?: 'kycStatus_min_fields';
+  /** Status value. */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "kycStatus" */
+export type KycStatus_Mutation_Response = {
+  __typename?: 'kycStatus_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<KycStatus>;
+};
+
+/** on_conflict condition type for table "kycStatus" */
+export type KycStatus_On_Conflict = {
+  constraint: KycStatus_Constraint;
+  update_columns?: Array<KycStatus_Update_Column>;
+  where?: InputMaybe<KycStatus_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "kycStatus". */
+export type KycStatus_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: kycStatus */
+export type KycStatus_Pk_Columns_Input = {
+  /** Status value. */
+  value: Scalars['String'];
+};
+
+/** select columns of table "kycStatus" */
+export const enum KycStatus_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "kycStatus" */
+export type KycStatus_Set_Input = {
+  /** Status value. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "kycStatus" */
+export type KycStatus_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: KycStatus_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type KycStatus_Stream_Cursor_Value_Input = {
+  /** Status value. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "kycStatus" */
+export const enum KycStatus_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type KycStatus_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<KycStatus_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: KycStatus_Bool_Exp;
+};
+
+/** aggregated selection of "kyc" */
+export type Kyc_Aggregate = {
+  __typename?: 'kyc_aggregate';
+  aggregate?: Maybe<Kyc_Aggregate_Fields>;
+  nodes: Array<Kyc>;
+};
+
+/** aggregate fields of "kyc" */
+export type Kyc_Aggregate_Fields = {
+  __typename?: 'kyc_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Kyc_Max_Fields>;
+  min?: Maybe<Kyc_Min_Fields>;
+};
+
+
+/** aggregate fields of "kyc" */
+export type Kyc_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Kyc_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "kyc". All fields are combined with a logical 'AND'. */
+export type Kyc_Bool_Exp = {
+  _and?: InputMaybe<Array<Kyc_Bool_Exp>>;
+  _not?: InputMaybe<Kyc_Bool_Exp>;
+  _or?: InputMaybe<Array<Kyc_Bool_Exp>>;
+  applicantId?: InputMaybe<String_Comparison_Exp>;
+  createDate?: InputMaybe<Timestamptz_Comparison_Exp>;
+  externalUserId?: InputMaybe<Uuid_Comparison_Exp>;
+  levelName?: InputMaybe<KycLevelName_Enum_Comparison_Exp>;
+  reviewStatus?: InputMaybe<KycStatus_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "kyc" */
+export const enum Kyc_Constraint {
+  /** unique or primary key constraint on columns "externalUserId" */
+  KycExternalUserIdKey = 'kyc_externalUserId_key',
+  /** unique or primary key constraint on columns "externalUserId" */
+  KycPkey = 'kyc_pkey'
+};
+
+/** input type for inserting data into table "kyc" */
+export type Kyc_Insert_Input = {
+  /** Unique identifier for the applicant provided by Sumsub. */
+  applicantId?: InputMaybe<Scalars['String']>;
+  /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
+  createDate?: InputMaybe<Scalars['timestamptz']>;
+  /** UUID referencing to the user ID in the existing accounts table. */
+  externalUserId?: InputMaybe<Scalars['uuid']>;
+  /** Level of KYC verification, which refers to kycLevelName. */
+  levelName?: InputMaybe<KycLevelName_Enum>;
+  /** Status of the applicant’s review in Sumsub, which refers to kycStatus. */
+  reviewStatus?: InputMaybe<KycStatus_Enum>;
+  /** Timestamp automatically updated whenever the kyc row changes. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Kyc_Max_Fields = {
+  __typename?: 'kyc_max_fields';
+  /** Unique identifier for the applicant provided by Sumsub. */
+  applicantId?: Maybe<Scalars['String']>;
+  /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
+  createDate?: Maybe<Scalars['timestamptz']>;
+  /** UUID referencing to the user ID in the existing accounts table. */
+  externalUserId?: Maybe<Scalars['uuid']>;
+  /** Timestamp automatically updated whenever the kyc row changes. */
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type Kyc_Min_Fields = {
+  __typename?: 'kyc_min_fields';
+  /** Unique identifier for the applicant provided by Sumsub. */
+  applicantId?: Maybe<Scalars['String']>;
+  /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
+  createDate?: Maybe<Scalars['timestamptz']>;
+  /** UUID referencing to the user ID in the existing accounts table. */
+  externalUserId?: Maybe<Scalars['uuid']>;
+  /** Timestamp automatically updated whenever the kyc row changes. */
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "kyc" */
+export type Kyc_Mutation_Response = {
+  __typename?: 'kyc_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Kyc>;
+};
+
+/** input type for inserting object relation for remote table "kyc" */
+export type Kyc_Obj_Rel_Insert_Input = {
+  data: Kyc_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Kyc_On_Conflict>;
+};
+
+/** on_conflict condition type for table "kyc" */
+export type Kyc_On_Conflict = {
+  constraint: Kyc_Constraint;
+  update_columns?: Array<Kyc_Update_Column>;
+  where?: InputMaybe<Kyc_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "kyc". */
+export type Kyc_Order_By = {
+  applicantId?: InputMaybe<Order_By>;
+  createDate?: InputMaybe<Order_By>;
+  externalUserId?: InputMaybe<Order_By>;
+  levelName?: InputMaybe<Order_By>;
+  reviewStatus?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: kyc */
+export type Kyc_Pk_Columns_Input = {
+  /** UUID referencing to the user ID in the existing accounts table. */
+  externalUserId: Scalars['uuid'];
+};
+
+/** select columns of table "kyc" */
+export const enum Kyc_Select_Column {
+  /** column name */
+  ApplicantId = 'applicantId',
+  /** column name */
+  CreateDate = 'createDate',
+  /** column name */
+  ExternalUserId = 'externalUserId',
+  /** column name */
+  LevelName = 'levelName',
+  /** column name */
+  ReviewStatus = 'reviewStatus',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "kyc" */
+export type Kyc_Set_Input = {
+  /** Unique identifier for the applicant provided by Sumsub. */
+  applicantId?: InputMaybe<Scalars['String']>;
+  /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
+  createDate?: InputMaybe<Scalars['timestamptz']>;
+  /** UUID referencing to the user ID in the existing accounts table. */
+  externalUserId?: InputMaybe<Scalars['uuid']>;
+  /** Level of KYC verification, which refers to kycLevelName. */
+  levelName?: InputMaybe<KycLevelName_Enum>;
+  /** Status of the applicant’s review in Sumsub, which refers to kycStatus. */
+  reviewStatus?: InputMaybe<KycStatus_Enum>;
+  /** Timestamp automatically updated whenever the kyc row changes. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Streaming cursor of the table "kyc" */
+export type Kyc_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Kyc_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Kyc_Stream_Cursor_Value_Input = {
+  /** Unique identifier for the applicant provided by Sumsub. */
+  applicantId?: InputMaybe<Scalars['String']>;
+  /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
+  createDate?: InputMaybe<Scalars['timestamptz']>;
+  /** UUID referencing to the user ID in the existing accounts table. */
+  externalUserId?: InputMaybe<Scalars['uuid']>;
+  /** Level of KYC verification, which refers to kycLevelName. */
+  levelName?: InputMaybe<KycLevelName_Enum>;
+  /** Status of the applicant’s review in Sumsub, which refers to kycStatus. */
+  reviewStatus?: InputMaybe<KycStatus_Enum>;
+  /** Timestamp automatically updated whenever the kyc row changes. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** update columns of table "kyc" */
+export const enum Kyc_Update_Column {
+  /** column name */
+  ApplicantId = 'applicantId',
+  /** column name */
+  CreateDate = 'createDate',
+  /** column name */
+  ExternalUserId = 'externalUserId',
+  /** column name */
+  LevelName = 'levelName',
+  /** column name */
+  ReviewStatus = 'reviewStatus',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type Kyc_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Kyc_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Kyc_Bool_Exp;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -7425,6 +7940,18 @@ export type Mutation_Root = {
   delete_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** delete single row from the table: "eventPassPricing" */
   delete_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
+  /** delete data from the table: "kyc" */
+  delete_kyc?: Maybe<Kyc_Mutation_Response>;
+  /** delete data from the table: "kycLevelName" */
+  delete_kycLevelName?: Maybe<KycLevelName_Mutation_Response>;
+  /** delete single row from the table: "kycLevelName" */
+  delete_kycLevelName_by_pk?: Maybe<KycLevelName>;
+  /** delete data from the table: "kycStatus" */
+  delete_kycStatus?: Maybe<KycStatus_Mutation_Response>;
+  /** delete single row from the table: "kycStatus" */
+  delete_kycStatus_by_pk?: Maybe<KycStatus>;
+  /** delete single row from the table: "kyc" */
+  delete_kyc_by_pk?: Maybe<Kyc>;
   /** delete data from the table: "nftTransfer" */
   delete_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
   /** delete single row from the table: "nftTransfer" */
@@ -7473,6 +8000,18 @@ export type Mutation_Root = {
   insert_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** insert a single row into the table: "eventPassPricing" */
   insert_eventPassPricing_one?: Maybe<EventPassPricing>;
+  /** insert data into the table: "kyc" */
+  insert_kyc?: Maybe<Kyc_Mutation_Response>;
+  /** insert data into the table: "kycLevelName" */
+  insert_kycLevelName?: Maybe<KycLevelName_Mutation_Response>;
+  /** insert a single row into the table: "kycLevelName" */
+  insert_kycLevelName_one?: Maybe<KycLevelName>;
+  /** insert data into the table: "kycStatus" */
+  insert_kycStatus?: Maybe<KycStatus_Mutation_Response>;
+  /** insert a single row into the table: "kycStatus" */
+  insert_kycStatus_one?: Maybe<KycStatus>;
+  /** insert a single row into the table: "kyc" */
+  insert_kyc_one?: Maybe<Kyc>;
   /** insert data into the table: "nftTransfer" */
   insert_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
   /** insert a single row into the table: "nftTransfer" */
@@ -7627,6 +8166,24 @@ export type Mutation_Root = {
   update_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
   /** update multiples rows of table: "eventPassPricing" */
   update_eventPassPricing_many?: Maybe<Array<Maybe<EventPassPricing_Mutation_Response>>>;
+  /** update data of the table: "kyc" */
+  update_kyc?: Maybe<Kyc_Mutation_Response>;
+  /** update data of the table: "kycLevelName" */
+  update_kycLevelName?: Maybe<KycLevelName_Mutation_Response>;
+  /** update single row of the table: "kycLevelName" */
+  update_kycLevelName_by_pk?: Maybe<KycLevelName>;
+  /** update multiples rows of table: "kycLevelName" */
+  update_kycLevelName_many?: Maybe<Array<Maybe<KycLevelName_Mutation_Response>>>;
+  /** update data of the table: "kycStatus" */
+  update_kycStatus?: Maybe<KycStatus_Mutation_Response>;
+  /** update single row of the table: "kycStatus" */
+  update_kycStatus_by_pk?: Maybe<KycStatus>;
+  /** update multiples rows of table: "kycStatus" */
+  update_kycStatus_many?: Maybe<Array<Maybe<KycStatus_Mutation_Response>>>;
+  /** update single row of the table: "kyc" */
+  update_kyc_by_pk?: Maybe<Kyc>;
+  /** update multiples rows of table: "kyc" */
+  update_kyc_many?: Maybe<Array<Maybe<Kyc_Mutation_Response>>>;
   /** update data of the table: "nftTransfer" */
   update_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
   /** update single row of the table: "nftTransfer" */
@@ -7893,6 +8450,42 @@ export type Mutation_RootDelete_EventPassPricing_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_KycArgs = {
+  where: Kyc_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_KycLevelNameArgs = {
+  where: KycLevelName_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_KycLevelName_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_KycStatusArgs = {
+  where: KycStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_KycStatus_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Kyc_By_PkArgs = {
+  externalUserId: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_NftTransferArgs = {
   where: NftTransfer_Bool_Exp;
 };
@@ -8051,6 +8644,48 @@ export type Mutation_RootInsert_EventPassPricingArgs = {
 export type Mutation_RootInsert_EventPassPricing_OneArgs = {
   object: EventPassPricing_Insert_Input;
   on_conflict?: InputMaybe<EventPassPricing_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_KycArgs = {
+  objects: Array<Kyc_Insert_Input>;
+  on_conflict?: InputMaybe<Kyc_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_KycLevelNameArgs = {
+  objects: Array<KycLevelName_Insert_Input>;
+  on_conflict?: InputMaybe<KycLevelName_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_KycLevelName_OneArgs = {
+  object: KycLevelName_Insert_Input;
+  on_conflict?: InputMaybe<KycLevelName_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_KycStatusArgs = {
+  objects: Array<KycStatus_Insert_Input>;
+  on_conflict?: InputMaybe<KycStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_KycStatus_OneArgs = {
+  object: KycStatus_Insert_Input;
+  on_conflict?: InputMaybe<KycStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Kyc_OneArgs = {
+  object: Kyc_Insert_Input;
+  on_conflict?: InputMaybe<Kyc_On_Conflict>;
 };
 
 
@@ -8765,6 +9400,66 @@ export type Mutation_RootUpdate_EventPassPricing_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_EventPassPricing_ManyArgs = {
   updates: Array<EventPassPricing_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_KycArgs = {
+  _set?: InputMaybe<Kyc_Set_Input>;
+  where: Kyc_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_KycLevelNameArgs = {
+  _set?: InputMaybe<KycLevelName_Set_Input>;
+  where: KycLevelName_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_KycLevelName_By_PkArgs = {
+  _set?: InputMaybe<KycLevelName_Set_Input>;
+  pk_columns: KycLevelName_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_KycLevelName_ManyArgs = {
+  updates: Array<KycLevelName_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_KycStatusArgs = {
+  _set?: InputMaybe<KycStatus_Set_Input>;
+  where: KycStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_KycStatus_By_PkArgs = {
+  _set?: InputMaybe<KycStatus_Set_Input>;
+  pk_columns: KycStatus_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_KycStatus_ManyArgs = {
+  updates: Array<KycStatus_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Kyc_By_PkArgs = {
+  _set?: InputMaybe<Kyc_Set_Input>;
+  pk_columns: Kyc_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Kyc_ManyArgs = {
+  updates: Array<Kyc_Updates>;
 };
 
 
@@ -9650,6 +10345,24 @@ export type Query_Root = {
   events: Array<Event>;
   /** Retrieve multiple events using the Relay connection interface */
   eventsConnection: EventConnection;
+  /** fetch data from the table: "kyc" */
+  kyc: Array<Kyc>;
+  /** fetch data from the table: "kycLevelName" */
+  kycLevelName: Array<KycLevelName>;
+  /** fetch aggregated fields from the table: "kycLevelName" */
+  kycLevelName_aggregate: KycLevelName_Aggregate;
+  /** fetch data from the table: "kycLevelName" using primary key columns */
+  kycLevelName_by_pk?: Maybe<KycLevelName>;
+  /** fetch data from the table: "kycStatus" */
+  kycStatus: Array<KycStatus>;
+  /** fetch aggregated fields from the table: "kycStatus" */
+  kycStatus_aggregate: KycStatus_Aggregate;
+  /** fetch data from the table: "kycStatus" using primary key columns */
+  kycStatus_by_pk?: Maybe<KycStatus>;
+  /** fetch aggregated fields from the table: "kyc" */
+  kyc_aggregate: Kyc_Aggregate;
+  /** fetch data from the table: "kyc" using primary key columns */
+  kyc_by_pk?: Maybe<Kyc>;
   /** fetch data from the table: "nftTransfer" */
   nftTransfer: Array<NftTransfer>;
   /** fetch aggregated fields from the table: "nftTransfer" */
@@ -10015,6 +10728,75 @@ export type Query_RootEventsConnectionArgs = {
 };
 
 
+export type Query_RootKycArgs = {
+  distinct_on?: InputMaybe<Array<Kyc_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Kyc_Order_By>>;
+  where?: InputMaybe<Kyc_Bool_Exp>;
+};
+
+
+export type Query_RootKycLevelNameArgs = {
+  distinct_on?: InputMaybe<Array<KycLevelName_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<KycLevelName_Order_By>>;
+  where?: InputMaybe<KycLevelName_Bool_Exp>;
+};
+
+
+export type Query_RootKycLevelName_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<KycLevelName_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<KycLevelName_Order_By>>;
+  where?: InputMaybe<KycLevelName_Bool_Exp>;
+};
+
+
+export type Query_RootKycLevelName_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Query_RootKycStatusArgs = {
+  distinct_on?: InputMaybe<Array<KycStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<KycStatus_Order_By>>;
+  where?: InputMaybe<KycStatus_Bool_Exp>;
+};
+
+
+export type Query_RootKycStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<KycStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<KycStatus_Order_By>>;
+  where?: InputMaybe<KycStatus_Bool_Exp>;
+};
+
+
+export type Query_RootKycStatus_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Query_RootKyc_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Kyc_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Kyc_Order_By>>;
+  where?: InputMaybe<Kyc_Bool_Exp>;
+};
+
+
+export type Query_RootKyc_By_PkArgs = {
+  externalUserId: Scalars['uuid'];
+};
+
+
 export type Query_RootNftTransferArgs = {
   distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -10297,6 +11079,30 @@ export type Subscription_Root = {
   eventPassPricing_by_pk?: Maybe<EventPassPricing>;
   /** fetch data from the table in a streaming manner: "eventPassPricing" */
   eventPassPricing_stream: Array<EventPassPricing>;
+  /** fetch data from the table: "kyc" */
+  kyc: Array<Kyc>;
+  /** fetch data from the table: "kycLevelName" */
+  kycLevelName: Array<KycLevelName>;
+  /** fetch aggregated fields from the table: "kycLevelName" */
+  kycLevelName_aggregate: KycLevelName_Aggregate;
+  /** fetch data from the table: "kycLevelName" using primary key columns */
+  kycLevelName_by_pk?: Maybe<KycLevelName>;
+  /** fetch data from the table in a streaming manner: "kycLevelName" */
+  kycLevelName_stream: Array<KycLevelName>;
+  /** fetch data from the table: "kycStatus" */
+  kycStatus: Array<KycStatus>;
+  /** fetch aggregated fields from the table: "kycStatus" */
+  kycStatus_aggregate: KycStatus_Aggregate;
+  /** fetch data from the table: "kycStatus" using primary key columns */
+  kycStatus_by_pk?: Maybe<KycStatus>;
+  /** fetch data from the table in a streaming manner: "kycStatus" */
+  kycStatus_stream: Array<KycStatus>;
+  /** fetch aggregated fields from the table: "kyc" */
+  kyc_aggregate: Kyc_Aggregate;
+  /** fetch data from the table: "kyc" using primary key columns */
+  kyc_by_pk?: Maybe<Kyc>;
+  /** fetch data from the table in a streaming manner: "kyc" */
+  kyc_stream: Array<Kyc>;
   /** fetch data from the table: "nftTransfer" */
   nftTransfer: Array<NftTransfer>;
   /** fetch aggregated fields from the table: "nftTransfer" */
@@ -10586,6 +11392,96 @@ export type Subscription_RootEventPassPricing_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<EventPassPricing_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassPricing_Bool_Exp>;
+};
+
+
+export type Subscription_RootKycArgs = {
+  distinct_on?: InputMaybe<Array<Kyc_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Kyc_Order_By>>;
+  where?: InputMaybe<Kyc_Bool_Exp>;
+};
+
+
+export type Subscription_RootKycLevelNameArgs = {
+  distinct_on?: InputMaybe<Array<KycLevelName_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<KycLevelName_Order_By>>;
+  where?: InputMaybe<KycLevelName_Bool_Exp>;
+};
+
+
+export type Subscription_RootKycLevelName_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<KycLevelName_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<KycLevelName_Order_By>>;
+  where?: InputMaybe<KycLevelName_Bool_Exp>;
+};
+
+
+export type Subscription_RootKycLevelName_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootKycLevelName_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<KycLevelName_Stream_Cursor_Input>>;
+  where?: InputMaybe<KycLevelName_Bool_Exp>;
+};
+
+
+export type Subscription_RootKycStatusArgs = {
+  distinct_on?: InputMaybe<Array<KycStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<KycStatus_Order_By>>;
+  where?: InputMaybe<KycStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootKycStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<KycStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<KycStatus_Order_By>>;
+  where?: InputMaybe<KycStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootKycStatus_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootKycStatus_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<KycStatus_Stream_Cursor_Input>>;
+  where?: InputMaybe<KycStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootKyc_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Kyc_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Kyc_Order_By>>;
+  where?: InputMaybe<Kyc_Bool_Exp>;
+};
+
+
+export type Subscription_RootKyc_By_PkArgs = {
+  externalUserId: Scalars['uuid'];
+};
+
+
+export type Subscription_RootKyc_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Kyc_Stream_Cursor_Input>>;
+  where?: InputMaybe<Kyc_Bool_Exp>;
 };
 
 

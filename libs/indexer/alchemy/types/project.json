@@ -1,0 +1,30 @@
+{
+  "name": "indexer-alchemy-types",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/indexer/alchemy/types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/indexer/alchemy/types",
+        "tsConfig": "libs/indexer/alchemy/types/tsconfig.lib.json",
+        "packageJson": "libs/indexer/alchemy/types/package.json",
+        "main": "libs/indexer/alchemy/types/src/index.ts",
+        "assets": ["libs/indexer/alchemy/types/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/indexer/alchemy/types/**/*.ts",
+          "libs/indexer/alchemy/types/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,11 +1,10 @@
 'use client';
 
+import { useAuthContext } from '@next/auth';
 import { Button, ButtonSkeleton } from '@ui/components';
 import { LogIn } from '@ui/icons';
-import { signIn } from 'next-auth/react';
-import { useAuthContext } from '@next/auth';
 
-interface NoUserPassFooterClientProps {
+export interface NoUserPassFooterClientProps {
   signInText: string;
 }
 

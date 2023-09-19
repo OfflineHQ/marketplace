@@ -1,0 +1,7 @@
+query GetKyc {
+  kyc {
+    applicantId
+    reviewStatus
+    levelName
+  }
+}

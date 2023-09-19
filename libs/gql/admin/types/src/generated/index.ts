@@ -22,14 +22,14 @@ export type GetAccountQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null }> };
+export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null, kyc?: { __typename?: 'kyc', applicantId: string, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null }> };
 
 export type GetAccountByEmailQueryVariables = Types.Exact<{
   email: Types.Scalars['String'];
 }>;
 
 
-export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null }> };
+export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null, kyc?: { __typename?: 'kyc', applicantId: string, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null }> };
 
 export type GetAccountByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['uuid'];
@@ -64,6 +64,30 @@ export type GetEventPassPendingOrdersQueryVariables = Types.Exact<{ [key: string
 
 
 export type GetEventPassPendingOrdersQuery = { __typename?: 'query_root', eventPassPendingOrder: Array<{ __typename?: 'eventPassPendingOrder', created_at: any, id: any, eventPassId: string, account?: { __typename?: 'account', email?: string | null, address: string } | null, eventPassPricing?: { __typename?: 'eventPassPricing', timeBeforeDelete: number } | null }> };
+
+export type KycFieldsFragment = { __typename?: 'kyc', applicantId: string, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null };
+
+export type CreateKycMutationVariables = Types.Exact<{
+  kyc: Types.Kyc_Insert_Input;
+}>;
+
+
+export type CreateKycMutation = { __typename?: 'mutation_root', insert_kyc_one?: { __typename?: 'kyc', applicantId: string, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null };
+
+export type UpdateKycMutationVariables = Types.Exact<{
+  externalUserId: Types.Scalars['uuid'];
+  kyc: Types.Kyc_Set_Input;
+}>;
+
+
+export type UpdateKycMutation = { __typename?: 'mutation_root', update_kyc_by_pk?: { __typename?: 'kyc', applicantId: string, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null };
+
+export type DeleteKycMutationVariables = Types.Exact<{
+  externalUserId: Types.Scalars['uuid'];
+}>;
+
+
+export type DeleteKycMutation = { __typename?: 'mutation_root', delete_kyc_by_pk?: { __typename?: 'kyc', externalUserId: any } | null };
 
 export type NftTransferFieldsFragment = { __typename?: 'nftTransfer', id: any, contractAddress: string, fromAddress: string, toAddress: string, transactionHash: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId: string, tokenId: any, created_at: any };
 

@@ -256,6 +256,27 @@ export const useGetEventPassPendingOrdersQuery = <
       fetchDataReactQuery<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables),
       options
     );
+export const GetKycDocument = `
+    query GetKyc {
+  kyc {
+    applicantId
+    reviewStatus
+    levelName
+  }
+}
+    `;
+export const useGetKycQuery = <
+      TData = Types.GetKycQuery,
+      TError = Error
+    >(
+      variables?: Types.GetKycQueryVariables,
+      options?: UseQueryOptions<Types.GetKycQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetKycQuery, TError, TData>(
+      variables === undefined ? ['GetKyc'] : ['GetKyc', variables],
+      fetchDataReactQuery<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables),
+      options
+    );
 export const GetPassedEventsWithEventPassNftsDocument = `
     query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(

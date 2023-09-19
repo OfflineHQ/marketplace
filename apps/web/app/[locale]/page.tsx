@@ -1,6 +1,5 @@
-import { useTranslations } from 'next-intl';
-import React from 'react';
 import { Text } from '@ui/components';
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
   const t = useTranslations('Index');

@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@crypto": ["libs/crypto/src/index.ts"],
       "@features/account/api": ["libs/features/account/api/src/index.ts"],
       "@features/appNav/ui": ["libs/features/appNav/ui/src/index.ts"],
       "@features/appNav/ui/stories": [
@@ -35,8 +36,15 @@
       "@features/cart": ["libs/features/cart/src/index.ts"],
       "@features/cart-types": ["libs/features/cart-types/src/index.ts"],
       "@features/cart/server": ["libs/features/cart/src/server.ts"],
+      "@features/kyc": ["libs/features/kyc/src/index.ts"],
+      "@features/kyc-actions": ["libs/features/kyc-actions/src/index.ts"],
+      "@features/kyc-api": ["libs/features/kyc-api/src/index.ts"],
+      "@features/kyc/server": ["libs/features/kyc/src/server.ts"],
       "@features/organizer/event": [
         "libs/features/organizer/event/src/index.ts"
+      ],
+      "@features/organizer/event-api": [
+        "libs/features/organizer/event-api/src/index.ts"
       ],
       "@features/organizer/event-types": [
         "libs/features/organizer/event-types/src/index.ts"
@@ -72,9 +80,14 @@
       "@gql/user/react-query": ["libs/gql/user/react-query/src/index.ts"],
       "@gql/user/types": ["libs/gql/user/types/src/index.ts"],
       "@indexer/alchemy/admin": ["libs/indexer/alchemy/admin/src/index.ts"],
+      "@indexer/alchemy/types": ["libs/indexer/alchemy/types/src/index.ts"],
       "@indexer/alchemy/webhooks": [
         "libs/indexer/alchemy/webhooks/src/index.ts"
       ],
+      "@kyc/admin": ["libs/kyc/admin/src/index.ts"],
+      "@kyc/common": ["libs/features/kyc-common/src/index.ts"],
+      "@kyc/types": ["libs/kyc/types/src/index.ts"],
+      "@kyc/webhooks": ["libs/kyc/webhooks/src/index.ts"],
       "@logger": ["libs/logger/src/index.ts"],
       "@next/auth": ["libs/next/auth/src/index.ts"],
       "@next/currency": ["libs/next/currency/src/index.ts"],

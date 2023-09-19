@@ -1,16 +1,17 @@
-import { useTranslations } from 'next-intl';
-import React from 'react';
+import { Locale } from '@gql/shared/types';
+import { AppUser } from '@next/types';
 import {
   Card,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-  CardOverflow,
   CardContent,
-  CardOverlay,
   CardDescription,
-  Button,
+  CardFooter,
+  CardHeader,
+  CardOverflow,
+  CardOverlay,
+  CardTitle,
 } from '@ui/components';
+import { useTranslations } from 'next-intl';
+import React from 'react';
 import {
   LocalPassList,
   type LocalPassListProps,
@@ -18,13 +19,17 @@ import {
 import { getEventPassPendingOrders } from '../api/getEventPassPendingOrders';
 
 export interface UserCartProps extends LocalPassListProps {
-  locale: string;
+  locale: Locale;
+  user: AppUser;
+  children: React.ReactNode;
 }
 
 export async function UserCart({
   EventPassesFetcher,
   locale,
   noCartImage,
+  user,
+  children,
 }: UserCartProps) {
   const userPassPendingOrders = await getEventPassPendingOrders({ locale });
   return (
@@ -32,16 +37,22 @@ export async function UserCart({
       EventPassesFetcher={EventPassesFetcher}
       userPassPendingOrders={userPassPendingOrders}
       noCartImage={noCartImage}
+      user={user}
+      locale={locale}
+      children={children}
     />
   );
 }
 
-type UserCartSectionProps = LocalPassListProps;
+type UserCartSectionProps = UserCartProps;
 
 const UserCartSection: React.FC<UserCartSectionProps> = ({
   EventPassesFetcher,
   userPassPendingOrders,
   noCartImage,
+  user,
+  locale,
+  children,
 }) => {
   const t = useTranslations('Cart.UserCart');
   return (
@@ -62,7 +73,7 @@ const UserCartSection: React.FC<UserCartSectionProps> = ({
         </CardOverflow>
         <CardOverlay />
         <CardFooter className="justify-center" variant="sticky">
-          <Button>{t('finalize-button')}</Button>
+          {children}
         </CardFooter>
       </Card>
     </section>

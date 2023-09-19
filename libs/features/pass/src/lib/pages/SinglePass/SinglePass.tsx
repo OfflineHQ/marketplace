@@ -1,37 +1,35 @@
-import { useTranslations, useFormatter } from 'next-intl';
-import { useMemo } from 'react';
+import { EventOrganizerButton, PassOptions } from '@features/organizer/event';
+import { EventPassNft } from '@features/pass-types';
+import { formatCurrency } from '@next/currency';
+import type { AppUser } from '@next/types';
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-  CardOverflow,
-  CardContent,
+  AlertSkeleton,
+  AspectRatio,
+  AspectRatioSkeleton,
   Button,
   ButtonSkeleton,
-  CardOverlay,
-  Text,
-  CardDescription,
-  AspectRatio,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
   CardNavBack,
   CardNavBackSkeleton,
-  AspectRatioSkeleton,
-  TextSkeleton,
-  AlertSkeleton,
-  Separator,
+  CardOverflow,
+  CardOverlay,
   Label,
+  Separator,
+  Text,
+  TextSkeleton,
 } from '@ui/components';
 import { Download, Reveal } from '@ui/icons';
+import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { EventPassNft } from '@features/pass-types';
-import { EventOrganizerButton, PassOptions } from '@features/organizer/event';
-import { formatCurrency } from '@next/currency';
-import type { User } from 'next-auth';
+import { useMemo } from 'react';
 import { IsPassRevealedAlert } from '../../molecules/IsPassRevealedAlert/IsPassRevealedAlert';
 
 export interface SinglePassProps {
   eventPassNft: EventPassNft;
-  user?: User;
+  user?: AppUser;
   downloadPass?: () => void;
   revealPass?: () => void;
 }

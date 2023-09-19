@@ -1,11 +1,12 @@
-import { getAccount } from './getAccount';
-import { createAccount } from './createAccount';
 import {
-  deleteTables,
+  applySeeds,
   createDbClient,
-  seedDb,
+  deleteAllTables,
   type PgClient,
 } from '@test-utils/db';
+import { accounts } from '@test-utils/gql';
+import { createAccount } from './createAccount';
+import { getAccount } from './getAccount';
 
 describe('getAccount test', () => {
   let client: PgClient;
@@ -17,12 +18,11 @@ describe('getAccount test', () => {
     client = await createDbClient();
   });
   afterAll(async () => {
-    await deleteTables(client, ['account']);
+    await deleteAllTables(client);
     await client.end();
   });
   beforeEach(async () => {
-    await deleteTables(client, ['account']);
-    await seedDb(client, 'account');
+    await deleteAllTables(client);
   });
   it('should return null when account does not exist', async () => {
     const nonExistingAddress = '0xNotExisting';
@@ -35,5 +35,19 @@ describe('getAccount test', () => {
     expect(fetchedAccount).not.toBeNull();
     expect(fetchedAccount.address).toEqual(account.address);
     expect(fetchedAccount.email).toEqual(account.email);
+  });
+  it('should get an existing account with kyc info if existing', async () => {
+    await applySeeds(client, ['account', 'kyc']);
+    const fetchedAccount = await getAccount(accounts.alpha_user.address);
+    expect(fetchedAccount).not.toBeNull();
+    expect(fetchedAccount.address).toEqual(accounts.alpha_user.address);
+    expect(fetchedAccount.email).toEqual(accounts.alpha_user.email);
+    expect(fetchedAccount.kyc).not.toBeNull();
+    expect(fetchedAccount.kyc?.levelName).toEqual(
+      accounts.alpha_user.kyc?.levelName
+    );
+    expect(fetchedAccount.kyc?.reviewStatus).toEqual(
+      accounts.alpha_user.kyc?.reviewStatus
+    );
   });
 });
