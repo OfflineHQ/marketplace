@@ -1,4 +1,8 @@
-import { AlchemyRequest, AlchemyNFTActivityEvent, Activity } from './types';
+import {
+  Activity,
+  AlchemyNFTActivityEvent,
+  AlchemyRequest,
+} from '@indexer/alchemy/types';
 import { WebhookType } from 'alchemy-sdk';
 
 export function createMockAlchemyRequest(

@@ -33,18 +33,6 @@ const nextConfig = {
     removeConsole: false,
     styledComponents: false,
   },
-  /* could improve performance in dev but @ui components no organized like that.
-  See that as ref: https://github.com/knitkode/koine/blob/3046607d655a3cfa1e3b3438f1aef168fbdc6ad5/packages/next/config/index.ts#L251
-  https://nextjs.org/blog/next-13-1#import-resolution-for-smaller-bundles
-  And this thread n
-  + this article: https://medium.com/@yashashr/next-js-optimization-for-better-performance-part-1-material-ui-mui-configs-plugins-6fdc48a4e984
-  */
-  modularizeImports: {
-    //Need to update structure of @ui/components to make it work
-    // '@ui/components/?(((\\w*)?/?)*)': {
-    //   transform: '@ui/components/{{ matches.[1] }}/{{member}}',
-    // },
-  },
   transpilePackages: ['@ui/components', '@ui/theme', '@ui/icons'],
   images: {
     domains: ['media.graphassets.com'],
@@ -71,12 +59,25 @@ const nextConfig = {
         'node_modules/.pnpm/sass',
       ],
     },
+    optimizePackageImports: [
+      '@ui/icons',
+      // '@ui/components', //  Error: Could not find the module "" in the React Client Manifest. This is probably a bug in the React Server Components bundler. => see https://github.com/vercel/next.js/issues/54967
+      '@features/appNav/ui',
+      '@features/cart',
+      '@features/cart/server',
+      '@features/kyc',
+      '@features/kyc/server',
+      '@features/organizer/event',
+      '@features/organizer/event/server',
+      '@features/pass',
+      '@features/pass/server',
+      '@features/settings',
+    ],
     // https://vercel.com/docs/concepts/deployments/skew-protection#enabling-skew-protection
     useDeploymentId: true,
     // If use with serverActions is desired
     serverActions: true,
     useDeploymentIdServerActions: true,
-    appDir: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
   },
   sentry: {

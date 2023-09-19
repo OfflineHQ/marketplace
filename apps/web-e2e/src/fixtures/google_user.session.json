@@ -2,8 +2,7 @@
   "user": {
     "id": "ac542c34-1907-451c-94be-5df69a959080",
     "address": "0x1bBEdB07706728A19c9dB82d3c420670D8040592",
-    "email": "google_user@gmail.com",
-    "emailVerified": true
+    "email": "google_user@gmail.com"
   },
   "expires": "3000-01-01T00:00:00.000Z"
 }

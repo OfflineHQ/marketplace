@@ -1,0 +1,30 @@
+{
+  "name": "kyc-types",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/kyc/types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/kyc/types",
+        "tsConfig": "libs/kyc/types/tsconfig.lib.json",
+        "packageJson": "libs/kyc/types/package.json",
+        "main": "libs/kyc/types/src/index.ts",
+        "assets": ["libs/kyc/types/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/kyc/types/**/*.ts",
+          "libs/kyc/types/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

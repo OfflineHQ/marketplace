@@ -6184,6 +6184,9 @@ type account {
   email: String
   emailVerified: Boolean!
   id: uuid!
+
+  """An object relationship"""
+  kyc: kyc
   organizer(
     """
     Defines which locales should be returned.
@@ -6210,6 +6213,7 @@ input account_bool_exp {
   email: String_comparison_exp
   emailVerified: Boolean_comparison_exp
   id: uuid_comparison_exp
+  kyc: kyc_bool_exp
 }
 
 """Ordering options when selecting data from "account"."""
@@ -6218,6 +6222,7 @@ input account_order_by {
   email: order_by
   emailVerified: order_by
   id: order_by
+  kyc: kyc_order_by
 }
 
 """
@@ -7700,6 +7705,149 @@ input jsonb_comparison_exp {
   _nin: [jsonb!]
 }
 
+"""
+columns and relationships of "kyc"
+"""
+type kyc {
+  """Unique identifier for the applicant provided by Sumsub."""
+  applicantId: String!
+
+  """
+  The date and time when the applicant was created in Sumsub. Stored in UTC timestamp.
+  """
+  createDate: timestamptz!
+
+  """UUID referencing to the user ID in the existing accounts table."""
+  externalUserId: uuid!
+
+  """Level of KYC verification, which refers to kycLevelName."""
+  levelName: kycLevelName_enum
+
+  """Status of the applicant’s review in Sumsub, which refers to kycStatus."""
+  reviewStatus: kycStatus_enum
+
+  """Timestamp automatically updated whenever the kyc row changes."""
+  updated_at: timestamptz
+}
+
+enum kycLevelName_enum {
+  advanced_kyc_level
+  basic_kyc_level
+}
+
+"""
+Boolean expression to compare columns of type "kycLevelName_enum". All fields are combined with logical 'AND'.
+"""
+input kycLevelName_enum_comparison_exp {
+  _eq: kycLevelName_enum
+  _in: [kycLevelName_enum!]
+  _is_null: Boolean
+  _neq: kycLevelName_enum
+  _nin: [kycLevelName_enum!]
+}
+
+enum kycStatus_enum {
+  completed
+  init
+  onHold
+  pending
+  prechecked
+  queued
+}
+
+"""
+Boolean expression to compare columns of type "kycStatus_enum". All fields are combined with logical 'AND'.
+"""
+input kycStatus_enum_comparison_exp {
+  _eq: kycStatus_enum
+  _in: [kycStatus_enum!]
+  _is_null: Boolean
+  _neq: kycStatus_enum
+  _nin: [kycStatus_enum!]
+}
+
+"""
+Boolean expression to filter rows from the table "kyc". All fields are combined with a logical 'AND'.
+"""
+input kyc_bool_exp {
+  _and: [kyc_bool_exp!]
+  _not: kyc_bool_exp
+  _or: [kyc_bool_exp!]
+  applicantId: String_comparison_exp
+  createDate: timestamptz_comparison_exp
+  externalUserId: uuid_comparison_exp
+  levelName: kycLevelName_enum_comparison_exp
+  reviewStatus: kycStatus_enum_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""Ordering options when selecting data from "kyc"."""
+input kyc_order_by {
+  applicantId: order_by
+  createDate: order_by
+  externalUserId: order_by
+  levelName: order_by
+  reviewStatus: order_by
+  updated_at: order_by
+}
+
+"""
+select columns of table "kyc"
+"""
+enum kyc_select_column {
+  """column name"""
+  applicantId
+
+  """column name"""
+  createDate
+
+  """column name"""
+  externalUserId
+
+  """column name"""
+  levelName
+
+  """column name"""
+  reviewStatus
+
+  """column name"""
+  updated_at
+}
+
+"""
+Streaming cursor of the table "kyc"
+"""
+input kyc_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: kyc_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input kyc_stream_cursor_value_input {
+  """Unique identifier for the applicant provided by Sumsub."""
+  applicantId: String
+
+  """
+  The date and time when the applicant was created in Sumsub. Stored in UTC timestamp.
+  """
+  createDate: timestamptz
+
+  """UUID referencing to the user ID in the existing accounts table."""
+  externalUserId: uuid
+
+  """Level of KYC verification, which refers to kycLevelName."""
+  levelName: kycLevelName_enum
+
+  """Status of the applicant’s review in Sumsub, which refers to kycStatus."""
+  reviewStatus: kycStatus_enum
+
+  """Timestamp automatically updated whenever the kyc row changes."""
+  updated_at: timestamptz
+}
+
 """mutation root"""
 type mutation_root {
   """Create one asset"""
@@ -9132,6 +9280,32 @@ type query_root {
     where: EventWhereInput
   ): EventConnection!
 
+  """
+  fetch data from the table: "kyc"
+  """
+  kyc(
+    """distinct select on columns"""
+    distinct_on: [kyc_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kyc_order_by!]
+
+    """filter the rows returned"""
+    where: kyc_bool_exp
+  ): [kyc!]!
+
+  """fetch data from the table: "kyc" using primary key columns"""
+  kyc_by_pk(
+    """UUID referencing to the user ID in the existing accounts table."""
+    externalUserId: uuid!
+  ): kyc
+
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
@@ -9700,6 +9874,46 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassPricing_bool_exp
   ): [eventPassPricing!]!
+
+  """
+  fetch data from the table: "kyc"
+  """
+  kyc(
+    """distinct select on columns"""
+    distinct_on: [kyc_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [kyc_order_by!]
+
+    """filter the rows returned"""
+    where: kyc_bool_exp
+  ): [kyc!]!
+
+  """fetch data from the table: "kyc" using primary key columns"""
+  kyc_by_pk(
+    """UUID referencing to the user ID in the existing accounts table."""
+    externalUserId: uuid!
+  ): kyc
+
+  """
+  fetch data from the table in a streaming manner: "kyc"
+  """
+  kyc_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [kyc_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: kyc_bool_exp
+  ): [kyc!]!
 }
 
 scalar timestamp

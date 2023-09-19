@@ -177,5 +177,14 @@
       "from": "From",
       "to": "To"
     }
+  },
+  "KYC": {
+    "Dialog": {
+      "title": "Verify Your Identity",
+      "description": "To access exclusive experiences and perks, we need a few details from you.<br></br>Don't worry, it's quick and secure."
+    },
+    "Button": {
+      "text": "Verify your identity"
+    }
   }
 }

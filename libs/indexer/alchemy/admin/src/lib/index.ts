@@ -1,20 +1,20 @@
-import {
-  Alchemy,
-  Network,
-  type GetNftsForOwnerOptions as _GetNftsForOwnerOptions,
-  OwnedNftsResponse,
-  OwnedNft,
-  GetNftsForContractOptions,
-  GetBaseNftsForContractOptions,
+import { Alchemy, Network } from 'alchemy-sdk';
+
+import type {
   BaseNft,
+  GetAllWebhooksResponse,
+  GetBaseNftsForContractOptions,
+  GetNftsForContractOptions,
   Nft,
-  GetTransfersForContractOptions as _GetTransfersForContractOptions,
-  TransferredNft,
-  WebhookType,
   NftActivityWebhook,
   NftWebhookParams,
-  GetAllWebhooksResponse,
-} from 'alchemy-sdk';
+  OwnedNft,
+  OwnedNftsResponse,
+  TransferredNft,
+  GetNftsForOwnerOptions as _GetNftsForOwnerOptions,
+  GetTransfersForContractOptions as _GetTransfersForContractOptions,
+} from '@indexer/alchemy/types';
+import { WebhookType } from '@indexer/alchemy/types';
 
 interface GetNftsForOwnerOptions
   extends Omit<_GetNftsForOwnerOptions, 'contractAddresses'> {

@@ -1,4 +1,9 @@
-// Use this file to export React client components (e.g. those with 'use client' directive) or other non-server utilities
-export * from './lib/pages/NoUserPass/NoUserPassFooterClient';
-export * from './lib/pages/UserPass/UserPass';
-export * from './lib/pages/NoUserPass/NoUserPass';
+export {
+  NoUserPass,
+  type NoUserPassProps,
+} from './lib/pages/NoUserPass/NoUserPass';
+export {
+  NoUserPassFooterClient,
+  type NoUserPassFooterClientProps,
+} from './lib/pages/NoUserPass/NoUserPassFooterClient';
+export { UserPass, type UserPassProps } from './lib/pages/UserPass/UserPass';

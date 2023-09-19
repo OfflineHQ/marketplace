@@ -1,12 +1,13 @@
 // PassPurchaseSheetContainer.spec.tsx
-import { screen, fireEvent } from '@testing-library/react';
-import { renderWithIntl } from '@test-utils/next-intl';
 import { composeStories } from '@storybook/react';
+import { renderWithIntl } from '@test-utils/next-intl';
+import { fireEvent, screen } from '@testing-library/react';
 import * as stories from './PassPurchaseSheetContainer.stories';
 
 const { Default, WithFullSize } = composeStories(stories);
 
 jest.mock('next/navigation', () => ({
+  ...jest.requireActual('next/navigation'),
   useRouter: () => ({
     back: jest.fn(),
   }),

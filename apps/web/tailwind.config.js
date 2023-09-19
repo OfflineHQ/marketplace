@@ -7,10 +7,7 @@ const { createGlobPatternsForDependencies } = require('@nx/next/tailwind');
  */
 module.exports = {
   content: [
-    join(
-      __dirname,
-      '{src,app,pages,components,public}/**/!(*.spec).{ts,tsx,html}'
-    ),
+    join(__dirname, '{src,app,components,public}/**/!(*.spec).{ts,tsx,html}'),
     join(__dirname, '../../libs/features/**/!(*.spec).{ts,tsx}'),
     join(__dirname, '../../libs/next/hygraph/**/!(*.spec).{ts,tsx}'),
     join(__dirname, '../../libs/ui/**/!(*.spec).{ts,tsx}'),

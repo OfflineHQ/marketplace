@@ -10,6 +10,13 @@ export const AccountFieldsFragmentDoc = `
   organizerId
 }
     `;
+export const KycFieldsFragmentDoc = `
+    fragment KycFields on kyc {
+  applicantId
+  reviewStatus
+  levelName
+}
+    `;
 export const NftTransferFieldsFragmentDoc = `
     fragment NftTransferFields on nftTransfer {
   id
@@ -140,23 +147,24 @@ export const EventPassNftFieldsFragmentDoc = `
     query GetAccount($address: String!) {
   account(where: {address: {_eq: $address}}) {
     ...AccountFields
+    kyc {
+      ...KycFields
+    }
   }
 }
-    ${AccountFieldsFragmentDoc}`;
+    ${AccountFieldsFragmentDoc}
+${KycFieldsFragmentDoc}`;
  const GetAccountByEmailDocument = `
     query GetAccountByEmail($email: String!) {
   account(where: {email: {_eq: $email}}) {
     ...AccountFields
+    kyc {
+      ...KycFields
+    }
   }
 }
-    ${AccountFieldsFragmentDoc}`;
- const GetAccountByIdDocument = `
-    query GetAccountById($id: uuid!) {
-  account(where: {id: {_eq: $id}}) {
-    address
-  }
-}
-    `;
+    ${AccountFieldsFragmentDoc}
+${KycFieldsFragmentDoc}`;
  const UpsertEventPassOrdersDocument = `
     mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
   insert_eventPassOrder(
@@ -206,6 +214,27 @@ export const EventPassNftFieldsFragmentDoc = `
     eventPassPricing {
       timeBeforeDelete
     }
+  }
+}
+    `;
+ const CreateKycDocument = `
+    mutation CreateKyc($kyc: kyc_insert_input!) {
+  insert_kyc_one(object: $kyc) {
+    ...KycFields
+  }
+}
+    ${KycFieldsFragmentDoc}`;
+ const UpdateKycDocument = `
+    mutation UpdateKyc($externalUserId: uuid!, $kyc: kyc_set_input!) {
+  update_kyc_by_pk(pk_columns: {externalUserId: $externalUserId}, _set: $kyc) {
+    ...KycFields
+  }
+}
+    ${KycFieldsFragmentDoc}`;
+ const DeleteKycDocument = `
+    mutation DeleteKyc($externalUserId: uuid!) {
+  delete_kyc_by_pk(externalUserId: $externalUserId) {
+    externalUserId
   }
 }
     `;
@@ -538,6 +567,15 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassPendingOrders(variables?: Types.GetEventPassPendingOrdersQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersQuery> {
       return requester<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables, options) as Promise<Types.GetEventPassPendingOrdersQuery>;
+    },
+    CreateKyc(variables: Types.CreateKycMutationVariables, options?: C): Promise<Types.CreateKycMutation> {
+      return requester<Types.CreateKycMutation, Types.CreateKycMutationVariables>(CreateKycDocument, variables, options) as Promise<Types.CreateKycMutation>;
+    },
+    UpdateKyc(variables: Types.UpdateKycMutationVariables, options?: C): Promise<Types.UpdateKycMutation> {
+      return requester<Types.UpdateKycMutation, Types.UpdateKycMutationVariables>(UpdateKycDocument, variables, options) as Promise<Types.UpdateKycMutation>;
+    },
+    DeleteKyc(variables: Types.DeleteKycMutationVariables, options?: C): Promise<Types.DeleteKycMutation> {
+      return requester<Types.DeleteKycMutation, Types.DeleteKycMutationVariables>(DeleteKycDocument, variables, options) as Promise<Types.DeleteKycMutation>;
     },
     UpsertNftTransfer(variables: Types.UpsertNftTransferMutationVariables, options?: C): Promise<Types.UpsertNftTransferMutation> {
       return requester<Types.UpsertNftTransferMutation, Types.UpsertNftTransferMutationVariables>(UpsertNftTransferDocument, variables, options) as Promise<Types.UpsertNftTransferMutation>;

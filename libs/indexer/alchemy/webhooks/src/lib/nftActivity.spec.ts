@@ -1,12 +1,9 @@
-import { nftActivity, extractNftTransfersFromEvent } from './nftActivity';
-import type { AlchemyNFTActivityEvent, Activity } from './types';
+import type { Activity, AlchemyNFTActivityEvent } from '@indexer/alchemy/types';
 import { EventPassNftWrapper } from '@nft/eventPass';
-import {
-  isValidSignatureForAlchemyRequest,
-  addAlchemyContextToRequest,
-} from './utils';
-import { WebhookType, Network } from 'alchemy-sdk';
+import { Network, WebhookType } from 'alchemy-sdk';
+import { extractNftTransfersFromEvent, nftActivity } from './nftActivity';
 import { createMockAlchemyRequest } from './testUtils';
+import { isValidSignatureForAlchemyRequest } from './utils';
 
 // Mock implementations
 jest.mock('./utils', () => ({

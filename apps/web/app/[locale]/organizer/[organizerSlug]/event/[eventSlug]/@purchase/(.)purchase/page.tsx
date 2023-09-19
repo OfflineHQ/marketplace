@@ -1,7 +1,7 @@
 import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
 import { deepPick } from '@utils';
 import { messages, defaultLocale, type Locale } from '@next/i18n';
-import { getEventPasses } from '@features/organizer/event/server';
+import { getEventPasses } from '@features/organizer/event-api';
 import type { EventPass } from '@features/organizer/event-types';
 import {
   PassPurchaseSheet,

@@ -1,5 +1,5 @@
-import * as crypto from 'crypto';
-import type { AlchemyRequest } from './types';
+import { isValidSignature } from '@crypto';
+import type { AlchemyRequest } from '@indexer/alchemy/types';
 
 export function isValidSignatureForAlchemyRequest(
   request: AlchemyRequest,
@@ -17,10 +17,7 @@ export function isValidSignatureForStringBody(
   signature: string,
   signingKey: string
 ): boolean {
-  const hmac = crypto.createHmac('sha256', signingKey); // Create a HMAC SHA256 hash using the signing key
-  hmac.update(body, 'utf8'); // Update the token hash with the request body using utf8
-  const digest = hmac.digest('hex');
-  return signature === digest;
+  return isValidSignature({ string: body, secret: signingKey, signature });
 }
 
 export function addAlchemyContextToRequest(
