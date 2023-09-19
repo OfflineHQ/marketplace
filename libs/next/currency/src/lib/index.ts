@@ -1,8 +1,8 @@
 import { getCookie, setCookie } from 'cookies-next';
 
+import { AED, CNY, EUR, GBP, QAR, SGD, USD } from '@dinero.js/currencies';
 import { Currency_Enum } from '@gql/shared/types';
-import { dinero, convert, toDecimal, Dinero } from 'dinero.js';
-import { EUR, USD, GBP, AED, CNY, QAR, SGD } from '@dinero.js/currencies';
+import { Dinero, convert, dinero, toDecimal } from 'dinero.js';
 
 export type Money = {
   amount: number;
@@ -25,12 +25,14 @@ const currencyMap = {
 
 // Set user's currency preference in a cookie
 export const setCurrencyPreference = (currency: Currency_Enum) => {
-  setCookie('currency', currency);
+  setCookie('NEXT_CURRENCY', currency);
 };
 
 // Get user's currency preference from a cookie
 export const getCurrencyPreference = (): Currency_Enum => {
-  return (getCookie('currency') as unknown as Currency_Enum) || defaultCurrency;
+  return (
+    (getCookie('NEXT_CURRENCY') as unknown as Currency_Enum) || defaultCurrency
+  );
 };
 
 // TODO fix rates because it will depend of the currency from money. Here it's as if money is always in EUR

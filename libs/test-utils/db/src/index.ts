@@ -8,13 +8,13 @@ let dbName = '';
 
 export const SeedTable = {
   account: 0,
-  eventPassPricing: 1,
-  eventPassPendingOrder: 2,
-  eventPassNftContract: 3,
-  eventParameters: 4,
-  eventPassNft: 5,
-  nftTransfer: 6,
-  eventPassOrder: 7,
+  kyc: 1,
+  eventPassPricing: 2,
+  eventPassPendingOrder: 3,
+  eventPassNftContract: 4,
+  eventParameters: 5,
+  eventPassNft: 6,
+  nftTransfer: 7,
 };
 
 export type SeedTableName = keyof typeof SeedTable;

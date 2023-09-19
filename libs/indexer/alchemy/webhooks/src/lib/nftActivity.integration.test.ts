@@ -1,15 +1,14 @@
+import { FileWrapper } from '@file-upload/admin';
+import type { Activity } from '@indexer/alchemy/types';
 import {
-  createDbClient,
-  deleteTables,
-  type PgClient,
-  deleteAllTables,
   applySeeds,
+  createDbClient,
+  deleteAllTables,
+  type PgClient,
 } from '@test-utils/db';
+import { Network } from 'alchemy-sdk';
 import { nftActivity } from './nftActivity';
 import { createMockAlchemyRequest } from './testUtils';
-import { FileWrapper } from '@file-upload/admin';
-import { WebhookType, Network } from 'alchemy-sdk';
-import type { Activity } from './types';
 
 // Mock the FileWrapper module
 jest.mock('@file-upload/admin');

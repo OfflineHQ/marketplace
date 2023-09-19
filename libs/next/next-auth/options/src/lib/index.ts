@@ -2,14 +2,17 @@
 import '@next/types';
 
 import * as jsonwebtoken from 'jsonwebtoken';
-import type { NextAuthOptions, User, Account } from 'next-auth';
-import type { JWTOptions, JWT } from 'next-auth/jwt';
+import type { Account, AuthOptions } from 'next-auth';
+import type { JWT, JWTOptions } from 'next-auth/jwt';
 
-import { SiweProvider } from '@next/siwe/provider';
+import { getAccount } from '@features/account/api';
 import { Roles } from '@next/hasura/utils';
-import { isProd, getNextAppURL, isBackOffice } from '@utils';
-import { Provider } from 'next-auth/providers';
 import { nextAuthCookieName } from '@next/next-auth/common';
+import { SiweProvider } from '@next/siwe/provider';
+import { AppUser } from '@next/types';
+import { getNextAppURL, isBackOffice, isProd } from '@utils';
+import { Provider } from 'next-auth/providers';
+import { NextRequest } from 'next/server';
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -105,83 +108,99 @@ export const providers: Array<Provider> = [SiweProvider()];
 const hostName = new URL(getNextAppURL()).hostname;
 const useSecureCookies = getNextAppURL().startsWith('https://');
 
-export const authOptions = {
-  cookies: {
-    sessionToken: {
-      name: nextAuthCookieName(),
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        secure: useSecureCookies,
-        // authorize cookie for subdomain, inc. hasura app (strip www. from hostName)
-        domain:
-          hostName === 'localhost' || !hostName
-            ? hostName
-            : '.' + hostName.replace(/^www\./, ''),
+export const createOptions = (req: NextRequest) =>
+  ({
+    cookies: {
+      sessionToken: {
+        name: nextAuthCookieName(),
+        options: {
+          httpOnly: true,
+          sameSite: 'lax',
+          path: '/',
+          secure: useSecureCookies,
+          // authorize cookie for subdomain, inc. hasura app (strip www. from hostName)
+          domain:
+            hostName === 'localhost' || !hostName
+              ? hostName
+              : '.' + hostName.replace(/^www\./, ''),
+        },
       },
     },
-  },
-  session: {
-    strategy: 'jwt',
-    maxAge:
-      parseInt(process.env.TOKEN_LIFE_TIME as string) || 30 * 24 * 60 * 60, // 30 days
-  },
-  debug: !isProd(),
-  providers,
-  pages: {
-    signIn: undefined,
-    signOut: undefined,
-    newUser: undefined,
-    // signOut: '/auth/signout',
-    // error: '/auth/error', // Error code passed in query string as ?error=
-    // verifyRequest: '/auth/verify-request', // (used for check email message)
-    // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
-  },
-  theme: {
-    colorScheme: 'auto',
-  },
-  jwt: jwtOptions,
-  secret: process.env.NEXTAUTH_SECRET,
-  callbacks: {
-    // Add hasura data needed for claims_map + accessToken
-    async jwt(args) {
-      const {
-        token,
-        user,
-        account,
-      }: {
-        token: JWT;
-        user?: User;
-        account?: Account | null;
-      } = args;
-      // User is connected, set the role for Hasura + Upload.js permissions to secure access to the user's pass or organizer folder
-      if (user && account) {
-        token.access = getJwtAccessOptions(user);
-        if (isBackOffice()) {
+    session: {
+      strategy: 'jwt',
+      maxAge:
+        parseInt(process.env.TOKEN_LIFE_TIME as string) || 30 * 24 * 60 * 60, // 30 days
+    },
+    debug: !isProd(),
+    providers,
+    pages: {
+      signIn: undefined,
+      signOut: undefined,
+      newUser: undefined,
+      // signOut: '/auth/signout',
+      // error: '/auth/error', // Error code passed in query string as ?error=
+      // verifyRequest: '/auth/verify-request', // (used for check email message)
+      // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+    },
+    theme: {
+      colorScheme: 'auto',
+    },
+    jwt: jwtOptions,
+    secret: process.env.NEXTAUTH_SECRET,
+    callbacks: {
+      // Add hasura data needed for claims_map + accessToken
+      async jwt(args) {
+        const {
+          token,
+          user,
+          account,
+          trigger,
+        }: {
+          token: JWT;
+          user?: AppUser;
+          account?: Account | null;
+          trigger?: string;
+        } = args;
+        const appUser = user;
+        // user is connected but has been updated on hasura, need to get the updated jwt with user
+        if (trigger === 'update' && token) {
+          const account = (await getAccount(token.user.address)) as AppUser;
           return {
-            user,
+            ...token,
+            user: {
+              ...token.user,
+              kyc: account.kyc,
+            },
+            access: getJwtAccessOptions(account),
+          };
+        }
+        // User is connected, set the role for Hasura + Upload.js permissions to secure access to the user's pass or organizer folder
+        else if (appUser && account) {
+          token.access = getJwtAccessOptions(appUser);
+          if (isBackOffice()) {
+            return {
+              user: appUser,
+              provider: account.provider,
+              providerType: account.type,
+              role: Roles.organizer,
+              access: token.access,
+            };
+          }
+          return {
+            user: appUser,
             provider: account.provider,
             providerType: account.type,
-            role: Roles.organizer,
+            role: Roles.user,
             access: token.access,
           };
         }
-
-        return {
-          user,
-          provider: account.provider,
-          providerType: account.type,
-          role: Roles.user,
-          access: token.access,
-        };
-      }
-      return token;
+        // just return the existing token
+        return token;
+      },
+      async session({ session, token }) {
+        // needed for hasura claims_map
+        session.user = token.user as AppUser;
+        return session;
+      },
     },
-    async session({ session, token }) {
-      // needed for hasura claims_map
-      session.user = token.user as User;
-      return session;
-    },
-  },
-} satisfies NextAuthOptions;
+  } satisfies AuthOptions);

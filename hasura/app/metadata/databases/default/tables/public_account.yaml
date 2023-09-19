@@ -1,6 +1,16 @@
 table:
   name: account
   schema: public
+object_relationships:
+  - name: kyc
+    using:
+      manual_configuration:
+        column_mapping:
+          id: externalUserId
+        insertion_order: null
+        remote_table:
+          name: kyc
+          schema: public
 remote_relationships:
   - definition:
       to_remote_schema:

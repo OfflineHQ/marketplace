@@ -168,6 +168,15 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
+ const GetKycDocument = `
+    query GetKyc {
+  kyc {
+    applicantId
+    reviewStatus
+    levelName
+  }
+}
+    `;
  const GetPassedEventsWithEventPassNftsDocument = `
     query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
@@ -295,6 +304,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassPendingOrders(variables: Types.GetEventPassPendingOrdersQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersQuery> {
       return requester<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables, options) as Promise<Types.GetEventPassPendingOrdersQuery>;
+    },
+    GetKyc(variables?: Types.GetKycQueryVariables, options?: C): Promise<Types.GetKycQuery> {
+      return requester<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables, options) as Promise<Types.GetKycQuery>;
     },
     GetPassedEventsWithEventPassNfts(variables: Types.GetPassedEventsWithEventPassNftsQueryVariables, options?: C): Promise<Types.GetPassedEventsWithEventPassNftsQuery> {
       return requester<Types.GetPassedEventsWithEventPassNftsQuery, Types.GetPassedEventsWithEventPassNftsQueryVariables>(GetPassedEventsWithEventPassNftsDocument, variables, options) as Promise<Types.GetPassedEventsWithEventPassNftsQuery>;

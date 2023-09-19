@@ -319,12 +319,6 @@ const sessions = {
 
 **To proceed, simply copy the value of the cookie `next-auth.session-token` once you login and paste the value for each users**
 
-The corresponding logins are:
-
-- alpha_user@test.io / Qwerty12345#
-- beta_user@test.io / Qwerty12345#
-- sebpalluel@gmail.com **(change it with your own google account globally in the workspace)**
-
 You can check the tests on `auth.cy.ts` for example usages of thoses utilities.
 
 ## NX

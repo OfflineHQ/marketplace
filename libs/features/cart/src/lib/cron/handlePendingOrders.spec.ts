@@ -82,7 +82,7 @@ describe('Cron job - handlePendingOrders', () => {
         },
         {
           address: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
-          email: 'beta_user@test.io',
+          email: null,
           eventPassIds: ['clj8raobj7g8l0aw3bfw6dny4'],
         },
       ],

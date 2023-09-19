@@ -1,7 +1,7 @@
 import { Locale } from '@gql/shared/types';
-import { getPassedEventsWithEventPassNfts } from './getPassedEventsWithEventPassNfts';
 import { userSdk } from '@gql/user/api';
 import { getCurrentUser } from '@next/next-auth/user';
+import { getPassedEventsWithEventPassNfts } from './getPassedEventsWithEventPassNfts';
 
 jest.mock('@next/next-auth/user');
 jest.mock('@gql/user/api');
@@ -21,11 +21,14 @@ describe('getPassedEventsWithEventPassNfts', () => {
 
     await getPassedEventsWithEventPassNfts(props);
 
-    expect(userSdk.GetPassedEventsWithEventPassNfts).toHaveBeenCalledWith({
-      ...props,
-      address: mockUser.address,
-      stage: process.env.HYGRAPH_STAGE,
-    });
+    expect(userSdk.GetPassedEventsWithEventPassNfts).toHaveBeenCalledWith(
+      {
+        ...props,
+        address: mockUser.address,
+        stage: process.env.HYGRAPH_STAGE,
+      },
+      { next: { tags: ['userEventPassNfts'] } }
+    );
   });
 
   it('should throw an error if user is not logged in', async () => {

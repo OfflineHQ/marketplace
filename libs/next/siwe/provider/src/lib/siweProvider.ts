@@ -1,6 +1,6 @@
-import { getNextAppURL } from '@utils';
 import { handleAccount } from '@features/account/api';
-import type { User } from 'next-auth';
+import type { AppUser } from '@next/types';
+import { getNextAppURL } from '@utils';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { getCsrfToken } from 'next-auth/react';
 import { SiweMessage } from 'siwe';
@@ -32,7 +32,6 @@ export const SiweProvider = () =>
     async authorize(credentials, req) {
       try {
         const siwe = new SiweMessage(JSON.parse(credentials?.message || '{}'));
-        console.log('getNextAppURL siwe provider', getNextAppURL());
         const nextAuthUrl = new URL(getNextAppURL());
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const nonce = await getCsrfToken({ req: { headers: req.headers } });
@@ -44,11 +43,11 @@ export const SiweProvider = () =>
         if (result.success) {
           try {
             // eslint-disable-next-line sonarjs/prefer-immediate-return
-            const user = await handleAccount({
+            const appUser = await handleAccount({
               address: credentials?.address || '',
               email: credentials?.email || '',
             });
-            return user as User;
+            return appUser as AppUser;
           } catch (error) {
             console.error({ error });
             throw new Error(error);
