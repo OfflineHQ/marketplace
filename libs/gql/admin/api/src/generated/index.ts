@@ -165,6 +165,13 @@ ${KycFieldsFragmentDoc}`;
 }
     ${AccountFieldsFragmentDoc}
 ${KycFieldsFragmentDoc}`;
+ const GetAccountByIdDocument = `
+    query GetAccountById($id: uuid!) {
+  account(where: {id: {_eq: $id}}) {
+    address
+  }
+}
+    `;
  const UpsertEventPassOrdersDocument = `
     mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
   insert_eventPassOrder(

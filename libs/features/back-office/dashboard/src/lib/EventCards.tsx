@@ -1,32 +1,32 @@
 'use client';
 
+import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
+import type { EventFromOrganizer as TEvent } from '@features/back-office/dashboard-types';
+import { getEventPassOrganizerFolderPath } from '@features/pass-common';
 import { useAuthContext } from '@next/auth';
+import { useUploader } from '@next/uploader-provider';
+import NftCollection, { type NftsMetadata } from '@nft/thirdweb-organizer';
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
   Card,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
   CardOverlay,
-  Button,
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
+  CardTitle,
   useToast,
 } from '@ui/components';
-import NftCollection, { type NftsMetadata } from '@nft/thirdweb';
-import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
-import type { EventFromOrganizer as TEvent } from '@features/back-office/dashboard-types';
-import { getEventPassOrganizerFolderPath } from '@features/pass-common';
-import { UploadDropzone } from 'react-uploader';
 import { useEffect, useState } from 'react';
+import { UploadDropzone } from 'react-uploader';
+import type { UploadWidgetConfig, UploaderInterface } from 'uploader';
 import {
   checkFolder,
   checkFolderLength,
   renameFolderQrCodes,
 } from './actions/renameFolderQrCodes';
-import type { UploadWidgetConfig, UploaderInterface } from 'uploader';
-import { useUploader } from '@next/uploader-provider';
 
 export interface EventCardsProps {
   events: TEvent[];
