@@ -16,6 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set up environment and cache dependencies
+        uses: sebpalluel/ci/.github/actions/setup-environment@latest
+
       - name: Cache Vercel CLI
         uses: actions/cache@v2
         id: cache-vercel
