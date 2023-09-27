@@ -8862,8 +8862,6 @@ enum orderStatus_enum {
   CANCELLED
   COMPLETED
   CONFIRMED
-  ERROR
-  UNAUTHORIZED
 }
 
 """
