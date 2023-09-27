@@ -3,6 +3,9 @@ name: Delete preview apps
 on:
   pull_request:
     types: [closed]
+    branches-ignore:
+      - main
+      - staging
   workflow_dispatch:
 
 env:
