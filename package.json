@@ -75,6 +75,7 @@
     "@tanstack/react-query": "^4.29.19",
     "@thirdweb-dev/sdk": "^3.10.59",
     "@vercel/analytics": "^0.1.11",
+    "@vercel/edge-config": "^0.4.1",
     "@web3auth/mpc-core-kit": "^0.3.1",
     "@web3auth/ui": "^5.2.0",
     "alchemy-sdk": "3.0.0-beta.0",

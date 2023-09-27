@@ -3,7 +3,9 @@ name: Deploy preview apps
 on:
   pull_request:
     types: [opened, reopened, synchronize]
-  workflow_dispatch:
+    branches-ignore:
+      - main
+      - staging
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}

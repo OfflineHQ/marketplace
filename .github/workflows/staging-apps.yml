@@ -1,0 +1,38 @@
+name: Deploy staging apps
+
+on:
+  push:
+    branches:
+      - staging
+  workflow_dispatch:
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache Vercel CLI
+        uses: actions/cache@v2
+        id: cache-vercel
+        with:
+          path: ~/.npm # adjust this path if needed
+          key: vercel-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install Vercel CLI
+        run: |
+          if [ -z "$(npm list -g --depth=0 | grep vercel)" ]
+          then
+            npm install --global vercel@latest
+          fi
+
+      - name: Build Vercel Project Artifacts
+        run: vercel build --token=${{secrets.VERCEL_TOKEN}}
+
+      - name: Deploy Staging to Vercel
+        id: deploy_vercel
+        run: vercel deploy --prebuilt --token=${{secrets.VERCEL_TOKEN}}
