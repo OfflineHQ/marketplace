@@ -330,7 +330,8 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       console.log('setting safeAuthKit');
       const options: Web3AuthOptions = {
         clientId: process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || '',
-        web3AuthNetwork: 'testnet',
+        web3AuthNetwork: process.env
+          .NEXT_PUBLIC_WEB3AUTH_NETWORK as Web3AuthOptions['web3AuthNetwork'],
         chainConfig: {
           ...chainConfig,
           chainId,
