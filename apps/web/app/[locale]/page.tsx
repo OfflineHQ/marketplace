@@ -6,6 +6,7 @@ export default function Home() {
   return (
     <div className="p-8">
       <Text>{t('title')}</Text>
+      Network: {process.env.NEXT_PUBLIC_WEB3AUTH_NETWORK}
     </div>
   );
 }
