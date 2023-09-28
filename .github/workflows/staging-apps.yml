@@ -36,9 +36,6 @@ jobs:
       - name: Vercel Environment Information
         run: vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Build Vercel Project Artifacts
-        run: vercel build --token=${{secrets.VERCEL_TOKEN}}
-
       - name: Deploy Staging to Vercel
         id: deploy_vercel
-        run: vercel deploy --prebuilt --token=${{secrets.VERCEL_TOKEN}}
+        run: vercel deploy --token=${{secrets.VERCEL_TOKEN}}
