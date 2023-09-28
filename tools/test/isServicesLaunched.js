@@ -3,6 +3,32 @@
 // const portReachable = require('is-port-reachable');
 // const dockerCompose = require('docker-compose');
 
+const isRedisReady = () => {
+  return new Promise(async function (resolve, reject) {
+    let redisReady = false;
+    const redisUrl = `${process.env.KV_REST_API_URL}`;
+    while (!redisReady) {
+      try {
+        const res = await fetch(redisUrl, {
+          headers: {
+            Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}`,
+          },
+        });
+        if (res.status === 200) {
+          redisReady = true;
+          if (res.statusText === 'OK') {
+            console.info('Redis is ready at: ', process.env.KV_REST_API_URL);
+          } else console.error(`Redis healthz: ${res.statusText}`);
+          resolve();
+        }
+      } catch (e) {
+        console.error(e);
+        reject();
+      }
+    }
+  });
+};
+
 const isHasuraConsoleReady = () => {
   return new Promise(async function (resolve, reject) {
     // executor (the producing code, "singer")
@@ -71,7 +97,11 @@ const isHasuraReady = () => {
 
 const isServicesLaunched = async () => {
   console.time('setup docker services and check for web app availability');
-  await Promise.allSettled([isHasuraReady(), isHasuraConsoleReady()]);
+  await Promise.allSettled([
+    isHasuraReady(),
+    isHasuraConsoleReady(),
+    isRedisReady(),
+  ]);
 
   // // ️️️✅ Best Practice: Speed up during development, if already live then do nothing
   // let isAppReachable = await portReachable(process.env.NEXT_PORT);
