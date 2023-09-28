@@ -46,5 +46,5 @@
     "google",
   ],
   "i18n-ally.translate.openai.apiKey": "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",
-  "i18n-ally.translate.openai.apiModel": "gpt-3.5-turbo"
+  "i18n-ally.translate.openai.apiModel": "gpt-3.5-turbo",
 }
