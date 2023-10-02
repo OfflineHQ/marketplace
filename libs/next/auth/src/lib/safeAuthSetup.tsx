@@ -3,8 +3,9 @@
 
 import { AuthKitSignInData, Web3AuthModalPack } from '@next/safe/auth';
 import { ToastAction, useToast } from '@ui/components';
-import { useDarkMode } from '@ui/hooks';
-import { isCypressRunning } from '@utils';
+import { getNextAppURL, isCypressRunning } from '@utils';
+import { MetamaskAdapter } from '@web3auth/metamask-adapter';
+
 import { useCallback, useEffect, useState } from 'react';
 
 import {
@@ -14,7 +15,7 @@ import {
   WALLET_ADAPTERS,
 } from '@web3auth/base';
 import { Web3AuthOptions } from '@web3auth/modal';
-import { OpenloginAdapter } from '@web3auth/openlogin-adapter';
+import { LANGUAGE_TYPE, OpenloginAdapter } from '@web3auth/openlogin-adapter';
 import { LOGIN_MODAL_EVENTS } from '@web3auth/ui';
 import { ethers } from 'ethers';
 import { getCsrfToken, signIn, signOut, useSession } from 'next-auth/react';
@@ -22,6 +23,8 @@ import { useRouter } from 'next/navigation';
 import { SiweMessage } from 'siwe';
 
 import { ExternalProvider } from '@ethersproject/providers';
+import { useLocale } from 'next-intl';
+import { useTheme } from 'next-themes';
 
 type ChainConfig = Web3AuthOptions['chainConfig'] & {
   safeTxServiceUrl?: string;
@@ -87,31 +90,32 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   const [safeUser, setSafeUser] = useState<SafeUser>();
   const [provider, setProvider] = useState<ExternalProvider | null>(null);
   const [connecting, setConnecting] = useState(false);
-  const isDark = useDarkMode();
+  const [loggedIn, setLoggedIn] = useState(false);
+  const { resolvedTheme } = useTheme();
   const { toast } = useToast();
   const router = useRouter();
+  const locale = useLocale();
   const { data: session } = useSession();
   const messages = props.messages;
 
   const web3AuthErrorHandler = useCallback(
     (error: any) => {
       // eslint-disable-next-line sonarjs/no-small-switch
-      switch (error?.message) {
-        case 'user closed popup':
-          if (messages?.userClosedPopup)
-            toast({
-              title: messages.userClosedPopup.title,
-              description: messages.userClosedPopup.description,
-            });
-          setConnecting(false);
-          break;
-        default:
-          console.error({ error });
-          break;
+      if (error?.message?.includes('login popup has been closed by the user')) {
+        if (messages?.userClosedPopup)
+          toast({
+            title: messages.userClosedPopup.title,
+            description: messages.userClosedPopup.description,
+            variant: 'destructive',
+          });
+        setConnecting(false);
+      } else {
+        console.error({ error });
       }
     },
     [messages?.userClosedPopup, toast]
   );
+
   const logoutSiwe = useCallback(
     async ({ refresh }: { refresh?: boolean }) => {
       await signOut({ redirect: false });
@@ -127,17 +131,18 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       await safeAuth.signOut();
       await logoutSiwe({ refresh });
 
-      setProvider(null);
       setSafeUser(undefined);
-      setConnecting(false);
+      setLoggedIn(false);
     },
     [safeAuth, logoutSiwe]
   );
 
   const setupUserSession = useCallback(async () => {
+    console.log({ safeAuth });
     if (!safeAuth) return;
 
-    const userInfo = !isCypressRunning() ? await safeAuth.getUserInfo() : {};
+    let userInfo: Partial<UserInfo> = {};
+    if (!isCypressRunning()) userInfo = await safeAuth.getUserInfo();
     let eoa: AuthKitSignInData['eoa'] = safeUser?.eoa || '';
     let safes: AuthKitSignInData['safes'] = safeUser?.safes || [];
     // here mean the page have been refreshed, so we need to get the AuthKitSignInData again
@@ -150,7 +155,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       safes,
       ...userInfo,
     } satisfies SafeUser;
-    console.log('Safe User: ', _safeUser);
+    console.log('Safe User: ', _safeUser, userInfo);
     setSafeUser(_safeUser);
     setConnecting(false);
   }, [safeAuth]);
@@ -204,12 +209,13 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         modalVisibilityChanged,
       ]);
 
-      // if the user sign in, we want to set the provider
+      console.log({ raceResult });
+
+      // if the user sign in, we want to login with siwe
       if (raceResult === 'connected') {
         // used to force signIn in case the user denied the connection
-        await safeAuth.signIn();
-        const _provider = safeAuth.getProvider();
-        setProvider(_provider);
+        // await safeAuth.signIn();
+        await finishLogin();
       }
 
       safeAuth.unsubscribe(
@@ -269,7 +275,9 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
             });
           }
           throw new Error('Error signing in with SIWE');
-        } else router.refresh();
+        } else {
+          router.refresh();
+        }
       } catch (error) {
         if (messages?.siweDeclined) {
           toast({
@@ -298,19 +306,26 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
     ]
   );
 
+  async function finishLogin() {
+    console.log('provider connected:', { session });
+    if (!session?.user) {
+      const web3Provider = new ethers.providers.Web3Provider(
+        safeAuth?.getProvider() as ethers.providers.ExternalProvider
+      );
+      const signer = web3Provider.getSigner(0);
+      await loginSiwe(signer);
+    }
+    await setupUserSession();
+    setConnecting(false);
+  }
+
   // when the provider (wallet) is connected, login to siwe or bypass if cookie is present
   useEffect(() => {
     (async () => {
       try {
         console.log('PROVIDER: ', { provider });
-        if (provider) {
-          console.log('provider connected:', { session });
-          if (!session?.user) {
-            const web3Provider = new ethers.providers.Web3Provider(provider);
-            const signer = web3Provider.getSigner();
-            await loginSiwe(signer);
-          }
-          await setupUserSession();
+        if (safeAuth?.web3Auth?.connected) {
+          await finishLogin();
         }
       } catch (error) {
         console.warn({ error });
@@ -327,19 +342,25 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         dark: `/logo-light.svg`,
         light: `/logo-dark.svg`,
       };
-      console.log('setting safeAuthKit');
+      console.log('setting safeAuthKit', { resolvedTheme, locale });
+      const clientId = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || '';
+      const web3AuthNetwork = process.env
+        .NEXT_PUBLIC_WEB3AUTH_NETWORK as Web3AuthOptions['web3AuthNetwork'];
+      const sessionTime =
+        parseInt(process.env.NEXT_PUBLIC_WEB3AUTH_SESSION_TIME as string) ||
+        30 * 24 * 60 * 60;
       const options: Web3AuthOptions = {
-        clientId: process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || '',
-        web3AuthNetwork: process.env
-          .NEXT_PUBLIC_WEB3AUTH_NETWORK as Web3AuthOptions['web3AuthNetwork'],
+        clientId,
+        web3AuthNetwork,
         chainConfig: {
           ...chainConfig,
           chainId,
         },
         uiConfig: {
-          // defaultLanguage: 'de', // todo add language
-          appLogo: isDark ? logos.dark : logos.light,
-          theme: isDark ? 'dark' : 'light',
+          defaultLanguage: locale as LANGUAGE_TYPE,
+          logoLight: logos.light,
+          logoDark: logos.dark,
+          mode: resolvedTheme,
           loginMethodsOrder: [
             'google',
             'twitter',
@@ -360,6 +381,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       };
 
       const modalConfig = {
+        // used to not show the torus option
         [WALLET_ADAPTERS.TORUS_EVM]: {
           label: 'torus',
           showOnModal: false,
@@ -371,23 +393,35 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         },
       };
 
+      const metamaskAdapter = new MetamaskAdapter({
+        clientId,
+        sessionTime,
+        web3AuthNetwork,
+        chainConfig: {
+          chainId,
+          ...chainConfig,
+        },
+      });
+
+      const whiteLabel = {
+        // TODO adapt here with Offline branding, https://web3auth.io/docs/sdk/web/openlogin#whitelabel
+        appName: 'Offline',
+        appUrl: getNextAppURL(),
+        logoLight: logos.light,
+        logoDark: logos.dark,
+        mode: resolvedTheme,
+        defaultLanguage: locale as LANGUAGE_TYPE,
+      };
+
       const openloginAdapter = new OpenloginAdapter({
         loginSettings: {
           mfaLevel: 'default',
         },
         adapterSettings: {
           uxMode: 'popup',
-          whiteLabel: {
-            // TODO adapt here with Offline branding, https://web3auth.io/docs/sdk/web/openlogin#whitelabel
-            name: 'Offline',
-            logoLight: logos.light,
-            logoDark: logos.dark,
-            dark: isDark,
-            // defaultLanguage: 'de', // todo add language
-          },
+          whiteLabel,
         },
-        sessionTime:
-          parseInt(process.env.TOKEN_LIFE_TIME as string) || 30 * 24 * 60 * 60, // 30 days,
+        sessionTime,
       });
 
       const web3AuthModalPack = new Web3AuthModalPack({
@@ -396,33 +430,35 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
 
       await web3AuthModalPack.init({
         options,
-        adapters: [openloginAdapter],
+        adapters: [openloginAdapter, metamaskAdapter],
         modalConfig,
       });
 
       setSafeAuth(web3AuthModalPack);
 
       const safeProvider: ExternalProvider | null =
-        web3AuthModalPack.getProvider(); // if the provider is set, mean the user is already connected to web3auth
-      // otherwise we deconnect the user from next auth if he is connected to sync the state with web3auth
-      if (safeProvider) {
-        setProvider(safeProvider);
-        setConnecting(true);
-      } else logoutSiwe({ refresh: false });
+        web3AuthModalPack.getProvider();
+      setProvider(safeProvider);
       web3AuthModalPack.subscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
       web3AuthModalPack.subscribe(ADAPTER_EVENTS.CONNECTING, () =>
         setConnecting(true)
       );
+      // here evaluate if user is logged in with web3auth. If it's not the case we logout the user from next auth.
+      if (safeAuth?.web3Auth?.connected) {
+        setConnecting(true);
+        setLoggedIn(true);
+      } else logoutSiwe({ refresh: false });
       return () => {
         web3AuthModalPack.unsubscribe(
           ADAPTER_EVENTS.ERRORED,
           web3AuthErrorHandler
         );
+        web3AuthModalPack.unsubscribe(ADAPTER_EVENTS.CONNECTING, () => null);
       };
     })();
-    // IMPORTANT: keep only isDark in the dependency array, otherwise it could create an infinite loop
+    // IMPORTANT: keep only resolvedTheme and locale in the dependency array, otherwise it could create an infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDark]);
+  }, [resolvedTheme, locale]);
 
   return {
     safeAuth,
