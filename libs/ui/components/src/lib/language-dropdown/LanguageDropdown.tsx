@@ -25,7 +25,7 @@ export function LanguageDropdown({ items, ...props }: LanguageDropdownProps) {
           {...props}
         />
       </DropdownMenuTrigger>
-      <DropdownMenuItems items={items} className="w-10" />
+      <DropdownMenuItems items={items} className="w-auto" />
     </DropdownMenu>
   );
 }
