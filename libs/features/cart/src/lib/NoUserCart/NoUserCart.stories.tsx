@@ -1,6 +1,6 @@
+import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 
 import { NoUserCart } from './NoUserCart';
 import {
@@ -38,12 +38,8 @@ export const SectionWithNoUserNoCart: Story = {
   },
 };
 
-export const SectionWithNoUser: Story = {
-  render: NoUserCartExample,
-};
-
 export const SectionWithNoUserOpened: Story = {
-  ...SectionWithNoUser,
+  render: NoUserCartExample,
   play: async (context) => {
     userEvent.click(
       await screen.findByRole('button', {
