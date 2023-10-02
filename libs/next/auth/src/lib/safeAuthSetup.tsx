@@ -1,11 +1,7 @@
 'use client';
 // safeAuthSetup.ts
-import {
-  SafeAuthKit,
-  SafeAuthSignInData,
-  SafeGetUserInfoResponse,
-  Web3AuthModalPack,
-} from '@next/safe/auth';
+
+import { AuthKitSignInData, Web3AuthModalPack } from '@next/safe/auth';
 import { ToastAction, useToast } from '@ui/components';
 import { useDarkMode } from '@ui/hooks';
 import { isCypressRunning } from '@utils';
@@ -14,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   ADAPTER_EVENTS,
   CHAIN_NAMESPACES,
+  UserInfo,
   WALLET_ADAPTERS,
 } from '@web3auth/base';
 import { Web3AuthOptions } from '@web3auth/modal';
@@ -63,9 +60,7 @@ const { safeTxServiceUrl, chainId, ...chainConfig } = (chainConfigs[
   process.env.NEXT_PUBLIC_CHAIN as string
 ] || chainConfigs['5']) as ChainConfig; // Default to goerli if no matching config
 
-export interface SafeUser
-  extends SafeGetUserInfoResponse<Web3AuthModalPack>,
-    SafeAuthSignInData {}
+export interface SafeUser extends Partial<UserInfo>, AuthKitSignInData {}
 
 export interface UseSafeAuthProps {
   messages?: {
@@ -88,7 +83,7 @@ export interface UseSafeAuthProps {
 }
 
 export function useSafeAuth(props: UseSafeAuthProps = {}) {
-  const [safeAuth, setSafeAuth] = useState<SafeAuthKit<Web3AuthModalPack>>();
+  const [safeAuth, setSafeAuth] = useState<Web3AuthModalPack>();
   const [safeUser, setSafeUser] = useState<SafeUser>();
   const [provider, setProvider] = useState<ExternalProvider | null>(null);
   const [connecting, setConnecting] = useState(false);
@@ -141,13 +136,18 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
 
   const setupUserSession = useCallback(async () => {
     if (!safeAuth) return;
-    // avoid running this function if cypress is running because it will fail
+
     const userInfo = !isCypressRunning() ? await safeAuth.getUserInfo() : {};
-    // here mean the page have been refreshed, so we need to get the safeAuthData again
-    if (!safeAuth.safeAuthData?.eoa) await safeAuth.getSafeAuthData();
+    let eoa: AuthKitSignInData['eoa'] = safeUser?.eoa || '';
+    let safes: AuthKitSignInData['safes'] = safeUser?.safes || [];
+    // here mean the page have been refreshed, so we need to get the AuthKitSignInData again
+    if (!eoa) {
+      eoa = await safeAuth.getAddress();
+      safes = await safeAuth.getSafes(safeTxServiceUrl || '');
+    }
     const _safeUser = {
-      eoa: safeAuth.safeAuthData?.eoa || '',
-      safes: safeAuth.safeAuthData?.safes || [],
+      eoa,
+      safes,
       ...userInfo,
     } satisfies SafeUser;
     console.log('Safe User: ', _safeUser);
@@ -390,30 +390,34 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
           parseInt(process.env.TOKEN_LIFE_TIME as string) || 30 * 24 * 60 * 60, // 30 days,
       });
 
-      const web3AuthModalPack = new Web3AuthModalPack(
-        options,
-        [openloginAdapter],
-        modalConfig
-      );
-
-      const safeAuthKit = await SafeAuthKit.init(web3AuthModalPack, {
+      const web3AuthModalPack = new Web3AuthModalPack({
         txServiceUrl: safeTxServiceUrl,
       });
 
-      setSafeAuth(safeAuthKit);
+      await web3AuthModalPack.init({
+        options,
+        adapters: [openloginAdapter],
+        modalConfig,
+      });
 
-      const safeProvider: ExternalProvider | null = safeAuthKit.getProvider(); // if the provider is set, mean the user is already connected to web3auth
+      setSafeAuth(web3AuthModalPack);
+
+      const safeProvider: ExternalProvider | null =
+        web3AuthModalPack.getProvider(); // if the provider is set, mean the user is already connected to web3auth
       // otherwise we deconnect the user from next auth if he is connected to sync the state with web3auth
       if (safeProvider) {
         setProvider(safeProvider);
         setConnecting(true);
       } else logoutSiwe({ refresh: false });
-      safeAuthKit.subscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
-      safeAuthKit.subscribe(ADAPTER_EVENTS.CONNECTING, () =>
+      web3AuthModalPack.subscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
+      web3AuthModalPack.subscribe(ADAPTER_EVENTS.CONNECTING, () =>
         setConnecting(true)
       );
       return () => {
-        safeAuthKit.unsubscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
+        web3AuthModalPack.unsubscribe(
+          ADAPTER_EVENTS.ERRORED,
+          web3AuthErrorHandler
+        );
       };
     })();
     // IMPORTANT: keep only isDark in the dependency array, otherwise it could create an infinite loop
