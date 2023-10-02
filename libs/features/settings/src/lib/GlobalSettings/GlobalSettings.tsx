@@ -6,7 +6,7 @@ import {
 import {
   DisplayDropdownClient,
   type DisplayDropdownClientProps,
-} from './DisplayDropdownClient';
+} from '../DisplayDropdown/DisplayDropdownClient';
 
 export interface GlobalSettingsProps
   extends LanguageDropdownClientProps,
