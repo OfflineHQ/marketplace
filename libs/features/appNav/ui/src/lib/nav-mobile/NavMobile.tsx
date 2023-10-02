@@ -1,17 +1,5 @@
+import { NavigationMenu, NavigationMenuList } from '@ui/components';
 import { NavLink, type NavLinkProps } from '../nav-link/NavLink';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-  DisplayDropdown,
-  type DisplayDropdownProps,
-  LanguageDropdown,
-  type LanguageDropdownProps,
-} from '@ui/components';
 
 export interface NavMobileProps {
   menuSections: NavLinkProps[];
