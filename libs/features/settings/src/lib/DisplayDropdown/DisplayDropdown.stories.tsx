@@ -1,7 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
+import {
+  screen,
+  fireEvent,
+  userEvent,
+  within,
+} from '@storybook/testing-library';
 import { DisplayDropdown } from './DisplayDropdown';
-import { DisplayDropdownExample, displayItems, displayItemsDark } from './examples';
+import {
+  DisplayDropdownExample,
+  displayItems,
+  displayItemsDark,
+} from './examples';
 import { sleep } from '@utils';
 
 const helperText = 'Select a display mode';
