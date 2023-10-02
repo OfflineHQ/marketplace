@@ -16,6 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@crypto": ["libs/crypto/src/index.ts"],
+      "@currency/api": ["libs/currency/api/src/index.ts"],
+      "@currency/types": ["libs/currency/types/src/index.ts"],
       "@features/account/api": ["libs/features/account/api/src/index.ts"],
       "@features/appNav/ui": ["libs/features/appNav/ui/src/index.ts"],
       "@features/appNav/ui/stories": [

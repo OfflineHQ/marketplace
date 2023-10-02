@@ -1,0 +1,26 @@
+{
+  "name": "currency-types",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/currency/types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/next/types",
+        "main": "libs/next/types/src/index.ts",
+        "tsConfig": "libs/next/types/tsconfig.lib.json",
+        "assets": ["libs/next/types/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/next/types/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["types"]
+}
