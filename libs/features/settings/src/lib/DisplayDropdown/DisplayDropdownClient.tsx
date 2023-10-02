@@ -2,15 +2,15 @@
 
 import React, { useMemo } from 'react';
 
-import { DisplayDropdown, type DisplayDropdownProps } from '@ui/components';
-import { Dark, Light, DarkLight } from '@ui/icons';
+import { Dark, DarkLight, Light } from '@ui/icons';
 import { useTheme } from 'next-themes';
+import { DisplayDropdown, type DisplayDropdownProps } from './DisplayDropdown';
 
 export interface DisplayDropdownClientProps {
   displaySelectText: {
     light: string;
     dark: string;
-    auto: string;
+    system: string;
   };
   displayText: string;
   className?: string;
@@ -40,10 +40,10 @@ export const DisplayDropdownClient: React.FC<DisplayDropdownClientProps> = ({
       },
       {
         type: 'item',
-        text: displaySelectText['auto'],
-        action: () => setTheme('auto'),
+        text: displaySelectText['system'],
+        action: () => setTheme('system'),
         icon: <DarkLight />,
-        disabled: theme === 'auto',
+        disabled: theme === 'system',
       },
     ],
     [displaySelectText, theme, setTheme]

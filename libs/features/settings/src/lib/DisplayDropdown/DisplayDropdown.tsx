@@ -1,35 +1,39 @@
 'use client';
 
-import { Button, ButtonProps } from '../button/Button';
 import {
+  Button,
+  ButtonProps,
   DropdownMenu,
-  DropdownMenuTrigger,
-} from '../dropdown-menu/DropdownMenu';
-import {
   DropdownMenuItems,
   DropdownMenuItemsProps,
-} from '../dropdown-menu/DropdownMenuItems';
+  DropdownMenuTrigger,
+} from '@ui/components';
 
-import { Dark, Light } from '@ui/icons';
-import { useDarkMode } from '@ui/hooks';
+import { Dark, DarkLight, IconProps, Light } from '@ui/icons';
+import { useTheme } from 'next-themes';
 
 export interface DisplayDropdownProps
   extends DropdownMenuItemsProps,
     ButtonProps {}
 
 export function DisplayDropdown({ items, ...props }: DisplayDropdownProps) {
-  const isDark = useDarkMode();
+  const { theme } = useTheme();
+  const icons: { [index: string]: React.ReactElement<IconProps> } = {
+    dark: <Dark />,
+    light: <Light />,
+    system: <DarkLight />,
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
           aria-label={props.helperText as string}
-          icon={isDark ? <Dark /> : <Light />}
+          icon={icons[theme as string]}
           {...props}
         />
       </DropdownMenuTrigger>
-      <DropdownMenuItems items={items} className="w-10" />
+      <DropdownMenuItems items={items} className="w-auto" />
     </DropdownMenu>
   );
 }
