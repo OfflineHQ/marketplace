@@ -51,7 +51,7 @@ export class Web3AuthModalPack extends AuthKitBasePack {
       adapters?.forEach((adapter) => this.web3Auth?.configureAdapter(adapter));
 
       await this.web3Auth.initModal({ modalConfig: modalConfig });
-
+      // here we set ethereum provider from ethereum in case this is running on cypress, used for testing, otherwise set the provider from web3auth
       this.#provider =
         isCypressRunning() && window.ethereum
           ? window.ethereum
@@ -92,8 +92,6 @@ export class Web3AuthModalPack extends AuthKitBasePack {
     if (!this.web3Auth) {
       throw new Error('Web3AuthModalPack is not initialized');
     }
-
-    this.#provider = null;
     await this.web3Auth.logout();
   }
 
