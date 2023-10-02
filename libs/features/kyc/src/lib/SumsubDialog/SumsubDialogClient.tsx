@@ -10,8 +10,8 @@ import {
   MessageHandler,
 } from '@sumsub/websdk/types/types';
 import { AutoAnimate, Button, ButtonProps, DialogFooter } from '@ui/components';
-import { useIsDarkMode } from '@ui/hooks';
 import { useSession } from 'next-auth/react';
+import { useTheme } from 'next-themes';
 import Link, { LinkProps } from 'next/link';
 import { useState } from 'react';
 type MessageType = Parameters<MessageHandler>[0];
@@ -34,7 +34,7 @@ export const SumsubDialogClient: React.FC<SumsubWebSdkProps> = ({
   confirmedLink,
 }) => {
   const { update } = useSession();
-  const isDark = useIsDarkMode();
+  const { resolvedTheme } = useTheme();
   const [statusConfirmed, setStatusConfirmed] = useState(false);
   async function onMessage(type: MessageType, payload: AnyEventPayload) {
     console.log({ type, payload });
@@ -59,7 +59,7 @@ export const SumsubDialogClient: React.FC<SumsubWebSdkProps> = ({
       <SumsubWebSdk
         accessToken={accessToken}
         expirationHandler={expirationHandler}
-        config={{ ...config, theme: isDark ? 'dark' : 'light' }}
+        config={{ ...config, theme: resolvedTheme }}
         options={options}
         onMessage={onMessage}
         onError={onError}

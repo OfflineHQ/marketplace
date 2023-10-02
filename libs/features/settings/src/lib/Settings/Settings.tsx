@@ -1,14 +1,14 @@
-import { useTranslations } from 'next-intl';
-import React from 'react';
 import {
   Card,
-  CardHeader,
-  CardTitle,
-  CardOverflow,
   CardContent,
-  CardOverlay,
   CardDescription,
+  CardHeader,
+  CardOverflow,
+  CardOverlay,
+  CardTitle,
 } from '@ui/components';
+import { useTranslations } from 'next-intl';
+import React from 'react';
 import { GlobalSettings } from '../GlobalSettings/GlobalSettings';
 
 export const Settings: React.FC = () => {
@@ -33,7 +33,7 @@ export const Settings: React.FC = () => {
               displaySelectText={{
                 light: t('display-select-text.light'),
                 dark: t('display-select-text.dark'),
-                auto: t('display-select-text.auto'),
+                system: t('display-select-text.auto'),
               }}
             />
           </CardContent>
