@@ -1,17 +1,16 @@
-import '@web/styles/globals.css';
-import { Inter as FontSans } from 'next/font/google';
-import localFont from 'next/font/local';
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { siteConfig } from '@web/config/site';
-import { Analytics } from '@web/components/Analytics';
-import { ThemeProvider } from '@ui/theme';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { ReactQueryProviders } from '@next/react-query';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
-import { locales } from '@next/i18n';
+import { ThemeProvider } from '@ui/theme';
+import { Analytics } from '@web/components/Analytics';
+import { siteConfig } from '@web/config/site';
+import '@web/styles/globals.css';
+import { Metadata } from 'next';
 import { useLocale, useTranslations } from 'next-intl';
+import { Inter as FontSans } from 'next/font/google';
+import localFont from 'next/font/local';
+import { notFound } from 'next/navigation';
 
 import { AppNavLayout, type AppNavLayoutProps } from '@features/appNav/ui';
 

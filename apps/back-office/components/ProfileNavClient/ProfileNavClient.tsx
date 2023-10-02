@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useMemo, useCallback } from 'react';
-import { LogIn, Settings, LifeBuoy, LogOut } from '@ui/icons';
-import { useToast } from '@ui/components';
-import { useAuthContext } from '@next/auth';
 import {
   ProfileNav,
   ProfileNavSkeleton,
   type ProfileNavProps,
 } from '@features/appNav/ui';
+import { useAuthContext } from '@next/auth';
+import { useToast } from '@ui/components';
+import { LogIn, LogOut } from '@ui/icons';
+import { useCallback, useMemo } from 'react';
 
 export const ProfileNavClient = () => {
   const { safeUser, login, logout, safeAuth, connecting } = useAuthContext();
