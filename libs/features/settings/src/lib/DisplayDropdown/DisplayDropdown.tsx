@@ -29,7 +29,7 @@ export function DisplayDropdown({ items, ...props }: DisplayDropdownProps) {
         <Button
           variant="outline"
           aria-label={props.helperText as string}
-          icon={icons[theme as string]}
+          icon={icons[theme as string] || icons.system}
           {...props}
         />
       </DropdownMenuTrigger>
