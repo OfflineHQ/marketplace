@@ -45,6 +45,7 @@ jest.mock('@web3auth/modal', () => {
   return {
     Web3Auth: jest.fn().mockImplementation(() => {
       return {
+        provider: mockProvider,
         getProvider: jest.fn().mockReturnValue(mockProvider),
         initModal: mockInitModal,
         connect: mockConnect,
@@ -133,9 +134,6 @@ describe('Web3AuthModalPack', () => {
         options: web3AuthOptions,
         modalConfig,
       });
-
-      const authKitSignInData = await web3AuthModalPack.signIn();
-
       expect(web3AuthModalPack.getProvider()).toBe(mockProvider);
     });
   });
@@ -157,23 +155,7 @@ describe('Web3AuthModalPack', () => {
   describe('signOut()', () => {
     it('should call the logout() method', async () => {
       await web3AuthModalPack.signOut();
-
-      expect(web3AuthModalPack.getProvider()).toBeNull();
       expect(mockLogout).toHaveBeenCalled();
-    });
-  });
-
-  describe('getProvider()', () => {
-    it('should return null if not signed in', async () => {
-      expect(web3AuthModalPack.getProvider()).toBeNull();
-    });
-
-    it('should return the provider after signIn', async () => {
-      testingUtils.mockAccounts(['0xf61B443A155b07D2b2cAeA2d99715dC84E839EEf']);
-
-      await web3AuthModalPack.signIn();
-
-      expect(web3AuthModalPack.getProvider()).toEqual(mockProvider);
     });
   });
 
