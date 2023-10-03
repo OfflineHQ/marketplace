@@ -1,18 +1,18 @@
-import { AuthProvider, NextAuthProvider } from '@next/auth';
-import { WithNoUser } from '@features/appNav/ui/stories';
-import { EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { AppNavLayout } from '@features/appNav/ui';
-import { NoUserCart } from './NoUserCart';
+import { WithNoUser } from '@features/appNav/ui/stories';
+import { AuthProvider, NextAuthProvider } from '@next/auth';
 import {
-  SetupPassesCartLocal,
-  ResetPassesCartLocal,
   FakeEventPassesFetcher,
+  ResetPassesCartLocal,
+  SetPassesCartLocal,
 } from '../EventPassList/examples';
+import { EventPassesSkeleton } from '../EventPasses/EventPasses';
+import { NoUserCart } from './NoUserCart';
 // @ts-ignore
 import EmptyCartImage from './empty-cart.svg';
 
 export function NoUserCartExample() {
-  SetupPassesCartLocal();
+  SetPassesCartLocal();
   return (
     <NextAuthProvider>
       <AuthProvider>
@@ -28,7 +28,6 @@ export function NoUserCartExample() {
 }
 
 export function NoUserCartLoadingExample() {
-  SetupPassesCartLocal();
   return (
     <NextAuthProvider>
       <AuthProvider>
