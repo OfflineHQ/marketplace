@@ -28,6 +28,7 @@ export function NoUserCartExample() {
 }
 
 export function NoUserCartLoadingExample() {
+  SetPassesCartLocal();
   return (
     <NextAuthProvider>
       <AuthProvider>
