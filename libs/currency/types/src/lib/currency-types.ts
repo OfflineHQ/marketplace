@@ -30,3 +30,13 @@ export const rates = {
   [Currency_Enum.Qar]: { amount: 4.08, scale: 0 },
   [Currency_Enum.Sgd]: { amount: 1.52, scale: 0 },
 };
+
+export enum Currency_Enum_Not_Const {
+  AED = 'AED',
+  CNY = 'CNY',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  QAR = 'QAR',
+  SGD = 'SGD',
+  USD = 'USD',
+}

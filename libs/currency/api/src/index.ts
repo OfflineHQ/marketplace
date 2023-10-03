@@ -1,4 +1,3 @@
-import { isPreviewOrProduction } from '@utils';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -7,9 +6,9 @@ export default class Currency {
   private EXCHANGE_RATE_API_KEY = process.env.EXCHANGE_RATE_API_KEY;
 
   async getRate(baseCurrency: string): Promise<{ [key: string]: number }> {
-    if (!isPreviewOrProduction()) {
-      return await this.fetchFromLocalFile(baseCurrency);
-    }
+    //if (!isPreviewOrProduction()) {
+    //  return await this.fetchFromLocalFile(baseCurrency);
+    //}
     try {
       const rates = await this.fetchFromAPI(
         `http://data.fixer.io/api/latest?access_key=${this.FIXER_CURRENCY_API_KEY}&base=${baseCurrency}`,
@@ -55,6 +54,10 @@ export default class Currency {
 
     if (data.error && data.error.code === 104) {
       throw new Error('Rate limit exceeded on Fixer API');
+    }
+
+    if (!data.rates && !data.conversion_rates) {
+      throw new Error(`No rates data received from ${apiName} API`);
     }
 
     return apiName === 'Fixer' ? data.rates : data.conversion_rates;
