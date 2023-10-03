@@ -22,22 +22,6 @@ export default meta;
 
 type Story = StoryObj<typeof NoUserCart>;
 
-export const SectionWithNoUserNoCart: Story = {
-  render: NoUserCartNoCartExample,
-  play: async (context) => {
-    expect(
-      screen.queryByRole('button', {
-        name: /Lorem ipsum/i,
-      })
-    ).toBeNull();
-    expect(
-      screen.queryByRole('button', {
-        name: /World Cup/i,
-      })
-    ).toBeNull();
-  },
-};
-
 export const SectionWithNoUserOpened: Story = {
   render: NoUserCartExample,
   play: async (context) => {
@@ -58,28 +42,45 @@ export const SectionWithNoUserOpened: Story = {
   },
 };
 
-// TODO, transform in a jest test becaus failing in CI
-// export const SectionWithNoUserOpenedRemove: Story = {
-//   ...SectionWithNoUserOpened,
-//   play: async (context) => {
-//     await SectionWithNoUserOpened.play(context);
-//     const removeButtons = await screen.findAllByRole('button', {
-//       name: /Remove/i,
-//     });
-//     expect(removeButtons).toHaveLength(2);
-//     await userEvent.click(removeButtons[0]);
-//     expect(
-//       await screen.findByRole('button', {
-//         name: /World cup/i,
-//       })
-//     );
-//     expect(
-//       screen.queryByRole('button', {
-//         name: /Lorem ipsum/i,
-//       })
-//     ).toBeNull();
-//   },
-// };
+export const SectionWithNoUserOpenedRemove: Story = {
+  ...SectionWithNoUserOpened,
+  play: async (context) => {
+    if (SectionWithNoUserOpened.play)
+      await SectionWithNoUserOpened.play(context);
+    const removeButtons = await screen.findAllByRole('button', {
+      name: /Remove/i,
+    });
+    expect(removeButtons).toHaveLength(2);
+    await userEvent.click(removeButtons[0]);
+    expect(
+      await screen.findByRole('button', {
+        name: /World cup/i,
+      })
+    );
+    expect(
+      screen.queryByRole('button', {
+        name: /Lorem ipsum/i,
+      })
+    ).toBeNull();
+  },
+};
+
+export const SectionWithNoUserNoCart: Story = {
+  render: NoUserCartNoCartExample,
+  play: async (context) => {
+    expect(
+      screen.queryByRole('button', {
+        name: /Lorem ipsum/i,
+      })
+    ).toBeNull();
+    expect(
+      screen.queryByRole('button', {
+        name: /World Cup/i,
+      })
+    ).toBeNull();
+  },
+};
+
 export const SectionWithNoUserLoading: Story = {
   render: NoUserCartLoadingExample,
 };
