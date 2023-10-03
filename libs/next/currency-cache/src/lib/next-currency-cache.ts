@@ -18,7 +18,7 @@ function getCacheKey(currency: Currency_Enum_Not_Const): string {
 }
 
 function withCacheKey(
-  fn: (key: string, currency: Currency_Enum_Not_Const) => Promise<unknown>
+  fn: (key: string, currency: Currency_Enum_Not_Const) => Promise<any>
 ) {
   return async (currency: Currency_Enum_Not_Const) => {
     const key = getCacheKey(currency);
