@@ -61,7 +61,7 @@ const nextConfig = {
     },
     optimizePackageImports: [
       '@ui/icons',
-      // '@ui/components', //  Error: Could not find the module "" in the React Client Manifest. This is probably a bug in the React Server Components bundler. => see https://github.com/vercel/next.js/issues/54967
+      '@ui/components', //  Error: Could not find the module "" in the React Client Manifest. This is probably a bug in the React Server Components bundler. => see https://github.com/vercel/next.js/issues/54967
       '@features/appNav/ui',
       '@features/cart',
       '@features/cart/server',
