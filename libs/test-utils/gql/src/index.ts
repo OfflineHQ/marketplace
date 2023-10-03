@@ -9,9 +9,6 @@ import { getSdk as userSdk, type Sdk as UserSdk } from '@gql/user/api';
 import { endpointUrl } from '@next/hasura/shared';
 import type { AppUser } from '@next/types';
 
-// setup env variables
-require('dotenv').config({ path: './tools/test/.env.test.jest' });
-
 // In your accounts sdk file:
 
 type Opts = {

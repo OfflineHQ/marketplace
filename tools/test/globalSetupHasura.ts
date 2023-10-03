@@ -7,9 +7,6 @@ module.exports = async () => {
   logger.info('global-setup: Starting');
   console.time('global-setup');
 
-  // setup env variables
-  require('dotenv').config({ path: './tools/test/.env.test.jest' });
-
   // // ️️️✅ Best Practice: Speed up during development, if already live then do nothing
   // const isDBReachable = await isPortReachable(5454);
   // const isHasuraReachable = await isPortReachable(9696);
