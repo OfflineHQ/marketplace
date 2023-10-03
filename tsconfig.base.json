@@ -17,7 +17,6 @@
     "paths": {
       "@crypto": ["libs/crypto/src/index.ts"],
       "@currency/api": ["libs/currency/api/src/index.ts"],
-      "@next/currency-cache": ["libs/next/currency-cache/src/index.ts"],
       "@currency/types": ["libs/currency/types/src/index.ts"],
       "@features/account/api": ["libs/features/account/api/src/index.ts"],
       "@features/appNav/ui": ["libs/features/appNav/ui/src/index.ts"],
@@ -96,6 +95,7 @@
       "@next/cache": ["libs/next/cache/src/index.ts"],
       "@next/cache/server": ["libs/next/cache/src/server.ts"],
       "@next/currency": ["libs/next/currency/src/index.ts"],
+      "@next/currency-cache": ["libs/next/currency-cache/src/index.ts"],
       "@next/hasura/api": ["libs/next/hasura/api/src/index.ts"],
       "@next/hasura/react-query": ["libs/next/hasura/react-query/src/index.ts"],
       "@next/hasura/shared": ["libs/next/hasura/shared/src/index.ts"],
