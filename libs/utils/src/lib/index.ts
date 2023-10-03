@@ -1,5 +1,5 @@
 import { stringToPath } from 'remeda';
-import type { NestedValueOf, NestedKeyOf } from '../types';
+import type { NestedKeyOf, NestedValueOf } from '../types';
 
 export function deepMerge(obj1: any, obj2: any): any {
   const output = Object.assign({}, obj1);
@@ -76,6 +76,14 @@ export function isDev() {
   );
 }
 
+export function isPreviewOrProduction() {
+  const env = ['preview', 'production'];
+  return (
+    env.includes(process.env.VERCEL_ENV as string) ||
+    env.includes(process.env.NEXT_PUBLIC_VERCEL_ENV as string)
+  );
+}
+
 export function isProd() {
   return (
     process.env.VERCEL_ENV === 'production' ||
@@ -84,7 +92,7 @@ export function isProd() {
 }
 
 export function getNextAppURL(): string {
-  if (isProd()) {
+  if (isPreviewOrProduction()) {
     return isServerSide()
       ? (process.env.NEXTAUTH_URL as string)
       : (process.env.NEXT_PUBLIC_SITE_URL as string);
