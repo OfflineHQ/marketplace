@@ -1,3 +1,4 @@
+import { isPreviewOrProduction } from '@utils';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -6,9 +7,9 @@ export default class Currency {
   private EXCHANGE_RATE_API_KEY = process.env.EXCHANGE_RATE_API_KEY;
 
   async getRate(baseCurrency: string): Promise<{ [key: string]: number }> {
-    //if (!isPreviewOrProduction()) {
-    //  return await this.fetchFromLocalFile(baseCurrency);
-    //}
+    if (!isPreviewOrProduction()) {
+      return await this.fetchFromLocalFile(baseCurrency);
+    }
     try {
       const rates = await this.fetchFromAPI(
         `http://data.fixer.io/api/latest?access_key=${this.FIXER_CURRENCY_API_KEY}&base=${baseCurrency}`,
@@ -20,7 +21,7 @@ export default class Currency {
       console.warn('Falling back to ExchangeRate API');
       try {
         const rates = await this.fetchFromAPI(
-          `https://v6.exchangerate-api.com/v6/${this.EXCHANGE_RATE_API_KEY}/latest/${baseCurrency}`,
+          `https://v6.exchangerate-api.com/v6/${this.EXCHANGE_RATE_API_KEY}/latest/${baseCurrency}`, // TODO basculer sur la bonne api
           'ExchangeRate'
         );
         await this.saveToLocalFile(baseCurrency, rates);
