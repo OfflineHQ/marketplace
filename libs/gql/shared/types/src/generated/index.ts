@@ -10159,7 +10159,9 @@ export const enum OrderStatus_Constraint {
 export const enum OrderStatus_Enum {
   Cancelled = 'CANCELLED',
   Completed = 'COMPLETED',
-  Confirmed = 'CONFIRMED'
+  Confirmed = 'CONFIRMED',
+  Error = 'ERROR',
+  Unauthorized = 'UNAUTHORIZED'
 };
 
 /** Boolean expression to compare columns of type "orderStatus_enum". All fields are combined with logical 'AND'. */
