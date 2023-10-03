@@ -8,7 +8,7 @@ const currencyApi = new Currency();
 const cacheApi = new Cache();
 
 class CacheApiError extends Error {
-  constructor(message: string, public originalError: any) {
+  constructor(message: string, public originalError: unknown) {
     super(message);
   }
 }
@@ -18,7 +18,7 @@ function getCacheKey(currency: Currency_Enum_Not_Const): string {
 }
 
 function withCacheKey(
-  fn: (key: string, currency: Currency_Enum_Not_Const) => Promise<any>
+  fn: (key: string, currency: Currency_Enum_Not_Const) => Promise<unknown>
 ) {
   return async (currency: Currency_Enum_Not_Const) => {
     const key = getCacheKey(currency);
