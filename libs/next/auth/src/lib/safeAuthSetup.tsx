@@ -17,7 +17,6 @@ import {
 } from '@web3auth/base';
 import { Web3AuthOptions } from '@web3auth/modal';
 import { LANGUAGE_TYPE, OpenloginAdapter } from '@web3auth/openlogin-adapter';
-import { LOGIN_MODAL_EVENTS } from '@web3auth/ui';
 import { ethers } from 'ethers';
 import { getCsrfToken, signIn, signOut, useSession } from 'next-auth/react';
 import { SiweMessage } from 'siwe';
@@ -191,10 +190,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         connectedResolved('connected');
       };
 
-      safeAuth.subscribe(
-        LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
-        web3AuthModalVisibilityHandler
-      );
+      safeAuth.subscribe('MODAL_VISIBILITY', web3AuthModalVisibilityHandler);
 
       safeAuth.subscribe(ADAPTER_EVENTS.CONNECTED, web3AuthConnectedHandler);
 
@@ -217,11 +213,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         // await safeAuth.signIn();
         await finishLogin();
       }
-
-      safeAuth.unsubscribe(
-        LOGIN_MODAL_EVENTS.MODAL_VISIBILITY,
-        web3AuthModalVisibilityHandler
-      );
+      safeAuth.unsubscribe('MODAL_VISIBILITY', web3AuthModalVisibilityHandler);
 
       safeAuth.unsubscribe(ADAPTER_EVENTS.CONNECTED, web3AuthConnectedHandler);
     } catch (error) {
