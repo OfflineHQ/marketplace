@@ -61,7 +61,8 @@ const nextConfig = {
     },
     optimizePackageImports: [
       '@ui/icons',
-      '@ui/components', //  Error: Could not find the module "" in the React Client Manifest. This is probably a bug in the React Server Components bundler. => see https://github.com/vercel/next.js/issues/54967
+      '@ui/components',
+      '@features/account/api',
       '@features/appNav/ui',
       '@features/cart',
       '@features/cart/server',
@@ -72,6 +73,15 @@ const nextConfig = {
       '@features/pass',
       '@features/pass/server',
       '@features/settings',
+      '@gql/admin/api',
+      '@gql/admin/types',
+      '@gql/user/api',
+      '@gql/user/react-query',
+      '@gql/user/types',
+      '@gql/anonymous/api',
+      '@gql/anonymous/react-query',
+      '@gql/anonymous/types',
+      '@gql/shared/types',
     ],
     // https://vercel.com/docs/concepts/deployments/skew-protection#enabling-skew-protection
     useDeploymentId: true,
