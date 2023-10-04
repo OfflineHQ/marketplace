@@ -1,11 +1,10 @@
 'use client';
 
-import { defaultLocale } from '@next/i18n';
 import { usePathname, useRouter } from '@next/navigation';
 import { LanguageDropdown, type LanguageDropdownProps } from '@ui/components';
 import { Check } from '@ui/icons';
-import { useParams, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocale } from 'next-intl';
+import { useMemo, useTransition } from 'react';
 // eslint-disable-next-line import/no-unresolved
 import '@next/types';
 
@@ -22,39 +21,15 @@ export const LanguageDropdownClient: React.FC<LanguageDropdownClientProps> = ({
   languageText,
   className,
 }) => {
-  const locale = useParams()?.locale || defaultLocale;
+  const locale = useLocale();
   const router = useRouter();
-  // need this little hack to avoid issue in storybook
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const pathname = window?.STORYBOOK_ENV ? '' : (usePathname() as string);
-  const searchParams = useSearchParams();
-  const getCurrentUrl = useCallback(() => {
-    let url = pathname;
-    if (searchParams?.toString()) url += `?${searchParams.toString()}`;
-    return url;
-  }, [pathname, searchParams]);
-
-  const [currentUrl, setCurrentUrl] = useState<string>(getCurrentUrl());
-
-  useEffect(() => {
-    setCurrentUrl(getCurrentUrl());
-  }, [pathname, searchParams]);
+  const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
 
   const changeLocale = (newLocale: string) => {
-    let url;
-    const pathParts = currentUrl.split('/');
-    if (
-      pathParts[1] &&
-      Object.prototype.hasOwnProperty.call(languageSelectText, pathParts[1])
-    ) {
-      // replace existing locale in url
-      pathParts[1] = newLocale;
-      url = pathParts.join('/');
-    } else {
-      // prepend new locale to url
-      url = '/' + newLocale + currentUrl;
-    }
-    router.push(url);
+    startTransition(() => {
+      router.replace(pathname, { locale: newLocale });
+    });
   };
 
   const languages: LanguageDropdownProps['items'] = useMemo(
@@ -78,7 +53,11 @@ export const LanguageDropdownClient: React.FC<LanguageDropdownClientProps> = ({
   );
 
   return (
-    <LanguageDropdown items={languages} className={className}>
+    <LanguageDropdown
+      items={languages}
+      className={className}
+      disabled={isPending}
+    >
       {languageText}
     </LanguageDropdown>
   );
