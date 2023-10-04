@@ -1,13 +1,13 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { Link, usePathname } from '@next/navigation';
 import {
+  NavigationMenuItem,
   NavigationMenuLink,
   navigationMenuTriggerStyle,
-  NavigationMenuItem,
 } from '@ui/components';
-import Link, { type LinkProps } from 'next/link';
 import { cn } from '@ui/shared';
+import type { LinkProps } from 'next/link';
 
 export type NavLinkProps = LinkProps & {
   children: React.ReactNode;

@@ -7,8 +7,8 @@ import * as stories from './PassPurchase.stories';
 const { NoPassSelected, SelectPasses, WithFullSizeAndBackButton } =
   composeStories(stories);
 
-jest.mock('next/navigation', () => ({
-  ...jest.requireActual('next/navigation'),
+jest.mock('@next/navigation', () => ({
+  ...jest.requireActual('@next/navigation'),
   useRouter: () => ({
     back: jest.fn(),
   }),

@@ -1,1 +1,1 @@
-export { NftClaimable } from './lib/nft-thirdweb-api';
+export * from './lib/nft-thirdweb-api';

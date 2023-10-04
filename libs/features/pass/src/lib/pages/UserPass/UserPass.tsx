@@ -1,19 +1,17 @@
 'use client';
 
-import { useSelectedLayoutSegment } from 'next/navigation';
+import { Link } from '@next/navigation';
 import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
   Card,
   CardHeader,
-  CardTitle,
-  CardFooter,
   CardOverflow,
-  CardContent,
+  CardTitle,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from '@ui/components';
-import Link from 'next/link';
+import { useSelectedLayoutSegment } from 'next/navigation';
 import React from 'react';
 
 export interface UserPassProps {

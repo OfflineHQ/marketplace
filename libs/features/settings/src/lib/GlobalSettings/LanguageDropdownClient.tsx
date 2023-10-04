@@ -1,11 +1,11 @@
 'use client';
 
-import { LanguageDropdown, type LanguageDropdownProps } from '@ui/components';
-import { useMemo, useState, useCallback, useEffect } from 'react';
-import { usePathname } from 'next-intl/client';
-import { useSearchParams, useRouter, useParams } from 'next/navigation';
-import { Check } from '@ui/icons';
 import { defaultLocale } from '@next/i18n';
+import { usePathname, useRouter } from '@next/navigation';
+import { LanguageDropdown, type LanguageDropdownProps } from '@ui/components';
+import { Check } from '@ui/icons';
+import { useParams, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 // eslint-disable-next-line import/no-unresolved
 import '@next/types';
 

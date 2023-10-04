@@ -1,14 +1,14 @@
+import { Event } from '@features/organizer/event-types';
+import { Link } from '@next/navigation';
 import {
-  Text,
-  TextSkeleton,
-  Button,
   Avatar,
   AvatarFallback,
   AvatarImage,
   AvatarSkeleton,
+  Button,
+  Text,
+  TextSkeleton,
 } from '@ui/components';
-import Link from 'next/link';
-import { Event } from '@features/organizer/event-types';
 import { getInitials } from '@ui/shared';
 
 export type EventOrganizerButtonProps = NonNullable<Event['organizer']>;

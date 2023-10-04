@@ -1,17 +1,16 @@
 'use client';
 
+import { Link } from '@next/navigation';
 import * as React from 'react';
-import Link from 'next/link';
 
-import { cn } from '@ui/shared';
 import { Tags } from '@ui/icons';
+import { cn } from '@ui/shared';
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuIndicator,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from './NavigationMenu';
