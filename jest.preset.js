@@ -5,6 +5,10 @@ module.exports = {
   setupFiles: [`${process.cwd()}/tools/test/jest.setup.ts`],
   // collectCoverage: true,
   coverageReporters: ['text', 'lcov', 'html'],
+  moduleNameMapper: {
+    '@formkit/auto-animate/react': `${process.cwd()}/__mocks__/@formkit/auto-animate/react.js`,
+    'auto-animate': `${process.cwd()}/__mocks__/auto-animate.tsx`,
+  },
   coverageThreshold: {
     // global: {
     //   branches: 80,
