@@ -1,12 +1,11 @@
 import { AuthProvider, NextAuthProvider } from '@next/auth';
-import { defaultLocale, getMessages, locales } from '@next/i18n';
+import { getMessages, locales } from '@next/i18n';
 import { ReactQueryProviders } from '@next/react-query';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { Analytics } from '@web/components/Analytics';
 import { siteConfig } from '@web/config/site';
-import '@web/styles/globals.css';
 import { Metadata } from 'next';
 import { createTranslator } from 'next-intl';
 import { Inter as FontSans } from 'next/font/google';
@@ -88,12 +87,10 @@ interface RootLayoutProps extends AppNavLayoutProps {
 }
 
 export default async function RootLayout({
-  params,
+  params: { locale },
   children,
   ...appNavLayout
 }: RootLayoutProps) {
-  if (!params) return null;
-  const locale = params?.locale || defaultLocale;
   // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale as any)) notFound();
   const messages = await getMessages(locale);
