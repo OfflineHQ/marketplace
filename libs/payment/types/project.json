@@ -1,0 +1,34 @@
+{
+  "name": "payment-types",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/payment/types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/payment/types",
+        "tsConfig": "libs/payment/types/tsconfig.lib.json",
+        "packageJson": "libs/payment/types/package.json",
+        "main": "libs/payment/types/src/index.ts",
+        "assets": ["libs/payment/types/*.md"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs payment-types {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/payment/types/**/*.ts",
+          "libs/payment/types/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

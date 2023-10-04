@@ -1,0 +1,48 @@
+{
+  "name": "payment-webhooks",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/payment/webhooks/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/payment/webhooks",
+        "tsConfig": "libs/payment/webhooks/tsconfig.lib.json",
+        "packageJson": "libs/payment/webhooks/package.json",
+        "main": "libs/payment/webhooks/src/index.ts",
+        "assets": ["libs/payment/webhooks/*.md"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs payment-webhooks {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/payment/webhooks/**/*.ts",
+          "libs/payment/webhooks/package.json"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/payment/webhooks/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
