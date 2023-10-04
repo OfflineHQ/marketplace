@@ -9,7 +9,7 @@ import {
 import { EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { NoUserCart } from './NoUserCart';
 // @ts-ignore
-import EmptyCartImage from './empty-cart.svg';
+import EmptyCartImage from '../images/empty-cart.svg';
 
 export function NoUserCartExample() {
   SetPassesCartLocal();
