@@ -26,14 +26,13 @@ export const LanguageDropdownClient: React.FC<LanguageDropdownClientProps> = ({
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
 
-  const changeLocale = (newLocale: string) => {
-    startTransition(() => {
-      router.replace(pathname, { locale: newLocale });
-    });
-  };
-
-  const languages: LanguageDropdownProps['items'] = useMemo(
-    () => [
+  const languages: LanguageDropdownProps['items'] = useMemo(() => {
+    const changeLocale = (newLocale: string) => {
+      startTransition(() => {
+        router.replace(pathname, { locale: newLocale });
+      });
+    };
+    return [
       {
         type: 'item',
         text: languageSelectText['en'],
@@ -48,9 +47,8 @@ export const LanguageDropdownClient: React.FC<LanguageDropdownClientProps> = ({
         disabled: locale === 'fr',
         action: () => changeLocale('fr'),
       },
-    ],
-    [languageSelectText, locale, changeLocale]
-  );
+    ];
+  }, [languageSelectText, locale, pathname, router]);
 
   return (
     <LanguageDropdown
