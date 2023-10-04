@@ -1,5 +1,7 @@
 'use client';
 
+import { EventSlugs } from '@features/organizer/event-types';
+import type { Locale } from '@gql/shared/types';
 import { useLocale } from 'next-intl';
 import { useEffect } from 'react';
 import {
@@ -8,8 +10,6 @@ import {
   type EventPassesProps,
 } from './EventPasses';
 import { useEventPassOrders } from './useEventPassOrders';
-import { EventSlugs } from '@features/organizer/event-types';
-import type { Locale } from '@gql/shared/types';
 
 export interface EventPassesUserProps
   extends Pick<EventPassesProps, 'passes' | 'onDelete'> {
