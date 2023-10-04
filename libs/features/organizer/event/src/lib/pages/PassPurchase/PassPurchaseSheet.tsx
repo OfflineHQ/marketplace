@@ -1,22 +1,23 @@
 // PassPurchaseSheet.tsx
-import { type LinkProps } from 'next/link';
+import { Link } from '@next/navigation';
+import { PropsFrom } from '@next/types';
 import {
-  type SheetNavigationProps,
-  SheetOverflow,
-  SheetHeader,
-  SheetTitle,
-  SheetTitleSkeleton,
   SheetDescription,
   SheetDescriptionSkeleton,
+  SheetHeader,
   SheetNavigationSkeleton,
+  SheetOverflow,
+  SheetTitle,
+  SheetTitleSkeleton,
+  type SheetNavigationProps,
 } from '@ui/components';
+import { PassFooterServer } from '../../organisms/PassFooter/PassFooterServer';
+import { PassFooterSheetClient } from '../../organisms/PassFooter/PassFooterSheetClient';
 import {
   PassList,
   PassListProps,
   PassListSkeleton,
 } from '../../organisms/PassList/PassList';
-import { PassFooterSheetClient } from '../../organisms/PassFooter/PassFooterSheetClient';
-import { PassFooterServer } from '../../organisms/PassFooter/PassFooterServer';
 import {
   PassPurchaseSheetNavigationClient,
   type PassPurchaseSheetNavigationClientProps,
@@ -26,7 +27,7 @@ export interface PassPurchaseSheetProps
   extends PassPurchaseSheetNavigationClientProps,
     PassListProps {
   goPaymentText: string;
-  goPaymentLink: LinkProps;
+  goPaymentLink: PropsFrom<typeof Link>;
   title: string;
   description: string;
 }

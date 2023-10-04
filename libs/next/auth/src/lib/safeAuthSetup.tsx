@@ -8,6 +8,7 @@ import { MetamaskAdapter } from '@web3auth/metamask-adapter';
 
 import { useCallback, useEffect, useState } from 'react';
 
+import { useRouter } from '@next/navigation';
 import {
   ADAPTER_EVENTS,
   CHAIN_NAMESPACES,
@@ -19,7 +20,6 @@ import { LANGUAGE_TYPE, OpenloginAdapter } from '@web3auth/openlogin-adapter';
 import { LOGIN_MODAL_EVENTS } from '@web3auth/ui';
 import { ethers } from 'ethers';
 import { getCsrfToken, signIn, signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { SiweMessage } from 'siwe';
 
 import { ExternalProvider } from '@ethersproject/providers';

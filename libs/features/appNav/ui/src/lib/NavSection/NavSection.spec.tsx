@@ -1,5 +1,5 @@
-import { render, fireEvent } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
+import { renderWithIntl } from '@test-utils/next-intl';
 import * as stories from './NavSection.stories';
 
 const { Cart, Skeleton } = composeStories(stories);
@@ -8,7 +8,7 @@ describe('HeaderNav', () => {
   it('should render successfully Stories', () => {
     const stories = [Cart, Skeleton];
     stories.forEach((Story) => {
-      const { baseElement } = render(<Story />);
+      const { baseElement } = renderWithIntl(<Story />);
       expect(baseElement).toBeTruthy();
     });
   });
@@ -17,11 +17,11 @@ describe('HeaderNav', () => {
       href: '/test',
     };
 
-    const { getByRole } = render(<Cart {...mockProps} />);
+    const { getByRole } = renderWithIntl(<Cart {...mockProps} />);
     const linkElement = getByRole('link');
 
     // Check if NavLink receives correct props
-    expect(linkElement.getAttribute('href')).toBe(mockProps.href);
+    expect(linkElement.getAttribute('href')).toBe(`/en${mockProps.href}`);
     expect(linkElement.textContent).toBe('Cart');
   });
 });
