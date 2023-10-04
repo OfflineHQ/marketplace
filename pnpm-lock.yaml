@@ -76,6 +76,9 @@ dependencies:
   '@sentry/nextjs':
     specifier: ^7.73.0
     version: 7.73.0(encoding@0.1.13)(next@13.5.4)(react@18.2.0)(webpack@5.88.2)
+  '@sentry/utils':
+    specifier: ^7.73.0
+    version: 7.73.0
   '@sumsub/websdk':
     specifier: ^2.0.1
     version: 2.0.1
@@ -197,8 +200,8 @@ dependencies:
     specifier: 4.23.1
     version: 4.23.1(next@13.5.4)(nodemailer@6.9.3)(react-dom@18.2.0)(react@18.2.0)
   next-intl:
-    specifier: 3.0.0-beta.18
-    version: 3.0.0-beta.18(next@13.5.4)(react@18.2.0)
+    specifier: 3.0.0-rc.2
+    version: 3.0.0-rc.2(next@13.5.4)(react@18.2.0)
   next-seo:
     specifier: ^5.15.0
     version: 5.15.0(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -4661,7 +4664,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.7.1)
       '@whatwg-node/fetch': 0.8.8
       graphql: 16.7.1
-      tslib: 2.6.0
+      tslib: 2.6.2
     transitivePeerDependencies:
       - encoding
     dev: true
@@ -4687,7 +4690,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.7.1)
       globby: 11.1.0
       graphql: 16.7.1
-      tslib: 2.6.0
+      tslib: 2.6.2
       unixify: 1.0.0
     transitivePeerDependencies:
       - '@babel/core'
@@ -4716,7 +4719,7 @@ packages:
     dependencies:
       graphql: 16.7.1
       lodash.sortby: 4.7.0
-      tslib: 2.6.0
+      tslib: 2.6.2
     dev: true
 
   /@graphql-tools/executor-graphql-ws@0.0.14(graphql@16.7.1):
@@ -4794,7 +4797,7 @@ packages:
       graphql: 16.7.1
       is-glob: 4.0.3
       micromatch: 4.0.5
-      tslib: 2.6.0
+      tslib: 2.6.2
       unixify: 1.0.0
     transitivePeerDependencies:
       - '@babel/core'
@@ -4812,7 +4815,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.7.1)
       '@whatwg-node/fetch': 0.8.8
       graphql: 16.7.1
-      tslib: 2.6.0
+      tslib: 2.6.2
       value-or-promise: 1.0.12
     transitivePeerDependencies:
       - '@babel/core'
@@ -4830,7 +4833,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.7.1)
       globby: 11.1.0
       graphql: 16.7.1
-      tslib: 2.6.0
+      tslib: 2.6.2
       unixify: 1.0.0
     dev: true
 
@@ -4845,7 +4848,7 @@ packages:
       '@babel/types': 7.22.5
       '@graphql-tools/utils': 9.2.1(graphql@16.7.1)
       graphql: 16.7.1
-      tslib: 2.6.0
+      tslib: 2.6.2
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
@@ -4870,7 +4873,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.7.1)
       globby: 11.1.0
       graphql: 16.7.1
-      tslib: 2.6.0
+      tslib: 2.6.2
       unixify: 1.0.0
     dev: true
 
@@ -4883,7 +4886,7 @@ packages:
       '@graphql-tools/utils': 9.2.1(graphql@16.7.1)
       graphql: 16.7.1
       p-limit: 3.1.0
-      tslib: 2.6.0
+      tslib: 2.6.2
     dev: true
 
   /@graphql-tools/merge@8.4.2(graphql@16.7.1):
@@ -4927,7 +4930,7 @@ packages:
       json-stable-stringify: 1.0.2
       lodash: 4.17.21
       scuid: 1.1.0
-      tslib: 2.6.0
+      tslib: 2.6.2
       yaml-ast-parser: 0.0.43
     transitivePeerDependencies:
       - '@types/node'
@@ -4979,7 +4982,7 @@ packages:
       '@whatwg-node/fetch': 0.8.8
       graphql: 16.7.1
       isomorphic-ws: 5.0.0(ws@8.13.0)
-      tslib: 2.6.0
+      tslib: 2.6.2
       value-or-promise: 1.0.12
       ws: 8.13.0
     transitivePeerDependencies:
@@ -5005,7 +5008,7 @@ packages:
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.7.1)
       graphql: 16.7.1
-      tslib: 2.6.0
+      tslib: 2.6.2
     dev: true
 
   /@graphql-tools/wrap@9.4.2(graphql@16.7.1):
@@ -22628,8 +22631,8 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-intl@3.0.0-beta.18(next@13.5.4)(react@18.2.0):
-    resolution: {integrity: sha512-RK3gM4NsA3mwzroMfIEgrCs5JDA/KVrMBzWlk0WThbqSeWy4vULz2FBUEqQdE8dSIdhxsArwGbrZwUNbCgSkWw==}
+  /next-intl@3.0.0-rc.2(next@13.5.4)(react@18.2.0):
+    resolution: {integrity: sha512-nYDn7ZuIiqX5XrBvf8bqdNVthPkkbbEN4HwDRY2SbFLkjCW2ceyP9aomJ6yfeOa1Vluy3sbEcHw8jJn/qmsqhA==}
     peerDependencies:
       next: ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0

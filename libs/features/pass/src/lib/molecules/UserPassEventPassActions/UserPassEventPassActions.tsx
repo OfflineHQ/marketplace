@@ -1,13 +1,13 @@
+import type { EventWithEventPassNfts } from '@features/pass-types';
+import { Link } from '@next/navigation';
 import {
   DropdownMenuActions,
   type DropdownMenuActionsProps,
   type ToastT,
 } from '@ui/components';
 import { Download, Reveal, SeeDetails, Send } from '@ui/icons';
-import type { EventWithEventPassNfts } from '@features/pass-types';
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import type { ErrorWithMessage } from '@utils';
+import { useTranslations } from 'next-intl';
 
 export type UserPassEventPassActionsFunctionsProps = {
   actionsFunctions: {
