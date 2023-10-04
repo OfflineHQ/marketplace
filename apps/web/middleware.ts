@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from 'next-auth/middleware';
-import createIntlMiddleware from 'next-intl/middleware';
-import { locales, defaultLocale } from '@next/i18n';
+import { defaultLocale, locales } from '@next/i18n';
 import { nextAuthCookieName } from '@next/next-auth/common';
+import { withAuth } from 'next-auth/middleware';
+import createMiddleware from 'next-intl/middleware';
+import { NextRequest, NextResponse } from 'next/server';
 
 const authPages = [
   '/user',
   // Add more restricted pages if needed
 ];
 
-const intlMiddleware = createIntlMiddleware({
+const intlMiddleware = createMiddleware({
   locales: locales.slice(),
   defaultLocale,
 });
@@ -48,5 +48,5 @@ export default function middleware(req: NextRequest) {
 
 export const config = {
   // Skip all paths that should not be internationalized
-  matcher: ['/((?!api|_next|.*\\..*).*)'],
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
 };

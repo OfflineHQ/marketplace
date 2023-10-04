@@ -1,24 +1,24 @@
 // PassPurchase.tsx
-import React from 'react';
-import Link, { type LinkProps } from 'next/link';
+import { Link } from '@next/navigation';
+import { PropsFrom } from '@next/types';
 import {
-  type SheetNavigationProps,
-  CardOverflow,
-  CardHeader,
-  CardTitle,
   CardContent,
   CardDescription,
+  CardHeader,
   CardNavBack,
+  CardOverflow,
+  CardTitle,
 } from '@ui/components';
-import { PassList, PassListProps } from '../../organisms/PassList/PassList';
+import React from 'react';
 import { PassFooterCardClient } from '../../organisms/PassFooter/PassFooterCardClient';
 import { PassFooterServer } from '../../organisms/PassFooter/PassFooterServer';
+import { PassList, PassListProps } from '../../organisms/PassList/PassList';
 
 export interface PassPurchaseCardProps extends PassListProps {
   backButtonText: string;
-  backButtonLink: LinkProps;
+  backButtonLink: PropsFrom<typeof Link>;
   goPaymentText: string;
-  goPaymentLink: LinkProps;
+  goPaymentLink: PropsFrom<typeof Link>;
   title: string;
   description: string;
 }
