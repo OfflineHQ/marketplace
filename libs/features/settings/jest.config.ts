@@ -8,6 +8,7 @@ export default {
       { jsc: { transform: { react: { runtime: 'automatic' } } } },
     ],
   },
+
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/features/settings',
 };
