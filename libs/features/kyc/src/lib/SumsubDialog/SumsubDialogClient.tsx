@@ -37,7 +37,6 @@ export const SumsubDialogClient: React.FC<SumsubWebSdkProps> = ({
   const { resolvedTheme } = useTheme();
   const [statusConfirmed, setStatusConfirmed] = useState(false);
   async function onMessage(type: MessageType, payload: AnyEventPayload) {
-    console.log({ type, payload });
     if (
       type === 'idCheck.onApplicantStatusChanged' &&
       'reviewStatus' in payload

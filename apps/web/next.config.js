@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+// Import env variables for client and server, will return an error in case it's not defined.
+import('../../libs/env/client/src/index.mjs');
+import('../../libs/env/server/src/index.mjs');
 const { withNx } = require('@nx/next');
 const path = require('path');
 const { withSentryConfig } = require('@sentry/nextjs');
@@ -22,6 +25,9 @@ const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
   ? null
   : process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
+/**
+ * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
+ **/
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
