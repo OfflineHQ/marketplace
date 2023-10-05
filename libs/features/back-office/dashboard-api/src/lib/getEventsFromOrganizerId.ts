@@ -1,6 +1,7 @@
-import { cache } from 'react';
+import env from '@env/server';
 import { adminSdk } from '@gql/admin/api';
 import type { Locale, Stage } from '@gql/shared/types';
+import { cache } from 'react';
 
 interface getEventsFromOrganizerIdProps {
   id: string;
@@ -12,7 +13,7 @@ export const getEventsFromOrganizerId = cache(
     const data = await adminSdk.GetEventsFromOrganizerId({
       id: id,
       locale: locale as Locale,
-      stage: process.env.HYGRAPH_STAGE as Stage,
+      stage: env.HYGRAPH_STAGE as Stage,
     });
     return data?.organizer?.events;
   }

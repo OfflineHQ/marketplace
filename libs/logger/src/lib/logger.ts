@@ -1,5 +1,6 @@
 import log from 'loglevel';
 
+// here redefined it to avoid loop in the build
 function isDev() {
   return (
     process.env.VERCEL_ENV !== 'production' ||

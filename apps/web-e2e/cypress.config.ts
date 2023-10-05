@@ -1,6 +1,5 @@
-import { defineConfig } from 'cypress';
 import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
-import { deleteAccount, deleteAccounts, seedDb, queryDb } from '@test-utils/db';
+import { defineConfig } from 'cypress';
 
 const cypressConfigGlobal = {
   defaultCommandTimeout: 15000,
@@ -19,7 +18,7 @@ export default defineConfig({
   e2e: {
     ...nxE2EPreset(__filename),
     chromeWebSecurity: false,
-    baseUrl: `http://localhost:${process.env.NEXT_PORT}`,
+    baseUrl: `http://localhost:8888`,
     supportFile: 'src/support/e2e.ts',
     setupNodeEvents(on, config) {
       // implement node event listeners here

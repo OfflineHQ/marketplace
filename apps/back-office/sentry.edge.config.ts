@@ -2,11 +2,13 @@
 // The config you add here will be used whenever the server handles a request.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
+import env from '@env/client';
+import envServer from '@env/server';
 import * as Sentry from '@sentry/nextjs';
 
-const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
+const SENTRY_DSN = envServer.SENTRY_AUTH_TOKEN
   ? null
-  : process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
+  : envServer.SENTRY_DSN || env.NEXT_PUBLIC_SENTRY_DSN;
 
 Sentry.init({
   environment: process.env.VERCEL_ENV || 'development',

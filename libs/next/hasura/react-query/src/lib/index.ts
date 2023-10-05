@@ -1,6 +1,17 @@
 'use client';
 
-import { endpointUrl } from '@next/hasura/shared';
+import { getHasuraEndpoint } from '@shared/client';
+
+// Used to convert BigInt to string when sending to Hasura to avoid JSON parse error
+interface BigInt {
+  /** Convert to BigInt to string form in JSON.stringify */
+  toJSON: () => string;
+}
+// @ts-ignore: Unreachable code error
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
 
 declare global {
   interface Window {
@@ -21,7 +32,7 @@ export const fetchDataReactQuery = <TData, TVariables>(
       Authorization: jwtTestToken ? `Bearer ${jwtTestToken}` : '',
       ...(options.headers ?? {}),
     };
-    const url = endpointUrl();
+    const url = getHasuraEndpoint();
     const res = await fetch(url, {
       method: 'POST',
       credentials: 'include',
