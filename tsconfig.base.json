@@ -16,6 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@crypto": ["libs/crypto/src/index.ts"],
+      "@env/client": ["libs/env/client/src/index.mjs"],
+      "@env/server": ["libs/env/server/src/index.mjs"],
       "@features/account/api": ["libs/features/account/api/src/index.ts"],
       "@features/appNav/ui": ["libs/features/appNav/ui/src/index.ts"],
       "@features/appNav/ui/stories": [
@@ -137,6 +139,6 @@
     }
   },
   "typeRoots": ["types", "node_modules/@types"],
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "types/**/*.d.ts"],
   "exclude": ["node_modules", "tmp"]
 }
