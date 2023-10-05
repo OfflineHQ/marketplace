@@ -15,6 +15,7 @@ import type {
   GetTransfersForContractOptions as _GetTransfersForContractOptions,
 } from '@indexer/alchemy/types';
 import { WebhookType } from '@indexer/alchemy/types';
+import env from '@env/server';
 
 interface GetNftsForOwnerOptions
   extends Omit<_GetNftsForOwnerOptions, 'contractAddresses'> {
@@ -83,9 +84,9 @@ export class AlchemyWrapper {
   network: Network;
 
   constructor() {
-    const apiKey = process.env.ALCHEMY_API_KEY;
+    const apiKey = env.ALCHEMY_API_KEY;
     let network: Network;
-    switch (process.env.CHAIN) {
+    switch (env.CHAIN) {
       case '5':
         network = Network.ETH_GOERLI;
         break;
@@ -99,7 +100,7 @@ export class AlchemyWrapper {
         network = Network.MATIC_MUMBAI;
         break;
       default:
-        throw new Error(`Unsupported network: ${process.env.CHAIN}`);
+        throw new Error(`Unsupported network: ${env.CHAIN}`);
     }
     this.network = network;
     this.alchemy = new Alchemy({ apiKey, network });

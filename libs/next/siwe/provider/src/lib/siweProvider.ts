@@ -1,6 +1,6 @@
 import { handleAccount } from '@features/account/api';
 import type { AppUser } from '@next/types';
-import { getNextAppURL } from '@utils';
+import { getNextAppURL } from '@shared/server';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { getCsrfToken } from 'next-auth/react';
 import { SiweMessage } from 'siwe';

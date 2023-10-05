@@ -16,6 +16,7 @@ import {
   addSumsubContextToRequest,
   isValidSignatureForSumsubRequest,
 } from './utils';
+import env from '@env/server';
 
 export async function applicantStatusChanged(
   req: SumsubRequest,
@@ -25,12 +26,7 @@ export async function applicantStatusChanged(
   const signature = headers().get('x-payload-digest') as string;
   addSumsubContextToRequest(req, body, signature);
 
-  if (
-    !isValidSignatureForSumsubRequest(
-      req,
-      process.env.SUMSUB_WEBHOOKS_SECRET_KEY as string
-    )
-  ) {
+  if (!isValidSignatureForSumsubRequest(req, env.SUMSUB_WEBHOOKS_SECRET_KEY)) {
     return new Response('Signature validation failed, unauthorized!', {
       status: 403,
     });

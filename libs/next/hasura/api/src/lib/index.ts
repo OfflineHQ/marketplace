@@ -1,11 +1,18 @@
-import { isJestRunning, isServerSide } from '@utils';
-import { endpointUrl } from '@next/hasura/shared';
-import { logger } from '@logger';
+import env from '@env/server';
+import { getHasuraEndpoint } from '@shared/server';
+import { isJestRunning } from '@utils';
 import { cookies } from 'next/headers';
 
-/// This fetcher is used for fetching data from Hasura GraphQL API.
-// The admin mode is used solely for the admin role, it returns an error if the HASURA_GRAPHQL_ADMIN_SECRET is not set or if it's not called server side
-// Otherwise it include the auth cookie or get the jwt for testing purposes
+// Used to convert BigInt to string when sending to Hasura to avoid JSON parse error
+interface BigInt {
+  /** Convert to BigInt to string form in JSON.stringify */
+  toJSON: () => string;
+}
+// @ts-ignore: Unreachable code error
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
 type HasuraOpts = {
   admin?: boolean;
 };
@@ -20,19 +27,13 @@ export const fetchData = (hasuraOpts: HasuraOpts = { admin: false }) => {
       'Content-Type': 'application/json',
     };
     if (admin) {
-      // forbid calling on client side and allow if jest is running
-      if (!isServerSide() && !isJestRunning())
-        throw new Error('Admin access is only available on the server');
-      if (!process.env.HASURA_GRAPHQL_ADMIN_SECRET)
-        throw new Error('Admin secret env is missing');
-      headers['X-Hasura-Admin-Secret'] =
-        process.env.HASURA_GRAPHQL_ADMIN_SECRET;
-    } else if (isServerSide()) {
-      // if server side, include the cookie because it's not sent by default in server side with next
-      // TODO check if work with new version of cypress with webpack 5
+      headers['X-Hasura-Admin-Secret'] = env.HASURA_GRAPHQL_ADMIN_SECRET;
+    }
+    if (!isJestRunning()) {
+      // include the cookie because it's not sent by default in server side with next
       headers['Cookie'] = cookies().toString();
     }
-    const res = await fetch(endpointUrl(), {
+    const res = await fetch(getHasuraEndpoint(), {
       method: 'POST',
       headers,
       credentials: 'include',
@@ -45,15 +46,6 @@ export const fetchData = (hasuraOpts: HasuraOpts = { admin: false }) => {
     });
     const json = await res.json();
     if (json.errors) {
-      if (!isJestRunning())
-        logger.error(
-          '\n\nerror:\n',
-          json.errors,
-          '\n\nquery:\n',
-          doc,
-          '\n\nvariables\n:',
-          variables
-        );
       const { message } = json.errors[0] || 'Error..';
       throw new Error(message);
     }

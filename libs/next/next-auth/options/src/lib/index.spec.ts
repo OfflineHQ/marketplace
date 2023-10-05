@@ -1,4 +1,5 @@
-import { isBackOffice } from '@utils';
+// import env from '@env/server';
+// import { isBackOffice } from '@shared/server';
 import type { User } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import { NextRequest } from 'next/server';
@@ -8,10 +9,10 @@ jest.mock('@next/siwe/provider', () => ({
   SiweProvider: jest.fn(() => ({})),
 }));
 
-jest.mock('@utils', () => ({
-  ...jest.requireActual('@utils'),
-  isBackOffice: jest.fn(),
-}));
+// jest.mock('@shared/server', () => ({
+//   ...jest.requireActual('@shared/server'),
+//   isBackOffice: jest.fn(),
+// }));
 
 jest.mock('@features/account/api', () => ({
   ...jest.requireActual('@features/account/api'),
@@ -46,9 +47,9 @@ describe('createOptions callbacks', () => {
     cookies: {},
   } as unknown as NextRequest;
 
-  beforeEach(() => {
-    (isBackOffice as jest.Mock).mockReturnValue(false);
-  });
+  // beforeEach(() => {
+  //   (isBackOffice as jest.Mock).mockReturnValue(false);
+  // });
   it('should add access, provider, providerType, and role fields to token if user and account are provided', async () => {
     const result = await createOptions(mockReq).callbacks.jwt({
       token: mockToken,
@@ -95,8 +96,7 @@ describe('createOptions callbacks', () => {
 
   it('should add access, provider, providerType, and role fields to token if user and account are provided and isBackOffice is true', async () => {
     const mockOrganizer = { ...mockUser, organizerId: 'organizer-xyz' };
-    // Mock the isBackOffice function to return true
-    (isBackOffice as jest.Mock).mockReturnValue(true);
+    process.env.APP = 'BACKOFFICE';
     const result = await createOptions(mockReq).callbacks.jwt({
       token: mockToken,
       user: mockOrganizer,

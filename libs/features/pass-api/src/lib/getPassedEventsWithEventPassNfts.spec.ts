@@ -2,6 +2,7 @@ import { Locale } from '@gql/shared/types';
 import { userSdk } from '@gql/user/api';
 import { getCurrentUser } from '@next/next-auth/user';
 import { getPassedEventsWithEventPassNfts } from './getPassedEventsWithEventPassNfts';
+import env from '@env/server';
 
 jest.mock('@next/next-auth/user');
 jest.mock('@gql/user/api');
@@ -25,7 +26,7 @@ describe('getPassedEventsWithEventPassNfts', () => {
       {
         ...props,
         address: mockUser.address,
-        stage: process.env.HYGRAPH_STAGE,
+        stage: env.HYGRAPH_STAGE,
       },
       { next: { tags: ['userEventPassNfts'] } }
     );

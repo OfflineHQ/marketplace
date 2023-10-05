@@ -60,12 +60,9 @@ export async function nftActivity(req: AlchemyRequest, eventId: string) {
   const body = await req.text();
   const signature = headers().get('x-alchemy-signature') as string;
   addAlchemyContextToRequest(req, body, signature);
-  if (
-    !isValidSignatureForAlchemyRequest(
-      req,
-      process.env.ALCHEMY_SIGNING_KEY as string
-    )
-  ) {
+  //TODO  the signingKey need to be fetched from the database because it's provided on the creation of the webhook
+  const signingKey = 'dummy';
+  if (!isValidSignatureForAlchemyRequest(req, signingKey)) {
     return new Response('Signature validation failed, unauthorized!', {
       status: 403,
     });
