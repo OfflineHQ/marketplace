@@ -1,6 +1,7 @@
 import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
 import type { EventPassNftById } from '@features/pass-types';
 import { getPassUser } from '@features/pass-common';
+import env from '@env/server';
 
 const fileWrapper = new FileWrapper();
 
@@ -30,11 +31,11 @@ export const transferPassQrCode = async (
       source: fileOrigin,
       destination: fileDest,
     },
-    accountId: process.env.UPLOAD_ACCOUNT_ID as string,
+    accountId: env.UPLOAD_ACCOUNT_ID,
   });
   if (resCopy.status !== FileCopyStatus.Copied) throw new Error(resCopy.status);
   await fileWrapper.deleteFile({
     filePath: fileOrigin,
-    accountId: process.env.UPLOAD_ACCOUNT_ID as string,
+    accountId: env.UPLOAD_ACCOUNT_ID,
   });
 };

@@ -1,6 +1,6 @@
 import { AlchemyWrapper } from '@indexer/alchemy/admin';
 // import { adminSdk } from '@gql/admin/api';
-import { getNextAppURL } from '@utils';
+import { getNextAppURL } from '@shared/server';
 
 const alchemy = new AlchemyWrapper();
 

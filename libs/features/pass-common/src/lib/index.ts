@@ -1,3 +1,6 @@
+import env from '@env/client';
+import envServer from '@env/server';
+
 type GetEventPassOrganizerFolderPath = {
   organizerId: string;
   eventId: string;
@@ -17,7 +20,7 @@ export const getEventPassOrganizerFolderPath = ({
   eventPassId,
 }: GetEventPassOrganizerFolderPath) => {
   return `/${
-    process.env.UPLOAD_PATH_PREFIX || process.env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX
+    envServer.UPLOAD_PATH_PREFIX || env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX
   }/organizers/${organizerId}/events/${eventId}/${eventPassId}`;
 };
 
@@ -42,6 +45,6 @@ export const getPassUser = ({
   tokenId,
 }: GetPassUser) => {
   return `/${
-    process.env.UPLOAD_PATH_PREFIX || process.env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX
+    envServer.UPLOAD_PATH_PREFIX || env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX
   }/users/${address}/${organizerId}/events/${eventId}/${eventPassId}/${eventId}-${eventPassId}-${tokenId}`;
 };

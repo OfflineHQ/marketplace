@@ -6,8 +6,8 @@ import {
 } from '@gql/anonymous/api';
 import { KycLevelName_Enum, KycStatus_Enum } from '@gql/shared/types';
 import { getSdk as userSdk, type Sdk as UserSdk } from '@gql/user/api';
-import { endpointUrl } from '@next/hasura/shared';
 import type { AppUser } from '@next/types';
+import { getHasuraEndpoint } from '@shared/client';
 
 // In your accounts sdk file:
 
@@ -26,7 +26,7 @@ const fetchDataForTest = (opts: Opts = { jwt: '', anonymous: false }) => {
       Authorization: !anonymous ? `Bearer ${jwt}` : '',
     };
 
-    const res = await fetch(endpointUrl(), {
+    const res = await fetch(getHasuraEndpoint(), {
       method: 'POST',
       headers,
       body: JSON.stringify({
