@@ -8,6 +8,7 @@ import {
   EventPassesSkeleton,
   type EventPassesProps,
 } from './EventPasses';
+import env from '@env/client';
 
 export interface EventPassesAnonymousProps
   extends Pick<EventPassesProps, 'passes' | 'onDelete'> {
@@ -24,7 +25,7 @@ export function EventPassesAnonymous({
   const { data, isLoading, isFetching, error } = useGetEventWithPassesQuery({
     slug: eventSlug,
     locale: locale as Locale,
-    stage: process.env.NEXT_PUBLIC_HYGRAPH_STAGE as Stage,
+    stage: env.NEXT_PUBLIC_HYGRAPH_STAGE as Stage,
   });
   if (error) {
     console.error(error);

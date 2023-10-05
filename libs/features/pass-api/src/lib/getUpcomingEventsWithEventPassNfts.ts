@@ -6,6 +6,7 @@ import { userSdk } from '@gql/user/api';
 import type { GetUpcomingEventsWithEventPassNftsQueryVariables } from '@gql/user/types';
 import { cache } from 'react';
 import { getCurrentUser } from '@next/next-auth/user';
+import env from '@env/server';
 
 type GetUpcomingEventsWithEventPassNftsUserProps = Omit<
   GetUpcomingEventsWithEventPassNftsQueryVariables,
@@ -20,7 +21,7 @@ export const getUpcomingEventsWithEventPassNfts = cache(
       {
         ...props,
         address: user.address,
-        stage: process.env.HYGRAPH_STAGE as Stage,
+        stage: env.HYGRAPH_STAGE as Stage,
       },
       { next: { tags: ['userEventPassNfts'] } }
     );

@@ -1,6 +1,7 @@
 import type { Locale, Stage } from '@gql/shared/types';
 import { adminSdk } from '@gql/admin/api';
 import { cache } from 'react';
+import env from '@env/server';
 
 interface GetEventPassesProps {
   eventSlug: string;
@@ -12,7 +13,7 @@ export const getEventPasses = cache(
     const data = await adminSdk.GetEventPasses({
       eventSlug: eventSlug,
       locale: locale as Locale,
-      stage: process.env.HYGRAPH_STAGE as Stage,
+      stage: env.HYGRAPH_STAGE as Stage,
     });
     return data?.eventPasses;
   }

@@ -1,5 +1,6 @@
-import { userSdk } from '@gql/user/api';
+import env from '@env/server';
 import type { Locale, Stage } from '@gql/shared/types';
+import { userSdk } from '@gql/user/api';
 
 export interface EventPassPendingOrderProps {
   locale: string;
@@ -10,7 +11,7 @@ export const getEventPassPendingOrders = async ({
   const res = await userSdk.GetEventPassPendingOrders(
     {
       locale: locale as Locale,
-      stage: process.env.HYGRAPH_STAGE as Stage,
+      stage: env.HYGRAPH_STAGE as Stage,
     },
     { cache: 'no-store' }
   );

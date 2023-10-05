@@ -2,6 +2,7 @@ import { transferPassQrCodeBatch } from './transferPassQrCodeBatch';
 import { FileWrapper } from '@file-upload/admin';
 import type { BatchTransferInput } from '@features/pass-types';
 import { mockEventPassNft } from './revealPass.spec';
+import env from '@env/server';
 
 jest.mock('@file-upload/admin');
 
@@ -49,7 +50,7 @@ describe('transferPassQrCodeBatch', () => {
     ).toHaveBeenCalledTimes(1);
     expect(
       FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
-    ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
+    ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       {
         destination:
           '/local/users/test-address/test-organizer/events/test-event/test-id/test-event-test-id-12421',
@@ -75,7 +76,7 @@ describe('transferPassQrCodeBatch', () => {
     ).toHaveBeenCalledTimes(1);
     expect(
       FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
-    ).toHaveBeenCalledWith(process.env.UPLOAD_ACCOUNT_ID as string, [
+    ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       '/local/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421',
       '/local/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421',
       '/local/users/0xFormerOwner3/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421',

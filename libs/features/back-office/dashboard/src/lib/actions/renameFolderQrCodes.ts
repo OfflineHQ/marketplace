@@ -1,5 +1,6 @@
 'use server';
 
+import env from '@env/server';
 import { FileWrapper, FolderWrapper } from '@file-upload/admin';
 import { revalidatePath } from 'next/cache';
 
@@ -8,7 +9,7 @@ export async function checkFolderLength(folderPath: string, maxAmount: number) {
   const folder = new FolderWrapper();
 
   const list = await folder.listFolder({
-    accountId: process.env.UPLOAD_ACCOUNT_ID as string,
+    accountId: env.UPLOAD_ACCOUNT_ID,
     folderPath: folderPath,
   });
 
@@ -39,7 +40,7 @@ export async function checkFolder(
   const folder = new FolderWrapper();
 
   const list = await folder.listFolder({
-    accountId: process.env.UPLOAD_ACCOUNT_ID as string,
+    accountId: env.UPLOAD_ACCOUNT_ID,
     folderPath: folderPath,
   });
 
@@ -84,7 +85,7 @@ export async function renameFolderQrCodes(
   const upload = new FileWrapper();
 
   const list = await folder.listFolder({
-    accountId: process.env.UPLOAD_ACCOUNT_ID as string,
+    accountId: env.UPLOAD_ACCOUNT_ID,
     folderPath: folderPath,
   });
   console.log(list);
@@ -123,7 +124,7 @@ export async function renameFolderQrCodes(
 
   console.log(nonNullSimplifiedList);
   await upload.copyFileBatch({
-    accountId: process.env.UPLOAD_ACCOUNT_ID as string,
+    accountId: env.UPLOAD_ACCOUNT_ID,
     copyFileBatchRequest: {
       files: nonNullSimplifiedList,
     },
@@ -132,7 +133,7 @@ export async function renameFolderQrCodes(
   const oldFiles = nonNullSimplifiedList.map((item) => item.source);
   console.log(oldFiles);
   await upload.deleteFileBatch({
-    accountId: process.env.UPLOAD_ACCOUNT_ID as string,
+    accountId: env.UPLOAD_ACCOUNT_ID,
     deleteFileBatchRequest: {
       files: oldFiles,
     },

@@ -1,11 +1,11 @@
 /* eslint-disable */
 export default {
-  displayName: 'next-hasura-shared',
-  preset: '../../../../jest.preset.js',
+  displayName: 'shared-server',
+  preset: '../../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../../coverage/libs/next/hasura/shared',
+  coverageDirectory: '../../../coverage/libs/shared/server',
 };

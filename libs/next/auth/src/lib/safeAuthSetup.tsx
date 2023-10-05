@@ -2,8 +2,9 @@
 // safeAuthSetup.ts
 
 import { AuthKitSignInData, Web3AuthModalPack } from '@next/safe/auth';
+import { getNextAppURL } from '@shared/client';
 import { ToastAction, useToast } from '@ui/components';
-import { getNextAppURL, isCypressRunning } from '@utils';
+import { isCypressRunning } from '@utils';
 import { MetamaskAdapter } from '@web3auth/metamask-adapter';
 
 import { useCallback, useEffect, useState } from 'react';
@@ -21,6 +22,7 @@ import { ethers } from 'ethers';
 import { getCsrfToken, signIn, signOut, useSession } from 'next-auth/react';
 import { SiweMessage } from 'siwe';
 
+import env from '@env/client';
 import { ExternalProvider } from '@ethersproject/providers';
 import { useLocale } from 'next-intl';
 import { useTheme } from 'next-themes';
@@ -59,7 +61,7 @@ const chainConfigs: Record<string, ChainConfig> = {
 };
 
 const { safeTxServiceUrl, chainId, ...chainConfig } = (chainConfigs[
-  process.env.NEXT_PUBLIC_CHAIN as string
+  env.NEXT_PUBLIC_CHAIN as string
 ] || chainConfigs['5']) as ChainConfig; // Default to goerli if no matching config
 
 export interface SafeUser extends Partial<UserInfo>, AuthKitSignInData {}
@@ -335,11 +337,11 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         light: `/logo-dark.svg`,
       };
       console.log('setting safeAuthKit', { resolvedTheme, locale });
-      const clientId = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || '';
-      const web3AuthNetwork = process.env
-        .NEXT_PUBLIC_WEB3AUTH_NETWORK as Web3AuthOptions['web3AuthNetwork'];
+      const clientId = env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || '';
+      const web3AuthNetwork =
+        env.NEXT_PUBLIC_WEB3AUTH_NETWORK as Web3AuthOptions['web3AuthNetwork'];
       const sessionTime =
-        parseInt(process.env.NEXT_PUBLIC_WEB3AUTH_SESSION_TIME as string) ||
+        parseInt(env.NEXT_PUBLIC_WEB3AUTH_SESSION_TIME as string) ||
         30 * 24 * 60 * 60;
       const options: Web3AuthOptions = {
         clientId,
@@ -448,7 +450,6 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         web3AuthModalPack.unsubscribe(ADAPTER_EVENTS.CONNECTING, () => null);
       };
     })();
-    // IMPORTANT: keep only resolvedTheme and locale in the dependency array, otherwise it could create an infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resolvedTheme, locale]);
 

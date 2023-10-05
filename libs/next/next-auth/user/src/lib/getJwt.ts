@@ -4,13 +4,14 @@ import { getToken } from 'next-auth/jwt';
 import { headers, cookies } from 'next/headers';
 import * as jsonwebtoken from 'jsonwebtoken';
 import type { JWT } from 'next-auth/jwt';
+import env from '@env/server';
 
 export const getJwt = async ({
   raw,
 }: {
   raw: boolean;
 }): Promise<JWT | string> => {
-  const secret = process.env.NEXTAUTH_SECRET;
+  const secret = env.NEXTAUTH_SECRET;
   const jwt = await getToken({
     req: {
       headers: Object.fromEntries(headers() as any),

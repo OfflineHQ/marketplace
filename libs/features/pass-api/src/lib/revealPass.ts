@@ -6,6 +6,7 @@ import type { EventPassNftByIdMinimal } from '@features/pass-types';
 import { FileCopyStatus, FileWrapper } from '@file-upload/admin';
 import { adminSdk } from '@gql/admin/api';
 import { getCurrentUser } from '@next/next-auth/user';
+import env from '@env/server';
 
 const fileWrapper = new FileWrapper();
 
@@ -50,13 +51,13 @@ export const eventPassTransferQRCode = async (
       source: fileOrigin,
       destination: fileDest,
     },
-    accountId: process.env.UPLOAD_ACCOUNT_ID as string,
+    accountId: env.UPLOAD_ACCOUNT_ID,
   });
   if (resCopy.status !== FileCopyStatus.Copied) throw new Error(resCopy.status);
   // TODO: evaluate if need to delete file from organizer space or not ?
   // const resDelete = await fileWrapper.deleteFile({
   //   filePath: fileOrigin,
-  //   accountId: process.env.UPLOAD_ACCOUNT_ID as string,
+  //   accountId: env.UPLOAD_ACCOUNT_ID,
   // });
 };
 
