@@ -1,11 +1,12 @@
 import { createClient } from '@vercel/kv';
+import env from '@env/server';
 
 export default class Cache {
   private client;
 
   constructor(url?: string, token?: string) {
-    const kvUrl = url || process.env.KV_REST_API_URL;
-    const kvToken = token || process.env.KV_REST_API_TOKEN;
+    const kvUrl = url || env.KV_REST_API_URL;
+    const kvToken = token || env.KV_REST_API_TOKEN;
 
     if (!kvUrl || !kvToken) {
       throw new Error('Error with KV environment variables');

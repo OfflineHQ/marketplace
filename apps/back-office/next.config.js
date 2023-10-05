@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+// Import env variables for client and server, will return an error in case it's not defined.
+import('../../libs/env/client/src/index.mjs');
+import('../../libs/env/server/src/index.mjs');
 const { withNx } = require('@nx/next');
 const path = require('path');
 const { withSentryConfig } = require('@sentry/nextjs');
@@ -76,6 +79,30 @@ const nextConfig = {
         'node_modules/.pnpm/sass',
       ],
     },
+    optimizePackageImports: [
+      '@ui/icons',
+      '@ui/components',
+      '@features/account/api',
+      '@features/appNav/ui',
+      '@features/cart',
+      '@features/cart/server',
+      '@features/kyc',
+      '@features/kyc/server',
+      '@features/organizer/event',
+      '@features/organizer/event/server',
+      '@features/pass',
+      '@features/pass/server',
+      '@features/settings',
+      '@gql/admin/api',
+      '@gql/admin/types',
+      '@gql/user/api',
+      '@gql/user/react-query',
+      '@gql/user/types',
+      '@gql/anonymous/api',
+      '@gql/anonymous/react-query',
+      '@gql/anonymous/types',
+      '@gql/shared/types',
+    ],
     // https://vercel.com/docs/concepts/deployments/skew-protection#enabling-skew-protection
     useDeploymentId: true,
     // If use with serverActions is desired

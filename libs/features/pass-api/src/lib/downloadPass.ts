@@ -1,9 +1,11 @@
-import { adminSdk } from '@gql/admin/api';
+import env from '@env/client';
+import envServer from '@env/server';
+import { getPassUser } from '@features/pass-common';
 import { FileDownloader } from '@file-upload/user';
+import { adminSdk } from '@gql/admin/api';
+import { nextAuthCookieName } from '@next/next-auth/common';
 import { isServerSide } from '@utils';
 import { cookies } from 'next/headers';
-import { nextAuthCookieName } from '@next/next-auth/common';
-import { getPassUser } from '@features/pass-common';
 
 export const getEventPassRevealedFilePath = async (id: string) => {
   const res = await adminSdk.GetEventPassNftByIdMinimal(
@@ -37,8 +39,8 @@ export const downloadPass = async (
   if (!nextAuthJwt) throw new Error('jwt cookie not found for user');
   const fileDownloader = new FileDownloader(
     isServerSide()
-      ? (process.env.UPLOAD_ACCOUNT_ID as string)
-      : (process.env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID as string),
+      ? envServer.UPLOAD_ACCOUNT_ID
+      : env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
     nextAuthJwt
   );
   const filePath = await getEventPassRevealedFilePath(id);

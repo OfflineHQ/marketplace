@@ -1,5 +1,6 @@
 import * as Upload from 'upload-js-full';
 import retry from 'async-retry';
+import env from '@env/server';
 
 export const FileCopyStatus = Upload.FileCopyStatus;
 
@@ -58,7 +59,7 @@ export class UploadWrapper {
     this.uploadManager = new Upload.UploadManager(
       new Upload.Configuration({
         fetchApi: fetch,
-        apiKey: process.env.UPLOAD_SECRET_API_KEY,
+        apiKey: env.UPLOAD_SECRET_API_KEY,
       })
     );
   }
@@ -85,7 +86,7 @@ export class FileWrapper {
       new Upload.FileApi(
         new Upload.Configuration({
           fetchApi: fetch,
-          apiKey: process.env.UPLOAD_SECRET_API_KEY,
+          apiKey: env.UPLOAD_SECRET_API_KEY,
         })
       );
     this.jobWrapper = jobWrapper || new JobWrapper();
@@ -196,7 +197,7 @@ export class FolderWrapper {
     this.folderApi = new Upload.FolderApi(
       new Upload.Configuration({
         fetchApi: fetch,
-        apiKey: process.env.UPLOAD_SECRET_API_KEY,
+        apiKey: env.UPLOAD_SECRET_API_KEY,
       })
     );
   }
@@ -233,7 +234,7 @@ export class JobWrapper {
       new Upload.JobApi(
         new Upload.Configuration({
           fetchApi: fetch,
-          apiKey: process.env.UPLOAD_SECRET_API_KEY,
+          apiKey: env.UPLOAD_SECRET_API_KEY,
         })
       );
   }

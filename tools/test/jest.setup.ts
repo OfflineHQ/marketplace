@@ -13,6 +13,9 @@ process.env.POSTGRES_PORT = '5454';
 process.env.HASURA_GRAPHQL_DATABASE_URL =
   'postgres://postgres:password@test-db:5454/postgres';
 process.env.HASURA_GRAPHQL_SERVER_PORT = '9696';
+process.env.HASURA_PROJECT_ENDPOINT = 'http://localhost:9696/v1/graphql';
+process.env.NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT =
+  'http://localhost:9696/v1/graphql';
 process.env.NEXTAUTH_URL = 'http://localhost:8888';
 process.env.HASURA_GRAPHQL_ADMIN_SECRET = 'password';
 process.env.HYGRAPH_CMS_WEBHOOK_READ_URL =
@@ -28,6 +31,11 @@ process.env.KV_REST_API_TOKEN = 'example_token_test';
 process.env.TZ = 'Europe/London';
 
 //////////////
+
+// used to avoid the error: Attempted to access a server-side environment variable on the client, because it doesn't know it's not on the server in jest.
+jest.mock('@t3-oss/env-nextjs', () => ({
+  createEnv: (env: any) => env.runtimeEnv,
+}));
 
 // Set the global agent options for node-fetch to avoid connection errors, see https://github.com/node-fetch/node-fetch/issues/1735
 

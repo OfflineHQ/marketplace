@@ -4,6 +4,8 @@ import { z } from 'zod';
 
 const env = createEnv({
   client: {
+    NEXT_PUBLIC_APP: z.string().optional(),
+    NEXT_PUBLIC_THIRDWEB_CLIENT_ID: z.string().min(1),
     NEXT_PUBLIC_HYGRAPH_STAGE: z.string().min(1),
     NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT: z.string().url(),
     NEXT_PUBLIC_WEB3AUTH_CLIENT_ID: z.string().min(1),
@@ -14,9 +16,12 @@ const env = createEnv({
     NEXT_PUBLIC_UPLOAD_ACCOUNT_ID: z.string().min(1),
     NEXT_PUBLIC_UPLOAD_PATH_PREFIX: z.string().min(1),
     NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY: z.string().min(1),
+    NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
   },
   runtimeEnv: {
+    NEXT_PUBLIC_APP: process.env.NEXT_PUBLIC_APP,
+    NEXT_PUBLIC_THIRDWEB_CLIENT_ID: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID,
     NEXT_PUBLIC_HYGRAPH_STAGE: process.env.NEXT_PUBLIC_HYGRAPH_STAGE,
     NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT:
       process.env.NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT,
@@ -30,6 +35,7 @@ const env = createEnv({
     NEXT_PUBLIC_UPLOAD_PATH_PREFIX: process.env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX,
     NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY:
       process.env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY,
+    NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   },

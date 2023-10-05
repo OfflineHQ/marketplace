@@ -1,5 +1,6 @@
 import { isServerSide } from '@utils';
 import Stripe from 'stripe';
+import env from '@env/server';
 
 export class Payment {
   private stripe: Stripe;
@@ -7,10 +8,10 @@ export class Payment {
     if (!isServerSide()) {
       throw new Error('Payment admin lib need to be used in server side');
     }
-    if (!process.env.STRIPE_API_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
+    if (!env.STRIPE_API_KEY || !env.STRIPE_WEBHOOK_SECRET) {
       throw new Error('STRIPE_API_KEY or STRIPE_WEBHOOK_SECRET is missing');
     }
-    this.stripe = new Stripe(process.env.STRIPE_API_KEY, {
+    this.stripe = new Stripe(env.STRIPE_API_KEY, {
       apiVersion: '2023-08-16',
       typescript: true,
     });
@@ -25,7 +26,7 @@ export class Payment {
     return this.stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET
+      env.STRIPE_WEBHOOK_SECRET
     );
   }
 }
