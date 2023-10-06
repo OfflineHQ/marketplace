@@ -1,6 +1,7 @@
 import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
 import type { BatchTransferInput } from '@features/pass-types';
 import { getPassUser } from '@features/pass-common';
+import env from '@env/server';
 
 const fileWrapper = new FileWrapper();
 
@@ -47,7 +48,7 @@ export const transferPassQrCodeBatch = async (
   try {
     // Execute the copy batch operation with retry
     await fileWrapper.copyFileBatchWithRetry(
-      process.env.UPLOAD_ACCOUNT_ID as string,
+      env.UPLOAD_ACCOUNT_ID,
       copyFileRequests
     );
   } catch (error: any) {
@@ -61,7 +62,7 @@ export const transferPassQrCodeBatch = async (
   try {
     // Execute the delete batch operation with retry
     await fileWrapper.deleteFilesBatchWithRetry(
-      process.env.UPLOAD_ACCOUNT_ID as string,
+      env.UPLOAD_ACCOUNT_ID,
       filesToDelete
     );
   } catch (error: any) {

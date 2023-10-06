@@ -1,6 +1,6 @@
+import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 
 import { NoUserCart } from './NoUserCart';
 import {
@@ -22,28 +22,8 @@ export default meta;
 
 type Story = StoryObj<typeof NoUserCart>;
 
-export const SectionWithNoUserNoCart: Story = {
-  render: NoUserCartNoCartExample,
-  play: async (context) => {
-    expect(
-      screen.queryByRole('button', {
-        name: /Lorem ipsum/i,
-      })
-    ).toBeNull();
-    expect(
-      screen.queryByRole('button', {
-        name: /World Cup/i,
-      })
-    ).toBeNull();
-  },
-};
-
-export const SectionWithNoUser: Story = {
-  render: NoUserCartExample,
-};
-
 export const SectionWithNoUserOpened: Story = {
-  ...SectionWithNoUser,
+  render: NoUserCartExample,
   play: async (context) => {
     userEvent.click(
       await screen.findByRole('button', {
@@ -62,28 +42,45 @@ export const SectionWithNoUserOpened: Story = {
   },
 };
 
-// TODO, transform in a jest test becaus failing in CI
-// export const SectionWithNoUserOpenedRemove: Story = {
-//   ...SectionWithNoUserOpened,
-//   play: async (context) => {
-//     await SectionWithNoUserOpened.play(context);
-//     const removeButtons = await screen.findAllByRole('button', {
-//       name: /Remove/i,
-//     });
-//     expect(removeButtons).toHaveLength(2);
-//     await userEvent.click(removeButtons[0]);
-//     expect(
-//       await screen.findByRole('button', {
-//         name: /World cup/i,
-//       })
-//     );
-//     expect(
-//       screen.queryByRole('button', {
-//         name: /Lorem ipsum/i,
-//       })
-//     ).toBeNull();
-//   },
-// };
+export const SectionWithNoUserOpenedRemove: Story = {
+  ...SectionWithNoUserOpened,
+  play: async (context) => {
+    if (SectionWithNoUserOpened.play)
+      await SectionWithNoUserOpened.play(context);
+    const removeButtons = await screen.findAllByRole('button', {
+      name: /Remove/i,
+    });
+    expect(removeButtons).toHaveLength(2);
+    await userEvent.click(removeButtons[0]);
+    expect(
+      await screen.findByRole('button', {
+        name: /World cup/i,
+      })
+    );
+    expect(
+      screen.queryByRole('button', {
+        name: /Lorem ipsum/i,
+      })
+    ).toBeNull();
+  },
+};
+
+export const SectionWithNoUserNoCart: Story = {
+  render: NoUserCartNoCartExample,
+  play: async (context) => {
+    expect(
+      screen.queryByRole('button', {
+        name: /Lorem ipsum/i,
+      })
+    ).toBeNull();
+    expect(
+      screen.queryByRole('button', {
+        name: /World Cup/i,
+      })
+    ).toBeNull();
+  },
+};
+
 export const SectionWithNoUserLoading: Story = {
   render: NoUserCartLoadingExample,
 };

@@ -1,17 +1,27 @@
+import { CartNav } from '../CartNav/CartNav';
+import { NavSectionSkeleton } from '../NavSection/NavSection';
+import { PassNav } from '../PassNav/PassNav';
+import { ProfileNav, ProfileNavSkeleton } from '../ProfileNav/ProfileNav';
 import {
-  cryptoUserSession,
-  normalUserSession,
+  notConnectedMenuItems,
+  normalUserMenuItems,
+  cryptoUserMenuItems,
+} from '../ProfileNav/examples';
+import {
   normalUserSessionWithImage,
+  normalUserSession,
+  cryptoUserSession,
 } from '../profile-avatar/examples';
-import {
+export {
   cryptoUserMenuItems,
   normalUserMenuItems,
   notConnectedMenuItems,
 } from '../ProfileNav/examples';
-import { ProfileNav, ProfileNavSkeleton } from '../ProfileNav/ProfileNav';
-import { CartNav } from '../CartNav/CartNav';
-import { PassNav } from '../PassNav/PassNav';
-import { NavSectionSkeleton } from '../NavSection/NavSection';
+export {
+  cryptoUserSession,
+  normalUserSession,
+  normalUserSessionWithImage,
+} from '../profile-avatar/examples';
 
 export const ProfileNavWithNoUser = () => (
   <ProfileNav

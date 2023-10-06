@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useMemo, useCallback } from 'react';
-import { LogIn, Settings, LifeBuoy, LogOut } from '@ui/icons';
-import { useToast } from '@ui/components';
-import { useAuthContext } from '@next/auth';
-import Link from 'next/link';
 import {
   ProfileNav,
   ProfileNavSkeleton,
   type ProfileNavProps,
 } from '@features/appNav/ui';
+import { useAuthContext } from '@next/auth';
+import { Link } from '@next/navigation';
+import { useToast } from '@ui/components';
+import { LifeBuoy, LogIn, LogOut, Settings } from '@ui/icons';
+import { useCallback, useMemo } from 'react';
 
 export interface ProfileNavClientProps {
   signInText: string;

@@ -1,12 +1,13 @@
 'use client';
 
+import { Link } from '@next/navigation';
+import { useStore } from '@next/store';
+import { PropsFrom } from '@next/types';
+import { AutoAnimate, Button, CardFooter, CardOverlay } from '@ui/components';
+import { Cart } from '@ui/icons';
 import React from 'react';
-import { CardOverlay, Button, AutoAnimate, CardFooter } from '@ui/components';
 import { PassTotal } from '../../molecules/PassTotal/PassTotal';
 import { usePassPurchaseStore } from '../../store/index';
-import { useStore } from '@next/store';
-import Link, { type LinkProps } from 'next/link';
-import { Cart } from '@ui/icons';
 
 import type { EventPass } from '@features/organizer/event-types';
 export interface PassFooterCardProps {
@@ -14,7 +15,7 @@ export interface PassFooterCardProps {
   organizerSlug: string;
   eventSlug: string;
   goPaymentText: string;
-  goPaymentLink: LinkProps;
+  goPaymentLink: PropsFrom<typeof Link>;
 }
 export const PassFooterCardClient: React.FC<PassFooterCardProps> = ({
   passes: passesData,

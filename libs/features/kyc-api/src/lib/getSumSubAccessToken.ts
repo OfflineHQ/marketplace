@@ -1,5 +1,6 @@
 'use server';
 
+import env from '@env/server';
 import { KycLevelName_Enum } from '@gql/shared/types';
 import { GetAccessTokenProps, Kyc } from '@kyc/admin';
 import { getCurrentUser } from '@next/next-auth/user';
@@ -30,8 +31,8 @@ export async function getSumSubAccessToken() {
     };
   }
   const kyc = new Kyc({
-    secretKey: process.env.SUMSUB_SECRET_KEY as string,
-    appToken: process.env.SUMSUB_API_KEY as string,
+    secretKey: env.SUMSUB_SECRET_KEY,
+    appToken: env.SUMSUB_API_KEY,
   });
   //TODO get level name from user
   return await kyc.getAccessToken(getAccesToken);

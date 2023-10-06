@@ -1,10 +1,12 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Uploader } from 'uploader';
-import type { UploaderInterface } from 'uploader';
-import { getNextAppURL } from '@utils';
+import env from '@env/client';
+import envServer from '@env/server';
 import { useAuthContext } from '@next/auth';
+import { getNextAppURL } from '@shared/client';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import type { UploaderInterface } from 'uploader';
+import { Uploader } from 'uploader';
 
 interface BytescaleProviderProps {
   children?: React.ReactNode;
@@ -35,8 +37,9 @@ export const UploaderProvider: React.FC<BytescaleProviderProps> = ({
   useEffect(() => {
     if (safeUser && !uploader) {
       const uploaderInstance = Uploader({
-        apiKey: (process.env.UPLOAD_PUBLIC_API_KEY ||
-          process.env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY) as string,
+        apiKey:
+          envServer.UPLOAD_PUBLIC_API_KEY ||
+          env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY,
       });
       uploaderInstance.beginAuthSession(
         `${getNextAppURL()}/api/bytescale/jwt`,

@@ -1,16 +1,17 @@
 'use client';
 
-import * as React from 'react';
-import * as SheetPrimitive from '@radix-ui/react-dialog';
-import { TextSkeleton, Text } from '../text/Text';
+import { Link } from '@next/navigation';
+import { PropsFrom } from '@next/types';
 import type { DialogPortalProps, DialogProps } from '@radix-ui/react-dialog';
-import { VariantProps, cva } from 'class-variance-authority';
+import * as SheetPrimitive from '@radix-ui/react-dialog';
+import { ChevronBack, Close } from '@ui/icons';
 import { cn } from '@ui/shared';
-import { Close, ChevronBack } from '@ui/icons';
-import { closeClasses } from '../shared/close';
-import { backClasses } from '../shared/back';
+import { VariantProps, cva } from 'class-variance-authority';
+import * as React from 'react';
 import { ButtonSkeleton, buttonVariantsCva } from '../button/Button';
-import Link, { type LinkProps } from 'next/link';
+import { backClasses } from '../shared/back';
+import { closeClasses } from '../shared/close';
+import { TextSkeleton } from '../text/Text';
 
 const Sheet = SheetPrimitive.Root;
 
@@ -122,7 +123,7 @@ function isFullWidth(
 
 export interface SheetNavigationProps {
   backButtonText?: string;
-  backButtonLink?: LinkProps;
+  backButtonLink?: PropsFrom<typeof Link>;
   backButtonAction?: () => void;
   position?: SheetContentProps['position'];
   size?: SheetContentProps['size'];
@@ -351,17 +352,17 @@ SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
 export {
   Sheet,
-  SheetTrigger,
   SheetContent,
-  SheetOverlay,
-  SheetOverflow,
-  SheetHeader,
-  SheetFooter,
-  SheetTitle,
-  SheetTitleSkeleton,
   SheetDescription,
   SheetDescriptionSkeleton,
+  SheetFooter,
+  SheetHeader,
   SheetNavigation,
   SheetNavigationSkeleton,
+  SheetOverflow,
+  SheetOverlay,
+  SheetTitle,
+  SheetTitleSkeleton,
+  SheetTrigger,
   type DialogProps as SheetProps,
 };

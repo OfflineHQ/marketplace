@@ -2,6 +2,7 @@ import { Stage } from '@gql/shared/types';
 import { userSdk } from '@gql/user/api';
 import { GetEventPassNftByTokenReferenceQueryVariables } from '@gql/user/types';
 import { cache } from 'react';
+import env from '@env/server';
 
 type GetEventPassNftByTokenReferenceUserProps = Omit<
   GetEventPassNftByTokenReferenceQueryVariables,
@@ -12,8 +13,8 @@ export const getEventPassNftByTokenReferenceUser = cache(
   async (props: GetEventPassNftByTokenReferenceUserProps) => {
     const data = await userSdk.GetEventPassNftByTokenReference({
       ...props,
-      stage: process.env.HYGRAPH_STAGE as Stage,
-      chainId: process.env.CHAIN as string,
+      stage: env.HYGRAPH_STAGE as Stage,
+      chainId: env.CHAIN,
     });
     return data?.eventPassNft?.[0];
   }

@@ -16,6 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@crypto": ["libs/crypto/src/index.ts"],
+      "@env/client": ["libs/env/client/src/index.mjs"],
+      "@env/server": ["libs/env/server/src/index.mjs"],
       "@currency/api": ["libs/currency/api/src/index.ts"],
       "@currency/types": ["libs/currency/types/src/index.ts"],
       "@features/account/api": ["libs/features/account/api/src/index.ts"],
@@ -98,11 +100,11 @@
       "@next/currency-cache": ["libs/next/currency-cache/src/index.ts"],
       "@next/hasura/api": ["libs/next/hasura/api/src/index.ts"],
       "@next/hasura/react-query": ["libs/next/hasura/react-query/src/index.ts"],
-      "@next/hasura/shared": ["libs/next/hasura/shared/src/index.ts"],
       "@next/hasura/utils": ["libs/next/hasura/utils/src/index.ts"],
       "@next/hygraph": ["libs/next/hygraph/src/index.ts"],
       "@next/hygraph/examples": ["libs/next/hygraph/src/examples.tsx"],
       "@next/i18n": ["libs/next/i18n/src/index.ts"],
+      "@next/navigation": ["libs/next/navigation/src/index.ts"],
       "@next/next-auth/common": ["libs/next/next-auth/common/src/index.ts"],
       "@next/next-auth/options": ["libs/next/next-auth/options/src/index.ts"],
       "@next/next-auth/user": ["libs/next/next-auth/user/src/index.ts"],
@@ -117,7 +119,12 @@
       "@nft/thirdweb-admin": ["libs/nft/thirdweb-admin/src/index.ts"],
       "@nft/thirdweb-organizer": ["libs/nft/thirdweb-organizer/src/index.ts"],
       "@nft/types": ["libs/nft/types/src/index.ts"],
+      "@payment/admin": ["libs/payment/admin/src/index.ts"],
+      "@payment/types": ["libs/payment/types/src/index.ts"],
+      "@payment/webhooks": ["libs/payment/webhooks/src/index.ts"],
       "@server/task": ["libs/server/task/src/index.ts"],
+      "@shared/client": ["libs/shared/client/src/index.ts"],
+      "@shared/server": ["libs/shared/server/src/index.ts"],
       "@test-utils/cache": ["libs/test-utils/cache/src/index.ts"],
       "@test-utils/db": ["libs/test-utils/db/src/index.ts"],
       "@test-utils/functions": ["libs/test-utils/functions/src/index.ts"],
@@ -136,6 +143,6 @@
     }
   },
   "typeRoots": ["types", "node_modules/@types"],
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "types/**/*.d.ts"],
   "exclude": ["node_modules", "tmp"]
 }

@@ -1,17 +1,16 @@
-import '@web/styles/globals.css';
-import { Inter as FontSans } from 'next/font/google';
-import localFont from 'next/font/local';
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { siteConfig } from '@web/config/site';
-import { Analytics } from '@web/components/Analytics';
-import { ThemeProvider } from '@ui/theme';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
+import { getMessages, locales } from '@next/i18n';
 import { ReactQueryProviders } from '@next/react-query';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
-import { locales } from '@next/i18n';
-import { useLocale, useTranslations } from 'next-intl';
+import { ThemeProvider } from '@ui/theme';
+import { Analytics } from '@web/components/Analytics';
+import { siteConfig } from '@web/config/site';
+import { Metadata } from 'next';
+import { createTranslator } from 'next-intl';
+import { Inter as FontSans } from 'next/font/google';
+import localFont from 'next/font/local';
+import { notFound } from 'next/navigation';
 
 import { AppNavLayout, type AppNavLayoutProps } from '@features/appNav/ui';
 
@@ -76,6 +75,7 @@ export const metadata: Metadata = {
 
 // Error: Usage of next-intl APIs in Server Components is currently only available for dynamic rendering (i.e. no `generateStaticParams`).
 // Support for static rendering is under consideration, please refer to the roadmap: https://next-intl-docs.vercel.app/docs/getting-started/app-router-server-components#roadmap
+// also get issue with cookies and headers usage (most probably in the hasura fetcher)
 // export async function generateStaticParams() {
 //   return locales.map((locale) => ({ locale }));
 // }
@@ -86,17 +86,15 @@ interface RootLayoutProps extends AppNavLayoutProps {
   };
 }
 
-export default function RootLayout({
-  params,
+export default async function RootLayout({
+  params: { locale },
   children,
   ...appNavLayout
 }: RootLayoutProps) {
-  const locale = useLocale();
-  // Show a 404 error if the user requests an unknown locale
-  if (params?.locale !== locale) {
-    notFound();
-  }
-  const t = useTranslations('Auth');
+  // Validate that the incoming `locale` parameter is valid
+  if (!locales.includes(locale as any)) notFound();
+  const messages = await getMessages(locale);
+  const t = createTranslator({ locale, messages });
   return (
     <html lang={locale} suppressHydrationWarning>
       <head />
@@ -112,21 +110,21 @@ export default function RootLayout({
             <AuthProvider
               messages={{
                 userClosedPopup: {
-                  title: t('user-closed-popup.title'),
-                  description: t('user-closed-popup.description'),
+                  title: t('Auth.user-closed-popup.title'),
+                  description: t('Auth.user-closed-popup.description'),
                 },
-                siweStatement: t('siwe-statement'),
+                siweStatement: t('Auth.siwe-statement'),
                 errorSigningInWithSiwe: {
-                  title: t('error-signing-in-with-siwe.title'),
-                  description: t('error-signing-in-with-siwe.description'),
+                  title: t('Auth.error-signing-in-with-siwe.title'),
+                  description: t('Auth.error-signing-in-with-siwe.description'),
                   tryAgainButton: t(
-                    'error-signing-in-with-siwe.try-again-button'
+                    'Auth.error-signing-in-with-siwe.try-again-button'
                   ),
                 },
                 siweDeclined: {
-                  title: t('siwe-declined.title'),
-                  description: t('siwe-declined.description'),
-                  tryAgainButton: t('siwe-declined.try-again-button'),
+                  title: t('Auth.siwe-declined.title'),
+                  description: t('Auth.siwe-declined.description'),
+                  tryAgainButton: t('Auth.siwe-declined.try-again-button'),
                 },
               }}
             >

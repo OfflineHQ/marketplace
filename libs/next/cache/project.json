@@ -12,7 +12,7 @@
         "lintFilePatterns": ["libs/next/cache/**/*.{ts,tsx,js,jsx}"]
       }
     },
-    "test": {
+    "test-integration": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {

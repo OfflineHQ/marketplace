@@ -32,6 +32,7 @@ services:
       - ../../hasura/app/metadata:/hasura-metadata
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+
   test-db:
     container_name: test_db
     image: postgres:13
@@ -49,8 +50,10 @@ services:
       retries: 10
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+
   redis:
     image: redis
+    command: redis-server --port 6380
     ports:
       - '6380:6380'
 
@@ -62,6 +65,8 @@ services:
       SRH_MODE: env
       SRH_TOKEN: example_token_test
       SRH_CONNECTION_STRING: 'redis://redis:6380'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
 
 volumes:
   test_db_data:

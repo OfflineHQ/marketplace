@@ -1,4 +1,4 @@
-import { getNextAppURL } from '@utils';
+import { getNextAppURL } from '@shared/server';
 
 export const nextAuthCookieName = (): string => {
   const useSecureCookies = getNextAppURL().startsWith('https://');
