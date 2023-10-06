@@ -69,63 +69,6 @@ export function isCypressRunning() {
   return window && (window as any).Cypress !== undefined;
 }
 
-export function isDev() {
-  return (
-    process.env.VERCEL_ENV !== 'production' ||
-    process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production'
-  );
-}
-
-export function isPreviewOrProduction() {
-  const env = ['preview', 'production'];
-  return (
-    env.includes(process.env.VERCEL_ENV as string) ||
-    env.includes(process.env.NEXT_PUBLIC_VERCEL_ENV as string)
-  );
-}
-
-export function isProd() {
-  return (
-    process.env.VERCEL_ENV === 'production' ||
-    process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
-  );
-}
-
-export function getNextAppURL(): string {
-  if (isProd()) {
-    return isServerSide()
-      ? (process.env.NEXTAUTH_URL as string)
-      : (process.env.NEXT_PUBLIC_SITE_URL as string);
-  } else {
-    let vercelURL = '';
-    if (process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL)
-      vercelURL = process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-    return vercelURL || (process.env.NEXTAUTH_URL as string);
-  }
-}
-
-export function isPreviewDeployment(): boolean {
-  return (
-    !!process.env.VERCEL_GIT_COMMIT_SHA ||
-    !!process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA
-  );
-}
-
-export function isPreviewOrPRDeployment(): boolean {
-  return (
-    !!process.env.VERCEL_GIT_COMMIT_SHA ||
-    !!process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ||
-    !!process.env.VERCEL_GIT_COMMIT_REF?.startsWith('pull/') ||
-    !!process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF?.startsWith('pull/')
-  );
-}
-
-export function isBackOffice(): boolean {
-  return process.env.APP === 'BACKOFFICE';
-}
-
 export function truncateString(str: string, maxChars: number): string {
   if (maxChars < 5) {
     throw new Error(

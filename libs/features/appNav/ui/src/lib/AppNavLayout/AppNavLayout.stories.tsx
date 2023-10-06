@@ -1,28 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-  waitFor,
-} from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
-import { sleep } from '@utils';
+import { screen, userEvent } from '@storybook/testing-library';
 
 import { AppNavLayout } from './AppNavLayout';
 import {
+  CartNavEmpty,
+  CartNavWithItems,
+  NavSectionLoading,
+  PassNavEmpty,
+  PassNavLoading,
+  PassNavWithPing,
+  ProfileNavLoading,
+  ProfileNavWithCryptoUser,
+  ProfileNavWithFallbackUser,
   ProfileNavWithNoUser,
   ProfileNavWithNoUserLoading,
   ProfileNavWithNormalUser,
-  ProfileNavWithCryptoUser,
-  ProfileNavWithFallbackUser,
-  CartNavEmpty,
-  CartNavWithItems,
-  PassNavEmpty,
-  PassNavWithPing,
-  PassNavLoading,
-  NavSectionLoading,
-  ProfileNavLoading,
 } from './examples';
 
 const meta = {

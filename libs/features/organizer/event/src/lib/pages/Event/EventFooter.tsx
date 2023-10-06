@@ -1,10 +1,11 @@
 import { Button } from '@ui/components';
 
+import { Link } from '@next/navigation';
+import { PropsFrom } from '@next/types';
 import { QrCode } from '@ui/icons';
-import Link, { type LinkProps } from 'next/link';
 
 export interface EventFooterProps {
-  purchaseLink: LinkProps;
+  purchaseLink: PropsFrom<typeof Link>;
   purchaseText: string;
 }
 

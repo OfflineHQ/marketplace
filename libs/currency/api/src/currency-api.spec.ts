@@ -1,7 +1,7 @@
-import * as utils from '@utils';
+import * as shared from '@shared/server';
 import Currency from './index';
 
-jest.mock('@utils');
+jest.mock('@shared/server');
 
 describe('Currency class', () => {
   let currency: Currency;
@@ -16,7 +16,7 @@ describe('Currency class', () => {
       const baseCurrency = 'EUR';
       const mockRates = { USD: 1.2, GBP: 0.85 };
 
-      (utils.isPreviewOrProduction as jest.Mock).mockReturnValue(false);
+      (shared.isPreviewOrProduction as jest.Mock).mockReturnValue(false);
 
       currency.fetchFromLocalFile = jest.fn().mockResolvedValue(mockRates);
 
@@ -29,7 +29,7 @@ describe('Currency class', () => {
       const baseCurrency = 'EUR';
       const mockRates = { USD: 1.2, GBP: 0.85 };
 
-      (utils.isPreviewOrProduction as jest.Mock).mockReturnValue(true);
+      (shared.isPreviewOrProduction as jest.Mock).mockReturnValue(true);
 
       (fetch as jest.Mock)
         .mockRejectedValueOnce(new Error('Failed to fetch data from Fixer API'))

@@ -9,7 +9,7 @@ export const globalSettingsProps = {
   displaySelectText: {
     light: 'Light',
     dark: 'Dark',
-    auto: 'Automatic',
+    system: 'Automatic',
   },
   displayText: 'Display mode',
 };

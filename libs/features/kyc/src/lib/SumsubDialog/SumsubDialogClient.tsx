@@ -2,6 +2,7 @@
 
 import { handleApplicantStatusChanged } from '@features/kyc-actions';
 import { KycStatus_Enum } from '@gql/shared/types';
+import { Link } from '@next/navigation';
 import { PropsFrom } from '@next/types';
 import SumsubWebSdk from '@sumsub/websdk-react';
 import {
@@ -10,9 +11,8 @@ import {
   MessageHandler,
 } from '@sumsub/websdk/types/types';
 import { AutoAnimate, Button, ButtonProps, DialogFooter } from '@ui/components';
-import { useIsDarkMode } from '@ui/hooks';
 import { useSession } from 'next-auth/react';
-import Link, { LinkProps } from 'next/link';
+import { useTheme } from 'next-themes';
 import { useState } from 'react';
 type MessageType = Parameters<MessageHandler>[0];
 type Error = Parameters<ErrorHandler>[0];
@@ -20,7 +20,7 @@ type Error = Parameters<ErrorHandler>[0];
 export interface SumsubWebSdkProps
   extends Omit<PropsFrom<SumsubWebSdk>, 'onMessage' | 'onError'> {
   confirmedText: string;
-  confirmedLink: LinkProps;
+  confirmedLink: PropsFrom<typeof Link>;
   confirmedIcon: ButtonProps['icon'];
 }
 
@@ -34,10 +34,9 @@ export const SumsubDialogClient: React.FC<SumsubWebSdkProps> = ({
   confirmedLink,
 }) => {
   const { update } = useSession();
-  const isDark = useIsDarkMode();
+  const { resolvedTheme } = useTheme();
   const [statusConfirmed, setStatusConfirmed] = useState(false);
   async function onMessage(type: MessageType, payload: AnyEventPayload) {
-    console.log({ type, payload });
     if (
       type === 'idCheck.onApplicantStatusChanged' &&
       'reviewStatus' in payload
@@ -59,7 +58,7 @@ export const SumsubDialogClient: React.FC<SumsubWebSdkProps> = ({
       <SumsubWebSdk
         accessToken={accessToken}
         expirationHandler={expirationHandler}
-        config={{ ...config, theme: isDark ? 'dark' : 'light' }}
+        config={{ ...config, theme: resolvedTheme }}
         options={options}
         onMessage={onMessage}
         onError={onError}

@@ -11,6 +11,7 @@ import type {
   EventSlugs,
 } from '@features/organizer/event-types';
 import type { Locale, Stage } from '@gql/shared/types';
+import env from '@env/client';
 
 export interface EventPassesSliceProps extends EventSlugs {
   locale: Locale;
@@ -29,7 +30,7 @@ export const useEventPassOrders = ({
     useGetEventWithPassesQuery({
       slug: eventSlug,
       locale,
-      stage: process.env.NEXT_PUBLIC_HYGRAPH_STAGE as Stage,
+      stage: env.NEXT_PUBLIC_HYGRAPH_STAGE as Stage,
     });
 
   const eventPassIds =

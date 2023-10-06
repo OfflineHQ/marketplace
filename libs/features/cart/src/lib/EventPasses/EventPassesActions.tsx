@@ -1,9 +1,9 @@
 'use client';
-import { Button } from '@ui/components';
-import { Delete, Edit } from '@ui/icons';
-import Link from 'next/link';
 import type { EventSlugs } from '@features/organizer/event-types';
 import type { EventPassesSliceProps } from '@features/organizer/event/store';
+import { Link } from '@next/navigation';
+import { Button } from '@ui/components';
+import { Delete, Edit } from '@ui/icons';
 
 export interface EventPassesActionsProps extends EventSlugs {
   onDelete: EventPassesSliceProps['deletePassesCart'];

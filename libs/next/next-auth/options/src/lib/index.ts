@@ -5,12 +5,13 @@ import * as jsonwebtoken from 'jsonwebtoken';
 import type { Account, AuthOptions } from 'next-auth';
 import type { JWT, JWTOptions } from 'next-auth/jwt';
 
+import env from '@env/server';
 import { getAccount } from '@features/account/api';
 import { Roles } from '@next/hasura/utils';
 import { nextAuthCookieName } from '@next/next-auth/common';
 import { SiweProvider } from '@next/siwe/provider';
 import { AppUser } from '@next/types';
-import { getNextAppURL, isBackOffice, isProd } from '@utils';
+import { getNextAppURL, isBackOffice, isProd } from '@shared/server';
 import { Provider } from 'next-auth/providers';
 import { NextRequest } from 'next/server';
 
@@ -27,7 +28,7 @@ const getJwtAccessOptions = (user: JWT['user']): JWT['access'] => {
       pathPermissions: [
         {
           match: {
-            path: `/${process.env.UPLOAD_PATH_PREFIX}/organizers/${user.organizerId}`,
+            path: `/${env.UPLOAD_PATH_PREFIX}/organizers/${user.organizerId}`,
             scope: 'Grandchildren+',
           },
           permissions: {
@@ -53,7 +54,7 @@ const getJwtAccessOptions = (user: JWT['user']): JWT['access'] => {
       pathPermissions: [
         {
           match: {
-            path: `/${process.env.UPLOAD_PATH_PREFIX}/users/${user.address}`,
+            path: `/${env.UPLOAD_PATH_PREFIX}/users/${user.address}`,
             scope: 'Grandchildren+',
           },
           permissions: {
@@ -77,8 +78,8 @@ const getJwtAccessOptions = (user: JWT['user']): JWT['access'] => {
 };
 
 export const jwtOptions: JWTOptions = {
-  secret: process.env.NEXTAUTH_SECRET as string,
-  maxAge: parseInt(process.env.TOKEN_LIFE_TIME as string) || 30 * 24 * 60 * 60, // 30 days
+  secret: env.NEXTAUTH_SECRET,
+  maxAge: env.TOKEN_LIFE_TIME || 30 * 24 * 60 * 60, // 30 days
   encode: async ({ secret, token: payload, maxAge }) => {
     if (payload) {
       if (!payload?.sub) payload.sub = payload?.user?.id;
@@ -128,8 +129,7 @@ export const createOptions = (req: NextRequest) =>
     },
     session: {
       strategy: 'jwt',
-      maxAge:
-        parseInt(process.env.TOKEN_LIFE_TIME as string) || 30 * 24 * 60 * 60, // 30 days
+      maxAge: env.TOKEN_LIFE_TIME || 30 * 24 * 60 * 60, // 30 days
     },
     debug: !isProd(),
     providers,
@@ -146,7 +146,7 @@ export const createOptions = (req: NextRequest) =>
       colorScheme: 'auto',
     },
     jwt: jwtOptions,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: env.NEXTAUTH_SECRET,
     callbacks: {
       // Add hasura data needed for claims_map + accessToken
       async jwt(args) {

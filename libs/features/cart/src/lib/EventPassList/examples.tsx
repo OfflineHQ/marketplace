@@ -1,17 +1,17 @@
-import { EventPassList } from './EventPassList';
-import { usePassPurchaseStore } from '@features/organizer/event/store';
-import {
-  eventProps,
-  event2Props,
-  passFamily,
-  passWeekend,
-  passPremium,
-} from '@features/organizer/event/examples';
-import type { EventPassesAnonymousProps } from '../EventPasses/EventPassesAnonymous';
 import type { EventCart } from '@features/cart-types';
-import { EventPasses, EventPassesSkeleton } from '../EventPasses/EventPasses';
-import { eventCartProps, eventPassesCart } from '../EventPasses/examples';
+import {
+  event2Props,
+  eventProps,
+  passFamily,
+  passPremium,
+  passWeekend,
+} from '@features/organizer/event/examples';
+import { usePassPurchaseStore } from '@features/organizer/event/store';
 import { useEffect } from 'react';
+import { EventPasses, EventPassesSkeleton } from '../EventPasses/EventPasses';
+import type { EventPassesAnonymousProps } from '../EventPasses/EventPassesAnonymous';
+import { eventCartProps, eventPassesCart } from '../EventPasses/examples';
+import { EventPassList } from './EventPassList';
 
 const eventCart2Props: EventCart = {
   ...event2Props,
@@ -69,6 +69,21 @@ export const SetupPassesCartLocal = () => {
 export const ResetPassesCartLocal = () => {
   const resetPasses = usePassPurchaseStore((state) => state.resetPasses);
   resetPasses();
+};
+
+export const SetPassesCartLocal = () => {
+  ResetPassesCartLocal();
+  const setPassesCart = usePassPurchaseStore((state) => state.setPassesCart);
+  setPassesCart({
+    organizerSlug: eventProps?.organizer?.slug || '',
+    eventSlug: eventProps.slug,
+    newPasses: [eventPassesCart[0]],
+  });
+  setPassesCart({
+    organizerSlug: event2Props?.organizer?.slug || '',
+    eventSlug: event2Props.slug,
+    newPasses: eventPassesCart2,
+  });
 };
 
 export const EventPassListExample = () => {

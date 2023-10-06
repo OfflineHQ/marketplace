@@ -6,8 +6,8 @@ import * as stories from './PassPurchaseSheetContainer.stories';
 
 const { Default, WithFullSize } = composeStories(stories);
 
-jest.mock('next/navigation', () => ({
-  ...jest.requireActual('next/navigation'),
+jest.mock('@next/navigation', () => ({
+  ...jest.requireActual('@next/navigation'),
   useRouter: () => ({
     back: jest.fn(),
   }),

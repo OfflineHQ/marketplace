@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+// Import env variables for client and server, will return an error in case it's not defined.
+import('../../libs/env/client/src/index.mjs');
+import('../../libs/env/server/src/index.mjs');
 const { withNx } = require('@nx/next');
 const path = require('path');
 const { withSentryConfig } = require('@sentry/nextjs');
@@ -22,6 +25,9 @@ const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
   ? null
   : process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
+/**
+ * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
+ **/
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -61,7 +67,8 @@ const nextConfig = {
     },
     optimizePackageImports: [
       '@ui/icons',
-      // '@ui/components', //  Error: Could not find the module "" in the React Client Manifest. This is probably a bug in the React Server Components bundler. => see https://github.com/vercel/next.js/issues/54967
+      '@ui/components',
+      '@features/account/api',
       '@features/appNav/ui',
       '@features/cart',
       '@features/cart/server',
@@ -72,6 +79,15 @@ const nextConfig = {
       '@features/pass',
       '@features/pass/server',
       '@features/settings',
+      '@gql/admin/api',
+      '@gql/admin/types',
+      '@gql/user/api',
+      '@gql/user/react-query',
+      '@gql/user/types',
+      '@gql/anonymous/api',
+      '@gql/anonymous/react-query',
+      '@gql/anonymous/types',
+      '@gql/shared/types',
     ],
     // https://vercel.com/docs/concepts/deployments/skew-protection#enabling-skew-protection
     useDeploymentId: true,
@@ -102,13 +118,37 @@ const sentryWebpackPluginOptions = {
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
+const sentryOptions = {
+  // For all available options, see:
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+
+  // Upload a larger set of source maps for prettier stack traces (increases build time)
+  widenClientFileUpload: true,
+
+  // Transpiles SDK to be compatible with IE11 (increases bundle size)
+  transpileClientSDK: true,
+
+  // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
+  tunnelRoute: '/monitoring',
+
+  // Hides source maps from generated client bundles
+  hideSourceMaps: true,
+
+  // Automatically tree-shake Sentry logger statements to reduce bundle size
+  disableLogger: true,
+};
+
 module.exports = async (phase, context) => {
   const addNx = withNx({
     ...nextConfig,
   });
 
   let config = await addNx(phase);
-  config = await withSentryConfig(config, sentryWebpackPluginOptions);
+  config = await withSentryConfig(
+    config,
+    sentryWebpackPluginOptions,
+    sentryOptions
+  );
   config = await withBundleAnalyzer(config);
   config = await withNextIntl(config);
   return config;

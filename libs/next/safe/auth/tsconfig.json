@@ -6,7 +6,6 @@
     "strict": true,
     "noImplicitOverride": true,
     "esModuleInterop": true,
-    "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "types": ["@next/types"]

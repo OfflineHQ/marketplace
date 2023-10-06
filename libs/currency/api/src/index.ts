@@ -1,4 +1,4 @@
-import { isPreviewOrProduction } from '@utils';
+import { isPreviewOrProduction } from '@shared/server';
 import * as fs from 'fs';
 import * as path from 'path';
 

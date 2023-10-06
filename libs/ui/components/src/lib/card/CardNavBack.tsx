@@ -1,14 +1,15 @@
 'use client';
 
-import * as React from 'react';
-import Link, { type LinkProps } from 'next/link';
+import { Link } from '@next/navigation';
+import { PropsFrom } from '@next/types';
 import { ChevronBack } from '@ui/icons';
+import * as React from 'react';
 import { Button, ButtonSkeleton } from '../button/Button';
 import { backClasses } from '../shared/back';
 
 export interface CardNavBackProps {
   text: string;
-  href: LinkProps;
+  href: PropsFrom<typeof Link>;
   variant?: 'default' | 'ghost' | 'secondary';
 }
 

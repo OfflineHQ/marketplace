@@ -1,8 +1,9 @@
 'use client';
 
+import env from '@env/client';
 import { ExternalProvider } from '@ethersproject/providers';
-import { ethers } from 'ethers';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
+import { ethers } from 'ethers';
 
 export type NftsMetadata = {
   name: string;
@@ -16,8 +17,7 @@ class NftCollection {
   constructor(provider: ExternalProvider) {
     const web3Provider = new ethers.providers.Web3Provider(provider);
     const signer = web3Provider.getSigner();
-    this.sdk = ThirdwebSDK.fromSigner(signer, 'goerli', {
-      //TODO: networkId to env.
+    this.sdk = ThirdwebSDK.fromSigner(signer, env.NEXT_PUBLIC_CHAIN, {
       clientId: '***REMOVED***',
     });
   }

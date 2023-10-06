@@ -1,12 +1,13 @@
 'use server';
 
+import env from '@env/server';
 import { adminSdk } from '@gql/admin/api';
-import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 import type {
   ClaimEventPassNftsMutation,
   ClaimEventPassNftsMutationVariables,
 } from '@gql/admin/types';
 import { EventPassOrder, OrderStatus_Enum } from '@gql/shared/types';
+import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 
 export type RequiredOrderKeys = {
   id: EventPassOrder['id'];
@@ -58,12 +59,12 @@ class NftClaimable {
   sdk?: ThirdwebSDK;
 
   constructor() {
-    if (process.env['THIRDWEB_MASTER_PRIVATE_KEY'] !== undefined) {
+    if (env.THIRDWEB_MASTER_PRIVATE_KEY) {
       this.sdk = ThirdwebSDK.fromPrivateKey(
-        process.env['THIRDWEB_MASTER_PRIVATE_KEY'] as string,
-        'goerli',
+        env.THIRDWEB_MASTER_PRIVATE_KEY as string,
+        env.CHAIN,
         {
-          secretKey: process.env['THIRDWEB_SECRET_KEY'],
+          secretKey: env.THIRDWEB_SECRET_KEY,
         }
       );
     } else {
@@ -76,7 +77,7 @@ class NftClaimable {
     phaseName: string,
     maxAmount: number
   ) {
-    if (!this.sdk || process.env['THIRDWEB_MASTER_ADDRESS'] === undefined) {
+    if (!this.sdk || env.THIRDWEB_MASTER_ADDRESS === undefined) {
       throw new Error('SDK is undefined');
     }
     const contract = await this.sdk.getContract(contractAddress);
@@ -90,7 +91,7 @@ class NftClaimable {
           maxClaimablePerWallet: 0,
           snapshot: [
             {
-              address: process.env['THIRDWEB_MASTER_ADDRESS'] as string,
+              address: env.THIRDWEB_MASTER_ADDRESS as string,
               maxClaimable: maxAmount,
             },
           ],
