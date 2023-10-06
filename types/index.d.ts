@@ -50,6 +50,8 @@ declare module '@env/server' {
     UPLOAD_SECRET_API_KEY: string;
     UPLOAD_PATH_PREFIX: string;
     UPLOAD_PUBLIC_API_KEY: string;
+    FIXER_CURRENCY_API_KEY: string;
+    EXCHANGE_RATE_API_KEY: string;
   };
   export default env;
 }
