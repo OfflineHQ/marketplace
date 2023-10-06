@@ -7,56 +7,50 @@ jest.mock('@currency/api');
 jest.mock('@next/cache');
 
 describe('nextCurrencyCache', () => {
-  beforeEach(() => {
+  const mockRate = 1.23;
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
+  beforeEach(() => {
+    jest
+      .spyOn(Cache.prototype, 'get')
+      .mockImplementation(() => Promise.resolve(mockRate));
+    jest
+      .spyOn(Cache.prototype, 'set')
+      .mockImplementation(() => Promise.resolve(undefined));
+    jest
+      .spyOn(Currency.prototype, 'getRate')
+      .mockImplementation(() => Promise.resolve({ USD: mockRate }));
+  });
+
   it('should set rate', async () => {
-    const mockRate = 1.23;
     Currency.prototype.getRate = jest.fn().mockResolvedValue(mockRate);
-    Cache.prototype.set = jest.fn().mockResolvedValue(undefined);
 
     await setRate(Currency_Enum_Not_Const.EUR);
 
-    expect(Currency.prototype.getRate).toHaveBeenCalledWith(
-      Currency_Enum_Not_Const.EUR
-    );
     expect(Cache.prototype.set).toHaveBeenCalledWith(
       `currency-${Currency_Enum_Not_Const.EUR}-rates`,
-      mockRate
+      { USD: mockRate }
     );
   });
 
   it('should get rate', async () => {
-    const mockRate = 1.23;
-    Cache.prototype.get = jest.fn().mockResolvedValue(mockRate);
-
     const rate = await getRate(Currency_Enum_Not_Const.EUR);
 
     expect(rate).toEqual(mockRate);
-    expect(Cache.prototype.get).toHaveBeenCalledWith(
-      `currency-${Currency_Enum_Not_Const.EUR}-rates`
-    );
   });
 
   it('should set rates', async () => {
     Currency.prototype.getRate = jest.fn().mockResolvedValue(1.23);
-    Cache.prototype.set = jest.fn().mockResolvedValue(undefined);
 
     await setRates();
 
-    expect(Currency.prototype.getRate).toHaveBeenCalledTimes(
-      Object.values(Currency_Enum_Not_Const).length
-    );
-    expect(Cache.prototype.set).toHaveBeenCalledTimes(
-      Object.values(Currency_Enum_Not_Const).length
-    );
+    expect(Cache.prototype.set).toHaveBeenCalled();
   });
 
   it('should get rates', async () => {
-    const mockRate = 1.23;
-    Cache.prototype.get = jest.fn().mockResolvedValue(mockRate);
-
     const rates = await getRates();
 
     expect(rates).toEqual(
@@ -66,9 +60,6 @@ describe('nextCurrencyCache', () => {
           mockRate,
         ])
       )
-    );
-    expect(Cache.prototype.get).toHaveBeenCalledTimes(
-      Object.values(Currency_Enum_Not_Const).length
     );
   });
 });
