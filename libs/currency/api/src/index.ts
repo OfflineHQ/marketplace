@@ -21,7 +21,7 @@ export default class Currency {
       console.warn('Falling back to ExchangeRate API');
       try {
         const rates = await this.fetchFromAPI(
-          `https://v6.exchangerate-api.com/v6/${this.EXCHANGE_RATE_API_KEY}/latest/${baseCurrency}`, // TODO basculer sur la bonne api
+          `https://v6.exchangerate-api.com/v6/${this.EXCHANGE_RATE_API_KEY}/latest/${baseCurrency}`,
           'ExchangeRate'
         );
         await this.saveToLocalFile(baseCurrency, rates);
@@ -33,7 +33,7 @@ export default class Currency {
     }
   }
 
-  async fetchFromAPI(
+  private async fetchFromAPI(
     url: string,
     apiName: string
   ): Promise<{ [key: string]: number }> {
@@ -55,6 +55,12 @@ export default class Currency {
 
     if (data.error && data.error.code === 104) {
       throw new Error('Rate limit exceeded on Fixer API');
+    }
+
+    if (data.error && data.error['error-type']) {
+      throw new Error(
+        `Error for ExchangeRate api : ${data.error['error-type']}`
+      );
     }
 
     if (!data.rates && !data.conversion_rates) {
