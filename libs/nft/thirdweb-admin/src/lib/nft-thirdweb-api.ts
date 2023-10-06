@@ -55,7 +55,7 @@ function sdkMiddleware(fn: FnType) {
   };
 }
 
-class NftClaimable {
+export class NftClaimable {
   sdk?: ThirdwebSDK;
 
   constructor() {
@@ -190,5 +190,3 @@ class NftClaimable {
     }
   }
 }
-
-export default NftClaimable;
