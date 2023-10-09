@@ -21,14 +21,16 @@ export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    //getRates()
-    //  .then((data) => {
-    //    setRates(data);
-    //    setIsLoading(false);
-    //  })
-    //  .catch((error) => {
-    //    console.error('Error fetching rates:', error);
-    //  });
+    const fetchRates = async () => {
+      const response = await fetch('/api/currency/rates', {
+        next: { tags: ['currency-rates'] },
+      });
+      const data = await response.json();
+      setRates(data);
+      setIsLoading(false);
+    };
+
+    fetchRates();
   }, []);
 
   return (
