@@ -4490,6 +4490,8 @@ export type Account = {
   kyc?: Maybe<Kyc>;
   organizer?: Maybe<Organizer>;
   organizerId?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  stripeCustomer?: Maybe<StripeCustomer>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -4536,6 +4538,7 @@ export type Account_Bool_Exp = {
   isOrganizer?: InputMaybe<Boolean_Comparison_Exp>;
   kyc?: InputMaybe<Kyc_Bool_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
+  stripeCustomer?: InputMaybe<StripeCustomer_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -4557,6 +4560,7 @@ export type Account_Insert_Input = {
   isOrganizer?: InputMaybe<Scalars['Boolean']>;
   kyc?: InputMaybe<Kyc_Obj_Rel_Insert_Input>;
   organizerId?: InputMaybe<Scalars['String']>;
+  stripeCustomer?: InputMaybe<StripeCustomer_Obj_Rel_Insert_Input>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -4615,6 +4619,7 @@ export type Account_Order_By = {
   isOrganizer?: InputMaybe<Order_By>;
   kyc?: InputMaybe<Kyc_Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  stripeCustomer?: InputMaybe<StripeCustomer_Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -6193,10 +6198,13 @@ export type EventPassOrder = {
   eventPass?: Maybe<EventPass>;
   eventPassId: Scalars['String'];
   /** An object relationship */
+  eventPassNftContract?: Maybe<EventPassNftContract>;
+  /** An object relationship */
   eventPassPricing?: Maybe<EventPassPricing>;
   id: Scalars['uuid'];
   quantity: Scalars['Int'];
   status: OrderStatus_Enum;
+  stripeCheckoutSessionId?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
 };
 
@@ -6494,10 +6502,12 @@ export type EventPassOrder_Bool_Exp = {
   accountId?: InputMaybe<Uuid_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   eventPassId?: InputMaybe<String_Comparison_Exp>;
+  eventPassNftContract?: InputMaybe<EventPassNftContract_Bool_Exp>;
   eventPassPricing?: InputMaybe<EventPassPricing_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   quantity?: InputMaybe<Int_Comparison_Exp>;
   status?: InputMaybe<OrderStatus_Enum_Comparison_Exp>;
+  stripeCheckoutSessionId?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -6518,10 +6528,12 @@ export type EventPassOrder_Insert_Input = {
   accountId?: InputMaybe<Scalars['uuid']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassNftContract?: InputMaybe<EventPassNftContract_Obj_Rel_Insert_Input>;
   eventPassPricing?: InputMaybe<EventPassPricing_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
   quantity?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<OrderStatus_Enum>;
+  stripeCheckoutSessionId?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -6533,6 +6545,7 @@ export type EventPassOrder_Max_Fields = {
   eventPassId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   quantity?: Maybe<Scalars['Int']>;
+  stripeCheckoutSessionId?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -6543,6 +6556,7 @@ export type EventPassOrder_Max_Order_By = {
   eventPassId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  stripeCheckoutSessionId?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -6554,6 +6568,7 @@ export type EventPassOrder_Min_Fields = {
   eventPassId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   quantity?: Maybe<Scalars['Int']>;
+  stripeCheckoutSessionId?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -6564,6 +6579,7 @@ export type EventPassOrder_Min_Order_By = {
   eventPassId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
+  stripeCheckoutSessionId?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -6589,10 +6605,12 @@ export type EventPassOrder_Order_By = {
   accountId?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   eventPassId?: InputMaybe<Order_By>;
+  eventPassNftContract?: InputMaybe<EventPassNftContract_Order_By>;
   eventPassPricing?: InputMaybe<EventPassPricing_Order_By>;
   id?: InputMaybe<Order_By>;
   quantity?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
+  stripeCheckoutSessionId?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -6616,6 +6634,8 @@ export const enum EventPassOrder_Select_Column {
   /** column name */
   Status = 'status',
   /** column name */
+  StripeCheckoutSessionId = 'stripeCheckoutSessionId',
+  /** column name */
   UpdatedAt = 'updated_at'
 };
 
@@ -6627,6 +6647,7 @@ export type EventPassOrder_Set_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   quantity?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<OrderStatus_Enum>;
+  stripeCheckoutSessionId?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -6679,6 +6700,7 @@ export type EventPassOrder_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   quantity?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<OrderStatus_Enum>;
+  stripeCheckoutSessionId?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -6707,6 +6729,8 @@ export const enum EventPassOrder_Update_Column {
   Quantity = 'quantity',
   /** column name */
   Status = 'status',
+  /** column name */
+  StripeCheckoutSessionId = 'stripeCheckoutSessionId',
   /** column name */
   UpdatedAt = 'updated_at'
 };
@@ -7960,6 +7984,18 @@ export type Mutation_Root = {
   delete_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** delete single row from the table: "orderStatus" */
   delete_orderStatus_by_pk?: Maybe<OrderStatus>;
+  /** delete data from the table: "stripeCheckoutSession" */
+  delete_stripeCheckoutSession?: Maybe<StripeCheckoutSession_Mutation_Response>;
+  /** delete data from the table: "stripeCheckoutSessionType" */
+  delete_stripeCheckoutSessionType?: Maybe<StripeCheckoutSessionType_Mutation_Response>;
+  /** delete single row from the table: "stripeCheckoutSessionType" */
+  delete_stripeCheckoutSessionType_by_pk?: Maybe<StripeCheckoutSessionType>;
+  /** delete single row from the table: "stripeCheckoutSession" */
+  delete_stripeCheckoutSession_by_pk?: Maybe<StripeCheckoutSession>;
+  /** delete data from the table: "stripeCustomer" */
+  delete_stripeCustomer?: Maybe<StripeCustomer_Mutation_Response>;
+  /** delete single row from the table: "stripeCustomer" */
+  delete_stripeCustomer_by_pk?: Maybe<StripeCustomer>;
   /** delete data from the table: "timezone" */
   delete_timezone?: Maybe<Timezone_Mutation_Response>;
   /** delete single row from the table: "timezone" */
@@ -8020,6 +8056,18 @@ export type Mutation_Root = {
   insert_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** insert a single row into the table: "orderStatus" */
   insert_orderStatus_one?: Maybe<OrderStatus>;
+  /** insert data into the table: "stripeCheckoutSession" */
+  insert_stripeCheckoutSession?: Maybe<StripeCheckoutSession_Mutation_Response>;
+  /** insert data into the table: "stripeCheckoutSessionType" */
+  insert_stripeCheckoutSessionType?: Maybe<StripeCheckoutSessionType_Mutation_Response>;
+  /** insert a single row into the table: "stripeCheckoutSessionType" */
+  insert_stripeCheckoutSessionType_one?: Maybe<StripeCheckoutSessionType>;
+  /** insert a single row into the table: "stripeCheckoutSession" */
+  insert_stripeCheckoutSession_one?: Maybe<StripeCheckoutSession>;
+  /** insert data into the table: "stripeCustomer" */
+  insert_stripeCustomer?: Maybe<StripeCustomer_Mutation_Response>;
+  /** insert a single row into the table: "stripeCustomer" */
+  insert_stripeCustomer_one?: Maybe<StripeCustomer>;
   /** insert data into the table: "timezone" */
   insert_timezone?: Maybe<Timezone_Mutation_Response>;
   /** insert a single row into the table: "timezone" */
@@ -8196,6 +8244,24 @@ export type Mutation_Root = {
   update_orderStatus_by_pk?: Maybe<OrderStatus>;
   /** update multiples rows of table: "orderStatus" */
   update_orderStatus_many?: Maybe<Array<Maybe<OrderStatus_Mutation_Response>>>;
+  /** update data of the table: "stripeCheckoutSession" */
+  update_stripeCheckoutSession?: Maybe<StripeCheckoutSession_Mutation_Response>;
+  /** update data of the table: "stripeCheckoutSessionType" */
+  update_stripeCheckoutSessionType?: Maybe<StripeCheckoutSessionType_Mutation_Response>;
+  /** update single row of the table: "stripeCheckoutSessionType" */
+  update_stripeCheckoutSessionType_by_pk?: Maybe<StripeCheckoutSessionType>;
+  /** update multiples rows of table: "stripeCheckoutSessionType" */
+  update_stripeCheckoutSessionType_many?: Maybe<Array<Maybe<StripeCheckoutSessionType_Mutation_Response>>>;
+  /** update single row of the table: "stripeCheckoutSession" */
+  update_stripeCheckoutSession_by_pk?: Maybe<StripeCheckoutSession>;
+  /** update multiples rows of table: "stripeCheckoutSession" */
+  update_stripeCheckoutSession_many?: Maybe<Array<Maybe<StripeCheckoutSession_Mutation_Response>>>;
+  /** update data of the table: "stripeCustomer" */
+  update_stripeCustomer?: Maybe<StripeCustomer_Mutation_Response>;
+  /** update single row of the table: "stripeCustomer" */
+  update_stripeCustomer_by_pk?: Maybe<StripeCustomer>;
+  /** update multiples rows of table: "stripeCustomer" */
+  update_stripeCustomer_many?: Maybe<Array<Maybe<StripeCustomer_Mutation_Response>>>;
   /** update data of the table: "timezone" */
   update_timezone?: Maybe<Timezone_Mutation_Response>;
   /** update single row of the table: "timezone" */
@@ -8510,6 +8576,42 @@ export type Mutation_RootDelete_OrderStatus_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_StripeCheckoutSessionArgs = {
+  where: StripeCheckoutSession_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StripeCheckoutSessionTypeArgs = {
+  where: StripeCheckoutSessionType_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StripeCheckoutSessionType_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StripeCheckoutSession_By_PkArgs = {
+  stripeSessionId: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StripeCustomerArgs = {
+  where: StripeCustomer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StripeCustomer_By_PkArgs = {
+  stripeCustomerId: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_TimezoneArgs = {
   where: Timezone_Bool_Exp;
 };
@@ -8714,6 +8816,48 @@ export type Mutation_RootInsert_OrderStatusArgs = {
 export type Mutation_RootInsert_OrderStatus_OneArgs = {
   object: OrderStatus_Insert_Input;
   on_conflict?: InputMaybe<OrderStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StripeCheckoutSessionArgs = {
+  objects: Array<StripeCheckoutSession_Insert_Input>;
+  on_conflict?: InputMaybe<StripeCheckoutSession_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StripeCheckoutSessionTypeArgs = {
+  objects: Array<StripeCheckoutSessionType_Insert_Input>;
+  on_conflict?: InputMaybe<StripeCheckoutSessionType_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StripeCheckoutSessionType_OneArgs = {
+  object: StripeCheckoutSessionType_Insert_Input;
+  on_conflict?: InputMaybe<StripeCheckoutSessionType_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StripeCheckoutSession_OneArgs = {
+  object: StripeCheckoutSession_Insert_Input;
+  on_conflict?: InputMaybe<StripeCheckoutSession_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StripeCustomerArgs = {
+  objects: Array<StripeCustomer_Insert_Input>;
+  on_conflict?: InputMaybe<StripeCustomer_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StripeCustomer_OneArgs = {
+  object: StripeCustomer_Insert_Input;
+  on_conflict?: InputMaybe<StripeCustomer_On_Conflict>;
 };
 
 
@@ -9506,6 +9650,66 @@ export type Mutation_RootUpdate_OrderStatus_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_StripeCheckoutSessionArgs = {
+  _set?: InputMaybe<StripeCheckoutSession_Set_Input>;
+  where: StripeCheckoutSession_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StripeCheckoutSessionTypeArgs = {
+  _set?: InputMaybe<StripeCheckoutSessionType_Set_Input>;
+  where: StripeCheckoutSessionType_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StripeCheckoutSessionType_By_PkArgs = {
+  _set?: InputMaybe<StripeCheckoutSessionType_Set_Input>;
+  pk_columns: StripeCheckoutSessionType_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StripeCheckoutSessionType_ManyArgs = {
+  updates: Array<StripeCheckoutSessionType_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StripeCheckoutSession_By_PkArgs = {
+  _set?: InputMaybe<StripeCheckoutSession_Set_Input>;
+  pk_columns: StripeCheckoutSession_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StripeCheckoutSession_ManyArgs = {
+  updates: Array<StripeCheckoutSession_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StripeCustomerArgs = {
+  _set?: InputMaybe<StripeCustomer_Set_Input>;
+  where: StripeCustomer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StripeCustomer_By_PkArgs = {
+  _set?: InputMaybe<StripeCustomer_Set_Input>;
+  pk_columns: StripeCustomer_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StripeCustomer_ManyArgs = {
+  updates: Array<StripeCustomer_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_TimezoneArgs = {
   _set?: InputMaybe<Timezone_Set_Input>;
   where: Timezone_Bool_Exp;
@@ -10161,6 +10365,7 @@ export const enum OrderStatus_Enum {
   Completed = 'COMPLETED',
   Confirmed = 'CONFIRMED',
   Error = 'ERROR',
+  Refunded = 'REFUNDED',
   Unauthorized = 'UNAUTHORIZED'
 };
 
@@ -10397,6 +10602,24 @@ export type Query_Root = {
   scheduledReleases: Array<ScheduledRelease>;
   /** Retrieve multiple scheduledReleases using the Relay connection interface */
   scheduledReleasesConnection: ScheduledReleaseConnection;
+  /** fetch data from the table: "stripeCheckoutSession" */
+  stripeCheckoutSession: Array<StripeCheckoutSession>;
+  /** fetch data from the table: "stripeCheckoutSessionType" */
+  stripeCheckoutSessionType: Array<StripeCheckoutSessionType>;
+  /** fetch aggregated fields from the table: "stripeCheckoutSessionType" */
+  stripeCheckoutSessionType_aggregate: StripeCheckoutSessionType_Aggregate;
+  /** fetch data from the table: "stripeCheckoutSessionType" using primary key columns */
+  stripeCheckoutSessionType_by_pk?: Maybe<StripeCheckoutSessionType>;
+  /** fetch aggregated fields from the table: "stripeCheckoutSession" */
+  stripeCheckoutSession_aggregate: StripeCheckoutSession_Aggregate;
+  /** fetch data from the table: "stripeCheckoutSession" using primary key columns */
+  stripeCheckoutSession_by_pk?: Maybe<StripeCheckoutSession>;
+  /** fetch data from the table: "stripeCustomer" */
+  stripeCustomer: Array<StripeCustomer>;
+  /** fetch aggregated fields from the table: "stripeCustomer" */
+  stripeCustomer_aggregate: StripeCustomer_Aggregate;
+  /** fetch data from the table: "stripeCustomer" using primary key columns */
+  stripeCustomer_by_pk?: Maybe<StripeCustomer>;
   /** fetch data from the table: "timezone" */
   timezone: Array<Timezone>;
   /** fetch aggregated fields from the table: "timezone" */
@@ -10954,6 +11177,75 @@ export type Query_RootScheduledReleasesConnectionArgs = {
 };
 
 
+export type Query_RootStripeCheckoutSessionArgs = {
+  distinct_on?: InputMaybe<Array<StripeCheckoutSession_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCheckoutSession_Order_By>>;
+  where?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
+};
+
+
+export type Query_RootStripeCheckoutSessionTypeArgs = {
+  distinct_on?: InputMaybe<Array<StripeCheckoutSessionType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCheckoutSessionType_Order_By>>;
+  where?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
+};
+
+
+export type Query_RootStripeCheckoutSessionType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StripeCheckoutSessionType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCheckoutSessionType_Order_By>>;
+  where?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
+};
+
+
+export type Query_RootStripeCheckoutSessionType_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Query_RootStripeCheckoutSession_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StripeCheckoutSession_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCheckoutSession_Order_By>>;
+  where?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
+};
+
+
+export type Query_RootStripeCheckoutSession_By_PkArgs = {
+  stripeSessionId: Scalars['String'];
+};
+
+
+export type Query_RootStripeCustomerArgs = {
+  distinct_on?: InputMaybe<Array<StripeCustomer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCustomer_Order_By>>;
+  where?: InputMaybe<StripeCustomer_Bool_Exp>;
+};
+
+
+export type Query_RootStripeCustomer_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StripeCustomer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCustomer_Order_By>>;
+  where?: InputMaybe<StripeCustomer_Bool_Exp>;
+};
+
+
+export type Query_RootStripeCustomer_By_PkArgs = {
+  stripeCustomerId: Scalars['String'];
+};
+
+
 export type Query_RootTimezoneArgs = {
   distinct_on?: InputMaybe<Array<Timezone_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -11007,6 +11299,535 @@ export type Query_RootUsersConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<UserWhereInput>;
+};
+
+/** Table to store Stripe Checkout Sessions for tracking user checkout processes. Sessions are deleted once they are successful or expired. */
+export type StripeCheckoutSession = {
+  __typename?: 'stripeCheckoutSession';
+  /** Timestamp automatically set when the row is created. */
+  created_at: Scalars['timestamptz'];
+  /** Stripe Customer ID referencing to the stripeCustomer table. */
+  stripeCustomerId: Scalars['String'];
+  /** Unique identifier for the Stripe Checkout Session. */
+  stripeSessionId: Scalars['String'];
+  /** Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table. */
+  type: StripeCheckoutSessionType_Enum;
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at: Scalars['timestamptz'];
+};
+
+/** Types of Stripe Checkout Sessions. */
+export type StripeCheckoutSessionType = {
+  __typename?: 'stripeCheckoutSessionType';
+  /** Type value. */
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "stripeCheckoutSessionType" */
+export type StripeCheckoutSessionType_Aggregate = {
+  __typename?: 'stripeCheckoutSessionType_aggregate';
+  aggregate?: Maybe<StripeCheckoutSessionType_Aggregate_Fields>;
+  nodes: Array<StripeCheckoutSessionType>;
+};
+
+/** aggregate fields of "stripeCheckoutSessionType" */
+export type StripeCheckoutSessionType_Aggregate_Fields = {
+  __typename?: 'stripeCheckoutSessionType_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<StripeCheckoutSessionType_Max_Fields>;
+  min?: Maybe<StripeCheckoutSessionType_Min_Fields>;
+};
+
+
+/** aggregate fields of "stripeCheckoutSessionType" */
+export type StripeCheckoutSessionType_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<StripeCheckoutSessionType_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "stripeCheckoutSessionType". All fields are combined with a logical 'AND'. */
+export type StripeCheckoutSessionType_Bool_Exp = {
+  _and?: InputMaybe<Array<StripeCheckoutSessionType_Bool_Exp>>;
+  _not?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
+  _or?: InputMaybe<Array<StripeCheckoutSessionType_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "stripeCheckoutSessionType" */
+export const enum StripeCheckoutSessionType_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  StripeCheckoutSessionTypePkey = 'stripeCheckoutSessionType_pkey'
+};
+
+export const enum StripeCheckoutSessionType_Enum {
+  EventPassOrder = 'event_pass_order'
+};
+
+/** Boolean expression to compare columns of type "stripeCheckoutSessionType_enum". All fields are combined with logical 'AND'. */
+export type StripeCheckoutSessionType_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<StripeCheckoutSessionType_Enum>;
+  _in?: InputMaybe<Array<StripeCheckoutSessionType_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<StripeCheckoutSessionType_Enum>;
+  _nin?: InputMaybe<Array<StripeCheckoutSessionType_Enum>>;
+};
+
+/** input type for inserting data into table "stripeCheckoutSessionType" */
+export type StripeCheckoutSessionType_Insert_Input = {
+  /** Type value. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type StripeCheckoutSessionType_Max_Fields = {
+  __typename?: 'stripeCheckoutSessionType_max_fields';
+  /** Type value. */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type StripeCheckoutSessionType_Min_Fields = {
+  __typename?: 'stripeCheckoutSessionType_min_fields';
+  /** Type value. */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "stripeCheckoutSessionType" */
+export type StripeCheckoutSessionType_Mutation_Response = {
+  __typename?: 'stripeCheckoutSessionType_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<StripeCheckoutSessionType>;
+};
+
+/** on_conflict condition type for table "stripeCheckoutSessionType" */
+export type StripeCheckoutSessionType_On_Conflict = {
+  constraint: StripeCheckoutSessionType_Constraint;
+  update_columns?: Array<StripeCheckoutSessionType_Update_Column>;
+  where?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "stripeCheckoutSessionType". */
+export type StripeCheckoutSessionType_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: stripeCheckoutSessionType */
+export type StripeCheckoutSessionType_Pk_Columns_Input = {
+  /** Type value. */
+  value: Scalars['String'];
+};
+
+/** select columns of table "stripeCheckoutSessionType" */
+export const enum StripeCheckoutSessionType_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "stripeCheckoutSessionType" */
+export type StripeCheckoutSessionType_Set_Input = {
+  /** Type value. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "stripeCheckoutSessionType" */
+export type StripeCheckoutSessionType_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: StripeCheckoutSessionType_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type StripeCheckoutSessionType_Stream_Cursor_Value_Input = {
+  /** Type value. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "stripeCheckoutSessionType" */
+export const enum StripeCheckoutSessionType_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type StripeCheckoutSessionType_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<StripeCheckoutSessionType_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: StripeCheckoutSessionType_Bool_Exp;
+};
+
+/** aggregated selection of "stripeCheckoutSession" */
+export type StripeCheckoutSession_Aggregate = {
+  __typename?: 'stripeCheckoutSession_aggregate';
+  aggregate?: Maybe<StripeCheckoutSession_Aggregate_Fields>;
+  nodes: Array<StripeCheckoutSession>;
+};
+
+/** aggregate fields of "stripeCheckoutSession" */
+export type StripeCheckoutSession_Aggregate_Fields = {
+  __typename?: 'stripeCheckoutSession_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<StripeCheckoutSession_Max_Fields>;
+  min?: Maybe<StripeCheckoutSession_Min_Fields>;
+};
+
+
+/** aggregate fields of "stripeCheckoutSession" */
+export type StripeCheckoutSession_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<StripeCheckoutSession_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "stripeCheckoutSession". All fields are combined with a logical 'AND'. */
+export type StripeCheckoutSession_Bool_Exp = {
+  _and?: InputMaybe<Array<StripeCheckoutSession_Bool_Exp>>;
+  _not?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
+  _or?: InputMaybe<Array<StripeCheckoutSession_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  stripeCustomerId?: InputMaybe<String_Comparison_Exp>;
+  stripeSessionId?: InputMaybe<String_Comparison_Exp>;
+  type?: InputMaybe<StripeCheckoutSessionType_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "stripeCheckoutSession" */
+export const enum StripeCheckoutSession_Constraint {
+  /** unique or primary key constraint on columns "stripeSessionId" */
+  StripeCheckoutSessionPkey = 'stripeCheckoutSession_pkey'
+};
+
+/** input type for inserting data into table "stripeCheckoutSession" */
+export type StripeCheckoutSession_Insert_Input = {
+  /** Timestamp automatically set when the row is created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Stripe Customer ID referencing to the stripeCustomer table. */
+  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the Stripe Checkout Session. */
+  stripeSessionId?: InputMaybe<Scalars['String']>;
+  /** Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table. */
+  type?: InputMaybe<StripeCheckoutSessionType_Enum>;
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type StripeCheckoutSession_Max_Fields = {
+  __typename?: 'stripeCheckoutSession_max_fields';
+  /** Timestamp automatically set when the row is created. */
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** Stripe Customer ID referencing to the stripeCustomer table. */
+  stripeCustomerId?: Maybe<Scalars['String']>;
+  /** Unique identifier for the Stripe Checkout Session. */
+  stripeSessionId?: Maybe<Scalars['String']>;
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type StripeCheckoutSession_Min_Fields = {
+  __typename?: 'stripeCheckoutSession_min_fields';
+  /** Timestamp automatically set when the row is created. */
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** Stripe Customer ID referencing to the stripeCustomer table. */
+  stripeCustomerId?: Maybe<Scalars['String']>;
+  /** Unique identifier for the Stripe Checkout Session. */
+  stripeSessionId?: Maybe<Scalars['String']>;
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "stripeCheckoutSession" */
+export type StripeCheckoutSession_Mutation_Response = {
+  __typename?: 'stripeCheckoutSession_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<StripeCheckoutSession>;
+};
+
+/** on_conflict condition type for table "stripeCheckoutSession" */
+export type StripeCheckoutSession_On_Conflict = {
+  constraint: StripeCheckoutSession_Constraint;
+  update_columns?: Array<StripeCheckoutSession_Update_Column>;
+  where?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "stripeCheckoutSession". */
+export type StripeCheckoutSession_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  stripeCustomerId?: InputMaybe<Order_By>;
+  stripeSessionId?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: stripeCheckoutSession */
+export type StripeCheckoutSession_Pk_Columns_Input = {
+  /** Unique identifier for the Stripe Checkout Session. */
+  stripeSessionId: Scalars['String'];
+};
+
+/** select columns of table "stripeCheckoutSession" */
+export const enum StripeCheckoutSession_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  StripeCustomerId = 'stripeCustomerId',
+  /** column name */
+  StripeSessionId = 'stripeSessionId',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "stripeCheckoutSession" */
+export type StripeCheckoutSession_Set_Input = {
+  /** Timestamp automatically set when the row is created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Stripe Customer ID referencing to the stripeCustomer table. */
+  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the Stripe Checkout Session. */
+  stripeSessionId?: InputMaybe<Scalars['String']>;
+  /** Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table. */
+  type?: InputMaybe<StripeCheckoutSessionType_Enum>;
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Streaming cursor of the table "stripeCheckoutSession" */
+export type StripeCheckoutSession_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: StripeCheckoutSession_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type StripeCheckoutSession_Stream_Cursor_Value_Input = {
+  /** Timestamp automatically set when the row is created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Stripe Customer ID referencing to the stripeCustomer table. */
+  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the Stripe Checkout Session. */
+  stripeSessionId?: InputMaybe<Scalars['String']>;
+  /** Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table. */
+  type?: InputMaybe<StripeCheckoutSessionType_Enum>;
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** update columns of table "stripeCheckoutSession" */
+export const enum StripeCheckoutSession_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  StripeCustomerId = 'stripeCustomerId',
+  /** column name */
+  StripeSessionId = 'stripeSessionId',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type StripeCheckoutSession_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<StripeCheckoutSession_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: StripeCheckoutSession_Bool_Exp;
+};
+
+/** Table to store Stripe Customer IDs for tracking user payment processes. */
+export type StripeCustomer = {
+  __typename?: 'stripeCustomer';
+  /** UUID referencing to the account ID in the existing accounts table. */
+  accountId: Scalars['uuid'];
+  /** Timestamp automatically set when the row is created. */
+  created_at: Scalars['timestamptz'];
+  /** Unique identifier for the Stripe Customer. */
+  stripeCustomerId: Scalars['String'];
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "stripeCustomer" */
+export type StripeCustomer_Aggregate = {
+  __typename?: 'stripeCustomer_aggregate';
+  aggregate?: Maybe<StripeCustomer_Aggregate_Fields>;
+  nodes: Array<StripeCustomer>;
+};
+
+/** aggregate fields of "stripeCustomer" */
+export type StripeCustomer_Aggregate_Fields = {
+  __typename?: 'stripeCustomer_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<StripeCustomer_Max_Fields>;
+  min?: Maybe<StripeCustomer_Min_Fields>;
+};
+
+
+/** aggregate fields of "stripeCustomer" */
+export type StripeCustomer_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<StripeCustomer_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "stripeCustomer". All fields are combined with a logical 'AND'. */
+export type StripeCustomer_Bool_Exp = {
+  _and?: InputMaybe<Array<StripeCustomer_Bool_Exp>>;
+  _not?: InputMaybe<StripeCustomer_Bool_Exp>;
+  _or?: InputMaybe<Array<StripeCustomer_Bool_Exp>>;
+  accountId?: InputMaybe<Uuid_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  stripeCustomerId?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "stripeCustomer" */
+export const enum StripeCustomer_Constraint {
+  /** unique or primary key constraint on columns "stripeCustomerId" */
+  StripeCustomerPkey = 'stripeCustomer_pkey'
+};
+
+/** input type for inserting data into table "stripeCustomer" */
+export type StripeCustomer_Insert_Input = {
+  /** UUID referencing to the account ID in the existing accounts table. */
+  accountId?: InputMaybe<Scalars['uuid']>;
+  /** Timestamp automatically set when the row is created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Unique identifier for the Stripe Customer. */
+  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type StripeCustomer_Max_Fields = {
+  __typename?: 'stripeCustomer_max_fields';
+  /** UUID referencing to the account ID in the existing accounts table. */
+  accountId?: Maybe<Scalars['uuid']>;
+  /** Timestamp automatically set when the row is created. */
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** Unique identifier for the Stripe Customer. */
+  stripeCustomerId?: Maybe<Scalars['String']>;
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type StripeCustomer_Min_Fields = {
+  __typename?: 'stripeCustomer_min_fields';
+  /** UUID referencing to the account ID in the existing accounts table. */
+  accountId?: Maybe<Scalars['uuid']>;
+  /** Timestamp automatically set when the row is created. */
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** Unique identifier for the Stripe Customer. */
+  stripeCustomerId?: Maybe<Scalars['String']>;
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "stripeCustomer" */
+export type StripeCustomer_Mutation_Response = {
+  __typename?: 'stripeCustomer_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<StripeCustomer>;
+};
+
+/** input type for inserting object relation for remote table "stripeCustomer" */
+export type StripeCustomer_Obj_Rel_Insert_Input = {
+  data: StripeCustomer_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<StripeCustomer_On_Conflict>;
+};
+
+/** on_conflict condition type for table "stripeCustomer" */
+export type StripeCustomer_On_Conflict = {
+  constraint: StripeCustomer_Constraint;
+  update_columns?: Array<StripeCustomer_Update_Column>;
+  where?: InputMaybe<StripeCustomer_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "stripeCustomer". */
+export type StripeCustomer_Order_By = {
+  accountId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  stripeCustomerId?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: stripeCustomer */
+export type StripeCustomer_Pk_Columns_Input = {
+  /** Unique identifier for the Stripe Customer. */
+  stripeCustomerId: Scalars['String'];
+};
+
+/** select columns of table "stripeCustomer" */
+export const enum StripeCustomer_Select_Column {
+  /** column name */
+  AccountId = 'accountId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  StripeCustomerId = 'stripeCustomerId',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "stripeCustomer" */
+export type StripeCustomer_Set_Input = {
+  /** UUID referencing to the account ID in the existing accounts table. */
+  accountId?: InputMaybe<Scalars['uuid']>;
+  /** Timestamp automatically set when the row is created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Unique identifier for the Stripe Customer. */
+  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Streaming cursor of the table "stripeCustomer" */
+export type StripeCustomer_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: StripeCustomer_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type StripeCustomer_Stream_Cursor_Value_Input = {
+  /** UUID referencing to the account ID in the existing accounts table. */
+  accountId?: InputMaybe<Scalars['uuid']>;
+  /** Timestamp automatically set when the row is created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Unique identifier for the Stripe Customer. */
+  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  /** Timestamp automatically updated whenever the row changes. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** update columns of table "stripeCustomer" */
+export const enum StripeCustomer_Update_Column {
+  /** column name */
+  AccountId = 'accountId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  StripeCustomerId = 'stripeCustomerId',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type StripeCustomer_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<StripeCustomer_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: StripeCustomer_Bool_Exp;
 };
 
 export type Subscription_Root = {
@@ -11119,6 +11940,30 @@ export type Subscription_Root = {
   orderStatus_by_pk?: Maybe<OrderStatus>;
   /** fetch data from the table in a streaming manner: "orderStatus" */
   orderStatus_stream: Array<OrderStatus>;
+  /** fetch data from the table: "stripeCheckoutSession" */
+  stripeCheckoutSession: Array<StripeCheckoutSession>;
+  /** fetch data from the table: "stripeCheckoutSessionType" */
+  stripeCheckoutSessionType: Array<StripeCheckoutSessionType>;
+  /** fetch aggregated fields from the table: "stripeCheckoutSessionType" */
+  stripeCheckoutSessionType_aggregate: StripeCheckoutSessionType_Aggregate;
+  /** fetch data from the table: "stripeCheckoutSessionType" using primary key columns */
+  stripeCheckoutSessionType_by_pk?: Maybe<StripeCheckoutSessionType>;
+  /** fetch data from the table in a streaming manner: "stripeCheckoutSessionType" */
+  stripeCheckoutSessionType_stream: Array<StripeCheckoutSessionType>;
+  /** fetch aggregated fields from the table: "stripeCheckoutSession" */
+  stripeCheckoutSession_aggregate: StripeCheckoutSession_Aggregate;
+  /** fetch data from the table: "stripeCheckoutSession" using primary key columns */
+  stripeCheckoutSession_by_pk?: Maybe<StripeCheckoutSession>;
+  /** fetch data from the table in a streaming manner: "stripeCheckoutSession" */
+  stripeCheckoutSession_stream: Array<StripeCheckoutSession>;
+  /** fetch data from the table: "stripeCustomer" */
+  stripeCustomer: Array<StripeCustomer>;
+  /** fetch aggregated fields from the table: "stripeCustomer" */
+  stripeCustomer_aggregate: StripeCustomer_Aggregate;
+  /** fetch data from the table: "stripeCustomer" using primary key columns */
+  stripeCustomer_by_pk?: Maybe<StripeCustomer>;
+  /** fetch data from the table in a streaming manner: "stripeCustomer" */
+  stripeCustomer_stream: Array<StripeCustomer>;
   /** fetch data from the table: "timezone" */
   timezone: Array<Timezone>;
   /** fetch aggregated fields from the table: "timezone" */
@@ -11542,6 +12387,96 @@ export type Subscription_RootOrderStatus_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<OrderStatus_Stream_Cursor_Input>>;
   where?: InputMaybe<OrderStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootStripeCheckoutSessionArgs = {
+  distinct_on?: InputMaybe<Array<StripeCheckoutSession_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCheckoutSession_Order_By>>;
+  where?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
+};
+
+
+export type Subscription_RootStripeCheckoutSessionTypeArgs = {
+  distinct_on?: InputMaybe<Array<StripeCheckoutSessionType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCheckoutSessionType_Order_By>>;
+  where?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
+};
+
+
+export type Subscription_RootStripeCheckoutSessionType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StripeCheckoutSessionType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCheckoutSessionType_Order_By>>;
+  where?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
+};
+
+
+export type Subscription_RootStripeCheckoutSessionType_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootStripeCheckoutSessionType_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<StripeCheckoutSessionType_Stream_Cursor_Input>>;
+  where?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
+};
+
+
+export type Subscription_RootStripeCheckoutSession_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StripeCheckoutSession_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCheckoutSession_Order_By>>;
+  where?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
+};
+
+
+export type Subscription_RootStripeCheckoutSession_By_PkArgs = {
+  stripeSessionId: Scalars['String'];
+};
+
+
+export type Subscription_RootStripeCheckoutSession_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<StripeCheckoutSession_Stream_Cursor_Input>>;
+  where?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
+};
+
+
+export type Subscription_RootStripeCustomerArgs = {
+  distinct_on?: InputMaybe<Array<StripeCustomer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCustomer_Order_By>>;
+  where?: InputMaybe<StripeCustomer_Bool_Exp>;
+};
+
+
+export type Subscription_RootStripeCustomer_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StripeCustomer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<StripeCustomer_Order_By>>;
+  where?: InputMaybe<StripeCustomer_Bool_Exp>;
+};
+
+
+export type Subscription_RootStripeCustomer_By_PkArgs = {
+  stripeCustomerId: Scalars['String'];
+};
+
+
+export type Subscription_RootStripeCustomer_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<StripeCustomer_Stream_Cursor_Input>>;
+  where?: InputMaybe<StripeCustomer_Bool_Exp>;
 };
 
 

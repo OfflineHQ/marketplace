@@ -6200,6 +6200,9 @@ type account {
     stage: Stage! = PUBLISHED
     where: OrganizerWhereUniqueInput_remote_rel_accountorganizer!
   ): Organizer
+
+  """An object relationship"""
+  stripeCustomer: stripeCustomer
 }
 
 """
@@ -6214,6 +6217,7 @@ input account_bool_exp {
   emailVerified: Boolean_comparison_exp
   id: uuid_comparison_exp
   kyc: kyc_bool_exp
+  stripeCustomer: stripeCustomer_bool_exp
 }
 
 """Ordering options when selecting data from "account"."""
@@ -6223,6 +6227,7 @@ input account_order_by {
   emailVerified: order_by
   id: order_by
   kyc: kyc_order_by
+  stripeCustomer: stripeCustomer_order_by
 }
 
 """
@@ -7127,6 +7132,9 @@ type eventPassOrder {
   eventPassId: String!
 
   """An object relationship"""
+  eventPassNftContract: eventPassNftContract
+
+  """An object relationship"""
   eventPassPricing: eventPassPricing
   id: uuid!
   quantity: Int!
@@ -7260,6 +7268,7 @@ input eventPassOrder_bool_exp {
   account: account_bool_exp
   created_at: timestamptz_comparison_exp
   eventPassId: String_comparison_exp
+  eventPassNftContract: eventPassNftContract_bool_exp
   eventPassPricing: eventPassPricing_bool_exp
   id: uuid_comparison_exp
   quantity: Int_comparison_exp
@@ -7312,6 +7321,7 @@ input eventPassOrder_order_by {
   account: account_order_by
   created_at: order_by
   eventPassId: order_by
+  eventPassNftContract: eventPassNftContract_order_by
   eventPassPricing: eventPassPricing_order_by
   id: order_by
   quantity: order_by
@@ -8863,6 +8873,7 @@ enum orderStatus_enum {
   COMPLETED
   CONFIRMED
   ERROR
+  REFUNDED
   UNAUTHORIZED
 }
 
@@ -9507,6 +9518,32 @@ type query_root {
     where: ScheduledReleaseWhereInput
   ): ScheduledReleaseConnection!
 
+  """
+  fetch data from the table: "stripeCustomer"
+  """
+  stripeCustomer(
+    """distinct select on columns"""
+    distinct_on: [stripeCustomer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCustomer_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCustomer_bool_exp
+  ): [stripeCustomer!]!
+
+  """fetch data from the table: "stripeCustomer" using primary key columns"""
+  stripeCustomer_by_pk(
+    """Unique identifier for the Stripe Customer."""
+    stripeCustomerId: String!
+  ): stripeCustomer
+
   """Retrieve a single user"""
   user(
     """
@@ -9565,6 +9602,65 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: UserWhereInput
   ): UserConnection!
+}
+
+"""
+Table to store Stripe Customer IDs for tracking user payment processes.
+"""
+type stripeCustomer {
+  """UUID referencing to the account ID in the existing accounts table."""
+  accountId: uuid!
+
+  """Unique identifier for the Stripe Customer."""
+  stripeCustomerId: String!
+}
+
+"""
+Boolean expression to filter rows from the table "stripeCustomer". All fields are combined with a logical 'AND'.
+"""
+input stripeCustomer_bool_exp {
+  _and: [stripeCustomer_bool_exp!]
+  _not: stripeCustomer_bool_exp
+  _or: [stripeCustomer_bool_exp!]
+  accountId: uuid_comparison_exp
+  stripeCustomerId: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "stripeCustomer"."""
+input stripeCustomer_order_by {
+  accountId: order_by
+  stripeCustomerId: order_by
+}
+
+"""
+select columns of table "stripeCustomer"
+"""
+enum stripeCustomer_select_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  stripeCustomerId
+}
+
+"""
+Streaming cursor of the table "stripeCustomer"
+"""
+input stripeCustomer_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: stripeCustomer_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input stripeCustomer_stream_cursor_value_input {
+  """UUID referencing to the account ID in the existing accounts table."""
+  accountId: uuid
+
+  """Unique identifier for the Stripe Customer."""
+  stripeCustomerId: String
 }
 
 type subscription_root {
@@ -9914,6 +10010,46 @@ type subscription_root {
     """filter the rows returned"""
     where: kyc_bool_exp
   ): [kyc!]!
+
+  """
+  fetch data from the table: "stripeCustomer"
+  """
+  stripeCustomer(
+    """distinct select on columns"""
+    distinct_on: [stripeCustomer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCustomer_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCustomer_bool_exp
+  ): [stripeCustomer!]!
+
+  """fetch data from the table: "stripeCustomer" using primary key columns"""
+  stripeCustomer_by_pk(
+    """Unique identifier for the Stripe Customer."""
+    stripeCustomerId: String!
+  ): stripeCustomer
+
+  """
+  fetch data from the table in a streaming manner: "stripeCustomer"
+  """
+  stripeCustomer_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [stripeCustomer_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: stripeCustomer_bool_exp
+  ): [stripeCustomer!]!
 }
 
 scalar timestamp

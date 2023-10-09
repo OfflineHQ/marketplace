@@ -14,3 +14,22 @@ query GetAccountEventPassOrderForEventPasses(
     created_at
   }
 }
+
+query GetEventPassOrdersFromStripeCheckoutSession(
+  $stripeCheckoutSessionId: String!
+) {
+  eventPassOrder(
+    where: { stripeCheckoutSessionId: { _eq: $stripeCheckoutSessionId } }
+  ) {
+    id
+    eventPassId
+    quantity
+    status
+    eventPassNftContract {
+      contractAddress
+    }
+    account {
+      address
+    }
+  }
+}
