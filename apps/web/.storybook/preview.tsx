@@ -1,8 +1,8 @@
+import { CurrencyProvider } from '@next/currency';
 import { defaultLocale } from '@next/i18n';
 import { Decorator, Preview } from '@storybook/react';
 import { NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { CurrencyProvider } from '@next/currency';
 import messagesEn from '../../../libs/next/i18n/src/messages/en.json';
 import messagesfr from '../../../libs/next/i18n/src/messages/fr.json';
 import { parameters } from '../../../storybook.preview.base';
@@ -64,9 +64,13 @@ const I18nextStoryDecorator: Decorator = (Story, context) => {
       messages={messages[locale]}
       now={staticDate}
     >
-      <CurrencyProvider>{Story(context)}</CurrencyProvider>
+      {Story(context)}
     </NextIntlClientProvider>
   );
+};
+
+const CurrencyDecorator: Decorator = (Story, context) => {
+  return <CurrencyProvider>{Story(context)}</CurrencyProvider>;
 };
 
 document.body.classList.add('font-sans');
@@ -82,6 +86,7 @@ const preview: Preview = {
     DarkModeDecorator,
     I18nextStoryDecorator,
     localStorageResetDecorator,
+    CurrencyDecorator,
   ],
 };
 export default preview;
