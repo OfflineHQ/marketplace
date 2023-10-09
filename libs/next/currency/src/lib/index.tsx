@@ -4,6 +4,7 @@ import { getCookie, setCookie } from 'cookies-next';
 
 import { Money, Rates, currencyMap, defaultCurrency } from '@currency/types';
 import { Currency_Enum } from '@gql/shared/types';
+import { isPreviewOrProduction } from '@shared/client';
 import { Dinero, convert, dinero, toDecimal } from 'dinero.js';
 
 import {
@@ -22,11 +23,24 @@ export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fetchRates = async () => {
-      const response = await fetch('/api/currency/rates', {
-        next: { tags: ['currency-rates'] },
-      });
-      const data = await response.json();
-      setRates(data);
+      if (isPreviewOrProduction()) {
+        const response = await fetch('/api/currency/rates', {
+          next: { tags: ['currency-rates'] },
+        });
+        const data = await response.json();
+        setRates(data);
+      } else {
+        setRates({
+          EUR: {
+            USD: 1,
+            EUR: 1,
+          },
+          USD: {
+            USD: 1,
+            EUR: 1,
+          },
+        });
+      }
       setIsLoading(false);
     };
 
