@@ -42,16 +42,8 @@ export const PassTotal: React.FC<PassTotalProps> = ({
         <TextSkeleton variant="h5" />
       ) : (
         <Text variant="h5">
-          {Object.entries(totalPrice).map(([key, val]) => (
-            <Text key={key}>
-              {key}: {format.number(val)}
-            </Text>
-          ))}
-          {Object.entries(rates).map(([key, val]) => (
-            <Text key={key}>
-              {key}: {format.number(val)}
-            </Text>
-          ))}
+          {JSON.stringify(totalPrice)}
+          {JSON.stringify(rates)}
           {format.number(5)}
         </Text>
       )}
