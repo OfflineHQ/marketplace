@@ -1,10 +1,10 @@
+import { getCurrencyPreference, setCurrencyPreference } from '@next/currency';
 import { usePathname, useRouter } from '@next/navigation';
+import '@next/types';
 import { CurrencyDropdown, type CurrencyDropdownProps } from '@ui/components';
 import { Check } from '@ui/icons';
 import { useLocale } from 'next-intl';
 import { useMemo, useTransition } from 'react';
-import { setCurrencyPreference, getCurrencyPreference } from '@next/currency';
-import '@next/types';
 
 export interface CurrencyDropdownClientProps {
   currencySelectText: {
