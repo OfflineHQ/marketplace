@@ -68,7 +68,7 @@ export async function getRates(): Promise<{
 }> {
   const promises = Object.values(Currency_Enum_Not_Const).map(
     async (currency) => {
-      const rate = await getRate(currency);
+      const rate = await currencyApi.getRate(currency);
       return { [currency]: rate };
     }
   );

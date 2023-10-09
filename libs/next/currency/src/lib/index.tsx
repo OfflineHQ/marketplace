@@ -6,7 +6,7 @@ import { Money, Rates, currencyMap, defaultCurrency } from '@currency/types';
 import { Currency_Enum } from '@gql/shared/types';
 import { Dinero, convert, dinero, toDecimal } from 'dinero.js';
 
-import { getRates } from '@next/currency-api';
+import { getRates } from '@next/currency-cache';
 import {
   ReactNode,
   createContext,
@@ -22,10 +22,14 @@ export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getRates().then((data) => {
-      setRates(data);
-      setIsLoading(false);
-    });
+    getRates()
+      .then((data) => {
+        setRates(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching rates:', error);
+      });
   }, []);
 
   return (
