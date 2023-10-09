@@ -1,0 +1,3 @@
+table:
+  name: stripeCheckoutSession
+  schema: public

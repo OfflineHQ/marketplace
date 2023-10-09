@@ -11,6 +11,15 @@ object_relationships:
         remote_table:
           name: kyc
           schema: public
+  - name: stripeCustomer
+    using:
+      manual_configuration:
+        column_mapping:
+          id: accountId
+        insertion_order: null
+        remote_table:
+          name: stripeCustomer
+          schema: public
 remote_relationships:
   - definition:
       to_remote_schema:
