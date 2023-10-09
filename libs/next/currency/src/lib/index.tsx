@@ -4,7 +4,7 @@ import { getCookie, setCookie } from 'cookies-next';
 
 import { Money, Rates, currencyMap, defaultCurrency } from '@currency/types';
 import { Currency_Enum } from '@gql/shared/types';
-import { isPreviewOrProduction } from '@shared/client';
+import { getRates } from '@next/currency-cache';
 import { Dinero, convert, dinero, toDecimal } from 'dinero.js';
 
 import {
@@ -22,33 +22,23 @@ export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRates = async () => {
-      if (isPreviewOrProduction()) {
-        const response = await fetch('/api/currency/rates', {
-          next: { tags: ['currency-rates'] },
-        });
-        const data = await response.json();
+    getRates()
+      .then((data) => {
         setRates(data);
-      } else {
-        setRates({
-          EUR: {
-            USD: 1,
-            EUR: 1,
-          },
-          USD: {
-            USD: 1,
-            EUR: 1,
-          },
-        });
-      }
-      setIsLoading(false);
-    };
-
-    fetchRates();
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching rates:', error);
+      });
   }, []);
 
   return (
-    <CurrencyContext.Provider value={{ rates, isLoading }}>
+    <CurrencyContext.Provider
+      value={{
+        rates,
+        isLoading,
+      }}
+    >
       {children}
     </CurrencyContext.Provider>
   );
