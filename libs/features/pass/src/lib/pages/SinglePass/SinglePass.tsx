@@ -1,6 +1,6 @@
 import { EventOrganizerButton, PassOptions } from '@features/organizer/event';
 import { EventPassNft } from '@features/pass-types';
-// import { formatCurrency, useCurrency } from '@next/currency';
+import { formatCurrency, useCurrency } from '@next/currency';
 import type { AppUser } from '@next/types';
 import {
   AlertSkeleton,
@@ -42,7 +42,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
 }) => {
   const t = useTranslations('Pass.SinglePass');
   const format = useFormatter();
-  //const { rates, isLoading } = useCurrency();
+  const { rates, isLoading } = useCurrency();
   const isOwner = useMemo(
     () => user?.address === eventPassNft.currentOwnerAddress,
     [user, eventPassNft]
@@ -113,7 +113,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
           </div>
           <div className="flex pb-2 pt-4 text-end">
             <Label className="mr-3">{t('sold-for')}</Label>
-            {/*isLoading ? (
+            {isLoading ? (
               <TextSkeleton />
             ) : (
               <Text className="font-semibold">
@@ -129,7 +129,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
                   rates
                 )}
               </Text>
-                )*/}
+            )}
           </div>
 
           <div className="flex pb-4">

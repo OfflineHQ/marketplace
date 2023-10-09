@@ -60,12 +60,14 @@ export const getCurrencyPreference = (): Currency_Enum => {
 
 export const toUserCurrency = (
   money: Money,
-  rates: Rates
+  rates: { [key: string]: Rates }
 ): {
   dinero: Dinero<number>;
   currency: Currency_Enum;
 } => {
   const userCurrency = getCurrencyPreference();
+
+  const currencyRate = rates[userCurrency as string];
 
   const fromCurrency = money.currency
     ? currencyMap[money.currency]
@@ -78,7 +80,7 @@ export const toUserCurrency = (
       dinero: dineroObject,
       currency: userCurrency,
     };
-  const convertedDinero = convert(dineroObject, toCurrency, rates);
+  const convertedDinero = convert(dineroObject, toCurrency, currencyRate);
   return {
     dinero: convertedDinero,
     currency: userCurrency,
@@ -88,7 +90,7 @@ export const toUserCurrency = (
 export const formatCurrency = (
   format: any,
   money: Money | undefined | null,
-  rates: Rates
+  rates: { [key: string]: Rates }
 ) => {
   if (!money) return format.number(0, { style: 'currency', currency: 'EUR' });
   const { currency, amount } = money;
