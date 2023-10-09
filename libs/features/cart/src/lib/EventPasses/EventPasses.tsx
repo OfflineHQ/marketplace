@@ -1,22 +1,23 @@
+import type { EventCart } from '@features/cart-types';
 import type { EventPassCart } from '@features/organizer/event-types';
+import { formatCurrency } from '@next/currency';
+import { getRates } from '@next/currency-api';
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  TextSkeleton,
-  Separator,
-  Text,
   Badge,
   ButtonSkeleton,
+  Separator,
+  Text,
+  TextSkeleton,
 } from '@ui/components';
+import { useFormatter, useTranslations } from 'next-intl';
 import Image from 'next/image';
-import type { EventCart } from '@features/cart-types';
-import { useTranslations, useFormatter } from 'next-intl';
 import {
   EventPassesActions,
   type EventPassesActionsProps,
 } from './EventPassesActions';
-import { formatCurrency } from '@next/currency';
 
 export interface EventPassesProps
   extends Pick<EventPassesActionsProps, 'onDelete'> {
@@ -35,13 +36,14 @@ const layout = {
   button: 'self-start',
 };
 
-const AccordionContentWrapper: React.FC<EventPassesProps> = ({
+const AccordionContentWrapper: React.FC<EventPassesProps> = async ({
   event,
   passes,
   onDelete,
 }) => {
   const t = useTranslations('Cart.List.Event');
   const format = useFormatter();
+  const rates = await getRates();
   const enrichedPasses = passes.map((pass) => {
     const matchingEventPass = event.eventPasses.find(
       (eventPass) => eventPass.id === pass.id
@@ -72,10 +74,14 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
                   {pass.name}
                 </Text>
                 <Text variant="small">
-                  {formatCurrency(format, {
-                    amount: pass.eventPassPricing?.priceAmount || 0,
-                    currency: pass.eventPassPricing?.priceCurrency,
-                  })}
+                  {formatCurrency(
+                    format,
+                    {
+                      amount: pass.eventPassPricing?.priceAmount || 0,
+                      currency: pass.eventPassPricing?.priceCurrency,
+                    },
+                    rates
+                  )}
                 </Text>
               </div>
             </div>

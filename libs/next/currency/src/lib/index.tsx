@@ -1,8 +1,41 @@
+'use client';
+
 import { getCookie, setCookie } from 'cookies-next';
 
-import { Money, currencyMap, defaultCurrency, rates } from '@currency/types';
+import { Money, Rates, currencyMap, defaultCurrency } from '@currency/types';
 import { Currency_Enum } from '@gql/shared/types';
 import { Dinero, convert, dinero, toDecimal } from 'dinero.js';
+
+import { getRates } from '@next/currency-api';
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+
+const CurrencyContext = createContext({ rates: {}, isLoading: true });
+
+export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
+  const [rates, setRates] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getRates().then((data) => {
+      setRates(data);
+      setIsLoading(false);
+    });
+  }, []);
+
+  return (
+    <CurrencyContext.Provider value={{ rates, isLoading }}>
+      {children}
+    </CurrencyContext.Provider>
+  );
+};
+
+export const useCurrency = () => useContext(CurrencyContext);
 
 // Set user's currency preference in a cookie
 export const setCurrencyPreference = (currency: Currency_Enum) => {
@@ -17,7 +50,8 @@ export const getCurrencyPreference = (): Currency_Enum => {
 };
 
 export const toUserCurrency = (
-  money: Money
+  money: Money,
+  rates: Rates
 ): {
   dinero: Dinero<number>;
   currency: Currency_Enum;
@@ -44,11 +78,12 @@ export const toUserCurrency = (
 
 export const formatCurrency = (
   format: any,
-  money: Money | undefined | null
+  money: Money | undefined | null,
+  rates: Rates
 ) => {
   if (!money) return format.number(0, { style: 'currency', currency: 'EUR' });
   const { currency, amount } = money;
-  const formattedAmount = toUserCurrency({ amount, currency });
+  const formattedAmount = toUserCurrency({ amount, currency }, rates);
 
   return format.number(toDecimal(formattedAmount.dinero), {
     style: 'currency',
