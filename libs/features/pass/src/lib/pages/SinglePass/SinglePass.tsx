@@ -1,6 +1,6 @@
 import { EventOrganizerButton, PassOptions } from '@features/organizer/event';
 import { EventPassNft } from '@features/pass-types';
-//import { formatCurrency, useCurrency } from '@next/currency';
+// import { formatCurrency, useCurrency } from '@next/currency';
 import type { AppUser } from '@next/types';
 import {
   AlertSkeleton,
