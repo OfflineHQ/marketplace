@@ -1,7 +1,7 @@
 import type { EventPass, EventSlugs } from '@features/organizer/event-types';
-//import { formatCurrency, useCurrency } from '@next/currency';
+import { formatCurrency, useCurrency } from '@next/currency';
 import { useStore } from '@next/store';
-import { Text } from '@ui/components'; // Assuming TextSkeleton is imported from here
+import { Text, TextSkeleton } from '@ui/components'; // Assuming TextSkeleton is imported from here
 import { useFormatter, useTranslations } from 'next-intl';
 import React from 'react';
 import { usePassPurchaseStore } from '../../store/index';
@@ -16,7 +16,7 @@ export const PassTotal: React.FC<PassTotalProps> = ({
   eventSlug,
 }) => {
   const store = useStore(usePassPurchaseStore, (state) => state);
-  //const { rates, isLoading } = useCurrency();
+  const { rates, isLoading } = useCurrency();
   const getPassesCartTotalPrice = usePassPurchaseStore(
     (state) => state.getPassesCartTotalPrice
   );
@@ -38,7 +38,7 @@ export const PassTotal: React.FC<PassTotalProps> = ({
           totalPasses,
         })}
       </Text>
-      {/*isLoading ? (
+      {isLoading ? (
         <TextSkeleton variant="h5" />
       ) : (
         <Text variant="h5">
@@ -46,7 +46,7 @@ export const PassTotal: React.FC<PassTotalProps> = ({
             totalPrice: formatCurrency(format, totalPrice, rates),
           })}
         </Text>
-        )*/}
+      )}
     </div>
   );
 };
