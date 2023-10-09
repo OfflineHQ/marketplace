@@ -3,6 +3,7 @@
 import Currency from '@currency/api';
 import { Currency_Enum_Not_Const } from '@currency/types';
 import Cache from '@next/cache';
+import { revalidateTag } from 'next/cache';
 
 const currencyApi = new Currency();
 const cacheApi = new Cache();
@@ -55,7 +56,7 @@ export async function setRates(): Promise<void[]> {
   const promises = Object.values(Currency_Enum_Not_Const).map((currency) =>
     setRate(currency)
   );
-  //revalidateTag('currency-rates');
+  revalidateTag('currency-rates');
   return await Promise.all(promises);
 }
 
