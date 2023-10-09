@@ -221,7 +221,6 @@
     "cypress": "^12.17.3",
     "dotenv-cli": "^6.0.0",
     "encoding": "^0.1.13",
-    "esbuild": "^0.17.17",
     "eslint": "~8.15.0",
     "eslint-config-next": "13.5.1",
     "eslint-config-prettier": "^8.8.0",
