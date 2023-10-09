@@ -38,12 +38,29 @@ export type GetAccountByIdQueryVariables = Types.Exact<{
 
 export type GetAccountByIdQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', address: string }> };
 
-export type UpsertEventPassOrdersMutationVariables = Types.Exact<{
-  objects: Array<Types.EventPassOrder_Insert_Input> | Types.EventPassOrder_Insert_Input;
+export type UpdateEventPassOrdersStatusMutationVariables = Types.Exact<{
+  updates: Array<Types.EventPassOrder_Updates> | Types.EventPassOrder_Updates;
 }>;
 
 
-export type UpsertEventPassOrdersMutation = { __typename?: 'mutation_root', insert_eventPassOrder?: { __typename?: 'eventPassOrder_mutation_response', returning: Array<{ __typename?: 'eventPassOrder', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId: string, accountId: any, created_at: any }> } | null };
+export type UpdateEventPassOrdersStatusMutation = { __typename?: 'mutation_root', update_eventPassOrder_many?: Array<{ __typename?: 'eventPassOrder_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'eventPassOrder', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId: string, accountId: any, created_at: any }> } | null> | null };
+
+export type SetEventPassOrdersStripeCheckoutSessionIdMutationVariables = Types.Exact<{
+  updates: Array<Types.EventPassOrder_Updates> | Types.EventPassOrder_Updates;
+}>;
+
+
+export type SetEventPassOrdersStripeCheckoutSessionIdMutation = { __typename?: 'mutation_root', update_eventPassOrder_many?: Array<{ __typename?: 'eventPassOrder_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'eventPassOrder', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId: string, accountId: any, created_at: any, stripeCheckoutSessionId?: string | null }> } | null> | null };
+
+export type MoveEventPassPendingOrdersToConfirmedMutationVariables = Types.Exact<{
+  eventPassPendingOrderIds: Array<Types.Scalars['uuid']> | Types.Scalars['uuid'];
+  objects: Array<Types.EventPassOrder_Insert_Input> | Types.EventPassOrder_Insert_Input;
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type MoveEventPassPendingOrdersToConfirmedMutation = { __typename?: 'mutation_root', delete_eventPassPendingOrder?: { __typename?: 'eventPassPendingOrder_mutation_response', affected_rows: number } | null, insert_eventPassOrder?: { __typename?: 'eventPassOrder_mutation_response', returning: Array<{ __typename?: 'eventPassOrder', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId: string, accountId: any, created_at: any, eventPassPricing?: { __typename?: 'eventPassPricing', priceAmount: number, priceCurrency: Types.Currency_Enum } | null, eventPass?: { __typename?: 'EventPass', id: string, name: string, nftImage: { __typename?: 'Asset', url: string }, event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> } | null };
 
 export type GetAccountEventPassOrderForEventPassesQueryVariables = Types.Exact<{
   accountId: Types.Scalars['uuid'];
@@ -52,6 +69,13 @@ export type GetAccountEventPassOrderForEventPassesQueryVariables = Types.Exact<{
 
 
 export type GetAccountEventPassOrderForEventPassesQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number, status: Types.OrderStatus_Enum, created_at: any }> };
+
+export type GetEventPassOrdersFromStripeCheckoutSessionQueryVariables = Types.Exact<{
+  stripeCheckoutSessionId: Types.Scalars['String'];
+}>;
+
+
+export type GetEventPassOrdersFromStripeCheckoutSessionQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', id: any, eventPassId: string, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null }> };
 
 export type DeleteEventPassPendingOrdersMutationVariables = Types.Exact<{
   ids: Array<Types.Scalars['uuid']> | Types.Scalars['uuid'];
@@ -251,3 +275,50 @@ export type GetEventPassNftByIdMinimalQueryVariables = Types.Exact<{
 
 
 export type GetEventPassNftByIdMinimalQuery = { __typename?: 'query_root', eventPassNft_by_pk?: { __typename?: 'eventPassNft', id: any, tokenId: any, eventId: string, eventPassId: string, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null } | null };
+
+export type StripeCheckoutSessionFieldsFragment = { __typename?: 'stripeCheckoutSession', stripeSessionId: string, stripeCustomerId: string, type: Types.StripeCheckoutSessionType_Enum };
+
+export type StripeCustomerFieldsFragment = { __typename?: 'stripeCustomer', stripeCustomerId: string, accountId: any };
+
+export type CreateStripeCheckoutSessionMutationVariables = Types.Exact<{
+  stripeCheckoutSession: Types.StripeCheckoutSession_Insert_Input;
+}>;
+
+
+export type CreateStripeCheckoutSessionMutation = { __typename?: 'mutation_root', insert_stripeCheckoutSession_one?: { __typename?: 'stripeCheckoutSession', stripeSessionId: string, stripeCustomerId: string, type: Types.StripeCheckoutSessionType_Enum } | null };
+
+export type DeleteStripeCheckoutSessionMutationVariables = Types.Exact<{
+  stripeSessionId: Types.Scalars['String'];
+}>;
+
+
+export type DeleteStripeCheckoutSessionMutation = { __typename?: 'mutation_root', delete_stripeCheckoutSession_by_pk?: { __typename?: 'stripeCheckoutSession', stripeSessionId: string, stripeCustomerId: string, type: Types.StripeCheckoutSessionType_Enum } | null };
+
+export type GetStripeCheckoutSessionForUserQueryVariables = Types.Exact<{
+  stripeCustomerId: Types.Scalars['String'];
+}>;
+
+
+export type GetStripeCheckoutSessionForUserQuery = { __typename?: 'query_root', stripeCheckoutSession: Array<{ __typename?: 'stripeCheckoutSession', stripeSessionId: string, stripeCustomerId: string, type: Types.StripeCheckoutSessionType_Enum }> };
+
+export type CreateStripeCustomerMutationVariables = Types.Exact<{
+  stripeCustomer: Types.StripeCustomer_Insert_Input;
+}>;
+
+
+export type CreateStripeCustomerMutation = { __typename?: 'mutation_root', insert_stripeCustomer_one?: { __typename?: 'stripeCustomer', stripeCustomerId: string, accountId: any } | null };
+
+export type UpdateStripeCustomerMutationVariables = Types.Exact<{
+  stripeCustomerId: Types.Scalars['String'];
+  stripeCustomer: Types.StripeCustomer_Set_Input;
+}>;
+
+
+export type UpdateStripeCustomerMutation = { __typename?: 'mutation_root', update_stripeCustomer_by_pk?: { __typename?: 'stripeCustomer', stripeCustomerId: string, accountId: any } | null };
+
+export type GetStripeCustomerByAccountQueryVariables = Types.Exact<{
+  accountId: Types.Scalars['uuid'];
+}>;
+
+
+export type GetStripeCustomerByAccountQuery = { __typename?: 'query_root', stripeCustomer: Array<{ __typename?: 'stripeCustomer', stripeCustomerId: string, accountId: any }> };

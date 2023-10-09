@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import { EventPassPendingOrder } from '@gql/shared/types';
 import { isJestRunning } from '@utils';
 import { Client } from 'pg';
 
@@ -13,8 +14,11 @@ export const SeedTable = {
   eventPassPendingOrder: 3,
   eventPassNftContract: 4,
   eventParameters: 5,
-  eventPassNft: 6,
-  nftTransfer: 7,
+  stripeCustomer: 6,
+  stripeCheckoutSession: 7,
+  eventPassOrder: 8,
+  eventPassNft: 9,
+  nftTransfer: 10,
 };
 
 export type SeedTableName = keyof typeof SeedTable;
@@ -87,4 +91,23 @@ export const applySeeds = async (client: Client, tables: SeedTableName[]) => {
 
 export const queryDb = async (client: Client, sql: string) => {
   await client.query(sql);
+};
+
+export const eventPassPendingOrders = {
+  alpha_user: [
+    {
+      id: 'd4951f86-1a8f-410a-bbc1-607f1c7933b9',
+      accountId: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
+      eventPassId: 'clj8raobj7g8l0aw3bfw6dny4',
+      quantity: 2,
+      created_at: '2023-07-19 12:55:53.506236+00',
+    },
+    {
+      id: 'c44e9122-7818-47c2-8818-508121c9843d',
+      accountId: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
+      eventPassId: 'fake-event-pass-2',
+      quantity: 2,
+      created_at: '2023-07-19 12:58:46.636737+00',
+    },
+  ] satisfies EventPassPendingOrder[],
 };

@@ -12,4 +12,7 @@
 - "!include public_kycStatus.yaml"
 - "!include public_nftTransfer.yaml"
 - "!include public_orderStatus.yaml"
+- "!include public_stripeCheckoutSession.yaml"
+- "!include public_stripeCheckoutSessionType.yaml"
+- "!include public_stripeCustomer.yaml"
 - "!include public_timezone.yaml"

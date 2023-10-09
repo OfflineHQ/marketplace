@@ -4,31 +4,19 @@ import type {
   ClaimEventPassNftsMutation,
   ClaimEventPassNftsMutationVariables,
 } from '@gql/admin/types';
-import { EventPassOrder, OrderStatus_Enum } from '@gql/shared/types';
+import { OrderStatus_Enum } from '@gql/shared/types';
+import { EventPassOrderWithContractData } from '@nft/types';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 
-export type RequiredOrderKeys = {
-  id: EventPassOrder['id'];
-  quantity: EventPassOrder['quantity'];
-  account: {
-    address: string;
-  };
-  eventPass: {
-    eventPassNftContract: {
-      contractAddress: string;
-    };
-  };
-};
-
 type FnType = (
-  orders: RequiredOrderKeys[]
+  orders: EventPassOrderWithContractData[]
 ) => Promise<ClaimEventPassNftsMutation>;
 
-async function checkOrder(order: RequiredOrderKeys) {
+async function checkOrder(order: EventPassOrderWithContractData) {
   if (!this.sdk) {
     throw new Error('SDK is undefined');
   }
-  const contractAddress = order.eventPass.eventPassNftContract.contractAddress;
+  const contractAddress = order.eventPassNftContract?.contractAddress;
   const contract = await this.sdk.getContract(contractAddress);
   const supply = await contract.totalUnclaimedSupply();
 
@@ -40,7 +28,7 @@ async function checkOrder(order: RequiredOrderKeys) {
 }
 
 function sdkMiddleware(fn: FnType) {
-  return async function (orders: RequiredOrderKeys[]) {
+  return async function (orders: EventPassOrderWithContractData[]) {
     if (!this.sdk) {
       throw new Error('SDK is undefined');
     }
@@ -124,7 +112,7 @@ export class NftClaimable {
 
   claimAllMetadatas = sdkMiddleware(async function (
     this: NftClaimable,
-    orders: RequiredOrderKeys[]
+    orders: EventPassOrderWithContractData[]
   ): Promise<ClaimEventPassNftsMutation> {
     const promises = orders.map((order) => this.claimOrder(order));
 
@@ -161,13 +149,17 @@ export class NftClaimable {
     });
   });
 
-  private async claimOrder(order: RequiredOrderKeys) {
+  private async claimOrder(order: EventPassOrderWithContractData) {
+    const contractAddress = order.eventPassNftContract?.contractAddress;
+    const toAddress = order.account?.address;
+    if (!contractAddress || !toAddress) {
+      throw new Error(
+        `Contract address or to address is undefined for order ${order.id}`
+      );
+    }
     if (!this.sdk) {
       throw new Error('SDK is undefined');
     }
-    const contractAddress =
-      order.eventPass.eventPassNftContract.contractAddress;
-    const toAddress = order.account.address;
     const contract = await this.sdk.getContract(contractAddress);
 
     try {
@@ -181,11 +173,17 @@ export class NftClaimable {
         currentOwnerAddress: toAddress,
       }));
     } catch (e) {
-      await adminSdk.UpsertEventPassOrders({
-        objects: [
+      await adminSdk.UpdateEventPassOrdersStatus({
+        updates: [
           {
-            id: order.id,
-            status: OrderStatus_Enum.Error,
+            _set: {
+              status: OrderStatus_Enum.Error,
+            },
+            where: {
+              id: {
+                _eq: order.id,
+              },
+            },
           },
         ],
       });
