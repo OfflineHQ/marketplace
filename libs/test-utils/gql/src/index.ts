@@ -9,8 +9,6 @@ import { getSdk as userSdk, type Sdk as UserSdk } from '@gql/user/api';
 import type { AppUser } from '@next/types';
 import { getHasuraEndpoint } from '@shared/client';
 
-// In your accounts sdk file:
-
 type Opts = {
   anonymous?: boolean;
   jwt?: string;

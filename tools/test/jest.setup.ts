@@ -25,6 +25,7 @@ process.env.NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT =
   'http://localhost:9696/v1/graphql';
 process.env.NEXTAUTH_URL = 'http://localhost:8888';
 process.env.HASURA_GRAPHQL_ADMIN_SECRET = 'password';
+process.env.HYGRAPH_STAGE = 'DRAFT';
 process.env.HYGRAPH_CMS_WEBHOOK_READ_URL =
   '***REMOVED***';
 process.env.HYGRAPH_CMS_READ_TOKEN =
