@@ -74,7 +74,7 @@ export default class Currency {
     baseCurrency: string,
     rates: { [key: string]: number }
   ) {
-    const filePath = path.resolve(__dirname, `../rates/${baseCurrency}.json`);
+    const filePath = path.join(process.cwd(), 'rates', `${baseCurrency}.json`);
     try {
       await fs.promises.writeFile(filePath, JSON.stringify(rates));
     } catch (error) {
@@ -90,10 +90,12 @@ export default class Currency {
     [key: string]: number;
   }> {
     try {
-      const data = await fs.promises.readFile(
-        path.resolve(__dirname, `../rates/${baseCurrency}.json`),
-        'utf8'
+      const filePath = path.join(
+        process.cwd(),
+        'rates',
+        `${baseCurrency}.json`
       );
+      const data = await fs.promises.readFile(filePath, 'utf8');
       return JSON.parse(data);
     } catch (error) {
       console.error('Failed to fetch from local JSON files:', error);

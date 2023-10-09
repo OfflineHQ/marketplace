@@ -97,7 +97,6 @@
       "@next/cache": ["libs/next/cache/src/index.ts"],
       "@next/cache/server": ["libs/next/cache/src/server.ts"],
       "@next/currency": ["libs/next/currency/src/index.ts"],
-      "@next/currency-api": ["libs/next/currency-api/src/server.ts"],
       "@next/currency-cache": ["libs/next/currency-cache/src/index.ts"],
       "@next/hasura/api": ["libs/next/hasura/api/src/index.ts"],
       "@next/hasura/react-query": ["libs/next/hasura/react-query/src/index.ts"],
