@@ -32,7 +32,10 @@
       "light": "Clair",
       "dark": "Sombre",
       "auto": "Automatique"
-    }
+    },
+    "currency-select-text": "Sélectionnez la devise avec laquelle vous souhaitez faire vos achats.",
+    "eur": "EUR",
+    "usd": "USD"
   },
   "AppNav": {
     "Profile": {

@@ -119,6 +119,7 @@
       "@nft/thirdweb-admin": ["libs/nft/thirdweb-admin/src/index.ts"],
       "@nft/thirdweb-organizer": ["libs/nft/thirdweb-organizer/src/index.ts"],
       "@nft/types": ["libs/nft/types/src/index.ts"],
+      "@next/currency-api": ["libs/next/currency-api/src/server.ts"],
       "@payment/admin": ["libs/payment/admin/src/index.ts"],
       "@payment/types": ["libs/payment/types/src/index.ts"],
       "@payment/webhooks": ["libs/payment/webhooks/src/index.ts"],

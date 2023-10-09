@@ -6,6 +6,10 @@ export type Money = {
   currency?: Currency_Enum | null;
 };
 
+export type Rates = {
+  [key: string]: number;
+};
+
 // Set default currency
 export const defaultCurrency: Currency_Enum = Currency_Enum.Eur;
 
