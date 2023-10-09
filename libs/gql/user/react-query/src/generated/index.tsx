@@ -414,3 +414,23 @@ export const useGetEventPassNftByTokenReferenceQuery = <
       fetchDataReactQuery<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables),
       options
     );
+export const GetStripeCustomerDocument = `
+    query GetStripeCustomer {
+  stripeCustomer {
+    stripeCustomerId
+    accountId
+  }
+}
+    `;
+export const useGetStripeCustomerQuery = <
+      TData = Types.GetStripeCustomerQuery,
+      TError = Error
+    >(
+      variables?: Types.GetStripeCustomerQueryVariables,
+      options?: UseQueryOptions<Types.GetStripeCustomerQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetStripeCustomerQuery, TError, TData>(
+      variables === undefined ? ['GetStripeCustomer'] : ['GetStripeCustomer', variables],
+      fetchDataReactQuery<Types.GetStripeCustomerQuery, Types.GetStripeCustomerQueryVariables>(GetStripeCustomerDocument, variables),
+      options
+    );

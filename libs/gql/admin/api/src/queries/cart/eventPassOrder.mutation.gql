@@ -1,8 +1,6 @@
-mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
-  insert_eventPassOrder(
-    objects: $objects
-    on_conflict: { constraint: eventPassOrder_pkey, update_columns: [quantity] }
-  ) {
+mutation UpdateEventPassOrdersStatus($updates: [eventPassOrder_updates!]!) {
+  update_eventPassOrder_many(updates: $updates) {
+    affected_rows
     returning {
       id
       quantity
@@ -10,6 +8,63 @@ mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
       eventPassId
       accountId
       created_at
+    }
+  }
+}
+
+mutation SetEventPassOrdersStripeCheckoutSessionId(
+  $updates: [eventPassOrder_updates!]!
+) {
+  update_eventPassOrder_many(updates: $updates) {
+    affected_rows
+    returning {
+      id
+      quantity
+      status
+      eventPassId
+      accountId
+      created_at
+      stripeCheckoutSessionId
+    }
+  }
+}
+
+mutation MoveEventPassPendingOrdersToConfirmed(
+  $eventPassPendingOrderIds: [uuid!]!
+  $objects: [eventPassOrder_insert_input!]!
+  $locale: Locale!
+  $stage: Stage!
+) {
+  delete_eventPassPendingOrder(
+    where: { id: { _in: $eventPassPendingOrderIds } }
+  ) {
+    affected_rows
+  }
+  insert_eventPassOrder(objects: $objects) {
+    returning {
+      id
+      quantity
+      status
+      eventPassId
+      accountId
+      created_at
+      eventPassPricing {
+        priceAmount
+        priceCurrency
+      }
+      eventPass(locales: [$locale, en], stage: $stage) {
+        id
+        name
+        nftImage {
+          url
+        }
+        event {
+          slug
+          organizer {
+            slug
+          }
+        }
+      }
     }
   }
 }
