@@ -1,5 +1,5 @@
 import type { EventPass, EventSlugs } from '@features/organizer/event-types';
-import { formatCurrency, useCurrency } from '@next/currency';
+import { useCurrency } from '@next/currency';
 import { useStore } from '@next/store';
 import { Text, TextSkeleton } from '@ui/components'; // Assuming TextSkeleton is imported from here
 import { useFormatter, useTranslations } from 'next-intl';
@@ -41,11 +41,7 @@ export const PassTotal: React.FC<PassTotalProps> = ({
       {isLoading ? (
         <TextSkeleton variant="h5" />
       ) : (
-        <Text variant="h5">
-          {t('Organizer.Event.PassPurchase.Footer.total.price', {
-            totalPrice: formatCurrency(format, totalPrice, rates),
-          })}
-        </Text>
+        <Text variant="h5">{`${format}, ${totalPrice}, ${rates}`}</Text>
       )}
     </div>
   );
