@@ -35,11 +35,11 @@ export const Settings: React.FC = () => {
                 dark: t('display-select-text.dark'),
                 system: t('display-select-text.auto'),
               }}
-              currencySelectText={t('currency-select-text')}
-              currencyText={{
+              currencySelectText={{
                 eur: t('eur'),
                 usd: t('usd'),
               }}
+              currencyText={t('currency-select-text')}
             />
           </CardContent>
         </CardOverflow>

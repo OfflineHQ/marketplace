@@ -1,9 +1,9 @@
 'use server';
 
-import { cache } from 'react';
+import { getNextAppURL } from '@shared/server';
 
-async function getLastRates() {
-  const response = await fetch('/api/currency/rates', {
+export async function getRates() {
+  const response = await fetch(`${getNextAppURL()}/api/currency/rates`, {
     next: { tags: ['currency-rates'] },
   });
 
@@ -13,5 +13,3 @@ async function getLastRates() {
 
   return await response.json();
 }
-
-export const getRates = cache(getLastRates);
