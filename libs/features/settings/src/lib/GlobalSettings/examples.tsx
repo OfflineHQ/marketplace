@@ -12,6 +12,11 @@ export const globalSettingsProps = {
     system: 'Automatic',
   },
   displayText: 'Display mode',
+  currencySelectText: 'Select your default currency',
+  currencyText: {
+    eur: 'EUR',
+    usd: 'USD',
+  },
 };
 
 export const GlobalSettingsExample = (props: GlobalSettingsProps) => {
