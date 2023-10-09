@@ -1,4 +1,6 @@
 import { adminSdk } from '@gql/admin/api';
+import { OrderStatus_Enum } from '@gql/shared/types';
+import { describe } from 'node:test';
 import { NftClaimable } from './nft-thirdweb-api';
 
 describe('NftClaimable exists', () => {
@@ -76,13 +78,13 @@ describe('NftClaimable good arguments', () => {
       {
         id: '93098f3a-c4e8-4b0a-91a9-7b951ab9ed0d',
         quantity: 1,
+        eventPassId: 'dummy',
+        status: OrderStatus_Enum.Confirmed,
         account: {
           address: '0xYourAccountAddress',
         },
-        eventPass: {
-          eventPassNftContract: {
-            contractAddress: '0xYourContractAddress',
-          },
+        eventPassNftContract: {
+          contractAddress: '0xYourContractAddress',
         },
       },
     ]);
@@ -118,7 +120,26 @@ describe('NftClaimable order fail', () => {
     nftClaimable.registerOwnership = jest
       .fn()
       .mockImplementation((args) => Promise.resolve(args));
-    adminSdk.UpsertEventPassOrders = jest.fn().mockReturnValue({});
+    adminSdk.UpdateEventPassOrdersStatus = jest.fn().mockReturnValue({});
+  });
+
+  it('should throw if checkOrder throws an error', async () => {
+    const order = {
+      id: '93098f3a-c4e8-4b0a-91a9-7b951ab9ed0d',
+      quantity: 3,
+      eventPassId: 'dummy',
+      status: OrderStatus_Enum.Confirmed,
+      account: {
+        address: '0xYourAccountAddress',
+      },
+      eventPassNftContract: {
+        contractAddress: '0xYourContractAddress',
+      },
+    };
+
+    await expect(nftClaimable.claimAllMetadatas([order])).rejects.toThrow(
+      `Error during check of the unclaim supply: Not enough supply for order ${order.id} : 1 remaining`
+    );
   });
 
   it('should call console.error with "Fake error" if claimTo throw', async () => {
@@ -128,25 +149,25 @@ describe('NftClaimable order fail', () => {
       {
         id: '479be2e4-103b-4345-9685-28c16ef3bd71',
         quantity: 1,
+        eventPassId: 'dummy',
+        status: OrderStatus_Enum.Confirmed,
         account: {
           address: '0xYourAccountAddress',
         },
-        eventPass: {
-          eventPassNftContract: {
-            contractAddress: '0x1',
-          },
+        eventPassNftContract: {
+          contractAddress: '0x1',
         },
       },
       {
         id: 'f5364b4d-b70e-4fa4-8539-d0198fd36270',
         quantity: 1,
+        eventPassId: 'dummy',
+        status: OrderStatus_Enum.Confirmed,
         account: {
           address: 'BadAccountAddress',
         },
-        eventPass: {
-          eventPassNftContract: {
-            contractAddress: '0x2',
-          },
+        eventPassNftContract: {
+          contractAddress: '0x2',
         },
       },
     ]);

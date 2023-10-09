@@ -129,6 +129,19 @@ export const EventPassNftFieldsFragmentDoc = `
   currentOwnerAddress
 }
     `;
+export const StripeCheckoutSessionFieldsFragmentDoc = `
+    fragment StripeCheckoutSessionFields on stripeCheckoutSession {
+  stripeSessionId
+  stripeCustomerId
+  type
+}
+    `;
+export const StripeCustomerFieldsFragmentDoc = `
+    fragment StripeCustomerFields on stripeCustomer {
+  stripeCustomerId
+  accountId
+}
+    `;
  const UpdateAccountDocument = `
     mutation UpdateAccount($id: uuid!, $account: account_set_input!) {
   update_account_by_pk(_set: $account, pk_columns: {id: $id}) {
@@ -172,12 +185,10 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     `;
- const UpsertEventPassOrdersDocument = `
-    mutation UpsertEventPassOrders($objects: [eventPassOrder_insert_input!]!) {
-  insert_eventPassOrder(
-    objects: $objects
-    on_conflict: {constraint: eventPassOrder_pkey, update_columns: [quantity]}
-  ) {
+ const UpdateEventPassOrdersStatusDocument = `
+    mutation UpdateEventPassOrdersStatus($updates: [eventPassOrder_updates!]!) {
+  update_eventPassOrder_many(updates: $updates) {
+    affected_rows
     returning {
       id
       quantity
@@ -185,6 +196,56 @@ ${KycFieldsFragmentDoc}`;
       eventPassId
       accountId
       created_at
+    }
+  }
+}
+    `;
+ const SetEventPassOrdersStripeCheckoutSessionIdDocument = `
+    mutation SetEventPassOrdersStripeCheckoutSessionId($updates: [eventPassOrder_updates!]!) {
+  update_eventPassOrder_many(updates: $updates) {
+    affected_rows
+    returning {
+      id
+      quantity
+      status
+      eventPassId
+      accountId
+      created_at
+      stripeCheckoutSessionId
+    }
+  }
+}
+    `;
+ const MoveEventPassPendingOrdersToConfirmedDocument = `
+    mutation MoveEventPassPendingOrdersToConfirmed($eventPassPendingOrderIds: [uuid!]!, $objects: [eventPassOrder_insert_input!]!, $locale: Locale!, $stage: Stage!) {
+  delete_eventPassPendingOrder(where: {id: {_in: $eventPassPendingOrderIds}}) {
+    affected_rows
+  }
+  insert_eventPassOrder(objects: $objects) {
+    returning {
+      id
+      quantity
+      status
+      eventPassId
+      accountId
+      created_at
+      eventPassPricing {
+        priceAmount
+        priceCurrency
+      }
+      eventPass(locales: [$locale, en], stage: $stage) {
+        id
+        name
+        nftImage {
+          url
+        }
+        event {
+          slug
+          organizer {
+            slug
+          }
+        }
+      }
     }
   }
 }
@@ -198,6 +259,24 @@ ${KycFieldsFragmentDoc}`;
     quantity
     status
     created_at
+  }
+}
+    `;
+ const GetEventPassOrdersFromStripeCheckoutSessionDocument = `
+    query GetEventPassOrdersFromStripeCheckoutSession($stripeCheckoutSessionId: String!) {
+  eventPassOrder(
+    where: {stripeCheckoutSessionId: {_eq: $stripeCheckoutSessionId}}
+  ) {
+    id
+    eventPassId
+    quantity
+    status
+    eventPassNftContract {
+      contractAddress
+    }
+    account {
+      address
+    }
   }
 }
     `;
@@ -545,6 +624,51 @@ ${EventPassFieldsFragmentDoc}`;
   }
 }
     ${EventPassNftFieldsFragmentDoc}`;
+ const CreateStripeCheckoutSessionDocument = `
+    mutation CreateStripeCheckoutSession($stripeCheckoutSession: stripeCheckoutSession_insert_input!) {
+  insert_stripeCheckoutSession_one(object: $stripeCheckoutSession) {
+    ...StripeCheckoutSessionFields
+  }
+}
+    ${StripeCheckoutSessionFieldsFragmentDoc}`;
+ const DeleteStripeCheckoutSessionDocument = `
+    mutation DeleteStripeCheckoutSession($stripeSessionId: String!) {
+  delete_stripeCheckoutSession_by_pk(stripeSessionId: $stripeSessionId) {
+    ...StripeCheckoutSessionFields
+  }
+}
+    ${StripeCheckoutSessionFieldsFragmentDoc}`;
+ const GetStripeCheckoutSessionForUserDocument = `
+    query GetStripeCheckoutSessionForUser($stripeCustomerId: String!) {
+  stripeCheckoutSession(where: {stripeCustomerId: {_eq: $stripeCustomerId}}) {
+    ...StripeCheckoutSessionFields
+  }
+}
+    ${StripeCheckoutSessionFieldsFragmentDoc}`;
+ const CreateStripeCustomerDocument = `
+    mutation CreateStripeCustomer($stripeCustomer: stripeCustomer_insert_input!) {
+  insert_stripeCustomer_one(object: $stripeCustomer) {
+    ...StripeCustomerFields
+  }
+}
+    ${StripeCustomerFieldsFragmentDoc}`;
+ const UpdateStripeCustomerDocument = `
+    mutation UpdateStripeCustomer($stripeCustomerId: String!, $stripeCustomer: stripeCustomer_set_input!) {
+  update_stripeCustomer_by_pk(
+    pk_columns: {stripeCustomerId: $stripeCustomerId}
+    _set: $stripeCustomer
+  ) {
+    ...StripeCustomerFields
+  }
+}
+    ${StripeCustomerFieldsFragmentDoc}`;
+ const GetStripeCustomerByAccountDocument = `
+    query GetStripeCustomerByAccount($accountId: uuid!) {
+  stripeCustomer(where: {accountId: {_eq: $accountId}}) {
+    ...StripeCustomerFields
+  }
+}
+    ${StripeCustomerFieldsFragmentDoc}`;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -563,11 +687,20 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetAccountById(variables: Types.GetAccountByIdQueryVariables, options?: C): Promise<Types.GetAccountByIdQuery> {
       return requester<Types.GetAccountByIdQuery, Types.GetAccountByIdQueryVariables>(GetAccountByIdDocument, variables, options) as Promise<Types.GetAccountByIdQuery>;
     },
-    UpsertEventPassOrders(variables: Types.UpsertEventPassOrdersMutationVariables, options?: C): Promise<Types.UpsertEventPassOrdersMutation> {
-      return requester<Types.UpsertEventPassOrdersMutation, Types.UpsertEventPassOrdersMutationVariables>(UpsertEventPassOrdersDocument, variables, options) as Promise<Types.UpsertEventPassOrdersMutation>;
+    UpdateEventPassOrdersStatus(variables: Types.UpdateEventPassOrdersStatusMutationVariables, options?: C): Promise<Types.UpdateEventPassOrdersStatusMutation> {
+      return requester<Types.UpdateEventPassOrdersStatusMutation, Types.UpdateEventPassOrdersStatusMutationVariables>(UpdateEventPassOrdersStatusDocument, variables, options) as Promise<Types.UpdateEventPassOrdersStatusMutation>;
+    },
+    SetEventPassOrdersStripeCheckoutSessionId(variables: Types.SetEventPassOrdersStripeCheckoutSessionIdMutationVariables, options?: C): Promise<Types.SetEventPassOrdersStripeCheckoutSessionIdMutation> {
+      return requester<Types.SetEventPassOrdersStripeCheckoutSessionIdMutation, Types.SetEventPassOrdersStripeCheckoutSessionIdMutationVariables>(SetEventPassOrdersStripeCheckoutSessionIdDocument, variables, options) as Promise<Types.SetEventPassOrdersStripeCheckoutSessionIdMutation>;
+    },
+    MoveEventPassPendingOrdersToConfirmed(variables: Types.MoveEventPassPendingOrdersToConfirmedMutationVariables, options?: C): Promise<Types.MoveEventPassPendingOrdersToConfirmedMutation> {
+      return requester<Types.MoveEventPassPendingOrdersToConfirmedMutation, Types.MoveEventPassPendingOrdersToConfirmedMutationVariables>(MoveEventPassPendingOrdersToConfirmedDocument, variables, options) as Promise<Types.MoveEventPassPendingOrdersToConfirmedMutation>;
     },
     GetAccountEventPassOrderForEventPasses(variables: Types.GetAccountEventPassOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetAccountEventPassOrderForEventPassesQuery> {
       return requester<Types.GetAccountEventPassOrderForEventPassesQuery, Types.GetAccountEventPassOrderForEventPassesQueryVariables>(GetAccountEventPassOrderForEventPassesDocument, variables, options) as Promise<Types.GetAccountEventPassOrderForEventPassesQuery>;
+    },
+    GetEventPassOrdersFromStripeCheckoutSession(variables: Types.GetEventPassOrdersFromStripeCheckoutSessionQueryVariables, options?: C): Promise<Types.GetEventPassOrdersFromStripeCheckoutSessionQuery> {
+      return requester<Types.GetEventPassOrdersFromStripeCheckoutSessionQuery, Types.GetEventPassOrdersFromStripeCheckoutSessionQueryVariables>(GetEventPassOrdersFromStripeCheckoutSessionDocument, variables, options) as Promise<Types.GetEventPassOrdersFromStripeCheckoutSessionQuery>;
     },
     DeleteEventPassPendingOrders(variables: Types.DeleteEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrdersMutation> {
       return requester<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrdersMutation>;
@@ -640,6 +773,24 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassNftByIdMinimal(variables: Types.GetEventPassNftByIdMinimalQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdMinimalQuery> {
       return requester<Types.GetEventPassNftByIdMinimalQuery, Types.GetEventPassNftByIdMinimalQueryVariables>(GetEventPassNftByIdMinimalDocument, variables, options) as Promise<Types.GetEventPassNftByIdMinimalQuery>;
+    },
+    CreateStripeCheckoutSession(variables: Types.CreateStripeCheckoutSessionMutationVariables, options?: C): Promise<Types.CreateStripeCheckoutSessionMutation> {
+      return requester<Types.CreateStripeCheckoutSessionMutation, Types.CreateStripeCheckoutSessionMutationVariables>(CreateStripeCheckoutSessionDocument, variables, options) as Promise<Types.CreateStripeCheckoutSessionMutation>;
+    },
+    DeleteStripeCheckoutSession(variables: Types.DeleteStripeCheckoutSessionMutationVariables, options?: C): Promise<Types.DeleteStripeCheckoutSessionMutation> {
+      return requester<Types.DeleteStripeCheckoutSessionMutation, Types.DeleteStripeCheckoutSessionMutationVariables>(DeleteStripeCheckoutSessionDocument, variables, options) as Promise<Types.DeleteStripeCheckoutSessionMutation>;
+    },
+    GetStripeCheckoutSessionForUser(variables: Types.GetStripeCheckoutSessionForUserQueryVariables, options?: C): Promise<Types.GetStripeCheckoutSessionForUserQuery> {
+      return requester<Types.GetStripeCheckoutSessionForUserQuery, Types.GetStripeCheckoutSessionForUserQueryVariables>(GetStripeCheckoutSessionForUserDocument, variables, options) as Promise<Types.GetStripeCheckoutSessionForUserQuery>;
+    },
+    CreateStripeCustomer(variables: Types.CreateStripeCustomerMutationVariables, options?: C): Promise<Types.CreateStripeCustomerMutation> {
+      return requester<Types.CreateStripeCustomerMutation, Types.CreateStripeCustomerMutationVariables>(CreateStripeCustomerDocument, variables, options) as Promise<Types.CreateStripeCustomerMutation>;
+    },
+    UpdateStripeCustomer(variables: Types.UpdateStripeCustomerMutationVariables, options?: C): Promise<Types.UpdateStripeCustomerMutation> {
+      return requester<Types.UpdateStripeCustomerMutation, Types.UpdateStripeCustomerMutationVariables>(UpdateStripeCustomerDocument, variables, options) as Promise<Types.UpdateStripeCustomerMutation>;
+    },
+    GetStripeCustomerByAccount(variables: Types.GetStripeCustomerByAccountQueryVariables, options?: C): Promise<Types.GetStripeCustomerByAccountQuery> {
+      return requester<Types.GetStripeCustomerByAccountQuery, Types.GetStripeCustomerByAccountQueryVariables>(GetStripeCustomerByAccountDocument, variables, options) as Promise<Types.GetStripeCustomerByAccountQuery>;
     }
   };
 }

@@ -1,0 +1,5 @@
+query GetStripeCustomerByAccount($accountId: uuid!) {
+  stripeCustomer(where: { accountId: { _eq: $accountId } }) {
+    ...StripeCustomerFields
+  }
+}
