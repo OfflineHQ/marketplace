@@ -1,8 +1,8 @@
-import { CurrencyProvider } from '@next/currency';
 import { defaultLocale } from '@next/i18n';
 import { Decorator, Preview } from '@storybook/react';
 import { NextIntlClientProvider } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { CurrencyProvider } from '@next/currency';
 import messagesEn from '../../../libs/next/i18n/src/messages/en.json';
 import messagesfr from '../../../libs/next/i18n/src/messages/fr.json';
 import { parameters } from '../../../storybook.preview.base';
