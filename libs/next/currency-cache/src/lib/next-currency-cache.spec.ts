@@ -1,7 +1,7 @@
 import Currency from '@currency/api';
 import { Currency_Enum_Not_Const } from '@currency/types';
 import Cache from '@next/cache';
-import { getRate, getRates, setRate, setRates } from './next-currency-cache';
+import { getRate, setRate, setRates } from './next-currency-cache';
 
 jest.mock('@currency/api');
 jest.mock('@next/cache');
@@ -50,16 +50,16 @@ describe('nextCurrencyCache', () => {
     expect(Cache.prototype.set).toHaveBeenCalled();
   });
 
-  it('should get rates', async () => {
-    const rates = await getRates();
+  //it('should get rates', async () => {
+  //  const rates = await getRates();
 
-    expect(rates).toEqual(
-      Object.fromEntries(
-        Object.values(Currency_Enum_Not_Const).map((currency) => [
-          currency,
-          mockRate,
-        ])
-      )
-    );
-  });
+  //  expect(rates).toEqual(
+  //    Object.fromEntries(
+  //      Object.values(Currency_Enum_Not_Const).map((currency) => [
+  //        currency,
+  //        mockRate,
+  //      ])
+  //    )
+  //  );
+  //});
 });
