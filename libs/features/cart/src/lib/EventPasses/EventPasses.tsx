@@ -1,6 +1,6 @@
 import type { EventCart } from '@features/cart-types';
 import type { EventPassCart } from '@features/organizer/event-types';
-import { formatCurrency, useCurrency } from '@next/currency';
+//import { formatCurrency, useCurrency } from '@next/currency';
 import {
   AccordionContent,
   AccordionItem,
@@ -42,7 +42,7 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
 }) => {
   const t = useTranslations('Cart.List.Event');
   const format = useFormatter();
-  const { rates, isLoading } = useCurrency();
+  //const { rates, isLoading } = useCurrency();
   const enrichedPasses = passes.map((pass) => {
     const matchingEventPass = event.eventPasses.find(
       (eventPass) => eventPass.id === pass.id
@@ -72,20 +72,20 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
                 <Text variant="h5" className="pb-2 font-semibold">
                   {pass.name}
                 </Text>
-                {isLoading ? (
-                  <TextSkeleton variant="small" />
-                ) : (
-                  <Text variant="small">
-                    {formatCurrency(
-                      format,
-                      {
-                        amount: pass.eventPassPricing?.priceAmount || 0,
-                        currency: pass.eventPassPricing?.priceCurrency,
-                      },
-                      rates
-                    )}
-                  </Text>
-                )}
+                {/* isLoading ? ( //}
+                {//  <TextSkeleton variant="small" />
+                {//) : (
+                {//  <Text variant="small">
+                {//    {formatCurrency(
+                {//      format,
+                {//      {
+                {//        amount: pass.eventPassPricing?.priceAmount || 0,
+                {//        currency: pass.eventPassPricing?.priceCurrency,
+                {//      },
+                {//      rates
+                {//    )}
+                {//  </Text>
+                {//) */}
               </div>
             </div>
           ) : null
