@@ -74,7 +74,7 @@ export default class Currency {
     baseCurrency: string,
     rates: { [key: string]: number }
   ) {
-    const filePath = path.join(process.cwd(), 'rates', `${baseCurrency}.json`);
+    const filePath = path.join(__dirname, 'rates', `${baseCurrency}.json`);
     try {
       await fs.promises.writeFile(filePath, JSON.stringify(rates));
     } catch (error) {
@@ -86,11 +86,10 @@ export default class Currency {
     }
   }
 
-  async fetchFromLocalFile(baseCurrency: string): Promise<{
-    [key: string]: number;
-  }> {
-    {
-      /* try {
+  async fetchFromLocalFile(
+    baseCurrency: string
+  ): Promise<{ [key: string]: number }> {
+    try {
       const filePath = path.join(
         process.cwd(),
         'rates',
@@ -101,11 +100,6 @@ export default class Currency {
     } catch (error) {
       console.error('Failed to fetch from local JSON files:', error);
       throw new Error('Could not retrieve data');
-    */
     }
-    return {
-      EUR: 1,
-      USD: 1,
-    };
   }
 }
