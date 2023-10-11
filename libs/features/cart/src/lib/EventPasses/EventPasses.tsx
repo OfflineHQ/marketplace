@@ -72,20 +72,16 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
                 <Text variant="h5" className="pb-2 font-semibold">
                   {pass.name}
                 </Text>
-                {isLoading ? (
-                  <TextSkeleton variant="small" />
-                ) : (
-                  <Text variant="small">
-                    {formatCurrency(
-                      format,
-                      {
-                        amount: pass.eventPassPricing?.priceAmount || 0,
-                        currency: pass.eventPassPricing?.priceCurrency,
-                      },
-                      rates
-                    )}
-                  </Text>
-                )}
+                <Text variant="small">
+                  {formatCurrency(
+                    format,
+                    {
+                      amount: pass.eventPassPricing?.priceAmount || 0,
+                      currency: pass.eventPassPricing?.priceCurrency,
+                    },
+                    rates
+                  )}
+                </Text>
               </div>
             </div>
           ) : null

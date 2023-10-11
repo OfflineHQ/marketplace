@@ -113,23 +113,18 @@ export const SinglePass: React.FC<SinglePassProps> = ({
           </div>
           <div className="flex pb-2 pt-4 text-end">
             <Label className="mr-3">{t('sold-for')}</Label>
-            {isLoading ? (
-              <TextSkeleton />
-            ) : (
-              <Text className="font-semibold">
-                {formatCurrency(
-                  format,
-                  {
-                    amount:
-                      eventPassNft.eventPass?.eventPassPricing?.priceAmount ||
-                      0,
-                    currency:
-                      eventPassNft.eventPass?.eventPassPricing?.priceCurrency,
-                  },
-                  rates
-                )}
-              </Text>
-            )}
+            <Text className="font-semibold">
+              {formatCurrency(
+                format,
+                {
+                  amount:
+                    eventPassNft.eventPass?.eventPassPricing?.priceAmount || 0,
+                  currency:
+                    eventPassNft.eventPass?.eventPassPricing?.priceCurrency,
+                },
+                rates
+              )}
+            </Text>
           </div>
 
           <div className="flex pb-4">

@@ -38,15 +38,11 @@ export const PassTotal: React.FC<PassTotalProps> = ({
           totalPasses,
         })}
       </Text>
-      {isLoading ? (
-        <TextSkeleton variant="h5" />
-      ) : (
-        <Text variant="h5">
-          {t('Organizer.Event.PassPurchase.Footer.total.price', {
-            totalPrice: formatCurrency(format, totalPrice, rates),
-          })}
-        </Text>
-      )}
+      <Text variant="h5">
+        {t('Organizer.Event.PassPurchase.Footer.total.price', {
+          totalPrice: formatCurrency(format, totalPrice, rates),
+        })}
+      </Text>
     </div>
   );
 };
