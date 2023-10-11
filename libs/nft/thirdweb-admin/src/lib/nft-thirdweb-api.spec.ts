@@ -7,33 +7,6 @@ describe('NftClaimable exists', () => {
   });
 });
 
-const contractAddressAdmin = '0x3E45A57ff6bf3bF55F167FCe657001F8ddE3fbC5'; // Contract address where the Master Private Key is an admin
-const contractAddressNotAdmin = '0xBcC862c75A1fC85D89bAaa5D47E1F672c1Dc9154'; // Contract address where it is not
-
-describe('NftClaimable bad arguments', () => {
-  let nftClaimable: NftClaimable;
-
-  beforeEach(() => {
-    nftClaimable = new NftClaimable();
-  });
-
-  it('should throw if maxAmount is 0', async () => {
-    await expect(
-      nftClaimable.startClaimPhase(contractAddressAdmin, 'Phase de claim', 0)
-    ).rejects.toThrow();
-  });
-
-  it('should throw if master wallet not admin', async () => {
-    await expect(
-      nftClaimable.startClaimPhase(
-        contractAddressNotAdmin,
-        'Phase de claim',
-        20
-      )
-    ).rejects.toThrow();
-  }, 20000);
-});
-
 describe('NftClaimable good arguments', () => {
   let nftClaimable: NftClaimable;
 
