@@ -109,7 +109,7 @@ describe('Payment', () => {
     it('should create a new stripe customer and store it if it does not exist', async () => {
       const userPersonalData = {
         email: 'email',
-        lang: 'lang',
+        lang: 'en',
         phone: 'phone',
         id: 'dummy',
         applicantId: 'dummy',
@@ -146,7 +146,7 @@ describe('Payment', () => {
       );
       expect(payment.stripe.customers.create).toHaveBeenCalledWith({
         email: userPersonalData.email,
-        preferred_locales: [userPersonalData.lang, Locale.En],
+        preferred_locales: [userPersonalData.lang],
         phone: userPersonalData.phone,
         metadata: {
           userId: accounts.alpha_user.id,
@@ -355,6 +355,15 @@ describe('Payment', () => {
     });
   });
   describe('createStripeCheckoutSession', () => {
+    const eventPassOrders = [
+      {
+        id: 'order1',
+        eventPassPricing: {
+          priceCurrency: 'usd',
+          priceAmount: 100,
+        },
+      },
+    ];
     beforeEach(() => {
       payment.stripe.checkout.sessions = {
         create: jest.fn().mockResolvedValue({}),
@@ -396,7 +405,7 @@ describe('Payment', () => {
       });
       payment.moveEventPassPendingOrdersToConfirmed = jest
         .fn()
-        .mockResolvedValue([]);
+        .mockResolvedValue(eventPassOrders);
 
       await payment.createStripeCheckoutSession({
         user: accounts.alpha_user,
@@ -421,6 +430,7 @@ describe('Payment', () => {
         email: 'stripeCustomerEmail',
       };
       const eventPassPendingOrders = [];
+
       const locale = Locale.En;
       const currency = 'usd';
       adminSdk.GetStripeCheckoutSessionForUser = jest.fn().mockResolvedValue({
@@ -428,7 +438,7 @@ describe('Payment', () => {
       });
       payment.moveEventPassPendingOrdersToConfirmed = jest
         .fn()
-        .mockResolvedValue([]);
+        .mockResolvedValue(eventPassOrders);
       payment.stripe.checkout.sessions.create = jest
         .fn()
         .mockResolvedValue({ id: 'sessionId' });
@@ -461,14 +471,13 @@ describe('Payment', () => {
       const eventPassPendingOrders = [];
       const locale = Locale.En;
       const currency = 'usd';
-      const orders = [];
       const sessionId = 'sessionId';
       adminSdk.GetStripeCheckoutSessionForUser = jest.fn().mockResolvedValue({
         stripeCheckoutSession: [],
       });
       payment.moveEventPassPendingOrdersToConfirmed = jest
         .fn()
-        .mockResolvedValue(orders);
+        .mockResolvedValue(eventPassOrders);
       payment.stripe.checkout.sessions.create = jest
         .fn()
         .mockResolvedValue({ id: sessionId });
@@ -488,7 +497,7 @@ describe('Payment', () => {
       expect(
         adminSdk.SetEventPassOrdersStripeCheckoutSessionId
       ).toHaveBeenCalledWith({
-        updates: orders.map(({ id }) => ({
+        updates: eventPassOrders.map(({ id }) => ({
           _set: {
             stripeCheckoutSessionId: sessionId,
           },
