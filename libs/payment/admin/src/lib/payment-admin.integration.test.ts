@@ -110,7 +110,7 @@ describe('Payment integration', () => {
 
       expect(payment.stripe.customers.create).toHaveBeenCalledWith({
         email: 'alpha_user@example.com',
-        preferred_locales: ['en', 'en'],
+        preferred_locales: ['en'],
         phone: '1234567890',
         metadata: {
           userId: accounts.alpha_user.id,
@@ -172,7 +172,7 @@ describe('Payment integration', () => {
         payment.createStripeCheckoutSession({
           user,
           stripeCustomer: stripeCustomer as StripeCustomer,
-          eventPassPendingOrders: [],
+          eventPassPendingOrders: eventPassPendingOrders.alpha_user,
           locale,
           currency,
         })
