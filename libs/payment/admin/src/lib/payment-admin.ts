@@ -232,14 +232,10 @@ export class Payment {
     const lineItems = orders.map((order) => {
       if (
         !order.eventPassPricing?.priceCurrency ||
-        !order.eventPass?.name ||
-        !order.eventPass?.nftImage?.url ||
-        !order.eventPass?.event?.slug ||
-        !order.eventPass?.event?.organizer?.slug
+        !order.eventPassPricing?.priceAmount
       ) {
         throw new Error(
-          'Price currency, event pass name or event pass image URL is undefined for order: ' +
-            order.id
+          'Price currency or Price amount is undefined for order: ' + order.id
         );
       }
 
@@ -249,8 +245,8 @@ export class Payment {
           currency: order.eventPassPricing.priceCurrency,
           unit_amount: order.eventPassPricing.priceAmount,
           product_data: {
-            name: order.eventPass.name,
-            images: [order.eventPass.nftImage.url],
+            name: order.eventPass?.name as string,
+            images: [order.eventPass?.nftImage?.url as string],
             metadata: {
               userId: user.id,
               eventPassPendingOrderId: eventPassPendingOrder.id,
