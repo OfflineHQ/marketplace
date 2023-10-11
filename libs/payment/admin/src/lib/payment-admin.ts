@@ -196,9 +196,12 @@ export class Payment {
     const refund = await this.stripe.refunds.create({
       payment_intent: paymentIntentId,
     });
-    //TODO: delete StripeCheckoutSession
-    if (refund && ['succeeded', 'pending'].includes(refund.status))
-      return refund;
+    if (!refund?.status) {
+      throw new Error(
+        'Refund status is null for paymentIntentId: ' + paymentIntentId
+      );
+    }
+    if (['succeeded', 'pending'].includes(refund.status)) return refund;
     throw new Error(
       `Refund failed for paymentIntentId: ${paymentIntentId} with status: ${refund.status}`
     );
