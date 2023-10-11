@@ -3,6 +3,13 @@ const nodeFetch = require('node-fetch');
 const http = require('http');
 const https = require('https');
 
+/* fix ReferenceError: TextDecoder is not defined (or TextEncoder) */
+import { TextDecoder, TextEncoder } from 'text-encoding';
+
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+//////////////
+
 // Set the env variables to override:
 
 process.env.POSTGRES_USER = 'postgres';

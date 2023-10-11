@@ -99,9 +99,9 @@ export class Payment {
               userId: user.id,
               eventPassPendingOrderId: eventPassPendingOrder.id,
               eventPassId: eventPassPendingOrder.eventPassId,
-              eventSlug: eventPassPendingOrder.eventPass?.event?.slug,
-              organizerSlug:
-                eventPassPendingOrder.eventPass?.event?.organizer?.slug,
+              eventSlug: eventPassPendingOrder.eventPass?.event?.slug as string,
+              organizerSlug: eventPassPendingOrder.eventPass?.event?.organizer
+                ?.slug as string,
               // could add more if needed
             },
           },
