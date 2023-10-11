@@ -1,4 +1,5 @@
 import { AuthProvider, NextAuthProvider } from '@next/auth';
+import { CurrencyProvider } from '@next/currency';
 import { getMessages, locales } from '@next/i18n';
 import { ReactQueryProviders } from '@next/react-query';
 import { Toaster } from '@ui/components';
@@ -129,8 +130,10 @@ export default async function RootLayout({
               }}
             >
               <ReactQueryProviders>
-                <AppNavLayout {...appNavLayout}>{children}</AppNavLayout>
-                <Toaster />
+                <CurrencyProvider>
+                  <AppNavLayout {...appNavLayout}>{children}</AppNavLayout>
+                  <Toaster />
+                </CurrencyProvider>
               </ReactQueryProviders>
             </AuthProvider>
           </NextAuthProvider>

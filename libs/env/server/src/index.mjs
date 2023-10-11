@@ -35,6 +35,8 @@ const env = createEnv({
     UPLOAD_PATH_PREFIX: z.string().min(1),
     UPLOAD_SECRET_JWT: z.string().min(1),
     UPLOAD_PUBLIC_API_KEY: z.string().min(1),
+    FIXER_CURRENCY_API_KEY: z.string().min(1),
+    EXCHANGE_RATE_API_KEY: z.string().min(1),
   },
   runtimeEnv: {
     APP: process.env.APP,
@@ -68,6 +70,8 @@ const env = createEnv({
     UPLOAD_PATH_PREFIX: process.env.UPLOAD_PATH_PREFIX,
     UPLOAD_SECRET_JWT: process.env.UPLOAD_SECRET_JWT,
     UPLOAD_PUBLIC_API_KEY: process.env.UPLOAD_PUBLIC_API_KEY,
+    FIXER_CURRENCY_API_KEY: process.env.FIXER_CURRENCY_API_KEY,
+    EXCHANGE_RATE_API_KEY: process.env.EXCHANGE_RATE_API_KEY,
   },
 });
 

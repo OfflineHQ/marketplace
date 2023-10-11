@@ -1,32 +1,31 @@
-import React from 'react';
 import {
+  AspectRatio,
+  AspectRatioSkeleton,
+  ButtonSkeleton,
   Card,
+  CardContent,
+  CardDescription,
+  CardDescriptionSkeleton,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
   CardTitleSkeleton,
-  CardDescriptionSkeleton,
-  TextSkeleton,
-  ButtonSkeleton,
-  Text,
-  AspectRatio,
-  Label,
-  AspectRatioSkeleton,
   Separator,
+  Text,
+  TextSkeleton,
 } from '@ui/components';
+import React from 'react';
 
-import Image from 'next/image';
-import { NextIntlClientProvider, useLocale, useFormatter } from 'next-intl';
+import { defaultLocale, messages, type Locale } from '@next/i18n';
 import { deepPick } from '@utils';
-import { messages, defaultLocale, type Locale } from '@next/i18n';
+import { NextIntlClientProvider, useFormatter, useLocale } from 'next-intl';
+import Image from 'next/image';
 
-import { formatCurrency } from '@next/currency';
+import { formatCurrency, useCurrency } from '@next/currency';
 
 import type { EventPass } from '@features/organizer/event-types';
-import { PassCardSelect, PassCardSelectProps } from './PassCardSelect';
 import { PassOptions } from '../PassOptions/PassOptions';
+import { PassCardSelect, PassCardSelectProps } from './PassCardSelect';
 
 export interface PassCardProps extends EventPass, PassCardSelectProps {
   className?: string;
@@ -43,6 +42,7 @@ export const PassCard: React.FC<PassCardProps> = ({
 }) => {
   const format = useFormatter();
   const _locale = useLocale();
+  const { rates, isLoading } = useCurrency();
   const locale: Locale = (_locale as Locale) || defaultLocale;
   const localeMessages = deepPick(messages[locale], [
     'Organizer.Event.PassPurchase.Pass',
@@ -66,11 +66,15 @@ export const PassCard: React.FC<PassCardProps> = ({
         <PassOptions passOptions={passOptions || []} />
       </CardHeader>
       <CardFooter className="flex items-center justify-between">
-        <Text>
-          {formatCurrency(format, {
-            amount: eventPassPricing?.priceAmount || 0,
-            currency: eventPassPricing?.priceCurrency,
-          })}
+        <Text variant="h5">
+          {formatCurrency(
+            format,
+            {
+              amount: eventPassPricing?.priceAmount || 0,
+              currency: eventPassPricing?.priceCurrency,
+            },
+            rates
+          )}
         </Text>
         <NextIntlClientProvider locale={locale} messages={localeMessages}>
           <PassCardSelect {...props} eventPassPricing={eventPassPricing} />
