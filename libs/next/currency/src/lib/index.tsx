@@ -1,27 +1,50 @@
+'use client';
+
 import { getCookie, setCookie } from 'cookies-next';
 
-import { AED, CNY, EUR, GBP, QAR, SGD, USD } from '@dinero.js/currencies';
+import { Money, Rates, currencyMap, defaultCurrency } from '@currency/types';
 import { Currency_Enum } from '@gql/shared/types';
+import { getRates } from '@next/currency-cache';
 import { Dinero, convert, dinero, toDecimal } from 'dinero.js';
 
-export type Money = {
-  amount: number;
-  currency?: Currency_Enum | null;
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+
+const CurrencyContext = createContext({ rates: {}, isLoading: true });
+
+export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
+  const [rates, setRates] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getRates()
+      .then((data) => {
+        setRates(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching rates:', error);
+      });
+  }, []);
+
+  return (
+    <CurrencyContext.Provider
+      value={{
+        rates,
+        isLoading,
+      }}
+    >
+      {children}
+    </CurrencyContext.Provider>
+  );
 };
 
-// Set default currency
-const defaultCurrency: Currency_Enum = Currency_Enum.Eur;
-
-// Create a mapping from your currency enum to the dinero currency objects
-const currencyMap = {
-  [Currency_Enum.Eur]: EUR,
-  [Currency_Enum.Usd]: USD,
-  [Currency_Enum.Gbp]: GBP,
-  [Currency_Enum.Aed]: AED,
-  [Currency_Enum.Cny]: CNY,
-  [Currency_Enum.Qar]: QAR,
-  [Currency_Enum.Sgd]: SGD,
-};
+export const useCurrency = () => useContext(CurrencyContext);
 
 // Set user's currency preference in a cookie
 export const setCurrencyPreference = (currency: Currency_Enum) => {
@@ -35,19 +58,9 @@ export const getCurrencyPreference = (): Currency_Enum => {
   );
 };
 
-// TODO fix rates because it will depend of the currency from money. Here it's as if money is always in EUR
-// Fixed rates for conversion (to be replaced by dynamic rates from the server)
-const rates = {
-  [Currency_Enum.Eur]: { amount: 1, scale: 0 },
-  [Currency_Enum.Usd]: { amount: 1.12, scale: 0 },
-  [Currency_Enum.Aed]: { amount: 4.13, scale: 0 },
-  [Currency_Enum.Cny]: { amount: 7.15, scale: 0 },
-  [Currency_Enum.Qar]: { amount: 4.08, scale: 0 },
-  [Currency_Enum.Sgd]: { amount: 1.52, scale: 0 },
-};
-
 export const toUserCurrency = (
-  money: Money
+  money: Money,
+  rates: { [key: string]: Rates }
 ): {
   dinero: Dinero<number>;
   currency: Currency_Enum;
@@ -60,12 +73,13 @@ export const toUserCurrency = (
   const toCurrency = currencyMap[userCurrency];
   const dineroObject = dinero({ amount: money.amount, currency: fromCurrency });
 
-  if (money.currency === userCurrency)
+  if (money.currency === userCurrency || Object.keys(rates).length === 0)
     return {
       dinero: dineroObject,
       currency: userCurrency,
     };
-  const convertedDinero = convert(dineroObject, toCurrency, rates);
+  const currencyRate = rates[userCurrency as string];
+  const convertedDinero = convert(dineroObject, toCurrency, currencyRate);
   return {
     dinero: convertedDinero,
     currency: userCurrency,
@@ -74,11 +88,12 @@ export const toUserCurrency = (
 
 export const formatCurrency = (
   format: any,
-  money: Money | undefined | null
+  money: Money | undefined | null,
+  rates: { [key: string]: Rates }
 ) => {
   if (!money) return format.number(0, { style: 'currency', currency: 'EUR' });
   const { currency, amount } = money;
-  const formattedAmount = toUserCurrency({ amount, currency });
+  const formattedAmount = toUserCurrency({ amount, currency }, rates);
 
   return format.number(toDecimal(formattedAmount.dinero), {
     style: 'currency',

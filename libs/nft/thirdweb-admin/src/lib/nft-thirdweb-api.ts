@@ -1,5 +1,3 @@
-'use server';
-
 import env from '@env/server';
 import { adminSdk } from '@gql/admin/api';
 import type {
@@ -13,11 +11,11 @@ export type RequiredOrderKeys = {
   id: EventPassOrder['id'];
   quantity: EventPassOrder['quantity'];
   account: {
-    address: EventPassOrder['account']['address'];
+    address: string;
   };
   eventPass: {
     eventPassNftContract: {
-      contractAddress: EventPassOrder['eventPass']['eventPassNftContract']['contractAddress'];
+      contractAddress: string;
     };
   };
 };
@@ -27,6 +25,9 @@ type FnType = (
 ) => Promise<ClaimEventPassNftsMutation>;
 
 async function checkOrder(order: RequiredOrderKeys) {
+  if (!this.sdk) {
+    throw new Error('SDK is undefined');
+  }
   const contractAddress = order.eventPass.eventPassNftContract.contractAddress;
   const contract = await this.sdk.getContract(contractAddress);
   const supply = await contract.totalUnclaimedSupply();
@@ -161,6 +162,9 @@ export class NftClaimable {
   });
 
   private async claimOrder(order: RequiredOrderKeys) {
+    if (!this.sdk) {
+      throw new Error('SDK is undefined');
+    }
     const contractAddress =
       order.eventPass.eventPassNftContract.contractAddress;
     const toAddress = order.account.address;

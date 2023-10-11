@@ -48,6 +48,10 @@ export {
   CommandShortcut,
 } from './lib/command/Command';
 export {
+  CurrencyDropdown,
+  type CurrencyDropdownProps,
+} from './lib/currency-dropdown/CurrencyDropdown';
+export {
   Dialog,
   DialogContent,
   DialogDescription,

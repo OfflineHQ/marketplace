@@ -57,6 +57,10 @@ module.exports = {
       test: /\.svg$/,
       use: ['@svgr/webpack', 'url-loader'],
     });
+    config.resolve.alias['@t3-oss/env-nextjs'] = path.resolve(
+      __dirname,
+      './env-nextjs.mock.js'
+    );
     //
     // Add tsconfig-paths-webpack-plugin to the resolve.plugins array
     config.resolve.plugins = [
