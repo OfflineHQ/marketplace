@@ -1,5 +1,5 @@
-import NftClaimable from './nft-thirdweb-api';
 import { adminSdk } from '@gql/admin/api';
+import { NftClaimable } from './nft-thirdweb-api';
 
 describe('NftClaimable exists', () => {
   it('should work', () => {
