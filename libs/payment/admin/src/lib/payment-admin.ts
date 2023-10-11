@@ -63,9 +63,13 @@ export class Payment {
       throw new Error(
         `User: ${user.id} has not completed KYC: ${kyc.applicantId}`
       );
+    if (!userPersonalData.email) {
+      throw new Error('Email is undefined for user: ' + user.id);
+    }
+
     const stripeCustomer = await this.stripe.customers.create({
       email: userPersonalData.email,
-      preferred_locales: [userPersonalData.lang, 'en'],
+      preferred_locales: [userPersonalData.lang || 'en'],
       phone: userPersonalData.phone,
       metadata: {
         userId: user.id,
@@ -119,7 +123,7 @@ export class Payment {
       locale,
       stage: env.HYGRAPH_STAGE as Stage,
     });
-    return res.insert_eventPassOrder.returning;
+    return res?.insert_eventPassOrder?.returning;
   }
 
   async markEventPassOrderAsCancelled({
@@ -217,15 +221,36 @@ export class Payment {
       accountId: user.id,
       locale,
     });
+    if (!orders || !orders.length)
+      throw new Error(
+        `No eventPassOrders created for user: ${
+          user.id
+        } and eventPassPendingOrders: ${eventPassPendingOrders
+          .map((order) => order.id)
+          .join(',')}`
+      );
     const lineItems = orders.map((order) => {
+      if (
+        !order.eventPassPricing?.priceCurrency ||
+        !order.eventPass?.name ||
+        !order.eventPass?.nftImage?.url ||
+        !order.eventPass?.event?.slug ||
+        !order.eventPass?.event?.organizer?.slug
+      ) {
+        throw new Error(
+          'Price currency, event pass name or event pass image URL is undefined for order: ' +
+            order.id
+        );
+      }
+
       return {
         quantity: order.quantity,
         price_data: {
-          currency: order.eventPassPricing?.priceCurrency,
-          unit_amount: order.eventPassPricing?.priceAmount,
+          currency: order.eventPassPricing.priceCurrency,
+          unit_amount: order.eventPassPricing.priceAmount,
           product_data: {
-            name: order.eventPass?.name,
-            images: [order.eventPass?.nftImage?.url],
+            name: order.eventPass.name,
+            images: [order.eventPass.nftImage.url],
             metadata: {
               userId: user.id,
               eventPassPendingOrderId: eventPassPendingOrder.id,
@@ -250,6 +275,12 @@ export class Payment {
       eventPassIds: orders.map((order) => order.eventPassId).join(','),
       // orders: JSON.stringify(orders),
     } satisfies StripeCheckoutSessionMetadataEventPassOrder;
+
+    if (!stripeCustomer.email) {
+      throw new Error(
+        'Email is null for stripe customer: ' + stripeCustomer.id
+      );
+    }
 
     const session = await this.stripe.checkout.sessions.create({
       line_items: lineItems,
@@ -388,7 +419,12 @@ export class Payment {
     const refund = await this.stripe.refunds.create({
       payment_intent: paymentIntentId,
     });
-    if (refund && ['succeeded', 'pending'].includes(refund.status)) {
+    if (!refund?.status) {
+      throw new Error(
+        'Refund status is null for paymentIntentId: ' + paymentIntentId
+      );
+    }
+    if (['succeeded', 'pending'].includes(refund.status)) {
       const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
         stripeCheckoutSessionId: checkoutSessionId,
       });
