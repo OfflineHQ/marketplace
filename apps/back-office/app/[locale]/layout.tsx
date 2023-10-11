@@ -1,4 +1,3 @@
-import { type AppNavLayoutProps } from '@features/appNav/ui';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { getMessages, locales } from '@next/i18n';
 import { ReactQueryProviders } from '@next/react-query';
@@ -6,7 +5,9 @@ import { UploaderProvider } from '@next/uploader-provider';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
-import { Analytics } from '@web/components/Analytics';
+import { Analytics } from '@back-office/components/Analytics';
+import { siteConfig } from '@back-office/config/site';
+import { Metadata } from 'next';
 import { createTranslator } from 'next-intl';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
@@ -24,16 +25,24 @@ const fontHeading = localFont({
   variable: '--font-heading',
 });
 
+export const metadata: Metadata = {
+  title: {
+    default: siteConfig.name,
+    template: `%s - ${siteConfig.name}`,
+  },
+};
+
 // Error: Usage of next-intl APIs in Server Components is currently only available for dynamic rendering (i.e. no `generateStaticParams`).
 // Support for static rendering is under consideration, please refer to the roadmap: https://next-intl-docs.vercel.app/docs/getting-started/app-router-server-components#roadmap
 // export async function generateStaticParams() {
 //   return locales.map((locale) => ({ locale }));
 // }
 
-interface RootLayoutProps extends AppNavLayoutProps {
+interface RootLayoutProps {
   params: {
     locale: string;
   };
+  children: React.ReactNode;
 }
 
 // export async function generateStaticParams() {
