@@ -66,20 +66,16 @@ export const PassCard: React.FC<PassCardProps> = ({
         <PassOptions passOptions={passOptions || []} />
       </CardHeader>
       <CardFooter className="flex items-center justify-between">
-        {isLoading ? (
-          <TextSkeleton variant="h5" />
-        ) : (
-          <Text variant="h5">
-            {formatCurrency(
-              format,
-              {
-                amount: eventPassPricing?.priceAmount || 0,
-                currency: eventPassPricing?.priceCurrency,
-              },
-              rates
-            )}
-          </Text>
-        )}
+        <Text variant="h5">
+          {formatCurrency(
+            format,
+            {
+              amount: eventPassPricing?.priceAmount || 0,
+              currency: eventPassPricing?.priceCurrency,
+            },
+            rates
+          )}
+        </Text>
         <NextIntlClientProvider locale={locale} messages={localeMessages}>
           <PassCardSelect {...props} eventPassPricing={eventPassPricing} />
         </NextIntlClientProvider>

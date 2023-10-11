@@ -67,19 +67,18 @@ export const toUserCurrency = (
 } => {
   const userCurrency = getCurrencyPreference();
 
-  const currencyRate = rates[userCurrency as string];
-
   const fromCurrency = money.currency
     ? currencyMap[money.currency]
     : currencyMap[defaultCurrency];
   const toCurrency = currencyMap[userCurrency];
   const dineroObject = dinero({ amount: money.amount, currency: fromCurrency });
 
-  if (money.currency === userCurrency)
+  if (money.currency === userCurrency || Object.keys(rates).length === 0)
     return {
       dinero: dineroObject,
       currency: userCurrency,
     };
+  const currencyRate = rates[userCurrency as string];
   const convertedDinero = convert(dineroObject, toCurrency, currencyRate);
   return {
     dinero: convertedDinero,
