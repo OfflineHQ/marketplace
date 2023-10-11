@@ -1,12 +1,12 @@
 // PassTotal.stories.tsx
-import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
+import { Meta, StoryObj } from '@storybook/react';
+import { screen } from '@storybook/testing-library';
 import { PassTotal } from './PassTotal';
 import {
-  passTotalProps,
   PassTotalWith1PassExample,
   PassTotalWithSeveralPassesExample,
+  passTotalProps,
 } from './examples';
 
 const meta = {

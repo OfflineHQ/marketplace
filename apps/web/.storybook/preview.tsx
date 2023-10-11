@@ -1,11 +1,12 @@
-import '../styles/globals.css';
-import { Preview, Decorator } from '@storybook/react';
-import { useEffect, useState } from 'react';
-import { parameters } from '../../../storybook.preview.base';
-import { NextIntlClientProvider } from 'next-intl';
+import { CurrencyProvider } from '@next/currency';
 import { defaultLocale } from '@next/i18n';
+import { Decorator, Preview } from '@storybook/react';
+import { NextIntlClientProvider } from 'next-intl';
+import { useEffect, useState } from 'react';
 import messagesEn from '../../../libs/next/i18n/src/messages/en.json';
 import messagesfr from '../../../libs/next/i18n/src/messages/fr.json';
+import { parameters } from '../../../storybook.preview.base';
+import '../styles/globals.css';
 
 window.STORYBOOK_ENV = true;
 
@@ -68,6 +69,10 @@ const I18nextStoryDecorator: Decorator = (Story, context) => {
   );
 };
 
+const CurrencyDecorator: Decorator = (Story, context) => {
+  return <CurrencyProvider>{Story(context)}</CurrencyProvider>;
+};
+
 document.body.classList.add('font-sans');
 
 const preview: Preview = {
@@ -81,6 +86,7 @@ const preview: Preview = {
     DarkModeDecorator,
     I18nextStoryDecorator,
     localStorageResetDecorator,
+    CurrencyDecorator,
   ],
 };
 export default preview;

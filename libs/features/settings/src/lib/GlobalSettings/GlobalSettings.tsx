@@ -8,15 +8,23 @@ import {
   type DisplayDropdownClientProps,
 } from '../DisplayDropdown/DisplayDropdownClient';
 
+import {
+  CurrencyDropdownClient,
+  type CurrencyDropdownClientProps,
+} from './CurrencyDropdownClient';
+
 export interface GlobalSettingsProps
   extends LanguageDropdownClientProps,
-    DisplayDropdownClientProps {}
+    DisplayDropdownClientProps,
+    CurrencyDropdownClientProps {}
 
 export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
   languageSelectText,
   languageText,
   displaySelectText,
   displayText,
+  currencySelectText,
+  currencyText,
 }) => {
   return (
     <div className="flex flex-col items-start gap-8">
@@ -27,6 +35,10 @@ export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
       <DisplayDropdownClient
         displaySelectText={displaySelectText}
         displayText={displayText}
+      />
+      <CurrencyDropdownClient
+        currencySelectText={currencySelectText}
+        currencyText={currencyText}
       />
     </div>
   );

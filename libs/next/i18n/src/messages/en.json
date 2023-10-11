@@ -32,7 +32,10 @@
       "light": "Light",
       "dark": "Dark",
       "auto": "Automatic"
-    }
+    },
+    "currency-select-text": "Select the currency you want to shop with",
+    "eur": "EUR",
+    "usd": "USD"
   },
   "AppNav": {
     "Profile": {

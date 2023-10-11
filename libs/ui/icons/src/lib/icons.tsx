@@ -12,6 +12,7 @@ import {
 } from 'react-icons/ai';
 import { BiCircle, BiHelpCircle, BiXCircle } from 'react-icons/bi';
 import {
+  BsCurrencyExchange,
   BsDownload,
   BsQrCode,
   BsQrCodeScan,
@@ -134,6 +135,14 @@ export const MenuActions: FC<IconProps> = (props) => (
   <AccessibleIcon
     IconComponent={BsThreeDotsVertical}
     label={'Menu Actions'}
+    {...props}
+  />
+);
+
+export const CurrencySettings: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={BsCurrencyExchange}
+    label={'CurrencySettings'}
     {...props}
   />
 );
