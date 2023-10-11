@@ -28,6 +28,22 @@ module.exports = {
         },
       },
     ],
+    // avoid issue with import.meta
+    '^.+\\.[tj]s$': [
+      'ts-jest',
+      {
+        diagnostics: {
+          ignoreCodes: [1343],
+        },
+        astTransformers: {
+          before: [
+            {
+              path: 'ts-jest-mock-import-meta', // or 'node_modules/ts-jest-mock-import-meta'
+            },
+          ],
+        },
+      },
+    ],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'mjs'],
   coverageThreshold: {

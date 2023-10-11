@@ -53,7 +53,6 @@ export async function stripeCheckoutStatus(req: Request) {
 
     const currency = checkoutSession.currency;
     const amount = checkoutSession.amount_total;
-    const line_items = checkoutSession.line_items.data;
     const metadata =
       checkoutSession.metadata as StripeCheckoutSessionMetadataEventPassOrder;
     if (event.type === 'checkout.session.completed') {

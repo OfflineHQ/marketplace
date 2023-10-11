@@ -108,7 +108,6 @@ const nextConfig = {
     // If use with serverActions is desired
     serverActions: true,
     useDeploymentIdServerActions: true,
-    appDir: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
   },
   sentry: {

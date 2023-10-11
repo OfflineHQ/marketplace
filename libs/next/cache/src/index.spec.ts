@@ -1,5 +1,5 @@
 import { kv } from '@vercel/kv';
-import Cache from './index';
+import { Cache } from './index';
 
 describe('Cache exists', () => {
   it('should work', () => {
