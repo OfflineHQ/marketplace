@@ -8,17 +8,17 @@
       "executor": "@nx/js:swc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/next/types",
-        "main": "libs/next/types/src/index.ts",
-        "tsConfig": "libs/next/types/tsconfig.lib.json",
-        "assets": ["libs/next/types/*.md"]
+        "outputPath": "dist/libs/currency/types",
+        "main": "libs/currency/types/src/index.ts",
+        "tsConfig": "libs/currency/types/tsconfig.lib.json",
+        "assets": ["libs/currency/types/*.md"]
       }
     },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/next/types/**/*.ts"]
+        "lintFilePatterns": ["libs/currency/types/**/*.ts"]
       }
     }
   },

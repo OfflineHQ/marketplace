@@ -1,5 +1,3 @@
-'use server';
-
 import env from '@env/server';
 import { adminSdk } from '@gql/admin/api';
 import type {

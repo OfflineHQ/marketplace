@@ -95,7 +95,6 @@
       "@logger": ["libs/logger/src/index.ts"],
       "@next/auth": ["libs/next/auth/src/index.ts"],
       "@next/cache": ["libs/next/cache/src/index.ts"],
-      "@next/cache/server": ["libs/next/cache/src/server.ts"],
       "@next/currency": ["libs/next/currency/src/index.ts"],
       "@next/currency-cache": ["libs/next/currency-cache/src/index.ts"],
       "@next/hasura/api": ["libs/next/hasura/api/src/index.ts"],
