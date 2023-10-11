@@ -9,7 +9,7 @@ import type {
   AllPassesCart,
 } from '@features/organizer/event-types';
 import { UserPassPendingOrder } from '@features/cart-types';
-import { Money } from '@next/currency';
+import { Money } from '@currency/types';
 
 interface GetPassCartProps extends EventSlugs {
   eventPassId: string;
