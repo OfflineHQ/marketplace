@@ -37,6 +37,7 @@ const env = createEnv({
     UPLOAD_PUBLIC_API_KEY: z.string().min(1),
     FIXER_CURRENCY_API_KEY: z.string().min(1),
     EXCHANGE_RATE_API_KEY: z.string().min(1),
+    NEXT_PUBLIC_OPENZEPPELIN_URL: z.string().min(1),
   },
   runtimeEnv: {
     APP: process.env.APP,
@@ -72,6 +73,7 @@ const env = createEnv({
     UPLOAD_PUBLIC_API_KEY: process.env.UPLOAD_PUBLIC_API_KEY,
     FIXER_CURRENCY_API_KEY: process.env.FIXER_CURRENCY_API_KEY,
     EXCHANGE_RATE_API_KEY: process.env.EXCHANGE_RATE_API_KEY,
+    NEXT_PUBLIC_OPENZEPPELIN_URL: process.env.NEXT_PUBLIC_OPENZEPPELIN_URL,
   },
 });
 

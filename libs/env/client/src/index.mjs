@@ -18,6 +18,7 @@ const env = createEnv({
     NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY: z.string().min(1),
     NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
+    NEXT_PUBLIC_OPENZEPPELIN_URL: z.string().min(1),
   },
   runtimeEnv: {
     NEXT_PUBLIC_APP: process.env.NEXT_PUBLIC_APP,
@@ -38,6 +39,7 @@ const env = createEnv({
     NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_OPENZEPPELIN_URL: process.env.NEXT_PUBLIC_OPENZEPPELIN_URL,
   },
 });
 

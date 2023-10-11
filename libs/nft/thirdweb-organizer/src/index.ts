@@ -19,6 +19,11 @@ class NftCollection {
     const signer = web3Provider.getSigner();
     this.sdk = ThirdwebSDK.fromSigner(signer, env.NEXT_PUBLIC_CHAIN, {
       clientId: '3ce7c20950e008cb1d6138a4a06d7e7f',
+      gasless: {
+        openzeppelin: {
+          relayerUrl: env.NEXT_PUBLIC_OPENZEPPELIN_URL,
+        },
+      },
     });
   }
 
@@ -88,7 +93,7 @@ class NftCollection {
         };
       })
     );
-    console.log('hasuraMetadas : ', hasuraMetadatas);
+    console.log('hasuraMetadatas : ', hasuraMetadatas);
 
     const resNfts = await fetch('/api/nft/nfts', {
       method: 'POST',
