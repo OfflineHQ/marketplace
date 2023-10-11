@@ -249,11 +249,10 @@ export class Payment {
             images: [order.eventPass?.nftImage?.url as string],
             metadata: {
               userId: user.id,
-              eventPassPendingOrderId: eventPassPendingOrder.id,
-              eventPassId: eventPassPendingOrder.eventPassId,
-              eventSlug: eventPassPendingOrder.eventPass?.event?.slug as string,
-              organizerSlug: eventPassPendingOrder.eventPass?.event?.organizer
-                ?.slug as string,
+              eventPassPendingOrderId: order.id,
+              eventPassId: order.eventPassId,
+              eventSlug: order.eventPass?.event?.slug as string,
+              organizerSlug: order.eventPass?.event?.organizer?.slug as string,
               // could add more if needed
             },
           },
