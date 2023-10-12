@@ -1,6 +1,6 @@
 import env from '@env/client';
 import envServer from '@env/server';
-import { getPassUser } from '@features/pass-common/server';
+import { getPassUser } from '@features/pass-common';
 import { FileDownloader } from '@file-upload/user';
 import { adminSdk } from '@gql/admin/api';
 import { nextAuthCookieName } from '@next/next-auth/common';
