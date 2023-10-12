@@ -91,6 +91,7 @@ const nextConfig = {
       '@features/organizer/event',
       '@features/organizer/event/server',
       '@features/pass',
+      '@features/pass-api',
       '@features/pass/server',
       '@features/settings',
       '@gql/admin/api',
