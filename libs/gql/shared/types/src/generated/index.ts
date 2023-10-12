@@ -4995,7 +4995,9 @@ export const enum EventParameters_Constraint {
   /** unique or primary key constraint on columns "eventId" */
   EventParametersEventIdKey = 'eventParameters_eventId_key',
   /** unique or primary key constraint on columns "id" */
-  EventParametersPkey = 'eventParameters_pkey'
+  EventParametersPkey = 'eventParameters_pkey',
+  /** unique or primary key constraint on columns "signingKey" */
+  EventParametersSigningKeyKey = 'eventParameters_signingKey_key'
 };
 
 /** input type for inserting data into table "eventParameters" */

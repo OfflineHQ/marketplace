@@ -6815,6 +6815,11 @@ enum eventParameters_constraint {
   unique or primary key constraint on columns "id"
   """
   eventParameters_pkey
+
+  """
+  unique or primary key constraint on columns "signingKey"
+  """
+  eventParameters_signingKey_key
 }
 
 """
