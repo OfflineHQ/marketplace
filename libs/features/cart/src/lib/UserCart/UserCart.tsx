@@ -1,4 +1,3 @@
-import { getEventPassPendingOrders } from '../api/getEventPassPendingOrders';
 import { UserCartSection, type UserCartSectionProps } from './UserCartSection';
 
 export type UserCartProps = UserCartSectionProps;
@@ -9,8 +8,8 @@ export async function UserCart({
   noCartImage,
   user,
   children,
+  userPassPendingOrders,
 }: UserCartProps) {
-  const userPassPendingOrders = await getEventPassPendingOrders({ locale });
   return (
     <UserCartSection
       EventPassesFetcher={EventPassesFetcher}

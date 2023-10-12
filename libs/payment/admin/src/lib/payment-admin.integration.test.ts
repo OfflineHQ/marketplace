@@ -69,10 +69,10 @@ describe('Payment integration', () => {
     ]);
   });
 
-  describe('createStripeCustomer', () => {
+  describe('getOrCreateStripeCustomer', () => {
     it('should return stripe customer if it already exist in db', async () => {
       jest.spyOn(adminSdk, 'CreateStripeCustomer');
-      const res = await payment.createStripeCustomer({
+      const res = await payment.getOrCreateStripeCustomer({
         user: accounts.alpha_user,
       });
       expect(res).toEqual({
@@ -99,7 +99,7 @@ describe('Payment integration', () => {
         id: 'new_stripe_customer_id',
       });
 
-      const res = await payment.createStripeCustomer({
+      const res = await payment.getOrCreateStripeCustomer({
         user: accounts.alpha_user,
       });
 

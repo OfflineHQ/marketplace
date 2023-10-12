@@ -23,3 +23,10 @@ query GetEventPassPendingOrders($locale: Locale!, $stage: Stage!) {
     }
   }
 }
+
+query GetEventPassPendingOrdersMinimal {
+  eventPassPendingOrder {
+    eventPassId
+    quantity
+  }
+}

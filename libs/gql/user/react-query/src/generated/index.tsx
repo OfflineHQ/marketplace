@@ -151,6 +151,26 @@ export const useGetEventWithPassesQuery = <
       fetchDataReactQuery<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables),
       options
     );
+export const GetEventPassOrdersConfirmedDocument = `
+    query GetEventPassOrdersConfirmed {
+  eventPassOrder(where: {status: {_eq: CONFIRMED}}) {
+    eventPassId
+    quantity
+  }
+}
+    `;
+export const useGetEventPassOrdersConfirmedQuery = <
+      TData = Types.GetEventPassOrdersConfirmedQuery,
+      TError = Error
+    >(
+      variables?: Types.GetEventPassOrdersConfirmedQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassOrdersConfirmedQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassOrdersConfirmedQuery, TError, TData>(
+      variables === undefined ? ['GetEventPassOrdersConfirmed'] : ['GetEventPassOrdersConfirmed', variables],
+      fetchDataReactQuery<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables),
+      options
+    );
 export const InsertEventPassPendingOrdersDocument = `
     mutation InsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!) {
   insert_eventPassPendingOrder(objects: $objects) {
@@ -254,6 +274,26 @@ export const useGetEventPassPendingOrdersQuery = <
     useQuery<Types.GetEventPassPendingOrdersQuery, TError, TData>(
       ['GetEventPassPendingOrders', variables],
       fetchDataReactQuery<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables),
+      options
+    );
+export const GetEventPassPendingOrdersMinimalDocument = `
+    query GetEventPassPendingOrdersMinimal {
+  eventPassPendingOrder {
+    eventPassId
+    quantity
+  }
+}
+    `;
+export const useGetEventPassPendingOrdersMinimalQuery = <
+      TData = Types.GetEventPassPendingOrdersMinimalQuery,
+      TError = Error
+    >(
+      variables?: Types.GetEventPassPendingOrdersMinimalQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassPendingOrdersMinimalQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassPendingOrdersMinimalQuery, TError, TData>(
+      variables === undefined ? ['GetEventPassPendingOrdersMinimal'] : ['GetEventPassPendingOrdersMinimal', variables],
+      fetchDataReactQuery<Types.GetEventPassPendingOrdersMinimalQuery, Types.GetEventPassPendingOrdersMinimalQueryVariables>(GetEventPassPendingOrdersMinimalDocument, variables),
       options
     );
 export const GetKycDocument = `
