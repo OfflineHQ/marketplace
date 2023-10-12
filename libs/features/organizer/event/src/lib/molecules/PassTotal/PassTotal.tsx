@@ -1,5 +1,6 @@
 import type { EventPass, EventSlugs } from '@features/organizer/event-types';
-import { formatCurrency, useCurrency } from '@next/currency';
+import { formatCurrency } from '@next/currency';
+import { useCurrency } from '@next/currency-provider';
 import { useStore } from '@next/store';
 import { Text, TextSkeleton } from '@ui/components'; // Assuming TextSkeleton is imported from here
 import { useFormatter, useTranslations } from 'next-intl';

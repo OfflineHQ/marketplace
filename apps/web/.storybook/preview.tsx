@@ -1,4 +1,4 @@
-import { CurrencyProvider } from '@next/currency';
+import { CurrencyProvider } from '@next/currency-provider';
 import { defaultLocale } from '@next/i18n';
 import { Decorator, Preview } from '@storybook/react';
 import { NextIntlClientProvider } from 'next-intl';
