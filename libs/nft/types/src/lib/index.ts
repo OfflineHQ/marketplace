@@ -1,8 +1,11 @@
 import type {
-  NftTransfer as ImportedNftTransfer,
+  GetEventPassOrdersFromStripeCheckoutSessionQuery,
+  UpdateEventPassNftFromNftTransferMutation,
+} from '@gql/admin/types';
+import type {
   EventPassNft as ImportedEventPassNft,
+  NftTransfer as ImportedNftTransfer,
 } from '@gql/shared/types';
-import type { UpdateEventPassNftFromNftTransferMutation } from '@gql/admin/types';
 
 export type NftTransfer = ImportedNftTransfer;
 
@@ -23,3 +26,6 @@ export type EventPassNftAfterMutation = NonNullable<
     UpdateEventPassNftFromNftTransferMutation['update_eventPassNft_many']
   >[0]
 >['returning'][0];
+
+export type EventPassOrderWithContractData =
+  GetEventPassOrdersFromStripeCheckoutSessionQuery['eventPassOrder'][0];

@@ -278,6 +278,14 @@ export const EventPassNftFieldsFragmentDoc = `
 }
     ${EventPassNftFieldsFragmentDoc}
 ${EventPassFieldsFragmentDoc}`;
+ const GetStripeCustomerDocument = `
+    query GetStripeCustomer {
+  stripeCustomer {
+    stripeCustomerId
+    accountId
+  }
+}
+    `;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -316,6 +324,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassNftByTokenReference(variables: Types.GetEventPassNftByTokenReferenceQueryVariables, options?: C): Promise<Types.GetEventPassNftByTokenReferenceQuery> {
       return requester<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables, options) as Promise<Types.GetEventPassNftByTokenReferenceQuery>;
+    },
+    GetStripeCustomer(variables?: Types.GetStripeCustomerQueryVariables, options?: C): Promise<Types.GetStripeCustomerQuery> {
+      return requester<Types.GetStripeCustomerQuery, Types.GetStripeCustomerQueryVariables>(GetStripeCustomerDocument, variables, options) as Promise<Types.GetStripeCustomerQuery>;
     }
   };
 }

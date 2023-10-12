@@ -10,7 +10,7 @@
     },
     {
       "path": "/libs/next/currency-cache/src/cron/setRates.ts",
-      "schedule": "* * 0/6 ? * * *"
+      "schedule": "0 */12 * * *"
     }
   ]
 }

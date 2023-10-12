@@ -6219,6 +6219,9 @@ type account {
     where: OrganizerWhereUniqueInput_remote_rel_accountorganizer!
   ): Organizer
   organizerId: String
+
+  """An object relationship"""
+  stripeCustomer: stripeCustomer
   updated_at: timestamptz
 }
 
@@ -6254,6 +6257,7 @@ input account_bool_exp {
   isOrganizer: Boolean_comparison_exp
   kyc: kyc_bool_exp
   organizerId: String_comparison_exp
+  stripeCustomer: stripeCustomer_bool_exp
   updated_at: timestamptz_comparison_exp
 }
 
@@ -6284,6 +6288,7 @@ input account_insert_input {
   isOrganizer: Boolean
   kyc: kyc_obj_rel_insert_input
   organizerId: String
+  stripeCustomer: stripeCustomer_obj_rel_insert_input
   updated_at: timestamptz
 }
 
@@ -6347,6 +6352,7 @@ input account_order_by {
   isOrganizer: order_by
   kyc: kyc_order_by
   organizerId: order_by
+  stripeCustomer: stripeCustomer_order_by
   updated_at: order_by
 }
 
@@ -8497,10 +8503,14 @@ type eventPassOrder {
   eventPassId: String!
 
   """An object relationship"""
+  eventPassNftContract: eventPassNftContract
+
+  """An object relationship"""
   eventPassPricing: eventPassPricing
   id: uuid!
   quantity: Int!
   status: orderStatus_enum!
+  stripeCheckoutSessionId: String
   updated_at: timestamptz!
 }
 
@@ -8808,10 +8818,12 @@ input eventPassOrder_bool_exp {
   accountId: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
   eventPassId: String_comparison_exp
+  eventPassNftContract: eventPassNftContract_bool_exp
   eventPassPricing: eventPassPricing_bool_exp
   id: uuid_comparison_exp
   quantity: Int_comparison_exp
   status: orderStatus_enum_comparison_exp
+  stripeCheckoutSessionId: String_comparison_exp
   updated_at: timestamptz_comparison_exp
 }
 
@@ -8840,10 +8852,12 @@ input eventPassOrder_insert_input {
   accountId: uuid
   created_at: timestamptz
   eventPassId: String
+  eventPassNftContract: eventPassNftContract_obj_rel_insert_input
   eventPassPricing: eventPassPricing_obj_rel_insert_input
   id: uuid
   quantity: Int
   status: orderStatus_enum
+  stripeCheckoutSessionId: String
   updated_at: timestamptz
 }
 
@@ -8854,6 +8868,7 @@ type eventPassOrder_max_fields {
   eventPassId: String
   id: uuid
   quantity: Int
+  stripeCheckoutSessionId: String
   updated_at: timestamptz
 }
 
@@ -8866,6 +8881,7 @@ input eventPassOrder_max_order_by {
   eventPassId: order_by
   id: order_by
   quantity: order_by
+  stripeCheckoutSessionId: order_by
   updated_at: order_by
 }
 
@@ -8876,6 +8892,7 @@ type eventPassOrder_min_fields {
   eventPassId: String
   id: uuid
   quantity: Int
+  stripeCheckoutSessionId: String
   updated_at: timestamptz
 }
 
@@ -8888,6 +8905,7 @@ input eventPassOrder_min_order_by {
   eventPassId: order_by
   id: order_by
   quantity: order_by
+  stripeCheckoutSessionId: order_by
   updated_at: order_by
 }
 
@@ -8917,10 +8935,12 @@ input eventPassOrder_order_by {
   accountId: order_by
   created_at: order_by
   eventPassId: order_by
+  eventPassNftContract: eventPassNftContract_order_by
   eventPassPricing: eventPassPricing_order_by
   id: order_by
   quantity: order_by
   status: order_by
+  stripeCheckoutSessionId: order_by
   updated_at: order_by
 }
 
@@ -8952,6 +8972,9 @@ enum eventPassOrder_select_column {
   status
 
   """column name"""
+  stripeCheckoutSessionId
+
+  """column name"""
   updated_at
 }
 
@@ -8965,6 +8988,7 @@ input eventPassOrder_set_input {
   id: uuid
   quantity: Int
   status: orderStatus_enum
+  stripeCheckoutSessionId: String
   updated_at: timestamptz
 }
 
@@ -9023,6 +9047,7 @@ input eventPassOrder_stream_cursor_value_input {
   id: uuid
   quantity: Int
   status: orderStatus_enum
+  stripeCheckoutSessionId: String
   updated_at: timestamptz
 }
 
@@ -9059,6 +9084,9 @@ enum eventPassOrder_update_column {
 
   """column name"""
   status
+
+  """column name"""
+  stripeCheckoutSessionId
 
   """column name"""
   updated_at
@@ -10707,6 +10735,54 @@ type mutation_root {
   delete_orderStatus_by_pk(value: String!): orderStatus
 
   """
+  delete data from the table: "stripeCheckoutSession"
+  """
+  delete_stripeCheckoutSession(
+    """filter the rows which have to be deleted"""
+    where: stripeCheckoutSession_bool_exp!
+  ): stripeCheckoutSession_mutation_response
+
+  """
+  delete data from the table: "stripeCheckoutSessionType"
+  """
+  delete_stripeCheckoutSessionType(
+    """filter the rows which have to be deleted"""
+    where: stripeCheckoutSessionType_bool_exp!
+  ): stripeCheckoutSessionType_mutation_response
+
+  """
+  delete single row from the table: "stripeCheckoutSessionType"
+  """
+  delete_stripeCheckoutSessionType_by_pk(
+    """Type value."""
+    value: String!
+  ): stripeCheckoutSessionType
+
+  """
+  delete single row from the table: "stripeCheckoutSession"
+  """
+  delete_stripeCheckoutSession_by_pk(
+    """Unique identifier for the Stripe Checkout Session."""
+    stripeSessionId: String!
+  ): stripeCheckoutSession
+
+  """
+  delete data from the table: "stripeCustomer"
+  """
+  delete_stripeCustomer(
+    """filter the rows which have to be deleted"""
+    where: stripeCustomer_bool_exp!
+  ): stripeCustomer_mutation_response
+
+  """
+  delete single row from the table: "stripeCustomer"
+  """
+  delete_stripeCustomer_by_pk(
+    """Unique identifier for the Stripe Customer."""
+    stripeCustomerId: String!
+  ): stripeCustomer
+
+  """
   delete data from the table: "timezone"
   """
   delete_timezone(
@@ -11026,6 +11102,72 @@ type mutation_root {
     """upsert condition"""
     on_conflict: orderStatus_on_conflict
   ): orderStatus
+
+  """
+  insert data into the table: "stripeCheckoutSession"
+  """
+  insert_stripeCheckoutSession(
+    """the rows to be inserted"""
+    objects: [stripeCheckoutSession_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: stripeCheckoutSession_on_conflict
+  ): stripeCheckoutSession_mutation_response
+
+  """
+  insert data into the table: "stripeCheckoutSessionType"
+  """
+  insert_stripeCheckoutSessionType(
+    """the rows to be inserted"""
+    objects: [stripeCheckoutSessionType_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: stripeCheckoutSessionType_on_conflict
+  ): stripeCheckoutSessionType_mutation_response
+
+  """
+  insert a single row into the table: "stripeCheckoutSessionType"
+  """
+  insert_stripeCheckoutSessionType_one(
+    """the row to be inserted"""
+    object: stripeCheckoutSessionType_insert_input!
+
+    """upsert condition"""
+    on_conflict: stripeCheckoutSessionType_on_conflict
+  ): stripeCheckoutSessionType
+
+  """
+  insert a single row into the table: "stripeCheckoutSession"
+  """
+  insert_stripeCheckoutSession_one(
+    """the row to be inserted"""
+    object: stripeCheckoutSession_insert_input!
+
+    """upsert condition"""
+    on_conflict: stripeCheckoutSession_on_conflict
+  ): stripeCheckoutSession
+
+  """
+  insert data into the table: "stripeCustomer"
+  """
+  insert_stripeCustomer(
+    """the rows to be inserted"""
+    objects: [stripeCustomer_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: stripeCustomer_on_conflict
+  ): stripeCustomer_mutation_response
+
+  """
+  insert a single row into the table: "stripeCustomer"
+  """
+  insert_stripeCustomer_one(
+    """the row to be inserted"""
+    object: stripeCustomer_insert_input!
+
+    """upsert condition"""
+    on_conflict: stripeCustomer_on_conflict
+  ): stripeCustomer
 
   """
   insert data into the table: "timezone"
@@ -12342,6 +12484,90 @@ type mutation_root {
   ): [orderStatus_mutation_response]
 
   """
+  update data of the table: "stripeCheckoutSession"
+  """
+  update_stripeCheckoutSession(
+    """sets the columns of the filtered rows to the given values"""
+    _set: stripeCheckoutSession_set_input
+
+    """filter the rows which have to be updated"""
+    where: stripeCheckoutSession_bool_exp!
+  ): stripeCheckoutSession_mutation_response
+
+  """
+  update data of the table: "stripeCheckoutSessionType"
+  """
+  update_stripeCheckoutSessionType(
+    """sets the columns of the filtered rows to the given values"""
+    _set: stripeCheckoutSessionType_set_input
+
+    """filter the rows which have to be updated"""
+    where: stripeCheckoutSessionType_bool_exp!
+  ): stripeCheckoutSessionType_mutation_response
+
+  """
+  update single row of the table: "stripeCheckoutSessionType"
+  """
+  update_stripeCheckoutSessionType_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: stripeCheckoutSessionType_set_input
+    pk_columns: stripeCheckoutSessionType_pk_columns_input!
+  ): stripeCheckoutSessionType
+
+  """
+  update multiples rows of table: "stripeCheckoutSessionType"
+  """
+  update_stripeCheckoutSessionType_many(
+    """updates to execute, in order"""
+    updates: [stripeCheckoutSessionType_updates!]!
+  ): [stripeCheckoutSessionType_mutation_response]
+
+  """
+  update single row of the table: "stripeCheckoutSession"
+  """
+  update_stripeCheckoutSession_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: stripeCheckoutSession_set_input
+    pk_columns: stripeCheckoutSession_pk_columns_input!
+  ): stripeCheckoutSession
+
+  """
+  update multiples rows of table: "stripeCheckoutSession"
+  """
+  update_stripeCheckoutSession_many(
+    """updates to execute, in order"""
+    updates: [stripeCheckoutSession_updates!]!
+  ): [stripeCheckoutSession_mutation_response]
+
+  """
+  update data of the table: "stripeCustomer"
+  """
+  update_stripeCustomer(
+    """sets the columns of the filtered rows to the given values"""
+    _set: stripeCustomer_set_input
+
+    """filter the rows which have to be updated"""
+    where: stripeCustomer_bool_exp!
+  ): stripeCustomer_mutation_response
+
+  """
+  update single row of the table: "stripeCustomer"
+  """
+  update_stripeCustomer_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: stripeCustomer_set_input
+    pk_columns: stripeCustomer_pk_columns_input!
+  ): stripeCustomer
+
+  """
+  update multiples rows of table: "stripeCustomer"
+  """
+  update_stripeCustomer_many(
+    """updates to execute, in order"""
+    updates: [stripeCustomer_updates!]!
+  ): [stripeCustomer_mutation_response]
+
+  """
   update data of the table: "timezone"
   """
   update_timezone(
@@ -13374,6 +13600,7 @@ enum orderStatus_enum {
   COMPLETED
   CONFIRMED
   ERROR
+  REFUNDED
   UNAUTHORIZED
 }
 
@@ -14498,6 +14725,148 @@ type query_root {
   ): ScheduledReleaseConnection!
 
   """
+  fetch data from the table: "stripeCheckoutSession"
+  """
+  stripeCheckoutSession(
+    """distinct select on columns"""
+    distinct_on: [stripeCheckoutSession_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCheckoutSession_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCheckoutSession_bool_exp
+  ): [stripeCheckoutSession!]!
+
+  """
+  fetch data from the table: "stripeCheckoutSessionType"
+  """
+  stripeCheckoutSessionType(
+    """distinct select on columns"""
+    distinct_on: [stripeCheckoutSessionType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCheckoutSessionType_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCheckoutSessionType_bool_exp
+  ): [stripeCheckoutSessionType!]!
+
+  """
+  fetch aggregated fields from the table: "stripeCheckoutSessionType"
+  """
+  stripeCheckoutSessionType_aggregate(
+    """distinct select on columns"""
+    distinct_on: [stripeCheckoutSessionType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCheckoutSessionType_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCheckoutSessionType_bool_exp
+  ): stripeCheckoutSessionType_aggregate!
+
+  """
+  fetch data from the table: "stripeCheckoutSessionType" using primary key columns
+  """
+  stripeCheckoutSessionType_by_pk(
+    """Type value."""
+    value: String!
+  ): stripeCheckoutSessionType
+
+  """
+  fetch aggregated fields from the table: "stripeCheckoutSession"
+  """
+  stripeCheckoutSession_aggregate(
+    """distinct select on columns"""
+    distinct_on: [stripeCheckoutSession_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCheckoutSession_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCheckoutSession_bool_exp
+  ): stripeCheckoutSession_aggregate!
+
+  """
+  fetch data from the table: "stripeCheckoutSession" using primary key columns
+  """
+  stripeCheckoutSession_by_pk(
+    """Unique identifier for the Stripe Checkout Session."""
+    stripeSessionId: String!
+  ): stripeCheckoutSession
+
+  """
+  fetch data from the table: "stripeCustomer"
+  """
+  stripeCustomer(
+    """distinct select on columns"""
+    distinct_on: [stripeCustomer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCustomer_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCustomer_bool_exp
+  ): [stripeCustomer!]!
+
+  """
+  fetch aggregated fields from the table: "stripeCustomer"
+  """
+  stripeCustomer_aggregate(
+    """distinct select on columns"""
+    distinct_on: [stripeCustomer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCustomer_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCustomer_bool_exp
+  ): stripeCustomer_aggregate!
+
+  """fetch data from the table: "stripeCustomer" using primary key columns"""
+  stripeCustomer_by_pk(
+    """Unique identifier for the Stripe Customer."""
+    stripeCustomerId: String!
+  ): stripeCustomer
+
+  """
   fetch data from the table: "timezone"
   """
   timezone(
@@ -14598,6 +14967,648 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: UserWhereInput
   ): UserConnection!
+}
+
+"""
+Table to store Stripe Checkout Sessions for tracking user checkout processes. Sessions are deleted once they are successful or expired.
+"""
+type stripeCheckoutSession {
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz!
+
+  """Stripe Customer ID referencing to the stripeCustomer table."""
+  stripeCustomerId: String!
+
+  """Unique identifier for the Stripe Checkout Session."""
+  stripeSessionId: String!
+
+  """
+  Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table.
+  """
+  type: stripeCheckoutSessionType_enum!
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz!
+}
+
+"""Types of Stripe Checkout Sessions."""
+type stripeCheckoutSessionType {
+  """Type value."""
+  value: String!
+}
+
+"""
+aggregated selection of "stripeCheckoutSessionType"
+"""
+type stripeCheckoutSessionType_aggregate {
+  aggregate: stripeCheckoutSessionType_aggregate_fields
+  nodes: [stripeCheckoutSessionType!]!
+}
+
+"""
+aggregate fields of "stripeCheckoutSessionType"
+"""
+type stripeCheckoutSessionType_aggregate_fields {
+  count(columns: [stripeCheckoutSessionType_select_column!], distinct: Boolean): Int!
+  max: stripeCheckoutSessionType_max_fields
+  min: stripeCheckoutSessionType_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "stripeCheckoutSessionType". All fields are combined with a logical 'AND'.
+"""
+input stripeCheckoutSessionType_bool_exp {
+  _and: [stripeCheckoutSessionType_bool_exp!]
+  _not: stripeCheckoutSessionType_bool_exp
+  _or: [stripeCheckoutSessionType_bool_exp!]
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "stripeCheckoutSessionType"
+"""
+enum stripeCheckoutSessionType_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  stripeCheckoutSessionType_pkey
+}
+
+enum stripeCheckoutSessionType_enum {
+  event_pass_order
+}
+
+"""
+Boolean expression to compare columns of type "stripeCheckoutSessionType_enum". All fields are combined with logical 'AND'.
+"""
+input stripeCheckoutSessionType_enum_comparison_exp {
+  _eq: stripeCheckoutSessionType_enum
+  _in: [stripeCheckoutSessionType_enum!]
+  _is_null: Boolean
+  _neq: stripeCheckoutSessionType_enum
+  _nin: [stripeCheckoutSessionType_enum!]
+}
+
+"""
+input type for inserting data into table "stripeCheckoutSessionType"
+"""
+input stripeCheckoutSessionType_insert_input {
+  """Type value."""
+  value: String
+}
+
+"""aggregate max on columns"""
+type stripeCheckoutSessionType_max_fields {
+  """Type value."""
+  value: String
+}
+
+"""aggregate min on columns"""
+type stripeCheckoutSessionType_min_fields {
+  """Type value."""
+  value: String
+}
+
+"""
+response of any mutation on the table "stripeCheckoutSessionType"
+"""
+type stripeCheckoutSessionType_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [stripeCheckoutSessionType!]!
+}
+
+"""
+on_conflict condition type for table "stripeCheckoutSessionType"
+"""
+input stripeCheckoutSessionType_on_conflict {
+  constraint: stripeCheckoutSessionType_constraint!
+  update_columns: [stripeCheckoutSessionType_update_column!]! = []
+  where: stripeCheckoutSessionType_bool_exp
+}
+
+"""Ordering options when selecting data from "stripeCheckoutSessionType"."""
+input stripeCheckoutSessionType_order_by {
+  value: order_by
+}
+
+"""primary key columns input for table: stripeCheckoutSessionType"""
+input stripeCheckoutSessionType_pk_columns_input {
+  """Type value."""
+  value: String!
+}
+
+"""
+select columns of table "stripeCheckoutSessionType"
+"""
+enum stripeCheckoutSessionType_select_column {
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "stripeCheckoutSessionType"
+"""
+input stripeCheckoutSessionType_set_input {
+  """Type value."""
+  value: String
+}
+
+"""
+Streaming cursor of the table "stripeCheckoutSessionType"
+"""
+input stripeCheckoutSessionType_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: stripeCheckoutSessionType_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input stripeCheckoutSessionType_stream_cursor_value_input {
+  """Type value."""
+  value: String
+}
+
+"""
+update columns of table "stripeCheckoutSessionType"
+"""
+enum stripeCheckoutSessionType_update_column {
+  """column name"""
+  value
+}
+
+input stripeCheckoutSessionType_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: stripeCheckoutSessionType_set_input
+
+  """filter the rows which have to be updated"""
+  where: stripeCheckoutSessionType_bool_exp!
+}
+
+"""
+aggregated selection of "stripeCheckoutSession"
+"""
+type stripeCheckoutSession_aggregate {
+  aggregate: stripeCheckoutSession_aggregate_fields
+  nodes: [stripeCheckoutSession!]!
+}
+
+"""
+aggregate fields of "stripeCheckoutSession"
+"""
+type stripeCheckoutSession_aggregate_fields {
+  count(columns: [stripeCheckoutSession_select_column!], distinct: Boolean): Int!
+  max: stripeCheckoutSession_max_fields
+  min: stripeCheckoutSession_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "stripeCheckoutSession". All fields are combined with a logical 'AND'.
+"""
+input stripeCheckoutSession_bool_exp {
+  _and: [stripeCheckoutSession_bool_exp!]
+  _not: stripeCheckoutSession_bool_exp
+  _or: [stripeCheckoutSession_bool_exp!]
+  created_at: timestamptz_comparison_exp
+  stripeCustomerId: String_comparison_exp
+  stripeSessionId: String_comparison_exp
+  type: stripeCheckoutSessionType_enum_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "stripeCheckoutSession"
+"""
+enum stripeCheckoutSession_constraint {
+  """
+  unique or primary key constraint on columns "stripeSessionId"
+  """
+  stripeCheckoutSession_pkey
+}
+
+"""
+input type for inserting data into table "stripeCheckoutSession"
+"""
+input stripeCheckoutSession_insert_input {
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz
+
+  """Stripe Customer ID referencing to the stripeCustomer table."""
+  stripeCustomerId: String
+
+  """Unique identifier for the Stripe Checkout Session."""
+  stripeSessionId: String
+
+  """
+  Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table.
+  """
+  type: stripeCheckoutSessionType_enum
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type stripeCheckoutSession_max_fields {
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz
+
+  """Stripe Customer ID referencing to the stripeCustomer table."""
+  stripeCustomerId: String
+
+  """Unique identifier for the Stripe Checkout Session."""
+  stripeSessionId: String
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type stripeCheckoutSession_min_fields {
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz
+
+  """Stripe Customer ID referencing to the stripeCustomer table."""
+  stripeCustomerId: String
+
+  """Unique identifier for the Stripe Checkout Session."""
+  stripeSessionId: String
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "stripeCheckoutSession"
+"""
+type stripeCheckoutSession_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [stripeCheckoutSession!]!
+}
+
+"""
+on_conflict condition type for table "stripeCheckoutSession"
+"""
+input stripeCheckoutSession_on_conflict {
+  constraint: stripeCheckoutSession_constraint!
+  update_columns: [stripeCheckoutSession_update_column!]! = []
+  where: stripeCheckoutSession_bool_exp
+}
+
+"""Ordering options when selecting data from "stripeCheckoutSession"."""
+input stripeCheckoutSession_order_by {
+  created_at: order_by
+  stripeCustomerId: order_by
+  stripeSessionId: order_by
+  type: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: stripeCheckoutSession"""
+input stripeCheckoutSession_pk_columns_input {
+  """Unique identifier for the Stripe Checkout Session."""
+  stripeSessionId: String!
+}
+
+"""
+select columns of table "stripeCheckoutSession"
+"""
+enum stripeCheckoutSession_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  stripeCustomerId
+
+  """column name"""
+  stripeSessionId
+
+  """column name"""
+  type
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "stripeCheckoutSession"
+"""
+input stripeCheckoutSession_set_input {
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz
+
+  """Stripe Customer ID referencing to the stripeCustomer table."""
+  stripeCustomerId: String
+
+  """Unique identifier for the Stripe Checkout Session."""
+  stripeSessionId: String
+
+  """
+  Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table.
+  """
+  type: stripeCheckoutSessionType_enum
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz
+}
+
+"""
+Streaming cursor of the table "stripeCheckoutSession"
+"""
+input stripeCheckoutSession_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: stripeCheckoutSession_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input stripeCheckoutSession_stream_cursor_value_input {
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz
+
+  """Stripe Customer ID referencing to the stripeCustomer table."""
+  stripeCustomerId: String
+
+  """Unique identifier for the Stripe Checkout Session."""
+  stripeSessionId: String
+
+  """
+  Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table.
+  """
+  type: stripeCheckoutSessionType_enum
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "stripeCheckoutSession"
+"""
+enum stripeCheckoutSession_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  stripeCustomerId
+
+  """column name"""
+  stripeSessionId
+
+  """column name"""
+  type
+
+  """column name"""
+  updated_at
+}
+
+input stripeCheckoutSession_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: stripeCheckoutSession_set_input
+
+  """filter the rows which have to be updated"""
+  where: stripeCheckoutSession_bool_exp!
+}
+
+"""
+Table to store Stripe Customer IDs for tracking user payment processes.
+"""
+type stripeCustomer {
+  """UUID referencing to the account ID in the existing accounts table."""
+  accountId: uuid!
+
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz!
+
+  """Unique identifier for the Stripe Customer."""
+  stripeCustomerId: String!
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "stripeCustomer"
+"""
+type stripeCustomer_aggregate {
+  aggregate: stripeCustomer_aggregate_fields
+  nodes: [stripeCustomer!]!
+}
+
+"""
+aggregate fields of "stripeCustomer"
+"""
+type stripeCustomer_aggregate_fields {
+  count(columns: [stripeCustomer_select_column!], distinct: Boolean): Int!
+  max: stripeCustomer_max_fields
+  min: stripeCustomer_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "stripeCustomer". All fields are combined with a logical 'AND'.
+"""
+input stripeCustomer_bool_exp {
+  _and: [stripeCustomer_bool_exp!]
+  _not: stripeCustomer_bool_exp
+  _or: [stripeCustomer_bool_exp!]
+  accountId: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  stripeCustomerId: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "stripeCustomer"
+"""
+enum stripeCustomer_constraint {
+  """
+  unique or primary key constraint on columns "stripeCustomerId"
+  """
+  stripeCustomer_pkey
+}
+
+"""
+input type for inserting data into table "stripeCustomer"
+"""
+input stripeCustomer_insert_input {
+  """UUID referencing to the account ID in the existing accounts table."""
+  accountId: uuid
+
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz
+
+  """Unique identifier for the Stripe Customer."""
+  stripeCustomerId: String
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type stripeCustomer_max_fields {
+  """UUID referencing to the account ID in the existing accounts table."""
+  accountId: uuid
+
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz
+
+  """Unique identifier for the Stripe Customer."""
+  stripeCustomerId: String
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type stripeCustomer_min_fields {
+  """UUID referencing to the account ID in the existing accounts table."""
+  accountId: uuid
+
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz
+
+  """Unique identifier for the Stripe Customer."""
+  stripeCustomerId: String
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "stripeCustomer"
+"""
+type stripeCustomer_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [stripeCustomer!]!
+}
+
+"""
+input type for inserting object relation for remote table "stripeCustomer"
+"""
+input stripeCustomer_obj_rel_insert_input {
+  data: stripeCustomer_insert_input!
+
+  """upsert condition"""
+  on_conflict: stripeCustomer_on_conflict
+}
+
+"""
+on_conflict condition type for table "stripeCustomer"
+"""
+input stripeCustomer_on_conflict {
+  constraint: stripeCustomer_constraint!
+  update_columns: [stripeCustomer_update_column!]! = []
+  where: stripeCustomer_bool_exp
+}
+
+"""Ordering options when selecting data from "stripeCustomer"."""
+input stripeCustomer_order_by {
+  accountId: order_by
+  created_at: order_by
+  stripeCustomerId: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: stripeCustomer"""
+input stripeCustomer_pk_columns_input {
+  """Unique identifier for the Stripe Customer."""
+  stripeCustomerId: String!
+}
+
+"""
+select columns of table "stripeCustomer"
+"""
+enum stripeCustomer_select_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  stripeCustomerId
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "stripeCustomer"
+"""
+input stripeCustomer_set_input {
+  """UUID referencing to the account ID in the existing accounts table."""
+  accountId: uuid
+
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz
+
+  """Unique identifier for the Stripe Customer."""
+  stripeCustomerId: String
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz
+}
+
+"""
+Streaming cursor of the table "stripeCustomer"
+"""
+input stripeCustomer_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: stripeCustomer_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input stripeCustomer_stream_cursor_value_input {
+  """UUID referencing to the account ID in the existing accounts table."""
+  accountId: uuid
+
+  """Timestamp automatically set when the row is created."""
+  created_at: timestamptz
+
+  """Unique identifier for the Stripe Customer."""
+  stripeCustomerId: String
+
+  """Timestamp automatically updated whenever the row changes."""
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "stripeCustomer"
+"""
+enum stripeCustomer_update_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  stripeCustomerId
+
+  """column name"""
+  updated_at
+}
+
+input stripeCustomer_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: stripeCustomer_set_input
+
+  """filter the rows which have to be updated"""
+  where: stripeCustomer_bool_exp!
 }
 
 type subscription_root {
@@ -15402,6 +16413,190 @@ type subscription_root {
     """filter the rows returned"""
     where: orderStatus_bool_exp
   ): [orderStatus!]!
+
+  """
+  fetch data from the table: "stripeCheckoutSession"
+  """
+  stripeCheckoutSession(
+    """distinct select on columns"""
+    distinct_on: [stripeCheckoutSession_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCheckoutSession_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCheckoutSession_bool_exp
+  ): [stripeCheckoutSession!]!
+
+  """
+  fetch data from the table: "stripeCheckoutSessionType"
+  """
+  stripeCheckoutSessionType(
+    """distinct select on columns"""
+    distinct_on: [stripeCheckoutSessionType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCheckoutSessionType_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCheckoutSessionType_bool_exp
+  ): [stripeCheckoutSessionType!]!
+
+  """
+  fetch aggregated fields from the table: "stripeCheckoutSessionType"
+  """
+  stripeCheckoutSessionType_aggregate(
+    """distinct select on columns"""
+    distinct_on: [stripeCheckoutSessionType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCheckoutSessionType_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCheckoutSessionType_bool_exp
+  ): stripeCheckoutSessionType_aggregate!
+
+  """
+  fetch data from the table: "stripeCheckoutSessionType" using primary key columns
+  """
+  stripeCheckoutSessionType_by_pk(
+    """Type value."""
+    value: String!
+  ): stripeCheckoutSessionType
+
+  """
+  fetch data from the table in a streaming manner: "stripeCheckoutSessionType"
+  """
+  stripeCheckoutSessionType_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [stripeCheckoutSessionType_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: stripeCheckoutSessionType_bool_exp
+  ): [stripeCheckoutSessionType!]!
+
+  """
+  fetch aggregated fields from the table: "stripeCheckoutSession"
+  """
+  stripeCheckoutSession_aggregate(
+    """distinct select on columns"""
+    distinct_on: [stripeCheckoutSession_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCheckoutSession_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCheckoutSession_bool_exp
+  ): stripeCheckoutSession_aggregate!
+
+  """
+  fetch data from the table: "stripeCheckoutSession" using primary key columns
+  """
+  stripeCheckoutSession_by_pk(
+    """Unique identifier for the Stripe Checkout Session."""
+    stripeSessionId: String!
+  ): stripeCheckoutSession
+
+  """
+  fetch data from the table in a streaming manner: "stripeCheckoutSession"
+  """
+  stripeCheckoutSession_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [stripeCheckoutSession_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: stripeCheckoutSession_bool_exp
+  ): [stripeCheckoutSession!]!
+
+  """
+  fetch data from the table: "stripeCustomer"
+  """
+  stripeCustomer(
+    """distinct select on columns"""
+    distinct_on: [stripeCustomer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCustomer_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCustomer_bool_exp
+  ): [stripeCustomer!]!
+
+  """
+  fetch aggregated fields from the table: "stripeCustomer"
+  """
+  stripeCustomer_aggregate(
+    """distinct select on columns"""
+    distinct_on: [stripeCustomer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [stripeCustomer_order_by!]
+
+    """filter the rows returned"""
+    where: stripeCustomer_bool_exp
+  ): stripeCustomer_aggregate!
+
+  """fetch data from the table: "stripeCustomer" using primary key columns"""
+  stripeCustomer_by_pk(
+    """Unique identifier for the Stripe Customer."""
+    stripeCustomerId: String!
+  ): stripeCustomer
+
+  """
+  fetch data from the table in a streaming manner: "stripeCustomer"
+  """
+  stripeCustomer_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [stripeCustomer_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: stripeCustomer_bool_exp
+  ): [stripeCustomer!]!
 
   """
   fetch data from the table: "timezone"
