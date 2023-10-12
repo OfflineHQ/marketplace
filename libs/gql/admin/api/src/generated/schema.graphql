@@ -6753,6 +6753,7 @@ type eventParameters {
     where: OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer!
   ): Organizer
   organizerId: String!
+  signingKey: String
   timezone: String
 }
 
@@ -6792,6 +6793,7 @@ input eventParameters_bool_exp {
   eventPassNfts_aggregate: eventPassNft_aggregate_bool_exp
   id: uuid_comparison_exp
   organizerId: String_comparison_exp
+  signingKey: String_comparison_exp
   timezone: String_comparison_exp
 }
 
@@ -6829,6 +6831,7 @@ input eventParameters_insert_input {
   eventPassNfts: eventPassNft_arr_rel_insert_input
   id: uuid
   organizerId: String
+  signingKey: String
   timezone: String
 }
 
@@ -6842,6 +6845,7 @@ type eventParameters_max_fields {
   eventId: String
   id: uuid
   organizerId: String
+  signingKey: String
   timezone: String
 }
 
@@ -6855,6 +6859,7 @@ type eventParameters_min_fields {
   eventId: String
   id: uuid
   organizerId: String
+  signingKey: String
   timezone: String
 }
 
@@ -6900,6 +6905,7 @@ input eventParameters_order_by {
   eventPassNfts_aggregate: eventPassNft_aggregate_order_by
   id: order_by
   organizerId: order_by
+  signingKey: order_by
   timezone: order_by
 }
 
@@ -6937,6 +6943,9 @@ enum eventParameters_select_column {
   organizerId
 
   """column name"""
+  signingKey
+
+  """column name"""
   timezone
 }
 
@@ -6952,6 +6961,7 @@ input eventParameters_set_input {
   eventId: String
   id: uuid
   organizerId: String
+  signingKey: String
   timezone: String
 }
 
@@ -6976,6 +6986,7 @@ input eventParameters_stream_cursor_value_input {
   eventId: String
   id: uuid
   organizerId: String
+  signingKey: String
   timezone: String
 }
 
@@ -7006,6 +7017,9 @@ enum eventParameters_update_column {
 
   """column name"""
   organizerId
+
+  """column name"""
+  signingKey
 
   """column name"""
   timezone

@@ -4885,6 +4885,7 @@ export type EventParameters = {
   id: Scalars['uuid'];
   organizer?: Maybe<Organizer>;
   organizerId: Scalars['String'];
+  signingKey?: Maybe<Scalars['String']>;
   timezone?: Maybe<Scalars['String']>;
 };
 
@@ -4983,6 +4984,7 @@ export type EventParameters_Bool_Exp = {
   eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
+  signingKey?: InputMaybe<String_Comparison_Exp>;
   timezone?: InputMaybe<String_Comparison_Exp>;
 };
 
@@ -5008,6 +5010,7 @@ export type EventParameters_Insert_Input = {
   eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  signingKey?: InputMaybe<Scalars['String']>;
   timezone?: InputMaybe<Scalars['String']>;
 };
 
@@ -5022,6 +5025,7 @@ export type EventParameters_Max_Fields = {
   eventId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   organizerId?: Maybe<Scalars['String']>;
+  signingKey?: Maybe<Scalars['String']>;
   timezone?: Maybe<Scalars['String']>;
 };
 
@@ -5036,6 +5040,7 @@ export type EventParameters_Min_Fields = {
   eventId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   organizerId?: Maybe<Scalars['String']>;
+  signingKey?: Maybe<Scalars['String']>;
   timezone?: Maybe<Scalars['String']>;
 };
 
@@ -5074,6 +5079,7 @@ export type EventParameters_Order_By = {
   eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  signingKey?: InputMaybe<Order_By>;
   timezone?: InputMaybe<Order_By>;
 };
 
@@ -5101,6 +5107,8 @@ export const enum EventParameters_Select_Column {
   /** column name */
   OrganizerId = 'organizerId',
   /** column name */
+  SigningKey = 'signingKey',
+  /** column name */
   Timezone = 'timezone'
 };
 
@@ -5114,6 +5122,7 @@ export type EventParameters_Set_Input = {
   eventId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  signingKey?: InputMaybe<Scalars['String']>;
   timezone?: InputMaybe<Scalars['String']>;
 };
 
@@ -5135,6 +5144,7 @@ export type EventParameters_Stream_Cursor_Value_Input = {
   eventId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  signingKey?: InputMaybe<Scalars['String']>;
   timezone?: InputMaybe<Scalars['String']>;
 };
 
@@ -5156,6 +5166,8 @@ export const enum EventParameters_Update_Column {
   Id = 'id',
   /** column name */
   OrganizerId = 'organizerId',
+  /** column name */
+  SigningKey = 'signingKey',
   /** column name */
   Timezone = 'timezone'
 };
