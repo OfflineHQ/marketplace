@@ -5,6 +5,12 @@ import { extractNftTransfersFromEvent, nftActivity } from './nftActivity';
 import { createMockAlchemyRequest } from './testUtils';
 import { isValidSignatureForAlchemyRequest } from './utils';
 
+// Mock the getSigningKeyFromEventId function
+jest.mock('@features/pass-api', () => ({
+  getSigningKeyFromEventId: jest
+    .fn()
+    .mockResolvedValue({ signingKey: 'fake-signing-key' }),
+}));
 // Mock implementations
 jest.mock('./utils', () => ({
   isValidSignatureForAlchemyRequest: jest.fn().mockReturnValue(true),
