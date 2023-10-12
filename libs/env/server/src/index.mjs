@@ -38,7 +38,7 @@ const env = createEnv({
     FIXER_CURRENCY_API_KEY: z.string().min(1),
     EXCHANGE_RATE_API_KEY: z.string().min(1),
     OPENZEPPELIN_URL: z.string().min(1),
-    WEB_APP_URL: z.string().min(1),
+    WEB_APP_URL: z.string().optional(),
   },
   runtimeEnv: {
     APP: process.env.APP,
