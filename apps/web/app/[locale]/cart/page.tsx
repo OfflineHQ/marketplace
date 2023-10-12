@@ -1,19 +1,22 @@
 export const dynamic = 'force-dynamic';
+import { EventPassesAnonymous, EventPassesUser } from '@features/cart';
 import {
-  EventPassListSkeleton,
-  EventPassesAnonymous,
-  EventPassesUser,
-} from '@features/cart';
-import { NoUserCart, UserCart } from '@features/cart/server';
+  NoUserCart,
+  UserCart,
+  UserCartProps,
+  getEventPassOrdersConfirmed,
+  getEventPassPendingOrders,
+} from '@features/cart/server';
 import { SumsubButton } from '@features/kyc/server';
 import { Locale } from '@gql/shared/types';
 import { isUserKycValidated } from '@kyc/common';
+import { Link, redirect } from '@next/navigation';
 import { getCurrentUser } from '@next/next-auth/user';
 import { AppUser } from '@next/types';
 import { Button } from '@ui/components';
 import { Cart } from '@ui/icons';
 import { useTranslations } from 'next-intl';
-import { FC, Suspense } from 'react';
+import { FC } from 'react';
 
 interface CartSectionProps {
   params: {
@@ -21,29 +24,41 @@ interface CartSectionProps {
   };
 }
 
-interface CartSectionContentProps {
+interface CartSectionContentProps
+  extends Pick<UserCartProps, 'userPassPendingOrders'> {
   user: AppUser | undefined;
   locale: Locale;
 }
 
-const CartSectionContent: FC<CartSectionContentProps> = ({ user, locale }) => {
+const CartSectionContent: FC<CartSectionContentProps> = ({
+  user,
+  locale,
+  userPassPendingOrders,
+}) => {
   const t = useTranslations('Cart.UserCart');
-
+  const isEmptyCart = !userPassPendingOrders?.length;
   return user ? (
     <UserCart
       user={user}
       EventPassesFetcher={EventPassesUser}
       locale={locale}
+      userPassPendingOrders={userPassPendingOrders}
       noCartImage="/empty-cart.svg"
     >
       {isUserKycValidated(user) ? (
-        <Button>{t('finalize-button')}</Button>
+        <Link href={isEmptyCart ? '/cart' : '/cart/purchase'} legacyBehavior>
+          <Button disabled={isEmptyCart} icon={<Cart />}>
+            {t('finalize-button')}
+          </Button>
+        </Link>
       ) : (
         <SumsubButton
           locale={locale}
-          confirmedText={t('finalize-button')}
-          confirmedLink={{ href: '/cart/purchase' }}
-          confirmedIcon={<Cart />}
+          confirmedText={
+            isEmptyCart ? t('continue-button') : t('finalize-button')
+          }
+          confirmedLink={{ href: isEmptyCart ? '/cart' : '/cart/purchase' }}
+          confirmedIcon={isEmptyCart ? undefined : <Cart />}
         />
       )}
     </UserCart>
@@ -59,9 +74,16 @@ export default async function CartSection({
   params: { locale },
 }: CartSectionProps) {
   const user = await getCurrentUser();
+  const userPassPendingOrders = await getEventPassPendingOrders({ locale });
+  const userPassConfirmedOrders = await getEventPassOrdersConfirmed();
+  if (userPassConfirmedOrders?.length) {
+    redirect('/cart/purchase');
+  }
   return (
-    <Suspense fallback={<EventPassListSkeleton />}>
-      <CartSectionContent user={user} locale={locale} />
-    </Suspense>
+    <CartSectionContent
+      user={user}
+      locale={locale}
+      userPassPendingOrders={userPassPendingOrders}
+    />
   );
 }

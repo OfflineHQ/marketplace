@@ -37,7 +37,6 @@ export const NoUserPass: React.FC<NoUserPassProps> = ({
 }) => {
   const activeTab = useSelectedLayoutSegment();
   // getLocalCart();
-  console.log({ activeTab });
   return (
     <section className="container">
       <Card variant="stickyFooter" noBorder>

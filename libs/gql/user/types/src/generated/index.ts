@@ -25,6 +25,11 @@ export type GetEventWithPassesQueryVariables = Types.Exact<{
 
 export type GetEventWithPassesQuery = { __typename?: 'query_root', event?: { __typename?: 'Event', id: string, slug: string, title: string, heroImage: { __typename?: 'Asset', url: string }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, image: { __typename?: 'Asset', url: string } } | null, eventPasses: Array<{ __typename?: 'EventPass', id: string, name: string, description: string, eventPassPricing?: { __typename?: 'eventPassPricing', priceAmount: number, priceCurrency: Types.Currency_Enum } | null }> } | null };
 
+export type GetEventPassOrdersConfirmedQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetEventPassOrdersConfirmedQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number }> };
+
 export type InsertEventPassPendingOrdersMutationVariables = Types.Exact<{
   objects: Array<Types.EventPassPendingOrder_Insert_Input> | Types.EventPassPendingOrder_Insert_Input;
 }>;
@@ -60,6 +65,11 @@ export type GetEventPassPendingOrdersQueryVariables = Types.Exact<{
 
 
 export type GetEventPassPendingOrdersQuery = { __typename?: 'query_root', eventPassPendingOrder: Array<{ __typename?: 'eventPassPendingOrder', id: any, eventPassId: string, quantity: number, created_at: any, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> };
+
+export type GetEventPassPendingOrdersMinimalQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetEventPassPendingOrdersMinimalQuery = { __typename?: 'query_root', eventPassPendingOrder: Array<{ __typename?: 'eventPassPendingOrder', eventPassId: string, quantity: number }> };
 
 export type GetKycQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
