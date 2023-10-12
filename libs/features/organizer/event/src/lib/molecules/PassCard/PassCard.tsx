@@ -11,17 +11,16 @@ import {
   CardTitle,
   CardTitleSkeleton,
   Separator,
-  Text,
   TextSkeleton,
 } from '@ui/components';
 import React from 'react';
 
 import { defaultLocale, messages, type Locale } from '@next/i18n';
 import { deepPick } from '@utils';
-import { NextIntlClientProvider, useFormatter, useLocale } from 'next-intl';
+import { NextIntlClientProvider, useLocale } from 'next-intl';
 import Image from 'next/image';
 
-import { formatCurrency, useCurrency } from '@next/currency';
+import { ConvertedCurrency } from '@next/currency';
 
 import type { EventPass } from '@features/organizer/event-types';
 import { PassOptions } from '../PassOptions/PassOptions';
@@ -40,9 +39,7 @@ export const PassCard: React.FC<PassCardProps> = ({
   className,
   ...props
 }) => {
-  const format = useFormatter();
   const _locale = useLocale();
-  const { rates, isLoading } = useCurrency();
   const locale: Locale = (_locale as Locale) || defaultLocale;
   const localeMessages = deepPick(messages[locale], [
     'Organizer.Event.PassPurchase.Pass',
@@ -66,16 +63,11 @@ export const PassCard: React.FC<PassCardProps> = ({
         <PassOptions passOptions={passOptions || []} />
       </CardHeader>
       <CardFooter className="flex items-center justify-between">
-        <Text variant="h5">
-          {formatCurrency(
-            format,
-            {
-              amount: eventPassPricing?.priceAmount || 0,
-              currency: eventPassPricing?.priceCurrency,
-            },
-            rates
-          )}
-        </Text>
+        <ConvertedCurrency
+          variant="h5"
+          currency={eventPassPricing?.priceCurrency}
+          amount={eventPassPricing?.priceAmount || 0}
+        />
         <NextIntlClientProvider locale={locale} messages={localeMessages}>
           <PassCardSelect {...props} eventPassPricing={eventPassPricing} />
         </NextIntlClientProvider>
