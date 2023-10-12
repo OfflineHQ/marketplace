@@ -1,0 +1,4 @@
+fragment StripeCustomerFields on stripeCustomer {
+  stripeCustomerId
+  accountId
+}

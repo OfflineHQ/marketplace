@@ -1,6 +1,6 @@
 import Currency from '@currency/api';
 import { Currency_Enum_Not_Const } from '@currency/types';
-import Cache from '@next/cache';
+import { Cache } from '@next/cache';
 import { getRate, setRate, setRates } from './next-currency-cache';
 
 jest.mock('@currency/api');
