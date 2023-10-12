@@ -1,6 +1,7 @@
 import type { EventCart } from '@features/cart-types';
 import type { EventPassCart } from '@features/organizer/event-types';
-import { formatCurrency, useCurrency } from '@next/currency';
+import { formatCurrency } from '@next/currency';
+import { useCurrency } from '@next/currency-provider';
 import {
   AccordionContent,
   AccordionItem,
