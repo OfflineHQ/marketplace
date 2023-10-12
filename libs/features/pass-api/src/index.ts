@@ -6,4 +6,4 @@ export { getPassedEventsWithEventPassNfts } from './lib/getPassedEventsWithEvent
 export { getSigningKeyFromEventId } from './lib/getSigningKeyFromEventId';
 export { getUpcomingEventsWithEventPassNfts } from './lib/getUpcomingEventsWithEventPassNfts';
 export { revealPass } from './lib/revealPass';
-export * from './lib/transferPassQrCodeBatch';
+export { transferPassQrCodeBatch } from './lib/transferPassQrCodeBatch';
