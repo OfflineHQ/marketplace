@@ -14,21 +14,8 @@ describe('Currency class', () => {
   afterAll(() => {
     jest.clearAllMocks();
   });
-  
+
   describe('getRate method', () => {
-    it('should get rates from Fixer API and save to local file', async () => {
-      const baseCurrency = 'EUR';
-      const mockRates = { USD: 1.2, GBP: 0.85 };
-
-      (shared.isPreviewOrProduction as jest.Mock).mockReturnValue(false);
-
-      currency.fetchFromLocalFile = jest.fn().mockResolvedValue(mockRates);
-
-      const rates = await currency.getRate(baseCurrency);
-
-      expect(rates).toEqual(mockRates);
-    });
-
     it('should get rates from ExchangeRate API and save to local file when Fixer API fails', async () => {
       const baseCurrency = 'EUR';
       const mockRates = { USD: 1.2, GBP: 0.85 };

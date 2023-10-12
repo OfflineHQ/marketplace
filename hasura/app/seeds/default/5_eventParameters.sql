@@ -11,7 +11,8 @@ INSERT INTO
 		"dateSaleStart",
 		"dateSaleEnd",
 		"organizerId",
-		"timezone"
+		"timezone",
+		'signingKey'
 	)
 VALUES
 	(
@@ -24,4 +25,5 @@ VALUES
 		'2023-08-24 12:00:00.0',
 		'clizzky8kap2t0bw7wka9a2id',
 		'Europe/London'
+		'fake-signing-key'
 	);
