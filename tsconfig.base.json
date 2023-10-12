@@ -108,9 +108,6 @@
       "@features/pass-common": [
         "libs/features/pass-common/src/index.ts"
       ],
-      "@features/pass-common/server": [
-        "libs/features/pass-common/src/server.ts"
-      ],
       "@features/pass-types": [
         "libs/features/pass-types/src/index.ts"
       ],

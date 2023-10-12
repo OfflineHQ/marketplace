@@ -1,5 +1,4 @@
-import env from '@env/client';
-
+// TODO: use env, shouldn't use client and server side env indifferently
 type GetEventPassOrganizerFolderPath = {
   organizerId: string;
   eventId: string;
@@ -18,7 +17,9 @@ export const getEventPassOrganizerFolderPath = ({
   eventId,
   eventPassId,
 }: GetEventPassOrganizerFolderPath) => {
-  return `/${env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX}/organizers/${organizerId}/events/${eventId}/${eventPassId}`;
+  return `/${
+    process.env.UPLOAD_PATH_PREFIX || process.env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX
+  }/organizers/${organizerId}/events/${eventId}/${eventPassId}`;
 };
 
 export const getPassOrganizer = ({
@@ -41,5 +42,7 @@ export const getPassUser = ({
   eventPassId,
   tokenId,
 }: GetPassUser) => {
-  return `/${env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX}/users/${address}/${organizerId}/events/${eventId}/${eventPassId}/${eventId}-${eventPassId}-${tokenId}`;
+  return `/${
+    process.env.UPLOAD_PATH_PREFIX || process.env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX
+  }/users/${address}/${organizerId}/events/${eventId}/${eventPassId}/${eventId}-${eventPassId}-${tokenId}`;
 };
