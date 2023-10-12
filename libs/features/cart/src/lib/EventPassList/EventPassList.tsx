@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Accordion } from '@ui/components';
 import type {
   AllPassesCart,
   EventSlugs,
 } from '@features/organizer/event-types';
+import { Accordion } from '@ui/components';
 import { EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { type EventPassesAnonymousProps } from '../EventPasses/EventPassesAnonymous';
 
@@ -44,7 +44,7 @@ export const EventPassListSkeleton: React.FC = () => {
   const skeletonItemsCount = 3;
 
   return (
-    <Accordion type="multiple">
+    <Accordion type="multiple" className="w-full">
       {Array.from({ length: skeletonItemsCount }).map((_, index) => (
         <div key={index}>
           <EventPassesSkeleton />
