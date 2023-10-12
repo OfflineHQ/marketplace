@@ -48,7 +48,7 @@ export class Payment {
   async getStripeCustomer({ stripeCustomerId }: { stripeCustomerId: string }) {
     return this.stripe.customers.retrieve(stripeCustomerId);
   }
-  async createStripeCustomer({ user }: { user: AppUser }) {
+  async getOrCreateStripeCustomer({ user }: { user: AppUser }) {
     const { kyc } = user;
     if (!kyc) throw new Error(`Missing kyc for user: ${user.id}`);
     const existingStripeCustomer = await adminSdk.GetStripeCustomerByAccount({
@@ -215,7 +215,7 @@ export class Payment {
         `User: ${user.id} already has an active checkout session: ${existingStripeCheckoutSession.stripeCheckoutSession[0].stripeSessionId}`
       );
     const success_url = `${this.baseUrl}/cart/success`;
-    const cancel_url = `${this.baseUrl}/cart`;
+    const cancel_url = `${this.baseUrl}/cart/canceled`;
     const orders = await this.moveEventPassPendingOrdersToConfirmed({
       eventPassPendingOrders,
       accountId: user.id,

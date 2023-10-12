@@ -58,7 +58,8 @@
     },
     "Cart": {
       "text": "Panier",
-      "helper-text": "Accédez à votre panier"
+      "helper-text": "Accédez à votre panier",
+      "helper-text-purchase": "Terminez votre achat"
     }
   },
   "Cart": {
@@ -70,7 +71,8 @@
     "UserCart": {
       "title": "Panier",
       "description": "Validez votre panier pour procéder au paiement",
-      "finalize-button": "Procéder au paiement"
+      "finalize-button": "Procéder au paiement",
+      "continue-button": "Continuer"
     },
     "List": {
       "Event": {

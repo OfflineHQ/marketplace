@@ -87,11 +87,11 @@ describe('Payment', () => {
       ).rejects.toThrow('Stripe error');
     });
   });
-  describe('createStripeCustomer', () => {
+  describe('getOrCreateStripeCustomer', () => {
     it('should throw error when user kyc is missing', async () => {
       const user = { id: 'userId', address: 'address' };
       await expect(
-        payment.createStripeCustomer({ user: accounts.google_user })
+        payment.getOrCreateStripeCustomer({ user: accounts.google_user })
       ).rejects.toThrow(`Missing kyc for user: ${accounts.google_user.id}`);
     });
 
@@ -100,7 +100,7 @@ describe('Payment', () => {
       adminSdk.GetStripeCustomerByAccount = jest
         .fn()
         .mockResolvedValue(existingStripeCustomer);
-      const result = await payment.createStripeCustomer({
+      const result = await payment.getOrCreateStripeCustomer({
         user: accounts.alpha_user,
       });
       expect(result).toEqual(existingStripeCustomer.stripeCustomer[0]);
@@ -137,7 +137,7 @@ describe('Payment', () => {
         .fn()
         .mockResolvedValue(createdStripeCustomer);
 
-      const result = await payment.createStripeCustomer({
+      const result = await payment.getOrCreateStripeCustomer({
         user: accounts.alpha_user,
       });
 

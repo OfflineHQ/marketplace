@@ -7116,6 +7116,7 @@ Order with as quantity for Event Pass (linked to Hygraph model EventPass) and as
 type eventPassOrder {
   """An object relationship"""
   account: account
+  accountId: uuid!
   created_at: timestamptz!
   eventPass(
     """
@@ -7139,6 +7140,7 @@ type eventPassOrder {
   id: uuid!
   quantity: Int!
   status: orderStatus_enum!
+  stripeCheckoutSessionId: String
   updated_at: timestamptz!
 }
 
@@ -7266,6 +7268,7 @@ input eventPassOrder_bool_exp {
   _not: eventPassOrder_bool_exp
   _or: [eventPassOrder_bool_exp!]
   account: account_bool_exp
+  accountId: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
   eventPassId: String_comparison_exp
   eventPassNftContract: eventPassNftContract_bool_exp
@@ -7273,15 +7276,18 @@ input eventPassOrder_bool_exp {
   id: uuid_comparison_exp
   quantity: Int_comparison_exp
   status: orderStatus_enum_comparison_exp
+  stripeCheckoutSessionId: String_comparison_exp
   updated_at: timestamptz_comparison_exp
 }
 
 """aggregate max on columns"""
 type eventPassOrder_max_fields {
+  accountId: uuid
   created_at: timestamptz
   eventPassId: String
   id: uuid
   quantity: Int
+  stripeCheckoutSessionId: String
   updated_at: timestamptz
 }
 
@@ -7289,19 +7295,23 @@ type eventPassOrder_max_fields {
 order by max() on columns of table "eventPassOrder"
 """
 input eventPassOrder_max_order_by {
+  accountId: order_by
   created_at: order_by
   eventPassId: order_by
   id: order_by
   quantity: order_by
+  stripeCheckoutSessionId: order_by
   updated_at: order_by
 }
 
 """aggregate min on columns"""
 type eventPassOrder_min_fields {
+  accountId: uuid
   created_at: timestamptz
   eventPassId: String
   id: uuid
   quantity: Int
+  stripeCheckoutSessionId: String
   updated_at: timestamptz
 }
 
@@ -7309,16 +7319,19 @@ type eventPassOrder_min_fields {
 order by min() on columns of table "eventPassOrder"
 """
 input eventPassOrder_min_order_by {
+  accountId: order_by
   created_at: order_by
   eventPassId: order_by
   id: order_by
   quantity: order_by
+  stripeCheckoutSessionId: order_by
   updated_at: order_by
 }
 
 """Ordering options when selecting data from "eventPassOrder"."""
 input eventPassOrder_order_by {
   account: account_order_by
+  accountId: order_by
   created_at: order_by
   eventPassId: order_by
   eventPassNftContract: eventPassNftContract_order_by
@@ -7326,6 +7339,7 @@ input eventPassOrder_order_by {
   id: order_by
   quantity: order_by
   status: order_by
+  stripeCheckoutSessionId: order_by
   updated_at: order_by
 }
 
@@ -7333,6 +7347,9 @@ input eventPassOrder_order_by {
 select columns of table "eventPassOrder"
 """
 enum eventPassOrder_select_column {
+  """column name"""
+  accountId
+
   """column name"""
   created_at
 
@@ -7347,6 +7364,9 @@ enum eventPassOrder_select_column {
 
   """column name"""
   status
+
+  """column name"""
+  stripeCheckoutSessionId
 
   """column name"""
   updated_at
@@ -7401,11 +7421,13 @@ input eventPassOrder_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input eventPassOrder_stream_cursor_value_input {
+  accountId: uuid
   created_at: timestamptz
   eventPassId: String
   id: uuid
   quantity: Int
   status: orderStatus_enum
+  stripeCheckoutSessionId: String
   updated_at: timestamptz
 }
 
