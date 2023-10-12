@@ -11,6 +11,15 @@ object_relationships:
         remote_table:
           name: account
           schema: public
+  - name: eventPassNftContract
+    using:
+      manual_configuration:
+        column_mapping:
+          eventPassId: eventPassId
+        insertion_order: null
+        remote_table:
+          name: eventPassNftContract
+          schema: public
   - name: eventPassPricing
     using:
       manual_configuration:

@@ -1,7 +1,7 @@
 import { createClient } from '@vercel/kv';
 import env from '@env/server';
 
-export default class Cache {
+export class Cache {
   private client;
 
   constructor(url?: string, token?: string) {

@@ -12,6 +12,17 @@
         "lintFilePatterns": ["libs/next/cache/**/*.{ts,tsx,js,jsx}"]
       }
     },
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/next/cache",
+        "tsConfig": "libs/next/cache/tsconfig.lib.json",
+        "packageJson": "libs/next/cache/package.json",
+        "main": "libs/next/cache/src/index.ts",
+        "assets": ["libs/next/cache/*.md"]
+      }
+    },
     "test-integration": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
