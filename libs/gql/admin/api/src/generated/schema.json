@@ -35324,6 +35324,12 @@
             "description": "unique or primary key constraint on columns \"id\"",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "eventParameters_signingKey_key",
+            "description": "unique or primary key constraint on columns \"signingKey\"",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
