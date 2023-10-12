@@ -14,6 +14,8 @@ declare module '@env/client' {
     NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY: string;
     NEXT_PUBLIC_SENTRY_DSN?: string;
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
+    NEXT_PUBLIC_OPENZEPPELIN_URL: string;
+    NEXT_PUBLIC_THIRDWEB_MASTER_ADDRESS: string;
   };
   export default env;
 }
