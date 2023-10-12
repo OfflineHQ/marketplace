@@ -1,6 +1,6 @@
 import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
 import type { BatchTransferInput } from '@features/pass-types';
-import { getPassUser } from '@features/pass-common';
+import { getPassUser } from '@features/pass-common/server';
 import env from '@env/server';
 
 const fileWrapper = new FileWrapper();
