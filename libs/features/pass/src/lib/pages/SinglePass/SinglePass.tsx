@@ -1,6 +1,6 @@
 import { EventOrganizerButton, PassOptions } from '@features/organizer/event';
 import { EventPassNft } from '@features/pass-types';
-import { formatCurrency, useCurrency } from '@next/currency';
+import { ConvertedCurrency } from '@next/currency';
 import type { AppUser } from '@next/types';
 import {
   AlertSkeleton,
@@ -41,8 +41,6 @@ export const SinglePass: React.FC<SinglePassProps> = ({
   revealPass,
 }) => {
   const t = useTranslations('Pass.SinglePass');
-  const format = useFormatter();
-  const { rates, isLoading } = useCurrency();
   const isOwner = useMemo(
     () => user?.address === eventPassNft.currentOwnerAddress,
     [user, eventPassNft]
@@ -113,18 +111,13 @@ export const SinglePass: React.FC<SinglePassProps> = ({
           </div>
           <div className="flex pb-2 pt-4 text-end">
             <Label className="mr-3">{t('sold-for')}</Label>
-            <Text className="font-semibold">
-              {formatCurrency(
-                format,
-                {
-                  amount:
-                    eventPassNft.eventPass?.eventPassPricing?.priceAmount || 0,
-                  currency:
-                    eventPassNft.eventPass?.eventPassPricing?.priceCurrency,
-                },
-                rates
-              )}
-            </Text>
+            <ConvertedCurrency
+              className="font-semibold"
+              currency={eventPassNft.eventPass?.eventPassPricing?.priceCurrency}
+              amount={
+                eventPassNft.eventPass?.eventPassPricing?.priceAmount || 0
+              }
+            />
           </div>
 
           <div className="flex pb-4">

@@ -1,5 +1,5 @@
 import { AuthProvider, NextAuthProvider } from '@next/auth';
-import { CurrencyProvider } from '@next/currency';
+import { CurrencyProvider } from '@next/currency-provider';
 import { getMessages, locales } from '@next/i18n';
 import { ReactQueryProviders } from '@next/react-query';
 import { Toaster } from '@ui/components';

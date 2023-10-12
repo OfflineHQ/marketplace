@@ -30,11 +30,6 @@
             "glob": "libs/features/organizer/event/README.md",
             "input": ".",
             "output": "."
-          },
-          {
-            "glob": "libs/features/organizer/event/src/lib/types/**/*",
-            "input": ".",
-            "output": "."
           }
         ]
       }
