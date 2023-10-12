@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
 import '@next/types';
 
-import { getPassOrganizer, getPassUser } from '@features/pass-common';
+import { getPassOrganizer, getPassUser } from '@features/pass-common/server';
 import type { EventPassNftByIdMinimal } from '@features/pass-types';
 import { FileCopyStatus, FileWrapper } from '@file-upload/admin';
 import { adminSdk } from '@gql/admin/api';
