@@ -55,7 +55,7 @@ declare module '@env/server' {
     UPLOAD_PUBLIC_API_KEY: string;
     FIXER_CURRENCY_API_KEY: string;
     EXCHANGE_RATE_API_KEY: string;
-    WEB_APP_URL: string;
+    WEB_APP_URL?: string;
   };
   export default env;
 }
