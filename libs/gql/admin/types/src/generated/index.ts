@@ -236,6 +236,20 @@ export type EventPassFieldsFragment = { __typename?: 'EventPass', name: string, 
 
 export type EventPassNftFieldsFragment = { __typename?: 'eventPassNft', id: any, tokenId: any, eventId: string, eventPassId: string, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null };
 
+export type GetSigningKeyFromEventIdQueryVariables = Types.Exact<{
+  eventId?: Types.InputMaybe<Types.Scalars['String']>;
+}>;
+
+
+export type GetSigningKeyFromEventIdQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', signingKey?: string | null }> };
+
+export type InsertEventParametersMutationVariables = Types.Exact<{
+  objects: Array<Types.EventParameters_Insert_Input> | Types.EventParameters_Insert_Input;
+}>;
+
+
+export type InsertEventParametersMutation = { __typename?: 'mutation_root', insert_eventParameters?: { __typename?: 'eventParameters_mutation_response', returning: Array<{ __typename?: 'eventParameters', id: any, activityWebhookId?: string | null, eventId: string }> } | null };
+
 export type GetEventPassNftByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['uuid'];
   locale: Types.Locale;

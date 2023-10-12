@@ -527,6 +527,24 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${OrganizerFieldsFragmentDoc}`;
+ const GetSigningKeyFromEventIdDocument = `
+    query GetSigningKeyFromEventId($eventId: String) {
+  eventParameters(where: {eventId: {_eq: $eventId}}) {
+    signingKey
+  }
+}
+    `;
+ const InsertEventParametersDocument = `
+    mutation InsertEventParameters($objects: [eventParameters_insert_input!]!) {
+  insert_eventParameters(objects: $objects) {
+    returning {
+      id
+      activityWebhookId
+      eventId
+    }
+  }
+}
+    `;
  const GetEventPassNftByIdDocument = `
     query GetEventPassNftById($id: uuid!, $locale: Locale!, $stage: Stage!) @cached {
   eventPassNft_by_pk(id: $id) {
@@ -634,6 +652,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
+    },
+    GetSigningKeyFromEventId(variables?: Types.GetSigningKeyFromEventIdQueryVariables, options?: C): Promise<Types.GetSigningKeyFromEventIdQuery> {
+      return requester<Types.GetSigningKeyFromEventIdQuery, Types.GetSigningKeyFromEventIdQueryVariables>(GetSigningKeyFromEventIdDocument, variables, options) as Promise<Types.GetSigningKeyFromEventIdQuery>;
+    },
+    InsertEventParameters(variables: Types.InsertEventParametersMutationVariables, options?: C): Promise<Types.InsertEventParametersMutation> {
+      return requester<Types.InsertEventParametersMutation, Types.InsertEventParametersMutationVariables>(InsertEventParametersDocument, variables, options) as Promise<Types.InsertEventParametersMutation>;
     },
     GetEventPassNftById(variables: Types.GetEventPassNftByIdQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdQuery> {
       return requester<Types.GetEventPassNftByIdQuery, Types.GetEventPassNftByIdQueryVariables>(GetEventPassNftByIdDocument, variables, options) as Promise<Types.GetEventPassNftByIdQuery>;

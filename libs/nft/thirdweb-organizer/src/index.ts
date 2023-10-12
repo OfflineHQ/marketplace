@@ -4,7 +4,11 @@ import env from '@env/client';
 import { ExternalProvider } from '@ethersproject/providers';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 import { ethers } from 'ethers';
-import { createEventPassNftContract, createEventPassNfts } from './action';
+import {
+  createEventParametersAndWebhook,
+  createEventPassNftContract,
+  createEventPassNfts,
+} from './action';
 
 export type NftsMetadata = {
   name: string;
@@ -104,6 +108,11 @@ class NftCollection {
       );
 
       await createEventPassNfts(hasuraMetadatas);
+      await createEventParametersAndWebhook({
+        eventId,
+        nftCollectionAddresses: [txResult],
+        organizerId,
+      });
     } catch (error) {
       console.error('Error deploying a collection:', error);
     }
