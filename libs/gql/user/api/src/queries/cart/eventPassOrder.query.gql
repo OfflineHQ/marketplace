@@ -1,0 +1,6 @@
+query GetEventPassOrdersConfirmed {
+  eventPassOrder(where: { status: { _eq: CONFIRMED } }) {
+    eventPassId
+    quantity
+  }
+}

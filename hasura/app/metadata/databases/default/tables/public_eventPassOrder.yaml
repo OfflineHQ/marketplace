@@ -47,10 +47,12 @@ select_permissions:
       columns:
         - id
         - eventPassId
+        - accountId
         - status
         - quantity
         - created_at
         - updated_at
+        - stripeCheckoutSessionId
       filter:
         accountId:
           _eq: X-Hasura-User-Id
