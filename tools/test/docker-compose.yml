@@ -36,7 +36,7 @@ services:
   test-db:
     container_name: test_db
     image: postgres:13
-    command: postgres -c fsync=off -c synchronous_commit=off -c full_page_writes=off -c random_page_cost=1.0 -p ${POSTGRES_PORT}
+    command: postgres -c fsync=off -c synchronous_commit=off -c full_page_writes=off -c random_page_cost=1.0 -c client_min_messages=NOTICE -p ${POSTGRES_PORT}
     env_file:
       - .env.test.jest
     ports:
