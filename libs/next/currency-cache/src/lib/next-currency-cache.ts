@@ -64,7 +64,9 @@ export async function setRates(): Promise<void[]> {
 }
 
 export async function getRates(): Promise<{
-  [key in Currency_Enum_Not_Const]: number;
+  [key in Currency_Enum_Not_Const]: {
+    [key in Currency_Enum_Not_Const]: number;
+  };
 }> {
   const promises = Object.values(Currency_Enum_Not_Const).map(
     async (currency) => {
