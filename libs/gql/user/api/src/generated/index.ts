@@ -114,6 +114,14 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
+ const GetEventPassOrdersConfirmedDocument = `
+    query GetEventPassOrdersConfirmed {
+  eventPassOrder(where: {status: {_eq: CONFIRMED}}) {
+    eventPassId
+    quantity
+  }
+}
+    `;
  const InsertEventPassPendingOrdersDocument = `
     mutation InsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!) {
   insert_eventPassPendingOrder(objects: $objects) {
@@ -165,6 +173,14 @@ export const EventPassNftFieldsFragmentDoc = `
         }
       }
     }
+  }
+}
+    `;
+ const GetEventPassPendingOrdersMinimalDocument = `
+    query GetEventPassPendingOrdersMinimal {
+  eventPassPendingOrder {
+    eventPassId
+    quantity
   }
 }
     `;
@@ -298,6 +314,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
       return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;
     },
+    GetEventPassOrdersConfirmed(variables?: Types.GetEventPassOrdersConfirmedQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedQuery> {
+      return requester<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedQuery>;
+    },
     InsertEventPassPendingOrders(variables: Types.InsertEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.InsertEventPassPendingOrdersMutation> {
       return requester<Types.InsertEventPassPendingOrdersMutation, Types.InsertEventPassPendingOrdersMutationVariables>(InsertEventPassPendingOrdersDocument, variables, options) as Promise<Types.InsertEventPassPendingOrdersMutation>;
     },
@@ -312,6 +331,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassPendingOrders(variables: Types.GetEventPassPendingOrdersQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersQuery> {
       return requester<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables, options) as Promise<Types.GetEventPassPendingOrdersQuery>;
+    },
+    GetEventPassPendingOrdersMinimal(variables?: Types.GetEventPassPendingOrdersMinimalQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersMinimalQuery> {
+      return requester<Types.GetEventPassPendingOrdersMinimalQuery, Types.GetEventPassPendingOrdersMinimalQueryVariables>(GetEventPassPendingOrdersMinimalDocument, variables, options) as Promise<Types.GetEventPassPendingOrdersMinimalQuery>;
     },
     GetKyc(variables?: Types.GetKycQueryVariables, options?: C): Promise<Types.GetKycQuery> {
       return requester<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables, options) as Promise<Types.GetKycQuery>;

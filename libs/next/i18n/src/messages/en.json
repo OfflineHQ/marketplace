@@ -58,7 +58,8 @@
     },
     "Cart": {
       "text": "Cart",
-      "helper-text": "Go to your cart"
+      "helper-text": "Go to your cart",
+      "helper-text-purchase": "Finish your purchase"
     }
   },
   "Cart": {
@@ -70,7 +71,8 @@
     "UserCart": {
       "title": "Cart",
       "description": "Validate your cart to proceed to the payment",
-      "finalize-button": "Proceed to payment"
+      "finalize-button": "Proceed to payment",
+      "continue-button": "Continue"
     },
     "List": {
       "no-cart": "You don't have anything in your cart yet",

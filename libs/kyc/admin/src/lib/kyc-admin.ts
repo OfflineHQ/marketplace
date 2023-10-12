@@ -232,7 +232,6 @@ export class Kyc {
       externalUserId
     )}/one`;
     const headers = this.headers({ method, uri });
-    console.log({ uri, headers });
     const response = await fetch(`${this.baseUrl}${uri}`, {
       method,
       headers: {
