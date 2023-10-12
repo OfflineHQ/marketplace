@@ -1,5 +1,6 @@
 import { Alchemy, Network } from 'alchemy-sdk';
 
+import env from '@env/server';
 import type {
   BaseNft,
   GetAllWebhooksResponse,
@@ -15,7 +16,6 @@ import type {
   GetTransfersForContractOptions as _GetTransfersForContractOptions,
 } from '@indexer/alchemy/types';
 import { WebhookType } from '@indexer/alchemy/types';
-import env from '@env/server';
 
 interface GetNftsForOwnerOptions
   extends Omit<_GetNftsForOwnerOptions, 'contractAddresses'> {
@@ -103,7 +103,12 @@ export class AlchemyWrapper {
         throw new Error(`Unsupported network: ${env.CHAIN}`);
     }
     this.network = network;
-    this.alchemy = new Alchemy({ apiKey, network });
+    const authToken = env.ALCHEMY_AUTH_TOKEN;
+    this.alchemy = new Alchemy({
+      apiKey,
+      network,
+      authToken,
+    });
   }
 
   convertNetworkToChainId(network: Network): string {

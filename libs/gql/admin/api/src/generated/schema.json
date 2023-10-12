@@ -34956,6 +34956,18 @@
             "deprecationReason": null
           },
           {
+            "name": "signingKey",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "timezone",
             "description": null,
             "args": [],
@@ -35307,6 +35319,18 @@
             "deprecationReason": null
           },
           {
+            "name": "signingKey",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "timezone",
             "description": null,
             "type": {
@@ -35346,6 +35370,12 @@
           {
             "name": "eventParameters_pkey",
             "description": "unique or primary key constraint on columns \"id\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "eventParameters_signingKey_key",
+            "description": "unique or primary key constraint on columns \"signingKey\"",
             "isDeprecated": false,
             "deprecationReason": null
           }
@@ -35479,6 +35509,18 @@
             "deprecationReason": null
           },
           {
+            "name": "signingKey",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "timezone",
             "description": null,
             "type": {
@@ -35586,6 +35628,18 @@
           },
           {
             "name": "organizerId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "signingKey",
             "description": null,
             "args": [],
             "type": {
@@ -35705,6 +35759,18 @@
           },
           {
             "name": "organizerId",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "signingKey",
             "description": null,
             "args": [],
             "type": {
@@ -36013,6 +36079,18 @@
             "deprecationReason": null
           },
           {
+            "name": "signingKey",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "timezone",
             "description": null,
             "type": {
@@ -36108,6 +36186,12 @@
           },
           {
             "name": "organizerId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "signingKey",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -36213,6 +36297,18 @@
           },
           {
             "name": "organizerId",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "signingKey",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -36382,6 +36478,18 @@
             "deprecationReason": null
           },
           {
+            "name": "signingKey",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "timezone",
             "description": null,
             "type": {
@@ -36450,6 +36558,12 @@
           },
           {
             "name": "organizerId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "signingKey",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null

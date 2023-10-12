@@ -11,6 +11,10 @@ describe('Currency class', () => {
     global.fetch = jest.fn();
   });
 
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
+
   describe('getRate method', () => {
     it('should get rates from Fixer API and save to local file', async () => {
       const baseCurrency = 'EUR';
