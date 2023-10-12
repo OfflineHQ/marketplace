@@ -14,6 +14,8 @@ declare module '@env/client' {
     NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY: string;
     NEXT_PUBLIC_SENTRY_DSN?: string;
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
+    NEXT_PUBLIC_OPENZEPPELIN_URL: string;
+    NEXT_PUBLIC_THIRDWEB_MASTER_ADDRESS: string;
   };
   export default env;
 }
@@ -22,6 +24,7 @@ declare module '@env/server' {
   const env: {
     APP?: string;
     ALCHEMY_API_KEY: string;
+    ALCHEMY_AUTH_TOKEN: string;
     CHAIN: string;
     NX_CLOUD_AUTH_TOKEN: string;
     NX_CACHE_DIRECTORY: string;
@@ -52,6 +55,7 @@ declare module '@env/server' {
     UPLOAD_PUBLIC_API_KEY: string;
     FIXER_CURRENCY_API_KEY: string;
     EXCHANGE_RATE_API_KEY: string;
+    WEB_APP_URL?: string;
   };
   export default env;
 }

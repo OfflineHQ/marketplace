@@ -1,3 +1,4 @@
+import env from '@env/server';
 import { FileWrapper } from '@file-upload/admin';
 import type { Activity } from '@indexer/alchemy/types';
 import {
@@ -9,7 +10,6 @@ import {
 import { Network } from 'alchemy-sdk';
 import { nftActivity } from './nftActivity';
 import { createMockAlchemyRequest } from './testUtils';
-import env from '@env/server';
 
 // Mock the FileWrapper module
 jest.mock('@file-upload/admin');

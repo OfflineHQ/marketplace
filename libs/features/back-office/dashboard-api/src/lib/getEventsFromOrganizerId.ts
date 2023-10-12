@@ -9,7 +9,7 @@ interface getEventsFromOrganizerIdProps {
 }
 
 export const getEventsFromOrganizerId = cache(
-  async ({ id, locale }: getEventsFromOrganizerIdProps) => {
+  async ({ id, locale }: getEventsFromOrganizerIdProps): Promise<unknown> => {
     const data = await adminSdk.GetEventsFromOrganizerId({
       id: id,
       locale: locale as Locale,

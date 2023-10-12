@@ -6,6 +6,7 @@ const env = createEnv({
   server: {
     APP: z.string().optional(),
     ALCHEMY_API_KEY: z.string().min(1),
+    ALCHEMY_AUTH_TOKEN: z.string().min(1),
     CHAIN: z.string(),
     NX_CLOUD_AUTH_TOKEN: z.string().min(1),
     NX_CACHE_DIRECTORY: z.string().min(1),
@@ -36,10 +37,13 @@ const env = createEnv({
     UPLOAD_PUBLIC_API_KEY: z.string().min(1),
     FIXER_CURRENCY_API_KEY: z.string().min(1),
     EXCHANGE_RATE_API_KEY: z.string().min(1),
+    OPENZEPPELIN_URL: z.string().min(1),
+    WEB_APP_URL: z.string().optional(),
   },
   runtimeEnv: {
     APP: process.env.APP,
     ALCHEMY_API_KEY: process.env.ALCHEMY_API_KEY,
+    ALCHEMY_AUTH_TOKEN: process.env.ALCHEMY_AUTH_TOKEN,
     CHAIN: process.env.CHAIN,
     NX_CLOUD_AUTH_TOKEN: process.env.NX_CLOUD_AUTH_TOKEN,
     NX_CACHE_DIRECTORY: process.env.NX_CACHE_DIRECTORY,
@@ -70,6 +74,8 @@ const env = createEnv({
     UPLOAD_PUBLIC_API_KEY: process.env.UPLOAD_PUBLIC_API_KEY,
     FIXER_CURRENCY_API_KEY: process.env.FIXER_CURRENCY_API_KEY,
     EXCHANGE_RATE_API_KEY: process.env.EXCHANGE_RATE_API_KEY,
+    OPENZEPPELIN_URL: process.env.NEXT_PUBLIC_OPENZEPPELIN_URL,
+    WEB_APP_URL: process.env.WEB_APP_URL,
   },
 });
 
