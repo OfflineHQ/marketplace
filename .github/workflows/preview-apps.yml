@@ -102,13 +102,10 @@ jobs:
       #     echo HASURA_GRAPHQL_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
       #     echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
 
-      - name: Build Vercel Project Artifacts
-        run: vercel build --token=${{secrets.VERCEL_TOKEN}}
-
       - name: Deploy Preview to Vercel
         id: deploy_vercel
         run: |
-          preview_url=$(vercel deploy --prebuilt --token=${{secrets.VERCEL_TOKEN}})
+          preview_url=$(vercel deploy --token=${{secrets.VERCEL_TOKEN}})
           echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
 
       - name: Comment on Pull Request
