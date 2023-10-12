@@ -5,13 +5,16 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@nx/js:swc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/currency/api",
         "main": "libs/currency/api/src/index.ts",
         "tsConfig": "libs/currency/api/tsconfig.lib.json",
-        "assets": ["libs/currency/api/*.md"]
+        "assets": [
+          "libs/currency/api/*.md",
+          "libs/currency/api/src/rates/*.json"
+        ]
       }
     },
     "lint": {
