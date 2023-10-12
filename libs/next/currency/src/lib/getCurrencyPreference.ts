@@ -1,5 +1,3 @@
-'use server';
-
 import { defaultCurrency } from '@currency/types';
 import { Currency_Enum } from '@gql/shared/types';
 import { getCookie } from 'cookies-next';

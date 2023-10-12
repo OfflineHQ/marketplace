@@ -149,7 +149,12 @@ export {
 export { Spinner } from './lib/spinner/Spinner';
 export { Switch } from './lib/switch/Switch';
 export { TextInput } from './lib/text-input/TextInput';
-export { Text, TextSkeleton } from './lib/text/Text';
+export {
+  Text,
+  TextSkeleton,
+  type TextProps,
+  type TextSkeletonProps,
+} from './lib/text/Text';
 export {
   Toast,
   ToastAction,
