@@ -1,0 +1,5 @@
+query GetSigningKeyFromEventId($eventId: String) {
+  eventParameters(where: { eventId: { _eq: $eventId } }) {
+    signingKey
+  }
+}
