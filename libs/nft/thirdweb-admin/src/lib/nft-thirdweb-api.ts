@@ -56,7 +56,7 @@ export class NftClaimable {
           secretKey: env.THIRDWEB_SECRET_KEY,
           gasless: {
             openzeppelin: {
-              relayerUrl: env.NEXT_PUBLIC_OPENZEPPELIN_URL,
+              relayerUrl: env.OPENZEPPELIN_URL,
             },
           },
         }
