@@ -77,7 +77,7 @@ export default class Currency {
   ) {
     // const __filename = fileURLToPath(import.meta.url);
     // const __dirname = path.dirname(__filename);
-    const filePath = path.join(process.cwd(), `rates/${baseCurrency}.json`);
+    const filePath = path.join(process.cwd(), `${baseCurrency}.json`);
     try {
       await fs.promises.writeFile(filePath, JSON.stringify(rates));
     } catch (error) {
@@ -95,7 +95,7 @@ export default class Currency {
     try {
       // const __filename = fileURLToPath(import.meta.url);
       // const __dirname = path.dirname(__filename);
-      const filePath = path.join(process.cwd(), `rates/${baseCurrency}.json`);
+      const filePath = path.join(process.cwd(), `${baseCurrency}.json`);
       const data = await fs.promises.readFile(filePath, 'utf8');
       return JSON.parse(data);
     } catch (error) {
