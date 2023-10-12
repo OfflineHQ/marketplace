@@ -1,7 +1,4 @@
-export {
-  CreateNftActivityWebhook,
-  createNftActivityWebhookForEvent,
-} from './lib/createNftActivityWebhookForEvent';
+export { createNftActivityWebhookForEvent } from './lib/createNftActivityWebhookForEvent';
 export { downloadPass } from './lib/downloadPass';
 export { getEventPassNftByTokenReferenceAnonymous } from './lib/getEventPassNftByTokenReferenceAnonymous';
 export { getEventPassNftByTokenReferenceUser } from './lib/getEventPassNftByTokenReferenceUser';
