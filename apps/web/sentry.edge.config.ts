@@ -4,12 +4,9 @@
 
 import * as Sentry from '@sentry/nextjs';
 
-import env from '@env/client';
 import envServer from '@env/server';
 
-const SENTRY_DSN = envServer.SENTRY_AUTH_TOKEN
-  ? null
-  : envServer.SENTRY_DSN || env.NEXT_PUBLIC_SENTRY_DSN;
+const SENTRY_DSN = envServer.SENTRY_AUTH_TOKEN ? null : envServer.SENTRY_DSN;
 
 Sentry.init({
   environment: process.env.VERCEL_ENV || 'development',

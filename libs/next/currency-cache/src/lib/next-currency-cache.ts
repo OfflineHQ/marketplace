@@ -89,5 +89,10 @@ export async function populateCacheIfEmpty(): Promise<void> {
       }
     }
   );
-  await Promise.all(promises);
+  try {
+    await Promise.all(promises);
+    console.log('Populated cache for currency has been called successfully');
+  } catch (error) {
+    console.error('Failed to populate cache for currency', error);
+  }
 }
