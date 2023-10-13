@@ -89,6 +89,7 @@ function EventPassContent({
         path,
         eventPass.eventPassPricing?.maxAmount || 0
       );
+      console.log('Status', status);
       setFilesNumber(status.length);
       return await checkFolder(
         path,
@@ -128,10 +129,7 @@ function EventPassContent({
   } satisfies UploadWidgetConfig;
 
   return (
-    <Card
-      className="w-full items-center justify-center md:w-[800px]"
-      key={eventPass.id}
-    >
+    <Card className="items-center justify-center" key={eventPass.id}>
       <CardHeader>
         <Avatar size="xl">
           <AvatarImage src={event.heroImage.url} />
@@ -146,14 +144,13 @@ function EventPassContent({
         </div>
       </CardHeader>
       <CardOverlay />
-      <CardFooter variant="sticky">
+      <CardFooter>
         {!eventPass.eventPassPricing?.maxAmount ? (
           <p>No eventPassPricing for this eventPass</p>
         ) : (
           <div>
             {!eventPass.eventPassNftContract ? (
               <Button
-                className="w-full"
                 onClick={async () => {
                   await deploy(
                     eventPass.name,
@@ -176,7 +173,6 @@ function EventPassContent({
               </Button>
             ) : (
               <Button
-                className="w-full"
                 onClick={async () => {
                   navigator.clipboard.writeText(
                     eventPass.eventPassNftContract?.contractAddress || ''
@@ -187,7 +183,7 @@ function EventPassContent({
               </Button>
             )}
             <p></p>
-            {!showUpload ? (
+            {!showUpload && eventPass.eventPassNftContract ? (
               filesNumber !== eventPass.eventPassPricing.maxAmount ? (
                 <>
                   {filesNumber}/{eventPass.eventPassPricing?.maxAmount}
@@ -214,13 +210,12 @@ function EventPassContent({
                       onComplete={(files) => {
                         alert(files.map((x) => x.fileUrl).join('\n'));
                       }}
-                      width="800px"
                     />
                   )}
                 </>
               ) : (
                 <Button
-                  className="w-full"
+                  className="mt-2"
                   onClick={async () => {
                     const status = await checkFolderLength(
                       path,
@@ -296,9 +291,9 @@ function EventCard({
   }
 
   return (
-    <div className="grid grid-cols-4 gap-8 md:grid-cols-2 lg:grid-cols-4">
+    <div className="m-3">
       {events.map((event: TEvent, idx: number) => (
-        <div key={idx}>
+        <div className="grid gap-8 lg:grid-cols-3" key={idx}>
           {event.eventPasses && event.eventPasses.length
             ? event.eventPasses.map((eventPass) =>
                 EventPassContent({
