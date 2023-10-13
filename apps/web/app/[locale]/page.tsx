@@ -1,6 +1,6 @@
-import { populateCacheIfEmpty } from '@next/currency-cache';
+// import { populateCacheIfEmpty } from '@next/currency-cache';
 
 export default async function Home() {
-  await populateCacheIfEmpty();
+  // await populateCacheIfEmpty();
   return <div className="p-8"></div>;
 }
