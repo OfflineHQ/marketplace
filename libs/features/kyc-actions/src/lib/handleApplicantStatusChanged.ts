@@ -5,7 +5,7 @@ import { KycStatus_Enum } from '@gql/shared/types';
 import { getCurrentUser } from '@next/next-auth/user';
 
 export async function handleApplicantStatusChanged(
-  status: KycStatus_Enum
+  status: KycStatus_Enum,
 ): Promise<boolean> {
   const user = await getCurrentUser();
   let statusDifferent = false;

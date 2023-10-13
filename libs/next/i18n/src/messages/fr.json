@@ -76,7 +76,7 @@
     },
     "List": {
       "Event": {
-        "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",
+        "num-pass": "{numPass, plural, =1 {# pass} other {# pass}}",
         "edit": "Modifier",
         "remove": "Supprimer"
       },
@@ -86,7 +86,7 @@
   "Pass": {
     "NoUserPass": {
       "title": "Pass",
-      "description": "Vous pourrez voir vos passes une fois connecté",
+      "description": "Vous pourrez voir vos pass une fois connecté",
       "sign-in-text": "Se connecter"
     },
     "SinglePass": {
@@ -107,29 +107,31 @@
     },
     "UserPass": {
       "UserPassEvent": {
-        "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",
+        "num-pass": "{numPass, plural, =1 {# pass} other {# pass}}",
         "num-pass-not-revealed": "x{numPassNotRevealed} non révélé",
         "num-pass-revealed": "x{numPassRevealed} révélé"
       },
       "DateRange": {
-        "from": "De",
-        "to": "Pour",
-        "in-your-timezone": "Dans votre propre fuseau horaire"
+        "from": "Du",
+        "to": "Au",
+        "in-your-timezone": "Dans votre fuseau horaire",
+        "from-hour": "De",
+        "to-hour": "À"
       },
       "UserPassEventCard": {
         "dialog-cancel-button": "Annuler",
         "dialog-confirm-button": "Oui, révélez {numPassNotRevealed, plural, =0 {le} =1 {le} other {les}}",
         "dialog-description": "Révéler {numPassNotRevealed, plural, =0 {le} =1 {le} other {les}} impliquerait que le pass a été montré.<br></br>{numPassNotRevealed, plural, =0 {Il} =1 {Il} other {Ils}} seront marqués comme tels au cas où ils seraient revendus sur le marché secondaire, rendant leur vente plus difficile.<br></br><br></br>Êtes-vous sûr de vouloir révéler {numPassNotRevealed, plural, =0 {celui-ci} =1{celui-ci} other{ceux-ci}} ?",
-        "dialog-title": "{numPassNotRevealed, plural, =1 {# pass non révélée} other {# passes non révélées}}",
-        "dialog-toast-error-description": "{numPass, plural, =1 {Une erreur s'est produite lors de la révélation et du téléchargement du pass. {errorMessage}} other {Des erreurs se sont produites lors de la révélation et du téléchargement des # passes. {errorMessage}}}",
-        "dialog-toast-error-title": "{numPass, plural, =1 {Erreur de révélation et de téléchargement du pass} other {Erreurs de révélation et de téléchargement des passes}}",
-        "dialog-toast-success-description": "{numPass, plural, =1 {Le pass a été révélé et téléchargé avec succès} other {Les # passes ont été révélés et téléchargés avec succès}}",
+        "dialog-title": "{numPassNotRevealed, plural, =1 {# pass non révélée} other {# pass non révélées}}",
+        "dialog-toast-error-description": "{numPass, plural, =1 {Une erreur s'est produite lors de la révélation et du téléchargement du pass. {errorMessage}} other {Des erreurs se sont produites lors de la révélation et du téléchargement des # pass. {errorMessage}}}",
+        "dialog-toast-error-title": "{numPass, plural, =1 {Erreur de révélation et de téléchargement du pass} other {Erreurs de révélation et de téléchargement des pass}}",
+        "dialog-toast-success-description": "{numPass, plural, =1 {Le pass a été révélé et téléchargé avec succès} other {Les # pass ont été révélés et téléchargés avec succès}}",
         "dialog-toast-success-title": "Révélation du pass réussie",
-        "download-passes-button": "Télécharger {numPass, plural, =1 {# pass} other {# passes}}",
-        "download-passes-toast-error-comment": "{numPass, plural, =1 {Une erreur s'est produite lors du téléchargement du pass.} other {Des erreurs se sont produites lors du téléchargement des # passes.}}",
-        "download-passes-toast-error-title": "{numPass, plural, =1 {Erreur lors du téléchargement du pass} other {Erreurs lors du téléchargement des passes}}",
-        "download-passes-toast-success-comment": "{numPass, plural, =1 {Le pass a été téléchargé avec succès} other {Les # passes ont été téléchargés avec succès}}",
-        "download-passes-toast-success-title": "{numPass, plural, =1 {Téléchargement du pass réussi} other {# Passes téléchargés avec succès}}",
+        "download-passes-button": "Télécharger {numPass, plural, =1 {# pass} other {# pass}}",
+        "download-passes-toast-error-comment": "{numPass, plural, =1 {Une erreur s'est produite lors du téléchargement du pass.} other {Des erreurs se sont produites lors du téléchargement des # pass.}}",
+        "download-passes-toast-error-title": "{numPass, plural, =1 {Erreur lors du téléchargement du pass} other {Erreurs lors du téléchargement des pass}}",
+        "download-passes-toast-success-comment": "{numPass, plural, =1 {Le pass a été téléchargé avec succès} other {Les # pass ont été téléchargés avec succès}}",
+        "download-passes-toast-success-title": "{numPass, plural, =1 {Téléchargement du pass réussi} other {# Pass téléchargés avec succès}}",
         "not-revealed": "Non révélé",
         "pass-number": "Pass #{number, number}",
         "revealed": "Révélé"
@@ -160,10 +162,10 @@
       "details": {
         "title": "Détails de l'événement"
       },
-      "purchase-button-activator": "Sélectionner les passes",
+      "purchase-button-activator": "Sélectionner les pass",
       "PassPurchase": {
         "title": "Sélection de pass",
-        "description": "Sélectionnez les passes que vous souhaitez acheter et validez votre commande",
+        "description": "Sélectionnez les pass que vous souhaitez acheter et validez votre commande",
         "Pass": {
           "sold-out": "Épuisé"
         },
@@ -172,7 +174,7 @@
         "Footer": {
           "purchase-button": "Passer au paiement",
           "total": {
-            "pass-selected": "{totalPasses, plural, =1 {# pass sélectionné} other {# passes sélectionnés}}",
+            "pass-selected": "{totalPasses, plural, =1 {# pass sélectionné} other {# pass sélectionnés}}",
             "price": "Prix total : {totalPrice}"
           }
         }

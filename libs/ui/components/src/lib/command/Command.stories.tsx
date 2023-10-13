@@ -35,7 +35,7 @@ export const BasicCommandWithText: Story = {
   play: async () => {
     await userEvent.type(
       screen.getByPlaceholderText('Type a command or search...'),
-      'Ca'
+      'Ca',
     );
     const roleGroup = screen.getByRole('group');
     expect(roleGroup.children.length).toBe(2);
@@ -47,7 +47,7 @@ export const BasicCommandWithNoResult: Story = {
   play: async () => {
     await userEvent.type(
       screen.getByPlaceholderText('Type a command or search...'),
-      'XYZ'
+      'XYZ',
     );
     expect(screen.queryByRole('group')).toBeNull();
     expect(screen.getByText('No results found.')).toBeVisible();
@@ -68,7 +68,7 @@ export const CommandCombobox: Story = {
     // check that Next.js item with aria-selected="true"
     expect(await screen.findByText('Next.js')).toHaveAttribute(
       'aria-selected',
-      'true'
+      'true',
     );
   },
 };

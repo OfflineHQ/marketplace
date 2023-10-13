@@ -27,6 +27,7 @@
     "../../libs/features/**/*.stories.tsx",
     "../../libs/features/**/*.mdx",
     "../../libs/next/hygraph/**/*.stories.tsx",
+    "../../libs/next/date/**/*.stories.tsx",
     ".storybook/*.ts",
     ".storybook/*.js",
     "next-env.d.ts",

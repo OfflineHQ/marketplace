@@ -27,7 +27,7 @@ describe('Kyc', () => {
 
   it('should throw an error if secretKey or appToken is missing', () => {
     expect(() => new Kyc({ secretKey: '', appToken: '' })).toThrow(
-      'Missing credentials'
+      'Missing credentials',
     );
   });
 
@@ -57,7 +57,7 @@ describe('Kyc', () => {
 
     expect(fetchMock).toHaveBeenCalledWith(
       `${kyc.baseUrl}/resources/accessTokens?userId=${encodeURIComponent(
-        userId
+        userId,
       )}&levelName=${encodeURIComponent(levelName)}`,
       {
         method: 'POST',
@@ -67,11 +67,11 @@ describe('Kyc', () => {
             method: 'POST',
             uri: '/resources/accessTokens',
             requestBody: `?userId=${encodeURIComponent(
-              userId
+              userId,
             )}&levelName=${encodeURIComponent(levelName)}`,
           }),
         },
-      }
+      },
     );
     expect(token).toEqual(mockResponse.token);
   });
@@ -114,12 +114,12 @@ describe('Kyc', () => {
     });
 
     expect(getApplicantPersonalDataByExternalUserIdSpy).toHaveBeenCalledWith(
-      externalUserId
+      externalUserId,
     );
 
     expect(fetchMock).toHaveBeenCalledWith(
       `${kyc.baseUrl}/resources/applicants?levelName=${encodeURIComponent(
-        levelName
+        levelName,
       )}`,
       {
         method: 'POST',
@@ -140,7 +140,7 @@ describe('Kyc', () => {
           email,
           lang,
         }),
-      }
+      },
     );
     expect(adminSdk.CreateKyc).toHaveBeenCalledWith({
       kyc: {
@@ -230,7 +230,7 @@ describe('Kyc', () => {
 
     expect(fetchMock).toHaveBeenCalledWith(
       `${kyc.baseUrl}/resources/applicants/${encodeURIComponent(
-        applicantId
+        applicantId,
       )}/moveToLevel?name=${encodeURIComponent(levelName)}`,
       {
         method: 'POST',
@@ -239,12 +239,12 @@ describe('Kyc', () => {
           ...kyc.headers({
             method: 'POST',
             uri: `/resources/applicants/${encodeURIComponent(
-              applicantId
+              applicantId,
             )}/moveToLevel`,
             requestBody: `?name=${encodeURIComponent(levelName)}`,
           }),
         },
-      }
+      },
     );
     expect(applicant).toEqual(mockResponse);
     expect(adminSdk.UpdateKyc).toHaveBeenCalledWith({
@@ -267,7 +267,7 @@ describe('Kyc', () => {
 
     expect(fetchMock).toHaveBeenCalledWith(
       `${kyc.baseUrl}/resources/applicants/${encodeURIComponent(
-        applicantId
+        applicantId,
       )}/status`,
       {
         method: 'GET',
@@ -276,11 +276,11 @@ describe('Kyc', () => {
           ...kyc.headers({
             method: 'GET',
             uri: `/resources/applicants/${encodeURIComponent(
-              applicantId
+              applicantId,
             )}/status`,
           }),
         },
-      }
+      },
     );
     expect(status).toEqual(mockResponse);
   });
@@ -296,7 +296,7 @@ describe('Kyc', () => {
 
     expect(fetchMock).toHaveBeenCalledWith(
       `${kyc.baseUrl}/resources/applicants/${encodeURIComponent(
-        applicantId
+        applicantId,
       )}/one`,
       {
         method: 'GET',
@@ -307,7 +307,7 @@ describe('Kyc', () => {
             uri: `/resources/applicants/${encodeURIComponent(applicantId)}/one`,
           }),
         },
-      }
+      },
     );
     expect(personalData).toEqual(mockResponse);
   });
@@ -319,15 +319,14 @@ describe('Kyc', () => {
       json: () => Promise.resolve(mockResponse),
     });
 
-    const personalData = await kyc.getApplicantPersonalDataByExternalUserId(
-      externalUserId
-    );
+    const personalData =
+      await kyc.getApplicantPersonalDataByExternalUserId(externalUserId);
 
     expect(fetchMock).toHaveBeenCalledWith(
       `${
         kyc.baseUrl
       }/resources/applicants/-;externalUserId=${encodeURIComponent(
-        externalUserId
+        externalUserId,
       )}/one`,
       {
         method: 'GET',
@@ -336,11 +335,11 @@ describe('Kyc', () => {
           ...kyc.headers({
             method: 'GET',
             uri: `/resources/applicants/-;externalUserId=${encodeURIComponent(
-              externalUserId
+              externalUserId,
             )}/one`,
           }),
         },
-      }
+      },
     );
     expect(personalData).toEqual(mockResponse);
   });

@@ -4,7 +4,7 @@ import { UserPassPendingOrder } from '@features/cart-types';
 import { getCurrentUser } from '@next/next-auth/user';
 
 import { type Locale } from '@gql/shared/types';
-import { getCurrencyPreference } from '@next/currency';
+import { getCurrencyPreference } from '@next/currency-common';
 import { Payment } from '@payment/admin';
 import { StripeCustomer } from '@payment/types';
 

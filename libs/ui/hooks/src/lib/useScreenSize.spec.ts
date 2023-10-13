@@ -6,7 +6,8 @@ window.matchMedia = jest.fn().mockImplementation((query) => {
   const maxWidthMatch = query.match(/max-width: (\d+)px/);
   const minWidth = minWidthMatch ? parseInt(minWidthMatch[1], 10) : 0;
   const maxWidth = maxWidthMatch ? parseInt(maxWidthMatch[1], 10) : Infinity;
-  const matches = window.innerWidth >= minWidth && window.innerWidth <= maxWidth;
+  const matches =
+    window.innerWidth >= minWidth && window.innerWidth <= maxWidth;
 
   return {
     matches,

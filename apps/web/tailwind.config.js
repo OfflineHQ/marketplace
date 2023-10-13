@@ -10,6 +10,7 @@ module.exports = {
     join(__dirname, '{src,app,components,public}/**/!(*.spec).{ts,tsx,html}'),
     join(__dirname, '../../libs/features/**/!(*.spec).{ts,tsx}'),
     join(__dirname, '../../libs/next/hygraph/**/!(*.spec).{ts,tsx}'),
+    join(__dirname, '../../libs/next/date/**/!(*.spec).{ts,tsx}'),
     join(__dirname, '../../libs/ui/**/!(*.spec).{ts,tsx}'),
   ],
   ...baseConfig,

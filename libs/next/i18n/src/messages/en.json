@@ -92,7 +92,9 @@
       "DateRange": {
         "from": "From",
         "to": "To",
-        "in-your-timezone": "In your own time zone"
+        "in-your-timezone": "In your own time zone",
+        "from-hour": "From",
+        "to-hour": "To"
       },
       "UserPassEvent": {
         "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",

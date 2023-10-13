@@ -119,10 +119,10 @@ describe('nftActivity integration test', () => {
 
     // Provide mock implementations
     (fileWrapper.copyFileBatchWithRetry as jest.Mock).mockImplementation(() =>
-      Promise.resolve()
+      Promise.resolve(),
     );
     (fileWrapper.deleteFilesBatchWithRetry as jest.Mock).mockImplementation(
-      () => Promise.resolve()
+      () => Promise.resolve(),
     );
   });
   afterEach(async () => {
@@ -142,32 +142,32 @@ describe('nftActivity integration test', () => {
   it('happy path with several nft activity being processed - no need to transfer QR code file', async () => {
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity]),
-      'clizzpvidao620buvxit1ynko'
+      'clizzpvidao620buvxit1ynko',
     );
 
     expect(response.status).toEqual(200);
 
     expect(
-      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock,
     ).not.toHaveBeenCalled();
     expect(
-      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).not.toHaveBeenCalled();
   });
 
   it('happy path with several nft activity being processed - transfer of QR code file', async () => {
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
-      'clizzpvidao620buvxit1ynko'
+      'clizzpvidao620buvxit1ynko',
     );
 
     expect(response.status).toEqual(200);
 
     expect(
-      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledTimes(1);
     expect(
-      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       {
         source:
@@ -177,10 +177,10 @@ describe('nftActivity integration test', () => {
       },
     ]);
     expect(
-      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledTimes(1);
     expect(
-      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
     ]);
@@ -189,16 +189,16 @@ describe('nftActivity integration test', () => {
   it('happy path with several nft activity being processed - from different contractAddress', async () => {
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2, mockActivity3]),
-      'clizzpvidao620buvxit1ynko'
+      'clizzpvidao620buvxit1ynko',
     );
 
     expect(response.status).toEqual(200);
 
     expect(
-      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledTimes(2);
     expect(
-      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       {
         source:
@@ -214,10 +214,10 @@ describe('nftActivity integration test', () => {
       },
     ]);
     expect(
-      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledTimes(2);
     expect(
-      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
       '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/fake-event-pass-2/clizzpvidao620buvxit1ynko-fake-event-pass-2-1512512512',
@@ -228,13 +228,13 @@ describe('nftActivity integration test', () => {
     const consoleSpy = jest.spyOn(console, 'error');
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity4NoNft]),
-      'clizzpvidao620buvxit1ynko'
+      'clizzpvidao620buvxit1ynko',
     );
     expect(response.status).toEqual(200);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
     expect(consoleSpy).toHaveBeenNthCalledWith(
       1,
-      expect.stringContaining(mockActivity4NoNft.contractAddress)
+      expect.stringContaining(mockActivity4NoNft.contractAddress),
     );
     consoleSpy.mockRestore();
   });
@@ -243,13 +243,13 @@ describe('nftActivity integration test', () => {
     const consoleSpy = jest.spyOn(console, 'error');
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity4NoNft]),
-      'clizzpvidao620buvxit1ynko'
+      'clizzpvidao620buvxit1ynko',
     );
     expect(response.status).toEqual(500);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
     expect(consoleSpy).toHaveBeenNthCalledWith(
       1,
-      expect.stringContaining(mockActivity4NoNft.contractAddress)
+      expect.stringContaining(mockActivity4NoNft.contractAddress),
     );
     consoleSpy.mockRestore();
   });
