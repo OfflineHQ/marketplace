@@ -70,10 +70,24 @@ export async function getRates(): Promise<{
 }> {
   const promises = Object.values(Currency_Enum_Not_Const).map(
     async (currency) => {
-      const rate = await currencyApi.getRate(currency);
+      const rate = await getRate(currency);
       return { [currency]: rate };
     }
   );
   const rates = await Promise.all(promises);
   return Object.assign({}, ...rates);
+}
+
+export async function populateCacheIfEmpty(): Promise<void> {
+  const promises = Object.values(Currency_Enum_Not_Const).map(
+    async (currency) => {
+      const key = getCacheKey(currency);
+      try {
+        await cacheApi.get(key);
+      } catch (error) {
+        await setRate(currency);
+      }
+    }
+  );
+  await Promise.all(promises);
 }
