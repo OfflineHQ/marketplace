@@ -5,13 +5,13 @@ import { FileWrapper, FolderWrapper } from '@file-upload/admin';
 import { revalidatePath } from 'next/cache';
 
 export async function checkFolderLength(folderPath: string, maxAmount: number) {
-  revalidatePath('/dashboard');
   const folder = new FolderWrapper();
 
   const list = await folder.listFolder({
     accountId: env.UPLOAD_ACCOUNT_ID,
     folderPath: folderPath,
   });
+  revalidatePath('/fr/Dashboard');
 
   const simplifiedList = list.items
     .map((item) => {
@@ -36,13 +36,13 @@ export async function checkFolder(
   eventPassId: string,
   maxAmount: number
 ) {
-  revalidatePath('/dashboard');
   const folder = new FolderWrapper();
 
   const list = await folder.listFolder({
     accountId: env.UPLOAD_ACCOUNT_ID,
     folderPath: folderPath,
   });
+  revalidatePath('/fr/Dashboard');
 
   const simplifiedList = list.items
     .map((item) => {
@@ -67,7 +67,6 @@ export async function checkFolder(
         (item) => item !== null && item.path.startsWith(tempPath)
       )
     ) {
-      console.log(tempPath);
       return false;
     }
   }
@@ -80,7 +79,6 @@ export async function renameFolderQrCodes(
   eventPassId: string,
   maxAmount: number
 ) {
-  revalidatePath('/dashboard');
   const folder = new FolderWrapper();
   const upload = new FileWrapper();
 
@@ -88,7 +86,7 @@ export async function renameFolderQrCodes(
     accountId: env.UPLOAD_ACCOUNT_ID,
     folderPath: folderPath,
   });
-  console.log(list);
+  revalidatePath('/fr/Dashboard');
 
   let i = 0;
 
@@ -112,8 +110,6 @@ export async function renameFolderQrCodes(
     return `Error : The amount of files is ${simplifiedList.length} but should be ${maxAmount}`;
   }
 
-  console.log(simplifiedList);
-
   if (simplifiedList === null || simplifiedList.length === 0) {
     return 'Error : Folder is empty';
   }
@@ -122,7 +118,6 @@ export async function renameFolderQrCodes(
     (item): item is { source: string; destination: string } => item !== null
   );
 
-  console.log(nonNullSimplifiedList);
   await upload.copyFileBatch({
     accountId: env.UPLOAD_ACCOUNT_ID,
     copyFileBatchRequest: {
@@ -131,7 +126,6 @@ export async function renameFolderQrCodes(
   });
 
   const oldFiles = nonNullSimplifiedList.map((item) => item.source);
-  console.log(oldFiles);
   await upload.deleteFileBatch({
     accountId: env.UPLOAD_ACCOUNT_ID,
     deleteFileBatchRequest: {
