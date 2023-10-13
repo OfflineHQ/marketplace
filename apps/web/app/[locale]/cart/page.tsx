@@ -74,6 +74,7 @@ export default async function CartSection({
   params: { locale },
 }: CartSectionProps) {
   const user = await getCurrentUser();
+  if (!user) return <CartSectionContent user={user} locale={locale} />;
   const userPassPendingOrders = await getEventPassPendingOrders({ locale });
   const userPassConfirmedOrders = await getEventPassOrdersConfirmed();
   if (userPassConfirmedOrders?.length) {
