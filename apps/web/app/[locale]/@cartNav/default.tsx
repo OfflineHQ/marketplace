@@ -42,6 +42,12 @@ async function CartNavSectionContent({ locale }: { locale: string }) {
   if (user) {
     userPassPendingOrders = await getEventPassPendingOrdersMinimal();
     userPassConfirmedOrders = await getEventPassOrdersConfirmed();
+    console.log(
+      'userPassPendingOrders',
+      userPassPendingOrders,
+      'userPassConfirmedOrders',
+      userPassConfirmedOrders
+    );
     if (userPassPendingOrders?.length) {
       numPendingOrders = userPassPendingOrders.reduce(
         (sum, order) => sum + order.quantity,
