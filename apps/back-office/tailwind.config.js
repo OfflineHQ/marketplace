@@ -9,10 +9,11 @@ module.exports = {
   content: [
     join(
       __dirname,
-      '{src,app,pages,components,public}/**/!(*.spec).{ts,tsx,html}'
+      '{src,app,pages,components,public}/**/!(*.spec).{ts,tsx,html}',
     ),
     join(__dirname, '../../libs/features/**/!(*.spec).{ts,tsx}'),
     join(__dirname, '../../libs/next/hygraph/**/!(*.spec).{ts,tsx}'),
+    join(__dirname, '../../libs/next/date/**/!(*.spec).{ts,tsx}'),
     join(__dirname, '../../libs/ui/**/!(*.spec).{ts,tsx}'),
   ],
   ...baseConfig,

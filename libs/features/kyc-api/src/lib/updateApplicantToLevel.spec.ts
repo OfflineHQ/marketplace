@@ -17,7 +17,7 @@ describe('updateApplicantToLevel', () => {
     const user = null;
 
     await expect(updateApplicantToLevel(user)).rejects.toThrow(
-      'User not found'
+      'User not found',
     );
   });
 
@@ -25,7 +25,7 @@ describe('updateApplicantToLevel', () => {
     const user = { kyc: {} };
 
     await expect(updateApplicantToLevel(user as AppUser)).rejects.toThrow(
-      'User has no applicantId'
+      'User has no applicantId',
     );
   });
 
@@ -36,7 +36,7 @@ describe('updateApplicantToLevel', () => {
     (isApplicantPending as jest.Mock).mockReturnValue(true);
 
     await expect(updateApplicantToLevel(user as AppUser)).rejects.toThrow(
-      'User kyc is pending'
+      'User kyc is pending',
     );
   });
 
@@ -46,7 +46,7 @@ describe('updateApplicantToLevel', () => {
     };
     (isApplicantPending as jest.Mock).mockReturnValue(false);
     (Kyc.prototype.moveApplicantToLevel as jest.Mock).mockResolvedValue(
-      'applicant'
+      'applicant',
     );
 
     const result = await updateApplicantToLevel(user as AppUser);

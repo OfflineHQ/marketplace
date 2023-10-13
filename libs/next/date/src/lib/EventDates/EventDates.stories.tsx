@@ -1,9 +1,10 @@
 // EventDates.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { EventDates, EventDatesProps } from './EventDates';
-import { eventDatesProps, event2DatesProps } from './examples';
+import { EventDates } from './EventDates';
+import { event2DatesProps, eventDatesProps } from './examples';
 
 const meta = {
+  title: 'Date/EventDates',
   component: EventDates,
   args: eventDatesProps,
 } satisfies Meta<typeof EventDates>;

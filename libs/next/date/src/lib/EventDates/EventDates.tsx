@@ -1,6 +1,6 @@
 // EventDates.tsx
+import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
 import React from 'react';
-import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import {
   EventDatesClient,
   type EventDatesClientProps,
@@ -8,7 +8,7 @@ import {
 
 export type EventDatesProps = Omit<
   EventDatesClientProps,
-  'fromText' | 'toText'
+  'fromText' | 'toText' | 'inYourTimezoneText' | 'fromHourText' | 'toHourText'
 >;
 
 export const EventDates: React.FC<EventDatesProps> = ({
@@ -16,7 +16,7 @@ export const EventDates: React.FC<EventDatesProps> = ({
   detailed,
 }) => {
   const locale = useLocale();
-  const t = useTranslations('Organizer.EventDates');
+  const t = useTranslations('Pass.UserPass.DateRange');
   return (
     <NextIntlClientProvider locale={locale} messages={undefined}>
       <EventDatesClient
@@ -24,6 +24,9 @@ export const EventDates: React.FC<EventDatesProps> = ({
         detailed={detailed}
         fromText={t('from')}
         toText={t('to')}
+        fromHourText={t('from-hour')}
+        toHourText={t('to-hour')}
+        inYourTimezoneText={t('in-your-timezone')}
       />
     </NextIntlClientProvider>
   );

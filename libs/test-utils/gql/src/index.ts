@@ -16,7 +16,7 @@ type Opts = {
 const fetchDataForTest = (opts: Opts = { jwt: '', anonymous: false }) => {
   return async <TResult, TVariables>(
     doc: string,
-    variables: TVariables
+    variables: TVariables,
   ): Promise<TResult> => {
     const { jwt, anonymous } = opts;
     const headers: RequestInit['headers'] = {
@@ -83,7 +83,7 @@ const generateJwt = (options: AccountOptions): string =>
       userId: options.userId,
     }),
     // private key provided on docker-compose for test
-    '3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R'
+    '3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R',
   );
 
 export const usersJwt = {

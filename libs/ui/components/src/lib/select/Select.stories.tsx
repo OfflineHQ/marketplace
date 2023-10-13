@@ -22,7 +22,9 @@ export const SelectedItem: Story = {
   play: async () => {
     await userEvent.click(screen.getByRole('combobox'));
     const optionList = await screen.findByRole('listbox');
-    const appleItem = within(optionList).getByRole('option', { name: 'Banana' });
+    const appleItem = within(optionList).getByRole('option', {
+      name: 'Banana',
+    });
     await userEvent.dblClick(appleItem);
     const selectedItem = screen.getByRole('combobox');
     expect(selectedItem.textContent).toBe('Banana');

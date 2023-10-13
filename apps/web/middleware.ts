@@ -6,6 +6,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const authPages = [
   '/user',
+  '/cart/*',
+  '/pass/*',
   // Add more restricted pages if needed
 ];
 
@@ -30,13 +32,15 @@ const authMiddleware = withAuth(
         return true;
       },
     },
-  }
+  },
 );
 
 export default function middleware(req: NextRequest) {
   const restrictedPathnameRegex = RegExp(
-    `^(/(${locales.join('|')})/)?(${authPages.join('|')})/?$`,
-    'i'
+    `^(/(${locales.join('|')})/)?(${authPages
+      .map((page) => page.replace('*', '.*'))
+      .join('|')})/?$`,
+    'i',
   );
   const isAuthPage = restrictedPathnameRegex.test(req.nextUrl.pathname);
   if (isAuthPage) {

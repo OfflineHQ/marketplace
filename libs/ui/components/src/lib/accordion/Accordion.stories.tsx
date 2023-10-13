@@ -41,7 +41,8 @@ function AccordionDemo(args: any) {
       <AccordionItem value="item-2">
         <AccordionTrigger>Is it styled?</AccordionTrigger>
         <AccordionContent>
-          Yes. It comes with default styles that matches the other components' aesthetic.
+          Yes. It comes with default styles that matches the other components'
+          aesthetic.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">
@@ -63,11 +64,13 @@ export const Default: Story = {
 export const OpenAccordionItem: Story = {
   ...Default,
   play: async () => {
-    const accordionTrigger = screen.getByRole('button', { name: 'Is it accessible?' });
+    const accordionTrigger = screen.getByRole('button', {
+      name: 'Is it accessible?',
+    });
     await userEvent.click(accordionTrigger);
 
     const accordionContent = await screen.findByText(
-      'Yes. It adheres to the WAI-ARIA design pattern.'
+      'Yes. It adheres to the WAI-ARIA design pattern.',
     );
     expect(accordionContent).toBeVisible();
 
@@ -83,7 +86,9 @@ export const CloseAccordionItem: Story = {
     chromatic: { disableSnapshot: true },
   },
   play: async () => {
-    const accordionTrigger = screen.getByRole('button', { name: 'Is it accessible?' });
+    const accordionTrigger = screen.getByRole('button', {
+      name: 'Is it accessible?',
+    });
     await userEvent.click(accordionTrigger);
     await userEvent.click(accordionTrigger);
 
@@ -97,22 +102,26 @@ export const MultipleOpenAccordionItem: Story = {
     type: 'multiple',
   },
   play: async () => {
-    const accordionTrigger = screen.getByRole('button', { name: 'Is it accessible?' });
+    const accordionTrigger = screen.getByRole('button', {
+      name: 'Is it accessible?',
+    });
     await userEvent.click(accordionTrigger);
 
     const accordionContent = await screen.findByText(
-      'Yes. It adheres to the WAI-ARIA design pattern.'
+      'Yes. It adheres to the WAI-ARIA design pattern.',
     );
     expect(accordionContent).toBeVisible();
 
     const accordionItem = accordionContent.closest('[role="region"]');
     expect(accordionItem?.getAttribute('data-state')).toBe('open');
 
-    const thirdAccordionTrigger = screen.getByRole('button', { name: 'Is it animated?' });
+    const thirdAccordionTrigger = screen.getByRole('button', {
+      name: 'Is it animated?',
+    });
     await userEvent.click(thirdAccordionTrigger);
 
     const ThirdAccordionContent = await screen.findByText(
-      "Yes. It's animated by default, but you can disable it if you prefer."
+      "Yes. It's animated by default, but you can disable it if you prefer.",
     );
     expect(ThirdAccordionContent).toBeVisible();
 

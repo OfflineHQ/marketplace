@@ -1,3 +1,4 @@
+import { getAccount } from '@features/account/api';
 import { adminSdk } from '@gql/admin/api';
 import { KycStatus_Enum } from '@gql/shared/types';
 import { getCurrentUser } from '@next/next-auth/user';
@@ -7,6 +8,7 @@ jest.mock('@next/next-auth/user', () => ({
   getCurrentUser: jest.fn(),
 }));
 jest.mock('@gql/admin/api');
+jest.mock('@features/account/api');
 
 describe('handleApplicantStatusChanged', () => {
   beforeEach(() => {
@@ -16,15 +18,15 @@ describe('handleApplicantStatusChanged', () => {
     (getCurrentUser as jest.Mock).mockResolvedValueOnce(null);
 
     await expect(
-      handleApplicantStatusChanged(KycStatus_Enum.Pending)
+      handleApplicantStatusChanged(KycStatus_Enum.Pending),
     ).rejects.toThrow('User not found');
   });
 
   it('throws an error if user does not have an applicant created', async () => {
     (getCurrentUser as jest.Mock).mockResolvedValueOnce({ kyc: {} });
-
+    (getAccount as jest.Mock).mockResolvedValueOnce({ kyc: {} });
     await expect(
-      handleApplicantStatusChanged(KycStatus_Enum.Pending)
+      handleApplicantStatusChanged(KycStatus_Enum.Pending),
     ).rejects.toThrow("User doesn't have an applicant created");
   });
 
@@ -37,6 +39,7 @@ describe('handleApplicantStatusChanged', () => {
       },
     };
     (getCurrentUser as jest.Mock).mockResolvedValueOnce(user);
+    (getAccount as jest.Mock).mockResolvedValueOnce(user);
     (adminSdk.UpdateKyc as jest.Mock).mockResolvedValueOnce(true);
 
     const result = await handleApplicantStatusChanged(KycStatus_Enum.Pending);
@@ -59,7 +62,7 @@ describe('handleApplicantStatusChanged', () => {
       },
     };
     (getCurrentUser as jest.Mock).mockResolvedValueOnce(user);
-
+    (getAccount as jest.Mock).mockResolvedValueOnce(user);
     const result = await handleApplicantStatusChanged(KycStatus_Enum.Pending);
 
     expect(adminSdk.UpdateKyc).not.toHaveBeenCalled();

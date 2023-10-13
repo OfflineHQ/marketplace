@@ -22,7 +22,7 @@ describe('transferPassQrCode', () => {
       status: FileCopyStatus.FileNotFound,
     });
     await expect(
-      transferPassQrCode(mockFormerOwnerAddress, mockEventPassNft)
+      transferPassQrCode(mockFormerOwnerAddress, mockEventPassNft),
     ).rejects.toThrow(FileCopyStatus.FileNotFound);
   });
 
@@ -31,10 +31,10 @@ describe('transferPassQrCode', () => {
       status: FileCopyStatus.Copied,
     });
     (FileWrapper.prototype.deleteFile as jest.Mock).mockRejectedValueOnce(
-      new Error('DeleteFailed')
+      new Error('DeleteFailed'),
     );
     await expect(
-      transferPassQrCode(mockFormerOwnerAddress, mockEventPassNft)
+      transferPassQrCode(mockFormerOwnerAddress, mockEventPassNft),
     ).rejects.toThrow('DeleteFailed');
   });
 });

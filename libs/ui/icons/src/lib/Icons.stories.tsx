@@ -29,7 +29,10 @@ export const AllIcons: Story = {
     return (
       <div className="flex flex-wrap items-center justify-center gap-4">
         {Object.entries(Icons).map(([name, Icon]) => (
-          <div key={name} className="flex flex-col items-center justify-center px-4">
+          <div
+            key={name}
+            className="flex flex-col items-center justify-center px-4"
+          >
             <Icon size={size} color={color} />
             <span className={`mt-2 ${colorText}`}>{name}</span>
           </div>
@@ -49,7 +52,10 @@ export const AllColors: Story = {
       <div className="flex flex-wrap items-center justify-center gap-4">
         {Object.entries(iconColors).map(([name, color]) => {
           return (
-            <div key={name} className="flex flex-col items-center justify-center px-4">
+            <div
+              key={name}
+              className="flex flex-col items-center justify-center px-4"
+            >
               <Icon size={size} color={name as keyof typeof iconColors} />
               <span className={`mt-2 ${color}`}>{name}</span>
             </div>
@@ -75,7 +81,10 @@ export const AllSizes: Story = {
       <div className="flex flex-wrap items-center justify-center gap-4">
         {Object.entries(iconSizes).map(([name]) => {
           return (
-            <div key={name} className="flex flex-col items-center justify-center px-4">
+            <div
+              key={name}
+              className="flex flex-col items-center justify-center px-4"
+            >
               <Icon size={name as keyof typeof iconSizes} color={color} />
               <span className={`mt-2`}>{name}</span>
             </div>

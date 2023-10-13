@@ -5,19 +5,19 @@ import * as path from 'path';
 async function readAndParseJson(directoryPath: string, file: string) {
   const data = await fs.promises.readFile(
     path.join(directoryPath, file),
-    'utf8'
+    'utf8',
   );
   return JSON.parse(data);
 }
 
 async function processFiles(
   directoryPath: string,
-  fileProcessor: (directoryPath: string, file: string) => Promise<void>
+  fileProcessor: (directoryPath: string, file: string) => Promise<void>,
 ) {
   const files = await fs.promises.readdir(directoryPath);
   const jsonFiles = files.filter((file) => path.extname(file) === '.json');
   await Promise.all(
-    jsonFiles.map((file) => fileProcessor(directoryPath, file))
+    jsonFiles.map((file) => fileProcessor(directoryPath, file)),
   );
 }
 
@@ -51,7 +51,7 @@ export async function batchDelete(key: string) {
     throw new Error(
       `Error during batch create of redis data : ${
         error instanceof Error ? error.message : error
-      }`
+      }`,
     );
   }
 }

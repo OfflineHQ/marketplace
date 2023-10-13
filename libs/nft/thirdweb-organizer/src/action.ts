@@ -18,7 +18,7 @@ import type {
 } from '@gql/shared/types';
 
 export async function createEventPassNftContract(
-  object: EventPassNftContract_Insert_Input
+  object: EventPassNftContract_Insert_Input,
 ): Promise<
   CreateEventPassNftContractMutation['insert_eventPassNftContract_one']
 > {
@@ -27,14 +27,14 @@ export async function createEventPassNftContract(
 }
 
 export async function createEventPassNfts(
-  objects: EventPassNft_Insert_Input[]
+  objects: EventPassNft_Insert_Input[],
 ): Promise<InsertEventPassNftsMutation['insert_eventPassNft']> {
   const data = await adminSdk.InsertEventPassNfts({ objects });
   return data?.insert_eventPassNft || null;
 }
 
 async function InsertEventParameters(
-  objects: EventParameters_Insert_Input[]
+  objects: EventParameters_Insert_Input[],
 ): Promise<InsertEventParametersMutation['insert_eventParameters']> {
   const data = await adminSdk.InsertEventParameters({ objects });
   return data?.insert_eventParameters;

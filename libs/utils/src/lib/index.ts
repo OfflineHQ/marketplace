@@ -22,7 +22,7 @@ export function isObject(item: any): boolean {
 
 export function deepPick<T, P extends NestedKeyOf<T>>(
   obj: T,
-  paths: P[]
+  paths: P[],
 ): NestedValueOf<T, P> {
   function pickHelper(item: any, path: string[]): any {
     if (path.length === 0 || item === undefined) {
@@ -72,7 +72,7 @@ export function isCypressRunning() {
 export function truncateString(str: string, maxChars: number): string {
   if (maxChars < 5) {
     throw new Error(
-      'maxChars must be at least 5 to allow proper truncation with three asterisks (***)'
+      'maxChars must be at least 5 to allow proper truncation with three asterisks (***)',
     );
   }
 
