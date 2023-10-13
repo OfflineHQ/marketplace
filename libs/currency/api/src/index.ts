@@ -2,18 +2,16 @@ import { isPreviewOrProduction } from '@shared/server';
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import env from '@env/server';
 
 export default class Currency {
-  private FIXER_CURRENCY_API_KEY = process.env.FIXER_CURRENCY_API_KEY;
-  private EXCHANGE_RATE_API_KEY = process.env.EXCHANGE_RATE_API_KEY;
-
   async getRate(baseCurrency: string): Promise<{ [key: string]: number }> {
     if (!isPreviewOrProduction()) {
       return await this.fetchFromLocalFile(baseCurrency);
     }
     try {
       const rates = await this.fetchFromAPI(
-        `http://data.fixer.io/api/latest?access_key=${this.FIXER_CURRENCY_API_KEY}&base=${baseCurrency}`,
+        `http://data.fixer.io/api/latest?access_key=${env.FIXER_CURRENCY_API_KEY}&base=${baseCurrency}`,
         'Fixer'
       );
       await this.saveToLocalFile(baseCurrency, rates);
@@ -22,7 +20,7 @@ export default class Currency {
       console.warn('Falling back to ExchangeRate API');
       try {
         const rates = await this.fetchFromAPI(
-          `https://v6.exchangerate-api.com/v6/${this.EXCHANGE_RATE_API_KEY}/latest/${baseCurrency}`,
+          `https://v6.exchangerate-api.com/v6/${env.EXCHANGE_RATE_API_KEY}/latest/${baseCurrency}`,
           'ExchangeRate'
         );
         await this.saveToLocalFile(baseCurrency, rates);
