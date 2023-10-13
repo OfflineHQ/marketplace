@@ -46,7 +46,7 @@ const textSkeletonVariantClasses = cva(
     defaultVariants: {
       variant: 'span',
     },
-  }
+  },
 );
 
 type AllowedHtmlElements =
@@ -96,7 +96,7 @@ const TextSkeleton: React.FC<TextSkeletonProps> = ({
         className={cn(
           textSkeletonVariantClasses({ variant: 'small' }),
           className,
-          'h-2'
+          'h-2',
         )}
         {...props}
       />

@@ -4,11 +4,9 @@ export interface TextInputWithLeftLabelsProps extends TextInputProps {
   className?: string;
 }
 
-export const TextInputWithLeftLabels: React.FC<TextInputWithLeftLabelsProps> = ({
-  className,
-  id,
-  ...props
-}) => {
+export const TextInputWithLeftLabels: React.FC<
+  TextInputWithLeftLabelsProps
+> = ({ className, id, ...props }) => {
   const labels = ['Width', 'Max. width', 'Height', 'Max. height'];
   const defaultValues = ['100%', '300px', '25px', 'none'];
 

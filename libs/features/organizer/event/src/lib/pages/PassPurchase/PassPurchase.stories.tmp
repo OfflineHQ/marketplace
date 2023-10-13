@@ -1,14 +1,14 @@
 // PassPurchaseSheet.stories.tsx
-import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
+import { Meta, StoryObj } from '@storybook/react';
+import { screen } from '@storybook/testing-library';
 import { PassPurchaseSheet } from './PassPurchaseSheet';
 import {
+  PassPurchaseCardExample,
   PassPurchaseSheetExample,
+  PassPurchaseSheetLoadingExample,
   passPurchaseProps,
   passPurchasePropsWithLotsOfPasses,
-  PassPurchaseSheetLoadingExample,
-  PassPurchaseCardExample,
 } from './examples';
 
 const meta = {
@@ -82,7 +82,7 @@ export const WithFullSizeAndBackButton: Story = {
     size: 'full',
   },
   play: async () => {
-    const backButton = screen.getByRole('button', {
+    const backButton = await screen.findByRole('button', {
       name: /Go back to the event/i,
     });
     expect(backButton).toBeVisible();

@@ -1,6 +1,11 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
+import {
+  screen,
+  fireEvent,
+  userEvent,
+  within,
+} from '@storybook/testing-library';
 import { Popover } from './Popover';
 
 import { PopoverDemo, PopoverDemoWithNoHeader } from './examples';

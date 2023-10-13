@@ -56,6 +56,7 @@ declare module '@env/server' {
     FIXER_CURRENCY_API_KEY: string;
     EXCHANGE_RATE_API_KEY: string;
     WEB_APP_URL?: string;
+    OPENZEPPELIN_URL: string;
   };
   export default env;
 }

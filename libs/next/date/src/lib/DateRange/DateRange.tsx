@@ -1,8 +1,8 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
-import { useLocale, useTranslations, NextIntlClientProvider } from 'next-intl';
 import { TextSkeleton } from '@ui/components';
 import { Calendar as CalendarIcon } from '@ui/icons';
+import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
+import React from 'react';
 import { type DateRangeClientProps } from './DateRangeClient';
 
 export const DateRangeSkeleton: React.FC = () => {
@@ -19,12 +19,12 @@ export const DateRangeSkeleton: React.FC = () => {
 
 const DynamicDateRangeClient = dynamic(
   () => import('./DateRangeClient'),
-  { ssr: false, loading: () => <DateRangeSkeleton /> } // This will load the component only on client side to get the correct timezone
+  { ssr: false, loading: () => <DateRangeSkeleton /> }, // This will load the component only on client side to get the correct timezone
 );
 
 export type DateRangeProps = Omit<
   DateRangeClientProps,
-  'fromText' | 'toText' | 'inYourTimezoneText'
+  'fromText' | 'toText' | 'inYourTimezoneText' | 'fromHourText' | 'toHourText'
 >;
 
 export const DateRange: React.FC<DateRangeProps> = (props) => {
@@ -36,6 +36,8 @@ export const DateRange: React.FC<DateRangeProps> = (props) => {
         {...props}
         fromText={t('from')}
         toText={t('to')}
+        fromHourText={t('from-hour')}
+        toHourText={t('to-hour')}
         inYourTimezoneText={t('in-your-timezone')}
       />
     </NextIntlClientProvider>

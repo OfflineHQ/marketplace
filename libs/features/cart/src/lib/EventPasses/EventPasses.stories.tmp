@@ -35,12 +35,12 @@ export const Opened: Story = {
     userEvent.click(
       screen.getByRole('button', {
         name: /Edit/i,
-      })
+      }),
     );
     userEvent.click(
       screen.getByRole('button', {
         name: /Delete/i,
-      })
+      }),
     );
   },
 };

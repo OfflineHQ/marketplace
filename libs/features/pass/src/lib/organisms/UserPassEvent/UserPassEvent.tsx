@@ -1,22 +1,22 @@
+import { DateRangeServer } from '@next/date';
 import {
+  AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  AccordionContent,
-  TextSkeleton,
+  Badge,
+  BadgeSkeleton,
+  ButtonSkeleton,
   Separator,
   Text,
-  Badge,
-  ButtonSkeleton,
-  BadgeSkeleton,
+  TextSkeleton,
 } from '@ui/components';
-import { DateRange } from '../../molecules/DateRange/DateRange';
 import {
   UserPassEventCard,
   type UserPassEventCardProps,
 } from '../UserPassEventCard/UserPassEventCard';
 
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export type UserPassEventProps = Omit<
   UserPassEventCardProps,
@@ -76,7 +76,7 @@ export const UserPassEvent: React.FC<UserPassEventProps> = ({
             <Text variant="h5" className="font-semibold">
               {eventParameters.event?.title}
             </Text>
-            <DateRange
+            <DateRangeServer
               className="py-2"
               dateStart={eventParameters.dateStart}
               dateEnd={eventParameters.dateEnd}

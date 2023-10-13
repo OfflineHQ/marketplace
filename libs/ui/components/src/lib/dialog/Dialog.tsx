@@ -1,9 +1,9 @@
 'use client';
 
-import * as React from 'react';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
 import type { DialogProps } from '@radix-ui/react-dialog';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { Close } from '@ui/icons';
+import * as React from 'react';
 import { closeClasses } from '../shared/close';
 
 import { cn } from '@ui/shared';
@@ -14,11 +14,10 @@ const Dialog = DialogPrimitive.Root;
 const DialogTrigger = DialogPrimitive.Trigger;
 
 const DialogPortal = ({
-  className,
   children,
   ...props
 }: DialogPrimitive.DialogPortalProps) => (
-  <DialogPrimitive.Portal className={cn(className)} {...props}>
+  <DialogPrimitive.Portal {...props}>
     <div className="fixed inset-0 z-50 flex items-start justify-center sm:items-center">
       {children}
     </div>
@@ -33,7 +32,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     className={cn(
       'fixed inset-0 z-50 bg-background/80 backdrop-blur-sm transition-all duration-100 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in',
-      className
+      className,
     )}
     {...props}
     ref={ref}
@@ -49,7 +48,7 @@ const DialogContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   const childrenArray = React.Children.toArray(children);
   const shouldBeClosable = childrenArray.some(
-    (child) => React.isValidElement(child) && child.type === DialogHeader
+    (child) => React.isValidElement(child) && child.type === DialogHeader,
   );
   const closeButtonClasses = buttonVariantsCva({
     variant: 'ghost',
@@ -64,7 +63,7 @@ const DialogContent = React.forwardRef<
           'fixed z-50 grid w-full gap-4 rounded-b-lg border bg-background p-6 shadow-lg animate-in data-[state=open]:fade-in-90 data-[state=open]:slide-in-from-bottom-10 sm:max-w-lg sm:rounded-lg sm:zoom-in-90 data-[state=open]:sm:slide-in-from-bottom-0',
           'flex flex-col space-y-4',
           'max-h-screen',
-          className
+          className,
         )}
         {...props}
       >
@@ -90,7 +89,7 @@ const DialogHeader = ({
   <div
     className={cn(
       'flex flex-col space-y-1.5 text-center sm:text-left',
-      className
+      className,
     )}
     {...props}
   />
@@ -104,7 +103,7 @@ const DialogFooter = ({
   <div
     className={cn(
       'flex flex-col-reverse space-y-2 space-y-reverse sm:flex-row sm:justify-end sm:space-x-2 md:space-y-0',
-      className
+      className,
     )}
     {...props}
   />
@@ -119,7 +118,7 @@ const DialogTitle = React.forwardRef<
     ref={ref}
     className={cn(
       'text-lg font-semibold leading-none tracking-tight',
-      className
+      className,
     )}
     {...props}
   />
@@ -140,11 +139,11 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
   Dialog,
-  DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
   type DialogProps,
 };

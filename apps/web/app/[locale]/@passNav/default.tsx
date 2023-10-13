@@ -10,7 +10,7 @@ export default async function PassNavSection() {
 }
 
 function PassNavSectionContent(
-  props: Pick<PassNavProps, 'ping' | 'isLoading'>
+  props: Pick<PassNavProps, 'ping' | 'isLoading'>,
 ) {
   const t = useTranslations('AppNav.Pass');
   return (

@@ -1,8 +1,6 @@
-import { CurrencyProvider } from '@next/currency-provider';
-import { defaultLocale } from '@next/i18n';
 import { Decorator, Preview } from '@storybook/react';
 import { NextIntlClientProvider } from 'next-intl';
-import { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import messagesEn from '../../../libs/next/i18n/src/messages/en.json';
 import messagesfr from '../../../libs/next/i18n/src/messages/fr.json';
 import { parameters } from '../../../storybook.preview.base';
@@ -53,24 +51,22 @@ const staticDate = new Date('2023-06-05T00:00:00Z');
 
 const I18nextStoryDecorator: Decorator = (Story, context) => {
   const { locale: selectedLocale } = context.globals;
-  const locale = selectedLocale || defaultLocale;
+  const locale = selectedLocale || 'en';
   const messages = {
     en: messagesEn,
     fr: messagesfr,
   };
   return (
-    <NextIntlClientProvider
-      locale={locale}
-      messages={messages[locale]}
-      now={staticDate}
-    >
-      {Story(context)}
-    </NextIntlClientProvider>
+    <Suspense>
+      <NextIntlClientProvider
+        locale={locale}
+        messages={messages[locale]}
+        now={staticDate}
+      >
+        {Story(context)}
+      </NextIntlClientProvider>
+    </Suspense>
   );
-};
-
-const CurrencyDecorator: Decorator = (Story, context) => {
-  return <CurrencyProvider>{Story(context)}</CurrencyProvider>;
 };
 
 document.body.classList.add('font-sans');
@@ -86,7 +82,6 @@ const preview: Preview = {
     DarkModeDecorator,
     I18nextStoryDecorator,
     localStorageResetDecorator,
-    CurrencyDecorator,
   ],
 };
 export default preview;
