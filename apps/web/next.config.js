@@ -115,7 +115,7 @@ const sentryWebpackPluginOptions = {
   project: 'nextjs-marketplace',
   authToken: process.env.SENTRY_AUTH_TOKEN,
   dryRun: !SENTRY_DSN,
-  silent: true, // Suppresses all logs
+  silent: process.env.VERCEL_ENV === 'production',
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
@@ -129,9 +129,6 @@ const sentryOptions = {
 
   // Transpiles SDK to be compatible with IE11 (increases bundle size)
   transpileClientSDK: true,
-
-  // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
-  tunnelRoute: '/monitoring',
 
   // Hides source maps from generated client bundles
   hideSourceMaps: true,
