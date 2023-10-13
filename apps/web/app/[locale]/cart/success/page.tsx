@@ -30,7 +30,7 @@ export default async function CartPurchase({
   params: { locale },
 }: CartSectionProps) {
   const user = await getCurrentUser();
-  if (!isUserKycValidated(user)) redirect('/cart');
+  if (!isUserKycValidated(user)) redirect('/');
 
   return <div>Cart Purchase Successfull</div>;
   // let session = await getStripeActiveCheckoutSession();
