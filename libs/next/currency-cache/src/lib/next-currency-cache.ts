@@ -79,18 +79,11 @@ export async function getRates(): Promise<{
 }
 
 export async function populateCacheIfEmpty(): Promise<void> {
-  const promises = Object.values(Currency_Enum_Not_Const).map(
-    async (currency) => {
-      const key = getCacheKey(currency);
-      try {
-        await cacheApi.get(key);
-      } catch (error) {
-        await setRate(currency);
-      }
-    }
-  );
   try {
-    await Promise.all(promises);
+    const rate = await getRate(Currency_Enum_Not_Const.EUR);
+    if (!rate) {
+      await setRates();
+    }
     console.log('Populated cache for currency has been called successfully');
   } catch (error) {
     console.error('Failed to populate cache for currency', error);
