@@ -453,7 +453,6 @@ describe('Payment', () => {
 
       expect(payment.stripe.checkout.sessions.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          customer_email: stripeCustomer.email,
           client_reference_id: accounts.alpha_user.id,
           customer: stripeCustomer.id,
           currency,

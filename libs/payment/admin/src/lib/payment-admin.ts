@@ -279,7 +279,6 @@ export class Payment {
 
     const session = await this.stripe.checkout.sessions.create({
       line_items: lineItems,
-      customer_email: stripeCustomer.email,
       client_reference_id: user.id,
       customer: stripeCustomer.id,
       currency,
