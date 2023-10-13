@@ -1,5 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
+import {
+  screen,
+  fireEvent,
+  userEvent,
+  within,
+} from '@storybook/testing-library';
 import { DropdownMenu } from './DropdownMenu';
 import { DropdownMenuDemo } from './examples';
 

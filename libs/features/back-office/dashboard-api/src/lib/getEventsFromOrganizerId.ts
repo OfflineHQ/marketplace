@@ -16,5 +16,5 @@ export const getEventsFromOrganizerId = cache(
       stage: env.HYGRAPH_STAGE as Stage,
     });
     return data?.organizer?.events;
-  }
+  },
 );

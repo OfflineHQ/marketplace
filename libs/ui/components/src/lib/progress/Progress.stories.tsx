@@ -58,7 +58,10 @@ export const AllVariants: ProgressStory = {
       {Object.keys(progressVariants).map((variant) => (
         <div key={variant} className="mb-4">
           <h3 className="mb-2">{variant}</h3>
-          <Progress {...args} variant={variant as keyof typeof progressVariants} />
+          <Progress
+            {...args}
+            variant={variant as keyof typeof progressVariants}
+          />
         </div>
       ))}
     </>

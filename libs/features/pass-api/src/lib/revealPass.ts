@@ -17,7 +17,7 @@ export const eventPassCheck = async (id: string) => {
     {
       id,
     },
-    { cache: 'no-store' }
+    { cache: 'no-store' },
   );
   const eventPassNft = res.eventPassNft_by_pk;
   if (!eventPassNft || eventPassNft.currentOwnerAddress != user.address)
@@ -28,7 +28,7 @@ export const eventPassCheck = async (id: string) => {
 };
 
 export const eventPassTransferQRCode = async (
-  eventPassNft: EventPassNftByIdMinimal
+  eventPassNft: EventPassNftByIdMinimal,
 ) => {
   const { currentOwnerAddress, tokenId, eventId, eventPassId, organizerId } =
     eventPassNft;

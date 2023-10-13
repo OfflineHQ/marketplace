@@ -90,7 +90,7 @@ export class Kyc {
   }): Promise<CreateKycMutation['insert_kyc_one']> {
     const method = 'POST';
     const uri = `/resources/applicants?levelName=${encodeURIComponent(
-      levelName
+      levelName,
     )}`;
     const requestBody = JSON.stringify({
       externalUserId,
@@ -105,9 +105,8 @@ export class Kyc {
       externalUserId,
     };
     try {
-      existingApplicant = await this.getApplicantPersonalDataByExternalUserId(
-        externalUserId
-      );
+      existingApplicant =
+        await this.getApplicantPersonalDataByExternalUserId(externalUserId);
       kyc = {
         reviewStatus: existingApplicant.review.reviewStatus,
         applicantId: existingApplicant.id,
@@ -154,7 +153,7 @@ export class Kyc {
   }): Promise<Applicant> {
     const method = 'POST';
     const uri = `/resources/applicants/${encodeURIComponent(
-      applicantId
+      applicantId,
     )}/moveToLevel`;
 
     const requestBody = `?name=${encodeURIComponent(levelName)}`;
@@ -183,11 +182,11 @@ export class Kyc {
     return data;
   }
   async getApplicantStatus(
-    applicantId: string
+    applicantId: string,
   ): Promise<ApplicantReviewStatus> {
     const method = 'GET';
     const uri = `/resources/applicants/${encodeURIComponent(
-      applicantId
+      applicantId,
     )}/status`;
     const headers = this.headers({ method, uri });
     const response = await fetch(`${this.baseUrl}${uri}`, {
@@ -205,7 +204,7 @@ export class Kyc {
   }
 
   async getApplicantPersonalData(
-    applicantId: string
+    applicantId: string,
   ): Promise<ApplicantPersonalData> {
     const method = 'GET';
     const uri = `/resources/applicants/${encodeURIComponent(applicantId)}/one`;
@@ -225,11 +224,11 @@ export class Kyc {
   }
 
   async getApplicantPersonalDataByExternalUserId(
-    externalUserId: string
+    externalUserId: string,
   ): Promise<ApplicantPersonalData> {
     const method = 'GET';
     const uri = `/resources/applicants/-;externalUserId=${encodeURIComponent(
-      externalUserId
+      externalUserId,
     )}/one`;
     const headers = this.headers({ method, uri });
     const response = await fetch(`${this.baseUrl}${uri}`, {

@@ -1,12 +1,21 @@
-import { type EventHeroProps } from './EventHero';
 import {
-  eventLocationsProps,
   event2LocationsProps,
+  eventDateLocation1,
+  eventDateLocation2,
+  eventDateLocation3,
+  eventLocationsProps,
 } from '../../molecules/EventLocations/examples';
-import {
-  eventDatesProps,
-  event2DatesProps,
-} from '../../molecules/EventDates/examples';
+import { type EventHeroProps } from './EventHero';
+
+export const eventDatesProps = {
+  eventDateLocations: [eventDateLocation1, eventDateLocation2],
+  detailed: false,
+};
+
+export const event2DatesProps = {
+  eventDateLocations: [eventDateLocation3],
+  detailed: false,
+};
 
 const organizer: EventHeroProps['organizer'] = {
   id: '1234',

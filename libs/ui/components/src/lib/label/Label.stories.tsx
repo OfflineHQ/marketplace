@@ -31,7 +31,9 @@ export const AllVariants: Story = {
     <>
       {variantOptions.map((variant) => (
         <div key={variant} className="mb-2">
-          <Label variant={variant as LabelProps['variant']}>{`${variant} Label`}</Label>
+          <Label
+            variant={variant as LabelProps['variant']}
+          >{`${variant} Label`}</Label>
         </div>
       ))}
     </>
