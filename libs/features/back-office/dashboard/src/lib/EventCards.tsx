@@ -73,7 +73,6 @@ function EventPassContent({
   deploy,
   uploader,
 }: EventPassContentProps) {
-  console.log(eventPass);
   const [filesNumber, setFilesNumber] = useState(0);
   const path = getEventPassOrganizerFolderPath({
     organizerId,
@@ -89,7 +88,6 @@ function EventPassContent({
         path,
         eventPass.eventPassPricing?.maxAmount || 0
       );
-      console.log('Status', status);
       setFilesNumber(status.length);
       return await checkFolder(
         path,
@@ -194,7 +192,6 @@ function EventPassContent({
                       onUpdate={async (files) => {
                         files
                           .map((x) => {
-                            console.log(x);
                             return x.fileUrl;
                           })
                           .join('\n');
