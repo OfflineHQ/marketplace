@@ -96,3 +96,5 @@ export async function populateCacheIfEmpty(): Promise<void> {
     console.error('Failed to populate cache for currency', error);
   }
 }
+
+populateCacheIfEmpty();

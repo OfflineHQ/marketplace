@@ -55,7 +55,6 @@ const nextConfig = {
   // outputFileTracingRoot needed for monorepo
   // output: 'standalone',
   experimental: {
-    instrumentationHook: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
       '*': [
@@ -100,8 +99,8 @@ const nextConfig = {
   },
   sentry: {
     hideSourceMaps: true,
-    // TODO set back when issue fixed, meanwhile issue in api route will not be reported if not wrapped with withSentry.
-    autoInstrumentServerFunctions: false, // avoid error: error ./middleware.ts Module not found: Can't resolve 'sentry.edge.config.ts'
+    // // TODO set back when issue fixed, meanwhile issue in api route will not be reported if not wrapped with withSentry.
+    // autoInstrumentServerFunctions: false, // avoid error: error ./middleware.ts Module not found: Can't resolve 'sentry.edge.config.ts'
   },
 };
 
