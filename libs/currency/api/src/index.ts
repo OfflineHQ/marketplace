@@ -2,6 +2,7 @@ import env from '@env/server';
 import { isPreviewOrProduction } from '@shared/server';
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 
 export default class Currency {
   async getRate(baseCurrency: string): Promise<{ [key: string]: number }> {
@@ -72,9 +73,9 @@ export default class Currency {
     baseCurrency: string,
     rates: { [key: string]: number }
   ) {
-    // const __filename = fileURLToPath(import.meta.url);
-    // const __dirname = path.dirname(__filename);
-    const filePath = path.join(process.cwd(), `${baseCurrency}.json`);
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const filePath = path.join(__dirname, `rates/${baseCurrency}.json`);
     try {
       await fs.promises.writeFile(filePath, JSON.stringify(rates));
     } catch (error) {
@@ -90,9 +91,9 @@ export default class Currency {
     baseCurrency: string
   ): Promise<{ [key: string]: number }> {
     try {
-      // const __filename = fileURLToPath(import.meta.url);
-      // const __dirname = path.dirname(__filename);
-      const filePath = path.join(process.cwd(), `${baseCurrency}.json`);
+      const __filename = fileURLToPath(import.meta.url);
+      const __dirname = path.dirname(__filename);
+      const filePath = path.join(__dirname, `rates/${baseCurrency}.json`);
       const data = await fs.promises.readFile(filePath, 'utf8');
       return JSON.parse(data);
     } catch (error) {
