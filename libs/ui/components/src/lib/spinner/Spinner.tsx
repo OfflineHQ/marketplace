@@ -28,7 +28,12 @@ export interface SpinnerProps
   size?: IconProps['size'];
 }
 
-const Spinner: FC<SpinnerProps> = ({ size = 'default', className, variant, ...rest }) => {
+const Spinner: FC<SpinnerProps> = ({
+  size = 'default',
+  className,
+  variant,
+  ...rest
+}) => {
   const iconClasses = iconCVA({ size });
   const spinnerClasses = cn(spinnerVariantsCva({ variant }));
   return (

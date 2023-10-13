@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-pascal-case */
 'use client';
 
-import * as React from 'react';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
-import { statusVariantIcons } from '../shared/statusVariant';
+import * as React from 'react';
 import { buttonVariantsCva } from '../button/Button';
+import { statusVariantIcons } from '../shared/statusVariant';
 
 import { cn } from '@ui/shared';
 
@@ -17,11 +17,10 @@ const AlertDialog = AlertDialogPrimitive.Root;
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
 
 const AlertDialogPortal = ({
-  className,
   children,
   ...props
 }: AlertDialogPrimitive.AlertDialogPortalProps) => (
-  <AlertDialogPrimitive.Portal className={cn(className)} {...props}>
+  <AlertDialogPrimitive.Portal {...props}>
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       {children}
     </div>
@@ -36,7 +35,7 @@ const AlertDialogOverlay = React.forwardRef<
   <AlertDialogPrimitive.Overlay
     className={cn(
       'fixed inset-0 z-50 bg-background/80 backdrop-blur-sm transition-opacity animate-in fade-in',
-      className
+      className,
     )}
     {...props}
     ref={ref}
@@ -54,7 +53,7 @@ const AlertDialogContent = React.forwardRef<
       ref={ref}
       className={cn(
         'fixed z-50 grid w-full max-w-lg scale-100 gap-4 border bg-background p-6 opacity-100 shadow-lg animate-in fade-in-90 slide-in-from-bottom-10 sm:rounded-lg sm:zoom-in-90 sm:slide-in-from-bottom-0 md:w-full',
-        className
+        className,
       )}
       {...props}
     />
@@ -77,7 +76,7 @@ const AlertDialogHeader: React.FC<AlertDialogHeaderProps> = ({
     <div
       className={cn(
         'flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 text-center sm:text-left',
-        className
+        className,
       )}
       {...props}
     >
@@ -104,7 +103,7 @@ const AlertDialogFooter = ({
   <div
     className={cn(
       'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
-      className
+      className,
     )}
     {...props}
   />
@@ -167,7 +166,7 @@ const AlertDialogCancel = React.forwardRef<
     className={cn(
       buttonVariantsCva({ variant: 'outline' }),
       'mt-2 sm:mt-0',
-      className
+      className,
     )}
     {...props}
   />
@@ -176,12 +175,12 @@ AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
 
 export {
   AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
   AlertDialogAction,
   AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
 };

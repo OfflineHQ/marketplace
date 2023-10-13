@@ -6,7 +6,7 @@ import {
 import { WebhookType } from 'alchemy-sdk';
 
 export function createMockAlchemyRequest(
-  nftActivities: Activity[]
+  nftActivities: Activity[],
 ): AlchemyRequest {
   const mockAlchemyRequest: AlchemyNFTActivityEvent = {
     webhookId: 'webhookId',

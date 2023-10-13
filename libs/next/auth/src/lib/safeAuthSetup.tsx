@@ -115,7 +115,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         console.error({ error });
       }
     },
-    [messages?.userClosedPopup, toast]
+    [messages?.userClosedPopup, toast],
   );
 
   const logoutSiwe = useCallback(
@@ -123,7 +123,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       await signOut({ redirect: false });
       if (refresh) router.refresh();
     },
-    [router]
+    [router],
   );
 
   const logout = useCallback(
@@ -136,7 +136,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       setSafeUser(undefined);
       setLoggedIn(false);
     },
-    [safeAuth, logoutSiwe]
+    [safeAuth, logoutSiwe],
   );
 
   const setupUserSession = useCallback(async () => {
@@ -298,14 +298,14 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       router,
       toast,
       login,
-    ]
+    ],
   );
 
   async function finishLogin() {
     console.log('provider connected:', { session });
     if (!session?.user) {
       const web3Provider = new ethers.providers.Web3Provider(
-        safeAuth?.getProvider() as ethers.providers.ExternalProvider
+        safeAuth?.getProvider() as ethers.providers.ExternalProvider,
       );
       const signer = web3Provider.getSigner(0);
       await loginSiwe(signer);
@@ -436,7 +436,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       setProvider(safeProvider);
       web3AuthModalPack.subscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
       web3AuthModalPack.subscribe(ADAPTER_EVENTS.CONNECTING, () =>
-        setConnecting(true)
+        setConnecting(true),
       );
       // here evaluate if user is logged in with web3auth. If it's not the case we logout the user from next auth.
       if (safeAuth?.web3Auth?.connected) {
@@ -449,7 +449,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       return () => {
         web3AuthModalPack.unsubscribe(
           ADAPTER_EVENTS.ERRORED,
-          web3AuthErrorHandler
+          web3AuthErrorHandler,
         );
         web3AuthModalPack.unsubscribe(ADAPTER_EVENTS.CONNECTING, () => null);
       };

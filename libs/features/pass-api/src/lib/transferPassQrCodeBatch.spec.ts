@@ -20,10 +20,10 @@ describe('transferPassQrCodeBatch', () => {
     await transferPassQrCodeBatch([mockInput]);
 
     expect(
-      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledTimes(1);
     expect(
-      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledTimes(1);
   });
 
@@ -46,10 +46,10 @@ describe('transferPassQrCodeBatch', () => {
     await transferPassQrCodeBatch(mockInputs);
 
     expect(
-      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledTimes(1);
     expect(
-      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock
+      FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       {
         destination:
@@ -72,10 +72,10 @@ describe('transferPassQrCodeBatch', () => {
     ]);
 
     expect(
-      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledTimes(1);
     expect(
-      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock
+      FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       '/local/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421',
       '/local/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421',
@@ -89,7 +89,7 @@ describe('transferPassQrCodeBatch', () => {
     ).mockRejectedValueOnce(new Error('Copy Error'));
 
     await expect(transferPassQrCodeBatch([mockInput])).rejects.toThrow(
-      'Error while copying files in transferPassQrCodeBatch: Copy Error.'
+      'Error while copying files in transferPassQrCodeBatch: Copy Error.',
     );
   });
 
@@ -99,7 +99,7 @@ describe('transferPassQrCodeBatch', () => {
     ).mockRejectedValueOnce(new Error('Delete Error'));
 
     await expect(transferPassQrCodeBatch([mockInput])).rejects.toThrow(
-      'Error while deleting files in transferPassQrCodeBatch: Delete Error.'
+      'Error while deleting files in transferPassQrCodeBatch: Delete Error.',
     );
   });
 });

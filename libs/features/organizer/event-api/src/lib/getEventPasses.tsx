@@ -16,5 +16,5 @@ export const getEventPasses = cache(
       stage: env.HYGRAPH_STAGE as Stage,
     });
     return data?.eventPasses;
-  }
+  },
 );

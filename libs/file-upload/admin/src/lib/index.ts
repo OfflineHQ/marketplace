@@ -8,7 +8,7 @@ export async function executeJobWithRetry(
   method: (params: any) => Promise<Upload.AsyncResponse>,
   params: any,
   jobType: Upload.AccountJobType,
-  jobWrapper: JobWrapper
+  jobWrapper: JobWrapper,
 ) {
   // Start the job
   let job = await method(params);
@@ -60,12 +60,12 @@ export class UploadWrapper {
       new Upload.Configuration({
         fetchApi: fetch,
         apiKey: env.UPLOAD_SECRET_API_KEY,
-      })
+      }),
     );
   }
 
   async uploadFile(
-    uploadOptions: Upload.UploadManagerParams
+    uploadOptions: Upload.UploadManagerParams,
   ): Promise<Upload.FileDetails> {
     try {
       return await this.uploadManager.upload(uploadOptions);
@@ -87,13 +87,13 @@ export class FileWrapper {
         new Upload.Configuration({
           fetchApi: fetch,
           apiKey: env.UPLOAD_SECRET_API_KEY,
-        })
+        }),
       );
     this.jobWrapper = jobWrapper || new JobWrapper();
   }
 
   async downloadFile(
-    downloadFileOptions: Upload.DownloadFileParams
+    downloadFileOptions: Upload.DownloadFileParams,
   ): Promise<Upload.BinaryResult> {
     try {
       return await this.fileApi.downloadFile(downloadFileOptions);
@@ -104,7 +104,7 @@ export class FileWrapper {
   }
 
   async getFileDetails(
-    getFileDetailsOptions: Upload.GetFileDetailsParams
+    getFileDetailsOptions: Upload.GetFileDetailsParams,
   ): Promise<Upload.FileDetails> {
     try {
       return await this.fileApi.getFileDetails(getFileDetailsOptions);
@@ -115,7 +115,7 @@ export class FileWrapper {
   }
 
   async copyFile(
-    copyFileOptions: Upload.CopyFileOperationParams
+    copyFileOptions: Upload.CopyFileOperationParams,
   ): Promise<Upload.CopyFileResponse> {
     try {
       return await this.fileApi.copyFile(copyFileOptions);
@@ -126,7 +126,7 @@ export class FileWrapper {
   }
 
   async copyFileBatch(
-    copyFileBatchOptions: Upload.CopyFileBatchOperationParams
+    copyFileBatchOptions: Upload.CopyFileBatchOperationParams,
   ): Promise<Upload.AsyncResponse> {
     try {
       return await this.fileApi.copyFileBatch(copyFileBatchOptions);
@@ -138,7 +138,7 @@ export class FileWrapper {
 
   async copyFileBatchWithRetry(
     accountId: string,
-    files: Upload.CopyFileRequest[]
+    files: Upload.CopyFileRequest[],
   ) {
     const copyFileBatchRequest: Upload.CopyFileBatchRequest = { files };
     const copyFileBatchOptions: Upload.CopyFileBatchOperationParams = {
@@ -150,7 +150,7 @@ export class FileWrapper {
       this.fileApi.copyFileBatch.bind(this.fileApi),
       copyFileBatchOptions,
       'CopyFileBatchJob',
-      this.jobWrapper
+      this.jobWrapper,
     );
   }
 
@@ -164,7 +164,7 @@ export class FileWrapper {
   }
 
   async deleteFileBatch(
-    deleteBatchOptions: Upload.DeleteFileBatchOperationParams
+    deleteBatchOptions: Upload.DeleteFileBatchOperationParams,
   ): Promise<Upload.AsyncResponse> {
     try {
       return await this.fileApi.deleteFileBatch(deleteBatchOptions);
@@ -185,7 +185,7 @@ export class FileWrapper {
       this.fileApi.deleteFileBatch.bind(this.fileApi),
       deleteFileBatchOptions,
       'DeleteFileBatchJob',
-      this.jobWrapper
+      this.jobWrapper,
     );
   }
 }
@@ -198,12 +198,12 @@ export class FolderWrapper {
       new Upload.Configuration({
         fetchApi: fetch,
         apiKey: env.UPLOAD_SECRET_API_KEY,
-      })
+      }),
     );
   }
 
   async putFolder(
-    folderOptions: Upload.PutFolderOperationParams
+    folderOptions: Upload.PutFolderOperationParams,
   ): Promise<Upload.FolderDetails> {
     try {
       return await this.folderApi.putFolder(folderOptions);
@@ -214,7 +214,7 @@ export class FolderWrapper {
   }
 
   async listFolder(
-    listFolderOptions: Upload.ListFolderParams
+    listFolderOptions: Upload.ListFolderParams,
   ): Promise<Upload.ListFolderResponse> {
     try {
       return await this.folderApi.listFolder(listFolderOptions);
@@ -235,7 +235,7 @@ export class JobWrapper {
         new Upload.Configuration({
           fetchApi: fetch,
           apiKey: env.UPLOAD_SECRET_API_KEY,
-        })
+        }),
       );
   }
 
@@ -249,7 +249,7 @@ export class JobWrapper {
   }
 
   async listRecentJobs(
-    jobOptions: Upload.ListRecentJobsParams
+    jobOptions: Upload.ListRecentJobsParams,
   ): Promise<Upload.ListRecentJobsResponse> {
     try {
       return await this.jobApi.listRecentJobs(jobOptions);

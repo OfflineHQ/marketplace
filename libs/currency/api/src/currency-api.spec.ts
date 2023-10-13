@@ -1,5 +1,5 @@
 import * as shared from '@shared/server';
-import Currency from './index';
+import { Currency } from './index';
 
 jest.mock('@shared/server');
 

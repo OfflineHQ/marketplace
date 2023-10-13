@@ -31,7 +31,7 @@ const progressRootVariants = cva(
     defaultVariants: {
       size: 'default',
     },
-  }
+  },
 );
 
 export type ProgressIndicatorProps = React.ComponentPropsWithoutRef<
@@ -39,16 +39,21 @@ export type ProgressIndicatorProps = React.ComponentPropsWithoutRef<
 > &
   VariantProps<typeof progressIndicatorVariants>;
 
-const progressIndicatorVariants = cva('h-full w-full flex-1 bg-primary transition-all', {
-  variants: {
-    variant: progressVariants,
+const progressIndicatorVariants = cva(
+  'h-full w-full flex-1 bg-primary transition-all',
+  {
+    variants: {
+      variant: progressVariants,
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
   },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
+);
 
-export interface ProgressProps extends ProgressRootProps, ProgressIndicatorProps {}
+export interface ProgressProps
+  extends ProgressRootProps,
+    ProgressIndicatorProps {}
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,

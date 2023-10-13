@@ -1,7 +1,10 @@
 'use client';
 
 import { Currency_Enum } from '@gql/shared/types';
-import { getCurrencyPreference, setCurrencyPreference } from '@next/currency';
+import {
+  getCurrencyPreference,
+  setCurrencyPreference,
+} from '@next/currency-common';
 import { usePathname, useRouter } from '@next/navigation';
 import '@next/types';
 import { CurrencyDropdown, type CurrencyDropdownProps } from '@ui/components';

@@ -33,7 +33,7 @@ prefix.apply(log, {
     const color = colors[level];
     // eslint-disable-next-line sonarjs/no-nested-template-literals
     return `${chalk.gray(`[${timestamp}]`)} ${color(level)} ${chalk.green(
-      `${name}:`
+      `${name}:`,
     )}`;
   },
 });
