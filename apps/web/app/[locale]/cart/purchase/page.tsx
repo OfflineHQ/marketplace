@@ -7,29 +7,13 @@ import { Locale } from '@gql/shared/types';
 import { isUserKycValidated } from '@kyc/common';
 import { redirect } from '@next/navigation';
 import { getCurrentUser } from '@next/next-auth/user';
-import { AppUser } from '@next/types';
-import { StripeCheckoutSession } from '@payment/types';
-import { FC } from 'react';
+import { redirect as nextRedirect } from 'next/navigation';
 
 interface CartSectionProps {
   params: {
     locale: Locale;
   };
 }
-
-interface CartSectionContentProps {
-  user: AppUser;
-  locale: Locale;
-  session: StripeCheckoutSession;
-}
-
-const CartSectionContent: FC<CartSectionContentProps> = ({
-  user,
-  locale,
-  session,
-}) => {
-  return <div>CartSectionContent</div>;
-};
 
 export default async function CartPurchase({
   params: { locale },
@@ -39,14 +23,14 @@ export default async function CartPurchase({
   let session = await getStripeActiveCheckoutSession();
   if (!session) {
     const pendingOrders = await getEventPassPendingOrders({ locale });
-    if (!pendingOrders?.length) redirect('/cart');
+    if (!pendingOrders?.length) redirect('/');
     session = await createStripeCheckoutSession({
       locale,
       eventPassPendingOrders: pendingOrders,
     });
   }
+  console.log('session', session);
   if (!session || !user || !session.url)
     throw new Error('Failed to create checkout session');
-  redirect(session.url);
-  return <CartSectionContent user={user} locale={locale} session={session} />;
+  nextRedirect(session.url);
 }
