@@ -1,12 +1,6 @@
-import env from '@env/client';
-import { Text } from '@ui/components';
-import { useTranslations } from 'next-intl';
+import { populateCacheIfEmpty } from '@next/currency-cache';
 
-export default function Home() {
-  const t = useTranslations('Index');
-  return (
-    <div className="p-8">
-      <Text>{t('title')}</Text>
-    </div>
-  );
+export default async function Home() {
+  await populateCacheIfEmpty();
+  return <div className="p-8"></div>;
 }
