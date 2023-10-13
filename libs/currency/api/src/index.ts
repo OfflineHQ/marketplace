@@ -12,21 +12,19 @@ export default class Currency {
       return await this.fetchFromLocalFile(baseCurrency);
     }
     try {
-      const rates = await this.fetchFromAPI(
+      //await this.saveToLocalFile(baseCurrency, rates);
+      return await this.fetchFromAPI(
         `http://data.fixer.io/api/latest?access_key=${this.FIXER_CURRENCY_API_KEY}&base=${baseCurrency}`,
         'Fixer'
       );
-      await this.saveToLocalFile(baseCurrency, rates);
-      return rates;
     } catch (error) {
       console.warn('Falling back to ExchangeRate API');
       try {
-        const rates = await this.fetchFromAPI(
+        //await this.saveToLocalFile(baseCurrency, rates);
+        return await this.fetchFromAPI(
           `https://v6.exchangerate-api.com/v6/${this.EXCHANGE_RATE_API_KEY}/latest/${baseCurrency}`,
           'ExchangeRate'
         );
-        await this.saveToLocalFile(baseCurrency, rates);
-        return rates;
       } catch (error) {
         console.warn('Falling back to local file');
         return await this.fetchFromLocalFile(baseCurrency);

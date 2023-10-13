@@ -2,9 +2,15 @@
 
 import { getCookie, setCookie } from 'cookies-next';
 
-import { Money, Rates, currencyMap, defaultCurrency } from '@currency/types';
+import {
+  Currency_Enum_Not_Const,
+  Money,
+  Rates,
+  currencyMap,
+  defaultCurrency,
+} from '@currency/types';
 import { Currency_Enum } from '@gql/shared/types';
-import { getRates } from '@next/currency-cache';
+import { getRate, getRates, setRates } from '@next/currency-cache';
 import { Dinero, convert, dinero, toDecimal } from 'dinero.js';
 
 import {
@@ -18,18 +24,24 @@ import {
 const CurrencyContext = createContext({ rates: {}, isLoading: true });
 
 export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
-  const [rates, setRates] = useState({});
+  const [rates, setRatesValues] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getRates()
-      .then((data) => {
-        setRates(data);
+    getRate(Currency_Enum_Not_Const.EUR).then((data) => {
+      if (!data) {
+        setRates().then(() => {
+          getRates().then((data) => {
+            setRatesValues(data);
+            setIsLoading(false);
+          });
+        });
+      }
+      getRates().then((data) => {
+        setRatesValues(data);
         setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching rates:', error);
       });
+    });
   }, []);
 
   return (
