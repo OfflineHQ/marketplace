@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react';
 
-const CurrencyContext = createContext({ rates: {}, isLoading: true });
+export const CurrencyContext = createContext({ rates: {}, isLoading: true });
 
 export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
   const [rates, setRates] = useState({});

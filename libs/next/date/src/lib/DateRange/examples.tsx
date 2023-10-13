@@ -1,4 +1,4 @@
-import { DateRange, type DateRangeProps } from './DateRange';
+import { type DateRangeProps } from './DateRange';
 import DateRangeClient from './DateRangeClient';
 
 export const datesParis = {
@@ -13,6 +13,12 @@ export const datesNewYork = {
   timezone: 'America/New_York',
 };
 
+export const datesSameDay = {
+  dateStart: '2021-01-01T21:00:00.000',
+  dateEnd: '2021-01-01T12:00:00.000',
+  timezone: 'Europe/Paris',
+};
+
 export const dateRangeProps = {
   ...datesParis,
 } satisfies DateRangeProps;
@@ -21,11 +27,13 @@ export const dateRangeProps2 = {
   ...datesNewYork,
 } satisfies DateRangeProps;
 
-export const DateRangeExample = (dateRangeProps) => (
+export const DateRangeExample = (dateRangeProps: DateRangeProps) => (
   <DateRangeClient
     {...dateRangeProps}
     fromText="From"
     toText="To"
     inYourTimezoneText="In your own time zone"
+    fromHourText="From"
+    toHourText="To"
   />
 );

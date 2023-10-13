@@ -17,5 +17,5 @@ export const getEventPassNftByTokenReferenceAnonymous = cache(
       chainId: env.CHAIN,
     });
     return data?.eventPassNft?.[0];
-  }
+  },
 );

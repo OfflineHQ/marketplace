@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, fireEvent, userEvent, within } from '@storybook/testing-library';
+import {
+  screen,
+  fireEvent,
+  userEvent,
+  within,
+} from '@storybook/testing-library';
 import { LanguageDropdown } from './LanguageDropdown';
 import { LanguageDropdownExample, languageItems } from './examples';
 

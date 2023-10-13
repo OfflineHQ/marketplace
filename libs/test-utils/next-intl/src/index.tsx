@@ -1,10 +1,10 @@
+import { messages } from '@next/i18n';
 import {
-  render as rtlRender,
   RenderOptions,
   RenderResult,
+  render as rtlRender,
 } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
-import { messages } from '@next/i18n';
 
 interface RenderWithProvidersOptions extends Omit<RenderOptions, 'queries'> {
   locale?: string;
@@ -16,7 +16,7 @@ interface CustomReactElement extends React.ReactElement {
 
 export function renderWithIntl(
   ui: CustomReactElement,
-  { locale = 'en', ...renderOptions }: RenderWithProvidersOptions = {}
+  { locale = 'en', ...renderOptions }: RenderWithProvidersOptions = {},
 ): RenderResult {
   function Wrapper({ children }: { children?: React.ReactNode }) {
     // mocked date to always get the same result in tests

@@ -22,7 +22,7 @@ export const Default: Story = {
     userEvent.hover(screen.getByText('@nextjs'));
 
     await screen.findByText(
-      'The React Framework – created and maintained by @vercel.'
+      'The React Framework – created and maintained by @vercel.',
     );
   },
   render: HoverCardDemo,

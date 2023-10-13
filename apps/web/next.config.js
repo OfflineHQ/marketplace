@@ -145,7 +145,7 @@ module.exports = async (phase, context) => {
   config = await withSentryConfig(
     config,
     sentryWebpackPluginOptions,
-    sentryOptions
+    sentryOptions,
   );
   config = await withBundleAnalyzer(config);
   config = await withNextIntl(config);

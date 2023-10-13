@@ -1,17 +1,14 @@
-import React from 'react';
+import { Event } from '@features/organizer/event-types';
+import { EventDatesServer, type EventDatesServerProps } from '@next/date';
 import {
   AspectRatio,
-  Text,
   AspectRatioSkeleton,
-  TextSkeleton,
   ButtonSkeleton,
+  Text,
+  TextSkeleton,
 } from '@ui/components';
 import Image from 'next/image';
-import { Event } from '@features/organizer/event-types';
-import {
-  EventDates,
-  type EventDatesProps,
-} from '../../molecules/EventDates/EventDates';
+import React from 'react';
 import {
   EventLocations,
   type EventLocationsProps,
@@ -24,7 +21,7 @@ import {
 } from '../../molecules/EventOrganizerButton/EventOrganizerButton';
 
 export interface EventHeroProps
-  extends EventDatesProps,
+  extends EventDatesServerProps,
     EventLocationsProps,
     EventHeroButtonProps,
     Pick<Event, 'heroImage' | 'title' | 'organizer'> {}
@@ -64,7 +61,7 @@ export const EventHero: React.FC<EventHeroProps> = ({
           <div className={`${layout.text} flex items-center pb-2 md:pb-4`}>
             {organizer ? <EventOrganizerButton {...organizer} /> : null}
           </div>
-          <EventDates {...locationDatesProps} />
+          <EventDatesServer {...locationDatesProps} />
           <EventLocations {...locationDatesProps} />
         </div>
         <div className="hidden w-full grow flex-col justify-end md:flex">

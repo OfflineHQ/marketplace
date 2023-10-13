@@ -20,14 +20,14 @@ export class Cache {
 
   private async handleOperation(
     operation: Promise<unknown>,
-    operationName: string
+    operationName: string,
   ) {
     try {
       return await operation;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(
-          `Error with redis operation ${operationName} : ${error.message}`
+          `Error with redis operation ${operationName} : ${error.message}`,
         );
       } else {
         throw error;
@@ -74,7 +74,7 @@ export class Cache {
   async sismember(key: string, member: string) {
     return this.handleOperation(
       this.client.sismember(key, member),
-      'sismember'
+      'sismember',
     );
   }
 
@@ -89,7 +89,7 @@ export class Cache {
   async setbit(key: string, offset: number, value: 0 | 1) {
     return this.handleOperation(
       this.client.setbit(key, offset, value),
-      'setbit'
+      'setbit',
     );
   }
 

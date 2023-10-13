@@ -13,7 +13,7 @@ export const getEventPassPendingOrders = async ({
       locale: locale as Locale,
       stage: env.HYGRAPH_STAGE as Stage,
     },
-    { cache: 'no-store' } // TODO: remove this when we have a proper cache invalidation strategy
+    { cache: 'no-store' }, // TODO: remove this when we have a proper cache invalidation strategy
   );
   return res.eventPassPendingOrder;
 };

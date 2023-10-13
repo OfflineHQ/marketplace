@@ -18,11 +18,11 @@ const PopoverContent = React.forwardRef<
 >(
   (
     { className, align = 'center', sideOffset = 4, children, ...props },
-    ref
+    ref,
   ) => {
     const childrenArray = React.Children.toArray(children);
     const shouldBeClosable = childrenArray.some(
-      (child) => React.isValidElement(child) && child.type === PopoverHeader
+      (child) => React.isValidElement(child) && child.type === PopoverHeader,
     );
     return (
       <PopoverPrimitive.Portal>
@@ -32,7 +32,7 @@ const PopoverContent = React.forwardRef<
           sideOffset={sideOffset}
           className={cn(
             'z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none animate-in data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
-            className
+            className,
           )}
           {...props}
         >
@@ -49,7 +49,7 @@ const PopoverContent = React.forwardRef<
         </PopoverPrimitive.Content>
       </PopoverPrimitive.Portal>
     );
-  }
+  },
 );
 PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
@@ -60,7 +60,7 @@ const PopoverHeader = ({
   <div
     className={cn(
       'flex flex-col space-y-2 text-center sm:text-left pb-3',
-      className
+      className,
     )}
     {...props}
   />

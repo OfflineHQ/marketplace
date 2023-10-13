@@ -52,7 +52,7 @@ module.exports = {
       const aliases = tsconfig.compilerOptions.paths;
       for (const alias in aliases) {
         const paths = aliases[alias].map((p) =>
-          path.resolve(__dirname, '../../../../', p)
+          path.resolve(__dirname, '../../../../', p),
         );
         config.resolve.alias[alias.replace('/*', '')] =
           paths.length > 1 ? paths : paths[0];

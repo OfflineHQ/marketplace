@@ -5,7 +5,7 @@ import { EventWithEventPassNfts } from '@features/pass-types';
 import { revalidateTag } from 'next/cache';
 
 export async function batchDownloadOrReveal(
-  eventPassNfts: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts']
+  eventPassNfts: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts'],
 ) {
   let revealCalled = false;
   console.log('eventPassNfts', eventPassNfts);

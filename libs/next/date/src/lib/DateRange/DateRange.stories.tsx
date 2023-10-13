@@ -1,15 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/testing-library';
 
 import { DateRange, DateRangeSkeleton } from './DateRange';
-import { dateRangeProps, dateRangeProps2, DateRangeExample } from './examples';
+import {
+  DateRangeExample,
+  dateRangeProps,
+  dateRangeProps2,
+  datesSameDay,
+} from './examples';
 
 const meta: Meta<typeof DateRange> = {
+  title: 'Date/DateRange',
   component: DateRange,
   args: dateRangeProps,
   render: (props) => <DateRangeExample {...props} />,
@@ -36,6 +37,10 @@ export const WithNewYorkDates: Story = {
     userEvent.click(button);
     screen.findByText(/In your own time zone/i);
   },
+};
+
+export const WithSameDayDates: Story = {
+  args: datesSameDay,
 };
 
 export const Loading: Story = {
