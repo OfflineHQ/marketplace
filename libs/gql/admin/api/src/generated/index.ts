@@ -617,9 +617,10 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
- const GetSigningKeyFromEventIdDocument = `
-    query GetSigningKeyFromEventId($eventId: String) {
+ const GetAlchemyInfosFromEventIdDocument = `
+    query GetAlchemyInfosFromEventId($eventId: String) {
   eventParameters(where: {eventId: {_eq: $eventId}}) {
+    activityWebhookId
     signingKey
   }
 }
@@ -789,8 +790,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     InsertEventParameters(variables: Types.InsertEventParametersMutationVariables, options?: C): Promise<Types.InsertEventParametersMutation> {
       return requester<Types.InsertEventParametersMutation, Types.InsertEventParametersMutationVariables>(InsertEventParametersDocument, variables, options) as Promise<Types.InsertEventParametersMutation>;
     },
-    GetSigningKeyFromEventId(variables?: Types.GetSigningKeyFromEventIdQueryVariables, options?: C): Promise<Types.GetSigningKeyFromEventIdQuery> {
-      return requester<Types.GetSigningKeyFromEventIdQuery, Types.GetSigningKeyFromEventIdQueryVariables>(GetSigningKeyFromEventIdDocument, variables, options) as Promise<Types.GetSigningKeyFromEventIdQuery>;
+    GetAlchemyInfosFromEventId(variables?: Types.GetAlchemyInfosFromEventIdQueryVariables, options?: C): Promise<Types.GetAlchemyInfosFromEventIdQuery> {
+      return requester<Types.GetAlchemyInfosFromEventIdQuery, Types.GetAlchemyInfosFromEventIdQueryVariables>(GetAlchemyInfosFromEventIdDocument, variables, options) as Promise<Types.GetAlchemyInfosFromEventIdQuery>;
     },
     GetEventPassNftById(variables: Types.GetEventPassNftByIdQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdQuery> {
       return requester<Types.GetEventPassNftByIdQuery, Types.GetEventPassNftByIdQueryVariables>(GetEventPassNftByIdDocument, variables, options) as Promise<Types.GetEventPassNftByIdQuery>;

@@ -1,6 +1,10 @@
 'use server';
 
-import { createNftActivityWebhookForEvent } from '@features/pass-api';
+import {
+  createNftActivityWebhookForEvent,
+  getAlchemyInfosFromEventId,
+  updateNftActivityWebhook,
+} from '@features/pass-api';
 import { adminSdk } from '@gql/admin/api';
 import type {
   CreateEventPassNftContractMutation,
@@ -41,16 +45,25 @@ export async function createEventParametersAndWebhook({
   nftCollectionAddresses,
   organizerId,
 }) {
-  const webhook = await createNftActivityWebhookForEvent({
-    eventId,
-    nftCollectionAddresses,
-  });
-  return InsertEventParameters([
-    {
-      activityWebhookId: webhook.id,
-      organizerId,
+  const webhook = await getAlchemyInfosFromEventId({ eventId: eventId });
+
+  if (webhook.activityWebhookId) {
+    await updateNftActivityWebhook({
+      webhookId: webhook.activityWebhookId,
+      nftCollectionAddresses,
+    });
+  } else {
+    const newWebhook = await createNftActivityWebhookForEvent({
       eventId,
-      signingKey: webhook.signingKey,
-    },
-  ]);
+      nftCollectionAddresses,
+    });
+    await InsertEventParameters([
+      {
+        activityWebhookId: newWebhook.id,
+        organizerId,
+        eventId,
+        signingKey: webhook.signingKey,
+      },
+    ]);
+  }
 }

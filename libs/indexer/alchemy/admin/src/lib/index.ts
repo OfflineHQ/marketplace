@@ -1,4 +1,4 @@
-import { Alchemy, Network } from 'alchemy-sdk';
+import { Alchemy, Network, NftFilter } from 'alchemy-sdk';
 
 import env from '@env/server';
 import type {
@@ -277,6 +277,24 @@ export class AlchemyWrapper {
     } catch (error) {
       console.error(
         `Creating NFT activity webhook failed: ${error.message}`,
+        error
+      );
+      throw error;
+    }
+  }
+
+  async addAddressNftActivityWebhook(
+    webhookId: string,
+    addresses: NftFilter[]
+  ) {
+    try {
+      return await this.alchemy.notify.updateWebhook(webhookId, {
+        addFilters: addresses,
+        removeFilters: [],
+      });
+    } catch (error) {
+      console.error(
+        `Updating NFT activity webhook failed: ${error.message}`,
         error
       );
       throw error;
