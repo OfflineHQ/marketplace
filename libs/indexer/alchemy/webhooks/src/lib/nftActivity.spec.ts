@@ -7,7 +7,7 @@ import { isValidSignatureForAlchemyRequest } from './utils';
 
 // Mock the getSigningKeyFromEventId function
 jest.mock('@features/pass-api', () => ({
-  getSigningKeyFromEventId: jest
+  getAlchemyInfosFromEventId: jest
     .fn()
     .mockResolvedValue({ signingKey: 'fake-signing-key' }),
 }));

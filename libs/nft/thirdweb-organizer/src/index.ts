@@ -109,7 +109,7 @@ class NftCollection {
 
       await createEventPassNfts(hasuraMetadatas);
       await createEventParametersAndWebhook({
-        eventId: eventPassId,
+        eventId,
         nftCollectionAddresses: [{ contractAddress: txResult }],
         organizerId,
       });

@@ -1,4 +1,4 @@
-import { getSigningKeyFromEventId } from '@features/pass-api';
+import { getAlchemyInfosFromEventId } from '@features/pass-api';
 import { AlchemyWrapper } from '@indexer/alchemy/admin';
 import type {
   AlchemyNFTActivityEvent,
@@ -61,7 +61,7 @@ export async function nftActivity(req: AlchemyRequest, eventId: string) {
   const body = await req.text();
   const signature = headers().get('x-alchemy-signature') as string;
   addAlchemyContextToRequest(req, body, signature);
-  const params = await getSigningKeyFromEventId({ eventId: eventId });
+  const params = await getAlchemyInfosFromEventId({ eventId: eventId });
   const signingKey = params.signingKey;
   if (!signingKey || !isValidSignatureForAlchemyRequest(req, signingKey)) {
     return new Response('Signature validation failed, unauthorized!', {
