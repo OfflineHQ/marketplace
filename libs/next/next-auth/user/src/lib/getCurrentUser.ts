@@ -13,7 +13,7 @@ const createUnauthenticatedUserCookie = () => {
   return uuid;
 };
 
-const getUnauthenticatedUserCookie = () => {
+export const getUnauthenticatedUserCookie = () => {
   return cookies().get('unauthenticated_user_id')?.value;
 };
 
