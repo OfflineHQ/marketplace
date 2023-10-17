@@ -24,6 +24,7 @@ import { SiweMessage } from 'siwe';
 
 import env from '@env/client';
 import { ExternalProvider } from '@ethersproject/providers';
+import { handleUnauthenticatedUser } from '@next/next-auth/user';
 import { useLocale } from 'next-intl';
 import { useTheme } from 'next-themes';
 
@@ -441,7 +442,10 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       if (safeAuth?.web3Auth?.connected) {
         setConnecting(true);
         setLoggedIn(true);
-      } else logoutSiwe({ refresh: false });
+      } else {
+        handleUnauthenticatedUser();
+        logoutSiwe({ refresh: false });
+      }
       return () => {
         web3AuthModalPack.unsubscribe(
           ADAPTER_EVENTS.ERRORED,

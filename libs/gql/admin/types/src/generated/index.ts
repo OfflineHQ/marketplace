@@ -267,12 +267,12 @@ export type InsertEventParametersMutationVariables = Types.Exact<{
 
 export type InsertEventParametersMutation = { __typename?: 'mutation_root', insert_eventParameters?: { __typename?: 'eventParameters_mutation_response', returning: Array<{ __typename?: 'eventParameters', id: any, activityWebhookId?: string | null, eventId: string }> } | null };
 
-export type GetSigningKeyFromEventIdQueryVariables = Types.Exact<{
+export type GetAlchemyInfosFromEventIdQueryVariables = Types.Exact<{
   eventId?: Types.InputMaybe<Types.Scalars['String']>;
 }>;
 
 
-export type GetSigningKeyFromEventIdQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', signingKey?: string | null }> };
+export type GetAlchemyInfosFromEventIdQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', activityWebhookId?: string | null, signingKey?: string | null }> };
 
 export type GetEventPassNftByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['uuid'];
