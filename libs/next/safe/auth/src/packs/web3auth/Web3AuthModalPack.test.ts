@@ -123,7 +123,7 @@ describe('Web3AuthModalPack', () => {
       });
 
       expect(mockInitModal).toHaveBeenCalledWith(
-        expect.objectContaining({ modalConfig })
+        expect.objectContaining({ modalConfig }),
       );
     });
 

@@ -14,5 +14,5 @@ export const insertEventPassPendingOrders = cache(
       objects: orders,
     });
     return res.insert_eventPassPendingOrder?.returning;
-  }
+  },
 );

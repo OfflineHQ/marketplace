@@ -37,7 +37,7 @@ const sessions = {
 Cypress.Commands.add('login', (user) => {
   cy.session(user, () => {
     cy.intercept('/api/auth/session', { fixture: `${user}.session.json` }).as(
-      'session'
+      'session',
     );
 
     // Set the cookie for cypress.

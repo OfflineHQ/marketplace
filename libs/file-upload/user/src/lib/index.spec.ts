@@ -49,7 +49,7 @@ describe('FileDownloader', () => {
         headers: {
           Authorization: 'Bearer mock-jwt',
         },
-      })
+      }),
     );
   });
 
@@ -57,11 +57,11 @@ describe('FileDownloader', () => {
     const mockFilePath = '/mock/file/path';
 
     (global.fetch as jest.Mock).mockResolvedValue(
-      new Response(null, { status: 404 })
+      new Response(null, { status: 404 }),
     );
 
     await expect(fileDownloader.downloadFile(mockFilePath)).rejects.toThrow(
-      'HTTP error! status: 404'
+      'HTTP error! status: 404',
     );
   });
 
@@ -69,7 +69,7 @@ describe('FileDownloader', () => {
     const mockFilePath = '/mock/file/path';
 
     (global.fetch as jest.Mock).mockResolvedValue(
-      new Response('Mock file content', { status: 200 })
+      new Response('Mock file content', { status: 200 }),
     );
 
     await fileDownloader.downloadFile(mockFilePath, {
@@ -84,7 +84,7 @@ describe('FileDownloader', () => {
         headers: {
           Authorization: 'Bearer mock-jwt',
         },
-      })
+      }),
     );
   });
 
@@ -92,7 +92,7 @@ describe('FileDownloader', () => {
     const mockFilePath = '/mock/file/path';
 
     (global.fetch as jest.Mock).mockResolvedValue(
-      new Response('Mock file content', { status: 200 })
+      new Response('Mock file content', { status: 200 }),
     );
 
     await fileDownloader.downloadFile(mockFilePath, {
@@ -107,7 +107,7 @@ describe('FileDownloader', () => {
         headers: {
           Authorization: 'Bearer mock-jwt',
         },
-      })
+      }),
     );
   });
 
@@ -115,7 +115,7 @@ describe('FileDownloader', () => {
     const mockFilePath = '/mock/file/path';
 
     (global.fetch as jest.Mock).mockResolvedValue(
-      new Response('Mock file content', { status: 200 })
+      new Response('Mock file content', { status: 200 }),
     );
 
     await fileDownloader.downloadFile(mockFilePath, {
@@ -130,7 +130,7 @@ describe('FileDownloader', () => {
         headers: {
           Authorization: 'Bearer mock-jwt',
         },
-      })
+      }),
     );
   });
 
@@ -138,7 +138,7 @@ describe('FileDownloader', () => {
     const mockFilePath = '/mock/file/path';
 
     (global.fetch as jest.Mock).mockResolvedValue(
-      new Response('Mock file content', { status: 200 })
+      new Response('Mock file content', { status: 200 }),
     );
 
     await fileDownloader.downloadFile(mockFilePath, {
@@ -153,7 +153,7 @@ describe('FileDownloader', () => {
         headers: {
           Authorization: 'Bearer mock-jwt',
         },
-      })
+      }),
     );
   });
 });

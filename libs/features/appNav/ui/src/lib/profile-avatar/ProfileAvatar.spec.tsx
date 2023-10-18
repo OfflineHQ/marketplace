@@ -5,13 +5,13 @@ import { cryptoUserSession, normalUserSessionWithImage } from './examples';
 describe('ProfileAvatar', () => {
   it('should render crypto user successfully', () => {
     const { baseElement } = renderWithIntl(
-      <ProfileAvatar user={cryptoUserSession} />
+      <ProfileAvatar user={cryptoUserSession} />,
     );
     expect(baseElement).toBeTruthy();
   });
   it('should render normal user successfully', () => {
     const { baseElement } = renderWithIntl(
-      <ProfileAvatar user={normalUserSessionWithImage} />
+      <ProfileAvatar user={normalUserSessionWithImage} />,
     );
     expect(baseElement).toBeTruthy();
   });

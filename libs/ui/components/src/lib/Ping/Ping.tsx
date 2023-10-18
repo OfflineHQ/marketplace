@@ -23,19 +23,19 @@ export const Ping: React.FC<PingProps> = ({
       {number && number > 0 && (
         <span
           className={cn(
-            `absolute z-10 ${position} flex ${size} items-center justify-center`
+            `absolute z-10 ${position} flex ${size} items-center justify-center`,
           )}
         >
           <span
             className={cn(
               `absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 ${
                 isActive ? 'animate-ping' : ''
-              }`
+              }`,
             )}
           ></span>
           <span
             className={cn(
-              `relative inline-flex ${size} items-center justify-center rounded-full bg-primary`
+              `relative inline-flex ${size} items-center justify-center rounded-full bg-primary`,
             )}
           >
             <span className="text-xs text-primary-foreground">{number}</span>

@@ -46,7 +46,7 @@ export const SetupPassesCartLocal = () => {
   const setPassesCart = usePassPurchaseStore((state) => state.setPassesCart);
   const allPasses = usePassPurchaseStore((state) => state.passes);
   const deletePassesCart = usePassPurchaseStore(
-    (state) => state.deletePassesCart
+    (state) => state.deletePassesCart,
   );
   useEffect(() => {
     setPassesCart({
