@@ -66,13 +66,10 @@ export const useEventPassOrders = ({
         throw new Error('Event data is still loading');
       }
       // Mapping of eventPassId to quantity from the local storage
-      const localPassesMap = localPasses.reduce(
-        (map, pass) => {
-          map[pass.id] = pass.amount;
-          return map;
-        },
-        {} as Record<string, number>,
-      );
+      const localPassesMap = localPasses.reduce((map, pass) => {
+        map[pass.id] = pass.amount;
+        return map;
+      }, {} as Record<string, number>);
 
       // Mapping of eventPassId to quantity from the database
       const dbPassesMap = ordersData.eventPassPendingOrder.reduce(
@@ -80,7 +77,7 @@ export const useEventPassOrders = ({
           map[order.eventPassId] = order.quantity;
           return map;
         },
-        {} as Record<string, number>,
+        {} as Record<string, number>
       );
 
       // Orders to insert into the database

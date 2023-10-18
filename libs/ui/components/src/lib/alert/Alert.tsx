@@ -24,7 +24,7 @@ const alertVariants = cva(
     defaultVariants: {
       variant: 'default',
     },
-  },
+  }
 );
 
 interface AlertProps
@@ -45,7 +45,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         {children}
       </div>
     );
-  },
+  }
 );
 Alert.displayName = 'Alert';
 

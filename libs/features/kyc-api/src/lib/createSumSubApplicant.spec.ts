@@ -45,7 +45,7 @@ describe('createSumSubApplicant', () => {
     });
 
     await expect(createSumSubApplicant()).rejects.toThrow(
-      'User already have an applicantId',
+      'User already have an applicantId'
     );
   });
 });

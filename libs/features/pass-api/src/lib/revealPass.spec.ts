@@ -41,7 +41,7 @@ describe('revealPass.ts tests', () => {
 
     beforeEach(() => {
       (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockResolvedValue(
-        mockResponse,
+        mockResponse
       );
       (getCurrentUser as jest.Mock).mockResolvedValue({
         address: 'test-address',
@@ -58,7 +58,7 @@ describe('revealPass.ts tests', () => {
         address: 'different-address',
       });
       await expect(eventPassCheck('invalid-id')).rejects.toThrow(
-        'Event Pass not owned by user',
+        'Event Pass not owned by user'
       );
     });
 
@@ -70,7 +70,7 @@ describe('revealPass.ts tests', () => {
         },
       });
       await expect(eventPassCheck('revealed-id')).rejects.toThrow(
-        'Event Pass already revealed',
+        'Event Pass already revealed'
       );
     });
   });
@@ -84,7 +84,7 @@ describe('revealPass.ts tests', () => {
 
     it('should handle the file transfer correctly', async () => {
       await expect(
-        eventPassTransferQRCode(mockEventPassNft),
+        eventPassTransferQRCode(mockEventPassNft)
       ).resolves.not.toThrow();
     });
 
@@ -93,7 +93,7 @@ describe('revealPass.ts tests', () => {
         status: 'Failed',
       });
       await expect(eventPassTransferQRCode(mockEventPassNft)).rejects.toThrow(
-        'Failed',
+        'Failed'
       );
     });
   });
@@ -120,10 +120,10 @@ describe('revealPass.ts tests', () => {
 
     it('should propagate error from eventPassCheck', async () => {
       (adminSdk.GetEventPassNftByIdMinimal as jest.Mock).mockRejectedValue(
-        new Error('Error from eventPassCheck'),
+        new Error('Error from eventPassCheck')
       );
       await expect(revealPass('invalid-id')).rejects.toThrow(
-        'Error from eventPassCheck',
+        'Error from eventPassCheck'
       );
     });
 
@@ -132,10 +132,10 @@ describe('revealPass.ts tests', () => {
         eventPassNft_by_pk: mockEventPassNft,
       });
       (FileWrapper.prototype.copyFile as jest.Mock).mockRejectedValue(
-        new Error('Error from eventPassTransferQRCode'),
+        new Error('Error from eventPassTransferQRCode')
       );
       await expect(revealPass('valid-id')).rejects.toThrow(
-        'Error from eventPassTransferQRCode',
+        'Error from eventPassTransferQRCode'
       );
     });
 
@@ -147,7 +147,7 @@ describe('revealPass.ts tests', () => {
         status: FileCopyStatus.FileNotFound,
       });
       await expect(revealPass('valid-id')).rejects.toThrow(
-        FileCopyStatus.FileNotFound,
+        FileCopyStatus.FileNotFound
       );
     });
 
@@ -159,10 +159,10 @@ describe('revealPass.ts tests', () => {
         status: FileCopyStatus.Copied,
       });
       (adminSdk.SetEventPassNftRevealed as jest.Mock).mockRejectedValue(
-        new Error('Error from SetEventPassNftRevealed'),
+        new Error('Error from SetEventPassNftRevealed')
       );
       await expect(revealPass('valid-id')).rejects.toThrow(
-        'Error from SetEventPassNftRevealed',
+        'Error from SetEventPassNftRevealed'
       );
     });
   });

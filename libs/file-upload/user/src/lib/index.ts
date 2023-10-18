@@ -21,7 +21,7 @@ export class FileDownloader {
     filePath: string,
     options: DownloadFileOptions = {
       auth: true,
-    },
+    }
   ): Promise<Blob | Buffer> {
     const parameters: { [key: string]: string } = {
       ...(options.auth !== undefined
@@ -53,7 +53,7 @@ export class FileDownloader {
         headers: {
           Authorization: `Bearer ${this.jwt}`,
         },
-      },
+      }
     );
 
     if (!response.ok) {

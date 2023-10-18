@@ -5,7 +5,7 @@ import { menuSections } from './examples';
 describe('NavDesktop', () => {
   it('should render successfully', () => {
     const { baseElement } = renderWithIntl(
-      <NavDesktop menuSections={menuSections} />,
+      <NavDesktop menuSections={menuSections} />
     );
     expect(baseElement).toBeTruthy();
   });

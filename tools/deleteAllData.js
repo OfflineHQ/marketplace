@@ -23,7 +23,7 @@ deleteAllData()
   .then(() => {
     console.log(
       'Data deletion completed with port:',
-      process.env.DB_PORT || '5432',
+      process.env.DB_PORT || '5432'
     );
     process.exit();
   })

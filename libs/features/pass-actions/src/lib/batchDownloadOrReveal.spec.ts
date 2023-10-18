@@ -60,7 +60,7 @@ describe('batchDownloadOrReveal', () => {
     (downloadPass as jest.Mock).mockResolvedValue({});
 
     await expect(batchDownloadOrReveal(eventPassNfts)).rejects.toThrow(
-      'FileNotFound',
+      'FileNotFound'
     );
 
     expect(revalidateTag).not.toHaveBeenCalled();
@@ -77,7 +77,7 @@ describe('batchDownloadOrReveal', () => {
     (downloadPass as jest.Mock).mockRejectedValue(error);
 
     await expect(batchDownloadOrReveal(eventPassNfts)).rejects.toThrow(
-      'FileNotFound',
+      'FileNotFound'
     );
 
     expect(revalidateTag).not.toHaveBeenCalled();

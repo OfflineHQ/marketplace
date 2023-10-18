@@ -15,7 +15,7 @@ const Checkbox = React.forwardRef<
     className={cn(
       iconSizes.sm,
       'peer shrink-0 rounded-sm border border-input ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary',
-      className,
+      className
     )}
     {...props}
   >

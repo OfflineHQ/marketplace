@@ -6,7 +6,7 @@ import { FileWrapper } from '@file-upload/admin';
 const fileWrapper = new FileWrapper();
 
 export const transferPassQrCodeBatch = async (
-  transferInputs: BatchTransferInput[],
+  transferInputs: BatchTransferInput[]
 ) => {
   const copyFileRequests: Parameters<
     typeof fileWrapper.copyFileBatchWithRetry
@@ -49,13 +49,13 @@ export const transferPassQrCodeBatch = async (
     // Execute the copy batch operation with retry
     await fileWrapper.copyFileBatchWithRetry(
       env.UPLOAD_ACCOUNT_ID,
-      copyFileRequests,
+      copyFileRequests
     );
   } catch (error: any) {
     throw new Error(
       `Error while copying files in transferPassQrCodeBatch: ${
         error.message
-      }. Failed batch: ${JSON.stringify(copyFileRequests)}`,
+      }. Failed batch: ${JSON.stringify(copyFileRequests)}`
     );
   }
 
@@ -63,13 +63,13 @@ export const transferPassQrCodeBatch = async (
     // Execute the delete batch operation with retry
     await fileWrapper.deleteFilesBatchWithRetry(
       env.UPLOAD_ACCOUNT_ID,
-      filesToDelete,
+      filesToDelete
     );
   } catch (error: any) {
     throw new Error(
       `Error while deleting files in transferPassQrCodeBatch: ${
         error.message
-      }. Failed batch: ${JSON.stringify(filesToDelete)}`,
+      }. Failed batch: ${JSON.stringify(filesToDelete)}`
     );
   }
 };

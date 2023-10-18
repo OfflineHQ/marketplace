@@ -58,7 +58,7 @@ describe('downloadPass functions', () => {
       const result = await getEventPassRevealedFilePath('valid-id');
       // Your assertion here
       expect(result).toEqual(
-        '/local/users/test-address/test-organizer/events/test-event/test-id/test-event-test-id-12421',
+        '/local/users/test-address/test-organizer/events/test-event/test-id/test-event-test-id-12421'
       );
     });
 
@@ -68,7 +68,7 @@ describe('downloadPass functions', () => {
       });
 
       await expect(getEventPassRevealedFilePath('valid-id')).rejects.toThrow(
-        'Event Pass not owned by user',
+        'Event Pass not owned by user'
       );
     });
 
@@ -78,7 +78,7 @@ describe('downloadPass functions', () => {
       });
 
       await expect(getEventPassRevealedFilePath('valid-id')).rejects.toThrow(
-        'Event Pass is not revealed',
+        'Event Pass is not revealed'
       );
     });
   });
@@ -90,7 +90,7 @@ describe('downloadPass functions', () => {
       (isServerSide as jest.Mock).mockReturnValue(true);
 
       await expect(downloadPass('valid-id', 'display')).rejects.toThrow(
-        'The action display can only be called on client side',
+        'The action display can only be called on client side'
       );
     });
 
@@ -99,7 +99,7 @@ describe('downloadPass functions', () => {
       mockCookiesGet.mockReturnValue(undefined); // No JWT cookie
 
       await expect(downloadPass('valid-id')).rejects.toThrow(
-        'jwt cookie not found for user',
+        'jwt cookie not found for user'
       );
     });
 
@@ -151,7 +151,7 @@ describe('downloadPass functions', () => {
       downloadFileMock.mockRejectedValue(new Error('File download error')); // Mock error from FileDownloader
 
       await expect(downloadPass('valid-id')).rejects.toThrow(
-        'File download error',
+        'File download error'
       );
     });
 

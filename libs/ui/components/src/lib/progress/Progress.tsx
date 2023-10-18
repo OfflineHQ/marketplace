@@ -31,7 +31,7 @@ const progressRootVariants = cva(
     defaultVariants: {
       size: 'default',
     },
-  },
+  }
 );
 
 export type ProgressIndicatorProps = React.ComponentPropsWithoutRef<
@@ -48,7 +48,7 @@ const progressIndicatorVariants = cva(
     defaultVariants: {
       variant: 'default',
     },
-  },
+  }
 );
 
 export interface ProgressProps

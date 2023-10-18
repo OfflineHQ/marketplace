@@ -25,7 +25,7 @@ const inputCVA = cva(
       size: 'default',
       variant: 'default',
     },
-  },
+  }
 );
 
 export interface InputProps
@@ -45,14 +45,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       rightIcon: RightIcon,
       ...props
     },
-    ref,
+    ref
   ) => {
     const DefaultRightIcon = statusVariantIcons[variant || 'default'];
     const RightIconComponent = RightIcon || DefaultRightIcon;
     const inputClasses = cn(
       inputCVA({ size, variant, className }),
       Icon && 'pl-8 md:pl-10',
-      RightIconComponent && 'pr-8 md:pr-10',
+      RightIconComponent && 'pr-8 md:pr-10'
     );
 
     return (
@@ -75,7 +75,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-  },
+  }
 );
 
 Input.displayName = 'Input';

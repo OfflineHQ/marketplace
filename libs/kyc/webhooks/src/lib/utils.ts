@@ -3,19 +3,19 @@ import type { SumsubRequest } from '@kyc/types';
 
 export function isValidSignatureForSumsubRequest(
   request: SumsubRequest,
-  signingKey: string,
+  signingKey: string
 ): boolean {
   return isValidSignatureForStringBody(
     request.sumsub.rawBody,
     request.sumsub.signature,
-    signingKey,
+    signingKey
   );
 }
 
 export function isValidSignatureForStringBody(
   body: string,
   signature: string,
-  signingKey: string,
+  signingKey: string
 ): boolean {
   return isValidSignature({
     string: body,
@@ -28,7 +28,7 @@ export function isValidSignatureForStringBody(
 export function addSumsubContextToRequest(
   req: SumsubRequest,
   body: string,
-  signature: string,
+  signature: string
 ): void {
   req.sumsub = {
     rawBody: body,
