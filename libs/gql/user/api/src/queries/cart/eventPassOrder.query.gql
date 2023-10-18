@@ -4,3 +4,17 @@ query GetEventPassOrdersConfirmed {
     quantity
   }
 }
+
+query GetEventPassOrdersConfirmedOrCompletedForEventPassIds(
+  $eventPassIds: [String!]!
+) {
+  eventPassOrder(
+    where: {
+      status: { _in: [CONFIRMED, COMPLETED] }
+      eventPassId: { _in: $eventPassIds }
+    }
+  ) {
+    eventPassId
+    quantity
+  }
+}
