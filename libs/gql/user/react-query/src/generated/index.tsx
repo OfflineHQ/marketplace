@@ -236,6 +236,28 @@ export const useInsertEventPassPendingOrdersMutation = <
       (variables?: Types.InsertEventPassPendingOrdersMutationVariables) => fetchDataReactQuery<Types.InsertEventPassPendingOrdersMutation, Types.InsertEventPassPendingOrdersMutationVariables>(InsertEventPassPendingOrdersDocument, variables)(),
       options
     );
+export const UpsertEventPassPendingOrderDocument = `
+    mutation UpsertEventPassPendingOrder($object: eventPassPendingOrder_insert_input!) {
+  insert_eventPassPendingOrder_one(
+    object: $object
+    on_conflict: {constraint: eventPassPendingOrder_pkey, update_columns: [quantity]}
+  ) {
+    id
+    quantity
+    eventPassId
+    created_at
+  }
+}
+    `;
+export const useUpsertEventPassPendingOrderMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<Types.UpsertEventPassPendingOrderMutation, TError, Types.UpsertEventPassPendingOrderMutationVariables, TContext>) =>
+    useMutation<Types.UpsertEventPassPendingOrderMutation, TError, Types.UpsertEventPassPendingOrderMutationVariables, TContext>(
+      ['UpsertEventPassPendingOrder'],
+      (variables?: Types.UpsertEventPassPendingOrderMutationVariables) => fetchDataReactQuery<Types.UpsertEventPassPendingOrderMutation, Types.UpsertEventPassPendingOrderMutationVariables>(UpsertEventPassPendingOrderDocument, variables)(),
+      options
+    );
 export const DeleteEventPassPendingOrderDocument = `
     mutation DeleteEventPassPendingOrder($eventPassPendingOrderId: uuid!) {
   delete_eventPassPendingOrder_by_pk(id: $eventPassPendingOrderId) {

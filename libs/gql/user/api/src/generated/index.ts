@@ -154,6 +154,19 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
+ const UpsertEventPassPendingOrderDocument = `
+    mutation UpsertEventPassPendingOrder($object: eventPassPendingOrder_insert_input!) {
+  insert_eventPassPendingOrder_one(
+    object: $object
+    on_conflict: {constraint: eventPassPendingOrder_pkey, update_columns: [quantity]}
+  ) {
+    id
+    quantity
+    eventPassId
+    created_at
+  }
+}
+    `;
  const DeleteEventPassPendingOrderDocument = `
     mutation DeleteEventPassPendingOrder($eventPassPendingOrderId: uuid!) {
   delete_eventPassPendingOrder_by_pk(id: $eventPassPendingOrderId) {
@@ -355,6 +368,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     InsertEventPassPendingOrders(variables: Types.InsertEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.InsertEventPassPendingOrdersMutation> {
       return requester<Types.InsertEventPassPendingOrdersMutation, Types.InsertEventPassPendingOrdersMutationVariables>(InsertEventPassPendingOrdersDocument, variables, options) as Promise<Types.InsertEventPassPendingOrdersMutation>;
+    },
+    UpsertEventPassPendingOrder(variables: Types.UpsertEventPassPendingOrderMutationVariables, options?: C): Promise<Types.UpsertEventPassPendingOrderMutation> {
+      return requester<Types.UpsertEventPassPendingOrderMutation, Types.UpsertEventPassPendingOrderMutationVariables>(UpsertEventPassPendingOrderDocument, variables, options) as Promise<Types.UpsertEventPassPendingOrderMutation>;
     },
     DeleteEventPassPendingOrder(variables: Types.DeleteEventPassPendingOrderMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrderMutation> {
       return requester<Types.DeleteEventPassPendingOrderMutation, Types.DeleteEventPassPendingOrderMutationVariables>(DeleteEventPassPendingOrderDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrderMutation>;
