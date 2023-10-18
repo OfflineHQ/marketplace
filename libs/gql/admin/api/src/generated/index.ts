@@ -449,7 +449,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
 }
     `;
  const GetEventPassesDocument = `
-    query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
+    query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPasses(
     where: {event: {slug: $eventSlug}}
     locales: [$locale, en]
@@ -473,9 +473,6 @@ ${EventDateLocationsFieldsFragmentDoc}`;
       eventDateLocation {
         ...EventDateLocationsFields
       }
-    }
-    eventPassOrderSums {
-      totalReserved
     }
   }
 }
@@ -572,6 +569,13 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     query GetContractAddressFromEventPassId($eventPassId: String) @cached {
   eventPassNftContract(where: {eventPassId: {_eq: $eventPassId}}) {
     contractAddress
+  }
+}
+    `;
+ const GetEventPassOrderSumsDocument = `
+    query GetEventPassOrderSums($eventPassId: String!) {
+  eventPassOrderSums_by_pk(eventPassId: $eventPassId) {
+    totalReserved
   }
 }
     `;
@@ -777,6 +781,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetContractAddressFromEventPassId(variables?: Types.GetContractAddressFromEventPassIdQueryVariables, options?: C): Promise<Types.GetContractAddressFromEventPassIdQuery> {
       return requester<Types.GetContractAddressFromEventPassIdQuery, Types.GetContractAddressFromEventPassIdQueryVariables>(GetContractAddressFromEventPassIdDocument, variables, options) as Promise<Types.GetContractAddressFromEventPassIdQuery>;
+    },
+    GetEventPassOrderSums(variables: Types.GetEventPassOrderSumsQueryVariables, options?: C): Promise<Types.GetEventPassOrderSumsQuery> {
+      return requester<Types.GetEventPassOrderSumsQuery, Types.GetEventPassOrderSumsQueryVariables>(GetEventPassOrderSumsDocument, variables, options) as Promise<Types.GetEventPassOrderSumsQuery>;
     },
     CreateEventPassPricing(variables: Types.CreateEventPassPricingMutationVariables, options?: C): Promise<Types.CreateEventPassPricingMutation> {
       return requester<Types.CreateEventPassPricingMutation, Types.CreateEventPassPricingMutationVariables>(CreateEventPassPricingDocument, variables, options) as Promise<Types.CreateEventPassPricingMutation>;
