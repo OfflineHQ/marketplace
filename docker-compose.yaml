@@ -85,6 +85,7 @@ services:
     env_file:
       - .env.local
     restart: on-failure
+
   db:
     container_name: db
     image: postgres:13
@@ -107,6 +108,7 @@ services:
 
   redis:
     image: redis
+    restart: unless-stopped
     ports:
       - '6379:6379'
 
@@ -118,6 +120,7 @@ services:
       SRH_MODE: env
       SRH_TOKEN: example_token
       SRH_CONNECTION_STRING: 'redis://redis:6379'
+    restart: unless-stopped
     extra_hosts:
       - 'host.docker.internal:host-gateway'
 
