@@ -58,7 +58,7 @@ export const UserPassEventPassActions: React.FC<
   };
 
   async function downloadPassToastError(
-    error: ErrorWithMessage,
+    error: ErrorWithMessage
   ): Promise<ToastT> {
     'use server';
     return {
@@ -86,7 +86,7 @@ export const UserPassEventPassActions: React.FC<
   };
 
   async function revealPassToastError(
-    error: ErrorWithMessage,
+    error: ErrorWithMessage
   ): Promise<ToastT> {
     'use server';
     // TODO: handle error, in case get error code and message display message in toast

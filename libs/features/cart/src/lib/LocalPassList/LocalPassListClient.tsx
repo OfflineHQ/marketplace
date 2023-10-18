@@ -25,13 +25,13 @@ export const LocalPassListClient: React.FC<LocalPassListClientProps> = ({
   noCartImage,
 }) => {
   const syncAllPassesCart = usePassPurchaseStore(
-    (state) => state.syncAllPassesCart,
+    (state) => state.syncAllPassesCart
   );
   const deletePassesCart = usePassPurchaseStore(
-    (state) => state.deletePassesCart,
+    (state) => state.deletePassesCart
   );
   const [allPassesCart, setAllPassesCart] = useState<AllPassesCart | null>(
-    null,
+    null
   );
   const deletePassesCartAndUpdateStore = (props: any) => {
     deletePassesCart(props);
@@ -44,7 +44,7 @@ export const LocalPassListClient: React.FC<LocalPassListClientProps> = ({
   }, [userPassPendingOrders]);
 
   const isCartEmpty = Object.values(allPassesCart || {}).every((organizer) =>
-    Object.values(organizer).every((event) => event.length === 0),
+    Object.values(organizer).every((event) => event.length === 0)
   );
   const t = useTranslations('Cart.List');
   return allPassesCart ? (

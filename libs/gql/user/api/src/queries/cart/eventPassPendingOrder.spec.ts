@@ -148,7 +148,7 @@ describe('tests for eventPassPendingOrder user', () => {
       eventPassPendingOrderId: eventPassPendingOrderId,
     });
     expect(resDelete.delete_eventPassPendingOrder_by_pk?.id).toBe(
-      eventPassPendingOrderId,
+      eventPassPendingOrderId
     );
   });
 
@@ -189,7 +189,7 @@ describe('tests for eventPassPendingOrder user', () => {
     await expect(
       alphaUser.InsertEventPassPendingOrders({
         objects: { ...order1, quantity: 0 },
-      }),
+      })
     ).rejects.toThrow();
   });
 
@@ -197,7 +197,7 @@ describe('tests for eventPassPendingOrder user', () => {
     await expect(
       alphaUser.InsertEventPassPendingOrders({
         objects: [order1, order1],
-      }),
+      })
     ).rejects.toThrow();
   });
 
@@ -208,7 +208,7 @@ describe('tests for eventPassPendingOrder user', () => {
     await expect(
       alphaUser.InsertEventPassPendingOrders({
         objects: [{ ...order2, quantity: 3 }],
-      }),
+      })
     ).rejects.toThrow();
   });
 
@@ -216,7 +216,7 @@ describe('tests for eventPassPendingOrder user', () => {
     await expect(
       alphaUser.InsertEventPassPendingOrders({
         objects: [{ ...order1, eventPassId: 'fake-dummy' }],
-      }),
+      })
     ).rejects.toThrow();
   });
 
@@ -224,7 +224,7 @@ describe('tests for eventPassPendingOrder user', () => {
     await expect(
       alphaUser.InsertEventPassPendingOrders({
         objects: [{ ...order1, quantity: 101 }],
-      }),
+      })
     ).rejects.toThrow();
   });
 
@@ -235,7 +235,7 @@ describe('tests for eventPassPendingOrder user', () => {
     await expect(
       betaUser.InsertEventPassPendingOrders({
         objects: [{ ...order1, quantity: 100 }],
-      }),
+      })
     ).rejects.toThrow();
   });
 
@@ -243,7 +243,7 @@ describe('tests for eventPassPendingOrder user', () => {
     await expect(
       alphaUser.InsertEventPassPendingOrders({
         objects: [{ ...order2, quantity: 11 }],
-      }),
+      })
     ).rejects.toThrow();
   });
 });

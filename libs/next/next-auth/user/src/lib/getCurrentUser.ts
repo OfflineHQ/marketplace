@@ -32,7 +32,7 @@ export const getCurrentUser = async (): Promise<AppUser | undefined> => {
     cookies: Object.fromEntries(
       cookies()
         .getAll()
-        .map((c) => [c.name, c.value]),
+        .map((c) => [c.name, c.value])
     ),
   };
   // eslint-disable-next-line @typescript-eslint/no-empty-function

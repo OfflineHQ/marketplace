@@ -48,7 +48,7 @@ describe('Payment', () => {
       expect(payment.stripe.webhooks.constructEvent).toHaveBeenCalledWith(
         body,
         signature,
-        env.STRIPE_WEBHOOK_SECRET,
+        env.STRIPE_WEBHOOK_SECRET
       );
     });
 
@@ -61,7 +61,7 @@ describe('Payment', () => {
         throw new Error('Stripe error');
       });
       expect(() =>
-        payment.webhookStripeConstructEvent({ body, signature }),
+        payment.webhookStripeConstructEvent({ body, signature })
       ).toThrow('Stripe error');
     });
   });
@@ -73,7 +73,7 @@ describe('Payment', () => {
       } as any;
       await payment.getStripeCustomer({ stripeCustomerId });
       expect(payment.stripe.customers.retrieve).toHaveBeenCalledWith(
-        stripeCustomerId,
+        stripeCustomerId
       );
     });
 
@@ -83,7 +83,7 @@ describe('Payment', () => {
         retrieve: jest.fn().mockRejectedValue(new Error('Stripe error')),
       } as any;
       await expect(
-        payment.getStripeCustomer({ stripeCustomerId }),
+        payment.getStripeCustomer({ stripeCustomerId })
       ).rejects.toThrow('Stripe error');
     });
   });
@@ -91,7 +91,7 @@ describe('Payment', () => {
     it('should throw error when user kyc is missing', async () => {
       const user = { id: 'userId', address: 'address' };
       await expect(
-        payment.getOrCreateStripeCustomer({ user: accounts.google_user }),
+        payment.getOrCreateStripeCustomer({ user: accounts.google_user })
       ).rejects.toThrow(`Missing kyc for user: ${accounts.google_user.id}`);
     });
 
@@ -128,7 +128,7 @@ describe('Payment', () => {
 
       adminSdk.GetStripeCustomerByAccount = jest.fn().mockResolvedValue(null);
       (kycApi.getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(
-        userPersonalData,
+        userPersonalData
       );
       payment.stripe.customers = {
         create: jest.fn().mockResolvedValue(stripeCustomer),
@@ -142,7 +142,7 @@ describe('Payment', () => {
       });
 
       expect(kycApi.getSumSubApplicantPersonalData).toHaveBeenCalledWith(
-        accounts.alpha_user.kyc.applicantId,
+        accounts.alpha_user.kyc.applicantId
       );
       expect(payment.stripe.customers.create).toHaveBeenCalledWith({
         email: userPersonalData.email,
@@ -178,7 +178,7 @@ describe('Payment', () => {
           metadata: {
             userId: accounts.alpha_user.id,
           },
-        },
+        }
       );
     });
 
@@ -204,7 +204,7 @@ describe('Payment', () => {
         payment.updateStripeCustomer({
           stripeCustomerId,
           user: accounts.alpha_user,
-        }),
+        })
       ).rejects.toThrow('Stripe error');
     });
   });
@@ -256,7 +256,7 @@ describe('Payment', () => {
       });
 
       expect(
-        adminSdk.MoveEventPassPendingOrdersToConfirmed,
+        adminSdk.MoveEventPassPendingOrdersToConfirmed
       ).toHaveBeenCalledWith({
         eventPassPendingOrderIds: ['order1', 'order2'],
         objects: [
@@ -291,7 +291,7 @@ describe('Payment', () => {
           eventPassPendingOrders: [],
           accountId,
           locale,
-        }),
+        })
       ).rejects.toThrow('SDK error');
     });
   });
@@ -389,9 +389,9 @@ describe('Payment', () => {
           eventPassPendingOrders,
           locale,
           currency,
-        }),
+        })
       ).rejects.toThrow(
-        `User: ${accounts.alpha_user.id} already has an active checkout session: undefined`,
+        `User: ${accounts.alpha_user.id} already has an active checkout session: undefined`
       );
     });
 
@@ -416,7 +416,7 @@ describe('Payment', () => {
       });
 
       expect(
-        payment.moveEventPassPendingOrdersToConfirmed,
+        payment.moveEventPassPendingOrdersToConfirmed
       ).toHaveBeenCalledWith({
         eventPassPendingOrders,
         accountId: accounts.alpha_user.id,
@@ -458,7 +458,7 @@ describe('Payment', () => {
           currency,
           locale,
           mode: 'payment',
-        }),
+        })
       );
     });
 
@@ -494,7 +494,7 @@ describe('Payment', () => {
       });
 
       expect(
-        adminSdk.SetEventPassOrdersStripeCheckoutSessionId,
+        adminSdk.SetEventPassOrdersStripeCheckoutSessionId
       ).toHaveBeenCalledWith({
         updates: eventPassOrders.map(({ id }) => ({
           _set: {
@@ -530,10 +530,10 @@ describe('Payment', () => {
       await payment.expireStripeCheckoutSession({ stripeCheckoutSessionId });
 
       expect(payment.stripe.checkout.sessions.expire).toHaveBeenCalledWith(
-        stripeCheckoutSessionId,
+        stripeCheckoutSessionId
       );
       expect(
-        payment.getEventPassOrdersFromStripeCheckoutSession,
+        payment.getEventPassOrdersFromStripeCheckoutSession
       ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
       expect(payment.markEventPassOrderAsCancelled).toHaveBeenCalledWith({
         eventPassOrdersId: orders.map((order) => order.id),
@@ -556,7 +556,7 @@ describe('Payment', () => {
       });
 
       expect(
-        adminSdk.GetEventPassOrdersFromStripeCheckoutSession,
+        adminSdk.GetEventPassOrdersFromStripeCheckoutSession
       ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
       expect(result).toEqual(eventPassOrder);
     });
@@ -596,7 +596,7 @@ describe('Payment', () => {
         stripeCustomerId,
       });
       expect(payment.stripe.checkout.sessions.retrieve).toHaveBeenCalledWith(
-        stripeSessionId,
+        stripeSessionId
       );
       expect(result).toEqual({ id: stripeSessionId });
     });
@@ -614,7 +614,7 @@ describe('Payment', () => {
       await payment.canceledStripeCheckoutSession({ stripeCheckoutSessionId });
 
       expect(
-        payment.getEventPassOrdersFromStripeCheckoutSession,
+        payment.getEventPassOrdersFromStripeCheckoutSession
       ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
       expect(payment.markEventPassOrderAsCancelled).toHaveBeenCalledWith({
         eventPassOrdersId: orders.map((order) => order.id),
@@ -638,10 +638,10 @@ describe('Payment', () => {
       await payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId });
 
       expect(
-        payment.getEventPassOrdersFromStripeCheckoutSession,
+        payment.getEventPassOrdersFromStripeCheckoutSession
       ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
       expect(payment.nftClaimable.claimAllMetadatas).toHaveBeenCalledWith(
-        orders,
+        orders
       );
       expect(payment.markEventPassOrderAsCompleted).toHaveBeenCalledWith({
         eventPassOrdersId: orders.map((order) => order.id),
@@ -658,7 +658,7 @@ describe('Payment', () => {
       await expect(
         payment.confirmedStripeCheckoutSession({
           stripeCheckoutSessionId: 'test',
-        }),
+        })
       ).rejects.toThrow('Failed to get orders');
       expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
@@ -675,7 +675,7 @@ describe('Payment', () => {
       await expect(
         payment.confirmedStripeCheckoutSession({
           stripeCheckoutSessionId: 'test',
-        }),
+        })
       ).rejects.toThrow('Error claiming NFTs: Failed to claim NFTs');
       expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
@@ -702,7 +702,7 @@ describe('Payment', () => {
         payment_intent: paymentIntentId,
       });
       expect(
-        payment.getEventPassOrdersFromStripeCheckoutSession,
+        payment.getEventPassOrdersFromStripeCheckoutSession
       ).toHaveBeenCalledWith({ stripeCheckoutSessionId: checkoutSessionId });
       expect(payment.markEventPassOrderAsRefunded).toHaveBeenCalledWith({
         eventPassOrdersId: orders.map((order) => order.id),
@@ -720,9 +720,9 @@ describe('Payment', () => {
       payment.stripe.refunds.create = jest.fn().mockResolvedValue(refund);
 
       await expect(
-        payment.refundPayment({ paymentIntentId, checkoutSessionId }),
+        payment.refundPayment({ paymentIntentId, checkoutSessionId })
       ).rejects.toThrow(
-        `Refund failed for paymentIntentId: ${paymentIntentId} with status: ${refund.status}`,
+        `Refund failed for paymentIntentId: ${paymentIntentId} with status: ${refund.status}`
       );
     });
   });

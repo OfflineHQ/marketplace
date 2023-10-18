@@ -117,7 +117,7 @@ describe('useEventPassOrders', () => {
         }),
       {
         wrapper: QueryClientProviderForTest,
-      },
+      }
     );
 
     await waitFor(() => {
@@ -125,7 +125,7 @@ describe('useEventPassOrders', () => {
       expect(result.current.ordersData).toBeDefined();
       expect(result.current.ordersData?.eventPassPendingOrder.length).toBe(1);
       expect(
-        result.current.ordersData?.eventPassPendingOrder[0].eventPassId,
+        result.current.ordersData?.eventPassPendingOrder[0].eventPassId
       ).toBe('clj8raobj7g8l0aw3bfw6dny4');
     });
   });
@@ -143,7 +143,7 @@ describe('useEventPassOrders', () => {
         }),
       {
         wrapper: QueryClientProviderForTest,
-      },
+      }
     );
 
     await waitFor(() => {
@@ -166,7 +166,7 @@ describe('useEventPassOrders', () => {
         }),
       {
         wrapper: QueryClientProviderForTest,
-      },
+      }
     );
 
     await waitFor(() => {
@@ -201,7 +201,7 @@ describe('useEventPassOrders', () => {
         }),
       {
         wrapper: QueryClientProviderForTest,
-      },
+      }
     );
 
     await waitFor(() => {
@@ -246,7 +246,7 @@ describe('useEventPassOrders', () => {
         }),
       {
         wrapper: QueryClientProviderForTest,
-      },
+      }
     );
 
     await waitFor(() => {
@@ -292,7 +292,7 @@ describe('useEventPassOrders', () => {
         }),
       {
         wrapper: QueryClientProviderForTest,
-      },
+      }
     );
 
     await waitFor(() => {
@@ -343,7 +343,7 @@ describe('useEventPassOrders', () => {
         }),
       {
         wrapper: QueryClientProviderForTest,
-      },
+      }
     );
 
     await waitFor(() => {
@@ -391,7 +391,7 @@ describe('useEventPassOrders', () => {
         }),
       {
         wrapper: QueryClientProviderForTest,
-      },
+      }
     );
 
     await waitFor(() => {
@@ -436,7 +436,7 @@ describe('useEventPassOrders', () => {
         }),
       {
         wrapper: QueryClientProviderForTest,
-      },
+      }
     );
 
     await waitFor(() => {

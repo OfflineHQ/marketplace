@@ -65,7 +65,7 @@ export default async function RootLayout({
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
           fontSans.variable,
-          fontHeading.variable,
+          fontHeading.variable
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -81,7 +81,7 @@ export default async function RootLayout({
                   title: t('Auth.error-signing-in-with-siwe.title'),
                   description: t('Auth.error-signing-in-with-siwe.description'),
                   tryAgainButton: t(
-                    'Auth.error-signing-in-with-siwe.try-again-button',
+                    'Auth.error-signing-in-with-siwe.try-again-button'
                   ),
                 },
                 siweDeclined: {

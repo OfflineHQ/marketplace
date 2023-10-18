@@ -216,7 +216,7 @@ async function clickOnDownloadButton() {
   }
   const allMenus = await screen.findAllByRole('menu');
   const openMenu = allMenus.find(
-    (menu) => menu.getAttribute('data-state') === 'open',
+    (menu) => menu.getAttribute('data-state') === 'open'
   );
   const downloadButton = within(openMenu).getByText('Download');
   await userEvent.click(downloadButton);

@@ -38,14 +38,14 @@ export const Opened: Story = {
     userEvent.click(
       await screen.findByRole('button', {
         name: /Lorem ipsum/i,
-      }),
+      })
     );
     await screen.findByText(/1 x/i);
     await screen.findByText(/General Admission/i);
     await userEvent.click(
       await screen.findByRole('button', {
         name: /World cup/i,
-      }),
+      })
     );
     await screen.findByText(/3 x/i);
     await screen.findByText(/Premium Pass/i);
@@ -68,7 +68,7 @@ export const Remove: Story = {
     userEvent.click(
       await screen.findByRole('button', {
         name: /Lorem ipsum/i,
-      }),
+      })
     );
     const removeButtons = await screen.findAllByRole('button', {
       name: /Remove/i,
@@ -77,12 +77,12 @@ export const Remove: Story = {
     await waitForElementToBeRemoved(() =>
       screen.queryByRole('button', {
         name: /Lorem ipsum/i,
-      }),
+      })
     );
     expect(
       await screen.findByRole('button', {
         name: /World cup/i,
-      }),
+      })
     );
   },
 };

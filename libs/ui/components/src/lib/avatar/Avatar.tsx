@@ -23,7 +23,7 @@ const avatarVariants = cva(
     defaultVariants: {
       size: 'default',
     },
-  },
+  }
 );
 
 export interface AvatarProps
@@ -42,7 +42,7 @@ const Avatar = React.forwardRef<
     className={cn(
       avatarVariants({ size }),
       'relative flex-shrink-0',
-      className,
+      className
     )}
     {...props}
   />
@@ -71,7 +71,7 @@ const AvatarFallback = React.forwardRef<
     ref={ref}
     className={cn(
       'flex h-full w-full items-center justify-center rounded-full bg-muted',
-      className,
+      className
     )}
     {...props}
   />
@@ -89,7 +89,7 @@ const AvatarSkeleton = React.forwardRef<
     className={cn(
       avatarVariants({ size }),
       'relative flex-shrink-0 animate-pulse bg-muted',
-      className,
+      className
     )}
     {...props}
   />

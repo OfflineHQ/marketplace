@@ -8,7 +8,7 @@ import { EventWithEventPassNfts } from '@features/pass-types';
 interface DownloadButtonClientProps {
   eventPassNftContract: EventWithEventPassNfts['eventPassNftContracts'][0];
   batchDownloadOrReveal: (
-    eventPassNfts: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts'],
+    eventPassNfts: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts']
   ) => Promise<void>;
   buttonTxt: string;
   buttonToastTxt: {

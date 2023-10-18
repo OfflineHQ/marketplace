@@ -18,7 +18,7 @@ describe('handleApplicantStatusChanged', () => {
     (getCurrentUser as jest.Mock).mockResolvedValueOnce(null);
 
     await expect(
-      handleApplicantStatusChanged(KycStatus_Enum.Pending),
+      handleApplicantStatusChanged(KycStatus_Enum.Pending)
     ).rejects.toThrow('User not found');
   });
 
@@ -26,7 +26,7 @@ describe('handleApplicantStatusChanged', () => {
     (getCurrentUser as jest.Mock).mockResolvedValueOnce({ kyc: {} });
     (getAccount as jest.Mock).mockResolvedValueOnce({ kyc: {} });
     await expect(
-      handleApplicantStatusChanged(KycStatus_Enum.Pending),
+      handleApplicantStatusChanged(KycStatus_Enum.Pending)
     ).rejects.toThrow("User doesn't have an applicant created");
   });
 

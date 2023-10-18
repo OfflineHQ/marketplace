@@ -67,7 +67,7 @@ describe('useToast', () => {
     await waitFor(() => result.current.toasts.length === 2);
 
     expect(
-      result.current.toasts.find((t) => t.title === 'Updated Toast 1'),
+      result.current.toasts.find((t) => t.title === 'Updated Toast 1')
     ).toBeTruthy();
   });
 });

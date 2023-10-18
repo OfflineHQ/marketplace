@@ -26,13 +26,13 @@ export async function reloadHasuraMetadata() {
     if (!json.is_consistent) {
       console.error(
         'Hasura metadata is not consistent:',
-        json.inconsistent_objects,
+        json.inconsistent_objects
       );
     }
   } else {
     const errorText = await res.text();
     console.error(
-      `Hasura metadata reload failed with status ${res.status}: ${errorText}`,
+      `Hasura metadata reload failed with status ${res.status}: ${errorText}`
     );
     throw new Error(`Hasura metadata reload failed: ${errorText}`);
   }
