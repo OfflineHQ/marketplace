@@ -30,6 +30,13 @@ export type GetEventPassOrdersConfirmedQueryVariables = Types.Exact<{ [key: stri
 
 export type GetEventPassOrdersConfirmedQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number }> };
 
+export type GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables = Types.Exact<{
+  eventPassIds: Array<Types.Scalars['String']> | Types.Scalars['String'];
+}>;
+
+
+export type GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number }> };
+
 export type InsertEventPassPendingOrdersMutationVariables = Types.Exact<{
   objects: Array<Types.EventPassPendingOrder_Insert_Input> | Types.EventPassPendingOrder_Insert_Input;
 }>;

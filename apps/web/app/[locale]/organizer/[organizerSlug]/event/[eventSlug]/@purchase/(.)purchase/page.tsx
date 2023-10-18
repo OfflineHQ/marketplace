@@ -1,12 +1,16 @@
-import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
-import { deepPick } from '@utils';
-import { messages, defaultLocale, type Locale } from '@next/i18n';
-import { getEventPasses } from '@features/organizer/event-api';
-import type { EventPass } from '@features/organizer/event-types';
 import {
   PassPurchaseSheet,
   PassPurchaseSheetContainer,
 } from '@features/organizer/event';
+import {
+  getEventPassOrdersConfirmedOrCompletedForEventPassIds,
+  getEventPasses,
+  getEventPassesCart,
+} from '@features/organizer/event-api';
+import type { EventPass, EventPassCart } from '@features/organizer/event-types';
+import { defaultLocale, messages, type Locale } from '@next/i18n';
+import { deepPick } from '@utils';
+import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
 
 interface PurchaseSectionProps {
   params: {
@@ -21,10 +25,20 @@ export default async function PurchaseSection({
 }: PurchaseSectionProps) {
   const { eventSlug, organizerSlug, locale } = params;
   const passes = await getEventPasses({ eventSlug, locale });
-
+  const eventPassesCart = await getEventPassesCart({
+    eventSlug,
+    organizerSlug,
+    eventPassIds: passes.map((pass) => pass.id),
+  });
+  const existingEventPasses =
+    await getEventPassOrdersConfirmedOrCompletedForEventPassIds({
+      eventPassIds: passes.map((pass) => pass.id),
+    });
   return (
     <PurchaseSectionContent
       passes={passes}
+      eventPassesCart={eventPassesCart}
+      existingEventPasses={existingEventPasses}
       eventSlug={eventSlug}
       organizerSlug={organizerSlug}
     />
@@ -33,6 +47,8 @@ export default async function PurchaseSection({
 
 interface PurchaseSectionContentProps {
   passes: EventPass[];
+  eventPassesCart: EventPassCart[] | null;
+  existingEventPasses: EventPassCart[] | null;
   eventSlug: string;
   organizerSlug: string;
 }
