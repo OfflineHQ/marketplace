@@ -25,8 +25,8 @@ export class PassCache {
   async getAllPassesCart(): Promise<AllPassesCart | null> {
     const userId = getUnauthenticatedUserCookie();
     const key = `unauthenticated_user_id:${userId}-passes`;
-    const passesCart = (await this.cache.get(key)) as string | null;
-    return passesCart ? JSON.parse(passesCart) : null;
+    const passesCart = await this.cache.get(key);
+    return passesCart as AllPassesCart | null;
   }
 
   async setAllPassesCart(passesCart: AllPassesCart): Promise<void> {
