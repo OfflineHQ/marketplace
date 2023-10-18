@@ -203,7 +203,7 @@ describe('extractNftTransfersFromEvent', () => {
     };
 
     expect(() =>
-      extractNftTransfersFromEvent(mockEventWithoutActivities),
+      extractNftTransfersFromEvent(mockEventWithoutActivities)
     ).toThrow('No nft activities found in event');
   });
 });
@@ -212,7 +212,7 @@ describe('nftActivity', () => {
   it('happy path with several nft activity being processed', async () => {
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
-      'clizzpvidao620buvxit1ynko',
+      'clizzpvidao620buvxit1ynko'
     );
     expect(response.status).toEqual(200);
     expect(isValidSignatureForAlchemyRequest).toHaveBeenCalled();
@@ -227,7 +227,7 @@ describe('nftActivity', () => {
 
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
-      'clizzpvidao620buvxit1ynko',
+      'clizzpvidao620buvxit1ynko'
     );
 
     expect(response.status).toEqual(500);
@@ -239,7 +239,7 @@ describe('nftActivity', () => {
 
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
-      'clizzpvidao620buvxit1ynko',
+      'clizzpvidao620buvxit1ynko'
     );
 
     expect(response.status).toEqual(403);
@@ -248,12 +248,12 @@ describe('nftActivity', () => {
   it('should return error 500 from eventPassNftWrapper', async () => {
     // Force an error in one of the EventPassNftWrapper methods
     getEventPassNftTransfersMetadataSpy.mockRejectedValue(
-      new Error('Test error'),
+      new Error('Test error')
     );
 
     const response = await nftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
-      'clizzpvidao620buvxit1ynko',
+      'clizzpvidao620buvxit1ynko'
     );
 
     expect(response.status).toEqual(500);
@@ -285,7 +285,7 @@ describe('nftActivity', () => {
 
     const response = await nftActivity(
       mockAlchemyRequest,
-      'clizzpvidao620buvxit1ynko',
+      'clizzpvidao620buvxit1ynko'
     );
 
     expect(response.status).toEqual(400);

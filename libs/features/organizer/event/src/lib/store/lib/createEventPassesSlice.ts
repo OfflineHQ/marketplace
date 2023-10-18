@@ -51,7 +51,7 @@ export interface EventPassesSliceProps {
 
 export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
   set,
-  get,
+  get
 ) => ({
   passes: {},
   resetPasses: () => set({ passes: {} }),
@@ -69,7 +69,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
         } else {
           // The event exists, find the pass
           const index = passes[organizerSlug][eventSlug].findIndex(
-            (p) => p.id === pass.id,
+            (p) => p.id === pass.id
           );
           if (index !== -1) {
             // The pass exists, update it
@@ -81,7 +81,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
         }
 
         draft.passes = passes;
-      }),
+      })
     );
   },
   setPassesCart: ({ organizerSlug, eventSlug, newPasses }) =>
@@ -93,7 +93,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
         }
         passes[organizerSlug][eventSlug] = newPasses;
         draft.passes = passes;
-      }),
+      })
     ),
   deletePassesCart: ({ organizerSlug, eventSlug }) =>
     set((state) =>
@@ -104,7 +104,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
           delete newPasses[organizerSlug][eventSlug];
           draft.passes = newPasses;
         }
-      }),
+      })
     ),
   deletePassCart: ({ organizerSlug, eventSlug, eventPassId }) =>
     set((state) =>
@@ -119,7 +119,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
           }
           draft.passes = newPasses;
         }
-      }),
+      })
     ),
   getPassesCart: ({ organizerSlug, eventSlug }) => {
     const passes = get().passes;
@@ -157,7 +157,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
 
     return passesCart.reduce(
       (totalPasses, passCart) => totalPasses + passCart.amount,
-      0,
+      0
     );
   },
   syncAllPassesCart: ({ userPassPendingOrders }) => {
@@ -210,7 +210,7 @@ export const createEventPassesSlice: StateCreator<EventPassesSliceProps> = (
 
         // Check if this pass already exists
         const passExists = allPassesCart[organizerSlug][eventSlug].some(
-          (pass) => pass.id === id,
+          (pass) => pass.id === id
         );
 
         if (!passExists) {

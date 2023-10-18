@@ -39,7 +39,7 @@ export const PassPurchaseCardExample = (props: PassPurchaseSheetProps) => (
 );
 
 export const PassPurchaseSheetLoadingExample = (
-  props: PassPurchaseSheetSkeletonProps,
+  props: PassPurchaseSheetSkeletonProps
 ) => (
   <Sheet open={true}>
     <PassPurchaseSheetSkeleton {...props} />

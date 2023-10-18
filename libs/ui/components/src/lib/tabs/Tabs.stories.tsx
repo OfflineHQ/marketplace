@@ -27,7 +27,7 @@ export const Default: Story = {
     const secondTab = within(tabs).getByText('Password');
     userEvent.click(secondTab);
     expect(
-      await screen.findByText(/Change your password/i),
+      await screen.findByText(/Change your password/i)
     ).toBeInTheDocument();
   },
 };

@@ -46,7 +46,7 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
   const { rates, isLoading } = useCurrency();
   const enrichedPasses = passes.map((pass) => {
     const matchingEventPass = event.eventPasses.find(
-      (eventPass) => eventPass.id === pass.id,
+      (eventPass) => eventPass.id === pass.id
     );
 
     return {
@@ -80,12 +80,12 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
                       amount: pass.eventPassPricing?.priceAmount || 0,
                       currency: pass.eventPassPricing?.priceCurrency,
                     },
-                    rates,
+                    rates
                   )}
                 </Text>
               </div>
             </div>
-          ) : null,
+          ) : null
         )}
       </div>
       <EventPassesActions

@@ -14,7 +14,7 @@ export class EventPassNftWrapper {
   }
   async getEventPassNftTransfersMetadata(
     nftTransfers: NftTransferWithoutMetadata[],
-    chainId: string,
+    chainId: string
   ) {
     const contractAddresses: string[] = [
       ...new Set(nftTransfers.map((transfer) => transfer.contractAddress)),
@@ -28,11 +28,11 @@ export class EventPassNftWrapper {
 
     return nftTransfers.reduce((acc, nft) => {
       const nftWithMetadata = eventPassNft.find(
-        (n) => n.tokenId == nft.tokenId, // here avoid exact match because we want to compare bigint with number
+        (n) => n.tokenId == nft.tokenId // here avoid exact match because we want to compare bigint with number
       );
       if (!nftWithMetadata) {
         console.error(
-          `Metadata not found for this token ! Skipping execution for this transfer: ${nft.transactionHash} in ${nft.chainId} for ${nft.contractAddress} collection, fromAddress ${nft.fromAddress} toAddress ${nft.toAddress} with erc721TokenId ${nft.tokenId}. This is a critical error that should be investigated.`,
+          `Metadata not found for this token ! Skipping execution for this transfer: ${nft.transactionHash} in ${nft.chainId} for ${nft.contractAddress} collection, fromAddress ${nft.fromAddress} toAddress ${nft.toAddress} with erc721TokenId ${nft.tokenId}. This is a critical error that should be investigated.`
         );
         return acc; // Skip this item and continue with the next one
       }
@@ -89,7 +89,7 @@ export class EventPassNftWrapper {
       if (!nftRes?.returning || !nftRes.returning?.length) {
         console.error(
           `No returning data for an update on eventPassNft, this is likely an error or a NFT that is missing. Please investigate ! Failed transfer:`,
-          nftTransfers[index],
+          nftTransfers[index]
         );
         return result;
       }
@@ -98,14 +98,14 @@ export class EventPassNftWrapper {
   }
   // we handle the transfer of the QR code from the old owner to the new owner for each nft that has been revealed
   async applyQrCodeBatchTransferForNewOwner(
-    eventPassNfts: EventPassNftAfterMutation[],
+    eventPassNfts: EventPassNftAfterMutation[]
   ) {
     const nftFileTransfers: Parameters<typeof transferPassQrCodeBatch>[0] = [];
     for (const eventPassNft of eventPassNfts) {
       if (eventPassNft.isRevealed) {
         if (!eventPassNft.lastNftTransfer)
           console.error(
-            `lastNftTransfer is null for revealed eventPassNft with id ${eventPassNft.id}. This is likely an error`,
+            `lastNftTransfer is null for revealed eventPassNft with id ${eventPassNft.id}. This is likely an error`
           );
         else
           nftFileTransfers.push({

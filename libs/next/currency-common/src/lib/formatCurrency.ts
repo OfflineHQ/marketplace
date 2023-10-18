@@ -4,7 +4,7 @@ import { toUserCurrency } from './toUserCurrency';
 export const formatCurrency = (
   format: any,
   money: Money | undefined | null,
-  rates: { [key: string]: Rates },
+  rates: { [key: string]: Rates }
 ) => {
   if (!money) return format.number(0, { style: 'currency', currency: 'EUR' });
   const { currency, amount } = money;

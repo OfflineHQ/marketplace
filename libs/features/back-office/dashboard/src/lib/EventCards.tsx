@@ -55,7 +55,7 @@ type DeployFunction = (
   maxAmount: number,
   eventId: string,
   eventSlug: string,
-  metadata: NftsMetadata,
+  metadata: NftsMetadata
 ) => Promise<void>;
 
 interface EventPassContentProps {
@@ -86,14 +86,14 @@ function EventPassContent({
     const fetchData = async () => {
       const status = await checkFolderLength(
         path,
-        eventPass.eventPassPricing?.maxAmount || 0,
+        eventPass.eventPassPricing?.maxAmount || 0
       );
       setFilesNumber(status.length);
       return await checkFolder(
         path,
         event.id,
         eventPass.id,
-        eventPass.eventPassPricing?.maxAmount || 0,
+        eventPass.eventPassPricing?.maxAmount || 0
       );
     };
 
@@ -109,7 +109,7 @@ function EventPassContent({
     onPreUpload: async (File: File) => {
       const status = await checkFolderLength(
         path,
-        eventPass.eventPassPricing?.maxAmount || 0,
+        eventPass.eventPassPricing?.maxAmount || 0
       );
 
       if (status.isEqual) {
@@ -163,7 +163,7 @@ function EventPassContent({
                         eventPass.nftImage === null
                           ? ''
                           : eventPass.nftImage.url,
-                    },
+                    }
                   );
                 }}
               >
@@ -173,7 +173,7 @@ function EventPassContent({
               <Button
                 onClick={async () => {
                   navigator.clipboard.writeText(
-                    eventPass.eventPassNftContract?.contractAddress || '',
+                    eventPass.eventPassNftContract?.contractAddress || ''
                   );
                 }}
               >
@@ -199,9 +199,9 @@ function EventPassContent({
                           (
                             await checkFolderLength(
                               path,
-                              eventPass.eventPassPricing?.maxAmount || 0,
+                              eventPass.eventPassPricing?.maxAmount || 0
                             )
-                          ).length,
+                          ).length
                         );
                       }}
                       onComplete={(files) => {
@@ -216,14 +216,14 @@ function EventPassContent({
                   onClick={async () => {
                     const status = await checkFolderLength(
                       path,
-                      eventPass.eventPassPricing?.maxAmount || 0,
+                      eventPass.eventPassPricing?.maxAmount || 0
                     );
                     if (status.isEqual) {
                       const res = await renameFolderQrCodes(
                         path,
                         event.id,
                         eventPass.id,
-                        eventPass.eventPassPricing?.maxAmount || 0,
+                        eventPass.eventPassPricing?.maxAmount || 0
                       );
                       toast.toast({
                         title: 'Rename',
@@ -266,7 +266,7 @@ function EventCard({
     maxAmount: number,
     eventId: string,
     eventSlug: string,
-    metadata: NftsMetadata,
+    metadata: NftsMetadata
   ) {
     try {
       await sdk.deployACollection(
@@ -276,7 +276,7 @@ function EventCard({
         eventId,
         organizerId,
         eventSlug,
-        metadata,
+        metadata
       );
     } catch (error) {
       console.error('Failed to deploy collection: ', error);
@@ -299,7 +299,7 @@ function EventCard({
                   deploy,
                   organizerId,
                   uploader,
-                }),
+                })
               )
             : null}
         </div>

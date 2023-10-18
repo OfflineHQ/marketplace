@@ -42,7 +42,7 @@ jest.mock('next/headers', () => ({
 
 // Mock SumsubRequest
 const createMockSumsubRequest = (
-  body: ApplicantWebhookPayload,
+  body: ApplicantWebhookPayload
 ): SumsubRequest => {
   return {
     sumsub: {
@@ -61,7 +61,7 @@ describe('applicantStatusChanged', () => {
   it('should process applicant status change correctly', async () => {
     const response = await applicantStatusChanged(
       createMockSumsubRequest(mockPayload),
-      'test-status',
+      'test-status'
     );
 
     expect(response.status).toEqual(200);
@@ -82,7 +82,7 @@ describe('applicantStatusChanged', () => {
     };
     const response = await applicantStatusChanged(
       createMockSumsubRequest(mockPayloadDelete),
-      'test-status',
+      'test-status'
     );
     expect(response.status).toEqual(200);
     expect(isValidSignatureForSumsubRequest).toHaveBeenCalled();
@@ -98,7 +98,7 @@ describe('applicantStatusChanged', () => {
 
     const response = await applicantStatusChanged(
       createMockSumsubRequest(mockPayload),
-      'test-status',
+      'test-status'
     );
 
     expect(response.status).toEqual(403);
@@ -112,7 +112,7 @@ describe('applicantStatusChanged', () => {
 
     const response = await applicantStatusChanged(
       createMockSumsubRequest(mockPayloadTypeError),
-      'test-status',
+      'test-status'
     );
 
     expect(response.status).toEqual(400);
