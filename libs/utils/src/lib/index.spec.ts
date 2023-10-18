@@ -10,7 +10,7 @@ describe('truncateString', () => {
     expect(() => {
       truncateString('Hello, world!', 4);
     }).toThrow(
-      'maxChars must be at least 5 to allow proper truncation with three asterisks (***)',
+      'maxChars must be at least 5 to allow proper truncation with three asterisks (***)'
     );
   });
 
@@ -50,14 +50,14 @@ describe('truncateEmailString', () => {
   test('should truncate email', () => {
     const originalEmail = 'johnny.doeyeydodidooooo@example.com';
     expect(truncateEmailString(originalEmail, 12)).toBe(
-      'john***ooooo@example.com',
+      'john***ooooo@example.com'
     );
   });
 
   test('should not truncate email with long domain', () => {
     const originalEmail = 'jonhdoe@verylongdomainexample.com';
     expect(truncateEmailString(originalEmail, 24)).toBe(
-      'jonhdoe@verylongdomainexample.com',
+      'jonhdoe@verylongdomainexample.com'
     );
   });
 });

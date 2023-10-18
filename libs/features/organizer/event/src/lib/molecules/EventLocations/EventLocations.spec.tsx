@@ -31,7 +31,7 @@ describe('EventLocations', () => {
     const locationElement = screen.getByText(/New York, USA/i);
     fireEvent.click(locationElement);
     expect(url).toEqual(
-      'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJd8BlQ2BZwokRAFUEcm_qrcA',
+      'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJd8BlQ2BZwokRAFUEcm_qrcA'
     );
     url = ''; // Reset the url for the next test
   });
@@ -47,12 +47,12 @@ describe('EventLocations', () => {
     const locationElements = screen.getAllByText(/New York, NY/i);
     fireEvent.click(locationElements[0]);
     expect(url).toEqual(
-      'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJd8BlQ2BZwokRAFUEcm_qrcA',
+      'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJd8BlQ2BZwokRAFUEcm_qrcA'
     );
     url = ''; // Reset the url for the next test
     fireEvent.click(locationElements[1]);
     expect(url).toEqual(
-      'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJhRwB-yFawokRv_x-4eLe3WI',
+      'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJhRwB-yFawokRv_x-4eLe3WI'
     );
   });
 
@@ -69,7 +69,7 @@ describe('EventLocations', () => {
   test('render Venue Detailed EventLocations', () => {
     render(<VenueDetailed />);
     screen.getByText(
-      /Stade de France, Saint-Denis, Île-de-France, France, 93216/i,
+      /Stade de France, Saint-Denis, Île-de-France, France, 93216/i
     );
   });
 
@@ -78,7 +78,7 @@ describe('EventLocations', () => {
     const locationElement = screen.getByText(/New York, USA/i);
     fireEvent.click(locationElement);
     expect(url).toEqual(
-      'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJd8BlQ2BZwokRAFUEcm_qrcA',
+      'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJd8BlQ2BZwokRAFUEcm_qrcA'
     );
   });
 

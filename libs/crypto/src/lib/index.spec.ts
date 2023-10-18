@@ -8,7 +8,7 @@ describe('Crypto library', () => {
         secret: 'secret',
       });
       expect(result).toBe(
-        '0329a06b62cd16b33eb6792be8c60b158d89a2ee3a876fce9a881ebb488c0914',
+        '0329a06b62cd16b33eb6792be8c60b158d89a2ee3a876fce9a881ebb488c0914'
       );
     });
     it('should return correct HMAC digest with SHA1', () => {
@@ -71,7 +71,7 @@ describe('Crypto library', () => {
           signature:
             '0329a06b62cd16b33eb6792be8c60b158d89a2ee3a876fce9a881ebb488c0914',
           algorithm: 'fake',
-        }),
+        })
       ).toThrow();
     });
   });

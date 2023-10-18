@@ -7,7 +7,7 @@ const fileWrapper = new FileWrapper();
 
 export const transferPassQrCode = async (
   formerOwnerAddress: string,
-  eventPassNft: EventPassNftById,
+  eventPassNft: EventPassNftById
 ) => {
   const { currentOwnerAddress, tokenId, eventId, eventPassId, organizerId } =
     eventPassNft;

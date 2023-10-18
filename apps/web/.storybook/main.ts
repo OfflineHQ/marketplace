@@ -51,8 +51,8 @@ module.exports = {
     };
     // This modifies the existing image rule to exclude `.svg` files
     // since we handle those with `@svgr/webpack`.
-    const imageRule = config.module.rules.find(
-      (rule) => rule.test?.test('.svg'),
+    const imageRule = config.module.rules.find((rule) =>
+      rule.test?.test('.svg')
     );
     imageRule.exclude = /\.svg$/;
     config.module.rules.push({
@@ -90,8 +90,8 @@ module.exports = {
           config.plugins.push(
             new webpack.NormalModuleReplacementPlugin(
               new RegExp(alias.replace('/', '\\/')),
-              path.resolve(__dirname, mockModules[alias]),
-            ),
+              path.resolve(__dirname, mockModules[alias])
+            )
           );
           console.log('mockModules', alias);
         }
@@ -101,12 +101,12 @@ module.exports = {
           // If the alias matches one of the mockAliases, override it
           config.resolve.alias[aliasKey] = path.resolve(
             __dirname,
-            mockAliases[aliasKey],
+            mockAliases[aliasKey]
           );
         } else {
           // If not, resolve it normally
           const paths = aliases[alias].map((p) =>
-            path.resolve(__dirname, '../../../', p),
+            path.resolve(__dirname, '../../../', p)
           );
           config.resolve.alias[aliasKey] = paths.length > 1 ? paths : paths[0];
         }
@@ -115,7 +115,7 @@ module.exports = {
     // set mocks to avoid webpack issues
     config.resolve.alias['@t3-oss/env-nextjs'] = path.resolve(
       __dirname,
-      './mocks/env-nextjs.mock.js',
+      './mocks/env-nextjs.mock.js'
     );
     return config;
   },

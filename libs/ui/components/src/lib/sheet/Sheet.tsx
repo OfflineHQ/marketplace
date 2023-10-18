@@ -103,12 +103,12 @@ const sheetVariants = cva(
       variant: 'default',
       size: 'default',
     },
-  },
+  }
 );
 
 function isFullWidth(
   position?: SheetContentProps['position'],
-  size?: SheetContentProps['size'],
+  size?: SheetContentProps['size']
 ): boolean {
   return (
     (['left', 'right'].includes(position as string) || !position) &&
@@ -140,7 +140,7 @@ const SheetNavigation: React.FC<SheetNavigationProps> = ({
     const classNames = cn(
       buttonType === 'close' ? closeClasses : backClasses,
       closeButtonClasses,
-      `${buttonType === 'close' ? 'right' : 'left'}-1 top-1`,
+      `${buttonType === 'close' ? 'right' : 'left'}-1 top-1`
     );
     const testId = `sheet-${buttonType}`;
     const Icon = buttonType === 'close' ? Close : ChevronBack;
@@ -186,7 +186,7 @@ const SheetNavigationSkeleton: React.FC<SheetNavigationProps> = ({
     const classNames = cn(
       buttonType === 'close' ? closeClasses : backClasses,
       closeButtonClasses,
-      `${buttonType === 'close' ? 'right' : 'left'}-1 top-1`,
+      `${buttonType === 'close' ? 'right' : 'left'}-1 top-1`
     );
     return <ButtonSkeleton className={`${classNames} w-12`} size="sm" />;
   };
@@ -233,12 +233,12 @@ const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
           `flex flex-col space-y-2 text-center sm:text-left px-6 pt-6 ${
             isFullWidth(position, size) && 'pt-12 md:pt-14'
           }`,
-          className,
+          className
         )}
         {...props}
       />
     );
-  },
+  }
 );
 SheetHeader.displayName = 'SheetHeader';
 
@@ -254,12 +254,12 @@ const SheetOverlay = React.forwardRef<HTMLDivElement, SheetOverlayProps>(
       ref={ref}
       className={cn(
         `absolute inset-x-0 z-10 h-20 bg-gradient-to-t from-card to-transparent pointer-events-none`,
-        className,
+        className
       )}
       style={{ bottom: footerHeight }}
       {...props}
     />
-  ),
+  )
 );
 SheetOverlay.displayName = 'SheetOverlay';
 
@@ -298,7 +298,7 @@ const SheetFooter = React.forwardRef<HTMLDivElement, SheetFooterProps>(
     >
       {props.children}
     </div>
-  ),
+  )
 );
 
 SheetFooter.displayName = 'SheetFooter';

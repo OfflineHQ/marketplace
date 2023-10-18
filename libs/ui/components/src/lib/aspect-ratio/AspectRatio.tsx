@@ -26,7 +26,7 @@ const AspectRatio = React.forwardRef<HTMLDivElement, AspectRatioProps>(
         {children}
       </AspectRatioPrimitive.Root>
     );
-  },
+  }
 );
 
 AspectRatio.displayName = 'AspectRatio';
@@ -47,7 +47,7 @@ const aspectRatioSkeletonVariantsCva = cva(
     defaultVariants: {
       variant: 'widescreen',
     },
-  },
+  }
 );
 
 interface AspectRatioSkeletonProps

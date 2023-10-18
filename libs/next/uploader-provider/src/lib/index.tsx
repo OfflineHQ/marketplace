@@ -16,7 +16,7 @@ interface UploaderContextValue {
 }
 
 const UploaderContext = createContext<UploaderContextValue | undefined>(
-  undefined,
+  undefined
 );
 
 export const useUploader = () => {
@@ -40,7 +40,7 @@ export const UploaderProvider: React.FC<BytescaleProviderProps> = ({
       });
       uploaderInstance.beginAuthSession(
         `${getNextAppURL()}/api/bytescale/jwt`,
-        async () => Promise.resolve({}),
+        async () => Promise.resolve({})
       );
       setUploader(uploaderInstance);
     } else if (!safeUser && uploader) {

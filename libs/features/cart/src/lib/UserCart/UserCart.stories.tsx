@@ -24,12 +24,12 @@ export const SectionWithUserOpened: Story = {
     userEvent.click(
       await screen.findByRole('button', {
         name: /Lorem ipsum/i,
-      }),
+      })
     );
     await userEvent.click(
       await screen.findByRole('button', {
         name: /World cup/i,
-      }),
+      })
     );
     const removeButtons = await screen.findAllByRole('button', {
       name: /Remove/i,

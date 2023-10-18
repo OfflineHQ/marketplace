@@ -16,7 +16,7 @@ interface CustomReactElement extends React.ReactElement {
 
 export function renderWithIntl(
   ui: CustomReactElement,
-  { locale = 'en', ...renderOptions }: RenderWithProvidersOptions = {},
+  { locale = 'en', ...renderOptions }: RenderWithProvidersOptions = {}
 ): RenderResult {
   function Wrapper({ children }: { children?: React.ReactNode }) {
     // mocked date to always get the same result in tests

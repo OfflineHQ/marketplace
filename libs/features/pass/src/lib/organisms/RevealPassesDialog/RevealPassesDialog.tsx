@@ -9,7 +9,7 @@ import {
 export type RevealPassesDialogProps = RevealPassesDialogClientProps;
 
 export const RevealPassesDialog: React.FC<RevealPassesDialogProps> = (
-  props,
+  props
 ) => {
   const _locale = useLocale();
   const locale: Locale = (_locale as Locale) || defaultLocale;
