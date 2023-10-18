@@ -51,6 +51,13 @@ export type InsertEventPassPendingOrdersMutationVariables = Types.Exact<{
 
 export type InsertEventPassPendingOrdersMutation = { __typename?: 'mutation_root', insert_eventPassPendingOrder?: { __typename?: 'eventPassPendingOrder_mutation_response', returning: Array<{ __typename?: 'eventPassPendingOrder', id: any, quantity: number, eventPassId: string, created_at: any }> } | null };
 
+export type UpsertEventPassPendingOrderMutationVariables = Types.Exact<{
+  object: Types.EventPassPendingOrder_Insert_Input;
+}>;
+
+
+export type UpsertEventPassPendingOrderMutation = { __typename?: 'mutation_root', insert_eventPassPendingOrder_one?: { __typename?: 'eventPassPendingOrder', id: any, quantity: number, eventPassId: string, created_at: any } | null };
+
 export type DeleteEventPassPendingOrderMutationVariables = Types.Exact<{
   eventPassPendingOrderId: Types.Scalars['uuid'];
 }>;
