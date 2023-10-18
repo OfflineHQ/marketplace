@@ -70,7 +70,7 @@ export const OpenAccordionItem: Story = {
     await userEvent.click(accordionTrigger);
 
     const accordionContent = await screen.findByText(
-      'Yes. It adheres to the WAI-ARIA design pattern.'
+      'Yes. It adheres to the WAI-ARIA design pattern.',
     );
     expect(accordionContent).toBeVisible();
 
@@ -108,7 +108,7 @@ export const MultipleOpenAccordionItem: Story = {
     await userEvent.click(accordionTrigger);
 
     const accordionContent = await screen.findByText(
-      'Yes. It adheres to the WAI-ARIA design pattern.'
+      'Yes. It adheres to the WAI-ARIA design pattern.',
     );
     expect(accordionContent).toBeVisible();
 
@@ -121,7 +121,7 @@ export const MultipleOpenAccordionItem: Story = {
     await userEvent.click(thirdAccordionTrigger);
 
     const ThirdAccordionContent = await screen.findByText(
-      "Yes. It's animated by default, but you can disable it if you prefer."
+      "Yes. It's animated by default, but you can disable it if you prefer.",
     );
     expect(ThirdAccordionContent).toBeVisible();
 

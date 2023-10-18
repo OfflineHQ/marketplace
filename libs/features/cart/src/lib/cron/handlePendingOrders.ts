@@ -32,7 +32,7 @@ export default async function handler() {
             };
           } else {
             accountsToNotify[order.account.address].eventPassIds.push(
-              order.eventPassId
+              order.eventPassId,
             );
           }
         }

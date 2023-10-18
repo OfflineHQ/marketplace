@@ -44,7 +44,7 @@ export const UserPassEventCard: React.FC<UserPassEventCardProps> = ({
   const t = useTranslations('Pass.UserPass.UserPassEventCard');
 
   const numPassNotRevealed = eventPassNftContract.eventPassNfts.filter(
-    (nft) => !nft.isRevealed
+    (nft) => !nft.isRevealed,
   ).length;
 
   return (

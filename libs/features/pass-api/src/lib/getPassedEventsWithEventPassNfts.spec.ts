@@ -12,7 +12,7 @@ describe('getPassedEventsWithEventPassNfts', () => {
     const mockUser = { address: 'alpha_user_address' };
     (getCurrentUser as jest.Mock).mockResolvedValue(mockUser);
     (userSdk.GetPassedEventsWithEventPassNfts as jest.Mock).mockResolvedValue(
-      {}
+      {},
     );
 
     const props = {
@@ -28,7 +28,7 @@ describe('getPassedEventsWithEventPassNfts', () => {
         address: mockUser.address,
         stage: env.HYGRAPH_STAGE,
       },
-      { next: { tags: ['userEventPassNfts'] } }
+      { next: { tags: ['userEventPassNfts'] } },
     );
   });
 
@@ -41,7 +41,7 @@ describe('getPassedEventsWithEventPassNfts', () => {
     };
 
     await expect(getPassedEventsWithEventPassNfts(props)).rejects.toThrow(
-      'User not logged in'
+      'User not logged in',
     );
   });
 });

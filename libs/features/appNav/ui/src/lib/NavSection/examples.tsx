@@ -10,7 +10,7 @@ export const cartNavProps: NavSectionProps = {
 export function NavSectionDemo(
   props: NavSectionProps,
   Icon: React.ReactElement<IconProps>,
-  text: string
+  text: string,
 ) {
   return (
     <div className="flex">

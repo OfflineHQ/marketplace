@@ -10,7 +10,10 @@ const currencyApi = new Currency();
 const cacheApi = new Cache();
 
 class CacheApiError extends Error {
-  constructor(message: string, public originalError: unknown) {
+  constructor(
+    message: string,
+    public originalError: unknown,
+  ) {
     super(message);
   }
 }
@@ -20,7 +23,7 @@ function getCacheKey(currency: Currency_Enum_Not_Const): string {
 }
 
 function withCacheKey(
-  fn: (key: string, currency: Currency_Enum_Not_Const) => Promise<any>
+  fn: (key: string, currency: Currency_Enum_Not_Const) => Promise<any>,
 ) {
   return async (currency: Currency_Enum_Not_Const) => {
     const key = getCacheKey(currency);
@@ -36,7 +39,7 @@ export const setRate = withCacheKey(
     } catch (error) {
       throw new CacheApiError(`Failed to get rate for ${currency}`, error);
     }
-  }
+  },
 );
 
 export const getRate = withCacheKey(
@@ -47,15 +50,15 @@ export const getRate = withCacheKey(
     } catch (error) {
       throw new CacheApiError(
         `Failed to get rate from cache for ${currency}`,
-        error
+        error,
       );
     }
-  }
+  },
 );
 
 export async function setRates(): Promise<void[]> {
   const promises = Object.values(Currency_Enum_Not_Const).map((currency) =>
-    setRate(currency)
+    setRate(currency),
   );
   if (!isJestRunning()) {
     revalidateTag('currency-rates');
@@ -72,7 +75,7 @@ export async function getRates(): Promise<{
     async (currency) => {
       const rate = await getRate(currency);
       return { [currency]: rate };
-    }
+    },
   );
   const rates = await Promise.all(promises);
   return Object.assign({}, ...rates);

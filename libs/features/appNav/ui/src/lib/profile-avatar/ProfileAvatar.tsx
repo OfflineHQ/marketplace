@@ -19,7 +19,7 @@ export interface EmojiAvatarProps extends Omit<AvatarProps, 'size'> {
 function EmojiAvatar({ address, ...props }: EmojiAvatarProps) {
   const { color, emoji } = useMemo(
     () => emojiAvatarForAddress(address),
-    [address]
+    [address],
   );
   return (
     <Avatar {...props}>

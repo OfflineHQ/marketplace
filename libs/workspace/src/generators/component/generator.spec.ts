@@ -34,23 +34,25 @@ describe('component generator', () => {
     const { sourceRoot } = readProjectConfiguration(tree, 'ui-lib');
     const { sourceRoot: e2eSourceRoot } = readProjectConfiguration(
       tree,
-      'ui-lib-e2e'
+      'ui-lib-e2e',
     );
 
     expect(
-      tree.exists(joinPathFragments(sourceRoot, 'lib/data-table/DataTable.tsx'))
+      tree.exists(
+        joinPathFragments(sourceRoot, 'lib/data-table/DataTable.tsx'),
+      ),
     ).toBe(true);
 
     expect(
       tree.exists(
-        joinPathFragments(sourceRoot, 'lib/data-table/DataTable.spec.tsx')
-      )
+        joinPathFragments(sourceRoot, 'lib/data-table/DataTable.spec.tsx'),
+      ),
     ).toBe(true);
 
     expect(
       tree.exists(
-        joinPathFragments(sourceRoot, 'lib/data-table/DataTable.stories.tsx')
-      )
+        joinPathFragments(sourceRoot, 'lib/data-table/DataTable.stories.tsx'),
+      ),
     ).toBe(true);
   });
 });

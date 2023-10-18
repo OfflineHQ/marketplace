@@ -43,7 +43,7 @@ export const ProfileNavClient = () => {
               text: 'Sign out',
             },
           ],
-    [safeUser, signOutUserAction, login]
+    [safeUser, signOutUserAction, login],
   );
 
   return !safeAuth ? (

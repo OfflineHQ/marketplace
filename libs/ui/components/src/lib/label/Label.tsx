@@ -18,7 +18,7 @@ const labelCva = cva(
     defaultVariants: {
       variant: 'default',
     },
-  }
+  },
 );
 
 export interface LabelProps
