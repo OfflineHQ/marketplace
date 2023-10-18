@@ -6,7 +6,7 @@ import { cryptoUserMenuItems } from './examples';
 describe('ProfileNav', () => {
   it('should render successfully', () => {
     const { baseElement } = renderWithIntl(
-      <ProfileNav user={cryptoUserSession} items={cryptoUserMenuItems} />
+      <ProfileNav user={cryptoUserSession} items={cryptoUserMenuItems} />,
     );
     expect(baseElement).toBeTruthy();
   });

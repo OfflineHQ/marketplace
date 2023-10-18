@@ -3,7 +3,7 @@ import { adminSdk } from '@gql/admin/api';
 import type { CreateEventPassNftContractMutation } from '@gql/admin/types';
 
 export const createEventPassNftContract = async (
-  object: EventPassNftContract_Insert_Input
+  object: EventPassNftContract_Insert_Input,
 ): Promise<
   CreateEventPassNftContractMutation['insert_eventPassNftContract_one']
 > => {

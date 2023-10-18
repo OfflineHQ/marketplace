@@ -30,7 +30,7 @@ export const OpenDialogWithFocus: Story = {
     expect(dialogTitle).toBeVisible();
 
     const dialogDescription = await screen.findByText(
-      "Make changes to your profile here. Click save when you're done."
+      "Make changes to your profile here. Click save when you're done.",
     );
     expect(dialogDescription).toBeVisible();
     // Check if the first TextInput is focused
@@ -67,7 +67,7 @@ export const OpenedDialogScrollable: Story = {
     expect(dialogTitle).toBeVisible();
 
     const dialogDescription = await screen.findByText(
-      "Make changes to your profile here. Click save when you're done."
+      "Make changes to your profile here. Click save when you're done.",
     );
     expect(dialogDescription).toBeVisible();
 

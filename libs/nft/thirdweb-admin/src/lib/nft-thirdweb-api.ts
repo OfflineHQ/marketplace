@@ -9,7 +9,7 @@ import { EventPassOrderWithContractData } from '@nft/types';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 
 type FnType = (
-  orders: EventPassOrderWithContractData[]
+  orders: EventPassOrderWithContractData[],
 ) => Promise<ClaimEventPassNftsMutation>;
 
 async function checkOrder(order: EventPassOrderWithContractData) {
@@ -22,7 +22,7 @@ async function checkOrder(order: EventPassOrderWithContractData) {
 
   if (supply < order.quantity) {
     throw new Error(
-      `Not enough supply for order ${order.id} : ${supply} remaining`
+      `Not enough supply for order ${order.id} : ${supply} remaining`,
     );
   }
 }
@@ -59,7 +59,7 @@ export class NftClaimable {
               relayerUrl: env.OPENZEPPELIN_URL,
             },
           },
-        }
+        },
       );
     } else {
       throw new Error('THIRDWEB_MASTER_PRIVATE_KEY is undefined');
@@ -69,7 +69,7 @@ export class NftClaimable {
   async startClaimPhase(
     contractAddress: string,
     phaseName: string,
-    maxAmount: number
+    maxAmount: number,
   ) {
     if (!this.sdk || env.THIRDWEB_MASTER_ADDRESS === undefined) {
       throw new Error('SDK is undefined');
@@ -117,14 +117,14 @@ export class NftClaimable {
 
   claimAllMetadatas = sdkMiddleware(async function (
     this: NftClaimable,
-    orders: EventPassOrderWithContractData[]
+    orders: EventPassOrderWithContractData[],
   ): Promise<ClaimEventPassNftsMutation> {
     const promises = orders.map((order) => this.claimOrder(order));
 
     const claims = await Promise.allSettled(promises);
 
     const rejectedClaims = claims.filter(
-      (claim) => claim.status === 'rejected'
+      (claim) => claim.status === 'rejected',
     ) as PromiseRejectedResult[];
 
     if (rejectedClaims.length > 0) {
@@ -134,7 +134,7 @@ export class NftClaimable {
     }
 
     const fulfilledClaims = claims.filter(
-      (claim) => claim.status === 'fulfilled'
+      (claim) => claim.status === 'fulfilled',
     ) as PromiseFulfilledResult<
       {
         contractAddress: string;
@@ -159,7 +159,7 @@ export class NftClaimable {
     const toAddress = order.account?.address;
     if (!contractAddress || !toAddress) {
       throw new Error(
-        `Contract address or to address is undefined for order ${order.id}`
+        `Contract address or to address is undefined for order ${order.id}`,
       );
     }
     if (!this.sdk) {
@@ -170,7 +170,7 @@ export class NftClaimable {
     try {
       const claimResult = await contract.erc721.claimTo(
         toAddress,
-        order.quantity
+        order.quantity,
       );
       return claimResult.map((claim) => ({
         contractAddress: contractAddress,

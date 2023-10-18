@@ -34,10 +34,10 @@ interface GetTransfersForContractOptions
 // Helper function to fetch all pages concurrently
 export async function fetchAllPages<T>(
   fetchPage: (
-    pageKey?: string
+    pageKey?: string,
   ) => Promise<{ items: T[]; nextPageKey?: string }>,
   batchSize = 5, // Number of pages to fetch in parallel
-  maxBatches = 20 // Maximum number of batches to avoid infinite loops
+  maxBatches = 20, // Maximum number of batches to avoid infinite loops
 ): Promise<T[]> {
   const allItems: T[] = [];
 
@@ -72,7 +72,7 @@ export async function fetchAllPages<T>(
 
   if (batchCount === maxBatches) {
     throw new Error(
-      'Reached maximum number of fetch batches. Possible infinite loop.'
+      'Reached maximum number of fetch batches. Possible infinite loop.',
     );
   }
 
@@ -145,7 +145,7 @@ export class AlchemyWrapper {
 
   async verifyNftOwnershipOnCollection(
     owner: string,
-    contractAddress: string
+    contractAddress: string,
   ): Promise<boolean> {
     try {
       return await this.alchemy.nft.verifyNftOwnership(owner, contractAddress);
@@ -157,14 +157,14 @@ export class AlchemyWrapper {
 
   async verifyNftOwnershipOnCollections(
     owner: string,
-    contractAddresses: string[]
+    contractAddresses: string[],
   ): Promise<{
     [contractAddresses: string]: boolean;
   }> {
     try {
       return await this.alchemy.nft.verifyNftOwnership(
         owner,
-        contractAddresses
+        contractAddresses,
       );
     } catch (error) {
       console.error(`Verifying NFT ownership failed: ${error.message}`, error);
@@ -174,7 +174,7 @@ export class AlchemyWrapper {
 
   async getNftsForOwner(
     ownerAddress: string,
-    options: GetNftsForOwnerOptions
+    options: GetNftsForOwnerOptions,
   ): Promise<OwnedNftsResponse> {
     if (!options.contractAddresses || !options.contractAddresses.length) {
       throw new Error('At least one contract address must be provided.');
@@ -185,7 +185,7 @@ export class AlchemyWrapper {
       const pageOptions = { ...options, pageKey };
       const response = await this.alchemy.nft.getNftsForOwner(
         ownerAddress,
-        pageOptions
+        pageOptions,
       );
       // here we set the OwnedNftsResponse to the first response we get back because successive page will have the same result except for the items in `ownedNfts`
       if (!OwnedNftsResponse) {
@@ -209,13 +209,13 @@ export class AlchemyWrapper {
 
   async getTransfersForContract(
     contractAddress: string,
-    options?: GetTransfersForContractOptions
+    options?: GetTransfersForContractOptions,
   ): Promise<TransferredNft[]> {
     return fetchAllPages<TransferredNft>(async (pageKey?: string) => {
       const pageOptions = { ...options, pageKey };
       const response = await this.alchemy.nft.getTransfersForContract(
         contractAddress,
-        pageOptions
+        pageOptions,
       );
       return {
         items: response.nfts,
@@ -226,12 +226,12 @@ export class AlchemyWrapper {
 
   async fetchAllNftsWithMetadata(
     contractAddress: string,
-    options?: GetNftsForContractOptions
+    options?: GetNftsForContractOptions,
   ): Promise<Nft[]> {
     const nfts: Nft[] = [];
     const nftsIterable = this.alchemy.nft.getNftsForContractIterator(
       contractAddress,
-      options
+      options,
     ) as AsyncIterable<Nft>;
 
     for await (const nft of nftsIterable) {
@@ -243,12 +243,12 @@ export class AlchemyWrapper {
 
   async fetchAllNftsWithoutMetadata(
     contractAddress: string,
-    options?: GetBaseNftsForContractOptions
+    options?: GetBaseNftsForContractOptions,
   ): Promise<BaseNft[]> {
     const nfts: BaseNft[] = [];
     const nftsIterable = this.alchemy.nft.getNftsForContractIterator(
       contractAddress,
-      options
+      options,
     ) as unknown as AsyncIterable<BaseNft>;
 
     for await (const nft of nftsIterable) {
@@ -262,7 +262,7 @@ export class AlchemyWrapper {
 
   async createNftActivityWebhook(
     webhookUrl: string,
-    filters: NftWebhookParams['filters']
+    filters: NftWebhookParams['filters'],
   ): Promise<NftActivityWebhook> {
     const params = {
       network: this.network,
@@ -272,12 +272,12 @@ export class AlchemyWrapper {
       return await this.alchemy.notify.createWebhook(
         webhookUrl,
         WebhookType.NFT_ACTIVITY,
-        params
+        params,
       );
     } catch (error) {
       console.error(
         `Creating NFT activity webhook failed: ${error.message}`,
-        error
+        error,
       );
       throw error;
     }
@@ -285,7 +285,7 @@ export class AlchemyWrapper {
 
   async addAddressNftActivityWebhook(
     webhookId: string,
-    addresses: NftFilter[]
+    addresses: NftFilter[],
   ) {
     try {
       return await this.alchemy.notify.updateWebhook(webhookId, {
@@ -295,7 +295,7 @@ export class AlchemyWrapper {
     } catch (error) {
       console.error(
         `Updating NFT activity webhook failed: ${error.message}`,
-        error
+        error,
       );
       throw error;
     }
@@ -307,7 +307,7 @@ export class AlchemyWrapper {
     } catch (error) {
       console.error(
         `Deleting NFT activity webhook failed: ${error.message}`,
-        error
+        error,
       );
       throw error;
     }
