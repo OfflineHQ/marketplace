@@ -1,5 +1,6 @@
-import { Badge, BoundedNumericStepper, ButtonSkeleton } from '@ui/components';
+import { Badge, ButtonSkeleton } from '@ui/components';
 
+import { updateEventPassCart } from '@features/organizer/event-actions';
 import {
   getEventPassCart,
   getEventPassOrderSums,
@@ -9,6 +10,7 @@ import type { EventPass, EventSlugs } from '@features/organizer/event-types';
 import { useLocale } from 'next-intl';
 import { getTranslator } from 'next-intl/server';
 import { Suspense } from 'react';
+import { PassCardSelectClient } from './PassCardSelectClient';
 
 export interface PassCardSelectProps
   extends Omit<EventPass, 'description' | 'name' | 'passOptions' | 'nftImage'>,
@@ -21,12 +23,6 @@ export const PassCardSelect: React.FC<PassCardSelectProps> = (props) => {
     </Suspense>
   );
 };
-
-// export interface PassCardSelectContentProps extends PassCardSelectProps {
-//   eventPassOrderSums: EventPassOrderSums;
-//   eventPassCart: EventPassCart | null;
-//   existingEventPass: EventPassCart | null;
-// }
 
 export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
   eventPassPricing,
@@ -47,17 +43,6 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
     await getEventPassOrdersConfirmedOrCompletedForEventPassId({
       eventPassId: id,
     });
-  // const handleOnChange = (newNumTickets: number) => {
-  //   store.updatePassCart({
-  //     organizerSlug,
-  //     eventSlug,
-  //     pass: {
-  //       eventPassId: id,
-  //       quantity: newNumTickets,
-  //     },
-  //   });
-  // };
-
   // here compute the max amount of tickets that can be bought
   const totalReserved = eventPassOrderSums?.totalReserved ?? 0;
   const maxAvailableTickets =
@@ -87,10 +72,13 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
       {maxVal <= 0 ? (
         <Badge variant="secondary">{t('sold-out')}</Badge>
       ) : (
-        <BoundedNumericStepper
-          // onChange={handleOnChange}
+        <PassCardSelectClient
           initialValue={eventPassCart?.quantity || 0}
           maxVal={maxVal}
+          organizerSlug={organizerSlug}
+          eventSlug={eventSlug}
+          eventPassId={id}
+          updateEventPassCart={updateEventPassCart}
         />
       )}
     </div>
