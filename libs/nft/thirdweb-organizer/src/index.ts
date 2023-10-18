@@ -39,7 +39,7 @@ class NftCollection {
     eventId: string,
     organizerId: string,
     eventSlug: string,
-    metadata: NftsMetadata
+    metadata: NftsMetadata,
   ) {
     try {
       const address = await this.sdk.wallet.getAddress();
@@ -52,7 +52,7 @@ class NftCollection {
           name,
           primary_sale_recipient: address,
           voting_token_address: address,
-        }
+        },
       );
 
       await createEventPassNftContract({
@@ -104,7 +104,7 @@ class NftCollection {
             eventPassId: eventPassId,
             contractAddress: txResult,
           };
-        })
+        }),
       );
 
       await createEventPassNfts(hasuraMetadatas);

@@ -19,7 +19,7 @@ export const DateRangeSkeleton: React.FC = () => {
 
 const DynamicDateRangeClient = dynamic(
   () => import('./DateRangeClient'),
-  { ssr: false, loading: () => <DateRangeSkeleton /> } // This will load the component only on client side to get the correct timezone
+  { ssr: false, loading: () => <DateRangeSkeleton /> }, // This will load the component only on client side to get the correct timezone
 );
 
 export type DateRangeProps = Omit<

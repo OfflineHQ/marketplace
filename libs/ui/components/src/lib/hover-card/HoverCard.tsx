@@ -16,7 +16,7 @@ const HoverCardContent = React.forwardRef<
 >(
   (
     { className, align = 'center', sideOffset = 4, children, ...props },
-    ref
+    ref,
   ) => (
     <HoverCardPrimitive.Content
       ref={ref}
@@ -24,14 +24,14 @@ const HoverCardContent = React.forwardRef<
       sideOffset={sideOffset}
       className={cn(
         'z-50 w-64 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none animate-in zoom-in-90',
-        className
+        className,
       )}
       {...props}
     >
       {children}
       <HoverCardPrimitive.Arrow className={arrowClasses} />
     </HoverCardPrimitive.Content>
-  )
+  ),
 );
 HoverCardContent.displayName = HoverCardPrimitive.Content.displayName;
 

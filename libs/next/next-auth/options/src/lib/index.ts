@@ -203,4 +203,4 @@ export const createOptions = (req: NextRequest) =>
         return session;
       },
     },
-  } satisfies AuthOptions);
+  }) satisfies AuthOptions;

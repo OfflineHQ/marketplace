@@ -28,12 +28,12 @@ export const SectionWithNoUserOpened: Story = {
     userEvent.click(
       await screen.findByRole('button', {
         name: /Lorem ipsum/i,
-      })
+      }),
     );
     await userEvent.click(
       await screen.findByRole('button', {
         name: /World cup/i,
-      })
+      }),
     );
     const removeButtons = await screen.findAllByRole('button', {
       name: /Remove/i,
@@ -55,12 +55,12 @@ export const SectionWithNoUserOpenedRemove: Story = {
     expect(
       await screen.findByRole('button', {
         name: /World cup/i,
-      })
+      }),
     );
     expect(
       screen.queryByRole('button', {
         name: /Lorem ipsum/i,
-      })
+      }),
     ).toBeNull();
   },
 };
@@ -71,12 +71,12 @@ export const SectionWithNoUserNoCart: Story = {
     expect(
       screen.queryByRole('button', {
         name: /Lorem ipsum/i,
-      })
+      }),
     ).toBeNull();
     expect(
       screen.queryByRole('button', {
         name: /World Cup/i,
-      })
+      }),
     ).toBeNull();
   },
 };

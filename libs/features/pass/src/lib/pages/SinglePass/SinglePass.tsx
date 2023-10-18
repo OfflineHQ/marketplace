@@ -43,7 +43,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
   const t = useTranslations('Pass.SinglePass');
   const isOwner = useMemo(
     () => user?.address === eventPassNft.currentOwnerAddress,
-    [user, eventPassNft]
+    [user, eventPassNft],
   );
   const backgroundImage = eventPassNft?.eventPass?.event?.heroImage.url || '';
   const backText = isOwner ? t('back-event-button') : t('see-event-button');

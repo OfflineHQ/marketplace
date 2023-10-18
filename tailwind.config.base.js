@@ -127,7 +127,7 @@ module.exports = {
             'background-position': 'center',
             'background-size': 'cover',
           },
-        })
+        }),
       );
       addUtilities(utilities, variants('backgroundColor'));
     }),
