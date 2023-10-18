@@ -53,6 +53,15 @@ select_permissions:
       filter:
         accountId:
           _eq: X-Hasura-User-Id
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - quantity
+      filter:
+        accountId:
+          _eq: X-Hasura-User-Id
+      check: {}
 delete_permissions:
   - role: user
     permission:

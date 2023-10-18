@@ -7540,6 +7540,13 @@ enum eventPassPendingOrder_constraint {
 }
 
 """
+input type for incrementing numeric columns in table "eventPassPendingOrder"
+"""
+input eventPassPendingOrder_inc_input {
+  quantity: Int
+}
+
+"""
 input type for inserting data into table "eventPassPendingOrder"
 """
 input eventPassPendingOrder_insert_input {
@@ -7578,6 +7585,11 @@ input eventPassPendingOrder_order_by {
   quantity: order_by
 }
 
+"""primary key columns input for table: eventPassPendingOrder"""
+input eventPassPendingOrder_pk_columns_input {
+  id: uuid!
+}
+
 """
 select columns of table "eventPassPendingOrder"
 """
@@ -7596,6 +7608,13 @@ enum eventPassPendingOrder_select_column {
 
   """column name"""
   quantity
+}
+
+"""
+input type for updating data in table "eventPassPendingOrder"
+"""
+input eventPassPendingOrder_set_input {
+  quantity: Int
 }
 
 """
@@ -7619,11 +7638,22 @@ input eventPassPendingOrder_stream_cursor_value_input {
 }
 
 """
-placeholder for update columns of table "eventPassPendingOrder" (current role has no relevant permissions)
+update columns of table "eventPassPendingOrder"
 """
 enum eventPassPendingOrder_update_column {
-  """placeholder (do not use)"""
-  _PLACEHOLDER
+  """column name"""
+  quantity
+}
+
+input eventPassPendingOrder_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: eventPassPendingOrder_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: eventPassPendingOrder_set_input
+
+  """filter the rows which have to be updated"""
+  where: eventPassPendingOrder_bool_exp!
 }
 
 """
@@ -8876,6 +8906,40 @@ type mutation_root {
 
   """Update one scheduledRelease"""
   updateScheduledRelease(data: ScheduledReleaseUpdateInput!, where: ScheduledReleaseWhereUniqueInput!): ScheduledRelease
+
+  """
+  update data of the table: "eventPassPendingOrder"
+  """
+  update_eventPassPendingOrder(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassPendingOrder_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassPendingOrder_set_input
+
+    """filter the rows which have to be updated"""
+    where: eventPassPendingOrder_bool_exp!
+  ): eventPassPendingOrder_mutation_response
+
+  """
+  update single row of the table: "eventPassPendingOrder"
+  """
+  update_eventPassPendingOrder_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: eventPassPendingOrder_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassPendingOrder_set_input
+    pk_columns: eventPassPendingOrder_pk_columns_input!
+  ): eventPassPendingOrder
+
+  """
+  update multiples rows of table: "eventPassPendingOrder"
+  """
+  update_eventPassPendingOrder_many(
+    """updates to execute, in order"""
+    updates: [eventPassPendingOrder_updates!]!
+  ): [eventPassPendingOrder_mutation_response]
 
   """Upsert one asset"""
   upsertAsset(upsert: AssetUpsertInput!, where: AssetWhereUniqueInput!): Asset
