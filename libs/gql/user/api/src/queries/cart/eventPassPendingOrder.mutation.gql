@@ -11,6 +11,23 @@ mutation InsertEventPassPendingOrders(
   }
 }
 
+mutation UpsertEventPassPendingOrder(
+  $object: eventPassPendingOrder_insert_input!
+) {
+  insert_eventPassPendingOrder_one(
+    object: $object
+    on_conflict: {
+      constraint: eventPassPendingOrder_pkey
+      update_columns: [quantity]
+    }
+  ) {
+    id
+    quantity
+    eventPassId
+    created_at
+  }
+}
+
 mutation DeleteEventPassPendingOrder($eventPassPendingOrderId: uuid!) {
   delete_eventPassPendingOrder_by_pk(id: $eventPassPendingOrderId) {
     id
