@@ -10,7 +10,7 @@ describe('hexToBigInt', () => {
   it('should throw an error for an invalid hexadecimal string', () => {
     const invalidHex = 'invalidHex';
     expect(() => hexToBigInt(invalidHex)).toThrow(
-      'Invalid hexadecimal string.'
+      'Invalid hexadecimal string.',
     );
   });
 

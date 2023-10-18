@@ -25,7 +25,7 @@ export interface RevealPassesDialogClientProps extends DialogProps {
   numPassNotRevealed: number;
   children: React.ReactNode;
   batchDownloadOrReveal: (
-    eventPassNfts: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts']
+    eventPassNfts: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts'],
   ) => Promise<void>;
 }
 
@@ -46,7 +46,7 @@ export const RevealPassesDialogClient: React.FC<
     try {
       console.log(
         'eventPassNftContract.eventPassNfts',
-        eventPassNftContract.eventPassNfts
+        eventPassNftContract.eventPassNfts,
       );
       await batchDownloadOrReveal(eventPassNftContract.eventPassNfts);
       setOpen(false);

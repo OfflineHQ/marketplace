@@ -39,7 +39,7 @@ describe('tests for eventParameters', () => {
     expect(events.length).toBeGreaterThan(0);
     events.forEach((event) => {
       expect(
-        event.eventPassNftContracts[0].eventPassNfts.length
+        event.eventPassNftContracts[0].eventPassNfts.length,
       ).toBeGreaterThan(0);
       event.eventPassNftContracts[0].eventPassNfts.forEach((nft) => {
         expect(nft.tokenId).not.toBeNull();
@@ -71,7 +71,7 @@ describe('tests for eventParameters', () => {
     expect(events.length).toBeGreaterThan(0);
     events.forEach((event) => {
       expect(
-        event.eventPassNftContracts[0].eventPassNfts.length
+        event.eventPassNftContracts[0].eventPassNfts.length,
       ).toBeGreaterThan(0);
       event.eventPassNftContracts[0].eventPassNfts.forEach((nft) => {
         expect(nft.tokenId).toBeDefined();

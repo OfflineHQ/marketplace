@@ -26,8 +26,8 @@ export const getPassedEventsWithEventPassNfts = cache(
         address: user.address,
         stage: env.HYGRAPH_STAGE as Stage,
       },
-      { next: { tags: ['userEventPassNfts'] } }
+      { next: { tags: ['userEventPassNfts'] } },
     );
     return data?.eventParameters;
-  }
+  },
 );

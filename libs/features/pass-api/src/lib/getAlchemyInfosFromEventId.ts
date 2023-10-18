@@ -8,5 +8,5 @@ export const getAlchemyInfosFromEventId = cache(
       eventId: props.eventId,
     });
     return data?.eventParameters?.[0];
-  }
+  },
 );

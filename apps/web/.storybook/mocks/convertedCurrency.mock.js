@@ -12,7 +12,7 @@ export function ConvertedCurrency({ amount, currency, variant, ...textProps }) {
       amount,
       currency,
     },
-    rates
+    rates,
   );
   return (
     <Text variant={variant} {...textProps}>

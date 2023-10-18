@@ -175,7 +175,7 @@ describe('Payment integration', () => {
           eventPassPendingOrders: eventPassPendingOrders.alpha_user,
           locale,
           currency,
-        })
+        }),
       ).rejects.toThrow(/violates foreign key constraint/i);
     });
     it('should throw an error if the user already have an active stripe checkout session', async () => {
@@ -190,7 +190,7 @@ describe('Payment integration', () => {
           eventPassPendingOrders: [],
           locale,
           currency,
-        })
+        }),
       ).rejects.toThrow(/already has an active checkout session/i);
     });
     it('should create a new stripe checkout session', async () => {

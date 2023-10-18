@@ -32,11 +32,11 @@ describe('fetchAllPages', () => {
 
     // Set a 2 seconds timeout to catch infinite loop
     const timeout = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Infinite loop detected!')), 2000)
+      setTimeout(() => reject(new Error('Infinite loop detected!')), 2000),
     );
 
     await expect(Promise.race([resultPromise, timeout])).rejects.toThrow(
-      'Reached maximum number of fetch batches. Possible infinite loop.'
+      'Reached maximum number of fetch batches. Possible infinite loop.',
     );
   });
 });
@@ -92,47 +92,49 @@ describe('AlchemyWrapper', () => {
   describe('convertNetworkToChainId', () => {
     it('should convert networks to correct chainIds', () => {
       expect(alchemyWrapper.convertNetworkToChainId(Network.ETH_MAINNET)).toBe(
-        '1'
+        '1',
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.ETH_GOERLI)).toBe(
-        '5'
+        '5',
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.ETH_SEPOLIA)).toBe(
-        '11155111'
+        '11155111',
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.OPT_MAINNET)).toBe(
-        '69'
+        '69',
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.OPT_GOERLI)).toBe(
-        '420'
+        '420',
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.ARB_MAINNET)).toBe(
-        '42161'
+        '42161',
       );
       expect(alchemyWrapper.convertNetworkToChainId(Network.ARB_GOERLI)).toBe(
-        '421613'
+        '421613',
       );
       expect(
-        alchemyWrapper.convertNetworkToChainId(Network.MATIC_MAINNET)
+        alchemyWrapper.convertNetworkToChainId(Network.MATIC_MAINNET),
       ).toBe('137');
       expect(alchemyWrapper.convertNetworkToChainId(Network.MATIC_MUMBAI)).toBe(
-        '80001'
+        '80001',
       );
       expect(
-        alchemyWrapper.convertNetworkToChainId(Network.ASTAR_MAINNET)
+        alchemyWrapper.convertNetworkToChainId(Network.ASTAR_MAINNET),
       ).toBe('592');
       expect(
-        alchemyWrapper.convertNetworkToChainId(Network.POLYGONZKEVM_MAINNET)
+        alchemyWrapper.convertNetworkToChainId(Network.POLYGONZKEVM_MAINNET),
       ).toBe('1101');
       expect(
-        alchemyWrapper.convertNetworkToChainId(Network.POLYGONZKEVM_TESTNET)
+        alchemyWrapper.convertNetworkToChainId(Network.POLYGONZKEVM_TESTNET),
       ).toBe('1442');
     });
 
     it('should throw an error for an unsupported network', () => {
       // @ts-ignore
       expect(() =>
-        alchemyWrapper.convertNetworkToChainId('unsupported-network' as Network)
+        alchemyWrapper.convertNetworkToChainId(
+          'unsupported-network' as Network,
+        ),
       ).toThrow('Unsupported network: unsupported-network');
     });
   });
@@ -150,7 +152,7 @@ describe('AlchemyWrapper', () => {
     it('should throw an error if no contract address is provided', async () => {
       const options = {};
       await expect(
-        alchemyWrapper.getNftsForOwner('owner1', options)
+        alchemyWrapper.getNftsForOwner('owner1', options),
       ).rejects.toThrow('At least one contract address must be provided.');
     });
 
@@ -163,7 +165,7 @@ describe('AlchemyWrapper', () => {
           ownedNfts: [{ id: 'nft1' }],
           totalCount: 1,
           validAt: { blockNumber: 100 },
-        }
+        },
       );
 
       const result = await alchemyWrapper.getNftsForOwner('owner1', options);
@@ -174,7 +176,7 @@ describe('AlchemyWrapper', () => {
 
     it('should throw an error if getNftsForOwner reject', async () => {
       (alchemyWrapper as any).alchemy.nft.getNftsForOwner.mockRejectedValueOnce(
-        new Error('Some API error')
+        new Error('Some API error'),
       );
 
       const ownerAddress = 'mockAddress';
@@ -183,7 +185,7 @@ describe('AlchemyWrapper', () => {
       };
 
       await expect(
-        alchemyWrapper.getNftsForOwner(ownerAddress, options)
+        alchemyWrapper.getNftsForOwner(ownerAddress, options),
       ).rejects.toThrow('Some API error');
     });
   });
@@ -197,7 +199,7 @@ describe('AlchemyWrapper', () => {
       ).alchemy.nft.verifyNftOwnership.mockResolvedValueOnce(true);
       const result = await alchemyWrapper.verifyNftOwnershipOnCollection(
         mockOwner,
-        mockContractAddress
+        mockContractAddress,
       );
       expect(result).toEqual(true);
     });
@@ -208,13 +210,13 @@ describe('AlchemyWrapper', () => {
       (
         alchemyWrapper as any
       ).alchemy.nft.verifyNftOwnership.mockRejectedValueOnce(
-        new Error('Verification Error')
+        new Error('Verification Error'),
       );
       await expect(
         alchemyWrapper.verifyNftOwnershipOnCollection(
           mockOwner,
-          mockContractAddress
-        )
+          mockContractAddress,
+        ),
       ).rejects.toThrow('Verification Error');
     });
   });
@@ -235,7 +237,7 @@ describe('AlchemyWrapper', () => {
 
       const result = await alchemyWrapper.verifyNftOwnershipOnCollections(
         mockOwner,
-        mockContractAddresses
+        mockContractAddresses,
       );
       expect(result).toEqual(mockResult);
     });
@@ -249,14 +251,14 @@ describe('AlchemyWrapper', () => {
       (
         alchemyWrapper as any
       ).alchemy.nft.verifyNftOwnership.mockRejectedValueOnce(
-        new Error('Verification Error')
+        new Error('Verification Error'),
       );
 
       await expect(
         alchemyWrapper.verifyNftOwnershipOnCollections(
           mockOwner,
-          mockContractAddresses
-        )
+          mockContractAddresses,
+        ),
       ).rejects.toThrow('Verification Error');
     });
   });
@@ -283,7 +285,7 @@ describe('AlchemyWrapper', () => {
 
       const result = await alchemyWrapper.getTransfersForContract(
         mockContractAddress,
-        mockOptions
+        mockOptions,
       );
       expect(result).toEqual([...mockTransfersPage1, ...mockTransfersPage2]);
     });
@@ -308,7 +310,7 @@ describe('AlchemyWrapper', () => {
 
       const result = await alchemyWrapper.getTransfersForContract(
         mockContractAddress,
-        mockOptions
+        mockOptions,
       );
       expect(result).toEqual(mockTransfers);
     });
@@ -325,11 +327,14 @@ describe('AlchemyWrapper', () => {
       (
         alchemyWrapper as any
       ).alchemy.nft.getTransfersForContract.mockRejectedValueOnce(
-        new Error('Retrieval Error')
+        new Error('Retrieval Error'),
       );
 
       await expect(
-        alchemyWrapper.getTransfersForContract(mockContractAddress, mockOptions)
+        alchemyWrapper.getTransfersForContract(
+          mockContractAddress,
+          mockOptions,
+        ),
       ).rejects.toThrow('Retrieval Error');
     });
   });
@@ -347,12 +352,11 @@ describe('AlchemyWrapper', () => {
       (
         alchemyWrapper as any
       ).alchemy.nft.getNftsForContractIterator.mockReturnValueOnce(
-        mockIterable
+        mockIterable,
       );
 
-      const result = await alchemyWrapper.fetchAllNftsWithMetadata(
-        'contractAddress123'
-      );
+      const result =
+        await alchemyWrapper.fetchAllNftsWithMetadata('contractAddress123');
 
       expect(result).toEqual(mockNfts);
     });
@@ -369,11 +373,11 @@ describe('AlchemyWrapper', () => {
       (
         alchemyWrapper as any
       ).alchemy.nft.getNftsForContractIterator.mockReturnValueOnce(
-        mockErrorIterable
+        mockErrorIterable,
       );
 
       await expect(
-        alchemyWrapper.fetchAllNftsWithMetadata('contractAddress123')
+        alchemyWrapper.fetchAllNftsWithMetadata('contractAddress123'),
       ).rejects.toThrow('Retrieval Error');
     });
   });
@@ -392,12 +396,11 @@ describe('AlchemyWrapper', () => {
       (
         alchemyWrapper as any
       ).alchemy.nft.getNftsForContractIterator.mockReturnValueOnce(
-        mockIterable
+        mockIterable,
       );
 
-      const result = await alchemyWrapper.fetchAllNftsWithoutMetadata(
-        'contractAddress123'
-      );
+      const result =
+        await alchemyWrapper.fetchAllNftsWithoutMetadata('contractAddress123');
       expect(result).toEqual(mockNfts);
     });
 
@@ -413,11 +416,11 @@ describe('AlchemyWrapper', () => {
       (
         alchemyWrapper as any
       ).alchemy.nft.getNftsForContractIterator.mockReturnValueOnce(
-        mockErrorIterable
+        mockErrorIterable,
       );
 
       await expect(
-        alchemyWrapper.fetchAllNftsWithoutMetadata('contractAddress123')
+        alchemyWrapper.fetchAllNftsWithoutMetadata('contractAddress123'),
       ).rejects.toThrow('Retrieval Error');
     });
   });
@@ -439,11 +442,11 @@ describe('AlchemyWrapper', () => {
 
       const result = await alchemyWrapper.createNftActivityWebhook(
         mockWebhookUrl,
-        mockFilters
+        mockFilters,
       );
 
       expect(
-        (alchemyWrapper as any).alchemy.notify.createWebhook
+        (alchemyWrapper as any).alchemy.notify.createWebhook,
       ).toHaveBeenCalledWith(mockWebhookUrl, WebhookType.NFT_ACTIVITY, {
         network: alchemyWrapper.network,
         filters: mockFilters,
@@ -462,11 +465,11 @@ describe('AlchemyWrapper', () => {
       (
         alchemyWrapper as any
       ).alchemy.notify.createWebhook.mockRejectedValueOnce(
-        new Error('Creation Error')
+        new Error('Creation Error'),
       );
 
       await expect(
-        alchemyWrapper.createNftActivityWebhook(mockWebhookUrl, mockFilters)
+        alchemyWrapper.createNftActivityWebhook(mockWebhookUrl, mockFilters),
       ).rejects.toThrow('Creation Error');
     });
   });
@@ -478,7 +481,7 @@ describe('AlchemyWrapper', () => {
       await alchemyWrapper.deleteNftActivityWebhook(mockWebhookId);
 
       expect(
-        (alchemyWrapper as any).alchemy.notify.deleteWebhook
+        (alchemyWrapper as any).alchemy.notify.deleteWebhook,
       ).toHaveBeenCalledWith(mockWebhookId);
     });
 
@@ -488,11 +491,11 @@ describe('AlchemyWrapper', () => {
       (
         alchemyWrapper as any
       ).alchemy.notify.deleteWebhook.mockRejectedValueOnce(
-        new Error('Deletion Error')
+        new Error('Deletion Error'),
       );
 
       await expect(
-        alchemyWrapper.deleteNftActivityWebhook(mockWebhookId)
+        alchemyWrapper.deleteNftActivityWebhook(mockWebhookId),
       ).rejects.toThrow('Deletion Error');
     });
   });
@@ -511,7 +514,7 @@ describe('AlchemyWrapper', () => {
       const result = await alchemyWrapper.getAllWebhooks();
 
       expect(
-        (alchemyWrapper as any).alchemy.notify.getAllWebhooks
+        (alchemyWrapper as any).alchemy.notify.getAllWebhooks,
       ).toHaveBeenCalled();
       expect(result).toEqual(mockResponse);
     });
@@ -520,11 +523,11 @@ describe('AlchemyWrapper', () => {
       (
         alchemyWrapper as any
       ).alchemy.notify.getAllWebhooks.mockRejectedValueOnce(
-        new Error('Fetch Error')
+        new Error('Fetch Error'),
       );
 
       await expect(alchemyWrapper.getAllWebhooks()).rejects.toThrow(
-        'Fetch Error'
+        'Fetch Error',
       );
     });
   });

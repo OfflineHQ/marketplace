@@ -32,7 +32,7 @@ const authMiddleware = withAuth(
         return true;
       },
     },
-  }
+  },
 );
 
 export default function middleware(req: NextRequest) {
@@ -40,7 +40,7 @@ export default function middleware(req: NextRequest) {
     `^(/(${locales.join('|')})/)?(${authPages
       .map((page) => page.replace('*', '.*'))
       .join('|')})/?$`,
-    'i'
+    'i',
   );
   const isAuthPage = restrictedPathnameRegex.test(req.nextUrl.pathname);
   if (isAuthPage) {
