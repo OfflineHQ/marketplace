@@ -1,49 +1,51 @@
-import type { EventPass, EventSlugs } from '@features/organizer/event-types';
-import { formatCurrency } from '@next/currency-common';
-import { useCurrency } from '@next/currency-provider';
-import { useStore } from '@next/store';
-import { Text } from '@ui/components'; // Assuming TextSkeleton is imported from here
-import { useFormatter, useTranslations } from 'next-intl';
-import React from 'react';
-import { usePassPurchaseStore } from '../../store/index';
+import type { EventPass, EventPassCart } from '@features/organizer/event-types';
+import { Text, TextSkeleton } from '@ui/components';
+import { useLocale } from 'next-intl';
+import { getTranslator } from 'next-intl/server';
+import React, { Suspense } from 'react';
 
-export interface PassTotalProps extends EventSlugs {
+export interface PassTotalProps {
   passesData: EventPass[];
+  passesCart: EventPassCart[];
 }
 
-export const PassTotal: React.FC<PassTotalProps> = ({
-  passesData,
-  organizerSlug,
-  eventSlug,
-}) => {
-  const store = useStore(usePassPurchaseStore, (state) => state);
-  const { rates, isLoading } = useCurrency();
-  const getPassesCartTotalPrice = usePassPurchaseStore(
-    (state) => state.getPassesCartTotalPrice,
+export const PassTotal: React.FC<PassTotalProps> = (props) => {
+  return (
+    <Suspense fallback={<PassTotalSkeleton />}>
+      <PassTotalContent {...props} />
+    </Suspense>
   );
-  const totalPrice = getPassesCartTotalPrice({
-    organizerSlug,
-    eventSlug,
-    passesData,
-  });
-  const totalPasses = store?.getPassesCartTotalPasses({
-    organizerSlug,
-    eventSlug,
-  });
-  const format = useFormatter();
-  const t = useTranslations();
+};
+
+export const PassTotalContent: React.FC<PassTotalProps> = async ({
+  passesData,
+  passesCart,
+}) => {
+  const totalPasses =
+    passesCart?.reduce((acc, { quantity }) => acc + quantity, 0) || 0;
+
+  const locale = useLocale();
+  const t = await getTranslator(locale, 'Organizer.Event.PassPurchase.Footer');
   return (
     <div className="flex-col">
       <Text variant="small">
-        {t('Organizer.Event.PassPurchase.Footer.total.pass-selected', {
+        {t('total.pass-selected', {
           totalPasses,
         })}
       </Text>
-      <Text variant="h5">
-        {t('Organizer.Event.PassPurchase.Footer.total.price', {
+      {/* <ConvertedCurrency variant="h5" currency={} /> */}
+      {/* <Text variant="h5">
+        {t('total.price', {
           totalPrice: formatCurrency(format, totalPrice, rates),
         })}
-      </Text>
+      </Text> */}
     </div>
   );
 };
+
+export const PassTotalSkeleton: React.FC = () => (
+  <div className="flex-col">
+    <TextSkeleton variant="small" />
+    <TextSkeleton variant="h5" />
+  </div>
+);
