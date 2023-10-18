@@ -122,6 +122,16 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
+ const GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument = `
+    query GetEventPassOrdersConfirmedOrCompletedForEventPassId($eventPassId: String!) {
+  eventPassOrder(
+    where: {status: {_in: [CONFIRMED, COMPLETED]}, eventPassId: {_eq: $eventPassId}}
+  ) {
+    eventPassId
+    quantity
+  }
+}
+    `;
  const GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument = `
     query GetEventPassOrdersConfirmedOrCompletedForEventPassIds($eventPassIds: [String!]!) {
   eventPassOrder(
@@ -155,6 +165,16 @@ export const EventPassNftFieldsFragmentDoc = `
     mutation DeleteEventPassPendingOrders($eventPassIds: [String!]!) {
   delete_eventPassPendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
     affected_rows
+  }
+}
+    `;
+ const GetEventPassPendingOrderForEventPassDocument = `
+    query GetEventPassPendingOrderForEventPass($eventPassId: String!) {
+  eventPassPendingOrder(where: {eventPassId: {_eq: $eventPassId}}) {
+    id
+    eventPassId
+    quantity
+    created_at
   }
 }
     `;
@@ -327,6 +347,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventPassOrdersConfirmed(variables?: Types.GetEventPassOrdersConfirmedQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedQuery> {
       return requester<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedQuery>;
     },
+    GetEventPassOrdersConfirmedOrCompletedForEventPassId(variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery> {
+      return requester<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery>;
+    },
     GetEventPassOrdersConfirmedOrCompletedForEventPassIds(variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery> {
       return requester<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery>;
     },
@@ -338,6 +361,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     DeleteEventPassPendingOrders(variables: Types.DeleteEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrdersMutation> {
       return requester<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrdersMutation>;
+    },
+    GetEventPassPendingOrderForEventPass(variables: Types.GetEventPassPendingOrderForEventPassQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrderForEventPassQuery> {
+      return requester<Types.GetEventPassPendingOrderForEventPassQuery, Types.GetEventPassPendingOrderForEventPassQueryVariables>(GetEventPassPendingOrderForEventPassDocument, variables, options) as Promise<Types.GetEventPassPendingOrderForEventPassQuery>;
     },
     GetEventPassPendingOrderForEventPasses(variables?: Types.GetEventPassPendingOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrderForEventPassesQuery> {
       return requester<Types.GetEventPassPendingOrderForEventPassesQuery, Types.GetEventPassPendingOrderForEventPassesQueryVariables>(GetEventPassPendingOrderForEventPassesDocument, variables, options) as Promise<Types.GetEventPassPendingOrderForEventPassesQuery>;

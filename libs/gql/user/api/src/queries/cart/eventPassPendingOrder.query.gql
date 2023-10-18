@@ -1,3 +1,12 @@
+query GetEventPassPendingOrderForEventPass($eventPassId: String!) {
+  eventPassPendingOrder(where: { eventPassId: { _eq: $eventPassId } }) {
+    id
+    eventPassId
+    quantity
+    created_at
+  }
+}
+
 query GetEventPassPendingOrderForEventPasses($eventPassIds: [String!]) {
   eventPassPendingOrder(where: { eventPassId: { _in: $eventPassIds } }) {
     id

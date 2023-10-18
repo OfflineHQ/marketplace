@@ -179,7 +179,7 @@ export type GetEventPassesQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetEventPassesQuery = { __typename?: 'query_root', eventPasses: Array<{ __typename?: 'EventPass', id: string, name: string, description: string, nftImage: { __typename?: 'Asset', url: string }, eventPassPricing?: { __typename?: 'eventPassPricing', maxAmount: number, maxAmountPerUser?: number | null, priceAmount: number, priceCurrency: Types.Currency_Enum } | null, passOptions: Array<{ __typename?: 'PassOption', name: string, description?: string | null, eventDateLocation: { __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } } }>, eventPassOrderSums?: { __typename?: 'eventPassOrderSums', totalReserved: number } | null }> };
+export type GetEventPassesQuery = { __typename?: 'query_root', eventPasses: Array<{ __typename?: 'EventPass', id: string, name: string, description: string, nftImage: { __typename?: 'Asset', url: string }, eventPassPricing?: { __typename?: 'eventPassPricing', maxAmount: number, maxAmountPerUser?: number | null, priceAmount: number, priceCurrency: Types.Currency_Enum } | null, passOptions: Array<{ __typename?: 'PassOption', name: string, description?: string | null, eventDateLocation: { __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } } }> }> };
 
 export type UpdateEventPassNftFromNftTransferMutationVariables = Types.Exact<{
   updates: Array<Types.EventPassNft_Updates> | Types.EventPassNft_Updates;
@@ -231,6 +231,13 @@ export type GetContractAddressFromEventPassIdQueryVariables = Types.Exact<{
 
 
 export type GetContractAddressFromEventPassIdQuery = { __typename?: 'query_root', eventPassNftContract: Array<{ __typename?: 'eventPassNftContract', contractAddress: string }> };
+
+export type GetEventPassOrderSumsQueryVariables = Types.Exact<{
+  eventPassId: Types.Scalars['String'];
+}>;
+
+
+export type GetEventPassOrderSumsQuery = { __typename?: 'query_root', eventPassOrderSums_by_pk?: { __typename?: 'eventPassOrderSums', totalReserved: number } | null };
 
 export type CreateEventPassPricingMutationVariables = Types.Exact<{
   eventPassPricing: Types.EventPassPricing_Insert_Input;
