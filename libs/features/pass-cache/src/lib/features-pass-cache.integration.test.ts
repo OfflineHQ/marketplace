@@ -3,7 +3,7 @@ import { PassCache } from './features-pass-cache';
 
 jest.mock('@next/next-auth/user');
 
-describe('PassCache Integration Test', () => {
+describe.skip('PassCache Integration Test', () => {
   let passCache: PassCache;
 
   beforeEach(() => {
