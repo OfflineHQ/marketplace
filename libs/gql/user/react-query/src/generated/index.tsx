@@ -171,6 +171,28 @@ export const useGetEventPassOrdersConfirmedQuery = <
       fetchDataReactQuery<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables),
       options
     );
+export const GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument = `
+    query GetEventPassOrdersConfirmedOrCompletedForEventPassIds($eventPassIds: [String!]!) {
+  eventPassOrder(
+    where: {status: {_in: [CONFIRMED, COMPLETED]}, eventPassId: {_in: $eventPassIds}}
+  ) {
+    eventPassId
+    quantity
+  }
+}
+    `;
+export const useGetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery = <
+      TData = Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery,
+      TError = Error
+    >(
+      variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery, TError, TData>(
+      ['GetEventPassOrdersConfirmedOrCompletedForEventPassIds', variables],
+      fetchDataReactQuery<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument, variables),
+      options
+    );
 export const InsertEventPassPendingOrdersDocument = `
     mutation InsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!) {
   insert_eventPassPendingOrder(objects: $objects) {
