@@ -17,7 +17,7 @@ export const createNftActivityWebhookForEvent = async ({
   const wepAppUrl = env.WEB_APP_URL;
   return alchemy.createNftActivityWebhook(
     `${wepAppUrl}/api/webhooks/nft_activity/${eventId}`,
-    nftCollectionAddresses,
+    nftCollectionAddresses
   );
 };
 
@@ -32,6 +32,6 @@ export const updateNftActivityWebhook = async ({
 }: UpdateNftActivityWebhook) => {
   return alchemy.addAddressNftActivityWebhook(
     webhookId,
-    nftCollectionAddresses,
+    nftCollectionAddresses
   );
 };
