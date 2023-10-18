@@ -1,4 +1,5 @@
-query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
+query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!)
+@cached {
   eventPasses(
     where: { event: { slug: $eventSlug } }
     locales: [$locale, en]
@@ -22,9 +23,6 @@ query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
       eventDateLocation {
         ...EventDateLocationsFields
       }
-    }
-    eventPassOrderSums {
-      totalReserved
     }
   }
 }

@@ -171,6 +171,28 @@ export const useGetEventPassOrdersConfirmedQuery = <
       fetchDataReactQuery<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables),
       options
     );
+export const GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument = `
+    query GetEventPassOrdersConfirmedOrCompletedForEventPassId($eventPassId: String!) {
+  eventPassOrder(
+    where: {status: {_in: [CONFIRMED, COMPLETED]}, eventPassId: {_eq: $eventPassId}}
+  ) {
+    eventPassId
+    quantity
+  }
+}
+    `;
+export const useGetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery = <
+      TData = Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery,
+      TError = Error
+    >(
+      variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery, TError, TData>(
+      ['GetEventPassOrdersConfirmedOrCompletedForEventPassId', variables],
+      fetchDataReactQuery<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument, variables),
+      options
+    );
 export const GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument = `
     query GetEventPassOrdersConfirmedOrCompletedForEventPassIds($eventPassIds: [String!]!) {
   eventPassOrder(
@@ -244,6 +266,28 @@ export const useDeleteEventPassPendingOrdersMutation = <
     useMutation<Types.DeleteEventPassPendingOrdersMutation, TError, Types.DeleteEventPassPendingOrdersMutationVariables, TContext>(
       ['DeleteEventPassPendingOrders'],
       (variables?: Types.DeleteEventPassPendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables)(),
+      options
+    );
+export const GetEventPassPendingOrderForEventPassDocument = `
+    query GetEventPassPendingOrderForEventPass($eventPassId: String!) {
+  eventPassPendingOrder(where: {eventPassId: {_eq: $eventPassId}}) {
+    id
+    eventPassId
+    quantity
+    created_at
+  }
+}
+    `;
+export const useGetEventPassPendingOrderForEventPassQuery = <
+      TData = Types.GetEventPassPendingOrderForEventPassQuery,
+      TError = Error
+    >(
+      variables: Types.GetEventPassPendingOrderForEventPassQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassPendingOrderForEventPassQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassPendingOrderForEventPassQuery, TError, TData>(
+      ['GetEventPassPendingOrderForEventPass', variables],
+      fetchDataReactQuery<Types.GetEventPassPendingOrderForEventPassQuery, Types.GetEventPassPendingOrderForEventPassQueryVariables>(GetEventPassPendingOrderForEventPassDocument, variables),
       options
     );
 export const GetEventPassPendingOrderForEventPassesDocument = `
