@@ -52,7 +52,7 @@ const buttonVariantsCva = cva(
       isIconOnly: true,
       class: 'rounded-full',
     })),
-  }
+  },
 );
 
 const SkeletonSizes = {
@@ -70,7 +70,7 @@ const buttonSkeletonVariantsCva = cva(
     defaultVariants: {
       size: 'default',
     },
-  }
+  },
 );
 interface ButtonSkeletonProps
   extends React.HTMLAttributes<HTMLButtonElement>,
@@ -165,7 +165,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       helperText,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [loading, setLoading] = useState(false);
     const _loading = isLoading || loading;
@@ -173,7 +173,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const isIconOnly = !hasChildren && !!(icon || iconRight);
 
     const handleClick = async (
-      event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+      event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     ) => {
       if (onClick && !_loading) {
         try {
@@ -215,7 +215,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         </button>
       </TooltipWrapper>
     );
-  }
+  },
 );
 Button.displayName = 'Button';
 

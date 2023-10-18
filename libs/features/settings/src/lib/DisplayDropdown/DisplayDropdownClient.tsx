@@ -46,7 +46,7 @@ export const DisplayDropdownClient: React.FC<DisplayDropdownClientProps> = ({
         disabled: theme === 'system',
       },
     ],
-    [displaySelectText, theme, setTheme]
+    [displaySelectText, theme, setTheme],
   );
 
   return (

@@ -25,7 +25,7 @@ async function ConvertedCurrencyContent({
       amount,
       currency,
     },
-    rates
+    rates,
   );
   return (
     <Text variant={variant} {...textProps}>

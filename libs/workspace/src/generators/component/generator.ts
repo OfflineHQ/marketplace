@@ -8,11 +8,11 @@ import { toPascalCase } from '@utils';
 
 export async function componentGenerator(
   tree: Tree,
-  { name, project }: ComponentGeneratorSchema
+  { name, project }: ComponentGeneratorSchema,
 ) {
   const { fileName: componentFileName, className: componentName } = names(name);
   const componentPath = `lib/${componentFileName}/${toPascalCase(
-    componentFileName
+    componentFileName,
   )}.tsx`;
 
   await reactComponentGenerator(tree, {

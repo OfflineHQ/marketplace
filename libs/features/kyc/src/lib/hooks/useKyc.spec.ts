@@ -71,7 +71,7 @@ describe('useKyc', () => {
       applicantId: 'mockApplicantId',
     });
     (getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(
-      mockPersonalData
+      mockPersonalData,
     );
 
     const result = await useKyc(Locale.En);
@@ -92,7 +92,7 @@ describe('useKyc', () => {
     (getSumSubAccessToken as jest.Mock).mockResolvedValue(mockToken);
     (getAccountKyc as jest.Mock).mockResolvedValue(mockKyc);
     (getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(
-      mockPersonalData
+      mockPersonalData,
     );
 
     const result = await useKyc(Locale.En);
@@ -110,7 +110,7 @@ describe('useKyc', () => {
     (getCurrentUser as jest.Mock).mockResolvedValue(mockUser);
     (getSumSubAccessToken as jest.Mock).mockResolvedValue(mockToken);
     (getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(
-      mockPersonalData
+      mockPersonalData,
     );
 
     const result = await useKyc(Locale.En);
@@ -127,7 +127,7 @@ describe('useKyc', () => {
     (getCurrentUser as jest.Mock).mockResolvedValue(mockUser);
     (getSumSubAccessToken as jest.Mock).mockResolvedValue(mockToken);
     (getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(
-      mockPersonalData
+      mockPersonalData,
     );
 
     const result = await useKyc(Locale.En);
@@ -135,7 +135,7 @@ describe('useKyc', () => {
     expect(result).toEqual({ user: mockUser, accessToken: mockToken });
     expect(getCurrentUser).toHaveBeenCalled();
     expect(getSumSubApplicantPersonalData).toHaveBeenCalledWith(
-      mockUser.kyc.applicantId
+      mockUser.kyc.applicantId,
     );
     expect(getSumSubAccessToken).toHaveBeenCalled();
   });
@@ -153,7 +153,7 @@ describe('useKyc', () => {
     expect(result).toEqual({ user: mockUser, accessToken: mockToken });
     expect(getCurrentUser).toHaveBeenCalled();
     expect(getSumSubApplicantPersonalData).toHaveBeenCalledWith(
-      mockUser.kyc.applicantId
+      mockUser.kyc.applicantId,
     );
     expect(getSumSubAccessToken).toHaveBeenCalled();
   });

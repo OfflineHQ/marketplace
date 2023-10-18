@@ -19,7 +19,7 @@ export const PassTotal: React.FC<PassTotalProps> = ({
   const store = useStore(usePassPurchaseStore, (state) => state);
   const { rates, isLoading } = useCurrency();
   const getPassesCartTotalPrice = usePassPurchaseStore(
-    (state) => state.getPassesCartTotalPrice
+    (state) => state.getPassesCartTotalPrice,
   );
   const totalPrice = getPassesCartTotalPrice({
     organizerSlug,

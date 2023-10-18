@@ -47,7 +47,7 @@ type CardProps = React.ComponentProps<typeof Card>;
 
 function CardNotifications(
   notifications: any[],
-  { className, ...props }: CardProps
+  { className, ...props }: CardProps,
 ) {
   return (
     <Card

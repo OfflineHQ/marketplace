@@ -14,6 +14,6 @@ export const usePassPurchaseStore = create<StoreState>()(
     }),
     {
       name: 'PassPurchase-store',
-    }
-  )
+    },
+  ),
 );
