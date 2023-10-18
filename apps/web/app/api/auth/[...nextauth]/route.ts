@@ -7,7 +7,7 @@ const handler = async (req: NextRequest, res: NextResponse) => {
   return NextAuth(
     req as unknown as NextApiRequest,
     res as unknown as NextApiResponse,
-    createOptions(req),
+    createOptions(req)
   );
 };
 

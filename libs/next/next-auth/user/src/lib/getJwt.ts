@@ -18,7 +18,7 @@ export const getJwt = async ({
       cookies: Object.fromEntries(
         cookies()
           .getAll()
-          .map((c) => [c.name, c.value]),
+          .map((c) => [c.name, c.value])
       ),
     } as any,
     secret,

@@ -27,7 +27,7 @@ export default function DateRangeClient({
     <div
       className={cn(
         `my-2 flex items-center space-x-${userTimezone !== timezone ? 2 : 4}`,
-        className,
+        className
       )}
     >
       <CalendarIcon size="lg" flex />

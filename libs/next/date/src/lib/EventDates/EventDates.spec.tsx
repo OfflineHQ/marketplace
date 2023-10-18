@@ -40,7 +40,7 @@ describe.skip('EventDates', () => {
 
   it('renders nothing if dates is an empty array', () => {
     const { container } = renderWithIntl(
-      <EventDates eventDateLocations={[]} />,
+      <EventDates eventDateLocations={[]} />
     );
     expect(container.firstChild).toBeNull();
   });

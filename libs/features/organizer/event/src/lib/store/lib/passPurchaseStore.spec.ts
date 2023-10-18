@@ -75,7 +75,7 @@ describe('passPurchaseStore', () => {
       result.current.getPassesCart({
         organizerSlug: 'testOrg',
         eventSlug: 'testEvent',
-      }),
+      })
     ).toEqual([pass1]);
   });
 
@@ -99,7 +99,7 @@ describe('passPurchaseStore', () => {
       result.current.getPassesCart({
         organizerSlug: 'existingOrg',
         eventSlug: 'existingEvent',
-      }),
+      })
     ).toEqual([pass1]);
   });
 
@@ -118,7 +118,7 @@ describe('passPurchaseStore', () => {
       result.current.getPassesCart({
         organizerSlug: 'nonexistentOrg',
         eventSlug: 'nonexistentEvent',
-      }),
+      })
     ).toStrictEqual([]);
   });
 
@@ -137,7 +137,7 @@ describe('passPurchaseStore', () => {
       result.current.getPassesCart({
         organizerSlug: 'testOrg',
         eventSlug: 'testEvent',
-      }),
+      })
     ).toEqual([pass1, pass2]);
   });
 
@@ -163,7 +163,7 @@ describe('passPurchaseStore', () => {
       result.current.getPassesCart({
         organizerSlug: 'testOrg',
         eventSlug: 'testEvent',
-      }),
+      })
     ).toBeUndefined();
   });
 
@@ -273,14 +273,14 @@ describe('passPurchaseStore', () => {
       result.current.getPassesCart({
         organizerSlug: organizerSlug1,
         eventSlug: eventSlug1,
-      }),
+      })
     ).toEqual([pass1]);
 
     expect(
       result.current.getPassesCart({
         organizerSlug: organizerSlug2,
         eventSlug: eventSlug2,
-      }),
+      })
     ).toEqual([pass2]);
   });
 

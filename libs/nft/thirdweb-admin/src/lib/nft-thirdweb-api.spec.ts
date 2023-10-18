@@ -39,10 +39,10 @@ describe('NftClaimable good arguments', () => {
     const result = await nftClaimable.startClaimPhase(
       '0x2e41588A1c8455dbD63B07E9401422B7F5559859',
       'Phase de claim',
-      100,
+      100
     );
     expect(result).toBe(
-      '0xc7a649c65b62b54e93bbd350bc9b60141a082e7e72b89adb59afcff4659028c4',
+      '0xc7a649c65b62b54e93bbd350bc9b60141a082e7e72b89adb59afcff4659028c4'
     );
   });
 
@@ -111,7 +111,7 @@ describe('NftClaimable order fail', () => {
     };
 
     await expect(nftClaimable.claimAllMetadatas([order])).rejects.toThrow(
-      `Error during check of the unclaim supply: Not enough supply for order ${order.id} : 1 remaining`,
+      `Error during check of the unclaim supply: Not enough supply for order ${order.id} : 1 remaining`
     );
   });
 
@@ -146,11 +146,11 @@ describe('NftClaimable order fail', () => {
     ]);
 
     expect(consoleSpy).toHaveBeenCalledWith(
-      'Error: Error during claiming operation: Fake error',
+      'Error: Error during claiming operation: Fake error'
     );
     expect(nftClaimable.registerOwnership).toHaveBeenCalled();
     expect(nfts.updates[0]._set.currentOwnerAddress).toEqual(
-      '0xYourAccountAddress',
+      '0xYourAccountAddress'
     );
 
     consoleSpy.mockRestore();

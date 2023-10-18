@@ -18,7 +18,7 @@ const alchemy = new AlchemyWrapper();
 
 // https://docs.alchemy.com/reference/nft-activity-webhook
 export const extractNftTransfersFromEvent = (
-  alchemyWebhookEvent: AlchemyNFTActivityEvent,
+  alchemyWebhookEvent: AlchemyNFTActivityEvent
 ) => {
   const nftActivities = alchemyWebhookEvent.event.activity;
   const nftTransfers: NftTransferWithoutMetadata[] = [];
@@ -37,7 +37,7 @@ export const extractNftTransfersFromEvent = (
     const { transactionHash, removed } = activity.log;
     if (removed) {
       console.error(
-        `NFT transfer: ${transactionHash} in ${network} for ${contractAddress} collection, fromAddress ${fromAddress} toAddress ${toAddress} with erc721TokenId ${erc721TokenId} was removed likely due to a reorg`,
+        `NFT transfer: ${transactionHash} in ${network} for ${contractAddress} collection, fromAddress ${fromAddress} toAddress ${toAddress} with erc721TokenId ${erc721TokenId} was removed likely due to a reorg`
       );
     } else {
       if (!erc721TokenId) {
@@ -76,7 +76,7 @@ export async function nftActivity(req: AlchemyRequest, eventId: string) {
     });
   }
   const chainId = alchemy.convertNetworkToChainId(
-    alchemyWebhookEvent.event.activity[0].network,
+    alchemyWebhookEvent.event.activity[0].network
   );
 
   const nftTransfersFromEvent =
@@ -87,25 +87,25 @@ export async function nftActivity(req: AlchemyRequest, eventId: string) {
       const NftTransfersNotCreated =
         await eventPassNftWrapper.getEventPassNftTransfersMetadata(
           nftTransfersFromEvent,
-          chainId,
+          chainId
         );
       if (!NftTransfersNotCreated.length) {
         return new Response(
           'Error, not finding any NFT corresponding to the NFT transfer',
           {
             status: 500,
-          },
+          }
         );
       }
       const nftTransfers = await eventPassNftWrapper.upsertNftTransfers(
-        NftTransfersNotCreated,
+        NftTransfersNotCreated
       );
       const updatedNfts =
         await eventPassNftWrapper.updateEventPassNftFromNftTransfer(
-          nftTransfers,
+          nftTransfers
         );
       await eventPassNftWrapper.applyQrCodeBatchTransferForNewOwner(
-        updatedNfts,
+        updatedNfts
       );
     } catch (e) {
       console.error(e);

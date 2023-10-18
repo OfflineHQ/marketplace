@@ -12,7 +12,7 @@ export const getEventPassRevealedFilePath = async (id: string) => {
     {
       id,
     },
-    { cache: 'no-store' },
+    { cache: 'no-store' }
   );
   const eventPassNft = res.eventPassNft_by_pk;
   if (!eventPassNft) throw new Error('Event Pass not owned by user');
@@ -31,7 +31,7 @@ export const getEventPassRevealedFilePath = async (id: string) => {
 
 export const downloadPass = async (
   id: string,
-  action: 'display' | 'download' = 'download',
+  action: 'display' | 'download' = 'download'
 ) => {
   if (isServerSide() && action === 'display')
     throw new Error('The action display can only be called on client side');
@@ -41,7 +41,7 @@ export const downloadPass = async (
     isServerSide()
       ? envServer.UPLOAD_ACCOUNT_ID
       : env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
-    nextAuthJwt,
+    nextAuthJwt
   );
   const filePath = await getEventPassRevealedFilePath(id);
   const fileData = await fileDownloader.downloadFile(filePath);

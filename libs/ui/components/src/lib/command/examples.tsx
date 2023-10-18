@@ -215,7 +215,7 @@ export function CommandComboboxDemo() {
                 <Check
                   className={cn(
                     'mr-2 h-4 w-4',
-                    value === framework.value ? 'opacity-100' : 'opacity-0',
+                    value === framework.value ? 'opacity-100' : 'opacity-0'
                   )}
                 />
                 {framework.label}
@@ -265,7 +265,7 @@ const statuses: Status[] = [
 export function CommandPopoverDemo() {
   const [open, setOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(
-    null,
+    null
   );
 
   return (
@@ -300,7 +300,7 @@ export function CommandPopoverDemo() {
                     onSelect={(value) => {
                       setSelectedStatus(
                         statuses.find((priority) => priority.value === value) ||
-                          null,
+                          null
                       );
                       setOpen(false);
                     }}
@@ -310,7 +310,7 @@ export function CommandPopoverDemo() {
                         'mr-2 h-4 w-4',
                         status.value === selectedStatus?.value
                           ? 'opacity-100'
-                          : 'opacity-40',
+                          : 'opacity-40'
                       )}
                     />
                     <span>{status.label}</span>

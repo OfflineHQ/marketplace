@@ -169,7 +169,7 @@ describe('executeJobWithRetry', () => {
     (jobWrapper as any).jobApi.getJob.mockResolvedValue({ status: 'Running' });
 
     await expect(
-      executeJobWithRetry(jobFunction, params, jobType, jobWrapper),
+      executeJobWithRetry(jobFunction, params, jobType, jobWrapper)
     ).rejects.toThrow('Job did not finish correctly after retries');
 
     expect(jobFunction).toHaveBeenCalledTimes(1); // called once initially, then retried 5 times
@@ -193,8 +193,9 @@ describe('UploadWrapper', () => {
       //... other fields
     };
 
-    const { fileUrl, filePath } =
-      await uploadWrapper.uploadFile(mockUploadOptions);
+    const { fileUrl, filePath } = await uploadWrapper.uploadFile(
+      mockUploadOptions
+    );
 
     expect(fileUrl).toEqual('https://mock-file-url.com');
     expect(filePath).toEqual('/mock/file/path');
@@ -223,7 +224,7 @@ describe('FileWrapper', () => {
     };
 
     const result: Upload.BinaryResult = await fileWrapper.downloadFile(
-      mockDownloadFileOptions,
+      mockDownloadFileOptions
     );
 
     expect(result.toString()).toEqual('Mock file content');
@@ -236,7 +237,7 @@ describe('FileWrapper', () => {
     };
 
     const result: Upload.FileDetails = await fileWrapper.getFileDetails(
-      mockGetFileDetailsOptions,
+      mockGetFileDetailsOptions
     );
 
     expect(result.accountId).toEqual('mock-account-id');
@@ -259,8 +260,9 @@ describe('FileWrapper', () => {
       },
     };
 
-    const result: Upload.CopyFileResponse =
-      await fileWrapper.copyFile(mockCopyFileOptions);
+    const result: Upload.CopyFileResponse = await fileWrapper.copyFile(
+      mockCopyFileOptions
+    );
 
     expect(result.status).toEqual('Copied');
   });
@@ -279,7 +281,7 @@ describe('FileWrapper', () => {
     };
 
     const result: Upload.AsyncResponse = await fileWrapper.copyFileBatch(
-      mockCopyFileBatchOptions,
+      mockCopyFileBatchOptions
     );
 
     expect(result.jobId).toEqual('mock-job-id');
@@ -383,7 +385,7 @@ describe('FolderWrapper', () => {
     };
 
     const result: Upload.ListFolderResponse = await folderWrapper.listFolder(
-      mockListFolderOptions,
+      mockListFolderOptions
     );
 
     expect(result.items.length).toEqual(0);

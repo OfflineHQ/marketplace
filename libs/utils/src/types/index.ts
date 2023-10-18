@@ -4,7 +4,7 @@ export type Merge<P, T> = Omit<P, keyof T> & T;
 
 export type NestedValueOf<
   ObjectType,
-  Property extends string,
+  Property extends string
 > = Property extends `${infer Key}.${infer Rest}`
   ? Key extends keyof ObjectType
     ? NestedValueOf<ObjectType[Key], Rest>

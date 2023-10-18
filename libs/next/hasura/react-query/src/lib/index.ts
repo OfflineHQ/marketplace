@@ -23,7 +23,7 @@ declare global {
 export const fetchDataReactQuery = <TData, TVariables>(
   query: string,
   variables?: TVariables,
-  options: { headers?: RequestInit['headers'] } = {},
+  options: { headers?: RequestInit['headers'] } = {}
 ): (() => Promise<TData>) => {
   return async () => {
     const jwtTestToken = window?.jwtTestToken || null;

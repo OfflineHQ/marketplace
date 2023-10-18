@@ -41,16 +41,16 @@ describe('eventPassPricing order integration tests', () => {
   it('create eventPassPricing successfully', async () => {
     const res = await adminSdk.CreateEventPassPricing({ eventPassPricing });
     expect(res.insert_eventPassPricing_one?.eventPassId).toEqual(
-      eventPassPricing.eventPassId,
+      eventPassPricing.eventPassId
     );
     expect(res.insert_eventPassPricing_one?.maxAmount).toEqual(
-      eventPassPricing.maxAmount,
+      eventPassPricing.maxAmount
     );
     expect(res.insert_eventPassPricing_one?.priceAmount).toEqual(
-      eventPassPricing.priceAmount,
+      eventPassPricing.priceAmount
     );
     expect(res.insert_eventPassPricing_one?.priceCurrency).toEqual(
-      eventPassPricing.priceCurrency,
+      eventPassPricing.priceCurrency
     );
   });
   it('update eventPassPricing successfully', async () => {
@@ -65,16 +65,16 @@ describe('eventPassPricing order integration tests', () => {
       eventPassPricing: newEventPassPricing,
     });
     expect(res.update_eventPassPricing_by_pk?.eventPassId).toEqual(
-      eventPassPricing.eventPassId,
+      eventPassPricing.eventPassId
     );
     expect(res.update_eventPassPricing_by_pk?.maxAmount).toEqual(
-      newEventPassPricing.maxAmount,
+      newEventPassPricing.maxAmount
     );
     expect(res.update_eventPassPricing_by_pk?.maxAmountPerUser).toEqual(
-      newEventPassPricing.maxAmountPerUser,
+      newEventPassPricing.maxAmountPerUser
     );
     expect(res.update_eventPassPricing_by_pk?.priceAmount).toEqual(
-      newEventPassPricing.priceAmount,
+      newEventPassPricing.priceAmount
     );
   });
 });

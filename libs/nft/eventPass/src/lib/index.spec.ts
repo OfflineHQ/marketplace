@@ -105,7 +105,7 @@ describe('EventPassNftWrapper', () => {
 
       const result = await wrapper.getEventPassNftTransfersMetadata(
         nftTransferWithoutMetadata,
-        '1',
+        '1'
       );
 
       expect(result).toEqual([
@@ -116,7 +116,7 @@ describe('EventPassNftWrapper', () => {
       ]);
 
       expect(
-        adminSdk.GetEventPassNftByContractsAndTokenIds,
+        adminSdk.GetEventPassNftByContractsAndTokenIds
       ).toHaveBeenCalledWith({
         contractAddresses: ['0xAddress'],
         chainId: '1',
@@ -144,7 +144,7 @@ describe('EventPassNftWrapper', () => {
 
       const result = await wrapper.getEventPassNftTransfersMetadata(
         nftTransfersWithoutMetadata,
-        '1',
+        '1'
       );
 
       expect(result).toEqual([
@@ -159,7 +159,7 @@ describe('EventPassNftWrapper', () => {
       ]);
 
       expect(
-        adminSdk.GetEventPassNftByContractsAndTokenIds,
+        adminSdk.GetEventPassNftByContractsAndTokenIds
       ).toHaveBeenCalledWith({
         contractAddresses: ['0xAddress', '0xAddress2'],
         chainId: '1',
@@ -175,12 +175,12 @@ describe('EventPassNftWrapper', () => {
       await expect(
         wrapper.getEventPassNftTransfersMetadata(
           nftTransfersWithoutMetadata,
-          '1',
-        ),
+          '1'
+        )
       ).rejects.toThrow('Fetching error');
 
       expect(
-        adminSdk.GetEventPassNftByContractsAndTokenIds,
+        adminSdk.GetEventPassNftByContractsAndTokenIds
       ).toHaveBeenCalledWith({
         contractAddresses: ['0xAddress', '0xAddress2'],
         chainId: '1',
@@ -208,7 +208,7 @@ describe('EventPassNftWrapper', () => {
 
       const result = await wrapper.getEventPassNftTransfersMetadata(
         nftTransfersWithoutMetadata,
-        '1',
+        '1'
       );
 
       expect(result).toEqual([
@@ -220,7 +220,7 @@ describe('EventPassNftWrapper', () => {
       ]);
 
       expect(
-        adminSdk.GetEventPassNftByContractsAndTokenIds,
+        adminSdk.GetEventPassNftByContractsAndTokenIds
       ).toHaveBeenCalledWith({
         contractAddresses: ['0xAddress', '0xAddress2'],
         chainId: '1',
@@ -258,7 +258,7 @@ describe('EventPassNftWrapper', () => {
         .mockRejectedValue(new Error('Upsert error'));
 
       await expect(
-        wrapper.upsertNftTransfers(nftTransfersNotCreated),
+        wrapper.upsertNftTransfers(nftTransfersNotCreated)
       ).rejects.toThrow('Upsert error');
       expect(adminSdk.UpsertNftTransfer).toHaveBeenCalledWith({
         objects: nftTransfersNotCreated,
@@ -273,7 +273,7 @@ describe('EventPassNftWrapper', () => {
       adminSdk.UpsertNftTransfer = jest.fn().mockResolvedValue(mockResponse);
 
       await expect(
-        wrapper.upsertNftTransfers(nftTransfersNotCreated),
+        wrapper.upsertNftTransfers(nftTransfersNotCreated)
       ).rejects.toThrow();
       expect(adminSdk.UpsertNftTransfer).toHaveBeenCalledWith({
         objects: nftTransfersNotCreated,
@@ -300,8 +300,9 @@ describe('EventPassNftWrapper', () => {
         .fn()
         .mockResolvedValue(mockResponse);
 
-      const result =
-        await wrapper.updateEventPassNftFromNftTransfer(nftTransfersCreated);
+      const result = await wrapper.updateEventPassNftFromNftTransfer(
+        nftTransfersCreated
+      );
 
       expect(result).toEqual(eventPassNfts);
     });
@@ -312,7 +313,7 @@ describe('EventPassNftWrapper', () => {
         .mockRejectedValue(new Error('Update error'));
 
       await expect(
-        wrapper.updateEventPassNftFromNftTransfer(nftTransfersCreated),
+        wrapper.updateEventPassNftFromNftTransfer(nftTransfersCreated)
       ).rejects.toThrow('Update error');
     });
 
@@ -322,7 +323,7 @@ describe('EventPassNftWrapper', () => {
       });
 
       await expect(
-        wrapper.updateEventPassNftFromNftTransfer(nftTransfersCreated),
+        wrapper.updateEventPassNftFromNftTransfer(nftTransfersCreated)
       ).rejects.toThrow();
     });
 
@@ -347,8 +348,9 @@ describe('EventPassNftWrapper', () => {
       // Spy on console.error
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
 
-      const result =
-        await wrapper.updateEventPassNftFromNftTransfer(nftTransfersCreated);
+      const result = await wrapper.updateEventPassNftFromNftTransfer(
+        nftTransfersCreated
+      );
 
       expect(result.length).toBe(1); // Only one valid returning element
       expect(consoleSpy).toHaveBeenCalled();

@@ -44,10 +44,10 @@ describe('getAccount test', () => {
     expect(fetchedAccount.email).toEqual(accounts.alpha_user.email);
     expect(fetchedAccount.kyc).not.toBeNull();
     expect(fetchedAccount.kyc?.levelName).toEqual(
-      accounts.alpha_user.kyc?.levelName,
+      accounts.alpha_user.kyc?.levelName
     );
     expect(fetchedAccount.kyc?.reviewStatus).toEqual(
-      accounts.alpha_user.kyc?.reviewStatus,
+      accounts.alpha_user.kyc?.reviewStatus
     );
   });
 });

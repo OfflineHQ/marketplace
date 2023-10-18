@@ -20,7 +20,7 @@ export const fetchData = (hasuraOpts: HasuraOpts = { admin: false }) => {
   return async <TResult, TVariables>(
     doc: string,
     variables: TVariables,
-    opts?: unknown,
+    opts?: unknown
   ): Promise<TResult> => {
     const { admin } = hasuraOpts;
     const headers: RequestInit['headers'] = {

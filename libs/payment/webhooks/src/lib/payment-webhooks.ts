@@ -28,7 +28,7 @@ const stripeCheckoutSessionEvents = [
 
 export async function stripeCheckoutStatus(
   req: Request,
-  payment: Payment = new Payment(),
+  payment: Payment = new Payment()
 ) {
   const body = await req.text();
   const signature = headers().get('Stripe-Signature') as string;
@@ -38,7 +38,7 @@ export async function stripeCheckoutStatus(
     console.log({ event });
     if (
       !stripeCheckoutSessionEvents.includes(
-        event.type as StripeCheckoutSessionEnum,
+        event.type as StripeCheckoutSessionEnum
       )
     ) {
       console.error(`Unhandled event type: ${event.type}`);
@@ -67,7 +67,7 @@ export async function stripeCheckoutStatus(
     ) {
       if (checkoutSession.payment_status !== 'paid') {
         console.warn(
-          `Payment not paid, payment_status: ${checkoutSession.payment_status}`,
+          `Payment not paid, payment_status: ${checkoutSession.payment_status}`
         );
         return new Response(null, { status: 200 });
       }
@@ -82,7 +82,7 @@ export async function stripeCheckoutStatus(
         if (!err.message?.includes('Error claiming NFTs'))
           return new Response(
             `ConfirmedStripeCheckoutSession Error: ${err.message}`,
-            { status: 500 },
+            { status: 500 }
           );
         //TODO: notify user and refund order because NFT not released.
         try {
@@ -95,11 +95,11 @@ export async function stripeCheckoutStatus(
 
           if (!paymentIntentId) {
             console.error(
-              `No payment_intent found for refund in checkoutSession: ${checkoutSession.id}`,
+              `No payment_intent found for refund in checkoutSession: ${checkoutSession.id}`
             );
             return new Response(
               `No payment_intent found for refund in checkoutSession: ${checkoutSession.id}`,
-              { status: 500 },
+              { status: 500 }
             );
           } else {
             await payment.refundPayment({
@@ -123,7 +123,7 @@ export async function stripeCheckoutStatus(
         console.error(err);
         return new Response(
           `CanceledStripeCheckoutSession Error: ${err.message}`,
-          { status: 400 },
+          { status: 400 }
         );
       }
       // TODO: establish a strategy where the user can pay again with https://stripe.com/docs/payments/checkout/abandoned-carts

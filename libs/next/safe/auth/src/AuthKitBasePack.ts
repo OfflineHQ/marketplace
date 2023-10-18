@@ -79,7 +79,7 @@ export abstract class AuthKitBasePack {
     }
 
     const ethersProvider = new ethers.providers.Web3Provider(
-      this.getProvider() as ethers.providers.ExternalProvider,
+      this.getProvider() as ethers.providers.ExternalProvider
     );
 
     const signer = ethersProvider.getSigner();
@@ -97,7 +97,7 @@ export abstract class AuthKitBasePack {
     }
 
     const provider = new ethers.providers.Web3Provider(
-      this.getProvider() as ethers.providers.ExternalProvider,
+      this.getProvider() as ethers.providers.ExternalProvider
     );
     const safeOwner = provider.getSigner(0);
 

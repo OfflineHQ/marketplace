@@ -34,7 +34,7 @@ export async function checkFolder(
   folderPath: string,
   eventId: string,
   eventPassId: string,
-  maxAmount: number,
+  maxAmount: number
 ) {
   const folder = new FolderWrapper();
 
@@ -64,7 +64,7 @@ export async function checkFolder(
 
     if (
       !simplifiedList.some(
-        (item) => item !== null && item.path.startsWith(tempPath),
+        (item) => item !== null && item.path.startsWith(tempPath)
       )
     ) {
       return false;
@@ -77,7 +77,7 @@ export async function renameFolderQrCodes(
   folderPath: string,
   eventId: string,
   eventPassId: string,
-  maxAmount: number,
+  maxAmount: number
 ) {
   const folder = new FolderWrapper();
   const upload = new FileWrapper();
@@ -115,7 +115,7 @@ export async function renameFolderQrCodes(
   }
 
   const nonNullSimplifiedList = simplifiedList.filter(
-    (item): item is { source: string; destination: string } => item !== null,
+    (item): item is { source: string; destination: string } => item !== null
   );
 
   await upload.copyFileBatch({
