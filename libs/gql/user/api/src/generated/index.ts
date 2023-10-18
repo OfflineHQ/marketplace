@@ -122,6 +122,16 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
+ const GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument = `
+    query GetEventPassOrdersConfirmedOrCompletedForEventPassIds($eventPassIds: [String!]!) {
+  eventPassOrder(
+    where: {status: {_in: [CONFIRMED, COMPLETED]}, eventPassId: {_in: $eventPassIds}}
+  ) {
+    eventPassId
+    quantity
+  }
+}
+    `;
  const InsertEventPassPendingOrdersDocument = `
     mutation InsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!) {
   insert_eventPassPendingOrder(objects: $objects) {
@@ -316,6 +326,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassOrdersConfirmed(variables?: Types.GetEventPassOrdersConfirmedQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedQuery> {
       return requester<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedQuery>;
+    },
+    GetEventPassOrdersConfirmedOrCompletedForEventPassIds(variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery> {
+      return requester<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery>;
     },
     InsertEventPassPendingOrders(variables: Types.InsertEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.InsertEventPassPendingOrdersMutation> {
       return requester<Types.InsertEventPassPendingOrdersMutation, Types.InsertEventPassPendingOrdersMutationVariables>(InsertEventPassPendingOrdersDocument, variables, options) as Promise<Types.InsertEventPassPendingOrdersMutation>;
