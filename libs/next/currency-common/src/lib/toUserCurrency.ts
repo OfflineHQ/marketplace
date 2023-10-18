@@ -5,7 +5,7 @@ import { getCurrencyPreference } from './getCurrencyPreference';
 
 export const toUserCurrency = (
   money: Money,
-  rates: { [key: string]: Rates },
+  rates: { [key: string]: Rates }
 ): {
   dinero: Dinero<number>;
   currency: Currency_Enum;

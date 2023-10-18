@@ -30,13 +30,13 @@ const authMiddleware = withAuth(
         return true;
       },
     },
-  },
+  }
 );
 
 export default function middleware(req: NextRequest) {
   const restrictedPathnameRegex = RegExp(
     `^(/(${locales.join('|')})/)?(${authPages.join('|')})/?$`,
-    'i',
+    'i'
   );
   const isAuthPage = restrictedPathnameRegex.test(req.nextUrl.pathname);
   if (isAuthPage) {

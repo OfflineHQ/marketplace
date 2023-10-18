@@ -40,7 +40,7 @@ export class Payment {
     return this.stripe.webhooks.constructEvent(
       body,
       signature,
-      env.STRIPE_WEBHOOK_SECRET,
+      env.STRIPE_WEBHOOK_SECRET
     );
   }
 
@@ -57,11 +57,11 @@ export class Payment {
     if (existingStripeCustomer && existingStripeCustomer.stripeCustomer.length)
       return existingStripeCustomer.stripeCustomer[0];
     const userPersonalData = await getSumSubApplicantPersonalData(
-      kyc.applicantId,
+      kyc.applicantId
     );
     if (userPersonalData.review.reviewStatus !== KycStatus_Enum.Completed)
       throw new Error(
-        `User: ${user.id} has not completed KYC: ${kyc.applicantId}`,
+        `User: ${user.id} has not completed KYC: ${kyc.applicantId}`
       );
     if (!userPersonalData.email) {
       throw new Error('Email is undefined for user: ' + user.id);
@@ -212,7 +212,7 @@ export class Payment {
       existingStripeCheckoutSession.stripeCheckoutSession.length
     )
       throw new Error(
-        `User: ${user.id} already has an active checkout session: ${existingStripeCheckoutSession.stripeCheckoutSession[0].stripeSessionId}`,
+        `User: ${user.id} already has an active checkout session: ${existingStripeCheckoutSession.stripeCheckoutSession[0].stripeSessionId}`
       );
     const success_url = `${this.baseUrl}/cart/success`;
     const cancel_url = `${this.baseUrl}/cart/canceled`;
@@ -227,7 +227,7 @@ export class Payment {
           user.id
         } and eventPassPendingOrders: ${eventPassPendingOrders
           .map((order) => order.id)
-          .join(',')}`,
+          .join(',')}`
       );
     const lineItems = orders.map((order) => {
       if (
@@ -235,7 +235,7 @@ export class Payment {
         !order.eventPassPricing?.priceAmount
       ) {
         throw new Error(
-          'Price currency or Price amount is undefined for order: ' + order.id,
+          'Price currency or Price amount is undefined for order: ' + order.id
         );
       }
 
@@ -273,7 +273,7 @@ export class Payment {
 
     if (!stripeCustomer.email) {
       throw new Error(
-        'Email is null for stripe customer: ' + stripeCustomer.id,
+        'Email is null for stripe customer: ' + stripeCustomer.id
       );
     }
 
@@ -361,7 +361,7 @@ export class Payment {
     if (!res || !res.stripeCheckoutSession.length) return null;
     const stripeCheckoutSession = res.stripeCheckoutSession[0];
     return this.stripe.checkout.sessions.retrieve(
-      stripeCheckoutSession.stripeSessionId,
+      stripeCheckoutSession.stripeSessionId
     );
   }
 
@@ -415,7 +415,7 @@ export class Payment {
     });
     if (!refund?.status) {
       throw new Error(
-        'Refund status is null for paymentIntentId: ' + paymentIntentId,
+        'Refund status is null for paymentIntentId: ' + paymentIntentId
       );
     }
     if (['succeeded', 'pending'].includes(refund.status)) {
@@ -432,7 +432,7 @@ export class Payment {
     }
     if (['succeeded', 'pending'].includes(refund.status)) return refund;
     throw new Error(
-      `Refund failed for paymentIntentId: ${paymentIntentId} with status: ${refund.status}`,
+      `Refund failed for paymentIntentId: ${paymentIntentId} with status: ${refund.status}`
     );
   }
 }

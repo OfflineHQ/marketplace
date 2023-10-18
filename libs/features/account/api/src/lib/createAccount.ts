@@ -3,7 +3,7 @@ import { adminSdk } from '@gql/admin/api';
 import type { CreateAccountMutation } from '@gql/admin/types';
 
 export const createAccount = async (
-  account: Account_Insert_Input,
+  account: Account_Insert_Input
 ): Promise<CreateAccountMutation['insert_account_one']> => {
   // TODO add segment analytics
   const data = await adminSdk.CreateAccount({ account });

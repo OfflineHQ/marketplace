@@ -36,11 +36,11 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       ref={ref}
       className={cn(
         cardVariantsCva({ variant, noBorder: !!noBorder }),
-        className,
+        className
       )}
       {...props}
     />
-  ),
+  )
 );
 Card.displayName = 'Card';
 
@@ -65,7 +65,7 @@ const CardTitle = React.forwardRef<
     ref={ref}
     className={cn(
       'text-lg font-semibold leading-none tracking-tight',
-      className,
+      className
     )}
     {...props}
   />
@@ -135,7 +135,7 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
     >
       {props.children}
     </div>
-  ),
+  )
 );
 
 CardFooter.displayName = 'CardFooter';
@@ -151,12 +151,12 @@ const CardOverlay = React.forwardRef<HTMLDivElement, CardOverlayProps>(
       ref={ref}
       className={cn(
         `absolute inset-x-0 z-10 h-20 bg-gradient-to-t from-card to-transparent pointer-events-none`,
-        className,
+        className
       )}
       style={{ bottom: footerHeight }}
       {...props}
     />
-  ),
+  )
 );
 CardOverlay.displayName = 'CardOverlay';
 

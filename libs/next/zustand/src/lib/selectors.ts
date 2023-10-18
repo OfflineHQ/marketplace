@@ -7,7 +7,7 @@ type WithSelectors<S> = S extends { getState: () => infer T }
   : never;
 
 export const createSelectors = <S extends UseBoundStore<StoreApi<State>>>(
-  _store: S,
+  _store: S
 ) => {
   const store = _store as WithSelectors<typeof _store>;
   store.use = {};

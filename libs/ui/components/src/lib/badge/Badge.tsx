@@ -44,7 +44,7 @@ const badgeVariantsCva = cva(
       variant: 'default',
       size: 'default',
     },
-  },
+  }
 );
 
 export interface BadgeProps
@@ -76,7 +76,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         {children && <span>{children}</span>}
       </span>
     );
-  },
+  }
 );
 Badge.displayName = 'Badge';
 
@@ -95,7 +95,7 @@ const badgeSkeletonVariantsCva = cva(
     defaultVariants: {
       size: 'default',
     },
-  },
+  }
 );
 
 export interface BadgeSkeletonProps

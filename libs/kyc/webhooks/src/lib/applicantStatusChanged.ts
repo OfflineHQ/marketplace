@@ -20,7 +20,7 @@ import env from '@env/server';
 
 export async function applicantStatusChanged(
   req: SumsubRequest,
-  status: string,
+  status: string
 ) {
   const body = await req.text();
   const signature = headers().get('x-payload-digest') as string;

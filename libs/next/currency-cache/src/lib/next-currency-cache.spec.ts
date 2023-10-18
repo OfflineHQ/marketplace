@@ -32,7 +32,7 @@ describe('nextCurrencyCache', () => {
 
     expect(Cache.prototype.set).toHaveBeenCalledWith(
       `currency-${Currency_Enum_Not_Const.EUR}-rates`,
-      { USD: mockRate },
+      { USD: mockRate }
     );
   });
 

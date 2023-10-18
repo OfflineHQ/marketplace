@@ -43,7 +43,7 @@ export const TextClose: Story = {
     const closeButton = screen.getByTestId('toast-close');
     await fireEvent.click(closeButton);
     await waitForElementToBeRemoved(() =>
-      screen.queryByText('The toast is closable'),
+      screen.queryByText('The toast is closable')
     );
   },
 };
@@ -98,7 +98,7 @@ export const ToastWithTitleAndDescription: Story = {
     expect(toastTitle).toBeVisible();
 
     const toastDescription = await screen.findByText(
-      'You have received a new message from John Doe.',
+      'You have received a new message from John Doe.'
     );
     expect(toastDescription).toBeVisible();
   },
