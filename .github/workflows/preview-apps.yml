@@ -106,6 +106,7 @@ jobs:
       - name: Set Hasura GraphQL endpoint to .env
         run: |
           echo HASURA_GRAPHQL_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
+          echo HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
           echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
           echo NEXTAUTH_URL=https://www.preview.offline.live/ >> .env
 
