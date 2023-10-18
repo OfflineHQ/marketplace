@@ -102,6 +102,13 @@ jobs:
       #     echo HASURA_GRAPHQL_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
       #     echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
 
+      # TODO remove this, was temporary to fix missing env issue
+      - name: Set Hasura GraphQL endpoint to .env
+        run: |
+          echo HASURA_GRAPHQL_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
+          echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
+          echo NEXTAUTH_URL=https://www.preview.offline.live/ >> .env
+
       - name: Deploy Preview to Vercel
         id: deploy_vercel
         run: |
