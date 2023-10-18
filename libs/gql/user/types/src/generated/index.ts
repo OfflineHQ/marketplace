@@ -30,6 +30,13 @@ export type GetEventPassOrdersConfirmedQueryVariables = Types.Exact<{ [key: stri
 
 export type GetEventPassOrdersConfirmedQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number }> };
 
+export type GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables = Types.Exact<{
+  eventPassId: Types.Scalars['String'];
+}>;
+
+
+export type GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number }> };
+
 export type GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables = Types.Exact<{
   eventPassIds: Array<Types.Scalars['String']> | Types.Scalars['String'];
 }>;
@@ -57,6 +64,13 @@ export type DeleteEventPassPendingOrdersMutationVariables = Types.Exact<{
 
 
 export type DeleteEventPassPendingOrdersMutation = { __typename?: 'mutation_root', delete_eventPassPendingOrder?: { __typename?: 'eventPassPendingOrder_mutation_response', affected_rows: number } | null };
+
+export type GetEventPassPendingOrderForEventPassQueryVariables = Types.Exact<{
+  eventPassId: Types.Scalars['String'];
+}>;
+
+
+export type GetEventPassPendingOrderForEventPassQuery = { __typename?: 'query_root', eventPassPendingOrder: Array<{ __typename?: 'eventPassPendingOrder', id: any, eventPassId: string, quantity: number, created_at: any }> };
 
 export type GetEventPassPendingOrderForEventPassesQueryVariables = Types.Exact<{
   eventPassIds?: Types.InputMaybe<Array<Types.Scalars['String']> | Types.Scalars['String']>;
