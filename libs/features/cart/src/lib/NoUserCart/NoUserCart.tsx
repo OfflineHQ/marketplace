@@ -11,12 +11,12 @@ import {
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import {
-  LocalPassList,
-  type LocalPassListProps,
-} from '../LocalPassList/LocalPassList';
+  EventPassesCart,
+  type EventPassesCartProps,
+} from '../EventPassesCart/EventPassesCart';
 import { NoUserCartFooterClient } from './NoUserCartFooterClient';
 
-export type NoUserCartProps = LocalPassListProps;
+export type NoUserCartProps = EventPassesCartProps;
 
 export const NoUserCart: React.FC<NoUserCartProps> = ({ noCartImage }) => {
   const t = useTranslations('Cart.NoUserCart');
@@ -29,7 +29,7 @@ export const NoUserCart: React.FC<NoUserCartProps> = ({ noCartImage }) => {
             <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
           <CardContent className="px-1">
-            <LocalPassList noCartImage={noCartImage} />
+            <EventPassesCart noCartImage={noCartImage} />
           </CardContent>
         </CardOverflow>
         <CardOverlay />
