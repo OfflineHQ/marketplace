@@ -9,15 +9,18 @@ import {
   type UserCartProps,
 } from '@features/cart/server';
 import { SumsubButton } from '@features/kyc/server';
+import { PassCache } from '@features/pass-cache';
 import { Locale } from '@gql/shared/types';
 import { isUserKycValidated } from '@kyc/common';
-import { Link } from '@next/navigation';
+import { Link, redirect } from '@next/navigation';
 import { getCurrentUser } from '@next/next-auth/user';
 import { AppUser } from '@next/types';
 import { Button } from '@ui/components';
 import { Cart } from '@ui/icons';
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
+
+const passCache = new PassCache();
 
 interface CartSectionProps {
   params: {
@@ -70,14 +73,19 @@ export default async function CartSection({
 }: CartSectionProps) {
   const user = await getCurrentUser();
   if (!user) return <CartSectionContent user={user} locale={locale} />;
-  // TODO: check if user has pending orders, if he have none check for the cache
-  // if get passes in cache, transfer it to pending orders if the event sale is not finished and then delete the cache.
-  // Do this in the pass-cache lib, execute this also in the event purchase page.
-  const userPassPendingOrders = await getEventPassPendingOrders();
+  let userPassPendingOrders = await getEventPassPendingOrders();
   const userPassConfirmedOrders = await getEventPassOrdersConfirmed();
-  // if (userPassConfirmedOrders?.length) {
-  //   redirect('/cart/purchase');
-  // }
+  // if user has confirmed orders, redirect to purchase page
+  if (userPassConfirmedOrders?.length) {
+    redirect('/cart/purchase');
+  }
+  // check if user has pending orders, if he have none check for the cache
+  // if get passes in cache, transfer it to pending orders if the event sale is not finished and then delete the cache.
+  else if (!userPassPendingOrders?.length) {
+    const res = await passCache.transferPassesCartToDb();
+    if (res) userPassPendingOrders = res;
+  }
+
   return (
     <CartSectionContent
       user={user}
