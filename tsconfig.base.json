@@ -65,9 +65,6 @@
       "@features/organizer/event/server": [
         "libs/features/organizer/event/src/server.ts"
       ],
-      "@features/organizer/event/store": [
-        "libs/features/organizer/event/src/lib/store"
-      ],
       "@features/pass": ["libs/features/pass/src/index.ts"],
       "@features/pass-actions": ["libs/features/pass-actions/src/index.ts"],
       "@features/pass-api": ["libs/features/pass-api/src/index.ts"],
