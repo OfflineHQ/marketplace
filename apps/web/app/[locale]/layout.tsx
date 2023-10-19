@@ -14,6 +14,7 @@ import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 
 import { AppNavLayout, type AppNavLayoutProps } from '@features/appNav/ui';
+import { getSession } from '@next/next-auth/user';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -95,6 +96,7 @@ export default async function RootLayout({
   // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale as any)) notFound();
   const messages = await getMessages(locale);
+  const session = await getSession();
   const t = createTranslator({ locale, messages });
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -107,7 +109,7 @@ export default async function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <NextAuthProvider>
+          <NextAuthProvider session={session}>
             <AuthProvider
               messages={{
                 userClosedPopup: {
@@ -128,6 +130,7 @@ export default async function RootLayout({
                   tryAgainButton: t('Auth.siwe-declined.try-again-button'),
                 },
               }}
+              session={session}
             >
               <ReactQueryProviders>
                 <CurrencyProvider>

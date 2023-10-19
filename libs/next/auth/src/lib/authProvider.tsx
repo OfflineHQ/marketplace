@@ -2,20 +2,23 @@
 
 import { SessionProvider } from 'next-auth/react';
 
+import { Session } from 'next-auth';
 import React, { createContext, useContext } from 'react';
 import { useSafeAuth, type UseSafeAuthProps } from './safeAuthSetup';
 
 interface AuthProviderProps extends UseSafeAuthProps {
   children?: React.ReactNode;
+  session: Session | null;
 }
 
 interface INextAuthProps {
   children: React.ReactNode;
+  session: Session | null;
 }
 
-export const NextAuthProvider = ({ children }: INextAuthProps) => {
+export const NextAuthProvider = ({ children, session }: INextAuthProps) => {
   return (
-    <SessionProvider refetchInterval={0} refetchOnWindowFocus={false}>
+    <SessionProvider session={session} refetchOnWindowFocus={false}>
       {children}
     </SessionProvider>
   );
@@ -42,8 +45,12 @@ export const useAuthContext = () => {
   return context;
 };
 
-export const AuthProvider = ({ children, messages }: AuthProviderProps) => {
-  const { safeAuth, ...props } = useSafeAuth({ messages });
+export const AuthProvider = ({
+  children,
+  messages,
+  session,
+}: AuthProviderProps) => {
+  const { safeAuth, ...props } = useSafeAuth({ messages, session });
 
   return (
     <AuthContext.Provider
