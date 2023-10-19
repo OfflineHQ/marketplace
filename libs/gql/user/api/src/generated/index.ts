@@ -142,18 +142,6 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
- const InsertEventPassPendingOrdersDocument = `
-    mutation InsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!) {
-  insert_eventPassPendingOrder(objects: $objects) {
-    returning {
-      id
-      quantity
-      eventPassId
-      created_at
-    }
-  }
-}
-    `;
  const UpsertEventPassPendingOrderDocument = `
     mutation UpsertEventPassPendingOrder($object: eventPassPendingOrder_insert_input!) {
   insert_eventPassPendingOrder_one(
@@ -167,6 +155,32 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
+ const UpsertEventPassPendingOrdersDocument = `
+    mutation UpsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!, $stage: Stage!) {
+  insert_eventPassPendingOrder(
+    objects: $objects
+    on_conflict: {constraint: eventPassPendingOrder_eventPassId_accountId_key, update_columns: [quantity]}
+  ) {
+    returning {
+      id
+      eventPassId
+      quantity
+      created_at
+      eventPassPricing {
+        timeBeforeDelete
+      }
+      eventPass(locales: [en], stage: $stage) {
+        event {
+          slug
+          organizer {
+            slug
+          }
+        }
+      }
+    }
+  }
+}
+    `;
  const DeleteEventPassPendingOrderDocument = `
     mutation DeleteEventPassPendingOrder($eventPassPendingOrderId: uuid!) {
   delete_eventPassPendingOrder_by_pk(id: $eventPassPendingOrderId) {
@@ -177,6 +191,13 @@ export const EventPassNftFieldsFragmentDoc = `
  const DeleteEventPassPendingOrdersDocument = `
     mutation DeleteEventPassPendingOrders($eventPassIds: [String!]!) {
   delete_eventPassPendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
+    affected_rows
+  }
+}
+    `;
+ const DeleteAllEventPassPendingOrdersDocument = `
+    mutation DeleteAllEventPassPendingOrders {
+  delete_eventPassPendingOrder(where: {}) {
     affected_rows
   }
 }
@@ -369,17 +390,20 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventPassOrdersConfirmedOrCompletedForEventPassIds(variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery> {
       return requester<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery>;
     },
-    InsertEventPassPendingOrders(variables: Types.InsertEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.InsertEventPassPendingOrdersMutation> {
-      return requester<Types.InsertEventPassPendingOrdersMutation, Types.InsertEventPassPendingOrdersMutationVariables>(InsertEventPassPendingOrdersDocument, variables, options) as Promise<Types.InsertEventPassPendingOrdersMutation>;
-    },
     UpsertEventPassPendingOrder(variables: Types.UpsertEventPassPendingOrderMutationVariables, options?: C): Promise<Types.UpsertEventPassPendingOrderMutation> {
       return requester<Types.UpsertEventPassPendingOrderMutation, Types.UpsertEventPassPendingOrderMutationVariables>(UpsertEventPassPendingOrderDocument, variables, options) as Promise<Types.UpsertEventPassPendingOrderMutation>;
+    },
+    UpsertEventPassPendingOrders(variables: Types.UpsertEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.UpsertEventPassPendingOrdersMutation> {
+      return requester<Types.UpsertEventPassPendingOrdersMutation, Types.UpsertEventPassPendingOrdersMutationVariables>(UpsertEventPassPendingOrdersDocument, variables, options) as Promise<Types.UpsertEventPassPendingOrdersMutation>;
     },
     DeleteEventPassPendingOrder(variables: Types.DeleteEventPassPendingOrderMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrderMutation> {
       return requester<Types.DeleteEventPassPendingOrderMutation, Types.DeleteEventPassPendingOrderMutationVariables>(DeleteEventPassPendingOrderDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrderMutation>;
     },
     DeleteEventPassPendingOrders(variables: Types.DeleteEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrdersMutation> {
       return requester<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrdersMutation>;
+    },
+    DeleteAllEventPassPendingOrders(variables?: Types.DeleteAllEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteAllEventPassPendingOrdersMutation> {
+      return requester<Types.DeleteAllEventPassPendingOrdersMutation, Types.DeleteAllEventPassPendingOrdersMutationVariables>(DeleteAllEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteAllEventPassPendingOrdersMutation>;
     },
     GetEventPassPendingOrderForEventPass(variables: Types.GetEventPassPendingOrderForEventPassQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrderForEventPassQuery> {
       return requester<Types.GetEventPassPendingOrderForEventPassQuery, Types.GetEventPassPendingOrderForEventPassQueryVariables>(GetEventPassPendingOrderForEventPassDocument, variables, options) as Promise<Types.GetEventPassPendingOrderForEventPassQuery>;

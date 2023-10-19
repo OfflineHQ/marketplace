@@ -1,12 +1,16 @@
+import env from '@env/server';
+import { userSdk } from '@gql/user/api';
 import { Cache } from '@next/cache';
 import { getUnauthenticatedUserCookie } from '@next/next-auth/user';
 import { produce } from 'immer';
 
+import { UserPassPendingOrder } from '@features/cart-types';
 import type {
   AllPassesCart,
   EventPassCart,
   EventSlugs,
 } from '@features/organizer/event-types';
+import { Stage } from '@gql/shared/types';
 
 interface GetPassCartProps extends EventSlugs {
   eventPassId: string;
@@ -144,5 +148,23 @@ export class PassCache {
       (p) => p.eventPassId === eventPassId,
     );
     return pass || null;
+  }
+
+  async transferPassesCartToDb(): Promise<UserPassPendingOrder[] | null> {
+    const passesCart = await this.getAllPassesCart();
+    if (!passesCart) {
+      return null;
+    }
+
+    const passes = Object.values(passesCart).flatMap((eventPasses) =>
+      Object.values(eventPasses).flatMap((passes) => passes),
+    );
+    const res = await userSdk.UpsertEventPassPendingOrders({
+      objects: passes,
+      stage: env.HYGRAPH_STAGE as Stage,
+    });
+    await this.deleteAllPassesCart();
+
+    return res?.insert_eventPassPendingOrder?.returning || null;
   }
 }
