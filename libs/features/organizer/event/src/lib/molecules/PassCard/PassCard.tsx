@@ -15,19 +15,18 @@ import {
 } from '@ui/components';
 import React from 'react';
 
-import { defaultLocale, messages, type Locale } from '@next/i18n';
-import { deepPick } from '@utils';
-import { NextIntlClientProvider, useLocale } from 'next-intl';
 import Image from 'next/image';
 
 import { ConvertedCurrency } from '@next/currency';
 
 import type { EventPass } from '@features/organizer/event-types';
+import { useTranslations } from 'next-intl';
 import { PassOptions } from '../PassOptions/PassOptions';
 import { PassCardSelect, PassCardSelectProps } from './PassCardSelect';
 
 export interface PassCardProps extends EventPass, PassCardSelectProps {
   className?: string;
+  hasConfirmedPasses?: boolean;
 }
 
 export const PassCard: React.FC<PassCardProps> = ({
@@ -37,13 +36,10 @@ export const PassCard: React.FC<PassCardProps> = ({
   passOptions,
   nftImage,
   className,
+  hasConfirmedPasses,
   ...props
 }) => {
-  const _locale = useLocale();
-  const locale: Locale = (_locale as Locale) || defaultLocale;
-  const localeMessages = deepPick(messages[locale], [
-    'Organizer.Event.PassPurchase.Pass',
-  ]);
+  const t = useTranslations('Organizer.Event.PassPurchase.Pass');
   return (
     <Card className={`flex h-fit flex-col justify-between ${className}`}>
       <CardHeader>
@@ -68,9 +64,9 @@ export const PassCard: React.FC<PassCardProps> = ({
           currency={eventPassPricing?.priceCurrency}
           amount={eventPassPricing?.priceAmount || 0}
         />
-        <NextIntlClientProvider locale={locale} messages={localeMessages}>
+        {hasConfirmedPasses ? null : (
           <PassCardSelect {...props} eventPassPricing={eventPassPricing} />
-        </NextIntlClientProvider>
+        )}
       </CardFooter>
     </Card>
   );

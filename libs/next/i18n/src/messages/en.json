@@ -176,7 +176,8 @@
           "total": {
             "pass-selected": "{totalPasses, plural, =1 {# pass selected} other {# passes selected}}",
             "price": "Total Price: {totalPrice}"
-          }
+          },
+          "finalize-payment": "Finalize my purchase"
         }
       }
     },
