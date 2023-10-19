@@ -6,7 +6,7 @@ import {
 import {
   getEventPassOrdersConfirmed,
   getEventPassPendingOrdersMinimal,
-} from '@features/cart/server';
+} from '@features/cart-api';
 import { getCurrentUser } from '@next/next-auth/user';
 import { Suspense } from 'react';
 

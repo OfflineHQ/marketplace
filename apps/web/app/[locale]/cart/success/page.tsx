@@ -35,7 +35,7 @@ export default async function CartPurchase({
   return <div>Cart Purchase Successfull</div>;
   // let session = await getStripeActiveCheckoutSession();
   // if (!session) {
-  //   const pendingOrders = await getEventPassPendingOrders({ locale });
+  //   const pendingOrders = await getEventPassPendingOrders();
   //   if (!pendingOrders?.length) redirect('/cart');
   //   session = await createStripeCheckoutSession({
   //     locale,
