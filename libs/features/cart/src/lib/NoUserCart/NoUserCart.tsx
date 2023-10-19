@@ -1,27 +1,24 @@
-import { useTranslations } from 'next-intl';
-import React from 'react';
 import {
   Card,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-  CardOverflow,
   CardContent,
-  CardOverlay,
   CardDescription,
+  CardFooter,
+  CardHeader,
+  CardOverflow,
+  CardOverlay,
+  CardTitle,
 } from '@ui/components';
-import { NoUserCartFooterClient } from './NoUserCartFooterClient';
+import { useTranslations } from 'next-intl';
+import React from 'react';
 import {
   LocalPassList,
   type LocalPassListProps,
 } from '../LocalPassList/LocalPassList';
+import { NoUserCartFooterClient } from './NoUserCartFooterClient';
 
 export type NoUserCartProps = LocalPassListProps;
 
-export const NoUserCart: React.FC<NoUserCartProps> = ({
-  EventPassesFetcher,
-  noCartImage,
-}) => {
+export const NoUserCart: React.FC<NoUserCartProps> = ({ noCartImage }) => {
   const t = useTranslations('Cart.NoUserCart');
   return (
     <section className="container">
@@ -32,10 +29,7 @@ export const NoUserCart: React.FC<NoUserCartProps> = ({
             <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
           <CardContent className="px-1">
-            <LocalPassList
-              EventPassesFetcher={EventPassesFetcher}
-              noCartImage={noCartImage}
-            />
+            <LocalPassList noCartImage={noCartImage} />
           </CardContent>
         </CardOverflow>
         <CardOverlay />
