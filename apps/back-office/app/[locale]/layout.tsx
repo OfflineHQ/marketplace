@@ -1,3 +1,5 @@
+import { Analytics } from '@back-office/components/Analytics';
+import { siteConfig } from '@back-office/config/site';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { getMessages, locales } from '@next/i18n';
 import { ReactQueryProviders } from '@next/react-query';
@@ -5,14 +7,13 @@ import { UploaderProvider } from '@next/uploader-provider';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
-import { Analytics } from '@back-office/components/Analytics';
-import { siteConfig } from '@back-office/config/site';
 import { Metadata } from 'next';
 import { createTranslator } from 'next-intl';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 import { ProfileNavClient } from '../../components/ProfileNavClient/ProfileNavClient';
+import { getSession } from 'next-auth/react';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -57,6 +58,7 @@ export default async function RootLayout({
   // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale as any)) notFound();
   const messages = await getMessages(locale);
+  const session = await getSession();
   const t = createTranslator({ locale, messages });
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -69,7 +71,7 @@ export default async function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <NextAuthProvider>
+          <NextAuthProvider session={session}>
             <AuthProvider
               messages={{
                 userClosedPopup: {
@@ -90,6 +92,7 @@ export default async function RootLayout({
                   tryAgainButton: t('Auth.siwe-declined.try-again-button'),
                 },
               }}
+              session={session}
             >
               <UploaderProvider>
                 <ReactQueryProviders>
