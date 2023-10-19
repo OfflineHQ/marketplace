@@ -140,7 +140,6 @@ describe('Payment integration', () => {
 
       // Verify the eventPassPendingOrders are deleted
       const data = await alphaUser.GetEventPassPendingOrders({
-        locale,
         stage: 'DRAFT' as Stage,
       });
       const orders = data.eventPassPendingOrder;
