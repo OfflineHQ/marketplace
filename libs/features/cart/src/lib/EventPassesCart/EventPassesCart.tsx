@@ -11,7 +11,7 @@ import {
   EventPassList,
   EventPassListSkeleton,
 } from '../EventPassList/EventPassList';
-const passeCache = new PassCache();
+const passCache = new PassCache();
 
 export interface EventPassesCartProps {
   noCartImage: string | StaticImageData;
@@ -46,7 +46,7 @@ const EventPassesCartContent: React.FC<EventPassesCartProps> = async ({
         },
         {} as Record<string, Record<string, EventPassCart[]>>,
       )
-    : await passeCache.getAllPassesCart();
+    : await passCache.getAllPassesCart();
   const isCartEmpty = Object.values(allPassesCart || {}).every((organizer) =>
     Object.values(organizer).every((event) => event.length === 0),
   );
