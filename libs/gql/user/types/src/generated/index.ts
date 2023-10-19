@@ -87,12 +87,11 @@ export type GetEventPassPendingOrderForEventPassesQueryVariables = Types.Exact<{
 export type GetEventPassPendingOrderForEventPassesQuery = { __typename?: 'query_root', eventPassPendingOrder: Array<{ __typename?: 'eventPassPendingOrder', id: any, eventPassId: string, quantity: number, created_at: any }> };
 
 export type GetEventPassPendingOrdersQueryVariables = Types.Exact<{
-  locale: Types.Locale;
   stage: Types.Stage;
 }>;
 
 
-export type GetEventPassPendingOrdersQuery = { __typename?: 'query_root', eventPassPendingOrder: Array<{ __typename?: 'eventPassPendingOrder', id: any, eventPassId: string, quantity: number, created_at: any, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> };
+export type GetEventPassPendingOrdersQuery = { __typename?: 'query_root', eventPassPendingOrder: Array<{ __typename?: 'eventPassPendingOrder', id: any, eventPassId: string, quantity: number, created_at: any, eventPassPricing?: { __typename?: 'eventPassPricing', timeBeforeDelete: number } | null, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> };
 
 export type GetEventPassPendingOrdersMinimalQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
