@@ -1,4 +1,4 @@
-import { getEventPassPendingOrders } from '@features/cart/server';
+import { getEventPassPendingOrders } from '@features/cart-api';
 import {
   createStripeCheckoutSession,
   getStripeActiveCheckoutSession,
@@ -22,7 +22,7 @@ export default async function CartPurchase({
   if (!isUserKycValidated(user)) redirect('/cart');
   let session = await getStripeActiveCheckoutSession();
   if (!session) {
-    const pendingOrders = await getEventPassPendingOrders({ locale });
+    const pendingOrders = await getEventPassPendingOrders();
     if (!pendingOrders?.length) redirect('/');
     session = await createStripeCheckoutSession({
       locale,

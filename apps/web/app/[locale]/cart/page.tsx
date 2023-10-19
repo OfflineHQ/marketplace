@@ -1,16 +1,17 @@
 export const dynamic = 'force-dynamic';
-import { EventPassesAnonymous, EventPassesUser } from '@features/cart';
+import {
+  getEventPassOrdersConfirmed,
+  getEventPassPendingOrders,
+} from '@features/cart-api';
 import {
   NoUserCart,
   UserCart,
-  UserCartProps,
-  getEventPassOrdersConfirmed,
-  getEventPassPendingOrders,
+  type UserCartProps,
 } from '@features/cart/server';
 import { SumsubButton } from '@features/kyc/server';
 import { Locale } from '@gql/shared/types';
 import { isUserKycValidated } from '@kyc/common';
-import { Link, redirect } from '@next/navigation';
+import { Link } from '@next/navigation';
 import { getCurrentUser } from '@next/next-auth/user';
 import { AppUser } from '@next/types';
 import { Button } from '@ui/components';
@@ -39,9 +40,6 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
   const isEmptyCart = !userPassPendingOrders?.length;
   return user ? (
     <UserCart
-      user={user}
-      EventPassesFetcher={EventPassesUser}
-      locale={locale}
       userPassPendingOrders={userPassPendingOrders}
       noCartImage="/empty-cart.svg"
     >
@@ -63,10 +61,7 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
       )}
     </UserCart>
   ) : (
-    <NoUserCart
-      EventPassesFetcher={EventPassesAnonymous}
-      noCartImage="/empty-cart.svg"
-    />
+    <NoUserCart noCartImage="/empty-cart.svg" />
   );
 };
 
@@ -75,11 +70,14 @@ export default async function CartSection({
 }: CartSectionProps) {
   const user = await getCurrentUser();
   if (!user) return <CartSectionContent user={user} locale={locale} />;
-  const userPassPendingOrders = await getEventPassPendingOrders({ locale });
+  // TODO: check if user has pending orders, if he have none check for the cache
+  // if get passes in cache, transfer it to pending orders if the event sale is not finished and then delete the cache.
+  // Do this in the pass-cache lib, execute this also in the event purchase page.
+  const userPassPendingOrders = await getEventPassPendingOrders();
   const userPassConfirmedOrders = await getEventPassOrdersConfirmed();
-  if (userPassConfirmedOrders?.length) {
-    redirect('/cart/purchase');
-  }
+  // if (userPassConfirmedOrders?.length) {
+  //   redirect('/cart/purchase');
+  // }
   return (
     <CartSectionContent
       user={user}
