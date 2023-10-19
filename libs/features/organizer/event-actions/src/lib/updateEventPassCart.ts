@@ -21,18 +21,30 @@ export async function updateEventPassCart({
 }: UpdateEventPassCartProps) {
   const user = await getCurrentUser();
   if (!user) {
-    await passeCache.updatePassCart({
-      organizerSlug,
-      eventSlug,
-      pass: { eventPassId, quantity },
-    });
-  } else {
-    await userSdk.UpsertEventPassPendingOrder({
-      object: {
+    if (quantity === 0) {
+      await passeCache.deletePassCart({
+        organizerSlug,
+        eventSlug,
         eventPassId,
-        quantity,
-      },
-    });
+      });
+    } else
+      await passeCache.updatePassCart({
+        organizerSlug,
+        eventSlug,
+        pass: { eventPassId, quantity },
+      });
+  } else {
+    if (quantity === 0) {
+      await userSdk.DeleteEventPassPendingOrders({
+        eventPassIds: [eventPassId],
+      });
+    } else
+      await userSdk.UpsertEventPassPendingOrder({
+        object: {
+          eventPassId,
+          quantity,
+        },
+      });
   }
   // give a 404 error, server action bug ?
   // revalidateTag(`getEventPassOrderSum-${eventPassId}`);
