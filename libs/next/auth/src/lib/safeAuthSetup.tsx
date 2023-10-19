@@ -25,6 +25,7 @@ import { SiweMessage } from 'siwe';
 import env from '@env/client';
 import { ExternalProvider } from '@ethersproject/providers';
 import { handleUnauthenticatedUser } from '@next/next-auth/user';
+import { Session } from 'next-auth';
 import { useLocale } from 'next-intl';
 import { useTheme } from 'next-themes';
 
@@ -85,6 +86,7 @@ export interface UseSafeAuthProps {
       tryAgainButton: string;
     };
   };
+  session?: Session | null;
 }
 
 export function useSafeAuth(props: UseSafeAuthProps = {}) {
@@ -97,7 +99,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   const { toast } = useToast();
   const router = useRouter();
   const locale = useLocale();
-  const { data: session } = useSession();
+  const { status } = useSession();
   const messages = props.messages;
 
   const web3AuthErrorHandler = useCallback(
@@ -302,8 +304,8 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   );
 
   async function finishLogin() {
-    console.log('provider connected:', { session });
-    if (!session?.user) {
+    if (status === 'unauthenticated' && !props.session?.user) {
+      console.log('Signing in with SIWE...');
       const web3Provider = new ethers.providers.Web3Provider(
         safeAuth?.getProvider() as ethers.providers.ExternalProvider,
       );
@@ -329,7 +331,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
     })();
     // Avoid putting the rest of dependencies in the array, it will cause an infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [provider, session?.user]);
+  }, [provider, props?.session?.user]);
 
   useEffect(() => {
     (async () => {
