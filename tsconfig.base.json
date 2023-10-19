@@ -10,38 +10,19 @@
     "importHelpers": true,
     "target": "es2022",
     "module": "esnext",
-    "lib": [
-      "es2022",
-      "dom"
-    ],
+    "lib": ["es2022", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@back-office/*": [
-        "apps/back-office/*"
-      ],
-      "@crypto": [
-        "libs/crypto/src/index.ts"
-      ],
-      "@currency/api": [
-        "libs/currency/api/src/index.ts"
-      ],
-      "@currency/types": [
-        "libs/currency/types/src/index.ts"
-      ],
-      "@env/client": [
-        "libs/env/client/src/index.mjs"
-      ],
-      "@env/server": [
-        "libs/env/server/src/index.mjs"
-      ],
-      "@features/account/api": [
-        "libs/features/account/api/src/index.ts"
-      ],
-      "@features/appNav/ui": [
-        "libs/features/appNav/ui/src/index.ts"
-      ],
+      "@back-office/*": ["apps/back-office/*"],
+      "@crypto": ["libs/crypto/src/index.ts"],
+      "@currency/api": ["libs/currency/api/src/index.ts"],
+      "@currency/types": ["libs/currency/types/src/index.ts"],
+      "@env/client": ["libs/env/client/src/index.mjs"],
+      "@env/server": ["libs/env/server/src/index.mjs"],
+      "@features/account/api": ["libs/features/account/api/src/index.ts"],
+      "@features/appNav/ui": ["libs/features/appNav/ui/src/index.ts"],
       "@features/appNav/ui/stories": [
         "libs/features/appNav/ui/src/stories.tsx"
       ],
@@ -57,33 +38,15 @@
       "@features/back-office/dashboard/server": [
         "libs/features/back-office/dashboard/src/server.ts"
       ],
-      "@features/cart": [
-        "libs/features/cart/src/index.ts"
-      ],
-      "@features/cart-actions": [
-        "libs/features/cart-actions/src/index.ts"
-      ],
-      "@features/cart-api": [
-        "libs/features/cart-api/src/index.ts"
-      ],
-      "@features/cart-types": [
-        "libs/features/cart-types/src/index.ts"
-      ],
-      "@features/cart/server": [
-        "libs/features/cart/src/server.ts"
-      ],
-      "@features/kyc": [
-        "libs/features/kyc/src/index.ts"
-      ],
-      "@features/kyc-actions": [
-        "libs/features/kyc-actions/src/index.ts"
-      ],
-      "@features/kyc-api": [
-        "libs/features/kyc-api/src/index.ts"
-      ],
-      "@features/kyc/server": [
-        "libs/features/kyc/src/server.ts"
-      ],
+      "@features/cart": ["libs/features/cart/src/index.ts"],
+      "@features/cart-actions": ["libs/features/cart-actions/src/index.ts"],
+      "@features/cart-api": ["libs/features/cart-api/src/index.ts"],
+      "@features/cart-types": ["libs/features/cart-types/src/index.ts"],
+      "@features/cart/server": ["libs/features/cart/src/server.ts"],
+      "@features/kyc": ["libs/features/kyc/src/index.ts"],
+      "@features/kyc-actions": ["libs/features/kyc-actions/src/index.ts"],
+      "@features/kyc-api": ["libs/features/kyc-api/src/index.ts"],
+      "@features/kyc/server": ["libs/features/kyc/src/server.ts"],
       "@features/organizer/event": [
         "libs/features/organizer/event/src/index.ts"
       ],
@@ -105,252 +68,91 @@
       "@features/organizer/event/store": [
         "libs/features/organizer/event/src/lib/store"
       ],
-      "@features/pass": [
-        "libs/features/pass/src/index.ts"
-      ],
-      "@features/pass-actions": [
-        "libs/features/pass-actions/src/index.ts"
-      ],
-      "@features/pass-api": [
-        "libs/features/pass-api/src/index.ts"
-      ],
-      "@features/pass-cache": [
-        "libs/features/pass-cache/src/index.ts"
-      ],
-      "@features/pass-common": [
-        "libs/features/pass-common/src/index.ts"
-      ],
-      "@features/pass-types": [
-        "libs/features/pass-types/src/index.ts"
-      ],
-      "@features/pass/server": [
-        "libs/features/pass/src/server.ts"
-      ],
-      "@features/payment-api": [
-        "libs/features/payment-api/src/index.ts"
-      ],
-      "@features/settings": [
-        "libs/features/settings/src/index.ts"
-      ],
-      "@features/settings/server": [
-        "libs/features/settings/src/server.ts"
-      ],
-      "@file-upload/admin": [
-        "libs/file-upload/admin/src/index.ts"
-      ],
-      "@file-upload/user": [
-        "libs/file-upload/user/src/index.ts"
-      ],
-      "@gql/admin/api": [
-        "libs/gql/admin/api/src/index.ts"
-      ],
-      "@gql/admin/types": [
-        "libs/gql/admin/types/src/index.ts"
-      ],
-      "@gql/anonymous/api": [
-        "libs/gql/anonymous/api/src/index.ts"
-      ],
+      "@features/pass": ["libs/features/pass/src/index.ts"],
+      "@features/pass-actions": ["libs/features/pass-actions/src/index.ts"],
+      "@features/pass-api": ["libs/features/pass-api/src/index.ts"],
+      "@features/pass-cache": ["libs/features/pass-cache/src/index.ts"],
+      "@features/pass-common": ["libs/features/pass-common/src/index.ts"],
+      "@features/pass-types": ["libs/features/pass-types/src/index.ts"],
+      "@features/pass/server": ["libs/features/pass/src/server.ts"],
+      "@features/payment-api": ["libs/features/payment-api/src/index.ts"],
+      "@features/settings": ["libs/features/settings/src/index.ts"],
+      "@features/settings/server": ["libs/features/settings/src/server.ts"],
+      "@file-upload/admin": ["libs/file-upload/admin/src/index.ts"],
+      "@file-upload/user": ["libs/file-upload/user/src/index.ts"],
+      "@gql/admin/api": ["libs/gql/admin/api/src/index.ts"],
+      "@gql/admin/types": ["libs/gql/admin/types/src/index.ts"],
+      "@gql/anonymous/api": ["libs/gql/anonymous/api/src/index.ts"],
       "@gql/anonymous/react-query": [
         "libs/gql/anonymous/react-query/src/index.ts"
       ],
-      "@gql/anonymous/types": [
-        "libs/gql/anonymous/types/src/index.ts"
-      ],
-      "@gql/shared/types": [
-        "libs/gql/shared/types/src/index.ts"
-      ],
-      "@gql/user/api": [
-        "libs/gql/user/api/src/index.ts"
-      ],
-      "@gql/user/react-query": [
-        "libs/gql/user/react-query/src/index.ts"
-      ],
-      "@gql/user/types": [
-        "libs/gql/user/types/src/index.ts"
-      ],
-      "@indexer/alchemy/admin": [
-        "libs/indexer/alchemy/admin/src/index.ts"
-      ],
-      "@indexer/alchemy/types": [
-        "libs/indexer/alchemy/types/src/index.ts"
-      ],
+      "@gql/anonymous/types": ["libs/gql/anonymous/types/src/index.ts"],
+      "@gql/shared/types": ["libs/gql/shared/types/src/index.ts"],
+      "@gql/user/api": ["libs/gql/user/api/src/index.ts"],
+      "@gql/user/react-query": ["libs/gql/user/react-query/src/index.ts"],
+      "@gql/user/types": ["libs/gql/user/types/src/index.ts"],
+      "@indexer/alchemy/admin": ["libs/indexer/alchemy/admin/src/index.ts"],
+      "@indexer/alchemy/types": ["libs/indexer/alchemy/types/src/index.ts"],
       "@indexer/alchemy/webhooks": [
         "libs/indexer/alchemy/webhooks/src/index.ts"
       ],
-      "@kyc/admin": [
-        "libs/kyc/admin/src/index.ts"
-      ],
-      "@kyc/common": [
-        "libs/features/kyc-common/src/index.ts"
-      ],
-      "@kyc/types": [
-        "libs/kyc/types/src/index.ts"
-      ],
-      "@kyc/webhooks": [
-        "libs/kyc/webhooks/src/index.ts"
-      ],
-      "@logger": [
-        "libs/logger/src/index.ts"
-      ],
-      "@next/auth": [
-        "libs/next/auth/src/index.ts"
-      ],
-      "@next/cache": [
-        "libs/next/cache/src/index.ts"
-      ],
-      "@next/currency": [
-        "libs/next/currency/src/index.ts"
-      ],
-      "@next/currency-cache": [
-        "libs/next/currency-cache/src/index.ts"
-      ],
-      "@next/currency-common": [
-        "libs/next/currency-common/src/index.ts"
-      ],
-      "@next/currency-provider": [
-        "libs/next/currency-provider/src/index.ts"
-      ],
-      "@next/date": [
-        "libs/next/date/src/index.ts"
-      ],
-      "@next/hasura/api": [
-        "libs/next/hasura/api/src/index.ts"
-      ],
-      "@next/hasura/react-query": [
-        "libs/next/hasura/react-query/src/index.ts"
-      ],
-      "@next/hasura/utils": [
-        "libs/next/hasura/utils/src/index.ts"
-      ],
-      "@next/hygraph": [
-        "libs/next/hygraph/src/index.ts"
-      ],
-      "@next/hygraph/examples": [
-        "libs/next/hygraph/src/examples.tsx"
-      ],
-      "@next/i18n": [
-        "libs/next/i18n/src/index.ts"
-      ],
-      "@next/navigation": [
-        "libs/next/navigation/src/index.ts"
-      ],
-      "@next/next-auth/common": [
-        "libs/next/next-auth/common/src/index.ts"
-      ],
-      "@next/next-auth/options": [
-        "libs/next/next-auth/options/src/index.ts"
-      ],
-      "@next/next-auth/user": [
-        "libs/next/next-auth/user/src/index.ts"
-      ],
-      "@next/react-query": [
-        "libs/next/react-query/src/index.ts"
-      ],
-      "@next/safe/auth": [
-        "libs/next/safe/auth/src/index.ts"
-      ],
-      "@next/siwe/provider": [
-        "libs/next/siwe/provider/src/index.ts"
-      ],
-      "@next/store": [
-        "libs/next/store/src/index.ts"
-      ],
-      "@next/types": [
-        "libs/next/types/src/index.ts"
-      ],
-      "@next/uploader-provider": [
-        "libs/next/uploader-provider/src/index.ts"
-      ],
-      "@next/zustand": [
-        "libs/next/zustand/src/index.ts"
-      ],
-      "@nft/eventPass": [
-        "libs/nft/eventPass/src/index.ts"
-      ],
-      "@nft/thirdweb-admin": [
-        "libs/nft/thirdweb-admin/src/index.ts"
-      ],
-      "@nft/thirdweb-organizer": [
-        "libs/nft/thirdweb-organizer/src/index.ts"
-      ],
-      "@nft/types": [
-        "libs/nft/types/src/index.ts"
-      ],
-      "@payment/admin": [
-        "libs/payment/admin/src/index.ts"
-      ],
-      "@payment/types": [
-        "libs/payment/types/src/index.ts"
-      ],
-      "@payment/webhooks": [
-        "libs/payment/webhooks/src/index.ts"
-      ],
-      "@server/task": [
-        "libs/server/task/src/index.ts"
-      ],
-      "@shared/client": [
-        "libs/shared/client/src/index.ts"
-      ],
-      "@shared/server": [
-        "libs/shared/server/src/index.ts"
-      ],
-      "@test-utils/cache": [
-        "libs/test-utils/cache/src/index.ts"
-      ],
-      "@test-utils/db": [
-        "libs/test-utils/db/src/index.ts"
-      ],
-      "@test-utils/functions": [
-        "libs/test-utils/functions/src/index.ts"
-      ],
-      "@test-utils/gql": [
-        "libs/test-utils/gql/src/index.ts"
-      ],
-      "@test-utils/hasura": [
-        "libs/test-utils/hasura/src/index.ts"
-      ],
-      "@test-utils/next-intl": [
-        "libs/test-utils/next-intl/src/index.tsx"
-      ],
-      "@test-utils/react-query": [
-        "libs/test-utils/react-query/src/index.tsx"
-      ],
-      "@ui/components": [
-        "libs/ui/components/src/index.ts"
-      ],
-      "@ui/hooks": [
-        "libs/ui/hooks/src/index.ts"
-      ],
-      "@ui/icons": [
-        "libs/ui/icons/src/index.ts"
-      ],
-      "@ui/shared": [
-        "libs/ui/shared/src/index.ts"
-      ],
-      "@ui/theme": [
-        "libs/ui/theme/src/index.ts"
-      ],
-      "@utils": [
-        "libs/utils/src/index.ts"
-      ],
-      "@web/*": [
-        "apps/web/*"
-      ],
-      "@workspace": [
-        "libs/workspace/src/index.ts"
-      ]
+      "@kyc/admin": ["libs/kyc/admin/src/index.ts"],
+      "@kyc/common": ["libs/features/kyc-common/src/index.ts"],
+      "@kyc/types": ["libs/kyc/types/src/index.ts"],
+      "@kyc/webhooks": ["libs/kyc/webhooks/src/index.ts"],
+      "@logger": ["libs/logger/src/index.ts"],
+      "@next/auth": ["libs/next/auth/src/index.ts"],
+      "@next/cache": ["libs/next/cache/src/index.ts"],
+      "@next/currency": ["libs/next/currency/src/index.ts"],
+      "@next/currency-cache": ["libs/next/currency-cache/src/index.ts"],
+      "@next/currency-common": ["libs/next/currency-common/src/index.ts"],
+      "@next/currency-provider": ["libs/next/currency-provider/src/index.ts"],
+      "@next/date": ["libs/next/date/src/index.ts"],
+      "@next/hasura/api": ["libs/next/hasura/api/src/index.ts"],
+      "@next/hasura/react-query": ["libs/next/hasura/react-query/src/index.ts"],
+      "@next/hasura/utils": ["libs/next/hasura/utils/src/index.ts"],
+      "@next/hygraph": ["libs/next/hygraph/src/index.ts"],
+      "@next/hygraph/examples": ["libs/next/hygraph/src/examples.tsx"],
+      "@next/i18n": ["libs/next/i18n/src/index.ts"],
+      "@next/navigation": ["libs/next/navigation/src/index.ts"],
+      "@next/next-auth/common": ["libs/next/next-auth/common/src/index.ts"],
+      "@next/next-auth/options": ["libs/next/next-auth/options/src/index.ts"],
+      "@next/next-auth/user": ["libs/next/next-auth/user/src/index.ts"],
+      "@next/react-query": ["libs/next/react-query/src/index.ts"],
+      "@next/safe/auth": ["libs/next/safe/auth/src/index.ts"],
+      "@next/siwe/provider": ["libs/next/siwe/provider/src/index.ts"],
+      "@next/store": ["libs/next/store/src/index.ts"],
+      "@next/types": ["libs/next/types/src/index.ts"],
+      "@next/uploader-provider": ["libs/next/uploader-provider/src/index.ts"],
+      "@next/zustand": ["libs/next/zustand/src/index.ts"],
+      "@nft/eventPass": ["libs/nft/eventPass/src/index.ts"],
+      "@nft/thirdweb-admin": ["libs/nft/thirdweb-admin/src/index.ts"],
+      "@nft/thirdweb-organizer": ["libs/nft/thirdweb-organizer/src/index.ts"],
+      "@nft/types": ["libs/nft/types/src/index.ts"],
+      "@payment/admin": ["libs/payment/admin/src/index.ts"],
+      "@payment/types": ["libs/payment/types/src/index.ts"],
+      "@payment/webhooks": ["libs/payment/webhooks/src/index.ts"],
+      "@server/task": ["libs/server/task/src/index.ts"],
+      "@shared/client": ["libs/shared/client/src/index.ts"],
+      "@shared/server": ["libs/shared/server/src/index.ts"],
+      "@test-utils/cache": ["libs/test-utils/cache/src/index.ts"],
+      "@test-utils/db": ["libs/test-utils/db/src/index.ts"],
+      "@test-utils/functions": ["libs/test-utils/functions/src/index.ts"],
+      "@test-utils/gql": ["libs/test-utils/gql/src/index.ts"],
+      "@test-utils/hasura": ["libs/test-utils/hasura/src/index.ts"],
+      "@test-utils/next-intl": ["libs/test-utils/next-intl/src/index.tsx"],
+      "@test-utils/react-query": ["libs/test-utils/react-query/src/index.tsx"],
+      "@ui/components": ["libs/ui/components/src/index.ts"],
+      "@ui/hooks": ["libs/ui/hooks/src/index.ts"],
+      "@ui/icons": ["libs/ui/icons/src/index.ts"],
+      "@ui/shared": ["libs/ui/shared/src/index.ts"],
+      "@ui/theme": ["libs/ui/theme/src/index.ts"],
+      "@utils": ["libs/utils/src/index.ts"],
+      "@web/*": ["apps/web/*"],
+      "@workspace": ["libs/workspace/src/index.ts"]
     }
   },
-  "typeRoots": [
-    "types",
-    "node_modules/@types"
-  ],
-  "include": [
-    "**/*.ts",
-    "types/**/*.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "typeRoots": ["types", "node_modules/@types"],
+  "include": ["**/*.ts", "types/**/*.d.ts"],
+  "exclude": ["node_modules", "tmp"]
 }
