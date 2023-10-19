@@ -158,7 +158,7 @@ export const EventPassNftFieldsFragmentDoc = `
     mutation UpsertEventPassPendingOrder($object: eventPassPendingOrder_insert_input!) {
   insert_eventPassPendingOrder_one(
     object: $object
-    on_conflict: {constraint: eventPassPendingOrder_pkey, update_columns: [quantity]}
+    on_conflict: {constraint: eventPassPendingOrder_eventPassId_accountId_key, update_columns: [quantity]}
   ) {
     id
     quantity
