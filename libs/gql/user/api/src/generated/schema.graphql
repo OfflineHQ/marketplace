@@ -7665,6 +7665,7 @@ type eventPassPricing {
   maxAmountPerUser: Int
   priceAmount: Int!
   priceCurrency: currency_enum!
+  timeBeforeDelete: Int!
 }
 
 """
@@ -7679,6 +7680,7 @@ input eventPassPricing_bool_exp {
   maxAmountPerUser: Int_comparison_exp
   priceAmount: Int_comparison_exp
   priceCurrency: currency_enum_comparison_exp
+  timeBeforeDelete: Int_comparison_exp
 }
 
 """Ordering options when selecting data from "eventPassPricing"."""
@@ -7688,6 +7690,7 @@ input eventPassPricing_order_by {
   maxAmountPerUser: order_by
   priceAmount: order_by
   priceCurrency: order_by
+  timeBeforeDelete: order_by
 }
 
 """
@@ -7708,6 +7711,9 @@ enum eventPassPricing_select_column {
 
   """column name"""
   priceCurrency
+
+  """column name"""
+  timeBeforeDelete
 }
 
 """
@@ -7728,6 +7734,7 @@ input eventPassPricing_stream_cursor_value_input {
   maxAmountPerUser: Int
   priceAmount: Int
   priceCurrency: currency_enum
+  timeBeforeDelete: Int
 }
 
 scalar jsonb
