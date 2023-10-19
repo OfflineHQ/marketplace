@@ -3,7 +3,10 @@ import {
   PassPurchaseSheetContainer,
   PassPurchaseSheetSkeleton,
 } from '@features/organizer/event';
-import { getEventPasses } from '@features/organizer/event-api';
+import {
+  getEventPassOrdersConfirmed,
+  getEventPasses,
+} from '@features/organizer/event-api';
 import { getTranslator } from 'next-intl/server';
 import { Suspense } from 'react';
 import EventSection from '../../../page';
@@ -42,6 +45,7 @@ const PurchaseSectionContent: React.FC<PurchaseSectionContentProps> = async ({
 }) => {
   const t = await getTranslator(locale, 'Organizer.Event.PassPurchase');
   const passes = await getEventPasses({ eventSlug, locale });
+  const confirmedPasses = await getEventPassOrdersConfirmed();
   return (
     <PassPurchaseSheet
       passes={passes}
@@ -53,6 +57,7 @@ const PurchaseSectionContent: React.FC<PurchaseSectionContentProps> = async ({
       goPaymentText={t('Footer.purchase-button')}
       goPaymentLink={{ href: '/cart' }}
       backButtonText={t('go-back-button')}
+      hasConfirmedPasses={!!confirmedPasses?.length}
     />
   );
 };
