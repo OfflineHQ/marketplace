@@ -305,7 +305,6 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
 
   async function finishLogin() {
     if (status === 'unauthenticated' && !props.session?.user) {
-      console.log('Signing in with SIWE...');
       const web3Provider = new ethers.providers.Web3Provider(
         safeAuth?.getProvider() as ethers.providers.ExternalProvider,
       );
