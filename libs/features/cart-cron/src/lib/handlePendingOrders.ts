@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { adminSdk } from '@gql/admin/api';
+import { NextResponse } from 'next/server';
 
 export default async function handler() {
   try {
@@ -20,7 +20,8 @@ export default async function handler() {
       const orderCreationTime = new Date(order.created_at).getTime() / 1000; // Convert to UNIX timestamp
 
       const deletionTime =
-        orderCreationTime + (order.eventPassPricing?.timeBeforeDelete || 14400); // default to 4 hours
+        orderCreationTime +
+        (order?.eventPassPricing?.timeBeforeDelete || 14400); // default to 4 hours
       if (currentTime >= deletionTime) {
         ordersToDelete.push(order.id);
         if (order.account?.address) {
