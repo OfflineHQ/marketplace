@@ -33,7 +33,6 @@ export const fetchData = (hasuraOpts: HasuraOpts = { admin: false }) => {
       // include the cookie because it's not sent by default in server side with next
       headers['Cookie'] = cookies().toString();
     }
-    console.log('fetchData', { doc, optsNext: opts?.next?.tags });
     const res = await fetch(getHasuraEndpoint(), {
       method: 'POST',
       headers,
