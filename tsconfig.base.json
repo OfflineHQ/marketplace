@@ -41,6 +41,7 @@
       "@features/cart": ["libs/features/cart/src/index.ts"],
       "@features/cart-actions": ["libs/features/cart-actions/src/index.ts"],
       "@features/cart-api": ["libs/features/cart-api/src/index.ts"],
+      "@features/cart-cron": ["libs/features/cart-cron/src/index.ts"],
       "@features/cart-types": ["libs/features/cart-types/src/index.ts"],
       "@features/cart/server": ["libs/features/cart/src/server.ts"],
       "@features/kyc": ["libs/features/kyc/src/index.ts"],
