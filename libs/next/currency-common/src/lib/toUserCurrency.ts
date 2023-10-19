@@ -23,8 +23,14 @@ export const toUserCurrency = (
       dinero: dineroObject,
       currency: userCurrency,
     };
-  const currencyRate = rates[userCurrency as string];
-  const convertedDinero = convert(dineroObject, toCurrency, currencyRate);
+  const currencyRate = rates[money.currency as string][toCurrency.code];
+  const adjustedRate = {
+    [toCurrency.code]: {
+      amount: Math.round(currencyRate * 10000),
+      scale: 4,
+    },
+  };
+  const convertedDinero = convert(dineroObject, toCurrency, adjustedRate);
   return {
     dinero: convertedDinero,
     currency: userCurrency,
