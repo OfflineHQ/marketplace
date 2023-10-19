@@ -1,26 +1,17 @@
 // PassPurchaseSheetContainer.tsx
+import { SheetContent, type SheetContentProps } from '@ui/components';
 import React from 'react';
-import {
-  type SheetProps,
-  type SheetContentProps,
-  Sheet,
-  SheetContent,
-} from '@ui/components';
 
-export interface PassPurchaseSheetContainerProps
-  extends Pick<SheetProps, 'open' | 'onOpenChange'>,
-    SheetContentProps {
+export interface PassPurchaseSheetContainerProps extends SheetContentProps {
   children?: React.ReactNode;
 }
 
 export const PassPurchaseSheetContainer: React.FC<
   PassPurchaseSheetContainerProps
-> = ({ open, onOpenChange, children, size = 'lg' }) => {
+> = ({ children, size = 'lg' }) => {
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent variant="stickyFooter" size={size}>
-        {children}
-      </SheetContent>
-    </Sheet>
+    <SheetContent variant="stickyFooter" size={size}>
+      {children}
+    </SheetContent>
   );
 };
