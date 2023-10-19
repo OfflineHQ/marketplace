@@ -1,5 +1,7 @@
 import { PassCache } from '@features/pass-cache';
 
+import { UserPassPendingOrder } from '@features/cart-types';
+import type { EventPassCart } from '@features/organizer/event-types';
 import { Alert } from '@ui/components';
 import { useLocale } from 'next-intl';
 import { getTranslator } from 'next-intl/server';
@@ -11,23 +13,40 @@ import {
 } from '../EventPassList/EventPassList';
 const passeCache = new PassCache();
 
-export interface LocalPassListProps {
+export interface EventPassesCartProps {
   noCartImage: string | StaticImageData;
+  userPassPendingOrders?: UserPassPendingOrder[];
 }
 
-export const LocalPassList: React.FC<LocalPassListProps> = ({
-  noCartImage,
-}) => (
+export const EventPassesCart: React.FC<EventPassesCartProps> = (props) => (
   <Suspense fallback={<EventPassListSkeleton />}>
-    <LocalPassListContent noCartImage={noCartImage} />
+    <EventPassesCartContent {...props} />
   </Suspense>
 );
 
-const LocalPassListContent: React.FC<LocalPassListProps> = async ({
+const EventPassesCartContent: React.FC<EventPassesCartProps> = async ({
   noCartImage,
+  userPassPendingOrders,
 }) => {
-  const allPassesCart = await passeCache.getAllPassesCart();
-  console.log({ allPassesCart });
+  const allPassesCart = userPassPendingOrders
+    ? userPassPendingOrders.reduce(
+        (acc, order) => {
+          const organizerSlug = order.eventPass?.event?.organizer?.slug;
+          const eventSlug = order.eventPass?.event?.slug;
+          if (organizerSlug && eventSlug) {
+            if (!acc[organizerSlug]) {
+              acc[organizerSlug] = {};
+            }
+            if (!acc[organizerSlug][eventSlug]) {
+              acc[organizerSlug][eventSlug] = [];
+            }
+            acc[organizerSlug][eventSlug].push(order);
+          }
+          return acc;
+        },
+        {} as Record<string, Record<string, EventPassCart[]>>,
+      )
+    : await passeCache.getAllPassesCart();
   const isCartEmpty = Object.values(allPassesCart || {}).every((organizer) =>
     Object.values(organizer).every((event) => event.length === 0),
   );
