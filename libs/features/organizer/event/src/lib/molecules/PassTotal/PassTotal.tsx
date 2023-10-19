@@ -1,4 +1,7 @@
+import { Money } from '@currency/types';
 import type { EventPass, EventPassCart } from '@features/organizer/event-types';
+import { Currency_Enum } from '@gql/shared/types';
+import { ConvertedCurrency } from '@next/currency';
 import { Text, TextSkeleton } from '@ui/components';
 import { useLocale } from 'next-intl';
 import { getTranslator } from 'next-intl/server';
@@ -24,6 +27,17 @@ export const PassTotalContent: React.FC<PassTotalProps> = async ({
   const totalPasses =
     passesCart?.reduce((acc, { quantity }) => acc + quantity, 0) || 0;
 
+  const money: Money = {
+    amount: 0,
+    currency:
+      passesData[0].eventPassPricing?.priceCurrency || Currency_Enum.Eur,
+  };
+  for (const { quantity, eventPassId } of passesCart) {
+    const pass = passesData.find(({ id }) => id === eventPassId);
+    if (pass) {
+      money.amount += quantity * (pass.eventPassPricing?.priceAmount || 0);
+    }
+  }
   const locale = useLocale();
   const t = await getTranslator(locale, 'Organizer.Event.PassPurchase.Footer');
   return (
@@ -33,12 +47,7 @@ export const PassTotalContent: React.FC<PassTotalProps> = async ({
           totalPasses,
         })}
       </Text>
-      {/* <ConvertedCurrency variant="h5" currency={} /> */}
-      {/* <Text variant="h5">
-        {t('total.price', {
-          totalPrice: formatCurrency(format, totalPrice, rates),
-        })}
-      </Text> */}
+      <ConvertedCurrency variant="h5" {...money} />
     </div>
   );
 };
