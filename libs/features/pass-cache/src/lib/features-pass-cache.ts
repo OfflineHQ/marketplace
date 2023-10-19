@@ -145,39 +145,4 @@ export class PassCache {
     );
     return pass || null;
   }
-
-  // async getPassesCartTotalPrice({
-  //   organizerSlug,
-  //   eventSlug,
-  //   passesData,
-  // }: GetPassesCartTotalPriceProps): Promise<Money> {
-  //   const passesCart = await this.getPassesCart({ organizerSlug, eventSlug });
-  //   if (!passesCart) {
-  //   }
-
-  //   const totalPrice = passesCart.reduce((acc, passCart) => {
-  //     const passData = passesData.find((pass) => pass.eventPassId === passCart.eventPassId);
-  //     if (!passData) {
-  //       return acc;
-  //     }
-
-  //     return acc + passData.price * passCart.quantity;
-  //   }, 0);
-
-  //   return totalPrice;
-  // }
-
-  async getPassesCartTotalPasses({
-    organizerSlug,
-    eventSlug,
-  }: EventSlugs): Promise<number> {
-    const passesCart = await this.getPassesCart({ organizerSlug, eventSlug });
-    if (!passesCart) {
-      return 0;
-    }
-
-    return passesCart.reduce((acc, passCart) => {
-      return acc + passCart.quantity;
-    }, 0);
-  }
 }
