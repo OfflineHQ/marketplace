@@ -1,7 +1,8 @@
+import { Event } from '@features/organizer/event';
 import { getEvent } from '@features/organizer/event-api';
 import type { Event as TEvent } from '@features/organizer/event-types';
-import { Event } from '@features/organizer/event';
 import { useTranslations } from 'next-intl';
+import { notFound } from 'next/navigation';
 interface EventSectionProps {
   params: {
     eventSlug: string;
@@ -14,9 +15,9 @@ export default async function EventSection({ params }: EventSectionProps) {
   const { eventSlug, organizerSlug, locale } = params;
 
   const event = await getEvent({ eventSlug, locale });
-  if (!event) {
-    // TODO redirect to 404
-    return null;
+  // in case the event is not found or the organizer slug is not the same as the one in the url redirect to 404
+  if (!event || event.organizer?.slug !== organizerSlug) {
+    return notFound();
   }
   return (
     <EventSectionContent
