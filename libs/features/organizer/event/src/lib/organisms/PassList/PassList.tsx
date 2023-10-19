@@ -1,13 +1,16 @@
+import type { EventPass } from '@features/organizer/event-types';
 import React from 'react';
 import {
   PassCard,
   PassCardProps,
   PassCardSkeleton,
 } from '../../molecules/PassCard/PassCard';
-import type { EventPass } from '@features/organizer/event-types';
 
 export interface PassListProps
-  extends Pick<PassCardProps, 'eventSlug' | 'organizerSlug'> {
+  extends Pick<
+    PassCardProps,
+    'eventSlug' | 'organizerSlug' | 'hasConfirmedPasses'
+  > {
   className?: string;
   passes: EventPass[];
 }
@@ -17,6 +20,7 @@ export const PassList: React.FC<PassListProps> = ({
   className,
   eventSlug,
   organizerSlug,
+  hasConfirmedPasses,
 }) => (
   <div
     className={`grid auto-rows-min grid-cols-1 gap-4 px-1 md:grid-cols-2 lg:grid-cols-3 ${className}`}
@@ -28,6 +32,7 @@ export const PassList: React.FC<PassListProps> = ({
         key={`${id}-${eventSlug}-${organizerSlug}`}
         eventSlug={eventSlug}
         organizerSlug={organizerSlug}
+        hasConfirmedPasses={hasConfirmedPasses}
       />
     ))}
   </div>
