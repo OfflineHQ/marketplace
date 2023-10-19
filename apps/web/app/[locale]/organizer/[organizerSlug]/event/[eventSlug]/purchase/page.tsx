@@ -1,5 +1,8 @@
 import { PassPurchaseCard } from '@features/organizer/event';
-import { getEventPasses } from '@features/organizer/event-api';
+import {
+  getEventPassOrdersConfirmed,
+  getEventPasses,
+} from '@features/organizer/event-api';
 import type { EventPass } from '@features/organizer/event-types';
 import { useTranslations } from 'next-intl';
 
@@ -16,12 +19,13 @@ export default async function PurchaseSection({
 }: PurchaseSectionProps) {
   const { eventSlug, organizerSlug, locale } = params;
   const passes = await getEventPasses({ eventSlug, locale });
-
+  const confirmedPasses = await getEventPassOrdersConfirmed();
   return (
     <PurchaseSectionContent
       passes={passes}
       eventSlug={eventSlug}
       organizerSlug={organizerSlug}
+      hasConfirmedPasses={!!confirmedPasses?.length}
     />
   );
 }
@@ -30,12 +34,14 @@ interface PurchaseSectionContentProps {
   passes: EventPass[];
   eventSlug: string;
   organizerSlug: string;
+  hasConfirmedPasses: boolean;
 }
 
 function PurchaseSectionContent({
   passes,
   eventSlug,
   organizerSlug,
+  hasConfirmedPasses,
 }: PurchaseSectionContentProps) {
   const t = useTranslations('Organizer.Event.PassPurchase');
   const backRoute = `/organizer/${organizerSlug}/event/${eventSlug}`;
@@ -47,8 +53,12 @@ function PurchaseSectionContent({
       eventSlug={eventSlug}
       title={t('title')}
       description={t('description')}
-      goPaymentText={t('Footer.purchase-button')}
-      goPaymentLink={{ href: '/cart' }}
+      goPaymentText={
+        hasConfirmedPasses
+          ? t('Footer.finalize-payment')
+          : t('Footer.purchase-button')
+      }
+      goPaymentLink={{ href: hasConfirmedPasses ? '/cart/purchase' : '/cart' }}
       backButtonText={t('see-event-button')}
       backButtonLink={{ href: backRoute }}
     />
