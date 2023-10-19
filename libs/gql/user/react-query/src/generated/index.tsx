@@ -335,13 +335,16 @@ export const useGetEventPassPendingOrderForEventPassesQuery = <
       options
     );
 export const GetEventPassPendingOrdersDocument = `
-    query GetEventPassPendingOrders($locale: Locale!, $stage: Stage!) {
+    query GetEventPassPendingOrders($stage: Stage!) {
   eventPassPendingOrder {
     id
     eventPassId
     quantity
     created_at
-    eventPass(locales: [$locale, en], stage: $stage) {
+    eventPassPricing {
+      timeBeforeDelete
+    }
+    eventPass(locales: [en], stage: $stage) {
       event {
         slug
         organizer {
