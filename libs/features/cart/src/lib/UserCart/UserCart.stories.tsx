@@ -2,13 +2,13 @@ import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 
-import { UserCartSection } from './UserCartSection';
+import { UserCart } from './UserCart';
 import { UserCartExample, UserCartLoadingExample } from './examples';
 
 // Import the stories you want to reuse
 
-const meta: Meta<typeof UserCartSection> = {
-  component: UserCartSection,
+const meta: Meta<typeof UserCart> = {
+  component: UserCart,
   parameters: {
     layout: 'fullscreen',
   },
@@ -16,7 +16,7 @@ const meta: Meta<typeof UserCartSection> = {
 
 export default meta;
 
-type Story = StoryObj<typeof UserCartSection>;
+type Story = StoryObj<typeof UserCart>;
 
 export const SectionWithUserOpened: Story = {
   render: UserCartExample,
