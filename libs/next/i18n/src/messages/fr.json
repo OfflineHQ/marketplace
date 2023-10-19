@@ -176,7 +176,8 @@
           "total": {
             "pass-selected": "{totalPasses, plural, =1 {# pass sélectionné} other {# pass sélectionnés}}",
             "price": "Prix total : {totalPrice}"
-          }
+          },
+          "finalize-payment": "Finaliser mon achat"
         }
       }
     },
@@ -193,5 +194,8 @@
       "title": "Vérifiez votre identité",
       "description": "Pour accéder à des expériences exclusives et des avantages, nous avons besoin de quelques détails de votre part.<br></br>Ne vous inquiétez pas, c'est rapide et sécurisé."
     }
+  },
+  "Error": {
+    "description": "Il y a eu une erreur"
   }
 }

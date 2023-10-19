@@ -5,7 +5,7 @@ import { PassCache } from '@features/pass-cache';
 import { userSdk } from '@gql/user/api';
 import { getCurrentUser } from '@next/next-auth/user';
 
-const passeCache = new PassCache();
+const passCache = new PassCache();
 
 // React server components are async so you make database or API calls.
 export interface DeleteEventPassesProps extends EventSlugs {
@@ -19,7 +19,7 @@ export async function deleteEventPasses({
 }: DeleteEventPassesProps) {
   const user = await getCurrentUser();
   if (!user) {
-    await passeCache.deletePassesCart({
+    await passCache.deletePassesCart({
       organizerSlug,
       eventSlug,
     });

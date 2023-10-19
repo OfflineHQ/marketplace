@@ -41,6 +41,7 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
   backButtonLink,
   organizerSlug,
   eventSlug,
+  hasConfirmedPasses,
   ...footerProps
 }) => {
   return (
@@ -54,6 +55,7 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
           passes={passes}
           organizerSlug={organizerSlug}
           eventSlug={eventSlug}
+          hasConfirmedPasses={hasConfirmedPasses}
         />
       </SheetOverflow>
       <PassFooterServer>
