@@ -31,6 +31,7 @@ export const PassPurchaseCard: React.FC<PassPurchaseCardProps> = ({
   backButtonLink,
   organizerSlug,
   eventSlug,
+  hasConfirmedPasses,
   ...footerProps
 }) => {
   return (
@@ -46,6 +47,7 @@ export const PassPurchaseCard: React.FC<PassPurchaseCardProps> = ({
             passes={passes}
             organizerSlug={organizerSlug}
             eventSlug={eventSlug}
+            hasConfirmedPasses={hasConfirmedPasses}
           />
         </CardContent>
       </CardOverflow>
