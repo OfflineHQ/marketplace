@@ -1,16 +1,3 @@
-mutation InsertEventPassPendingOrders(
-  $objects: [eventPassPendingOrder_insert_input!]!
-) {
-  insert_eventPassPendingOrder(objects: $objects) {
-    returning {
-      id
-      quantity
-      eventPassId
-      created_at
-    }
-  }
-}
-
 mutation UpsertEventPassPendingOrder(
   $object: eventPassPendingOrder_insert_input!
 ) {
@@ -28,6 +15,37 @@ mutation UpsertEventPassPendingOrder(
   }
 }
 
+mutation UpsertEventPassPendingOrders(
+  $objects: [eventPassPendingOrder_insert_input!]!
+  $stage: Stage!
+) {
+  insert_eventPassPendingOrder(
+    objects: $objects
+    on_conflict: {
+      constraint: eventPassPendingOrder_eventPassId_accountId_key
+      update_columns: [quantity]
+    }
+  ) {
+    returning {
+      id
+      eventPassId
+      quantity
+      created_at
+      eventPassPricing {
+        timeBeforeDelete
+      }
+      eventPass(locales: [en], stage: $stage) {
+        event {
+          slug
+          organizer {
+            slug
+          }
+        }
+      }
+    }
+  }
+}
+
 mutation DeleteEventPassPendingOrder($eventPassPendingOrderId: uuid!) {
   delete_eventPassPendingOrder_by_pk(id: $eventPassPendingOrderId) {
     id
@@ -36,6 +54,12 @@ mutation DeleteEventPassPendingOrder($eventPassPendingOrderId: uuid!) {
 
 mutation DeleteEventPassPendingOrders($eventPassIds: [String!]!) {
   delete_eventPassPendingOrder(where: { eventPassId: { _in: $eventPassIds } }) {
+    affected_rows
+  }
+}
+
+mutation DeleteAllEventPassPendingOrders {
+  delete_eventPassPendingOrder(where: {}) {
     affected_rows
   }
 }
