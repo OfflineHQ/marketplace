@@ -35,9 +35,11 @@ interface PurchaseSectionContentProps {
   locale: string;
 }
 
-export const PurchaseSectionContent: React.FC<
-  PurchaseSectionContentProps
-> = async ({ eventSlug, organizerSlug, locale }) => {
+const PurchaseSectionContent: React.FC<PurchaseSectionContentProps> = async ({
+  eventSlug,
+  organizerSlug,
+  locale,
+}) => {
   const t = await getTranslator(locale, 'Organizer.Event.PassPurchase');
   const passes = await getEventPasses({ eventSlug, locale });
   return (
