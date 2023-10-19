@@ -37,11 +37,8 @@ export const PassCardSelectClient: React.FC<PassCardSelectClientProps> = ({
               eventPassId,
               quantity,
             });
-            // pb with revalidatePath, so refresh for now
+            // pb with revalidatePath or revalidateTag, (error 404 in updateEventPassCart) so refresh for now
             router.refresh();
-            // revalidatePath(
-            //   `en/organizer/${organizerSlug}/event/${eventSlug}/purchase`,
-            // );
           } catch (e) {
             console.error(e);
             // TODO handle error with toast
