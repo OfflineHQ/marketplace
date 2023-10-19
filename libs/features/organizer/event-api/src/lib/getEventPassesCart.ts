@@ -3,7 +3,7 @@ import { PassCache } from '@features/pass-cache';
 import { userSdk } from '@gql/user/api';
 import { getCurrentUser } from '@next/next-auth/user';
 
-const passeCache = new PassCache();
+const passCache = new PassCache();
 
 interface getEventPassesCartProps extends EventSlugs {
   eventPassIds: string[];
@@ -16,7 +16,7 @@ export const getEventPassesCart = async ({
 }: getEventPassesCartProps) => {
   const user = await getCurrentUser();
   if (!user) {
-    return await passeCache.getPassesCart({ organizerSlug, eventSlug });
+    return await passCache.getPassesCart({ organizerSlug, eventSlug });
   }
   const data = await userSdk.GetEventPassPendingOrderForEventPasses(
     {
