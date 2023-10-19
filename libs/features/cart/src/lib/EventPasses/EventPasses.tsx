@@ -1,7 +1,5 @@
 import type { EventCart } from '@features/cart-types';
-import type { EventPassCart } from '@features/organizer/event-types';
-import { formatCurrency } from '@next/currency-common';
-import { useCurrency } from '@next/currency-provider';
+import { ConvertedCurrency } from '@next/currency';
 import {
   AccordionContent,
   AccordionItem,
@@ -12,7 +10,7 @@ import {
   Text,
   TextSkeleton,
 } from '@ui/components';
-import { useFormatter, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import {
   EventPassesActions,
@@ -20,9 +18,8 @@ import {
 } from './EventPassesActions';
 
 export interface EventPassesProps
-  extends Pick<EventPassesActionsProps, 'onDelete'> {
+  extends Pick<EventPassesActionsProps, 'passes'> {
   event: EventCart;
-  passes: EventPassCart[];
 }
 
 const layout = {
@@ -39,14 +36,11 @@ const layout = {
 const AccordionContentWrapper: React.FC<EventPassesProps> = ({
   event,
   passes,
-  onDelete,
 }) => {
   const t = useTranslations('Cart.List.Event');
-  const format = useFormatter();
-  const { rates, isLoading } = useCurrency();
   const enrichedPasses = passes.map((pass) => {
     const matchingEventPass = event.eventPasses.find(
-      (eventPass) => eventPass.id === pass.id,
+      (eventPass) => eventPass.id === pass.eventPassId,
     );
 
     return {
@@ -59,30 +53,25 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
     <AccordionContent>
       <div className="mt-3 flex flex-col">
         {enrichedPasses.map((pass, index) =>
-          pass.amount ? (
-            <div key={pass.id + index} className="mb-5 flex md:mb-8">
+          pass.quantity ? (
+            <div key={pass.eventPassId + index} className="mb-5 flex md:mb-8">
               <div
                 className={`flex items-center ${layout.imageContainer} h-auto md:h-auto`}
               >
                 <Text
                   variant="h5"
                   className="font-semibold"
-                >{`${pass.amount} x`}</Text>
+                >{`${pass.quantity} x`}</Text>
               </div>
               <div className="ml-2 flex flex-col md:ml-3">
                 <Text variant="h5" className="pb-2 font-semibold">
                   {pass.name}
                 </Text>
-                <Text variant="small">
-                  {formatCurrency(
-                    format,
-                    {
-                      amount: pass.eventPassPricing?.priceAmount || 0,
-                      currency: pass.eventPassPricing?.priceCurrency,
-                    },
-                    rates,
-                  )}
-                </Text>
+                <ConvertedCurrency
+                  variant="small"
+                  amount={pass.eventPassPricing?.priceAmount || 0}
+                  currency={pass.eventPassPricing?.priceCurrency}
+                />
               </div>
             </div>
           ) : null,
@@ -93,17 +82,13 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
         deleteText={t('remove')}
         eventSlug={event.slug as string}
         organizerSlug={event?.organizer?.slug as string}
-        onDelete={onDelete}
+        passes={passes}
       />
     </AccordionContent>
   );
 };
 
-export const EventPasses: React.FC<EventPassesProps> = ({
-  event,
-  passes,
-  onDelete,
-}) => {
+export const EventPasses: React.FC<EventPassesProps> = ({ event, passes }) => {
   const t = useTranslations('Cart.List.Event');
   return (
     <AccordionItem value={event.id as string} className="mx-5">
@@ -122,17 +107,13 @@ export const EventPasses: React.FC<EventPassesProps> = ({
             <Text variant="h4">{event.title}</Text>
             <Badge variant="secondary">
               {t('num-pass', {
-                numPass: passes.reduce((sum, pass) => sum + pass.amount, 0),
+                numPass: passes.reduce((sum, pass) => sum + pass.quantity, 0),
               })}
             </Badge>
           </div>
         </div>
       </AccordionTrigger>
-      <AccordionContentWrapper
-        event={event}
-        passes={passes}
-        onDelete={onDelete}
-      />
+      <AccordionContentWrapper event={event} passes={passes} />
     </AccordionItem>
   );
 };

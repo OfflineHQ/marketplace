@@ -1,23 +1,29 @@
 'use client';
-import type { EventSlugs } from '@features/organizer/event-types';
-import type { EventPassesSliceProps } from '@features/organizer/event/store';
-import { Link } from '@next/navigation';
+import { deleteEventPasses } from '@features/cart-actions';
+import type {
+  EventPassCart,
+  EventSlugs,
+} from '@features/organizer/event-types';
+import { Link, useRouter } from '@next/navigation';
 import { Button } from '@ui/components';
 import { Delete, Edit } from '@ui/icons';
+import { useTransition } from 'react';
 
 export interface EventPassesActionsProps extends EventSlugs {
-  onDelete: EventPassesSliceProps['deletePassesCart'];
   editText: string;
   deleteText: string;
+  passes: EventPassCart[];
 }
 
 export const EventPassesActions: React.FC<EventPassesActionsProps> = ({
-  onDelete,
   editText,
   deleteText,
   eventSlug,
   organizerSlug,
+  passes,
 }) => {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   return (
     <div className="mb-4 flex flex-wrap items-center justify-end space-x-6">
       <Link
@@ -34,7 +40,22 @@ export const EventPassesActions: React.FC<EventPassesActionsProps> = ({
         variant="destructive"
         className="mt-4"
         icon={<Delete />}
-        onClick={() => onDelete({ eventSlug, organizerSlug })}
+        onClick={() =>
+          startTransition(async () => {
+            try {
+              await deleteEventPasses({
+                organizerSlug,
+                eventSlug,
+                eventPassIds: passes.map(({ eventPassId }) => eventPassId),
+              });
+              // pb with revalidatePath or revalidateTag, (error 404 in updateEventPassCart) so refresh for now
+              router.refresh();
+            } catch (e) {
+              console.error(e);
+              // TODO handle error with toast
+            }
+          })
+        }
       >
         {deleteText}
       </Button>
