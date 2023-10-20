@@ -57,6 +57,9 @@ export class NftClaimable {
       throw new Error('SDK is undefined');
     }
     const contractAddress = order.eventPassNftContract?.contractAddress;
+    if (!contractAddress) {
+      throw new Error('Contract address is undefined');
+    }
     const contract = await this.sdk.getContract(contractAddress);
     const supply = await contract.erc721.totalUnclaimedSupply();
 
