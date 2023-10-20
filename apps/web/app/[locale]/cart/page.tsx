@@ -75,8 +75,8 @@ export default async function CartSection({
   if (!user) return <CartSectionContent user={user} locale={locale} />;
   let userPassPendingOrders = await getEventPassPendingOrders();
   const userPassConfirmedOrders = await getEventPassOrdersConfirmed();
-  // if user has confirmed orders, redirect to purchase page
-  if (userPassConfirmedOrders?.length) {
+  // if user has confirmed orders and kyc validated, redirect to purchase page
+  if (userPassConfirmedOrders?.length && isUserKycValidated(user)) {
     redirect('/cart/purchase');
   }
   // check if user has pending orders, if he have none check for the cache
