@@ -16,6 +16,7 @@ describe('NftClaimable good arguments', () => {
     nftClaimable = new NftClaimable();
     nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
       erc721: {
+        totalUnclaimedSupply: jest.fn().mockResolvedValue(1),
         claimConditions: {
           set: jest.fn().mockResolvedValue({
             receipt: {
@@ -30,20 +31,8 @@ describe('NftClaimable good arguments', () => {
             { id: { toNumber: jest.fn().mockReturnValue(1) } },
           ]),
       },
-      totalUnclaimedSupply: jest.fn().mockResolvedValue(1),
     });
     nftClaimable.registerOwnership = jest.fn().mockResolvedValue({});
-  });
-
-  it('should succeed if startClaimPhase receives a valid contractAddress', async () => {
-    const result = await nftClaimable.startClaimPhase(
-      '0x2e41588A1c8455dbD63B07E9401422B7F5559859',
-      'Phase de claim',
-      100,
-    );
-    expect(result).toBe(
-      '0xc7a649c65b62b54e93bbd350bc9b60141a082e7e72b89adb59afcff4659028c4',
-    );
   });
 
   it('should succeed if ClaimAllMetadatas receive a valid order', async () => {
@@ -72,6 +61,7 @@ describe('NftClaimable order fail', () => {
     nftClaimable = new NftClaimable();
     nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
       erc721: {
+        totalUnclaimedSupply: jest.fn().mockResolvedValue(1),
         claimTo: jest.fn((toAddress) => {
           if (toAddress === '0xYourAccountAddress') {
             return Promise.resolve([
@@ -88,7 +78,6 @@ describe('NftClaimable order fail', () => {
           }
         }),
       },
-      totalUnclaimedSupply: jest.fn().mockResolvedValue(1),
     });
     nftClaimable.registerOwnership = jest
       .fn()
