@@ -7,25 +7,11 @@ import type {
 import { OrderStatus_Enum } from '@gql/shared/types';
 import { EventPassOrderWithContractData } from '@nft/types';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
+import { ethers } from 'ethers';
 
 type FnType = (
   orders: EventPassOrderWithContractData[],
 ) => Promise<ClaimEventPassNftsMutation>;
-
-async function checkOrder(order: EventPassOrderWithContractData) {
-  if (!this.sdk) {
-    throw new Error('SDK is undefined');
-  }
-  const contractAddress = order.eventPassNftContract?.contractAddress;
-  const contract = await this.sdk.getContract(contractAddress);
-  const supply = await contract.totalUnclaimedSupply();
-
-  if (supply < order.quantity) {
-    throw new Error(
-      `Not enough supply for order ${order.id} : ${supply} remaining`,
-    );
-  }
-}
 
 function sdkMiddleware(fn: FnType) {
   return async function (orders: EventPassOrderWithContractData[]) {
@@ -34,7 +20,7 @@ function sdkMiddleware(fn: FnType) {
     }
 
     try {
-      await Promise.all(orders.map((order) => checkOrder.call(this, order)));
+      await Promise.all(orders.map((order) => this.checkOrder(order)));
     } catch (e) {
       console.error(e);
       throw new Error(`Error during check of the unclaim supply: ${e.message}`);
@@ -66,39 +52,20 @@ export class NftClaimable {
     }
   }
 
-  async startClaimPhase(
-    contractAddress: string,
-    phaseName: string,
-    maxAmount: number,
-  ) {
-    if (!this.sdk || env.THIRDWEB_MASTER_ADDRESS === undefined) {
+  async checkOrder(order: EventPassOrderWithContractData) {
+    if (!this.sdk) {
       throw new Error('SDK is undefined');
     }
+    const contractAddress = order.eventPassNftContract?.contractAddress;
     const contract = await this.sdk.getContract(contractAddress);
-    try {
-      const txResult = await contract.erc721.claimConditions.set([
-        {
-          metadata: {
-            name: phaseName,
-          },
-          startTime: new Date(),
-          maxClaimablePerWallet: 0,
-          snapshot: [
-            {
-              address: env.THIRDWEB_MASTER_ADDRESS as string,
-              maxClaimable: maxAmount,
-            },
-          ],
-        },
-      ]);
-      return txResult.receipt.transactionHash;
-    } catch (e) {
-      if (e instanceof Error) {
-        console.error(e);
-        throw new Error(`Error during contract operation: ${e.message}`);
-      } else {
-        throw e;
-      }
+    const supply = await contract.erc721.totalUnclaimedSupply();
+
+    if (
+      ethers.BigNumber.from(supply).lt(ethers.BigNumber.from(order.quantity))
+    ) {
+      throw new Error(
+        `Not enough supply for order ${order.id} : ${supply} remaining but ${order.quantity} wanted`,
+      );
     }
   }
 
