@@ -1,14 +1,12 @@
 'use client';
 
+import { defaultCurrency } from '@currency/types';
 import { Currency_Enum } from '@gql/shared/types';
-import {
-  getCurrencyPreference,
-  setCurrencyPreference,
-} from '@next/currency-common';
 import { usePathname, useRouter } from '@next/navigation';
 import '@next/types';
 import { CurrencyDropdown, type CurrencyDropdownProps } from '@ui/components';
 import { Check } from '@ui/icons';
+import { getCookie, setCookie } from 'cookies-next';
 import { useMemo, useTransition } from 'react';
 
 export interface CurrencyDropdownClientProps {
@@ -25,7 +23,8 @@ export const CurrencyDropdownClient: React.FC<CurrencyDropdownClientProps> = ({
   currencyText,
   className,
 }) => {
-  const currency = getCurrencyPreference();
+  const currency =
+    (getCookie('NEXT_CURRENCY') as unknown as Currency_Enum) || defaultCurrency;
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
@@ -33,7 +32,7 @@ export const CurrencyDropdownClient: React.FC<CurrencyDropdownClientProps> = ({
   const currencies: CurrencyDropdownProps['items'] = useMemo(() => {
     const changeCurrency = (newCurrency: Currency_Enum) => {
       startTransition(() => {
-        setCurrencyPreference(newCurrency);
+        setCookie('NEXT_CURRENCY', newCurrency);
         router.replace(pathname);
       });
     };
