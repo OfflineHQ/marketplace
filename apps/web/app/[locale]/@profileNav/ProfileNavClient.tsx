@@ -24,14 +24,15 @@ export interface ProfileNavClientProps {
     signIn: string;
     settings: string;
   };
+  isNextAuthConnected?: boolean;
 }
 
 export const ProfileNavClient = ({
   signInText,
   profileSectionsText,
+  isNextAuthConnected,
 }: ProfileNavClientProps) => {
-  const { safeUser, login, logout, safeAuth, provider, connecting } =
-    useAuthContext();
+  const { safeUser, login, logout, safeAuth, connecting } = useAuthContext();
   const { toast } = useToast();
 
   const signOutUserAction = useCallback(async () => {
@@ -102,15 +103,14 @@ export const ProfileNavClient = ({
               text: profileSectionsText.signOut,
             },
           ],
-    [safeUser, signOutUserAction, login, toast, profileSectionsText],
+    [safeUser, signOutUserAction, login, profileSectionsText],
   );
-
   return !safeAuth ? (
     <ProfileNavSkeleton />
   ) : (
     <ProfileNav
       items={items}
-      isLoading={connecting}
+      isLoading={connecting && !isNextAuthConnected}
       user={safeUser}
       signInText={signInText}
     />

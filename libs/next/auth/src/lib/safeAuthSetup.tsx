@@ -7,7 +7,7 @@ import { ToastAction, useToast } from '@ui/components';
 import { isCypressRunning } from '@utils';
 import { MetamaskAdapter } from '@web3auth/metamask-adapter';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 
 import { useRouter } from '@next/navigation';
 import {
@@ -87,6 +87,7 @@ export interface UseSafeAuthProps {
     };
   };
   session?: Session | null;
+  isConnected?: () => boolean;
 }
 
 export function useSafeAuth(props: UseSafeAuthProps = {}) {
@@ -94,13 +95,12 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   const [safeUser, setSafeUser] = useState<SafeUser>();
   const [provider, setProvider] = useState<ExternalProvider | null>(null);
   const [connecting, setConnecting] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
   const { resolvedTheme } = useTheme();
   const { toast } = useToast();
   const router = useRouter();
   const locale = useLocale();
-  const { status } = useSession();
   const messages = props.messages;
+  const isSigningInRef = useRef(false);
 
   const web3AuthErrorHandler = useCallback(
     (error: any) => {
@@ -122,6 +122,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
 
   const logoutSiwe = useCallback(
     async ({ refresh }: { refresh?: boolean }) => {
+      console.log('Signing out with SIWE...');
       await signOut({ redirect: false });
       if (refresh) router.refresh();
     },
@@ -136,7 +137,6 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       await logoutSiwe({ refresh });
 
       setSafeUser(undefined);
-      setLoggedIn(false);
     },
     [safeAuth, logoutSiwe],
   );
@@ -232,6 +232,11 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       try {
         // don't run this function if cypress is running, cannot mock the signature so directly provide the cookie instead
         if (isCypressRunning()) return;
+        if (isSigningInRef.current) {
+          console.log('Already signing in with SIWE, ignoring extra call...');
+          return;
+        }
+        isSigningInRef.current = true;
         console.log('Signing in with SIWE...');
         const address = await signer.getAddress();
         const message = new SiweMessage({
@@ -291,6 +296,8 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
           });
         }
         throw new Error('Signing in with SIWE declined');
+      } finally {
+        isSigningInRef.current = false;
       }
     },
     [
@@ -304,11 +311,18 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   );
 
   async function finishLogin() {
-    if (status === 'unauthenticated' && !props.session?.user) {
+    const isNextAuthConnected = await props?.isConnected?.();
+    console.log({
+      isNextAuthConnected,
+    });
+    if (!isNextAuthConnected) {
       const web3Provider = new ethers.providers.Web3Provider(
         safeAuth?.getProvider() as ethers.providers.ExternalProvider,
       );
       const signer = web3Provider.getSigner(0);
+      console.log({
+        isNextAuthConnected,
+      });
       await loginSiwe(signer);
     }
     await setupUserSession();
@@ -319,18 +333,21 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   useEffect(() => {
     (async () => {
       try {
-        console.log('PROVIDER: ', { provider });
+        console.log('web3AuthConnected Effect: ', {
+          web3AuthConnected: safeAuth?.web3Auth?.connected,
+        });
         if (safeAuth?.web3Auth?.connected) {
           await finishLogin();
         }
       } catch (error) {
         console.warn({ error });
         await logout({ refresh: false });
+      } finally {
+        setConnecting(false);
       }
     })();
-    // Avoid putting the rest of dependencies in the array, it will cause an infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [provider, props?.session?.user]);
+  }, [safeAuth?.web3Auth?.connected]);
 
   useEffect(() => {
     (async () => {
@@ -440,10 +457,10 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         setConnecting(true),
       );
       // here evaluate if user is logged in with web3auth. If it's not the case we logout the user from next auth.
-      if (safeAuth?.web3Auth?.connected) {
+      if (web3AuthModalPack?.web3Auth?.connected) {
         setConnecting(true);
-        setLoggedIn(true);
       } else {
+        console.log('User not connected with web3auth so logging out...');
         handleUnauthenticatedUser();
         logoutSiwe({ refresh: false });
       }
