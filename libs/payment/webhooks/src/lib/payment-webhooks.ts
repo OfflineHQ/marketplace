@@ -12,7 +12,7 @@ import { headers } from 'next/headers';
 // StripeCheckoutSessionEnum.paymentFailed
 // StripeCheckoutSessionEnum.paymentSucceeded
 const stripeCheckoutSessionEvents = [
-  StripeCheckoutSessionEnum.complete,
+  StripeCheckoutSessionEnum.completed,
   StripeCheckoutSessionEnum.expired,
 ];
 
@@ -63,7 +63,7 @@ export async function stripeCheckoutStatus(
     //   checkoutSession.metadata as StripeCheckoutSessionMetadataEventPassOrder;
     if (
       (event.type as StripeCheckoutSessionEnum) ===
-      StripeCheckoutSessionEnum.complete
+      StripeCheckoutSessionEnum.completed
     ) {
       if (checkoutSession.payment_status !== 'paid') {
         console.warn(
