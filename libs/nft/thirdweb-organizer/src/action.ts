@@ -47,7 +47,7 @@ export async function createEventParametersAndWebhook({
 }) {
   const webhook = await getAlchemyInfosFromEventId({ eventId: eventId });
 
-  if (webhook.activityWebhookId) {
+  if (webhook && webhook.activityWebhookId) {
     await updateNftActivityWebhook({
       webhookId: webhook.activityWebhookId,
       nftCollectionAddresses,
@@ -62,7 +62,7 @@ export async function createEventParametersAndWebhook({
         activityWebhookId: newWebhook.id,
         organizerId,
         eventId,
-        signingKey: webhook.signingKey,
+        signingKey: newWebhook.signingKey,
       },
     ]);
   }

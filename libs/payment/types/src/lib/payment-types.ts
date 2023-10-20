@@ -21,7 +21,7 @@ export type StripePaymentIntent = Stripe.PaymentIntent;
 export enum StripeCheckoutSessionEnum {
   paymentFailed = 'checkout.session.payment_failed', // Occurs when a payment intent using a delayed payment method fails.
   paymentSucceeded = 'checkout.session.payment_succeeded', // Occurs when a payment intent using a delayed payment method finally succeeds.
-  complete = 'checkout.session.complete', // Occurs when a Checkout Session has been successfully completed.
+  completed = 'checkout.session.completed', // Occurs when a Checkout Session has been successfully completed.
   expired = 'checkout.session.expired', // Occurs when a Checkout Session is expired.
 }
 
