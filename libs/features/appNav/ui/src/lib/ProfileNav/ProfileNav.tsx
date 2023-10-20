@@ -1,20 +1,20 @@
 import {
-  ProfileAvatarProps,
-  ProfileAvatar,
-} from '../profile-avatar/ProfileAvatar';
-import {
+  AutoAnimate,
+  AvatarSkeleton,
+  Button,
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuItems,
   DropdownMenuItemsProps,
-  Button,
-  AvatarSkeleton,
-  TextSkeleton,
+  DropdownMenuTrigger,
   Spinner,
-  AutoAnimate,
+  TextSkeleton,
 } from '@ui/components';
-import { OutlineUserCircle, QrCode } from '@ui/icons';
+import { OutlineUserCircle } from '@ui/icons';
 import { truncateEmailString, truncateString } from '@utils';
+import {
+  ProfileAvatar,
+  ProfileAvatarProps,
+} from '../profile-avatar/ProfileAvatar';
 
 export interface ProfileNavProps
   extends Omit<ProfileAvatarProps, 'user'>,

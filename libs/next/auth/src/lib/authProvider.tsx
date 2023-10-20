@@ -9,6 +9,7 @@ import { useSafeAuth, type UseSafeAuthProps } from './safeAuthSetup';
 interface AuthProviderProps extends UseSafeAuthProps {
   children?: React.ReactNode;
   session: Session | null;
+  isConnected?: () => boolean;
 }
 
 interface INextAuthProps {
@@ -49,8 +50,13 @@ export const AuthProvider = ({
   children,
   messages,
   session,
+  isConnected,
 }: AuthProviderProps) => {
-  const { safeAuth, ...props } = useSafeAuth({ messages, session });
+  const { safeAuth, ...props } = useSafeAuth({
+    messages,
+    session,
+    isConnected,
+  });
 
   return (
     <AuthContext.Provider
