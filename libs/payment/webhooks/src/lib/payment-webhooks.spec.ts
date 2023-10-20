@@ -36,7 +36,7 @@ const mockRequest: Request = {
 describe('stripeCheckoutStatus', () => {
   beforeEach(() => {
     mockPayment.webhookStripeConstructEvent = jest.fn().mockReturnValue({
-      type: StripeCheckoutSessionEnum.complete,
+      type: StripeCheckoutSessionEnum.completed,
       data: {
         object: {
           mode: 'payment',
@@ -123,7 +123,7 @@ describe('stripeCheckoutStatus', () => {
 
   it('Should handle error and refund when confirming checkout session because `Error claiming NFTs`', async () => {
     mockPayment.webhookStripeConstructEvent = jest.fn().mockReturnValue({
-      type: StripeCheckoutSessionEnum.complete,
+      type: StripeCheckoutSessionEnum.completed,
       data: {
         object: {
           mode: 'payment',
@@ -153,7 +153,7 @@ describe('stripeCheckoutStatus', () => {
 
   it('Should handle error when refund fails', async () => {
     mockPayment.webhookStripeConstructEvent = jest.fn().mockReturnValue({
-      type: StripeCheckoutSessionEnum.complete,
+      type: StripeCheckoutSessionEnum.completed,
       data: {
         object: {
           mode: 'payment',
