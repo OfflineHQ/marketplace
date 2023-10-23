@@ -112,11 +112,19 @@ module.exports = {
         }
       }
     }
+    const mockExternalModules = {
+      '@t3-oss/env-nextjs': './mocks/env-nextjs.mock.js',
+      'next-intl/server': './mocks/nextIntlServer.mock.js',
+      'next/headers': './mocks/nextHeaders.mock.js',
+    };
     // set mocks to avoid webpack issues
-    config.resolve.alias['@t3-oss/env-nextjs'] = path.resolve(
-      __dirname,
-      './mocks/env-nextjs.mock.js',
-    );
+    for (const externalModule in mockExternalModules) {
+      console.log('Setting mock for external module: ', externalModule);
+      config.resolve.alias[externalModule] = path.resolve(
+        __dirname,
+        mockExternalModules[externalModule],
+      );
+    }
     return config;
   },
 };
