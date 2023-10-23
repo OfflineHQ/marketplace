@@ -1,60 +1,29 @@
 import { AppNavLayout } from '@features/appNav/ui';
 import { WithNormalUser } from '@features/appNav/ui/stories';
-import type { Locale } from '@gql/shared/types';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
-import { accounts } from '@test-utils/gql';
 import { Button } from '@ui/components';
-import { useLocale, useTranslations } from 'next-intl';
-import {
-  FakeEventPassesFetcher,
-  SetPassesCartLocal,
-} from '../EventPassList/examples';
-import { EventPassesSkeleton } from '../EventPasses/EventPasses';
-import { UserCartSection, type UserCartSectionProps } from './UserCartSection';
+import { useTranslations } from 'next-intl';
+import { UserCart, UserCartProps } from './UserCart';
 // @ts-ignore
 import EmptyCartImage from '../images/empty-cart.svg';
 
-function RenderUserCart({
-  EventPassesFetcher,
-  user,
-}: Pick<UserCartSectionProps, 'EventPassesFetcher' | 'user'>) {
+export function UserCartExample({
+  userPassPendingOrders,
+}: Pick<UserCartProps, 'userPassPendingOrders'>) {
   const t = useTranslations('Cart.UserCart');
-  const locale = useLocale();
   return (
-    <NextAuthProvider>
-      <AuthProvider>
+    <NextAuthProvider session={null}>
+      <AuthProvider session={null} isConnected={() => true}>
         <AppNavLayout {...WithNormalUser.args}>
-          <UserCartSection
-            EventPassesFetcher={EventPassesFetcher}
+          <UserCart
             noCartImage={EmptyCartImage}
-            locale={locale as Locale}
-            user={user}
+            userPassPendingOrders={userPassPendingOrders}
           >
             <Button>{t('finalize-button')}</Button>
-          </UserCartSection>
+          </UserCart>
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
-  );
-}
-
-export function UserCartExample() {
-  SetPassesCartLocal();
-  return (
-    <RenderUserCart
-      EventPassesFetcher={FakeEventPassesFetcher}
-      user={accounts.alpha_user}
-    />
-  );
-}
-
-export function UserCartLoadingExample() {
-  SetPassesCartLocal();
-  return (
-    <RenderUserCart
-      EventPassesFetcher={EventPassesSkeleton}
-      user={accounts.alpha_user}
-    />
   );
 }
 

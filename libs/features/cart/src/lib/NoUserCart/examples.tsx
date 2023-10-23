@@ -1,26 +1,16 @@
 import { AppNavLayout } from '@features/appNav/ui';
 import { WithNoUser } from '@features/appNav/ui/stories';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
-import {
-  FakeEventPassesFetcher,
-  ResetPassesCartLocal,
-  SetPassesCartLocal,
-} from '../EventPassList/examples';
-import { EventPassesSkeleton } from '../EventPasses/EventPasses';
 import { NoUserCart } from './NoUserCart';
 // @ts-ignore
 import EmptyCartImage from '../images/empty-cart.svg';
 
 export function NoUserCartExample() {
-  SetPassesCartLocal();
   return (
-    <NextAuthProvider>
-      <AuthProvider>
+    <NextAuthProvider session={null}>
+      <AuthProvider session={null} isConnected={() => false}>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart
-            EventPassesFetcher={FakeEventPassesFetcher}
-            noCartImage={EmptyCartImage}
-          />
+          <NoUserCart noCartImage={EmptyCartImage} />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
@@ -28,15 +18,11 @@ export function NoUserCartExample() {
 }
 
 export function NoUserCartLoadingExample() {
-  SetPassesCartLocal();
   return (
-    <NextAuthProvider>
-      <AuthProvider>
+    <NextAuthProvider session={null}>
+      <AuthProvider session={null} isConnected={() => false}>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart
-            EventPassesFetcher={EventPassesSkeleton}
-            noCartImage={EmptyCartImage}
-          />
+          <NoUserCart noCartImage={EmptyCartImage} />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
@@ -44,15 +30,11 @@ export function NoUserCartLoadingExample() {
 }
 
 export function NoUserCartNoCartExample() {
-  ResetPassesCartLocal();
   return (
-    <NextAuthProvider>
-      <AuthProvider>
+    <NextAuthProvider session={null}>
+      <AuthProvider session={null} isConnected={() => false}>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart
-            EventPassesFetcher={FakeEventPassesFetcher}
-            noCartImage={EmptyCartImage}
-          />
+          <NoUserCart noCartImage={EmptyCartImage} />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
