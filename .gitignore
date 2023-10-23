@@ -71,8 +71,5 @@ static
 .DS_Store
 Thumbs.db
 
-# msw
-mockServiceWorker.js
-
 # Sentry Auth Token
 .sentryclirc

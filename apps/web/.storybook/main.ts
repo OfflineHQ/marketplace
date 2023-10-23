@@ -37,6 +37,7 @@ module.exports = {
     },
     interactionsDebugger: true,
   },
+  staticDirs: ['../../../public'], // add msw worker to storybook
   features: {
     storyStoreV7: !isCI,
   },
@@ -79,11 +80,13 @@ module.exports = {
         '@currency/api': './mocks/currencyApi.mock.js',
         '@next/currency': './mocks/convertedCurrency.mock.js',
         '@next/date': './mocks/nextDate.mock.js',
+        '@next/next-auth/user': './mocks/nextAuthUser.mock.js',
       };
       // and mock modules (used to replace React components)
       const mockModules = {
         '@next/currency': './mocks/convertedCurrency.mock.js',
         '@next/date': './mocks/nextDate.mock.js',
+        '@next/next-auth/user': './mocks/nextAuthUser.mock.js',
       };
       for (const alias in aliases) {
         if (mockModules[alias]) {

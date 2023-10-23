@@ -103,7 +103,7 @@
       "executor": "@nx/storybook:storybook",
       "options": {
         "port": 4401,
-        "quiet": true,
+        "quiet": false,
         "configDir": "apps/web/.storybook"
       },
       "configurations": {
