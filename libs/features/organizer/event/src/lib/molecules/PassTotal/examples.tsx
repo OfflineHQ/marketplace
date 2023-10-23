@@ -1,22 +1,18 @@
 // examples.tsx
-import { PassTotal, type PassTotalProps } from './PassTotal';
-import { usePassPurchaseStore } from '@features/organizer/event/store';
 import {
+  passEarlyBird,
+  passFamily,
+  passPremium,
+  passWeekend,
   passWithMaxAmount,
   passWithMaxAmountPerUser,
   passWithSoldOut,
-  passFamily,
-  passEarlyBird,
-  passWeekend,
-  passPremium,
-  passWithMaxAmountCart,
-  passWithMaxAmountPerUserCart,
 } from '../PassCard/examples';
+import { PassTotal, type PassTotalProps } from './PassTotal';
 
 export const passTotalProps = {
   passesData: [passWithMaxAmount, passWithMaxAmountPerUser],
-  organizerSlug: 'organizer-slug',
-  eventSlug: 'event-slug',
+  passesCart: [],
 } satisfies PassTotalProps;
 
 export const lotsOfPasses = [
@@ -29,37 +25,27 @@ export const lotsOfPasses = [
   passPremium,
 ] satisfies PassTotalProps['passesData'];
 
-export const PassTotalWith1PassExample = ({
-  eventSlug,
-  organizerSlug,
-  ...props
-}: PassTotalProps) => {
-  const resetPasses = usePassPurchaseStore((state) => state.resetPasses);
-  resetPasses();
-  const updatePassCart = usePassPurchaseStore((state) => state.updatePassCart);
-  updatePassCart({
-    organizerSlug,
-    eventSlug,
-    pass: { ...passWithMaxAmountCart, amount: 1 },
-  });
-  return <PassTotal {...{ organizerSlug, eventSlug, ...props }} />;
+export const PassTotalWith1PassExample = ({ ...props }: PassTotalProps) => {
+  // updatePassCart({
+  //   organizerSlug,
+  //   eventSlug,
+  //   pass: { ...passWithMaxAmountCart, amount: 1 },
+  // });
+  return <PassTotal {...props} />;
 };
 
 export const PassTotalWithSeveralPassesExample = ({
-  eventSlug,
-  organizerSlug,
   ...props
 }: PassTotalProps) => {
-  const updatePassCart = usePassPurchaseStore((state) => state.updatePassCart);
-  updatePassCart({
-    organizerSlug,
-    eventSlug,
-    pass: passWithMaxAmountCart,
-  });
-  updatePassCart({
-    organizerSlug,
-    eventSlug,
-    pass: passWithMaxAmountPerUserCart,
-  });
-  return <PassTotal {...{ organizerSlug, eventSlug, ...props }} />;
+  // updatePassCart({
+  //   organizerSlug,
+  //   eventSlug,
+  //   pass: passWithMaxAmountCart,
+  // });
+  // updatePassCart({
+  //   organizerSlug,
+  //   eventSlug,
+  //   pass: passWithMaxAmountPerUserCart,
+  // });
+  return <PassTotal {...props} />;
 };
