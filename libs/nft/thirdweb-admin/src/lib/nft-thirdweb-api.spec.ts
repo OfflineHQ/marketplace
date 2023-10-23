@@ -1,30 +1,29 @@
 import { adminSdk } from '@gql/admin/api';
-import { OrderStatus_Enum } from '@gql/shared/types';
+import { EventPassOrder, OrderStatus_Enum } from '@gql/shared/types';
+import {
+  applySeeds,
+  createDbClient,
+  deleteTables,
+  type PgClient,
+} from '@test-utils/db';
 import { describe } from 'node:test';
 import { NftClaimable } from './nft-thirdweb-api';
 
-describe('NftClaimable exists', () => {
-  it('should work', () => {
-    expect(new NftClaimable()).toBeDefined();
-  });
-});
-
-describe('NftClaimable good arguments', () => {
+describe('NftClaimable integration test', () => {
   let nftClaimable: NftClaimable;
+  let order: EventPassOrder;
+  let client: PgClient;
 
-  beforeEach(() => {
+  beforeAll(async () => {
+    client = await createDbClient();
+  });
+
+  beforeEach(async () => {
     nftClaimable = new NftClaimable();
+
     nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
       erc721: {
-        totalUnclaimedSupply: jest.fn().mockResolvedValue(1),
-        claimConditions: {
-          set: jest.fn().mockResolvedValue({
-            receipt: {
-              transactionHash:
-                '0xc7a649c65b62b54e93bbd350bc9b60141a082e7e72b89adb59afcff4659028c4',
-            },
-          }),
-        },
+        claimConditions: { canClaim: jest.fn().mockResolvedValue(true) },
         claimTo: jest
           .fn()
           .mockResolvedValue([
@@ -32,116 +31,77 @@ describe('NftClaimable good arguments', () => {
           ]),
       },
     });
-    nftClaimable.registerOwnership = jest.fn().mockResolvedValue({});
-  });
-
-  it('should succeed if ClaimAllMetadatas receive a valid order', async () => {
-    const nfts = await nftClaimable.claimAllMetadatas([
-      {
-        id: '93098f3a-c4e8-4b0a-91a9-7b951ab9ed0d',
-        quantity: 1,
-        eventPassId: 'dummy',
-        status: OrderStatus_Enum.Confirmed,
-        account: {
-          address: '0xYourAccountAddress',
-        },
-        eventPassNftContract: {
-          contractAddress: '0xYourContractAddress',
-        },
-      },
+    await applySeeds(client, [
+      'account',
+      'eventPassNftContract',
+      'eventPassPricing',
+      'eventPassOrder',
     ]);
-    expect(nfts).toBeDefined();
-  });
-});
-
-describe('NftClaimable order fail', () => {
-  let nftClaimable: NftClaimable;
-
-  beforeEach(() => {
-    nftClaimable = new NftClaimable();
-    nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
-      erc721: {
-        totalUnclaimedSupply: jest.fn().mockResolvedValue(1),
-        claimTo: jest.fn((toAddress) => {
-          if (toAddress === '0xYourAccountAddress') {
-            return Promise.resolve([
-              {
-                id: {
-                  toNumber() {
-                    return 1;
-                  },
-                },
-              },
-            ]);
-          } else {
-            return Promise.reject(new Error('Fake error'));
-          }
-        }),
-      },
+    const res = await adminSdk.GetEventPassOrdersFromStripeCheckoutSession({
+      stripeCheckoutSessionId:
+        'cs_test_a17kYy8IpmWsLecscKe5pRQNP5hir8ysWC9sturzdXMfh7Y94gYJIAyePN',
     });
-    nftClaimable.registerOwnership = jest
-      .fn()
-      .mockImplementation((args) => Promise.resolve(args));
-    adminSdk.UpdateEventPassOrdersStatus = jest.fn().mockReturnValue({});
+    order = res.eventPassOrder[0] as EventPassOrder;
   });
 
-  it('should throw if checkOrder throws an error', async () => {
-    const order = {
-      id: '93098f3a-c4e8-4b0a-91a9-7b951ab9ed0d',
-      quantity: 3,
-      eventPassId: 'dummy',
-      status: OrderStatus_Enum.Confirmed,
-      account: {
-        address: '0xYourAccountAddress',
-      },
-      eventPassNftContract: {
-        contractAddress: '0xYourContractAddress',
-      },
-    };
-
-    await expect(nftClaimable.claimAllMetadatas([order])).rejects.toThrow(
-      `Error during check of the unclaim supply: Not enough supply for order ${order.id} : 1 remaining`,
-    );
-  });
-
-  it('should call console.error with "Fake error" if claimTo throw', async () => {
-    const consoleSpy = jest.spyOn(console, 'error');
-
-    const nfts = await nftClaimable.claimAllMetadatas([
-      {
-        id: '479be2e4-103b-4345-9685-28c16ef3bd71',
-        quantity: 1,
-        eventPassId: 'dummy',
-        status: OrderStatus_Enum.Confirmed,
-        account: {
-          address: '0xYourAccountAddress',
-        },
-        eventPassNftContract: {
-          contractAddress: '0x1',
-        },
-      },
-      {
-        id: 'f5364b4d-b70e-4fa4-8539-d0198fd36270',
-        quantity: 1,
-        eventPassId: 'dummy',
-        status: OrderStatus_Enum.Confirmed,
-        account: {
-          address: 'BadAccountAddress',
-        },
-        eventPassNftContract: {
-          contractAddress: '0x2',
-        },
-      },
+  afterEach(async () => {
+    await deleteTables(client, [
+      'account',
+      'eventPassNftContract',
+      'eventPassPricing',
+      'eventPassOrder',
     ]);
+  });
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Error: Error during claiming operation: Fake error',
-    );
-    expect(nftClaimable.registerOwnership).toHaveBeenCalled();
-    expect(nfts.updates[0]._set.currentOwnerAddress).toEqual(
-      '0xYourAccountAddress',
-    );
+  afterAll(async () => {
+    await client.end();
+  });
 
-    consoleSpy.mockRestore();
+  it('should update the database when claimAllMetadatas is called', async () => {
+    await nftClaimable.claimAllMetadatas([order]);
+
+    const updatedOrder = await adminSdk.GetAccountEventPassOrderForEventPasses({
+      accountId: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
+      eventPassIds: 'fake-event-pass-2',
+    });
+    expect(updatedOrder.eventPassOrder[0].status).toBe(
+      OrderStatus_Enum.Completed,
+    );
+  });
+
+  describe('with fails', () => {
+    it('should throw an error when canClaim returns false', async () => {
+      nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
+        erc721: {
+          claimConditions: { canClaim: jest.fn().mockResolvedValue(false) },
+        },
+      });
+
+      await expect(nftClaimable.claimAllMetadatas([order])).rejects.toThrow();
+    });
+
+    it('should throw an error when claimTo fails', async () => {
+      nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
+        erc721: {
+          claimConditions: { canClaim: jest.fn().mockResolvedValue(true) },
+          claimTo: jest.fn().mockRejectedValue(new Error('claimTo failed')),
+        },
+      });
+
+      const consoleSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(jest.fn());
+
+      const result = await nftClaimable.claimAllMetadatas([order]);
+
+      expect(result).toEqual({
+        update_eventPassNft_many: { affected_rows: 0, returning: [] },
+      });
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Error: Error during claiming operation: claimTo failed',
+      );
+
+      consoleSpy.mockRestore();
+    });
   });
 });

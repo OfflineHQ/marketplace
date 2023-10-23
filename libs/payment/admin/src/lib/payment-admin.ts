@@ -389,15 +389,9 @@ export class Payment {
     const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
-    Promise.resolve(this.nftClaimable.claimAllMetadatas(orders))
-      .then(() => {
-        return this.markEventPassOrderAsCompleted({
-          eventPassOrdersId: orders.map((order) => order.id),
-        });
-      })
-      .catch((e) => {
-        console.error(`Error claiming NFTs: ${e.message}`);
-      });
+    Promise.resolve(this.nftClaimable.claimAllMetadatas(orders)).catch((e) => {
+      console.error(`Error claiming NFTs: ${e.message}`);
+    });
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
     });
