@@ -88,7 +88,6 @@ describe('PassCache Integration Test', () => {
     jest
       .spyOn(userSdk, 'UpsertEventPassPendingOrders')
       .mockImplementation(async (params) => {
-        console.log('I was here.');
         return await alphaUser.UpsertEventPassPendingOrders({
           objects: params.objects,
           stage: 'DRAFT' as Stage,
@@ -113,8 +112,6 @@ describe('PassCache Integration Test', () => {
     expect(emptyPassesCart).toEqual(null);
 
     const dataFromDb = await adminSdk.GetEventPassPendingOrders();
-
-    console.log(dataFromDb.eventPassPendingOrder);
 
     expect(transferred).toBeDefined();
     const isIdInDb =
