@@ -117,7 +117,6 @@ export class NftClaimable {
         where: {
           contractAddress: { _eq: claim.value[0].contractAddress },
           tokenId: { _eq: claim.value[0].tokenId },
-          status: OrderStatus_Enum.Completed,
         },
       })),
     });
@@ -141,6 +140,20 @@ export class NftClaimable {
         toAddress,
         order.quantity,
       );
+      await adminSdk.UpdateEventPassOrdersStatus({
+        updates: [
+          {
+            _set: {
+              status: OrderStatus_Enum.Completed,
+            },
+            where: {
+              id: {
+                _eq: order.id,
+              },
+            },
+          },
+        ],
+      });
       return claimResult.map((claim) => ({
         contractAddress: contractAddress,
         tokenId: claim.id.toNumber(),
