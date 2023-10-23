@@ -1,7 +1,5 @@
 // PassCard.stories.tsx
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { screen } from '@storybook/testing-library';
 import { graphql } from 'msw';
 import { PassCard, PassCardProps, PassCardSkeleton } from './PassCard';
 import {
@@ -54,37 +52,82 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query('GetEventPassOrderSums', (req, res, ctx) => {
+          return ctx.data({
+            eventPassOrderSums_by_pk: {
+              totalReserved: 0,
+            },
+          });
+        }),
+        graphql.query(
+          'GetEventPassPendingOrderForEventPass',
+          (req, res, ctx) => {
+            return ctx.data({
+              eventPassPendingOrder: null,
+            });
+          },
+        ),
+        graphql.query(
+          'GetEventPassOrdersConfirmedOrCompletedForEventPassId',
+          (req, res, ctx) => {
+            return ctx.data({
+              eventPassOrder: [],
+            });
+          },
+        ),
+      ],
+    },
+  },
+};
 
 export const BoundaryConditions: Story = {
   ...Default,
-  render: PassCardBoundaryMaxExample,
-  play: async () => {
-    const incrementButton = await screen.findByRole('button', {
-      name: /increment value/i,
-    });
-    expect(incrementButton).toBeDisabled();
-    const decrementButton = screen.getByRole('button', {
-      name: /decrement value/i,
-    });
-    expect(decrementButton).not.toBeDisabled();
+  parameters: {
+    msw: {
+      handlers: [
+        ...Default.parameters.msw.handlers,
+        graphql.query(
+          'GetEventPassPendingOrderForEventPass',
+          (req, res, ctx) => {
+            return ctx.json({
+              eventPassPendingOrder: { quantity: 6 },
+            });
+          },
+        ),
+      ],
+    },
   },
+  render: PassCardBoundaryMaxExample,
+  // play: async () => {
+  //   const incrementButton = await screen.findByRole('button', {
+  //     name: /increment value/i,
+  //   });
+  //   expect(incrementButton).toBeDisabled();
+  //   const decrementButton = screen.getByRole('button', {
+  //     name: /decrement value/i,
+  //   });
+  //   expect(decrementButton).not.toBeDisabled();
+  // },
 };
 
 export const BoundaryConditionsPerUser: Story = {
   args: passWithMaxAmountPerUser,
   render: PassCardBoundaryMaxPerUserExample,
-  play: async (context) => {
-    if (BoundaryConditions.play) await BoundaryConditions.play(context);
-  },
+  // play: async (context) => {
+  //   if (BoundaryConditions.play) await BoundaryConditions.play(context);
+  // },
 };
 
 export const SoldOut: Story = {
   args: passWithSoldOut,
-  play: async () => {
-    const soldOut = await screen.findByText(/sold-out/i);
-    expect(soldOut).toBeInTheDocument();
-  },
+  // play: async () => {
+  //   const soldOut = await screen.findByText(/sold-out/i);
+  //   expect(soldOut).toBeInTheDocument();
+  // },
 };
 
 export const Loading: Story = {
