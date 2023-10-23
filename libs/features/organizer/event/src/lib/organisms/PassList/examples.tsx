@@ -1,12 +1,6 @@
 // examples.tsx
-import { PassList, PassListProps } from './PassList';
 import { passTotalProps } from '../../molecules/PassTotal/examples';
-import { usePassPurchaseStore } from '@features/organizer/event/store';
-
-import {
-  passWithMaxAmountCart,
-  passWithMaxAmountPerUserCart,
-} from '../../molecules/PassCard/examples';
+import { PassList, PassListProps } from './PassList';
 
 export const passListProps = {
   passes: passTotalProps['passesData'],
@@ -19,12 +13,11 @@ export const PassListBoundaryMaxExample = ({
   eventSlug,
   ...props
 }: PassListProps) => {
-  const updatePassCart = usePassPurchaseStore((state) => state.updatePassCart);
-  updatePassCart({ organizerSlug, eventSlug, pass: passWithMaxAmountCart });
-  updatePassCart({
-    organizerSlug,
-    eventSlug,
-    pass: passWithMaxAmountPerUserCart,
-  });
+  // updatePassCart({ organizerSlug, eventSlug, pass: passWithMaxAmountCart });
+  // updatePassCart({
+  //   organizerSlug,
+  //   eventSlug,
+  //   pass: passWithMaxAmountPerUserCart,
+  // });
   return <PassList {...{ eventSlug, organizerSlug, ...props }} />;
 };

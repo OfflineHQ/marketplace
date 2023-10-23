@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 
 import { UserCart } from './UserCart';
-import { UserCartExample, UserCartLoadingExample } from './examples';
+import { UserCartExample } from './examples';
 
 // Import the stories you want to reuse
 
@@ -36,8 +36,4 @@ export const SectionWithUserOpened: Story = {
     });
     expect(removeButtons).toHaveLength(2);
   },
-};
-
-export const SectionUserLoading: Story = {
-  render: UserCartLoadingExample,
 };
