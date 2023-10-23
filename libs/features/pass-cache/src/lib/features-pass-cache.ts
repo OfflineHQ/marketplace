@@ -165,6 +165,8 @@ export class PassCache {
     });
     await this.deleteAllPassesCart();
 
+    console.log('Res', res.insert_eventPassPendingOrder.returning[0]);
+
     return res?.insert_eventPassPendingOrder?.returning || null;
   }
 }
