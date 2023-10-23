@@ -1,7 +1,8 @@
 // PassCard.stories.tsx
-import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
+import { Meta, StoryObj } from '@storybook/react';
+import { screen } from '@storybook/testing-library';
+import { graphql } from 'msw';
 import { PassCard, PassCardProps, PassCardSkeleton } from './PassCard';
 import {
   PassCardBoundaryMaxExample,
@@ -17,6 +18,35 @@ const meta = {
     organizerSlug: 'organizer-slug',
     eventSlug: 'event-slug',
     ...passWithMaxAmount,
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query('GetEventPassOrderSums', (req, res, ctx) => {
+          return ctx.data({
+            eventPassOrderSums_by_pk: {
+              totalReserved: 0,
+            },
+          });
+        }),
+        graphql.query(
+          'GetEventPassPendingOrderForEventPass',
+          (req, res, ctx) => {
+            return ctx.data({
+              eventPassPendingOrder: null,
+            });
+          },
+        ),
+        graphql.query(
+          'GetEventPassOrdersConfirmedOrCompletedForEventPassId',
+          (req, res, ctx) => {
+            return ctx.data({
+              eventPassOrder: [],
+            });
+          },
+        ),
+      ],
+    },
   },
 } satisfies Meta<PassCardProps>;
 

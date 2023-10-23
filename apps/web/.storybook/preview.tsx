@@ -1,4 +1,5 @@
 import { Decorator, Preview } from '@storybook/react';
+import { initialize, mswLoader } from 'msw-storybook-addon';
 import { NextIntlClientProvider } from 'next-intl';
 import React, { Suspense, useEffect, useState } from 'react';
 import messagesEn from '../../../libs/next/i18n/src/messages/en.json';
@@ -7,6 +8,9 @@ import { parameters } from '../../../storybook.preview.base';
 import '../styles/globals.css';
 
 window.STORYBOOK_ENV = true;
+
+// Initialize MSW
+initialize();
 
 export const DarkModeDecorator: Decorator = (Story: any, context: any = {}) => {
   const [dark, setDark] = useState(false);
@@ -83,5 +87,7 @@ const preview: Preview = {
     I18nextStoryDecorator,
     localStorageResetDecorator,
   ],
+  // Provide the MSW addon loader globally
+  loaders: [mswLoader],
 };
 export default preview;
