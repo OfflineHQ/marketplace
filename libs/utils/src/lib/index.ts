@@ -41,10 +41,6 @@ export function deepPick<T, P extends NestedKeyOf<T>>(
     .reduce((acc, val) => deepMerge(acc, val), {});
 }
 
-export interface MyRequestInit extends Omit<RequestInit, 'headers'> {
-  headers?: Record<string, string>;
-}
-
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export function toPascalCase(s: string): string {
