@@ -397,6 +397,30 @@ export class Payment {
     });
   }
 
+  async refundPartialPayment({
+    paymentIntentId,
+    amount,
+  }: {
+    paymentIntentId: string;
+    amount: number;
+  }) {
+    const refund = await this.stripe.refunds.create({
+      payment_intent: paymentIntentId,
+      amount,
+    });
+    if (!refund?.status) {
+      throw new Error(
+        'Refund status is null for paymentIntentId: ' + paymentIntentId,
+      );
+    }
+    if (['succeeded', 'pending'].includes(refund.status)) {
+      return refund;
+    }
+    throw new Error(
+      `Partial refund failed for paymentIntentId: ${paymentIntentId} with status: ${refund.status}`,
+    );
+  }
+
   // used in case the NFT is not released for any reason or if event is cancelled.
   async refundPayment({
     paymentIntentId,
