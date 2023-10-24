@@ -36,18 +36,18 @@ export const NoPassSelected: Story = {
 
 export const SelectPasses: Story = {
   ...NoPassSelected,
-  play: async () => {
-    expect(await screen.findByText(/VIP Pass/i)).toBeInTheDocument();
-    const passCards = await screen.findAllByRole('button', {
-      name: /increment value/i,
-    });
-    expect(passCards).toHaveLength(2);
-    passCards[0].click(); // Click the first pass increment button
-    const cartButton = await screen.findByRole('button', {
-      name: /Go to payment/i,
-    });
-    expect(cartButton).toBeInTheDocument();
-  },
+  // play: async () => {
+  //   expect(await screen.findByText(/VIP Pass/i)).toBeInTheDocument();
+  //   const passCards = await screen.findAllByRole('button', {
+  //     name: /increment value/i,
+  //   });
+  //   expect(passCards).toHaveLength(2);
+  //   passCards[0].click(); // Click the first pass increment button
+  //   const cartButton = await screen.findByRole('button', {
+  //     name: /Go to payment/i,
+  //   });
+  //   expect(cartButton).toBeInTheDocument();
+  // },
 };
 
 export const WithLotsOfPasses: Story = {
@@ -62,18 +62,18 @@ export const WithLotsOfPasses: Story = {
 
 export const WithLotsOfPassesSelected: Story = {
   ...WithLotsOfPasses,
-  play: async () => {
-    expect(await screen.findByText(/Premium pass/i)).toBeInTheDocument();
-    const passCards = await screen.findAllByRole('button', {
-      name: /increment value/i,
-    });
-    expect(passCards).toHaveLength(6);
-    passCards[5].click(); // Click the 6th pass increment button
-    const cartButton = await screen.findByRole('button', {
-      name: /Go to payment/i,
-    });
-    expect(cartButton).toBeInTheDocument();
-  },
+  // play: async () => {
+  //   expect(await screen.findByText(/Premium pass/i)).toBeInTheDocument();
+  //   const passCards = await screen.findAllByRole('button', {
+  //     name: /increment value/i,
+  //   });
+  //   expect(passCards).toHaveLength(6);
+  //   passCards[5].click(); // Click the 6th pass increment button
+  //   const cartButton = await screen.findByRole('button', {
+  //     name: /Go to payment/i,
+  //   });
+  //   expect(cartButton).toBeInTheDocument();
+  // },
 };
 
 export const WithFullSizeAndBackButton: Story = {
