@@ -5,10 +5,12 @@ import {
   passPremium,
   passWeekend,
   passWithMaxAmount,
+  passWithMaxAmountCart,
   passWithMaxAmountPerUser,
+  passWithMaxAmountPerUserCart,
   passWithSoldOut,
 } from '../PassCard/examples';
-import { PassTotal, type PassTotalProps } from './PassTotal';
+import { type PassTotalProps } from './PassTotal';
 
 export const passTotalProps = {
   passesData: [passWithMaxAmount, passWithMaxAmountPerUser],
@@ -25,27 +27,4 @@ export const lotsOfPasses = [
   passPremium,
 ] satisfies PassTotalProps['passesData'];
 
-export const PassTotalWith1PassExample = ({ ...props }: PassTotalProps) => {
-  // updatePassCart({
-  //   organizerSlug,
-  //   eventSlug,
-  //   pass: { ...passWithMaxAmountCart, amount: 1 },
-  // });
-  return <PassTotal {...props} />;
-};
-
-export const PassTotalWithSeveralPassesExample = ({
-  ...props
-}: PassTotalProps) => {
-  // updatePassCart({
-  //   organizerSlug,
-  //   eventSlug,
-  //   pass: passWithMaxAmountCart,
-  // });
-  // updatePassCart({
-  //   organizerSlug,
-  //   eventSlug,
-  //   pass: passWithMaxAmountPerUserCart,
-  // });
-  return <PassTotal {...props} />;
-};
+export { passWithMaxAmountCart, passWithMaxAmountPerUserCart };
