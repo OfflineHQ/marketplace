@@ -1,18 +1,17 @@
-import { EventPasses, type EventPassesProps } from './EventPasses';
-import { Accordion } from '@ui/components';
-import {
-  passWithMaxAmount,
-  passWithMaxAmountPerUser,
-  passWithMaxAmountCart,
-  passWithMaxAmountPerUserCart,
-  eventProps,
-  event2Props,
-} from '@features/organizer/event/examples';
 import type { EventCart } from '@features/cart-types';
+import {
+  eventProps,
+  passWithMaxAmount,
+  passWithMaxAmountCart,
+  passWithMaxAmountPerUser,
+  passWithMaxAmountPerUserCart,
+} from '@features/organizer/event/examples';
+import { Accordion } from '@ui/components';
+import { EventPasses, type EventPassesProps } from './EventPasses';
 
 export const eventPassesCart: EventPassesProps['passes'] = [
-  { ...passWithMaxAmountCart, amount: 1 },
-  { ...passWithMaxAmountPerUserCart, amount: 2 },
+  passWithMaxAmountCart,
+  passWithMaxAmountPerUserCart,
 ];
 
 export const eventCartProps: EventCart = {
@@ -22,7 +21,6 @@ export const eventCartProps: EventCart = {
 
 export const eventPassesProps: EventPassesProps = {
   event: eventCartProps,
-  onDelete: ({ organizerSlug, eventSlug }) => null,
   passes: eventPassesCart,
 };
 
