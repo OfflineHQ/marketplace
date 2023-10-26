@@ -13,27 +13,32 @@ import {
   type EventPassesProps,
 } from '../EventPasses/EventPasses';
 
-export interface EventPassListProps {
+export interface EventPassListProps
+  extends Pick<EventPassesContentProps, 'noActions'> {
   allPasses?: AllPassesCart;
 }
 
 export interface EventPassesContentProps
-  extends Pick<EventPassesProps, 'passes'>,
+  extends Pick<EventPassesProps, 'passes' | 'noActions'>,
     EventSlugs {}
 
 const EventPassListContent: React.FC<EventPassesContentProps> = async ({
   organizerSlug,
   eventSlug,
   passes,
+  noActions,
 }) => {
   // const event = await GetEventWithPasses
   const locale = useLocale();
   const event = await getEventWithPasses({ eventSlug, locale });
   if (!event) return null;
-  return <EventPasses event={event} passes={passes} />;
+  return <EventPasses event={event} passes={passes} noActions={noActions} />;
 };
 
-export const EventPassList: React.FC<EventPassListProps> = ({ allPasses }) => {
+export const EventPassList: React.FC<EventPassListProps> = ({
+  allPasses,
+  noActions,
+}) => {
   return (
     <Accordion type="multiple">
       {Object.entries(allPasses || {}).map(([organizerSlug, events], index) => (
@@ -45,6 +50,7 @@ export const EventPassList: React.FC<EventPassListProps> = ({ allPasses }) => {
                   organizerSlug={organizerSlug}
                   eventSlug={eventSlug}
                   passes={eventPasses}
+                  noActions={noActions}
                 />
               </Suspense>
             </div>

@@ -4,6 +4,7 @@ import { redirect } from '@next/navigation';
 import { getCurrentUser } from '@next/next-auth/user';
 import { AppUser } from '@next/types';
 import { StripeCheckoutSession } from '@payment/types';
+import { Card, CardOverflow } from '@ui/components';
 import { FC } from 'react';
 
 interface CartSectionProps {
@@ -32,18 +33,11 @@ export default async function CartPurchase({
   const user = await getCurrentUser();
   if (!isUserKycValidated(user)) redirect('/');
 
-  return <div>Cart Purchase Successfull</div>;
-  // let session = await getStripeActiveCheckoutSession();
-  // if (!session) {
-  //   const pendingOrders = await getEventPassPendingOrders();
-  //   if (!pendingOrders?.length) redirect('/cart');
-  //   session = await createStripeCheckoutSession({
-  //     locale,
-  //     eventPassPendingOrders: pendingOrders,
-  //   });
-  // }
-  // if (!session || !user || !session.url)
-  //   throw new Error('Failed to create checkout session');
-  // redirect(session.url);
-  // return <CartSectionContent user={user} locale={locale} session={session} />;
+  return (
+    <section className="container">
+      <Card variant="stickyFooter" noBorder>
+        <CardOverflow></CardOverflow>
+      </Card>
+    </section>
+  );
 }
