@@ -27,10 +27,12 @@ export const Opened: Story = {
       name: /Lorem ipsum/i,
     });
     accordionTrigger.click();
-    await screen.findByText(/1 x/i);
+    await screen.findByText(/6 x/i);
     await screen.findByText(/General Admission/i);
-    await screen.findByText(/2 x/i);
+    await screen.findByText(/€1,237.86/i);
+    await screen.findByText(/3 x/i);
     await screen.findByText(/VIP Pass/i);
+    await screen.findByText(/€2,380.50/i);
     userEvent.click(
       screen.getByRole('button', {
         name: /Edit/i,

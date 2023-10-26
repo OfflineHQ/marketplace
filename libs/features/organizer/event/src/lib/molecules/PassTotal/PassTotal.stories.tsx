@@ -4,14 +4,15 @@ import { Meta, StoryObj } from '@storybook/react';
 import { screen } from '@storybook/testing-library';
 import { PassTotal } from './PassTotal';
 import {
-  PassTotalWith1PassExample,
-  PassTotalWithSeveralPassesExample,
   passTotalProps,
+  passWithMaxAmountCart,
+  passWithMaxAmountPerUserCart,
 } from './examples';
 
 const meta = {
   component: PassTotal,
   args: passTotalProps,
+  render: (props) => <PassTotal {...props} />,
 } satisfies Meta<typeof PassTotal>;
 
 export default meta;
@@ -19,21 +20,28 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const With1Pass: Story = {
-  render: PassTotalWith1PassExample,
+  args: {
+    passesCart: [{ ...passWithMaxAmountCart, quantity: 1 }],
+  },
   play: async () => {
     const passTotal = await screen.findByText(/1 pass/i);
     expect(passTotal).toBeInTheDocument();
-    const totalPrice = screen.getByText(/€1,300.00/i);
+    const totalPrice = screen.getByText(/€1,237.86/i);
     expect(totalPrice).toBeInTheDocument();
   },
 };
 
 export const WithSeveralPasses: Story = {
-  render: PassTotalWithSeveralPassesExample,
+  args: {
+    passesCart: [
+      { ...passWithMaxAmountCart, quantity: 3 },
+      { ...passWithMaxAmountPerUserCart, quantity: 6 },
+    ],
+  },
   play: async () => {
     const passTotal = await screen.findByText(/9 passes/i);
     expect(passTotal).toBeInTheDocument();
-    const totalPrice = screen.getByText(/€15,300.00/i);
+    const totalPrice = screen.getByText(/€17,996.58/i);
     expect(totalPrice).toBeInTheDocument();
   },
 };
