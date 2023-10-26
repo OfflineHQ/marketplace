@@ -81,6 +81,11 @@
         "edit": "Edit",
         "remove": "Remove"
       }
+    },
+    "Successful": {
+      "title": "Purchase Successful! 🎉",
+      "description": "Thank you for your purchase. Your passes should be available in a few minutes.",
+      "continue-shopping-button": "Go to Homepage"
     }
   },
   "Pass": {
