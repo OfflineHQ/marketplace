@@ -81,6 +81,11 @@
         "remove": "Supprimer"
       },
       "no-cart": "Vous n'avez encore rien dans votre panier"
+    },
+    "Successful": {
+      "title": "Achat réussi ! 🎉",
+      "description": "Merci pour votre achat. Vos pass devraient disponibles dans quelques minutes.",
+      "continue-shopping-button": "Aller à la page d'accueil"
     }
   },
   "Pass": {

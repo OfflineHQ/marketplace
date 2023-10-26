@@ -20,6 +20,7 @@ import {
 export interface EventPassesProps
   extends Pick<EventPassesActionsProps, 'passes'> {
   event: EventCart;
+  noActions?: boolean;
 }
 
 const layout = {
@@ -36,6 +37,7 @@ const layout = {
 const AccordionContentWrapper: React.FC<EventPassesProps> = ({
   event,
   passes,
+  noActions,
 }) => {
   const t = useTranslations('Cart.List.Event');
   const enrichedPasses = passes.map((pass) => {
@@ -77,13 +79,15 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
           ) : null,
         )}
       </div>
-      <EventPassesActions
-        editText={t('edit')}
-        deleteText={t('remove')}
-        eventSlug={event.slug as string}
-        organizerSlug={event?.organizer?.slug as string}
-        passes={passes}
-      />
+      {noActions ? null : (
+        <EventPassesActions
+          editText={t('edit')}
+          deleteText={t('remove')}
+          eventSlug={event.slug as string}
+          organizerSlug={event?.organizer?.slug as string}
+          passes={passes}
+        />
+      )}
     </AccordionContent>
   );
 };
