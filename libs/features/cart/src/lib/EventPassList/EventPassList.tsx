@@ -1,10 +1,9 @@
 import React, { Suspense } from 'react';
 
 import { getEventWithPasses } from '@features/cart-api';
-import type {
-  AllPassesCart,
-  EventSlugs,
-} from '@features/organizer/event-types';
+import { AllPassesCart } from '@features/cart-types';
+import type { EventSlugs } from '@features/organizer/event-types';
+
 import { Accordion } from '@ui/components';
 import { useLocale } from 'next-intl';
 import {

@@ -1,5 +1,6 @@
 import { Money } from '@currency/types';
-import type { EventPass, EventPassCart } from '@features/organizer/event-types';
+import { EventPassCart } from '@features/cart-types';
+import type { EventPass } from '@features/organizer/event-types';
 import { Currency_Enum } from '@gql/shared/types';
 import { ConvertedCurrency } from '@next/currency';
 import { Text, TextSkeleton } from '@ui/components';

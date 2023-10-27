@@ -25,11 +25,4 @@ export type EventPassPendingOrders = NonNullable<
 
 export type EventPassPendingOrder = EventPassPendingOrders[0];
 
-export type EventPassCart = Pick<
-  EventPassPendingOrder,
-  'eventPassId' | 'quantity'
->;
-
-export type AllPassesCart = Record<string, Record<string, EventPassCart[]>>; // EventPasses will be grouped by organizerSlug -> eventSlug -> passes
-
 export type PassOption = EventPass['passOptions'][0];
