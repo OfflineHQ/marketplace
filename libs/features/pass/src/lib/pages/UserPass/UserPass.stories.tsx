@@ -1,17 +1,7 @@
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@storybook/testing-library';
-import { sleep } from '@utils';
+import { screen, userEvent, within } from '@storybook/testing-library';
 
-import { UserPass } from './UserPass';
-import { UserPassExample } from './examples';
 import {
   UserPassListExample,
   UserPassListSkeletonExample,
@@ -20,8 +10,9 @@ import {
   eventParameters,
   eventParameters2,
 } from '../../organisms/UserPassList/examples';
+import { UserPass } from './UserPass';
+import { UserPassExample } from './examples';
 // @ts-ignore
-import EmptyPassImage from './empty-pass.svg';
 
 const meta: Meta<typeof UserPass> = {
   component: UserPass,
@@ -32,7 +23,7 @@ const meta: Meta<typeof UserPass> = {
   args: {
     children: (
       <UserPassListExample
-        noPassImage={EmptyPassImage}
+        noPassImage="/empty-pass.svg"
         actionsFunctions={actionsFunctions}
         batchDownloadOrReveal={batchDownloadOrReveal}
         eventsParameters={[eventParameters, eventParameters2]}
@@ -68,7 +59,7 @@ export const WithUserNoData: Story = {
   args: {
     children: (
       <UserPassListExample
-        noPassImage={EmptyPassImage}
+        noPassImage="/empty-pass.svg"
         batchDownloadOrReveal={batchDownloadOrReveal}
         actionsFunctions={actionsFunctions}
         eventsParameters={[]}
@@ -81,7 +72,7 @@ export const WithUserDialogTimezone: Story = {
   args: {
     children: (
       <UserPassListExample
-        noPassImage={EmptyPassImage}
+        noPassImage="/empty"
         batchDownloadOrReveal={batchDownloadOrReveal}
         actionsFunctions={actionsFunctions}
         eventsParameters={[eventParameters2]}
@@ -144,7 +135,7 @@ export const DownloadPassesError: Story = {
   args: {
     children: (
       <UserPassListExample
-        noPassImage={EmptyPassImage}
+        noPassImage="/empty"
         actionsFunctions={actionsFunctions}
         batchDownloadOrReveal={async () => {
           throw new Error('Error');
@@ -166,7 +157,7 @@ export const BatchRevealDialogSuccess: Story = {
   args: {
     children: (
       <UserPassListExample
-        noPassImage={EmptyPassImage}
+        noPassImage="/empty"
         actionsFunctions={actionsFunctions}
         batchDownloadOrReveal={batchDownloadOrReveal}
         eventsParameters={[eventParameters2]}
@@ -189,7 +180,7 @@ export const BatchRevealDialogError: Story = {
   args: {
     children: (
       <UserPassListExample
-        noPassImage={EmptyPassImage}
+        noPassImage="/empty"
         actionsFunctions={actionsFunctions}
         batchDownloadOrReveal={async () => {
           throw new Error('Error');
@@ -239,7 +230,7 @@ export const DownloadOnePassError: Story = {
   args: {
     children: (
       <UserPassListExample
-        noPassImage={EmptyPassImage}
+        noPassImage="/empty"
         actionsFunctions={{
           ...actionsFunctions,
           downloadPass: async () => {
@@ -289,7 +280,7 @@ export const RevealOnePassError: Story = {
   args: {
     children: (
       <UserPassListExample
-        noPassImage={EmptyPassImage}
+        noPassImage="/empty"
         actionsFunctions={{
           ...actionsFunctions,
           revealPass: async () => {

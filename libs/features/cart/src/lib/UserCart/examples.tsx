@@ -4,8 +4,6 @@ import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { Button } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import { UserCart, UserCartProps } from './UserCart';
-// @ts-ignore
-import EmptyCartImage from '../images/empty-cart.svg';
 
 export function UserCartExample({
   userPassPendingOrders,
@@ -16,7 +14,7 @@ export function UserCartExample({
       <AuthProvider session={null} isConnected={() => true}>
         <AppNavLayout {...WithNormalUser.args}>
           <UserCart
-            noCartImage={EmptyCartImage}
+            noCartImage="/empty-cart.svg"
             userPassPendingOrders={userPassPendingOrders}
           >
             <Button>{t('finalize-button')}</Button>
