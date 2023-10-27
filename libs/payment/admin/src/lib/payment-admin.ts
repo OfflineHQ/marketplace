@@ -389,7 +389,8 @@ export class Payment {
     const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
-    this.nftClaimable.claimAllMetadatas(orders);
+    console.log('Going into claimAllMetadatas', orders.length, orders[0].id);
+    await this.nftClaimable.claimAllMetadatas(orders);
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
     });
