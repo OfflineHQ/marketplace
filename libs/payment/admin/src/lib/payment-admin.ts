@@ -1,4 +1,3 @@
-import env from '@env/server';
 import { UserPassPendingOrder } from '@features/cart-types';
 import { getSumSubApplicantPersonalData } from '@features/kyc-api';
 import { adminSdk } from '@gql/admin/api';
@@ -17,6 +16,7 @@ import {
   StripeCustomer,
 } from '@payment/types';
 import { getNextAppURL } from '@shared/server';
+import { env } from 'process';
 import Stripe from 'stripe';
 
 export class Payment {
@@ -389,12 +389,29 @@ export class Payment {
     const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
-    for (const order of orders) {
-      fetch(`${env.NEXTAUTH_URL}/api/order/claim/${order.id}`);
-    }
+
+    let totalAmount = 0;
+
+    const checkOrderPromises = orders.map(async (order) => {
+      try {
+        await this.nftClaimable.checkOrder(order);
+        fetch(`${getNextAppURL()}/api/order/claim/${order.id}`);
+      } catch (error) {
+        if (order.eventPassPricing?.priceAmount) {
+          totalAmount += order.eventPassPricing.priceAmount * order.quantity;
+        }
+      }
+    });
+
+    await Promise.allSettled(checkOrderPromises);
+
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
     });
+
+    if (totalAmount !== 0) {
+      throw new Error(`Some orders failed for an amount of : ${totalAmount}`);
+    }
   }
 
   async refundPartialPayment({
