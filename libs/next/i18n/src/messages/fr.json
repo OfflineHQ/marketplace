@@ -80,7 +80,7 @@
         "edit": "Modifier",
         "remove": "Supprimer"
       },
-      "no-cart": "Vous n'avez encore rien dans votre panier"
+      "no-cart": "Votre panier d'achat est vide"
     },
     "Successful": {
       "title": "Achat réussi ! 🎉",
