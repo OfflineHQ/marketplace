@@ -15,5 +15,11 @@ export default function Error({
     console.error(error);
   }, [error]);
 
-  return <UIError error={error} reset={reset} />;
+  return (
+    <html>
+      <body>
+        <UIError error={error} reset={reset} />
+      </body>
+    </html>
+  );
 }
