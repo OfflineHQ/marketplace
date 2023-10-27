@@ -418,7 +418,7 @@ export class Payment {
 
     const checkOrderPromises = orders.map(async (order) => {
       try {
-        await this.nftClaimable.checkOrder(order);
+        //await this.nftClaimable.checkOrder(order);
         fetch(`${getNextAppURL()}/api/order/claim/${order.id}`);
       } catch (error) {
         if (order.eventPassPricing?.priceAmount) {
