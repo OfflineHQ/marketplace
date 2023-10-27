@@ -82,7 +82,7 @@ describe('NftClaimable integration test', () => {
         },
       });
 
-      await expect(nftClaimable.claimOrder(order)).rejects.toThrow();
+      await expect(nftClaimable.checkOrder(order)).rejects.toThrow();
     });
 
     it('should throw an error when claimTo fails', async () => {
