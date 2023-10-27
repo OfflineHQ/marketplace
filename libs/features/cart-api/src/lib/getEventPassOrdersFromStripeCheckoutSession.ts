@@ -21,7 +21,6 @@ export const getEventPassOrdersFromStripeCheckoutSession = async (
     stripeCheckoutSessionId,
   });
   const customer = await payment.getOrCreateStripeCustomer({ user });
-  console.log('customer', customer, 'session', session);
   if (
     payment.getStripeCustomerId(session.customer) === customer?.stripeCustomerId
   ) {
