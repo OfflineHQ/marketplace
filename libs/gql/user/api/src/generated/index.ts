@@ -122,6 +122,23 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
+ const GetEventPassOrdersFromIdsDocument = `
+    query GetEventPassOrdersFromIds($eventPassOrderIds: [uuid!]!, $stage: Stage!) {
+  eventPassOrder(where: {id: {_in: $eventPassOrderIds}}) {
+    id
+    eventPassId
+    quantity
+    eventPass(locales: [en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+    `;
  const GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument = `
     query GetEventPassOrdersConfirmedOrCompletedForEventPassId($eventPassId: String!) {
   eventPassOrder(
@@ -383,6 +400,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassOrdersConfirmed(variables?: Types.GetEventPassOrdersConfirmedQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedQuery> {
       return requester<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedQuery>;
+    },
+    GetEventPassOrdersFromIds(variables: Types.GetEventPassOrdersFromIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrdersFromIdsQuery> {
+      return requester<Types.GetEventPassOrdersFromIdsQuery, Types.GetEventPassOrdersFromIdsQueryVariables>(GetEventPassOrdersFromIdsDocument, variables, options) as Promise<Types.GetEventPassOrdersFromIdsQuery>;
     },
     GetEventPassOrdersConfirmedOrCompletedForEventPassId(variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery> {
       return requester<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery>;

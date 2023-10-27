@@ -5,6 +5,22 @@ query GetEventPassOrdersConfirmed {
   }
 }
 
+query GetEventPassOrdersFromIds($eventPassOrderIds: [uuid!]!, $stage: Stage!) {
+  eventPassOrder(where: { id: { _in: $eventPassOrderIds } }) {
+    id
+    eventPassId
+    quantity
+    eventPass(locales: [en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+
 query GetEventPassOrdersConfirmedOrCompletedForEventPassId(
   $eventPassId: String!
 ) {

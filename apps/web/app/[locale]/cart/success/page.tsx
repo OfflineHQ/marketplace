@@ -1,43 +1,29 @@
+import { getEventPassOrdersFromStripeCheckoutSession } from '@features/cart-api';
+import { CartSuccessful } from '@features/cart/server';
 import { Locale } from '@gql/shared/types';
 import { isUserKycValidated } from '@kyc/common';
 import { redirect } from '@next/navigation';
 import { getCurrentUser } from '@next/next-auth/user';
-import { AppUser } from '@next/types';
-import { StripeCheckoutSession } from '@payment/types';
-import { Card, CardOverflow } from '@ui/components';
-import { FC } from 'react';
 
-interface CartSectionProps {
+interface CartSuccessfulPageProps {
   params: {
     locale: Locale;
   };
+  searchParams: {
+    session_id: string;
+  };
 }
 
-interface CartSectionContentProps {
-  user: AppUser;
-  locale: Locale;
-  session: StripeCheckoutSession;
-}
-
-const CartSectionContent: FC<CartSectionContentProps> = ({
-  user,
-  locale,
-  session,
-}) => {
-  return <div>CartSectionContent</div>;
-};
-
-export default async function CartPurchase({
+export default async function CartSuccessfulPage({
   params: { locale },
-}: CartSectionProps) {
+  searchParams: { session_id },
+}: CartSuccessfulPageProps) {
+  if (!session_id) return redirect('/');
   const user = await getCurrentUser();
-  if (!isUserKycValidated(user)) redirect('/');
-
-  return (
-    <section className="container">
-      <Card variant="stickyFooter" noBorder>
-        <CardOverflow></CardOverflow>
-      </Card>
-    </section>
-  );
+  if (!user || !isUserKycValidated(user)) return redirect('/');
+  const passes = await getEventPassOrdersFromStripeCheckoutSession({
+    user,
+    stripeCheckoutSessionId: session_id,
+  });
+  return <CartSuccessful passes={passes} />;
 }

@@ -1,7 +1,6 @@
 import { PassCache } from '@features/pass-cache';
 
-import { UserPassPendingOrder } from '@features/cart-types';
-import type { EventPassCart } from '@features/organizer/event-types';
+import { AllPassesCart, UserPassPendingOrder } from '@features/cart-types';
 import { Alert } from '@ui/components';
 import { useLocale } from 'next-intl';
 import { getTranslator } from 'next-intl/server';
@@ -29,23 +28,20 @@ const EventPassesCartContent: React.FC<EventPassesCartProps> = async ({
   userPassPendingOrders,
 }) => {
   const allPassesCart = userPassPendingOrders
-    ? userPassPendingOrders.reduce(
-        (acc, order) => {
-          const organizerSlug = order.eventPass?.event?.organizer?.slug;
-          const eventSlug = order.eventPass?.event?.slug;
-          if (organizerSlug && eventSlug) {
-            if (!acc[organizerSlug]) {
-              acc[organizerSlug] = {};
-            }
-            if (!acc[organizerSlug][eventSlug]) {
-              acc[organizerSlug][eventSlug] = [];
-            }
-            acc[organizerSlug][eventSlug].push(order);
+    ? userPassPendingOrders.reduce((acc, order) => {
+        const organizerSlug = order.eventPass?.event?.organizer?.slug;
+        const eventSlug = order.eventPass?.event?.slug;
+        if (organizerSlug && eventSlug) {
+          if (!acc[organizerSlug]) {
+            acc[organizerSlug] = {};
           }
-          return acc;
-        },
-        {} as Record<string, Record<string, EventPassCart[]>>,
-      )
+          if (!acc[organizerSlug][eventSlug]) {
+            acc[organizerSlug][eventSlug] = [];
+          }
+          acc[organizerSlug][eventSlug].push(order);
+        }
+        return acc;
+      }, {} as AllPassesCart)
     : await passCache.getAllPassesCart();
   const isCartEmpty = Object.values(allPassesCart || {}).every((organizer) =>
     Object.values(organizer).every((event) => event.length === 0),
