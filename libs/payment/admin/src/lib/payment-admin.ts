@@ -389,14 +389,9 @@ export class Payment {
     const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
-    if (!orders.length) {
-      throw new Error('Orders array is empty');
-    }
-    try {
-      await this.nftClaimable.claimAllMetadatas(orders);
-    } catch (e) {
+    this.nftClaimable.claimAllMetadatas(orders).catch((e) => {
       console.error(`Error claiming NFTs: ${e.message}`);
-    }
+    });
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
     });
