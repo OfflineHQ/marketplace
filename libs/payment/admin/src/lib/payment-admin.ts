@@ -214,8 +214,8 @@ export class Payment {
       throw new Error(
         `User: ${user.id} already has an active checkout session: ${existingStripeCheckoutSession.stripeCheckoutSession[0].stripeSessionId}`,
       );
-    const success_url = `${this.baseUrl}/cart/success`;
-    const cancel_url = `${this.baseUrl}/cart/canceled`;
+    const success_url = `${this.baseUrl}/cart/success?session_id={CHECKOUT_SESSION_ID}`;
+    const cancel_url = `${this.baseUrl}/cart/canceled?session_id={CHECKOUT_SESSION_ID}`;
     const orders = await this.moveEventPassPendingOrdersToConfirmed({
       eventPassPendingOrders,
       accountId: user.id,
@@ -363,6 +363,30 @@ export class Payment {
     return this.stripe.checkout.sessions.retrieve(
       stripeCheckoutSession.stripeSessionId,
     );
+  }
+
+  async getStripeCheckoutSession({
+    stripeCheckoutSessionId,
+  }: {
+    stripeCheckoutSessionId: string;
+  }) {
+    return this.stripe.checkout.sessions.retrieve(stripeCheckoutSessionId);
+  }
+
+  getStripeCustomerId(
+    customer: Stripe.Checkout.Session['customer'],
+  ): string | null {
+    if (typeof customer === 'string') {
+      return customer;
+    } else if (
+      customer &&
+      'id' in customer &&
+      typeof customer.id === 'string'
+    ) {
+      return customer.id;
+    } else {
+      return null;
+    }
   }
 
   async canceledStripeCheckoutSession({
