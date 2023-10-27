@@ -89,6 +89,7 @@ export class NftClaimable {
     this: NftClaimable,
     orders: EventPassOrderWithContractData[],
   ): Promise<ClaimEventPassNftsMutation> {
+    console.log('In claimAllMetadatas');
     const promises = orders.map((order) => this.claimOrder(order));
 
     const claims = await Promise.allSettled(promises);
@@ -112,6 +113,8 @@ export class NftClaimable {
         currentOwnerAddress: string;
       }[]
     >[];
+
+    console.log('Fulfilledclaims : ', fulfilledClaims.length);
 
     return await this.registerOwnership({
       updates: fulfilledClaims.map((claim) => ({
