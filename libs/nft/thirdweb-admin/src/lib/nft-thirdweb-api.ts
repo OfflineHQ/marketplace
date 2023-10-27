@@ -96,6 +96,9 @@ export class NftClaimable {
         `Contract address or to address is undefined for order ${order.id}`,
       );
     }
+    if (!this.sdk) {
+      throw new Error('SDK is undefined');
+    }
     const contract = await this.sdk.getContract(contractAddress);
 
     try {
