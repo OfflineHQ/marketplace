@@ -1,3 +1,4 @@
+import env from '@env/server';
 import { UserPassPendingOrder } from '@features/cart-types';
 import { getSumSubApplicantPersonalData } from '@features/kyc-api';
 import { adminSdk } from '@gql/admin/api';
@@ -16,7 +17,6 @@ import {
   StripeCustomer,
 } from '@payment/types';
 import { getNextAppURL } from '@shared/server';
-import { env } from 'process';
 import Stripe from 'stripe';
 
 export class Payment {

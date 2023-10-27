@@ -8,27 +8,6 @@ import { OrderStatus_Enum } from '@gql/shared/types';
 import { EventPassOrderWithContractData } from '@nft/types';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 
-type FnType = (
-  order: EventPassOrderWithContractData,
-) => Promise<ClaimEventPassNftsMutation>;
-
-function sdkMiddleware(fn: FnType) {
-  return async function (order: EventPassOrderWithContractData) {
-    if (!this.sdk) {
-      throw new Error('SDK is undefined');
-    }
-
-    try {
-      await this.checkOrder(order);
-    } catch (e) {
-      console.error(e);
-      throw new Error(`Error during check of the unclaim supply: ${e.message}`);
-    }
-
-    return await fn.call(this, order);
-  };
-}
-
 export class NftClaimable {
   sdk?: ThirdwebSDK;
 
@@ -85,7 +64,7 @@ export class NftClaimable {
     }
   }
 
-  claimOrder = sdkMiddleware(async function (
+  async claimOrder(
     this: NftClaimable,
     order: EventPassOrderWithContractData,
   ): Promise<ClaimEventPassNftsMutation> {
@@ -147,5 +126,5 @@ export class NftClaimable {
       console.error(e);
       throw new Error(`Error during claiming operation: ${e.message}`);
     }
-  });
+  }
 }
