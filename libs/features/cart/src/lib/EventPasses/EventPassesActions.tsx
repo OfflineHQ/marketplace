@@ -1,9 +1,7 @@
 'use client';
 import { deleteEventPasses } from '@features/cart-actions';
-import type {
-  EventPassCart,
-  EventSlugs,
-} from '@features/organizer/event-types';
+import type { EventPassCart } from '@features/cart-types';
+import type { EventSlugs } from '@features/organizer/event-types';
 import { Link, useRouter } from '@next/navigation';
 import { Button } from '@ui/components';
 import { Delete, Edit } from '@ui/icons';
