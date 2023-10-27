@@ -20,13 +20,11 @@ function sdkMiddleware(fn: FnType) {
 
     try {
       await this.checkOrder(order);
-      console.log('wft');
     } catch (e) {
       console.error(e);
       throw new Error(`Error during check of the unclaim supply: ${e.message}`);
     }
 
-    console.log('Calling the function now !!!!!');
     return await fn.call(this, order);
   };
 }
@@ -58,7 +56,6 @@ export class NftClaimable {
       throw new Error('SDK is undefined');
     }
     const contractAddress = order.eventPassNftContract?.contractAddress;
-    console.log(order.eventPassNftContract);
     if (!contractAddress) {
       throw new Error('Contract address is undefined');
     }
@@ -73,7 +70,6 @@ export class NftClaimable {
         `Cannot claim for order ${order.id} with reasons : ${reasons}`,
       );
     }
-    console.log('hihi');
   }
 
   async registerOwnership(updateData: ClaimEventPassNftsMutationVariables) {
@@ -103,7 +99,6 @@ export class NftClaimable {
     const contract = await this.sdk.getContract(contractAddress);
 
     try {
-      console.log('Claim lol');
       const claimResult = await contract.erc721.claimTo(
         toAddress,
         order.quantity,
