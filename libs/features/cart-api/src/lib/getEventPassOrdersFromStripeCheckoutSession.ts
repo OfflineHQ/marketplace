@@ -10,15 +10,18 @@ export type GetEventPassOrdersFromStripeCheckoutSessionProps = {
   user: AppUser;
 };
 
-export const getEventPassOrdersFromStripeCheckoutSession = async ({
-  stripeCheckoutSessionId,
-  user,
-}: GetEventPassOrdersFromStripeCheckoutSessionProps) => {
-  const payment = new Payment();
+export const getEventPassOrdersFromStripeCheckoutSession = async (
+  {
+    stripeCheckoutSessionId,
+    user,
+  }: GetEventPassOrdersFromStripeCheckoutSessionProps,
+  payment = new Payment(),
+) => {
   const session = await payment.getStripeCheckoutSession({
     stripeCheckoutSessionId,
   });
   const customer = await payment.getOrCreateStripeCustomer({ user });
+  console.log('customer', customer, 'session', session);
   if (
     payment.getStripeCustomerId(session.customer) === customer?.stripeCustomerId
   ) {
