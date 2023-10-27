@@ -1,12 +1,13 @@
-export { lotsOfPasses } from './lib/molecules/PassTotal/examples';
 export {
+  passFamily,
+  passFamilyCart,
+  passPremium,
+  passWeekend,
   passWithMaxAmount,
   passWithMaxAmountCart,
   passWithMaxAmountPerUser,
   passWithMaxAmountPerUserCart,
   passWithSoldOut,
-  passFamily,
-  passWeekend,
-  passPremium,
 } from './lib/molecules/PassCard/examples';
-export { eventProps, event2Props } from './lib/pages/Event/examples';
+export { lotsOfPasses } from './lib/molecules/PassTotal/examples';
+export { event2Props, eventProps } from './lib/pages/Event/examples';
