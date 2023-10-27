@@ -15,6 +15,24 @@ query GetAccountEventPassOrderForEventPasses(
   }
 }
 
+query GetEventPassOrderFromId($id: uuid!) {
+  eventPassOrder(where: { id: { _eq: $id } }) {
+    id
+    eventPassId
+    quantity
+    status
+    eventPassNftContract {
+      contractAddress
+    }
+    account {
+      address
+    }
+    eventPassPricing {
+      priceAmount
+    }
+  }
+}
+
 query GetEventPassOrdersFromStripeCheckoutSession(
   $stripeCheckoutSessionId: String!
 ) {
@@ -30,6 +48,9 @@ query GetEventPassOrdersFromStripeCheckoutSession(
     }
     account {
       address
+    }
+    eventPassPricing {
+      priceAmount
     }
   }
 }

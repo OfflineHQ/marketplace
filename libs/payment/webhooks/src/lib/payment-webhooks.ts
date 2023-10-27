@@ -74,7 +74,6 @@ export async function stripeCheckoutStatus(
       setTimeout(async () => {
         try {
           //TODO release the NFTs.
-          console.log('Going into confirmedStripeCheckoutSession');
           await payment.confirmedStripeCheckoutSession({
             stripeCheckoutSessionId: checkoutSession.id,
           });
