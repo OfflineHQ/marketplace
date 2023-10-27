@@ -174,7 +174,6 @@ export const useGetEventPassOrdersConfirmedQuery = <
 export const GetEventPassOrdersFromIdsDocument = `
     query GetEventPassOrdersFromIds($eventPassOrderIds: [uuid!]!, $stage: Stage!) {
   eventPassOrder(where: {id: {_in: $eventPassOrderIds}}) {
-    id
     eventPassId
     quantity
     eventPass(locales: [en], stage: $stage) {
