@@ -53,7 +53,7 @@ export async function stripeCheckoutStatus(
         status: 400,
       });
     }
-    console.log({ checkoutSession });
+    //console.log({ checkoutSession });
 
     // const currency = checkoutSession.currency;
     // const amount_total = checkoutSession.amount_total;
