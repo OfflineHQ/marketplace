@@ -86,6 +86,10 @@
       "title": "Achat réussi ! 🎉",
       "description": "Merci pour votre achat. Vos pass devraient disponibles dans quelques minutes.",
       "continue-shopping-button": "Aller à la page d'accueil"
+    },
+    "Cancelled": {
+      "description": "Votre achat a été annulé avec succès. Nous sommes désolés de vous voir partir. Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contacter. N'hésitez pas à continuer vos achats si vous changez d'avis.",
+      "continue-shopping-button": "Aller à la page d'accueil"
     }
   },
   "Pass": {

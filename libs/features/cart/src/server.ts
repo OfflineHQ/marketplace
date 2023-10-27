@@ -1,5 +1,9 @@
 // Use this file to export React server components
 export {
+  CartCancelled,
+  type CartCancelledProps,
+} from './lib/CartCancelled/CartCancelled';
+export {
   CartSuccessful,
   type CartSuccessfulProps,
 } from './lib/CartSuccessful/CartSuccessful';
