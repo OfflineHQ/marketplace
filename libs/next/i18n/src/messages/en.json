@@ -208,8 +208,10 @@
   "Error": {
     "description": "There's been an error"
   },
-  "navigation": {
+  "Navigation": {
     "404-not-found": "This page doesn't exist or couldn't be found",
-    "back-to-home": "Go to Homepage"
+    "back-to-home": "Go to Homepage",
+    "retry": "Try again",
+    "error-message": "Something went wrong"
   }
 }
