@@ -1,6 +1,7 @@
 'use client';
 
-import { EventPass, EventPassCart } from '@features/organizer/event-types';
+import { EventPassCart } from '@features/cart-types';
+import { EventPass } from '@features/organizer/event-types';
 import { Currency_Enum } from '@gql/shared/types';
 import {
   passOptionsFestival,

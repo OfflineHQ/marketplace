@@ -4,12 +4,12 @@ import { Cache } from '@next/cache';
 import { getUnauthenticatedUserCookie } from '@next/next-auth/user';
 import { produce } from 'immer';
 
-import { UserPassPendingOrder } from '@features/cart-types';
-import type {
+import {
   AllPassesCart,
   EventPassCart,
-  EventSlugs,
-} from '@features/organizer/event-types';
+  UserPassPendingOrder,
+} from '@features/cart-types';
+import type { EventSlugs } from '@features/organizer/event-types';
 import { Stage } from '@gql/shared/types';
 
 interface GetPassCartProps extends EventSlugs {

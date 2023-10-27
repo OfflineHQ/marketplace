@@ -1,3 +1,4 @@
+import { UserPassOrder } from '@features/cart-types';
 import { Link } from '@next/navigation';
 import {
   Button,
@@ -7,30 +8,41 @@ import {
   CardHeader,
   CardOverflow,
   CardOverlay,
+  CardTitle,
   Text,
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
-import {
-  EventPassList,
-  type EventPassListProps,
-} from '../EventPassList/EventPassList';
+import { EventPassList } from '../EventPassList/EventPassList';
 
-export type CartSuccessfulProps = EventPassListProps;
+export type CartSuccessfulProps = {
+  passes: UserPassOrder[];
+};
 
-export const CartSuccessful: FC<CartSuccessfulProps> = ({ allPasses }) => {
+export const CartSuccessful: FC<CartSuccessfulProps> = ({ passes }) => {
   const t = useTranslations('Cart.Successful');
+  const allPasses = passes.reduce((acc, pass) => {
+    const organizerSlug = pass.eventPass?.event?.organizer?.slug;
+    const eventSlug = pass.eventPass?.event?.slug;
+    if (organizerSlug && eventSlug) {
+      if (!acc[organizerSlug]) {
+        acc[organizerSlug] = {};
+      }
+      if (!acc[organizerSlug][eventSlug]) {
+        acc[organizerSlug][eventSlug] = [];
+      }
+      acc[organizerSlug][eventSlug].push(pass);
+    }
+    return acc;
+  }, {} as any);
   return (
     <section className="container">
       <Card variant="stickyFooter" noBorder>
         <CardOverflow>
           <CardHeader>
-            <Text
-              variant="h2"
-              className="text-3xl font-bold tracking-tighter text-success md:text-4xl"
-            >
+            <CardTitle className="text-3xl font-bold tracking-tighter text-success md:text-4xl">
               {t('title')}
-            </Text>
+            </CardTitle>
             <Text
               variant="p"
               className="max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
