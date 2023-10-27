@@ -2,15 +2,13 @@ import { AppNavLayout } from '@features/appNav/ui';
 import { WithNoUser } from '@features/appNav/ui/stories';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { NoUserCart } from './NoUserCart';
-// @ts-ignore
-import EmptyCartImage from '../images/empty-cart.svg';
 
 export function NoUserCartExample() {
   return (
     <NextAuthProvider session={null}>
       <AuthProvider session={null} isConnected={() => false}>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart noCartImage={EmptyCartImage} />
+          <NoUserCart noCartImage="/empty-cart.svg" />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
@@ -22,7 +20,7 @@ export function NoUserCartLoadingExample() {
     <NextAuthProvider session={null}>
       <AuthProvider session={null} isConnected={() => false}>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart noCartImage={EmptyCartImage} />
+          <NoUserCart noCartImage="/empty-cart.svg" />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
@@ -34,7 +32,7 @@ export function NoUserCartNoCartExample() {
     <NextAuthProvider session={null}>
       <AuthProvider session={null} isConnected={() => false}>
         <AppNavLayout {...WithNoUser.args}>
-          <NoUserCart noCartImage={EmptyCartImage} />
+          <NoUserCart noCartImage="/empty-cart.svg" />
         </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>

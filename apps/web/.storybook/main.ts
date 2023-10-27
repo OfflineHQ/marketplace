@@ -37,7 +37,7 @@ module.exports = {
     },
     interactionsDebugger: true,
   },
-  staticDirs: ['../../../public'], // add msw worker to storybook
+  staticDirs: ['../../../msw', '../public'], // add msw worker to storybook and public folder from next app for images
   features: {
     storyStoreV7: !isCI,
   },

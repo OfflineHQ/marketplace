@@ -277,7 +277,7 @@
   },
   "_id": "offline@0.0.0",
   "msw": {
-    "workerDirectory": "public"
+    "workerDirectory": "msw"
   },
   "nx": {
     "includedScripts": []
