@@ -7,7 +7,6 @@ import type {
 import { OrderStatus_Enum } from '@gql/shared/types';
 import { EventPassOrderWithContractData } from '@nft/types';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
-import { ethers } from 'ethers';
 
 type FnType = (
   orders: EventPassOrderWithContractData[],
@@ -61,14 +60,13 @@ export class NftClaimable {
       throw new Error('Contract address is undefined');
     }
     const contract = await this.sdk.getContract(contractAddress);
-    const supply = await contract.erc721.totalUnclaimedSupply();
 
-    if (
-      ethers.BigNumber.from(supply).lt(ethers.BigNumber.from(order.quantity))
-    ) {
-      throw new Error(
-        `Not enough supply for order ${order.id} : ${supply} remaining but ${order.quantity} wanted`,
-      );
+    if (!(await contract.erc721.claimConditions.canClaim(order.quantity))) {
+      const reasons =
+        await contract.erc721.claimConditions.getClaimIneligibilityReasons(
+          order.quantity,
+        );
+      throw new Error(`Cannot claim for reasons : ${reasons}`);
     }
   }
 
@@ -89,7 +87,6 @@ export class NftClaimable {
     this: NftClaimable,
     orders: EventPassOrderWithContractData[],
   ): Promise<ClaimEventPassNftsMutation> {
-    console.log('In claimAllMetadatas');
     const promises = orders.map((order) => this.claimOrder(order));
 
     const claims = await Promise.allSettled(promises);
@@ -113,8 +110,6 @@ export class NftClaimable {
         currentOwnerAddress: string;
       }[]
     >[];
-
-    console.log('Fulfilledclaims : ', fulfilledClaims.length);
 
     return await this.registerOwnership({
       updates: fulfilledClaims.map((claim) => ({

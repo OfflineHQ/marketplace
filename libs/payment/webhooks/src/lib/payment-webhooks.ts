@@ -53,7 +53,7 @@ export async function stripeCheckoutStatus(
         status: 400,
       });
     }
-    //console.log({ checkoutSession });
+    console.log({ checkoutSession });
 
     // const currency = checkoutSession.currency;
     // const amount_total = checkoutSession.amount_total;
@@ -71,48 +71,47 @@ export async function stripeCheckoutStatus(
         );
         return new Response(null, { status: 200 });
       }
-      setTimeout(async () => {
+      try {
+        //TODO release the NFTs.
+        await payment.confirmedStripeCheckoutSession({
+          stripeCheckoutSessionId: checkoutSession.id,
+        });
+      } catch (err) {
+        console.error(err);
+        //TODO: refund only if NFT not released ! filter the error depending of that.
+        if (!err.message?.includes('Error claiming NFTs'))
+          return new Response(
+            `ConfirmedStripeCheckoutSession Error: ${err.message}`,
+            { status: 500 },
+          );
+        //TODO: notify user and refund order because NFT not released.
         try {
-          //TODO release the NFTs.
-          console.log('Going into confirmedStripeCheckoutSession');
-          await payment.confirmedStripeCheckoutSession({
-            stripeCheckoutSessionId: checkoutSession.id,
-          });
+          let paymentIntentId;
+          if (typeof checkoutSession.payment_intent === 'string') {
+            paymentIntentId = checkoutSession.payment_intent;
+          } else if (checkoutSession.payment_intent) {
+            paymentIntentId = checkoutSession.payment_intent.id;
+          }
+
+          if (!paymentIntentId) {
+            console.error(
+              `No payment_intent found for refund in checkoutSession: ${checkoutSession.id}`,
+            );
+            return new Response(
+              `No payment_intent found for refund in checkoutSession: ${checkoutSession.id}`,
+              { status: 500 },
+            );
+          } else {
+            await payment.refundPayment({
+              paymentIntentId,
+              checkoutSessionId: checkoutSession.id,
+            });
+          }
         } catch (err) {
           console.error(err);
-          //TODO: refund only if NFT not released ! filter the error depending of that.
-          if (!err.message?.includes('Error claiming NFTs')) {
-            console.error(
-              `ConfirmedStripeCheckoutSession Error: ${err.message}`,
-            );
-            return;
-          }
-          //TODO: notify user and refund order because NFT not released.
-          try {
-            let paymentIntentId;
-            if (typeof checkoutSession.payment_intent === 'string') {
-              paymentIntentId = checkoutSession.payment_intent;
-            } else if (checkoutSession.payment_intent) {
-              paymentIntentId = checkoutSession.payment_intent.id;
-            }
-
-            if (!paymentIntentId) {
-              console.error(
-                `No payment_intent found for refund in checkoutSession: ${checkoutSession.id}`,
-              );
-              return;
-            } else {
-              await payment.refundPayment({
-                paymentIntentId,
-                checkoutSessionId: checkoutSession.id,
-              });
-            }
-          } catch (err) {
-            console.error(err);
-          }
         }
-      }, 0);
-      return new Response(null, { status: 200 });
+        return new Response(null, { status: 200 });
+      }
     } else if (event.type === 'checkout.session.expired') {
       // TODO: notify user and cancel orders
       try {
