@@ -36,7 +36,7 @@ export type GetEventPassOrdersFromIdsQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetEventPassOrdersFromIdsQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', id: any, eventPassId: string, quantity: number, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> };
+export type GetEventPassOrdersFromIdsQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> };
 
 export type GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables = Types.Exact<{
   eventPassId: Types.Scalars['String'];
