@@ -86,6 +86,11 @@
       "title": "Purchase Successful! 🎉",
       "description": "Thank you for your purchase. Your passes should be available in a few minutes.",
       "continue-shopping-button": "Go to Homepage"
+    },
+    "Cancelled": {
+      "title": "Purchase Cancelled",
+      "description": "Your purchase has been successfully cancelled. We're sorry to see you go. If you have any questions or concerns, please don't hesitate to contact us. Feel free to continue shopping if you change your mind.",
+      "continue-shopping-button": "Go to Homepage"
     }
   },
   "Pass": {
