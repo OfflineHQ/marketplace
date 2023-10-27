@@ -171,6 +171,35 @@ export const useGetEventPassOrdersConfirmedQuery = <
       fetchDataReactQuery<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables),
       options
     );
+export const GetEventPassOrdersFromIdsDocument = `
+    query GetEventPassOrdersFromIds($eventPassOrderIds: [uuid!]!, $stage: Stage!) {
+  eventPassOrder(where: {id: {_in: $eventPassOrderIds}}) {
+    id
+    eventPassId
+    quantity
+    eventPass(locales: [en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+    `;
+export const useGetEventPassOrdersFromIdsQuery = <
+      TData = Types.GetEventPassOrdersFromIdsQuery,
+      TError = Error
+    >(
+      variables: Types.GetEventPassOrdersFromIdsQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassOrdersFromIdsQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassOrdersFromIdsQuery, TError, TData>(
+      ['GetEventPassOrdersFromIds', variables],
+      fetchDataReactQuery<Types.GetEventPassOrdersFromIdsQuery, Types.GetEventPassOrdersFromIdsQueryVariables>(GetEventPassOrdersFromIdsDocument, variables),
+      options
+    );
 export const GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument = `
     query GetEventPassOrdersConfirmedOrCompletedForEventPassId($eventPassId: String!) {
   eventPassOrder(
