@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 export function NotFound() {
-  const t = useTranslations('navigation');
+  const t = useTranslations('Navigation');
   return (
     <Card variant="stickyFooter" noBorder className="container mx-auto h-full">
       <CardContent className="flex w-full flex-col items-center">
