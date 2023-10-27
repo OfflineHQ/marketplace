@@ -112,6 +112,11 @@ export const passFamily: EventPass = {
   // },
 };
 
+export const passFamilyCart: EventPassCart = {
+  eventPassId: passFamily.id,
+  quantity: 2,
+};
+
 export const passEarlyBird: EventPass = {
   id: '5',
   name: 'Early Bird Pass',
