@@ -10,7 +10,6 @@ export async function GET(req: NextRequest) {
   const jwt = jsonwebtoken.sign(payload!, env.UPLOAD_SECRET_JWT as string, {
     algorithm: 'RS256',
   });
-  //console.log('jwt', jwt);
   return new NextResponse(jwt, {
     status: 200,
     headers: {

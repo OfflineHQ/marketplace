@@ -38,12 +38,6 @@ export default async function SinglePassPage({ params }: SinglePassPageProps) {
       locale,
     });
   }
-  console.log('eventPassNft', eventPassNft, {
-    organizerId,
-    eventId,
-    eventPassId,
-    tokenId,
-  });
   if (!eventPassNft) {
     // TODO redirect to 404
     return null;
