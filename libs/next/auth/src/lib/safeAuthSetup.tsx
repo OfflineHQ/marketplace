@@ -7,7 +7,7 @@ import { ToastAction, useToast } from '@ui/components';
 import { isCypressRunning } from '@utils';
 import { MetamaskAdapter } from '@web3auth/metamask-adapter';
 
-import { useCallback, useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useRouter } from '@next/navigation';
 import {
@@ -19,7 +19,7 @@ import {
 import { Web3AuthOptions } from '@web3auth/modal';
 import { LANGUAGE_TYPE, OpenloginAdapter } from '@web3auth/openlogin-adapter';
 import { ethers } from 'ethers';
-import { getCsrfToken, signIn, signOut, useSession } from 'next-auth/react';
+import { getCsrfToken, signIn, signOut } from 'next-auth/react';
 import { SiweMessage } from 'siwe';
 
 import env from '@env/client';
@@ -460,7 +460,6 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       if (web3AuthModalPack?.web3Auth?.connected) {
         setConnecting(true);
       } else {
-        console.log('User not connected with web3auth so logging out...');
         handleUnauthenticatedUser();
         logoutSiwe({ refresh: false });
       }

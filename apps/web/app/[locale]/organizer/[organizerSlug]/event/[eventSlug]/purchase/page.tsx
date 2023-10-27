@@ -2,9 +2,11 @@ import { PassPurchaseCard } from '@features/organizer/event';
 import {
   getEventPassOrdersConfirmed,
   getEventPasses,
+  getEvent,
 } from '@features/organizer/event-api';
 import type { EventPass } from '@features/organizer/event-types';
 import { useTranslations } from 'next-intl';
+import { NotFound } from '@features/navigation';
 
 export interface PurchaseSectionProps {
   params: {
@@ -20,14 +22,19 @@ export default async function PurchaseSection({
   const { eventSlug, organizerSlug, locale } = params;
   const passes = await getEventPasses({ eventSlug, locale });
   const confirmedPasses = await getEventPassOrdersConfirmed();
-  return (
-    <PurchaseSectionContent
-      passes={passes}
-      eventSlug={eventSlug}
-      organizerSlug={organizerSlug}
-      hasConfirmedPasses={!!confirmedPasses?.length}
-    />
-  );
+  const event = await getEvent({ eventSlug, locale });
+  // in case the event is not found or the organizer slug is not the same as the one in the url redirect to 404
+  if (!event || event.organizer?.slug !== organizerSlug) {
+    return <NotFound />;
+  } else
+    return (
+      <PurchaseSectionContent
+        passes={passes}
+        eventSlug={eventSlug}
+        organizerSlug={organizerSlug}
+        hasConfirmedPasses={!!confirmedPasses?.length}
+      />
+    );
 }
 
 interface PurchaseSectionContentProps {
@@ -45,7 +52,6 @@ function PurchaseSectionContent({
 }: PurchaseSectionContentProps) {
   const t = useTranslations('Organizer.Event.PassPurchase');
   const backRoute = `/organizer/${organizerSlug}/event/${eventSlug}`;
-  // TODO get reserved passes and owned passes from user if connected and change pass props so it respect boundaries. Also need to change pass purchase to handle this.
   return (
     <PassPurchaseCard
       passes={passes}
