@@ -23,7 +23,7 @@ describe('NftClaimable integration test', () => {
 
     nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
       erc721: {
-        claimConditions: { canClaim: jest.fn().mockResolvedValue(true) },
+        totalUnclaimedSupply: jest.fn().mockResolvedValue(10),
         claimTo: jest
           .fn()
           .mockResolvedValue([
@@ -73,7 +73,7 @@ describe('NftClaimable integration test', () => {
     it('should throw an error when canClaim returns false', async () => {
       nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
         erc721: {
-          claimConditions: { canClaim: jest.fn().mockResolvedValue(false) },
+          totalUnclaimedSupply: jest.fn().mockResolvedValue(0),
         },
       });
 
@@ -83,7 +83,7 @@ describe('NftClaimable integration test', () => {
     it('should throw an error when claimTo fails', async () => {
       nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
         erc721: {
-          claimConditions: { canClaim: jest.fn().mockResolvedValue(true) },
+          totalUnclaimedSupply: jest.fn().mockResolvedValue(10),
           claimTo: jest.fn().mockRejectedValue(new Error('claimTo failed')),
         },
       });
