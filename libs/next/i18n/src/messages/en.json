@@ -207,5 +207,9 @@
   },
   "Error": {
     "description": "There's been an error"
+  },
+  "navigation": {
+    "404-not-found": "This page doesn't exist or couldn't be found",
+    "back-to-home": "Go to Homepage"
   }
 }
