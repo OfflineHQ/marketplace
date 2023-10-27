@@ -63,7 +63,6 @@ export class NftClaimable {
       throw new Error('Contract address is undefined');
     }
     const contract = await this.sdk.getContract(contractAddress);
-    console.log('hihi');
 
     if (!(await contract.erc721.claimConditions.canClaim(order.quantity))) {
       const reasons =
