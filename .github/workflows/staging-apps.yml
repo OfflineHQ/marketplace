@@ -45,10 +45,10 @@ jobs:
           echo "::set-output name=build_required::$?"
 
       - name: App // Vercel Environment Information
-        if: fromJson(steps.app_check_build.outputs)['build_required_${{ matrix.app }}'] == '1'
+        if: fromJson(steps.app_check_build.outputs)['build_required_${{ matrix.app }}'] === '1'
         run: cd apps/${{ matrix.app }} && vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: App // Deploy Staging to Vercel
-        if: fromJson(steps.app_check_build.outputs)['build_required_${{ matrix.app }}'] == '1'
+        if: fromJson(steps.app_check_build.outputs)['build_required_${{ matrix.app }}'] === '1'
         id: app_deploy_vercel
         run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
