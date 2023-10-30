@@ -206,5 +206,11 @@
   },
   "Error": {
     "description": "Il y a eu une erreur"
+  },
+  "Navigation": {
+    "404-not-found": "Cette page n'existe pas ou n'a pas pu être trouvée.",
+    "back-to-home": "Aller à la page d'accueil",
+    "retry": "Réessayer",
+    "error-message": "Un problème est survenu"
   }
 }
