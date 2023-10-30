@@ -91,8 +91,13 @@ jobs:
       - name: Check if app should be built
         id: app_check_build
         run: |
-          npx --y nx-ignore ${{ matrix.app }}
-          echo "BUILD_REQUIRED_${{ matrix.app }}=$?" >> $GITHUB_ENV
+          output=$(npx --y nx-ignore ${{ matrix.app }})
+          echo "$output"
+          if [[ "$output" == *"✅ - Build can proceed"* ]]; then
+            echo "BUILD_REQUIRED_${{ matrix.app }}=true" >> $GITHUB_ENV
+          else
+            echo "BUILD_REQUIRED_${{ matrix.app }}=false" >> $GITHUB_ENV
+          fi
 
       - name: Deploy Preview to Vercel
         id: deploy_vercel
@@ -101,7 +106,7 @@ jobs:
         run: |
           set -e
           set -x
-          if [[ $BUILD_REQUIRED == '1' ]]; then
+          if [[ $BUILD_REQUIRED == true ]]; then
             cd apps/${{ matrix.app }} && vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
             # TODO remove this when Hasura correctly deployed, was temporary to fix missing env issue
             echo HASURA_GRAPHQL_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
