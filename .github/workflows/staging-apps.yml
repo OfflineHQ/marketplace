@@ -34,7 +34,7 @@ jobs:
           fi
 
       - name: Web App // Vercel Environment Information
-        run: cd apps/web vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }}
+        run: cd apps/web && vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Web App // Deploy Staging to Vercel
         id: web_app_deploy_vercel
