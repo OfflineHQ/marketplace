@@ -104,14 +104,14 @@ jobs:
           BUILD_REQUIRED: ${{ env[format('BUILD_REQUIRED_{0}', matrix.app)] }}
         run: |
           if [[ $BUILD_REQUIRED == true ]]; then
-            cd apps/${{ matrix.app }} && vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }} --local-config=apps/${{ matrix.app }}/vercel.json
             # TODO remove this when Hasura correctly deployed, was temporary to fix missing env issue
             echo HASURA_GRAPHQL_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
             echo HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
             echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
             echo NEXTAUTH_URL=https://www.preview.offline.live/ >> .env
             #
-            preview_url=$(vercel deploy --token=${{secrets.VERCEL_TOKEN}})
+            preview_url=$(vercel deploy --token=${{secrets.VERCEL_TOKEN}} --local-config=apps/${{ matrix.app }}/vercel.json)
             echo "PREVIEW_URL_${{ matrix.app }}=$preview_url" >> $GITHUB_ENV
           else
             echo "Build not required - skipping Deploy Preview to Vercel"

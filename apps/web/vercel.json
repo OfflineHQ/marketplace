@@ -3,7 +3,6 @@
   "buildCommand": "cd ../.. && pnpm nx build web --prod",
   "outputDirectory": "../../dist/apps/web/.next",
   "installCommand": "pnpm install",
-  "rootDirectory": "../..",
   "crons": [
     {
       "path": "/crons/handlePendingOrders.ts",
