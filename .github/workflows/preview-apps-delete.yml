@@ -39,33 +39,3 @@ jobs:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
           branch_name: ${{ env.PULL_REQUEST_SHA }}
           api_key: ${{ secrets.NEON_API_KEY }}
-
-      - name: Download PREVIEW_URL cache
-        uses: actions/cache@v3
-        id: cache-preview-url
-        with:
-          path: ./preview_url.txt
-          key: preview-url-${{ env.PULL_REQUEST_SHA }}
-
-      - name: Get PREVIEW_URL from cache
-        id: get_preview_url
-        run: |
-          preview_url=$(cat preview_url.txt)
-          echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
-
-      - name: Cache Vercel CLI
-        uses: actions/cache@v2
-        id: cache-vercel
-        with:
-          path: ~/.npm # adjust this path if needed
-          key: vercel-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install Vercel CLI
-        run: |
-          if [ -z "$(npm list -g --depth=0 | grep vercel)" ]
-          then
-            npm install --global vercel@latest
-          fi
-
-      - name: Delete Vercel Preview
-        run: vercel remove [${{ env.PREVIEW_URL }}] --yes --token ${{ secrets.VERCEL_TOKEN }}
