@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "name": "back-office",
+  "buildCommand": "cd ../.. && pnpm nx build back-office --prod",
+  "outputDirectory": "../../dist/apps/back-office/.next",
+  "installCommand": "pnpm install"
+}

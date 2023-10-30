@@ -6,13 +6,15 @@ on:
       - staging
   workflow_dispatch:
 
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
 jobs:
   deploy-staging:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: ['web', 'back-office']
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ matrix.app == 'web' && secrets.VERCEL_PROJECT_ID_WEB || secrets.VERCEL_PROJECT_ID_BACK_OFFICE }}
     steps:
       - uses: actions/checkout@v3
 
@@ -33,9 +35,18 @@ jobs:
             npm install --global vercel@latest
           fi
 
-      - name: Web App // Vercel Environment Information
-        run: cd apps/web && vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }}
+      # Deploy app
+      - name: Check if app should be built
+        id: app_check_build
+        run: |
+          BUILD_REQUIRED=$(pnpx nx-ignore ${{ matrix.app }}; echo $?)
+          echo "::set-output name=build_required::$BUILD_REQUIRED"
 
-      - name: Web App // Deploy Staging to Vercel
-        id: web_app_deploy_vercel
-        run: vercel deploy --token=${{secrets.VERCEL_TOKEN}}
+      - name: App // Vercel Environment Information
+        if: steps.app_check_build.outputs.build_required == '1'
+        run: cd apps/${{ matrix.app }} && vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: App // Deploy Staging to Vercel
+        if: steps.app_check_build.outputs.build_required == '1'
+        id: app_deploy_vercel
+        run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
