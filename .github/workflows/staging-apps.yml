@@ -17,6 +17,8 @@ jobs:
       VERCEL_PROJECT_ID: ${{ matrix.app == 'web' && secrets.VERCEL_PROJECT_ID_WEB || secrets.VERCEL_PROJECT_ID_BACK_OFFICE }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Set up environment and cache dependencies
         uses: sebpalluel/ci/.github/actions/setup-environment@latest
@@ -39,7 +41,7 @@ jobs:
       - name: Check if app should be built
         id: app_check_build
         run: |
-          BUILD_REQUIRED=$(pnpx nx-ignore ${{ matrix.app }}; echo $?)
+          BUILD_REQUIRED=$(npx nx-ignore ${{ matrix.app }}; echo $?)
           echo "::set-output name=build_required_${{ matrix.app }}::$BUILD_REQUIRED"
 
       - name: App // Vercel Environment Information
