@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { setRates } from '@next/currency-cache';
+import { setRates } from '../next-currency-cache';
 
 export default async function handler() {
   try {
