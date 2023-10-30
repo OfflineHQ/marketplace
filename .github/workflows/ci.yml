@@ -34,7 +34,6 @@ jobs:
         pnpm exec nx-cloud record -- pnpm docker:test & pnpm docker:services
 
       parallel-commands: |
-        pnpm nx workspace-lint
         pnpm nx format:check --verbose
         ## test relying in prisma + hasura not working in parallel, docker services not available ?
         # pnpm nx affected --target=test-prisma --ci --code-coverage
