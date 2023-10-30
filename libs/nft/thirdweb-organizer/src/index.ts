@@ -45,7 +45,6 @@ class NftCollection {
       const address = await this.sdk.wallet.getAddress();
       const chainIdNumber = await this.sdk.wallet.getChainId();
       const chainId = chainIdNumber.toString();
-
       const txResult = await this.sdk.deployer.deployBuiltInContract(
         'nft-drop',
         {
@@ -54,7 +53,6 @@ class NftCollection {
           voting_token_address: address,
         },
       );
-
       await createEventPassNftContract({
         contractAddress: txResult,
         eventPassId: eventPassId,
@@ -62,7 +60,6 @@ class NftCollection {
         eventId: eventId,
         organizerId: organizerId,
       });
-
       const contract = await this.sdk.getContract(txResult);
 
       await contract.erc721.claimConditions.set([
@@ -80,7 +77,6 @@ class NftCollection {
           ],
         },
       ]);
-
       const metadatas = Array.from({ length: maxAmount }).map((_, i) => {
         return {
           name: metadata.name,
@@ -91,17 +87,22 @@ class NftCollection {
       });
       const results = await contract.erc721.lazyMint(metadatas);
 
+      const fullBaseUri = (await results[0].data()).uri;
+      const baseUri = fullBaseUri.slice(0, -1);
+
       const hasuraMetadatas = await Promise.all(
-        metadatas.map(async (m, i) => {
-          const data = await results[i].data();
+        metadatas.map(async (metadata, i) => {
+          const tokenIdInBigNumber = results[i].id;
+          const tokenId = ethers.BigNumber.from(tokenIdInBigNumber).toNumber();
+          const tokenUri = `${baseUri}${i}`;
           return {
-            metadata: m,
-            chainId: chainId,
-            tokenId: data.id,
-            tokenUri: data.uri,
-            organizerId: organizerId,
-            eventId: eventId,
-            eventPassId: eventPassId,
+            metadata,
+            chainId,
+            tokenId,
+            tokenUri,
+            organizerId,
+            eventId,
+            eventPassId,
             contractAddress: txResult,
           };
         }),
@@ -112,6 +113,7 @@ class NftCollection {
         eventId,
         nftCollectionAddresses: [{ contractAddress: txResult }],
         organizerId,
+        eventSlug,
       });
     } catch (error) {
       console.error('Error deploying a collection:', error);
