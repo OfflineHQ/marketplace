@@ -40,13 +40,13 @@ jobs:
         id: app_check_build
         run: |
           BUILD_REQUIRED=$(pnpx nx-ignore ${{ matrix.app }}; echo $?)
-          echo "::set-output name=build_required::$BUILD_REQUIRED"
+          echo "::set-output name=build_required_${{ matrix.app }}::$BUILD_REQUIRED"
 
       - name: App // Vercel Environment Information
-        if: steps.app_check_build.outputs.build_required == '1'
+        if: fromJson(steps.app_check_build.outputs)['build_required_${{ matrix.app }}'] == '1'
         run: cd apps/${{ matrix.app }} && vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: App // Deploy Staging to Vercel
-        if: steps.app_check_build.outputs.build_required == '1'
+        if: fromJson(steps.app_check_build.outputs)['build_required_${{ matrix.app }}'] == '1'
         id: app_deploy_vercel
         run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
