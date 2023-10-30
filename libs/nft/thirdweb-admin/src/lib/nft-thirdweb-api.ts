@@ -8,27 +8,6 @@ import { OrderStatus_Enum } from '@gql/shared/types';
 import { EventPassOrderWithContractData } from '@nft/types';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 
-type FnType = (
-  orders: EventPassOrderWithContractData[],
-) => Promise<ClaimEventPassNftsMutation>;
-
-function sdkMiddleware(fn: FnType) {
-  return async function (orders: EventPassOrderWithContractData[]) {
-    if (!this.sdk) {
-      throw new Error('SDK is undefined');
-    }
-
-    try {
-      await Promise.all(orders.map((order) => this.checkOrder(order)));
-    } catch (e) {
-      console.error(e);
-      throw new Error(`Error during check of the unclaim supply: ${e.message}`);
-    }
-
-    return await fn.call(this, orders);
-  };
-}
-
 export class NftClaimable {
   sdk?: ThirdwebSDK;
 
@@ -66,7 +45,9 @@ export class NftClaimable {
         await contract.erc721.claimConditions.getClaimIneligibilityReasons(
           order.quantity,
         );
-      throw new Error(`Cannot claim for reasons : ${reasons}`);
+      throw new Error(
+        `Cannot claim for order ${order.id} with reasons : ${reasons}`,
+      );
     }
   }
 
@@ -83,46 +64,10 @@ export class NftClaimable {
     }
   }
 
-  claimAllMetadatas = sdkMiddleware(async function (
+  async claimOrder(
     this: NftClaimable,
-    orders: EventPassOrderWithContractData[],
+    order: EventPassOrderWithContractData,
   ): Promise<ClaimEventPassNftsMutation> {
-    const promises = orders.map((order) => this.claimOrder(order));
-
-    const claims = await Promise.allSettled(promises);
-
-    const rejectedClaims = claims.filter(
-      (claim) => claim.status === 'rejected',
-    ) as PromiseRejectedResult[];
-
-    if (rejectedClaims.length > 0) {
-      for (const rejectedClaim of rejectedClaims) {
-        console.error(`${rejectedClaim.reason}`);
-      }
-    }
-
-    const fulfilledClaims = claims.filter(
-      (claim) => claim.status === 'fulfilled',
-    ) as PromiseFulfilledResult<
-      {
-        contractAddress: string;
-        tokenId: number;
-        currentOwnerAddress: string;
-      }[]
-    >[];
-
-    return await this.registerOwnership({
-      updates: fulfilledClaims.map((claim) => ({
-        _set: { currentOwnerAddress: claim.value[0].currentOwnerAddress },
-        where: {
-          contractAddress: { _eq: claim.value[0].contractAddress },
-          tokenId: { _eq: claim.value[0].tokenId },
-        },
-      })),
-    });
-  });
-
-  private async claimOrder(order: EventPassOrderWithContractData) {
     const contractAddress = order.eventPassNftContract?.contractAddress;
     const toAddress = order.account?.address;
     if (!contractAddress || !toAddress) {
@@ -154,11 +99,15 @@ export class NftClaimable {
           },
         ],
       });
-      return claimResult.map((claim) => ({
-        contractAddress: contractAddress,
-        tokenId: claim.id.toNumber(),
-        currentOwnerAddress: toAddress,
-      }));
+      return await this.registerOwnership({
+        updates: claimResult.map((claim) => ({
+          _set: { currentOwnerAddress: toAddress },
+          where: {
+            contractAddress: { _eq: contractAddress },
+            tokenId: { _eq: claim.id.toNumber() },
+          },
+        })),
+      });
     } catch (e) {
       await adminSdk.UpdateEventPassOrdersStatus({
         updates: [

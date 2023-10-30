@@ -58,7 +58,7 @@ describe('NftClaimable integration test', () => {
   });
 
   it('should update the database when claimAllMetadatas is called', async () => {
-    await nftClaimable.claimAllMetadatas([order]);
+    await nftClaimable.claimOrder(order);
 
     const updatedOrder = await adminSdk.GetAccountEventPassOrderForEventPasses({
       accountId: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
@@ -73,11 +73,16 @@ describe('NftClaimable integration test', () => {
     it('should throw an error when canClaim returns false', async () => {
       nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
         erc721: {
-          claimConditions: { canClaim: jest.fn().mockResolvedValue(false) },
+          claimConditions: {
+            canClaim: jest.fn().mockResolvedValue(false),
+            getClaimIneligibilityReasons: jest
+              .fn()
+              .mockResolvedValue('Not enough gas gas gas'),
+          },
         },
       });
 
-      await expect(nftClaimable.claimAllMetadatas([order])).rejects.toThrow();
+      await expect(nftClaimable.checkOrder(order)).rejects.toThrow();
     });
 
     it('should throw an error when claimTo fails', async () => {
@@ -92,15 +97,11 @@ describe('NftClaimable integration test', () => {
         .spyOn(console, 'error')
         .mockImplementation(jest.fn());
 
-      const result = await nftClaimable.claimAllMetadatas([order]);
+      await expect(nftClaimable.claimOrder(order)).rejects.toThrow();
 
-      expect(result).toEqual({
-        update_eventPassNft_many: { affected_rows: 0, returning: [] },
-      });
       expect(consoleSpy).toHaveBeenCalledWith(
-        'Error: Error during claiming operation: claimTo failed',
+        expect.objectContaining({ message: 'claimTo failed' }),
       );
-
       consoleSpy.mockRestore();
     });
   });

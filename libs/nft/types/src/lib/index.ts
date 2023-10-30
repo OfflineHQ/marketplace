@@ -1,4 +1,5 @@
 import type {
+  GetEventPassOrderFromIdQuery,
   GetEventPassOrdersFromStripeCheckoutSessionQuery,
   UpdateEventPassNftFromNftTransferMutation,
 } from '@gql/admin/types';
@@ -28,4 +29,5 @@ export type EventPassNftAfterMutation = NonNullable<
 >['returning'][0];
 
 export type EventPassOrderWithContractData =
-  GetEventPassOrdersFromStripeCheckoutSessionQuery['eventPassOrder'][0];
+  GetEventPassOrdersFromStripeCheckoutSessionQuery['eventPassOrder'][0] &
+    GetEventPassOrderFromIdQuery['eventPassOrder'][0];

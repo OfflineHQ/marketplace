@@ -413,12 +413,29 @@ export class Payment {
     const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
-    this.nftClaimable.claimAllMetadatas(orders).catch((e) => {
-      console.error(`Error claiming NFTs: ${e.message}`);
+
+    let totalAmount = 0;
+
+    const checkOrderPromises = orders.map(async (order) => {
+      try {
+        await this.nftClaimable.checkOrder(order);
+        fetch(`${getNextAppURL()}/api/order/claim/${order.id}`);
+      } catch (error) {
+        if (order.eventPassPricing?.priceAmount) {
+          totalAmount += order.eventPassPricing.priceAmount * order.quantity;
+        }
+      }
     });
+
+    await Promise.allSettled(checkOrderPromises);
+
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
     });
+
+    if (totalAmount !== 0) {
+      throw new Error(`Some orders failed for an amount of : ${totalAmount}`);
+    }
   }
 
   async refundPartialPayment({
