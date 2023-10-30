@@ -3,8 +3,8 @@
   "name": "marketplace",
   "buildCommand": "cd ../.. && pnpm nx build web --prod",
   "outputDirectory": "../../dist/apps/web/.next",
-  "installCommand": "cd ../.. pnpm install",
-  "ignoreCommand": "cd ../.. pnpx nx-ignore web",
+  "installCommand": "pnpm install",
+  "ignoreCommand": "cd ../.. && pnpx nx-ignore web",
   "crons": [
     {
       "path": "/crons/handlePendingOrders.ts",
