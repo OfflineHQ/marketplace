@@ -262,6 +262,25 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetEventPassOrderFromIdDocument = `
+    query GetEventPassOrderFromId($id: uuid!) {
+  eventPassOrder(where: {id: {_eq: $id}}) {
+    id
+    eventPassId
+    quantity
+    status
+    eventPassNftContract {
+      contractAddress
+    }
+    account {
+      address
+    }
+    eventPassPricing {
+      priceAmount
+    }
+  }
+}
+    `;
  const GetEventPassOrdersFromStripeCheckoutSessionDocument = `
     query GetEventPassOrdersFromStripeCheckoutSession($stripeCheckoutSessionId: String!) {
   eventPassOrder(
@@ -276,6 +295,9 @@ ${KycFieldsFragmentDoc}`;
     }
     account {
       address
+    }
+    eventPassPricing {
+      priceAmount
     }
   }
 }
@@ -721,6 +743,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetAccountEventPassOrderForEventPasses(variables: Types.GetAccountEventPassOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetAccountEventPassOrderForEventPassesQuery> {
       return requester<Types.GetAccountEventPassOrderForEventPassesQuery, Types.GetAccountEventPassOrderForEventPassesQueryVariables>(GetAccountEventPassOrderForEventPassesDocument, variables, options) as Promise<Types.GetAccountEventPassOrderForEventPassesQuery>;
+    },
+    GetEventPassOrderFromId(variables: Types.GetEventPassOrderFromIdQueryVariables, options?: C): Promise<Types.GetEventPassOrderFromIdQuery> {
+      return requester<Types.GetEventPassOrderFromIdQuery, Types.GetEventPassOrderFromIdQueryVariables>(GetEventPassOrderFromIdDocument, variables, options) as Promise<Types.GetEventPassOrderFromIdQuery>;
     },
     GetEventPassOrdersFromStripeCheckoutSession(variables: Types.GetEventPassOrdersFromStripeCheckoutSessionQueryVariables, options?: C): Promise<Types.GetEventPassOrdersFromStripeCheckoutSessionQuery> {
       return requester<Types.GetEventPassOrdersFromStripeCheckoutSessionQuery, Types.GetEventPassOrdersFromStripeCheckoutSessionQueryVariables>(GetEventPassOrdersFromStripeCheckoutSessionDocument, variables, options) as Promise<Types.GetEventPassOrdersFromStripeCheckoutSessionQuery>;
