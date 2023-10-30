@@ -41,7 +41,7 @@ jobs:
       - name: Check if app should be built
         id: app_check_build
         run: |
-          BUILD_REQUIRED=$(npx nx-ignore ${{ matrix.app }}; echo $?)
+          BUILD_REQUIRED=$(npx --y nx-ignore ${{ matrix.app }}; echo $?)
           echo "::set-output name=build_required_${{ matrix.app }}::$BUILD_REQUIRED"
 
       - name: App // Vercel Environment Information
