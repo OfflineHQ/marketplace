@@ -37,16 +37,21 @@ jobs:
             npm install --global vercel@latest
           fi
 
-      # Deploy app
       - name: Check if app should be built
         id: app_check_build
         run: |
-          npx --y nx-ignore ${{ matrix.app }}
-          echo "build_required=$?" >> $GITHUB_ENV
+          output=$(npx --y nx-ignore ${{ matrix.app }}) || true
+          if [[ "$output" == *"✅ - Build can proceed"* ]]; then
+            echo "BUILD_REQUIRED_${{ matrix.app }}=true" >> $GITHUB_ENV
+          else
+            echo "BUILD_REQUIRED_${{ matrix.app }}=false" >> $GITHUB_ENV
+          fi
 
       - name: App // Vercel Environment Information and Deploy Staging to Vercel
+        env:
+          BUILD_REQUIRED: ${{ env[format('BUILD_REQUIRED_{0}', matrix.app)] }}
         run: |
-          if [[ $build_required == '1' ]]; then
+          if [[ $BUILD_REQUIRED == true ]]; then
             cd apps/${{ matrix.app }} && vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }} &&
             vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
           else
