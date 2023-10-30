@@ -7,11 +7,11 @@
   "ignoreCommand": "cd ../.. pnpx nx-ignore web",
   "crons": [
     {
-      "path": "../../libs/features/cart-cron/src/lib/handlePendingOrders.ts",
+      "path": "/crons/handlePendingOrders.ts",
       "schedule": "*/5 * * * *"
     },
     {
-      "path": "../../libs/next/currency-cache/src/cron/setRates.ts",
+      "path": "/crons/setRates.ts",
       "schedule": "0 */12 * * *"
     }
   ]
