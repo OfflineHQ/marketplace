@@ -33,9 +33,9 @@ jobs:
             npm install --global vercel@latest
           fi
 
-      - name: Vercel Environment Information
-        run: vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Web App // Vercel Environment Information
+        run: cd apps/web vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Deploy Staging to Vercel
-        id: deploy_vercel
+      - name: Web App // Deploy Staging to Vercel
+        id: web_app_deploy_vercel
         run: vercel deploy --token=${{secrets.VERCEL_TOKEN}}
