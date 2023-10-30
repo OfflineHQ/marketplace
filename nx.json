@@ -61,9 +61,6 @@
     "affected:lint": {
       "cache": true
     },
-    "workspace-lint": {
-      "cache": true
-    },
     "format": {
       "cache": true
     },
