@@ -42,12 +42,13 @@ jobs:
         id: app_check_build
         run: |
           npx --y nx-ignore ${{ matrix.app }}
-          echo "build_required=$?" >> $GITHUB_OUTPUT
+          echo "build_required=$?" >> $GITHUB_ENV
 
-      - name: App // Vercel Environment Information
-        if: ${{ steps.app_check_build.outputs.build_required == '0' }}
-        run: cd apps/${{ matrix.app }} && vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: App // Deploy Staging to Vercel
-        if: ${{ steps.app_check_build.outputs.build_required == '0' }}
-        run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
+      - name: App // Vercel Environment Information and Deploy Staging to Vercel
+        run: |
+          if [[ $build_required == '1' ]]; then
+            cd apps/${{ matrix.app }} && vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }} &&
+            vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            echo "Build not required - skipping Vercel Environment Information and Deploy Staging to Vercel"
+          fi
