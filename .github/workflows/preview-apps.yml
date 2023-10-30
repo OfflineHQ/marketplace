@@ -94,6 +94,7 @@ jobs:
           set -e
           set -x
           output=$(npx --y nx-ignore ${{ matrix.app }})
+          echo "Exit status: $?"
           echo "$output"
           if [[ "$output" == *"✅ - Build can proceed"* ]]; then
             echo "BUILD_REQUIRED_${{ matrix.app }}=true" >> $GITHUB_ENV
