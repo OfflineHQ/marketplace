@@ -1,19 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
+import { screen, userEvent, within } from '@storybook/testing-library';
 
 import { UserPassList } from './UserPassList';
 import {
-  eventParameters,
-  eventParameters2,
   UserPassListExample,
   UserPassListSkeletonExample,
   actionsFunctions,
   batchDownloadOrReveal,
+  eventParameters,
+  eventParameters2,
 } from './examples';
 
 const meta: Meta<typeof UserPassList> = {
@@ -35,7 +30,7 @@ type Story = StoryObj<typeof UserPassList>;
 export const WithSingleEvent: Story = {
   render: UserPassListExample,
   play: async ({ canvasElement }) => {
-    screen.getByText(/Lorem/i);
+    await screen.findByText(/Lorem/i);
     screen.getByText(/Jan 1, 2021/i);
     screen.getByText(/Jan 3, 2021/i);
     screen.getByText(/3 passes/i);
