@@ -154,7 +154,7 @@
       "title": "{title} #{number, number}",
       "sold-for": "Sold for:",
       "see-event-button": "See the event",
-      "back-event-button": "Come back to the event",
+      "back-event-button": "Come back to my passes",
       "download-button": "Download the pass",
       "reveal-button": "Reveal the pass",
       "IsPassRevealedAlert": {

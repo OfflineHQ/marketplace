@@ -56,7 +56,7 @@ jobs:
 
       # - name: Set Hasura GraphQL endpoint to .env
       #   run: |
-      #     echo HASURA_GRAPHQL_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
+      #     echo HASURA_PROJECT_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
       #     echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
 
   deploy:
@@ -107,13 +107,12 @@ jobs:
           if [[ $BUILD_REQUIRED == true ]]; then
             vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }} --local-config=apps/${{ matrix.app }}/vercel.json
             # TODO remove this when Hasura correctly deployed, was temporary to fix missing env issue
-            echo HASURA_GRAPHQL_ENDPOINT=https://www.hasura.staging.offline.live/ >> .vercel/.env.preview.local
             echo HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .vercel/.env.preview.local
             echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .vercel/.env.preview.local
             echo NEXTAUTH_URL=https://www.preview.offline.live/ >> .vercel/.env.preview.local
             #
             vercel build --token=${{ secrets.VERCEL_TOKEN }} --local-config=apps/${{ matrix.app }}/vercel.json
-            preview_url=$(vercel deploy --token=${{secrets.VERCEL_TOKEN}} --prebuilt --local-config=apps/${{ matrix.app }}/vercel.json)
+            preview_url=$(vercel deploy -e HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ -e NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live  -e NEXTAUTH_URL=https://www.preview.offline.live/ --token=${{secrets.VERCEL_TOKEN}} --prebuilt --local-config=apps/${{ matrix.app }}/vercel.json --global-config=.vercel)
             echo "PREVIEW_URL_${{ matrix.app }}=$preview_url" >> $GITHUB_ENV
           else
             echo "Build not required - skipping Deploy Preview to Vercel"

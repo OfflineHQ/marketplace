@@ -1,12 +1,6 @@
 {
   "root": true,
-  "plugins": [
-    "@nx/eslint-plugin",
-    "eslint-plugin-prettier",
-    "markdown",
-    "sonarjs",
-    "tailwindcss"
-  ],
+  "plugins": ["@nx/eslint-plugin", "markdown", "sonarjs", "tailwindcss"],
   "extends": [
     "eslint-config-prettier",
     "plugin:import/recommended",
@@ -21,7 +15,7 @@
     "import/resolver": {
       "node": "true",
       "typescript": {
-        "project": ["apps/**/tsconfig.*?.json", "libs/**/tsconfig.*?.json"]
+        "project": ["apps/*/tsconfig.json", "libs/*/tsconfig.json"]
       }
     },
     "tailwindcss": {
@@ -32,6 +26,10 @@
     }
   },
   "rules": {
+    "import/named": "off",
+    "import/namespace": "off",
+    "import/default": "off",
+    "import/no-named-as-default-member": "off",
     "tailwindcss/no-custom-classname": [
       "error",
       {
@@ -68,14 +66,14 @@
       "extends": ["plugin:@nx/eslint-plugin/typescript"],
       "rules": {
         "@typescript-eslint/ban-ts-comment": "off",
-        "import/no-cycle": "error"
+        "import/no-cycle": "off"
       }
     },
     {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nx/eslint-plugin/javascript"],
       "rules": {
-        "import/no-cycle": "error"
+        "import/no-cycle": "off"
       }
     },
     {

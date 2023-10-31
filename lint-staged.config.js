@@ -3,7 +3,7 @@ module.exports = {
     const fileList = files.join(',');
     return [
       `nx affected --target=typecheck --files=${fileList}`,
-      `nx affected:lint --fix --parallel --files=${fileList}`,
+      `nx affected:lint --fix --parallel=6 --eslintConfig=.eslintrc.ci.json --files=${fileList}`,
       `nx format:write --files=${fileList}`,
     ];
   },

@@ -1,7 +1,7 @@
 import { adminSdk } from '@gql/admin/api';
 import { NftClaimable } from '@nft/thirdweb-admin';
 
-export const maxDuration = 100;
+export const maxDuration = 300;
 
 export async function GET(req: Request, { params: { id } }) {
   const order = (await adminSdk.GetEventPassOrderFromId({ id }))

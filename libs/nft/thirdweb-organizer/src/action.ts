@@ -1,5 +1,6 @@
 'use server';
 
+import { getEvent } from '@features/organizer/event-api';
 import {
   createNftActivityWebhookForEvent,
   getAlchemyInfosFromEventId,
@@ -16,6 +17,7 @@ import type {
   EventPassNftContract_Insert_Input,
   EventPassNft_Insert_Input,
 } from '@gql/shared/types';
+import { defaultLocale } from '@next/i18n';
 
 export async function createEventPassNftContract(
   object: EventPassNftContract_Insert_Input,
@@ -44,6 +46,7 @@ export async function createEventParametersAndWebhook({
   eventId,
   nftCollectionAddresses,
   organizerId,
+  eventSlug,
 }) {
   const webhook = await getAlchemyInfosFromEventId({ eventId: eventId });
 
@@ -57,12 +60,20 @@ export async function createEventParametersAndWebhook({
       eventId,
       nftCollectionAddresses,
     });
+    const event = await getEvent({
+      eventSlug,
+      locale: defaultLocale,
+    });
+    if (!event) throw new Error('Event not found');
+    if (!event.eventDateLocations?.[0]) throw new Error('Event has no date');
     await InsertEventParameters([
       {
         activityWebhookId: newWebhook.id,
         organizerId,
         eventId,
         signingKey: newWebhook.signingKey,
+        dateEnd: event.eventDateLocations[0].dateEnd, //TODO -> handle multiple dateLocations event ??
+        dateStart: event.eventDateLocations[0].dateStart,
       },
     ]);
   }
