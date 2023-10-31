@@ -1,13 +1,15 @@
 // PassList.stories.tsx
-import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
+import { Meta, StoryObj } from '@storybook/react';
+import { screen } from '@storybook/testing-library';
+import { default as passCardMeta } from '../../molecules/PassCard/PassCard.stories';
 import { PassList, PassListSkeleton } from './PassList';
 import { PassListBoundaryMaxExample, passListProps } from './examples';
 
 const meta = {
   component: PassList,
   args: passListProps,
+  parameters: passCardMeta.parameters,
 } satisfies Meta<typeof PassList>;
 
 export default meta;
