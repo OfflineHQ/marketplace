@@ -1,4 +1,5 @@
 {
+  "extends": [".eslintrc.json"],
   "rules": {
     "import/no-named-as-default": "error",
     "import/no-cycle": "error",
