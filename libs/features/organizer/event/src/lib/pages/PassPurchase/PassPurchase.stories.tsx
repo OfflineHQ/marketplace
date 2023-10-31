@@ -2,6 +2,8 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import { screen } from '@storybook/testing-library';
+import { graphql } from 'msw';
+import { default as passCardMeta } from '../../molecules/PassCard/PassCard.stories';
 import { PassPurchaseSheet } from './PassPurchaseSheet';
 import {
   PassPurchaseCardExample,
@@ -16,7 +18,22 @@ const meta = {
   args: passPurchaseProps,
   render: PassPurchaseSheetExample,
   parameters: {
-    layout: 'fullscreen',
+    ...passCardMeta.parameters,
+    msw: {
+      handlers: [
+        ...passCardMeta.parameters.msw.handlers,
+        graphql.query(
+          'GetEventPassPendingOrderForEventPasses',
+          (req, res, ctx) => {
+            return res(
+              ctx.data({
+                eventPassPendingOrder: null,
+              }),
+            );
+          },
+        ),
+      ],
+    },
   },
 } satisfies Meta<typeof PassPurchaseSheet>;
 

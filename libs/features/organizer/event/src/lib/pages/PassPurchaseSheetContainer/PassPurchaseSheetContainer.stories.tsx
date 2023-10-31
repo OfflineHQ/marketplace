@@ -6,14 +6,13 @@ import {
 import { PassPurchaseSheetContainer } from './PassPurchaseSheetContainer';
 
 import { Meta, StoryObj } from '@storybook/react';
+import { default as passPurchaseMeta } from '../PassPurchase/PassPurchase.stories';
 
 const meta = {
   component: PassPurchaseSheetContainerExample,
   args: passPurchaseContainerProps,
+  parameters: passPurchaseMeta.parameters,
   render: PassPurchaseSheetContainerExample,
-  parameters: {
-    layout: 'fullscreen',
-  },
 } satisfies Meta<typeof PassPurchaseSheetContainer>;
 
 export default meta;
