@@ -50,7 +50,9 @@ export const PassTotalContent: React.FC<PassTotalProps> = async ({
       </Text>
       <ConvertedCurrency
         variant="h5"
-        translationKey="Organizer.Event.PassPurchase.Footer.total.price"
+        translationFn={(convertedAmount) =>
+          t('total.price', { convertedAmount })
+        }
         {...money}
       />
     </div>
