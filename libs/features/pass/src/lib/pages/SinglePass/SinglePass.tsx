@@ -48,7 +48,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
   const backgroundImage = eventPassNft?.eventPass?.event?.heroImage.url || '';
   const backText = isOwner ? t('back-event-button') : t('see-event-button');
   const backRoute = isOwner
-    ? `/pass/event/${eventPassNft?.eventPass?.event?.slug}`
+    ? `/pass`
     : `/organizer/${eventPassNft?.eventPass?.event?.organizer?.slug}/event/${eventPassNft?.eventPass?.event?.slug}`;
   return (
     <Card variant="stickyFooter" noBorder className="w-full">

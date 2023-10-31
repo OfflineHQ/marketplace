@@ -84,7 +84,7 @@
     },
     "Successful": {
       "title": "Achat réussi ! 🎉",
-      "description": "Merci pour votre achat. Vos pass devraient disponibles dans quelques minutes.",
+      "description": "Merci pour votre achat. Vos pass devraient être disponibles dans quelques minutes.",
       "continue-shopping-button": "Aller à la page d'accueil"
     },
     "Cancelled": {
@@ -102,7 +102,7 @@
       "title": "{title} #{number, number}",
       "sold-for": "Vendu pour :",
       "see-event-button": "Voir l'événement",
-      "back-event-button": "Revenir à l'événement",
+      "back-event-button": "Revenir à mes pass",
       "download-button": "Télécharger le pass",
       "reveal-button": "Révéler le pass",
       "IsPassRevealedAlert": {

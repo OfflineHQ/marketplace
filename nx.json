@@ -113,5 +113,5 @@
   "defaultAffected": ["web", "back-office"],
   "defaultBase": "main",
   "nxCloudAccessToken": "MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=",
-  "parallel": true
+  "parallel": 5
 }

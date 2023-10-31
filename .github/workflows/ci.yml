@@ -41,7 +41,7 @@ jobs:
         ## TODO set back when cypress upgraded to webpack 5, compilation error with this code `headers['Cookie'] = cookies().toString()`;
         # pnpm nx affected --target=e2e --no-watch
       parallel-commands-on-agents: |
-        pnpm affected:lint --parallel=3 &
+        pnpm affected:lint --parallel=3 --eslintConfig=.eslintrc.ci.json &
         pnpm affected:build --parallel=3 &
         pnpm nx affected --target=test --parallel=3 --ci --code-coverage &
   agents:
