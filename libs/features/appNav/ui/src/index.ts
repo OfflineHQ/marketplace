@@ -3,6 +3,10 @@ export {
   type AppNavLayoutProps,
 } from './lib/AppNavLayout/AppNavLayout';
 
+export { AppNavLayoutDesktop } from './lib/AppNavLayout/AppNavLayoutDesktop';
+
+export { AppNavLayoutMobile } from './lib/AppNavLayout/AppNavLayoutMobile';
+
 export { NavSectionSkeleton } from './lib/NavSection/NavSection';
 
 export { CartNav, type CartNavProps } from './lib/CartNav/CartNav';

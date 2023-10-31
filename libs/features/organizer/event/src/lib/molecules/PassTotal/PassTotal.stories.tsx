@@ -2,7 +2,7 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import { screen } from '@storybook/testing-library';
-import { PassTotal } from './PassTotal';
+import { PassTotal, PassTotalSkeleton } from './PassTotal';
 import {
   passTotalProps,
   passWithMaxAmountCart,
@@ -44,4 +44,8 @@ export const WithSeveralPasses: Story = {
     const totalPrice = screen.getByText(/€17,996.58/i);
     expect(totalPrice).toBeInTheDocument();
   },
+};
+
+export const Skeleton: Story = {
+  render: () => <PassTotalSkeleton />,
 };

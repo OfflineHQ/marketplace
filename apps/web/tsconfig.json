@@ -34,12 +34,13 @@
   ],
   "exclude": [
     "../../dist/apps/web/.next/types/**/*.ts",
+    "**/**/examples.tsx",
     "node_modules",
     "jest.config.ts",
-    "**/*.stories.ts",
-    "**/*.stories.js",
-    "**/*.stories.jsx",
-    "**/*.stories.tsx"
+    "**/**/*.stories.ts",
+    "**/**/*.stories.js",
+    "**/**/*.stories.jsx",
+    "**/**/*.stories.tsx"
   ],
   "references": [
     {

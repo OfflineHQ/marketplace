@@ -41,13 +41,12 @@ const nextConfig = {
   },
   transpilePackages: ['@ui/components', '@ui/theme', '@ui/icons'],
   images: {
-    domains: ['media.graphassets.com'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'picsum.photos',
+        hostname: 'media.graphassets.com',
         port: '',
-        pathname: '/seed/hero/**',
+        pathname: '/**',
       },
     ],
   },
@@ -55,6 +54,7 @@ const nextConfig = {
   // outputFileTracingRoot needed for monorepo
   // output: 'standalone',
   experimental: {
+    serverActions: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
       '*': [
@@ -92,8 +92,6 @@ const nextConfig = {
     ],
     // https://vercel.com/docs/concepts/deployments/skew-protection#enabling-skew-protection
     useDeploymentId: true,
-    // If use with serverActions is desired
-    serverActions: true,
     useDeploymentIdServerActions: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
   },

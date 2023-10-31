@@ -1,42 +1,18 @@
 {
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-cloud",
-      "options": {
-        "cacheDirectory": "/tmp/nx-cache",
-        "cacheableOperations": [
-          "build",
-          "affected:build",
-          "lint",
-          "lint:fix",
-          "affected:lint",
-          "workspace-lint",
-          "format",
-          "format:check",
-          "format:write",
-          "test",
-          "affected:test",
-          "test-integration",
-          "affected:test-integration",
-          "affected:test",
-          "e2e",
-          "affected:e2e",
-          "build-storybook"
-        ],
-        "parallel": true,
-        "canTrackAnalytics": true,
-        "showUsageWarning": true,
-        "accessToken": "MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU="
-      }
-    }
-  },
   "pluginsConfig": {
     "@nx/js": {
       "analyzeSourceFiles": true
     }
   },
+  "tasksRunnerOptions": {
+    "default": {
+      "options": {
+        "canTrackAnalytics": true,
+        "showUsageWarning": true
+      }
+    }
+  },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "offline",
   "affected": {
     "defaultBase": "main"
   },
@@ -51,10 +27,12 @@
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["noMarkdown", "^noMarkdown"]
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "cache": true
     },
     "test": {
-      "inputs": ["noMarkdown", "^noMarkdown"]
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "cache": true
     },
     "build-storybook": {
       "inputs": [
@@ -63,13 +41,46 @@
         "{workspaceRoot}/.storybook/**/*",
         "{projectRoot}/.storybook/**/*",
         "{projectRoot}/tsconfig.storybook.json"
-      ]
+      ],
+      "cache": true
     },
     "e2e": {
-      "inputs": ["default", "^default"]
+      "inputs": ["default", "^default"],
+      "cache": true
     },
     "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
+      "cache": true
+    },
+    "affected:build": {
+      "cache": true
+    },
+    "lint:fix": {
+      "cache": true
+    },
+    "affected:lint": {
+      "cache": true
+    },
+    "format": {
+      "cache": true
+    },
+    "format:check": {
+      "cache": true
+    },
+    "format:write": {
+      "cache": true
+    },
+    "affected:test": {
+      "cache": true
+    },
+    "test-integration": {
+      "cache": true
+    },
+    "affected:test-integration": {
+      "cache": true
+    },
+    "affected:e2e": {
+      "cache": true
     }
   },
   "generators": {
@@ -100,5 +111,7 @@
   },
   "defaultProject": "web",
   "defaultAffected": ["web", "back-office"],
-  "defaultBase": "main"
+  "defaultBase": "main",
+  "nxCloudAccessToken": "MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=",
+  "parallel": true
 }

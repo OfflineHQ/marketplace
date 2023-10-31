@@ -1,7 +1,7 @@
 {
   "root": true,
   "plugins": [
-    "@nx/nx",
+    "@nx/eslint-plugin",
     "eslint-plugin-prettier",
     "markdown",
     "sonarjs",
@@ -65,7 +65,7 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/typescript"],
+      "extends": ["plugin:@nx/eslint-plugin/typescript"],
       "rules": {
         "@typescript-eslint/ban-ts-comment": "off",
         "import/no-cycle": "error"
@@ -73,7 +73,7 @@
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nx/javascript"],
+      "extends": ["plugin:@nx/eslint-plugin/javascript"],
       "rules": {
         "import/no-cycle": "error"
       }

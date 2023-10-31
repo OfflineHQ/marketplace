@@ -3,7 +3,13 @@ import { useFormatter } from 'next-intl';
 import { formatCurrency } from '../../../../libs/next/currency-common/src/lib/formatCurrency';
 import { useCurrency } from './currencyProvider.mock';
 
-export function ConvertedCurrency({ amount, currency, variant, ...textProps }) {
+export function ConvertedCurrency({
+  amount,
+  currency,
+  variant,
+  translationFn,
+  ...textProps
+}) {
   const { rates } = useCurrency();
   const formater = useFormatter();
   const convertedAmount = formatCurrency(
@@ -14,9 +20,13 @@ export function ConvertedCurrency({ amount, currency, variant, ...textProps }) {
     },
     rates,
   );
+
+  const content = translationFn
+    ? translationFn(convertedAmount)
+    : convertedAmount;
   return (
     <Text variant={variant} {...textProps}>
-      {convertedAmount}
+      {content}
     </Text>
   );
 }

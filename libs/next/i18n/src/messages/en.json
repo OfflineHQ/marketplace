@@ -185,7 +185,7 @@
           "purchase-button": "Go to payment",
           "total": {
             "pass-selected": "{totalPasses, plural, =1 {# pass selected} other {# passes selected}}",
-            "price": "Total Price: {totalPrice}"
+            "price": "Total Price: {convertedAmount}"
           },
           "finalize-payment": "Finalize my purchase"
         }
