@@ -64,6 +64,8 @@ export async function createEventParametersAndWebhook({
       eventSlug,
       locale: defaultLocale,
     });
+    if (!event) throw new Error('Event not found');
+    if (!event.eventDateLocations?.[0]) throw new Error('Event has no date');
     await InsertEventParameters([
       {
         activityWebhookId: newWebhook.id,
