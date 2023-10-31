@@ -111,7 +111,7 @@ jobs:
             echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .vercel/.env.preview.local
             echo NEXTAUTH_URL=https://www.preview.offline.live/ >> .vercel/.env.preview.local
             #
-            vercel build -token=${{ secrets.VERCEL_TOKEN }} --local-config=apps/${{ matrix.app }}/vercel.json
+            vercel build --token=${{ secrets.VERCEL_TOKEN }} --local-config=apps/${{ matrix.app }}/vercel.json
             preview_url=$(vercel deploy --token=${{secrets.VERCEL_TOKEN}} --prebuilt --local-config=apps/${{ matrix.app }}/vercel.json)
             echo "PREVIEW_URL_${{ matrix.app }}=$preview_url" >> $GITHUB_ENV
           else
