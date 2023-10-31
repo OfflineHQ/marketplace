@@ -1,9 +1,10 @@
+import { isConnected } from '@next/next-auth/user';
 import { useLocale } from 'next-intl';
 import { getTranslator } from 'next-intl/server';
 import { ProfileNavClient } from './ProfileNavClient';
-import { isConnected } from '@next/next-auth/user';
 
 export default async function ProfileNavSection() {
+  console.log('ProfileNavSection');
   const locale = useLocale();
   const t = await getTranslator(locale, 'AppNav.Profile');
   const isNextAuthConnected = await isConnected();

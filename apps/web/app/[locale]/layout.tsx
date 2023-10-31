@@ -7,7 +7,7 @@ import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { Analytics } from '@web/components/Analytics';
 import { siteConfig } from '@web/config/site';
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 import { createTranslator } from 'next-intl';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
@@ -27,6 +27,13 @@ const fontHeading = localFont({
   variable: '--font-heading',
 });
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
+  ],
+};
+
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -39,10 +46,6 @@ export const metadata: Metadata = {
     'Tailwind CSS',
     'Server Components',
     'Radix UI',
-  ],
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
   ],
   openGraph: {
     type: 'website',
@@ -90,7 +93,6 @@ interface RootLayoutProps extends AppNavLayoutProps {
 
 export default async function RootLayout({
   params: { locale },
-  children,
   ...appNavLayout
 }: RootLayoutProps) {
   // Validate that the incoming `locale` parameter is valid
@@ -135,7 +137,7 @@ export default async function RootLayout({
             <NextAuthProvider session={session}>
               <ReactQueryProviders>
                 <CurrencyProvider>
-                  <AppNavLayout {...appNavLayout}>{children}</AppNavLayout>
+                  <AppNavLayout {...appNavLayout} />
                   <Toaster />
                 </CurrencyProvider>
               </ReactQueryProviders>

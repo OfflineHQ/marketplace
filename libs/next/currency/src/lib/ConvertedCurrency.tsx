@@ -4,19 +4,19 @@ import type { Money } from '@currency/types';
 import { getRates } from '@next/currency-cache';
 import { formatCurrency } from '@next/currency-common';
 import { Text, TextSkeleton, type TextProps } from '@ui/components';
-import { NestedKeyOf, useLocale, useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { getFormatter } from 'next-intl/server';
 import { Suspense } from 'react';
 
 export interface ConvertedCurrencyProps extends TextProps, Money {
-  translationKey?: NestedKeyOf<IntlMessages>;
+  translationFn?: (convertedAmount: string) => string;
 }
 
 async function ConvertedCurrencyContent({
   amount,
   currency,
   variant,
-  translationKey,
+  translationFn,
   ...textProps
 }: ConvertedCurrencyProps) {
   const locale = useLocale();
@@ -30,10 +30,9 @@ async function ConvertedCurrencyContent({
     },
     rates,
   );
-  const t = useTranslations();
 
-  const content = translationKey
-    ? t(translationKey as any, { convertedAmount })
+  const content = translationFn
+    ? translationFn(convertedAmount)
     : convertedAmount;
 
   return (
