@@ -7,7 +7,7 @@ import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { Analytics } from '@web/components/Analytics';
 import { siteConfig } from '@web/config/site';
-import { Metadata, Viewport } from 'next';
+import { Metadata } from 'next';
 import { createTranslator } from 'next-intl';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
@@ -27,49 +27,47 @@ const fontHeading = localFont({
   variable: '--font-heading',
 });
 
-export const viewport: Viewport = {
+// export const viewport: Viewport = {
+//   themeColor: [
+//     { media: '(prefers-color-scheme: light)', color: 'white' },
+//     { media: '(prefers-color-scheme: dark)', color: 'black' },
+//   ],
+// };
+
+export const metadata: Metadata = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },
   ],
-};
-
-export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
   },
-  description: siteConfig.description,
-  keywords: [
-    'Next.js',
-    'React',
-    'Tailwind CSS',
-    'Server Components',
-    'Radix UI',
-  ],
+  // description: siteConfig.description,
+  keywords: ['Event Pass', 'Exclusive Events', 'NFT', 'Web 3'],
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: siteConfig.url,
     title: siteConfig.name,
-    description: siteConfig.description,
+    // description: siteConfig.description,
     siteName: siteConfig.name,
-    images: [
-      {
-        url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
-        alt: siteConfig.name,
-      },
-    ],
+    // images: [
+    //   {
+    //     url: siteConfig.ogImage,
+    //     width: 1200,
+    //     height: 630,
+    //     alt: siteConfig.name,
+    //   },
+    // ],
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: siteConfig.name,
-    description: siteConfig.description,
-    images: [siteConfig.ogImage],
-    creator: '@offline',
-  },
+  // twitter: {
+  //   card: 'summary_large_image',
+  //   title: siteConfig.name,
+  //   description: siteConfig.description,
+  //   images: [siteConfig.ogImage],
+  //   creator: '@offline',
+  // },
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon-16x16.png',
