@@ -1,12 +1,4 @@
-import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-  waitForElementToBeRemoved,
-} from '@storybook/testing-library';
 
 import { Ping } from './Ping';
 import { PingButtonDemo } from './examples';
@@ -35,9 +27,9 @@ export const WithNumber = {
   },
 } satisfies Story;
 
-export const WithNumberDoubleDigit = {
+export const WithNumberDoubleDigitNotActive = {
   args: {
-    isActive: true,
+    isActive: false,
     number: 12,
   },
 } satisfies Story;

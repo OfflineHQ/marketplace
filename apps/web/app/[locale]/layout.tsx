@@ -27,46 +27,47 @@ const fontHeading = localFont({
   variable: '--font-heading',
 });
 
+// export const viewport: Viewport = {
+//   themeColor: [
+//     { media: '(prefers-color-scheme: light)', color: 'white' },
+//     { media: '(prefers-color-scheme: dark)', color: 'black' },
+//   ],
+// };
+
 export const metadata: Metadata = {
-  title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
-  keywords: [
-    'Next.js',
-    'React',
-    'Tailwind CSS',
-    'Server Components',
-    'Radix UI',
-  ],
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },
   ],
+  title: {
+    default: siteConfig.name,
+    template: `%s - ${siteConfig.name}`,
+  },
+  // description: siteConfig.description,
+  keywords: ['Event Pass', 'Exclusive Events', 'NFT', 'Web 3'],
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: siteConfig.url,
     title: siteConfig.name,
-    description: siteConfig.description,
+    // description: siteConfig.description,
     siteName: siteConfig.name,
-    images: [
-      {
-        url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
-        alt: siteConfig.name,
-      },
-    ],
+    // images: [
+    //   {
+    //     url: siteConfig.ogImage,
+    //     width: 1200,
+    //     height: 630,
+    //     alt: siteConfig.name,
+    //   },
+    // ],
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: siteConfig.name,
-    description: siteConfig.description,
-    images: [siteConfig.ogImage],
-    creator: '@offline',
-  },
+  // twitter: {
+  //   card: 'summary_large_image',
+  //   title: siteConfig.name,
+  //   description: siteConfig.description,
+  //   images: [siteConfig.ogImage],
+  //   creator: '@offline',
+  // },
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon-16x16.png',
@@ -90,7 +91,6 @@ interface RootLayoutProps extends AppNavLayoutProps {
 
 export default async function RootLayout({
   params: { locale },
-  children,
   ...appNavLayout
 }: RootLayoutProps) {
   // Validate that the incoming `locale` parameter is valid
@@ -135,7 +135,7 @@ export default async function RootLayout({
             <NextAuthProvider session={session}>
               <ReactQueryProviders>
                 <CurrencyProvider>
-                  <AppNavLayout {...appNavLayout}>{children}</AppNavLayout>
+                  <AppNavLayout {...appNavLayout} />
                   <Toaster />
                 </CurrencyProvider>
               </ReactQueryProviders>

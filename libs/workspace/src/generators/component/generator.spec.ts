@@ -1,6 +1,6 @@
 import { joinPathFragments, readProjectConfiguration, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
-import { Linter } from '@nx/linter';
+import { Linter } from '@nx/eslint';
 import { libraryGenerator, storybookConfigurationGenerator } from '@nx/react';
 import generator from './generator';
 

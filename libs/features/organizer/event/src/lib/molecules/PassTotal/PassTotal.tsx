@@ -48,13 +48,19 @@ export const PassTotalContent: React.FC<PassTotalProps> = async ({
           totalPasses,
         })}
       </Text>
-      <ConvertedCurrency variant="h5" {...money} />
+      <ConvertedCurrency
+        variant="h5"
+        translationFn={(convertedAmount) =>
+          t('total.price', { convertedAmount })
+        }
+        {...money}
+      />
     </div>
   );
 };
 
 export const PassTotalSkeleton: React.FC = () => (
-  <div className="flex-col">
+  <div className="flex-col space-y-3 py-2">
     <TextSkeleton variant="small" />
     <TextSkeleton variant="h5" />
   </div>
