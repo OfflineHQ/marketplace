@@ -20,7 +20,7 @@ export const Ping: React.FC<PingProps> = ({
 
   return (
     <div className={cn('relative inline-block max-w-fit', className)}>
-      {number && number > 0 && (
+      {((number && number > 0) || isActive) && (
         <span
           className={cn(
             `absolute z-10 ${position} flex ${size} items-center justify-center`,
