@@ -1,5 +1,5 @@
 import { renderWithIntl } from '@test-utils/next-intl';
-import ProfileAvatar from './ProfileAvatar';
+import { ProfileAvatar } from './ProfileAvatar';
 import { cryptoUserSession, normalUserSessionWithImage } from './examples';
 
 describe('ProfileAvatar', () => {
