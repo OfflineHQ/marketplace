@@ -8,24 +8,8 @@ const createJestConfig = nextJest({
 
 const customConfig = {
   displayName: 'web',
-  preset: '../../jest.preset.js', // complain about server action: To use Server Actions, please enable the feature flag in your Next.js config. Read more: https://nextjs.org/docs/app/building-your-application/data-fetching/forms-and-mutations#convention
-  transform: {
-    '^.+\\.(js|ts|tsx)?$': [
-      '@swc/jest',
-      {
-        jsc: {
-          transform: {
-            react: {
-              runtime: 'automatic',
-            },
-          },
-        },
-      },
-    ],
-  },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  preset: '../../jest.preset.js',
   coverageDirectory: '../../coverage/apps/web',
-  testEnvironment: 'jest-environment-jsdom',
 };
 
 module.exports = createJestConfig(customConfig);
