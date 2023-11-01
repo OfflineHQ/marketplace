@@ -5,10 +5,10 @@ import {
   ProfileNavSkeleton,
   type ProfileNavProps,
 } from '@features/app-nav';
-import { useAuthContext } from '@next/auth';
 import { Link } from '@next/navigation';
+import { useAuthContext } from '@next/auth';
 import { useToast } from '@ui/components';
-import { LifeBuoy, LogIn, LogOut, Settings } from '@ui/icons';
+import { LogIn, LogOut, LifeBuoy, Settings } from '@ui/icons';
 import { useCallback, useMemo } from 'react';
 
 export interface ProfileNavClientProps {

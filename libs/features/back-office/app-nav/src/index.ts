@@ -1,1 +1,6 @@
-// Use this file to export React client components (e.g. those with 'use client' directive) or other non-server utilities
+export { ProfileNavClient } from './lib/profile-nav/ProfileNavClient';
+
+export {
+  AppNavLayout,
+  type AppNavLayoutProps,
+} from './lib/app-nav-layout/AppNavLayout';
