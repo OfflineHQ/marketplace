@@ -26,8 +26,8 @@
       "@features/appNav/ui/stories": [
         "libs/features/appNav/ui/src/stories.tsx"
       ],
-      "@features/back-office/app-nav-ui": [
-        "libs/features/back-office/app-nav-ui/src/index.ts"
+      "@features/back-office/app-nav": [
+        "libs/features/back-office/app-nav/src/index.ts"
       ],
       "@features/back-office/dashboard": [
         "libs/features/back-office/dashboard/src/index.ts"
