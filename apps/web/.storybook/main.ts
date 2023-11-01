@@ -4,8 +4,8 @@ const isCI = !!process.env.GITHUB_EVENT_NAME; // Check if running in CI
 
 module.exports = {
   stories: [
-    '../../../libs/features/**/*.stories.@(js|ts|tsx)',
-    '../../../libs/features/**/*.mdx',
+    '../../../libs/features/!(back-office)/**/*.stories.@(js|ts|tsx)',
+    '../../../libs/features/!(back-office)/**/*.mdx',
     '../../../libs/next/hygraph/**/*.stories.@(js|ts|tsx)',
     '../../../libs/next/date/**/*.stories.@(js|ts|tsx)',
   ],
