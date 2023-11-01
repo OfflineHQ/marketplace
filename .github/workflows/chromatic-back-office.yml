@@ -1,17 +1,15 @@
-name: 'Chromatic Web'
+name: 'Chromatic Back-Office'
 
 on:
   pull_request:
     paths:
       - libs/ui/**
       - libs/features/**
-      - '!libs/features/back-office/**'
   push:
     branches: ['staging']
     paths:
       - libs/ui/**
       - libs/features/**
-      - '!libs/features/back-office/**'
   workflow_dispatch:
 
 concurrency:
@@ -37,7 +35,7 @@ jobs:
         uses: chromaui/action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          projectToken: ${{ secrets.CHROMATIC_WEB_PROJECT_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_BACK_OFFICE_PROJECT_TOKEN }}
           exitZeroOnChanges: true
           onlyChanged: true
-          buildScriptName: build-storybook:web
+          buildScriptName: build-storybook:back-office
