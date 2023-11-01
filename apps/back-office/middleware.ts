@@ -5,7 +5,9 @@ import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 const authPages = [
-  '/user',
+  'user',
+  'dashboard',
+  'dashboard/*',
   // Add more restricted pages if needed
 ];
 
@@ -35,7 +37,9 @@ const authMiddleware = withAuth(
 
 export default function middleware(req: NextRequest) {
   const restrictedPathnameRegex = RegExp(
-    `^(/(${locales.join('|')})/)?(${authPages.join('|')})/?$`,
+    `^(/(${locales.join('|')})/)?(${authPages
+      .map((page) => page.replace('*', '.*'))
+      .join('|')})/?$`,
     'i',
   );
   const isAuthPage = restrictedPathnameRegex.test(req.nextUrl.pathname);

@@ -13,7 +13,7 @@ import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 
-import { AppNavLayout, type AppNavLayoutProps } from '@features/appNav/ui';
+import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
 import { getSession, isConnected } from '@next/next-auth/user';
 
 const fontSans = FontSans({
@@ -109,38 +109,38 @@ export default async function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AuthProvider
-            messages={{
-              userClosedPopup: {
-                title: t('Auth.user-closed-popup.title'),
-                description: t('Auth.user-closed-popup.description'),
-              },
-              siweStatement: t('Auth.siwe-statement'),
-              errorSigningInWithSiwe: {
-                title: t('Auth.error-signing-in-with-siwe.title'),
-                description: t('Auth.error-signing-in-with-siwe.description'),
-                tryAgainButton: t(
-                  'Auth.error-signing-in-with-siwe.try-again-button',
-                ),
-              },
-              siweDeclined: {
-                title: t('Auth.siwe-declined.title'),
-                description: t('Auth.siwe-declined.description'),
-                tryAgainButton: t('Auth.siwe-declined.try-again-button'),
-              },
-            }}
-            session={session}
-            isConnected={isConnected}
-          >
-            <NextAuthProvider session={session}>
+          <NextAuthProvider session={session}>
+            <AuthProvider
+              messages={{
+                userClosedPopup: {
+                  title: t('Auth.user-closed-popup.title'),
+                  description: t('Auth.user-closed-popup.description'),
+                },
+                siweStatement: t('Auth.siwe-statement'),
+                errorSigningInWithSiwe: {
+                  title: t('Auth.error-signing-in-with-siwe.title'),
+                  description: t('Auth.error-signing-in-with-siwe.description'),
+                  tryAgainButton: t(
+                    'Auth.error-signing-in-with-siwe.try-again-button',
+                  ),
+                },
+                siweDeclined: {
+                  title: t('Auth.siwe-declined.title'),
+                  description: t('Auth.siwe-declined.description'),
+                  tryAgainButton: t('Auth.siwe-declined.try-again-button'),
+                },
+              }}
+              session={session}
+              isConnected={isConnected}
+            >
               <ReactQueryProviders>
                 <CurrencyProvider>
                   <AppNavLayout {...appNavLayout} />
                   <Toaster />
                 </CurrencyProvider>
               </ReactQueryProviders>
-            </NextAuthProvider>
-          </AuthProvider>
+            </AuthProvider>
+          </NextAuthProvider>
         </ThemeProvider>
         <Analytics />
       </body>

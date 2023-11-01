@@ -22,9 +22,10 @@
       "@env/client": ["libs/env/client/src/index.mjs"],
       "@env/server": ["libs/env/server/src/index.mjs"],
       "@features/account/api": ["libs/features/account/api/src/index.ts"],
-      "@features/appNav/ui": ["libs/features/appNav/ui/src/index.ts"],
-      "@features/appNav/ui/stories": [
-        "libs/features/appNav/ui/src/stories.tsx"
+      "@features/app-nav": ["libs/features/app-nav/src/index.ts"],
+      "@features/app-nav/stories": ["libs/features/app-nav/src/stories.tsx"],
+      "@features/back-office/app-nav": [
+        "libs/features/back-office/app-nav/src/index.ts"
       ],
       "@features/back-office/dashboard": [
         "libs/features/back-office/dashboard/src/index.ts"

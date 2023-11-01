@@ -1,5 +1,5 @@
-import { AppNavLayout } from '@features/appNav/ui';
-import { WithNormalUser } from '@features/appNav/ui/stories';
+import { AppNavLayout } from '@features/app-nav';
+import { WithNormalUser } from '@features/app-nav/stories';
 import { ErrorClient, type ErrorProps } from './ErrorClient';
 
 export const ErrorExample = (props: ErrorProps) => {

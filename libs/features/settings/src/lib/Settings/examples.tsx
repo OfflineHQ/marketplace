@@ -1,6 +1,6 @@
 import { Settings } from './Settings';
-import { WithNoUser, WithNormalUser } from '@features/appNav/ui/stories';
-import { AppNavLayout } from '@features/appNav/ui';
+import { WithNoUser, WithNormalUser } from '@features/app-nav/stories';
+import { AppNavLayout } from '@features/app-nav';
 
 export const SettingsExample = () => {
   return (

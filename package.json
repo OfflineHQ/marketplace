@@ -34,6 +34,7 @@
     "analyze:web": "cross-env ANALYZE=true nx build web",
     "build-storybook:ui": "nx run ui-components:build-storybook",
     "build-storybook:web": "nx run web:build-storybook",
+    "build-storybook:back-office": "nx run back-office:build-storybook",
     "vercel-build": "npm i -g node-gyp"
   },
   "private": true,

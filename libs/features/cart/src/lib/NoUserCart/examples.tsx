@@ -1,5 +1,5 @@
-import { AppNavLayout } from '@features/appNav/ui';
-import { WithNoUser } from '@features/appNav/ui/stories';
+import { AppNavLayout } from '@features/app-nav';
+import { WithNoUser } from '@features/app-nav/stories';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { NoUserCart } from './NoUserCart';
 
