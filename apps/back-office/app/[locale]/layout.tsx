@@ -1,5 +1,6 @@
 import { Analytics } from '@back-office/components/Analytics';
 import { siteConfig } from '@back-office/config/site';
+import { CurrencyProvider } from '@next/currency-provider';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { getMessages, locales } from '@next/i18n';
 import { ReactQueryProviders } from '@next/react-query';
@@ -12,8 +13,8 @@ import { createTranslator } from 'next-intl';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
-import { ProfileNavClient } from '../../components/ProfileNavClient/ProfileNavClient';
-import { getSession } from 'next-auth/react';
+import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
+import { getSession, isConnected } from '@next/next-auth/user';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -39,11 +40,10 @@ export const metadata: Metadata = {
 //   return locales.map((locale) => ({ locale }));
 // }
 
-interface RootLayoutProps {
+interface RootLayoutProps extends AppNavLayoutProps {
   params: {
     locale: string;
   };
-  children: React.ReactNode;
 }
 
 // export async function generateStaticParams() {
@@ -52,7 +52,6 @@ interface RootLayoutProps {
 
 export default async function RootLayout({
   params: { locale },
-  children,
   ...appNavLayout
 }: RootLayoutProps) {
   // Validate that the incoming `locale` parameter is valid
@@ -93,12 +92,14 @@ export default async function RootLayout({
                 },
               }}
               session={session}
+              isConnected={isConnected}
             >
               <UploaderProvider>
                 <ReactQueryProviders>
-                  <ProfileNavClient />
-                  {children}
-                  <Toaster />
+                  <CurrencyProvider>
+                    <AppNavLayout {...appNavLayout} />
+                    <Toaster />
+                  </CurrencyProvider>
                 </ReactQueryProviders>
               </UploaderProvider>
             </AuthProvider>
