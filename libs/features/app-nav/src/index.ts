@@ -20,3 +20,5 @@ export {
   ProfileNavSkeleton,
   type ProfileNavProps,
 } from './lib/ProfileNav/ProfileNav';
+
+export { ProfileNavClient } from './lib/ProfileNav/ProfileNavClient';
