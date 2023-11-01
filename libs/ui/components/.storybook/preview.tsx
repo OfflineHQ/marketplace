@@ -1,7 +1,7 @@
-import './globals.css';
+import { Decorator, Preview } from '@storybook/react';
 import { useEffect, useState } from 'react';
-import { Preview, Decorator } from '@storybook/react';
-import { parameters } from '../../../../storybook.preview.base';
+import { parameters } from '../../../../storybook/storybook.preview.base';
+import './globals.css';
 
 // // can't take it from storybook.preview.base otherwise buggy
 export const DarkModeDecorator: Decorator = (Story: any, context: any = {}) => {

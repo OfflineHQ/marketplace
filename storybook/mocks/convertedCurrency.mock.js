@@ -1,6 +1,6 @@
 import { Text } from '@ui/components';
 import { useFormatter } from 'next-intl';
-import { formatCurrency } from '../../../../libs/next/currency-common/src/lib/formatCurrency';
+import { formatCurrency } from '../../libs/next/currency-common/src/lib/formatCurrency';
 import { useCurrency } from './currencyProvider.mock';
 
 export function ConvertedCurrency({

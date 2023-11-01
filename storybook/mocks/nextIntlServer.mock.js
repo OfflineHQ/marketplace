@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useFormatter, useTimeZone, useTranslations } from 'next-intl';
 export { getRequestConfig } from 'next-intl/server';
 
