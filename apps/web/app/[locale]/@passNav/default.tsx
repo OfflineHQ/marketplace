@@ -1,4 +1,4 @@
-import { PassNav, type PassNavProps } from '@features/appNav/ui';
+import { PassNav, type PassNavProps } from '@features/app-nav';
 import { useTranslations } from 'next-intl';
 // import { getCurrentUser } from '@next/next-auth/user';;
 

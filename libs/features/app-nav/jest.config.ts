@@ -1,7 +1,7 @@
 /* eslint-disable */
 export default {
-  displayName: 'features-appNav-ui',
-  preset: '../../../../jest.preset.js',
+  displayName: 'app-nav',
+  preset: '../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': [
       '@swc/jest',
@@ -9,5 +9,5 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../../coverage/libs/features/appNav/ui',
+  coverageDirectory: '../../../coverage/libs/features/app-nav',
 };

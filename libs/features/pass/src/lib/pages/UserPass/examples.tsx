@@ -1,6 +1,6 @@
 import { NextAuthProvider } from '@next/auth';
-import { WithNormalUser } from '@features/appNav/ui/stories';
-import { AppNavLayout } from '@features/appNav/ui';
+import { WithNormalUser } from '@features/app-nav/stories';
+import { AppNavLayout } from '@features/app-nav';
 import { Toaster } from '@ui/components';
 import { UserPass } from './UserPass';
 import { useTranslations } from 'next-intl';
