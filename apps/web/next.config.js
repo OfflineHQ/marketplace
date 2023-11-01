@@ -69,7 +69,7 @@ const nextConfig = {
       '@ui/icons',
       '@ui/components',
       '@features/account/api',
-      '@features/appNav/ui',
+      '@features/appNav',
       '@features/cart',
       '@features/cart/server',
       '@features/kyc',
