@@ -5,9 +5,9 @@ import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 const authPages = [
-  '/user',
-  '/cart/*',
-  '/pass/*',
+  'user',
+  'cart/*',
+  'pass/*',
   // Add more restricted pages if needed
 ];
 

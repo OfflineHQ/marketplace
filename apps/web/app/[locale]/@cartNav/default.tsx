@@ -2,7 +2,7 @@ import {
   CartNav,
   NavSectionSkeleton,
   type CartNavProps,
-} from '@features/appNav/ui';
+} from '@features/app-nav';
 import {
   getEventPassOrdersConfirmed,
   getEventPassPendingOrdersMinimal,

@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - libs/ui/**
-      - apps/web/**
+      - libs/features/**
+      - '!libs/features/back-office/**'
   push:
-    branches: ['main']
+    branches: ['staging']
     paths:
       - libs/ui/**
-      - apps/web/**
+      - libs/features/**
+      - '!libs/features/back-office/**'
   workflow_dispatch:
 
 concurrency:

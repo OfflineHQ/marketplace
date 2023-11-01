@@ -7,8 +7,8 @@ import {
   eventDetails2Props,
 } from '../../molecules/EventDetails/examples';
 import { Event, EventSkeleton, type EventProps } from './Event';
-import { WithNormalUser } from '@features/appNav/ui/stories';
-import { AppNavLayout } from '@features/appNav/ui';
+import { WithNormalUser } from '@features/app-nav/stories';
+import { AppNavLayout } from '@features/app-nav';
 
 export const eventProps: EventProps = {
   ...eventHeroProps,
