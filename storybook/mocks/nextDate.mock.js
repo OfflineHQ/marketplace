@@ -1,5 +1,5 @@
-import { DateRange } from '../../../../libs/next/date/src/lib/DateRange/DateRange';
-import { EventDates } from '../../../../libs/next/date/src/lib/EventDates/EventDates';
+import { DateRange } from '../../libs/next/date/src/lib/DateRange/DateRange';
+import { EventDates } from '../../libs/next/date/src/lib/EventDates/EventDates';
 
 async function DateRangeServer(props) {
   return <DateRange {...props} />;
