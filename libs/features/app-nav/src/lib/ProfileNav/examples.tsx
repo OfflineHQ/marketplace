@@ -1,8 +1,11 @@
 import { ProfileNavProps, ProfileNav } from './ProfileNav';
+import { ProfileNavClient } from './ProfileNavClient';
 import {
   cryptoUserSession,
   normalUserSession,
 } from '../profile-avatar/examples';
+import { AuthProvider, NextAuthProvider } from '@next/auth';
+import { useTranslations } from 'next-intl';
 import { LifeBuoy, LogOut, LogIn, Settings, User } from '@ui/icons';
 
 export const cryptoUserMenuItems = [
@@ -93,3 +96,30 @@ export const notConnectedMenuItems = [
     text: 'Support',
   },
 ] satisfies ProfileNavProps['items'];
+
+export function ProfileNavClientExample({ isNextAuthConnected = false }) {
+  const t = useTranslations('AppNav.Profile');
+  return (
+    <div className="flex">
+      <NextAuthProvider session={null}>
+        <AuthProvider session={null} isConnected={() => true}>
+          <ProfileNavClient
+            signInText={t('sign-in')}
+            profileSectionsText={{
+              myAccount: t('sections-text.my-account'),
+              support: t('sections-text.support'),
+              supportTitle: t('sections-text.support-title'),
+              supportDescription: t('sections-text.support-description'),
+              signOut: t('sections-text.sign-out'),
+              signOutTitle: t('sections-text.sign-out-title'),
+              signOutDescription: t('sections-text.sign-out-description'),
+              signIn: t('sections-text.sign-in'),
+              settings: t('sections-text.settings'),
+            }}
+            isNextAuthConnected={isNextAuthConnected}
+          />{' '}
+        </AuthProvider>
+      </NextAuthProvider>
+    </div>
+  );
+}
