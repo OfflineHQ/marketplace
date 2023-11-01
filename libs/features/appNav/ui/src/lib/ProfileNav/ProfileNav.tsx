@@ -85,5 +85,3 @@ export function ProfileNavSkeleton() {
     </div>
   );
 }
-
-export default ProfileNav;

@@ -1,6 +1,6 @@
 import { renderWithIntl } from '@test-utils/next-intl';
 import { cryptoUserSession } from '../profile-avatar/examples';
-import ProfileNav from './ProfileNav';
+import { ProfileNav } from './ProfileNav';
 import { cryptoUserMenuItems } from './examples';
 
 describe('ProfileNav', () => {

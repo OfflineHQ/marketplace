@@ -1,12 +1,12 @@
-import { useMemo } from 'react';
+import type { SafeUser } from '@next/auth';
 import {
   Avatar,
-  AvatarImage,
   AvatarFallback,
+  AvatarImage,
   type AvatarProps,
 } from '@ui/components';
 import { emojiAvatarForAddress, getInitials } from '@ui/shared';
-import type { SafeUser } from '@next/auth';
+import { useMemo } from 'react';
 
 export interface ProfileAvatarProps extends Omit<AvatarProps, 'size'> {
   user: SafeUser;
@@ -49,5 +49,3 @@ export function ProfileAvatar(props: ProfileAvatarProps) {
     EmojiAvatar({ ...props, className, address: eoa })
   );
 }
-
-export default ProfileAvatar;
