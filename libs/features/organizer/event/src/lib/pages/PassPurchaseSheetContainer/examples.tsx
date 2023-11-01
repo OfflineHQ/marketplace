@@ -1,5 +1,5 @@
-import { AppNavLayout } from '@features/appNav/ui';
-import { WithNormalUser } from '@features/appNav/ui/stories';
+import { AppNavLayout } from '@features/app-nav';
+import { WithNormalUser } from '@features/app-nav/stories';
 import { Sheet } from '@ui/components';
 import { PassPurchaseSheet } from '../PassPurchase/PassPurchaseSheet';
 import { passPurchaseProps } from '../PassPurchase/examples';

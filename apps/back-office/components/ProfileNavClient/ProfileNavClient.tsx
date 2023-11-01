@@ -4,7 +4,7 @@ import {
   ProfileNav,
   ProfileNavSkeleton,
   type ProfileNavProps,
-} from '@features/appNav/ui';
+} from '@features/app-nav';
 import { useAuthContext } from '@next/auth';
 import { useToast } from '@ui/components';
 import { LogIn, LogOut } from '@ui/icons';

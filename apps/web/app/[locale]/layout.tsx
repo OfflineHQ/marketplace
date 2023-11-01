@@ -13,7 +13,7 @@ import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 
-import { AppNavLayout, type AppNavLayoutProps } from '@features/appNav/ui';
+import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
 import { getSession, isConnected } from '@next/next-auth/user';
 
 const fontSans = FontSans({
