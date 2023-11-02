@@ -7,6 +7,15 @@ export const AccountFieldsFragmentDoc = `
   email
 }
     `;
+export const OrganizerFieldsFragmentDoc = `
+    fragment OrganizerFields on Organizer {
+  image {
+    url
+  }
+  name
+  slug
+}
+    `;
 export const EventDateLocationsFieldsFragmentDoc = `
     fragment EventDateLocationsFields on EventDateLocation {
   locationAddress {
@@ -69,6 +78,13 @@ export const EventPassNftFieldsFragmentDoc = `
   organizerId
   isRevealed
   currentOwnerAddress
+}
+    `;
+export const RoleAssignmentsFieldsFragmentDoc = `
+    fragment RoleAssignmentsFields on roleAssignments {
+  role
+  organizerId
+  eventId
 }
     `;
  const GetAccountDocument = `
@@ -385,6 +401,39 @@ export const EventPassNftFieldsFragmentDoc = `
 }
     ${EventPassNftFieldsFragmentDoc}
 ${EventPassFieldsFragmentDoc}`;
+ const GetMyRolesDocument = `
+    query GetMyRoles {
+  roleAssignments {
+    ...RoleAssignmentsFields
+  }
+}
+    ${RoleAssignmentsFieldsFragmentDoc}`;
+ const GetMyRolesWithOrganizerInfosDocument = `
+    query GetMyRolesWithOrganizerInfos($stage: Stage!) {
+  roleAssignments {
+    ...RoleAssignmentsFields
+    organizer(where: {}, locales: [en], stage: $stage) {
+      ...OrganizerFields
+    }
+  }
+}
+    ${RoleAssignmentsFieldsFragmentDoc}
+${OrganizerFieldsFragmentDoc}`;
+ const GetMyRolesWithOrganizerAndInviterInfosDocument = `
+    query GetMyRolesWithOrganizerAndInviterInfos($stage: Stage!) {
+  roleAssignments {
+    ...RoleAssignmentsFields
+    organizer(where: {}, locales: [en], stage: $stage) {
+      ...OrganizerFields
+    }
+    inviter {
+      address
+      email
+    }
+  }
+}
+    ${RoleAssignmentsFieldsFragmentDoc}
+${OrganizerFieldsFragmentDoc}`;
  const GetStripeCustomerDocument = `
     query GetStripeCustomer {
   stripeCustomer {
@@ -458,6 +507,15 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassNftByTokenReference(variables: Types.GetEventPassNftByTokenReferenceQueryVariables, options?: C): Promise<Types.GetEventPassNftByTokenReferenceQuery> {
       return requester<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables, options) as Promise<Types.GetEventPassNftByTokenReferenceQuery>;
+    },
+    GetMyRoles(variables?: Types.GetMyRolesQueryVariables, options?: C): Promise<Types.GetMyRolesQuery> {
+      return requester<Types.GetMyRolesQuery, Types.GetMyRolesQueryVariables>(GetMyRolesDocument, variables, options) as Promise<Types.GetMyRolesQuery>;
+    },
+    GetMyRolesWithOrganizerInfos(variables: Types.GetMyRolesWithOrganizerInfosQueryVariables, options?: C): Promise<Types.GetMyRolesWithOrganizerInfosQuery> {
+      return requester<Types.GetMyRolesWithOrganizerInfosQuery, Types.GetMyRolesWithOrganizerInfosQueryVariables>(GetMyRolesWithOrganizerInfosDocument, variables, options) as Promise<Types.GetMyRolesWithOrganizerInfosQuery>;
+    },
+    GetMyRolesWithOrganizerAndInviterInfos(variables: Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables, options?: C): Promise<Types.GetMyRolesWithOrganizerAndInviterInfosQuery> {
+      return requester<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables>(GetMyRolesWithOrganizerAndInviterInfosDocument, variables, options) as Promise<Types.GetMyRolesWithOrganizerAndInviterInfosQuery>;
     },
     GetStripeCustomer(variables?: Types.GetStripeCustomerQueryVariables, options?: C): Promise<Types.GetStripeCustomerQuery> {
       return requester<Types.GetStripeCustomerQuery, Types.GetStripeCustomerQueryVariables>(GetStripeCustomerDocument, variables, options) as Promise<Types.GetStripeCustomerQuery>;

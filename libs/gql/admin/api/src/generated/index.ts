@@ -7,7 +7,6 @@ export const AccountFieldsFragmentDoc = `
   address
   email
   emailVerified
-  organizerId
 }
     `;
 export const KycFieldsFragmentDoc = `
@@ -131,6 +130,13 @@ export const EventPassNftFieldsFragmentDoc = `
   currentOwnerAddress
 }
     `;
+export const RoleAssignmentsFieldsFragmentDoc = `
+    fragment RoleAssignmentsFields on roleAssignments {
+  role
+  organizerId
+  eventId
+}
+    `;
 export const StripeCheckoutSessionFieldsFragmentDoc = `
     fragment StripeCheckoutSessionFields on stripeCheckoutSession {
   stripeSessionId
@@ -165,10 +171,14 @@ export const StripeCustomerFieldsFragmentDoc = `
     kyc {
       ...KycFields
     }
+    roles {
+      ...RoleAssignmentsFields
+    }
   }
 }
     ${AccountFieldsFragmentDoc}
-${KycFieldsFragmentDoc}`;
+${KycFieldsFragmentDoc}
+${RoleAssignmentsFieldsFragmentDoc}`;
  const GetAccountByEmailDocument = `
     query GetAccountByEmail($email: String!) {
   account(where: {email: {_eq: $email}}) {
@@ -180,6 +190,13 @@ ${KycFieldsFragmentDoc}`;
 }
     ${AccountFieldsFragmentDoc}
 ${KycFieldsFragmentDoc}`;
+ const GetAccountByAddressDocument = `
+    query GetAccountByAddress($address: String!) {
+  account(where: {address: {_eq: $address}}) {
+    ...AccountFields
+  }
+}
+    ${AccountFieldsFragmentDoc}`;
  const GetAccountByIdDocument = `
     query GetAccountById($id: uuid!) {
   account(where: {id: {_eq: $id}}) {
@@ -671,6 +688,22 @@ ${EventPassFieldsFragmentDoc}`;
   }
 }
     ${EventPassNftFieldsFragmentDoc}`;
+ const CreateRoleAssignmentDocument = `
+    mutation CreateRoleAssignment($input: roleAssignments_insert_input!) {
+  insert_roleAssignments_one(object: $input) {
+    role
+  }
+}
+    `;
+ const GetRoleMinimalDocument = `
+    query GetRoleMinimal($accountId: uuid!, $role: roles_enum!, $organizerId: String!, $eventId: String) {
+  roleAssignments(
+    where: {accountId: {_eq: $accountId}, role: {_eq: $role}, organizerId: {_eq: $organizerId}, eventId: {_eq: $eventId}}
+  ) {
+    id
+  }
+}
+    `;
  const CreateStripeCheckoutSessionDocument = `
     mutation CreateStripeCheckoutSession($stripeCheckoutSession: stripeCheckoutSession_insert_input!) {
   insert_stripeCheckoutSession_one(object: $stripeCheckoutSession) {
@@ -730,6 +763,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetAccountByEmail(variables: Types.GetAccountByEmailQueryVariables, options?: C): Promise<Types.GetAccountByEmailQuery> {
       return requester<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables, options) as Promise<Types.GetAccountByEmailQuery>;
+    },
+    GetAccountByAddress(variables: Types.GetAccountByAddressQueryVariables, options?: C): Promise<Types.GetAccountByAddressQuery> {
+      return requester<Types.GetAccountByAddressQuery, Types.GetAccountByAddressQueryVariables>(GetAccountByAddressDocument, variables, options) as Promise<Types.GetAccountByAddressQuery>;
     },
     GetAccountById(variables: Types.GetAccountByIdQueryVariables, options?: C): Promise<Types.GetAccountByIdQuery> {
       return requester<Types.GetAccountByIdQuery, Types.GetAccountByIdQueryVariables>(GetAccountByIdDocument, variables, options) as Promise<Types.GetAccountByIdQuery>;
@@ -832,6 +868,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassNftByIdMinimal(variables: Types.GetEventPassNftByIdMinimalQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdMinimalQuery> {
       return requester<Types.GetEventPassNftByIdMinimalQuery, Types.GetEventPassNftByIdMinimalQueryVariables>(GetEventPassNftByIdMinimalDocument, variables, options) as Promise<Types.GetEventPassNftByIdMinimalQuery>;
+    },
+    CreateRoleAssignment(variables: Types.CreateRoleAssignmentMutationVariables, options?: C): Promise<Types.CreateRoleAssignmentMutation> {
+      return requester<Types.CreateRoleAssignmentMutation, Types.CreateRoleAssignmentMutationVariables>(CreateRoleAssignmentDocument, variables, options) as Promise<Types.CreateRoleAssignmentMutation>;
+    },
+    GetRoleMinimal(variables: Types.GetRoleMinimalQueryVariables, options?: C): Promise<Types.GetRoleMinimalQuery> {
+      return requester<Types.GetRoleMinimalQuery, Types.GetRoleMinimalQueryVariables>(GetRoleMinimalDocument, variables, options) as Promise<Types.GetRoleMinimalQuery>;
     },
     CreateStripeCheckoutSession(variables: Types.CreateStripeCheckoutSessionMutationVariables, options?: C): Promise<Types.CreateStripeCheckoutSessionMutation> {
       return requester<Types.CreateStripeCheckoutSessionMutation, Types.CreateStripeCheckoutSessionMutationVariables>(CreateStripeCheckoutSessionDocument, variables, options) as Promise<Types.CreateStripeCheckoutSessionMutation>;

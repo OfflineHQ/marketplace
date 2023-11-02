@@ -3,6 +3,6 @@ FROM debian:buster-slim
 RUN apt-get update -y && apt-get install --no-install-recommends -y curl socat ca-certificates \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
-RUN curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.27.0 bash
+RUN curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.35.0 bash
 
 WORKDIR /usr/src/hasura

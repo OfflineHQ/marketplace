@@ -1,6 +1,6 @@
 'use client';
 
-import { getRates } from '@next/currency-cache';
+import { CurrencyCache } from '@next/currency-cache';
 
 import {
   ReactNode,
@@ -10,6 +10,8 @@ import {
   useState,
 } from 'react';
 
+const currencyCache = new CurrencyCache();
+
 export const CurrencyContext = createContext({ rates: {}, isLoading: true });
 
 export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
@@ -17,7 +19,8 @@ export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getRates()
+    currencyCache
+      .getRates()
       .then((data) => {
         setRates(data);
         setIsLoading(false);

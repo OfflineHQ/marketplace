@@ -36,11 +36,11 @@ export const rates = {
 };
 
 export enum Currency_Enum_Not_Const {
-  AED = 'AED',
-  CNY = 'CNY',
-  EUR = 'EUR',
-  GBP = 'GBP',
-  QAR = 'QAR',
-  SGD = 'SGD',
-  USD = 'USD',
+  Aed = 'AED',
+  Cny = 'CNY',
+  Eur = 'EUR',
+  Gbp = 'GBP',
+  Qar = 'QAR',
+  Sgd = 'SGD',
+  Usd = 'USD',
 }

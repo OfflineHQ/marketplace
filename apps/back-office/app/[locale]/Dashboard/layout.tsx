@@ -8,7 +8,7 @@ export default async function DashboardLayout({
   return (
     <section className="container mx-auto">
       {user ? (
-        !user.organizerId ? (
+        !user.role?.organizerId ? (
           <p>User {user.id} is not an organizer</p>
         ) : (
           children

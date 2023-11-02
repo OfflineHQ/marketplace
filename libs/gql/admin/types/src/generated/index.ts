@@ -1,6 +1,6 @@
 import * as Types from '@gql/shared/types';
 
-export type AccountFieldsFragment = { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null };
+export type AccountFieldsFragment = { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean };
 
 export type UpdateAccountMutationVariables = Types.Exact<{
   id: Types.Scalars['uuid'];
@@ -8,28 +8,35 @@ export type UpdateAccountMutationVariables = Types.Exact<{
 }>;
 
 
-export type UpdateAccountMutation = { __typename?: 'mutation_root', update_account_by_pk?: { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null } | null };
+export type UpdateAccountMutation = { __typename?: 'mutation_root', update_account_by_pk?: { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean } | null };
 
 export type CreateAccountMutationVariables = Types.Exact<{
   account: Types.Account_Insert_Input;
 }>;
 
 
-export type CreateAccountMutation = { __typename?: 'mutation_root', insert_account_one?: { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null } | null };
+export type CreateAccountMutation = { __typename?: 'mutation_root', insert_account_one?: { __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean } | null };
 
 export type GetAccountQueryVariables = Types.Exact<{
   address: Types.Scalars['String'];
 }>;
 
 
-export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null, kyc?: { __typename?: 'kyc', applicantId: string, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null }> };
+export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, kyc?: { __typename?: 'kyc', applicantId: string, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null, roles: Array<{ __typename?: 'roleAssignments', role: Types.Roles_Enum, organizerId: string, eventId?: string | null }> }> };
 
 export type GetAccountByEmailQueryVariables = Types.Exact<{
   email: Types.Scalars['String'];
 }>;
 
 
-export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, organizerId?: string | null, kyc?: { __typename?: 'kyc', applicantId: string, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null }> };
+export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, kyc?: { __typename?: 'kyc', applicantId: string, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null }> };
+
+export type GetAccountByAddressQueryVariables = Types.Exact<{
+  address: Types.Scalars['String'];
+}>;
+
+
+export type GetAccountByAddressQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean }> };
 
 export type GetAccountByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['uuid'];
@@ -303,6 +310,25 @@ export type GetEventPassNftByIdMinimalQueryVariables = Types.Exact<{
 
 
 export type GetEventPassNftByIdMinimalQuery = { __typename?: 'query_root', eventPassNft_by_pk?: { __typename?: 'eventPassNft', id: any, tokenId: any, eventId: string, eventPassId: string, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null } | null };
+
+export type RoleAssignmentsFieldsFragment = { __typename?: 'roleAssignments', role: Types.Roles_Enum, organizerId: string, eventId?: string | null };
+
+export type CreateRoleAssignmentMutationVariables = Types.Exact<{
+  input: Types.RoleAssignments_Insert_Input;
+}>;
+
+
+export type CreateRoleAssignmentMutation = { __typename?: 'mutation_root', insert_roleAssignments_one?: { __typename?: 'roleAssignments', role: Types.Roles_Enum } | null };
+
+export type GetRoleMinimalQueryVariables = Types.Exact<{
+  accountId: Types.Scalars['uuid'];
+  role: Types.Roles_Enum;
+  organizerId: Types.Scalars['String'];
+  eventId?: Types.InputMaybe<Types.Scalars['String']>;
+}>;
+
+
+export type GetRoleMinimalQuery = { __typename?: 'query_root', roleAssignments: Array<{ __typename?: 'roleAssignments', id: any }> };
 
 export type StripeCheckoutSessionFieldsFragment = { __typename?: 'stripeCheckoutSession', stripeSessionId: string, stripeCustomerId: string, type: Types.StripeCheckoutSessionType_Enum };
 

@@ -39,6 +39,15 @@
       "@features/back-office/dashboard/server": [
         "libs/features/back-office/dashboard/src/server.ts"
       ],
+      "@features/back-office/roles": [
+        "libs/features/back-office/roles/src/index.ts"
+      ],
+      "@features/back-office/roles-actions": [
+        "libs/features/back-office/roles-actions/src/index.ts"
+      ],
+      "@features/back-office/roles-api": [
+        "libs/features/back-office/roles-api/src/index.ts"
+      ],
       "@features/cart": ["libs/features/cart/src/index.ts"],
       "@features/cart-actions": ["libs/features/cart-actions/src/index.ts"],
       "@features/cart-api": ["libs/features/cart-api/src/index.ts"],
@@ -110,7 +119,6 @@
       "@next/date": ["libs/next/date/src/index.ts"],
       "@next/hasura/api": ["libs/next/hasura/api/src/index.ts"],
       "@next/hasura/react-query": ["libs/next/hasura/react-query/src/index.ts"],
-      "@next/hasura/utils": ["libs/next/hasura/utils/src/index.ts"],
       "@next/hygraph": ["libs/next/hygraph/src/index.ts"],
       "@next/hygraph/examples": ["libs/next/hygraph/src/examples.tsx"],
       "@next/i18n": ["libs/next/i18n/src/index.ts"],
@@ -132,6 +140,8 @@
       "@payment/admin": ["libs/payment/admin/src/index.ts"],
       "@payment/types": ["libs/payment/types/src/index.ts"],
       "@payment/webhooks": ["libs/payment/webhooks/src/index.ts"],
+      "@roles/admin": ["libs/roles/admin/src/index.ts"],
+      "@roles/types": ["libs/roles/types/src/index.ts"],
       "@server/task": ["libs/server/task/src/index.ts"],
       "@shared/client": ["libs/shared/client/src/index.ts"],
       "@shared/server": ["libs/shared/server/src/index.ts"],
