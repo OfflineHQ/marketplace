@@ -29,20 +29,23 @@ export class PassCache {
   async getAllPassesCart(): Promise<AllPassesCart | null> {
     const userId = getUnauthenticatedUserCookie();
     const key = `unauthenticated_user_id:${userId}-passes`;
-    const passesCart = await this.cache.get(key);
+    const passesCart = await this.cache.kv.get(key);
     return passesCart as AllPassesCart | null;
   }
 
   async setAllPassesCart(passesCart: AllPassesCart): Promise<void> {
     const userId = getUnauthenticatedUserCookie();
     const key = `unauthenticated_user_id:${userId}-passes`;
-    await this.cache.set(key, JSON.stringify(passesCart));
+    // Set expiry to two months
+    await this.cache.kv.set(key, JSON.stringify(passesCart), {
+      ex: 60 * 60 * 24 * 60,
+    });
   }
 
   async deleteAllPassesCart(): Promise<void> {
     const userId = getUnauthenticatedUserCookie();
     const key = `unauthenticated_user_id:${userId}-passes`;
-    await this.cache.del(key);
+    await this.cache.kv.del(key);
   }
 
   async updatePassCart({

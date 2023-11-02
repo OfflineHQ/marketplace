@@ -4623,12 +4623,6 @@ input OrganizerWhereUniqueInput {
 }
 
 """References Organizer record uniquely"""
-input OrganizerWhereUniqueInput_remote_rel_accountorganizer {
-  name: String
-  slug: String
-}
-
-"""References Organizer record uniquely"""
 input OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer {
   name: String
   slug: String
@@ -4636,6 +4630,12 @@ input OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer {
 
 """References Organizer record uniquely"""
 input OrganizerWhereUniqueInput_remote_rel_eventPassNftorganizer {
+  name: String
+  slug: String
+}
+
+"""References Organizer record uniquely"""
+input OrganizerWhereUniqueInput_remote_rel_roleAssignmentsorganizer {
   name: String
   slug: String
 }
@@ -6257,19 +6257,24 @@ type account {
 
   """An object relationship"""
   kyc: kyc
-  organizer(
-    """
-    Defines which locales should be returned.
-    
-    Note that `Organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
-    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
-    
-    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
-    """
-    locales: [Locale!]! = [en]
-    stage: Stage! = PUBLISHED
-    where: OrganizerWhereUniqueInput_remote_rel_accountorganizer!
-  ): Organizer
+
+  """An array relationship"""
+  roles(
+    """distinct select on columns"""
+    distinct_on: [roleAssignments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roleAssignments_order_by!]
+
+    """filter the rows returned"""
+    where: roleAssignments_bool_exp
+  ): [roleAssignments!]!
 
   """An object relationship"""
   stripeCustomer: stripeCustomer
@@ -6287,6 +6292,7 @@ input account_bool_exp {
   emailVerified: Boolean_comparison_exp
   id: uuid_comparison_exp
   kyc: kyc_bool_exp
+  roles: roleAssignments_bool_exp
   stripeCustomer: stripeCustomer_bool_exp
 }
 
@@ -6297,6 +6303,7 @@ input account_order_by {
   emailVerified: order_by
   id: order_by
   kyc: kyc_order_by
+  roles_aggregate: roleAssignments_aggregate_order_by
   stripeCustomer: stripeCustomer_order_by
 }
 
@@ -7599,7 +7606,7 @@ unique or primary key constraints on table "eventPassPendingOrder"
 """
 enum eventPassPendingOrder_constraint {
   """
-  unique or primary key constraint on columns "accountId", "eventPassId"
+  unique or primary key constraint on columns "eventPassId", "accountId"
   """
   eventPassPendingOrder_eventPassId_accountId_key
 
@@ -8130,6 +8137,14 @@ type mutation_root {
   delete single row from the table: "eventPassPendingOrder"
   """
   delete_eventPassPendingOrder_by_pk(id: uuid!): eventPassPendingOrder
+
+  """
+  delete data from the table: "roleAssignments"
+  """
+  delete_roleAssignments(
+    """filter the rows which have to be deleted"""
+    where: roleAssignments_bool_exp!
+  ): roleAssignments_mutation_response
 
   """
   insert data into the table: "eventPassPendingOrder"
@@ -9566,6 +9581,26 @@ type query_root {
     where: OrganizerWhereInput
   ): OrganizerConnection!
 
+  """
+  fetch data from the table: "roleAssignments"
+  """
+  roleAssignments(
+    """distinct select on columns"""
+    distinct_on: [roleAssignments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roleAssignments_order_by!]
+
+    """filter the rows returned"""
+    where: roleAssignments_bool_exp
+  ): [roleAssignments!]!
+
   """Retrieve a single scheduledOperation"""
   scheduledOperation(
     """
@@ -9772,6 +9807,179 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: UserWhereInput
   ): UserConnection!
+}
+
+"""
+Table to assign roles to accounts, allowing a many-to-many relationship. Each account can have multiple roles and each role can be assigned to multiple accounts. This is part of the RBAC system integration.
+"""
+type roleAssignments {
+  accountId: uuid!
+  created_at: timestamptz!
+  eventId: String
+  id: uuid!
+  invitedById: uuid!
+
+  """An object relationship"""
+  inviter: account!
+  organizer(
+    """
+    Defines which locales should be returned.
+    
+    Note that `Organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: OrganizerWhereUniqueInput_remote_rel_roleAssignmentsorganizer!
+  ): Organizer
+  organizerId: String!
+  role: roles_enum!
+}
+
+"""
+order by aggregate values of table "roleAssignments"
+"""
+input roleAssignments_aggregate_order_by {
+  count: order_by
+  max: roleAssignments_max_order_by
+  min: roleAssignments_min_order_by
+}
+
+"""
+Boolean expression to filter rows from the table "roleAssignments". All fields are combined with a logical 'AND'.
+"""
+input roleAssignments_bool_exp {
+  _and: [roleAssignments_bool_exp!]
+  _not: roleAssignments_bool_exp
+  _or: [roleAssignments_bool_exp!]
+  accountId: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  eventId: String_comparison_exp
+  id: uuid_comparison_exp
+  invitedById: uuid_comparison_exp
+  inviter: account_bool_exp
+  organizerId: String_comparison_exp
+  role: roles_enum_comparison_exp
+}
+
+"""
+order by max() on columns of table "roleAssignments"
+"""
+input roleAssignments_max_order_by {
+  accountId: order_by
+  created_at: order_by
+  eventId: order_by
+  id: order_by
+  invitedById: order_by
+  organizerId: order_by
+}
+
+"""
+order by min() on columns of table "roleAssignments"
+"""
+input roleAssignments_min_order_by {
+  accountId: order_by
+  created_at: order_by
+  eventId: order_by
+  id: order_by
+  invitedById: order_by
+  organizerId: order_by
+}
+
+"""
+response of any mutation on the table "roleAssignments"
+"""
+type roleAssignments_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [roleAssignments!]!
+}
+
+"""Ordering options when selecting data from "roleAssignments"."""
+input roleAssignments_order_by {
+  accountId: order_by
+  created_at: order_by
+  eventId: order_by
+  id: order_by
+  invitedById: order_by
+  inviter: account_order_by
+  organizerId: order_by
+  role: order_by
+}
+
+"""
+select columns of table "roleAssignments"
+"""
+enum roleAssignments_select_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventId
+
+  """column name"""
+  id
+
+  """column name"""
+  invitedById
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  role
+}
+
+"""
+Streaming cursor of the table "roleAssignments"
+"""
+input roleAssignments_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: roleAssignments_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input roleAssignments_stream_cursor_value_input {
+  accountId: uuid
+  created_at: timestamptz
+  eventId: String
+  id: uuid
+  invitedById: uuid
+  organizerId: String
+  role: roles_enum
+}
+
+enum roles_enum {
+  organizer_admin
+  organizer_auditor
+  organizer_content_manager
+  organizer_finance_manager
+  organizer_guest
+  organizer_human_resources
+  organizer_operations_manager
+  organizer_super_admin
+  organizer_validator
+}
+
+"""
+Boolean expression to compare columns of type "roles_enum". All fields are combined with logical 'AND'.
+"""
+input roles_enum_comparison_exp {
+  _eq: roles_enum
+  _in: [roles_enum!]
+  _is_null: Boolean
+  _neq: roles_enum
+  _nin: [roles_enum!]
 }
 
 """
@@ -10180,6 +10388,40 @@ type subscription_root {
     """filter the rows returned"""
     where: kyc_bool_exp
   ): [kyc!]!
+
+  """
+  fetch data from the table: "roleAssignments"
+  """
+  roleAssignments(
+    """distinct select on columns"""
+    distinct_on: [roleAssignments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roleAssignments_order_by!]
+
+    """filter the rows returned"""
+    where: roleAssignments_bool_exp
+  ): [roleAssignments!]!
+
+  """
+  fetch data from the table in a streaming manner: "roleAssignments"
+  """
+  roleAssignments_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [roleAssignments_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: roleAssignments_bool_exp
+  ): [roleAssignments!]!
 
   """
   fetch data from the table: "stripeCustomer"

@@ -1,6 +1,7 @@
-import { ProfileNavClient } from './ProfileNavClient';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { useTranslations } from 'next-intl';
+import { ProfileNavClient } from './ProfileNavClient';
+import { ProfileNavProps, ProfileNav } from './ProfileNav';
 
 export function ProfileNavClientExample({ isNextAuthConnected = false }) {
   const t = useTranslations('AppNav.Profile');
@@ -25,6 +26,14 @@ export function ProfileNavClientExample({ isNextAuthConnected = false }) {
           />{' '}
         </AuthProvider>
       </NextAuthProvider>
+    </div>
+  );
+}
+
+export function ProfileNavExample(props: ProfileNavProps) {
+  return (
+    <div className="flex">
+      <ProfileNav {...props} />{' '}
     </div>
   );
 }

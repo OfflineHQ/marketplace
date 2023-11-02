@@ -1,6 +1,6 @@
 import { OrganizerDashboard } from '@features/back-office/dashboard';
-import { getCurrentUser } from '@next/next-auth/user';
 import { getEventsFromOrganizerId } from '@features/back-office/dashboard-api';
+import { getCurrentUser } from '@next/next-auth/user';
 
 interface DashboardProps {
   params: {
@@ -13,10 +13,10 @@ export default async function Dashboard({
 }: DashboardProps) {
   const user = await getCurrentUser();
   if (!user) return;
-  const organizerId = user.organizerId || '';
+  const organizerId = user.role?.organizerId || '';
   if (!organizerId) return;
   const events = await getEventsFromOrganizerId({
-    id: user.organizerId as string,
+    id: organizerId as string,
     locale,
   });
   return <OrganizerDashboard events={events} organizerId={organizerId} />;

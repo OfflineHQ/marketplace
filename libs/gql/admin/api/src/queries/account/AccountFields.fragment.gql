@@ -3,5 +3,4 @@ fragment AccountFields on account {
   address
   email
   emailVerified
-  organizerId
 }

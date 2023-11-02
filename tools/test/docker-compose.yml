@@ -3,7 +3,7 @@ version: '3.9'
 services:
   hasura-engine-test:
     container_name: hasura_engine_test
-    image: 'hasura/graphql-engine:v2.27.0.cli-migrations-v3'
+    image: 'hasura/graphql-engine:v2.35.0.cli-migrations-v3'
     # command: 'graphql-engine --database-url $HASURA_GRAPHQL_DATABASE_URL serve --server-port $HASURA_GRAPHQL_SERVER_PORT'
     depends_on:
       test-db:
@@ -13,8 +13,87 @@ services:
     environment:
       HASURA_GRAPHQL_DEV_MODE: 'true'
       HASURA_GRAPHQL_ENABLE_TELEMETRY: 'false'
-      ## important ! here we use headers with encrypted json instead of cookie for testing purposes
-      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R", "claims_map": { "x-hasura-allowed-roles": { "path": "$$.roles" }, "x-hasura-default-role": { "path": "$$.roles[0]" }, "x-hasura-client-id": { "path": "$$.clientId", "default": "" }, "x-hasura-user-id": { "path": "$$.userId", "default": "" } }}'
+      ## important ! here we use headers with encrypted json instead of cookie for testing purposes, we also use CustomHeader to avoid conflicts with both cookies
+      HASURA_GRAPHQL_JWT_SECRETS: |
+        [
+          {
+            "type": "HS256",
+            "key": "ALjZVyWYniAX+6A86TilZ9oWJ4t8ZdCwDRrve1SwC/I=",
+            "issuer": "https://dummy-fake-issuer.com",
+            "header": {
+              "type": "CustomHeader",
+              "name": "marketplace-jwt"
+            },
+            "claims_map": {
+              "x-hasura-allowed-roles": ["user", "anonymous"],
+              "x-hasura-client-id": {
+                "default": "",
+                "path": "$.clientId"
+              },
+              "x-hasura-default-role": "user",
+              "x-hasura-role": {
+                "default": "",
+                "path": "$.role"
+              },
+              "x-hasura-user-id": {
+                "default": "",
+                "path": "$.user.id"
+              },
+              "x-hasura-username": {
+                "default": "",
+                "path": "$.name"
+              }
+            }
+          },
+          {
+            "type": "HS256",
+            "key": "HGTRbJ6IaEoByH8KhA+BKV0Bgug+R7RSydnMbex2cZg=",
+            "issuer": "https://dummy-fake-issuer-2.io",
+            "header": {
+              "type": "CustomHeader",
+              "name": "back-office-jwt"
+            },
+            "claims_map": {
+              "x-hasura-allowed-roles": [
+                "user",
+                "organizer_super_admin",
+                "organizer_admin",
+                "organizer_operations_manager",
+                "organizer_finance_manager",
+                "organizer_content_manager",
+                "organizer_validator",
+                "organizer_auditor",
+                "organizer_guest,
+                "organizer_human_resources"
+              ],
+              "x-hasura-client-id": {
+                "default": "",
+                "path": "$.clientId"
+              },
+              "x-hasura-default-role": "user",
+              "x-hasura-role": {
+                "default": "",
+                "path": "$.user.role.role"
+              },
+              "x-hasura-organizer-id": {
+                "default": "",
+                "path": "$.user.role.organizerId"
+              },
+              "x-hasura-event-id": {
+                "path": "$.user.role.eventId",
+                "default": ""
+              },
+              "x-hasura-user-id": {
+                "default": "",
+                "path": "$.user.id"
+              },
+              "x-hasura-username": {
+                "default": "",
+                "path": "$.name"
+              }
+            }
+          }
+        ]
     healthcheck:
       test:
         [
@@ -35,7 +114,7 @@ services:
 
   test-db:
     container_name: test_db
-    image: postgres:13
+    image: postgres:16
     command: postgres -c fsync=off -c synchronous_commit=off -c full_page_writes=off -c random_page_cost=1.0 -c client_min_messages=NOTICE -p ${POSTGRES_PORT}
     env_file:
       - .env.test.jest

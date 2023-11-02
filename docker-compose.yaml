@@ -2,7 +2,7 @@ version: '3.9'
 services:
   hasura-engine:
     container_name: hasura_engine
-    image: hasura/graphql-engine:v2.27.0
+    image: hasura/graphql-engine:v2.35.0
     ports:
       - '8080:8080'
     depends_on:
@@ -15,7 +15,84 @@ services:
       HASURA_GRAPHQL_DEV_MODE: 'true'
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ENABLE_TELEMETRY: 'false'
-      HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS256","key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlE9g9dr5yaq89gr4lnZ1\nyRb2DKisPhrVmAvVPTcXkFrOzQzJvuIVdnyojTxLOTokqP1tdijb72wPUWQaxuBu\nimIoQAQ2l1z/ovNLgzPQh/c2g8rC3Sq3O4sVgdZSErGGtKviHc++a3V/ZHJ45qJg\nrWposj05q8SHQufP6L6N+xu1wwi8CP9LxJh1gp/RnabPggPMRj09wV6unqcMuK/o\nhL6ycfgeTmVGlcCvULN/tncHw34sGnOBE3kQfghR0KRFGR2PwO4GnIknBebul0W7\n+hrUtlyi2fzP5WUn6n88BLu/2cd99sxOkbG9Gk8TMKb30vOb45ut7CWvt7oFfHow\n7wIDAQAB\n-----END PUBLIC KEY-----\n", "header": {"type": "Cookie", "name": "next-auth.session-token" }, "claims_map": { "x-hasura-allowed-roles": ["user", "organizer", "anonymous" ], "x-hasura-default-role": "user", "x-hasura-client-id": { "path": "$$.clientId", "default": "" }, "x-hasura-user-id": { "path": "$$.user.id", "default": "" }, "x-hasura-role": { "path": "$$.role", "default": "" } } }'
+      HASURA_GRAPHQL_JWT_SECRETS: |
+        [
+          {
+            "claims_map": {
+              "x-hasura-allowed-roles": ["user", "anonymous"],
+              "x-hasura-client-id": {
+                "default": "",
+                "path": "$.clientId"
+              },
+              "x-hasura-default-role": "user",
+              "x-hasura-role": {
+                "default": "",
+                "path": "$.role"
+              },
+              "x-hasura-user-id": {
+                "default": "",
+                "path": "$.user.id"
+              },
+              "x-hasura-username": {
+                "default": "",
+                "path": "$.name"
+              }
+            },
+            "header": {
+              "name": "next-auth.session-token",
+              "type": "Cookie"
+            },
+            "key": "-----BEGIN RSA PUBLIC KEY-----\nMIICCgKCAgEAtHmpqKfTdp2DNnolB3B8FrDxm64vbOXiH14GFT77PqcMtlssyFKk\nR2Ak6bpCa63tRuTJmrItMOYEmTmTfOAi0ttVqnTSdLrMLYpGR6dLl6tbUAIOYiJ9\nTbPsZaEPbBEGiG/vTe9kpdGQG66q+QydmrGRmZd1JQnC2fXo3ZpVT1URrpL50UCR\nbXH1rVBfuhd1lkpItszZxJ4T4M6JSzMfCkNG3TyezRHytecNftAJICeaEtMHV+2Z\nJ/Dy8+DL5CuRhyLDOyGDsjaQi6Wj8tLFNGg3BX/uXL47iqdtGT5ucYgNF9X9zxTv\nQ21pC+bZCnVN2B0ucJtMH+vXVb1iwqKjnxKEXfdqyLpux4LCZM9lTpScf2yXJKGF\nX3kTTLy/vQESXUxCiSO4p0OIuQKbS5Zj/i3d4rpXhC1Q3aE2KXVm/OXrv9lyN33P\n46BbzKHP8wwRSlBd1wMCn6RGw2+SdP+jdjNp3bawdvRoktk2t2FWGXn22fngk1z2\nazs0aBzW373nuhUBz6vOPAzxIxIjsmTIcYq5uU35ozxtn4bToaHvVefF7LjT1tyT\nbN6vUjMOJsOpK3hoGOzHHBMH+HZhAZvehb02peNABIceaXXsnrTZDn9BJul6795d\n4lQt6kH4hrgZ/DgF7ENg51MKP2gBszVMWvf+tA8ZSNDbvfo6BrGC4qUCAwEAAQ==\n-----END RSA PUBLIC KEY-----\n",
+            "type": "RS256"
+          },
+          {
+            "claims_map": {
+              "x-hasura-allowed-roles": [
+                "user",
+                "organizer_super_admin",
+                "organizer_admin",
+                "organizer_operations_manager",
+                "organizer_finance_manager",
+                "organizer_content_manager",
+                "organizer_validator",
+                "organizer_auditor",
+                "organizer_guest",
+                "organizer_human_resources"
+              ],
+              "x-hasura-client-id": {
+                "default": "",
+                "path": "$.clientId"
+              },
+              "x-hasura-default-role": "user",
+              "x-hasura-role": {
+                "default": "",
+                "path": "$.user.role.role"
+              },
+              "x-hasura-organizer-id": {
+                "default": "",
+                "path": "$.user.role.organizerId"
+              },
+              "x-hasura-event-id": {
+                "path": "$.user.role.eventId",
+                "default": ""
+              },
+              "x-hasura-user-id": {
+                "default": "",
+                "path": "$.user.id"
+              },
+              "x-hasura-username": {
+                "default": "",
+                "path": "$.name"
+              }
+            },
+            "header": {
+              "name": "next-auth.session-token.back-office",
+              "type": "Cookie"
+            },
+            "key": "-----BEGIN RSA PUBLIC KEY-----\nMIICCgKCAgEAwJV6d9yS6R+jubxhbueB7+0GK9jWbld2kiBPdppXMuG/+oqvMs1n\nq51oOrjt9N6zEK9otJ/xbRu0D+tRruZvL0N3HG5F+zPFQFcRrGjZSz+5l/p9odc9\nA8xRzeKuLFjDnzcMC4J2njUTXPuZKvp2HMN6sXC28zNYXrbxgfBDvpPkuU00tSoe\nxTR80Q1A5dQs4FL5Kd8LaL9osKaFo3KLyW3KKlfYJS2I56vtJedcKKRJ0WqVZEjJ\n9S5viDFf7lu7kTRZ/jlFmFrZSKFLf5f22+XFABNVMIKfPeMlGJxaTk2/K4E7MU7d\nbYZsbUqV8mncUC3p4zApjKp4kdQnja3yRGiUIjjjF9u/yyqorQd/UCK/2Tkz2Gow\ntEwvWOzCD1KIhOsRxuk4ympHw0RTo0rsiMB+l9E01koe6KfkYJ6bauFL37aNjSyn\npUiR3bDoZVRlNrPFGoCwr0vv0VaKTyxD8+yt+UEwwkMUeXVL7Gz9tyq21nxX8mSt\nICVKemE8mjIXp/fWeRwynchfc3D7HrVvmtgn2hFyJOtRFNJy+D0xvxaoEqCbQvSY\npUEgB9c6HTmDooEjI+H5oBVwZIYYtw/Znv40rF06uPR+JhMgy1nILvCBjtn90ibL\nwyw0JINto6lbeNko39IyOzk7zpbtuNnxbQY731cAkXvGcRVRsW7c6S0CAwEAAQ==\n-----END RSA PUBLIC KEY-----\n",
+            "type": "RS256"
+          }
+        ]
     healthcheck:
       test:
         [
@@ -88,7 +165,7 @@ services:
 
   db:
     container_name: db
-    image: postgres:13
+    image: postgres:16
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:

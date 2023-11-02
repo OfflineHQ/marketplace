@@ -22,3 +22,8 @@ export {
 } from './lib/ProfileNav/ProfileNav';
 
 export { ProfileNavClient } from './lib/ProfileNav/ProfileNavClient';
+
+export {
+  ProfileAvatar,
+  ProfileAvatarProps,
+} from './lib/profile-avatar/ProfileAvatar';
