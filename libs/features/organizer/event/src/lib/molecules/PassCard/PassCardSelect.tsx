@@ -3,8 +3,8 @@ import { Badge, ButtonSkeleton } from '@ui/components';
 import { updateEventPassCart } from '@features/organizer/event-actions';
 import {
   getEventPassCart,
+  getEventPassOrderPurchasedForEventPass,
   getEventPassOrderSums,
-  getEventPassOrdersConfirmedOrCompletedForEventPass,
 } from '@features/organizer/event-api';
 import type { EventPass, EventSlugs } from '@features/organizer/event-types';
 import { useLocale } from 'next-intl';
@@ -39,10 +39,9 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
     eventSlug,
     eventPassId: id,
   });
-  const existingEventPasses =
-    await getEventPassOrdersConfirmedOrCompletedForEventPass({
-      eventPassId: id,
-    });
+  const existingEventPasses = await getEventPassOrderPurchasedForEventPass({
+    eventPassId: id,
+  });
   // here compute the max amount of tickets that can be bought
   const totalReserved = eventPassOrderSums?.totalReserved ?? 0;
   const maxAvailableTickets =

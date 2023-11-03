@@ -12,7 +12,7 @@ jest.mock('@gql/user/api', () => ({
   },
 }));
 
-describe('getEventPassOrdersConfirmedOrCompletedForEventPass', () => {
+describe('getEventPassOrderPurchasedForEventPass', () => {
   const mockEventPassId = 'test-pass';
 
   it('should return null if user is not authenticated', async () => {
