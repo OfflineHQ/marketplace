@@ -1066,6 +1066,70 @@ type DocumentVersion {
   stage: Stage!
 }
 
+"""An object with an ID"""
+interface Entity {
+  """The id of the object."""
+  id: ID!
+
+  """The Stage of an object"""
+  stage: Stage!
+}
+
+"""
+This enumeration holds all typenames that implement the Entity interface. Components implement the Entity interface. At the moment models are not supported, models are listed in this enum to avoid an empty enum without any components.
+"""
+enum EntityTypeName {
+  """Asset system model"""
+  Asset
+
+  """Root event model"""
+  Event
+
+  """
+  Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several.
+  """
+  EventDateLocation
+
+  """
+  Define a pass for an event with different options, price, number of passes etc.
+  """
+  EventPass
+
+  """
+  A model for location data (point on a map) + additional info such as street, venue etc.
+  """
+  LocationAddress
+
+  """
+  An organizer is an entity that launch events and handle the pass benefits.
+  """
+  Organizer
+
+  """
+  Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations.
+  """
+  PassOption
+
+  """Scheduled Operation system model"""
+  ScheduledOperation
+
+  """Scheduled Release system model"""
+  ScheduledRelease
+
+  """User system model"""
+  User
+}
+
+"""Allows to specify input to query components directly"""
+input EntityWhereInput {
+  """The ID of an object"""
+  id: ID!
+  stage: Stage!
+
+  """The Type name of an object"""
+  typename: EntityTypeName!
+}
+
 """Root event model"""
 type Event implements Node {
   """The time the document was created"""
@@ -1458,7 +1522,7 @@ input EventCreateOneInlineInput {
 """
 Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several.
 """
-type EventDateLocation {
+type EventDateLocation implements Entity {
   """The end date including time on the UTC timezone."""
   dateEnd: DateTime!
 
@@ -3321,7 +3385,7 @@ type Location {
 """
 A model for location data (point on a map) + additional info such as street, venue etc.
 """
-type LocationAddress {
+type LocationAddress implements Entity {
   """Name of the city"""
   city: String!
 
@@ -3334,7 +3398,9 @@ type LocationAddress {
   """The unique identifier"""
   id: ID!
 
-  """Place ID from google maps"""
+  """
+  Place ID from google maps. Use this tool to retrieve the correct Place ID from the location you want to open on google maps while clicking on the address provided: https://developers.google.com/maps/documentation/places/web-service/place-id#find-id
+  """
   placeId: String
   postalCode: String!
 
@@ -3772,6 +3838,10 @@ type Organizer implements Node {
 
   """The unique identifier"""
   id: ID!
+
+  """
+  Image that represent the organizer, typically its logo. Advised resolution is 350 x 350 pixels, in square format with transparency (for ex: svg or png but not jpg) so that the image always look good either on light or dark mode.
+  """
   image(
     """
     Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
@@ -4591,7 +4661,7 @@ type PageInfo {
 """
 Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations.
 """
-type PassOption {
+type PassOption implements Entity {
   """
   Description of the option, like "Access to the event on Day 1"
   """
@@ -9087,6 +9157,12 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: AssetWhereInput
   ): AssetConnection!
+
+  """Fetches an object given its ID"""
+  entities(
+    """The where parameters to query components"""
+    where: [EntityWhereInput!]!
+  ): [Entity!]
 
   """Retrieve a single event"""
   event(

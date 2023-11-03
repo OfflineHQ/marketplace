@@ -808,6 +808,47 @@ export type DocumentVersion = {
   stage: Stage;
 };
 
+/** An object with an ID */
+export type Entity = {
+  /** The id of the object. */
+  id: Scalars['ID'];
+  /** The Stage of an object */
+  stage: Stage;
+};
+
+/** This enumeration holds all typenames that implement the Entity interface. Components implement the Entity interface. At the moment models are not supported, models are listed in this enum to avoid an empty enum without any components. */
+export const enum EntityTypeName {
+  /** Asset system model */
+  Asset = 'Asset',
+  /** Root event model */
+  Event = 'Event',
+  /** Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several. */
+  EventDateLocation = 'EventDateLocation',
+  /** Define a pass for an event with different options, price, number of passes etc. */
+  EventPass = 'EventPass',
+  /** A model for location data (point on a map) + additional info such as street, venue etc. */
+  LocationAddress = 'LocationAddress',
+  /** An organizer is an entity that launch events and handle the pass benefits. */
+  Organizer = 'Organizer',
+  /** Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations. */
+  PassOption = 'PassOption',
+  /** Scheduled Operation system model */
+  ScheduledOperation = 'ScheduledOperation',
+  /** Scheduled Release system model */
+  ScheduledRelease = 'ScheduledRelease',
+  /** User system model */
+  User = 'User'
+};
+
+/** Allows to specify input to query components directly */
+export type EntityWhereInput = {
+  /** The ID of an object */
+  id: Scalars['ID'];
+  stage: Stage;
+  /** The Type name of an object */
+  typename: EntityTypeName;
+};
+
 /** Root event model */
 export type Event = Node & {
   __typename?: 'Event';
@@ -1061,7 +1102,7 @@ export type EventCreateOneInlineInput = {
 };
 
 /** Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several. */
-export type EventDateLocation = {
+export type EventDateLocation = Entity & {
   __typename?: 'EventDateLocation';
   /** The end date including time on the UTC timezone. */
   dateEnd: Scalars['DateTime'];
@@ -2431,7 +2472,7 @@ export type LocationDistanceArgs = {
 };
 
 /** A model for location data (point on a map) + additional info such as street, venue etc. */
-export type LocationAddress = {
+export type LocationAddress = Entity & {
   __typename?: 'LocationAddress';
   /** Name of the city */
   city: Scalars['String'];
@@ -2441,7 +2482,7 @@ export type LocationAddress = {
   country: Scalars['String'];
   /** The unique identifier */
   id: Scalars['ID'];
-  /** Place ID from google maps */
+  /** Place ID from google maps. Use this tool to retrieve the correct Place ID from the location you want to open on google maps while clicking on the address provided: https://developers.google.com/maps/documentation/places/web-service/place-id#find-id */
   placeId?: Maybe<Scalars['String']>;
   postalCode: Scalars['String'];
   /** System stage field */
@@ -2711,6 +2752,7 @@ export type Organizer = Node & {
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
+  /** Image that represent the organizer, typically its logo. Advised resolution is 350 x 350 pixels, in square format with transparency (for ex: svg or png but not jpg) so that the image always look good either on light or dark mode. */
   image: Asset;
   /** System Locale field */
   locale: Locale;
@@ -3363,7 +3405,7 @@ export type PageInfo = {
 };
 
 /** Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations. */
-export type PassOption = {
+export type PassOption = Entity & {
   __typename?: 'PassOption';
   /** Description of the option, like "Access to the event on Day 1" */
   description?: Maybe<Scalars['String']>;
@@ -10510,6 +10552,8 @@ export type Query_Root = {
   currency_aggregate: Currency_Aggregate;
   /** fetch data from the table: "currency" using primary key columns */
   currency_by_pk?: Maybe<Currency>;
+  /** Fetches an object given its ID */
+  entities?: Maybe<Array<Entity>>;
   /** Retrieve a single event */
   event?: Maybe<Event>;
   eventParameters: Array<EventParameters>;
@@ -10730,6 +10774,11 @@ export type Query_RootCurrency_AggregateArgs = {
 
 export type Query_RootCurrency_By_PkArgs = {
   value: Scalars['String'];
+};
+
+
+export type Query_RootEntitiesArgs = {
+  where: Array<EntityWhereInput>;
 };
 
 
