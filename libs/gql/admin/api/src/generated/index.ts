@@ -264,7 +264,7 @@ ${KycFieldsFragmentDoc}`;
     `;
  const GetEventPassOrderFromIdDocument = `
     query GetEventPassOrderFromId($id: uuid!) {
-  eventPassOrder(where: {id: {_eq: $id}}) {
+  eventPassOrder_by_pk(id: $id) {
     id
     eventPassId
     quantity

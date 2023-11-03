@@ -75,7 +75,7 @@ export type GetEventPassOrderFromIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetEventPassOrderFromIdQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', id: any, eventPassId: string, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null, eventPassPricing?: { __typename?: 'eventPassPricing', priceAmount: number } | null }> };
+export type GetEventPassOrderFromIdQuery = { __typename?: 'query_root', eventPassOrder_by_pk?: { __typename?: 'eventPassOrder', id: any, eventPassId: string, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null, eventPassPricing?: { __typename?: 'eventPassPricing', priceAmount: number } | null } | null };
 
 export type GetEventPassOrdersFromStripeCheckoutSessionQueryVariables = Types.Exact<{
   stripeCheckoutSessionId: Types.Scalars['String'];
