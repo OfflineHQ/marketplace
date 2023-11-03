@@ -13,8 +13,11 @@ import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 
+import { Currency_Enum_Not_Const } from '@currency/types';
 import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
+import { getRate, setRates } from '@next/currency-cache';
 import { getSession, isConnected } from '@next/next-auth/user';
+import { isLocal } from '@shared/server';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -98,6 +101,13 @@ export default async function RootLayout({
   const messages = await getMessages(locale);
   const session = await getSession();
   const t = createTranslator({ locale, messages });
+
+  if (isLocal()) {
+    const res = await getRate(Currency_Enum_Not_Const.USD);
+    if (!res) {
+      await setRates();
+    }
+  }
   return (
     <html lang={locale} suppressHydrationWarning>
       <head />
