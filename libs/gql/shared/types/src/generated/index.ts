@@ -10421,6 +10421,7 @@ export const enum OrderStatus_Enum {
   Completed = 'COMPLETED',
   Confirmed = 'CONFIRMED',
   Error = 'ERROR',
+  IsMinting = 'IS_MINTING',
   Refunded = 'REFUNDED',
   Unauthorized = 'UNAUTHORIZED'
 };

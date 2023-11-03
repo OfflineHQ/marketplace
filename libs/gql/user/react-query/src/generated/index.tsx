@@ -199,48 +199,48 @@ export const useGetEventPassOrdersFromIdsQuery = <
       fetchDataReactQuery<Types.GetEventPassOrdersFromIdsQuery, Types.GetEventPassOrdersFromIdsQueryVariables>(GetEventPassOrdersFromIdsDocument, variables),
       options
     );
-export const GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument = `
-    query GetEventPassOrdersConfirmedOrCompletedForEventPassId($eventPassId: String!) {
+export const GetEventPassOrderPurchasedForEventPassesIdDocument = `
+    query GetEventPassOrderPurchasedForEventPassesId($eventPassId: String!) {
   eventPassOrder(
-    where: {status: {_in: [CONFIRMED, COMPLETED]}, eventPassId: {_eq: $eventPassId}}
+    where: {status: {_in: [CONFIRMED, COMPLETED, IS_MINTING]}, eventPassId: {_eq: $eventPassId}}
   ) {
     eventPassId
     quantity
   }
 }
     `;
-export const useGetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery = <
-      TData = Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery,
+export const useGetEventPassOrderPurchasedForEventPassesIdQuery = <
+      TData = Types.GetEventPassOrderPurchasedForEventPassesIdQuery,
       TError = Error
     >(
-      variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery, TError, TData>
+      variables: Types.GetEventPassOrderPurchasedForEventPassesIdQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassOrderPurchasedForEventPassesIdQuery, TError, TData>
     ) =>
-    useQuery<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery, TError, TData>(
-      ['GetEventPassOrdersConfirmedOrCompletedForEventPassId', variables],
-      fetchDataReactQuery<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument, variables),
+    useQuery<Types.GetEventPassOrderPurchasedForEventPassesIdQuery, TError, TData>(
+      ['GetEventPassOrderPurchasedForEventPassesId', variables],
+      fetchDataReactQuery<Types.GetEventPassOrderPurchasedForEventPassesIdQuery, Types.GetEventPassOrderPurchasedForEventPassesIdQueryVariables>(GetEventPassOrderPurchasedForEventPassesIdDocument, variables),
       options
     );
-export const GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument = `
-    query GetEventPassOrdersConfirmedOrCompletedForEventPassIds($eventPassIds: [String!]!) {
+export const GetEventPassOrderPurchasedForEventPassesIdsDocument = `
+    query GetEventPassOrderPurchasedForEventPassesIds($eventPassIds: [String!]!) {
   eventPassOrder(
-    where: {status: {_in: [CONFIRMED, COMPLETED]}, eventPassId: {_in: $eventPassIds}}
+    where: {status: {_in: [CONFIRMED, COMPLETED, IS_MINTING]}, eventPassId: {_in: $eventPassIds}}
   ) {
     eventPassId
     quantity
   }
 }
     `;
-export const useGetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery = <
-      TData = Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery,
+export const useGetEventPassOrderPurchasedForEventPassesIdsQuery = <
+      TData = Types.GetEventPassOrderPurchasedForEventPassesIdsQuery,
       TError = Error
     >(
-      variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery, TError, TData>
+      variables: Types.GetEventPassOrderPurchasedForEventPassesIdsQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery, TError, TData>
     ) =>
-    useQuery<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery, TError, TData>(
-      ['GetEventPassOrdersConfirmedOrCompletedForEventPassIds', variables],
-      fetchDataReactQuery<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument, variables),
+    useQuery<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery, TError, TData>(
+      ['GetEventPassOrderPurchasedForEventPassesIds', variables],
+      fetchDataReactQuery<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery, Types.GetEventPassOrderPurchasedForEventPassesIdsQueryVariables>(GetEventPassOrderPurchasedForEventPassesIdsDocument, variables),
       options
     );
 export const UpsertEventPassPendingOrderDocument = `
