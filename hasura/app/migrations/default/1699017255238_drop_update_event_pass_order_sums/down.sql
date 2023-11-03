@@ -1,0 +1,5 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- DROP TRIGGER update_order_sums ON "eventPassOrder";
+-- DROP TRIGGER update_pending_order_sums ON "eventPassPendingOrder";
+-- DROP FUNCTION update_eventPassOrder_sums();
