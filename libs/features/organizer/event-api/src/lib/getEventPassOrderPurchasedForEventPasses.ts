@@ -18,7 +18,7 @@ export const getEventPassOrderPurchasedForEventPasses = async ({
     },
     {
       next: {
-        tags: ['GetEventPassOrdersConfirmedOrCompletedForEventPassIds'],
+        tags: ['GetEventPassOrderPurchasedForEventPassesIds'],
       },
     },
   );
