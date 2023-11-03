@@ -5,25 +5,24 @@ interface getExistingEventPassProps {
   eventPassId: string;
 }
 
-export const getEventPassOrdersConfirmedOrCompletedForEventPass = async ({
+export const getEventPassOrderPurchasedForEventPass = async ({
   eventPassId,
 }: getExistingEventPassProps) => {
   const user = await getCurrentUser();
   if (!user) {
     return null;
   }
-  const data =
-    await userSdk.GetEventPassOrdersConfirmedOrCompletedForEventPassId(
-      {
-        eventPassId,
+  const data = await userSdk.GetEventPassOrderPurchasedForEventPassesId(
+    {
+      eventPassId,
+    },
+    {
+      next: {
+        tags: [
+          `GetEventPassOrdersConfirmedOrCompletedForEventPassId-${eventPassId}`,
+        ],
       },
-      {
-        next: {
-          tags: [
-            `GetEventPassOrdersConfirmedOrCompletedForEventPassId-${eventPassId}`,
-          ],
-        },
-      },
-    );
+    },
+  );
   return data?.eventPassOrder;
 };
