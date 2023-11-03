@@ -1,20 +1,23 @@
 import { Analytics } from '@back-office/components/Analytics';
 import { siteConfig } from '@back-office/config/site';
-import { CurrencyProvider } from '@next/currency-provider';
+import { Currency_Enum_Not_Const } from '@currency/types';
+import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
+import { getRate, setRates } from '@next/currency-cache';
+import { CurrencyProvider } from '@next/currency-provider';
 import { getMessages, locales } from '@next/i18n';
+import { getSession, isConnected } from '@next/next-auth/user';
 import { ReactQueryProviders } from '@next/react-query';
 import { UploaderProvider } from '@next/uploader-provider';
+import { isLocal } from '@shared/server';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { Metadata } from 'next';
-import { createTranslator } from 'next-intl';
+import { createTranslator, createTranslator } from 'next-intl';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
-import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
-import { getSession, isConnected } from '@next/next-auth/user';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -59,6 +62,13 @@ export default async function RootLayout({
   const messages = await getMessages(locale);
   const session = await getSession();
   const t = createTranslator({ locale, messages });
+
+  if (isLocal()) {
+    const res = await getRate(Currency_Enum_Not_Const.USD);
+    if (!res) {
+      await setRates();
+    }
+  }
   return (
     <html lang={locale} suppressHydrationWarning>
       <head />
