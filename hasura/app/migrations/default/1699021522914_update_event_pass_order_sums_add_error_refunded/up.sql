@@ -15,7 +15,7 @@ BEGIN
     SELECT COALESCE(SUM(quantity), 0) AS totalReserved
     FROM (
       SELECT quantity FROM "eventPassOrder"
-      WHERE "eventPassId" = target_eventPassId AND ("status" != 'CANCELLED' OR "status" != "ERROR" OR "status" != "REFUNDED")
+      WHERE "eventPassId" = target_eventPassId AND ("status" != 'CANCELLED' AND "status" != 'ERROR' AND "status" != 'REFUNDED')
       UNION ALL
       SELECT quantity FROM "eventPassPendingOrder"
       WHERE "eventPassId" = target_eventPassId
@@ -32,7 +32,7 @@ BEGIN
         SELECT COALESCE(SUM(quantity), 0) AS totalReserved
         FROM (
           SELECT quantity FROM "eventPassOrder"
-          WHERE "eventPassId" = target_eventPassId AND ("status" != 'CANCELLED' OR "status" != "ERROR" OR "status" != "REFUNDED")
+          WHERE "eventPassId" = target_eventPassId AND ("status" != 'CANCELLED' AND "status" != 'ERROR' AND "status" != 'REFUNDED')
           UNION ALL
           SELECT quantity FROM "eventPassPendingOrder"
           WHERE "eventPassId" = target_eventPassId
