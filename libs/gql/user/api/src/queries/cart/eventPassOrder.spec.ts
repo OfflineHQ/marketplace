@@ -46,6 +46,14 @@ describe('tests for eventPassOrder user', () => {
     expect(orders[0].quantity).toBe(8);
   });
 
+  it('should get eventPassOrders with IS_MINTING status', async () => {
+    const res = await alphaUser.GetEventPassOrdersIsMinting();
+    const orders = res.eventPassOrder;
+    expect(orders.length).toBe(1);
+    expect(orders[0].eventPassId).toBe('fake-event-pass-2');
+    expect(orders[0].quantity).toBe(2);
+  });
+
   it('should get eventPassOrders from ids', async () => {
     const res = await alphaUser.GetEventPassOrdersFromIds({
       eventPassOrderIds: ['1e8b9aea-1b0a-4a05-803b-c72d0b46e9a2'],
@@ -62,7 +70,7 @@ describe('tests for eventPassOrder user', () => {
       eventPassId: 'fake-event-pass-2',
     });
     const orders = res.eventPassOrder;
-    expect(orders.length).toBe(1);
+    expect(orders.length).toBe(2);
     expect(orders[0].eventPassId).toBe('fake-event-pass-2');
     expect(orders[0].quantity).toBe(8);
   });
@@ -72,8 +80,7 @@ describe('tests for eventPassOrder user', () => {
       eventPassIds: ['fake-event-pass-2'],
     });
     const orders = res.eventPassOrder;
-    console.log(res);
-    expect(orders.length).toBe(1);
+    expect(orders.length).toBe(2);
     expect(orders[0].eventPassId).toBe('fake-event-pass-2');
     expect(orders[0].quantity).toBe(8);
   });
