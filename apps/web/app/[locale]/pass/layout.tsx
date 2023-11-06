@@ -45,8 +45,8 @@ function PassLayoutContent({
   const t = useTranslations('Pass.NoUserPass');
   const tUserPass = useTranslations('Pass.UserPass');
   const textMintingOrders = numMintingOrders
-    ? tUserPass('orders-minting', {
-        numMintingOrders: numMintingOrders,
+    ? tUserPass('minting-success-message', {
+        numPass: numMintingOrders,
       })
     : '';
   return getUser ? (
