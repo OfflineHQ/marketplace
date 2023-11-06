@@ -5,6 +5,13 @@ query GetEventPassOrdersConfirmed {
   }
 }
 
+query GetEventPassOrdersIsMinting {
+  eventPassOrder(where: { status: { _eq: IS_MINTING } }) {
+    eventPassId
+    quantity
+  }
+}
+
 query GetEventPassOrdersFromIds($eventPassOrderIds: [uuid!]!, $stage: Stage!) {
   eventPassOrder(where: { id: { _in: $eventPassOrderIds } }) {
     eventPassId

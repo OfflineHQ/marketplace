@@ -122,6 +122,14 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
+ const GetEventPassOrdersIsMintingDocument = `
+    query GetEventPassOrdersIsMinting {
+  eventPassOrder(where: {status: {_eq: IS_MINTING}}) {
+    eventPassId
+    quantity
+  }
+}
+    `;
  const GetEventPassOrdersFromIdsDocument = `
     query GetEventPassOrdersFromIds($eventPassOrderIds: [uuid!]!, $stage: Stage!) {
   eventPassOrder(where: {id: {_in: $eventPassOrderIds}}) {
@@ -399,6 +407,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassOrdersConfirmed(variables?: Types.GetEventPassOrdersConfirmedQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedQuery> {
       return requester<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedQuery>;
+    },
+    GetEventPassOrdersIsMinting(variables?: Types.GetEventPassOrdersIsMintingQueryVariables, options?: C): Promise<Types.GetEventPassOrdersIsMintingQuery> {
+      return requester<Types.GetEventPassOrdersIsMintingQuery, Types.GetEventPassOrdersIsMintingQueryVariables>(GetEventPassOrdersIsMintingDocument, variables, options) as Promise<Types.GetEventPassOrdersIsMintingQuery>;
     },
     GetEventPassOrdersFromIds(variables: Types.GetEventPassOrdersFromIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrdersFromIdsQuery> {
       return requester<Types.GetEventPassOrdersFromIdsQuery, Types.GetEventPassOrdersFromIdsQueryVariables>(GetEventPassOrdersFromIdsDocument, variables, options) as Promise<Types.GetEventPassOrdersFromIdsQuery>;

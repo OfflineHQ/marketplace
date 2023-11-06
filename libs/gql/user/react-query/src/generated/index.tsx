@@ -171,6 +171,26 @@ export const useGetEventPassOrdersConfirmedQuery = <
       fetchDataReactQuery<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables),
       options
     );
+export const GetEventPassOrdersIsMintingDocument = `
+    query GetEventPassOrdersIsMinting {
+  eventPassOrder(where: {status: {_eq: IS_MINTING}}) {
+    eventPassId
+    quantity
+  }
+}
+    `;
+export const useGetEventPassOrdersIsMintingQuery = <
+      TData = Types.GetEventPassOrdersIsMintingQuery,
+      TError = Error
+    >(
+      variables?: Types.GetEventPassOrdersIsMintingQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassOrdersIsMintingQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassOrdersIsMintingQuery, TError, TData>(
+      variables === undefined ? ['GetEventPassOrdersIsMinting'] : ['GetEventPassOrdersIsMinting', variables],
+      fetchDataReactQuery<Types.GetEventPassOrdersIsMintingQuery, Types.GetEventPassOrdersIsMintingQueryVariables>(GetEventPassOrdersIsMintingDocument, variables),
+      options
+    );
 export const GetEventPassOrdersFromIdsDocument = `
     query GetEventPassOrdersFromIds($eventPassOrderIds: [uuid!]!, $stage: Stage!) {
   eventPassOrder(where: {id: {_in: $eventPassOrderIds}}) {

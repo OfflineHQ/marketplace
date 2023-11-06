@@ -115,6 +115,9 @@ function EventPassContent({
       if (status.isEqual) {
         return { errorMessage: 'Already enough files.' };
       }
+      if (!File.name.endsWith('.png')) {
+        return { errorMessage: 'File is not a .png' };
+      }
     },
     maxFileCount: eventPass.eventPassPricing?.maxAmount,
     showFinishButton: true,
