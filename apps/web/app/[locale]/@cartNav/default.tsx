@@ -3,10 +3,7 @@ import {
   NavSectionSkeleton,
   type CartNavProps,
 } from '@features/app-nav';
-import {
-  getEventPassOrdersConfirmed,
-  getEventPassPendingOrdersMinimal,
-} from '@features/cart-api';
+import { getEventPassPendingOrdersMinimal } from '@features/cart-api';
 import { getCurrentUser } from '@next/next-auth/user';
 import { Suspense } from 'react';
 
@@ -32,16 +29,11 @@ async function CartNavSectionContent({ locale }: { locale: string }) {
   let userPassPendingOrders: Awaited<
     ReturnType<typeof getEventPassPendingOrdersMinimal>
   >;
-  let userPassConfirmedOrders: Awaited<
-    ReturnType<typeof getEventPassOrdersConfirmed>
-  >;
   let navProps: Pick<CartNavProps, 'ping'> = {};
   let numPendingOrders = 0;
-  let numConfirmedOrders = 0;
   const user = await getCurrentUser();
   if (user) {
     userPassPendingOrders = await getEventPassPendingOrdersMinimal();
-    userPassConfirmedOrders = await getEventPassOrdersConfirmed();
     if (userPassPendingOrders?.length) {
       numPendingOrders = userPassPendingOrders.reduce(
         (sum, order) => sum + order.quantity,
@@ -49,22 +41,13 @@ async function CartNavSectionContent({ locale }: { locale: string }) {
       );
       navProps = { ping: { number: numPendingOrders } };
     }
-    if (userPassConfirmedOrders?.length) {
-      numConfirmedOrders = userPassConfirmedOrders.reduce(
-        (sum, order) => sum + order.quantity,
-        0,
-      );
-      navProps = { ping: { isActive: true, number: numConfirmedOrders } };
-    }
   }
   const t = await getTranslator(locale, 'AppNav.Cart');
   return (
     <CartNav
       text={t('text')}
-      href={numConfirmedOrders ? '/cart/purchase' : '/cart'}
-      helperText={
-        numConfirmedOrders ? t('helper-text-purchase') : t('helper-text')
-      }
+      href={'/cart'} //TODO Replace with numPendingOrders instead of delete ?
+      helperText={t('helper-text')}
       {...navProps}
     />
   );

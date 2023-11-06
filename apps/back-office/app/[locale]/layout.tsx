@@ -14,7 +14,7 @@ import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { Metadata } from 'next';
-import { createTranslator, createTranslator } from 'next-intl';
+import { createTranslator } from 'next-intl';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
