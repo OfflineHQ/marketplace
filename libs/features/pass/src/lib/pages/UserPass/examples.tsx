@@ -1,12 +1,22 @@
-import { NextAuthProvider } from '@next/auth';
-import { WithNormalUser } from '@features/app-nav/stories';
 import { AppNavLayout } from '@features/app-nav';
+import { WithNormalUser } from '@features/app-nav/stories';
 import { Toaster } from '@ui/components';
-import { UserPass } from './UserPass';
 import { useTranslations } from 'next-intl';
+import { UserPass } from './UserPass';
 
-export function UserPassExample({ children }: { children: React.ReactNode }) {
+export function UserPassExample({
+  children,
+  numMintingOrders,
+}: {
+  children: React.ReactNode;
+  numMintingOrders?: number;
+}) {
   const t = useTranslations('Pass.UserPass');
+  const textMintingOrders = numMintingOrders
+    ? t('minting-success-message', {
+        numPass: numMintingOrders,
+      })
+    : '';
   return (
     <>
       <AppNavLayout
@@ -17,6 +27,7 @@ export function UserPassExample({ children }: { children: React.ReactNode }) {
             comingSoon={t('upcoming')}
             past={t('past')}
             children={children}
+            textMintingOrders={textMintingOrders}
           />
         }
       />

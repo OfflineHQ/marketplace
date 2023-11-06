@@ -39,7 +39,7 @@ export const UserPass: React.FC<UserPassProps> = ({
         <CardOverflow>
           <CardHeader>
             <CardTitle>{title}</CardTitle>
-            {textMintingOrders !== '' ? (
+            {textMintingOrders && textMintingOrders !== '' ? (
               <Alert variant="success" className="">
                 {textMintingOrders}
               </Alert>
