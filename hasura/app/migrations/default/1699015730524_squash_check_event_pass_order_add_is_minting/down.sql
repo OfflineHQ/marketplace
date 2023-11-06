@@ -95,3 +95,4 @@
 -- BEFORE INSERT OR UPDATE ON "eventPassPendingOrder"
 -- FOR EACH ROW
 -- EXECUTE PROCEDURE check_event_pass_order();
+DELETE FROM "public"."orderStatus" WHERE "value" = 'IS_MINTING';
