@@ -5,7 +5,7 @@ export const maxDuration = 300;
 
 export async function GET(req: Request, { params: { id } }) {
   const order = (await adminSdk.GetEventPassOrderFromId({ id }))
-    .eventPassOrder[0];
+    .eventPassOrder_by_pk;
   const nft = new NftClaimable();
 
   if (!order) {
