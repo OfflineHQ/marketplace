@@ -39,6 +39,8 @@ export const EventListFieldsFragmentDoc = `
   slug
   title
   heroImage {
+    width
+    height
     url
   }
 }
