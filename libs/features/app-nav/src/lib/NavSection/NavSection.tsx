@@ -1,11 +1,11 @@
-import { NavLink, type NavLinkProps } from '../nav-link/NavLink';
 import {
   Button,
   ButtonSkeleton,
   Ping,
-  type ButtonProps,
   PingProps,
+  type ButtonProps,
 } from '@ui/components';
+import { NavLink, type NavLinkProps } from '../nav-link/NavLink';
 
 export interface NavSectionProps
   extends Omit<NavLinkProps, 'children'>,

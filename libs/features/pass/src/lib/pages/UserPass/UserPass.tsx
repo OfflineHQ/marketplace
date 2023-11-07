@@ -2,6 +2,7 @@
 
 import { Link } from '@next/navigation';
 import {
+  Alert,
   Card,
   CardHeader,
   CardOverflow,
@@ -11,6 +12,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@ui/components';
+
 import { useSelectedLayoutSegment } from 'next/navigation';
 import React from 'react';
 
@@ -19,6 +21,7 @@ export interface UserPassProps {
   title: string;
   comingSoon: string;
   past: string;
+  textMintingOrders?: string;
 }
 
 export const UserPass: React.FC<UserPassProps> = ({
@@ -26,14 +29,21 @@ export const UserPass: React.FC<UserPassProps> = ({
   title,
   comingSoon,
   past,
+  textMintingOrders,
 }) => {
   const activeTab = useSelectedLayoutSegment();
+
   return (
     <section className="container">
       <Card variant="stickyFooter" noBorder>
         <CardOverflow>
           <CardHeader>
             <CardTitle>{title}</CardTitle>
+            {textMintingOrders && textMintingOrders !== '' ? (
+              <Alert variant="success" className="">
+                {textMintingOrders}
+              </Alert>
+            ) : null}
           </CardHeader>
           {activeTab === 'organizer' ? (
             children

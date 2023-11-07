@@ -5527,6 +5527,195 @@
         "possibleTypes": null
       },
       {
+        "kind": "INTERFACE",
+        "name": "Entity",
+        "description": "An object with an ID",
+        "fields": [
+          {
+            "name": "id",
+            "description": "The id of the object.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stage",
+            "description": "The Stage of an object",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "Stage",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "EventDateLocation",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "LocationAddress",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "PassOption",
+            "ofType": null
+          }
+        ]
+      },
+      {
+        "kind": "ENUM",
+        "name": "EntityTypeName",
+        "description": "This enumeration holds all typenames that implement the Entity interface. Components implement the Entity interface. At the moment models are not supported, models are listed in this enum to avoid an empty enum without any components.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "Asset",
+            "description": "Asset system model",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "Event",
+            "description": "Root event model",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "EventDateLocation",
+            "description": "Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "EventPass",
+            "description": "Define a pass for an event with different options, price, number of passes etc.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "LocationAddress",
+            "description": "A model for location data (point on a map) + additional info such as street, venue etc.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "Organizer",
+            "description": "An organizer is an entity that launch events and handle the pass benefits.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PassOption",
+            "description": "Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ScheduledOperation",
+            "description": "Scheduled Operation system model",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ScheduledRelease",
+            "description": "Scheduled Release system model",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "User",
+            "description": "User system model",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "EntityWhereInput",
+        "description": "Allows to specify input to query components directly",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": "The ID of an object",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "stage",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "Stage",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "typename",
+            "description": "The Type name of an object",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "EntityTypeName",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "Event",
         "description": "Root event model",
@@ -7245,7 +7434,13 @@
           }
         ],
         "inputFields": null,
-        "interfaces": [],
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Entity",
+            "ofType": null
+          }
+        ],
         "enumValues": null,
         "possibleTypes": null
       },
@@ -16781,7 +16976,7 @@
           },
           {
             "name": "placeId",
-            "description": "Place ID from google maps",
+            "description": "Place ID from google maps. Use this tool to retrieve the correct Place ID from the location you want to open on google maps while clicking on the address provided: https://developers.google.com/maps/documentation/places/web-service/place-id#find-id",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -16861,7 +17056,13 @@
           }
         ],
         "inputFields": null,
-        "interfaces": [],
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Entity",
+            "ofType": null
+          }
+        ],
         "enumValues": null,
         "possibleTypes": null
       },
@@ -18972,7 +19173,7 @@
           },
           {
             "name": "image",
-            "description": null,
+            "description": "Image that represent the organizer, typically its logo. Advised resolution is 350 x 350 pixels, in square format with transparency (for ex: svg or png but not jpg) so that the image always look good either on light or dark mode.",
             "args": [
               {
                 "name": "forceParentLocale",
@@ -23331,7 +23532,13 @@
           }
         ],
         "inputFields": null,
-        "interfaces": [],
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Entity",
+            "ofType": null
+          }
+        ],
         "enumValues": null,
         "possibleTypes": null
       },
@@ -39581,6 +39788,51 @@
                 "kind": "OBJECT",
                 "name": "AssetConnection",
                 "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "entities",
+            "description": "Fetches an object given its ID",
+            "args": [
+              {
+                "name": "where",
+                "description": "The where parameters to query components",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "EntityWhereInput",
+                        "ofType": null
+                      }
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INTERFACE",
+                  "name": "Entity",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,

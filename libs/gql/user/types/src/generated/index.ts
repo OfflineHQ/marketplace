@@ -30,6 +30,11 @@ export type GetEventPassOrdersConfirmedQueryVariables = Types.Exact<{ [key: stri
 
 export type GetEventPassOrdersConfirmedQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number }> };
 
+export type GetEventPassOrdersIsMintingQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetEventPassOrdersIsMintingQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number }> };
+
 export type GetEventPassOrdersFromIdsQueryVariables = Types.Exact<{
   eventPassOrderIds: Array<Types.Scalars['uuid']> | Types.Scalars['uuid'];
   stage: Types.Stage;
@@ -38,19 +43,19 @@ export type GetEventPassOrdersFromIdsQueryVariables = Types.Exact<{
 
 export type GetEventPassOrdersFromIdsQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> };
 
-export type GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables = Types.Exact<{
+export type GetEventPassOrderPurchasedForEventPassesIdQueryVariables = Types.Exact<{
   eventPassId: Types.Scalars['String'];
 }>;
 
 
-export type GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number }> };
+export type GetEventPassOrderPurchasedForEventPassesIdQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number }> };
 
-export type GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables = Types.Exact<{
+export type GetEventPassOrderPurchasedForEventPassesIdsQueryVariables = Types.Exact<{
   eventPassIds: Array<Types.Scalars['String']> | Types.Scalars['String'];
 }>;
 
 
-export type GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number }> };
+export type GetEventPassOrderPurchasedForEventPassesIdsQuery = { __typename?: 'query_root', eventPassOrder: Array<{ __typename?: 'eventPassOrder', eventPassId: string, quantity: number }> };
 
 export type UpsertEventPassPendingOrderMutationVariables = Types.Exact<{
   object: Types.EventPassPendingOrder_Insert_Input;

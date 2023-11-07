@@ -65,6 +65,31 @@ INSERT INTO
 	)
 VALUES
 	(
+		'fake-event-pass-3',
+		'2023-07-17 18:53:51.122975+00',
+		'2023-07-17 18:53:51.122975+00',
+		'609aa404-9467-4792-bb26-7b9de9cda12d',
+		200,
+		10,
+		100000,
+		'EUR',
+		14400
+	);
+
+INSERT INTO
+	public."eventPassPricing" (
+		"eventPassId",
+		created_at,
+		updated_at,
+		id,
+		"maxAmount",
+		"maxAmountPerUser",
+		"priceAmount",
+		"priceCurrency",
+		"timeBeforeDelete"
+	)
+VALUES
+	(
 		'clj8raobj7g8l0aw3bfw6dny4',
 		'2023-07-31 15:55:59.133832+00',
 		'2023-07-31 15:55:59.133832+00',

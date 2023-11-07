@@ -68,6 +68,20 @@ export const WithUserNoData: Story = {
   },
 };
 
+export const WithUserMintingOrders: Story = {
+  args: {
+    children: (
+      <UserPassListExample
+        noPassImage="/empty-pass.svg"
+        batchDownloadOrReveal={batchDownloadOrReveal}
+        actionsFunctions={actionsFunctions}
+        eventsParameters={[]}
+      />
+    ),
+  },
+  render: (args) => <UserPassExample numMintingOrders={4} {...args} />,
+};
+
 export const WithUserDialogTimezone: Story = {
   args: {
     children: (

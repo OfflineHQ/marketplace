@@ -1,6 +1,6 @@
-import { NavSection, type NavSectionProps } from '../NavSection/NavSection';
+import { AutoAnimate, Spinner } from '@ui/components';
 import { Cart } from '@ui/icons';
-import { Spinner, AutoAnimate } from '@ui/components';
+import { NavSection, type NavSectionProps } from '../NavSection/NavSection';
 
 export interface CartNavProps extends NavSectionProps {
   text: string;
