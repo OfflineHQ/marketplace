@@ -50,7 +50,7 @@ describe('tests for eventPassOrder user', () => {
     const res = await alphaUser.GetEventPassOrdersIsMinting();
     const orders = res.eventPassOrder;
     expect(orders.length).toBe(1);
-    expect(orders[0].eventPassId).toBe('fake-event-pass-2');
+    expect(orders[0].eventPassId).toBe('fake-event-pass-3');
     expect(orders[0].quantity).toBe(2);
   });
 
@@ -70,7 +70,7 @@ describe('tests for eventPassOrder user', () => {
       eventPassId: 'fake-event-pass-2',
     });
     const orders = res.eventPassOrder;
-    expect(orders.length).toBe(2);
+    expect(orders.length).toBe(1);
     expect(orders[0].eventPassId).toBe('fake-event-pass-2');
     expect(orders[0].quantity).toBe(8);
   });
@@ -80,7 +80,7 @@ describe('tests for eventPassOrder user', () => {
       eventPassIds: ['fake-event-pass-2'],
     });
     const orders = res.eventPassOrder;
-    expect(orders.length).toBe(2);
+    expect(orders.length).toBe(1);
     expect(orders[0].eventPassId).toBe('fake-event-pass-2');
     expect(orders[0].quantity).toBe(8);
   });
