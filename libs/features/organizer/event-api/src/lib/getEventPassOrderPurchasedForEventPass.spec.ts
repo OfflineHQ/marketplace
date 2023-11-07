@@ -1,26 +1,24 @@
 import { userSdk } from '@gql/user/api';
 import { getCurrentUser } from '@next/next-auth/user';
-import { getEventPassOrdersConfirmedOrCompletedForEventPass } from './getEventPassOrdersConfirmedOrCompletedForEventPass';
+import { getEventPassOrderPurchasedForEventPass } from './getEventPassOrderPurchasedForEventPass';
 
 jest.mock('@next/next-auth/user');
 
 jest.mock('@gql/user/api', () => ({
   userSdk: {
-    GetEventPassOrdersConfirmedOrCompletedForEventPassId: jest
-      .fn()
-      .mockResolvedValue({
-        eventPassOrder: [{ id: 'test-order' }],
-      }),
+    GetEventPassOrderPurchasedForEventPassesId: jest.fn().mockResolvedValue({
+      eventPassOrder: [{ id: 'test-order' }],
+    }),
   },
 }));
 
-describe('getEventPassOrdersConfirmedOrCompletedForEventPass', () => {
+describe('getEventPassOrderPurchasedForEventPass', () => {
   const mockEventPassId = 'test-pass';
 
   it('should return null if user is not authenticated', async () => {
     (getCurrentUser as jest.Mock).mockResolvedValue(null);
 
-    const result = await getEventPassOrdersConfirmedOrCompletedForEventPass({
+    const result = await getEventPassOrderPurchasedForEventPass({
       eventPassId: mockEventPassId,
     });
 
@@ -31,19 +29,19 @@ describe('getEventPassOrdersConfirmedOrCompletedForEventPass', () => {
     const mockUser = { id: 'test-user' };
     (getCurrentUser as jest.Mock).mockResolvedValue(mockUser);
 
-    const result = await getEventPassOrdersConfirmedOrCompletedForEventPass({
+    const result = await getEventPassOrderPurchasedForEventPass({
       eventPassId: mockEventPassId,
     });
 
     expect(result).toEqual([{ id: 'test-order' }]);
     expect(
-      userSdk.GetEventPassOrdersConfirmedOrCompletedForEventPassId,
+      userSdk.GetEventPassOrderPurchasedForEventPassesId,
     ).toHaveBeenCalledWith(
       { eventPassId: mockEventPassId },
       {
         next: {
           tags: [
-            `GetEventPassOrdersConfirmedOrCompletedForEventPassId-${mockEventPassId}`,
+            `GetEventPassOrderPurchasedForEventPassesId-${mockEventPassId}`,
           ],
         },
       },

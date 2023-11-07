@@ -32,7 +32,7 @@ export const getPassOrganizer = ({
     organizerId,
     eventId,
     eventPassId,
-  })}/${eventId}-${eventPassId}-${tokenId}`;
+  })}/${eventId}-${eventPassId}-${tokenId}.png`;
 };
 
 export const getPassUser = ({
@@ -44,5 +44,5 @@ export const getPassUser = ({
 }: GetPassUser) => {
   return `/${
     process.env.UPLOAD_PATH_PREFIX || process.env.NEXT_PUBLIC_UPLOAD_PATH_PREFIX
-  }/users/${address}/${organizerId}/events/${eventId}/${eventPassId}/${eventId}-${eventPassId}-${tokenId}`;
+  }/users/${address}/${organizerId}/events/${eventId}/${eventPassId}/${eventId}-${eventPassId}-${tokenId}.png`;
 };

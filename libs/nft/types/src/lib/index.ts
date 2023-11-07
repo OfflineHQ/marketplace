@@ -30,4 +30,4 @@ export type EventPassNftAfterMutation = NonNullable<
 
 export type EventPassOrderWithContractData =
   GetEventPassOrdersFromStripeCheckoutSessionQuery['eventPassOrder'][0] &
-    GetEventPassOrderFromIdQuery['eventPassOrder'][0];
+    GetEventPassOrderFromIdQuery['eventPassOrder_by_pk'];

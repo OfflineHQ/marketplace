@@ -36,7 +36,7 @@ const meta = {
           },
         ),
         graphql.query(
-          'GetEventPassOrdersConfirmedOrCompletedForEventPassId',
+          'GetEventPassOrderPurchasedForEventPassesId',
           (req, res, ctx) => {
             return ctx.data({
               eventPassOrder: [],
@@ -72,7 +72,7 @@ export const Default: Story = {
           },
         ),
         graphql.query(
-          'GetEventPassOrdersConfirmedOrCompletedForEventPassId',
+          'GetEventPassOrderPurchasedForEventPassesId',
           (req, res, ctx) => {
             return ctx.data({
               eventPassOrder: [],

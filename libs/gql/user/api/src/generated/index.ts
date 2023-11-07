@@ -122,6 +122,14 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
+ const GetEventPassOrdersIsMintingDocument = `
+    query GetEventPassOrdersIsMinting {
+  eventPassOrder(where: {status: {_eq: IS_MINTING}}) {
+    eventPassId
+    quantity
+  }
+}
+    `;
  const GetEventPassOrdersFromIdsDocument = `
     query GetEventPassOrdersFromIds($eventPassOrderIds: [uuid!]!, $stage: Stage!) {
   eventPassOrder(where: {id: {_in: $eventPassOrderIds}}) {
@@ -138,20 +146,20 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
- const GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument = `
-    query GetEventPassOrdersConfirmedOrCompletedForEventPassId($eventPassId: String!) {
+ const GetEventPassOrderPurchasedForEventPassesIdDocument = `
+    query GetEventPassOrderPurchasedForEventPassesId($eventPassId: String!) {
   eventPassOrder(
-    where: {status: {_in: [CONFIRMED, COMPLETED]}, eventPassId: {_eq: $eventPassId}}
+    where: {status: {_in: [CONFIRMED, COMPLETED, IS_MINTING]}, eventPassId: {_eq: $eventPassId}}
   ) {
     eventPassId
     quantity
   }
 }
     `;
- const GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument = `
-    query GetEventPassOrdersConfirmedOrCompletedForEventPassIds($eventPassIds: [String!]!) {
+ const GetEventPassOrderPurchasedForEventPassesIdsDocument = `
+    query GetEventPassOrderPurchasedForEventPassesIds($eventPassIds: [String!]!) {
   eventPassOrder(
-    where: {status: {_in: [CONFIRMED, COMPLETED]}, eventPassId: {_in: $eventPassIds}}
+    where: {status: {_in: [CONFIRMED, COMPLETED, IS_MINTING]}, eventPassId: {_in: $eventPassIds}}
   ) {
     eventPassId
     quantity
@@ -400,14 +408,17 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventPassOrdersConfirmed(variables?: Types.GetEventPassOrdersConfirmedQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedQuery> {
       return requester<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedQuery>;
     },
+    GetEventPassOrdersIsMinting(variables?: Types.GetEventPassOrdersIsMintingQueryVariables, options?: C): Promise<Types.GetEventPassOrdersIsMintingQuery> {
+      return requester<Types.GetEventPassOrdersIsMintingQuery, Types.GetEventPassOrdersIsMintingQueryVariables>(GetEventPassOrdersIsMintingDocument, variables, options) as Promise<Types.GetEventPassOrdersIsMintingQuery>;
+    },
     GetEventPassOrdersFromIds(variables: Types.GetEventPassOrdersFromIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrdersFromIdsQuery> {
       return requester<Types.GetEventPassOrdersFromIdsQuery, Types.GetEventPassOrdersFromIdsQueryVariables>(GetEventPassOrdersFromIdsDocument, variables, options) as Promise<Types.GetEventPassOrdersFromIdsQuery>;
     },
-    GetEventPassOrdersConfirmedOrCompletedForEventPassId(variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery> {
-      return requester<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery>;
+    GetEventPassOrderPurchasedForEventPassesId(variables: Types.GetEventPassOrderPurchasedForEventPassesIdQueryVariables, options?: C): Promise<Types.GetEventPassOrderPurchasedForEventPassesIdQuery> {
+      return requester<Types.GetEventPassOrderPurchasedForEventPassesIdQuery, Types.GetEventPassOrderPurchasedForEventPassesIdQueryVariables>(GetEventPassOrderPurchasedForEventPassesIdDocument, variables, options) as Promise<Types.GetEventPassOrderPurchasedForEventPassesIdQuery>;
     },
-    GetEventPassOrdersConfirmedOrCompletedForEventPassIds(variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery> {
-      return requester<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery>;
+    GetEventPassOrderPurchasedForEventPassesIds(variables: Types.GetEventPassOrderPurchasedForEventPassesIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery> {
+      return requester<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery, Types.GetEventPassOrderPurchasedForEventPassesIdsQueryVariables>(GetEventPassOrderPurchasedForEventPassesIdsDocument, variables, options) as Promise<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery>;
     },
     UpsertEventPassPendingOrder(variables: Types.UpsertEventPassPendingOrderMutationVariables, options?: C): Promise<Types.UpsertEventPassPendingOrderMutation> {
       return requester<Types.UpsertEventPassPendingOrderMutation, Types.UpsertEventPassPendingOrderMutationVariables>(UpsertEventPassPendingOrderDocument, variables, options) as Promise<Types.UpsertEventPassPendingOrderMutation>;

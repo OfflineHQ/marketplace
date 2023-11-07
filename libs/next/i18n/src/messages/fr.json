@@ -163,6 +163,7 @@
       "no-pass": "Vous n'avez pas encore de pass.",
       "past": "Passé",
       "title": "Pass",
+      "minting-success-message": "{numPass, plural, =1 {Votre pass est en cours de création et sera ajouté à votre portefeuille sous peu. Vous devriez le recevoir dans quelques minutes.} other {# pass sont en cours de création et seront ajoutés à votre portefeuille sous peu. Vous devriez les recevoir dans quelques minutes.}}",
       "upcoming": "À venir"
     }
   },
