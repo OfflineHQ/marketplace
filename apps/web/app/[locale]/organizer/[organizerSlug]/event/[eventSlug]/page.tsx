@@ -2,6 +2,7 @@ import { NotFound } from '@features/navigation';
 import { Event } from '@features/organizer/event';
 import { getEvent } from '@features/organizer/event-api';
 import type { Event as TEvent } from '@features/organizer/event-types';
+import { locales } from '@next/i18n';
 import { getNextAppURL } from '@shared/server';
 import type { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
@@ -12,6 +13,22 @@ interface EventSectionProps {
     organizerSlug: string;
     locale: string;
   };
+}
+
+function generateLocaleURLs(
+  locales: readonly string[],
+  organizerSlug: string,
+  eventSlug: string,
+) {
+  const urls = {};
+
+  locales.forEach((locale) => {
+    urls[
+      locale
+    ] = `${getNextAppURL()}/${locale}/organizer/${organizerSlug}/event/${eventSlug}`;
+  });
+
+  return urls;
 }
 
 export async function generateMetadata({
@@ -31,7 +48,7 @@ export async function generateMetadata({
   const firstParagraph = event.description.json.children.find(
     (child) => child.type === 'paragraph',
   );
-
+  console.log(generateLocaleURLs(locales, organizerSlug, eventSlug));
   return {
     title: event.title,
     description: firstParagraph.children[0].text,
@@ -48,7 +65,7 @@ export async function generateMetadata({
           alt: event.title,
         },
       ],
-      locale: 'en',
+      locale: locale,
       type: 'website',
     },
     twitter: {
@@ -67,10 +84,7 @@ export async function generateMetadata({
     },
     alternates: {
       canonical: `${getNextAppURL()}/${locale}/organizer/${organizerSlug}/event/${eventSlug}`,
-      languages: {
-        en: `${getNextAppURL()}/en/organizer/${organizerSlug}/event/${eventSlug}`,
-        fr: `${getNextAppURL()}/fr/organizer/${organizerSlug}/event/${eventSlug}`,
-      },
+      languages: generateLocaleURLs(locales, organizerSlug, eventSlug),
     },
   };
 }
