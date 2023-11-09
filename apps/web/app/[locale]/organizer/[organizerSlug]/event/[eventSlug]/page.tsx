@@ -48,7 +48,6 @@ export async function generateMetadata({
   const firstParagraph = event.description.json.children.find(
     (child) => child.type === 'paragraph',
   );
-  console.log(generateLocaleURLs(locales, organizerSlug, eventSlug));
   return {
     title: event.title,
     description: firstParagraph.children[0].text,
