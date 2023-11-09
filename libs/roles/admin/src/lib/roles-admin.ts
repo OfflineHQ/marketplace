@@ -281,7 +281,7 @@ export class RoleAuthorization {
     if (!inviterRole) {
       throw new RoleAuthorizationError("User doesn't have a role");
     }
-    if (user.role.organizerId !== organizerId) {
+    if (user.role?.organizerId !== organizerId) {
       throw new RoleAuthorizationError(
         "User doesn't have a role for this organizer",
       );
@@ -289,7 +289,7 @@ export class RoleAuthorization {
     if (role && !Object.values(Roles_Enum_Not_Const_Values).includes(role)) {
       throw new RoleAuthorizationError('Invalid role');
     }
-    switch (user.role.role) {
+    switch (user.role?.role) {
       case Roles_Enum.OrganizerSuperAdmin:
         return true;
       case Roles_Enum.OrganizerHumanResources:
@@ -310,7 +310,7 @@ export class RoleAuthorization {
     if (!inviterRole) {
       throw new RoleAuthorizationError("User doesn't have a role");
     }
-    switch (user.role.role) {
+    switch (user.role?.role) {
       case Roles_Enum.OrganizerSuperAdmin:
         return true;
       case Roles_Enum.OrganizerAdmin:
