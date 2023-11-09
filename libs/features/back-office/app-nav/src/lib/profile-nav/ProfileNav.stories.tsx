@@ -30,11 +30,7 @@ export const WithAdminRole: Story = {
 };
 
 export const WithAdminRoleMobile: Story = {
-  args: {
-    role: organizerRoleAdmin,
-    isLoading: false,
-    items: [],
-  },
+  ...WithAdminRole,
   parameters: {
     viewport: {
       defaultViewport: 'mobile1',
@@ -55,6 +51,15 @@ export const WithUser: Story = {
     user,
     isLoading: false,
     items: [],
+  },
+};
+
+export const WithUserMobile: Story = {
+  ...WithUser,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
 };
 

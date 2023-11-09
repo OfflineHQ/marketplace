@@ -1,9 +1,9 @@
 'use client';
 
-import * as React from 'react';
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu';
-import { cva } from 'class-variance-authority';
 import { ChevronDown } from '@ui/icons';
+import { cva } from 'class-variance-authority';
+import * as React from 'react';
 import { indicatorClasses } from '../shared/indicator';
 
 import { cn } from '@ui/shared';
@@ -129,13 +129,13 @@ NavigationMenuIndicator.displayName =
   NavigationMenuPrimitive.Indicator.displayName;
 
 export {
-  navigationMenuTriggerStyle,
   NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
   NavigationMenuContent,
-  NavigationMenuTrigger,
-  NavigationMenuLink,
   NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
   NavigationMenuViewport,
+  navigationMenuTriggerStyle,
 };

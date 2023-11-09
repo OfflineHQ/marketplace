@@ -1,22 +1,20 @@
+import { iconCVA } from '@ui/icons';
+import { cn } from '@ui/shared';
 import * as React from 'react';
 import {
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from './DropdownMenu';
-import { cn } from '@ui/shared';
-import { iconCVA } from '@ui/icons';
 import {
   DropdownMenuItemClient,
-  type DropdownMenuItemClientProps,
   MenuItem,
+  type DropdownMenuItemClientProps,
 } from './DropdownMenuItemClient';
 
 interface DropdownMenuItemsProps

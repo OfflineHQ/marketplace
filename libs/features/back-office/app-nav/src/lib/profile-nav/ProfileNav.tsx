@@ -66,15 +66,15 @@ function ProfileNavUser({ user, isLoading }: ProfileNavUserProps) {
   const email = user?.email || '';
   const eoa = user?.eoa || '';
   return (
-    <div className="flex h-16 w-16 flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:space-y-0 md:px-4">
-      <AutoAnimate className="flex items-center">
+    <div className="flex w-fit flex-row  items-center justify-center space-x-2 space-y-0 px-4">
+      <AutoAnimate>
         {isLoading ? (
           <Spinner size="xl" variant="ghost" className="md:mr-2" />
         ) : (
           <ProfileAvatar user={user} />
         )}
       </AutoAnimate>
-      <div className="hidden pb-1 font-semibold md:flex md:pb-0">
+      <div className="flex pb-0 font-semibold">
         {email ? truncateEmailString(email, 12) : truncateString(eoa, 16)}
       </div>
     </div>
@@ -92,7 +92,7 @@ function ProfileNavNotConnected({
 }: ProfileNavNotConnectedProps) {
   return (
     <div className="mt-3 flex h-16 flex-col items-center space-y-0 px-4 md:mt-0 md:flex-row md:space-x-2">
-      <AutoAnimate className="flex items-center">
+      <AutoAnimate>
         {isLoading ? (
           <Spinner size="xl" variant="ghost" className="md:mr-2" />
         ) : (
@@ -114,7 +114,7 @@ function ProfileNavRole({ role, isLoading }: ProfileNavRoleProps) {
   const name = role.organizer?.name;
   return (
     <div className="flex w-fit flex-row  items-center justify-center space-x-2 space-y-0 px-4">
-      <AutoAnimate className="flex items-center">
+      <AutoAnimate>
         {isLoading ? (
           <Spinner size="xl" variant="ghost" className="md:mr-2" />
         ) : (
