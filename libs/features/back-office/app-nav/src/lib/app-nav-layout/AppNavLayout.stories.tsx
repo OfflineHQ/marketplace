@@ -1,13 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
 
 import { AppNavLayout } from './AppNavLayout';
 import {
-  // ProfileNavWithCryptoUser,
-  // ProfileNavWithFallbackUser,
+  ProfileNavWithAdminRole,
   ProfileNavWithNoUser,
-  ProfileNavWithNoUserLoading,
-  // ProfileNavWithNormalUser,
+  ProfileNavWithUser,
 } from './examples';
 
 const meta = {
@@ -25,6 +22,47 @@ export const WithNoUser: Story = {
   args: {
     children: 'test',
     profileNav: <ProfileNavWithNoUser />,
+  },
+};
+
+export const WithUser: Story = {
+  args: {
+    children: 'test',
+    profileNav: <ProfileNavWithUser />,
+  },
+};
+
+export const WithAdminRole: Story = {
+  args: {
+    children: 'test',
+    profileNav: <ProfileNavWithAdminRole />,
+  },
+};
+
+export const WithNoUserMobile: Story = {
+  ...WithNoUser,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+export const WithUserMobile: Story = {
+  ...WithUser,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+export const WithAdminRoleMobile: Story = {
+  ...WithAdminRole,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
   },
 };
 

@@ -127,6 +127,13 @@ export {
   SelectTrigger,
   SelectValue,
 } from './lib/select/Select';
+
+export {
+  SelectItems,
+  type SelectItemProps,
+  type SelectItemsProps,
+} from './lib/select/SelectItems';
+
 export { Separator } from './lib/separator/Separator';
 export {
   Sheet,

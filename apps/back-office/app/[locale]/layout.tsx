@@ -1,7 +1,10 @@
 import { Analytics } from '@back-office/components/Analytics';
 import { siteConfig } from '@back-office/config/site';
 import { Currency_Enum_Not_Const } from '@currency/types';
-import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
+import {
+  AppNavLayout,
+  type AppNavLayoutProps,
+} from '@features/back-office/app-nav';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { CurrencyCache } from '@next/currency-cache';
 import { CurrencyProvider } from '@next/currency-provider';
