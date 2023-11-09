@@ -35,6 +35,11 @@ const nextConfig = {
   },
   reactStrictMode: true,
   swcMinify: true,
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false, path: false };
+
+    return config;
+  },
   compiler: {
     // TODO set back when in 'real' prod. For now useful for debug
     // removeConsole:
