@@ -113,7 +113,7 @@ interface ProfileNavRoleProps {
 function ProfileNavRole({ role, isLoading }: ProfileNavRoleProps) {
   const name = role.organizer?.name;
   return (
-    <div className="flex h-16 w-16 flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:space-y-0 md:px-4">
+    <div className="flex w-fit flex-row  items-center justify-center space-x-2 space-y-0 px-4">
       <AutoAnimate className="flex items-center">
         {isLoading ? (
           <Spinner size="xl" variant="ghost" className="md:mr-2" />
