@@ -1,4 +1,6 @@
 import { ProfileAvatar, ProfileAvatarProps } from '@features/app-nav';
+import { RoleBadge } from '@features/back-office/roles';
+import { RoleWithOrganizer } from '@roles/types';
 import {
   AutoAnimate,
   AvatarSkeleton,
@@ -12,25 +14,32 @@ import {
 } from '@ui/components';
 import { OutlineUserCircle } from '@ui/icons';
 import { truncateEmailString, truncateString } from '@utils';
+import { RoleAvatar } from '../role-avatar/RoleAvatar';
 
 export interface ProfileNavProps
-  extends Omit<ProfileAvatarProps, 'user'>,
+  extends Omit<ProfileNavUserProps, 'user'>,
+    Omit<ProfileNavRoleProps, 'role'>,
+    ProfileNavNotConnectedProps,
     DropdownMenuItemsProps {
-  user?: ProfileAvatarProps['user'];
-  signInText?: React.ReactNode;
-  isLoading?: boolean;
+  user?: ProfileNavUserProps['user'];
+  role?: ProfileNavRoleProps['role'];
 }
 
 export function ProfileNav({
   user,
+  role,
   items,
   signInText,
   isLoading,
   ...props
 }: ProfileNavProps) {
-  const email = user?.email || '';
-  const eoa = user?.eoa || '';
-
+  function ProfileNavContent() {
+    if (role) return <ProfileNavRole role={role} isLoading={isLoading} />;
+    else if (user) return <ProfileNavUser user={user} isLoading={isLoading} />;
+    return (
+      <ProfileNavNotConnected signInText={signInText} isLoading={isLoading} />
+    );
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -39,38 +48,84 @@ export function ProfileNav({
           {...props}
           className="inline-flex h-16 w-fit p-0 md:h-12"
         >
-          {user ? (
-            <div className="flex h-16 w-16 flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:space-y-0 md:px-4">
-              <AutoAnimate className="flex items-center">
-                {isLoading ? (
-                  <Spinner size="xl" variant="ghost" className="md:mr-2" />
-                ) : (
-                  <ProfileAvatar user={user} className="relative bottom-10" />
-                )}
-              </AutoAnimate>
-              <span className="hidden items-center justify-center pl-2 md:flex">
-                {email
-                  ? truncateEmailString(email, 12)
-                  : truncateString(eoa, 16)}
-              </span>
-            </div>
-          ) : (
-            <div className="mt-3 flex h-16 flex-col items-center space-y-0 px-4 md:mt-0 md:flex-row md:space-x-2">
-              <AutoAnimate className="flex items-center">
-                {isLoading ? (
-                  <Spinner size="xl" variant="ghost" className="md:mr-2" />
-                ) : (
-                  <OutlineUserCircle size="xl" />
-                )}
-              </AutoAnimate>
-              {/* <QrCode size="lg" /> */}
-              <div className="pb-1 font-semibold md:pb-0">{signInText}</div>
-            </div>
-          )}
+          <ProfileNavContent />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuItems items={items} />
     </DropdownMenu>
+  );
+}
+
+interface ProfileNavUserProps
+  extends Omit<ProfileAvatarProps, 'user' | 'role'> {
+  user: ProfileAvatarProps['user'];
+  isLoading: boolean;
+}
+
+function ProfileNavUser({ user, isLoading }: ProfileNavUserProps) {
+  const email = user?.email || '';
+  const eoa = user?.eoa || '';
+  return (
+    <div className="flex h-16 w-16 flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:space-y-0 md:px-4">
+      <AutoAnimate className="flex items-center">
+        {isLoading ? (
+          <Spinner size="xl" variant="ghost" className="md:mr-2" />
+        ) : (
+          <ProfileAvatar user={user} />
+        )}
+      </AutoAnimate>
+      <div className="hidden pb-1 font-semibold md:flex md:pb-0">
+        {email ? truncateEmailString(email, 12) : truncateString(eoa, 16)}
+      </div>
+    </div>
+  );
+}
+
+interface ProfileNavNotConnectedProps {
+  isLoading: boolean;
+  signInText?: React.ReactNode;
+}
+
+function ProfileNavNotConnected({
+  signInText,
+  isLoading,
+}: ProfileNavNotConnectedProps) {
+  return (
+    <div className="mt-3 flex h-16 flex-col items-center space-y-0 px-4 md:mt-0 md:flex-row md:space-x-2">
+      <AutoAnimate className="flex items-center">
+        {isLoading ? (
+          <Spinner size="xl" variant="ghost" className="md:mr-2" />
+        ) : (
+          <OutlineUserCircle size="xl" />
+        )}
+      </AutoAnimate>
+      {/* <QrCode size="lg" /> */}
+      <div className="pb-1 font-semibold md:pb-0">{signInText}</div>
+    </div>
+  );
+}
+
+interface ProfileNavRoleProps {
+  role: RoleWithOrganizer;
+  isLoading: boolean;
+}
+
+function ProfileNavRole({ role, isLoading }: ProfileNavRoleProps) {
+  const name = role.organizer?.name;
+  return (
+    <div className="flex h-16 w-16 flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:space-y-0 md:px-4">
+      <AutoAnimate className="flex items-center">
+        {isLoading ? (
+          <Spinner size="xl" variant="ghost" className="md:mr-2" />
+        ) : (
+          <RoleAvatar role={role} />
+        )}
+      </AutoAnimate>
+      <div className="flex flex-col">
+        <div className="pb-1 font-semibold">{name}</div>
+        <RoleBadge role={role} size="sm" />
+      </div>
+    </div>
   );
 }
 

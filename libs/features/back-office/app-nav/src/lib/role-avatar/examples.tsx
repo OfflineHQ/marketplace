@@ -1,7 +1,7 @@
-import { RoleAvatarProps, RoleAvatar } from './RoleAvatar';
 import { Roles_Enum } from '@gql/shared/types';
+import { RoleAvatar, RoleAvatarProps } from './RoleAvatar';
 
-export const organizerRole = {
+export const organizerRoleAdmin = {
   role: Roles_Enum.OrganizerAdmin,
   organizerId: '123',
   organizer: {
@@ -14,10 +14,10 @@ export const organizerRole = {
 } as RoleAvatarProps['role'];
 
 export const organizerRoleWithoutImage = {
-  ...organizerRole,
+  ...organizerRoleAdmin,
   organizer: {
-    ...organizerRole.organizer,
-    image: null,
+    ...organizerRoleAdmin.organizer,
+    image: {},
   },
 } as RoleAvatarProps['role'];
 

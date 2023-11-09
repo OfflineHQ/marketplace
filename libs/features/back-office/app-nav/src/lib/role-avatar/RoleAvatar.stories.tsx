@@ -2,7 +2,7 @@ import type { Meta } from '@storybook/react';
 import { RoleAvatar } from './RoleAvatar';
 import {
   RoleAvatarExample,
-  organizerRole,
+  organizerRoleAdmin,
   organizerRoleWithoutImage,
 } from './examples';
 
@@ -15,16 +15,12 @@ const Story: Meta<typeof RoleAvatar> = {
     },
   },
   args: {
-    role: organizerRole,
+    role: organizerRoleAdmin,
   },
 };
 export default Story;
 
-export const OrganizerWithImage = {
-  args: {
-    role: organizerRole,
-  },
-};
+export const OrganizerWithImage = {};
 
 export const OrganizerWithoutImage = {
   args: {
