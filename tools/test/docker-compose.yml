@@ -28,20 +28,20 @@ services:
               "x-hasura-allowed-roles": ["user", "anonymous"],
               "x-hasura-client-id": {
                 "default": "",
-                "path": "$.clientId"
+                "path": "$$.clientId"
               },
               "x-hasura-default-role": "user",
               "x-hasura-role": {
                 "default": "",
-                "path": "$.role"
+                "path": "$$.role"
               },
               "x-hasura-user-id": {
                 "default": "",
-                "path": "$.user.id"
+                "path": "$$.user.id"
               },
               "x-hasura-username": {
                 "default": "",
-                "path": "$.name"
+                "path": "$$.name"
               }
             }
           },
@@ -68,28 +68,28 @@ services:
               ],
               "x-hasura-client-id": {
                 "default": "",
-                "path": "$.clientId"
+                "path": "$$.clientId"
               },
               "x-hasura-default-role": "user",
               "x-hasura-role": {
                 "default": "",
-                "path": "$.user.role.role"
+                "path": "$$.user.role.role"
               },
               "x-hasura-organizer-id": {
                 "default": "",
-                "path": "$.user.role.organizerId"
+                "path": "$$.user.role.organizerId"
               },
               "x-hasura-event-id": {
-                "path": "$.user.role.eventId",
+                "path": "$$.user.role.eventId",
                 "default": ""
               },
               "x-hasura-user-id": {
                 "default": "",
-                "path": "$.user.id"
+                "path": "$$.user.id"
               },
               "x-hasura-username": {
                 "default": "",
-                "path": "$.name"
+                "path": "$$.name"
               }
             }
           }
