@@ -19,3 +19,6 @@
 \*.7z#
 **/generated/**
 pnpm-lock.yaml
+schema.graphql
+schema.json
+

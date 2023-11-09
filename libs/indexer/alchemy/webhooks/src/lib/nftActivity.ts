@@ -21,6 +21,7 @@ export const extractNftTransfersFromEvent = (
   alchemyWebhookEvent: AlchemyNFTActivityEvent,
 ) => {
   const nftActivities = alchemyWebhookEvent.event.activity;
+  const network = alchemyWebhookEvent.event.network;
   const nftTransfers: NftTransferWithoutMetadata[] = [];
   if (!nftActivities?.length) {
     throw new Error('No nft activities found in event');
@@ -32,7 +33,6 @@ export const extractNftTransfersFromEvent = (
       contractAddress,
       blockNumber,
       erc721TokenId,
-      network,
     } = activity;
     const { transactionHash, removed } = activity.log;
     if (removed) {
@@ -76,7 +76,7 @@ export async function nftActivity(req: AlchemyRequest, eventId: string) {
     });
   }
   const chainId = alchemy.convertNetworkToChainId(
-    alchemyWebhookEvent.event.activity[0].network,
+    alchemyWebhookEvent.event.network,
   );
 
   const nftTransfersFromEvent =

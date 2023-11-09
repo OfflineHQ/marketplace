@@ -3,7 +3,7 @@ import {
   AlchemyNFTActivityEvent,
   AlchemyRequest,
 } from '@indexer/alchemy/types';
-import { WebhookType } from 'alchemy-sdk';
+import { Network, WebhookType } from 'alchemy-sdk';
 
 export function createMockAlchemyRequest(
   nftActivities: Activity[],
@@ -14,6 +14,7 @@ export function createMockAlchemyRequest(
     createdAt: new Date(),
     type: WebhookType.NFT_ACTIVITY,
     event: {
+      network: Network.ETH_GOERLI,
       activity: nftActivities,
     },
   };

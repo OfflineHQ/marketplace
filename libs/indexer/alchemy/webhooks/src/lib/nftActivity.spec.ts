@@ -39,7 +39,6 @@ const applyQrCodeBatchTransferForNewOwnerSpy = jest
   .mockResolvedValue();
 
 const mockActivity: Activity = {
-  network: Network.ETH_GOERLI,
   fromAddress: 'fromAddress',
   toAddress: 'toAddress',
   contractAddress: 'contractAddress',
@@ -62,7 +61,6 @@ const mockActivity: Activity = {
 };
 
 const mockActivity2: Activity = {
-  network: Network.ETH_GOERLI,
   fromAddress: 'fromAddress2',
   toAddress: 'toAddress2',
   contractAddress: 'contractAddress2',
@@ -89,6 +87,7 @@ export const mockAlchemyNftActivityEvent: AlchemyNFTActivityEvent = {
   createdAt: new Date(),
   type: WebhookType.NFT_ACTIVITY,
   event: {
+    network: Network.ETH_GOERLI,
     activity: [mockActivity],
   },
 };
@@ -124,6 +123,7 @@ describe('extractNftTransfersFromEvent', () => {
     const mockEvent: AlchemyNFTActivityEvent = {
       ...mockAlchemyNftActivityEvent,
       event: {
+        network: Network.ETH_GOERLI,
         activity: [mockActivity, mockActivity2],
       },
     };
@@ -166,6 +166,7 @@ describe('extractNftTransfersFromEvent', () => {
       createdAt: new Date(),
       type: WebhookType.NFT_ACTIVITY,
       event: {
+        network: Network.ETH_GOERLI,
         activity: [mockActivityWithRemoved, mockActivity2],
       },
     };
@@ -198,6 +199,7 @@ describe('extractNftTransfersFromEvent', () => {
       createdAt: new Date(),
       type: WebhookType.NFT_ACTIVITY,
       event: {
+        network: Network.ETH_GOERLI,
         activity: [], // Empty activity array
       },
     };

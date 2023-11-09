@@ -33,12 +33,11 @@ function EmojiAvatar({ address, ...props }: EmojiAvatarProps) {
 export function ProfileAvatar(props: ProfileAvatarProps) {
   const {
     user: { name, profileImage, eoa },
+    className,
   } = props;
   const fallBack = name ? getInitials(name) : '';
-  const className = 'w-12 h-12';
-  // const className = '';
   return profileImage || fallBack ? (
-    <Avatar {...props} className={className}>
+    <Avatar {...props} className={`${className} h-12 w-12`}>
       <AvatarImage
         src={profileImage || ''}
         className="flex items-center justify-center bg-muted"
