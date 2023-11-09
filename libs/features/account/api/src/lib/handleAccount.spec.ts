@@ -11,6 +11,7 @@ describe('handleAccount test', () => {
     address: '0x123',
     email: 'test@safsaf.safsaf',
     emailVerified: false,
+    roles: null,
   };
 
   afterEach(async () => {
