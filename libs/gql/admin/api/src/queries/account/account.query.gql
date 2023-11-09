@@ -4,6 +4,9 @@ query GetAccount($address: String!) {
     kyc {
       ...KycFields
     }
+    roles {
+      ...RoleAssignmentsFields
+    }
   }
 }
 
@@ -13,6 +16,12 @@ query GetAccountByEmail($email: String!) {
     kyc {
       ...KycFields
     }
+  }
+}
+
+query GetAccountByAddress($address: String!) {
+  account(where: { address: { _eq: $address } }) {
+    ...AccountFields
   }
 }
 

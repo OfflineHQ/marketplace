@@ -1,3 +1,4 @@
+export { ProfileNavSkeleton } from './lib/profile-nav/ProfileNav';
 export { ProfileNavClient } from './lib/profile-nav/ProfileNavClient';
 
 export {

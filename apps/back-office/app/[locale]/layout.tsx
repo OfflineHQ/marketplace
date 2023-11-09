@@ -3,7 +3,7 @@ import { siteConfig } from '@back-office/config/site';
 import { Currency_Enum_Not_Const } from '@currency/types';
 import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
-import { getRate, setRates } from '@next/currency-cache';
+import { CurrencyCache } from '@next/currency-cache';
 import { CurrencyProvider } from '@next/currency-provider';
 import { getMessages, locales } from '@next/i18n';
 import { getSession, isConnected } from '@next/next-auth/user';
@@ -62,11 +62,12 @@ export default async function RootLayout({
   const messages = await getMessages(locale);
   const session = await getSession();
   const t = createTranslator({ locale, messages });
+  const currencyCache = new CurrencyCache();
 
   if (isLocal()) {
-    const res = await getRate(Currency_Enum_Not_Const.USD);
+    const res = await currencyCache.getRate(Currency_Enum_Not_Const.Usd);
     if (!res) {
-      await setRates();
+      await currencyCache.setRates();
     }
   }
   return (

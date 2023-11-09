@@ -1,15 +1,18 @@
 'use client';
 
+import { useAuthContext } from '@next/auth';
+import { Link } from '@next/navigation';
+import { AppUser } from '@next/types';
+import { Role, RoleWithOrganizer } from '@roles/types';
+import { useToast } from '@ui/components';
+import { LifeBuoy, LogIn, LogOut, Settings } from '@ui/icons';
+import { useSession } from 'next-auth/react';
+import { useCallback, useMemo } from 'react';
 import {
   ProfileNav,
   ProfileNavSkeleton,
   type ProfileNavProps,
-} from '@features/app-nav';
-import { Link } from '@next/navigation';
-import { useAuthContext } from '@next/auth';
-import { useToast } from '@ui/components';
-import { LogIn, LogOut, LifeBuoy, Settings } from '@ui/icons';
-import { useCallback, useMemo } from 'react';
+} from './ProfileNav';
 
 export interface ProfileNavClientProps {
   signInText: string;
@@ -25,15 +28,31 @@ export interface ProfileNavClientProps {
     settings: string;
   };
   isNextAuthConnected?: boolean;
+  roles?: RoleWithOrganizer[];
+  account?: AppUser;
 }
 
 export const ProfileNavClient = ({
   signInText,
   profileSectionsText,
   isNextAuthConnected,
+  roles,
+  account,
 }: ProfileNavClientProps) => {
   const { safeUser, login, logout, safeAuth, connecting } = useAuthContext();
+  const { update } = useSession();
   const { toast } = useToast();
+
+  const matchingRole = account?.role
+    ? roles?.find((role) => {
+        const userRole = account.role;
+        return (
+          role.role === userRole?.role &&
+          role.organizerId === userRole?.organizerId &&
+          (role.eventId === userRole?.eventId || !userRole?.eventId)
+        );
+      })
+    : undefined;
 
   const signOutUserAction = useCallback(async () => {
     await logout({ refresh: true });
@@ -42,6 +61,22 @@ export const ProfileNavClient = ({
       description: profileSectionsText.signOutDescription,
     });
   }, [logout, toast, profileSectionsText]);
+
+  const switchToRole = useCallback(
+    async (role: Role) => {
+      try {
+        await update({ role });
+      } catch (error) {
+        // TODO handle error with toast
+        console.error(error);
+      }
+    },
+    [update],
+  );
+
+  const switchToMyAccount = useCallback(async () => {
+    await update();
+  }, [update]);
 
   const commonSections: ProfileNavProps['items'] = [
     {
@@ -112,6 +147,7 @@ export const ProfileNavClient = ({
       items={items}
       isLoading={connecting && !isNextAuthConnected}
       user={safeUser}
+      role={matchingRole}
       signInText={signInText}
     />
   );
