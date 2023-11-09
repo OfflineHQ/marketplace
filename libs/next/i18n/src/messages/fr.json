@@ -33,7 +33,7 @@
       "dark": "Sombre",
       "auto": "Automatique"
     },
-    "currency-select-text": "Sélectionnez la devise avec laquelle vous souhaitez faire vos achats.",
+    "currency-select-text": "Sélectionnez votre devise",
     "eur": "EUR",
     "usd": "USD"
   },
@@ -90,7 +90,8 @@
     "Cancelled": {
       "title": "Achat annulé",
       "description": "Votre achat a été annulé avec succès. Nous sommes désolés de vous voir partir. Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contacter. N'hésitez pas à continuer vos achats si vous changez d'avis.",
-      "continue-shopping-button": "Aller à la page d'accueil"
+      "continue-shopping-button": "Aller à la page d'accueil",
+      "title": "Achat annulé"
     }
   },
   "Pass": {
@@ -214,5 +215,18 @@
     "back-to-home": "Aller à la page d'accueil",
     "retry": "Réessayer",
     "error-message": "Un problème est survenu"
+  },
+  "Roles": {
+    "RoleBadge": {
+      "organizer-admin": "Administrateur de l'organisateur",
+      "organizer-auditor": "Auditeur de l'organisateur",
+      "organizer-content-manager": "Gestionnaire de contenu de l'organisateur",
+      "organizer-finance-manager": "Gestionnaire financier de l'organisateur",
+      "organizer-guest": "Invité de l'organisateur",
+      "organizer-human-resources": "Ressources humaines de l'organisateur",
+      "organizer-operations-manager": "Responsable des opérations de l'organisateur",
+      "organizer-super-admin": "Super Admin de l'organisateur",
+      "organizer-validator": "Validateur de l'organisateur"
+    }
   }
 }

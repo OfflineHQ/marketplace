@@ -8,6 +8,15 @@ export const AccountFieldsFragmentDoc = `
   email
 }
     `;
+export const OrganizerFieldsFragmentDoc = `
+    fragment OrganizerFields on Organizer {
+  image {
+    url
+  }
+  name
+  slug
+}
+    `;
 export const EventDateLocationsFieldsFragmentDoc = `
     fragment EventDateLocationsFields on EventDateLocation {
   locationAddress {
@@ -70,6 +79,13 @@ export const EventPassNftFieldsFragmentDoc = `
   organizerId
   isRevealed
   currentOwnerAddress
+}
+    `;
+export const RoleAssignmentsFieldsFragmentDoc = `
+    fragment RoleAssignmentsFields on roleAssignments {
+  role
+  organizerId
+  eventId
 }
     `;
 export const GetAccountDocument = `
@@ -621,6 +637,75 @@ export const useGetEventPassNftByTokenReferenceQuery = <
     useQuery<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>(
       ['GetEventPassNftByTokenReference', variables],
       fetchDataReactQuery<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables),
+      options
+    );
+export const GetMyRolesDocument = `
+    query GetMyRoles {
+  roleAssignments {
+    ...RoleAssignmentsFields
+  }
+}
+    ${RoleAssignmentsFieldsFragmentDoc}`;
+export const useGetMyRolesQuery = <
+      TData = Types.GetMyRolesQuery,
+      TError = Error
+    >(
+      variables?: Types.GetMyRolesQueryVariables,
+      options?: UseQueryOptions<Types.GetMyRolesQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetMyRolesQuery, TError, TData>(
+      variables === undefined ? ['GetMyRoles'] : ['GetMyRoles', variables],
+      fetchDataReactQuery<Types.GetMyRolesQuery, Types.GetMyRolesQueryVariables>(GetMyRolesDocument, variables),
+      options
+    );
+export const GetMyRolesWithOrganizerInfosDocument = `
+    query GetMyRolesWithOrganizerInfos($stage: Stage!) {
+  roleAssignments {
+    ...RoleAssignmentsFields
+    organizer(where: {}, locales: [en], stage: $stage) {
+      ...OrganizerFields
+    }
+  }
+}
+    ${RoleAssignmentsFieldsFragmentDoc}
+${OrganizerFieldsFragmentDoc}`;
+export const useGetMyRolesWithOrganizerInfosQuery = <
+      TData = Types.GetMyRolesWithOrganizerInfosQuery,
+      TError = Error
+    >(
+      variables: Types.GetMyRolesWithOrganizerInfosQueryVariables,
+      options?: UseQueryOptions<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>(
+      ['GetMyRolesWithOrganizerInfos', variables],
+      fetchDataReactQuery<Types.GetMyRolesWithOrganizerInfosQuery, Types.GetMyRolesWithOrganizerInfosQueryVariables>(GetMyRolesWithOrganizerInfosDocument, variables),
+      options
+    );
+export const GetMyRolesWithOrganizerAndInviterInfosDocument = `
+    query GetMyRolesWithOrganizerAndInviterInfos($stage: Stage!) {
+  roleAssignments {
+    ...RoleAssignmentsFields
+    organizer(where: {}, locales: [en], stage: $stage) {
+      ...OrganizerFields
+    }
+    inviter {
+      address
+      email
+    }
+  }
+}
+    ${RoleAssignmentsFieldsFragmentDoc}
+${OrganizerFieldsFragmentDoc}`;
+export const useGetMyRolesWithOrganizerAndInviterInfosQuery = <
+      TData = Types.GetMyRolesWithOrganizerAndInviterInfosQuery,
+      TError = Error
+    >(
+      variables: Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables,
+      options?: UseQueryOptions<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>(
+      ['GetMyRolesWithOrganizerAndInviterInfos', variables],
+      fetchDataReactQuery<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables>(GetMyRolesWithOrganizerAndInviterInfosDocument, variables),
       options
     );
 export const GetStripeCustomerDocument = `

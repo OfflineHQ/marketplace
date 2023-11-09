@@ -33,7 +33,7 @@
       "dark": "Dark",
       "auto": "Automatic"
     },
-    "currency-select-text": "Select the currency you want to shop with",
+    "currency-select-text": "Select your currency",
     "eur": "EUR",
     "usd": "USD"
   },
@@ -214,5 +214,18 @@
     "back-to-home": "Go to Homepage",
     "retry": "Try again",
     "error-message": "Something went wrong"
+  },
+  "Roles": {
+    "RoleBadge": {
+      "organizer-admin": "Organizer Admin",
+      "organizer-auditor": "Organizer Auditor",
+      "organizer-content-manager": "Organizer Content Manager",
+      "organizer-finance-manager": "Organizer Finance Manager",
+      "organizer-guest": "Organizer Guest",
+      "organizer-human-resources": "Organizer Human Resources",
+      "organizer-operations-manager": "Organizer Operations Manager",
+      "organizer-super-admin": "Organizer Super Admin",
+      "organizer-validator": "Organizer Validator"
+    }
   }
 }

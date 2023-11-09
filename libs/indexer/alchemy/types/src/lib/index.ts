@@ -29,12 +29,12 @@ export interface AlchemyWebhookEvent {
 export interface AlchemyNFTActivityEvent extends AlchemyWebhookEvent {
   type: WebhookType.NFT_ACTIVITY;
   event: {
+    network: AlchemyNetwork;
     activity: Activity[];
   };
 }
 
 export interface Activity {
-  network: AlchemyNetwork;
   fromAddress: string;
   toAddress: string;
   contractAddress: string;
