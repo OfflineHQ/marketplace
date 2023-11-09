@@ -4639,12 +4639,6 @@ input OrganizerWhereUniqueInput {
 }
 
 """References Organizer record uniquely"""
-input OrganizerWhereUniqueInput_remote_rel_accountorganizer {
-  name: String
-  slug: String
-}
-
-"""References Organizer record uniquely"""
 input OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer {
   name: String
   slug: String
@@ -4652,6 +4646,12 @@ input OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer {
 
 """References Organizer record uniquely"""
 input OrganizerWhereUniqueInput_remote_rel_eventPassNftorganizer {
+  name: String
+  slug: String
+}
+
+"""References Organizer record uniquely"""
+input OrganizerWhereUniqueInput_remote_rel_roleAssignmentsorganizer {
   name: String
   slug: String
 }
@@ -6271,24 +6271,45 @@ type account {
   email: String
   emailVerified: Boolean!
   id: uuid!
-  isOrganizer: Boolean!
 
   """An object relationship"""
   kyc: kyc
-  organizer(
-    """
-    Defines which locales should be returned.
-    
-    Note that `Organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
-    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
-    
-    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
-    """
-    locales: [Locale!]! = [en]
-    stage: Stage! = PUBLISHED
-    where: OrganizerWhereUniqueInput_remote_rel_accountorganizer!
-  ): Organizer
-  organizerId: String
+
+  """An array relationship"""
+  roles(
+    """distinct select on columns"""
+    distinct_on: [roleAssignments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roleAssignments_order_by!]
+
+    """filter the rows returned"""
+    where: roleAssignments_bool_exp
+  ): [roleAssignments!]!
+
+  """An aggregate relationship"""
+  roles_aggregate(
+    """distinct select on columns"""
+    distinct_on: [roleAssignments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roleAssignments_order_by!]
+
+    """filter the rows returned"""
+    where: roleAssignments_bool_exp
+  ): roleAssignments_aggregate!
 
   """An object relationship"""
   stripeCustomer: stripeCustomer
@@ -6324,9 +6345,9 @@ input account_bool_exp {
   email: String_comparison_exp
   emailVerified: Boolean_comparison_exp
   id: uuid_comparison_exp
-  isOrganizer: Boolean_comparison_exp
   kyc: kyc_bool_exp
-  organizerId: String_comparison_exp
+  roles: roleAssignments_bool_exp
+  roles_aggregate: roleAssignments_aggregate_bool_exp
   stripeCustomer: stripeCustomer_bool_exp
   updated_at: timestamptz_comparison_exp
 }
@@ -6355,9 +6376,8 @@ input account_insert_input {
   email: String
   emailVerified: Boolean
   id: uuid
-  isOrganizer: Boolean
   kyc: kyc_obj_rel_insert_input
-  organizerId: String
+  roles: roleAssignments_arr_rel_insert_input
   stripeCustomer: stripeCustomer_obj_rel_insert_input
   updated_at: timestamptz
 }
@@ -6368,7 +6388,6 @@ type account_max_fields {
   created_at: timestamptz
   email: String
   id: uuid
-  organizerId: String
   updated_at: timestamptz
 }
 
@@ -6378,7 +6397,6 @@ type account_min_fields {
   created_at: timestamptz
   email: String
   id: uuid
-  organizerId: String
   updated_at: timestamptz
 }
 
@@ -6419,9 +6437,8 @@ input account_order_by {
   email: order_by
   emailVerified: order_by
   id: order_by
-  isOrganizer: order_by
   kyc: kyc_order_by
-  organizerId: order_by
+  roles_aggregate: roleAssignments_aggregate_order_by
   stripeCustomer: stripeCustomer_order_by
   updated_at: order_by
 }
@@ -6451,12 +6468,6 @@ enum account_select_column {
   id
 
   """column name"""
-  isOrganizer
-
-  """column name"""
-  organizerId
-
-  """column name"""
   updated_at
 }
 
@@ -6469,8 +6480,6 @@ input account_set_input {
   email: String
   emailVerified: Boolean
   id: uuid
-  isOrganizer: Boolean
-  organizerId: String
   updated_at: timestamptz
 }
 
@@ -6492,8 +6501,6 @@ input account_stream_cursor_value_input {
   email: String
   emailVerified: Boolean
   id: uuid
-  isOrganizer: Boolean
-  organizerId: String
   updated_at: timestamptz
 }
 
@@ -6517,12 +6524,6 @@ enum account_update_column {
   id
 
   """column name"""
-  isOrganizer
-
-  """column name"""
-  organizerId
-
-  """column name"""
   updated_at
 }
 
@@ -6532,6 +6533,884 @@ input account_updates {
 
   """filter the rows which have to be updated"""
   where: account_bool_exp!
+}
+
+"""
+History of auditable actions on audited tables, from audit.if_modified_func()
+"""
+type audit_logged_actions {
+  """Action type; I = insert, D = delete, U = update, T = truncate"""
+  action: String!
+
+  """Wall clock time at which audited event's trigger call occurred"""
+  action_tstamp_clk: timestamptz!
+
+  """Statement start timestamp for tx in which audited event occurred"""
+  action_tstamp_stm: timestamptz!
+
+  """Transaction start timestamp for tx in which audited event occurred"""
+  action_tstamp_tx: timestamptz!
+
+  """
+  Application name set when this audit event occurred. Can be changed in-session by client.
+  """
+  application_name: String
+
+  """
+  New values of fields changed by UPDATE. Null except for row-level UPDATE events.
+  """
+  changed_fields(
+    """JSON select path"""
+    path: String
+  ): jsonb
+
+  """IP address of client that issued query. Null for unix domain socket."""
+  client_addr: inet
+
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Int
+
+  """
+  Top-level query that caused this auditable event. May be more than one statement.
+  """
+  client_query: String
+
+  """Unique identifier for each auditable event"""
+  event_id: bigint!
+  hasura_user(
+    """JSON select path"""
+    path: String
+  ): jsonb
+
+  """Table OID. Changes with drop/create. Get with 'tablename'::regclass"""
+  relid: oid!
+
+  """
+  Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.
+  """
+  row_data(
+    """JSON select path"""
+    path: String
+  ): jsonb
+
+  """Database schema audited table for this event is in"""
+  schema_name: String!
+
+  """Login / session user whose statement caused the audited event"""
+  session_user_name: String
+
+  """
+  't' if audit event is from an FOR EACH STATEMENT trigger, 'f' for FOR EACH ROW
+  """
+  statement_only: Boolean!
+
+  """Non-schema-qualified table name of table event occured in"""
+  table_name: String!
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: bigint
+}
+
+"""
+aggregated selection of "audit.logged_actions"
+"""
+type audit_logged_actions_aggregate {
+  aggregate: audit_logged_actions_aggregate_fields
+  nodes: [audit_logged_actions!]!
+}
+
+"""
+aggregate fields of "audit.logged_actions"
+"""
+type audit_logged_actions_aggregate_fields {
+  avg: audit_logged_actions_avg_fields
+  count(columns: [audit_logged_actions_select_column!], distinct: Boolean): Int!
+  max: audit_logged_actions_max_fields
+  min: audit_logged_actions_min_fields
+  stddev: audit_logged_actions_stddev_fields
+  stddev_pop: audit_logged_actions_stddev_pop_fields
+  stddev_samp: audit_logged_actions_stddev_samp_fields
+  sum: audit_logged_actions_sum_fields
+  var_pop: audit_logged_actions_var_pop_fields
+  var_samp: audit_logged_actions_var_samp_fields
+  variance: audit_logged_actions_variance_fields
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input audit_logged_actions_append_input {
+  """
+  New values of fields changed by UPDATE. Null except for row-level UPDATE events.
+  """
+  changed_fields: jsonb
+  hasura_user: jsonb
+
+  """
+  Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.
+  """
+  row_data: jsonb
+}
+
+"""aggregate avg on columns"""
+type audit_logged_actions_avg_fields {
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Float
+
+  """Unique identifier for each auditable event"""
+  event_id: Float
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "audit.logged_actions". All fields are combined with a logical 'AND'.
+"""
+input audit_logged_actions_bool_exp {
+  _and: [audit_logged_actions_bool_exp!]
+  _not: audit_logged_actions_bool_exp
+  _or: [audit_logged_actions_bool_exp!]
+  action: String_comparison_exp
+  action_tstamp_clk: timestamptz_comparison_exp
+  action_tstamp_stm: timestamptz_comparison_exp
+  action_tstamp_tx: timestamptz_comparison_exp
+  application_name: String_comparison_exp
+  changed_fields: jsonb_comparison_exp
+  client_addr: inet_comparison_exp
+  client_port: Int_comparison_exp
+  client_query: String_comparison_exp
+  event_id: bigint_comparison_exp
+  hasura_user: jsonb_comparison_exp
+  relid: oid_comparison_exp
+  row_data: jsonb_comparison_exp
+  schema_name: String_comparison_exp
+  session_user_name: String_comparison_exp
+  statement_only: Boolean_comparison_exp
+  table_name: String_comparison_exp
+  transaction_id: bigint_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "audit.logged_actions"
+"""
+enum audit_logged_actions_constraint {
+  """
+  unique or primary key constraint on columns "event_id"
+  """
+  logged_actions_pkey
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input audit_logged_actions_delete_at_path_input {
+  """
+  New values of fields changed by UPDATE. Null except for row-level UPDATE events.
+  """
+  changed_fields: [String!]
+  hasura_user: [String!]
+
+  """
+  Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.
+  """
+  row_data: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input audit_logged_actions_delete_elem_input {
+  """
+  New values of fields changed by UPDATE. Null except for row-level UPDATE events.
+  """
+  changed_fields: Int
+  hasura_user: Int
+
+  """
+  Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.
+  """
+  row_data: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input audit_logged_actions_delete_key_input {
+  """
+  New values of fields changed by UPDATE. Null except for row-level UPDATE events.
+  """
+  changed_fields: String
+  hasura_user: String
+
+  """
+  Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.
+  """
+  row_data: String
+}
+
+"""
+input type for incrementing numeric columns in table "audit.logged_actions"
+"""
+input audit_logged_actions_inc_input {
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Int
+
+  """Unique identifier for each auditable event"""
+  event_id: bigint
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: bigint
+}
+
+"""
+input type for inserting data into table "audit.logged_actions"
+"""
+input audit_logged_actions_insert_input {
+  """Action type; I = insert, D = delete, U = update, T = truncate"""
+  action: String
+
+  """Wall clock time at which audited event's trigger call occurred"""
+  action_tstamp_clk: timestamptz
+
+  """Statement start timestamp for tx in which audited event occurred"""
+  action_tstamp_stm: timestamptz
+
+  """Transaction start timestamp for tx in which audited event occurred"""
+  action_tstamp_tx: timestamptz
+
+  """
+  Application name set when this audit event occurred. Can be changed in-session by client.
+  """
+  application_name: String
+
+  """
+  New values of fields changed by UPDATE. Null except for row-level UPDATE events.
+  """
+  changed_fields: jsonb
+
+  """IP address of client that issued query. Null for unix domain socket."""
+  client_addr: inet
+
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Int
+
+  """
+  Top-level query that caused this auditable event. May be more than one statement.
+  """
+  client_query: String
+
+  """Unique identifier for each auditable event"""
+  event_id: bigint
+  hasura_user: jsonb
+
+  """Table OID. Changes with drop/create. Get with 'tablename'::regclass"""
+  relid: oid
+
+  """
+  Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.
+  """
+  row_data: jsonb
+
+  """Database schema audited table for this event is in"""
+  schema_name: String
+
+  """Login / session user whose statement caused the audited event"""
+  session_user_name: String
+
+  """
+  't' if audit event is from an FOR EACH STATEMENT trigger, 'f' for FOR EACH ROW
+  """
+  statement_only: Boolean
+
+  """Non-schema-qualified table name of table event occured in"""
+  table_name: String
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: bigint
+}
+
+"""aggregate max on columns"""
+type audit_logged_actions_max_fields {
+  """Action type; I = insert, D = delete, U = update, T = truncate"""
+  action: String
+
+  """Wall clock time at which audited event's trigger call occurred"""
+  action_tstamp_clk: timestamptz
+
+  """Statement start timestamp for tx in which audited event occurred"""
+  action_tstamp_stm: timestamptz
+
+  """Transaction start timestamp for tx in which audited event occurred"""
+  action_tstamp_tx: timestamptz
+
+  """
+  Application name set when this audit event occurred. Can be changed in-session by client.
+  """
+  application_name: String
+
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Int
+
+  """
+  Top-level query that caused this auditable event. May be more than one statement.
+  """
+  client_query: String
+
+  """Unique identifier for each auditable event"""
+  event_id: bigint
+
+  """Database schema audited table for this event is in"""
+  schema_name: String
+
+  """Login / session user whose statement caused the audited event"""
+  session_user_name: String
+
+  """Non-schema-qualified table name of table event occured in"""
+  table_name: String
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: bigint
+}
+
+"""aggregate min on columns"""
+type audit_logged_actions_min_fields {
+  """Action type; I = insert, D = delete, U = update, T = truncate"""
+  action: String
+
+  """Wall clock time at which audited event's trigger call occurred"""
+  action_tstamp_clk: timestamptz
+
+  """Statement start timestamp for tx in which audited event occurred"""
+  action_tstamp_stm: timestamptz
+
+  """Transaction start timestamp for tx in which audited event occurred"""
+  action_tstamp_tx: timestamptz
+
+  """
+  Application name set when this audit event occurred. Can be changed in-session by client.
+  """
+  application_name: String
+
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Int
+
+  """
+  Top-level query that caused this auditable event. May be more than one statement.
+  """
+  client_query: String
+
+  """Unique identifier for each auditable event"""
+  event_id: bigint
+
+  """Database schema audited table for this event is in"""
+  schema_name: String
+
+  """Login / session user whose statement caused the audited event"""
+  session_user_name: String
+
+  """Non-schema-qualified table name of table event occured in"""
+  table_name: String
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: bigint
+}
+
+"""
+response of any mutation on the table "audit.logged_actions"
+"""
+type audit_logged_actions_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [audit_logged_actions!]!
+}
+
+"""
+on_conflict condition type for table "audit.logged_actions"
+"""
+input audit_logged_actions_on_conflict {
+  constraint: audit_logged_actions_constraint!
+  update_columns: [audit_logged_actions_update_column!]! = []
+  where: audit_logged_actions_bool_exp
+}
+
+"""Ordering options when selecting data from "audit.logged_actions"."""
+input audit_logged_actions_order_by {
+  action: order_by
+  action_tstamp_clk: order_by
+  action_tstamp_stm: order_by
+  action_tstamp_tx: order_by
+  application_name: order_by
+  changed_fields: order_by
+  client_addr: order_by
+  client_port: order_by
+  client_query: order_by
+  event_id: order_by
+  hasura_user: order_by
+  relid: order_by
+  row_data: order_by
+  schema_name: order_by
+  session_user_name: order_by
+  statement_only: order_by
+  table_name: order_by
+  transaction_id: order_by
+}
+
+"""primary key columns input for table: audit.logged_actions"""
+input audit_logged_actions_pk_columns_input {
+  """Unique identifier for each auditable event"""
+  event_id: bigint!
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input audit_logged_actions_prepend_input {
+  """
+  New values of fields changed by UPDATE. Null except for row-level UPDATE events.
+  """
+  changed_fields: jsonb
+  hasura_user: jsonb
+
+  """
+  Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.
+  """
+  row_data: jsonb
+}
+
+"""
+select columns of table "audit.logged_actions"
+"""
+enum audit_logged_actions_select_column {
+  """column name"""
+  action
+
+  """column name"""
+  action_tstamp_clk
+
+  """column name"""
+  action_tstamp_stm
+
+  """column name"""
+  action_tstamp_tx
+
+  """column name"""
+  application_name
+
+  """column name"""
+  changed_fields
+
+  """column name"""
+  client_addr
+
+  """column name"""
+  client_port
+
+  """column name"""
+  client_query
+
+  """column name"""
+  event_id
+
+  """column name"""
+  hasura_user
+
+  """column name"""
+  relid
+
+  """column name"""
+  row_data
+
+  """column name"""
+  schema_name
+
+  """column name"""
+  session_user_name
+
+  """column name"""
+  statement_only
+
+  """column name"""
+  table_name
+
+  """column name"""
+  transaction_id
+}
+
+"""
+input type for updating data in table "audit.logged_actions"
+"""
+input audit_logged_actions_set_input {
+  """Action type; I = insert, D = delete, U = update, T = truncate"""
+  action: String
+
+  """Wall clock time at which audited event's trigger call occurred"""
+  action_tstamp_clk: timestamptz
+
+  """Statement start timestamp for tx in which audited event occurred"""
+  action_tstamp_stm: timestamptz
+
+  """Transaction start timestamp for tx in which audited event occurred"""
+  action_tstamp_tx: timestamptz
+
+  """
+  Application name set when this audit event occurred. Can be changed in-session by client.
+  """
+  application_name: String
+
+  """
+  New values of fields changed by UPDATE. Null except for row-level UPDATE events.
+  """
+  changed_fields: jsonb
+
+  """IP address of client that issued query. Null for unix domain socket."""
+  client_addr: inet
+
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Int
+
+  """
+  Top-level query that caused this auditable event. May be more than one statement.
+  """
+  client_query: String
+
+  """Unique identifier for each auditable event"""
+  event_id: bigint
+  hasura_user: jsonb
+
+  """Table OID. Changes with drop/create. Get with 'tablename'::regclass"""
+  relid: oid
+
+  """
+  Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.
+  """
+  row_data: jsonb
+
+  """Database schema audited table for this event is in"""
+  schema_name: String
+
+  """Login / session user whose statement caused the audited event"""
+  session_user_name: String
+
+  """
+  't' if audit event is from an FOR EACH STATEMENT trigger, 'f' for FOR EACH ROW
+  """
+  statement_only: Boolean
+
+  """Non-schema-qualified table name of table event occured in"""
+  table_name: String
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: bigint
+}
+
+"""aggregate stddev on columns"""
+type audit_logged_actions_stddev_fields {
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Float
+
+  """Unique identifier for each auditable event"""
+  event_id: Float
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type audit_logged_actions_stddev_pop_fields {
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Float
+
+  """Unique identifier for each auditable event"""
+  event_id: Float
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type audit_logged_actions_stddev_samp_fields {
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Float
+
+  """Unique identifier for each auditable event"""
+  event_id: Float
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: Float
+}
+
+"""
+Streaming cursor of the table "audit_logged_actions"
+"""
+input audit_logged_actions_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: audit_logged_actions_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input audit_logged_actions_stream_cursor_value_input {
+  """Action type; I = insert, D = delete, U = update, T = truncate"""
+  action: String
+
+  """Wall clock time at which audited event's trigger call occurred"""
+  action_tstamp_clk: timestamptz
+
+  """Statement start timestamp for tx in which audited event occurred"""
+  action_tstamp_stm: timestamptz
+
+  """Transaction start timestamp for tx in which audited event occurred"""
+  action_tstamp_tx: timestamptz
+
+  """
+  Application name set when this audit event occurred. Can be changed in-session by client.
+  """
+  application_name: String
+
+  """
+  New values of fields changed by UPDATE. Null except for row-level UPDATE events.
+  """
+  changed_fields: jsonb
+
+  """IP address of client that issued query. Null for unix domain socket."""
+  client_addr: inet
+
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Int
+
+  """
+  Top-level query that caused this auditable event. May be more than one statement.
+  """
+  client_query: String
+
+  """Unique identifier for each auditable event"""
+  event_id: bigint
+  hasura_user: jsonb
+
+  """Table OID. Changes with drop/create. Get with 'tablename'::regclass"""
+  relid: oid
+
+  """
+  Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple.
+  """
+  row_data: jsonb
+
+  """Database schema audited table for this event is in"""
+  schema_name: String
+
+  """Login / session user whose statement caused the audited event"""
+  session_user_name: String
+
+  """
+  't' if audit event is from an FOR EACH STATEMENT trigger, 'f' for FOR EACH ROW
+  """
+  statement_only: Boolean
+
+  """Non-schema-qualified table name of table event occured in"""
+  table_name: String
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: bigint
+}
+
+"""aggregate sum on columns"""
+type audit_logged_actions_sum_fields {
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Int
+
+  """Unique identifier for each auditable event"""
+  event_id: bigint
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: bigint
+}
+
+"""
+update columns of table "audit.logged_actions"
+"""
+enum audit_logged_actions_update_column {
+  """column name"""
+  action
+
+  """column name"""
+  action_tstamp_clk
+
+  """column name"""
+  action_tstamp_stm
+
+  """column name"""
+  action_tstamp_tx
+
+  """column name"""
+  application_name
+
+  """column name"""
+  changed_fields
+
+  """column name"""
+  client_addr
+
+  """column name"""
+  client_port
+
+  """column name"""
+  client_query
+
+  """column name"""
+  event_id
+
+  """column name"""
+  hasura_user
+
+  """column name"""
+  relid
+
+  """column name"""
+  row_data
+
+  """column name"""
+  schema_name
+
+  """column name"""
+  session_user_name
+
+  """column name"""
+  statement_only
+
+  """column name"""
+  table_name
+
+  """column name"""
+  transaction_id
+}
+
+input audit_logged_actions_updates {
+  """append existing jsonb value of filtered columns with new jsonb value"""
+  _append: audit_logged_actions_append_input
+
+  """
+  delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+  """
+  _delete_at_path: audit_logged_actions_delete_at_path_input
+
+  """
+  delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+  """
+  _delete_elem: audit_logged_actions_delete_elem_input
+
+  """
+  delete key/value pair or string element. key/value pairs are matched based on their key value
+  """
+  _delete_key: audit_logged_actions_delete_key_input
+
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: audit_logged_actions_inc_input
+
+  """prepend existing jsonb value of filtered columns with new jsonb value"""
+  _prepend: audit_logged_actions_prepend_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: audit_logged_actions_set_input
+
+  """filter the rows which have to be updated"""
+  where: audit_logged_actions_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type audit_logged_actions_var_pop_fields {
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Float
+
+  """Unique identifier for each auditable event"""
+  event_id: Float
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: Float
+}
+
+"""aggregate var_samp on columns"""
+type audit_logged_actions_var_samp_fields {
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Float
+
+  """Unique identifier for each auditable event"""
+  event_id: Float
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: Float
+}
+
+"""aggregate variance on columns"""
+type audit_logged_actions_variance_fields {
+  """
+  Remote peer IP port address of client that issued query. Undefined for unix socket.
+  """
+  client_port: Float
+
+  """Unique identifier for each auditable event"""
+  event_id: Float
+
+  """
+  Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx.
+  """
+  transaction_id: Float
 }
 
 scalar bigint
@@ -7438,7 +8317,7 @@ unique or primary key constraints on table "eventPassNftContract"
 """
 enum eventPassNftContract_constraint {
   """
-  unique or primary key constraint on columns "contractAddress", "chainId"
+  unique or primary key constraint on columns "chainId", "contractAddress"
   """
   eventPassNftContract_contractAddress_chainId_key
 }
@@ -7774,7 +8653,7 @@ unique or primary key constraints on table "eventPassNft"
 """
 enum eventPassNft_constraint {
   """
-  unique or primary key constraint on columns "tokenId", "contractAddress", "chainId"
+  unique or primary key constraint on columns "chainId", "contractAddress", "tokenId"
   """
   eventPassNft_contractAddress_tokenId_chainId_key
 
@@ -7784,7 +8663,7 @@ enum eventPassNft_constraint {
   eventPassNft_pkey
 
   """
-  unique or primary key constraint on columns "tokenId", "contractAddress", "chainId"
+  unique or primary key constraint on columns "chainId", "contractAddress", "tokenId"
   """
   event_pass_nft_unique_nft
 }
@@ -9289,7 +10168,7 @@ unique or primary key constraints on table "eventPassPendingOrder"
 """
 enum eventPassPendingOrder_constraint {
   """
-  unique or primary key constraint on columns "accountId", "eventPassId"
+  unique or primary key constraint on columns "eventPassId", "accountId"
   """
   eventPassPendingOrder_eventPassId_accountId_key
 
@@ -9836,6 +10715,23 @@ type eventPassPricing_variance_fields {
   maxAmountPerUser: Float
   priceAmount: Float
   timeBeforeDelete: Float
+}
+
+scalar inet
+
+"""
+Boolean expression to compare columns of type "inet". All fields are combined with logical 'AND'.
+"""
+input inet_comparison_exp {
+  _eq: inet
+  _gt: inet
+  _gte: inet
+  _in: [inet!]
+  _is_null: Boolean
+  _lt: inet
+  _lte: inet
+  _neq: inet
+  _nin: [inet!]
 }
 
 scalar jsonb
@@ -10632,6 +11528,22 @@ type mutation_root {
   delete_account_by_pk(id: uuid!): account
 
   """
+  delete data from the table: "audit.logged_actions"
+  """
+  delete_audit_logged_actions(
+    """filter the rows which have to be deleted"""
+    where: audit_logged_actions_bool_exp!
+  ): audit_logged_actions_mutation_response
+
+  """
+  delete single row from the table: "audit.logged_actions"
+  """
+  delete_audit_logged_actions_by_pk(
+    """Unique identifier for each auditable event"""
+    event_id: bigint!
+  ): audit_logged_actions
+
+  """
   delete data from the table: "currency"
   """
   delete_currency(
@@ -10805,6 +11717,30 @@ type mutation_root {
   delete_orderStatus_by_pk(value: String!): orderStatus
 
   """
+  delete data from the table: "roleAssignments"
+  """
+  delete_roleAssignments(
+    """filter the rows which have to be deleted"""
+    where: roleAssignments_bool_exp!
+  ): roleAssignments_mutation_response
+
+  """
+  delete data from the table: "roles"
+  """
+  delete_roles(
+    """filter the rows which have to be deleted"""
+    where: roles_bool_exp!
+  ): roles_mutation_response
+
+  """
+  delete single row from the table: "roles"
+  """
+  delete_roles_by_pk(
+    "\n    organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.\n    organizer_admin: Full Read & Write permissions on web2 and web3 components.\n    organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.\n    organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.\n    organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.\n    organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.\n    organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.\n    organizer_guest: Limited access to web2. Can view public content without web3 permissions.\n    organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).\n"
+    value: String!
+  ): roles
+
+  """
   delete data from the table: "stripeCheckoutSession"
   """
   delete_stripeCheckoutSession(
@@ -10886,6 +11822,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: account_on_conflict
   ): account
+
+  """
+  insert data into the table: "audit.logged_actions"
+  """
+  insert_audit_logged_actions(
+    """the rows to be inserted"""
+    objects: [audit_logged_actions_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: audit_logged_actions_on_conflict
+  ): audit_logged_actions_mutation_response
+
+  """
+  insert a single row into the table: "audit.logged_actions"
+  """
+  insert_audit_logged_actions_one(
+    """the row to be inserted"""
+    object: audit_logged_actions_insert_input!
+
+    """upsert condition"""
+    on_conflict: audit_logged_actions_on_conflict
+  ): audit_logged_actions
 
   """
   insert data into the table: "currency"
@@ -11172,6 +12130,50 @@ type mutation_root {
     """upsert condition"""
     on_conflict: orderStatus_on_conflict
   ): orderStatus
+
+  """
+  insert data into the table: "roleAssignments"
+  """
+  insert_roleAssignments(
+    """the rows to be inserted"""
+    objects: [roleAssignments_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: roleAssignments_on_conflict
+  ): roleAssignments_mutation_response
+
+  """
+  insert a single row into the table: "roleAssignments"
+  """
+  insert_roleAssignments_one(
+    """the row to be inserted"""
+    object: roleAssignments_insert_input!
+
+    """upsert condition"""
+    on_conflict: roleAssignments_on_conflict
+  ): roleAssignments
+
+  """
+  insert data into the table: "roles"
+  """
+  insert_roles(
+    """the rows to be inserted"""
+    objects: [roles_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: roles_on_conflict
+  ): roles_mutation_response
+
+  """
+  insert a single row into the table: "roles"
+  """
+  insert_roles_one(
+    """the row to be inserted"""
+    object: roles_insert_input!
+
+    """upsert condition"""
+    on_conflict: roles_on_conflict
+  ): roles
 
   """
   insert data into the table: "stripeCheckoutSession"
@@ -12121,6 +13123,82 @@ type mutation_root {
   ): [account_mutation_response]
 
   """
+  update data of the table: "audit.logged_actions"
+  """
+  update_audit_logged_actions(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: audit_logged_actions_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: audit_logged_actions_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: audit_logged_actions_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: audit_logged_actions_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: audit_logged_actions_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: audit_logged_actions_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: audit_logged_actions_set_input
+
+    """filter the rows which have to be updated"""
+    where: audit_logged_actions_bool_exp!
+  ): audit_logged_actions_mutation_response
+
+  """
+  update single row of the table: "audit.logged_actions"
+  """
+  update_audit_logged_actions_by_pk(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: audit_logged_actions_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: audit_logged_actions_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: audit_logged_actions_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: audit_logged_actions_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: audit_logged_actions_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: audit_logged_actions_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: audit_logged_actions_set_input
+    pk_columns: audit_logged_actions_pk_columns_input!
+  ): audit_logged_actions
+
+  """
+  update multiples rows of table: "audit.logged_actions"
+  """
+  update_audit_logged_actions_many(
+    """updates to execute, in order"""
+    updates: [audit_logged_actions_updates!]!
+  ): [audit_logged_actions_mutation_response]
+
+  """
   update data of the table: "currency"
   """
   update_currency(
@@ -12554,6 +13632,53 @@ type mutation_root {
   ): [orderStatus_mutation_response]
 
   """
+  update data of the table: "roleAssignments"
+  """
+  update_roleAssignments(
+    """sets the columns of the filtered rows to the given values"""
+    _set: roleAssignments_set_input
+
+    """filter the rows which have to be updated"""
+    where: roleAssignments_bool_exp!
+  ): roleAssignments_mutation_response
+
+  """
+  update multiples rows of table: "roleAssignments"
+  """
+  update_roleAssignments_many(
+    """updates to execute, in order"""
+    updates: [roleAssignments_updates!]!
+  ): [roleAssignments_mutation_response]
+
+  """
+  update data of the table: "roles"
+  """
+  update_roles(
+    """sets the columns of the filtered rows to the given values"""
+    _set: roles_set_input
+
+    """filter the rows which have to be updated"""
+    where: roles_bool_exp!
+  ): roles_mutation_response
+
+  """
+  update single row of the table: "roles"
+  """
+  update_roles_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: roles_set_input
+    pk_columns: roles_pk_columns_input!
+  ): roles
+
+  """
+  update multiples rows of table: "roles"
+  """
+  update_roles_many(
+    """updates to execute, in order"""
+    updates: [roles_updates!]!
+  ): [roles_mutation_response]
+
+  """
   update data of the table: "stripeCheckoutSession"
   """
   update_stripeCheckoutSession(
@@ -12857,7 +13982,7 @@ enum nftTransfer_constraint {
   nftTransfer_pkey
 
   """
-  unique or primary key constraint on columns "tokenId", "contractAddress", "transactionHash"
+  unique or primary key constraint on columns "transactionHash", "contractAddress", "tokenId"
   """
   nft_transfer_unique_transfer
 }
@@ -13621,6 +14746,23 @@ input nftTransfer_variance_order_by {
   tokenId: order_by
 }
 
+scalar oid
+
+"""
+Boolean expression to compare columns of type "oid". All fields are combined with logical 'AND'.
+"""
+input oid_comparison_exp {
+  _eq: oid
+  _gt: oid
+  _gte: oid
+  _in: [oid!]
+  _is_null: Boolean
+  _lt: oid
+  _lte: oid
+  _neq: oid
+  _nin: [oid!]
+}
+
 """
 columns and relationships of "orderStatus"
 """
@@ -13906,6 +15048,54 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: AssetWhereInput
   ): AssetConnection!
+
+  """
+  fetch data from the table: "audit.logged_actions"
+  """
+  audit_logged_actions(
+    """distinct select on columns"""
+    distinct_on: [audit_logged_actions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [audit_logged_actions_order_by!]
+
+    """filter the rows returned"""
+    where: audit_logged_actions_bool_exp
+  ): [audit_logged_actions!]!
+
+  """
+  fetch aggregated fields from the table: "audit.logged_actions"
+  """
+  audit_logged_actions_aggregate(
+    """distinct select on columns"""
+    distinct_on: [audit_logged_actions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [audit_logged_actions_order_by!]
+
+    """filter the rows returned"""
+    where: audit_logged_actions_bool_exp
+  ): audit_logged_actions_aggregate!
+
+  """
+  fetch data from the table: "audit.logged_actions" using primary key columns
+  """
+  audit_logged_actions_by_pk(
+    """Unique identifier for each auditable event"""
+    event_id: bigint!
+  ): audit_logged_actions
 
   """
   fetch data from the table: "currency"
@@ -14679,6 +15869,92 @@ type query_root {
     where: OrganizerWhereInput
   ): OrganizerConnection!
 
+  """
+  fetch data from the table: "roleAssignments"
+  """
+  roleAssignments(
+    """distinct select on columns"""
+    distinct_on: [roleAssignments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roleAssignments_order_by!]
+
+    """filter the rows returned"""
+    where: roleAssignments_bool_exp
+  ): [roleAssignments!]!
+
+  """
+  fetch aggregated fields from the table: "roleAssignments"
+  """
+  roleAssignments_aggregate(
+    """distinct select on columns"""
+    distinct_on: [roleAssignments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roleAssignments_order_by!]
+
+    """filter the rows returned"""
+    where: roleAssignments_bool_exp
+  ): roleAssignments_aggregate!
+
+  """
+  fetch data from the table: "roles"
+  """
+  roles(
+    """distinct select on columns"""
+    distinct_on: [roles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roles_order_by!]
+
+    """filter the rows returned"""
+    where: roles_bool_exp
+  ): [roles!]!
+
+  """
+  fetch aggregated fields from the table: "roles"
+  """
+  roles_aggregate(
+    """distinct select on columns"""
+    distinct_on: [roles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roles_order_by!]
+
+    """filter the rows returned"""
+    where: roles_bool_exp
+  ): roles_aggregate!
+
+  """fetch data from the table: "roles" using primary key columns"""
+  roles_by_pk(
+    "\n    organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.\n    organizer_admin: Full Read & Write permissions on web2 and web3 components.\n    organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.\n    organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.\n    organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.\n    organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.\n    organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.\n    organizer_guest: Limited access to web2. Can view public content without web3 permissions.\n    organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).\n"
+    value: String!
+  ): roles
+
   """Retrieve a single scheduledOperation"""
   scheduledOperation(
     """
@@ -15044,6 +16320,462 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: UserWhereInput
   ): UserConnection!
+}
+
+"""
+Table to assign roles to accounts, allowing a many-to-many relationship. Each account can have multiple roles and each role can be assigned to multiple accounts. This is part of the RBAC system integration.
+"""
+type roleAssignments {
+  accountId: uuid!
+  created_at: timestamptz!
+  eventId: String
+  id: uuid!
+  invitedById: uuid!
+
+  """An object relationship"""
+  inviter: account!
+  organizer(
+    """
+    Defines which locales should be returned.
+    
+    Note that `Organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: OrganizerWhereUniqueInput_remote_rel_roleAssignmentsorganizer!
+  ): Organizer
+  organizerId: String!
+  role: roles_enum!
+}
+
+"""
+aggregated selection of "roleAssignments"
+"""
+type roleAssignments_aggregate {
+  aggregate: roleAssignments_aggregate_fields
+  nodes: [roleAssignments!]!
+}
+
+input roleAssignments_aggregate_bool_exp {
+  count: roleAssignments_aggregate_bool_exp_count
+}
+
+input roleAssignments_aggregate_bool_exp_count {
+  arguments: [roleAssignments_select_column!]
+  distinct: Boolean
+  filter: roleAssignments_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "roleAssignments"
+"""
+type roleAssignments_aggregate_fields {
+  count(columns: [roleAssignments_select_column!], distinct: Boolean): Int!
+  max: roleAssignments_max_fields
+  min: roleAssignments_min_fields
+}
+
+"""
+order by aggregate values of table "roleAssignments"
+"""
+input roleAssignments_aggregate_order_by {
+  count: order_by
+  max: roleAssignments_max_order_by
+  min: roleAssignments_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "roleAssignments"
+"""
+input roleAssignments_arr_rel_insert_input {
+  data: [roleAssignments_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: roleAssignments_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "roleAssignments". All fields are combined with a logical 'AND'.
+"""
+input roleAssignments_bool_exp {
+  _and: [roleAssignments_bool_exp!]
+  _not: roleAssignments_bool_exp
+  _or: [roleAssignments_bool_exp!]
+  accountId: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  eventId: String_comparison_exp
+  id: uuid_comparison_exp
+  invitedById: uuid_comparison_exp
+  inviter: account_bool_exp
+  organizerId: String_comparison_exp
+  role: roles_enum_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "roleAssignments"
+"""
+enum roleAssignments_constraint {
+  """
+  unique or primary key constraint on columns "organizerId", "accountId", "role", "eventId"
+  """
+  unique_role_assignment
+}
+
+"""
+input type for inserting data into table "roleAssignments"
+"""
+input roleAssignments_insert_input {
+  accountId: uuid
+  created_at: timestamptz
+  eventId: String
+  id: uuid
+  invitedById: uuid
+  inviter: account_obj_rel_insert_input
+  organizerId: String
+  role: roles_enum
+}
+
+"""aggregate max on columns"""
+type roleAssignments_max_fields {
+  accountId: uuid
+  created_at: timestamptz
+  eventId: String
+  id: uuid
+  invitedById: uuid
+  organizerId: String
+}
+
+"""
+order by max() on columns of table "roleAssignments"
+"""
+input roleAssignments_max_order_by {
+  accountId: order_by
+  created_at: order_by
+  eventId: order_by
+  id: order_by
+  invitedById: order_by
+  organizerId: order_by
+}
+
+"""aggregate min on columns"""
+type roleAssignments_min_fields {
+  accountId: uuid
+  created_at: timestamptz
+  eventId: String
+  id: uuid
+  invitedById: uuid
+  organizerId: String
+}
+
+"""
+order by min() on columns of table "roleAssignments"
+"""
+input roleAssignments_min_order_by {
+  accountId: order_by
+  created_at: order_by
+  eventId: order_by
+  id: order_by
+  invitedById: order_by
+  organizerId: order_by
+}
+
+"""
+response of any mutation on the table "roleAssignments"
+"""
+type roleAssignments_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [roleAssignments!]!
+}
+
+"""
+on_conflict condition type for table "roleAssignments"
+"""
+input roleAssignments_on_conflict {
+  constraint: roleAssignments_constraint!
+  update_columns: [roleAssignments_update_column!]! = []
+  where: roleAssignments_bool_exp
+}
+
+"""Ordering options when selecting data from "roleAssignments"."""
+input roleAssignments_order_by {
+  accountId: order_by
+  created_at: order_by
+  eventId: order_by
+  id: order_by
+  invitedById: order_by
+  inviter: account_order_by
+  organizerId: order_by
+  role: order_by
+}
+
+"""
+select columns of table "roleAssignments"
+"""
+enum roleAssignments_select_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventId
+
+  """column name"""
+  id
+
+  """column name"""
+  invitedById
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  role
+}
+
+"""
+input type for updating data in table "roleAssignments"
+"""
+input roleAssignments_set_input {
+  accountId: uuid
+  created_at: timestamptz
+  eventId: String
+  id: uuid
+  invitedById: uuid
+  organizerId: String
+  role: roles_enum
+}
+
+"""
+Streaming cursor of the table "roleAssignments"
+"""
+input roleAssignments_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: roleAssignments_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input roleAssignments_stream_cursor_value_input {
+  accountId: uuid
+  created_at: timestamptz
+  eventId: String
+  id: uuid
+  invitedById: uuid
+  organizerId: String
+  role: roles_enum
+}
+
+"""
+update columns of table "roleAssignments"
+"""
+enum roleAssignments_update_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventId
+
+  """column name"""
+  id
+
+  """column name"""
+  invitedById
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  role
+}
+
+input roleAssignments_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: roleAssignments_set_input
+
+  """filter the rows which have to be updated"""
+  where: roleAssignments_bool_exp!
+}
+
+"""
+Stores user roles defining access levels and permissions within the Offline platform.
+"""
+type roles {
+  "\n    organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.\n    organizer_admin: Full Read & Write permissions on web2 and web3 components.\n    organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.\n    organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.\n    organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.\n    organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.\n    organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.\n    organizer_guest: Limited access to web2. Can view public content without web3 permissions.\n    organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).\n"
+  value: String!
+}
+
+"""
+aggregated selection of "roles"
+"""
+type roles_aggregate {
+  aggregate: roles_aggregate_fields
+  nodes: [roles!]!
+}
+
+"""
+aggregate fields of "roles"
+"""
+type roles_aggregate_fields {
+  count(columns: [roles_select_column!], distinct: Boolean): Int!
+  max: roles_max_fields
+  min: roles_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "roles". All fields are combined with a logical 'AND'.
+"""
+input roles_bool_exp {
+  _and: [roles_bool_exp!]
+  _not: roles_bool_exp
+  _or: [roles_bool_exp!]
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "roles"
+"""
+enum roles_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  roles_pkey
+}
+
+enum roles_enum {
+  organizer_admin
+  organizer_auditor
+  organizer_content_manager
+  organizer_finance_manager
+  organizer_guest
+  organizer_human_resources
+  organizer_operations_manager
+  organizer_super_admin
+  organizer_validator
+}
+
+"""
+Boolean expression to compare columns of type "roles_enum". All fields are combined with logical 'AND'.
+"""
+input roles_enum_comparison_exp {
+  _eq: roles_enum
+  _in: [roles_enum!]
+  _is_null: Boolean
+  _neq: roles_enum
+  _nin: [roles_enum!]
+}
+
+"""
+input type for inserting data into table "roles"
+"""
+input roles_insert_input {
+  "\n    organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.\n    organizer_admin: Full Read & Write permissions on web2 and web3 components.\n    organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.\n    organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.\n    organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.\n    organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.\n    organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.\n    organizer_guest: Limited access to web2. Can view public content without web3 permissions.\n    organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).\n"
+  value: String
+}
+
+"""aggregate max on columns"""
+type roles_max_fields {
+  "\n    organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.\n    organizer_admin: Full Read & Write permissions on web2 and web3 components.\n    organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.\n    organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.\n    organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.\n    organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.\n    organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.\n    organizer_guest: Limited access to web2. Can view public content without web3 permissions.\n    organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).\n"
+  value: String
+}
+
+"""aggregate min on columns"""
+type roles_min_fields {
+  "\n    organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.\n    organizer_admin: Full Read & Write permissions on web2 and web3 components.\n    organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.\n    organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.\n    organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.\n    organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.\n    organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.\n    organizer_guest: Limited access to web2. Can view public content without web3 permissions.\n    organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).\n"
+  value: String
+}
+
+"""
+response of any mutation on the table "roles"
+"""
+type roles_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [roles!]!
+}
+
+"""
+on_conflict condition type for table "roles"
+"""
+input roles_on_conflict {
+  constraint: roles_constraint!
+  update_columns: [roles_update_column!]! = []
+  where: roles_bool_exp
+}
+
+"""Ordering options when selecting data from "roles"."""
+input roles_order_by {
+  value: order_by
+}
+
+"""primary key columns input for table: roles"""
+input roles_pk_columns_input {
+  "\n    organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.\n    organizer_admin: Full Read & Write permissions on web2 and web3 components.\n    organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.\n    organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.\n    organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.\n    organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.\n    organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.\n    organizer_guest: Limited access to web2. Can view public content without web3 permissions.\n    organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).\n"
+  value: String!
+}
+
+"""
+select columns of table "roles"
+"""
+enum roles_select_column {
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "roles"
+"""
+input roles_set_input {
+  "\n    organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.\n    organizer_admin: Full Read & Write permissions on web2 and web3 components.\n    organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.\n    organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.\n    organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.\n    organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.\n    organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.\n    organizer_guest: Limited access to web2. Can view public content without web3 permissions.\n    organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).\n"
+  value: String
+}
+
+"""
+Streaming cursor of the table "roles"
+"""
+input roles_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: roles_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input roles_stream_cursor_value_input {
+  "\n    organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.\n    organizer_admin: Full Read & Write permissions on web2 and web3 components.\n    organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.\n    organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.\n    organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.\n    organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.\n    organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.\n    organizer_guest: Limited access to web2. Can view public content without web3 permissions.\n    organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).\n"
+  value: String
+}
+
+"""
+update columns of table "roles"
+"""
+enum roles_update_column {
+  """column name"""
+  value
+}
+
+input roles_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: roles_set_input
+
+  """filter the rows which have to be updated"""
+  where: roles_bool_exp!
 }
 
 """
@@ -15745,6 +17477,68 @@ type subscription_root {
     """filter the rows returned"""
     where: account_bool_exp
   ): [account!]!
+
+  """
+  fetch data from the table: "audit.logged_actions"
+  """
+  audit_logged_actions(
+    """distinct select on columns"""
+    distinct_on: [audit_logged_actions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [audit_logged_actions_order_by!]
+
+    """filter the rows returned"""
+    where: audit_logged_actions_bool_exp
+  ): [audit_logged_actions!]!
+
+  """
+  fetch aggregated fields from the table: "audit.logged_actions"
+  """
+  audit_logged_actions_aggregate(
+    """distinct select on columns"""
+    distinct_on: [audit_logged_actions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [audit_logged_actions_order_by!]
+
+    """filter the rows returned"""
+    where: audit_logged_actions_bool_exp
+  ): audit_logged_actions_aggregate!
+
+  """
+  fetch data from the table: "audit.logged_actions" using primary key columns
+  """
+  audit_logged_actions_by_pk(
+    """Unique identifier for each auditable event"""
+    event_id: bigint!
+  ): audit_logged_actions
+
+  """
+  fetch data from the table in a streaming manner: "audit.logged_actions"
+  """
+  audit_logged_actions_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [audit_logged_actions_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: audit_logged_actions_bool_exp
+  ): [audit_logged_actions!]!
 
   """
   fetch data from the table: "currency"
@@ -16490,6 +18284,120 @@ type subscription_root {
     """filter the rows returned"""
     where: orderStatus_bool_exp
   ): [orderStatus!]!
+
+  """
+  fetch data from the table: "roleAssignments"
+  """
+  roleAssignments(
+    """distinct select on columns"""
+    distinct_on: [roleAssignments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roleAssignments_order_by!]
+
+    """filter the rows returned"""
+    where: roleAssignments_bool_exp
+  ): [roleAssignments!]!
+
+  """
+  fetch aggregated fields from the table: "roleAssignments"
+  """
+  roleAssignments_aggregate(
+    """distinct select on columns"""
+    distinct_on: [roleAssignments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roleAssignments_order_by!]
+
+    """filter the rows returned"""
+    where: roleAssignments_bool_exp
+  ): roleAssignments_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "roleAssignments"
+  """
+  roleAssignments_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [roleAssignments_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: roleAssignments_bool_exp
+  ): [roleAssignments!]!
+
+  """
+  fetch data from the table: "roles"
+  """
+  roles(
+    """distinct select on columns"""
+    distinct_on: [roles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roles_order_by!]
+
+    """filter the rows returned"""
+    where: roles_bool_exp
+  ): [roles!]!
+
+  """
+  fetch aggregated fields from the table: "roles"
+  """
+  roles_aggregate(
+    """distinct select on columns"""
+    distinct_on: [roles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roles_order_by!]
+
+    """filter the rows returned"""
+    where: roles_bool_exp
+  ): roles_aggregate!
+
+  """fetch data from the table: "roles" using primary key columns"""
+  roles_by_pk(
+    "\n    organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.\n    organizer_admin: Full Read & Write permissions on web2 and web3 components.\n    organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.\n    organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.\n    organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.\n    organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.\n    organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.\n    organizer_guest: Limited access to web2. Can view public content without web3 permissions.\n    organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).\n"
+    value: String!
+  ): roles
+
+  """
+  fetch data from the table in a streaming manner: "roles"
+  """
+  roles_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [roles_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: roles_bool_exp
+  ): [roles!]!
 
   """
   fetch data from the table: "stripeCheckoutSession"

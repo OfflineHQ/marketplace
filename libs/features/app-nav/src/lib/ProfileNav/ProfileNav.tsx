@@ -48,14 +48,14 @@ export function ProfileNav({
                 {isLoading ? (
                   <Spinner size="xl" variant="ghost" className="md:mr-2" />
                 ) : (
-                  <ProfileAvatar user={user} className="relative bottom-10" />
+                  <ProfileAvatar user={user} />
                 )}
               </AutoAnimate>
-              <span className="hidden items-center justify-center pl-2 md:flex">
+              <div className="hidden pb-1 font-semibold md:flex md:pb-0">
                 {email
                   ? truncateEmailString(email, 12)
                   : truncateString(eoa, 16)}
-              </span>
+              </div>
             </div>
           ) : (
             <div className="mt-3 flex h-16 flex-col items-center space-y-0 px-4 md:mt-0 md:flex-row md:space-x-2">

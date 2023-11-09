@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
-import { setRates } from '../next-currency-cache';
+import { CurrencyCache } from '../next-currency-cache';
 
 export default async function handler() {
   try {
-    const result = await setRates();
+    const currencyCache = new CurrencyCache();
+    const result = await currencyCache.setRates();
     return new NextResponse(JSON.stringify(result), {
       status: 200,
     });

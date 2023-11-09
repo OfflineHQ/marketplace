@@ -1,3 +1,4 @@
+import { Currency_Enum_Not_Const } from '@currency/types';
 import env from '@env/server';
 import { isPreviewOrProduction } from '@shared/server';
 import * as fs from 'fs';
@@ -5,6 +6,11 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 
 export class Currency {
+  supportedCurrencies: string;
+
+  constructor() {
+    this.supportedCurrencies = Object.values(Currency_Enum_Not_Const).join(',');
+  }
   async getRate(baseCurrency: string): Promise<{ [key: string]: number }> {
     if (!isPreviewOrProduction()) {
       return await this.fetchFromLocalFile(baseCurrency);
@@ -12,7 +18,7 @@ export class Currency {
     try {
       // await this.saveToLocalFile(baseCurrency, rates);
       return await this.fetchFromAPI(
-        `http://data.fixer.io/api/latest?access_key=${env.FIXER_CURRENCY_API_KEY}&base=${baseCurrency}`,
+        `http://data.fixer.io/api/latest?access_key=${env.FIXER_CURRENCY_API_KEY}&base=${baseCurrency}&symbols=${this.supportedCurrencies}`,
         'Fixer',
       );
     } catch (error) {

@@ -1,7 +1,7 @@
 'use server';
 
 import type { Money } from '@currency/types';
-import { getRates } from '@next/currency-cache';
+import { CurrencyCache } from '@next/currency-cache';
 import { formatCurrency } from '@next/currency-common';
 import { Text, TextSkeleton, type TextProps } from '@ui/components';
 import { useLocale } from 'next-intl';
@@ -12,6 +12,8 @@ export interface ConvertedCurrencyProps extends TextProps, Money {
   translationFn?: (convertedAmount: string) => string;
 }
 
+const currencyCache = new CurrencyCache();
+
 async function ConvertedCurrencyContent({
   amount,
   currency,
@@ -20,7 +22,7 @@ async function ConvertedCurrencyContent({
   ...textProps
 }: ConvertedCurrencyProps) {
   const locale = useLocale();
-  const rates = await getRates();
+  const rates = await currencyCache.getRates();
   const formater = await getFormatter(locale);
   const convertedAmount = formatCurrency(
     formater,
