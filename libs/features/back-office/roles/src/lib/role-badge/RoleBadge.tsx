@@ -1,5 +1,5 @@
 import { Role, Roles_Enum_Not_Const_Values } from '@roles/types';
-import { Badge, BadgeProps } from 'libs/ui/components/src/lib/badge/Badge';
+import { Badge, BadgeProps } from '@ui/components';
 import { useTranslations } from 'next-intl';
 
 export interface RoleBadgeProps extends Omit<BadgeProps, 'role' | 'variant'> {

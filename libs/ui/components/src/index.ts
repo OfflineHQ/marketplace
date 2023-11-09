@@ -168,7 +168,7 @@ export { Toaster } from './lib/toast/Toaster';
 export { useToast, type ToastT } from './lib/toast/useToast';
 
 export { Ping, type PingProps } from './lib/Ping/Ping';
-export { Badge, BadgeSkeleton } from './lib/badge/Badge';
+export { Badge, BadgeSkeleton, type BadgeProps } from './lib/badge/Badge';
 export {
   BoundedNumericStepper,
   type BoundedNumericStepperProps,
