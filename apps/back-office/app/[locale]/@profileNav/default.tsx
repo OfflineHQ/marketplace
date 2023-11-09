@@ -1,12 +1,33 @@
-import { isConnected } from '@next/next-auth/user';
-import { useLocale } from 'next-intl';
+import {
+  ProfileNavClient,
+  ProfileNavSkeleton,
+} from '@features/back-office/app-nav';
+import { getMyRolesWithOrganizerInfos } from '@features/back-office/roles-api';
+import { getCurrentUser } from '@next/next-auth/user';
 import { getTranslator } from 'next-intl/server';
-import { ProfileNavClient } from '@features/app-nav';
+import { Suspense } from 'react';
 
-export default async function ProfileNavSection() {
-  const locale = useLocale();
+interface ProfileNavSectionProps {
+  params: {
+    locale: string;
+  };
+}
+
+export default async function ProfileNavSection({
+  params: { locale },
+}: ProfileNavSectionProps) {
+  return (
+    <Suspense fallback={<ProfileNavSkeleton />}>
+      <ProfileNavSectionContent locale={locale} />
+    </Suspense>
+  );
+}
+
+async function ProfileNavSectionContent({ locale }: { locale: string }) {
   const t = await getTranslator(locale, 'AppNav.Profile');
-  const isNextAuthConnected = await isConnected();
+  const user = await getCurrentUser();
+  let roles;
+  if (user) roles = await getMyRolesWithOrganizerInfos();
   return (
     <ProfileNavClient
       signInText={t('sign-in')}
@@ -21,7 +42,9 @@ export default async function ProfileNavSection() {
         signIn: t('sections-text.sign-in'),
         settings: t('sections-text.settings'),
       }}
-      isNextAuthConnected={isNextAuthConnected}
+      isNextAuthConnected={!!user}
+      roles={roles}
+      account={user}
     />
   );
 }

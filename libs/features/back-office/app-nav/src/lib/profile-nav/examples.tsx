@@ -1,7 +1,7 @@
-import { AuthProvider, NextAuthProvider } from '@next/auth';
+import { AuthProvider, NextAuthProvider, SafeUser } from '@next/auth';
 import { useTranslations } from 'next-intl';
+import { ProfileNav, ProfileNavProps } from './ProfileNav';
 import { ProfileNavClient } from './ProfileNavClient';
-import { ProfileNavProps, ProfileNav } from './ProfileNav';
 
 export function ProfileNavClientExample({ isNextAuthConnected = false }) {
   const t = useTranslations('AppNav.Profile');
@@ -37,3 +37,11 @@ export function ProfileNavExample(props: ProfileNavProps) {
     </div>
   );
 }
+
+export const user = {
+  eoa: '0x1bBEdB07706728A19c9dB82d3c420670D8040592',
+  safes: [],
+  email: 'johndoe@example.com',
+  name: 'John Doe',
+  profileImage: 'https://robohash.org/johndoe.png?size=96x96',
+} satisfies SafeUser;

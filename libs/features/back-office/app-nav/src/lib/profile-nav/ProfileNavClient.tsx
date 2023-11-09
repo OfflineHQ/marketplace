@@ -2,7 +2,8 @@
 
 import { useAuthContext } from '@next/auth';
 import { Link } from '@next/navigation';
-import { Role } from '@roles/types';
+import { AppUser } from '@next/types';
+import { Role, RoleWithOrganizer } from '@roles/types';
 import { useToast } from '@ui/components';
 import { LifeBuoy, LogIn, LogOut, Settings } from '@ui/icons';
 import { useSession } from 'next-auth/react';
@@ -27,16 +28,31 @@ export interface ProfileNavClientProps {
     settings: string;
   };
   isNextAuthConnected?: boolean;
+  roles?: RoleWithOrganizer[];
+  account?: AppUser;
 }
 
 export const ProfileNavClient = ({
   signInText,
   profileSectionsText,
   isNextAuthConnected,
+  roles,
+  account,
 }: ProfileNavClientProps) => {
   const { safeUser, login, logout, safeAuth, connecting } = useAuthContext();
   const { update } = useSession();
   const { toast } = useToast();
+
+  const matchingRole = account?.role
+    ? roles?.find((role) => {
+        const userRole = account.role;
+        return (
+          role.role === userRole?.role &&
+          role.organizerId === userRole?.organizerId &&
+          (role.eventId === userRole?.eventId || !userRole?.eventId)
+        );
+      })
+    : undefined;
 
   const signOutUserAction = useCallback(async () => {
     await logout({ refresh: true });
@@ -131,6 +147,7 @@ export const ProfileNavClient = ({
       items={items}
       isLoading={connecting && !isNextAuthConnected}
       user={safeUser}
+      role={matchingRole}
       signInText={signInText}
     />
   );

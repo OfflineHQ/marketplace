@@ -16,8 +16,8 @@ export function RoleAvatar(props: RoleAvatarProps) {
     role: { organizer },
     className,
   } = props;
-  const fallBack = organizer.name ? getInitials(organizer.name) : '';
-  const profileImage = organizer.image ? organizer.image.url : '';
+  const fallBack = organizer?.name ? getInitials(organizer.name) : '';
+  const profileImage = organizer?.image?.url || '';
   return profileImage || fallBack ? (
     <Avatar {...props} className={`${className} h-12 w-12`}>
       <AvatarImage
