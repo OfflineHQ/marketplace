@@ -1,3 +1,5 @@
+'use server';
+
 import { NextResponse } from 'next/server';
 import { CurrencyCache } from '../next-currency-cache';
 

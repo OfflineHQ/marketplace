@@ -1,40 +1,22 @@
 'use client';
 
-import { CurrencyCache } from '@next/currency-cache';
-
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-
-const currencyCache = new CurrencyCache();
+import { CurrencyRates } from '@currency/types';
+import { ReactNode, createContext, useContext } from 'react';
 
 export const CurrencyContext = createContext({ rates: {}, isLoading: true });
 
-export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
-  const [rates, setRates] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    currencyCache
-      .getRates()
-      .then((data) => {
-        setRates(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching rates:', error);
-      });
-  }, []);
-
+export const CurrencyProvider = ({
+  children,
+  rates,
+}: {
+  children: ReactNode;
+  rates: CurrencyRates;
+}) => {
   return (
     <CurrencyContext.Provider
       value={{
         rates,
-        isLoading,
+        isLoading: !!rates,
       }}
     >
       {children}
