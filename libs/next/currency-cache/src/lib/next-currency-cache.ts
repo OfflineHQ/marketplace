@@ -1,5 +1,5 @@
 import { Currency } from '@currency/api';
-import { Currency_Enum_Not_Const } from '@currency/types';
+import { Currency_Enum_Not_Const, CurrencyRates } from '@currency/types';
 import { Cache } from '@next/cache';
 import { isJestRunning } from '@utils';
 import { revalidateTag } from 'next/cache';
@@ -70,11 +70,7 @@ export class CurrencyCache {
     return await Promise.all(promises);
   }
 
-  async getRates(): Promise<{
-    [key in Currency_Enum_Not_Const]: {
-      [key in Currency_Enum_Not_Const]: number;
-    };
-  }> {
+  async getRates(): Promise<CurrencyRates> {
     const promises = Object.values(Currency_Enum_Not_Const).map(
       async (currency) => {
         const rate = await this.getRate(currency);

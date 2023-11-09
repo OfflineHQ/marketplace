@@ -102,12 +102,13 @@ export default async function RootLayout({
   const session = await getSession();
   const t = createTranslator({ locale, messages });
   const currencyCache = new CurrencyCache();
-
+  let rates;
   if (isLocal()) {
     const res = await currencyCache.getRate(Currency_Enum_Not_Const.Usd);
     if (!res) {
       await currencyCache.setRates();
     }
+    rates = await currencyCache.getRates();
   }
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -145,7 +146,7 @@ export default async function RootLayout({
               isConnected={isConnected}
             >
               <ReactQueryProviders>
-                <CurrencyProvider>
+                <CurrencyProvider rates={rates}>
                   <AppNavLayout {...appNavLayout} />
                   <Toaster />
                 </CurrencyProvider>
