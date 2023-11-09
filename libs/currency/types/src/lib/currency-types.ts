@@ -44,3 +44,9 @@ export enum Currency_Enum_Not_Const {
   Sgd = 'SGD',
   Usd = 'USD',
 }
+
+export type CurrencyRates = {
+  [key in Currency_Enum_Not_Const]: {
+    [key in Currency_Enum_Not_Const]: number;
+  };
+};
