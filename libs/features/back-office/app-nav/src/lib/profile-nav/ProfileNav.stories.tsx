@@ -60,4 +60,5 @@ export const WithUser: Story = {
 
 export const Skeleton: Story = {
   render: ProfileNavSkeleton,
+  ...WithUser,
 };

@@ -7,15 +7,15 @@ import {
 } from '@ui/components';
 import { getInitials } from '@ui/shared';
 
-export interface RoleAvatarProps extends Omit<AvatarProps, 'size'> {
+export interface RoleAvatarProps extends Omit<AvatarProps, 'size' | 'role'> {
   role: RoleWithOrganizer;
 }
 
-export function RoleAvatar(props: RoleAvatarProps) {
-  const {
-    role: { organizer },
-    className,
-  } = props;
+export function RoleAvatar({
+  role: { organizer },
+  className,
+  ...props
+}: RoleAvatarProps) {
   const fallBack = organizer?.name ? getInitials(organizer.name) : '';
   const profileImage = organizer?.image?.url || '';
   return profileImage || fallBack ? (
