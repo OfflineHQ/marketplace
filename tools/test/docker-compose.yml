@@ -63,7 +63,7 @@ services:
                 "organizer_content_manager",
                 "organizer_validator",
                 "organizer_auditor",
-                "organizer_guest,
+                "organizer_guest",
                 "organizer_human_resources"
               ],
               "x-hasura-client-id": {
