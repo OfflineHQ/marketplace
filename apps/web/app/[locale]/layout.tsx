@@ -1,5 +1,5 @@
 import { AuthProvider, NextAuthProvider } from '@next/auth';
-import { CurrencyProvider } from '@next/currency-provider';
+// import { CurrencyProvider } from '@next/currency-provider';
 import { getMessages, locales } from '@next/i18n';
 import { ReactQueryProviders } from '@next/react-query';
 import { Toaster } from '@ui/components';
@@ -13,11 +13,11 @@ import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 
-import { Currency_Enum_Not_Const } from '@currency/types';
+// import { Currency_Enum_Not_Const } from '@currency/types';
 import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
-import { CurrencyCache } from '@next/currency-cache';
+// import { CurrencyCache } from '@next/currency-cache';
 import { getSession, isConnected } from '@next/next-auth/user';
-import { isLocal } from '@shared/server';
+// import { isLocal } from '@shared/server';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -101,15 +101,15 @@ export default async function RootLayout({
   const messages = await getMessages(locale);
   const session = await getSession();
   const t = createTranslator({ locale, messages });
-  const currencyCache = new CurrencyCache();
-  let rates;
-  if (isLocal()) {
-    const res = await currencyCache.getRate(Currency_Enum_Not_Const.Usd);
-    if (!res) {
-      await currencyCache.setRates();
-    }
-    rates = await currencyCache.getRates();
-  }
+  // const currencyCache = new CurrencyCache();
+  // let rates;
+  // if (isLocal()) {
+  //   const res = await currencyCache.getRate(Currency_Enum_Not_Const.Usd);
+  //   if (!res) {
+  //     await currencyCache.setRates();
+  //   }
+  //   rates = await currencyCache.getRates();
+  // }
   return (
     <html lang={locale} suppressHydrationWarning>
       <head />
@@ -146,10 +146,8 @@ export default async function RootLayout({
               isConnected={isConnected}
             >
               <ReactQueryProviders>
-                <CurrencyProvider rates={rates}>
-                  <AppNavLayout {...appNavLayout} />
-                  <Toaster />
-                </CurrencyProvider>
+                <AppNavLayout {...appNavLayout} />
+                <Toaster />
               </ReactQueryProviders>
             </AuthProvider>
           </NextAuthProvider>
