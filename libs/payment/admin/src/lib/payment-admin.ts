@@ -9,6 +9,8 @@ import {
   StripeCheckoutSessionType_Enum,
   type Locale,
 } from '@gql/shared/types';
+import { getRates } from '@next/currency-cache';
+import { toUserCurrency } from '@next/currency-common';
 import { AppUser } from '@next/types';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import {
@@ -17,6 +19,7 @@ import {
   StripeCustomer,
 } from '@payment/types';
 import { getNextAppURL } from '@shared/server';
+import { toDecimal } from 'dinero.js';
 import Stripe from 'stripe';
 
 export class Payment {
@@ -210,7 +213,10 @@ export class Payment {
           .map((order) => order.id)
           .join(',')}`,
       );
-    const lineItems = orders.map((order) => {
+
+    const rates = await getRates();
+
+    const lineItemsPromises = orders.map(async (order) => {
       if (
         !order.eventPassPricing?.priceCurrency ||
         !order.eventPassPricing?.priceAmount
@@ -219,12 +225,34 @@ export class Payment {
           'Price currency or Price amount is undefined for order: ' + order.id,
         );
       }
+      let currencyStripe: string;
+      let unitAmount: number;
+
+      if (currency === order.eventPassPricing.priceCurrency) {
+        currencyStripe = currency.toLowerCase();
+        unitAmount = order.eventPassPricing.priceAmount;
+      } else {
+        currencyStripe = currency.toLowerCase();
+        unitAmount = Math.floor(
+          Number(
+            toDecimal(
+              toUserCurrency(
+                {
+                  amount: order.eventPassPricing.priceAmount,
+                  currency: order.eventPassPricing.priceCurrency,
+                },
+                rates,
+              ).dinero,
+            ),
+          ) * 100,
+        );
+      }
 
       return {
         quantity: order.quantity,
         price_data: {
-          currency: order.eventPassPricing.priceCurrency,
-          unit_amount: order.eventPassPricing.priceAmount,
+          currency: currencyStripe,
+          unit_amount: unitAmount,
           product_data: {
             name: order.eventPass?.name as string,
             images: [order.eventPass?.nftImage?.url as string],
@@ -257,12 +285,13 @@ export class Payment {
         'Email is null for stripe customer: ' + stripeCustomer.id,
       );
     }
+    const lineItems = await Promise.all(lineItemsPromises);
 
     const session = await this.stripe.checkout.sessions.create({
       line_items: lineItems,
       client_reference_id: user.id,
       customer: stripeCustomer.id,
-      currency,
+      currency: currency.toLowerCase(),
       locale,
       metadata,
       mode: 'payment',
@@ -279,7 +308,6 @@ export class Payment {
       //   setup_future_usage: 'on_session', // see alternative with 'off_session' here: https://stripe.com/docs/payments/save-during-payment
       // }
     });
-
     await adminSdk.SetEventPassOrdersStripeCheckoutSessionId({
       updates: orders.map(({ id }) => ({
         _set: {
