@@ -49,7 +49,8 @@
         "sign-out-title": "You have been signed out",
         "sign-out-description": "See you soon 👋 !",
         "sign-in": "Sign in",
-        "settings": "Settings"
+        "settings": "Settings",
+        "copied-address": "Address copied!"
       }
     },
     "Pass": {

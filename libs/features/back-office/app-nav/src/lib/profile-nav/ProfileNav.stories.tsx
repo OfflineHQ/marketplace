@@ -1,8 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 // import { cryptoUserSession } from '../profile-avatar/examples';
+import { screen, userEvent } from '@storybook/testing-library';
 import { organizerRoleAdmin } from '../role-avatar/examples';
 import { ProfileNav, ProfileNavSkeleton } from './ProfileNav';
-import { ProfileNavExample, user } from './examples';
+import {
+  ProfileNavExample,
+  itemsAdmin,
+  itemsNotConnected,
+  itemsUserNoRoles,
+  itemsUserWithRoles,
+  user,
+} from './examples';
 
 const meta = {
   component: ProfileNav,
@@ -17,7 +25,44 @@ export const NotConnected: Story = {
   args: {
     isLoading: false,
     signInText: 'Sign in',
-    items: [],
+    items: itemsNotConnected,
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(await screen.findByText('Sign in'));
+    await screen.findByText('Settings');
+    await screen.findByText('Support');
+  },
+};
+
+export const WithUserNoRoles: Story = {
+  args: {
+    user,
+    isLoading: false,
+    items: itemsUserNoRoles,
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(await screen.findByText(/john/i));
+    await screen.findByText('Settings');
+    screen.getByText('Support');
+    screen.getByText(/0x/i);
+    screen.getByText(/sign out/i);
+  },
+};
+
+export const WithUserRoles: Story = {
+  args: {
+    user,
+    isLoading: false,
+    items: itemsUserWithRoles,
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(await screen.findByText(/john/i));
+    await screen.findByText('Settings');
+    screen.getByText('Support');
+    screen.getByText(/0x/i);
+    screen.getByText(/sign out/i);
+    await userEvent.click(await screen.findByText(/switch to role/i));
+    await screen.findByText(/super admin/i);
   },
 };
 
@@ -25,7 +70,7 @@ export const WithAdminRole: Story = {
   args: {
     role: organizerRoleAdmin,
     isLoading: false,
-    items: [],
+    items: itemsAdmin,
   },
 };
 
@@ -40,22 +85,13 @@ export const WithAdminRoleMobile: Story = {
 
 export const WithAdminRoleLoading: Story = {
   args: {
-    role: organizerRoleAdmin,
+    ...WithAdminRole,
     isLoading: true,
-    items: [],
-  },
-};
-
-export const WithUser: Story = {
-  args: {
-    user,
-    isLoading: false,
-    items: [],
   },
 };
 
 export const WithUserMobile: Story = {
-  ...WithUser,
+  ...WithUserNoRoles,
   parameters: {
     viewport: {
       defaultViewport: 'mobile1',
@@ -65,5 +101,5 @@ export const WithUserMobile: Story = {
 
 export const Skeleton: Story = {
   render: ProfileNavSkeleton,
-  ...WithUser,
+  ...WithUserNoRoles,
 };
