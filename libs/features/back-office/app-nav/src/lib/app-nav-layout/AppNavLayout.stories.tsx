@@ -6,8 +6,10 @@ import {
   MenuNavWithAdminRole,
   MenuNavWithNoRole,
   MenuNavWithNoUser,
+  MenuNavWithSuperAdminRole,
   ProfileNavWithAdminRole,
   ProfileNavWithNoUser,
+  ProfileNavWithSuperAdminRole,
   ProfileNavWithUser,
 } from './examples';
 
@@ -43,6 +45,14 @@ export const WithAdminRole: Story = {
     children: 'test',
     menuNav: <MenuNavWithAdminRole />,
     profileNav: <ProfileNavWithAdminRole />,
+  },
+};
+
+export const WithSuperAdminRole: Story = {
+  args: {
+    children: 'test',
+    menuNav: <MenuNavWithSuperAdminRole />,
+    profileNav: <ProfileNavWithSuperAdminRole />,
   },
 };
 
