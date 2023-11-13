@@ -60,6 +60,12 @@
       "text": "Cart",
       "helper-text": "Go to your cart",
       "helper-text-purchase": "Finish your purchase"
+    },
+    "MenuNav": {
+      "go-to-text": "Go to ...",
+      "my-roles-text": "My Roles",
+      "manage-roles-text": "Manage Roles",
+      "events-management-text": "Events Management"
     }
   },
   "Cart": {

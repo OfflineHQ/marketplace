@@ -44,11 +44,11 @@ const SelectItems: React.FC<SelectItemsProps> = ({ items, className }) => {
                 wrapper={item.wrapper}
                 value={item.value || index.toString()}
               >
-                <div className="flex">
+                <div className="flex items-center">
                   {icon && (
                     <icon.type
                       {...icon.props}
-                      className={cn(iconClasses, icon.props.className)}
+                      className={cn(iconClasses, icon.props.className, 'ml-2')}
                     />
                   )}
                   <span>{item.text}</span>
