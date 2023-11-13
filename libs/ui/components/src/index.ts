@@ -176,6 +176,7 @@ export { useToast, type ToastT } from './lib/toast/useToast';
 
 export { Ping, type PingProps } from './lib/Ping/Ping';
 export { Badge, BadgeSkeleton, type BadgeProps } from './lib/badge/Badge';
+export { BlockchainAddress } from './lib/blockchain-address/BlockchainAddress';
 export {
   BoundedNumericStepper,
   type BoundedNumericStepperProps,
