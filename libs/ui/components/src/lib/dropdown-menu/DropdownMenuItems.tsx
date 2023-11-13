@@ -77,10 +77,19 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
                     <DropdownMenuSubContent>
-                      <DropdownMenuItems
-                        items={item.subItems || []}
-                        setLoading={setLoading}
-                      />
+                      {item.subItems?.map((subItem, subIndex) =>
+                        subItem.type !== 'children' ? (
+                          <DropdownMenuItemClient
+                            key={subIndex}
+                            icon={subItem.icon}
+                            item={subItem}
+                            setLoading={setLoading}
+                            iconClasses={iconClasses}
+                          />
+                        ) : (
+                          <div key={subIndex}>{subItem.children}</div>
+                        ),
+                      )}
                     </DropdownMenuSubContent>
                   </DropdownMenuPortal>
                 </DropdownMenuSub>
