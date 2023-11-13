@@ -41,6 +41,7 @@ async function ProfileNavSectionContent({ locale }: { locale: string }) {
         signOutDescription: t('sections-text.sign-out-description'),
         signIn: t('sections-text.sign-in'),
         settings: t('sections-text.settings'),
+        copiedAddress: t('sections-text.copied-address'),
       }}
       isNextAuthConnected={!!user}
       roles={roles}

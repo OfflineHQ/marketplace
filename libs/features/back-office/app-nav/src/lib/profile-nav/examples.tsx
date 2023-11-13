@@ -1,15 +1,24 @@
 import { AuthProvider, NextAuthProvider, SafeUser } from '@next/auth';
 import { useTranslations } from 'next-intl';
+import {
+  organizerRoleAdmin,
+  organizerRoleSuperAdmin,
+} from '../role-avatar/examples';
 import { ProfileNav, ProfileNavProps } from './ProfileNav';
-import { ProfileNavClient } from './ProfileNavClient';
+import {
+  ProfileNavClient,
+  ProfileNavClientProps,
+  constructItems,
+} from './ProfileNavClient';
 
-export function ProfileNavClientExample({ isNextAuthConnected = false }) {
+export function ProfileNavClientExample(props: ProfileNavClientProps) {
   const t = useTranslations('AppNav.Profile');
   return (
     <div className="flex">
       <NextAuthProvider session={null}>
         <AuthProvider session={null} isConnected={() => true}>
           <ProfileNavClient
+            {...props}
             signInText={t('sign-in')}
             profileSectionsText={{
               myAccount: t('sections-text.my-account'),
@@ -21,8 +30,8 @@ export function ProfileNavClientExample({ isNextAuthConnected = false }) {
               signOutDescription: t('sections-text.sign-out-description'),
               signIn: t('sections-text.sign-in'),
               settings: t('sections-text.settings'),
+              copiedAddress: t('sections-text.copied-address'),
             }}
-            isNextAuthConnected={isNextAuthConnected}
           />{' '}
         </AuthProvider>
       </NextAuthProvider>
@@ -38,6 +47,19 @@ export function ProfileNavExample(props: ProfileNavProps) {
   );
 }
 
+const profileSectionsText = {
+  myAccount: 'My account',
+  support: 'Support',
+  supportTitle: 'Support',
+  supportDescription: 'Support description',
+  signOut: 'Sign out',
+  signOutTitle: 'Sign out',
+  signOutDescription: 'Sign out description',
+  signIn: 'Sign in',
+  settings: 'Settings',
+  copiedAddress: 'Copied address!',
+} as ProfileNavClientProps['profileSectionsText'];
+
 export const user = {
   eoa: '0x1bBEdB07706728A19c9dB82d3c420670D8040592',
   safes: [],
@@ -45,3 +67,32 @@ export const user = {
   name: 'John Doe',
   profileImage: 'https://robohash.org/johndoe.png?size=96x96',
 } satisfies SafeUser;
+
+const commonProps = {
+  profileSectionsText,
+  safeUser: user,
+  login: () => null,
+  signOutUserAction: () => null,
+  switchToRole: () => null,
+  switchToMyAccount: () => null,
+};
+
+export const itemsNotConnected: ProfileNavProps['items'] = constructItems({
+  ...commonProps,
+  safeUser: undefined,
+});
+
+export const itemsUserNoRoles: ProfileNavProps['items'] = constructItems({
+  ...commonProps,
+});
+
+export const itemsUserWithRoles: ProfileNavProps['items'] = constructItems({
+  ...commonProps,
+  roles: [organizerRoleAdmin, organizerRoleSuperAdmin],
+});
+
+export const itemsAdmin: ProfileNavProps['items'] = constructItems({
+  ...commonProps,
+  roles: [organizerRoleAdmin, organizerRoleSuperAdmin],
+  matchingRole: organizerRoleAdmin,
+});

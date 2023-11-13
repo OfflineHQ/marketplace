@@ -49,7 +49,8 @@
         "sign-out-title": "Vous avez été déconnecté",
         "sign-out-description": "À bientôt 👋 !",
         "sign-in": "Se connecter",
-        "settings": "Paramètres"
+        "settings": "Paramètres",
+        "copied-address": "Adresse copiée !"
       }
     },
     "Pass": {
