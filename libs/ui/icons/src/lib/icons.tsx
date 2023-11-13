@@ -46,6 +46,7 @@ import {
   HiOutlineLanguage,
   HiOutlineUsers as HiOutlineUsers2,
 } from 'react-icons/hi2';
+import { LuCopy } from 'react-icons/lu';
 import { RxMagicWand } from 'react-icons/rx';
 import { AccessibleIcon } from './AccessibleIcon';
 import { IconProps } from './variants';
@@ -86,6 +87,10 @@ import { PiIdentificationCardLight } from 'react-icons/pi';
 import type { IconType as ReactIcon } from 'react-icons';
 
 export type IconType = ReactIcon;
+
+export const Copy: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={LuCopy} label={'Copy'} {...props} />
+);
 
 export const UserIdentification: FC<IconProps> = (props) => (
   <AccessibleIcon

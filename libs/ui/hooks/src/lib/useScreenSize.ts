@@ -1,4 +1,4 @@
-import { useWindowSize } from 'react-use';
+import { useWindowSize } from '@uidotdev/usehooks';
 
 const screens = {
   sm: 640,
@@ -9,8 +9,8 @@ const screens = {
 };
 
 export function useScreenSize() {
-  const { width } = useWindowSize();
-
+  const { width: _width } = useWindowSize();
+  const width = _width || 0;
   const isSm = width <= screens.sm;
   const isMd = width > screens.sm && width < screens.lg;
   const isLg = width >= screens.lg && width < screens.xl;
