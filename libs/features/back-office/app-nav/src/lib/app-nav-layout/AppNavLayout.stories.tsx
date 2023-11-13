@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import React from 'react';
 import { AppNavLayout } from './AppNavLayout';
 import {
+  MenuNavWithAdminRole,
+  MenuNavWithNoRole,
+  MenuNavWithNoUser,
   ProfileNavWithAdminRole,
   ProfileNavWithNoUser,
   ProfileNavWithUser,
@@ -21,6 +25,7 @@ type Story = StoryObj<typeof meta>;
 export const WithNoUser: Story = {
   args: {
     children: 'test',
+    menuNav: <MenuNavWithNoUser />,
     profileNav: <ProfileNavWithNoUser />,
   },
 };
@@ -28,6 +33,7 @@ export const WithNoUser: Story = {
 export const WithUser: Story = {
   args: {
     children: 'test',
+    menuNav: <MenuNavWithNoRole />,
     profileNav: <ProfileNavWithUser />,
   },
 };
@@ -35,6 +41,7 @@ export const WithUser: Story = {
 export const WithAdminRole: Story = {
   args: {
     children: 'test',
+    menuNav: <MenuNavWithAdminRole />,
     profileNav: <ProfileNavWithAdminRole />,
   },
 };

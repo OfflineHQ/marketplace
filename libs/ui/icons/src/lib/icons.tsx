@@ -12,6 +12,7 @@ import {
 } from 'react-icons/ai';
 import { BiCircle, BiHelpCircle, BiXCircle } from 'react-icons/bi';
 import {
+  BsCalendarWeek,
   BsCurrencyExchange,
   BsDownload,
   BsQrCode,
@@ -43,6 +44,7 @@ import {
   HiOutlineArrowUpCircle,
   HiOutlineCalendarDays,
   HiOutlineLanguage,
+  HiOutlineUsers as HiOutlineUsers2,
 } from 'react-icons/hi2';
 import { RxMagicWand } from 'react-icons/rx';
 import { AccessibleIcon } from './AccessibleIcon';
@@ -149,6 +151,14 @@ export const CurrencySettings: FC<IconProps> = (props) => (
 
 export const Download: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={BsDownload} label={'Download'} {...props} />
+);
+
+export const EventManagement: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={BsCalendarWeek}
+    label={'Event Management'}
+    {...props}
+  />
 );
 
 export const OutlineArrowRight: FC<IconProps> = (props) => (
@@ -388,6 +398,10 @@ export const UserAdd: FC<IconProps> = (props) => (
 );
 
 export const Users: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={HiOutlineUsers2} label={'Users'} {...props} />
+);
+
+export const UserRoles: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={HiOutlineUsers} label={'Users'} {...props} />
 );
 

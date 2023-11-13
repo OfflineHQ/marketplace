@@ -60,6 +60,12 @@
       "text": "Panier",
       "helper-text": "Accédez à votre panier",
       "helper-text-purchase": "Terminez votre achat"
+    },
+    "MenuNav": {
+      "go-to-text": "Allez à ...",
+      "my-roles-text": "Mes rôles",
+      "manage-roles-text": "Gérer les rôles",
+      "events-management-text": "Gestion des événements"
     }
   },
   "Cart": {

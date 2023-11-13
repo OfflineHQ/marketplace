@@ -74,7 +74,7 @@ function ProfileNavUser({ user, isLoading }: ProfileNavUserProps) {
           <ProfileAvatar user={user} />
         )}
       </AutoAnimate>
-      <div className="flex pb-0 font-semibold">
+      <div className="hidden pb-0 font-semibold md:flex">
         {email ? truncateEmailString(email, 12) : truncateString(eoa, 16)}
       </div>
     </div>
@@ -121,7 +121,7 @@ function ProfileNavRole({ role, isLoading }: ProfileNavRoleProps) {
           <RoleAvatar role={role} />
         )}
       </AutoAnimate>
-      <div className="flex flex-col">
+      <div className="hidden flex-col md:flex">
         <div className="pb-1 font-semibold">{name}</div>
         <RoleBadge role={role} size="sm" />
       </div>
