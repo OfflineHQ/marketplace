@@ -2,7 +2,10 @@ import { backOfficeAccounts } from '@test-utils/gql';
 import { MenuNav } from '../menu-nav/MenuNav';
 import { ProfileNav, ProfileNavSkeleton } from '../profile-nav/ProfileNav';
 import { user } from '../profile-nav/examples';
-import { organizerRoleAdmin } from '../role-avatar/examples';
+import {
+  organizerRoleAdmin,
+  organizerRoleSuperAdmin,
+} from '../role-avatar/examples';
 
 export const ProfileNavWithNoUser = () => (
   <ProfileNav
@@ -30,6 +33,10 @@ export const ProfileNavWithUser = () => (
 
 export const ProfileNavWithAdminRole = () => (
   <ProfileNav role={organizerRoleAdmin} isLoading={false} items={[]} />
+);
+
+export const ProfileNavWithSuperAdminRole = () => (
+  <ProfileNav role={organizerRoleSuperAdmin} isLoading={false} items={[]} />
 );
 
 export const MenuNavWithNoUser = () => <MenuNav user={undefined} />;
