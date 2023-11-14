@@ -6,8 +6,7 @@ import { Link } from '@next/navigation';
 import { AppUser } from '@next/types';
 import { Role, RoleWithOrganizer } from '@roles/types';
 import { BlockchainAddress, DropdownMenuItem, useToast } from '@ui/components';
-import { LifeBuoy, LogIn, LogOut, Settings } from '@ui/icons';
-import { toast } from 'libs/ui/components/src/lib/toast/useToast';
+import { LifeBuoy, LogIn, LogOut, Settings, User } from '@ui/icons';
 import { useSession } from 'next-auth/react';
 import { useCallback, useMemo } from 'react';
 import { RoleAvatar } from '../role-avatar/RoleAvatar';
@@ -37,6 +36,7 @@ interface ConstructItemsParams {
   signOutUserAction: () => void;
   switchToRole: (role: Role) => void;
   switchToMyAccount: () => void;
+  toast: ReturnType<typeof useToast>['toast'];
 }
 
 export interface ProfileNavClientProps
@@ -56,15 +56,14 @@ interface RoleItemProps {
 
 const RoleItem = ({ role, switchToRole }: RoleItemProps) => {
   const name = role.organizer?.name;
-  console.log({ role });
   return (
     <DropdownMenuItem
       onSelect={() => switchToRole(role)}
       className="cursor-pointer"
     >
-      <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0 px-4">
+      <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0">
         <RoleAvatar role={role} />
-        <div className="hidden flex-col md:flex">
+        <div className="flex flex-col">
           <div className="pb-1 font-semibold">{name}</div>
           <RoleBadge role={role} size="sm" />
         </div>
@@ -82,6 +81,7 @@ export const constructItems = ({
   signOutUserAction,
   switchToRole,
   switchToMyAccount,
+  toast,
 }: ConstructItemsParams): ProfileNavProps['items'] => {
   const commonSections: ProfileNavProps['items'] = [
     {
@@ -103,6 +103,35 @@ export const constructItems = ({
         }),
     },
   ];
+
+  const currentRoleSections: ProfileNavProps['items'] = matchingRole
+    ? [
+        {
+          type: 'label',
+          text: 'My current role',
+          className: 'md:hidden',
+        },
+        {
+          type: 'children',
+          children: (
+            <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0 pl-2">
+              <RoleAvatar role={matchingRole} />
+              <div className="flex flex-col">
+                <div className="overflow-hidden pb-1 text-sm">
+                  {matchingRole.organizer?.name}
+                </div>
+                <RoleBadge role={matchingRole} size="sm" />
+              </div>
+            </div>
+          ),
+          className: 'md:hidden',
+        },
+        {
+          type: 'separator',
+          className: 'md:hidden',
+        },
+      ]
+    : [];
 
   const userInfoSections: ProfileNavProps['items'] = safeUser
     ? [
@@ -133,6 +162,15 @@ export const constructItems = ({
       ),
     });
   }
+  if (matchingRole) {
+    userInfoSections.push({
+      type: 'item',
+      text: 'Switch to my account',
+      icon: <User />,
+      className: 'cursor-pointer',
+      action: switchToMyAccount,
+    });
+  }
 
   const rolesSections: ProfileNavProps['items'] = roles?.length
     ? [
@@ -145,11 +183,13 @@ export const constructItems = ({
         {
           type: 'sub',
           text: 'Switch to role',
-          subItems: roles.map((role) => ({
-            type: 'children',
-            children: <RoleItem role={role} switchToRole={switchToRole} />,
-            className: 'cursor-pointer',
-          })),
+          subItems: roles
+            .filter((role) => role !== matchingRole)
+            .map((role) => ({
+              type: 'children',
+              children: <RoleItem role={role} switchToRole={switchToRole} />,
+              className: 'cursor-pointer',
+            })),
         },
       ]
     : [];
@@ -167,6 +207,7 @@ export const constructItems = ({
         ...commonSections,
       ]
     : [
+        ...currentRoleSections,
         ...userInfoSections,
         ...rolesSections,
         { type: 'separator' },
@@ -238,6 +279,7 @@ export const ProfileNavClient = ({
         signOutUserAction,
         switchToRole,
         switchToMyAccount,
+        toast,
       }),
     [
       roles,
@@ -248,6 +290,7 @@ export const ProfileNavClient = ({
       signOutUserAction,
       switchToRole,
       switchToMyAccount,
+      toast,
     ],
   );
   return !safeAuth ? (

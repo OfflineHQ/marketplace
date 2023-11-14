@@ -49,6 +49,15 @@ export const WithUserNoRoles: Story = {
   },
 };
 
+export const WithUserNoRolesMobile: Story = {
+  ...WithUserNoRoles,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
 export const WithUserRoles: Story = {
   args: {
     user,
@@ -72,6 +81,17 @@ export const WithAdminRole: Story = {
     isLoading: false,
     items: itemsAdmin,
   },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(await screen.findByText(/Organizer admin/i));
+    await screen.findByText('Settings');
+    screen.getByText(/current role/i);
+    screen.getByText('Support');
+    screen.getByText(/0x/i);
+    screen.getByText(/sign out/i);
+    screen.getByText(/switch to my account/i);
+    await userEvent.click(await screen.findByText(/switch to role/i));
+    await screen.findByText(/super admin/i);
+  },
 };
 
 export const WithAdminRoleMobile: Story = {
@@ -85,21 +105,24 @@ export const WithAdminRoleMobile: Story = {
 
 export const WithAdminRoleLoading: Story = {
   args: {
-    ...WithAdminRole,
+    ...WithAdminRole.args,
     isLoading: true,
   },
 };
 
-export const WithUserMobile: Story = {
-  ...WithUserNoRoles,
+export const WithAdminRoleLoadingMobile: Story = {
   parameters: {
     viewport: {
       defaultViewport: 'mobile1',
     },
   },
+  args: {
+    ...WithAdminRole.args,
+    isLoading: true,
+  },
 };
 
 export const Skeleton: Story = {
   render: ProfileNavSkeleton,
-  ...WithUserNoRoles,
+  args: NotConnected.args,
 };
