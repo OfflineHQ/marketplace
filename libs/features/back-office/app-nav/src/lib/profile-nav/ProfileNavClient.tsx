@@ -2,7 +2,7 @@
 
 import { RoleBadge } from '@features/back-office/roles';
 import { SafeUser, useAuthContext } from '@next/auth';
-import { Link } from '@next/navigation';
+import { Link, useRouter } from '@next/navigation';
 import { AppUser } from '@next/types';
 import { RoleWithOrganizer } from '@roles/types';
 import { BlockchainAddress, DropdownMenuItem, useToast } from '@ui/components';
@@ -237,6 +237,7 @@ export const ProfileNavClient = ({
   const { safeUser, login, logout, safeAuth, connecting } = useAuthContext();
   const { update } = useSession();
   const { toast } = useToast();
+  const router = useRouter();
 
   const matchingRole = account?.role
     ? roles?.find((role) => {
@@ -265,6 +266,8 @@ export const ProfileNavClient = ({
           title: profileSectionsText.switchToRoleToastTitle,
           description: RoleItem({ role, switchToRole: () => null }),
         });
+        // TODO redirect to default role route
+        // const defaultRoleRoute = '';
       } catch (error) {
         console.error(error);
         toast({
@@ -284,6 +287,7 @@ export const ProfileNavClient = ({
         title: profileSectionsText.switchToMyAccountToastTitle,
         description: profileSectionsText.switchToMyAccountToastTDescription,
       });
+      router.push('/my-roles');
     } catch (error) {
       console.error(error);
       toast({

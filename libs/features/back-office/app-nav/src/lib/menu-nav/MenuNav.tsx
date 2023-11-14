@@ -25,7 +25,7 @@ export const MenuNav: React.FC<MenuNavProps> = ({ user }) => {
   ];
   const manageRoles: MenuNavMobileProps['items'][0] = {
     icon: <Users />,
-    value: 'manage-roles',
+    value: '/manage-roles',
     wrapper: <Link href="/manage-roles" />,
     text: t('manage-roles-text'),
     type: 'item',
