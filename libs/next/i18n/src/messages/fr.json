@@ -57,7 +57,8 @@
         "switch-to-role-toast-error-title": "Erreur lors de la tentative de changement de rôle",
         "switch-to-my-account-toast-title": "Compte utilisateur",
         "switch-to-my-account-toast-description": "Vous êtes maintenant connecté avec votre propre compte",
-        "switch-to-my-account-toast-error-title": "Erreur lors de la tentative de basculement vers votre compte"
+        "switch-to-my-account-toast-error-title": "Erreur lors de la tentative de basculement vers votre compte",
+        "switch-to-role-toast-title": "Passé au rôle :"
       }
     },
     "Pass": {

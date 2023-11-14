@@ -20,8 +20,6 @@ export const MenuNavMobile: React.FC<MenuNavMobileProps> = ({
 }) => {
   const pathname = usePathname();
   if (items.length === 0) return null;
-
-  console.log({ pathname });
   return (
     <Select defaultValue={pathname !== '/' ? pathname : undefined}>
       <SelectTrigger className="flex min-w-min space-x-2">

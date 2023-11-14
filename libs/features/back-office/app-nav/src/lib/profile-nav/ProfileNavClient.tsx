@@ -81,6 +81,16 @@ const RoleItem = ({ role, switchToRole }: RoleItemProps) => {
   );
 };
 
+const RoleItemDisplay = ({ role }: { role: RoleWithOrganizer }) => (
+  <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0 pl-2">
+    <RoleAvatar role={role} />
+    <div className="flex flex-col">
+      <div className="pb-1 text-sm">{role.organizer?.name}</div>
+      <RoleBadge role={role} size="sm" />
+    </div>
+  </div>
+);
+
 export const constructItems = ({
   roles,
   matchingRole,
@@ -122,17 +132,7 @@ export const constructItems = ({
         },
         {
           type: 'children',
-          children: (
-            <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0 pl-2">
-              <RoleAvatar role={matchingRole} />
-              <div className="flex flex-col">
-                <div className="pb-1 text-sm">
-                  {matchingRole.organizer?.name}
-                </div>
-                <RoleBadge role={matchingRole} size="sm" />
-              </div>
-            </div>
-          ),
+          children: <RoleItemDisplay role={matchingRole} />,
           className: 'md:hidden',
         },
         {
@@ -264,7 +264,7 @@ export const ProfileNavClient = ({
         await update({ role });
         toast({
           title: profileSectionsText.switchToRoleToastTitle,
-          description: RoleItem({ role, switchToRole: () => null }),
+          description: <RoleItemDisplay role={role} />,
         });
         // TODO redirect to default role route
         // const defaultRoleRoute = '';

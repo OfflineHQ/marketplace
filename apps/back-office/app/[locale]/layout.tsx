@@ -17,10 +17,11 @@ import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { Metadata } from 'next';
-import { createTranslator } from 'next-intl';
+import { createTranslator, NextIntlClientProvider } from 'next-intl';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
+import { deepPick } from '@utils';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -65,6 +66,7 @@ export default async function RootLayout({
   const messages = await getMessages(locale);
   const session = await getSession();
   const t = createTranslator({ locale, messages });
+  const localeMessages = deepPick(messages, ['Roles.RoleBadge']);
   const currencyCache = new CurrencyCache();
   let rates;
   if (isLocal()) {
@@ -113,7 +115,12 @@ export default async function RootLayout({
                 <ReactQueryProviders>
                   <CurrencyProvider rates={rates}>
                     <AppNavLayout {...appNavLayout} />
-                    <Toaster />
+                    <NextIntlClientProvider
+                      locale={locale}
+                      messages={localeMessages}
+                    >
+                      <Toaster />
+                    </NextIntlClientProvider>
                   </CurrencyProvider>
                 </ReactQueryProviders>
               </UploaderProvider>
