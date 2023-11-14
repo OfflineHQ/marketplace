@@ -18,6 +18,7 @@ export interface SelectItemProps {
   className?: string;
   icon?: React.ReactElement;
   wrapper?: React.ReactElement;
+  children?: React.ReactNode;
   iconClasses?: string;
   disabled?: boolean;
 }
@@ -32,29 +33,38 @@ const SelectItems: React.FC<SelectItemsProps> = ({ items, className }) => {
     size: 'sm',
     marginRight: 'default',
   });
+
+  const renderSelectItem = (itemProps: SelectItemProps, itemIndex: number) => {
+    const { icon: itemIcon, ...item } = itemProps;
+    const content = (
+      <div className="flex items-center">
+        {itemIcon && (
+          <itemIcon.type
+            {...itemIcon.props}
+            className={cn(iconClasses, itemIcon.props.className, 'ml-2')}
+          />
+        )}
+        <span>{item.text}</span>
+      </div>
+    );
+
+    return (
+      <SelectItem
+        key={itemIndex}
+        disabled={item.disabled}
+        value={item.value || itemIndex.toString()}
+      >
+        {item.wrapper ? React.cloneElement(item.wrapper, {}, content) : content}
+      </SelectItem>
+    );
+  };
+
   return (
     <SelectContent>
       {items.map(({ icon, ...item }, index) => {
         switch (item.type) {
           case 'item':
-            return (
-              <SelectItem
-                key={index}
-                disabled={item.disabled}
-                wrapper={item.wrapper}
-                value={item.value || index.toString()}
-              >
-                <div className="flex items-center">
-                  {icon && (
-                    <icon.type
-                      {...icon.props}
-                      className={cn(iconClasses, icon.props.className, 'ml-2')}
-                    />
-                  )}
-                  <span>{item.text}</span>
-                </div>
-              </SelectItem>
-            );
+            return renderSelectItem(item, index);
           case 'group':
             return (
               <SelectGroup key={index}>
@@ -72,26 +82,12 @@ const SelectItems: React.FC<SelectItemsProps> = ({ items, className }) => {
                           </SelectLabel>
                         );
                       case 'item':
+                        return renderSelectItem(groupItem, groupIndex);
+                      case 'children':
                         return (
-                          <SelectItem
-                            key={groupIndex}
-                            disabled={groupItem.disabled}
-                            wrapper={groupItem.wrapper}
-                            value={groupItem.value || groupIndex.toString()}
-                          >
-                            <div className="flex">
-                              {groupIcon && (
-                                <groupIcon.type
-                                  {...groupIcon.props}
-                                  className={cn(
-                                    iconClasses,
-                                    groupIcon.props.className,
-                                  )}
-                                />
-                              )}
-                              {groupItem.text}
-                            </div>
-                          </SelectItem>
+                          <div key={groupIndex} className={groupItem.className}>
+                            {groupItem.children}
+                          </div>
                         );
                       default:
                         return null;
@@ -102,6 +98,12 @@ const SelectItems: React.FC<SelectItemsProps> = ({ items, className }) => {
             );
           case 'separator':
             return <SelectSeparator key={index} />;
+          case 'children':
+            return (
+              <div key={index} className={item.className}>
+                {item.children}
+              </div>
+            );
           default:
             return null;
         }

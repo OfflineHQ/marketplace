@@ -182,7 +182,22 @@ export const constructItems = ({
     });
   }
 
-  const rolesSections: ProfileNavProps['items'] = roles?.length
+  const notMachingRoleSections: ProfileNavProps['items'] = roles?.length
+    ? [
+        ...roles
+          .filter((role) => role !== matchingRole)
+          .map(
+            (role) =>
+              ({
+                type: 'children',
+                children: <RoleItem role={role} switchToRole={switchToRole} />,
+                className: 'cursor-pointer',
+              }) as ProfileNavProps['items'][0],
+          ),
+      ]
+    : [];
+
+  const rolesSections: ProfileNavProps['items'] = notMachingRoleSections?.length
     ? [
         { type: 'separator' },
         {
@@ -190,13 +205,7 @@ export const constructItems = ({
           text: profileSectionsText.switchToRole,
           className: 'pt-2 pb-0',
         },
-        ...(roles
-          .filter((role) => role !== matchingRole)
-          .map((role) => ({
-            type: 'children',
-            children: <RoleItem role={role} switchToRole={switchToRole} />,
-            className: 'cursor-pointer',
-          })) satisfies ProfileNavProps['items']),
+        ...notMachingRoleSections,
       ]
     : [];
 

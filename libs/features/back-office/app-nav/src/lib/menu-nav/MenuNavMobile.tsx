@@ -1,5 +1,5 @@
 'use client';
-import { usePathname } from '@next/navigation';
+import { usePathname, useRouter } from '@next/navigation';
 import {
   Select,
   SelectItems,
@@ -19,9 +19,13 @@ export const MenuNavMobile: React.FC<MenuNavMobileProps> = ({
   ...props
 }) => {
   const pathname = usePathname();
+  const router = useRouter();
   if (items.length === 0) return null;
   return (
-    <Select defaultValue={pathname !== '/' ? pathname : undefined}>
+    <Select
+      defaultValue={pathname !== '/' ? pathname : undefined}
+      onValueChange={(value) => router.push(value)}
+    >
       <SelectTrigger className="flex min-w-min space-x-2">
         <Menu />
         <SelectValue placeholder={goToText} />
