@@ -1,4 +1,5 @@
 import { AuthProvider, NextAuthProvider, SafeUser } from '@next/auth';
+import { toast } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import {
   organizerRoleAdmin,
@@ -75,6 +76,7 @@ const commonProps = {
   signOutUserAction: () => null,
   switchToRole: () => null,
   switchToMyAccount: () => null,
+  toast,
 };
 
 export const itemsNotConnected: ProfileNavProps['items'] = constructItems({
