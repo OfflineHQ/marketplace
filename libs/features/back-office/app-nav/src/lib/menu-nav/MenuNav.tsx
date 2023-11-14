@@ -31,7 +31,7 @@ export const MenuNav: React.FC<MenuNavProps> = ({ user }) => {
     type: 'item',
   };
   if (!user) return null;
-  if (!user?.role)
+  if (user && !user?.role)
     items = [
       {
         icon: <UserRoles />,
