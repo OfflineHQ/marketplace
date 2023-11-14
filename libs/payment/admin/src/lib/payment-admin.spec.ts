@@ -635,7 +635,7 @@ describe('Payment', () => {
       expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
 
-    it('should throw an error when checkOrder fails for one ', async () => {
+    it('should throw an error when checkOrder fails for one of the orders', async () => {
       const orders = [{ id: 'order1' }, { id: 'order2' }];
       payment.getEventPassOrdersFromStripeCheckoutSession = jest
         .fn()

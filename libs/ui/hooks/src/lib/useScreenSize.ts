@@ -1,4 +1,4 @@
-import { useWindowSize } from '@uidotdev/usehooks';
+import { useWindowSize } from 'react-use';
 
 const screens = {
   sm: 640,
