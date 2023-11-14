@@ -1,13 +1,13 @@
 import { EventCards, type EventCardsProps } from './EventCards';
 
-interface OrganizerDashboardProps extends Omit<EventCardsProps, 'events'> {
+interface OrganizerEventsProps extends Omit<EventCardsProps, 'events'> {
   events?: EventCardsProps['events'];
 }
 
-export async function OrganizerDashboard({
+export async function OrganizerEvents({
   events,
   organizerId,
-}: OrganizerDashboardProps) {
+}: OrganizerEventsProps) {
   return events && events.length ? (
     <EventCards events={events} organizerId={organizerId} />
   ) : (

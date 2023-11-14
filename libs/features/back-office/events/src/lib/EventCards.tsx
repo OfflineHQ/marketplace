@@ -1,7 +1,7 @@
 'use client';
 
 import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
-import type { EventFromOrganizer as TEvent } from '@features/back-office/dashboard-types';
+import type { EventFromOrganizer as TEvent } from '@features/back-office/events-types';
 import { getEventPassOrganizerFolderPath } from '@features/pass-common';
 import { useAuthContext } from '@next/auth';
 import { useUploader } from '@next/uploader-provider';

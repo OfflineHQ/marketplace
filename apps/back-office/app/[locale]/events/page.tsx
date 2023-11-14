@@ -1,16 +1,14 @@
-import { OrganizerDashboard } from '@features/back-office/dashboard';
-import { getEventsFromOrganizerId } from '@features/back-office/dashboard-api';
+import { OrganizerEvents } from '@features/back-office/events';
+import { getEventsFromOrganizerId } from '@features/back-office/events-api';
 import { getCurrentUser } from '@next/next-auth/user';
 
-interface DashboardProps {
+interface EventsProps {
   params: {
     locale: string;
   };
 }
 
-export default async function Dashboard({
-  params: { locale },
-}: DashboardProps) {
+export default async function Events({ params: { locale } }: EventsProps) {
   const user = await getCurrentUser();
   if (!user) return;
   const organizerId = user.role?.organizerId || '';
@@ -19,5 +17,5 @@ export default async function Dashboard({
     id: organizerId as string,
     locale,
   });
-  return <OrganizerDashboard events={events} organizerId={organizerId} />;
+  return <OrganizerEvents events={events} organizerId={organizerId} />;
 }

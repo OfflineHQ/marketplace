@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'features-back-office-dashboard-types',
+  displayName: 'features-back-office-events-types',
   preset: '../../../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
@@ -8,5 +8,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory:
-    '../../../../coverage/libs/features/back-office/dashboard-types',
+    '../../../../coverage/libs/features/back-office/events-types',
 };

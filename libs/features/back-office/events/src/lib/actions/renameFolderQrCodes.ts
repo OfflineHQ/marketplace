@@ -11,7 +11,7 @@ export async function checkFolderLength(folderPath: string, maxAmount: number) {
     accountId: env.UPLOAD_ACCOUNT_ID,
     folderPath: folderPath,
   });
-  revalidatePath('/fr/Dashboard');
+  revalidatePath('/[locale]/events', 'page');
 
   const simplifiedList = list.items
     .map((item) => {
@@ -42,7 +42,7 @@ export async function checkFolder(
     accountId: env.UPLOAD_ACCOUNT_ID,
     folderPath: folderPath,
   });
-  revalidatePath('/fr/Dashboard');
+  revalidatePath('/[locale]/events', 'page');
 
   const simplifiedList = list.items
     .map((item) => {
@@ -86,7 +86,7 @@ export async function renameFolderQrCodes(
     accountId: env.UPLOAD_ACCOUNT_ID,
     folderPath: folderPath,
   });
-  revalidatePath('/fr/Dashboard');
+  revalidatePath('/[locale]/events', 'page');
 
   let i = 0;
 
