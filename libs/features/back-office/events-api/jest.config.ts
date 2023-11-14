@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'features-back-office-dashboard-api',
+  displayName: 'features-back-office-events-api',
   preset: '../../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': [
@@ -15,5 +15,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory:
-    '../../../../coverage/libs/features/back-office/dashboard-api',
+    '../../../../coverage/libs/features/back-office/events-api',
 };
