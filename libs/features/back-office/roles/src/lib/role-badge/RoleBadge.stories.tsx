@@ -5,6 +5,7 @@ import { RoleBadge, RoleBadgeProps } from './RoleBadge';
 const roleOptions = Object.values(Roles_Enum_Not_Const_Values).map((role) => ({
   role,
   organizerId: 'fake',
+  eventId: '',
 }));
 
 const RoleBadgeStory: Meta<typeof RoleBadge> = {

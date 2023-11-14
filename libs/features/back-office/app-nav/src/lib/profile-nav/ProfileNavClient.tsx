@@ -1,5 +1,6 @@
 'use client';
 
+import { RoleBadge } from '@features/back-office/roles';
 import { SafeUser, useAuthContext } from '@next/auth';
 import { Link, useRouter } from '@next/navigation';
 import { AppUser } from '@next/types';
@@ -16,7 +17,6 @@ import {
   ProfileNavSkeleton,
   type ProfileNavProps,
 } from './ProfileNav';
-import { RoleBadge } from '@features/back-office/roles';
 
 interface ConstructItemsParams {
   roles?: RoleWithOrganizer[];
