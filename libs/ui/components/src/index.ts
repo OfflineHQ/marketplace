@@ -127,6 +127,13 @@ export {
   SelectTrigger,
   SelectValue,
 } from './lib/select/Select';
+
+export {
+  SelectItems,
+  type SelectItemProps,
+  type SelectItemsProps,
+} from './lib/select/SelectItems';
+
 export { Separator } from './lib/separator/Separator';
 export {
   Sheet,
@@ -165,10 +172,11 @@ export {
   ToastViewport,
 } from './lib/toast/Toast';
 export { Toaster } from './lib/toast/Toaster';
-export { useToast, type ToastT } from './lib/toast/useToast';
+export { toast, useToast, type ToastT } from './lib/toast/useToast';
 
 export { Ping, type PingProps } from './lib/Ping/Ping';
 export { Badge, BadgeSkeleton, type BadgeProps } from './lib/badge/Badge';
+export { BlockchainAddress } from './lib/blockchain-address/BlockchainAddress';
 export {
   BoundedNumericStepper,
   type BoundedNumericStepperProps,

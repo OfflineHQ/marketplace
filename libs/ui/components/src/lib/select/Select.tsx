@@ -1,10 +1,9 @@
 'use client';
 
-import * as React from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
-import { cn } from '@ui/shared';
-import { cva, VariantProps } from 'class-variance-authority';
 import { Check, ChevronDown } from '@ui/icons';
+import { cn } from '@ui/shared';
+import * as React from 'react';
 
 const Select = SelectPrimitive.Root;
 
@@ -109,11 +108,11 @@ SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
 export {
   Select,
-  SelectGroup,
-  SelectValue,
-  SelectTrigger,
   SelectContent,
-  SelectLabel,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectSeparator,
+  SelectTrigger,
+  SelectValue,
 };

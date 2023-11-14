@@ -148,25 +148,6 @@ export class Payment {
     });
   }
 
-  async markEventPassOrderAsCompleted({
-    eventPassOrdersId,
-  }: {
-    eventPassOrdersId: string[];
-  }) {
-    return adminSdk.UpdateEventPassOrdersStatus({
-      updates: eventPassOrdersId.map((id) => ({
-        _set: {
-          status: OrderStatus_Enum.Completed,
-        },
-        where: {
-          id: {
-            _eq: id,
-          },
-        },
-      })),
-    });
-  }
-
   async markEventPassOrderAsRefunded({
     eventPassOrdersId,
   }: {
