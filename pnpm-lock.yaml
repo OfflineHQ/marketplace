@@ -103,6 +103,9 @@ dependencies:
   '@thirdweb-dev/sdk':
     specifier: ^3.10.67
     version: 3.10.67(@solana/web3.js@1.87.3)(encoding@0.1.13)(ethers@5.7.2)(typescript@5.2.2)
+  '@uidotdev/usehooks':
+    specifier: 2.4.1
+    version: 2.4.1(react-dom@18.2.0)(react@18.2.0)
   '@vercel/analytics':
     specifier: ^0.1.11
     version: 0.1.11(react@18.2.0)
@@ -11311,6 +11314,17 @@ packages:
       '@typescript-eslint/types': 5.62.0
       eslint-visitor-keys: 3.4.3
     dev: true
+
+  /@uidotdev/usehooks@2.4.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-1I+RwWyS+kdv3Mv0Vmc+p0dPYH0DTRAo04HLyXReYBL9AeseDWUJyi4THuksBJcu9F0Pih69Ak150VDnqbVnXg==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /@upload-io/upload-api-client-upload-js@2.18.0:
     resolution: {integrity: sha512-yPwsRCecXSilYn4q5ZDD4fyI2PVyUcLimv2LQcfpV3hRyzc8t82NuWHYEYpRZa5K68zxw2RljDf30geT1vJN9g==}

@@ -1,22 +1,20 @@
+import { iconCVA } from '@ui/icons';
+import { cn } from '@ui/shared';
 import * as React from 'react';
 import {
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from './DropdownMenu';
-import { cn } from '@ui/shared';
-import { iconCVA } from '@ui/icons';
 import {
   DropdownMenuItemClient,
-  type DropdownMenuItemClientProps,
   MenuItem,
+  type DropdownMenuItemClientProps,
 } from './DropdownMenuItemClient';
 
 interface DropdownMenuItemsProps
@@ -50,7 +48,11 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
             );
 
           case 'children':
-            return <div key={index}>{item.children}</div>;
+            return (
+              <div key={index} className={item.className}>
+                {item.children}
+              </div>
+            );
 
           case 'item':
             return (
@@ -79,10 +81,21 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
                     <DropdownMenuSubContent>
-                      <DropdownMenuItems
-                        items={item.subItems || []}
-                        setLoading={setLoading}
-                      />
+                      {item.subItems?.map((subItem, subIndex) =>
+                        subItem.type !== 'children' ? (
+                          <DropdownMenuItemClient
+                            key={subIndex}
+                            icon={subItem.icon}
+                            item={subItem}
+                            setLoading={setLoading}
+                            iconClasses={iconClasses}
+                          />
+                        ) : (
+                          <div key={subIndex} className={subItem.className}>
+                            {subItem.children}
+                          </div>
+                        ),
+                      )}
                     </DropdownMenuSubContent>
                   </DropdownMenuPortal>
                 </DropdownMenuSub>

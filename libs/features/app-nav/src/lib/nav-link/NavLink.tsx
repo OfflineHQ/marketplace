@@ -17,7 +17,7 @@ export type NavLinkProps = LinkProps & {
 export function NavLink({ href, children, className }: NavLinkProps) {
   const isActive = usePathname() === href;
   return (
-    <NavigationMenuItem>
+    <NavigationMenuItem className="flex">
       <Link href={href} legacyBehavior passHref>
         <NavigationMenuLink
           className={cn(

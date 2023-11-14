@@ -77,21 +77,22 @@ export async function stripeCheckoutStatus(
           stripeCheckoutSessionId: checkoutSession.id,
         });
       } catch (err) {
-        console.error(err);
         //TODO: refund only if NFT not released ! filter the error depending of that.
-        if (
-          !err.message?.includes('Error claiming NFTs') ||
-          !err.message?.includes('Some orders failed')
-        )
+        console.log(err.message);
+        if (!err.message?.includes('Some orders failed')) {
           return new Response(
             `ConfirmedStripeCheckoutSession Error: ${err.message}`,
             { status: 500 },
           );
+        }
 
         let refundAmount: number | undefined;
 
         if (err.message?.includes('Some orders failed')) {
-          refundAmount = Number(err.message.split(':')[1].trim());
+          const match = err.message?.match(
+            /Some orders failed for an amount of : (\d+)/,
+          );
+          refundAmount = match ? parseInt(match[1]) : 0;
         }
 
         //TODO: notify user and refund order because NFT not released.

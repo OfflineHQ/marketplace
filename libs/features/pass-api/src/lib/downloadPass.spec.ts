@@ -1,8 +1,6 @@
-import { getEventPassRevealedFilePath, downloadPass } from './downloadPass';
 import { adminSdk } from '@gql/admin/api';
-import { FileDownloader } from '@file-upload/user';
 import { isServerSide } from '@utils';
-import { cookies } from 'next/headers';
+import { downloadPass, getEventPassRevealedFilePath } from './downloadPass';
 import { mockEventPassNft } from './revealPass.spec';
 
 // Mocking the dependencies
@@ -58,7 +56,7 @@ describe('downloadPass functions', () => {
       const result = await getEventPassRevealedFilePath('valid-id');
       // Your assertion here
       expect(result).toEqual(
-        '/local/users/test-address/test-organizer/events/test-event/test-id/test-event-test-id-12421',
+        '/local/users/test-address/test-organizer/events/test-event/test-id/test-event-test-id-12421.png',
       );
     });
 

@@ -5,3 +5,9 @@ export {
   AppNavLayout,
   type AppNavLayoutProps,
 } from './lib/app-nav-layout/AppNavLayout';
+
+export {
+  MenuNav,
+  MenuNavSkeleton,
+  type MenuNavProps,
+} from './lib/menu-nav/MenuNav';

@@ -29,6 +29,7 @@ describe('RoleInvitationService', () => {
     role: Roles_Enum.OrganizerAdmin,
     organizerId:
       backOfficeAccounts.alpha_organizer_super_admin_user.role.organizerId,
+    eventId: '',
     address: backOfficeAccounts.delta_user.address,
     senderAddress: backOfficeAccounts.alpha_organizer_super_admin_user.address,
     expiration: Date.now() + 60 * 60 * 24 * 1000, // Set expiration to 24 hours from now
@@ -173,6 +174,7 @@ describe('RoleInvitationService', () => {
       nonce: 'nonce1',
       role: Roles_Enum.OrganizerAdmin,
       organizerId: 'organizer1',
+      eventId: '',
       address: 'address1',
       senderAddress: 'senderAddress1',
       expiration: Date.now() + 60 * 60 * 24 * 1000,
@@ -181,6 +183,7 @@ describe('RoleInvitationService', () => {
       nonce: 'nonce2',
       role: Roles_Enum.OrganizerContentManager,
       organizerId: 'organizer2',
+      eventId: '',
       address: 'address2',
       senderAddress: 'senderAddress2',
       expiration: Date.now() + 60 * 60 * 24 * 1000,
@@ -406,6 +409,7 @@ describe('RoleInvitationService', () => {
         role: Roles_Enum.OrganizerAdmin,
         organizerId:
           backOfficeAccounts.alpha_organizer_super_admin_user.role.organizerId,
+        eventId: '',
         accountId: backOfficeAccounts.delta_user.id,
         invitedById: backOfficeAccounts.alpha_organizer_super_admin_user.id,
       },
@@ -611,6 +615,7 @@ describe('RoleAuthorization', () => {
         role: {
           role: Roles_Enum.OrganizerSuperAdmin,
           organizerId: 'organizer123',
+          eventId: '',
         },
       };
       const result = await roleAuthorization.inviteAccountWithRole({
@@ -629,12 +634,14 @@ describe('RoleAuthorization', () => {
         role: {
           role: Roles_Enum.OrganizerHumanResources,
           organizerId: 'organizer123',
+          eventId: '',
         },
       };
       const result = await roleAuthorization.inviteAccountWithRole({
         user,
         role: Roles_Enum.OrganizerGuest,
         organizerId: 'organizer123',
+        eventId: '',
       });
       expect(result).toBe(true);
     });
@@ -646,6 +653,7 @@ describe('RoleAuthorization', () => {
         role: {
           role: Roles_Enum.OrganizerHumanResources,
           organizerId: 'organizer123',
+          eventId: '',
         },
       };
       const result = await roleAuthorization.inviteAccountWithRole({
@@ -684,6 +692,7 @@ describe('RoleAuthorization', () => {
         role: {
           role: Roles_Enum.OrganizerSuperAdmin,
           organizerId: 'organizer456',
+          eventId: '',
         },
       };
       await expect(
@@ -703,6 +712,7 @@ describe('RoleAuthorization', () => {
         role: {
           role: Roles_Enum.OrganizerSuperAdmin,
           organizerId: 'organizer123',
+          eventId: '',
         },
       };
       await expect(

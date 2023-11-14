@@ -47,7 +47,7 @@ export const SumsubDialogClient: React.FC<SumsubWebSdkProps> = ({
       if (status === KycStatus_Enum.Completed) {
         setStatusConfirmed(true);
       }
-      if (statusDifferent) update();
+      if (statusDifferent) await update();
     }
   }
   function onError(error: Error) {
