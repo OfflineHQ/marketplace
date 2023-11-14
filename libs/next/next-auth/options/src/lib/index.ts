@@ -16,6 +16,7 @@ import { Provider } from 'next-auth/providers';
 
 import { KycLevelName_Enum } from '@gql/shared/types';
 import { RoleAuthorization } from '@roles/admin';
+import { isSameRole } from '@roles/common';
 
 const authz = new RoleAuthorization();
 
@@ -192,7 +193,11 @@ export const createOptions = () =>
               throw new Error(
                 'Unauthorized to switch to role while the Advanced KYC is not validated',
               );
-            else if (!userAccount.roles?.find((r) => r === sessionRole))
+            else if (
+              !userAccount.roles?.find((role) =>
+                isSameRole({ role, roleToCompare: sessionRole }),
+              )
+            )
               throw new Error('Unauthorized to switch to this role');
             userAccount.role = session.role;
           }

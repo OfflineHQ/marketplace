@@ -138,6 +138,7 @@
       "@payment/types": ["libs/payment/types/src/index.ts"],
       "@payment/webhooks": ["libs/payment/webhooks/src/index.ts"],
       "@roles/admin": ["libs/roles/admin/src/index.ts"],
+      "@roles/common": ["libs/roles/common/src/index.ts"],
       "@roles/types": ["libs/roles/types/src/index.ts"],
       "@server/task": ["libs/server/task/src/index.ts"],
       "@shared/client": ["libs/shared/client/src/index.ts"],
