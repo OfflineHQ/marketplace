@@ -138,15 +138,15 @@ describe('stripeCheckoutStatus', () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs: test');
+        throw new Error('Some orders failed for an amount of : 82500');
       });
-    mockPayment.refundPayment = jest.fn();
+    mockPayment.refundPartialPayment = jest.fn();
 
     const result = await stripeCheckoutStatus(mockRequest, mockPayment);
 
-    expect(mockPayment.refundPayment).toHaveBeenCalledWith({
+    expect(mockPayment.refundPartialPayment).toHaveBeenCalledWith({
       paymentIntentId: 'paymentIntentId',
-      checkoutSessionId: 'checkoutSessionId',
+      amount: 82500,
     });
     expect(result.status).toEqual(200);
   });
@@ -168,18 +168,18 @@ describe('stripeCheckoutStatus', () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs: test');
+        throw new Error('Some orders failed for an amount of : 8250');
       });
 
-    mockPayment.refundPayment = jest.fn().mockImplementationOnce(() => {
+    mockPayment.refundPartialPayment = jest.fn().mockImplementationOnce(() => {
       throw new Error('Error refunding payment');
     });
 
     const result = await stripeCheckoutStatus(mockRequest, mockPayment);
 
-    expect(mockPayment.refundPayment).toHaveBeenCalledWith({
+    expect(mockPayment.refundPartialPayment).toHaveBeenCalledWith({
       paymentIntentId: 'paymentIntentId',
-      checkoutSessionId: 'checkoutSessionId',
+      amount: 8250,
     });
     expect(result.status).toEqual(200); // Adjust this based on how your function handles refund errors
   });

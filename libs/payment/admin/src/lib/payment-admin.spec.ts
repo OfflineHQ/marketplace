@@ -636,18 +636,30 @@ describe('Payment', () => {
     });
 
     it('should throw an error when checkOrder fails for one of the orders', async () => {
-      const orders = [{ id: 'order1' }, { id: 'order2' }];
+      const orders = [
+        { id: 'order1', eventPassPricing: { priceAmount: 100 }, quantity: 2 },
+        { id: 'order2', eventPassPricing: { priceAmount: 150 }, quantity: 3 },
+      ];
       payment.getEventPassOrdersFromStripeCheckoutSession = jest
         .fn()
-        .mockResolvedValue([orders]);
+        .mockResolvedValue(orders);
+      payment.nftClaimable.checkOrder = jest
+        .fn()
+        .mockImplementation((order) => {
+          if (order.id === 'order2') {
+            throw new Error('Failed to claim NFTs');
+          }
+        });
       adminSdk.DeleteStripeCheckoutSession = jest.fn();
 
       await expect(
         payment.confirmedStripeCheckoutSession({
           stripeCheckoutSessionId: 'test',
         }),
-      ).rejects.toThrow('Error claiming NFTs: Failed to claim NFTs');
-      expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
+      ).rejects.toThrow('Some orders failed for an amount of : 450');
+      expect(adminSdk.DeleteStripeCheckoutSession).toHaveBeenCalledWith({
+        stripeSessionId: 'test',
+      });
     });
   });
   describe('refundPayment', () => {
