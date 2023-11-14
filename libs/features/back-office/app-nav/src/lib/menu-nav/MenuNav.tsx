@@ -42,7 +42,7 @@ export const MenuNav: React.FC<MenuNavProps> = ({ user }) => {
       },
     ];
   else {
-    switch (user.role.role) {
+    switch (user.role?.role) {
       case Roles_Enum.OrganizerSuperAdmin:
         items = [...adminItems, manageRoles];
         break;
