@@ -9,6 +9,7 @@ const authPages = [
   'user',
   'events',
   'events/*',
+  'my-roles',
   // Add more restricted pages if needed
 ];
 
