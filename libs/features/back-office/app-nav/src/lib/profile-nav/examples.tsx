@@ -98,3 +98,9 @@ export const itemsAdmin: ProfileNavProps['items'] = constructItems({
   roles: [organizerRoleAdmin, organizerRoleSuperAdmin],
   matchingRole: organizerRoleAdmin,
 });
+
+export const itemsSuperAdmin: ProfileNavProps['items'] = constructItems({
+  ...commonProps,
+  roles: [organizerRoleAdmin, organizerRoleSuperAdmin],
+  matchingRole: organizerRoleSuperAdmin,
+});

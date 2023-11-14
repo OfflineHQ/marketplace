@@ -14,9 +14,9 @@ export const AppNavLayoutMobile: React.FC<AppNavLayoutMobileProps> = ({
       data-testid="mobile-menu"
       className="fixed bottom-0 z-20 w-full border-t bg-background md:hidden"
     >
-      <NavigationMenuList className="grid grid-cols-7">
+      <NavigationMenuList className="grid h-16 grid-cols-7">
         <div className="col-span-5 ml-2">{menuNav}</div>
-        <div className="col-span-2">{profileNav}</div>
+        <div className="col-span-2 flex items-center pl-2">{profileNav}</div>
       </NavigationMenuList>
     </NavigationMenu>
   );
