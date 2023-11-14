@@ -42,6 +42,13 @@ async function ProfileNavSectionContent({ locale }: { locale: string }) {
         signIn: t('sections-text.sign-in'),
         settings: t('sections-text.settings'),
         copiedAddress: t('sections-text.copied-address'),
+        switchToMyAccount: t('sections-text.switch-to-my-account'),
+        myCurrentRole: t('sections-text.my-current-role'),
+        switchToRole: t('sections-text.switch-to-role'),
+        switchToRoleToastTitle: t('sections-text.switch-to-role-toast-title'),
+        switchToRoleToastErrorTitle: t(
+          'sections-text.switch-to-role-toast-error-title',
+        ),
       }}
       isNextAuthConnected={!!user}
       roles={roles}

@@ -50,7 +50,12 @@
         "sign-out-description": "See you soon 👋 !",
         "sign-in": "Sign in",
         "settings": "Settings",
-        "copied-address": "Address copied!"
+        "copied-address": "Address copied!",
+        "switch-to-my-account": "Switch to my account",
+        "my-current-role": "My current role",
+        "switch-to-role": "Switch to role",
+        "switch-to-role-toast-title": "Switched to role:",
+        "switch-to-role-toast-error-title": "Error while trying to switch to role"
       }
     },
     "Pass": {
