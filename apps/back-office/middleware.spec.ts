@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import middleware from './middleware';
 
 // Mock createMiddleware
@@ -43,7 +43,7 @@ describe('middleware', () => {
 
   it('should redirect if not authenticated on sub route', async () => {
     req.cookies.get.mockReturnValue(null);
-    req.nextUrl.pathname = '/en/event/event-slug';
+    req.nextUrl.pathname = '/en/events/event-slug';
 
     await middleware(req);
 
@@ -62,7 +62,7 @@ describe('middleware', () => {
 
   it('should not redirect if authenticated on sub route', async () => {
     req.cookies.get.mockReturnValue('auth_token');
-    req.nextUrl.pathname = '/en/event/event-slug';
+    req.nextUrl.pathname = '/en/events/event-slug';
 
     await middleware(req);
 
