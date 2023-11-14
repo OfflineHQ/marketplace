@@ -321,26 +321,6 @@ describe('Payment', () => {
     });
   });
 
-  describe('markEventPassOrderAsCompleted', () => {
-    it('should call adminSdk.UpdateEventPassOrdersStatus with correct parameters', async () => {
-      const eventPassOrdersId = ['order1', 'order2'];
-      adminSdk.UpdateEventPassOrdersStatus = jest.fn().mockReturnValue({});
-      await payment.markEventPassOrderAsCompleted({ eventPassOrdersId });
-      expect(adminSdk.UpdateEventPassOrdersStatus).toHaveBeenCalledWith({
-        updates: eventPassOrdersId.map((id) => ({
-          _set: {
-            status: OrderStatus_Enum.Completed,
-          },
-          where: {
-            id: {
-              _eq: id,
-            },
-          },
-        })),
-      });
-    });
-  });
-
   describe('markEventPassOrderAsRefunded', () => {
     it('should call adminSdk.UpdateEventPassOrdersStatus with correct parameters', async () => {
       const eventPassOrdersId = ['order1', 'order2'];

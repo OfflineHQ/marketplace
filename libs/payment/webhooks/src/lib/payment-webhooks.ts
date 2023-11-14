@@ -77,13 +77,13 @@ export async function stripeCheckoutStatus(
           stripeCheckoutSessionId: checkoutSession.id,
         });
       } catch (err) {
-        console.error(err);
         //TODO: refund only if NFT not released ! filter the error depending of that.
         if (!err.message?.includes('Error claiming NFTs'))
           return new Response(
             `ConfirmedStripeCheckoutSession Error: ${err.message}`,
             { status: 500 },
           );
+        }
 
         //TODO: notify user and refund order because NFT not released.
         try {

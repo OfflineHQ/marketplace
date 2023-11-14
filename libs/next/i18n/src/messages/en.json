@@ -49,7 +49,16 @@
         "sign-out-title": "You have been signed out",
         "sign-out-description": "See you soon 👋 !",
         "sign-in": "Sign in",
-        "settings": "Settings"
+        "settings": "Settings",
+        "copied-address": "Address copied!",
+        "switch-to-my-account": "Switch to my account",
+        "my-current-role": "My current role",
+        "switch-to-role": "Switch to role",
+        "switch-to-role-toast-title": "Switched to role:",
+        "switch-to-role-toast-error-title": "Error while trying to switch to role",
+        "switch-to-my-account-toast-title": "User account",
+        "switch-to-my-account-toast-description": "You are now connected with your own account",
+        "switch-to-my-account-toast-error-title": "Error while trying to switch to your account"
       }
     },
     "Pass": {
@@ -60,6 +69,12 @@
       "text": "Cart",
       "helper-text": "Go to your cart",
       "helper-text-purchase": "Finish your purchase"
+    },
+    "MenuNav": {
+      "go-to-text": "Go to ...",
+      "my-roles-text": "My Roles",
+      "manage-roles-text": "Manage Roles",
+      "events-management-text": "Events Management"
     }
   },
   "Cart": {

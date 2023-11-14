@@ -1,10 +1,9 @@
 'use client';
 
-import { DropdownMenuItem, DropdownMenuShortcut } from './DropdownMenu';
-import { useToast, type ToastT } from '../toast/useToast';
-import { iconCVA } from '@ui/icons';
 import { cn } from '@ui/shared';
 import { getErrorMessage, type ErrorWithMessage } from '@utils';
+import { useToast, type ToastT } from '../toast/useToast';
+import { DropdownMenuItem, DropdownMenuShortcut } from './DropdownMenu';
 
 export interface HandleActionProps {
   action?: (() => void) | undefined;

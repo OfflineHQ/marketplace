@@ -1,13 +1,21 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
+import { expect } from '@storybook/jest';
+import { type Meta, type StoryObj } from '@storybook/react';
 
+import { screen, userEvent } from '@storybook/testing-library';
+import { sleep } from '@utils';
 import { AppNavLayout } from './AppNavLayout';
 import {
-  // ProfileNavWithCryptoUser,
-  // ProfileNavWithFallbackUser,
+  MenuNavWithAdminRole,
+  MenuNavWithNoRole,
+  MenuNavWithNoUser,
+  MenuNavWithSuperAdminRole,
+  ProfileNavLoading,
+  ProfileNavWithAdminRole,
   ProfileNavWithNoUser,
   ProfileNavWithNoUserLoading,
-  // ProfileNavWithNormalUser,
+  ProfileNavWithSuperAdminRole,
+  ProfileNavWithUser,
+  ProfileNavWithUserLoading,
 } from './examples';
 
 const meta = {
@@ -24,62 +32,181 @@ type Story = StoryObj<typeof meta>;
 export const WithNoUser: Story = {
   args: {
     children: 'test',
+    menuNav: <MenuNavWithNoUser />,
     profileNav: <ProfileNavWithNoUser />,
+  },
+  play: async ({ canvasElement }) => {
+    await sleep(100);
+    const signIn = await screen.findAllByText('Sign in');
+    userEvent.click(signIn[0]);
+    await screen.findByText('Settings');
+    await screen.findByText('Support');
   },
 };
 
-// export const WithNormalUser: Story = {
-//   args: {
-//     children: 'test',
-//     profileNav: <ProfileNavWithNormalUser />,
-//   },
-// };
-// export const WithFallbackUser: Story = {
-//   args: {
-//     children: 'test',
-//     profileNav: <ProfileNavWithFallbackUser />,
-//   },
-// };
+export const WithUser: Story = {
+  args: {
+    children: 'test',
+    menuNav: <MenuNavWithNoRole />,
+    profileNav: <ProfileNavWithUser />,
+  },
+  play: async ({ canvasElement }) => {
+    await sleep(100);
+    const myRolesRoute = await screen.findAllByText(/my roles/i);
+    userEvent.click(myRolesRoute[0]);
+    const profileButton = await screen.findAllByText(/john/i);
+    userEvent.click(profileButton[0]);
+    await screen.findByText('Settings');
+    await screen.findByText('Support');
+    await screen.findByText('Sign out');
+  },
+};
 
-// export const WithCryptoUser: Story = {
-//   args: {
-//     children: 'test',
-//     profileNav: <ProfileNavWithCryptoUser />,
-//   },
-// };
+export const WithAdminRole: Story = {
+  args: {
+    children: 'test',
+    menuNav: <MenuNavWithAdminRole />,
+    profileNav: <ProfileNavWithAdminRole />,
+  },
+  play: async ({ canvasElement }) => {
+    await sleep(100);
+    const eventsRoute = await screen.findAllByText(/events/i);
+    userEvent.click(eventsRoute[0]);
+    const profileButton = await screen.findAllByText(/organizer admin/i);
+    userEvent.click(profileButton[0]);
+    await screen.findByText(/super admin/i);
+  },
+};
 
-// export const WithDarkMode: Story = {
-//   ...WithNormalUser,
-//   parameters: {
-//     darkMode: {
-//       isDark: true,
-//     },
-//   },
-// };
+export const WithSuperAdminRole: Story = {
+  args: {
+    children: 'test',
+    menuNav: <MenuNavWithSuperAdminRole />,
+    profileNav: <ProfileNavWithSuperAdminRole />,
+  },
+  play: async ({ canvasElement }) => {
+    await sleep(100);
+    const eventsRoute = await screen.findAllByText(/events/i);
+    userEvent.click(eventsRoute[0]);
+    const manageRoute = await screen.findAllByText(/manage/i);
+    userEvent.click(manageRoute[0]);
+    const profileButton = await screen.findAllByText(/organizer super admin/i);
+    userEvent.click(profileButton[0]);
+    await screen.findByText(/organizer admin/i);
+  },
+};
 
-// export const WithMobile: Story = {
-//   ...WithFallbackUser,
-//   parameters: {
-//     viewport: {
-//       defaultViewport: 'mobile1',
-//     },
-//   },
-// };
+export const WithNoUserLoading: Story = {
+  args: {
+    children: 'test',
+    menuNav: <MenuNavWithNoUser />,
+    profileNav: <ProfileNavWithNoUserLoading />,
+  },
+};
 
-// export const WithMobileLoadingProfile: Story = {
-//   ...WithMobile,
-//   args: {
-//     ...WithMobile.args,
-//     profileNav: <ProfileNavWithNoUserLoading />,
-//   },
-// };
+export const WithSkeleton: Story = {
+  args: {
+    children: 'test',
+    menuNav: <MenuNavWithAdminRole />,
+    profileNav: <ProfileNavLoading />,
+  },
+};
 
-// export const WithMobileOpenedProfileMenu: Story = {
-//   ...WithMobile,
-//   play: async ({ container }) => {
-//     const profileButton = await screen.findAllByText('JD');
-//     // target the second profile button that is on mobile menu
-//     userEvent.click(profileButton[1]);
-//     await screen.findByText('Log out');
-//   },
-// };
+export const WithUserLoading: Story = {
+  args: {
+    children: 'test',
+    menuNav: <MenuNavWithAdminRole />,
+    profileNav: <ProfileNavWithUserLoading />,
+  },
+};
+
+export const WithNoUserMobile: Story = {
+  ...WithNoUser,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  play: async ({ canvasElement }) => {
+    await sleep(100);
+    const signIn = await screen.findAllByText('Sign in');
+    userEvent.click(signIn[1]);
+    await screen.findByText('Settings');
+    await screen.findByText('Support');
+  },
+};
+
+export const WithUserMobile: Story = {
+  ...WithUser,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/my-roles',
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    await sleep(100);
+    const myRolesRoute = await screen.findAllByText(/my roles/i);
+    expect(myRolesRoute[1]).toBeInTheDocument();
+    const profileButton = await screen.findAllByText(/john/i);
+    userEvent.click(profileButton[1]);
+    await screen.findByText('Settings');
+    await screen.findByText('Support');
+    await screen.findByText('Sign out');
+  },
+};
+
+export const WithSuperAdminRoleMobile: Story = {
+  ...WithSuperAdminRole,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/events',
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    await sleep(100);
+    const eventsRoute = await screen.findAllByText(/Events/i);
+    expect(eventsRoute[1]).toBeInTheDocument();
+    const profileButton = await screen.findAllByText(/organizer super admin/i);
+    userEvent.click(profileButton[1]);
+    await screen.findByText(/organizer admin/i);
+  },
+};
+
+export const WithNoUserLoadingMobile: Story = {
+  ...WithNoUserLoading,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+export const WithSkeletonMobile: Story = {
+  ...WithSkeleton,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+export const WithUserLoadingMobile: Story = {
+  ...WithUserLoading,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};

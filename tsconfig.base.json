@@ -27,17 +27,14 @@
       "@features/back-office/app-nav": [
         "libs/features/back-office/app-nav/src/index.ts"
       ],
-      "@features/back-office/dashboard": [
-        "libs/features/back-office/dashboard/src/index.ts"
+      "@features/back-office/events": [
+        "libs/features/back-office/events/src/index.ts"
       ],
-      "@features/back-office/dashboard-api": [
-        "libs/features/back-office/dashboard-api/src/index.ts"
+      "@features/back-office/events-api": [
+        "libs/features/back-office/events-api/src/index.ts"
       ],
-      "@features/back-office/dashboard-types": [
-        "libs/features/back-office/dashboard-types/src/index.ts"
-      ],
-      "@features/back-office/dashboard/server": [
-        "libs/features/back-office/dashboard/src/server.ts"
+      "@features/back-office/events-types": [
+        "libs/features/back-office/events-types/src/index.ts"
       ],
       "@features/back-office/roles": [
         "libs/features/back-office/roles/src/index.ts"
@@ -141,6 +138,7 @@
       "@payment/types": ["libs/payment/types/src/index.ts"],
       "@payment/webhooks": ["libs/payment/webhooks/src/index.ts"],
       "@roles/admin": ["libs/roles/admin/src/index.ts"],
+      "@roles/common": ["libs/roles/common/src/index.ts"],
       "@roles/types": ["libs/roles/types/src/index.ts"],
       "@server/task": ["libs/server/task/src/index.ts"],
       "@shared/client": ["libs/shared/client/src/index.ts"],

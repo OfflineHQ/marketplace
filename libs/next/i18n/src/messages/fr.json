@@ -49,7 +49,16 @@
         "sign-out-title": "Vous avez été déconnecté",
         "sign-out-description": "À bientôt 👋 !",
         "sign-in": "Se connecter",
-        "settings": "Paramètres"
+        "settings": "Paramètres",
+        "copied-address": "Adresse copiée !",
+        "switch-to-my-account": "Revenir à mon compte",
+        "my-current-role": "Mon rôle actuel",
+        "switch-to-role": "Passer au rôle",
+        "switch-to-role-toast-error-title": "Erreur lors de la tentative de changement de rôle",
+        "switch-to-my-account-toast-title": "Compte utilisateur",
+        "switch-to-my-account-toast-description": "Vous êtes maintenant connecté avec votre propre compte",
+        "switch-to-my-account-toast-error-title": "Erreur lors de la tentative de basculement vers votre compte",
+        "switch-to-role-toast-title": "Passé au rôle :"
       }
     },
     "Pass": {
@@ -60,6 +69,12 @@
       "text": "Panier",
       "helper-text": "Accédez à votre panier",
       "helper-text-purchase": "Terminez votre achat"
+    },
+    "MenuNav": {
+      "go-to-text": "Allez à ...",
+      "my-roles-text": "Mes rôles",
+      "manage-roles-text": "Gérer les rôles",
+      "events-management-text": "Gestion des événements"
     }
   },
   "Cart": {
@@ -218,7 +233,7 @@
   },
   "Roles": {
     "RoleBadge": {
-      "organizer-admin": "Administrateur de l'organisateur",
+      "organizer-admin": "Admin de l'organisateur",
       "organizer-auditor": "Auditeur de l'organisateur",
       "organizer-content-manager": "Gestionnaire de contenu de l'organisateur",
       "organizer-finance-manager": "Gestionnaire financier de l'organisateur",

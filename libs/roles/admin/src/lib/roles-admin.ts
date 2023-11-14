@@ -10,7 +10,7 @@ interface Invitation {
   nonce: string;
   role: Roles_Enum;
   organizerId: string;
-  eventId?: string;
+  eventId: string;
   address: string;
   senderAddress: string;
   expiration: number; // Timestamp indicating when the invitation expires
@@ -23,7 +23,7 @@ interface InvitationForRoleExistsProps {
   address: string;
   role: Roles_Enum;
   organizerId: string;
-  eventId?: string;
+  eventId: string;
 }
 
 interface AcceptInvitationProps {
