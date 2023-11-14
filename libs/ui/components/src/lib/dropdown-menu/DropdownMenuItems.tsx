@@ -48,7 +48,11 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
             );
 
           case 'children':
-            return <div key={index}>{item.children}</div>;
+            return (
+              <div key={index} className={item.className}>
+                {item.children}
+              </div>
+            );
 
           case 'item':
             return (
@@ -87,7 +91,9 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
                             iconClasses={iconClasses}
                           />
                         ) : (
-                          <div key={subIndex}>{subItem.children}</div>
+                          <div key={subIndex} className={subItem.className}>
+                            {subItem.children}
+                          </div>
                         ),
                       )}
                     </DropdownMenuSubContent>
