@@ -1,10 +1,10 @@
 'use server';
 
-import { getToken } from 'next-auth/jwt';
-import { headers, cookies } from 'next/headers';
+import env from '@env/server';
 import * as jsonwebtoken from 'jsonwebtoken';
 import type { JWT } from 'next-auth/jwt';
-import env from '@env/server';
+import { getToken } from 'next-auth/jwt';
+import { cookies, headers } from 'next/headers';
 
 export const getJwt = async ({
   raw,

@@ -1,12 +1,12 @@
+import * as Upload from '@bytescale/sdk';
+import retry from 'async-retry';
 import {
-  UploadWrapper,
   FileWrapper,
   FolderWrapper,
   JobWrapper,
+  UploadWrapper,
   executeJobWithRetry,
 } from './index';
-import * as Upload from 'upload-js-full';
-import retry from 'async-retry';
 
 let jobWrapper: JobWrapper;
 
@@ -33,7 +33,7 @@ jest.mock('async-retry', () => {
   };
 });
 
-jest.mock('upload-js-full', () => ({
+jest.mock('@bytescale/sdk', () => ({
   UploadManager: jest.fn().mockImplementation(() => ({
     upload: jest.fn().mockResolvedValue({
       fileUrl: 'https://mock-file-url.com',
@@ -188,7 +188,6 @@ describe('UploadWrapper', () => {
 
   it('should upload a file and return its URL and path', async () => {
     const mockUploadOptions = {
-      accountId: 'mock-account-id',
       data: 'Mock data',
       //... other fields
     };
@@ -208,7 +207,9 @@ describe('FileWrapper', () => {
 
   beforeEach(() => {
     process.env.UPLOAD_SECRET_API_KEY = 'mock-api-key';
-    mockJobApi = new Upload.JobApi();
+    mockJobApi = new Upload.JobApi({
+      apiKey: process.env.UPLOAD_SECRET_API_KEY,
+    });
     mockJobWrapper = new JobWrapper(mockJobApi);
     fileWrapper = new FileWrapper(undefined, mockJobWrapper);
   });
