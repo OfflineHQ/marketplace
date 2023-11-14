@@ -16328,7 +16328,7 @@ Table to assign roles to accounts, allowing a many-to-many relationship. Each ac
 type roleAssignments {
   accountId: uuid!
   created_at: timestamptz!
-  eventId: String
+  eventId: String!
   id: uuid!
   invitedById: uuid!
 

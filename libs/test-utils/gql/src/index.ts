@@ -91,6 +91,7 @@ export const backOfficeAccounts = {
     role: {
       role: Roles_Enum.OrganizerSuperAdmin,
       organizerId: 'clizzky8kap2t0bw7wka9a2id',
+      eventId: '',
     },
   } satisfies AppUser,
   alpha_organizer2_admin_user: {
@@ -98,6 +99,7 @@ export const backOfficeAccounts = {
     role: {
       role: Roles_Enum.OrganizerAdmin,
       organizerId: 'dummy',
+      eventId: '',
     },
   } satisfies AppUser,
   beta_organizer_admin_user: {
@@ -105,6 +107,7 @@ export const backOfficeAccounts = {
     role: {
       role: Roles_Enum.OrganizerAdmin,
       organizerId: 'clizzky8kap2t0bw7wka9a2id',
+      eventId: '',
     },
   } satisfies AppUser,
   delta_user: {

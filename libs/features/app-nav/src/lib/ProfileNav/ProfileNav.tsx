@@ -44,7 +44,7 @@ export function ProfileNav({
         >
           {user ? (
             <div className="flex h-16 w-16 flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:space-y-0 md:px-4">
-              <AutoAnimate className="flex items-center">
+              <AutoAnimate>
                 {isLoading ? (
                   <Spinner size="xl" variant="ghost" className="md:mr-2" />
                 ) : (
@@ -59,7 +59,7 @@ export function ProfileNav({
             </div>
           ) : (
             <div className="mt-3 flex h-16 flex-col items-center space-y-0 px-4 md:mt-0 md:flex-row md:space-x-2">
-              <AutoAnimate className="flex items-center">
+              <AutoAnimate>
                 {isLoading ? (
                   <Spinner size="xl" variant="ghost" className="md:mr-2" />
                 ) : (

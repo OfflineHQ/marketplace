@@ -9,6 +9,19 @@ import {
   SelectValue,
 } from './Select';
 
+import {
+  CreditCard,
+  LifeBuoy,
+  LogOut,
+  Plus,
+  Settings,
+  User,
+  UserAdd,
+  Users,
+} from '@ui/icons';
+
+import { SelectItems, SelectItemsProps } from './SelectItems';
+
 export function SelectDemo() {
   return (
     <Select>
@@ -45,5 +58,34 @@ export function SelectDemo() {
         </SelectGroup>
       </SelectContent>
     </Select>
+  );
+}
+
+export const menuItems = [
+  { type: 'label', text: 'My Account', value: 'my-account' },
+  { type: 'separator' },
+  { type: 'item', icon: <User />, text: 'Profile' },
+  { type: 'item', icon: <CreditCard />, text: 'Billing' },
+  { type: 'item', icon: <Settings />, text: 'Settings' },
+  { type: 'separator' },
+  { type: 'item', icon: <Users />, text: 'Team', disabled: true },
+  { type: 'item', icon: <UserAdd />, text: 'Invite users' },
+  { type: 'item', icon: <Plus />, text: 'New Team' },
+  { type: 'separator' },
+  { type: 'item', icon: <LifeBuoy />, text: 'Support' },
+  { type: 'separator' },
+  { type: 'item', icon: <LogOut />, text: 'Log out' },
+] satisfies SelectItemsProps['items'];
+
+export function SelectItemsDemo(props: SelectItemsProps) {
+  return (
+    <div className="flex">
+      <Select>
+        <SelectTrigger className="flex h-full items-center space-x-2">
+          <SelectValue placeholder="Select an item" />
+        </SelectTrigger>
+        <SelectItems {...props} />
+      </Select>
+    </div>
   );
 }

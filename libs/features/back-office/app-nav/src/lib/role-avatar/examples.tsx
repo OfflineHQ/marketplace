@@ -1,9 +1,8 @@
-import { Roles_Enum } from '@gql/shared/types';
+import { backOfficeAccounts } from '@test-utils/gql';
 import { RoleAvatar, RoleAvatarProps } from './RoleAvatar';
 
 export const organizerRoleAdmin = {
-  role: Roles_Enum.OrganizerAdmin,
-  organizerId: '123',
+  ...backOfficeAccounts.beta_organizer_admin_user.role,
   organizer: {
     image: {
       url: 'https://robohash.org/organizer.png?size=96x96',
@@ -11,6 +10,11 @@ export const organizerRoleAdmin = {
     name: 'Organizer Name',
     slug: 'organizer-name',
   },
+} as RoleAvatarProps['role'];
+
+export const organizerRoleSuperAdmin = {
+  ...organizerRoleAdmin,
+  ...backOfficeAccounts.alpha_organizer_super_admin_user.role,
 } as RoleAvatarProps['role'];
 
 export const organizerRoleWithoutImage = {

@@ -4,10 +4,12 @@ import { withAuth } from 'next-auth/middleware';
 import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
+// TODO adapt this list to roles with restricted access to some routes + update tests
 const authPages = [
   'user',
-  'dashboard',
-  'dashboard/*',
+  'events',
+  'events/*',
+  'my-roles',
   // Add more restricted pages if needed
 ];
 

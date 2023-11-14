@@ -22,7 +22,7 @@ export type GetAccountQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, kyc?: { __typename?: 'kyc', applicantId: string, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null, roles: Array<{ __typename?: 'roleAssignments', role: Types.Roles_Enum, organizerId: string, eventId?: string | null }> }> };
+export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, email?: string | null, emailVerified: boolean, kyc?: { __typename?: 'kyc', applicantId: string, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null, roles: Array<{ __typename?: 'roleAssignments', role: Types.Roles_Enum, organizerId: string, eventId: string }> }> };
 
 export type GetAccountByEmailQueryVariables = Types.Exact<{
   email: Types.Scalars['String'];
@@ -311,7 +311,7 @@ export type GetEventPassNftByIdMinimalQueryVariables = Types.Exact<{
 
 export type GetEventPassNftByIdMinimalQuery = { __typename?: 'query_root', eventPassNft_by_pk?: { __typename?: 'eventPassNft', id: any, tokenId: any, eventId: string, eventPassId: string, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null } | null };
 
-export type RoleAssignmentsFieldsFragment = { __typename?: 'roleAssignments', role: Types.Roles_Enum, organizerId: string, eventId?: string | null };
+export type RoleAssignmentsFieldsFragment = { __typename?: 'roleAssignments', role: Types.Roles_Enum, organizerId: string, eventId: string };
 
 export type CreateRoleAssignmentMutationVariables = Types.Exact<{
   input: Types.RoleAssignments_Insert_Input;

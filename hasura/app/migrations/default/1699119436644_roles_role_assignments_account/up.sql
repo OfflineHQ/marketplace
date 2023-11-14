@@ -43,7 +43,7 @@ CREATE TABLE "public"."roleAssignments" (
   "invitedById" uuid REFERENCES account(id) NOT NULL,
   role text REFERENCES roles("value") NOT NULL, -- use the role value enum from roles column
   "organizerId" text NOT NULL,
-  "eventId" text NULL,
+  "eventId" text NOT NULL DEFAULT '',
   created_at timestamptz NOT NULL DEFAULT now(),
   CONSTRAINT unique_role_assignment UNIQUE ("accountId", role, "organizerId", "eventId")
 );
