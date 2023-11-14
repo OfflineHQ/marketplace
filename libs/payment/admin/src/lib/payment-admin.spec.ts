@@ -315,26 +315,6 @@ describe('Payment', () => {
     });
   });
 
-  describe('markEventPassOrderAsCompleted', () => {
-    it('should call adminSdk.UpdateEventPassOrdersStatus with correct parameters', async () => {
-      const eventPassOrdersId = ['order1', 'order2'];
-      adminSdk.UpdateEventPassOrdersStatus = jest.fn().mockReturnValue({});
-      await payment.markEventPassOrderAsCompleted({ eventPassOrdersId });
-      expect(adminSdk.UpdateEventPassOrdersStatus).toHaveBeenCalledWith({
-        updates: eventPassOrdersId.map((id) => ({
-          _set: {
-            status: OrderStatus_Enum.Completed,
-          },
-          where: {
-            id: {
-              _eq: id,
-            },
-          },
-        })),
-      });
-    });
-  });
-
   describe('markEventPassOrderAsRefunded', () => {
     it('should call adminSdk.UpdateEventPassOrdersStatus with correct parameters', async () => {
       const eventPassOrdersId = ['order1', 'order2'];
@@ -625,14 +605,12 @@ describe('Payment', () => {
     });
   });
   describe('confirmedStripeCheckoutSession', () => {
-    it('should call getEventPassOrdersFromStripeCheckoutSession, nftClaimable.claimAllMetadatas, markEventPassOrderAsCompleted, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
+    it('should call getEventPassOrdersFromStripeCheckoutSession, nftClaimable.claimAllMetadatas, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
       const stripeCheckoutSessionId = 'sessionId';
       const orders = [{ id: 'order1' }, { id: 'order2' }];
       payment.getEventPassOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue(orders);
-      payment.nftClaimable.claimAllMetadatas = jest.fn().mockResolvedValue({});
-      payment.markEventPassOrderAsCompleted = jest.fn().mockResolvedValue({});
       adminSdk.DeleteStripeCheckoutSession = jest.fn().mockResolvedValue({});
 
       await payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId });
@@ -640,12 +618,6 @@ describe('Payment', () => {
       expect(
         payment.getEventPassOrdersFromStripeCheckoutSession,
       ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
-      expect(payment.nftClaimable.claimAllMetadatas).toHaveBeenCalledWith(
-        orders,
-      );
-      expect(payment.markEventPassOrderAsCompleted).toHaveBeenCalledWith({
-        eventPassOrdersId: orders.map((order) => order.id),
-      });
       expect(adminSdk.DeleteStripeCheckoutSession).toHaveBeenCalledWith({
         stripeSessionId: stripeCheckoutSessionId,
       });
@@ -663,13 +635,11 @@ describe('Payment', () => {
       expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
 
-    it('should throw an error when claimAllMetadatas fails', async () => {
-      payment.nftClaimable.claimAllMetadatas = jest
-        .fn()
-        .mockRejectedValue(new Error('Failed to claim NFTs'));
+    it('should throw an error when checkOrder fails for one ', async () => {
+      const orders = [{ id: 'order1' }, { id: 'order2' }];
       payment.getEventPassOrdersFromStripeCheckoutSession = jest
         .fn()
-        .mockResolvedValue([]);
+        .mockResolvedValue([orders]);
       adminSdk.DeleteStripeCheckoutSession = jest.fn();
 
       await expect(

@@ -1,9 +1,9 @@
 'use client';
 
 import { Copy } from '@ui/icons';
-import { useCopyToClipboard } from '@uidotdev/usehooks';
 import { truncateString } from '@utils';
 import { useEffect, useState } from 'react';
+import { useCopyToClipboard } from 'react-use';
 import { Badge, BadgeProps } from '../badge/Badge';
 import { statusVariantIcons } from '../shared/statusVariant';
 import { Tooltip } from '../tooltip/Tooltip';
