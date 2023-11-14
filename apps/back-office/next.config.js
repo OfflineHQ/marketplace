@@ -90,7 +90,7 @@ const nextConfig = {
       '@features/account/api',
       '@features/appNav',
       '@features/back-office/appNav',
-      '@features/back-office/dashboard',
+      '@features/back-office/events',
       '@features/cart',
       '@features/cart/server',
       '@features/kyc',
