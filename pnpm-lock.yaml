@@ -1,6 +1,15 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@bytescale/sdk':
+    specifier: ^3.10.0
+    version: 3.10.0
+  '@bytescale/upload-widget':
+    specifier: ^4.17.0
+    version: 4.17.0
+  '@bytescale/upload-widget-react':
+    specifier: ^4.12.0
+    version: 4.12.0(react@18.2.0)
   '@dinero.js/currencies':
     specifier: 2.0.0-alpha.14
     version: 2.0.0-alpha.14
@@ -271,9 +280,6 @@ dependencies:
   tslib:
     specifier: ^2.6.2
     version: 2.6.2
-  upload-js-full:
-    specifier: ^2.22.1
-    version: 2.22.1
   uploader:
     specifier: ^3.48.2
     version: 3.48.2
@@ -2115,6 +2121,28 @@ packages:
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
+
+  /@bytescale/sdk@3.10.0:
+    resolution: {integrity: sha512-aDdMh0vGJmb2QX1M4DOcVl/9LB1Zzb1C5wCVH1bGM3jgyhZYhrLIk8xcswhSnT8ohVnSVgt1Z56zuLkNWM6dEw==}
+    dev: false
+
+  /@bytescale/upload-widget-react@4.12.0(react@18.2.0):
+    resolution: {integrity: sha512-TmOBQfzBpfmyOfw0Fs7Y7XpbQK6vCAcPLvFUdQYlWPprXgwBYITo2PK0tVTP32QRQTxfq0+mFOvNstoIHP47bQ==}
+    peerDependencies:
+      react: '>=16.3.0'
+    dependencies:
+      '@bytescale/upload-widget': 4.17.0
+      lodash.isequal: 4.5.0
+      react: 18.2.0
+    dev: false
+
+  /@bytescale/upload-widget@4.17.0:
+    resolution: {integrity: sha512-BHEBMZuNK6IiTelg3FKZrcbQmWH8rrmfN17l3wvGm1hA2azjwkGZV0UjisBTE5KO6ktgxnXEVttAKcVs64Fejw==}
+    dependencies:
+      '@bytescale/sdk': 3.10.0
+      classnames: 2.3.2
+      preact: 10.18.1
+    dev: false
 
   /@chainlink/contracts@0.6.1(ethers@5.7.2):
     resolution: {integrity: sha512-EuwijGexttw0UjfrW+HygwhQIrGAbqpf1ue28R55HhWMHBzphEH0PhWm8DQmFfj5OZNy8Io66N4L0nStkZ3QKQ==}
@@ -17325,7 +17353,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.5
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: true
@@ -26942,11 +26970,6 @@ packages:
       browserslist: 4.22.1
       escalade: 3.1.1
       picocolors: 1.0.0
-
-  /upload-js-full@2.22.1:
-    resolution: {integrity: sha512-0cntVkfP7mgHT4bHfJ/BXrL+TYNBU00kp8TmMT8l2TpYTZbwiT+0xG9CJweytHXvIEl16/Wu52xLqzzauiZlhQ==}
-    deprecated: 'Use the Bytescale JavaScript SDK: https://github.com/bytescale/bytescale-javascript-sdk/blob/main/MIGRATE.md'
-    dev: false
 
   /upload-js@2.24.3:
     resolution: {integrity: sha512-iiTowtr2uRw2coGXlqiN1ff/wfMPVMv2MqaZYqEYBSNGmxD1pLl9R9wU8BT/mK+Yn8fDx7utlPovXziS8PVaIA==}

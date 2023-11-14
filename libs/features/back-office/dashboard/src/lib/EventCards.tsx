@@ -1,10 +1,11 @@
 'use client';
 
+import { UploadDropzone } from '@bytescale/upload-widget-react';
+import env from '@env/client';
 import { ExternalProvider } from '@ethersproject/providers/lib/web3-provider';
 import type { EventFromOrganizer as TEvent } from '@features/back-office/dashboard-types';
 import { getEventPassOrganizerFolderPath } from '@features/pass-common';
 import { useAuthContext } from '@next/auth';
-import { useUploader } from '@next/uploader-provider';
 import NftCollection, { type NftsMetadata } from '@nft/thirdweb-organizer';
 import {
   Avatar,
@@ -20,8 +21,6 @@ import {
   useToast,
 } from '@ui/components';
 import { useEffect, useState } from 'react';
-import { UploadDropzone } from 'react-uploader';
-import type { UploadWidgetConfig, UploaderInterface } from 'uploader';
 import {
   checkFolder,
   checkFolderLength,
@@ -35,10 +34,9 @@ export interface EventCardsProps {
 
 export function EventCards(props: EventCardsProps) {
   const { safeUser, provider } = useAuthContext();
-  const { uploader } = useUploader();
 
   return safeUser && provider ? (
-    <EventCard provider={provider} uploader={uploader} {...props} />
+    <EventCard provider={provider} {...props} />
   ) : (
     <p>Provider is not ready.</p>
   );
@@ -46,7 +44,6 @@ export function EventCards(props: EventCardsProps) {
 
 interface EventCardProps extends EventCardsProps {
   provider: ExternalProvider;
-  uploader: EventPassContentProps['uploader'];
 }
 
 type DeployFunction = (
@@ -63,7 +60,6 @@ interface EventPassContentProps {
   event: TEvent;
   deploy: DeployFunction;
   organizerId: string;
-  uploader: UploaderInterface | null;
 }
 
 function EventPassContent({
@@ -71,7 +67,6 @@ function EventPassContent({
   event,
   eventPass,
   deploy,
-  uploader,
 }: EventPassContentProps) {
   const [filesNumber, setFilesNumber] = useState(0);
   const path = getEventPassOrganizerFolderPath({
@@ -101,6 +96,7 @@ function EventPassContent({
   }, [path, event.id, eventPass.id, eventPass.eventPassPricing?.maxAmount]);
 
   const uploaderOptions = {
+    apiKey: env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY,
     multi: true,
 
     path: {
@@ -127,7 +123,7 @@ function EventPassContent({
         primary: '#377dff',
       },
     },
-  } satisfies UploadWidgetConfig;
+  };
 
   return (
     <Card className="items-center justify-center" key={eventPass.id}>
@@ -188,12 +184,11 @@ function EventPassContent({
               filesNumber !== eventPass.eventPassPricing.maxAmount ? (
                 <>
                   {filesNumber}/{eventPass.eventPassPricing?.maxAmount}
-                  {uploader && (
+                  {
                     <UploadDropzone
-                      uploader={uploader}
                       options={uploaderOptions}
-                      onUpdate={async (files) => {
-                        files
+                      onUpdate={async ({ uploadedFiles }) => {
+                        uploadedFiles
                           .map((x) => {
                             return x.fileUrl;
                           })
@@ -211,7 +206,7 @@ function EventPassContent({
                         alert(files.map((x) => x.fileUrl).join('\n'));
                       }}
                     />
-                  )}
+                  }
                 </>
               ) : (
                 <Button
@@ -255,12 +250,7 @@ function EventPassContent({
   );
 }
 
-function EventCard({
-  events,
-  provider,
-  organizerId,
-  uploader,
-}: EventCardProps) {
+function EventCard({ events, provider, organizerId }: EventCardProps) {
   const sdk = new NftCollection(provider);
 
   async function deploy(
@@ -301,7 +291,6 @@ function EventCard({
                   event,
                   deploy,
                   organizerId,
-                  uploader,
                 }),
               )
             : null}

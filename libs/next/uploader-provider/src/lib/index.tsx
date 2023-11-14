@@ -1,11 +1,11 @@
 'use client';
 
+import * as Bytescale from '@bytescale/sdk';
+import type { UploaderInterface } from '@bytescale/upload-widget';
 import env from '@env/client';
 import { useAuthContext } from '@next/auth';
 import { getNextAppURL } from '@shared/client';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import type { UploaderInterface } from 'uploader';
-import { Uploader } from 'uploader';
 
 interface BytescaleProviderProps {
   children?: React.ReactNode;
@@ -31,21 +31,19 @@ export const UploaderProvider: React.FC<BytescaleProviderProps> = ({
   children,
 }) => {
   const { safeUser } = useAuthContext();
-  const [uploader, setUploader] = useState<UploaderInterface | null>(null);
+  const [uploader, setUploader] = useState(false);
 
   useEffect(() => {
     if (safeUser && !uploader) {
-      const uploaderInstance = Uploader({
-        apiKey: env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY,
+      Bytescale.AuthManager.beginAuthSession({
+        accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
+        authUrl: `${getNextAppURL()}/api/bytescale/jwt`,
+        authHeaders: async () => Promise.resolve({}),
       });
-      uploaderInstance.beginAuthSession(
-        `${getNextAppURL()}/api/bytescale/jwt`,
-        async () => Promise.resolve({}),
-      );
-      setUploader(uploaderInstance);
+      setUploader(true);
     } else if (!safeUser && uploader) {
-      uploader.endAuthSession();
-      setUploader(null);
+      Bytescale.AuthManager.endAuthSession();
+      setUploader(false);
     }
   }, [safeUser, uploader]);
 

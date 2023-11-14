@@ -39,6 +39,9 @@
   },
   "private": true,
   "dependencies": {
+    "@bytescale/sdk": "^3.10.0",
+    "@bytescale/upload-widget": "^4.17.0",
+    "@bytescale/upload-widget-react": "^4.12.0",
     "@dinero.js/currencies": "2.0.0-alpha.14",
     "@ethersproject/providers": "^5.7.2",
     "@formkit/auto-animate": "1.0.0-beta.6",
@@ -129,7 +132,6 @@
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-gradients": "^3.0.0",
     "tslib": "^2.6.2",
-    "upload-js-full": "^2.22.1",
     "uploader": "^3.48.2",
     "uuid": "^8.3.2",
     "zod": "^3.22.4",
