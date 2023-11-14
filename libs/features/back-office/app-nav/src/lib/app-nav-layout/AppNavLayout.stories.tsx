@@ -2,6 +2,7 @@ import { expect } from '@storybook/jest';
 import { type Meta, type StoryObj } from '@storybook/react';
 
 import { screen, userEvent } from '@storybook/testing-library';
+import { sleep } from '@utils';
 import { AppNavLayout } from './AppNavLayout';
 import {
   MenuNavWithAdminRole,
@@ -35,6 +36,7 @@ export const WithNoUser: Story = {
     profileNav: <ProfileNavWithNoUser />,
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     const signIn = await screen.findAllByText('Sign in');
     userEvent.click(signIn[0]);
     await screen.findByText('Settings');
@@ -49,6 +51,7 @@ export const WithUser: Story = {
     profileNav: <ProfileNavWithUser />,
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     const myRolesRoute = await screen.findAllByText(/my roles/i);
     userEvent.click(myRolesRoute[0]);
     const profileButton = await screen.findAllByText(/john/i);
@@ -66,6 +69,7 @@ export const WithAdminRole: Story = {
     profileNav: <ProfileNavWithAdminRole />,
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     const eventsRoute = await screen.findAllByText(/events/i);
     userEvent.click(eventsRoute[0]);
     const profileButton = await screen.findAllByText(/organizer admin/i);
@@ -81,6 +85,7 @@ export const WithSuperAdminRole: Story = {
     profileNav: <ProfileNavWithSuperAdminRole />,
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     const eventsRoute = await screen.findAllByText(/events/i);
     userEvent.click(eventsRoute[0]);
     const manageRoute = await screen.findAllByText(/manage/i);
@@ -123,6 +128,7 @@ export const WithNoUserMobile: Story = {
     },
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     const signIn = await screen.findAllByText('Sign in');
     userEvent.click(signIn[1]);
     await screen.findByText('Settings');
@@ -144,6 +150,7 @@ export const WithUserMobile: Story = {
     },
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     const myRolesRoute = await screen.findAllByText(/my roles/i);
     expect(myRolesRoute[1]).toBeInTheDocument();
     const profileButton = await screen.findAllByText(/john/i);
@@ -168,6 +175,7 @@ export const WithSuperAdminRoleMobile: Story = {
     },
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     const eventsRoute = await screen.findAllByText(/Events/i);
     expect(eventsRoute[1]).toBeInTheDocument();
     const profileButton = await screen.findAllByText(/organizer super admin/i);

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 // import { cryptoUserSession } from '../profile-avatar/examples';
 import { screen, userEvent } from '@storybook/testing-library';
+import { sleep } from '@utils';
 import { organizerRoleAdmin } from '../role-avatar/examples';
 import { ProfileNav, ProfileNavSkeleton } from './ProfileNav';
 import {
@@ -28,6 +29,7 @@ export const NotConnected: Story = {
     items: itemsNotConnected,
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     await userEvent.click(await screen.findByText('Sign in'));
     await screen.findByText('Settings');
     await screen.findByText('Support');
@@ -41,6 +43,7 @@ export const WithUserNoRoles: Story = {
     items: itemsUserNoRoles,
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     await userEvent.click(await screen.findByText(/john/i));
     await screen.findByText('Settings');
     screen.getByText('Support');
@@ -65,6 +68,7 @@ export const WithUserRoles: Story = {
     items: itemsUserWithRoles,
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     await userEvent.click(await screen.findByText(/john/i));
     await screen.findByText('Settings');
     screen.getByText('Support');
@@ -83,6 +87,7 @@ export const WithAdminRole: Story = {
     items: itemsAdmin,
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     await userEvent.click(await screen.findByText(/Organizer admin/i));
     await screen.findByText('Settings');
     screen.getByText(/current role/i);
@@ -103,6 +108,7 @@ export const WithAdminRoleMobile: Story = {
     },
   },
   play: async ({ canvasElement }) => {
+    await sleep(100);
     await userEvent.click(await screen.findByText(/Organizer admin/i));
     await screen.findByText('Settings');
     screen.getByText(/current role/i);
