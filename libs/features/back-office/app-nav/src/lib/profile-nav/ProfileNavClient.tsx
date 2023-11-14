@@ -258,13 +258,15 @@ export const ProfileNavClient = ({
   const switchToRole = useCallback(
     async (role: RoleWithOrganizer) => {
       try {
-        await update({ role });
+        const session = await update({ role });
+        console.log({ session });
         toast({
           title: profileSectionsText.switchToRoleToastTitle,
           description: <RoleItemDisplay role={role} />,
         });
         // TODO redirect to default role route
         // const defaultRoleRoute = '';
+        router.refresh();
       } catch (error) {
         console.error(error);
         toast({
@@ -285,6 +287,7 @@ export const ProfileNavClient = ({
         description: profileSectionsText.switchToMyAccountToastTDescription,
       });
       router.push('/my-roles');
+      router.refresh();
     } catch (error) {
       console.error(error);
       toast({
