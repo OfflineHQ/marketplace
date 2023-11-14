@@ -1,7 +1,7 @@
+import { expect } from '@storybook/jest';
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import { screen, userEvent, within } from '@storybook/testing-library';
-import React from 'react';
+import { screen, userEvent } from '@storybook/testing-library';
 import { AppNavLayout } from './AppNavLayout';
 import {
   MenuNavWithAdminRole,
@@ -136,14 +136,16 @@ export const WithUserMobile: Story = {
     viewport: {
       defaultViewport: 'mobile1',
     },
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/my-roles',
+      },
+    },
   },
   play: async ({ canvasElement }) => {
-    await userEvent.click(screen.getByRole('combobox'));
-    const optionList = await screen.findByRole('listbox');
-    const myRoleRoute = within(optionList).getByRole('option', {
-      name: /my roles/i,
-    });
-    await userEvent.dblClick(myRoleRoute);
+    const myRolesRoute = await screen.findAllByText(/my roles/i);
+    expect(myRolesRoute[1]).toBeInTheDocument();
     const profileButton = await screen.findAllByText(/john/i);
     userEvent.click(profileButton[1]);
     await screen.findByText('Settings');
@@ -158,14 +160,16 @@ export const WithSuperAdminRoleMobile: Story = {
     viewport: {
       defaultViewport: 'mobile1',
     },
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/events',
+      },
+    },
   },
   play: async ({ canvasElement }) => {
-    await userEvent.click(screen.getByRole('combobox'));
-    const optionList = await screen.findByRole('listbox');
-    const eventsRoute = within(optionList).getByRole('option', {
-      name: /events/i,
-    });
-    await userEvent.dblClick(eventsRoute);
+    const eventsRoute = await screen.findAllByText(/Events/i);
+    expect(eventsRoute[1]).toBeInTheDocument();
     const profileButton = await screen.findAllByText(/organizer super admin/i);
     userEvent.click(profileButton[1]);
     await screen.findByText(/organizer admin/i);

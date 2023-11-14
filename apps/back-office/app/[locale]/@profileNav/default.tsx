@@ -49,6 +49,15 @@ async function ProfileNavSectionContent({ locale }: { locale: string }) {
         switchToRoleToastErrorTitle: t(
           'sections-text.switch-to-role-toast-error-title',
         ),
+        switchToMyAccountToastErrorTitle: t(
+          'sections-text.switch-to-my-account-toast-error-title',
+        ),
+        switchToMyAccountToastTitle: t(
+          'sections-text.switch-to-my-account-toast-title',
+        ),
+        switchToMyAccountToastTDescription: t(
+          'sections-text.switch-to-my-account-toast-description',
+        ),
       }}
       isNextAuthConnected={!!user}
       roles={roles}

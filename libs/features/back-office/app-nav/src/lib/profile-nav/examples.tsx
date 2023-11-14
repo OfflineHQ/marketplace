@@ -41,6 +41,15 @@ export function ProfileNavClientExample(props: ProfileNavClientProps) {
               switchToRoleToastErrorTitle: t(
                 'sections-text.switch-to-role-toast-error-title',
               ),
+              switchToMyAccountToastErrorTitle: t(
+                'sections-text.switch-to-my-account-toast-error-title',
+              ),
+              switchToMyAccountToastTitle: t(
+                'sections-text.switch-to-my-account-toast-title',
+              ),
+              switchToMyAccountToastTDescription: t(
+                'sections-text.switch-to-my-account-toast-description',
+              ),
             }}
           />{' '}
         </AuthProvider>
@@ -73,6 +82,11 @@ const profileSectionsText = {
   switchToRole: 'Switch to role',
   switchToRoleToastTitle: 'Switched to role:',
   switchToRoleToastErrorTitle: 'Error while trying to switch to role',
+  switchToMyAccountToastErrorTitle:
+    'Error while trying to switch to your account',
+  switchToMyAccountToastTitle: 'User account',
+  switchToMyAccountToastTDescription:
+    'You are now connected with your own account',
 } as ProfileNavClientProps['profileSectionsText'];
 
 export const user = {
