@@ -50,7 +50,11 @@
         "sign-out-description": "À bientôt 👋 !",
         "sign-in": "Se connecter",
         "settings": "Paramètres",
-        "copied-address": "Adresse copiée !"
+        "copied-address": "Adresse copiée !",
+        "switch-to-my-account": "Revenir à mon compte",
+        "my-current-role": "Mon rôle actuel",
+        "switch-to-role": "Passer au rôle",
+        "switch-to-role-toast-error-title": "Erreur lors de la tentative de changement de rôle"
       }
     },
     "Pass": {
@@ -224,7 +228,7 @@
   },
   "Roles": {
     "RoleBadge": {
-      "organizer-admin": "Administrateur de l'organisateur",
+      "organizer-admin": "Admin de l'organisateur",
       "organizer-auditor": "Auditeur de l'organisateur",
       "organizer-content-manager": "Gestionnaire de contenu de l'organisateur",
       "organizer-finance-manager": "Gestionnaire financier de l'organisateur",

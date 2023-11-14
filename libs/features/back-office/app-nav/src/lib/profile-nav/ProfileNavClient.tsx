@@ -4,9 +4,10 @@ import { RoleBadge } from '@features/back-office/roles';
 import { SafeUser, useAuthContext } from '@next/auth';
 import { Link } from '@next/navigation';
 import { AppUser } from '@next/types';
-import { Role, RoleWithOrganizer } from '@roles/types';
+import { RoleWithOrganizer } from '@roles/types';
 import { BlockchainAddress, DropdownMenuItem, useToast } from '@ui/components';
 import { LifeBuoy, LogIn, LogOut, Settings, User } from '@ui/icons';
+import { getErrorMessage } from '@utils';
 import { useSession } from 'next-auth/react';
 import { useCallback, useMemo } from 'react';
 import { RoleAvatar } from '../role-avatar/RoleAvatar';
@@ -31,10 +32,15 @@ interface ConstructItemsParams {
     signIn: string;
     settings: string;
     copiedAddress: string;
+    switchToMyAccount: string;
+    myCurrentRole: string;
+    switchToRole: string;
+    switchToRoleToastTitle: string;
+    switchToRoleToastErrorTitle: string;
   };
   login: () => void;
   signOutUserAction: () => void;
-  switchToRole: (role: Role) => void;
+  switchToRole: (role: RoleWithOrganizer) => void;
   switchToMyAccount: () => void;
   toast: ReturnType<typeof useToast>['toast'];
 }
@@ -51,7 +57,7 @@ export interface ProfileNavClientProps
 
 interface RoleItemProps {
   role: RoleWithOrganizer;
-  switchToRole: (role: Role) => void;
+  switchToRole: (role: RoleWithOrganizer) => void;
 }
 
 const RoleItem = ({ role, switchToRole }: RoleItemProps) => {
@@ -108,7 +114,7 @@ export const constructItems = ({
     ? [
         {
           type: 'label',
-          text: 'My current role',
+          text: profileSectionsText.myCurrentRole,
           className: 'md:hidden',
         },
         {
@@ -165,7 +171,7 @@ export const constructItems = ({
   if (matchingRole) {
     userInfoSections.push({
       type: 'item',
-      text: 'Switch to my account',
+      text: profileSectionsText.switchToMyAccount,
       icon: <User />,
       className: 'cursor-pointer',
       action: switchToMyAccount,
@@ -177,7 +183,7 @@ export const constructItems = ({
         { type: 'separator' },
         {
           type: 'label',
-          text: 'Switch to role',
+          text: profileSectionsText.switchToRole,
           className: 'pt-2 pb-0',
         },
         ...(roles
@@ -249,15 +255,23 @@ export const ProfileNavClient = ({
   }, [logout, toast, profileSectionsText]);
 
   const switchToRole = useCallback(
-    async (role: Role) => {
+    async (role: RoleWithOrganizer) => {
       try {
         await update({ role });
+        toast({
+          title: profileSectionsText.switchToRoleToastTitle,
+          description: RoleItem({ role, switchToRole: () => null }),
+        });
       } catch (error) {
-        // TODO handle error with toast
         console.error(error);
+        toast({
+          title: profileSectionsText.switchToRoleToastErrorTitle,
+          description: getErrorMessage(error),
+          variant: 'destructive',
+        });
       }
     },
-    [update],
+    [update, toast, profileSectionsText],
   );
 
   const switchToMyAccount = useCallback(async () => {
