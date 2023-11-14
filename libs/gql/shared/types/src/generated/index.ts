@@ -12238,7 +12238,7 @@ export type RoleAssignments = {
   __typename?: 'roleAssignments';
   accountId: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
-  eventId?: Maybe<Scalars['String']>;
+  eventId: Scalars['String'];
   id: Scalars['uuid'];
   invitedById: Scalars['uuid'];
   /** An object relationship */
