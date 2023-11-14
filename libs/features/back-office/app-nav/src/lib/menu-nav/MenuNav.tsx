@@ -1,5 +1,4 @@
 import { Roles_Enum } from '@gql/shared/types';
-import { Link } from '@next/navigation';
 import { AppUser } from '@next/types';
 import { TextSkeleton } from '@ui/components';
 import { EventManagement, UserRoles, Users } from '@ui/icons';
@@ -14,11 +13,11 @@ export type MenuNavProps = {
 export const MenuNav: React.FC<MenuNavProps> = ({ user }) => {
   const t = useTranslations('AppNav.MenuNav');
   let items: MenuNavMobileProps['items'] = [];
+
   const adminItems: MenuNavMobileProps['items'] = [
     {
       icon: <EventManagement />,
       value: '/events',
-      wrapper: <Link href="/events" />,
       text: t('events-management-text'),
       type: 'item',
     },
@@ -26,7 +25,6 @@ export const MenuNav: React.FC<MenuNavProps> = ({ user }) => {
   const manageRoles: MenuNavMobileProps['items'][0] = {
     icon: <Users />,
     value: '/manage-roles',
-    wrapper: <Link href="/manage-roles" />,
     text: t('manage-roles-text'),
     type: 'item',
   };
@@ -36,7 +34,7 @@ export const MenuNav: React.FC<MenuNavProps> = ({ user }) => {
       {
         icon: <UserRoles />,
         value: '/my-roles',
-        wrapper: <Link href="/my-roles" />,
+
         text: t('my-roles-text'),
         type: 'item',
       },
