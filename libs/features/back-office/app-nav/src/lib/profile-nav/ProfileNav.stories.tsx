@@ -70,8 +70,9 @@ export const WithUserRoles: Story = {
     screen.getByText('Support');
     screen.getByText(/0x/i);
     screen.getByText(/sign out/i);
-    await userEvent.click(await screen.findByText(/switch to role/i));
-    await screen.findByText(/super admin/i);
+    screen.getByText(/switch to role/i);
+    screen.getByText(/super admin/i);
+    screen.getByText(/organizer admin/i);
   },
 };
 
@@ -89,8 +90,8 @@ export const WithAdminRole: Story = {
     screen.getByText(/0x/i);
     screen.getByText(/sign out/i);
     screen.getByText(/switch to my account/i);
-    await userEvent.click(await screen.findByText(/switch to role/i));
-    await screen.findByText(/super admin/i);
+    screen.getByText(/switch to role/i);
+    screen.getByText(/super admin/i);
   },
 };
 
@@ -100,6 +101,17 @@ export const WithAdminRoleMobile: Story = {
     viewport: {
       defaultViewport: 'mobile1',
     },
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(await screen.findByText(/Organizer admin/i));
+    await screen.findByText('Settings');
+    screen.getByText(/current role/i);
+    screen.getByText('Support');
+    screen.getByText(/0x/i);
+    screen.getByText(/sign out/i);
+    screen.getByText(/switch to my account/i);
+    screen.getByText(/switch to role/i);
+    screen.getByText(/super admin/i);
   },
 };
 

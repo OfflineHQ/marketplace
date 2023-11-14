@@ -6,6 +6,7 @@ export const iconSizes = {
   default: 'w-5 h-5 md:w-6 md:h-6',
   lg: 'w-7 h-7 md:w-7 md:h-7',
   xl: 'w-9 h-9 md:w-9.5 md:h-9.5',
+  auto: 'w-auto h-auto',
 };
 
 export const iconMarginLeft = {
