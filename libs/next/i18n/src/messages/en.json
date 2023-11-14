@@ -55,7 +55,10 @@
         "my-current-role": "My current role",
         "switch-to-role": "Switch to role",
         "switch-to-role-toast-title": "Switched to role:",
-        "switch-to-role-toast-error-title": "Error while trying to switch to role"
+        "switch-to-role-toast-error-title": "Error while trying to switch to role",
+        "switch-to-my-account-toast-title": "User account",
+        "switch-to-my-account-toast-description": "You are now connected with your own account",
+        "switch-to-my-account-toast-error-title": "Error while trying to switch to your account"
       }
     },
     "Pass": {

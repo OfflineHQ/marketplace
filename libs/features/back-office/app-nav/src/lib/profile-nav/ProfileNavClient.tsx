@@ -37,6 +37,9 @@ interface ConstructItemsParams {
     switchToRole: string;
     switchToRoleToastTitle: string;
     switchToRoleToastErrorTitle: string;
+    switchToMyAccountToastTitle: string;
+    switchToMyAccountToastTDescription: string;
+    switchToMyAccountToastErrorTitle: string;
   };
   login: () => void;
   signOutUserAction: () => void;
@@ -275,8 +278,21 @@ export const ProfileNavClient = ({
   );
 
   const switchToMyAccount = useCallback(async () => {
-    await update();
-  }, [update]);
+    try {
+      await update();
+      toast({
+        title: profileSectionsText.switchToMyAccountToastTitle,
+        description: profileSectionsText.switchToMyAccountToastTDescription,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: profileSectionsText.switchToMyAccountToastErrorTitle,
+        description: getErrorMessage(error),
+        variant: 'destructive',
+      });
+    }
+  }, [update, toast, profileSectionsText]);
 
   const items: ProfileNavProps['items'] = useMemo(
     () =>
