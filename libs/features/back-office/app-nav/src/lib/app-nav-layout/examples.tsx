@@ -1,7 +1,13 @@
 import { backOfficeAccounts } from '@test-utils/gql';
 import { MenuNav } from '../menu-nav/MenuNav';
 import { ProfileNav, ProfileNavSkeleton } from '../profile-nav/ProfileNav';
-import { user } from '../profile-nav/examples';
+import {
+  itemsAdmin,
+  itemsNotConnected,
+  itemsSuperAdmin,
+  itemsUserNoRoles,
+  user,
+} from '../profile-nav/examples';
 import {
   organizerRoleAdmin,
   organizerRoleSuperAdmin,
@@ -11,7 +17,7 @@ export const ProfileNavWithNoUser = () => (
   <ProfileNav
     user={undefined}
     isLoading={false}
-    items={[]}
+    items={itemsNotConnected}
     signInText="Sign in"
   />
 );
@@ -21,22 +27,30 @@ export const ProfileNavLoading = () => <ProfileNavSkeleton />;
 export const ProfileNavWithNoUserLoading = () => (
   <ProfileNav
     user={undefined}
-    items={[]}
+    items={itemsNotConnected}
     isLoading={true}
     signInText="Sign in"
   />
 );
 
 export const ProfileNavWithUser = () => (
-  <ProfileNav user={user} items={[]} isLoading={false} />
+  <ProfileNav user={user} items={itemsUserNoRoles} isLoading={false} />
+);
+
+export const ProfileNavWithUserLoading = () => (
+  <ProfileNav user={user} items={itemsUserNoRoles} isLoading={true} />
 );
 
 export const ProfileNavWithAdminRole = () => (
-  <ProfileNav role={organizerRoleAdmin} isLoading={false} items={[]} />
+  <ProfileNav role={organizerRoleAdmin} isLoading={false} items={itemsAdmin} />
 );
 
 export const ProfileNavWithSuperAdminRole = () => (
-  <ProfileNav role={organizerRoleSuperAdmin} isLoading={false} items={[]} />
+  <ProfileNav
+    role={organizerRoleSuperAdmin}
+    isLoading={false}
+    items={itemsSuperAdmin}
+  />
 );
 
 export const MenuNavWithNoUser = () => <MenuNav user={undefined} />;
