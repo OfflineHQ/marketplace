@@ -61,7 +61,7 @@ const RoleItem = ({ role, switchToRole }: RoleItemProps) => {
       onSelect={() => switchToRole(role)}
       className="cursor-pointer"
     >
-      <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0">
+      <div className="mr-2 flex w-fit flex-row items-center justify-center space-x-2 space-y-0">
         <RoleAvatar role={role} />
         <div className="flex flex-col">
           <div className="pb-1 font-semibold">{name}</div>
@@ -117,7 +117,7 @@ export const constructItems = ({
             <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0 pl-2">
               <RoleAvatar role={matchingRole} />
               <div className="flex flex-col">
-                <div className="overflow-hidden pb-1 text-sm">
+                <div className="pb-1 text-sm">
                   {matchingRole.organizer?.name}
                 </div>
                 <RoleBadge role={matchingRole} size="sm" />
@@ -177,20 +177,16 @@ export const constructItems = ({
         { type: 'separator' },
         {
           type: 'label',
-          text: 'Roles',
+          text: 'Switch to role',
           className: 'pt-2 pb-0',
         },
-        {
-          type: 'sub',
-          text: 'Switch to role',
-          subItems: roles
-            .filter((role) => role !== matchingRole)
-            .map((role) => ({
-              type: 'children',
-              children: <RoleItem role={role} switchToRole={switchToRole} />,
-              className: 'cursor-pointer',
-            })),
-        },
+        ...(roles
+          .filter((role) => role !== matchingRole)
+          .map((role) => ({
+            type: 'children',
+            children: <RoleItem role={role} switchToRole={switchToRole} />,
+            className: 'cursor-pointer',
+          })) satisfies ProfileNavProps['items']),
       ]
     : [];
 

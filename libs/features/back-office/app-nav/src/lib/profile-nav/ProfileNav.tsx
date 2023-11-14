@@ -51,7 +51,7 @@ export function ProfileNav({
           <ProfileNavContent />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuItems items={items} />
+      <DropdownMenuItems items={items} className="w-fit" />
     </DropdownMenu>
   );
 }
@@ -66,10 +66,10 @@ function ProfileNavUser({ user, isLoading }: ProfileNavUserProps) {
   const email = user?.email || '';
   const eoa = user?.eoa || '';
   return (
-    <div className="flex w-fit flex-row  items-center justify-center space-x-2 space-y-0 px-4">
+    <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0 px-4">
       <AutoAnimate>
         {isLoading ? (
-          <Spinner size="xl" variant="ghost" className="md:mr-2" />
+          <Spinner size="auto" variant="ghost" className="md:mr-2" />
         ) : (
           <ProfileAvatar user={user} />
         )}
@@ -91,16 +91,16 @@ function ProfileNavNotConnected({
   isLoading,
 }: ProfileNavNotConnectedProps) {
   return (
-    <div className="mt-3 flex h-16 flex-col items-center space-y-0 px-4 md:mt-0 md:flex-row md:space-x-2">
+    <div className="mt-3 flex h-16 flex-col items-center justify-center space-y-0 px-4 md:mt-0 md:flex-row md:space-x-2">
       <AutoAnimate>
         {isLoading ? (
-          <Spinner size="xl" variant="ghost" className="md:mr-2" />
+          <Spinner size="auto" variant="ghost" className="md:mr-2" />
         ) : (
           <OutlineUserCircle size="xl" />
         )}
       </AutoAnimate>
       {/* <QrCode size="lg" /> */}
-      <div className="pb-1 font-semibold md:pb-0">{signInText}</div>
+      <div className="pb-3 font-semibold md:pb-0">{signInText}</div>
     </div>
   );
 }
@@ -113,10 +113,10 @@ interface ProfileNavRoleProps {
 function ProfileNavRole({ role, isLoading }: ProfileNavRoleProps) {
   const name = role.organizer?.name;
   return (
-    <div className="flex w-fit flex-row  items-center justify-center space-x-2 space-y-0 px-4">
+    <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0 px-4">
       <AutoAnimate>
         {isLoading ? (
-          <Spinner size="xl" variant="ghost" className="md:mr-2" />
+          <Spinner size="auto" variant="ghost" className="md:mr-2" />
         ) : (
           <RoleAvatar role={role} />
         )}
