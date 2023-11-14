@@ -1,9 +1,9 @@
 'use client';
 
-import { RoleBadge } from '@features/back-office/roles';
 import { SafeUser, useAuthContext } from '@next/auth';
 import { Link, useRouter } from '@next/navigation';
 import { AppUser } from '@next/types';
+import { isSameRole } from '@roles/common';
 import { RoleWithOrganizer } from '@roles/types';
 import { BlockchainAddress, DropdownMenuItem, useToast } from '@ui/components';
 import { LifeBuoy, LogIn, LogOut, Settings, User } from '@ui/icons';
@@ -16,6 +16,7 @@ import {
   ProfileNavSkeleton,
   type ProfileNavProps,
 } from './ProfileNav';
+import { RoleBadge } from '@features/back-office/roles';
 
 interface ConstructItemsParams {
   roles?: RoleWithOrganizer[];
@@ -242,11 +243,7 @@ export const ProfileNavClient = ({
   const matchingRole = account?.role
     ? roles?.find((role) => {
         const userRole = account.role;
-        return (
-          role.role === userRole?.role &&
-          role.organizerId === userRole?.organizerId &&
-          (role.eventId === userRole?.eventId || !userRole?.eventId)
-        );
+        return isSameRole({ role, roleToCompare: userRole });
       })
     : undefined;
 
