@@ -79,6 +79,7 @@ const nextConfig = {
       '@features/cart/server',
       '@features/kyc',
       '@features/kyc/server',
+      '@features/navigation',
       '@features/organizer/event',
       '@features/organizer/event/server',
       '@features/pass',
