@@ -61,39 +61,37 @@ const SelectItems: React.FC<SelectItemsProps> = ({ items, className }) => {
 
   return (
     <SelectContent>
-      {items.map(({ icon, ...item }, index) => {
+      {items.map((item, index) => {
         switch (item.type) {
           case 'item':
             return renderSelectItem(item, index);
           case 'group':
             return (
               <SelectGroup key={index}>
-                {item.items?.map(
-                  ({ icon: groupIcon, ...groupItem }, groupIndex) => {
-                    // eslint-disable-next-line sonarjs/no-nested-switch
-                    switch (groupItem.type) {
-                      case 'label':
-                        return (
-                          <SelectLabel
-                            key={groupIndex}
-                            className={groupItem.className}
-                          >
-                            {groupItem.text}
-                          </SelectLabel>
-                        );
-                      case 'item':
-                        return renderSelectItem(groupItem, groupIndex);
-                      case 'children':
-                        return (
-                          <div key={groupIndex} className={groupItem.className}>
-                            {groupItem.children}
-                          </div>
-                        );
-                      default:
-                        return null;
-                    }
-                  },
-                )}
+                {item.items?.map((groupItem, groupIndex) => {
+                  // eslint-disable-next-line sonarjs/no-nested-switch
+                  switch (groupItem.type) {
+                    case 'label':
+                      return (
+                        <SelectLabel
+                          key={groupIndex}
+                          className={groupItem.className}
+                        >
+                          {groupItem.text}
+                        </SelectLabel>
+                      );
+                    case 'item':
+                      return renderSelectItem(groupItem, groupIndex);
+                    case 'children':
+                      return (
+                        <div key={groupIndex} className={groupItem.className}>
+                          {groupItem.children}
+                        </div>
+                      );
+                    default:
+                      return null;
+                  }
+                })}
               </SelectGroup>
             );
           case 'separator':
