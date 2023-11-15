@@ -1,6 +1,5 @@
 'use client';
 
-import { Error as UIError } from '@features/navigation';
 import { useEffect } from 'react';
 
 export default function Error({
@@ -11,16 +10,14 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.log('Global Error', error);
     // Log the error to an error reporting service
     console.error(error);
+    // TODO add toast notification for error
   }, [error]);
 
   return (
     <html>
-      <body>
-        <UIError error={error} reset={reset} />
-      </body>
+      <body>{/* <UIError error={error} reset={reset} /> */}</body>
     </html>
   );
 }
