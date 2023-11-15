@@ -72,7 +72,9 @@ const env = createEnv({
     UPLOAD_ACCOUNT_ID: process.env.UPLOAD_ACCOUNT_ID,
     UPLOAD_SECRET_API_KEY: process.env.UPLOAD_SECRET_API_KEY,
     UPLOAD_PATH_PREFIX: process.env.UPLOAD_PATH_PREFIX,
-    UPLOAD_SECRET_JWT: process.env.UPLOAD_SECRET_JWT,
+    UPLOAD_SECRET_JWT: process.env.UPLOAD_SECRET_JWT
+      ? process.env.UPLOAD_SECRET_JWT.replace(/\\n/g, '\n')
+      : process.env.UPLOAD_SECRET_JWT,
     UPLOAD_PUBLIC_API_KEY: process.env.UPLOAD_PUBLIC_API_KEY,
     FIXER_CURRENCY_API_KEY: process.env.FIXER_CURRENCY_API_KEY,
     EXCHANGE_RATE_API_KEY: process.env.EXCHANGE_RATE_API_KEY,
