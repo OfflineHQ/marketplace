@@ -242,5 +242,8 @@
       "organizer-super-admin": "Super Admin de l'organisateur",
       "organizer-validator": "Validateur de l'organisateur"
     }
+  },
+  "OrganizerEvents": {
+    "no-events": "Vous n'avez pas encore d'événement."
   }
 }
