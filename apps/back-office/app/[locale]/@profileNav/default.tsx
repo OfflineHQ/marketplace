@@ -3,12 +3,12 @@ import {
   ProfileNavSkeleton,
 } from '@features/back-office/app-nav';
 import { getMyRolesWithOrganizerInfos } from '@features/back-office/roles-api';
+import { messages } from '@next/i18n';
 import { getCurrentUser } from '@next/next-auth/user';
-import { getTranslator } from 'next-intl/server';
-import { Suspense } from 'react';
 import { deepPick } from '@utils';
 import { NextIntlClientProvider } from 'next-intl';
-import { messages } from '@next/i18n';
+import { getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
 
 interface ProfileNavSectionProps {
   params: {
@@ -27,7 +27,7 @@ export default async function ProfileNavSection({
 }
 
 async function ProfileNavSectionContent({ locale }: { locale: string }) {
-  const t = await getTranslator(locale, 'AppNav.Profile');
+  const t = await getTranslations({ locale, namespace: 'AppNav.Profile' });
   const user = await getCurrentUser();
   let roles;
   if (user) roles = await getMyRolesWithOrganizerInfos();
