@@ -59,7 +59,6 @@ const nextConfig = {
   // outputFileTracingRoot needed for monorepo
   // output: 'standalone',
   experimental: {
-    serverActions: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
       '*': [

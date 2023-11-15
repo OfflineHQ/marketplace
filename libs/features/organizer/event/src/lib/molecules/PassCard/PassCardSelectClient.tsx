@@ -7,14 +7,13 @@ import {
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 
-import { updateEventPassCart } from '@features/organizer/event-actions';
 import { EventSlugs } from '@features/organizer/event-types';
 
 export interface PassCardSelectClientProps
   extends Omit<BoundedNumericStepperProps, 'onChange' | 'disabled'>,
     EventSlugs {
   eventPassId: string;
-  updateEventPassCart: typeof updateEventPassCart;
+  updateEventPassCart: () => Promise<void>;
 }
 
 //TODO: here handle error cases from updateEventPassCart (display with toast)
@@ -22,6 +21,7 @@ export const PassCardSelectClient: React.FC<PassCardSelectClientProps> = ({
   organizerSlug,
   eventSlug,
   eventPassId,
+  updateEventPassCart,
   ...boundedNumericStepperProps
 }) => {
   const [isPending, startTransition] = useTransition();

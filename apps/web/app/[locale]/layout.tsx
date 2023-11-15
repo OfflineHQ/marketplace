@@ -7,7 +7,7 @@ import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { Analytics } from '@web/components/Analytics';
 import { siteConfig } from '@web/config/site';
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
@@ -29,18 +29,14 @@ const fontHeading = localFont({
   variable: '--font-heading',
 });
 
-// export const viewport: Viewport = {
-//   themeColor: [
-//     { media: '(prefers-color-scheme: light)', color: 'white' },
-//     { media: '(prefers-color-scheme: dark)', color: 'black' },
-//   ],
-// };
-
-export const metadata: Metadata = {
+export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },
   ],
+};
+
+export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
