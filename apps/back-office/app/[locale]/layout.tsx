@@ -17,7 +17,7 @@ import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { deepPick } from '@utils';
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import { Inter as FontSans } from 'next/font/google';
@@ -34,6 +34,13 @@ const fontHeading = localFont({
   src: '../../assets/fonts/CalSans-SemiBold.woff2',
   variable: '--font-heading',
 });
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
+  ],
+};
 
 export const metadata: Metadata = {
   title: {
