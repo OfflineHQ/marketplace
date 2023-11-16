@@ -198,3 +198,14 @@ export { Progress } from './lib/progress/Progress';
 export { Tooltip, TooltipWrapper } from './lib/tooltip/Tooltip';
 
 export { Tabs, TabsContent, TabsList, TabsTrigger } from './lib/tabs/Tabs';
+
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './lib/table/Table';
