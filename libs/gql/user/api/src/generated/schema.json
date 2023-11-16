@@ -1201,6 +1201,11 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
+            "name": "Entity",
+            "ofType": null
+          },
+          {
+            "kind": "INTERFACE",
             "name": "Node",
             "ofType": null
           }
@@ -5570,7 +5575,22 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
+            "name": "Asset",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Event",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
             "name": "EventDateLocation",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "EventPass",
             "ofType": null
           },
           {
@@ -5580,7 +5600,27 @@
           },
           {
             "kind": "OBJECT",
+            "name": "Organizer",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
             "name": "PassOption",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "ScheduledOperation",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "ScheduledRelease",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "User",
             "ofType": null
           }
         ]
@@ -5588,7 +5628,7 @@
       {
         "kind": "ENUM",
         "name": "EntityTypeName",
-        "description": "This enumeration holds all typenames that implement the Entity interface. Components implement the Entity interface. At the moment models are not supported, models are listed in this enum to avoid an empty enum without any components.",
+        "description": "This enumeration holds all typenames that implement the Entity interface. Components and models implement the Entity interface.",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -5659,7 +5699,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "EntityWhereInput",
-        "description": "Allows to specify input to query components directly",
+        "description": "Allows to specify input to query models and components directly",
         "fields": null,
         "inputFields": [
           {
@@ -6898,6 +6938,11 @@
         ],
         "inputFields": null,
         "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Entity",
+            "ofType": null
+          },
           {
             "kind": "INTERFACE",
             "name": "Node",
@@ -10836,6 +10881,11 @@
         ],
         "inputFields": null,
         "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Entity",
+            "ofType": null
+          },
           {
             "kind": "INTERFACE",
             "name": "Node",
@@ -19771,6 +19821,11 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
+            "name": "Entity",
+            "ofType": null
+          },
+          {
+            "kind": "INTERFACE",
             "name": "Node",
             "ofType": null
           }
@@ -25600,6 +25655,11 @@
         "interfaces": [
           {
             "kind": "INTERFACE",
+            "name": "Entity",
+            "ofType": null
+          },
+          {
+            "kind": "INTERFACE",
             "name": "Node",
             "ofType": null
           }
@@ -27351,6 +27411,11 @@
         ],
         "inputFields": null,
         "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Entity",
+            "ofType": null
+          },
           {
             "kind": "INTERFACE",
             "name": "Node",
@@ -29566,6 +29631,11 @@
         ],
         "inputFields": null,
         "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Entity",
+            "ofType": null
+          },
           {
             "kind": "INTERFACE",
             "name": "Node",

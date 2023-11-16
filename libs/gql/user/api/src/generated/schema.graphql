@@ -18,7 +18,7 @@ type Aggregate {
 }
 
 """Asset system model"""
-type Asset implements Node {
+type Asset implements Entity & Node {
   """The time the document was created"""
   createdAt(
     """
@@ -1076,7 +1076,7 @@ interface Entity {
 }
 
 """
-This enumeration holds all typenames that implement the Entity interface. Components implement the Entity interface. At the moment models are not supported, models are listed in this enum to avoid an empty enum without any components.
+This enumeration holds all typenames that implement the Entity interface. Components and models implement the Entity interface.
 """
 enum EntityTypeName {
   """Asset system model"""
@@ -1120,7 +1120,7 @@ enum EntityTypeName {
   User
 }
 
-"""Allows to specify input to query components directly"""
+"""Allows to specify input to query models and components directly"""
 input EntityWhereInput {
   """The ID of an object"""
   id: ID!
@@ -1131,7 +1131,7 @@ input EntityWhereInput {
 }
 
 """Root event model"""
-type Event implements Node {
+type Event implements Entity & Node {
   """The time the document was created"""
   createdAt(
     """
@@ -1980,7 +1980,7 @@ enum EventOrderByInput {
 """
 Define a pass for an event with different options, price, number of passes etc.
 """
-type EventPass implements Node {
+type EventPass implements Entity & Node {
   """The time the document was created"""
   createdAt(
     """
@@ -3749,7 +3749,7 @@ interface Node {
 """
 An organizer is an entity that launch events and handle the pass benefits.
 """
-type Organizer implements Node {
+type Organizer implements Entity & Node {
   """The time the document was created"""
   createdAt(
     """
@@ -4978,7 +4978,7 @@ input PassOptionWhereUniqueInput {
 scalar RichTextAST
 
 """Scheduled Operation system model"""
-type ScheduledOperation implements Node {
+type ScheduledOperation implements Entity & Node {
   affectedDocuments(
     after: String
     before: String
@@ -5387,7 +5387,7 @@ input ScheduledOperationWhereUniqueInput {
 }
 
 """Scheduled Release system model"""
-type ScheduledRelease implements Node {
+type ScheduledRelease implements Entity & Node {
   """The time the document was created"""
   createdAt: DateTime!
 
@@ -5923,7 +5923,7 @@ enum SystemDateTimeFieldVariation {
 }
 
 """User system model"""
-type User implements Node {
+type User implements Entity & Node {
   """The time the document was created"""
   createdAt: DateTime!
 
