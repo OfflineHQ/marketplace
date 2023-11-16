@@ -29,7 +29,7 @@ export type Aggregate = {
 };
 
 /** Asset system model */
-export type Asset = Node & {
+export type Asset = Entity & Node & {
   __typename?: 'Asset';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -818,7 +818,7 @@ export type Entity = {
   stage: Stage;
 };
 
-/** This enumeration holds all typenames that implement the Entity interface. Components implement the Entity interface. At the moment models are not supported, models are listed in this enum to avoid an empty enum without any components. */
+/** This enumeration holds all typenames that implement the Entity interface. Components and models implement the Entity interface. */
 export const enum EntityTypeName {
   /** Asset system model */
   Asset = 'Asset',
@@ -842,7 +842,7 @@ export const enum EntityTypeName {
   User = 'User'
 };
 
-/** Allows to specify input to query components directly */
+/** Allows to specify input to query models and components directly */
 export type EntityWhereInput = {
   /** The ID of an object */
   id: Scalars['ID'];
@@ -852,7 +852,7 @@ export type EntityWhereInput = {
 };
 
 /** Root event model */
-export type Event = Node & {
+export type Event = Entity & Node & {
   __typename?: 'Event';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -1462,7 +1462,7 @@ export const enum EventOrderByInput {
 };
 
 /** Define a pass for an event with different options, price, number of passes etc. */
-export type EventPass = Node & {
+export type EventPass = Entity & Node & {
   __typename?: 'EventPass';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -2740,7 +2740,7 @@ export type Node = {
 };
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
-export type Organizer = Node & {
+export type Organizer = Entity & Node & {
   __typename?: 'Organizer';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -3637,7 +3637,7 @@ export type PassOptionWhereUniqueInput = {
 };
 
 /** Scheduled Operation system model */
-export type ScheduledOperation = Node & {
+export type ScheduledOperation = Entity & Node & {
   __typename?: 'ScheduledOperation';
   affectedDocuments: Array<ScheduledOperationAffectedDocument>;
   /** The time the document was created */
@@ -3905,7 +3905,7 @@ export type ScheduledOperationWhereUniqueInput = {
 };
 
 /** Scheduled Release system model */
-export type ScheduledRelease = Node & {
+export type ScheduledRelease = Entity & Node & {
   __typename?: 'ScheduledRelease';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -4276,7 +4276,7 @@ export const enum SystemDateTimeFieldVariation {
 };
 
 /** User system model */
-export type User = Node & {
+export type User = Entity & Node & {
   __typename?: 'User';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
