@@ -209,3 +209,13 @@ export {
   TableHeader,
   TableRow,
 } from './lib/table/Table';
+
+export {
+  DataTableFacetedFilter,
+  type DataTableFacetedFilterProps,
+} from './lib/data-table/DataTableFacetedFilter';
+
+export {
+  DataTableColumnHeader,
+  type DataTableColumnHeaderProps,
+} from './lib/data-table/DataTableColumnHeader';
