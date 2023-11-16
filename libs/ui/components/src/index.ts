@@ -239,3 +239,5 @@ export {
   DataTableViewOptions,
   type DataTableViewOptionsProps,
 } from './lib/data-table/DataTableViewOptions';
+
+export { DataTable, type DataTableProps } from './lib/data-table/DataTable';
