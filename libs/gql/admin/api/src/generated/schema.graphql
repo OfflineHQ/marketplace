@@ -4707,7 +4707,7 @@ type PassOption implements Entity {
     This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
     """
     locales: [Locale!]
-  ): EventDateLocation!
+  ): EventDateLocation
 
   """The unique identifier"""
   id: ID!
@@ -4746,7 +4746,7 @@ type PassOption implements Entity {
 input PassOptionCreateInput {
   """description input for default locale (en)"""
   description: String
-  eventDateLocation: EventDateLocationCreateOneInlineInput!
+  eventDateLocation: EventDateLocationCreateOneInlineInput
 
   """
   Inline mutations for managing document localizations excluding the default locale
