@@ -23651,13 +23651,9 @@
               }
             ],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "EventDateLocation",
-                "ofType": null
-              }
+              "kind": "OBJECT",
+              "name": "EventDateLocation",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -23825,13 +23821,9 @@
             "name": "eventDateLocation",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "EventDateLocationCreateOneInlineInput",
-                "ofType": null
-              }
+              "kind": "INPUT_OBJECT",
+              "name": "EventDateLocationCreateOneInlineInput",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,

@@ -3415,7 +3415,7 @@ export type PassOption = Entity & {
    * Define the location and date for this option.
    * Important ! It will determine the release and availability for the Pass access.
    */
-  eventDateLocation: EventDateLocation;
+  eventDateLocation?: Maybe<EventDateLocation>;
   /** The unique identifier */
   id: Scalars['ID'];
   /** System Locale field */
@@ -3445,7 +3445,7 @@ export type PassOptionLocalizationsArgs = {
 export type PassOptionCreateInput = {
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['String']>;
-  eventDateLocation: EventDateLocationCreateOneInlineInput;
+  eventDateLocation?: InputMaybe<EventDateLocationCreateOneInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<PassOptionCreateLocalizationsInput>;
   /** name input for default locale (en) */
