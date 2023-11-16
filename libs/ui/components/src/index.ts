@@ -219,3 +219,23 @@ export {
   DataTableColumnHeader,
   type DataTableColumnHeaderProps,
 } from './lib/data-table/DataTableColumnHeader';
+
+export {
+  DataTablePagination,
+  type DataTablePaginationProps,
+} from './lib/data-table/DataTablePagination';
+
+export {
+  DataTableRowActions,
+  type DataTableRowActionsProps,
+} from './lib/data-table/DataTableRowActions';
+
+export {
+  DataTableToolbar,
+  type DataTableToolbarProps,
+} from './lib/data-table/DataTableToolbar';
+
+export {
+  DataTableViewOptions,
+  type DataTableViewOptionsProps,
+} from './lib/data-table/DataTableViewOptions';
