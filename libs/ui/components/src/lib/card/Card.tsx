@@ -7,22 +7,25 @@ import { TextSkeleton } from '../text/Text';
 const variants = {
   default: 'border shadow-sm',
   noBorder: '',
-  stickyFooter: 'relative border shadow-sm flex flex-col h-full',
+  stickyFooter: 'relative border shadow-sm flex flex-col',
   distinct: 'border shadow-md bg-muted rounded-sm text-card-muted-foreground',
 };
 
-const cardVariantsCva = cva('rounded-lg bg-card text-card-foreground', {
-  variants: {
-    variant: variants,
-    noBorder: {
-      true: 'border-none shadow-none',
+const cardVariantsCva = cva(
+  'flex flex-col rounded-lg bg-card text-card-foreground',
+  {
+    variants: {
+      variant: variants,
+      noBorder: {
+        true: 'border-none shadow-none',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      noBorder: false,
     },
   },
-  defaultVariants: {
-    variant: 'default',
-    noBorder: false,
-  },
-});
+);
 
 export interface CardProps
   extends React.HTMLAttributes<HTMLDivElement>,
@@ -100,18 +103,39 @@ const CardDescriptionSkeleton = React.forwardRef<
 ));
 CardDescriptionSkeleton.displayName = 'CardDescriptionSkeleton';
 
-const CardContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('p-6 pt-0 flex-grow', className)} {...props} />
-));
+const contentVariants = {
+  default: 'p-6 pt-0 flex-grow',
+  stickyFooter: 'p-6 pt-0 flex-grow mb-24 md:mb-16',
+};
+
+const cardContentVariantsCva = cva('', {
+  variants: {
+    variant: contentVariants,
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export interface CardContentProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardContentVariantsCva> {}
+
+const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
+  ({ className, variant, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(cardContentVariantsCva({ variant }), className)}
+      {...props}
+    />
+  ),
+);
 CardContent.displayName = 'CardContent';
 
 const footerVariants = {
   default: 'p-6 pt-0 relative',
   sticky:
-    'mt-auto absolute bottom-16 md:pb-3 md:bottom-0 min-w-[100%] pt-2 px-6 pb-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
+    'mt-auto absolute md:sticky bottom-16 md:bottom-0 md:pb-2 mb-0 min-w-[100%] pt-2 px-6 pb-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
 };
 
 const cardFooterVariantsCva = cva('flex items-center', {

@@ -93,7 +93,10 @@ export const SinglePass: React.FC<SinglePassProps> = ({
             </div>
           </CardHeader>
         </div>
-        <CardContent className="space-y-2 md:relative md:space-y-4">
+        <CardContent
+          className="space-y-2 md:relative md:space-y-4"
+          variant={isOwner ? 'stickyFooter' : 'default'}
+        >
           <div className="hidden flex-col space-y-4 pt-10 md:flex">
             <Text variant="h2">
               {t('title', {
