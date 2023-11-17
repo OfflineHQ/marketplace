@@ -5,7 +5,6 @@ import {
   CardFooter,
   CardHeader,
   CardOverflow,
-  CardOverlay,
   CardTitle,
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
@@ -40,7 +39,6 @@ export const UserCart: React.FC<UserCartProps> = ({
             />
           </CardContent>
         </CardOverflow>
-        <CardOverlay />
         <CardFooter className="justify-center" variant="sticky">
           {children}
         </CardFooter>

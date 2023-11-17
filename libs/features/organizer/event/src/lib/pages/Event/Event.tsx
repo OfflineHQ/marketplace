@@ -1,22 +1,20 @@
 import {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardOverflow,
-  Button,
   ButtonSkeleton,
-  CardOverlay,
+  Card,
+  CardFooter,
+  CardHeader,
+  CardOverflow,
 } from '@ui/components';
-import {
-  EventHero,
-  EventHeroSkeleton,
-  type EventHeroProps,
-} from '../../molecules/EventHero/EventHero';
 import {
   EventDetails,
   EventDetailsSkeleton,
   type EventDetailsProps,
 } from '../../molecules/EventDetails/EventDetails';
+import {
+  EventHero,
+  EventHeroSkeleton,
+  type EventHeroProps,
+} from '../../molecules/EventHero/EventHero';
 import { EventFooter, type EventFooterProps } from './EventFooter';
 
 export interface EventProps
@@ -41,7 +39,6 @@ export const Event: React.FC<EventProps> = ({
         </CardHeader>
         <EventDetails className="md:mt-4" description={description} />
       </CardOverflow>
-      <CardOverlay />
       <CardFooter className="justify-center" variant="sticky">
         <EventFooter purchaseLink={purchaseLink} purchaseText={purchaseText} />
       </CardFooter>
@@ -52,12 +49,14 @@ export const Event: React.FC<EventProps> = ({
 export const EventSkeleton: React.FC = () => {
   return (
     <Card variant="stickyFooter" noBorder className="w-full">
-      <CardHeader>
-        <EventHeroSkeleton />
-      </CardHeader>
-      <EventDetailsSkeleton className="md:mt-4" />
+      <CardOverflow>
+        <CardHeader>
+          <EventHeroSkeleton />
+        </CardHeader>
+        <EventDetailsSkeleton className="md:mt-4" />
+      </CardOverflow>
       <CardFooter variant="sticky" className="justify-center">
-        <ButtonSkeleton className="w-full md:w-1/6" />
+        <ButtonSkeleton className=" w-full md:w-1/6" />
       </CardFooter>
     </Card>
   );

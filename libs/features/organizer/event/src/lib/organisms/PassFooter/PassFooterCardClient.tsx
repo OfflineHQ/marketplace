@@ -2,7 +2,7 @@ import { getEventPassesCart } from '@features/organizer/event-api';
 import type { EventPass } from '@features/organizer/event-types';
 import { Link } from '@next/navigation';
 import { PropsFrom } from '@next/types';
-import { AutoAnimate, Button, CardFooter, CardOverlay } from '@ui/components';
+import { AutoAnimate, Button, CardFooter } from '@ui/components';
 import { Cart } from '@ui/icons';
 import React, { Suspense } from 'react';
 import { PassTotal } from '../../molecules/PassTotal/PassTotal';
@@ -38,25 +38,22 @@ export const PassFooterCardClientContent: React.FC<
   return (
     <AutoAnimate className="mt-auto">
       {passesCart?.length ? (
-        <>
-          <CardOverlay footerHeight="112px" />
-          <CardFooter
-            variant="sticky"
-            className="flex flex-col items-start space-y-2"
+        <CardFooter
+          variant="sticky"
+          className="flex flex-col items-start space-y-2"
+        >
+          <PassTotal passesData={passesData} passesCart={passesCart} />
+          <Link
+            {...goPaymentLink}
+            legacyBehavior
+            passHref
+            className="w-full justify-center"
           >
-            <PassTotal passesData={passesData} passesCart={passesCart} />
-            <Link
-              {...goPaymentLink}
-              legacyBehavior
-              passHref
-              className="w-full justify-center"
-            >
-              <Button className={`w-full md:w-1/3`} block icon={<Cart />}>
-                {goPaymentText}
-              </Button>
-            </Link>
-          </CardFooter>
-        </>
+            <Button className={`w-full md:w-1/3`} block icon={<Cart />}>
+              {goPaymentText}
+            </Button>
+          </Link>
+        </CardFooter>
       ) : null}
     </AutoAnimate>
   );

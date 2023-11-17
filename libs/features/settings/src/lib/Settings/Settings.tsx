@@ -4,7 +4,6 @@ import {
   CardDescription,
   CardHeader,
   CardOverflow,
-  CardOverlay,
   CardTitle,
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
@@ -43,7 +42,6 @@ export const Settings: React.FC = () => {
             />
           </CardContent>
         </CardOverflow>
-        <CardOverlay />
       </Card>
     </section>
   );
