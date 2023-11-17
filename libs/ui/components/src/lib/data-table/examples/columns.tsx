@@ -5,18 +5,12 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '../../badge/Badge';
 import { Checkbox } from '../../checkbox/Checkbox';
 
-import {
-  DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-} from '@radix-ui/react-dropdown-menu';
-import { DropdownMenuShortcut } from '../../dropdown-menu/DropdownMenu';
+import { sleep } from '@utils';
 import { DataTableColumnHeader } from '../DataTableColumnHeader';
-import { DataTableRowActions } from '../DataTableRowActions';
+import {
+  DataTableRowActions,
+  DataTableRowActionsProps,
+} from '../DataTableRowActions';
 import { labels, priorities, statuses } from './data/data';
 import { Task, taskSchema } from './data/schema';
 
@@ -75,7 +69,7 @@ export const columns: ColumnDef<Task>[] = [
 
       return (
         <div className="flex space-x-2">
-          {label && <Badge variant="outline">{label.label}</Badge>}
+          {label && <Badge variant="outline">{label.text}</Badge>}
           <span className="max-w-[500px] truncate font-medium">
             {row.getValue('title')}
           </span>
@@ -106,7 +100,7 @@ export const columns: ColumnDef<Task>[] = [
           {status.icon && (
             <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
           )}
-          <span>{status.label}</span>
+          <span>{status.text}</span>
         </div>
       );
     },
@@ -137,7 +131,7 @@ export const columns: ColumnDef<Task>[] = [
           {priority.icon && (
             <priority.icon className="mr-2 h-4 w-4 text-muted-foreground" />
           )}
-          <span>{priority.label}</span>
+          <span>{priority.text}</span>
         </div>
       );
     },
@@ -149,31 +143,48 @@ export const columns: ColumnDef<Task>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const task = taskSchema.parse(row.original);
-      return (
-        <DataTableRowActions controlText={{ openMenu: 'Open' }}>
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Make a copy</DropdownMenuItem>
-          <DropdownMenuItem>Favorite</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              <DropdownMenuRadioGroup value={task.label}>
-                {labels.map((label) => (
-                  <DropdownMenuRadioItem key={label.value} value={label.value}>
-                    {label.label}
-                  </DropdownMenuRadioItem>
-                ))}
-              </DropdownMenuRadioGroup>
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            Delete
-            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DataTableRowActions>
-      );
+      const items = [
+        {
+          type: 'item',
+          text: 'Edit',
+          action: () => sleep(1000),
+        },
+        {
+          type: 'item',
+          text: 'Make a copy',
+          action: () => sleep(1000),
+        },
+
+        {
+          type: 'item',
+          text: 'Favorite',
+          action: () => sleep(1000),
+        },
+        {
+          type: 'separator',
+        },
+        {
+          type: 'sub-radios',
+          text: 'Labels',
+          value: task.label,
+          subItems: labels.map((label) => ({
+            type: 'item',
+            text: label.text,
+            value: label.value,
+            action: () => sleep(1000),
+          })),
+        },
+        {
+          type: 'separator',
+        },
+        {
+          type: 'item',
+          text: 'Delete',
+          action: () => sleep(1000),
+          shortcut: '⌘⌫',
+        },
+      ] satisfies DataTableRowActionsProps['items'];
+      return <DataTableRowActions helperText="Open" items={items} />;
     },
   },
 ];
