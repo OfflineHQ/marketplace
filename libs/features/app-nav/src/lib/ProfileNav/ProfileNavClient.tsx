@@ -1,15 +1,15 @@
 'use client';
 
-import {
-  ProfileNav,
-  ProfileNavSkeleton,
-  type ProfileNavProps,
-} from './ProfileNav';
 import { useAuthContext } from '@next/auth';
 import { Link } from '@next/navigation';
 import { useToast } from '@ui/components';
 import { LifeBuoy, LogIn, LogOut, Settings } from '@ui/icons';
 import { useCallback, useMemo } from 'react';
+import {
+  ProfileNav,
+  ProfileNavSkeleton,
+  type ProfileNavProps,
+} from './ProfileNav';
 
 export interface ProfileNavClientProps {
   signInText: string;
@@ -34,6 +34,8 @@ export const ProfileNavClient = ({
 }: ProfileNavClientProps) => {
   const { safeUser, login, logout, safeAuth, connecting } = useAuthContext();
   const { toast } = useToast();
+
+  console.log({ safeUser });
 
   const signOutUserAction = useCallback(async () => {
     await logout({ refresh: true });

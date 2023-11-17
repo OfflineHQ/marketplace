@@ -18,6 +18,7 @@ import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
 import { getRate, setRates } from '@next/currency-cache';
 import { getSession, isConnected } from '@next/next-auth/user';
 import { isLocal } from '@shared/server';
+import { usersJwt } from '@test-utils/gql';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -103,6 +104,8 @@ export default async function RootLayout({
   const t = createTranslator({ locale, messages });
 
   if (isLocal()) {
+    const users = usersJwt;
+    console.log(users.alpha_user);
     const res = await getRate(Currency_Enum_Not_Const.USD);
     if (!res) {
       await setRates();

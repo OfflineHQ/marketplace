@@ -8,6 +8,7 @@ import { KycLevelName_Enum, KycStatus_Enum } from '@gql/shared/types';
 import { getSdk as userSdk, type Sdk as UserSdk } from '@gql/user/api';
 import type { AppUser } from '@next/types';
 import { getHasuraEndpoint } from '@shared/client';
+import * as jsonwebtoken from 'jsonwebtoken';
 
 type Opts = {
   anonymous?: boolean;
@@ -53,7 +54,7 @@ export const accounts = {
     address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
     email: 'alpha_user@test.io',
     kyc: {
-      applicantId: '64d5f7a58f241166d756ba33',
+      applicantId: '65536aea0d367a65f4e100e0',
       reviewStatus: KycStatus_Enum.Completed,
       levelName: KycLevelName_Enum.BasicKycLevel,
     },
@@ -75,15 +76,23 @@ type AccountOptions = {
   userId: string;
 };
 
-// generate a JWT that includes roles, userId
+const secret = process.env.NEXTAUTH_SECRET;
+if (!secret) {
+  throw new Error('NEXTAUTH_SECRET is not defined');
+}
+
 const generateJwt = (options: AccountOptions): string =>
-  jwt.sign(
+  jsonwebtoken.sign(
     JSON.stringify({
-      roles: [options.defaultRole],
-      userId: options.userId,
+      role: options.defaultRole,
+      provider: 'credentials',
+      providerType: 'credentials',
+      user: accounts.alpha_user,
     }),
-    // private key provided on docker-compose for test
-    '3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R',
+    secret,
+    {
+      algorithm: 'RS256',
+    },
   );
 
 export const usersJwt = {

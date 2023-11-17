@@ -1,12 +1,14 @@
+import { ProfileNavClient } from '@features/app-nav';
 import { isConnected } from '@next/next-auth/user';
 import { useLocale } from 'next-intl';
 import { getTranslator } from 'next-intl/server';
-import { ProfileNavClient } from '@features/app-nav';
 
 export default async function ProfileNavSection() {
   const locale = useLocale();
   const t = await getTranslator(locale, 'AppNav.Profile');
   const isNextAuthConnected = await isConnected();
+  console.log({ isNextAuthConnected });
+
   return (
     <ProfileNavClient
       signInText={t('sign-in')}
