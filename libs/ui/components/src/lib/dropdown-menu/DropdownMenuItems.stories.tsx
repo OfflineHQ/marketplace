@@ -54,8 +54,7 @@ export const DropdownMenuItemsWithRadios: Story = {
   },
   play: async ({ canvasElement }) => {
     userEvent.click(screen.getByText('Open'));
-    userEvent.click(screen.getByText('Close'));
-
-    await screen.findByText('Open');
+    userEvent.hover(await screen.findByText(/Labels/i));
+    await screen.findByText(/Radio 1/i);
   },
 };

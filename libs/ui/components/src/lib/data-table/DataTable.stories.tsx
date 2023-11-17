@@ -137,6 +137,6 @@ export const DataTableWithToolbarToggleColumns: Story = {
     const dropdown = within(screen.getByRole('menu'));
     await userEvent.click(dropdown.getByText(/Priority/i));
     expect(screen.queryByText(/High/i)).not.toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: /view/i }));
+    await userEvent.click(await screen.findByRole('button', { name: /view/i }));
   },
 };
