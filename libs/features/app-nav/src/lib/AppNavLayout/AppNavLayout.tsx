@@ -15,7 +15,7 @@ export function AppNavLayout(props: AppNavLayoutProps) {
     <div className="flex h-full w-full flex-col-reverse md:flex-col">
       {/* Navigation for larger screens */}
       <AppNavLayoutDesktop {...appNavLayout} />
-      <div className="flex h-full w-full pb-16 md:pb-0">{children}</div>
+      <div className="flex h-full w-full md:mb-0">{children}</div>
       {/* Navigation for mobile screens */}
       <AppNavLayoutMobile {...appNavLayout} />
     </div>
