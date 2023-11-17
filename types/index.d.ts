@@ -16,6 +16,7 @@ declare module '@env/client' {
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
     NEXT_PUBLIC_OPENZEPPELIN_URL: string;
     NEXT_PUBLIC_THIRDWEB_MASTER_ADDRESS: string;
+    NEXT_PUBLIC_PLAYWRIGHT: string;
   };
   export default env;
 }

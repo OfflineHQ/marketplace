@@ -457,7 +457,11 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         setConnecting(true),
       );
       // here evaluate if user is logged in with web3auth. If it's not the case we logout the user from next auth.
-      if (web3AuthModalPack?.web3Auth?.connected) {
+      if (
+        web3AuthModalPack?.web3Auth?.connected ||
+        env.NEXT_PUBLIC_PLAYWRIGHT
+      ) {
+        console.log('hihi');
         setConnecting(true);
       } else {
         handleUnauthenticatedUser();

@@ -52,6 +52,7 @@ export class Web3AuthModalPack extends AuthKitBasePack {
 
       await this.web3Auth.initModal({ modalConfig: modalConfig });
       // here we set ethereum provider from ethereum in case this is running on cypress, used for testing, otherwise set the provider from web3auth
+      console.log({ Ethereum: window.ethereum });
       this.#provider =
         isCypressRunning() && window.ethereum
           ? window.ethereum

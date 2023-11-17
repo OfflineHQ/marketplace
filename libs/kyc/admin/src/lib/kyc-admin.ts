@@ -206,6 +206,7 @@ export class Kyc {
   async getApplicantPersonalData(
     applicantId: string,
   ): Promise<ApplicantPersonalData> {
+    console.log(applicantId);
     const method = 'GET';
     const uri = `/resources/applicants/${encodeURIComponent(applicantId)}/one`;
     const headers = this.headers({ method, uri });
@@ -216,6 +217,7 @@ export class Kyc {
         ...headers,
       },
     });
+    console.log({ response });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
