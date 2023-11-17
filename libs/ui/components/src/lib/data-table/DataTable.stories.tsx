@@ -33,7 +33,13 @@ const paginationControlText = {
   lastPage: 'Last page',
 };
 
-export const DefaultDataTable: Story = {};
+export const DefaultDataTable: Story = {
+  play: async ({ canvasElement }) => {
+    await userEvent.click(screen.getByRole('button', { name: /priority/i }));
+    const dropdown = within(screen.getByRole('menu'));
+    await userEvent.click(dropdown.getByText(/sort descending/i));
+  },
+};
 
 export const DataTableWithPagination: Story = {
   args: {
@@ -111,5 +117,26 @@ export const DataTableWithToolbarFilters: Story = {
     const dropdown2 = within(screen.getByRole('listbox'));
     await userEvent.click(dropdown2.getByText(/Done/i));
     expect(screen.queryAllByText(/In Progress/i).length).toBe(1);
+  },
+};
+
+export const DataTableWithToolbarToggleColumns: Story = {
+  args: {
+    ...DataTableWithToolbarFilters.args,
+    toolbarProps: {
+      ...DataTableWithToolbarFilters.args.toolbarProps,
+      showToggleColumns: true,
+      toggleColumnsText: {
+        view: 'View',
+        toggleColumns: 'Toggle columns',
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(screen.getByRole('button', { name: /view/i }));
+    const dropdown = within(screen.getByRole('menu'));
+    await userEvent.click(dropdown.getByText(/Priority/i));
+    expect(screen.queryByText(/High/i)).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /view/i }));
   },
 };
