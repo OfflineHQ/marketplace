@@ -14,16 +14,16 @@ export const AppNavLayoutMobile: React.FC<AppNavLayoutMobileProps> = ({
   return (
     <NavigationMenu
       data-testid="mobile-menu"
-      className="fixed bottom-0 z-20 flex w-full bg-background md:hidden"
+      className="fixed bottom-0 z-20 flex w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:hidden"
     >
       <NavigationMenuList className="flex w-full">
-        <div className="w-28 flex-1 whitespace-nowrap text-center md:hidden">
+        <div className="w-28 flex-1 whitespace-nowrap text-center">
           {cartNav}
         </div>
-        <div className="w-28 flex-1 whitespace-nowrap text-center md:hidden">
+        <div className="w-28 flex-1 whitespace-nowrap text-center">
           {passNav}
         </div>
-        <div className="w-28 flex-1 whitespace-nowrap text-center md:hidden">
+        <div className="w-28 flex-1 whitespace-nowrap text-center">
           {profileNav}
         </div>
       </NavigationMenuList>
