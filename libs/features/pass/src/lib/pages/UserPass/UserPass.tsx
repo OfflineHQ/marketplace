@@ -35,7 +35,7 @@ export const UserPass: React.FC<UserPassProps> = ({
 
   return (
     <section className="container">
-      <Card variant="stickyFooter" noBorder>
+      <Card noBorder className="mb-16 h-full">
         <CardOverflow>
           <CardHeader>
             <CardTitle>{title}</CardTitle>
@@ -62,7 +62,7 @@ export const UserPass: React.FC<UserPassProps> = ({
               </TabsList>
               <TabsContent
                 value={activeTab || 'upcoming'}
-                className="h-full overflow-auto"
+                className="h-full overflow-y-auto"
               >
                 {children}
               </TabsContent>

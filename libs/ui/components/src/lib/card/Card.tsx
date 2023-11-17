@@ -7,7 +7,7 @@ import { TextSkeleton } from '../text/Text';
 const variants = {
   default: 'border shadow-sm',
   noBorder: '',
-  stickyFooter: 'relative border shadow-sm flex flex-col',
+  stickyFooter: 'relative border shadow-sm flex flex-col pb-24 md:pt-8 md:pb-8',
   distinct: 'border shadow-md bg-muted rounded-sm text-card-muted-foreground',
 };
 
@@ -105,7 +105,7 @@ CardDescriptionSkeleton.displayName = 'CardDescriptionSkeleton';
 
 const contentVariants = {
   default: 'p-6 pt-0 flex-grow',
-  stickyFooter: 'p-6 pt-0 flex-grow mb-24 md:mb-16',
+  stickyFooter: 'p-6 pt-0 flex-grow mb-16 md:mb-16',
 };
 
 const cardContentVariantsCva = cva('', {
@@ -146,7 +146,7 @@ CardContent.displayName = 'CardContent';
 const footerVariants = {
   default: 'p-6 pt-0 relative',
   sticky:
-    'mt-auto absolute md:sticky bottom-16 md:bottom-0 md:pb-2 mb-0 min-w-[100%] pt-2 px-6 pb-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
+    'mt-auto absolute bottom-16 md:bottom-0 md:pb-2 mb-0 min-w-[100%] pt-2 px-6 pb-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
 };
 
 const cardFooterVariantsCva = cva('flex items-center', {
