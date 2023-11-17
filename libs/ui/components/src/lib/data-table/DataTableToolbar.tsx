@@ -2,6 +2,7 @@
 
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { Column, Table } from '@tanstack/react-table';
+import { OutlineSearch } from '@ui/icons';
 import { Button } from '../button/Button';
 import { Input } from '../input/Input';
 import {
@@ -18,10 +19,15 @@ interface FilterConfig<TData, TValue>
   id: string; // ID of the column
 }
 
+interface SearchProps<TData> {
+  placeholder?: string;
+  filterKey: keyof TData;
+}
+
 export interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  enableSearch?: boolean;
-  filtersConfig?: FilterConfig<TData, any>[];
+  searchProps?: SearchProps<TData>;
+  filtersConfig?: Omit<FilterConfig<TData, any>, 'controlText'>[];
   filtersConfigText?: DataTableFacetedFilterProps<TData, any>['controlText'] & {
     reset: string;
   };
@@ -31,7 +37,7 @@ export interface DataTableToolbarProps<TData> {
 
 export function DataTableToolbar<TData>({
   table,
-  enableSearch = false,
+  searchProps,
   filtersConfig = [],
   filtersConfigText,
   showToggleColumns = false,
@@ -42,12 +48,20 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
-        {enableSearch && (
+        {searchProps && (
           <Input
+            {...searchProps}
+            icon={<OutlineSearch />}
             placeholder="Filter tasks..."
-            value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+            value={
+              (table
+                .getColumn(searchProps.filterKey as string)
+                ?.getFilterValue() as string) ?? ''
+            }
             onChange={(event) =>
-              table.getColumn('title')?.setFilterValue(event.target.value)
+              table
+                .getColumn(searchProps.filterKey as string)
+                ?.setFilterValue(event.target.value)
             }
             className="h-8 w-[150px] lg:w-[250px]"
           />

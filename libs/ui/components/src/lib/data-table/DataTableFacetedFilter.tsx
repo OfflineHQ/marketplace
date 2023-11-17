@@ -21,7 +21,7 @@ export interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
   options: {
-    label: string;
+    text: string;
     value: string;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
@@ -73,7 +73,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                         key={option.value}
                         className="rounded-sm px-1 font-normal"
                       >
-                        {option.label}
+                        {option.text}
                       </Badge>
                     ))
                 )}
@@ -84,7 +84,7 @@ export function DataTableFacetedFilter<TData, TValue>({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
         <Command>
-          <CommandInput placeholder={title} />
+          <CommandInput placeholder={title} className="h-8" />
           <CommandList>
             <CommandEmpty>{controlText.noResultFound}</CommandEmpty>
             <CommandGroup>
@@ -118,7 +118,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     {option.icon && (
                       <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
                     )}
-                    <span>{option.label}</span>
+                    <span>{option.text}</span>
                     {facets?.get(option.value) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
                         {facets.get(option.value)}
