@@ -12,59 +12,59 @@ import {
 export const labels = [
   {
     value: 'bug',
-    label: 'Bug',
+    text: 'Bug',
   },
   {
     value: 'feature',
-    label: 'Feature',
+    text: 'Feature',
   },
   {
     value: 'documentation',
-    label: 'Documentation',
+    text: 'Documentation',
   },
 ];
 
 export const statuses = [
   {
     value: 'backlog',
-    label: 'Backlog',
+    text: 'Backlog',
     icon: QuestionMarkCircledIcon,
   },
   {
     value: 'todo',
-    label: 'Todo',
+    text: 'Todo',
     icon: CircleIcon,
   },
   {
     value: 'in progress',
-    label: 'In Progress',
+    text: 'In Progress',
     icon: StopwatchIcon,
   },
   {
     value: 'done',
-    label: 'Done',
+    text: 'Done',
     icon: CheckCircledIcon,
   },
   {
     value: 'canceled',
-    label: 'Canceled',
+    text: 'Canceled',
     icon: CrossCircledIcon,
   },
 ];
 
 export const priorities = [
   {
-    label: 'Low',
+    text: 'Low',
     value: 'low',
     icon: ArrowDownIcon,
   },
   {
-    label: 'Medium',
+    text: 'Medium',
     value: 'medium',
     icon: ArrowRightIcon,
   },
   {
-    label: 'High',
+    text: 'High',
     value: 'high',
     icon: ArrowUpIcon,
   },
