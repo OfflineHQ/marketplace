@@ -111,10 +111,21 @@ const contentVariants = {
 const cardContentVariantsCva = cva('', {
   variants: {
     variant: contentVariants,
+    isMain: {
+      true: 'mb-16 md:mb-0',
+    },
   },
   defaultVariants: {
     variant: 'default',
+    isMain: false,
   },
+  compoundVariants: [
+    {
+      variant: 'stickyFooter',
+      isMain: true,
+      class: 'mb-24 md:mb-16',
+    },
+  ],
 });
 
 export interface CardContentProps
@@ -122,10 +133,10 @@ export interface CardContentProps
     VariantProps<typeof cardContentVariantsCva> {}
 
 const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
-  ({ className, variant, ...props }, ref) => (
+  ({ className, variant, isMain, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn(cardContentVariantsCva({ variant }), className)}
+      className={cn(cardContentVariantsCva({ variant, isMain }), className)}
       {...props}
     />
   ),
