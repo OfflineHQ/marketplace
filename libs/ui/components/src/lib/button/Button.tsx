@@ -1,14 +1,14 @@
 /* eslint-disable react/jsx-pascal-case */
 'use client';
 
-import { useState } from 'react';
 import { iconCVA, IconProps } from '@ui/icons';
+import { useState } from 'react';
 
 import { Spinner } from '../spinner/Spinner';
 import { TooltipWrapper } from '../tooltip/Tooltip';
 
+import { cva, VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-import { VariantProps, cva } from 'class-variance-authority';
 
 import { cn } from '@ui/shared';
 
@@ -222,8 +222,8 @@ Button.displayName = 'Button';
 export {
   Button,
   sizes as buttonSizes,
+  ButtonSkeleton,
   variants as buttonVariants,
   buttonVariantsCva,
-  ButtonSkeleton,
   type ButtonSkeletonProps,
 };
