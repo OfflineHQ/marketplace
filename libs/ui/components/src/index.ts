@@ -189,7 +189,6 @@ export {
   CardFooter,
   CardHeader,
   CardOverflow,
-  CardOverlay,
   CardTitle,
   CardTitleSkeleton,
 } from './lib/card/Card';

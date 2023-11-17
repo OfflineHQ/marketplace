@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import { cn } from '@ui/shared';
-import { TextSkeleton } from '../text/Text';
 import { VariantProps, cva } from 'class-variance-authority';
+import { TextSkeleton } from '../text/Text';
 
 const variants = {
   default: 'border shadow-sm',
@@ -110,7 +110,8 @@ CardContent.displayName = 'CardContent';
 
 const footerVariants = {
   default: 'p-6 pt-0 relative',
-  sticky: 'mt-auto pb-3 pt-0 px-6 relative',
+  sticky:
+    'mt-auto absolute bottom-16 md:pb-3 md:bottom-0 min-w-[100%] pt-2 px-6 pb-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
 };
 
 const cardFooterVariantsCva = cva('flex items-center', {
@@ -140,26 +141,6 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
 
 CardFooter.displayName = 'CardFooter';
 
-export interface CardOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
-  footerHeight?: string;
-  className?: string;
-}
-
-const CardOverlay = React.forwardRef<HTMLDivElement, CardOverlayProps>(
-  ({ footerHeight = '3.25rem', className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        `absolute inset-x-0 z-10 h-20 bg-gradient-to-t from-card to-transparent pointer-events-none`,
-        className,
-      )}
-      style={{ bottom: footerHeight }}
-      {...props}
-    />
-  ),
-);
-CardOverlay.displayName = 'CardOverlay';
-
 const CardOverflow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -170,13 +151,12 @@ CardOverflow.displayName = 'CardOverflow';
 
 export {
   Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
   CardContent,
-  CardTitleSkeleton,
+  CardDescription,
   CardDescriptionSkeleton,
+  CardFooter,
+  CardHeader,
   CardOverflow,
-  CardOverlay,
+  CardTitle,
+  CardTitleSkeleton,
 };
