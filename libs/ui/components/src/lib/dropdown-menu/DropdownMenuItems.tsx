@@ -1,3 +1,4 @@
+import { DropdownMenuContentProps } from '@radix-ui/react-dropdown-menu';
 import { iconCVA } from '@ui/icons';
 import { cn } from '@ui/shared';
 import * as React from 'react';
@@ -6,6 +7,8 @@ import {
   DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
@@ -18,15 +21,18 @@ import {
 } from './DropdownMenuItemClient';
 
 interface DropdownMenuItemsProps
-  extends Pick<DropdownMenuItemClientProps, 'setLoading'> {
+  extends Pick<DropdownMenuItemClientProps, 'setLoading'>,
+    Pick<DropdownMenuContentProps, 'align'> {
   items: MenuItem[];
   className?: string;
+  valueChanged?: (value: string) => void;
 }
 
 const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
   items,
   className,
   setLoading,
+  align,
 }) => {
   const iconClasses = iconCVA({
     size: 'sm',
@@ -34,7 +40,7 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
   });
 
   return (
-    <DropdownMenuContent className={cn('w-56', className)}>
+    <DropdownMenuContent className={cn('w-56', className)} align={align}>
       {items.map(({ icon, ...item }, index) => {
         switch (item.type) {
           case 'separator':
@@ -66,7 +72,7 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
               </DropdownMenuGroup>
             );
 
-          case 'sub':
+          case 'sub-items':
             return (
               <DropdownMenuGroup key={index}>
                 <DropdownMenuSub>
@@ -100,6 +106,34 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
                   </DropdownMenuPortal>
                 </DropdownMenuSub>
               </DropdownMenuGroup>
+            );
+          case 'sub-radios':
+            return (
+              <DropdownMenuSub key={index}>
+                <DropdownMenuSubTrigger>
+                  {icon && (
+                    <icon.type
+                      {...icon.props}
+                      className={cn(iconClasses, icon.props.className)}
+                    />
+                  )}
+                  <span>{item.text}</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuRadioGroup value={item.value}>
+                    {item.subItems?.map((subItem, subIndex) => (
+                      <DropdownMenuRadioItem
+                        key={subItem.value as string}
+                        value={subItem.value as string}
+                        disabled={subItem.disabled}
+                        onSelect={subItem.action}
+                      >
+                        {subItem.text}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
             );
 
           default:

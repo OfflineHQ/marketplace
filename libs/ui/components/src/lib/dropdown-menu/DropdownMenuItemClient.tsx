@@ -12,7 +12,13 @@ export interface HandleActionProps {
 }
 
 export interface MenuItem extends HandleActionProps {
-  type: 'label' | 'separator' | 'item' | 'sub' | 'children';
+  type:
+    | 'label'
+    | 'separator'
+    | 'item'
+    | 'sub-items'
+    | 'children'
+    | 'sub-radios';
   text?: string;
   children?: React.ReactNode;
   wrapper?: React.ReactElement;
@@ -22,6 +28,7 @@ export interface MenuItem extends HandleActionProps {
   subItems?: MenuItem[];
   current?: boolean;
   className?: string;
+  value?: string;
 }
 
 export interface DropdownMenuItemClientProps {
