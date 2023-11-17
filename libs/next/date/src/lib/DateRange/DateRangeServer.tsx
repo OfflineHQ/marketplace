@@ -33,8 +33,8 @@ async function DateRangeServer({
     locale,
     namespace: 'Pass.UserPass.DateRange',
   });
-  const userTimezone = await getTimeZone(locale);
-  const format = await getFormatter(locale);
+  const userTimezone = await getTimeZone({ locale });
+  const format = await getFormatter({ locale });
   const textProps = {
     fromText: t('from'),
     toText: t('to'),
