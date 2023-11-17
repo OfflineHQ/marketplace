@@ -9,6 +9,6 @@ export async function getTimeZone() {
   return Promise.resolve(useTimeZone());
 }
 
-export async function getFormatter({locale}:{locale: string}) {
+export async function getFormatter({ locale }) {
   return Promise.resolve(useFormatter());
 }
