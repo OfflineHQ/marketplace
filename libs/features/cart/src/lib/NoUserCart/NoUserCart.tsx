@@ -5,7 +5,6 @@ import {
   CardFooter,
   CardHeader,
   CardOverflow,
-  CardOverlay,
   CardTitle,
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
@@ -32,7 +31,6 @@ export const NoUserCart: React.FC<NoUserCartProps> = ({ noCartImage }) => {
             <EventPassesCart noCartImage={noCartImage} />
           </CardContent>
         </CardOverflow>
-        <CardOverlay />
         <CardFooter className="justify-center" variant="sticky">
           <NoUserCartFooterClient signInText={t('sign-in-text')} />
         </CardFooter>

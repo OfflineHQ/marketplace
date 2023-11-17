@@ -8,7 +8,6 @@ import {
   CardFooter,
   CardHeader,
   CardOverflow,
-  CardOverlay,
   CardTitle,
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
@@ -51,7 +50,6 @@ export const CartCancelled: FC<CartCancelledProps> = ({ passes }) => {
             <EventPassList allPasses={allPasses} noActions={true} />
           </CardContent>
         </CardOverflow>
-        <CardOverlay />
         <CardFooter className="justify-center" variant="sticky">
           <Link href="/" legacyBehavior>
             <Button variant="secondary">{t('continue-shopping-button')}</Button>

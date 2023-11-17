@@ -1,24 +1,20 @@
 'use client';
 
-import { useSelectedLayoutSegment } from 'next/navigation';
 import {
   Card,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-  CardOverflow,
   CardContent,
-  Button,
-  ButtonSkeleton,
-  CardOverlay,
-  Text,
   CardDescription,
+  CardFooter,
+  CardHeader,
+  CardOverflow,
+  CardTitle,
 } from '@ui/components';
-import { NoUserPassFooterClient } from './NoUserPassFooterClient';
+import { useSelectedLayoutSegment } from 'next/navigation';
 import {
   NoPassPlaceholder,
   type NoPassPlaceholderProps,
 } from '../../molecules/NoPassPlaceholder/NoPassPlaceholder';
+import { NoUserPassFooterClient } from './NoUserPassFooterClient';
 
 export interface NoUserPassProps
   extends Pick<NoPassPlaceholderProps, 'noPassImage'> {
@@ -53,7 +49,6 @@ export const NoUserPass: React.FC<NoUserPassProps> = ({
             )}
           </CardContent>
         </CardOverflow>
-        <CardOverlay />
         <CardFooter className="justify-center" variant="sticky">
           <NoUserPassFooterClient signInText={signInText} />
         </CardFooter>
