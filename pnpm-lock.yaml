@@ -209,8 +209,8 @@ dependencies:
     specifier: 4.23.1
     version: 4.23.1(next@14.0.3)(nodemailer@6.9.6)(react-dom@18.2.0)(react@18.2.0)
   next-intl:
-    specifier: 3.0.1
-    version: 3.0.1(next@14.0.3)(react@18.2.0)
+    specifier: 3.0.3
+    version: 3.0.3(next@14.0.3)(react@18.2.0)
   next-seo:
     specifier: ^6.4.0
     version: 6.4.0(next@14.0.3)(react-dom@18.2.0)(react@18.2.0)
@@ -21548,8 +21548,8 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-intl@3.0.1(next@14.0.3)(react@18.2.0):
-    resolution: {integrity: sha512-lnaOvntHHUw2jrpvfPdT5ukQdPLQRMmSCxvMGX3tZaScVF1u6lOH8zuW3NE4iCEwT5ZU/PS5RM34FsZ1oiAlig==}
+  /next-intl@3.0.3(next@14.0.3)(react@18.2.0):
+    resolution: {integrity: sha512-ENR6Aji0ECZ5KbVcv/ZZA+ZCHjhUTEmprqWODXmKH9cShYMVclvJKxwrhujL0NmwTAa0B0ScHacVnoBTO8VEPg==}
     peerDependencies:
       next: ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0 || ^14.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -21558,7 +21558,7 @@ packages:
       negotiator: 0.6.3
       next: 14.0.3(@babel/core@7.23.2)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
-      use-intl: 3.0.2(react@18.2.0)
+      use-intl: 3.0.3(react@18.2.0)
     dev: false
 
   /next-seo@6.4.0(next@14.0.3)(react-dom@18.2.0)(react@18.2.0):
@@ -27065,8 +27065,8 @@ packages:
       react: 18.2.0
       tslib: 2.6.2
 
-  /use-intl@3.0.2(react@18.2.0):
-    resolution: {integrity: sha512-Q/BnIY/Ct3d3C8nL0PPg8tzjQ4ifTMkq7233zLKS0WYzM7eS+piTdqh8Kq/uVzj4XkDOTEZmKpBx0NMsn6Yo4w==}
+  /use-intl@3.0.3(react@18.2.0):
+    resolution: {integrity: sha512-A0y58ru45Vzw+kdmUoYfEd2EULg32c2v/9Y+jMQgEDivKg2naMtKtzxe4wx0f0FXVmFZj3pMjNtDL5QG3SudUA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
