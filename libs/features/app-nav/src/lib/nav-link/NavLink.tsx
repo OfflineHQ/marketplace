@@ -24,6 +24,7 @@ export function NavLink({ href, children, className }: NavLinkProps) {
             navigationMenuTriggerStyle(),
             className,
             isActive ? 'underline' : '',
+            'bg-transparent',
           )}
         >
           {children}
