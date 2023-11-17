@@ -2,38 +2,41 @@
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 
-import { Button } from '../button/Button';
+import { useState } from 'react';
+import { Button, ButtonProps } from '../button/Button';
 import {
   DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuTrigger,
 } from '../dropdown-menu/DropdownMenu';
+import {
+  DropdownMenuItems,
+  DropdownMenuItemsProps,
+} from '../dropdown-menu/DropdownMenuItems';
 
-export interface DataTableRowActionsProps<TData> {
-  controlText: {
-    openMenu: string;
-  };
-  children: React.ReactNode;
-}
+export interface DataTableRowActionsProps
+  extends Omit<DropdownMenuItemsProps, 'setLoading'>,
+    Pick<ButtonProps, 'isLoading' | 'helperText'> {}
 
-export function DataTableRowActions<TData>({
-  controlText,
-  children,
-}: DataTableRowActionsProps<TData>) {
+export function DataTableRowActions({
+  isLoading,
+  helperText,
+  ...menuProps
+}: DataTableRowActionsProps) {
+  const [loading, setLoading] = useState(false);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
+          isLoading={isLoading || loading}
+          helperText={helperText}
+          size="sm"
+          icon={<DotsHorizontalIcon />}
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-        >
-          <DotsHorizontalIcon className="h-4 w-4" />
-          <span className="sr-only">{controlText.openMenu}</span>
-        </Button>
+        />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[160px]">
-        {children}
-      </DropdownMenuContent>
+
+      <DropdownMenuItems {...menuProps} align="end" setLoading={setLoading} />
     </DropdownMenu>
   );
 }
