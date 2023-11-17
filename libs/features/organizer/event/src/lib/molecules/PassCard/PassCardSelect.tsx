@@ -1,6 +1,5 @@
 import { Badge, ButtonSkeleton } from '@ui/components';
 
-import { updateEventPassCart } from '@features/organizer/event-actions';
 import {
   getEventPassCart,
   getEventPassOrderPurchasedForEventPass,
@@ -80,7 +79,6 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
           organizerSlug={organizerSlug}
           eventSlug={eventSlug}
           eventPassId={id}
-          updateEventPassCart={updateEventPassCart}
         />
       )}
     </div>
