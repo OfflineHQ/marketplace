@@ -1,7 +1,7 @@
 import { useFormatter, useTimeZone, useTranslations } from 'next-intl';
 export { getRequestConfig } from 'next-intl/server';
 
-export async function getTranslations(locale, namespace) {
+export async function getTranslations({ locale, namespace }) {
   return Promise.resolve(useTranslations(namespace));
 }
 
