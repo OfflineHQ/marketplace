@@ -14,7 +14,7 @@ export const AppNavLayoutDesktop: React.FC<AppNavLayoutDesktopProps> = ({
   profileNav,
 }) => {
   return (
-    <header className="sticky top-0 z-50 hidden w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:flex">
+    <header className="absolute top-0 z-20 hidden w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:flex">
       <NavigationMenu className="flex-1 justify-start">
         <NavigationMenuList>
           <NavLink href="/" className="mx-4 my-2 min-w-[100px] p-0">
