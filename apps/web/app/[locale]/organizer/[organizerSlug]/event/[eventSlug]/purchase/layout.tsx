@@ -1,13 +1,9 @@
-import { Card } from '@ui/components';
+import { AppContainer } from '@features/app-nav';
 
 export default function PurchaseTemplate({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <Card variant="stickyFooter" noBorder className="container mx-auto h-full">
-      {children}
-    </Card>
-  );
+  return <AppContainer>{children}</AppContainer>;
 }

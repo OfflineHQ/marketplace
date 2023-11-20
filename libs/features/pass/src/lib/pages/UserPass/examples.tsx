@@ -12,8 +12,8 @@ export function UserPassExample({
   numMintingOrders?: number;
 }) {
   const t = useTranslations('Pass.UserPass');
-  const textMintingOrders = numMintingOrders
-    ? t('minting-success-message', {
+  const textMintingOrdersBadge = numMintingOrders
+    ? t('minting-success-message-badge', {
         numPass: numMintingOrders,
       })
     : '';
@@ -27,7 +27,7 @@ export function UserPassExample({
             comingSoon={t('upcoming')}
             past={t('past')}
             children={children}
-            textMintingOrders={textMintingOrders}
+            textMintingOrdersBadge={textMintingOrdersBadge}
           />
         }
       />

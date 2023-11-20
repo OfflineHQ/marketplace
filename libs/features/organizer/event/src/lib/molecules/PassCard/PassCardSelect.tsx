@@ -1,6 +1,5 @@
 import { Badge, ButtonSkeleton } from '@ui/components';
 
-import { updateEventPassCart } from '@features/organizer/event-actions';
 import {
   getEventPassCart,
   getEventPassOrderPurchasedForEventPass,
@@ -8,7 +7,7 @@ import {
 } from '@features/organizer/event-api';
 import type { EventPass, EventSlugs } from '@features/organizer/event-types';
 import { useLocale } from 'next-intl';
-import { getTranslator } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 import { PassCardSelectClient } from './PassCardSelectClient';
 
@@ -32,7 +31,10 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
   ...props
 }) => {
   const locale = useLocale();
-  const t = await getTranslator(locale, 'Organizer.Event.PassPurchase.Pass');
+  const t = await getTranslations({
+    locale,
+    namespace: 'Organizer.Event.PassPurchase.Pass',
+  });
   const eventPassOrderSums = await getEventPassOrderSums({ eventPassId: id });
   const eventPassCart = await getEventPassCart({
     organizerSlug,
@@ -77,7 +79,6 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
           organizerSlug={organizerSlug}
           eventSlug={eventSlug}
           eventPassId={id}
-          updateEventPassCart={updateEventPassCart}
         />
       )}
     </div>

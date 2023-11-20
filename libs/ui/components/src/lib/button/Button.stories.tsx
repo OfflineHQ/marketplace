@@ -2,29 +2,28 @@ import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
 import {
   screen,
-  fireEvent,
   userEvent,
-  within,
   waitForElementToBeRemoved,
+  within,
 } from '@storybook/testing-library';
-import { OutlineArrowRight, Settings } from '@ui/icons';
 import { delayData } from '@test-utils/functions';
+import { Settings } from '@ui/icons';
 
+import { sleep } from '@utils';
 import { Button, ButtonSkeleton, type ButtonSkeletonProps } from './Button';
 import {
-  variantOptions,
-  sizeOptions,
-  ButtonDemo,
-  AllbuttonVariantsComponent,
   AllbuttonSizesComponent,
-  AllbuttonVariantsLoadingComponent,
   AllbuttonSizesLoadingComponent,
-  AllbuttonVariantsDisabledComponent,
-  AllbuttonVariantsWithIconComponent,
   AllbuttonSizesWithIconComponent,
   AllbuttonSizesWithIconRightComponent,
+  AllbuttonVariantsComponent,
+  AllbuttonVariantsDisabledComponent,
+  AllbuttonVariantsLoadingComponent,
+  AllbuttonVariantsWithIconComponent,
+  ButtonDemo,
+  sizeOptions,
+  variantOptions,
 } from './examples';
-import { sleep } from '@utils';
 
 const meta = {
   title: 'Atoms/Button',
@@ -72,6 +71,13 @@ export const ButtonWithOnlyIcon: Story = {
     children: undefined,
     icon: <Settings />,
     variant: 'ghost',
+  },
+} satisfies Story;
+
+export const ButtonWithIconOnlyAndLoading: Story = {
+  args: {
+    ...ButtonWithOnlyIcon.args,
+    isLoading: true,
   },
 } satisfies Story;
 

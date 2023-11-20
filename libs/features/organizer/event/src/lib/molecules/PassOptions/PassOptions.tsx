@@ -30,11 +30,18 @@ export const PassOptions: React.FC<PassOptionsProps> = ({
           </AccordionTrigger>
           <AccordionContent className="space-y-4">
             <Text variant="p">{description}</Text>
-            <EventDatesServer
-              eventDateLocations={[eventDateLocation]}
-              detailed
-            />
-            <EventLocations eventDateLocations={[eventDateLocation]} detailed />
+            {eventDateLocation && (
+              <>
+                <EventDatesServer
+                  eventDateLocations={[eventDateLocation]}
+                  detailed
+                />
+                <EventLocations
+                  eventDateLocations={[eventDateLocation]}
+                  detailed
+                />
+              </>
+            )}
           </AccordionContent>
         </AccordionItem>
       ))}

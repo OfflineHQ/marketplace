@@ -7,7 +7,7 @@ import {
   getEventPassOrdersConfirmed,
   getEventPasses,
 } from '@features/organizer/event-api';
-import { getTranslator } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 import EventSection from '../../../page';
 
@@ -43,7 +43,10 @@ const PurchaseSectionContent: React.FC<PurchaseSectionContentProps> = async ({
   organizerSlug,
   locale,
 }) => {
-  const t = await getTranslator(locale, 'Organizer.Event.PassPurchase');
+  const t = await getTranslations({
+    locale,
+    namespace: 'Organizer.Event.PassPurchase',
+  });
   const passes = await getEventPasses({ eventSlug, locale });
   const confirmedPasses = await getEventPassOrdersConfirmed();
   return (

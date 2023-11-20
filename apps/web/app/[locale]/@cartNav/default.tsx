@@ -7,7 +7,7 @@ import { getEventPassPendingOrdersMinimal } from '@features/cart-api';
 import { getCurrentUser } from '@next/next-auth/user';
 import { Suspense } from 'react';
 
-import { getTranslator } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 
 interface CartNavSectionProps {
   params: {
@@ -42,7 +42,7 @@ async function CartNavSectionContent({ locale }: { locale: string }) {
       navProps = { ping: { number: numPendingOrders } };
     }
   }
-  const t = await getTranslator(locale, 'AppNav.Cart');
+  const t = await getTranslations({ locale, namespace: 'AppNav.Cart' });
   return (
     <CartNav
       text={t('text')}
