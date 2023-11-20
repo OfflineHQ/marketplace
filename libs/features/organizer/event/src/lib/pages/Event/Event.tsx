@@ -3,7 +3,7 @@ import {
   AppContainerFooter,
   AppContainerOverflow,
 } from '@features/app-nav';
-import { ButtonSkeleton, CardFooter, CardHeader } from '@ui/components';
+import { ButtonSkeleton, CardHeader } from '@ui/components';
 import {
   EventDetails,
   EventDetailsSkeleton,
@@ -54,9 +54,9 @@ export const EventSkeleton: React.FC = () => {
         </CardHeader>
         <EventDetailsSkeleton className="md:mt-4" />
       </AppContainerOverflow>
-      <CardFooter variant="sticky" className="justify-center">
+      <AppContainerFooter>
         <ButtonSkeleton className=" w-full md:w-1/6" />
-      </CardFooter>
+      </AppContainerFooter>
     </AppContainer>
   );
 };

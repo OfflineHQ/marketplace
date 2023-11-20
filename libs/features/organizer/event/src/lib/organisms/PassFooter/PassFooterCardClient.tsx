@@ -1,8 +1,9 @@
+import { AppContainerFooter } from '@features/app-nav';
 import { getEventPassesCart } from '@features/organizer/event-api';
 import type { EventPass } from '@features/organizer/event-types';
 import { Link } from '@next/navigation';
 import { PropsFrom } from '@next/types';
-import { AutoAnimate, Button, CardFooter } from '@ui/components';
+import { AutoAnimate, Button } from '@ui/components';
 import { Cart } from '@ui/icons';
 import React, { Suspense } from 'react';
 import { PassTotal } from '../../molecules/PassTotal/PassTotal';
@@ -36,12 +37,9 @@ export const PassFooterCardClientContent: React.FC<
     eventPassIds: passesData.map(({ id }) => id),
   });
   return (
-    <AutoAnimate className="mt-auto">
+    <AutoAnimate>
       {passesCart?.length ? (
-        <CardFooter
-          variant="sticky"
-          className="flex flex-col items-start space-y-2"
-        >
+        <AppContainerFooter className="flex flex-col items-start space-y-2">
           <PassTotal passesData={passesData} passesCart={passesCart} />
           <Link
             {...goPaymentLink}
@@ -53,7 +51,7 @@ export const PassFooterCardClientContent: React.FC<
               {goPaymentText}
             </Button>
           </Link>
-        </CardFooter>
+        </AppContainerFooter>
       ) : null}
     </AutoAnimate>
   );
