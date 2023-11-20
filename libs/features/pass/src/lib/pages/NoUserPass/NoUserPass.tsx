@@ -1,12 +1,14 @@
 'use client';
 
 import {
-  Card,
+  AppContainer,
+  AppContainerFooter,
+  AppContainerOverflow,
+} from '@features/app-nav';
+import {
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardOverflow,
   CardTitle,
 } from '@ui/components';
 import { useSelectedLayoutSegment } from 'next/navigation';
@@ -34,25 +36,23 @@ export const NoUserPass: React.FC<NoUserPassProps> = ({
   const activeTab = useSelectedLayoutSegment();
   // getLocalCart();
   return (
-    <section className="container">
-      <Card variant="stickyFooter" noBorder>
-        <CardOverflow>
-          <CardHeader>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>{description}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {!!activeTab && activeTab === 'organizer' ? (
-              children
-            ) : (
-              <NoPassPlaceholder noPassImage={noPassImage} />
-            )}
-          </CardContent>
-        </CardOverflow>
-        <CardFooter className="justify-center" variant="sticky">
-          <NoUserPassFooterClient signInText={signInText} />
-        </CardFooter>
-      </Card>
-    </section>
+    <AppContainer>
+      <AppContainerOverflow variant="stickyFooter">
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {!!activeTab && activeTab === 'organizer' ? (
+            children
+          ) : (
+            <NoPassPlaceholder noPassImage={noPassImage} />
+          )}
+        </CardContent>
+      </AppContainerOverflow>
+      <AppContainerFooter>
+        <NoUserPassFooterClient signInText={signInText} />
+      </AppContainerFooter>
+    </AppContainer>
   );
 };
