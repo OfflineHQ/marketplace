@@ -1,1 +1,5 @@
-export * from './lib/roles-admin';
+export {
+  RoleAuthorization,
+  RoleInvitationService,
+  type CreateInvitationProps,
+} from './lib/roles-admin';
