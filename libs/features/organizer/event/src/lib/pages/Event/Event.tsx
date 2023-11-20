@@ -31,7 +31,7 @@ export const Event: React.FC<EventProps> = ({
   ...eventHeroProps
 }) => {
   return (
-    <AppContainer variant="stickyFooter">
+    <AppContainer>
       <AppContainerOverflow variant="stickyFooter">
         <CardHeader>
           <EventHero {...eventHeroProps} {...{ purchaseLink, purchaseText }} />
@@ -47,7 +47,7 @@ export const Event: React.FC<EventProps> = ({
 
 export const EventSkeleton: React.FC = () => {
   return (
-    <AppContainer variant="stickyFooter">
+    <AppContainer>
       <AppContainerOverflow variant="stickyFooter">
         <CardHeader>
           <EventHeroSkeleton />
