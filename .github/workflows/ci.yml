@@ -8,6 +8,7 @@ on:
 
 env:
   CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
+  NODE_OPTIONS: '--max_old_space_size=4096'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
