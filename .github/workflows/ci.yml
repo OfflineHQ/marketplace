@@ -9,6 +9,7 @@ on:
 env:
   CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
   NODE_OPTIONS: '--max_old_space_size=4096'
+  NX_CLOUD_AUTH_TOKEN: MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -20,6 +21,7 @@ jobs:
     uses: sebpalluel/ci/.github/workflows/nx-cloud-main.yml@latest
     secrets:
       ENV_FILE: ${{ secrets.ENV_FILE }}
+      NX_CLOUD_AUTH_TOKEN: MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=
     with:
       runs-on: ubuntu-latest
       artifacts-path: |
@@ -48,6 +50,7 @@ jobs:
     uses: sebpalluel/ci/.github/workflows/nx-cloud-agents.yml@latest
     secrets:
       ENV_FILE: ${{ secrets.ENV_FILE }}
+      NX_CLOUD_AUTH_TOKEN: MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=
     with:
       runs-on: ubuntu-latest
       environment: staging

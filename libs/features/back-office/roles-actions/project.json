@@ -15,12 +15,16 @@
       }
     },
     "build": {
-      "executor": "@nx/js:swc",
+      "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/features/back-office/roles-actions",
         "tsConfig": "libs/features/back-office/roles-actions/tsconfig.lib.json",
-        "main": "libs/features/back-office/roles-actions/src/index.ts",
+        "project": "libs/features/back-office/roles-actions/package.json",
+        "entryFile": "libs/features/back-office/roles-actions/src/index.ts",
+        "external": ["react", "react-dom", "react/jsx-runtime"],
+        "rollupConfig": "@nx/react/plugins/bundle-rollup",
+        "compiler": "swc",
         "assets": [
           {
             "glob": "libs/features/back-office/roles-actions/README.md",
