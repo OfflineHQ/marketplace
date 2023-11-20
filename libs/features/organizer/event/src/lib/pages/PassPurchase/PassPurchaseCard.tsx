@@ -1,4 +1,5 @@
 // PassPurchase.tsx
+import { AppContainerOverflow } from '@features/app-nav';
 import { Link } from '@next/navigation';
 import { PropsFrom } from '@next/types';
 import {
@@ -6,7 +7,6 @@ import {
   CardDescription,
   CardHeader,
   CardNavBack,
-  CardOverflow,
   CardTitle,
 } from '@ui/components';
 import React from 'react';
@@ -37,11 +37,11 @@ export const PassPurchaseCard: React.FC<PassPurchaseCardProps> = ({
   return (
     <>
       <CardNavBack text={backButtonText} href={backButtonLink} />
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardOverflow>
+      <AppContainerOverflow variant="stickyFooterLg">
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </CardHeader>
         <CardContent>
           <PassList
             passes={passes}
@@ -50,7 +50,7 @@ export const PassPurchaseCard: React.FC<PassPurchaseCardProps> = ({
             hasConfirmedPasses={hasConfirmedPasses}
           />
         </CardContent>
-      </CardOverflow>
+      </AppContainerOverflow>
       <PassFooterServer>
         <PassFooterCardClient
           passes={passes}

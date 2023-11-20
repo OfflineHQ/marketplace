@@ -18,7 +18,7 @@
       "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/features/organizer//event-api",
+        "outputPath": "dist/libs/features/organizer/event-api",
         "tsConfig": "libs/features/organizer/event-api/tsconfig.lib.json",
         "project": "libs/features/organizer/event-api/package.json",
         "entryFile": "libs/features/organizer/event-api/src/index.ts",

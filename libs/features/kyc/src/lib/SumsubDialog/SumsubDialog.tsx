@@ -10,7 +10,6 @@ import {
 
 import { useTranslations } from 'next-intl';
 import { SumsubDialogClient, SumsubWebSdkProps } from './SumsubDialogClient';
-
 export interface SumsubDialogProps extends DialogProps, SumsubWebSdkProps {
   children?: React.ReactNode;
 }

@@ -11,17 +11,17 @@ import { CurrencyProvider } from '@next/currency-provider';
 import { getMessages, locales } from '@next/i18n';
 import { getSession, isConnected } from '@next/next-auth/user';
 import { ReactQueryProviders } from '@next/react-query';
-import { UploaderProvider } from '@next/uploader-provider';
 import { isLocal } from '@shared/server';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
-import { Metadata } from 'next';
-import { createTranslator, NextIntlClientProvider } from 'next-intl';
+import { deepPick } from '@utils';
+import { Metadata, Viewport } from 'next';
+import { NextIntlClientProvider } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
-import { deepPick } from '@utils';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -33,6 +33,13 @@ const fontHeading = localFont({
   src: '../../assets/fonts/CalSans-SemiBold.woff2',
   variable: '--font-heading',
 });
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
+  ],
+};
 
 export const metadata: Metadata = {
   title: {
@@ -65,7 +72,7 @@ export default async function RootLayout({
   if (!locales.includes(locale as any)) notFound();
   const messages = await getMessages(locale);
   const session = await getSession();
-  const t = createTranslator({ locale, messages });
+  const t = await getTranslations({ locale, namespace: 'Auth' });
   const localeMessages = deepPick(messages, ['Roles.RoleBadge']);
   const currencyCache = new CurrencyCache();
   let rates;
@@ -91,39 +98,37 @@ export default async function RootLayout({
             <AuthProvider
               messages={{
                 userClosedPopup: {
-                  title: t('Auth.user-closed-popup.title'),
-                  description: t('Auth.user-closed-popup.description'),
+                  title: t('user-closed-popup.title'),
+                  description: t('user-closed-popup.description'),
                 },
-                siweStatement: t('Auth.siwe-statement'),
+                siweStatement: t('siwe-statement'),
                 errorSigningInWithSiwe: {
-                  title: t('Auth.error-signing-in-with-siwe.title'),
-                  description: t('Auth.error-signing-in-with-siwe.description'),
+                  title: t('error-signing-in-with-siwe.title'),
+                  description: t('error-signing-in-with-siwe.description'),
                   tryAgainButton: t(
-                    'Auth.error-signing-in-with-siwe.try-again-button',
+                    'error-signing-in-with-siwe.try-again-button',
                   ),
                 },
                 siweDeclined: {
-                  title: t('Auth.siwe-declined.title'),
-                  description: t('Auth.siwe-declined.description'),
-                  tryAgainButton: t('Auth.siwe-declined.try-again-button'),
+                  title: t('siwe-declined.title'),
+                  description: t('siwe-declined.description'),
+                  tryAgainButton: t('siwe-declined.try-again-button'),
                 },
               }}
               session={session}
               isConnected={isConnected}
             >
-              <UploaderProvider>
-                <ReactQueryProviders>
-                  <CurrencyProvider rates={rates}>
-                    <AppNavLayout {...appNavLayout} />
-                    <NextIntlClientProvider
-                      locale={locale}
-                      messages={localeMessages}
-                    >
-                      <Toaster />
-                    </NextIntlClientProvider>
-                  </CurrencyProvider>
-                </ReactQueryProviders>
-              </UploaderProvider>
+              <ReactQueryProviders>
+                <CurrencyProvider rates={rates}>
+                  <AppNavLayout {...appNavLayout} />
+                  <NextIntlClientProvider
+                    locale={locale}
+                    messages={localeMessages}
+                  >
+                    <Toaster />
+                  </NextIntlClientProvider>
+                </CurrencyProvider>
+              </ReactQueryProviders>
             </AuthProvider>
           </NextAuthProvider>
         </ThemeProvider>

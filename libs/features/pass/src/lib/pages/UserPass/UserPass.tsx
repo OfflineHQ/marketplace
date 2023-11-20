@@ -1,11 +1,10 @@
 'use client';
 
+import { AppContainer } from '@features/app-nav';
 import { Link } from '@next/navigation';
 import {
-  Alert,
-  Card,
+  Badge,
   CardHeader,
-  CardOverflow,
   CardTitle,
   Tabs,
   TabsContent,
@@ -21,7 +20,7 @@ export interface UserPassProps {
   title: string;
   comingSoon: string;
   past: string;
-  textMintingOrders?: string;
+  textMintingOrdersBadge?: string;
 }
 
 export const UserPass: React.FC<UserPassProps> = ({
@@ -29,47 +28,45 @@ export const UserPass: React.FC<UserPassProps> = ({
   title,
   comingSoon,
   past,
-  textMintingOrders,
+  textMintingOrdersBadge,
 }) => {
   const activeTab = useSelectedLayoutSegment();
 
   return (
-    <section className="container">
-      <Card variant="stickyFooter" noBorder>
-        <CardOverflow>
-          <CardHeader>
-            <CardTitle>{title}</CardTitle>
-            {textMintingOrders && textMintingOrders !== '' ? (
-              <Alert variant="success" className="">
-                {textMintingOrders}
-              </Alert>
+    <AppContainer>
+      <CardHeader className="md:pt-16">
+        <CardTitle>
+          <div className="flex items-center space-x-2">
+            <span>{title} </span>
+            {textMintingOrdersBadge ? (
+              <Badge variant="green">{textMintingOrdersBadge}</Badge>
             ) : null}
-          </CardHeader>
-          {activeTab === 'organizer' ? (
-            children
-          ) : (
-            <Tabs
-              value={activeTab || 'upcoming'}
-              className="mx-auto flex h-full w-full flex-col md:max-w-[1420px]"
-            >
-              <TabsList className="grid w-full grid-cols-2">
-                <Link href="/pass" legacyBehavior>
-                  <TabsTrigger value="upcoming">{comingSoon}</TabsTrigger>
-                </Link>
-                <Link href="/pass/past" legacyBehavior>
-                  <TabsTrigger value="past">{past}</TabsTrigger>
-                </Link>
-              </TabsList>
-              <TabsContent
-                value={activeTab || 'upcoming'}
-                className="h-full overflow-auto"
-              >
-                {children}
-              </TabsContent>
-            </Tabs>
-          )}
-        </CardOverflow>
-      </Card>
-    </section>
+          </div>
+        </CardTitle>
+      </CardHeader>
+      {activeTab === 'organizer' ? (
+        children
+      ) : (
+        <Tabs
+          value={activeTab || 'upcoming'}
+          className="mx-auto h-full w-full flex-col"
+        >
+          <TabsList className="grid w-full grid-cols-2">
+            <Link href="/pass" legacyBehavior>
+              <TabsTrigger value="upcoming">{comingSoon}</TabsTrigger>
+            </Link>
+            <Link href="/pass/past" legacyBehavior>
+              <TabsTrigger value="past">{past}</TabsTrigger>
+            </Link>
+          </TabsList>
+          <TabsContent
+            value={activeTab || 'upcoming'}
+            className="h-full overflow-y-auto pb-40"
+          >
+            {children}
+          </TabsContent>
+        </Tabs>
+      )}
+    </AppContainer>
   );
 };

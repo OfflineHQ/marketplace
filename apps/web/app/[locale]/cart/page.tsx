@@ -48,7 +48,12 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
     >
       {isUserKycValidated(user) ? (
         <Link href={isEmptyCart ? '/cart' : '/cart/purchase'} legacyBehavior>
-          <Button disabled={isEmptyCart} icon={<Cart />}>
+          <Button
+            disabled={isEmptyCart}
+            icon={<Cart />}
+            block
+            className="w-full md:w-1/6"
+          >
             {t('finalize-button')}
           </Button>
         </Link>

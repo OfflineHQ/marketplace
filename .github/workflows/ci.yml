@@ -8,6 +8,8 @@ on:
 
 env:
   CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
+  NODE_OPTIONS: '--max_old_space_size=4096'
+  NX_CLOUD_AUTH_TOKEN: MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -19,6 +21,7 @@ jobs:
     uses: sebpalluel/ci/.github/workflows/nx-cloud-main.yml@latest
     secrets:
       ENV_FILE: ${{ secrets.ENV_FILE }}
+      NX_CLOUD_AUTH_TOKEN: MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=
     with:
       runs-on: ubuntu-latest
       artifacts-path: |
@@ -41,14 +44,13 @@ jobs:
         ## TODO set back when cypress upgraded to webpack 5, compilation error with this code `headers['Cookie'] = cookies().toString()`;
         # pnpm nx affected --target=e2e --no-watch
       parallel-commands-on-agents: |
-        pnpm affected:lint --parallel=3 --eslintConfig=.eslintrc.ci.json &
-        pnpm affected:build --parallel=3 &
-        pnpm nx affected --target=test --parallel=3 --ci --code-coverage &
+        pnpm affected:parallel-ci
   agents:
     name: Nx Cloud - Agents
     uses: sebpalluel/ci/.github/workflows/nx-cloud-agents.yml@latest
     secrets:
       ENV_FILE: ${{ secrets.ENV_FILE }}
+      NX_CLOUD_AUTH_TOKEN: MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=
     with:
       runs-on: ubuntu-latest
       environment: staging

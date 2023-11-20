@@ -180,7 +180,7 @@
       "no-pass": "Vous n'avez pas encore de pass.",
       "past": "Passé",
       "title": "Pass",
-      "minting-success-message": "{numPass, plural, =1 {Votre pass est en cours de création et sera ajouté à votre portefeuille sous peu. Vous devriez le recevoir dans quelques minutes.} other {# pass sont en cours de création et seront ajoutés à votre portefeuille sous peu. Vous devriez les recevoir dans quelques minutes.}}",
+      "minting-success-message-badge": "{numPass, plural, =1 {1 pass en cours de création} other {# pass en cours de création}}",
       "upcoming": "À venir"
     }
   },
@@ -243,5 +243,8 @@
       "organizer-super-admin": "Super Admin de l'organisateur",
       "organizer-validator": "Validateur de l'organisateur"
     }
+  },
+  "OrganizerEvents": {
+    "no-events": "Vous n'avez pas encore d'événement."
   }
 }

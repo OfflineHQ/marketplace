@@ -1,22 +1,19 @@
 import {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardOverflow,
-  Button,
-  ButtonSkeleton,
-  CardOverlay,
-} from '@ui/components';
-import {
-  EventHero,
-  EventHeroSkeleton,
-  type EventHeroProps,
-} from '../../molecules/EventHero/EventHero';
+  AppContainer,
+  AppContainerFooter,
+  AppContainerOverflow,
+} from '@features/app-nav';
+import { ButtonSkeleton, CardHeader } from '@ui/components';
 import {
   EventDetails,
   EventDetailsSkeleton,
   type EventDetailsProps,
 } from '../../molecules/EventDetails/EventDetails';
+import {
+  EventHero,
+  EventHeroSkeleton,
+  type EventHeroProps,
+} from '../../molecules/EventHero/EventHero';
 import { EventFooter, type EventFooterProps } from './EventFooter';
 
 export interface EventProps
@@ -34,31 +31,32 @@ export const Event: React.FC<EventProps> = ({
   ...eventHeroProps
 }) => {
   return (
-    <Card variant="stickyFooter" noBorder className="w-full">
-      <CardOverflow>
+    <AppContainer>
+      <AppContainerOverflow variant="stickyFooter">
         <CardHeader>
           <EventHero {...eventHeroProps} {...{ purchaseLink, purchaseText }} />
         </CardHeader>
         <EventDetails className="md:mt-4" description={description} />
-      </CardOverflow>
-      <CardOverlay />
-      <CardFooter className="justify-center" variant="sticky">
+      </AppContainerOverflow>
+      <AppContainerFooter>
         <EventFooter purchaseLink={purchaseLink} purchaseText={purchaseText} />
-      </CardFooter>
-    </Card>
+      </AppContainerFooter>
+    </AppContainer>
   );
 };
 
 export const EventSkeleton: React.FC = () => {
   return (
-    <Card variant="stickyFooter" noBorder className="w-full">
-      <CardHeader>
-        <EventHeroSkeleton />
-      </CardHeader>
-      <EventDetailsSkeleton className="md:mt-4" />
-      <CardFooter variant="sticky" className="justify-center">
-        <ButtonSkeleton className="w-full md:w-1/6" />
-      </CardFooter>
-    </Card>
+    <AppContainer>
+      <AppContainerOverflow variant="stickyFooter">
+        <CardHeader>
+          <EventHeroSkeleton />
+        </CardHeader>
+        <EventDetailsSkeleton className="md:mt-4" />
+      </AppContainerOverflow>
+      <AppContainerFooter>
+        <ButtonSkeleton className=" w-full md:w-1/6" />
+      </AppContainerFooter>
+    </AppContainer>
   );
 };

@@ -59,7 +59,6 @@ const nextConfig = {
   // outputFileTracingRoot needed for monorepo
   // output: 'standalone',
   experimental: {
-    serverActions: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
       '*': [
@@ -79,6 +78,7 @@ const nextConfig = {
       '@features/cart/server',
       '@features/kyc',
       '@features/kyc/server',
+      '@features/navigation',
       '@features/organizer/event',
       '@features/organizer/event/server',
       '@features/pass',
