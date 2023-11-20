@@ -1,11 +1,10 @@
 'use client';
 
+import { AppContainer } from '@features/app-nav';
 import { Link } from '@next/navigation';
 import {
   Alert,
-  Card,
   CardHeader,
-  CardOverflow,
   CardTitle,
   Tabs,
   TabsContent,
@@ -34,42 +33,38 @@ export const UserPass: React.FC<UserPassProps> = ({
   const activeTab = useSelectedLayoutSegment();
 
   return (
-    <section className="container">
-      <Card noBorder className="mb-16 h-full">
-        <CardOverflow>
-          <CardHeader>
-            <CardTitle>{title}</CardTitle>
-            {textMintingOrders && textMintingOrders !== '' ? (
-              <Alert variant="success" className="">
-                {textMintingOrders}
-              </Alert>
-            ) : null}
-          </CardHeader>
-          {activeTab === 'organizer' ? (
-            children
-          ) : (
-            <Tabs
-              value={activeTab || 'upcoming'}
-              className="mx-auto flex h-full w-full flex-col md:max-w-[1420px]"
-            >
-              <TabsList className="grid w-full grid-cols-2">
-                <Link href="/pass" legacyBehavior>
-                  <TabsTrigger value="upcoming">{comingSoon}</TabsTrigger>
-                </Link>
-                <Link href="/pass/past" legacyBehavior>
-                  <TabsTrigger value="past">{past}</TabsTrigger>
-                </Link>
-              </TabsList>
-              <TabsContent
-                value={activeTab || 'upcoming'}
-                className="h-full overflow-y-auto"
-              >
-                {children}
-              </TabsContent>
-            </Tabs>
-          )}
-        </CardOverflow>
-      </Card>
-    </section>
+    <AppContainer>
+      <CardHeader className="md:pt-16">
+        <CardTitle>{title}</CardTitle>
+        {textMintingOrders && textMintingOrders !== '' ? (
+          <Alert variant="success" className="">
+            {textMintingOrders}
+          </Alert>
+        ) : null}
+      </CardHeader>
+      {activeTab === 'organizer' ? (
+        children
+      ) : (
+        <Tabs
+          value={activeTab || 'upcoming'}
+          className="mx-auto h-full w-full flex-col"
+        >
+          <TabsList className="grid w-full grid-cols-2">
+            <Link href="/pass" legacyBehavior>
+              <TabsTrigger value="upcoming">{comingSoon}</TabsTrigger>
+            </Link>
+            <Link href="/pass/past" legacyBehavior>
+              <TabsTrigger value="past">{past}</TabsTrigger>
+            </Link>
+          </TabsList>
+          <TabsContent
+            value={activeTab || 'upcoming'}
+            className="h-full overflow-y-auto pb-40"
+          >
+            {children}
+          </TabsContent>
+        </Tabs>
+      )}
+    </AppContainer>
   );
 };
