@@ -2,29 +2,13 @@ import { cn } from '@ui/shared';
 import { VariantProps, cva } from 'class-variance-authority';
 import React from 'react';
 
-const variants = {
-  default: 'px-6 pt-0 pb-14 md:pb-0 md:pt-8',
-  stickyFooter: 'px-6 pt-0 py-0',
-};
-
-const appContainerVariantsCva = cva('container flex h-full flex-col', {
-  variants: {
-    variant: variants,
-  },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
-
-export interface AppContainerProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof appContainerVariantsCva> {}
+export type AppContainerProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const AppContainer = React.forwardRef<HTMLDivElement, AppContainerProps>(
-  ({ className, variant, ...props }, ref) => (
+  ({ className, ...props }, ref) => (
     <section
       ref={ref}
-      className={cn(appContainerVariantsCva({ variant }), className)}
+      className={cn('container flex h-full flex-col px-6 py-0', className)}
       {...props}
     />
   ),
@@ -33,21 +17,18 @@ export const AppContainer = React.forwardRef<HTMLDivElement, AppContainerProps>(
 AppContainer.displayName = 'AppContainer';
 
 const appContainerOverflowVariants = {
-  default: 'pb-14',
-  stickyFooter: 'pb-24',
+  default: 'pb-14 md:pb-0 ',
+  stickyFooter: 'pb-24 md:pb-12',
 };
 
-const appContainerOverflowVariantsCva = cva(
-  'overflow-y-auto md:pb-0 md:pt-14',
-  {
-    variants: {
-      variant: appContainerOverflowVariants,
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
+const appContainerOverflowVariantsCva = cva('overflow-y-auto md:pt-14', {
+  variants: {
+    variant: appContainerOverflowVariants,
   },
-);
+  defaultVariants: {
+    variant: 'default',
+  },
+});
 
 export interface AppContainerOverflowProps
   extends React.HTMLAttributes<HTMLDivElement>,
