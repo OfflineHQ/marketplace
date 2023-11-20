@@ -113,7 +113,7 @@
       "title": "Pass",
       "no-pass": "You don't have any pass yet",
       "upcoming": "Upcoming",
-      "minting-success-message": "{numPass, plural, =1 {Your pass is being minted and will be added to your wallet shortly. You should receive it within a few minutes.}other {# passes are being minted and will be added to your wallet shortly. You should receive them within a few minutes.}}",
+      "minting-success-message-badge": "{numPass, plural, =1 {1 pass incoming} other {# passes incoming}}",
       "past": "Past",
       "DateRange": {
         "from": "From",

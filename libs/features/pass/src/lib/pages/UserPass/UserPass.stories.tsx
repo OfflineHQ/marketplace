@@ -75,7 +75,7 @@ export const WithUserMintingOrders: Story = {
         noPassImage="/empty-pass.svg"
         batchDownloadOrReveal={batchDownloadOrReveal}
         actionsFunctions={actionsFunctions}
-        eventsParameters={[]}
+        eventsParameters={[eventParameters2]}
       />
     ),
   },

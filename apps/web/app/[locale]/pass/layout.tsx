@@ -44,8 +44,8 @@ function PassLayoutContent({
 }: PassLayoutContentProps) {
   const t = useTranslations('Pass.NoUserPass');
   const tUserPass = useTranslations('Pass.UserPass');
-  const textMintingOrders = numMintingOrders
-    ? tUserPass('minting-success-message', {
+  const textMintingOrdersBadge = numMintingOrders
+    ? tUserPass('minting-success-message-badge', {
         numPass: numMintingOrders,
       })
     : '';
@@ -54,7 +54,7 @@ function PassLayoutContent({
       title={tUserPass('title')}
       comingSoon={tUserPass('upcoming')}
       past={tUserPass('past')}
-      textMintingOrders={textMintingOrders}
+      textMintingOrdersBadge={textMintingOrdersBadge}
     >
       {children}
     </UserPass>

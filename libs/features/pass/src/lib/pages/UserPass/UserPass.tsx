@@ -3,7 +3,7 @@
 import { AppContainer } from '@features/app-nav';
 import { Link } from '@next/navigation';
 import {
-  Alert,
+  Badge,
   CardHeader,
   CardTitle,
   Tabs,
@@ -20,7 +20,7 @@ export interface UserPassProps {
   title: string;
   comingSoon: string;
   past: string;
-  textMintingOrders?: string;
+  textMintingOrdersBadge?: string;
 }
 
 export const UserPass: React.FC<UserPassProps> = ({
@@ -28,19 +28,21 @@ export const UserPass: React.FC<UserPassProps> = ({
   title,
   comingSoon,
   past,
-  textMintingOrders,
+  textMintingOrdersBadge,
 }) => {
   const activeTab = useSelectedLayoutSegment();
 
   return (
     <AppContainer>
       <CardHeader className="md:pt-16">
-        <CardTitle>{title}</CardTitle>
-        {textMintingOrders && textMintingOrders !== '' ? (
-          <Alert variant="success" className="">
-            {textMintingOrders}
-          </Alert>
-        ) : null}
+        <CardTitle>
+          <div className="flex items-center space-x-2">
+            <span>{title} </span>
+            {textMintingOrdersBadge ? (
+              <Badge variant="green">{textMintingOrdersBadge}</Badge>
+            ) : null}
+          </div>
+        </CardTitle>
       </CardHeader>
       {activeTab === 'organizer' ? (
         children
