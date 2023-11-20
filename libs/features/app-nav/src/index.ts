@@ -27,3 +27,9 @@ export {
   ProfileAvatar,
   type ProfileAvatarProps,
 } from './lib/profile-avatar/ProfileAvatar';
+
+export {
+  AppContainer,
+  AppContainerFooter,
+  AppContainerOverflow,
+} from './lib/AppContainer/AppContainer';
