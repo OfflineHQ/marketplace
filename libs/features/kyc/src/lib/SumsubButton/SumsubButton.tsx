@@ -50,7 +50,9 @@ const SumsubButtonContent: React.FC<SumsubButtonContentProps> = ({
       config={{ lang: locale }}
       {...props}
     >
-      <Button icon={<UserIdentification />}>{t('text')}</Button>
+      <Button icon={<UserIdentification />} block className="w-full md:w-1/6">
+        {t('text')}
+      </Button>
     </SumsubDialog>
   );
 };

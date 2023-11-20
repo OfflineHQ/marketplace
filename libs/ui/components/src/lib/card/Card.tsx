@@ -1,28 +1,31 @@
 import * as React from 'react';
 
 import { cn } from '@ui/shared';
-import { TextSkeleton } from '../text/Text';
 import { VariantProps, cva } from 'class-variance-authority';
+import { TextSkeleton } from '../text/Text';
 
 const variants = {
   default: 'border shadow-sm',
   noBorder: '',
-  stickyFooter: 'relative border shadow-sm flex flex-col h-full',
+  stickyFooter: 'relative border shadow-sm flex flex-col pb-24 md:pt-8 md:pb-8',
   distinct: 'border shadow-md bg-muted rounded-sm text-card-muted-foreground',
 };
 
-const cardVariantsCva = cva('rounded-lg bg-card text-card-foreground', {
-  variants: {
-    variant: variants,
-    noBorder: {
-      true: 'border-none shadow-none',
+const cardVariantsCva = cva(
+  'flex flex-col rounded-lg bg-card text-card-foreground',
+  {
+    variants: {
+      variant: variants,
+      noBorder: {
+        true: 'border-none shadow-none',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      noBorder: false,
     },
   },
-  defaultVariants: {
-    variant: 'default',
-    noBorder: false,
-  },
-});
+);
 
 export interface CardProps
   extends React.HTMLAttributes<HTMLDivElement>,
@@ -100,17 +103,50 @@ const CardDescriptionSkeleton = React.forwardRef<
 ));
 CardDescriptionSkeleton.displayName = 'CardDescriptionSkeleton';
 
-const CardContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('p-6 pt-0 flex-grow', className)} {...props} />
-));
+const contentVariants = {
+  default: 'p-6 pt-0 flex-grow',
+  stickyFooter: 'p-6 pt-0 flex-grow mb-16 md:mb-16',
+};
+
+const cardContentVariantsCva = cva('', {
+  variants: {
+    variant: contentVariants,
+    isMain: {
+      true: 'mb-16 md:mb-0',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+    isMain: false,
+  },
+  compoundVariants: [
+    {
+      variant: 'stickyFooter',
+      isMain: true,
+      class: 'mb-24 md:mb-16',
+    },
+  ],
+});
+
+export interface CardContentProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardContentVariantsCva> {}
+
+const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
+  ({ className, variant, isMain, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(cardContentVariantsCva({ variant, isMain }), className)}
+      {...props}
+    />
+  ),
+);
 CardContent.displayName = 'CardContent';
 
 const footerVariants = {
   default: 'p-6 pt-0 relative',
-  sticky: 'mt-auto pb-3 pt-0 px-6 relative',
+  sticky:
+    'mt-auto absolute bottom-16 md:bottom-0 md:pb-2 mb-0 min-w-[100%] pt-2 px-6 pb-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
 };
 
 const cardFooterVariantsCva = cva('flex items-center', {
@@ -140,26 +176,6 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
 
 CardFooter.displayName = 'CardFooter';
 
-export interface CardOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
-  footerHeight?: string;
-  className?: string;
-}
-
-const CardOverlay = React.forwardRef<HTMLDivElement, CardOverlayProps>(
-  ({ footerHeight = '3.25rem', className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        `absolute inset-x-0 z-10 h-20 bg-gradient-to-t from-card to-transparent pointer-events-none`,
-        className,
-      )}
-      style={{ bottom: footerHeight }}
-      {...props}
-    />
-  ),
-);
-CardOverlay.displayName = 'CardOverlay';
-
 const CardOverflow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -170,13 +186,12 @@ CardOverflow.displayName = 'CardOverflow';
 
 export {
   Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
   CardContent,
-  CardTitleSkeleton,
+  CardDescription,
   CardDescriptionSkeleton,
+  CardFooter,
+  CardHeader,
   CardOverflow,
-  CardOverlay,
+  CardTitle,
+  CardTitleSkeleton,
 };
