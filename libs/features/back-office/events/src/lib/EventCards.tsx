@@ -15,7 +15,6 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardOverlay,
   CardTitle,
   useToast,
 } from '@ui/components';
@@ -144,7 +143,6 @@ function EventPassContent({
           </div>
         </div>
       </CardHeader>
-      <CardOverlay />
       <CardFooter>
         {!eventPass.eventPassPricing?.maxAmount ? (
           <p>No eventPassPricing for this eventPass</p>

@@ -12,7 +12,7 @@ export const AppNavLayoutDesktop: React.FC<AppNavLayoutDesktopProps> = ({
   menuNav,
 }) => {
   return (
-    <div className="sticky top-0 z-20 hidden w-full border-b bg-background md:flex">
+    <header className="sticky top-0 z-50 hidden w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:flex">
       <NavigationMenu className="flex-1 justify-start">
         <NavigationMenuList>
           <NavLink href="/" className="mx-4 my-2 min-w-[100px] p-0">
@@ -27,6 +27,6 @@ export const AppNavLayoutDesktop: React.FC<AppNavLayoutDesktopProps> = ({
           {profileNav}
         </NavigationMenuList>
       </NavigationMenu>
-    </div>
+    </header>
   );
 };

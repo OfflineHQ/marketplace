@@ -1,14 +1,15 @@
+import {
+  AppContainer,
+  AppContainerFooter,
+  AppContainerOverflow,
+} from '@features/app-nav';
 import { UserPassOrder } from '@features/cart-types';
 import { Link } from '@next/navigation';
 import {
   Alert,
   Button,
-  Card,
   CardContent,
-  CardFooter,
   CardHeader,
-  CardOverflow,
-  CardOverlay,
   CardTitle,
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
@@ -36,28 +37,25 @@ export const CartCancelled: FC<CartCancelledProps> = ({ passes }) => {
     return acc;
   }, {} as any);
   return (
-    <section className="container">
-      <Card variant="stickyFooter" noBorder>
-        <CardOverflow>
-          <CardHeader className="space-y-3">
-            <CardTitle className="text-3xl font-bold tracking-tighter text-warning md:text-3xl">
-              {t('title')}
-            </CardTitle>
-            <Alert variant="warning" className="max-w-[600px]">
-              {t('description')}
-            </Alert>
-          </CardHeader>
-          <CardContent>
-            <EventPassList allPasses={allPasses} noActions={true} />
-          </CardContent>
-        </CardOverflow>
-        <CardOverlay />
-        <CardFooter className="justify-center" variant="sticky">
-          <Link href="/" legacyBehavior>
-            <Button variant="secondary">{t('continue-shopping-button')}</Button>
-          </Link>
-        </CardFooter>
-      </Card>
-    </section>
+    <AppContainer>
+      <AppContainerOverflow variant="stickyFooter">
+        <CardHeader className="space-y-3">
+          <CardTitle className="text-3xl font-bold tracking-tighter text-warning md:text-3xl">
+            {t('title')}
+          </CardTitle>
+          <Alert variant="warning" className="max-w-[600px]">
+            {t('description')}
+          </Alert>
+        </CardHeader>
+        <CardContent>
+          <EventPassList allPasses={allPasses} noActions={true} />
+        </CardContent>
+      </AppContainerOverflow>
+      <AppContainerFooter>
+        <Link href="/" legacyBehavior>
+          <Button variant="secondary">{t('continue-shopping-button')}</Button>
+        </Link>
+      </AppContainerFooter>
+    </AppContainer>
   );
 };

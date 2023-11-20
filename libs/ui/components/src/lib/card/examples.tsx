@@ -2,6 +2,7 @@ import { BellRing, Check } from '@ui/icons';
 
 import { cn } from '@ui/shared';
 import { Button, ButtonSkeleton } from '../button/Button';
+import { Switch } from '../switch/Switch';
 import {
   Card,
   CardContent,
@@ -9,13 +10,10 @@ import {
   CardDescriptionSkeleton,
   CardFooter,
   CardHeader,
-  CardTitle,
   CardOverflow,
-  CardOverlay,
+  CardTitle,
   CardTitleSkeleton,
 } from './Card';
-import { Separator } from '../separator/Separator';
-import { Switch } from '../switch/Switch';
 
 import { Input } from '../input/Input';
 import { Label } from '../label/Label';
@@ -93,7 +91,6 @@ function CardNotifications(
           </div>
         </CardContent>
       </CardOverflow>
-      <CardOverlay />
       <CardFooter variant="sticky">
         <Button className="w-full" icon={<Check />}>
           Mark all as read

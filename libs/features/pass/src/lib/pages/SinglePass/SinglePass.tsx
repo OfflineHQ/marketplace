@@ -1,3 +1,8 @@
+import {
+  AppContainer,
+  AppContainerFooter,
+  AppContainerOverflow,
+} from '@features/app-nav';
 import { EventOrganizerButton, PassOptions } from '@features/organizer/event';
 import { EventPassNft } from '@features/pass-types';
 import { ConvertedCurrency } from '@next/currency';
@@ -8,14 +13,11 @@ import {
   AspectRatioSkeleton,
   Button,
   ButtonSkeleton,
-  Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardNavBack,
   CardNavBackSkeleton,
-  CardOverflow,
-  CardOverlay,
   Label,
   Separator,
   Text,
@@ -51,8 +53,8 @@ export const SinglePass: React.FC<SinglePassProps> = ({
     ? `/pass`
     : `/organizer/${eventPassNft?.eventPass?.event?.organizer?.slug}/event/${eventPassNft?.eventPass?.event?.slug}`;
   return (
-    <Card variant="stickyFooter" noBorder className="w-full">
-      <CardOverflow>
+    <AppContainer>
+      <AppContainerOverflow variant={isOwner ? 'stickyFooter' : 'default'}>
         <div
           style={
             {
@@ -94,7 +96,11 @@ export const SinglePass: React.FC<SinglePassProps> = ({
             </div>
           </CardHeader>
         </div>
-        <CardContent className="space-y-2 md:relative md:space-y-4">
+        <CardContent
+          className="space-y-2 md:relative md:space-y-4"
+          variant={isOwner ? 'stickyFooter' : 'default'}
+          isMain
+        >
           <div className="hidden flex-col space-y-4 pt-10 md:flex">
             <Text variant="h2">
               {t('title', {
@@ -132,27 +138,24 @@ export const SinglePass: React.FC<SinglePassProps> = ({
             passOptions={eventPassNft.eventPass?.passOptions || []}
           />
         </CardContent>
-      </CardOverflow>
+      </AppContainerOverflow>
       {isOwner ? (
-        <>
-          <CardOverlay />
-          <CardFooter className="justify-center" variant="sticky">
-            <Button
-              className={`w-full md:w-1/3`}
-              block
-              onClick={eventPassNft.isRevealed ? downloadPass : revealPass}
-              icon={eventPassNft.isRevealed ? <Download /> : <Reveal />}
-            >
-              {eventPassNft.isRevealed
-                ? t('download-button')
-                : t('reveal-button')}
-            </Button>
-            {/* Here can display if pass revealed or not */}
-            {/* In case user connected and is owner of the pass, put call to action button 'Reveal Pass' or 'Download Pass'/'Add to Google/Apple Wallet' */}
-          </CardFooter>
-        </>
+        <CardFooter className="justify-center" variant="sticky">
+          <Button
+            className={`w-full md:w-1/3`}
+            block
+            onClick={eventPassNft.isRevealed ? downloadPass : revealPass}
+            icon={eventPassNft.isRevealed ? <Download /> : <Reveal />}
+          >
+            {eventPassNft.isRevealed
+              ? t('download-button')
+              : t('reveal-button')}
+          </Button>
+          {/* Here can display if pass revealed or not */}
+          {/* In case user connected and is owner of the pass, put call to action button 'Reveal Pass' or 'Download Pass'/'Add to Google/Apple Wallet' */}
+        </CardFooter>
       ) : null}
-    </Card>
+    </AppContainer>
   );
 };
 
@@ -160,8 +163,8 @@ export const SinglePassSkeleton: React.FC<{ isOwner?: boolean }> = ({
   isOwner = false,
 }) => {
   return (
-    <Card variant="stickyFooter" noBorder className="w-full">
-      <CardOverflow>
+    <AppContainer>
+      <AppContainerOverflow variant={isOwner ? 'stickyFooter' : 'default'}>
         <CardNavBackSkeleton />
         <CardHeader>
           <div className="mx-auto mt-10 flex max-h-[380px] w-full max-w-[350px]">
@@ -176,12 +179,12 @@ export const SinglePassSkeleton: React.FC<{ isOwner?: boolean }> = ({
           <AlertSkeleton />
           <ButtonSkeleton />
         </CardContent>
-      </CardOverflow>
+      </AppContainerOverflow>
       {isOwner ? (
-        <CardFooter className="justify-center" variant="sticky">
+        <AppContainerFooter>
           <ButtonSkeleton />
-        </CardFooter>
+        </AppContainerFooter>
       ) : null}
-    </Card>
+    </AppContainer>
   );
 };

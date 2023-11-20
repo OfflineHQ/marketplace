@@ -189,7 +189,6 @@ export {
   CardFooter,
   CardHeader,
   CardOverflow,
-  CardOverlay,
   CardTitle,
   CardTitleSkeleton,
 } from './lib/card/Card';
@@ -198,3 +197,46 @@ export { Progress } from './lib/progress/Progress';
 export { Tooltip, TooltipWrapper } from './lib/tooltip/Tooltip';
 
 export { Tabs, TabsContent, TabsList, TabsTrigger } from './lib/tabs/Tabs';
+
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './lib/table/Table';
+
+export {
+  DataTableFacetedFilter,
+  type DataTableFacetedFilterProps,
+} from './lib/data-table/DataTableFacetedFilter';
+
+export {
+  DataTableColumnHeader,
+  type DataTableColumnHeaderProps,
+} from './lib/data-table/DataTableColumnHeader';
+
+export {
+  DataTablePagination,
+  type DataTablePaginationProps,
+} from './lib/data-table/DataTablePagination';
+
+export {
+  DataTableRowActions,
+  type DataTableRowActionsProps,
+} from './lib/data-table/DataTableRowActions';
+
+export {
+  DataTableToolbar,
+  type DataTableToolbarProps,
+} from './lib/data-table/DataTableToolbar';
+
+export {
+  DataTableViewOptions,
+  type DataTableViewOptionsProps,
+} from './lib/data-table/DataTableViewOptions';
+
+export { DataTable, type DataTableProps } from './lib/data-table/DataTable';

@@ -7,12 +7,11 @@ import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { Analytics } from '@web/components/Analytics';
 import { siteConfig } from '@web/config/site';
-import { Metadata } from 'next';
-import { createTranslator } from 'next-intl';
+import { Metadata, Viewport } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
-
+import { getTranslations } from 'next-intl/server';
 import { Currency_Enum_Not_Const } from '@currency/types';
 import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
 import { CurrencyCache } from '@next/currency-cache';
@@ -30,18 +29,14 @@ const fontHeading = localFont({
   variable: '--font-heading',
 });
 
-// export const viewport: Viewport = {
-//   themeColor: [
-//     { media: '(prefers-color-scheme: light)', color: 'white' },
-//     { media: '(prefers-color-scheme: dark)', color: 'black' },
-//   ],
-// };
-
-export const metadata: Metadata = {
+export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },
   ],
+};
+
+export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
@@ -100,7 +95,7 @@ export default async function RootLayout({
   if (!locales.includes(locale as any)) notFound();
   const messages = await getMessages(locale);
   const session = await getSession();
-  const t = createTranslator({ locale, messages });
+  const t = await getTranslations({ locale, namespace: 'Auth' });
   const currencyCache = new CurrencyCache();
   let rates;
   if (isLocal()) {
@@ -125,21 +120,21 @@ export default async function RootLayout({
             <AuthProvider
               messages={{
                 userClosedPopup: {
-                  title: t('Auth.user-closed-popup.title'),
-                  description: t('Auth.user-closed-popup.description'),
+                  title: t('user-closed-popup.title'),
+                  description: t('user-closed-popup.description'),
                 },
-                siweStatement: t('Auth.siwe-statement'),
+                siweStatement: t('siwe-statement'),
                 errorSigningInWithSiwe: {
-                  title: t('Auth.error-signing-in-with-siwe.title'),
-                  description: t('Auth.error-signing-in-with-siwe.description'),
+                  title: t('error-signing-in-with-siwe.title'),
+                  description: t('error-signing-in-with-siwe.description'),
                   tryAgainButton: t(
-                    'Auth.error-signing-in-with-siwe.try-again-button',
+                    'error-signing-in-with-siwe.try-again-button',
                   ),
                 },
                 siweDeclined: {
-                  title: t('Auth.siwe-declined.title'),
-                  description: t('Auth.siwe-declined.description'),
-                  tryAgainButton: t('Auth.siwe-declined.try-again-button'),
+                  title: t('siwe-declined.title'),
+                  description: t('siwe-declined.description'),
+                  tryAgainButton: t('siwe-declined.try-again-button'),
                 },
               }}
               session={session}

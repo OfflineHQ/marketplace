@@ -58,16 +58,18 @@ export const PassCard: React.FC<PassCardProps> = ({
         </div>
         <PassOptions passOptions={passOptions || []} />
       </CardHeader>
-      <CardFooter className="flex items-center justify-between">
-        <ConvertedCurrency
-          variant="h5"
-          currency={eventPassPricing?.priceCurrency}
-          amount={eventPassPricing?.priceAmount || 0}
-        />
-        {hasConfirmedPasses ? null : (
-          <PassCardSelect {...props} eventPassPricing={eventPassPricing} />
-        )}
-      </CardFooter>
+      {eventPassPricing ? (
+        <CardFooter className="flex items-center justify-between">
+          <ConvertedCurrency
+            variant="h5"
+            currency={eventPassPricing?.priceCurrency}
+            amount={eventPassPricing?.priceAmount || 0}
+          />
+          {hasConfirmedPasses ? null : (
+            <PassCardSelect {...props} eventPassPricing={eventPassPricing} />
+          )}
+        </CardFooter>
+      ) : null}
     </Card>
   );
 };

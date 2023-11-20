@@ -1,16 +1,27 @@
 import { EventCards, type EventCardsProps } from './EventCards';
+import {
+  NoEventsPlaceholder,
+  NoEventsPlaceholderProps,
+} from './molecules/NoEventsPlaceholder/NoEventsPlaceholder';
 
-interface OrganizerEventsProps extends Omit<EventCardsProps, 'events'> {
+interface OrganizerEventsProps
+  extends Omit<EventCardsProps, 'events'>,
+    NoEventsPlaceholderProps {
   events?: EventCardsProps['events'];
 }
 
 export async function OrganizerEvents({
   events,
   organizerId,
+  noEventsImage,
+  noEventsText,
 }: OrganizerEventsProps) {
   return events && events.length ? (
     <EventCards events={events} organizerId={organizerId} />
   ) : (
-    <p>No event at the moment for {organizerId}</p>
+    <NoEventsPlaceholder
+      noEventsImage={noEventsImage}
+      noEventsText={noEventsText}
+    />
   );
 }

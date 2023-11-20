@@ -2,6 +2,9 @@
   "pluginsConfig": {
     "@nx/js": {
       "analyzeSourceFiles": true
+    },
+    "@nx/rollup": {
+      "analyzeSourceFiles": true
     }
   },
   "tasksRunnerOptions": {

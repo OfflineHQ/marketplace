@@ -23,7 +23,7 @@ async function ConvertedCurrencyContent({
 }: ConvertedCurrencyProps) {
   const locale = useLocale();
   const rates = await currencyCache.getRates();
-  const formater = await getFormatter(locale);
+  const formater = await getFormatter({ locale });
   const convertedAmount = formatCurrency(
     formater,
     {

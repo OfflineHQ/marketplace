@@ -6,6 +6,9 @@ on:
       - staging
   workflow_dispatch:
 
+env:
+  NODE_OPTIONS: '--max_old_space_size=4096'
+
 jobs:
   deploy-staging:
     runs-on: ubuntu-latest
