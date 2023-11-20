@@ -19,9 +19,10 @@ AppContainer.displayName = 'AppContainer';
 const appContainerOverflowVariants = {
   default: 'pb-14 md:pb-0 ',
   stickyFooter: 'pb-24 md:pb-12',
+  stickyFooterLg: 'pb-40 md:pb-24',
 };
 
-const appContainerOverflowVariantsCva = cva('overflow-y-auto md:pt-14', {
+const appContainerOverflowVariantsCva = cva('h-full overflow-y-auto md:pt-14', {
   variants: {
     variant: appContainerOverflowVariants,
   },
