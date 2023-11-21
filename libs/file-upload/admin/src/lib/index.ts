@@ -2,6 +2,12 @@ import * as Upload from '@bytescale/sdk';
 import env from '@env/server';
 import retry from 'async-retry';
 
+export const enum FileCopyStatusEnum {
+  Copied = 'Copied',
+  FileNotFound = 'FileNotFound',
+  SkippedDueToCondition = 'SkippedDueToCondition',
+}
+
 export async function executeJobWithRetry(
   method: (params: any) => Promise<Upload.AsyncResponse>,
   params: any,

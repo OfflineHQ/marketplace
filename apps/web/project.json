@@ -131,6 +131,13 @@
       "options": {
         "command": "test-storybook -c apps/web/.storybook --url=http://localhost:4401"
       }
+    },
+    "e2e": {
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/web"],
+      "options": {
+        "config": "apps/web/playwright.config.ts"
+      }
     }
   },
   "tags": []

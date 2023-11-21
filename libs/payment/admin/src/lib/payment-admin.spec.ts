@@ -14,6 +14,18 @@ import { Payment } from './payment-admin';
 
 jest.mock('@nft/thirdweb-admin');
 jest.mock('@features/kyc-api');
+jest.mock('@next/currency-cache', () => {
+  return {
+    CurrencyCache: jest.fn().mockImplementation(() => {
+      return {
+        getRates: jest.fn().mockResolvedValue({
+          EUR: { USD: 1.18, EUR: 1 },
+          USD: { USD: 1, EUR: 0.85 },
+        }),
+      };
+    }),
+  };
+});
 
 describe('Payment', () => {
   let payment: Payment;
@@ -386,7 +398,6 @@ describe('Payment', () => {
       payment.moveEventPassPendingOrdersToConfirmed = jest
         .fn()
         .mockResolvedValue(eventPassOrders);
-
       await payment.createStripeCheckoutSession({
         user: accounts.alpha_user,
         stripeCustomer: stripeCustomer as StripeCustomer,
@@ -605,12 +616,13 @@ describe('Payment', () => {
     });
   });
   describe('confirmedStripeCheckoutSession', () => {
-    it('should call getEventPassOrdersFromStripeCheckoutSession, nftClaimable.claimAllMetadatas, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
+    it('should call getEventPassOrdersFromStripeCheckoutSession, nftClaimable.checkOrder, markEventPassOrderAsCompleted, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
       const stripeCheckoutSessionId = 'sessionId';
       const orders = [{ id: 'order1' }, { id: 'order2' }];
       payment.getEventPassOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue(orders);
+      payment.nftClaimable.checkOrder = jest.fn().mockResolvedValue({});
       adminSdk.DeleteStripeCheckoutSession = jest.fn().mockResolvedValue({});
 
       await payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId });
@@ -618,6 +630,15 @@ describe('Payment', () => {
       expect(
         payment.getEventPassOrdersFromStripeCheckoutSession,
       ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
+      expect(payment.nftClaimable.checkOrder).toHaveBeenCalledTimes(
+        orders.length,
+      );
+      orders.forEach((order, index) => {
+        expect(payment.nftClaimable.checkOrder).toHaveBeenNthCalledWith(
+          index + 1,
+          order,
+        );
+      });
       expect(adminSdk.DeleteStripeCheckoutSession).toHaveBeenCalledWith({
         stripeSessionId: stripeCheckoutSessionId,
       });
@@ -635,31 +656,21 @@ describe('Payment', () => {
       expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
 
-    it('should throw an error when checkOrder fails for one of the orders', async () => {
-      const orders = [
-        { id: 'order1', eventPassPricing: { priceAmount: 100 }, quantity: 2 },
-        { id: 'order2', eventPassPricing: { priceAmount: 150 }, quantity: 3 },
-      ];
-      payment.getEventPassOrdersFromStripeCheckoutSession = jest
-        .fn()
-        .mockResolvedValue(orders);
+    it('should throw an error when checkOrder fails', async () => {
       payment.nftClaimable.checkOrder = jest
         .fn()
-        .mockImplementation((order) => {
-          if (order.id === 'order2') {
-            throw new Error('Failed to claim NFTs');
-          }
-        });
+        .mockRejectedValue(new Error('Failed to claim NFTs'));
+      payment.getEventPassOrdersFromStripeCheckoutSession = jest
+        .fn()
+        .mockResolvedValue([{ id: 'order1' }, { id: 'order2' }]);
       adminSdk.DeleteStripeCheckoutSession = jest.fn();
 
       await expect(
         payment.confirmedStripeCheckoutSession({
           stripeCheckoutSessionId: 'test',
         }),
-      ).rejects.toThrow('Some orders failed for an amount of : 450');
-      expect(adminSdk.DeleteStripeCheckoutSession).toHaveBeenCalledWith({
-        stripeSessionId: 'test',
-      });
+      ).rejects.toThrow('Error claiming NFTs : Failed to claim NFTs');
+      expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
   });
   describe('refundPayment', () => {
