@@ -10,6 +10,7 @@ const customConfig = {
   displayName: 'web',
   preset: '../../jest.preset.js',
   coverageDirectory: '../../coverage/apps/web',
+  testPathIgnorePatterns: ['/node_modules/', '/playwright/'],
 };
 
 module.exports = createJestConfig(customConfig);

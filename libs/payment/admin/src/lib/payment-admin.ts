@@ -9,7 +9,7 @@ import {
   StripeCheckoutSessionType_Enum,
   type Locale,
 } from '@gql/shared/types';
-import { getRates } from '@next/currency-cache';
+import { CurrencyCache } from '@next/currency-cache';
 import { toUserCurrency } from '@next/currency-common';
 import { AppUser } from '@next/types';
 import { NftClaimable } from '@nft/thirdweb-admin';
@@ -187,6 +187,7 @@ export class Payment {
     locale: Locale;
     currency: string;
   }) {
+    const currencyCache = new CurrencyCache();
     const existingStripeCheckoutSession =
       await adminSdk.GetStripeCheckoutSessionForUser({
         stripeCustomerId: stripeCustomer.id,
@@ -214,7 +215,7 @@ export class Payment {
           .join(',')}`,
       );
 
-    const rates = await getRates();
+    const rates = await currencyCache.getRates();
 
     const lineItemsPromises = orders.map(async (order) => {
       if (
@@ -423,28 +424,23 @@ export class Payment {
       stripeCheckoutSessionId,
     });
 
-    let totalAmount = 0;
-
-    const checkOrderPromises = orders.map(async (order) => {
-      try {
+    try {
+      const checkOrderPromises = orders.map(async (order) => {
         await this.nftClaimable.checkOrder(order);
-        fetch(`${getNextAppURL()}/api/order/claim/${order.id}`);
-      } catch (error) {
-        if (order.eventPassPricing?.priceAmount) {
-          totalAmount += order.eventPassPricing.priceAmount * order.quantity;
-        }
-      }
-    });
-
-    await Promise.allSettled(checkOrderPromises);
+        return order;
+      });
+      const checkedOrders = await Promise.all(checkOrderPromises);
+      const fetchPromises = checkedOrders.map((order) =>
+        fetch(`${getNextAppURL()}/api/order/claim/${order.id}`),
+      );
+      Promise.all(fetchPromises);
+    } catch (error) {
+      throw new Error(`Error claiming NFTs : ${error.message}`);
+    }
 
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
     });
-
-    if (totalAmount !== 0) {
-      throw new Error(`Some orders failed for an amount of : ${totalAmount}`);
-    }
   }
 
   async refundPartialPayment({
