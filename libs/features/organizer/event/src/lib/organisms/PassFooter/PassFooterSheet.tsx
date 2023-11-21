@@ -1,7 +1,13 @@
 import { getEventPassesCart } from '@features/organizer/event-api';
 import { Link } from '@next/navigation';
 import { PropsFrom } from '@next/types';
-import { AutoAnimate, Button, SheetFooter, SheetOverlay } from '@ui/components';
+import {
+  AutoAnimate,
+  Button,
+  ButtonSkeleton,
+  SheetFooter,
+  SheetOverlay,
+} from '@ui/components';
 import { Cart } from '@ui/icons';
 import React, { Suspense } from 'react';
 import { PassTotal } from '../../molecules/PassTotal/PassTotal';
@@ -15,19 +21,15 @@ export interface PassFooterSheetProps {
   goPaymentLink: PropsFrom<typeof Link>;
 }
 
-export const PassFooterSheetClient: React.FC<PassFooterSheetProps> = (
-  props,
-) => {
+export const PassFooterSheet: React.FC<PassFooterSheetProps> = (props) => {
   return (
-    <Suspense>
-      <PassFooterSheetClientContent {...props} />
+    <Suspense fallback={<ButtonSkeleton className="w-full md:w-1/6" />}>
+      <PassFooterSheetContent {...props} />
     </Suspense>
   );
 };
 
-export const PassFooterSheetClientContent: React.FC<
-  PassFooterSheetProps
-> = async ({
+export const PassFooterSheetContent: React.FC<PassFooterSheetProps> = async ({
   passes: passesData,
   organizerSlug,
   eventSlug,

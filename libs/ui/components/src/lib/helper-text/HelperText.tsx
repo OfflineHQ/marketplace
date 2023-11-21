@@ -1,6 +1,6 @@
-import * as React from 'react';
 import { cn } from '@ui/shared';
 import { cva, VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 import { statusTextColorVariants } from '../shared/statusVariant';
 
 const helperTextVariants = statusTextColorVariants;
@@ -16,6 +16,7 @@ const helperTextCva = cva('text-sm opacity-80 peer-disabled:opacity-50', {
 
 export interface HelperTextProps extends VariantProps<typeof helperTextCva> {
   children?: React.ReactNode;
+  message?: string | string[];
   id?: string;
   className?: string;
   htmlFor?: string;
@@ -25,19 +26,28 @@ export interface HelperTextProps extends VariantProps<typeof helperTextCva> {
 const HelperText: React.FC<HelperTextProps> = ({
   variant = 'default',
   children,
+  message,
   id,
   className,
   disabled,
   ...props
 }) => {
   const helperTextClasses = cn(helperTextCva({ variant, className }));
+
+  const renderMessage = () => {
+    if (Array.isArray(message)) {
+      return message.map((msg, index) => <p key={index}>{msg}</p>);
+    }
+    return <p>{message}</p>;
+  };
   return (
     <>
       <input className="peer hidden" disabled={disabled} aria-hidden="true" />
-      {children ? (
-        <p className={helperTextClasses} id={id} {...props}>
+      {children || message ? (
+        <div className={helperTextClasses} id={id} {...props}>
           {children}
-        </p>
+          {message && renderMessage()}
+        </div>
       ) : null}
     </>
   );

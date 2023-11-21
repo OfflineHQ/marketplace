@@ -244,6 +244,55 @@
     }
   },
   "OrganizerEvents": {
-    "no-events": "You don't have any event yet"
+    "no-events": "You don't have any event yet",
+    "Table": {
+      "header-title": "Title",
+      "header-slug": "Slug",
+      "header-date-start": "Start Date",
+      "header-edit": "Edit",
+      "title": "Events Management",
+      "search-placeholder": "Filter events..."
+    },
+    "Sheet": {
+      "EventPassCard": {
+        "EventPassNftsInfos": {
+          "title": "NFTs Informations",
+          "name": "Name",
+          "description": "Description",
+          "max-amount": "Amount",
+          "max-amount-per-user": "Amount per user",
+          "price": "Price",
+          "no-event-pass-pricing": "No pricing and amount defined for this pass",
+          "image": "Image"
+        },
+        "EventPassNftFiles": {
+          "title": "Pass associated to your NFTs"
+        }
+      },
+      "go-back-to-events": "Go back to events"
+    }
+  },
+  "UI": {
+    "Table": {
+      "no-results": "No results.",
+      "column-header-asc": "Sort ascending",
+      "column-header-desc": "Sort descending",
+      "column-header-hide": "Hide column",
+      "pagination-row-of": "of",
+      "pagination-row-selected": "selected",
+      "pagination-rows-per-page": "Rows par page",
+      "pagination-page": "Page",
+      "pagination-first-page": "First page",
+      "pagination-previous-page": "Previous page",
+      "pagination-next-page": "Next page",
+      "pagination-page-of": "of",
+      "pagination-last-page": "Last page",
+      "filters-reset": "Reset",
+      "filters-value-selected": "value(s) selected",
+      "filters-no-result-found": "no result found",
+      "filters-clear-filters": "clear filters",
+      "toggle-columns-view": "View",
+      "toggle-columns-toggle-columns": "Toggle columns"
+    }
   }
 }

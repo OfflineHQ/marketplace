@@ -48,11 +48,7 @@ function CardNotifications(
   { className, ...props }: CardProps,
 ) {
   return (
-    <Card
-      className={cn('w-full md:w-[380px]', className)}
-      variant="stickyFooter"
-      {...props}
-    >
+    <Card className={cn('w-full md:w-[380px]', className)} {...props}>
       <CardHeader>
         <CardTitle>Notifications</CardTitle>
         <CardDescription>You have 3 unread messages.</CardDescription>
@@ -91,7 +87,7 @@ function CardNotifications(
           </div>
         </CardContent>
       </CardOverflow>
-      <CardFooter variant="sticky">
+      <CardFooter>
         <Button className="w-full" icon={<Check />}>
           Mark all as read
         </Button>

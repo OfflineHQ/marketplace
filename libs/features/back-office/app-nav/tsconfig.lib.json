@@ -12,6 +12,7 @@
   },
   "exclude": [
     "jest.config.ts",
+    "src/stories.tsx",
     "src/**/examples.tsx",
     "src/**/*.stories.tsx",
     "src/**/*.spec.ts",

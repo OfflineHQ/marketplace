@@ -1,12 +1,15 @@
 // PassPurchase.tsx
-import { AppContainerOverflow } from '@features/app-nav';
+import {
+  AppContainerNavBack,
+  AppContainerNavBackProps,
+  AppContainerOverflow,
+} from '@features/app-nav';
 import { Link } from '@next/navigation';
 import { PropsFrom } from '@next/types';
 import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardNavBack,
   CardTitle,
 } from '@ui/components';
 import React from 'react';
@@ -16,7 +19,7 @@ import { PassList, PassListProps } from '../../organisms/PassList/PassList';
 
 export interface PassPurchaseCardProps extends PassListProps {
   backButtonText: string;
-  backButtonLink: PropsFrom<typeof Link>;
+  backButtonLink: AppContainerNavBackProps['href'];
   goPaymentText: string;
   goPaymentLink: PropsFrom<typeof Link>;
   title: string;
@@ -36,9 +39,9 @@ export const PassPurchaseCard: React.FC<PassPurchaseCardProps> = ({
 }) => {
   return (
     <>
-      <CardNavBack text={backButtonText} href={backButtonLink} />
+      <AppContainerNavBack text={backButtonText} href={backButtonLink} />
       <AppContainerOverflow variant="stickyFooterLg">
-        <CardHeader>
+        <CardHeader className="mt-8">
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>

@@ -459,31 +459,49 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${EventDateLocationsFieldsFragmentDoc}`;
- const GetEventsFromOrganizerIdDocument = `
-    query GetEventsFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
+ const GetEventsFromOrganizerIdTableDocument = `
+    query GetEventsFromOrganizerIdTable($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {id: $id}, locales: [$locale, en], stage: $stage) {
     events {
       title
-      id
       slug
-      heroImage {
+      eventParameters {
+        dateStart
+        dateEnd
+        dateSaleStart
+        dateSaleEnd
+        timezone
+      }
+    }
+  }
+}
+    `;
+ const GetEventWithPassesOrganizerDocument = `
+    query GetEventWithPassesOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
+  event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
+    title
+    id
+    slug
+    heroImage {
+      url
+    }
+    eventPasses {
+      name
+      id
+      description
+      nftName
+      nftImage {
         url
       }
-      eventPasses {
-        name
-        id
-        description
-        nftName
-        nftImage {
-          url
-        }
-        nftDescription
-        eventPassPricing {
-          maxAmount
-        }
-        eventPassNftContract {
-          contractAddress
-        }
+      nftDescription
+      eventPassPricing {
+        maxAmount
+        maxAmountPerUser
+        priceAmount
+        priceCurrency
+      }
+      eventPassNftContract {
+        contractAddress
       }
     }
   }
@@ -818,8 +836,11 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
       return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;
     },
-    GetEventsFromOrganizerId(variables: Types.GetEventsFromOrganizerIdQueryVariables, options?: C): Promise<Types.GetEventsFromOrganizerIdQuery> {
-      return requester<Types.GetEventsFromOrganizerIdQuery, Types.GetEventsFromOrganizerIdQueryVariables>(GetEventsFromOrganizerIdDocument, variables, options) as Promise<Types.GetEventsFromOrganizerIdQuery>;
+    GetEventsFromOrganizerIdTable(variables: Types.GetEventsFromOrganizerIdTableQueryVariables, options?: C): Promise<Types.GetEventsFromOrganizerIdTableQuery> {
+      return requester<Types.GetEventsFromOrganizerIdTableQuery, Types.GetEventsFromOrganizerIdTableQueryVariables>(GetEventsFromOrganizerIdTableDocument, variables, options) as Promise<Types.GetEventsFromOrganizerIdTableQuery>;
+    },
+    GetEventWithPassesOrganizer(variables: Types.GetEventWithPassesOrganizerQueryVariables, options?: C): Promise<Types.GetEventWithPassesOrganizerQuery> {
+      return requester<Types.GetEventWithPassesOrganizerQuery, Types.GetEventWithPassesOrganizerQueryVariables>(GetEventWithPassesOrganizerDocument, variables, options) as Promise<Types.GetEventWithPassesOrganizerQuery>;
     },
     GetEventPasses(variables: Types.GetEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassesQuery> {
       return requester<Types.GetEventPassesQuery, Types.GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<Types.GetEventPassesQuery>;

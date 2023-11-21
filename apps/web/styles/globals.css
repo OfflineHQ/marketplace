@@ -10,6 +10,8 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
+    --highlight: 215 40% 86.1%;
+
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 47.4% 11.2%;
 
@@ -58,6 +60,8 @@
 
     --muted: 223 47% 11%;
     --muted-foreground: 215.4 16.3% 56.9%;
+
+    --highlight: 223 47% 15%;
 
     --accent: 216 34% 17%;
     --accent-foreground: 210 40% 98%;
@@ -114,23 +118,23 @@
       'rlig' 1,
       'calt' 1;
   }
-  h1 {
-    @apply text-4xl font-bold;
+  /* h1 {
+    @apply text-4xl font-extrabold tracking-tight lg:text-5xl;
   }
   h2 {
-    @apply text-3xl font-bold;
+    @apply text-3xl font-semibold tracking-tight;
   }
   h3 {
-    @apply text-2xl font-bold;
+    @apply text-2xl font-semibold tracking-tight;
   }
   h4 {
-    @apply text-xl font-bold;
+    @apply text-xl font-semibold tracking-tight;
   }
   h5 {
-    @apply text-lg font-bold;
+    @apply text-lg font-medium;
   }
   h6 {
-    @apply text-base font-bold;
+    @apply text-base font-medium;
   }
   p {
     @apply text-base;
@@ -150,12 +154,9 @@
     @apply underline;
     @apply text-primary;
   }
-  span {
-    /* @apply text-base; */
-  }
   small {
     @apply text-sm;
-  }
+  } */
 }
 
 @layer utilities {

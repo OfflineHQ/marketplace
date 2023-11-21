@@ -1,0 +1,29 @@
+{
+  "name": "next-i18n-ui",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/next/i18n-ui/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/next/i18n-ui",
+        "main": "libs/next/i18n-ui/src/index.ts",
+        "tsConfig": "libs/next/i18n-ui/tsconfig.lib.json",
+        "assets": ["libs/next/i18n-ui/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/next/i18n-ui/**/*.ts",
+          "libs/next/i18n-ui/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
