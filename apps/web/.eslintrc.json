@@ -24,7 +24,7 @@
       "rules": {}
     },
     {
-      "files": ["e2e/**/*.{ts,js,tsx,jsx}"],
+      "files": ["playwright/**/*.{ts,js,tsx,jsx}"],
       "rules": {}
     }
   ],
