@@ -192,7 +192,6 @@ export {
   CardTitle,
   CardTitleSkeleton,
 } from './lib/card/Card';
-export { CardNavBack, CardNavBackSkeleton } from './lib/card/CardNavBack';
 export { Progress } from './lib/progress/Progress';
 export { Tooltip, TooltipWrapper } from './lib/tooltip/Tooltip';
 

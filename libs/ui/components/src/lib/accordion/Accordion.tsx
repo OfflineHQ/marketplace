@@ -1,20 +1,20 @@
 'use client';
 
-import * as React from 'react';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
-import { cn } from '@ui/shared';
-import { cva, VariantProps } from 'class-variance-authority';
 import { ChevronDown } from '@ui/icons';
+import { cn } from '@ui/shared';
+import * as React from 'react';
 
 const Accordion = AccordionPrimitive.Root;
 
 const AccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => (
+>(({ className, disabled, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn('border-b', className)}
+    className={cn('border-b', disabled ? 'opacity-30' : '', className)}
+    disabled={disabled}
     {...props}
   />
 ));
@@ -28,7 +28,7 @@ const AccordionTrigger = React.forwardRef<
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        'flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180',
+        'flex flex-1 items-center justify-between py-4 font-medium transition-all [&:not([data-disabled])]:hover:underline [&[data-state=open]>svg]:rotate-180',
         className,
       )}
       {...props}
@@ -47,14 +47,15 @@ const AccordionContent = React.forwardRef<
   <AccordionPrimitive.Content
     ref={ref}
     className={cn(
-      'overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down pb-4 pt-0',
+      (className =
+        'overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down'),
       className,
     )}
     {...props}
   >
-    {children}
+    <div className={cn('pb-4 pt-0', className)}>{children}</div>
   </AccordionPrimitive.Content>
 ));
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };

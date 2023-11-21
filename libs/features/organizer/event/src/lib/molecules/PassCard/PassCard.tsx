@@ -41,7 +41,10 @@ export const PassCard: React.FC<PassCardProps> = ({
 }) => {
   const t = useTranslations('Organizer.Event.PassPurchase.Pass');
   return (
-    <Card className={`flex h-fit flex-col justify-between ${className}`}>
+    <Card
+      className={`flex h-fit flex-col justify-between ${className}`}
+      variant="distinct"
+    >
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>{description}</CardDescription>

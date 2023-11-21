@@ -125,7 +125,6 @@ export const DataTableWithToolbarToggleColumns: Story = {
     ...DataTableWithToolbarFilters.args,
     toolbarProps: {
       ...DataTableWithToolbarFilters.args.toolbarProps,
-      showToggleColumns: true,
       toggleColumnsText: {
         view: 'View',
         toggleColumns: 'Toggle columns',

@@ -50,6 +50,7 @@ declare module '@env/server' {
     TZ: string;
     UPLOAD_ACCOUNT_ID: string;
     UPLOAD_SECRET_API_KEY: string;
+    UPLOAD_SECRET_JWT: string;
     UPLOAD_PATH_PREFIX: string;
     UPLOAD_PUBLIC_API_KEY: string;
     FIXER_CURRENCY_API_KEY: string;

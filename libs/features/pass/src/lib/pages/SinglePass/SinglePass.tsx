@@ -1,6 +1,8 @@
 import {
   AppContainer,
   AppContainerFooter,
+  AppContainerNavBack,
+  AppContainerNavBackSkeleton,
   AppContainerOverflow,
 } from '@features/app-nav';
 import { EventOrganizerButton, PassOptions } from '@features/organizer/event';
@@ -14,10 +16,7 @@ import {
   Button,
   ButtonSkeleton,
   CardContent,
-  CardFooter,
   CardHeader,
-  CardNavBack,
-  CardNavBackSkeleton,
   Label,
   Separator,
   Text,
@@ -54,6 +53,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
     : `/organizer/${eventPassNft?.eventPass?.event?.organizer?.slug}/event/${eventPassNft?.eventPass?.event?.slug}`;
   return (
     <AppContainer>
+      <AppContainerNavBack text={backText} href={{ href: backRoute }} />
       <AppContainerOverflow variant={isOwner ? 'stickyFooter' : 'default'}>
         <div
           style={
@@ -64,13 +64,6 @@ export const SinglePass: React.FC<SinglePassProps> = ({
           // eslint-disable-next-line tailwindcss/no-custom-classname
           className="flex-col bg-overlay-background md:max-h-[400px]"
         >
-          <div className="absolute z-10 mt-3 pl-3">
-            <CardNavBack
-              text={backText}
-              variant="secondary"
-              href={{ href: backRoute }}
-            />
-          </div>
           <CardHeader>
             <div className="mx-auto mt-10 flex max-h-[380px] w-full max-w-[350px]">
               <AspectRatio variant="square">
@@ -96,11 +89,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
             </div>
           </CardHeader>
         </div>
-        <CardContent
-          className="space-y-2 md:relative md:space-y-4"
-          variant={isOwner ? 'stickyFooter' : 'default'}
-          isMain
-        >
+        <CardContent className="space-y-2 md:relative md:space-y-4" isMain>
           <div className="hidden flex-col space-y-4 pt-10 md:flex">
             <Text variant="h2">
               {t('title', {
@@ -140,7 +129,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
         </CardContent>
       </AppContainerOverflow>
       {isOwner ? (
-        <CardFooter className="justify-center" variant="sticky">
+        <AppContainerFooter className="justify-center">
           <Button
             className={`w-full md:w-1/3`}
             block
@@ -153,7 +142,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
           </Button>
           {/* Here can display if pass revealed or not */}
           {/* In case user connected and is owner of the pass, put call to action button 'Reveal Pass' or 'Download Pass'/'Add to Google/Apple Wallet' */}
-        </CardFooter>
+        </AppContainerFooter>
       ) : null}
     </AppContainer>
   );
@@ -165,7 +154,7 @@ export const SinglePassSkeleton: React.FC<{ isOwner?: boolean }> = ({
   return (
     <AppContainer>
       <AppContainerOverflow variant={isOwner ? 'stickyFooter' : 'default'}>
-        <CardNavBackSkeleton />
+        <AppContainerNavBackSkeleton />
         <CardHeader>
           <div className="mx-auto mt-10 flex max-h-[380px] w-full max-w-[350px]">
             <AspectRatioSkeleton variant="square" className="mx-auto my-2" />

@@ -17,6 +17,7 @@ import {
 
 export interface DataTablePaginationProps<TData> {
   table: Table<TData>;
+  enableRowSelection?: boolean;
   controlText: {
     rowOf: string;
     rowSelected: string;
@@ -33,13 +34,16 @@ export interface DataTablePaginationProps<TData> {
 export function DataTablePagination<TData>({
   table,
   controlText,
+  enableRowSelection = false,
 }: DataTablePaginationProps<TData>) {
   return (
     <div className="flex items-center justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} {controlText.rowOf}{' '}
-        {table.getFilteredRowModel().rows.length} {controlText.rowSelected}
-      </div>
+      {enableRowSelection && (
+        <div className="flex-1 text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} {controlText.rowOf}{' '}
+          {table.getFilteredRowModel().rows.length} {controlText.rowSelected}
+        </div>
+      )}
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">{controlText.rowsPerPage}</p>

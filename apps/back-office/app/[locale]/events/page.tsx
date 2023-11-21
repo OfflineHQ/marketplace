@@ -1,12 +1,18 @@
-import { OrganizerEvents } from '@features/back-office/events';
-import { getEventsFromOrganizerId } from '@features/back-office/events-api';
+import { EventsPage } from '@features/back-office/events';
+import { getEventsFromOrganizerIdTable } from '@features/back-office/events-api';
+import { Locale } from '@gql/shared/types';
+import {
+  getTableHeaderControlText,
+  getTableNoResultText,
+  getTablePaginationControlText,
+  getTableToggleColumnsControlText,
+} from '@next/i18n-ui';
 import { getCurrentUser } from '@next/next-auth/user';
-import { UploaderProvider } from '@next/uploader-provider';
 import { getTranslations } from 'next-intl/server';
 
 interface EventsProps {
   params: {
-    locale: string;
+    locale: Locale;
   };
 }
 
@@ -15,19 +21,35 @@ export default async function Events({ params: { locale } }: EventsProps) {
   if (!user) return;
   const organizerId = user.role?.organizerId || '';
   if (!organizerId) return;
-  const events = await getEventsFromOrganizerId({
+  const events = await getEventsFromOrganizerIdTable({
     id: organizerId as string,
     locale,
   });
-  const t = await getTranslations({ locale, namespace: 'OrganizerEvents' });
+  const headerControlText = await getTableHeaderControlText(locale);
+  const noResultsText = await getTableNoResultText(locale);
+  const paginationPropsText = await getTablePaginationControlText(locale);
+  const paginationProps = {
+    controlText: paginationPropsText,
+  };
+  const t = await getTranslations({
+    locale,
+    namespace: 'OrganizerEvents.Table',
+  });
+  const toggleColumnsText = await getTableToggleColumnsControlText(locale);
+  const toolbarProps = {
+    searchProps: {
+      filterKey: 'title',
+      placeholder: t('search-placeholder'),
+    },
+    toggleColumnsText,
+  };
   return (
-    <UploaderProvider>
-      <OrganizerEvents
-        events={events}
-        organizerId={organizerId}
-        noEventsImage="/empty-pass.svg"
-        noEventsText={t('no-events')}
-      />
-    </UploaderProvider>
+    <EventsPage
+      events={events || []}
+      toolbarProps={toolbarProps}
+      noResultsText={noResultsText}
+      paginationProps={paginationProps}
+      headerControlText={headerControlText}
+    />
   );
 }

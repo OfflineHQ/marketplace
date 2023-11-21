@@ -7,8 +7,8 @@ import { TextSkeleton } from '../text/Text';
 const variants = {
   default: 'border shadow-sm',
   noBorder: '',
-  stickyFooter: 'relative border shadow-sm flex flex-col pb-24 md:pt-8 md:pb-8',
   distinct: 'border shadow-md bg-muted rounded-sm text-card-muted-foreground',
+  insideDistinct: 'border shadow-xs bg-muted rounded-sm',
 };
 
 const cardVariantsCva = cva(
@@ -47,13 +47,28 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 );
 Card.displayName = 'Card';
 
+const headerVariants = {
+  default: '',
+  distinct: 'bg-highlight',
+};
+
+const cardHeaderVariantsCva = cva('flex flex-col space-y-1.5 p-6', {
+  variants: {
+    variant: headerVariants,
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
 const CardHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> &
+    VariantProps<typeof cardHeaderVariantsCva>
+>(({ className, variant, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex flex-col space-y-1.5 p-6', className)}
+    className={cn(cardHeaderVariantsCva({ variant }), className)}
     {...props}
   />
 ));
@@ -105,7 +120,6 @@ CardDescriptionSkeleton.displayName = 'CardDescriptionSkeleton';
 
 const contentVariants = {
   default: 'p-6 pt-0 flex-grow',
-  stickyFooter: 'p-6 pt-0 flex-grow mb-16 md:mb-16',
 };
 
 const cardContentVariantsCva = cva('', {
@@ -119,13 +133,6 @@ const cardContentVariantsCva = cva('', {
     variant: 'default',
     isMain: false,
   },
-  compoundVariants: [
-    {
-      variant: 'stickyFooter',
-      isMain: true,
-      class: 'mb-24 md:mb-16',
-    },
-  ],
 });
 
 export interface CardContentProps
@@ -145,8 +152,6 @@ CardContent.displayName = 'CardContent';
 
 const footerVariants = {
   default: 'p-6 pt-0 relative',
-  sticky:
-    'mt-auto absolute bottom-16 md:bottom-0 md:pb-2 mb-0 min-w-[100%] pt-2 px-6 pb-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
 };
 
 const cardFooterVariantsCva = cva('flex items-center', {
