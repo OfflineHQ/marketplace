@@ -618,7 +618,6 @@ describe('Payment', () => {
         .fn()
         .mockResolvedValue(orders);
       payment.nftClaimable.checkOrder = jest.fn().mockResolvedValue({});
-      payment.markEventPassOrderAsCompleted = jest.fn().mockResolvedValue({});
       adminSdk.DeleteStripeCheckoutSession = jest.fn().mockResolvedValue({});
 
       await payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId });

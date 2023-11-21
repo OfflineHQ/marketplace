@@ -1,6 +1,7 @@
 'use server';
 
 import env from '@env/server';
+import { nextAuthCookieName } from '@next/next-auth/common';
 import * as jsonwebtoken from 'jsonwebtoken';
 import type { JWT } from 'next-auth/jwt';
 import { getToken } from 'next-auth/jwt';
