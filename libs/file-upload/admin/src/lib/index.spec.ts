@@ -1,6 +1,7 @@
 import * as Upload from '@bytescale/sdk';
 import retry from 'async-retry';
 import {
+  FileCopyStatusEnum,
   FileWrapper,
   FolderWrapper,
   JobWrapper,
@@ -59,7 +60,9 @@ jest.mock('@bytescale/sdk', () => ({
       size: 43182,
       tags: ['example_tag'],
     }),
-    copyFile: jest.fn().mockResolvedValue({ status: 'Copied' }),
+    copyFile: jest
+      .fn()
+      .mockResolvedValue({ status: FileCopyStatusEnum.Copied }),
     copyFileBatch: jest.fn().mockResolvedValue({ jobId: 'mock-job-id' }),
     deleteFile: jest.fn().mockResolvedValue(undefined),
     deleteFileBatch: jest.fn().mockResolvedValue({
@@ -263,7 +266,7 @@ describe('FileWrapper', () => {
     const result: Upload.CopyFileResponse =
       await fileWrapper.copyFile(mockCopyFileOptions);
 
-    expect(result.status).toEqual('Copied');
+    expect(result.status).toEqual(FileCopyStatusEnum.Copied);
   });
 
   it('should copy multiple files in a batch operation', async () => {

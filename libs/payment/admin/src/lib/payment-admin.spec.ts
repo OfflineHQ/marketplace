@@ -14,12 +14,6 @@ import { Payment } from './payment-admin';
 
 jest.mock('@nft/thirdweb-admin');
 jest.mock('@features/kyc-api');
-jest.mock('@next/currency-cache', () => ({
-  getRates: jest.fn().mockResolvedValue({
-    EUR: { USD: 1.18, EUR: 1 },
-    USD: { USD: 1, EUR: 0.85 },
-  }),
-}));
 
 describe('Payment', () => {
   let payment: Payment;
