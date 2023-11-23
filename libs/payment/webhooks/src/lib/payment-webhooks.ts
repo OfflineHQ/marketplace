@@ -83,7 +83,6 @@ export async function stripeCheckoutStatus(
             `ConfirmedStripeCheckoutSession Error: ${err.message}`,
             { status: 500 },
           );
-        }
 
         //TODO: notify user and refund order because NFT not released.
         try {

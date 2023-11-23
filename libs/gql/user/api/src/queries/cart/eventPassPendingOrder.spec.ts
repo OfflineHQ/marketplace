@@ -8,6 +8,7 @@ import {
   deleteTables,
   seedDb,
   type PgClient,
+  deleteAllTables,
 } from '@test-utils/db';
 import { alphaUserClient, betaUserClient } from '@test-utils/gql';
 
@@ -34,11 +35,7 @@ describe('tests for eventPassPendingOrder user', () => {
 
   beforeAll(async () => {
     client = await createDbClient();
-    await deleteTables(client, [
-      'account',
-      'eventPassPendingOrder',
-      'eventPassPricing',
-    ]);
+    await deleteAllTables(client);
     await applySeeds(client, ['account', 'eventPassPricing']);
   });
   afterAll(async () => {
