@@ -719,4 +719,98 @@ describe('Payment', () => {
       );
     });
   });
+
+  describe('calculateUnitAmount', () => {
+    it('should return calculated amount if currency is not the same as priceCurrency and currency has a lower rate', () => {
+      const order = {
+        eventPassPricing: {
+          priceAmount: 100,
+          priceCurrency: 'USD',
+        },
+      };
+      const rates = {
+        USD: {
+          USD: 1,
+          EUR: 0.85,
+        },
+        EUR: {
+          USD: 1.15,
+          EUR: 1,
+        },
+      };
+
+      const result = payment.calculateUnitAmount(order, rates);
+
+      expect(result).toEqual(85);
+    });
+  });
+
+  it('should return calculated amount if currency is not the same as priceCurrency and currency has a higher rate', () => {
+    const order = {
+      eventPassPricing: {
+        priceAmount: 100,
+        priceCurrency: 'USD',
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 1.15,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 0.85,
+      },
+    };
+
+    const result = payment.calculateUnitAmount(order, rates);
+
+    expect(result).toEqual(115);
+  });
+
+  it('should return calculated amount if currency is not the same complex amount', () => {
+    const order = {
+      eventPassPricing: {
+        priceAmount: 123456,
+        priceCurrency: 'USD',
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 0.85,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 1.15,
+      },
+    };
+
+    const result = payment.calculateUnitAmount(order, rates);
+
+    expect(result).toEqual(104938);
+  });
+
+  it('should return calculated amount if currency is not the same complex amount complex rate', () => {
+    const order = {
+      eventPassPricing: {
+        priceAmount: 123456789,
+        priceCurrency: 'USD',
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 0.798,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 1.15,
+      },
+    };
+
+    const result = payment.calculateUnitAmount(order, rates);
+
+    expect(result).toEqual(98518518);
+  });
 });
