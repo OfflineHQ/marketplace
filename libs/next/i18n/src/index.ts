@@ -1,3 +1,4 @@
+import { getNextAppURL } from '@shared/server';
 import { notFound } from 'next/navigation';
 import { default as en } from './messages/en.json';
 import { default as fr } from './messages/fr.json';
@@ -14,6 +15,14 @@ async function getMessages(locale: string) {
   } catch (error) {
     notFound();
   }
+}
+
+export function getLocalizedUrls(url: string) {
+  const urls: Record<Locale, string> = {
+    en: `${getNextAppURL()}/en/${url}`,
+    fr: `${getNextAppURL()}/fr/${url}`,
+  };
+  return urls;
 }
 
 export { defaultLocale, getMessages, locales, messages };
