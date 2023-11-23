@@ -5,10 +5,10 @@ import type {
 import {
   applySeeds,
   createDbClient,
+  deleteAllTables,
   deleteTables,
   seedDb,
   type PgClient,
-  deleteAllTables,
 } from '@test-utils/db';
 import { alphaUserClient, betaUserClient } from '@test-utils/gql';
 

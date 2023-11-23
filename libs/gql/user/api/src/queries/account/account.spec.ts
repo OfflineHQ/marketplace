@@ -1,6 +1,5 @@
 import {
   createDbClient,
-  deleteAllTables,
   deleteTables,
   seedDb,
   type PgClient,
@@ -19,7 +18,6 @@ describe('user access security tests', () => {
 
   beforeAll(async () => {
     client = await createDbClient();
-    await deleteAllTables(client);
   });
 
   afterAll(async () => {
