@@ -23,9 +23,8 @@ function generateLocaleURLs(
   const urls = {};
 
   locales.forEach((locale) => {
-    urls[
-      locale
-    ] = `${getNextAppURL()}/${locale}/organizer/${organizerSlug}/event/${eventSlug}`;
+    urls[locale] =
+      `${getNextAppURL()}/${locale}/organizer/${organizerSlug}/event/${eventSlug}`;
   });
 
   return urls;
