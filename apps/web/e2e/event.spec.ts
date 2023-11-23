@@ -29,7 +29,7 @@ test.beforeEach(async () => {
 test.setTimeout(120000);
 
 test.use({
-  storageState: 'apps/web/playwright/utils/alpha_user.json',
+  storageState: 'apps/web/e2e/utils/alpha_user.json',
 });
 
 test('user should be able to buy a pass', async ({ page }) => {
