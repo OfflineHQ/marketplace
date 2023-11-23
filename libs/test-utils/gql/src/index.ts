@@ -13,7 +13,6 @@ import { getSdk as userSdk, type Sdk as UserSdk } from '@gql/user/api';
 import type { AppUser } from '@next/types';
 import { getHasuraEndpoint } from '@shared/client';
 import { isBackOffice } from '@shared/server';
-import * as jsonwebtoken from 'jsonwebtoken';
 
 type Opts = {
   anonymous?: boolean;
@@ -77,13 +76,8 @@ const H256SecretBackOffice = 'HGTRbJ6IaEoByH8KhA+BKV0Bgug+R7RSydnMbex2cZg=';
 // generate a JWT that includes roles, userId
 // secret: private key provided on docker-compose for test, either for marketplace or back-office
 const generateJwt = (user: AppUser, secret: string, role?: string): string =>
-  jsonwebtoken.sign(
-    JSON.stringify({ user, role }),
-    process.env.NEXTAUTH_SECRET || 'default_secret',
-    {
-      algorithm: 'RS256',
-    },
-  );
+  jwt.sign(JSON.stringify({ user, role }), secret);
+
 export const usersJwt = {
   google_user: generateJwt(accounts.google_user, H256SecretMarketplace, 'user'),
   alpha_user: generateJwt(accounts.alpha_user, H256SecretMarketplace, 'user'),
