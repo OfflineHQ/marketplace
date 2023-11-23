@@ -40,12 +40,6 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-declare global {
-  interface Window {
-    useE2EAuthContext: () => Promise<string>;
-  }
-}
-
 export const useAuthContext = () => {
   const authContext = useContext(AuthContext);
   const [context, setContext] = React.useState<AuthContextValue | undefined>(
