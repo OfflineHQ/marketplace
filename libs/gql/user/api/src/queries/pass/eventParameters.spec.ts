@@ -1,12 +1,11 @@
-import { alphaUserClient, betaUserClient } from '@test-utils/gql';
+import type { Locale, Stage } from '@gql/shared/types';
 import {
-  deleteTables,
-  deleteAllTables,
   applySeeds,
   createDbClient,
+  deleteAllTables,
   type PgClient,
 } from '@test-utils/db';
-import type { Locale, Stage } from '@gql/shared/types';
+import { alphaUserClient, betaUserClient } from '@test-utils/gql';
 
 describe('tests for eventParameters', () => {
   let client: PgClient;

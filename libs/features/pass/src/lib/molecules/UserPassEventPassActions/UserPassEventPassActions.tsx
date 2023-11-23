@@ -1,5 +1,4 @@
 import type { EventWithEventPassNfts } from '@features/pass-types';
-import { Link } from '@next/navigation';
 import {
   DropdownMenuActions,
   type DropdownMenuActionsProps,
@@ -7,7 +6,8 @@ import {
 } from '@ui/components';
 import { Download, Reveal, SeeDetails, Send } from '@ui/icons';
 import type { ErrorWithMessage } from '@utils';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 export type UserPassEventPassActionsFunctionsProps = {
   actionsFunctions: {
@@ -29,12 +29,13 @@ export const UserPassEventPassActions: React.FC<
   UserPassEventPassActionsProps
 > = ({ eventPassNft, eventPass, event, organizer, actionsFunctions }) => {
   const t = useTranslations('Pass.UserPass.UserPassEventPassActions');
+  const locale = useLocale();
   const items: DropdownMenuActionsProps['items'] = [
     {
       type: 'item',
       wrapper: (
         <Link
-          href={`/pass/organizer/${organizer?.id}/event/${event?.id}/eventPass/${eventPass?.id}/${eventPassNft?.tokenId}`}
+          href={`/${locale}/pass/organizer/${organizer?.id}/event/${event?.id}/eventPass/${eventPass?.id}/${eventPassNft?.tokenId}`}
         />
       ),
       icon: <SeeDetails />,
@@ -134,6 +135,5 @@ export const UserPassEventPassActions: React.FC<
     text: t('send-pass'),
     disabled: true,
   });
-
   return <DropdownMenuActions helperText={t('helper-text')} items={items} />;
 };
