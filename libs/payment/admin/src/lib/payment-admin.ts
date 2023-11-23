@@ -167,6 +167,22 @@ export class Payment {
     });
   }
 
+  calculateUnitAmount(order, rates) {
+    return Math.round(
+      Number(
+        toDecimal(
+          toUserCurrency(
+            {
+              amount: order.eventPassPricing.priceAmount,
+              currency: order.eventPassPricing.priceCurrency,
+            },
+            rates,
+          ).dinero,
+        ),
+      ) * 100,
+    );
+  }
+
   // TODO us stripe customer api to save payment method (card etc) for future use
   //ref: https://stripe.com/docs/payments/save-during-payment
   //ref:https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method
@@ -234,19 +250,7 @@ export class Payment {
         unitAmount = order.eventPassPricing.priceAmount;
       } else {
         currencyStripe = currency.toLowerCase();
-        unitAmount = Math.floor(
-          Number(
-            toDecimal(
-              toUserCurrency(
-                {
-                  amount: order.eventPassPricing.priceAmount,
-                  currency: order.eventPassPricing.priceCurrency,
-                },
-                rates,
-              ).dinero,
-            ),
-          ) * 100,
-        );
+        unitAmount = this.calculateUnitAmount(order, rates);
       }
 
       return {
