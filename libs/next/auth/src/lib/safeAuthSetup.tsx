@@ -38,7 +38,7 @@ const chainConfigs: Record<string, ChainConfig> = {
   '5': {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     rpcTarget:
-      'https://eth-goerli.g.alchemy.com/v2/XGWYfxudDv5ACSpZegVCjkgSrskOpG3v',
+      'https://eth-goerli.g.alchemy.com/v2/suWCSUU8QCZyA8U4VHEXzGYJZobJPSfc',
     chainId: '0x5',
     displayName: 'Ethereum Goerli',
     blockExplorer: 'https://goerli.etherscan.io/',
@@ -49,7 +49,7 @@ const chainConfigs: Record<string, ChainConfig> = {
   },
   '11155111': {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    rpcTarget: 'https://eth-sepolia.g.alchemy.com/v2/OUR_API_KEY', // TODO add an alchemy app
+    rpcTarget: 'https://eth-sepolia.g.alchemy.com/v2/YOUR_API_KEY', // TODO add an alchemy app
     chainId: '0xaa36a7',
     displayName: 'Ethereum Sepolia',
     blockExplorer: 'https://sepolia.etherscan.io/',
