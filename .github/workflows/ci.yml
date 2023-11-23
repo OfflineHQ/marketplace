@@ -33,7 +33,7 @@ jobs:
       parallel-commands: |
         pnpm nx format:check --verbose
         pnpm nx affected --target=test-integration --parallel=false --ci --code-coverage
-        pnpm nx affected --target=e2e
+        pnpm nx affected --target=e2e --skipInstall
       parallel-commands-on-agents: |
         pnpm affected:parallel-ci
   agents:
