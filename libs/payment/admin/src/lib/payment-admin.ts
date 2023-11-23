@@ -242,6 +242,14 @@ export class Payment {
           'Price currency or Price amount is undefined for order: ' + order.id,
         );
       }
+      if (order.eventPassPricing?.priceAmount < 0) {
+        throw new Error('Price amount is negative for order: ' + order.id);
+      }
+
+      if (Object.keys(rates).length === 0) {
+        throw new Error('Rates are empty for order: ' + order.id);
+      }
+
       let currencyStripe: string;
       let unitAmount: number;
 

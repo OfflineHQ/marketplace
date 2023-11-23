@@ -813,4 +813,27 @@ describe('Payment', () => {
 
     expect(result).toEqual(98518518);
   });
+
+  it('should handle large priceAmount without overflow', () => {
+    const order = {
+      eventPassPricing: {
+        priceAmount: Number.MAX_SAFE_INTEGER,
+        priceCurrency: 'USD',
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 0.85,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 1.15,
+      },
+    };
+
+    const result = payment.calculateUnitAmount(order, rates);
+
+    expect(result).toBeCloseTo(Number.MAX_SAFE_INTEGER * 0.85);
+  });
 });
