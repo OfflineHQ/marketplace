@@ -1,11 +1,12 @@
 import { expect, test } from '@playwright/test';
+import { accounts } from '@test-utils/gql';
 import {
   PgClient,
   applySeeds,
   createDbClient,
   deleteAllTables,
 } from 'libs/test-utils/db/src/index';
-import { alpha_user, loadUser } from './utils/loadUser';
+import { loadUser } from './utils/loadUser';
 
 let client: PgClient;
 
@@ -32,7 +33,7 @@ test.use({
 });
 
 test('user should be able to buy a pass', async ({ page }) => {
-  await loadUser(page, alpha_user);
+  await loadUser(page, accounts.alpha_user, 'Alpha User');
   await page.goto('/en');
   await new Promise((resolve) => setTimeout(resolve, 15000));
   await expect(
