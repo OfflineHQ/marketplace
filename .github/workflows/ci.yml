@@ -24,12 +24,6 @@ jobs:
       NX_CLOUD_AUTH_TOKEN: MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=
     with:
       runs-on: ubuntu-latest
-      artifacts-path: |
-        dist/cypress
-      artifacts-name: cypress
-      environment-variables: |
-        CYPRESS_CACHE_FOLDER=~/.cache/Cypress
-      cypress_cache_path: ~/.cache/Cypress
       node-version: 20
       pnpm-version: 7
       environment: staging
@@ -38,11 +32,8 @@ jobs:
 
       parallel-commands: |
         pnpm nx format:check --verbose
-        ## test relying in prisma + hasura not working in parallel, docker services not available ?
-        # pnpm nx affected --target=test-prisma --ci --code-coverage
         pnpm nx affected --target=test-integration --parallel=false --ci --code-coverage
-        ## TODO set back when cypress upgraded to webpack 5, compilation error with this code `headers['Cookie'] = cookies().toString()`;
-        # pnpm nx affected --target=e2e --no-watch
+        pnpm nx affected --target=e2e
       parallel-commands-on-agents: |
         pnpm affected:parallel-ci
   agents:

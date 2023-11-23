@@ -25,16 +25,26 @@
   },
   "extends": "nx/presets/npm.json",
   "namedInputs": {
-    "noMarkdown": ["!{projectRoot}/**/*.md"]
+    "noMarkdown": [
+      "!{projectRoot}/**/*.md"
+    ]
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["noMarkdown", "^noMarkdown"],
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "noMarkdown",
+        "^noMarkdown"
+      ],
       "cache": true
     },
     "test": {
-      "inputs": ["noMarkdown", "^noMarkdown"],
+      "inputs": [
+        "noMarkdown",
+        "^noMarkdown"
+      ],
       "cache": true
     },
     "build-storybook": {
@@ -48,11 +58,17 @@
       "cache": true
     },
     "e2e": {
-      "inputs": ["default", "^default"],
+      "inputs": [
+        "default",
+        "^default"
+      ],
       "cache": true
     },
     "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslintrc.json"
+      ],
       "cache": true
     },
     "affected:build": {
@@ -113,7 +129,10 @@
     }
   },
   "defaultProject": "web",
-  "defaultAffected": ["web", "back-office"],
+  "defaultAffected": [
+    "web",
+    "back-office"
+  ],
   "defaultBase": "main",
   "nxCloudAccessToken": "MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=",
   "parallel": 5
