@@ -25,7 +25,7 @@ export const SeedTable = {
 export type SeedTableName = keyof typeof SeedTable;
 
 export type PgClient = Client;
-// assigning the right port depending of if jest or cypress is running
+// assigning the right port depending of if jest is running
 // localhost here because has to be working both in local or on nx cloud. work thanks to extra_hosts on db container
 export const createDbClient = async (): Promise<Client> => {
   // Create a new client

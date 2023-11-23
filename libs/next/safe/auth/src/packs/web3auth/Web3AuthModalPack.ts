@@ -2,7 +2,6 @@ import { ExternalProvider } from '@ethersproject/providers';
 import { IAdapter, UserInfo } from '@web3auth/base';
 import { ModalConfig, Web3Auth, Web3AuthOptions } from '@web3auth/modal';
 
-import { isCypressRunning } from '@utils';
 import { AuthKitBasePack } from '../../AuthKitBasePack';
 import { getErrorMessage } from '../../lib/errors';
 import type { AuthKitSignInData } from '../../types';
@@ -51,11 +50,10 @@ export class Web3AuthModalPack extends AuthKitBasePack {
       adapters?.forEach((adapter) => this.web3Auth?.configureAdapter(adapter));
 
       await this.web3Auth.initModal({ modalConfig: modalConfig });
-      // here we set ethereum provider from ethereum in case this is running on cypress, used for testing, otherwise set the provider from web3auth
-      this.#provider =
-        isCypressRunning() && window.ethereum
-          ? window.ethereum
-          : this.web3Auth.provider;
+      // here we set ethereum provider from ethereum in case this is running on playwright, used for testing, otherwise set the provider from web3auth
+      this.#provider = window.ethereum
+        ? window.ethereum
+        : this.web3Auth.provider;
     } catch (e) {
       throw new Error(getErrorMessage(e));
     }
