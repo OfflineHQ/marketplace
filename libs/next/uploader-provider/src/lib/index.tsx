@@ -1,7 +1,6 @@
 'use client';
 
 import * as Bytescale from '@bytescale/sdk';
-import type { UploaderInterface } from '@bytescale/upload-widget';
 import env from '@env/client';
 import { useAuthContext } from '@next/auth';
 import { getNextAppURL } from '@shared/client';
@@ -12,7 +11,7 @@ interface BytescaleProviderProps {
 }
 
 interface UploaderContextValue {
-  uploader: UploaderInterface | null;
+  uploader: boolean;
 }
 
 const UploaderContext = createContext<UploaderContextValue | undefined>(
