@@ -62,7 +62,7 @@ test('user should be able to buy a pass', async ({ page }) => {
   await page.getByRole('button', { name: 'Go to payment' }).click();
   await new Promise((resolve) => setTimeout(resolve, 7000));
   await page.getByRole('button', { name: 'Proceed to payment' }).click();
-  await new Promise((resolve) => setTimeout(resolve, 14000));
+  await new Promise((resolve) => setTimeout(resolve, 20000));
   const url = page.url();
   expect(url).toMatch(/checkout.stripe.com\/c\/pay/);
 });
