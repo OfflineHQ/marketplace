@@ -76,3 +76,6 @@ Thumbs.db
 
 # Sentry Auth Token
 .sentryclirc
+
+#playwright
+playwright-report/

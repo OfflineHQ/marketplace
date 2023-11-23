@@ -2,6 +2,7 @@ import { Stage } from '@gql/shared/types';
 import {
   applySeeds,
   createDbClient,
+  deleteAllTables,
   deleteTables,
   type PgClient,
 } from '@test-utils/db';
@@ -14,11 +15,7 @@ describe('tests for eventPassOrder user', () => {
 
   beforeAll(async () => {
     client = await createDbClient();
-    await deleteTables(client, [
-      'account',
-      'eventPassOrder',
-      'eventPassPricing',
-    ]);
+    await deleteAllTables(client);
     await applySeeds(client, ['account', 'eventPassPricing']);
   });
 

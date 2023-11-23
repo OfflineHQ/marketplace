@@ -83,10 +83,9 @@ const DropdownMenuItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
     inset?: boolean;
-    wrapper?: React.ReactElement;
   }
->(({ className, inset, wrapper, ...props }, ref) => {
-  const content = (
+>(({ className, inset, ...props }, ref) => {
+  return (
     <DropdownMenuPrimitive.Item
       ref={ref}
       className={cn(
@@ -97,8 +96,6 @@ const DropdownMenuItem = React.forwardRef<
       {...props}
     />
   );
-
-  return wrapper ? React.cloneElement(wrapper, {}, content) : content;
 });
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName;
 
