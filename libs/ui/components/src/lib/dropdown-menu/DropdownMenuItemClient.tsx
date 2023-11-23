@@ -39,7 +39,7 @@ export interface DropdownMenuItemClientProps {
 }
 export const DropdownMenuItemClient: React.FC<DropdownMenuItemClientProps> = ({
   icon,
-  item: { wrapper, ...item },
+  item,
   iconClasses,
   setLoading,
 }) => {
@@ -70,29 +70,11 @@ export const DropdownMenuItemClient: React.FC<DropdownMenuItemClientProps> = ({
     }
   };
 
-  return wrapper ? (
-    <wrapper.type {...wrapper.props}>
-      <DropdownMenuItem
-        disabled={item.disabled}
-        onSelect={() => handleAction(item)}
-        className={item.className}
-      >
-        {icon && (
-          <icon.type
-            {...icon.props}
-            className={cn(iconClasses, icon.props.className)}
-          />
-        )}
-        <span>{item.text}</span>
-        {item.shortcut && (
-          <DropdownMenuShortcut>{item.shortcut}</DropdownMenuShortcut>
-        )}
-      </DropdownMenuItem>
-    </wrapper.type>
-  ) : (
+  return (
     <DropdownMenuItem
       disabled={item.disabled}
       onSelect={() => handleAction(item)}
+      wrapper={item.wrapper}
       className={item.className}
     >
       {icon && (
