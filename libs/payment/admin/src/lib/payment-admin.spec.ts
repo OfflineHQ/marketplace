@@ -1,12 +1,15 @@
+import { CurrencyRates } from '@currency/types';
 import env from '@env/server';
 import * as kycApi from '@features/kyc-api';
 import { adminSdk } from '@gql/admin/api';
 import {
+  Currency_Enum,
   KycStatus_Enum,
   Locale,
   OrderStatus_Enum,
   StripeCheckoutSessionType_Enum,
 } from '@gql/shared/types';
+import { calculateUnitAmount } from '@next/currency-common';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import { StripeCustomer } from '@payment/types';
 import { accounts } from '@test-utils/gql';
@@ -724,8 +727,8 @@ describe('Payment', () => {
     it('should return calculated amount if currency is not the same as priceCurrency and currency has a lower rate', () => {
       const order = {
         eventPassPricing: {
-          priceAmount: 100,
-          priceCurrency: 'USD',
+          amount: 100,
+          currency: Currency_Enum.Usd,
         },
       };
       const rates = {
@@ -737,9 +740,9 @@ describe('Payment', () => {
           USD: 1.15,
           EUR: 1,
         },
-      };
+      } as CurrencyRates;
 
-      const result = payment.calculateUnitAmount(order, rates);
+      const result = calculateUnitAmount(order.eventPassPricing, rates);
 
       expect(result).toEqual(85);
     });
@@ -748,8 +751,8 @@ describe('Payment', () => {
   it('should return calculated amount if currency is not the same as priceCurrency and currency has a higher rate', () => {
     const order = {
       eventPassPricing: {
-        priceAmount: 100,
-        priceCurrency: 'USD',
+        amount: 100,
+        currency: Currency_Enum.Usd,
       },
     };
     const rates = {
@@ -761,9 +764,9 @@ describe('Payment', () => {
         EUR: 1,
         USD: 0.85,
       },
-    };
+    } as CurrencyRates;
 
-    const result = payment.calculateUnitAmount(order, rates);
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
 
     expect(result).toEqual(115);
   });
@@ -771,8 +774,8 @@ describe('Payment', () => {
   it('should return calculated amount if currency is not the same complex amount', () => {
     const order = {
       eventPassPricing: {
-        priceAmount: 123456,
-        priceCurrency: 'USD',
+        amount: 123456,
+        currency: Currency_Enum.Usd,
       },
     };
     const rates = {
@@ -784,9 +787,9 @@ describe('Payment', () => {
         EUR: 1,
         USD: 1.15,
       },
-    };
+    } as CurrencyRates;
 
-    const result = payment.calculateUnitAmount(order, rates);
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
 
     expect(result).toEqual(104938);
   });
@@ -794,8 +797,8 @@ describe('Payment', () => {
   it('should return calculated amount if currency is not the same complex amount complex rate', () => {
     const order = {
       eventPassPricing: {
-        priceAmount: 123456789,
-        priceCurrency: 'USD',
+        amount: 123456789,
+        currency: Currency_Enum.Usd,
       },
     };
     const rates = {
@@ -807,9 +810,9 @@ describe('Payment', () => {
         EUR: 1,
         USD: 1.15,
       },
-    };
+    } as CurrencyRates;
 
-    const result = payment.calculateUnitAmount(order, rates);
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
 
     expect(result).toEqual(98518518);
   });
@@ -817,8 +820,8 @@ describe('Payment', () => {
   it('should handle large priceAmount without overflow', () => {
     const order = {
       eventPassPricing: {
-        priceAmount: Number.MAX_SAFE_INTEGER,
-        priceCurrency: 'USD',
+        amount: Number.MAX_SAFE_INTEGER,
+        currency: Currency_Enum.Usd,
       },
     };
     const rates = {
@@ -830,9 +833,9 @@ describe('Payment', () => {
         EUR: 1,
         USD: 1.15,
       },
-    };
+    } as CurrencyRates;
 
-    const result = payment.calculateUnitAmount(order, rates);
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
 
     expect(result).toBeCloseTo(Number.MAX_SAFE_INTEGER * 0.85);
   });

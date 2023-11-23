@@ -10,7 +10,7 @@ import {
   type Locale,
 } from '@gql/shared/types';
 import { CurrencyCache } from '@next/currency-cache';
-import { toUserCurrency } from '@next/currency-common';
+import { calculateUnitAmount } from '@next/currency-common';
 import { AppUser } from '@next/types';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import {
@@ -19,7 +19,6 @@ import {
   StripeCustomer,
 } from '@payment/types';
 import { getNextAppURL } from '@shared/server';
-import { toDecimal } from 'dinero.js';
 import Stripe from 'stripe';
 
 export class Payment {
@@ -167,22 +166,6 @@ export class Payment {
     });
   }
 
-  calculateUnitAmount(order, rates) {
-    return Math.round(
-      Number(
-        toDecimal(
-          toUserCurrency(
-            {
-              amount: order.eventPassPricing.priceAmount,
-              currency: order.eventPassPricing.priceCurrency,
-            },
-            rates,
-          ).dinero,
-        ),
-      ) * 100,
-    );
-  }
-
   // TODO us stripe customer api to save payment method (card etc) for future use
   //ref: https://stripe.com/docs/payments/save-during-payment
   //ref:https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method
@@ -258,7 +241,13 @@ export class Payment {
         unitAmount = order.eventPassPricing.priceAmount;
       } else {
         currencyStripe = currency.toLowerCase();
-        unitAmount = this.calculateUnitAmount(order, rates);
+        unitAmount = calculateUnitAmount(
+          {
+            amount: order.eventPassPricing.priceAmount,
+            currency: order.eventPassPricing.priceCurrency,
+          },
+          rates,
+        );
       }
 
       return {
