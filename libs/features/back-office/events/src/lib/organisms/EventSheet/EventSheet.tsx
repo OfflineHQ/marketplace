@@ -20,17 +20,15 @@ export const EventSheet = ({ event, organizerId }: EventSheetProps) => {
       <SheetHeader size="full">
         <SheetTitle>{event.title}</SheetTitle>
       </SheetHeader>
-      <SheetOverflow className="py-3">
-        <div className="grid gap-8 md:grid-cols-2">
-          {event.eventPasses?.map((eventPass, index) => (
-            <EventPassCard
-              key={index}
-              eventPass={eventPass}
-              event={event}
-              organizerId={organizerId}
-            />
-          ))}
-        </div>
+      <SheetOverflow className="grid h-full gap-8 py-3 pb-28 md:grid-cols-2">
+        {event.eventPasses?.map((eventPass, index) => (
+          <EventPassCard
+            key={index}
+            eventPass={eventPass}
+            event={event}
+            organizerId={organizerId}
+          />
+        ))}
       </SheetOverflow>
       <SheetNavigation
         wrapper={<Link href={`/${locale}/events`} />}
