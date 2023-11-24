@@ -20,7 +20,12 @@ export const EventPassCardContent = ({
     <CardContent>
       <Accordion type="multiple" defaultValue={['nft-infos']}>
         <EventPassNftsInfos eventPass={eventPass} />
-        <EventPassNftFiles eventPass={eventPass} />
+        <EventPassNftFiles
+          eventPass={eventPass}
+          organizerId={organizerId}
+          eventId={event.id}
+          eventPassId={eventPass.id}
+        />
       </Accordion>
     </CardContent>
   );
