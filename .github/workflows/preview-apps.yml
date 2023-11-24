@@ -7,11 +7,6 @@ on:
   #     - main
   #     - staging
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch to use'
-        required: true
-        default: ''
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.branch || github.ref }}
+          ref: ${{ github.ref }}
 
       - name: Get PR sha
         id: get_pull_request_sha
@@ -83,7 +78,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.branch || github.ref }}
+          ref: ${{ github.ref }}
           fetch-depth: 0
 
       - name: Set up environment and cache dependencies
