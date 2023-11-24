@@ -188,9 +188,7 @@ const TableSkeleton: React.FC<TableSkeletonProps> = ({
         <SkeletonRow key={i} cols={cols} variant={variant} />
       ))}
     </TableBody>
-    <TableFooter variant={variant}>
-      {/* <FooterRowSkeleton cols={cols} /> */}
-    </TableFooter>
+    <TableFooter>{/* <FooterRowSkeleton cols={cols} /> */}</TableFooter>
   </Table>
 );
 
