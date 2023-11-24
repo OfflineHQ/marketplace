@@ -11,21 +11,19 @@ jobs:
     environment: preview
     steps:
       - name: Trigger Preview Apps Workflow
-        uses: benc-uk/workflow-dispatch@v1
+        uses: benc-uk/workflow-dispatch@v1.2.2
         with:
           workflow: Deploy preview apps
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: refs/pull/${{ github.event.pull_request.number }}/head
-          inputs: '{"branch": "${{ github.event.pull_request.head.ref  }}"}'
+          ref: ${{ github.event.pull_request.head.ref }}
   e2e:
     if: github.event.review.state == 'approved' && github.event.pull_request.base.ref != 'main'
     runs-on: ubuntu-latest
     environment: preview
     steps:
       - name: Trigger E2E Workflow
-        uses: benc-uk/workflow-dispatch@v1
+        uses: benc-uk/workflow-dispatch@v1.2.2
         with:
           workflow: e2e
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: refs/pull/${{ github.event.pull_request.number }}/head
-          inputs: '{"branch": "${{ github.event.pull_request.head.ref  }}"}'
+          ref: ${{ github.event.pull_request.head.ref }}
