@@ -6,7 +6,7 @@ import {
 } from '@features/pass-common';
 import { FolderWrapper } from '@file-upload/admin';
 
-export type GetEventPassNftFilesProps = GetEventPassOrganizerFolderPath
+export type GetEventPassNftFilesProps = GetEventPassOrganizerFolderPath;
 
 export async function getEventPassNftFiles(props: GetEventPassNftFilesProps) {
   const folder = new FolderWrapper();
@@ -15,7 +15,5 @@ export async function getEventPassNftFiles(props: GetEventPassNftFilesProps) {
     accountId: env.UPLOAD_ACCOUNT_ID,
     folderPath: folderPath,
   });
-  return list.items.filter(
-    (item): item is FileSummary => 'filePath' in item,
-  );
+  return list.items.filter((item): item is FileSummary => 'filePath' in item);
 }
