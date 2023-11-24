@@ -1,10 +1,21 @@
 name: Deploy preview apps
 
 on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-    branches-ignore:
-      - main
+  # pull_request:
+  #   types: [opened, reopened, synchronize]
+  #   branches-ignore:
+  #     - main
+  #     - staging
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to use'
+        required: true
+        default: ''
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -15,6 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
 
       - name: Get PR sha
         id: get_pull_request_sha
@@ -70,6 +83,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
           fetch-depth: 0
 
       - name: Set up environment and cache dependencies
