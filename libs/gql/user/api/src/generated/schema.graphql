@@ -1211,22 +1211,7 @@ type Event implements Entity & Node {
     skip: Int
     where: EventDateLocationWhereInput
   ): [EventDateLocation!]!
-  eventParameters(
-    """distinct select on columns"""
-    distinct_on: [eventParameters_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventParameters_order_by!]
-
-    """filter the rows returned"""
-    where: eventParameters_bool_exp
-  ): [eventParameters!]!
+  eventParameters: eventParameters
   eventPasses(
     after: String
     before: String
@@ -9194,6 +9179,10 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: EventWhereUniqueInput!
   ): Event
+
+  """
+  fetch data from the table: "eventParameters"
+  """
   eventParameters(
     """distinct select on columns"""
     distinct_on: [eventParameters_select_column!]
@@ -10078,6 +10067,10 @@ type subscription_root {
     """filter the rows returned"""
     where: account_bool_exp
   ): [account!]!
+
+  """
+  fetch data from the table: "eventParameters"
+  """
   eventParameters(
     """distinct select on columns"""
     distinct_on: [eventParameters_select_column!]

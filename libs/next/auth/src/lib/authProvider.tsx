@@ -5,6 +5,8 @@ import { SessionProvider } from 'next-auth/react';
 import { Session } from 'next-auth';
 import React, { createContext, useContext } from 'react';
 import { useSafeAuth, type UseSafeAuthProps } from './safeAuthSetup';
+// eslint-disable-next-line import/no-unresolved
+import '@next/types';
 
 interface AuthProviderProps extends UseSafeAuthProps {
   children?: React.ReactNode;
@@ -39,11 +41,32 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const useAuthContext = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
+  const authContext = useContext(AuthContext);
+  const [context, setContext] = React.useState<AuthContextValue | undefined>(
+    undefined,
+  );
+
+  React.useEffect(() => {
+    const fetchAuthContext = async () => {
+      if (
+        process.env.NEXT_PUBLIC_PLAYWRIGHT &&
+        typeof window !== 'undefined' &&
+        window.useE2EAuthContext
+      ) {
+        const e2eAuthContextString = await window.useE2EAuthContext();
+        const e2eAuthContext = JSON.parse(e2eAuthContextString);
+        setContext(e2eAuthContext);
+      }
+    };
+
+    fetchAuthContext();
+  }, []);
+
+  if (!authContext) {
     throw new Error('useAuthContext must be used within an AuthProvider');
   }
-  return context;
+
+  return context ? context : authContext;
 };
 
 export const AuthProvider = ({
