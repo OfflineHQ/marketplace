@@ -1,11 +1,6 @@
 name: Deploy preview apps
 
 on:
-  # pull_request:
-  #   types: [opened, reopened, synchronize]
-  #   branches-ignore:
-  #     - main
-  #     - staging
   workflow_dispatch:
 
 concurrency:
