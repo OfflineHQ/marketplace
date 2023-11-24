@@ -267,6 +267,16 @@
         },
         "EventPassNftFiles": {
           "title": "Pass associés à vos NFTs"
+        },
+        "EventPassNftFilesTable": {
+          "header-file-path": "Fichier",
+          "header-show": "Montrer le fichier",
+          "header-delete": "Supprimer le fichier"
+        },
+        "EventPassCardFooter": {
+          "deploy-contract": "Déployer le contrat NFTs",
+          "no-pricing-set": "Vous devez d'abord définir les paramètres de vos NFTs.",
+          "copied-contract-address": "Adresse du contrat copiée"
         }
       },
       "go-back-to-events": "Retournez aux événements"
