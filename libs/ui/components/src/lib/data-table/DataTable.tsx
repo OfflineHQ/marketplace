@@ -25,6 +25,7 @@ import {
   TableRow,
 } from '../table/Table';
 
+import { cn } from '@ui/shared';
 import {
   DataTablePagination,
   type DataTablePaginationProps,
@@ -35,16 +36,18 @@ import {
 } from './DataTableToolbar';
 
 export interface DataTableProps<TData, TValue> {
+  className?: string;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   showHeader?: boolean;
   enableRowSelection?: boolean;
-  toolbarProps?: Omit<DataTableToolbarProps<TData>, 'table'>;
+  toolbarProps?: Omit<DataTableToolbarProps<TData, TValue>, 'table'>;
   paginationProps?: Omit<DataTablePaginationProps<TData>, 'table'>;
   noResultsText: string;
 }
 
 export function DataTable<TData, TValue>({
+  className,
   columns,
   data,
   showHeader = true,
@@ -84,11 +87,11 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4">
+    <div className={cn('space-y-4', className)}>
       {toolbarProps ? (
-        <DataTableToolbar<TData> table={table} {...toolbarProps} />
+        <DataTableToolbar table={table} {...toolbarProps} />
       ) : null}
-      <div className="rounded-md border">
+      <div className="flex h-full grow overflow-auto rounded-md border">
         <Table>
           {showHeader ? (
             <TableHeader>
@@ -118,7 +121,10 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      align={(cell.column.columnDef.meta as any)?.align}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
@@ -141,7 +147,11 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       {paginationProps ? (
-        <DataTablePagination<TData> table={table} {...paginationProps} />
+        <DataTablePagination
+          table={table}
+          enableRowSelection={enableRowSelection}
+          {...paginationProps}
+        />
       ) : null}
     </div>
   );

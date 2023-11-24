@@ -217,12 +217,10 @@ describe('Payment integration', () => {
         });
       expect(stripeSessionForUser).not.toBeNull();
 
-      console.log(stripeSession);
       // Verify that the order are assigned to the checkout session
       const orders = await payment.getEventPassOrdersFromStripeCheckoutSession({
         stripeCheckoutSessionId: stripeSession.stripeSessionId,
       });
-      console.log(orders);
       expect(orders.length).toBe(2);
     });
   });
