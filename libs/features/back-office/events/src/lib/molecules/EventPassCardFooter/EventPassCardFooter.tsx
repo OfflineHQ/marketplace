@@ -15,7 +15,7 @@ function EventPassContractDeployButton({
   eventPass,
 }: EventPassCardFooterProps) {
   const isDisabled = !eventPass.eventPassPricing?.maxAmount;
-  const isDisabledReasons = [];
+  const isDisabledReasons: string[] = [];
   const t = useTranslations(
     'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter',
   );
