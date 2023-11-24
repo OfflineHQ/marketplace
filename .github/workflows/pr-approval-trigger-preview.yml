@@ -1,0 +1,29 @@
+name: Manual Trigger for Preview Apps
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  preview-apps:
+    if: github.event.review.state == 'approved' && github.event.pull_request.base.ref != 'main' && github.event.pull_request.base.ref != 'staging'
+    runs-on: ubuntu-latest
+    environment: preview
+    steps:
+      - name: Trigger Preview Apps Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Deploy preview apps
+          token: ${{ secrets.GITHUB_TOKEN }}
+          inputs: '{"branch": "${{ github.head_ref }}"}'
+  e2e:
+    if: github.event.review.state == 'approved' && github.event.pull_request.base.ref != 'main' && github.event.pull_request.base.ref != 'staging'
+    runs-on: ubuntu-latest
+    environment: preview
+    steps:
+      - name: Trigger E2E Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: E2E
+          token: ${{ secrets.GITHUB_TOKEN }}
+          inputs: '{"branch": "${{ github.head_ref }}"}'

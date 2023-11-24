@@ -26,9 +26,9 @@ jobs:
       runs-on: ubuntu-latest
       node-version: 20
       pnpm-version: 7
-      environment: staging
+      environment: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'preview' }}
       init-commands: |
-        pnpm exec nx-cloud record -- pnpm docker:test & pnpm docker:services
+        pnpm exec nx-cloud record -- pnpm docker:test
 
       parallel-commands: |
         pnpm nx format:check --verbose
@@ -45,7 +45,7 @@ jobs:
       NX_CLOUD_AUTH_TOKEN: MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=
     with:
       runs-on: ubuntu-latest
-      environment: staging
+      environment: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'preview' }}
       node-version: 20
       pnpm-version: 7
       number-of-agents: 3
