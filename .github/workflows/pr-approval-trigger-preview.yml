@@ -24,6 +24,6 @@ jobs:
       - name: Trigger E2E Workflow
         uses: benc-uk/workflow-dispatch@v1.2.2
         with:
-          workflow: e2e
+          workflow: E2E tests
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.event.pull_request.head.ref }}
