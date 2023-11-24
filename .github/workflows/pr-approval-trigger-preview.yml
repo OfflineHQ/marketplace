@@ -15,6 +15,7 @@ jobs:
         with:
           workflow: Deploy preview apps
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: refs/pull/${{ github.event.pull_request.number }}/head
           inputs: '{"branch": "${{ github.head_ref }}"}'
   e2e:
     if: github.event.review.state == 'approved' && github.event.pull_request.base.ref != 'main'
@@ -26,4 +27,5 @@ jobs:
         with:
           workflow: E2E
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: refs/pull/${{ github.event.pull_request.number }}/head
           inputs: '{"branch": "${{ github.head_ref }}"}'
