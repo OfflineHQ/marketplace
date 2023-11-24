@@ -1,5 +1,11 @@
 import { EventFromOrganizerWithPasses } from '@features/back-office/events-types';
-import { Button, CardFooter, HelperText } from '@ui/components';
+import {
+  BlockchainAddress,
+  Button,
+  CardFooter,
+  HelperText,
+} from '@ui/components';
+import { useTranslations } from 'next-intl';
 
 export interface EventPassCardFooterProps {
   eventPass: EventFromOrganizerWithPasses['eventPasses'][0];
@@ -10,22 +16,31 @@ function EventPassContractDeployButton({
 }: EventPassCardFooterProps) {
   const isDisabled = !eventPass.eventPassPricing?.maxAmount;
   const isDisabledReasons = [];
+  const t = useTranslations(
+    'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter',
+  );
   if (!eventPass.eventPassPricing?.maxAmount)
-    isDisabledReasons.push('You need to define your NFTs parameters first');
+    isDisabledReasons.push(t('no-pricing-set'));
   return (
     <div className="w-full flex-col">
       <Button block disabled={isDisabled}>
-        Deploy
+        {t('deploy-contract')}
       </Button>
-      {isDisabledReasons.length && (
-        <HelperText message={isDisabledReasons} variant="warning" />
-      )}
+      <HelperText message={isDisabledReasons} variant="warning" />
     </div>
   );
 }
 
 function EventPassContractDeployed({ eventPass }: EventPassCardFooterProps) {
-  return <p>Deployed</p>;
+  const t = useTranslations(
+    'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter',
+  );
+  return (
+    <BlockchainAddress
+      address={eventPass.eventPassNftContract?.contractAddress as string}
+      copiedText={t('copied-contract-address')}
+    />
+  );
 }
 
 export function EventPassCardFooter({ eventPass }: EventPassCardFooterProps) {

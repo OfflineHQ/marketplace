@@ -1,4 +1,4 @@
-import { EventsPage } from '@features/back-office/events';
+import { EventTableSkeleton, EventsPage } from '@features/back-office/events';
 import { getEventsFromOrganizerIdTable } from '@features/back-office/events-api';
 import { Locale } from '@gql/shared/types';
 import {
@@ -9,6 +9,7 @@ import {
 } from '@next/i18n-ui';
 import { getCurrentUser } from '@next/next-auth/user';
 import { getTranslations } from 'next-intl/server';
+import { Suspense } from 'react';
 
 interface EventsProps {
   params: {
@@ -16,7 +17,7 @@ interface EventsProps {
   };
 }
 
-export default async function Events({ params: { locale } }: EventsProps) {
+async function EventsContent({ params: { locale } }: EventsProps) {
   const user = await getCurrentUser();
   if (!user) return;
   const organizerId = user.role?.organizerId || '';
@@ -51,5 +52,13 @@ export default async function Events({ params: { locale } }: EventsProps) {
       paginationProps={paginationProps}
       headerControlText={headerControlText}
     />
+  );
+}
+
+export default function Events(props: EventsProps) {
+  return (
+    <Suspense fallback={<EventTableSkeleton />}>
+      <EventsContent {...props} />
+    </Suspense>
   );
 }
