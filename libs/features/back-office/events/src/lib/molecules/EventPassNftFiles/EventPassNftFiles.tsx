@@ -1,16 +1,23 @@
-import { EventFromOrganizerWithPasses } from '@features/back-office/events-types';
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  TableSkeleton,
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
+import { Suspense } from 'react';
 
-export interface EventPassNftFilesProps {
-  eventPass: EventFromOrganizerWithPasses['eventPasses'][0];
-}
+import {
+  EventPassNftFilesTable,
+  EventPassNftFilesTableProps,
+} from '../EventPassNftFilesTable/EventPassNftFilesTable';
 
-export function EventPassNftFiles({ eventPass }: EventPassNftFilesProps) {
+export type EventPassNftFilesProps = EventPassNftFilesTableProps;
+
+export function EventPassNftFiles({
+  eventPass,
+  ...props
+}: EventPassNftFilesProps) {
   const t = useTranslations(
     'OrganizerEvents.Sheet.EventPassCard.EventPassNftFiles',
   );
@@ -20,7 +27,15 @@ export function EventPassNftFiles({ eventPass }: EventPassNftFilesProps) {
       disabled={!eventPass.eventPassPricing?.maxAmount}
     >
       <AccordionTrigger>{t('title')}</AccordionTrigger>
-      <AccordionContent></AccordionContent>
+      <AccordionContent>
+        {eventPass.eventPassPricing?.maxAmount ? (
+          <Suspense
+            fallback={<TableSkeleton rows={10} cols={2} variant="highlight" />}
+          >
+            <EventPassNftFilesTable eventPass={eventPass} {...props} />
+          </Suspense>
+        ) : null}
+      </AccordionContent>
     </AccordionItem>
   );
 }

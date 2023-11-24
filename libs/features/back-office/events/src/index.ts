@@ -1,2 +1,2 @@
 export { EventSheet } from './lib/organisms/EventSheet/EventSheet';
-export { EventsPage } from './lib/pages/EventsPage';
+export { EventTableSkeleton, EventsPage } from './lib/pages/EventsPage';
