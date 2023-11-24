@@ -1,13 +1,12 @@
+import { Card } from './Card';
 import {
   CardDemo,
+  CardSkeleton,
   CardWithForm,
   CardWithOverflow,
-  CardSkeleton,
 } from './examples';
-import { Card } from './Card';
 
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent, within } from '@storybook/testing-library';
 
 const meta = {
   title: 'Molecules/Card',
@@ -19,7 +18,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const FullSizeStickyFooter: Story = {
+export const Default: Story = {
   parameters: {
     layout: 'fullscreen',
   },
@@ -34,13 +33,25 @@ export const NoBorder: Story = {
   },
 };
 
-export const FullSizeStickyFooterOverflow: Story = {
-  ...FullSizeStickyFooter,
+export const Overflow: Story = {
+  ...Default,
   render: CardWithOverflow,
 };
 
 export const WithForm: Story = {
   render: CardWithForm,
+};
+
+export const Distinct: Story = {
+  args: {
+    variant: 'distinct',
+  },
+};
+
+export const InsideDistinct: Story = {
+  args: {
+    variant: 'insideDistinct',
+  },
 };
 
 export const Loading: Story = {

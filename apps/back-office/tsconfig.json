@@ -25,6 +25,7 @@
     "**/*.tsx",
     "**/*.js",
     "**/*.jsx",
+    "../../types/**/*.d.ts",
     "../../libs/next/types/**/*.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts",

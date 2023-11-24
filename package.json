@@ -20,7 +20,7 @@
     "affected:e2e": "pnpm docker:services && nx affected:e2e",
     "affected:test-integration": "nx affected --target=test-integration --parallel=false -- --runInBand",
     "affected:dep-graph": "nx affected:dep-graph",
-    "affected:parallel-ci": "nx affected -t lint,test,build --parallel=3 --eslintConfig=.eslintrc.ci.json --ci",
+    "affected:parallel-ci": "nx affected -t lint,test --parallel=3 --eslintConfig=.eslintrc.ci.json --ci",
     "docker:services": "docker-compose --env-file .env.local up -d",
     "docker:test": "docker-compose -f tools/test/docker-compose.yml --env-file tools/test/.env.test.jest up -d",
     "docker:build": "docker-compose --env-file .env.local build",

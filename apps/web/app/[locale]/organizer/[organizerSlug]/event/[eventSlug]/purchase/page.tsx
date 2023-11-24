@@ -1,12 +1,12 @@
+import { NotFound } from '@features/navigation';
 import { PassPurchaseCard } from '@features/organizer/event';
 import {
+  getEvent,
   getEventPassOrdersConfirmed,
   getEventPasses,
-  getEvent,
 } from '@features/organizer/event-api';
 import type { EventPass } from '@features/organizer/event-types';
 import { useTranslations } from 'next-intl';
-import { NotFound } from '@features/navigation';
 
 export interface PurchaseSectionProps {
   params: {

@@ -306,17 +306,32 @@ export class RoleAuthorization {
     }
   }
   async readAndWritePassesFile(user: AppUser) {
-    const inviterRole = user.role?.role;
-    if (!inviterRole) {
+    const role = user.role?.role;
+    if (!role) {
       throw new RoleAuthorizationError("User doesn't have a role");
     }
-    switch (user.role?.role) {
+    switch (role) {
       case Roles_Enum.OrganizerSuperAdmin:
         return true;
       case Roles_Enum.OrganizerAdmin:
         return true;
       default:
         return false;
+    }
+  }
+
+  async readOrganizerEventManagement(user: AppUser) {
+    const role = user.role?.role;
+    if (!role) {
+      throw new RoleAuthorizationError("User doesn't have a role");
+    }
+    switch (role) {
+      case Roles_Enum.OrganizerValidator:
+        return false;
+      case Roles_Enum.OrganizerHumanResources:
+        return false;
+      default:
+        return true;
     }
   }
 }
