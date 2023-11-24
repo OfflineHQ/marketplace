@@ -2,6 +2,8 @@ import * as React from 'react';
 
 import { cn } from '@ui/shared';
 
+import { VariantProps, cva } from 'class-variance-authority';
+
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
@@ -105,6 +107,93 @@ const TableCaption = React.forwardRef<
 ));
 TableCaption.displayName = 'TableCaption';
 
+const tableSkeletonVariantsCva = cva('', {
+  variants: {
+    variant: {
+      default: 'bg-muted',
+      highlight: 'bg-highlight',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+interface ColsSkeletonProps
+  extends VariantProps<typeof tableSkeletonVariantsCva> {
+  cols: number;
+}
+
+const CellSkeleton = ({
+  variant,
+}: VariantProps<typeof tableSkeletonVariantsCva>) => (
+  <TableCell>
+    <div
+      className={cn(tableSkeletonVariantsCva({ variant }), 'h-4 w-32 rounded')}
+    />
+  </TableCell>
+);
+
+const HeaderSkeleton = ({
+  variant,
+}: VariantProps<typeof tableSkeletonVariantsCva>) => (
+  <TableHead>
+    <div
+      className={cn(tableSkeletonVariantsCva({ variant }), 'h-4 w-16 rounded')}
+    />
+  </TableHead>
+);
+
+const FooterSkeleton = ({
+  variant,
+}: VariantProps<typeof tableSkeletonVariantsCva>) => (
+  <TableCell>
+    <div
+      className={cn(tableSkeletonVariantsCva({ variant }), 'h-4 w-16 rounded')}
+    />
+  </TableCell>
+);
+
+const SkeletonRow: React.FC<ColsSkeletonProps> = ({ cols, variant }) => (
+  <TableRow className="animate-pulse">
+    {Array.from({ length: cols }, (_, i) => (
+      <CellSkeleton variant={variant} key={i} />
+    ))}
+  </TableRow>
+);
+
+const HeaderRowSkeleton: React.FC<ColsSkeletonProps> = ({ cols, variant }) => (
+  <TableHeader className="animate-pulse">
+    <TableRow>
+      {Array.from({ length: cols }, (_, i) => (
+        <HeaderSkeleton variant={variant} key={i} />
+      ))}
+    </TableRow>
+  </TableHeader>
+);
+
+interface TableSkeletonProps extends ColsSkeletonProps {
+  rows: number;
+}
+
+const TableSkeleton: React.FC<TableSkeletonProps> = ({
+  rows,
+  cols,
+  variant,
+}) => (
+  <Table>
+    <HeaderRowSkeleton cols={cols} variant={variant} />
+    <TableBody>
+      {Array.from({ length: rows }, (_, i) => (
+        <SkeletonRow key={i} cols={cols} variant={variant} />
+      ))}
+    </TableBody>
+    <TableFooter variant={variant}>
+      {/* <FooterRowSkeleton cols={cols} /> */}
+    </TableFooter>
+  </Table>
+);
+
 export {
   Table,
   TableBody,
@@ -114,4 +203,5 @@ export {
   TableHead,
   TableHeader,
   TableRow,
+  TableSkeleton,
 };
