@@ -33,7 +33,8 @@ jobs:
       parallel-commands: |
         pnpm nx format:check --verbose
         pnpm nx affected --target=test-integration --parallel=false --ci --code-coverage
-        pnpm nx affected --target=e2e --skipInstall
+        # TODO put in a separate job executed manually in order to be allowed to merge on staging
+        # pnpm nx affected --target=e2e --skipInstall
       parallel-commands-on-agents: |
         pnpm affected:parallel-ci
   agents:
