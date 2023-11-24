@@ -1,12 +1,15 @@
+import { CurrencyRates } from '@currency/types';
 import env from '@env/server';
 import * as kycApi from '@features/kyc-api';
 import { adminSdk } from '@gql/admin/api';
 import {
+  Currency_Enum,
   KycStatus_Enum,
   Locale,
   OrderStatus_Enum,
   StripeCheckoutSessionType_Enum,
 } from '@gql/shared/types';
+import { calculateUnitAmount } from '@next/currency-common';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import { StripeCustomer } from '@payment/types';
 import { accounts } from '@test-utils/gql';
@@ -14,6 +17,18 @@ import { Payment } from './payment-admin';
 
 jest.mock('@nft/thirdweb-admin');
 jest.mock('@features/kyc-api');
+jest.mock('@next/currency-cache', () => {
+  return {
+    CurrencyCache: jest.fn().mockImplementation(() => {
+      return {
+        getRates: jest.fn().mockResolvedValue({
+          EUR: { USD: 1.18, EUR: 1 },
+          USD: { USD: 1, EUR: 0.85 },
+        }),
+      };
+    }),
+  };
+});
 
 describe('Payment', () => {
   let payment: Payment;
@@ -386,7 +401,6 @@ describe('Payment', () => {
       payment.moveEventPassPendingOrdersToConfirmed = jest
         .fn()
         .mockResolvedValue(eventPassOrders);
-
       await payment.createStripeCheckoutSession({
         user: accounts.alpha_user,
         stripeCustomer: stripeCustomer as StripeCustomer,
@@ -605,12 +619,13 @@ describe('Payment', () => {
     });
   });
   describe('confirmedStripeCheckoutSession', () => {
-    it('should call getEventPassOrdersFromStripeCheckoutSession, nftClaimable.claimAllMetadatas, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
+    it('should call getEventPassOrdersFromStripeCheckoutSession, nftClaimable.checkOrder, markEventPassOrderAsCompleted, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
       const stripeCheckoutSessionId = 'sessionId';
       const orders = [{ id: 'order1' }, { id: 'order2' }];
       payment.getEventPassOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue(orders);
+      payment.nftClaimable.checkOrder = jest.fn().mockResolvedValue({});
       adminSdk.DeleteStripeCheckoutSession = jest.fn().mockResolvedValue({});
 
       await payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId });
@@ -618,6 +633,15 @@ describe('Payment', () => {
       expect(
         payment.getEventPassOrdersFromStripeCheckoutSession,
       ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
+      expect(payment.nftClaimable.checkOrder).toHaveBeenCalledTimes(
+        orders.length,
+      );
+      orders.forEach((order, index) => {
+        expect(payment.nftClaimable.checkOrder).toHaveBeenNthCalledWith(
+          index + 1,
+          order,
+        );
+      });
       expect(adminSdk.DeleteStripeCheckoutSession).toHaveBeenCalledWith({
         stripeSessionId: stripeCheckoutSessionId,
       });
@@ -635,31 +659,21 @@ describe('Payment', () => {
       expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
 
-    it('should throw an error when checkOrder fails for one of the orders', async () => {
-      const orders = [
-        { id: 'order1', eventPassPricing: { priceAmount: 100 }, quantity: 2 },
-        { id: 'order2', eventPassPricing: { priceAmount: 150 }, quantity: 3 },
-      ];
-      payment.getEventPassOrdersFromStripeCheckoutSession = jest
-        .fn()
-        .mockResolvedValue(orders);
+    it('should throw an error when checkOrder fails', async () => {
       payment.nftClaimable.checkOrder = jest
         .fn()
-        .mockImplementation((order) => {
-          if (order.id === 'order2') {
-            throw new Error('Failed to claim NFTs');
-          }
-        });
+        .mockRejectedValue(new Error('Failed to claim NFTs'));
+      payment.getEventPassOrdersFromStripeCheckoutSession = jest
+        .fn()
+        .mockResolvedValue([{ id: 'order1' }, { id: 'order2' }]);
       adminSdk.DeleteStripeCheckoutSession = jest.fn();
 
       await expect(
         payment.confirmedStripeCheckoutSession({
           stripeCheckoutSessionId: 'test',
         }),
-      ).rejects.toThrow('Some orders failed for an amount of : 450');
-      expect(adminSdk.DeleteStripeCheckoutSession).toHaveBeenCalledWith({
-        stripeSessionId: 'test',
-      });
+      ).rejects.toThrow('Error claiming NFTs : Failed to claim NFTs');
+      expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
   });
   describe('refundPayment', () => {
@@ -707,5 +721,122 @@ describe('Payment', () => {
         `Refund failed for paymentIntentId: ${paymentIntentId} with status: ${refund.status}`,
       );
     });
+  });
+
+  describe('calculateUnitAmount', () => {
+    it('should return calculated amount if currency is not the same as priceCurrency and currency has a lower rate', () => {
+      const order = {
+        eventPassPricing: {
+          amount: 100,
+          currency: Currency_Enum.Usd,
+        },
+      };
+      const rates = {
+        USD: {
+          USD: 1,
+          EUR: 0.85,
+        },
+        EUR: {
+          USD: 1.15,
+          EUR: 1,
+        },
+      } as CurrencyRates;
+
+      const result = calculateUnitAmount(order.eventPassPricing, rates);
+
+      expect(result).toEqual(85);
+    });
+  });
+
+  it('should return calculated amount if currency is not the same as priceCurrency and currency has a higher rate', () => {
+    const order = {
+      eventPassPricing: {
+        amount: 100,
+        currency: Currency_Enum.Usd,
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 1.15,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 0.85,
+      },
+    } as CurrencyRates;
+
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
+
+    expect(result).toEqual(115);
+  });
+
+  it('should return calculated amount if currency is not the same complex amount', () => {
+    const order = {
+      eventPassPricing: {
+        amount: 123456,
+        currency: Currency_Enum.Usd,
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 0.85,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 1.15,
+      },
+    } as CurrencyRates;
+
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
+
+    expect(result).toEqual(104938);
+  });
+
+  it('should return calculated amount if currency is not the same complex amount complex rate', () => {
+    const order = {
+      eventPassPricing: {
+        amount: 123456789,
+        currency: Currency_Enum.Usd,
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 0.798,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 1.15,
+      },
+    } as CurrencyRates;
+
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
+
+    expect(result).toEqual(98518518);
+  });
+
+  it('should handle large priceAmount without overflow', () => {
+    const order = {
+      eventPassPricing: {
+        amount: Number.MAX_SAFE_INTEGER,
+        currency: Currency_Enum.Usd,
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 0.85,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 1.15,
+      },
+    } as CurrencyRates;
+
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
+
+    expect(result).toBeCloseTo(Number.MAX_SAFE_INTEGER * 0.85);
   });
 });

@@ -866,8 +866,7 @@ export type Event = Entity & Node & {
    * This is only for information purpose but it should match your 'Event Pass' locations and dates
    */
   eventDateLocations: Array<EventDateLocation>;
-  eventParameters: Array<EventParameters>;
-  eventParameters_aggregate: EventParameters_Aggregate;
+  eventParameters?: Maybe<EventParameters>;
   eventPasses: Array<EventPass>;
   heroImage: Asset;
   /** List of Event versions */
@@ -932,26 +931,6 @@ export type EventEventDateLocationsArgs = {
   orderBy?: InputMaybe<EventDateLocationOrderByInput>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<EventDateLocationWhereInput>;
-};
-
-
-/** Root event model */
-export type EventEventParametersArgs = {
-  distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventParameters_Order_By>>;
-  where?: InputMaybe<EventParameters_Bool_Exp>;
-};
-
-
-/** Root event model */
-export type EventEventParameters_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventParameters_Order_By>>;
-  where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
 
@@ -11351,7 +11330,9 @@ export type Query_Root = {
   entities?: Maybe<Array<Entity>>;
   /** Retrieve a single event */
   event?: Maybe<Event>;
+  /** fetch data from the table: "eventParameters" */
   eventParameters: Array<EventParameters>;
+  /** fetch aggregated fields from the table: "eventParameters" */
   eventParameters_aggregate: EventParameters_Aggregate;
   /** fetch data from the table: "eventParameters" using primary key columns */
   eventParameters_by_pk?: Maybe<EventParameters>;
@@ -13268,7 +13249,9 @@ export type Subscription_Root = {
   currency_by_pk?: Maybe<Currency>;
   /** fetch data from the table in a streaming manner: "currency" */
   currency_stream: Array<Currency>;
+  /** fetch data from the table: "eventParameters" */
   eventParameters: Array<EventParameters>;
+  /** fetch aggregated fields from the table: "eventParameters" */
   eventParameters_aggregate: EventParameters_Aggregate;
   /** fetch data from the table: "eventParameters" using primary key columns */
   eventParameters_by_pk?: Maybe<EventParameters>;
