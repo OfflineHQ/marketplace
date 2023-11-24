@@ -43,7 +43,7 @@ const HelperText: React.FC<HelperTextProps> = ({
   return (
     <>
       <input className="peer hidden" disabled={disabled} aria-hidden="true" />
-      {children || message ? (
+      {children || (Array.isArray(message) ? message.length > 0 : message) ? (
         <div className={helperTextClasses} id={id} {...props}>
           {children}
           {message && renderMessage()}

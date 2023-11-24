@@ -206,6 +206,7 @@ export {
   TableHead,
   TableHeader,
   TableRow,
+  TableSkeleton,
 } from './lib/table/Table';
 
 export {
