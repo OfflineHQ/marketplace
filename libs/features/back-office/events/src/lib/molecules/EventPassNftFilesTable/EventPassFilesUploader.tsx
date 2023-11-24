@@ -7,7 +7,7 @@ import env from '@env/client';
 import * as Bytescale from '@bytescale/sdk';
 import { getNextAppURL } from '@shared/client';
 
-export type EventPassNftFilesTableProps = GetEventPassNftFilesProps
+export type EventPassNftFilesTableProps = GetEventPassNftFilesProps;
 
 export async function EventPassNftFilesUploader({
   eventPass,
