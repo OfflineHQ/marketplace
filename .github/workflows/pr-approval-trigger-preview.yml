@@ -6,7 +6,7 @@ on:
 
 jobs:
   preview-apps:
-    if: github.event.review.state == 'approved' && github.event.pull_request.base.ref != 'main' && github.event.pull_request.base.ref != 'staging'
+    if: github.event.review.state == 'approved' && github.event.pull_request.base.ref != 'main'
     runs-on: ubuntu-latest
     environment: preview
     steps:
@@ -17,7 +17,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           inputs: '{"branch": "${{ github.head_ref }}"}'
   e2e:
-    if: github.event.review.state == 'approved' && github.event.pull_request.base.ref != 'main' && github.event.pull_request.base.ref != 'staging'
+    if: github.event.review.state == 'approved' && github.event.pull_request.base.ref != 'main'
     runs-on: ubuntu-latest
     environment: preview
     steps:
