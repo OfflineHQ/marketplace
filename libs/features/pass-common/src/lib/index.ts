@@ -1,9 +1,9 @@
 // TODO: use env, shouldn't use client and server side env indifferently
-type GetEventPassOrganizerFolderPath = {
+export interface GetEventPassOrganizerFolderPath {
   organizerId: string;
   eventId: string;
   eventPassId: string;
-};
+}
 
 interface GetPassOrganizer extends GetEventPassOrganizerFolderPath {
   tokenId: string;

@@ -82,26 +82,26 @@ export function EventsTable({
         return value.includes(row.getValue(id));
       },
     },
-    {
-      accessorKey: 'eventParameters.dateStart',
-      meta: {
-        title: t('header-date-start'),
-      },
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title={t('header-date-start')}
-          controlText={headerControlText}
-        />
-      ),
-      cell: ({ row }) => {
-        return (
-          <div className="flex items-center">
-            <span>{row.getValue('eventParameters.dateStart')}</span>
-          </div>
-        );
-      },
-    },
+    // {
+    //   accessorKey: 'eventParameters.dateStart',
+    //   meta: {
+    //     title: t('header-date-start'),
+    //   },
+    //   header: ({ column }) => (
+    //     <DataTableColumnHeader
+    //       column={column}
+    //       title={t('header-date-start')}
+    //       controlText={headerControlText}
+    //     />
+    //   ),
+    //   cell: ({ row }) => {
+    //     return (
+    //       <div className="flex items-center">
+    //         <span>{row.getValue('eventParameters.dateStart')}</span>
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       id: 'actions',
       meta: {
