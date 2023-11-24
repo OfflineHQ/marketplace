@@ -1,4 +1,4 @@
-name: 'E2E'
+name: 'e2e'
 
 on:
   workflow_dispatch:
