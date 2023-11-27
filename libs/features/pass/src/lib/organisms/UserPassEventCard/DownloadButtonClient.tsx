@@ -30,7 +30,6 @@ export const DownloadButtonClient: React.FC<DownloadButtonClientProps> = ({
   const { toast } = useToast();
   const handleAction = async () => {
     try {
-      console.log({ eventPassNftContract });
       await batchDownloadOrReveal(
         `${eventPassNftContract.eventPass?.event?.slug}-${slugify(
           eventPassNftContract.eventPass?.name || '',

@@ -1,17 +1,17 @@
 'use client';
 
 import * as Bytescale from '@bytescale/sdk';
+import env from '@env/client';
 import { getEventPassRevealedFilePath, revealPass } from '@features/pass-api';
 import { EventWithEventPassNfts } from '@features/pass-types';
 import { getCurrentUser } from '@next/next-auth/user';
 import { getNextAppURL } from '@shared/client';
 import { revalidateTag } from 'next/cache';
-import { env } from 'process';
 
 async function downloadPass(slug: string, id: string, tokenId: string) {
   try {
     await Bytescale.AuthManager.beginAuthSession({
-      accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID || 'FW25ba3',
+      accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
       authUrl: `${getNextAppURL()}/api/bytescale/jwt`,
       authHeaders: async () => Promise.resolve({}),
     });
@@ -21,11 +21,11 @@ async function downloadPass(slug: string, id: string, tokenId: string) {
 
     const fileApi = new Bytescale.FileApi({
       fetchApi: fetch,
-      apiKey: 'public_FW25ba36mEdkrUv4r6qd45EtSRpT',
+      apiKey: env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY,
     });
 
     const fileData = await fileApi.downloadFile({
-      accountId: 'FW25ba3',
+      accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
       filePath: filePath,
     });
 
