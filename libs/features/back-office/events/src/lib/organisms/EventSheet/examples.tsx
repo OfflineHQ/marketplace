@@ -3,7 +3,11 @@ import { WithSuperAdminRole } from '@features/back-office/app-nav/stories';
 import { Currency_Enum } from '@gql/shared/types';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { Sheet, SheetContent } from '@ui/components';
-import { EventSheet, type EventSheetProps } from './EventSheet';
+import {
+  EventSheet,
+  EventSheetSkeleton,
+  type EventSheetProps,
+} from './EventSheet';
 
 export const event: EventSheetProps['event'] = {
   title: 'Epic Music Festival',
@@ -61,6 +65,18 @@ export const EventSheetExample = (props: EventSheetProps) => {
           </Sheet>
         </AuthProvider>
       </NextAuthProvider>
+    </AppNavLayout>
+  );
+};
+
+export const EventSheetSkeletonExample = () => {
+  return (
+    <AppNavLayout {...WithSuperAdminRole.args}>
+      <Sheet open={true}>
+        <SheetContent size={'full'}>
+          <EventSheetSkeleton />
+        </SheetContent>
+      </Sheet>
     </AppNavLayout>
   );
 };

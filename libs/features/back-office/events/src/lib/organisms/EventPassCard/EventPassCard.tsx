@@ -1,4 +1,15 @@
-import { Card, CardDescription, CardHeader, CardTitle } from '@ui/components';
+import {
+  AccordionSkeleton,
+  ButtonSkeleton,
+  Card,
+  CardContent,
+  CardDescription,
+  CardDescriptionSkeleton,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardTitleSkeleton,
+} from '@ui/components';
 import {
   EventPassCardContent,
   type EventPassCardContentProps,
@@ -19,6 +30,23 @@ export const EventPassCard = ({ eventPass, ...props }: EventPassCardProps) => {
       </CardHeader>
       <EventPassCardContent eventPass={eventPass} {...props} />
       <EventPassCardFooter eventPass={eventPass} />
+    </Card>
+  );
+};
+
+export const EventPassCardSkeleton = () => {
+  return (
+    <Card className="flex flex-col" variant="distinct">
+      <CardHeader className="space-y-4">
+        <CardTitleSkeleton color="highlight" />
+        <CardDescriptionSkeleton color="highlight" />
+      </CardHeader>
+      <CardContent>
+        <AccordionSkeleton numItems={2} color="highlight" />
+      </CardContent>
+      <CardFooter>
+        <ButtonSkeleton className="w-full" color="highlight" />
+      </CardFooter>
     </Card>
   );
 };

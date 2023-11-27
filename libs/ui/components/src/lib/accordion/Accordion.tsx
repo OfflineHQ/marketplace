@@ -4,6 +4,7 @@ import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { ChevronDown } from '@ui/icons';
 import { cn } from '@ui/shared';
 import * as React from 'react';
+import { TextSkeleton, TextSkeletonProps } from '../text/Text';
 
 const Accordion = AccordionPrimitive.Root;
 
@@ -56,4 +57,39 @@ const AccordionContent = React.forwardRef<
 ));
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
-export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };
+const AccordionItemSkeleton = React.forwardRef<
+  HTMLDivElement,
+  TextSkeletonProps
+>(({ className, ...props }, ref) => (
+  <div className="border-b">
+    <div className="flex flex-1 items-center justify-between py-4 font-medium transition-all [&:not([data-disabled])]:hover:underline [&[data-state=open]>svg]:rotate-180">
+      <TextSkeleton variant="h4" {...props} />
+      <ChevronDown className="opacity-30" />
+    </div>
+  </div>
+));
+AccordionItemSkeleton.displayName = 'AccordionItemSkeleton';
+
+interface AccordionSkeletonProps extends TextSkeletonProps {
+  numItems: number;
+}
+
+const AccordionSkeleton: React.FC<AccordionSkeletonProps> = ({
+  numItems,
+  ...props
+}) => (
+  <Accordion type="single">
+    {Array.from({ length: numItems }, (_, i) => (
+      <AccordionItemSkeleton key={i} {...props} />
+    ))}
+  </Accordion>
+);
+
+export {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionItemSkeleton,
+  AccordionSkeleton,
+  AccordionTrigger,
+};

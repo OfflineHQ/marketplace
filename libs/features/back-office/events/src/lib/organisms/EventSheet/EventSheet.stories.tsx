@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { EventSheetExample, event } from './examples';
+import {
+  EventSheetExample,
+  EventSheetSkeletonExample,
+  event,
+} from './examples';
 
 import { EventSheet } from './EventSheet';
 
@@ -27,4 +31,8 @@ export const WithMobile: Story = {
       defaultViewport: 'mobile1',
     },
   },
+};
+
+export const Skeleton: Story = {
+  render: () => <EventSheetSkeletonExample />,
 };
