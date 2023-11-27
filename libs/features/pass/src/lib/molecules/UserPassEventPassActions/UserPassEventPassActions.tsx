@@ -10,6 +10,7 @@ import type { ErrorWithMessage } from '@utils';
 import { slugify } from '@utils';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { slugify } from '@utils';
 
 
 export type UserPassEventPassActionsFunctionsProps = {
