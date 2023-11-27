@@ -103,9 +103,9 @@
       "continue-shopping-button": "Aller à la page d'accueil"
     },
     "Cancelled": {
+      "title": "Achat annulé",
       "description": "Votre achat a été annulé avec succès. Nous sommes désolés de vous voir partir. Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contacter. N'hésitez pas à continuer vos achats si vous changez d'avis.",
-      "continue-shopping-button": "Aller à la page d'accueil",
-      "title": "Achat annulé"
+      "continue-shopping-button": "Aller à la page d'accueil"
     }
   },
   "Pass": {
@@ -244,6 +244,65 @@
     }
   },
   "OrganizerEvents": {
-    "no-events": "Vous n'avez pas encore d'événement."
+    "no-events": "Vous n'avez pas encore d'événement.",
+    "Table": {
+      "header-title": "Titre",
+      "header-slug": "Slug",
+      "header-date-start": "Date de début",
+      "header-edit": "Éditer",
+      "title": "Gestion des événements",
+      "search-placeholder": "Filtrer les événements..."
+    },
+    "Sheet": {
+      "EventPassCard": {
+        "EventPassNftsInfos": {
+          "title": "Informations sur les NFTs",
+          "name": "Nom",
+          "description": "Description",
+          "max-amount": "Quantitée",
+          "max-amount-per-user": "Quantitée par utilisateur",
+          "price": "Prix",
+          "no-event-pass-pricing": "Aucun prix et quantitée définis pour ce pass.",
+          "image": "Image"
+        },
+        "EventPassNftFiles": {
+          "title": "Pass associés à vos NFTs"
+        },
+        "EventPassNftFilesTable": {
+          "header-file-path": "Fichier",
+          "header-show": "Montrer le fichier",
+          "header-delete": "Supprimer le fichier"
+        },
+        "EventPassCardFooter": {
+          "deploy-contract": "Déployer le contrat NFTs",
+          "no-pricing-set": "Vous devez d'abord définir les paramètres de vos NFTs.",
+          "copied-contract-address": "Adresse du contrat copiée"
+        }
+      },
+      "go-back-to-events": "Retournez aux événements"
+    }
+  },
+  "UI": {
+    "Table": {
+      "no-results": "Pas de résultat.",
+      "column-header-asc": "Trier par ordre ascendant",
+      "column-header-desc": "Trier par order descendant",
+      "column-header-hide": "Cacher la colonne",
+      "pagination-row-of": "sur",
+      "pagination-row-selected": "séléctionné(es)",
+      "pagination-rows-per-page": "Lignes par page",
+      "pagination-page": "Page",
+      "pagination-first-page": "Première page",
+      "pagination-previous-page": "Page précédente",
+      "pagination-next-page": "Prochaine page",
+      "pagination-page-of": "sur",
+      "pagination-last-page": "Dernière page",
+      "filters-reset": "Réinitialiser",
+      "filters-value-selected": "valeur(s) sélectionnée(s)",
+      "filters-no-result-found": "pas de résultat trouvé",
+      "filters-clear-filters": "effacer les filtres",
+      "toggle-columns-view": "Vue",
+      "toggle-columns-toggle-columns": "Sélectionner les colonnes"
+    }
   }
 }

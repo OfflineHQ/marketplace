@@ -1,7 +1,5 @@
 'use client';
 
-import { Link } from '@next/navigation';
-import { PropsFrom } from '@next/types';
 import type { DialogPortalProps, DialogProps } from '@radix-ui/react-dialog';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { ChevronBack, Close } from '@ui/icons';
@@ -9,7 +7,6 @@ import { cn } from '@ui/shared';
 import { VariantProps, cva } from 'class-variance-authority';
 import * as React from 'react';
 import { ButtonSkeleton, buttonVariantsCva } from '../button/Button';
-import { backClasses } from '../shared/back';
 import { closeClasses } from '../shared/close';
 import { TextSkeleton } from '../text/Text';
 
@@ -29,6 +26,7 @@ const portalVariants = cva('fixed inset-0 z-50 flex', {
   defaultVariants: { position: 'right' },
 });
 
+const backClasses = 'absolute z-10 ml-2 mt-2';
 interface SheetPortalProps
   extends DialogPortalProps,
     VariantProps<typeof portalVariants> {}
@@ -117,8 +115,8 @@ function isFullWidth(
 }
 
 export interface SheetNavigationProps {
-  backButtonText?: string;
-  backButtonLink?: PropsFrom<typeof Link>;
+  backButtonText?: React.ReactNode;
+  wrapper?: React.ReactElement;
   backButtonAction?: () => void;
   position?: SheetContentProps['position'];
   size?: SheetContentProps['size'];
@@ -126,17 +124,16 @@ export interface SheetNavigationProps {
 
 const SheetNavigation: React.FC<SheetNavigationProps> = ({
   backButtonText,
-  backButtonLink,
+  wrapper,
   backButtonAction,
   position,
   size,
 }) => {
-  const closeButtonClasses = buttonVariantsCva({
-    variant: 'ghost',
-    size: 'sm',
-  });
-
   const renderButton = (buttonType: string) => {
+    const closeButtonClasses = buttonVariantsCva({
+      variant: buttonType === 'close' ? 'ghost' : 'secondary',
+      size: 'sm',
+    });
     const classNames = cn(
       buttonType === 'close' ? closeClasses : backClasses,
       closeButtonClasses,
@@ -149,28 +146,22 @@ const SheetNavigation: React.FC<SheetNavigationProps> = ({
         ? null
         : backButtonText && <div className="pl-2">{backButtonText}</div>;
 
-    return (
+    const button = (
       <SheetPrimitive.Close
         data-testid={testId}
         className={classNames}
         onClick={backButtonAction}
       >
-        <Icon /> {buttonText}
+        <Icon size={buttonType === 'close' ? 'lg' : 'sm'} /> {buttonText}
       </SheetPrimitive.Close>
     );
+
+    return wrapper ? React.cloneElement(wrapper, {}, button) : button;
   };
 
-  return backButtonLink ? (
-    <Link {...backButtonLink} passHref>
-      {isFullWidth(position, size)
-        ? renderButton('back')
-        : renderButton('close')}
-    </Link>
-  ) : isFullWidth(position, size) ? (
-    renderButton('back')
-  ) : (
-    renderButton('close')
-  );
+  return isFullWidth(position, size)
+    ? renderButton('back')
+    : renderButton('close');
 };
 
 const SheetNavigationSkeleton: React.FC<SheetNavigationProps> = ({
@@ -231,7 +222,7 @@ const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
       <div
         className={cn(
           `flex flex-col space-y-2 text-center sm:text-left px-6 pt-6 ${
-            isFullWidth(position, size) && 'pt-12 md:pt-14'
+            isFullWidth(position, size) && 'pt-16'
           }`,
           className,
         )}

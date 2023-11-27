@@ -43,3 +43,15 @@ export const AllVariants: Story = {
     },
   },
 };
+
+export const WithMessage: Story = {
+  args: {
+    message: 'This is a message',
+  },
+};
+
+export const WithSeveralMessages: Story = {
+  args: {
+    message: ['This is a message', 'This is another message'],
+  },
+};

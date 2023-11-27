@@ -78,22 +78,11 @@ export async function stripeCheckoutStatus(
         });
       } catch (err) {
         //TODO: refund only if NFT not released ! filter the error depending of that.
-        console.log(err.message);
-        if (!err.message?.includes('Some orders failed')) {
+        if (!err.message?.includes('Error claiming NFTs'))
           return new Response(
             `ConfirmedStripeCheckoutSession Error: ${err.message}`,
             { status: 500 },
           );
-        }
-
-        let refundAmount: number | undefined;
-
-        if (err.message?.includes('Some orders failed')) {
-          const match = err.message?.match(
-            /Some orders failed for an amount of : (\d+)/,
-          );
-          refundAmount = match ? parseInt(match[1]) : 0;
-        }
 
         //TODO: notify user and refund order because NFT not released.
         try {
@@ -112,11 +101,6 @@ export async function stripeCheckoutStatus(
               `No payment_intent found for refund in checkoutSession: ${checkoutSession.id}`,
               { status: 500 },
             );
-          } else if (paymentIntentId && refundAmount) {
-            await payment.refundPartialPayment({
-              paymentIntentId,
-              amount: refundAmount,
-            });
           } else {
             await payment.refundPayment({
               paymentIntentId,

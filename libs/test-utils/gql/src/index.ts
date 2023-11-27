@@ -59,7 +59,7 @@ export const accounts = {
     address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
     email: 'alpha_user@test.io',
     kyc: {
-      applicantId: '64d5f7a58f241166d756ba33',
+      applicantId: '653bb6d8f8865a0b96363bf3',
       reviewStatus: KycStatus_Enum.Completed,
       levelName: KycLevelName_Enum.BasicKycLevel,
     },

@@ -1,22 +1,22 @@
+import { Currency_Enum_Not_Const } from '@currency/types';
+import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
+import { CurrencyCache } from '@next/currency-cache';
 import { CurrencyProvider } from '@next/currency-provider';
 import { getMessages, locales } from '@next/i18n';
+import { getSession, isConnected } from '@next/next-auth/user';
 import { ReactQueryProviders } from '@next/react-query';
+import { isLocal } from '@shared/server';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { Analytics } from '@web/components/Analytics';
 import { siteConfig } from '@web/config/site';
 import { Metadata, Viewport } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
-import { Currency_Enum_Not_Const } from '@currency/types';
-import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
-import { CurrencyCache } from '@next/currency-cache';
-import { getSession, isConnected } from '@next/next-auth/user';
-import { isLocal } from '@shared/server';
 
 const fontSans = FontSans({
   subsets: ['latin'],

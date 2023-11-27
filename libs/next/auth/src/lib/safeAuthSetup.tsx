@@ -4,7 +4,6 @@
 import { AuthKitSignInData, Web3AuthModalPack } from '@next/safe/auth';
 import { getNextAppURL } from '@shared/client';
 import { ToastAction, useToast } from '@ui/components';
-import { isCypressRunning } from '@utils';
 import { MetamaskAdapter } from '@web3auth/metamask-adapter';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -39,7 +38,7 @@ const chainConfigs: Record<string, ChainConfig> = {
   '5': {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     rpcTarget:
-      'https://eth-goerli.g.alchemy.com/v2/XGWYfxudDv5ACSpZegVCjkgSrskOpG3v',
+      'https://eth-goerli.g.alchemy.com/v2/suWCSUU8QCZyA8U4VHEXzGYJZobJPSfc',
     chainId: '0x5',
     displayName: 'Ethereum Goerli',
     blockExplorer: 'https://goerli.etherscan.io/',
@@ -50,7 +49,7 @@ const chainConfigs: Record<string, ChainConfig> = {
   },
   '11155111': {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    rpcTarget: 'https://eth-sepolia.g.alchemy.com/v2/OUR_API_KEY', // TODO add an alchemy app
+    rpcTarget: 'https://eth-sepolia.g.alchemy.com/v2/YOUR_API_KEY', // TODO add an alchemy app
     chainId: '0xaa36a7',
     displayName: 'Ethereum Sepolia',
     blockExplorer: 'https://sepolia.etherscan.io/',
@@ -146,7 +145,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
     if (!safeAuth) return;
 
     let userInfo: Partial<UserInfo> = {};
-    if (!isCypressRunning()) userInfo = await safeAuth.getUserInfo();
+    userInfo = await safeAuth.getUserInfo();
     let eoa: AuthKitSignInData['eoa'] = safeUser?.eoa || '';
     let safes: AuthKitSignInData['safes'] = safeUser?.safes || [];
     // here mean the page have been refreshed, so we need to get the AuthKitSignInData again
@@ -230,8 +229,6 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   const loginSiwe = useCallback(
     async (signer: ethers.Signer) => {
       try {
-        // don't run this function if cypress is running, cannot mock the signature so directly provide the cookie instead
-        if (isCypressRunning()) return;
         if (isSigningInRef.current) {
           console.log('Already signing in with SIWE, ignoring extra call...');
           return;
@@ -249,9 +246,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
           nonce: await getCsrfToken(),
         });
         const signature = await signer?.signMessage(message.prepareMessage());
-        const userInfo = !isCypressRunning()
-          ? await safeAuth?.getUserInfo()
-          : {};
+        const userInfo = await safeAuth?.getUserInfo();
         const signInRes = await signIn('credentials', {
           message: JSON.stringify(message),
           redirect: false,
@@ -457,7 +452,10 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         setConnecting(true),
       );
       // here evaluate if user is logged in with web3auth. If it's not the case we logout the user from next auth.
-      if (web3AuthModalPack?.web3Auth?.connected) {
+      if (
+        web3AuthModalPack?.web3Auth?.connected ||
+        process.env.NEXT_PUBLIC_PLAYWRIGHT
+      ) {
         setConnecting(true);
       } else {
         handleUnauthenticatedUser();

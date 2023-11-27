@@ -1,5 +1,12 @@
-import type { GetEventsFromOrganizerIdQuery } from '@gql/admin/types';
+import type {
+  GetEventWithPassesOrganizerQuery,
+  GetEventsFromOrganizerIdTableQuery,
+} from '@gql/admin/types';
 
-export type EventFromOrganizer = NonNullable<
-  NonNullable<GetEventsFromOrganizerIdQuery['organizer']>['events']
+export type EventFromOrganizerWithPasses = NonNullable<
+  GetEventWithPassesOrganizerQuery['event']
+>;
+
+export type EventFromOrganizerTable = NonNullable<
+  NonNullable<GetEventsFromOrganizerIdTableQuery['organizer']>['events']
 >[0];
