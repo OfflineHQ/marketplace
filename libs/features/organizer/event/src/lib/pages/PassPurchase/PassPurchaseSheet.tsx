@@ -11,7 +11,7 @@ import {
   type SheetNavigationProps,
 } from '@ui/components';
 import { useLocale } from 'next-intl';
-import Link from 'next/link';
+import Link, { LinkProps } from 'next/link';
 import { PassFooterServer } from '../../organisms/PassFooter/PassFooterServer';
 import {
   PassFooterSheet,
@@ -29,6 +29,7 @@ export interface PassPurchaseSheetProps
     PassFooterSheetProps {
   title: string;
   description: string;
+  closeLink: LinkProps;
 }
 
 export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
@@ -40,6 +41,7 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
   organizerSlug,
   eventSlug,
   hasConfirmedPasses,
+  closeLink,
   ...footerProps
 }) => {
   const locale = useLocale();
@@ -66,11 +68,7 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
         />
       </PassFooterServer>
       <SheetNavigation
-        wrapper={
-          <Link
-            href={`/${locale}/organizer/${organizerSlug}/event/${eventSlug}`}
-          />
-        }
+        wrapper={<Link {...closeLink} />}
         backButtonText={backButtonText}
         size={size}
       />

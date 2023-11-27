@@ -2,6 +2,8 @@ export {
   Accordion,
   AccordionContent,
   AccordionItem,
+  AccordionItemSkeleton,
+  AccordionSkeleton,
   AccordionTrigger,
 } from './lib/accordion/Accordion';
 export {
@@ -195,7 +197,14 @@ export {
 export { Progress } from './lib/progress/Progress';
 export { Tooltip, TooltipWrapper } from './lib/tooltip/Tooltip';
 
-export { Tabs, TabsContent, TabsList, TabsTrigger } from './lib/tabs/Tabs';
+export {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsSkeleton,
+  TabsTrigger,
+  TabsTriggerSkeleton,
+} from './lib/tabs/Tabs';
 
 export {
   Table,

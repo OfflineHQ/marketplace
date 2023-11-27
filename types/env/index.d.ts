@@ -26,7 +26,6 @@ declare module '@env/server' {
     ALCHEMY_API_KEY: string;
     ALCHEMY_AUTH_TOKEN: string;
     CHAIN: string;
-    NX_CACHE_DIRECTORY: string;
     HASURA_PROJECT_ENDPOINT: string;
     HASURA_GRAPHQL_ADMIN_SECRET: string;
     HYGRAPH_STAGE: string;
