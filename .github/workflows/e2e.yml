@@ -22,4 +22,4 @@ jobs:
         run: pnpm docker:services
 
       - name: Run e2e tests
-        run: pnpm nx affected --target=e2e --skipInstall
+        run: pnpm nx run web:e2e --skipInstall

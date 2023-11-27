@@ -1,6 +1,8 @@
 'use client';
 import { EventWithEventPassNfts } from '@features/pass-types';
 import {
+  Badge,
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -8,23 +10,22 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  Text,
   Separator,
-  Badge,
-  Button,
+  Text,
   useToast,
   type DialogProps,
 } from '@ui/components';
 import { Reveal } from '@ui/icons';
+import { getErrorMessage, slugify } from '@utils';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { getErrorMessage } from '@utils';
 
 export interface RevealPassesDialogClientProps extends DialogProps {
   eventPassNftContract: EventWithEventPassNfts['eventPassNftContracts'][0];
   numPassNotRevealed: number;
   children: React.ReactNode;
   batchDownloadOrReveal: (
+    slug: string,
     eventPassNfts: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts'],
   ) => Promise<void>;
 }
@@ -48,7 +49,12 @@ export const RevealPassesDialogClient: React.FC<
         'eventPassNftContract.eventPassNfts',
         eventPassNftContract.eventPassNfts,
       );
-      await batchDownloadOrReveal(eventPassNftContract.eventPassNfts);
+      await batchDownloadOrReveal(
+        `${eventPassNftContract.eventPass?.event?.slug}-${slugify(
+          eventPassNftContract.eventPass?.name || '',
+        )}`,
+        eventPassNftContract.eventPassNfts,
+      );
       setOpen(false);
       toast({
         title: t('dialog-toast-success-title'),

@@ -121,15 +121,3 @@ jobs:
           else
             echo "Build not required - skipping Deploy Preview to Vercel"
           fi
-  comment:
-    needs: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Comment on Pull Request
-        uses: thollander/actions-comment-pull-request@v2
-        with:
-          message: >-
-            Neon branch :elephant: : https://console.neon.tech/app/projects/${{secrets.NEON_PROJECT_ID}}/branches/${{steps.create_branch.outputs.branch_id}}
-            Hasura Console :computer: : ${{steps.hasura_cloud_preview.outputs.consoleURL}}
-            ${{ env.PREVIEW_URL_web != '' && format('Vercel Preview URL for Marketplace :rocket: : {0}', env.PREVIEW_URL_web) || '' }}
-            ${{ env.PREVIEW_URL_back-office != '' && format('Vercel Preview URL for Back-Office :rocket: : {0}', env.PREVIEW_URL_back-office) || '' }}

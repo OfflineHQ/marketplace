@@ -315,6 +315,9 @@ export const RoleAssignmentsFieldsFragmentDoc = `
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name
+        event {
+          slug
+        }
         nftImage {
           url
         }
@@ -359,6 +362,9 @@ export const RoleAssignmentsFieldsFragmentDoc = `
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name
+        event {
+          slug
+        }
         nftImage {
           url
         }
