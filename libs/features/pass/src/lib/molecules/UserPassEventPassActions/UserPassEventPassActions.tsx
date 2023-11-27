@@ -1,4 +1,5 @@
 import type { EventWithEventPassNfts } from '@features/pass-types';
+import { getNextAppURL } from '@shared/server';
 import {
   DropdownMenuActions,
   type DropdownMenuActionsProps,
@@ -6,12 +7,12 @@ import {
 } from '@ui/components';
 import { Download, Reveal, SeeDetails, Send } from '@ui/icons';
 import type { ErrorWithMessage } from '@utils';
+import { slugify } from '@utils';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 export type UserPassEventPassActionsFunctionsProps = {
   actionsFunctions: {
-    downloadPass: (id: string) => void;
     revealPass: (id: string) => void;
     sendPass?: () => void;
   };
@@ -42,11 +43,6 @@ export const UserPassEventPassActions: React.FC<
       text: t('see-details'),
     },
   ];
-
-  async function downloadPass() {
-    'use server';
-    return actionsFunctions.downloadPass(eventPassNft.id);
-  }
 
   const downloadPassToastErrors = {
     title: t('action-download-toast-error-title'),
@@ -115,7 +111,13 @@ export const UserPassEventPassActions: React.FC<
       type: 'item',
       icon: <Download />,
       text: t('download-pass'),
-      action: downloadPass,
+      wrapper: (
+        <Link
+          href={`${getNextAppURL()}/api/downloadPass?id=${eventPassNft?.id}&tokenId=${eventPassNft?.tokenId}&slug=${event?.slug}-${slugify(
+            eventPass?.name || '',
+          )}`}
+        />
+      ),
       toastError: downloadPassToastError,
       toastSuccess: downloadPassToastSuccess,
     });

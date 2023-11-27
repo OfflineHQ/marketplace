@@ -1,8 +1,4 @@
-import {
-  batchDownloadOrReveal,
-  downloadPass,
-  revealPass,
-} from '@features/pass-actions';
+import { batchDownloadOrReveal, revealPass } from '@features/pass-actions';
 import { getPassedEventsWithEventPassNfts } from '@features/pass-api';
 import { UserPassList } from '@features/pass/server';
 import type { Locale } from '@gql/shared/types';
@@ -26,7 +22,6 @@ export default async function PassTabPast({
     currentDate: new Date().toUTCString(),
   });
   const actionsFunctions = {
-    downloadPass,
     revealPass,
   };
   return (
