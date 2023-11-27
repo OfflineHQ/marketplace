@@ -20,6 +20,7 @@ export const SeedTable = {
   eventPassNft: 9,
   nftTransfer: 10,
   roleAssignments: 11,
+  follow: 12,
 };
 
 export type SeedTableName = keyof typeof SeedTable;

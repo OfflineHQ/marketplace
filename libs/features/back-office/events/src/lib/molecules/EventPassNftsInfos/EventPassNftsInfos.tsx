@@ -27,9 +27,9 @@ export function EventPassNftsInfos({ eventPass }: EventPassNftsInfosProps) {
           <p className="text-right">
             <AspectRatio variant="classic">
               <Image
+                className="rounded-sm object-cover"
                 src={eventPass?.nftImage?.url || '/image-placeholder.svg'}
                 fill
-                style={{ objectFit: 'cover' }}
                 alt={eventPass.nftName}
               />
             </AspectRatio>

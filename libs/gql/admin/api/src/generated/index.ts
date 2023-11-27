@@ -42,6 +42,7 @@ export const EventListFieldsFragmentDoc = `
     height
     url
   }
+  heroImageClasses
 }
     `;
 export const OrganizerFieldsFragmentDoc = `
@@ -49,20 +50,10 @@ export const OrganizerFieldsFragmentDoc = `
   id
   slug
   name
-  description {
-    json
-    references {
-      ... on Asset {
-        __typename
-        id
-        url
-        mimeType
-      }
-    }
-  }
   image {
     url
   }
+  imageClasses
 }
     `;
 export const EventDateLocationsFieldsFragmentDoc = `
@@ -108,6 +99,7 @@ export const EventPassFieldsFragmentDoc = `
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -115,6 +107,7 @@ export const EventPassFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
   }
 }
@@ -417,6 +410,7 @@ ${KycFieldsFragmentDoc}`;
       image {
         url
       }
+      imageClasses
     }
     eventDateLocations {
       ...EventDateLocationsFields
@@ -434,13 +428,9 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
-      id
-      slug
-      name
-      image {
-        url
-      }
+      ...OrganizerFields
     }
     eventDateLocations {
       ...EventDateLocationsFields
@@ -458,7 +448,8 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     }
   }
 }
-    ${EventDateLocationsFieldsFragmentDoc}`;
+    ${OrganizerFieldsFragmentDoc}
+${EventDateLocationsFieldsFragmentDoc}`;
  const GetEventsFromOrganizerIdTableDocument = `
     query GetEventsFromOrganizerIdTable($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {id: $id}, locales: [$locale, en], stage: $stage) {
@@ -485,6 +476,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     heroImage {
       url
     }
+    heroImageClasses
     eventPasses {
       name
       id
@@ -662,13 +654,83 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+ const DeleteFollowOrganizerDocument = `
+    mutation DeleteFollowOrganizer($accountId: uuid!, $organizerSlug: String!) {
+  delete_follow_by_pk(accountId: $accountId, organizerSlug: $organizerSlug) {
+    organizerSlug
+  }
+}
+    `;
+ const CheckFollowingOrganizerDocument = `
+    query CheckFollowingOrganizer($accountId: uuid!, $organizerSlug: String!) {
+  follow_by_pk(accountId: $accountId, organizerSlug: $organizerSlug) {
+    accountId
+    organizerSlug
+  }
+}
+    `;
  const GetOrganizerDocument = `
     query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
-    ...OrganizerFields
+    slug
+    name
+    description {
+      json
+      references {
+        ... on Asset {
+          __typename
+          id
+          url
+          mimeType
+        }
+      }
+    }
+    image {
+      url
+    }
+    imageClasses
+    heroImage {
+      url
+    }
+    heroImageClasses
+    twitterHandle
+    instagramHandle
+    tiktokHandle
+    facebookHandle
+    youtubeHandle
+    telegramHandle
+    discordWidgetId
   }
 }
-    ${OrganizerFieldsFragmentDoc}`;
+    `;
+ const GetOrganizerFromSlugDocument = `
+    query GetOrganizerFromSlug($slug: String!, $stage: Stage!) @cached {
+  organizer(where: {slug: $slug}, locales: [en], stage: $stage) {
+    id
+    slug
+  }
+}
+    `;
+ const GetOrganizerLatestEventsDocument = `
+    query GetOrganizerLatestEvents($organizerId: String!, $locale: Locale!, $stage: Stage!) @cached {
+  eventParameters(
+    where: {organizerId: {_eq: $organizerId}}
+    order_by: {dateStart: desc}
+    limit: 3
+  ) {
+    dateStart
+    dateEnd
+    event(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      title
+      heroImage {
+        url
+      }
+      heroImageClasses
+    }
+  }
+}
+    `;
  const InsertEventParametersDocument = `
     mutation InsertEventParameters($objects: [eventParameters_insert_input!]!) {
   insert_eventParameters(objects: $objects) {
@@ -875,8 +937,20 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     UpdateEventPassPricing(variables: Types.UpdateEventPassPricingMutationVariables, options?: C): Promise<Types.UpdateEventPassPricingMutation> {
       return requester<Types.UpdateEventPassPricingMutation, Types.UpdateEventPassPricingMutationVariables>(UpdateEventPassPricingDocument, variables, options) as Promise<Types.UpdateEventPassPricingMutation>;
     },
+    DeleteFollowOrganizer(variables: Types.DeleteFollowOrganizerMutationVariables, options?: C): Promise<Types.DeleteFollowOrganizerMutation> {
+      return requester<Types.DeleteFollowOrganizerMutation, Types.DeleteFollowOrganizerMutationVariables>(DeleteFollowOrganizerDocument, variables, options) as Promise<Types.DeleteFollowOrganizerMutation>;
+    },
+    CheckFollowingOrganizer(variables: Types.CheckFollowingOrganizerQueryVariables, options?: C): Promise<Types.CheckFollowingOrganizerQuery> {
+      return requester<Types.CheckFollowingOrganizerQuery, Types.CheckFollowingOrganizerQueryVariables>(CheckFollowingOrganizerDocument, variables, options) as Promise<Types.CheckFollowingOrganizerQuery>;
+    },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
+    },
+    GetOrganizerFromSlug(variables: Types.GetOrganizerFromSlugQueryVariables, options?: C): Promise<Types.GetOrganizerFromSlugQuery> {
+      return requester<Types.GetOrganizerFromSlugQuery, Types.GetOrganizerFromSlugQueryVariables>(GetOrganizerFromSlugDocument, variables, options) as Promise<Types.GetOrganizerFromSlugQuery>;
+    },
+    GetOrganizerLatestEvents(variables: Types.GetOrganizerLatestEventsQueryVariables, options?: C): Promise<Types.GetOrganizerLatestEventsQuery> {
+      return requester<Types.GetOrganizerLatestEventsQuery, Types.GetOrganizerLatestEventsQueryVariables>(GetOrganizerLatestEventsDocument, variables, options) as Promise<Types.GetOrganizerLatestEventsQuery>;
     },
     InsertEventParameters(variables: Types.InsertEventParametersMutationVariables, options?: C): Promise<Types.InsertEventParametersMutation> {
       return requester<Types.InsertEventParametersMutation, Types.InsertEventParametersMutationVariables>(InsertEventParametersDocument, variables, options) as Promise<Types.InsertEventParametersMutation>;

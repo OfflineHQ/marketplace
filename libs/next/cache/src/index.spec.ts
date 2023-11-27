@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv';
+import { resetCache } from '@test-utils/cache';
 import { Cache } from './index';
 
 describe('Cache exists', () => {
@@ -12,7 +12,7 @@ describe('Cache with valid arguments', () => {
 
   beforeAll(async () => {
     cache = new Cache();
-    kv.flushall();
+    await resetCache();
   });
 
   describe('set', () => {

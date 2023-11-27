@@ -13,6 +13,7 @@ export const OrganizerFieldsFragmentDoc = `
   image {
     url
   }
+  imageClasses
   name
   slug
 }
@@ -60,6 +61,7 @@ export const EventPassFieldsFragmentDoc = `
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -67,6 +69,7 @@ export const EventPassFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
   }
 }
@@ -135,6 +138,7 @@ export const GetEventWithPassesDocument = `
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -142,6 +146,7 @@ export const GetEventWithPassesDocument = `
       image {
         url
       }
+      imageClasses
     }
     eventPasses {
       id
@@ -502,6 +507,22 @@ export const useGetKycQuery = <
       fetchDataReactQuery<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables),
       options
     );
+export const InsertFollowOrganizerDocument = `
+    mutation InsertFollowOrganizer($organizerSlug: String!) {
+  insert_follow_one(object: {organizerSlug: $organizerSlug}) {
+    organizerSlug
+  }
+}
+    `;
+export const useInsertFollowOrganizerMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<Types.InsertFollowOrganizerMutation, TError, Types.InsertFollowOrganizerMutationVariables, TContext>) =>
+    useMutation<Types.InsertFollowOrganizerMutation, TError, Types.InsertFollowOrganizerMutationVariables, TContext>(
+      ['InsertFollowOrganizer'],
+      (variables?: Types.InsertFollowOrganizerMutationVariables) => fetchDataReactQuery<Types.InsertFollowOrganizerMutation, Types.InsertFollowOrganizerMutationVariables>(InsertFollowOrganizerDocument, variables)(),
+      options
+    );
 export const GetPassedEventsWithEventPassNftsDocument = `
     query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
@@ -537,6 +558,7 @@ export const GetPassedEventsWithEventPassNftsDocument = `
       image {
         url
       }
+      imageClasses
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
       id
@@ -545,6 +567,7 @@ export const GetPassedEventsWithEventPassNftsDocument = `
       heroImage {
         url
       }
+      heroImageClasses
     }
   }
 }
@@ -596,6 +619,7 @@ export const GetUpcomingEventsWithEventPassNftsDocument = `
       image {
         url
       }
+      imageClasses
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
       id
@@ -604,6 +628,7 @@ export const GetUpcomingEventsWithEventPassNftsDocument = `
       heroImage {
         url
       }
+      heroImageClasses
     }
   }
 }

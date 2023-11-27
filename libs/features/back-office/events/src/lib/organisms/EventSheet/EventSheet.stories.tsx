@@ -27,6 +27,7 @@ export const Default: Story = {};
 
 export const WithMobile: Story = {
   parameters: {
+    layout: 'fullscreen',
     viewport: {
       defaultViewport: 'mobile1',
     },

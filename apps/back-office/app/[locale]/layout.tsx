@@ -8,7 +8,6 @@ import {
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { CurrencyCache } from '@next/currency-cache';
 import { CurrencyProvider } from '@next/currency-provider';
-import { Inter as FontSans } from '@next/font/google';
 import { getMessages, locales } from '@next/i18n';
 import { getSession, isConnected } from '@next/next-auth/user';
 import { ReactQueryProviders } from '@next/react-query';
@@ -20,6 +19,7 @@ import { deepPick } from '@utils';
 import { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
+import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 

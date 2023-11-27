@@ -56,12 +56,12 @@ export const UserPassEventCard: React.FC<UserPassEventCardProps> = ({
       <CardHeader className="space-y-4">
         <AspectRatio variant="classic">
           <Image
+            className="rounded-sm object-cover"
             src={
               eventPassNftContract.eventPass?.nftImage?.url ||
               '/image-placeholder.svg'
             }
             fill
-            style={{ objectFit: 'cover' }}
             alt={eventPassNftContract.eventPass?.name as string}
           />
         </AspectRatio>

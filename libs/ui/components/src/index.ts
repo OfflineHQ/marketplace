@@ -195,6 +195,7 @@ export {
   CardTitleSkeleton,
 } from './lib/card/Card';
 export { Progress } from './lib/progress/Progress';
+export { Toggle, type ToggleProps } from './lib/toggle/Toggle';
 export { Tooltip, TooltipWrapper } from './lib/tooltip/Tooltip';
 
 export {

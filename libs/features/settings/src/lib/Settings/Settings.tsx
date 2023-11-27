@@ -1,9 +1,10 @@
+import { AppContainer, AppContainerOverflow } from '@features/app-nav';
 import {
-  AppContainer,
-  AppContainerHeader,
-  AppContainerOverflow,
-} from '@features/app-nav';
-import { CardContent, CardDescription, CardTitle } from '@ui/components';
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@ui/components';
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { GlobalSettings } from '../GlobalSettings/GlobalSettings';
@@ -13,11 +14,11 @@ export const Settings: React.FC = () => {
   // getLocalCart();
   return (
     <AppContainer>
-      <AppContainerHeader>
-        <CardTitle>{t('title')}</CardTitle>
-        <CardDescription>{t('description')}</CardDescription>
-      </AppContainerHeader>
       <AppContainerOverflow>
+        <CardHeader>
+          <CardTitle>{t('title')}</CardTitle>
+          <CardDescription>{t('description')}</CardDescription>
+        </CardHeader>
         <CardContent>
           <GlobalSettings
             languageText={t('language-text')}

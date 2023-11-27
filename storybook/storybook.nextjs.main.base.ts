@@ -9,7 +9,6 @@ export const mainConfig = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/addon-a11y',
-    'storybook-addon-swc',
     'storybook-dark-mode',
     // Add PostCSS into addons for compiling tailwind below
     {
@@ -24,6 +23,7 @@ export const mainConfig = {
   framework: {
     name: '@storybook/nextjs',
     options: {
+      builder: { useSWC: true },
       nextConfigPath: path.resolve(__dirname, '../next.config.js'),
     },
     interactionsDebugger: true,
@@ -107,6 +107,7 @@ export const mainConfig = {
       '@t3-oss/env-nextjs': './mocks/env-nextjs.mock.js',
       'next-intl/server': './mocks/nextIntlServer.mock.js',
       'next/headers': './mocks/nextHeaders.mock.js',
+      jsonwebtoken: './mocks/jsonwebtoken.mock.js',
     };
     // set mocks to avoid webpack issues
     for (const externalModule in mockExternalModules) {

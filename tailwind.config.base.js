@@ -73,7 +73,9 @@ module.exports = {
         },
         highlight: {
           DEFAULT: 'hsl(var(--highlight))',
-          foreground: 'hsl(var(--highlight-foreground))',
+        },
+        image: {
+          DEFAULT: 'hsl(var(--image))',
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',

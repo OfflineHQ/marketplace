@@ -123,6 +123,7 @@ export const WithUserLoading: Story = {
 export const WithNoUserMobile: Story = {
   ...WithNoUser,
   parameters: {
+    layout: 'fullscreen',
     viewport: {
       defaultViewport: 'mobile1',
     },
@@ -139,6 +140,7 @@ export const WithNoUserMobile: Story = {
 export const WithUserMobile: Story = {
   ...WithUser,
   parameters: {
+    layout: 'fullscreen',
     viewport: {
       defaultViewport: 'mobile1',
     },
@@ -164,6 +166,7 @@ export const WithUserMobile: Story = {
 export const WithSuperAdminRoleMobile: Story = {
   ...WithSuperAdminRole,
   parameters: {
+    layout: 'fullscreen',
     viewport: {
       defaultViewport: 'mobile1',
     },
@@ -187,6 +190,7 @@ export const WithSuperAdminRoleMobile: Story = {
 export const WithNoUserLoadingMobile: Story = {
   ...WithNoUserLoading,
   parameters: {
+    layout: 'fullscreen',
     viewport: {
       defaultViewport: 'mobile1',
     },
@@ -196,6 +200,7 @@ export const WithNoUserLoadingMobile: Story = {
 export const WithSkeletonMobile: Story = {
   ...WithSkeleton,
   parameters: {
+    layout: 'fullscreen',
     viewport: {
       defaultViewport: 'mobile1',
     },
@@ -205,6 +210,7 @@ export const WithSkeletonMobile: Story = {
 export const WithUserLoadingMobile: Story = {
   ...WithUserLoading,
   parameters: {
+    layout: 'fullscreen',
     viewport: {
       defaultViewport: 'mobile1',
     },
