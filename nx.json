@@ -17,7 +17,7 @@
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "affected": {
-    "defaultBase": "main"
+    "defaultBase": "staging"
   },
   "workspaceLayout": {
     "appsDir": "apps",
@@ -114,7 +114,7 @@
   },
   "defaultProject": "web",
   "defaultAffected": ["web", "back-office"],
-  "defaultBase": "main",
+  "defaultBase": "staging",
   "nxCloudAccessToken": "MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=",
   "parallel": 5
 }
