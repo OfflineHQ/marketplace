@@ -22,7 +22,7 @@ export function RoleAvatar({
     <Avatar {...props} className={`${className} h-12 w-12`}>
       <AvatarImage
         src={profileImage || ''}
-        className="flex items-center justify-center bg-muted"
+        className={`flex items-center justify-center bg-muted ${organizer?.imageClasses}`}
       />
       <AvatarFallback>{fallBack}</AvatarFallback>
     </Avatar>

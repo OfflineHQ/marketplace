@@ -40,6 +40,7 @@ query GetPassedEventsWithEventPassNfts(
       image {
         url
       }
+      imageClasses
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
       id
@@ -48,6 +49,7 @@ query GetPassedEventsWithEventPassNfts(
       heroImage {
         url
       }
+      heroImageClasses
     }
   }
 }
@@ -94,6 +96,7 @@ query GetUpcomingEventsWithEventPassNfts(
       image {
         url
       }
+      imageClasses
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
       id
@@ -102,6 +105,7 @@ query GetUpcomingEventsWithEventPassNfts(
       heroImage {
         url
       }
+      heroImageClasses
     }
   }
 }

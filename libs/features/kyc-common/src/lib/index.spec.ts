@@ -1,12 +1,13 @@
-import { isUserKycValidated, isUserKycPending } from './index';
-import { KycStatus_Enum } from '@gql/shared/types';
+import { KycLevelName_Enum, KycStatus_Enum } from '@gql/shared/types';
 import { AppUser } from '@next/types';
+import { isUserKycPending, isUserKycValidated } from './index';
 
 describe('KYC status functions', () => {
   const userValidated = {
     id: 'dummy',
     address: 'dummy',
     kyc: {
+      levelName: KycLevelName_Enum.BasicKycLevel,
       reviewStatus: KycStatus_Enum.Completed,
       applicantId: 'dummy',
     },
@@ -16,6 +17,7 @@ describe('KYC status functions', () => {
     id: 'dummy',
     address: 'dummy',
     kyc: {
+      levelName: KycLevelName_Enum.BasicKycLevel,
       reviewStatus: KycStatus_Enum.Pending,
       applicantId: 'dummy',
     },
@@ -43,5 +45,30 @@ describe('KYC status functions', () => {
   it('should return false if user KYC is not pending', () => {
     expect(isUserKycPending(userValidated)).toBe(false);
     expect(isUserKycPending(userNoKYC)).toBe(false);
+  });
+
+  it('should return true if user KYC is completed and levelName matches', () => {
+    expect(
+      isUserKycValidated(userValidated, KycLevelName_Enum.BasicKycLevel),
+    ).toBe(true);
+  });
+  it('should return true if user KYC is completed and levelName advanced matches', () => {
+    expect(
+      isUserKycValidated(
+        {
+          ...userValidated,
+          kyc: {
+            ...userValidated.kyc,
+            levelName: KycLevelName_Enum.AdvancedKycLevel,
+          },
+        },
+        KycLevelName_Enum.AdvancedKycLevel,
+      ),
+    ).toBe(true);
+  });
+  it('should return false if user KYC is completed but levelName does not match', () => {
+    expect(
+      isUserKycValidated(userValidated, KycLevelName_Enum.AdvancedKycLevel),
+    ).toBe(false);
   });
 });

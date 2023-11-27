@@ -1,5 +1,5 @@
-import Image, { StaticImageData } from 'next/image';
 import { Alert } from '@ui/components';
+import Image, { StaticImageData } from 'next/image';
 
 export interface NoPassPlaceholderProps {
   noPassText?: string;

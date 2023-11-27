@@ -19,6 +19,7 @@ const meta = {
   render: PassPurchaseSheetExample,
   parameters: {
     ...passCardMeta.parameters,
+    layout: 'fullscreen',
     msw: {
       handlers: [
         ...passCardMeta.parameters.msw.handlers,

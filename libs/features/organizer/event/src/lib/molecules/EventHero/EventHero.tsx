@@ -20,17 +20,18 @@ import {
 export interface EventHeroProps
   extends EventDatesServerProps,
     EventLocationsProps,
-    Pick<Event, 'heroImage' | 'title' | 'organizer'> {}
+    Pick<Event, 'heroImage' | 'heroImageClasses' | 'title' | 'organizer'> {}
 
 const layout = {
   grid: 'grid grid-cols-1 items-center gap-8 md:grid-cols-2',
-  image: 'rounded-sm',
+  image: 'rounded-sm object-cover',
   textContainer: 'md:space-y-4 items-start h-full flex flex-col',
   text: 'mb-2 md:mb-4',
 };
 
 export const EventHero: React.FC<EventHeroProps> = ({
   heroImage,
+  heroImageClasses,
   title,
   organizer,
   ...locationDatesProps
@@ -41,8 +42,7 @@ export const EventHero: React.FC<EventHeroProps> = ({
         <Image
           src={heroImage?.url || '/image-placeholder.svg'}
           fill
-          className={layout.image}
-          style={{ objectFit: 'cover' }}
+          className={`${layout.image} ${heroImageClasses}`}
           alt={title}
         />
       </AspectRatio>

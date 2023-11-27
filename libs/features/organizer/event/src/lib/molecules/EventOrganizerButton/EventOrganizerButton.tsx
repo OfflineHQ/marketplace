@@ -20,6 +20,7 @@ const layout = {
 export const EventOrganizerButton: React.FC<EventOrganizerButtonProps> = ({
   name,
   image,
+  imageClasses,
   slug,
 }) => {
   return (
@@ -27,7 +28,7 @@ export const EventOrganizerButton: React.FC<EventOrganizerButtonProps> = ({
       <Button variant="ghost" className={layout.container}>
         <Avatar size="lg" className="m-1">
           <AvatarFallback>{getInitials(name)}</AvatarFallback>
-          <AvatarImage src={image?.url} />
+          <AvatarImage src={image?.url} className={imageClasses || ''} />
         </Avatar>
         <Text variant="h5" className="flex items-center justify-center">
           <div className="tracking-wider">{name}</div>

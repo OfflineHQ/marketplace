@@ -1,8 +1,8 @@
 'use client';
-import * as React from 'react';
 import * as AspectRatioPrimitive from '@radix-ui/react-aspect-ratio';
-import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@ui/shared';
+import { VariantProps, cva } from 'class-variance-authority';
+import * as React from 'react';
 
 const aspectRatios = {
   square: 1,
@@ -39,7 +39,7 @@ const aspectRatioSkeletonSizes = {
 };
 
 const aspectRatioSkeletonVariantsCva = cva(
-  'w-full animate-pulse rounded-sm bg-muted',
+  'w-full animate-pulse rounded-sm bg-image',
   {
     variants: {
       variant: aspectRatioSkeletonSizes,
@@ -84,7 +84,7 @@ const AspectRatioSkeleton: React.FC<AspectRatioSkeletonProps> = ({
 
 export {
   AspectRatio,
-  aspectRatios,
   AspectRatioSkeleton,
+  aspectRatios,
   type AspectRatioSkeletonProps,
 };

@@ -12,6 +12,7 @@ export const OrganizerFieldsFragmentDoc = `
   image {
     url
   }
+  imageClasses
   name
   slug
 }
@@ -59,6 +60,7 @@ export const EventPassFieldsFragmentDoc = `
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -66,6 +68,7 @@ export const EventPassFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
   }
 }
@@ -110,6 +113,7 @@ export const RoleAssignmentsFieldsFragmentDoc = `
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -117,6 +121,7 @@ export const RoleAssignmentsFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
     eventPasses {
       id
@@ -300,6 +305,13 @@ export const RoleAssignmentsFieldsFragmentDoc = `
   }
 }
     `;
+ const InsertFollowOrganizerDocument = `
+    mutation InsertFollowOrganizer($organizerSlug: String!) {
+  insert_follow_one(object: {organizerSlug: $organizerSlug}) {
+    organizerSlug
+  }
+}
+    `;
  const GetPassedEventsWithEventPassNftsDocument = `
     query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
@@ -335,6 +347,7 @@ export const RoleAssignmentsFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
       id
@@ -343,6 +356,7 @@ export const RoleAssignmentsFieldsFragmentDoc = `
       heroImage {
         url
       }
+      heroImageClasses
     }
   }
 }
@@ -382,6 +396,7 @@ export const RoleAssignmentsFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
       id
@@ -390,6 +405,7 @@ export const RoleAssignmentsFieldsFragmentDoc = `
       heroImage {
         url
       }
+      heroImageClasses
     }
   }
 }
@@ -504,6 +520,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetKyc(variables?: Types.GetKycQueryVariables, options?: C): Promise<Types.GetKycQuery> {
       return requester<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables, options) as Promise<Types.GetKycQuery>;
+    },
+    InsertFollowOrganizer(variables: Types.InsertFollowOrganizerMutationVariables, options?: C): Promise<Types.InsertFollowOrganizerMutation> {
+      return requester<Types.InsertFollowOrganizerMutation, Types.InsertFollowOrganizerMutationVariables>(InsertFollowOrganizerDocument, variables, options) as Promise<Types.InsertFollowOrganizerMutation>;
     },
     GetPassedEventsWithEventPassNfts(variables: Types.GetPassedEventsWithEventPassNftsQueryVariables, options?: C): Promise<Types.GetPassedEventsWithEventPassNftsQuery> {
       return requester<Types.GetPassedEventsWithEventPassNftsQuery, Types.GetPassedEventsWithEventPassNftsQueryVariables>(GetPassedEventsWithEventPassNftsDocument, variables, options) as Promise<Types.GetPassedEventsWithEventPassNftsQuery>;
