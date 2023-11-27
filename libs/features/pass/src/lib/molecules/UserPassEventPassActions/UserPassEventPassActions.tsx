@@ -13,7 +13,6 @@ import { useTranslations } from 'next-intl';
 
 export type UserPassEventPassActionsFunctionsProps = {
   actionsFunctions: {
-    downloadPass: (id: string) => void;
     revealPass: (id: string) => void;
     sendPass?: () => void;
   };
