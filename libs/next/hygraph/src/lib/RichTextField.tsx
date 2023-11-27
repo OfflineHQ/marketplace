@@ -2,9 +2,9 @@ import {
   RichText,
   type RichTextProps,
 } from '@graphcms/rich-text-react-renderer';
+import { Text, TooltipWrapper } from '@ui/components';
 import Image from 'next/image';
 import Link from 'next/link';
-import { TooltipWrapper } from '@ui/components';
 import React from 'react';
 
 export type RichTextFieldProps = RichTextProps;
@@ -12,7 +12,7 @@ export type RichTextFieldProps = RichTextProps;
 export const RichTextField: React.FC<RichTextFieldProps> = (props) => {
   return (
     // eslint-disable-next-line tailwindcss/no-custom-classname
-    <div className="richTextField space-y-4">
+    <div className="space-y-4">
       <RichText
         {...props}
         renderers={{
@@ -57,6 +57,30 @@ export const RichTextField: React.FC<RichTextFieldProps> = (props) => {
                 </TooltipWrapper>
               </Link>
             );
+          },
+          h1: ({ children }) => {
+            return <Text variant="h1">{children}</Text>;
+          },
+          h2: ({ children }) => {
+            return <Text variant="h2">{children}</Text>;
+          },
+          h3: ({ children }) => {
+            return <Text variant="h3">{children}</Text>;
+          },
+          h4: ({ children }) => {
+            return <Text variant="h4">{children}</Text>;
+          },
+          h5: ({ children }) => {
+            return <Text variant="h5">{children}</Text>;
+          },
+          h6: ({ children }) => {
+            return <Text variant="h6">{children}</Text>;
+          },
+          p: ({ children }) => {
+            return <Text variant="p">{children}</Text>;
+          },
+          blockquote: ({ children }) => {
+            return <div className="border-l-2 pl-4">{children}</div>;
           },
         }}
       />

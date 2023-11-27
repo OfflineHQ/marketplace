@@ -8,7 +8,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 import * as React from 'react';
 import { ButtonSkeleton, buttonVariantsCva } from '../button/Button';
 import { closeClasses } from '../shared/close';
-import { TextSkeleton } from '../text/Text';
+import { TextSkeleton, TextSkeletonProps } from '../text/Text';
 
 const Sheet = SheetPrimitive.Root;
 
@@ -309,8 +309,8 @@ const SheetTitle = React.forwardRef<
 SheetTitle.displayName = SheetPrimitive.Title.displayName;
 
 const SheetTitleSkeleton = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
+  React.ElementRef<typeof SheetPrimitive.Title>,
+  TextSkeletonProps
 >(({ className, ...props }, ref) => (
   <TextSkeleton className={className} variant="h3" {...props} />
 ));
@@ -328,8 +328,8 @@ const SheetDescription = React.forwardRef<
 ));
 
 const SheetDescriptionSkeleton = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  React.ElementRef<typeof SheetPrimitive.Description>,
+  TextSkeletonProps
 >(({ className, ...props }, ref) => (
   <TextSkeleton className={className} variant="p" {...props} />
 ));

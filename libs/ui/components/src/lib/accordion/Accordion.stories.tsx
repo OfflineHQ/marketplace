@@ -1,15 +1,16 @@
 import { expect } from '@storybook/jest';
 // Accordion.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent, within } from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/testing-library';
 
+import { sleep } from '@utils';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
+  AccordionSkeleton,
   AccordionTrigger,
 } from './Accordion';
-import { sleep } from '@utils';
 
 const meta = {
   title: 'Molecules/Accordion',
@@ -129,4 +130,8 @@ export const MultipleOpenAccordionItem: Story = {
     expect(thirdAccordionItem?.getAttribute('data-state')).toBe('open');
     await sleep(400);
   },
+};
+
+export const Skeleton: Story = {
+  render: () => <AccordionSkeleton numItems={3} />,
 };

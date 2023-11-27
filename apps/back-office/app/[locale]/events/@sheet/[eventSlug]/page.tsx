@@ -1,4 +1,4 @@
-import { EventSheet } from '@features/back-office/events';
+import { EventSheet, EventSheetSkeleton } from '@features/back-office/events';
 import { getEventWithPassesOrganizer } from '@features/back-office/events-api';
 import { getCurrentUser } from '@next/next-auth/user';
 import { SheetContent } from '@ui/components';
@@ -33,7 +33,7 @@ export default function EventSheetPage({
 }: EventSheetPageProps) {
   return (
     <SheetContent size={'full'}>
-      <Suspense fallback={<div>Loading</div>}>
+      <Suspense fallback={<EventSheetSkeleton />}>
         <EventSheetPageContent eventSlug={eventSlug} locale={locale} />
       </Suspense>
     </SheetContent>

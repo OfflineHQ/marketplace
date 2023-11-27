@@ -6,7 +6,7 @@ import { EventPassNft } from '@features/pass-types';
 import { SinglePass } from '@features/pass/server';
 import type { Locale } from '@gql/shared/types';
 import { getCurrentUser } from '@next/next-auth/user';
-import { notFound } from 'next/navigation';
+import { NotFound } from '@features/navigation';
 
 export interface SinglePassPageProps {
   params: {
@@ -40,7 +40,7 @@ export default async function SinglePassPage({ params }: SinglePassPageProps) {
     });
   }
   if (!eventPassNft) {
-    return notFound();
+    return <NotFound />;
   }
   return <SinglePass user={user} eventPassNft={eventPassNft} />;
 }
