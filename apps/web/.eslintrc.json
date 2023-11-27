@@ -1,5 +1,6 @@
 {
   "extends": [
+    "plugin:playwright/recommended",
     "plugin:@nx/react-typescript",
     "next",
     "next/core-web-vitals",
@@ -20,6 +21,10 @@
     },
     {
       "files": ["*.js", "*.jsx"],
+      "rules": {}
+    },
+    {
+      "files": ["e2e/**/*.{ts,js,tsx,jsx}"],
       "rules": {}
     }
   ],

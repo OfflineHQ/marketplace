@@ -31,5 +31,9 @@ export {
 export {
   AppContainer,
   AppContainerFooter,
+  AppContainerHeader,
+  AppContainerNavBack,
+  AppContainerNavBackSkeleton,
   AppContainerOverflow,
+  type AppContainerNavBackProps,
 } from './lib/AppContainer/AppContainer';

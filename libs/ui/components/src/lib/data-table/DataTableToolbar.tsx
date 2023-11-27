@@ -19,30 +19,31 @@ interface FilterConfig<TData, TValue>
   id: string; // ID of the column
 }
 
-interface SearchProps<TData> {
+interface SearchProps<TData, TValue> {
   placeholder?: string;
-  filterKey: keyof TData;
+  filterKey: string;
 }
 
-export interface DataTableToolbarProps<TData> {
+export interface DataTableToolbarProps<TData, TValue> {
   table: Table<TData>;
-  searchProps?: SearchProps<TData>;
-  filtersConfig?: Omit<FilterConfig<TData, any>, 'controlText'>[];
-  filtersConfigText?: DataTableFacetedFilterProps<TData, any>['controlText'] & {
+  searchProps?: SearchProps<TData, TValue>;
+  filtersConfig?: Omit<FilterConfig<TData, TValue>, 'controlText'>[];
+  filtersConfigText?: DataTableFacetedFilterProps<
+    TData,
+    TValue
+  >['controlText'] & {
     reset: string;
   };
-  showToggleColumns?: boolean;
   toggleColumnsText?: DataTableViewOptionsProps<TData>['controlText'];
 }
 
-export function DataTableToolbar<TData>({
+export function DataTableToolbar<TData, TValue>({
   table,
   searchProps,
   filtersConfig = [],
   filtersConfigText,
-  showToggleColumns = false,
   toggleColumnsText,
-}: DataTableToolbarProps<TData>) {
+}: DataTableToolbarProps<TData, TValue>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
@@ -52,15 +53,14 @@ export function DataTableToolbar<TData>({
           <Input
             {...searchProps}
             icon={<OutlineSearch />}
-            placeholder="Filter tasks..."
             value={
               (table
-                .getColumn(searchProps.filterKey as string)
+                .getColumn(searchProps.filterKey)
                 ?.getFilterValue() as string) ?? ''
             }
             onChange={(event) =>
               table
-                .getColumn(searchProps.filterKey as string)
+                .getColumn(searchProps.filterKey)
                 ?.setFilterValue(event.target.value)
             }
             className="h-8 w-[150px] lg:w-[250px]"
@@ -92,7 +92,7 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      {showToggleColumns && toggleColumnsText && (
+      {toggleColumnsText && (
         <DataTableViewOptions table={table} controlText={toggleColumnsText} />
       )}
     </div>

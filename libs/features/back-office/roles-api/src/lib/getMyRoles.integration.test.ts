@@ -3,7 +3,7 @@ import {
   PgClient,
   applySeeds,
   createDbClient,
-  deleteTables,
+  deleteAllTables,
 } from '@test-utils/db';
 import {
   alphaUserClient,
@@ -27,11 +27,12 @@ describe('getMyRoles Integration Test', () => {
 
   beforeAll(async () => {
     client = await createDbClient();
+    await deleteAllTables(client);
     await applySeeds(client, ['account', 'roleAssignments']);
   });
 
   afterAll(async () => {
-    await deleteTables(client, ['account', 'roleAssignments']);
+    await deleteAllTables(client);
   });
 
   beforeEach(() => {

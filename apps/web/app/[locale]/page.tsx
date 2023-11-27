@@ -1,6 +1,4 @@
-// import { populateCacheIfEmpty } from '@next/currency-cache';
-
 export default async function Home() {
-  // await populateCacheIfEmpty();
-  return <div className="p-8"></div>;
+  // dummy to check if passing e2e
+  return null;
 }

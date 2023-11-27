@@ -1,11 +1,11 @@
+import { FileCopyStatusEnum, FileWrapper } from '@file-upload/admin';
+import { adminSdk } from '@gql/admin/api';
+import { getCurrentUser } from '@next/next-auth/user';
 import {
   eventPassCheck,
   eventPassTransferQRCode,
   revealPass,
 } from './revealPass'; // adjust the path if necessary
-import { adminSdk } from '@gql/admin/api';
-import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
-import { getCurrentUser } from '@next/next-auth/user';
 
 jest.mock('@next/next-auth/user');
 
@@ -78,7 +78,7 @@ describe('revealPass.ts tests', () => {
   describe('eventPassTransferQRCode', () => {
     beforeEach(() => {
       (FileWrapper.prototype.copyFile as jest.Mock).mockResolvedValue({
-        status: FileCopyStatus.Copied,
+        status: FileCopyStatusEnum.Copied,
       });
     });
 
@@ -112,7 +112,7 @@ describe('revealPass.ts tests', () => {
         eventPassNft_by_pk: mockEventPassNft,
       });
       (FileWrapper.prototype.copyFile as jest.Mock).mockResolvedValue({
-        status: FileCopyStatus.Copied,
+        status: FileCopyStatusEnum.Copied,
       });
       (adminSdk.SetEventPassNftRevealed as jest.Mock).mockResolvedValue(true);
       await expect(revealPass('valid-id')).resolves.not.toThrow();
@@ -144,10 +144,10 @@ describe('revealPass.ts tests', () => {
         eventPassNft_by_pk: mockEventPassNft,
       });
       (FileWrapper.prototype.copyFile as jest.Mock).mockResolvedValue({
-        status: FileCopyStatus.FileNotFound,
+        status: FileCopyStatusEnum.FileNotFound,
       });
       await expect(revealPass('valid-id')).rejects.toThrow(
-        FileCopyStatus.FileNotFound,
+        FileCopyStatusEnum.FileNotFound,
       );
     });
 
@@ -156,7 +156,7 @@ describe('revealPass.ts tests', () => {
         eventPassNft_by_pk: mockEventPassNft,
       });
       (FileWrapper.prototype.copyFile as jest.Mock).mockResolvedValue({
-        status: FileCopyStatus.Copied,
+        status: FileCopyStatusEnum.Copied,
       });
       (adminSdk.SetEventPassNftRevealed as jest.Mock).mockRejectedValue(
         new Error('Error from SetEventPassNftRevealed'),

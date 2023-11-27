@@ -1,10 +1,9 @@
 'use client';
 
-import { AppContainer } from '@features/app-nav';
+import { AppContainer, AppContainerHeader } from '@features/app-nav';
 import { Link } from '@next/navigation';
 import {
   Badge,
-  CardHeader,
   CardTitle,
   Tabs,
   TabsContent,
@@ -34,7 +33,7 @@ export const UserPass: React.FC<UserPassProps> = ({
 
   return (
     <AppContainer>
-      <CardHeader className="md:pt-16">
+      <AppContainerHeader>
         <CardTitle>
           <div className="flex items-center space-x-2">
             <span>{title} </span>
@@ -43,7 +42,7 @@ export const UserPass: React.FC<UserPassProps> = ({
             ) : null}
           </div>
         </CardTitle>
-      </CardHeader>
+      </AppContainerHeader>
       {activeTab === 'organizer' ? (
         children
       ) : (

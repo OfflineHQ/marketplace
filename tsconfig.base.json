@@ -27,6 +27,9 @@
       "@features/back-office/app-nav": [
         "libs/features/back-office/app-nav/src/index.ts"
       ],
+      "@features/back-office/app-nav/stories": [
+        "libs/features/back-office/app-nav/src/stories.tsx"
+      ],
       "@features/back-office/events": [
         "libs/features/back-office/events/src/index.ts"
       ],
@@ -119,6 +122,7 @@
       "@next/hygraph": ["libs/next/hygraph/src/index.ts"],
       "@next/hygraph/examples": ["libs/next/hygraph/src/examples.tsx"],
       "@next/i18n": ["libs/next/i18n/src/index.ts"],
+      "@next/i18n-ui": ["libs/next/i18n-ui/src/index.ts"],
       "@next/navigation": ["libs/next/navigation/src/index.ts"],
       "@next/next-auth/common": ["libs/next/next-auth/common/src/index.ts"],
       "@next/next-auth/options": ["libs/next/next-auth/options/src/index.ts"],
@@ -160,7 +164,7 @@
       "@workspace": ["libs/workspace/src/index.ts"]
     }
   },
-  "typeRoots": ["types", "node_modules/@types"],
-  "include": ["**/*.ts", "types/**/*.d.ts"],
+  "typeRoots": ["node_modules/@types", "./types"],
+  "include": ["**/*.ts", "./types/**/*.d.ts"],
   "exclude": ["node_modules", "tmp"]
 }

@@ -4,7 +4,15 @@ import env from '@env/server';
 import { FileWrapper, FolderWrapper } from '@file-upload/admin';
 import { revalidatePath } from 'next/cache';
 
-export async function checkFolderLength(folderPath: string, maxAmount: number) {
+interface CheckFolderLengthProps {
+  folderPath: string;
+  maxAmount: number;
+}
+
+export async function checkFolderLength({
+  folderPath,
+  maxAmount,
+}: CheckFolderLengthProps) {
   const folder = new FolderWrapper();
 
   const list = await folder.listFolder({
@@ -30,12 +38,17 @@ export async function checkFolderLength(folderPath: string, maxAmount: number) {
   };
 }
 
-export async function checkFolder(
-  folderPath: string,
-  eventId: string,
-  eventPassId: string,
-  maxAmount: number,
-) {
+interface CheckFolderProps extends CheckFolderLengthProps {
+  eventId: string;
+  eventPassId: string;
+}
+
+export async function checkFolder({
+  folderPath,
+  eventId,
+  eventPassId,
+  maxAmount,
+}: CheckFolderProps) {
   const folder = new FolderWrapper();
 
   const list = await folder.listFolder({
@@ -73,12 +86,14 @@ export async function checkFolder(
   return true;
 }
 
-export async function renameFolderQrCodes(
-  folderPath: string,
-  eventId: string,
-  eventPassId: string,
-  maxAmount: number,
-) {
+type RenameFolderQrCodesProps = CheckFolderProps;
+
+export async function renameFolderQrCodes({
+  folderPath,
+  eventId,
+  eventPassId,
+  maxAmount,
+}: RenameFolderQrCodesProps) {
   const folder = new FolderWrapper();
   const upload = new FileWrapper();
 

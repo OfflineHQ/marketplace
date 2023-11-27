@@ -44,6 +44,9 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: 'id',
+    meta: {
+      title: 'Task',
+    },
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -57,6 +60,9 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: 'title',
+    meta: {
+      title: 'Title',
+    },
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -79,6 +85,9 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: 'status',
+    meta: {
+      title: 'Status',
+    },
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -110,6 +119,9 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: 'priority',
+    meta: {
+      title: 'Priority',
+    },
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}

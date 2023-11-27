@@ -34,7 +34,7 @@ export const Event: React.FC<EventProps> = ({
     <AppContainer>
       <AppContainerOverflow variant="stickyFooter">
         <CardHeader>
-          <EventHero {...eventHeroProps} {...{ purchaseLink, purchaseText }} />
+          <EventHero {...eventHeroProps} />
         </CardHeader>
         <EventDetails className="md:mt-4" description={description} />
       </AppContainerOverflow>

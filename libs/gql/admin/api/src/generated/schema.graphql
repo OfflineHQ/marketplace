@@ -1211,38 +1211,7 @@ type Event implements Entity & Node {
     skip: Int
     where: EventDateLocationWhereInput
   ): [EventDateLocation!]!
-  eventParameters(
-    """distinct select on columns"""
-    distinct_on: [eventParameters_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventParameters_order_by!]
-
-    """filter the rows returned"""
-    where: eventParameters_bool_exp
-  ): [eventParameters!]!
-  eventParameters_aggregate(
-    """distinct select on columns"""
-    distinct_on: [eventParameters_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventParameters_order_by!]
-
-    """filter the rows returned"""
-    where: eventParameters_bool_exp
-  ): eventParameters_aggregate!
+  eventParameters: eventParameters
   eventPasses(
     after: String
     before: String
@@ -15160,6 +15129,10 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: EventWhereUniqueInput!
   ): Event
+
+  """
+  fetch data from the table: "eventParameters"
+  """
   eventParameters(
     """distinct select on columns"""
     distinct_on: [eventParameters_select_column!]
@@ -15176,6 +15149,10 @@ type query_root {
     """filter the rows returned"""
     where: eventParameters_bool_exp
   ): [eventParameters!]!
+
+  """
+  fetch aggregated fields from the table: "eventParameters"
+  """
   eventParameters_aggregate(
     """distinct select on columns"""
     distinct_on: [eventParameters_select_column!]
@@ -17596,6 +17573,10 @@ type subscription_root {
     """filter the rows returned"""
     where: currency_bool_exp
   ): [currency!]!
+
+  """
+  fetch data from the table: "eventParameters"
+  """
   eventParameters(
     """distinct select on columns"""
     distinct_on: [eventParameters_select_column!]
@@ -17612,6 +17593,10 @@ type subscription_root {
     """filter the rows returned"""
     where: eventParameters_bool_exp
   ): [eventParameters!]!
+
+  """
+  fetch aggregated fields from the table: "eventParameters"
+  """
   eventParameters_aggregate(
     """distinct select on columns"""
     distinct_on: [eventParameters_select_column!]
