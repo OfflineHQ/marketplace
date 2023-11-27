@@ -20,6 +20,9 @@ query GetPassedEventsWithEventPassNfts(
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name
+        event {
+          slug
+        }
         nftImage {
           url
         }
@@ -71,6 +74,9 @@ query GetUpcomingEventsWithEventPassNfts(
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name
+        event {
+          slug
+        }
         nftImage {
           url
         }

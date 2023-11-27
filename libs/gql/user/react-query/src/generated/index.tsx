@@ -517,6 +517,9 @@ export const GetPassedEventsWithEventPassNftsDocument = `
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name
+        event {
+          slug
+        }
         nftImage {
           url
         }
@@ -573,6 +576,9 @@ export const GetUpcomingEventsWithEventPassNftsDocument = `
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name
+        event {
+          slug
+        }
         nftImage {
           url
         }

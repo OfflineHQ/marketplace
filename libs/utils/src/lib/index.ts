@@ -112,3 +112,11 @@ export function checkCookie(name: string) {
   // Return false if the cookie with the requested name can't be found
   return false;
 }
+
+export const slugify = (str: string) =>
+  str
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');

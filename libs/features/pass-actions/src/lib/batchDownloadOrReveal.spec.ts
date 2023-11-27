@@ -1,5 +1,5 @@
 import { batchDownloadOrReveal } from './batchDownloadOrReveal';
-import { revealPass, downloadPass } from '@features/pass-api';
+import { revealPass } from '@features/pass-api';
 import { revalidateTag } from 'next/cache';
 
 jest.mock('next/cache', () => ({
