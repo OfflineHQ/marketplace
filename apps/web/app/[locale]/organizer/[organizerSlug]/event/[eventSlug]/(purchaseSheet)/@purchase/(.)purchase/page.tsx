@@ -60,6 +60,9 @@ const PurchaseSectionContent: React.FC<PurchaseSectionContentProps> = async ({
       goPaymentText={t('Footer.purchase-button')}
       goPaymentLink={{ href: '/cart' }}
       backButtonText={t('go-back-button')}
+      closeLink={{
+        href: `/${locale}/organizer/${organizerSlug}/event/${eventSlug}`,
+      }}
       hasConfirmedPasses={!!confirmedPasses?.length}
     />
   );

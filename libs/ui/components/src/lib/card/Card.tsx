@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { cn } from '@ui/shared';
 import { VariantProps, cva } from 'class-variance-authority';
-import { TextSkeleton } from '../text/Text';
+import { TextSkeleton, TextSkeletonProps } from '../text/Text';
 
 const variants = {
   default: 'border shadow-sm',
@@ -92,7 +92,7 @@ CardTitle.displayName = 'CardTitle';
 
 const CardTitleSkeleton = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
+  TextSkeletonProps
 >(({ className, ...props }, ref) => (
   <TextSkeleton className={className} variant="h4" {...props} />
 ));
@@ -112,7 +112,7 @@ CardDescription.displayName = 'CardDescription';
 
 const CardDescriptionSkeleton = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  TextSkeletonProps
 >(({ className, ...props }, ref) => (
   <TextSkeleton className={className} variant="p" {...props} />
 ));

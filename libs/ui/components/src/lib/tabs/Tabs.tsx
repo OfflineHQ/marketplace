@@ -1,9 +1,10 @@
 'use client';
 
-import * as React from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
+import * as React from 'react';
 
 import { cn } from '@ui/shared';
+import { TextSkeleton, TextSkeletonProps } from '../text/Text';
 
 const Tabs = TabsPrimitive.Root;
 
@@ -52,4 +53,46 @@ const TabsContent = React.forwardRef<
 ));
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 
-export { Tabs, TabsList, TabsTrigger, TabsContent };
+const TabsTriggerSkeleton = React.forwardRef<HTMLDivElement, TextSkeletonProps>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        'inline-flex items-center justify-center whitespace-nowrap px-3 py-1.5',
+        className,
+      )}
+    >
+      <TextSkeleton variant="span" {...props} />
+    </div>
+  ),
+);
+TabsTriggerSkeleton.displayName = 'TabsTriggerSkeleton';
+
+interface TabsSkeletonProps extends TextSkeletonProps {
+  numTabs: number;
+}
+
+const TabsSkeleton: React.FC<TabsSkeletonProps> = ({
+  numTabs,
+  className,
+  ...props
+}) => (
+  <Tabs className={className}>
+    <TabsList>
+      {Array.from({ length: numTabs }, (_, i) => (
+        <TabsTriggerSkeleton key={i} {...props} />
+      ))}
+    </TabsList>
+  </Tabs>
+);
+
+TabsSkeleton.displayName = 'TabsSkeleton';
+
+export {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsSkeleton,
+  TabsTrigger,
+  TabsTriggerSkeleton,
+};

@@ -109,10 +109,6 @@ function EventSectionContent({
       purchaseLink={{
         href: {
           pathname: `/organizer/${organizerSlug}/event/${eventSlug}/purchase`,
-          // query: {
-          //   organizerSlug: organizerSlug,
-          //   eventSlug: eventSlug,
-          // },
         },
       }}
       purchaseText={t('purchase-button-activator')}

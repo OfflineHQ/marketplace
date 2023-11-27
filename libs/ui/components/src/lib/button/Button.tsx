@@ -62,26 +62,32 @@ const SkeletonSizes = {
 };
 
 const buttonSkeletonVariantsCva = cva(
-  'max-w-full shrink-0 animate-pulse rounded-md bg-muted',
+  'max-w-full shrink-0 animate-pulse rounded-md',
   {
     variants: {
       size: SkeletonSizes,
+      color: {
+        default: 'bg-muted',
+        highlight: 'bg-highlight',
+      },
     },
     defaultVariants: {
       size: 'default',
+      color: 'default',
     },
   },
 );
 interface ButtonSkeletonProps
-  extends React.HTMLAttributes<HTMLButtonElement>,
+  extends Omit<React.HTMLAttributes<HTMLButtonElement>, 'color'>,
     VariantProps<typeof buttonSkeletonVariantsCva> {}
 
 const ButtonSkeleton: React.FC<ButtonSkeletonProps> = ({
   size = 'default',
+  color = 'default',
   className,
   ...props
 }) => {
-  const classNames = cn(buttonSkeletonVariantsCva({ size }), className);
+  const classNames = cn(buttonSkeletonVariantsCva({ size, color }), className);
 
   return <div className={classNames} />;
 };

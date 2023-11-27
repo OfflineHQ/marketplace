@@ -1,11 +1,11 @@
 // Tabs.stories.tsx
-import { Meta, StoryObj } from '@storybook/react';
 import { expect } from '@storybook/jest';
+import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent, within } from '@storybook/testing-library';
 
-import { Tabs } from './Tabs';
+import { Tabs, TabsSkeleton } from './Tabs';
 
-import { TabsExample, TabsDemo } from './examples';
+import { TabsDemo, TabsExample } from './examples';
 
 const meta = {
   title: 'Organisms/Tabs',
@@ -34,4 +34,8 @@ export const Default: Story = {
 
 export const WithCardAndForm: Story = {
   render: TabsDemo,
+};
+
+export const Skeleton: Story = {
+  render: () => <TabsSkeleton numTabs={2} color="highlight" />,
 };
