@@ -1,13 +1,12 @@
 import * as Bytescale from '@bytescale/sdk';
 import { expect, test } from '@playwright/test';
-import { accounts } from '@test-utils/gql';
 import {
   PgClient,
   applySeeds,
   createDbClient,
   deleteAllTables,
 } from 'libs/test-utils/db/src/index';
-import { loadUser } from './utils/loadUser';
+import { loadAccount } from './utils/loadAccount';
 
 let client: PgClient;
 
@@ -46,15 +45,8 @@ test.beforeEach(async () => {
     'eventPassOrder',
   ]);
 });
-
-test.use({
-  storageState: 'apps/web/e2e/utils/alpha_user.json',
-});
-
-test('user should be able to download and reveal his pass', async ({
-  page,
-}) => {
-  await loadUser({ page, user: accounts.alpha_user });
+test('user should be able to download and reveal his pass', async () => {
+  const { page, account } = await loadAccount({ user: 'alpha_user' });
   await page.getByRole('link', { name: 'Qr Code Pass' }).click();
   await page.getByRole('tab', { name: 'Past' }).click();
   await expect(page.getByText('Pass #12,432Revealed')).toBeVisible();
