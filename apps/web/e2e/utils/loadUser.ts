@@ -1,5 +1,5 @@
-import { Page } from 'playwright';
 import type { AppUser } from '@next/types';
+import { Page } from 'playwright';
 
 export async function loadUser(page: Page, user: AppUser, name: string) {
   await page.exposeFunction('useE2EAuthContext', () => {
@@ -19,13 +19,5 @@ export async function loadUser(page: Page, user: AppUser, name: string) {
       logoutSiwe: 'logoutSiwe',
       connecting: 'connecting',
     });
-  });
-  await page.exposeFunction('ethereum', () => {
-    return {
-      blockchain: 'ethereum',
-      accounts: {
-        return: [user.address],
-      },
-    };
   });
 }

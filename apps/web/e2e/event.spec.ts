@@ -12,6 +12,7 @@ let client: PgClient;
 
 test.beforeAll(async () => {
   client = await createDbClient();
+  await deleteAllTables(client);
 });
 
 test.afterAll(async () => {
@@ -26,7 +27,7 @@ test.beforeEach(async () => {
   await applySeeds(client, ['account', 'kyc', 'eventPassPricing']);
 });
 
-test.setTimeout(120000);
+test.setTimeout(200000);
 
 test.use({
   storageState: 'apps/web/e2e/utils/alpha_user.json',
@@ -35,7 +36,6 @@ test.use({
 test('user should be able to buy a pass', async ({ page }) => {
   await loadUser(page, accounts.alpha_user, 'Alpha User');
   await page.goto('/en');
-  await new Promise((resolve) => setTimeout(resolve, 15000));
   await expect(
     page.getByRole('button', { name: 'alpha_user@test.io', exact: true }),
   ).toBeVisible();
@@ -48,21 +48,20 @@ test('user should be able to buy a pass', async ({ page }) => {
     .getByRole('button', { name: 'Qr Code Select passes' })
     .first()
     .click();
-  await new Promise((resolve) => setTimeout(resolve, 7000));
   await page
     .locator('div')
     .filter({ hasText: /^€82\.500$/ })
     .getByLabel('increment value')
     .click();
-  await new Promise((resolve) => setTimeout(resolve, 5000));
   await expect(page.getByText('1 pass selected')).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Total Price: €82.50' }),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Go to payment' }).click();
-  await new Promise((resolve) => setTimeout(resolve, 7000));
   await page.getByRole('button', { name: 'Proceed to payment' }).click();
   await new Promise((resolve) => setTimeout(resolve, 20000));
   const url = page.url();
   expect(url).toMatch(/checkout.stripe.com\/c\/pay/);
+  await page.getByLabel('Back').click();
+  await expect(page.getByText('Purchase Cancelled')).toBeVisible();
 });

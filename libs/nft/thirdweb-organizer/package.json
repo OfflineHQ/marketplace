@@ -2,6 +2,6 @@
   "name": "@nft/thirdweb-organizer",
   "version": "0.0.1",
   "dependencies": {
-    "@thirdweb-dev/sdk": "^3.10.53"
+    "@thirdweb-dev/sdk": "^4.0.17"
   }
 }
