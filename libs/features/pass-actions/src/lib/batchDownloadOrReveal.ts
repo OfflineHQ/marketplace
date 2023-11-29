@@ -6,7 +6,6 @@ import { getEventPassRevealedFilePath, revealPass } from '@features/pass-api';
 import { EventWithEventPassNfts } from '@features/pass-types';
 import { getCurrentUser } from '@next/next-auth/user';
 import { getNextAppURL } from '@shared/client';
-import { revalidateTag } from 'next/cache';
 
 async function downloadPass(slug: string, id: string, tokenId: string) {
   try {
@@ -48,16 +47,10 @@ export async function batchDownloadOrReveal(
   slug: string,
   eventPassNfts: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts'],
 ) {
-  let revealCalled = false;
   for (const eventPassNft of eventPassNfts) {
     if (!eventPassNft.isRevealed) {
-      revealCalled = true;
       await revealPass(eventPassNft.id);
     }
     await downloadPass(slug, eventPassNft.id, eventPassNft.tokenId);
-  }
-
-  if (revealCalled) {
-    revalidateTag('userEventPassNfts');
   }
 }
