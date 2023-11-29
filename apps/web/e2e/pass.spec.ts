@@ -47,8 +47,6 @@ test.beforeEach(async () => {
   ]);
 });
 
-test.setTimeout(120000);
-
 test.use({
   storageState: 'apps/web/e2e/utils/alpha_user.json',
 });
@@ -56,8 +54,7 @@ test.use({
 test('user should be able to download and reveal his pass', async ({
   page,
 }) => {
-  await loadUser(page, accounts.alpha_user, 'Alpha User');
-  await page.goto('http://localhost:8888/en');
+  await loadUser({ page, user: accounts.alpha_user });
   await page.getByRole('link', { name: 'Qr Code Pass' }).click();
   await page.getByRole('tab', { name: 'Past' }).click();
   await expect(page.getByText('Pass #12,432Revealed')).toBeVisible();

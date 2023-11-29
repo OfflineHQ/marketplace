@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { resetCache } from '@test-utils/cache';
 import { accounts } from '@test-utils/gql';
 import {
   PgClient,
@@ -13,6 +14,7 @@ let client: PgClient;
 test.beforeAll(async () => {
   client = await createDbClient();
   await deleteAllTables(client);
+  await resetCache();
 });
 
 test.afterAll(async () => {
@@ -27,20 +29,16 @@ test.beforeEach(async () => {
   await applySeeds(client, ['account', 'kyc', 'eventPassPricing']);
 });
 
-test.setTimeout(200000);
-
 test.use({
   storageState: 'apps/web/e2e/utils/alpha_user.json',
 });
 
 test('user should be able to buy a pass', async ({ page }) => {
-  await loadUser(page, accounts.alpha_user, 'Alpha User');
-  await page.goto('/en');
-  await expect(
-    page.getByRole('button', { name: 'alpha_user@test.io', exact: true }),
-  ).toBeVisible();
-
-  await page.goto('/en/organizer/test/event/test-an-event');
+  await loadUser({
+    page,
+    user: accounts.alpha_user,
+    goTo: '/en/organizer/test/event/test-an-event',
+  });
   await expect(page.getByRole('img', { name: 'An event' })).toBeVisible();
   await expect(page.getByText('Wed, Jun 28, 2023, 2:08 PM')).toBeVisible();
   await expect(page.getByText('Thu, Jun 22, 2023, 8:40 PM')).toBeVisible();
@@ -59,9 +57,7 @@ test('user should be able to buy a pass', async ({ page }) => {
   ).toBeVisible();
   await page.getByRole('button', { name: 'Go to payment' }).click();
   await page.getByRole('button', { name: 'Proceed to payment' }).click();
-  await new Promise((resolve) => setTimeout(resolve, 20000));
-  const url = page.url();
-  expect(url).toMatch(/checkout.stripe.com\/c\/pay/);
+  await page.waitForURL(/checkout.stripe.com\/c\/pay/);
   await page.getByLabel('Back').click();
   await expect(page.getByText('Purchase Cancelled')).toBeVisible();
 });
