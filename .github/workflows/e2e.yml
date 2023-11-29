@@ -19,7 +19,7 @@ jobs:
         uses: sebpalluel/ci/.github/actions/setup-environment@latest
 
       - name: Launch docker services
-        run: pnpm docker:services
+        run: pnpm docker:services & pnpm nx run web:build:production
 
       - name: Run e2e tests
         run: pnpm nx run web:e2e --skipInstall
