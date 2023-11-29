@@ -1,13 +1,12 @@
 import { expect, test } from '@playwright/test';
 import { resetCache } from '@test-utils/cache';
-import { accounts } from '@test-utils/gql';
 import {
   PgClient,
   applySeeds,
   createDbClient,
   deleteAllTables,
 } from 'libs/test-utils/db/src/index';
-import { loadUser } from './utils/loadUser';
+import { loadAccount } from './utils/loadAccount';
 
 let client: PgClient;
 
@@ -29,14 +28,9 @@ test.beforeEach(async () => {
   await applySeeds(client, ['account', 'kyc', 'eventPassPricing']);
 });
 
-test.use({
-  storageState: 'apps/web/e2e/utils/alpha_user.json',
-});
-
-test('user should be able to buy a pass', async ({ page }) => {
-  await loadUser({
-    page,
-    user: accounts.alpha_user,
+test('user should be able to buy a pass', async () => {
+  const { page, account } = await loadAccount({
+    user: 'alpha_user',
     goTo: '/en/organizer/test/event/test-an-event',
   });
   await expect(page.getByRole('img', { name: 'An event' })).toBeVisible();

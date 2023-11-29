@@ -45,14 +45,10 @@ export const useAuthContext = () => {
   const [context, setContext] = React.useState<AuthContextValue | undefined>(
     undefined,
   );
-
   React.useEffect(() => {
     const fetchAuthContext = async () => {
-      if (
-        process.env.NEXT_PUBLIC_PLAYWRIGHT &&
-        typeof window !== 'undefined' &&
-        window.useE2EAuthContext
-      ) {
+      // here mean we are in e2e test so bypass the web3auth part
+      if (window?.useE2EAuthContext) {
         const e2eAuthContextString = await window.useE2EAuthContext();
         const e2eAuthContext = JSON.parse(e2eAuthContextString);
         setContext(e2eAuthContext);
