@@ -3,3 +3,12 @@ query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
     ...OrganizerFields
   }
 }
+
+query GetAllOrganizerSlugsWithEventsSlugs {
+  organizers(stage: DRAFT) {
+    slug
+    events {
+      slug
+    }
+  }
+}
