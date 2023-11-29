@@ -23,8 +23,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command:
-      'export NEXT_PUBLIC_PLAYWRIGHT=true && pnpm nx run web:serve:production --turbo',
+    command: 'pnpm nx run web:serve:production --turbo',
     url: 'http://127.0.0.1:8888',
     reuseExistingServer: !process.env.CI,
     cwd: './',
