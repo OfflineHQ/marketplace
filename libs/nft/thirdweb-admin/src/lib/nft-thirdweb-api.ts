@@ -1,21 +1,22 @@
 import env from '@env/server';
 import { adminSdk } from '@gql/admin/api';
-import type {
+import {
   ClaimEventPassNftsMutation,
   ClaimEventPassNftsMutationVariables,
 } from '@gql/admin/types';
 import { OrderStatus_Enum } from '@gql/shared/types';
 import { EventPassOrderWithContractData } from '@nft/types';
+import { Goerli } from '@thirdweb-dev/chains';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 
 export class NftClaimable {
   sdk?: ThirdwebSDK;
 
   constructor() {
-    if (env.THIRDWEB_MASTER_PRIVATE_KEY) {
+    try {
       this.sdk = ThirdwebSDK.fromPrivateKey(
-        env.THIRDWEB_MASTER_PRIVATE_KEY as string,
-        env.CHAIN,
+        env.THIRDWEB_MASTER_PRIVATE_KEY,
+        Goerli,
         {
           secretKey: env.THIRDWEB_SECRET_KEY,
           gasless: {
@@ -25,8 +26,9 @@ export class NftClaimable {
           },
         },
       );
-    } else {
-      throw new Error('THIRDWEB_MASTER_PRIVATE_KEY is undefined');
+    } catch (error) {
+      console.error(`Error initializing ThirdwebSDK: ${error.message}`);
+      throw error;
     }
   }
 
