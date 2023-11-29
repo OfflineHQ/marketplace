@@ -5,7 +5,7 @@ import {
   applySeeds,
   createDbClient,
   deleteAllTables,
-} from 'libs/test-utils/db/src/index';
+} from '@test-utils/db';
 import { loadAccount } from './utils/loadAccount';
 
 let client: PgClient;

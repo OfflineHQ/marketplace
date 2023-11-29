@@ -1,3 +1,4 @@
+import { AppUser } from '@next/types';
 import { expect } from '@playwright/test';
 import { accounts } from '@test-utils/gql';
 import { chromium } from 'playwright';
@@ -10,11 +11,10 @@ interface LoadUserProps {
 export async function loadAccount({ user, goTo = '/en' }: LoadUserProps) {
   const browser = await chromium.launch();
   const context = await browser.newContext({
-    storageState: `apps/web/e2e/utils/${user}.json`,
-    userAgent: 'My custom user agent',
+    storageState: `apps/web/e2e/utils/${user as string}.json`,
   });
   const page = await context.newPage();
-  const account = accounts[user];
+  const account: AppUser = accounts[user];
   await page.exposeFunction('useE2EAuthContext', () => {
     return JSON.stringify({
       safeUser: {
