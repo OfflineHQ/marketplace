@@ -453,8 +453,11 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       );
       // here evaluate if user is logged in with web3auth. If it's not the case we logout the user from next auth.
       // useE2EAuthContext is provided by the e2e test to bypass real login
-      if (web3AuthModalPack?.web3Auth?.connected || window?.useE2EAuthContext) {
-        if (window.useE2EAuthContext) {
+      if (
+        web3AuthModalPack?.web3Auth?.connected ||
+        (window?.useE2EAuthContext && process.env.NEXT_PUBLIC_E2E_TEST)
+      ) {
+        if (window.useE2EAuthContext && process.env.NEXT_PUBLIC_E2E_TEST) {
           console.log('Using E2E Auth Context');
         } else setConnecting(true);
       } else {
