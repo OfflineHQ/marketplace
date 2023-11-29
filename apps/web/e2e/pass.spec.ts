@@ -59,21 +59,27 @@ test('user should be able to download and reveal his pass', async ({
   await loadUser(page, accounts.alpha_user, 'Alpha User');
   await page.goto('http://localhost:8888/en');
   await page.getByRole('link', { name: 'Qr Code Pass' }).click();
+  await new Promise((resolve) => setTimeout(resolve, 10000));
   await page.getByRole('tab', { name: 'Past' }).click();
   await new Promise((resolve) => setTimeout(resolve, 20000));
   await expect(page.getByText('Pass #12,432Revealed')).toBeVisible();
   await expect(page.getByText('Pass #1,234,124Not revealed')).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Download Download 2 passes' })
+    .click();
+  await page.getByRole('button', { name: 'Reveal Yes, reveal it' }).click();
   await page.getByRole('button', { name: 'Menu Actions' }).nth(1).click();
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('link', { name: 'Download Download' }).click();
   const download = await downloadPromise;
-  await page.getByRole('button', { name: 'Menu Actions' }).nth(1).click();
-  await page.getByRole('link', { name: 'Download Download' }).click();
   await expect(page.getByText('Pass downloaded').nth(1)).toBeVisible();
   await expect(
     page.getByText('The pass has been downloaded').nth(1),
   ).toBeVisible();
-  const downloadFilename = await download.suggestedFilename();
+  const downloadFilename = download.suggestedFilename();
   expect(downloadFilename).toEqual('test-an-event-vip-12432.png');
   expect(await download.failure()).toBeFalsy();
+  await page.reload();
+  await new Promise((resolve) => setTimeout(resolve, 10000));
+  await expect(page.getByText('Pass #1,234,124Revealed')).toBeVisible();
 });
