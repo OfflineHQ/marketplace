@@ -22,6 +22,14 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
+  webServer: {
+    command:
+      'export NEXT_PUBLIC_PLAYWRIGHT=true && pnpm nx run web:build && pnpm nx run web:serve:development',
+    url: 'http://127.0.0.1:8888',
+    reuseExistingServer: !process.env.CI,
+    cwd: './',
+    timeout: 360000,
+  },
   projects: [
     {
       name: 'Chromium',
