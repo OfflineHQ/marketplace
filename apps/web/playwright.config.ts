@@ -24,7 +24,7 @@ export default defineConfig({
   },
   webServer: {
     command:
-      'export NEXT_PUBLIC_PLAYWRIGHT=true && pnpm nx run web:build && pnpm nx run web:serve:development',
+      'export NEXT_PUBLIC_PLAYWRIGHT=true && pnpm nx run web:serve:production --turbo',
     url: 'http://127.0.0.1:8888',
     reuseExistingServer: !process.env.CI,
     cwd: './',
