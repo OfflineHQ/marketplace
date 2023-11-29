@@ -101,7 +101,7 @@ export const UserPassEvent: React.FC<UserPassEventProps> = ({
       <AccordionContent className="grid grid-cols-1 gap-y-4 md:grid-cols-4 md:gap-4">
         {eventParameters.eventPassNftContracts.map(
           (eventPassNftContract, index) => (
-            <div key={index}>
+            <div key={index} className="flex h-full">
               <UserPassEventCard
                 eventPassNftContract={eventPassNftContract}
                 eventParameters={eventParameters}
