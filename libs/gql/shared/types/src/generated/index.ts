@@ -44,6 +44,7 @@ export type Asset = Entity & Node & {
   /** The height of the file */
   height?: Maybe<Scalars['Float']>;
   heroImageEvent: Array<Event>;
+  heroImageOrganizer: Array<Organizer>;
   /** List of Asset versions */
   history: Array<Version>;
   /** The unique identifier */
@@ -108,6 +109,20 @@ export type AssetHeroImageEventArgs = {
   orderBy?: InputMaybe<EventOrderByInput>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<EventWhereInput>;
+};
+
+
+/** Asset system model */
+export type AssetHeroImageOrganizerArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<OrganizerOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<OrganizerWhereInput>;
 };
 
 
@@ -214,6 +229,7 @@ export type AssetCreateInput = {
   handle: Scalars['String'];
   height?: InputMaybe<Scalars['Float']>;
   heroImageEvent?: InputMaybe<EventCreateManyInlineInput>;
+  heroImageOrganizer?: InputMaybe<OrganizerCreateManyInlineInput>;
   imageOrganizer?: InputMaybe<OrganizerCreateManyInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<AssetCreateLocalizationsInput>;
@@ -294,6 +310,9 @@ export type AssetManyWhereInput = {
   heroImageEvent_every?: InputMaybe<EventWhereInput>;
   heroImageEvent_none?: InputMaybe<EventWhereInput>;
   heroImageEvent_some?: InputMaybe<EventWhereInput>;
+  heroImageOrganizer_every?: InputMaybe<OrganizerWhereInput>;
+  heroImageOrganizer_none?: InputMaybe<OrganizerWhereInput>;
+  heroImageOrganizer_some?: InputMaybe<OrganizerWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -392,6 +411,7 @@ export type AssetUpdateInput = {
   handle?: InputMaybe<Scalars['String']>;
   height?: InputMaybe<Scalars['Float']>;
   heroImageEvent?: InputMaybe<EventUpdateManyInlineInput>;
+  heroImageOrganizer?: InputMaybe<OrganizerUpdateManyInlineInput>;
   imageOrganizer?: InputMaybe<OrganizerUpdateManyInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<AssetUpdateLocalizationsInput>;
@@ -586,6 +606,9 @@ export type AssetWhereInput = {
   heroImageEvent_every?: InputMaybe<EventWhereInput>;
   heroImageEvent_none?: InputMaybe<EventWhereInput>;
   heroImageEvent_some?: InputMaybe<EventWhereInput>;
+  heroImageOrganizer_every?: InputMaybe<OrganizerWhereInput>;
+  heroImageOrganizer_none?: InputMaybe<OrganizerWhereInput>;
+  heroImageOrganizer_some?: InputMaybe<OrganizerWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -868,7 +891,10 @@ export type Event = Entity & Node & {
   eventDateLocations: Array<EventDateLocation>;
   eventParameters?: Maybe<EventParameters>;
   eventPasses: Array<EventPass>;
+  /** An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen. */
   heroImage: Asset;
+  /** Optional field used to style your hero image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
+  heroImageClasses?: Maybe<Scalars['String']>;
   /** List of Event versions */
   history: Array<Version>;
   /** The unique identifier */
@@ -1039,6 +1065,7 @@ export type EventCreateInput = {
   eventDateLocations?: InputMaybe<EventDateLocationCreateManyInlineInput>;
   eventPasses?: InputMaybe<EventPassCreateManyInlineInput>;
   heroImage: AssetCreateOneInlineInput;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventCreateLocalizationsInput>;
   organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
@@ -1339,6 +1366,25 @@ export type EventManyWhereInput = {
   eventPasses_none?: InputMaybe<EventPassWhereInput>;
   eventPasses_some?: InputMaybe<EventPassWhereInput>;
   heroImage?: InputMaybe<AssetWhereInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -1424,6 +1470,8 @@ export type EventManyWhereInput = {
 export const enum EventOrderByInput {
   CreatedAtAsc = 'createdAt_ASC',
   CreatedAtDesc = 'createdAt_DESC',
+  HeroImageClassesAsc = 'heroImageClasses_ASC',
+  HeroImageClassesDesc = 'heroImageClasses_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
   PublicAsc = 'public_ASC',
@@ -2104,6 +2152,7 @@ export type EventUpdateInput = {
   eventDateLocations?: InputMaybe<EventDateLocationUpdateManyInlineInput>;
   eventPasses?: InputMaybe<EventPassUpdateManyInlineInput>;
   heroImage?: InputMaybe<AssetUpdateOneInlineInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventUpdateLocalizationsInput>;
   organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
@@ -2154,6 +2203,7 @@ export type EventUpdateManyInlineInput = {
 export type EventUpdateManyInput = {
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<EventUpdateManyLocalizationsInput>;
   public?: InputMaybe<Scalars['Boolean']>;
@@ -2261,6 +2311,25 @@ export type EventWhereInput = {
   eventPasses_none?: InputMaybe<EventPassWhereInput>;
   eventPasses_some?: InputMaybe<EventPassWhereInput>;
   heroImage?: InputMaybe<AssetWhereInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -2726,15 +2795,27 @@ export type Organizer = Entity & Node & {
   /** User that created this document */
   createdBy?: Maybe<User>;
   description?: Maybe<OrganizerDescriptionRichText>;
+  /** The discord widge id of the organizer. You need to enable the widget in your discord server and copy the value in `server id`. For details instruction of how to enable and find the id, refer to this section https://dev.fandom.com/wiki/DiscordIntegrator#Enabling_the_widget */
+  discordWidgetId?: Maybe<Scalars['String']>;
   /** Get the document in other stages */
   documentInStages: Array<Organizer>;
   events: Array<Event>;
+  /** The facebook handle (username) of the organizer. You can just copy the text on your facebook landing page on the URL, like 'johndoe' for 'https://www.facebook.com/johndoe'. */
+  facebookHandle?: Maybe<Scalars['String']>;
+  /** An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen. */
+  heroImage: Asset;
+  /** Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
+  heroImageClasses?: Maybe<Scalars['String']>;
   /** List of Organizer versions */
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
   /** Image that represent the organizer, typically its logo. Advised resolution is 350 x 350 pixels, in square format with transparency (for ex: svg or png but not jpg) so that the image always look good either on light or dark mode. */
   image: Asset;
+  /** Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
+  imageClasses?: Maybe<Scalars['String']>;
+  /** The instagram handle (username) of the organizer. You can just copy the name on your instagram landing page next to the follow button. */
+  instagramHandle?: Maybe<Scalars['String']>;
   /** System Locale field */
   locale: Locale;
   /** Get the other localizations for this document */
@@ -2750,10 +2831,18 @@ export type Organizer = Entity & Node & {
   slug: Scalars['String'];
   /** System stage field */
   stage: Stage;
+  /** The telegram handle (username) of the organizer. You can just copy the text on your telegram profile page in parameters after the @, like 'johndoe' for '@johndoe'. */
+  telegramHandle?: Maybe<Scalars['String']>;
+  /** The tiktok handle (username) of the organizer. You can just copy the name on your tiktok landing page. */
+  tiktokHandle?: Maybe<Scalars['String']>;
+  /** The twitter (X) handle (username) of the organizer. You can just copy the text on your twitter landing page after the @, like 'johndoe' for '@johndoe'. */
+  twitterHandle?: Maybe<Scalars['String']>;
   /** The time the document was updated */
   updatedAt: Scalars['DateTime'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
+  /** The youtube handle (username) of the organizer. YYou can just copy the text on your youtube landing page after the @, like 'johndoe' for '@johndoe'. */
+  youtubeHandle?: Maybe<Scalars['String']>;
 };
 
 
@@ -2789,6 +2878,13 @@ export type OrganizerEventsArgs = {
   orderBy?: InputMaybe<EventOrderByInput>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<EventWhereInput>;
+};
+
+
+/** An organizer is an entity that launch events and handle the pass benefits. */
+export type OrganizerHeroImageArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
 };
 
 
@@ -2873,13 +2969,23 @@ export type OrganizerCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
+  discordWidgetId?: InputMaybe<Scalars['String']>;
   events?: InputMaybe<EventCreateManyInlineInput>;
+  facebookHandle?: InputMaybe<Scalars['String']>;
+  heroImage: AssetCreateOneInlineInput;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
   image: AssetCreateOneInlineInput;
+  imageClasses?: InputMaybe<Scalars['String']>;
+  instagramHandle?: InputMaybe<Scalars['String']>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<OrganizerCreateLocalizationsInput>;
   name: Scalars['String'];
   slug: Scalars['String'];
+  telegramHandle?: InputMaybe<Scalars['String']>;
+  tiktokHandle?: InputMaybe<Scalars['String']>;
+  twitterHandle?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
+  youtubeHandle?: InputMaybe<Scalars['String']>;
 };
 
 export type OrganizerCreateLocalizationDataInput = {
@@ -2972,12 +3078,70 @@ export type OrganizerManyWhereInput = {
   /** All values that are not contained in given list. */
   createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
+  discordWidgetId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  discordWidgetId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  discordWidgetId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  discordWidgetId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  discordWidgetId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  discordWidgetId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  discordWidgetId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  discordWidgetId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  discordWidgetId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  discordWidgetId_starts_with?: InputMaybe<Scalars['String']>;
   documentInStages_every?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_none?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_some?: InputMaybe<OrganizerWhereStageInput>;
   events_every?: InputMaybe<EventWhereInput>;
   events_none?: InputMaybe<EventWhereInput>;
   events_some?: InputMaybe<EventWhereInput>;
+  facebookHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  facebookHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  facebookHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  facebookHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  facebookHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  facebookHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  facebookHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  facebookHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  facebookHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  facebookHandle_starts_with?: InputMaybe<Scalars['String']>;
+  heroImage?: InputMaybe<AssetWhereInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -2998,6 +3162,44 @@ export type OrganizerManyWhereInput = {
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
   image?: InputMaybe<AssetWhereInput>;
+  imageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  imageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  imageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  imageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  imageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  imageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  imageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  imageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  imageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  imageClasses_starts_with?: InputMaybe<Scalars['String']>;
+  instagramHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  instagramHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  instagramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  instagramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  instagramHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  instagramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  instagramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  instagramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  instagramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  instagramHandle_starts_with?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']>;
@@ -3055,6 +3257,63 @@ export type OrganizerManyWhereInput = {
   slug_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   slug_starts_with?: InputMaybe<Scalars['String']>;
+  telegramHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  telegramHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  telegramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  telegramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  telegramHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  telegramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  telegramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  telegramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  telegramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  telegramHandle_starts_with?: InputMaybe<Scalars['String']>;
+  tiktokHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  tiktokHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  tiktokHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  tiktokHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  tiktokHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  tiktokHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  tiktokHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  tiktokHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  tiktokHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  tiktokHandle_starts_with?: InputMaybe<Scalars['String']>;
+  twitterHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  twitterHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  twitterHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  twitterHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  twitterHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  twitterHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  twitterHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  twitterHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  twitterHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  twitterHandle_starts_with?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -3071,32 +3330,79 @@ export type OrganizerManyWhereInput = {
   /** All values that are not contained in given list. */
   updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
+  youtubeHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  youtubeHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  youtubeHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  youtubeHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  youtubeHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  youtubeHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  youtubeHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  youtubeHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  youtubeHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  youtubeHandle_starts_with?: InputMaybe<Scalars['String']>;
 };
 
 export const enum OrganizerOrderByInput {
   CreatedAtAsc = 'createdAt_ASC',
   CreatedAtDesc = 'createdAt_DESC',
+  DiscordWidgetIdAsc = 'discordWidgetId_ASC',
+  DiscordWidgetIdDesc = 'discordWidgetId_DESC',
+  FacebookHandleAsc = 'facebookHandle_ASC',
+  FacebookHandleDesc = 'facebookHandle_DESC',
+  HeroImageClassesAsc = 'heroImageClasses_ASC',
+  HeroImageClassesDesc = 'heroImageClasses_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  ImageClassesAsc = 'imageClasses_ASC',
+  ImageClassesDesc = 'imageClasses_DESC',
+  InstagramHandleAsc = 'instagramHandle_ASC',
+  InstagramHandleDesc = 'instagramHandle_DESC',
   NameAsc = 'name_ASC',
   NameDesc = 'name_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   SlugAsc = 'slug_ASC',
   SlugDesc = 'slug_DESC',
+  TelegramHandleAsc = 'telegramHandle_ASC',
+  TelegramHandleDesc = 'telegramHandle_DESC',
+  TiktokHandleAsc = 'tiktokHandle_ASC',
+  TiktokHandleDesc = 'tiktokHandle_DESC',
+  TwitterHandleAsc = 'twitterHandle_ASC',
+  TwitterHandleDesc = 'twitterHandle_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC'
+  UpdatedAtDesc = 'updatedAt_DESC',
+  YoutubeHandleAsc = 'youtubeHandle_ASC',
+  YoutubeHandleDesc = 'youtubeHandle_DESC'
 };
 
 export type OrganizerUpdateInput = {
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
+  discordWidgetId?: InputMaybe<Scalars['String']>;
   events?: InputMaybe<EventUpdateManyInlineInput>;
+  facebookHandle?: InputMaybe<Scalars['String']>;
+  heroImage?: InputMaybe<AssetUpdateOneInlineInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<AssetUpdateOneInlineInput>;
+  imageClasses?: InputMaybe<Scalars['String']>;
+  instagramHandle?: InputMaybe<Scalars['String']>;
   /** Manage document localizations */
   localizations?: InputMaybe<OrganizerUpdateLocalizationsInput>;
   name?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
+  telegramHandle?: InputMaybe<Scalars['String']>;
+  tiktokHandle?: InputMaybe<Scalars['String']>;
+  twitterHandle?: InputMaybe<Scalars['String']>;
+  youtubeHandle?: InputMaybe<Scalars['String']>;
 };
 
 export type OrganizerUpdateLocalizationDataInput = {
@@ -3138,8 +3444,17 @@ export type OrganizerUpdateManyInlineInput = {
 export type OrganizerUpdateManyInput = {
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
+  discordWidgetId?: InputMaybe<Scalars['String']>;
+  facebookHandle?: InputMaybe<Scalars['String']>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
+  imageClasses?: InputMaybe<Scalars['String']>;
+  instagramHandle?: InputMaybe<Scalars['String']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<OrganizerUpdateManyLocalizationsInput>;
+  telegramHandle?: InputMaybe<Scalars['String']>;
+  tiktokHandle?: InputMaybe<Scalars['String']>;
+  twitterHandle?: InputMaybe<Scalars['String']>;
+  youtubeHandle?: InputMaybe<Scalars['String']>;
 };
 
 export type OrganizerUpdateManyLocalizationDataInput = {
@@ -3230,12 +3545,70 @@ export type OrganizerWhereInput = {
   /** All values that are not contained in given list. */
   createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
+  discordWidgetId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  discordWidgetId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  discordWidgetId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  discordWidgetId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  discordWidgetId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  discordWidgetId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  discordWidgetId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  discordWidgetId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  discordWidgetId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  discordWidgetId_starts_with?: InputMaybe<Scalars['String']>;
   documentInStages_every?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_none?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_some?: InputMaybe<OrganizerWhereStageInput>;
   events_every?: InputMaybe<EventWhereInput>;
   events_none?: InputMaybe<EventWhereInput>;
   events_some?: InputMaybe<EventWhereInput>;
+  facebookHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  facebookHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  facebookHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  facebookHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  facebookHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  facebookHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  facebookHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  facebookHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  facebookHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  facebookHandle_starts_with?: InputMaybe<Scalars['String']>;
+  heroImage?: InputMaybe<AssetWhereInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -3256,6 +3629,44 @@ export type OrganizerWhereInput = {
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
   image?: InputMaybe<AssetWhereInput>;
+  imageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  imageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  imageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  imageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  imageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  imageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  imageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  imageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  imageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  imageClasses_starts_with?: InputMaybe<Scalars['String']>;
+  instagramHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  instagramHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  instagramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  instagramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  instagramHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  instagramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  instagramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  instagramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  instagramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  instagramHandle_starts_with?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']>;
@@ -3313,6 +3724,63 @@ export type OrganizerWhereInput = {
   slug_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   slug_starts_with?: InputMaybe<Scalars['String']>;
+  telegramHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  telegramHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  telegramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  telegramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  telegramHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  telegramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  telegramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  telegramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  telegramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  telegramHandle_starts_with?: InputMaybe<Scalars['String']>;
+  tiktokHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  tiktokHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  tiktokHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  tiktokHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  tiktokHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  tiktokHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  tiktokHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  tiktokHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  tiktokHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  tiktokHandle_starts_with?: InputMaybe<Scalars['String']>;
+  twitterHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  twitterHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  twitterHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  twitterHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  twitterHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  twitterHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  twitterHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  twitterHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  twitterHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  twitterHandle_starts_with?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -3329,6 +3797,25 @@ export type OrganizerWhereInput = {
   /** All values that are not contained in given list. */
   updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
+  youtubeHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  youtubeHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  youtubeHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  youtubeHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  youtubeHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  youtubeHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  youtubeHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  youtubeHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  youtubeHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  youtubeHandle_starts_with?: InputMaybe<Scalars['String']>;
 };
 
 /** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */

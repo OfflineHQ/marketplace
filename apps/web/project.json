@@ -138,6 +138,19 @@
       "options": {
         "config": "apps/web/playwright.config.ts"
       }
+    },
+
+    "postbuild": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["node ./scripts/generate-sitemap.mjs"]
+      }
+    },
+    "build-and-postbuild": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["nx run web:build", "nx run web:postbuild"]
+      }
     }
   },
   "tags": []

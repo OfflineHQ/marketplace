@@ -101,6 +101,35 @@ type Asset implements Entity & Node {
     skip: Int
     where: EventWhereInput
   ): [Event!]!
+  heroImageOrganizer(
+    after: String
+    before: String
+    first: Int
+
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `heroImageOrganizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+    last: Int
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `heroImageOrganizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+    orderBy: OrganizerOrderByInput
+    skip: Int
+    where: OrganizerWhereInput
+  ): [Organizer!]!
 
   """List of Asset versions"""
   history(
@@ -319,6 +348,7 @@ input AssetCreateInput {
   handle: String!
   height: Float
   heroImageEvent: EventCreateManyInlineInput
+  heroImageOrganizer: OrganizerCreateManyInlineInput
   imageOrganizer: OrganizerCreateManyInlineInput
 
   """
@@ -413,6 +443,9 @@ input AssetManyWhereInput {
   heroImageEvent_every: EventWhereInput
   heroImageEvent_none: EventWhereInput
   heroImageEvent_some: EventWhereInput
+  heroImageOrganizer_every: OrganizerWhereInput
+  heroImageOrganizer_none: OrganizerWhereInput
+  heroImageOrganizer_some: OrganizerWhereInput
   id: ID
 
   """All values containing the given string."""
@@ -535,6 +568,7 @@ input AssetUpdateInput {
   handle: String
   height: Float
   heroImageEvent: EventUpdateManyInlineInput
+  heroImageOrganizer: OrganizerUpdateManyInlineInput
   imageOrganizer: OrganizerUpdateManyInlineInput
 
   """Manage document localizations"""
@@ -780,6 +814,9 @@ input AssetWhereInput {
   heroImageEvent_every: EventWhereInput
   heroImageEvent_none: EventWhereInput
   heroImageEvent_some: EventWhereInput
+  heroImageOrganizer_every: OrganizerWhereInput
+  heroImageOrganizer_none: OrganizerWhereInput
+  heroImageOrganizer_some: OrganizerWhereInput
   id: ID
 
   """All values containing the given string."""
@@ -1241,6 +1278,10 @@ type Event implements Entity & Node {
     skip: Int
     where: EventPassWhereInput
   ): [EventPass!]!
+
+  """
+  An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen.
+  """
   heroImage(
     """
     Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
@@ -1262,6 +1303,11 @@ type Event implements Entity & Node {
     """
     locales: [Locale!]
   ): Asset!
+
+  """
+  Optional field used to style your hero image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast)
+  """
+  heroImageClasses: String
 
   """List of Event versions"""
   history(
@@ -1455,6 +1501,7 @@ input EventCreateInput {
   eventDateLocations: EventDateLocationCreateManyInlineInput
   eventPasses: EventPassCreateManyInlineInput
   heroImage: AssetCreateOneInlineInput!
+  heroImageClasses: String
 
   """
   Inline mutations for managing document localizations excluding the default locale
@@ -1827,6 +1874,34 @@ input EventManyWhereInput {
   eventPasses_none: EventPassWhereInput
   eventPasses_some: EventPassWhereInput
   heroImage: AssetWhereInput
+  heroImageClasses: String
+
+  """All values containing the given string."""
+  heroImageClasses_contains: String
+
+  """All values ending with the given string."""
+  heroImageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  heroImageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  heroImageClasses_not: String
+
+  """All values not containing the given string."""
+  heroImageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  heroImageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  heroImageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  heroImageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  heroImageClasses_starts_with: String
   id: ID
 
   """All values containing the given string."""
@@ -1946,6 +2021,8 @@ input EventManyWhereInput {
 enum EventOrderByInput {
   createdAt_ASC
   createdAt_DESC
+  heroImageClasses_ASC
+  heroImageClasses_DESC
   id_ASC
   id_DESC
   public_ASC
@@ -2917,6 +2994,7 @@ input EventUpdateInput {
   eventDateLocations: EventDateLocationUpdateManyInlineInput
   eventPasses: EventPassUpdateManyInlineInput
   heroImage: AssetUpdateOneInlineInput
+  heroImageClasses: String
 
   """Manage document localizations"""
   localizations: EventUpdateLocalizationsInput
@@ -2979,6 +3057,7 @@ input EventUpdateManyInlineInput {
 input EventUpdateManyInput {
   """description input for default locale (en)"""
   description: RichTextAST
+  heroImageClasses: String
 
   """Optional updates to localizations"""
   localizations: EventUpdateManyLocalizationsInput
@@ -3110,6 +3189,34 @@ input EventWhereInput {
   eventPasses_none: EventPassWhereInput
   eventPasses_some: EventPassWhereInput
   heroImage: AssetWhereInput
+  heroImageClasses: String
+
+  """All values containing the given string."""
+  heroImageClasses_contains: String
+
+  """All values ending with the given string."""
+  heroImageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  heroImageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  heroImageClasses_not: String
+
+  """All values not containing the given string."""
+  heroImageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  heroImageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  heroImageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  heroImageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  heroImageClasses_starts_with: String
   id: ID
 
   """All values containing the given string."""
@@ -3767,6 +3874,11 @@ type Organizer implements Entity & Node {
   ): User
   description: OrganizerDescriptionRichText
 
+  """
+  The discord widge id of the organizer. You need to enable the widget in your discord server and copy the value in `server id`. For details instruction of how to enable and find the id, refer to this section https://dev.fandom.com/wiki/DiscordIntegrator#Enabling_the_widget
+  """
+  discordWidgetId: String
+
   """Get the document in other stages"""
   documentInStages(
     """Decides if the current stage should be included or not"""
@@ -3810,6 +3922,41 @@ type Organizer implements Entity & Node {
     where: EventWhereInput
   ): [Event!]!
 
+  """
+  The facebook handle (username) of the organizer. You can just copy the text on your facebook landing page on the URL, like 'johndoe' for 'https://www.facebook.com/johndoe'.
+  """
+  facebookHandle: String
+
+  """
+  An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen.
+  """
+  heroImage(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `heroImage` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `heroImage` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): Asset!
+
+  """
+  Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast)
+  """
+  heroImageClasses: String
+
   """List of Organizer versions"""
   history(
     limit: Int! = 10
@@ -3848,6 +3995,16 @@ type Organizer implements Entity & Node {
     """
     locales: [Locale!]
   ): Asset!
+
+  """
+  Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast)
+  """
+  imageClasses: String
+
+  """
+  The instagram handle (username) of the organizer. You can just copy the name on your instagram landing page next to the follow button.
+  """
+  instagramHandle: String
 
   """System Locale field"""
   locale: Locale!
@@ -3939,6 +4096,21 @@ type Organizer implements Entity & Node {
   """System stage field"""
   stage: Stage!
 
+  """
+  The telegram handle (username) of the organizer. You can just copy the text on your telegram profile page in parameters after the @, like 'johndoe' for '@johndoe'.
+  """
+  telegramHandle: String
+
+  """
+  The tiktok handle (username) of the organizer. You can just copy the name on your tiktok landing page.
+  """
+  tiktokHandle: String
+
+  """
+  The twitter (X) handle (username) of the organizer. You can just copy the text on your twitter landing page after the @, like 'johndoe' for '@johndoe'.
+  """
+  twitterHandle: String
+
   """The time the document was updated"""
   updatedAt(
     """
@@ -3969,6 +4141,11 @@ type Organizer implements Entity & Node {
     """
     locales: [Locale!]
   ): User
+
+  """
+  The youtube handle (username) of the organizer. YYou can just copy the text on your youtube landing page after the @, like 'johndoe' for '@johndoe'.
+  """
+  youtubeHandle: String
 }
 
 input OrganizerConnectInput {
@@ -3997,8 +4174,14 @@ input OrganizerCreateInput {
 
   """description input for default locale (en)"""
   description: RichTextAST
+  discordWidgetId: String
   events: EventCreateManyInlineInput
+  facebookHandle: String
+  heroImage: AssetCreateOneInlineInput!
+  heroImageClasses: String
   image: AssetCreateOneInlineInput!
+  imageClasses: String
+  instagramHandle: String
 
   """
   Inline mutations for managing document localizations excluding the default locale
@@ -4006,7 +4189,11 @@ input OrganizerCreateInput {
   localizations: OrganizerCreateLocalizationsInput
   name: String!
   slug: String!
+  telegramHandle: String
+  tiktokHandle: String
+  twitterHandle: String
   updatedAt: DateTime
+  youtubeHandle: String
 }
 
 input OrganizerCreateLocalizationDataInput {
@@ -4103,12 +4290,97 @@ input OrganizerManyWhereInput {
   """All values that are not contained in given list."""
   createdAt_not_in: [DateTime]
   createdBy: UserWhereInput
+  discordWidgetId: String
+
+  """All values containing the given string."""
+  discordWidgetId_contains: String
+
+  """All values ending with the given string."""
+  discordWidgetId_ends_with: String
+
+  """All values that are contained in given list."""
+  discordWidgetId_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  discordWidgetId_not: String
+
+  """All values not containing the given string."""
+  discordWidgetId_not_contains: String
+
+  """All values not ending with the given string"""
+  discordWidgetId_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  discordWidgetId_not_in: [String]
+
+  """All values not starting with the given string."""
+  discordWidgetId_not_starts_with: String
+
+  """All values starting with the given string."""
+  discordWidgetId_starts_with: String
   documentInStages_every: OrganizerWhereStageInput
   documentInStages_none: OrganizerWhereStageInput
   documentInStages_some: OrganizerWhereStageInput
   events_every: EventWhereInput
   events_none: EventWhereInput
   events_some: EventWhereInput
+  facebookHandle: String
+
+  """All values containing the given string."""
+  facebookHandle_contains: String
+
+  """All values ending with the given string."""
+  facebookHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  facebookHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  facebookHandle_not: String
+
+  """All values not containing the given string."""
+  facebookHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  facebookHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  facebookHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  facebookHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  facebookHandle_starts_with: String
+  heroImage: AssetWhereInput
+  heroImageClasses: String
+
+  """All values containing the given string."""
+  heroImageClasses_contains: String
+
+  """All values ending with the given string."""
+  heroImageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  heroImageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  heroImageClasses_not: String
+
+  """All values not containing the given string."""
+  heroImageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  heroImageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  heroImageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  heroImageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  heroImageClasses_starts_with: String
   id: ID
 
   """All values containing the given string."""
@@ -4138,6 +4410,62 @@ input OrganizerManyWhereInput {
   """All values starting with the given string."""
   id_starts_with: ID
   image: AssetWhereInput
+  imageClasses: String
+
+  """All values containing the given string."""
+  imageClasses_contains: String
+
+  """All values ending with the given string."""
+  imageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  imageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  imageClasses_not: String
+
+  """All values not containing the given string."""
+  imageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  imageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  imageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  imageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  imageClasses_starts_with: String
+  instagramHandle: String
+
+  """All values containing the given string."""
+  instagramHandle_contains: String
+
+  """All values ending with the given string."""
+  instagramHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  instagramHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  instagramHandle_not: String
+
+  """All values not containing the given string."""
+  instagramHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  instagramHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  instagramHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  instagramHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  instagramHandle_starts_with: String
   name: String
 
   """All values containing the given string."""
@@ -4220,6 +4548,90 @@ input OrganizerManyWhereInput {
 
   """All values starting with the given string."""
   slug_starts_with: String
+  telegramHandle: String
+
+  """All values containing the given string."""
+  telegramHandle_contains: String
+
+  """All values ending with the given string."""
+  telegramHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  telegramHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  telegramHandle_not: String
+
+  """All values not containing the given string."""
+  telegramHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  telegramHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  telegramHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  telegramHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  telegramHandle_starts_with: String
+  tiktokHandle: String
+
+  """All values containing the given string."""
+  tiktokHandle_contains: String
+
+  """All values ending with the given string."""
+  tiktokHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  tiktokHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  tiktokHandle_not: String
+
+  """All values not containing the given string."""
+  tiktokHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  tiktokHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  tiktokHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  tiktokHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  tiktokHandle_starts_with: String
+  twitterHandle: String
+
+  """All values containing the given string."""
+  twitterHandle_contains: String
+
+  """All values ending with the given string."""
+  twitterHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  twitterHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  twitterHandle_not: String
+
+  """All values not containing the given string."""
+  twitterHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  twitterHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  twitterHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  twitterHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  twitterHandle_starts_with: String
   updatedAt: DateTime
 
   """All values greater than the given value."""
@@ -4243,33 +4655,89 @@ input OrganizerManyWhereInput {
   """All values that are not contained in given list."""
   updatedAt_not_in: [DateTime]
   updatedBy: UserWhereInput
+  youtubeHandle: String
+
+  """All values containing the given string."""
+  youtubeHandle_contains: String
+
+  """All values ending with the given string."""
+  youtubeHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  youtubeHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  youtubeHandle_not: String
+
+  """All values not containing the given string."""
+  youtubeHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  youtubeHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  youtubeHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  youtubeHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  youtubeHandle_starts_with: String
 }
 
 enum OrganizerOrderByInput {
   createdAt_ASC
   createdAt_DESC
+  discordWidgetId_ASC
+  discordWidgetId_DESC
+  facebookHandle_ASC
+  facebookHandle_DESC
+  heroImageClasses_ASC
+  heroImageClasses_DESC
   id_ASC
   id_DESC
+  imageClasses_ASC
+  imageClasses_DESC
+  instagramHandle_ASC
+  instagramHandle_DESC
   name_ASC
   name_DESC
   publishedAt_ASC
   publishedAt_DESC
   slug_ASC
   slug_DESC
+  telegramHandle_ASC
+  telegramHandle_DESC
+  tiktokHandle_ASC
+  tiktokHandle_DESC
+  twitterHandle_ASC
+  twitterHandle_DESC
   updatedAt_ASC
   updatedAt_DESC
+  youtubeHandle_ASC
+  youtubeHandle_DESC
 }
 
 input OrganizerUpdateInput {
   """description input for default locale (en)"""
   description: RichTextAST
+  discordWidgetId: String
   events: EventUpdateManyInlineInput
+  facebookHandle: String
+  heroImage: AssetUpdateOneInlineInput
+  heroImageClasses: String
   image: AssetUpdateOneInlineInput
+  imageClasses: String
+  instagramHandle: String
 
   """Manage document localizations"""
   localizations: OrganizerUpdateLocalizationsInput
   name: String
   slug: String
+  telegramHandle: String
+  tiktokHandle: String
+  twitterHandle: String
+  youtubeHandle: String
 }
 
 input OrganizerUpdateLocalizationDataInput {
@@ -4321,9 +4789,18 @@ input OrganizerUpdateManyInlineInput {
 input OrganizerUpdateManyInput {
   """description input for default locale (en)"""
   description: RichTextAST
+  discordWidgetId: String
+  facebookHandle: String
+  heroImageClasses: String
+  imageClasses: String
+  instagramHandle: String
 
   """Optional updates to localizations"""
   localizations: OrganizerUpdateManyLocalizationsInput
+  telegramHandle: String
+  tiktokHandle: String
+  twitterHandle: String
+  youtubeHandle: String
 }
 
 input OrganizerUpdateManyLocalizationDataInput {
@@ -4436,12 +4913,97 @@ input OrganizerWhereInput {
   """All values that are not contained in given list."""
   createdAt_not_in: [DateTime]
   createdBy: UserWhereInput
+  discordWidgetId: String
+
+  """All values containing the given string."""
+  discordWidgetId_contains: String
+
+  """All values ending with the given string."""
+  discordWidgetId_ends_with: String
+
+  """All values that are contained in given list."""
+  discordWidgetId_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  discordWidgetId_not: String
+
+  """All values not containing the given string."""
+  discordWidgetId_not_contains: String
+
+  """All values not ending with the given string"""
+  discordWidgetId_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  discordWidgetId_not_in: [String]
+
+  """All values not starting with the given string."""
+  discordWidgetId_not_starts_with: String
+
+  """All values starting with the given string."""
+  discordWidgetId_starts_with: String
   documentInStages_every: OrganizerWhereStageInput
   documentInStages_none: OrganizerWhereStageInput
   documentInStages_some: OrganizerWhereStageInput
   events_every: EventWhereInput
   events_none: EventWhereInput
   events_some: EventWhereInput
+  facebookHandle: String
+
+  """All values containing the given string."""
+  facebookHandle_contains: String
+
+  """All values ending with the given string."""
+  facebookHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  facebookHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  facebookHandle_not: String
+
+  """All values not containing the given string."""
+  facebookHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  facebookHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  facebookHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  facebookHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  facebookHandle_starts_with: String
+  heroImage: AssetWhereInput
+  heroImageClasses: String
+
+  """All values containing the given string."""
+  heroImageClasses_contains: String
+
+  """All values ending with the given string."""
+  heroImageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  heroImageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  heroImageClasses_not: String
+
+  """All values not containing the given string."""
+  heroImageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  heroImageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  heroImageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  heroImageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  heroImageClasses_starts_with: String
   id: ID
 
   """All values containing the given string."""
@@ -4471,6 +5033,62 @@ input OrganizerWhereInput {
   """All values starting with the given string."""
   id_starts_with: ID
   image: AssetWhereInput
+  imageClasses: String
+
+  """All values containing the given string."""
+  imageClasses_contains: String
+
+  """All values ending with the given string."""
+  imageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  imageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  imageClasses_not: String
+
+  """All values not containing the given string."""
+  imageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  imageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  imageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  imageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  imageClasses_starts_with: String
+  instagramHandle: String
+
+  """All values containing the given string."""
+  instagramHandle_contains: String
+
+  """All values ending with the given string."""
+  instagramHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  instagramHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  instagramHandle_not: String
+
+  """All values not containing the given string."""
+  instagramHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  instagramHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  instagramHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  instagramHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  instagramHandle_starts_with: String
   name: String
 
   """All values containing the given string."""
@@ -4553,6 +5171,90 @@ input OrganizerWhereInput {
 
   """All values starting with the given string."""
   slug_starts_with: String
+  telegramHandle: String
+
+  """All values containing the given string."""
+  telegramHandle_contains: String
+
+  """All values ending with the given string."""
+  telegramHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  telegramHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  telegramHandle_not: String
+
+  """All values not containing the given string."""
+  telegramHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  telegramHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  telegramHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  telegramHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  telegramHandle_starts_with: String
+  tiktokHandle: String
+
+  """All values containing the given string."""
+  tiktokHandle_contains: String
+
+  """All values ending with the given string."""
+  tiktokHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  tiktokHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  tiktokHandle_not: String
+
+  """All values not containing the given string."""
+  tiktokHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  tiktokHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  tiktokHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  tiktokHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  tiktokHandle_starts_with: String
+  twitterHandle: String
+
+  """All values containing the given string."""
+  twitterHandle_contains: String
+
+  """All values ending with the given string."""
+  twitterHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  twitterHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  twitterHandle_not: String
+
+  """All values not containing the given string."""
+  twitterHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  twitterHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  twitterHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  twitterHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  twitterHandle_starts_with: String
   updatedAt: DateTime
 
   """All values greater than the given value."""
@@ -4576,6 +5278,34 @@ input OrganizerWhereInput {
   """All values that are not contained in given list."""
   updatedAt_not_in: [DateTime]
   updatedBy: UserWhereInput
+  youtubeHandle: String
+
+  """All values containing the given string."""
+  youtubeHandle_contains: String
+
+  """All values ending with the given string."""
+  youtubeHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  youtubeHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  youtubeHandle_not: String
+
+  """All values not containing the given string."""
+  youtubeHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  youtubeHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  youtubeHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  youtubeHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  youtubeHandle_starts_with: String
 }
 
 """
