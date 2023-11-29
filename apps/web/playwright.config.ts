@@ -28,7 +28,7 @@ export default defineConfig({
     url: 'http://127.0.0.1:8888',
     reuseExistingServer: !process.env.CI,
     cwd: './',
-    timeout: 360000,
+    timeout: 120000,
   },
   projects: [
     {

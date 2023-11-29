@@ -59,9 +59,7 @@ test('user should be able to download and reveal his pass', async ({
   await loadUser(page, accounts.alpha_user, 'Alpha User');
   await page.goto('http://localhost:8888/en');
   await page.getByRole('link', { name: 'Qr Code Pass' }).click();
-  await new Promise((resolve) => setTimeout(resolve, 10000));
   await page.getByRole('tab', { name: 'Past' }).click();
-  await new Promise((resolve) => setTimeout(resolve, 20000));
   await expect(page.getByText('Pass #12,432Revealed')).toBeVisible();
   await expect(page.getByText('Pass #1,234,124Not revealed')).toBeVisible();
   await page
@@ -80,6 +78,5 @@ test('user should be able to download and reveal his pass', async ({
   expect(downloadFilename).toEqual('test-an-event-vip-12432.png');
   expect(await download.failure()).toBeFalsy();
   await page.reload();
-  await new Promise((resolve) => setTimeout(resolve, 10000));
   await expect(page.getByText('Pass #1,234,124Revealed')).toBeVisible();
 });
