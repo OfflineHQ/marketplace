@@ -6,8 +6,21 @@ import {
 } from '@gql/admin/types';
 import { OrderStatus_Enum } from '@gql/shared/types';
 import { EventPassOrderWithContractData } from '@nft/types';
-import { Goerli } from '@thirdweb-dev/chains';
+import { Ethereum, Goerli, Sepolia } from '@thirdweb-dev/chains';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
+
+function convertChainIdToThirdwebChain(chainId: string) {
+  switch (chainId) {
+    case '1':
+      return Ethereum;
+    case '5':
+      return Goerli;
+    case '11155111':
+      return Sepolia;
+    default:
+      throw new Error(`Unsupported chainId: ${chainId}`);
+  }
+}
 
 export class NftClaimable {
   sdk?: ThirdwebSDK;
@@ -16,14 +29,9 @@ export class NftClaimable {
     try {
       this.sdk = ThirdwebSDK.fromPrivateKey(
         env.THIRDWEB_MASTER_PRIVATE_KEY,
-        Goerli,
+        convertChainIdToThirdwebChain(env.CHAIN),
         {
           secretKey: env.THIRDWEB_SECRET_KEY,
-          gasless: {
-            openzeppelin: {
-              relayerUrl: env.OPENZEPPELIN_URL,
-            },
-          },
         },
       );
     } catch (error) {
