@@ -1,15 +1,15 @@
 import { expect } from '@storybook/jest';
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   fireEvent,
   screen,
   userEvent,
   waitForElementToBeRemoved,
 } from '@storybook/testing-library';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Toaster } from './Toaster';
-import { ToastAction } from './Toast';
-import { ToastSimple, type ToasterToast } from './examples';
 import { sleep } from '@utils';
+import { ToastAction } from './Toast';
+import { Toaster } from './Toaster';
+import { ToastSimple, type ToasterToast } from './examples';
 
 const meta: Meta<ToasterToast> = {
   render: (args) => {
@@ -56,7 +56,7 @@ export const SimpleToast: Story = {
     const toasterTrigger = screen.getByRole('button', { name: 'Show Toast' });
     await userEvent.click(toasterTrigger);
     const toastDescription = await screen.findByText('This is a toast');
-    expect(toastDescription).toBeVisible();
+    await expect(toastDescription).toBeVisible();
   },
 };
 
@@ -80,8 +80,8 @@ export const ThreeToast: Story = {
     expect(toastDescriptions.length).toEqual(3);
 
     // Check if all 3 toasts are visible
-    toastDescriptions.forEach((toastDescription) => {
-      expect(toastDescription).toBeVisible();
+    toastDescriptions.forEach(async (toastDescription) => {
+      await expect(toastDescription).toBeVisible();
     });
   },
 };
@@ -95,12 +95,12 @@ export const ToastWithTitleAndDescription: Story = {
     const toasterTrigger = screen.getByRole('button', { name: 'Show Toast' });
     await userEvent.click(toasterTrigger);
     const toastTitle = await screen.findByText('New message received');
-    expect(toastTitle).toBeVisible();
+    await expect(toastTitle).toBeVisible();
 
     const toastDescription = await screen.findByText(
       'You have received a new message from John Doe.',
     );
-    expect(toastDescription).toBeVisible();
+    await expect(toastDescription).toBeVisible();
   },
 };
 
@@ -114,13 +114,13 @@ export const ToastWithAction: Story = {
     const toasterTrigger = screen.getByRole('button', { name: 'Show Toast' });
     await userEvent.click(toasterTrigger);
     const toastTitle = await screen.findByText('This is a toast with action');
-    expect(toastTitle).toBeVisible();
+    await expect(toastTitle).toBeVisible();
 
     const toastDescription = await screen.findByText('And a description');
-    expect(toastDescription).toBeVisible();
+    await expect(toastDescription).toBeVisible();
 
     const toastAction = screen.getByRole('button', { name: 'Try again' });
-    expect(toastAction).toBeVisible();
+    await expect(toastAction).toBeVisible();
   },
 };
 
@@ -135,8 +135,8 @@ export const ToastWithDestructiveVariant: Story = {
     const toasterTrigger = screen.getByRole('button', { name: 'Show Toast' });
     await userEvent.click(toasterTrigger);
     const toastTitle = await screen.findByText('Uh oh! Something went wrong.');
-    expect(toastTitle).toBeVisible();
+    await expect(toastTitle).toBeVisible();
     const toastElement = screen.getByRole('alert');
-    expect(toastElement).toHaveClass('destructive');
+    await expect(toastElement).toHaveClass('destructive');
   },
 };

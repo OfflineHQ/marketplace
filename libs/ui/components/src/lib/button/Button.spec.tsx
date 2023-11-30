@@ -1,10 +1,10 @@
+import { composeStories } from '@storybook/react';
 import {
+  fireEvent,
   render,
   screen,
-  fireEvent,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { composeStories } from '@storybook/react';
 import * as stories from './Button.stories';
 
 const { DefaultButton } = composeStories(stories);
@@ -28,10 +28,10 @@ describe('Button', () => {
     await waitForElementToBeRemoved(() => screen.queryByRole('status'));
   });
 
-  test('button is disabled when disabled prop is true', () => {
+  test('button is disabled when disabled prop is true', async () => {
     render(<DefaultButton disabled>default Disabled</DefaultButton>);
     const buttonElement = screen.getByText('default Disabled');
-    expect(buttonElement).toBeDisabled();
+    await expect(buttonElement).toBeDisabled();
   });
 
   test('button displays loading state when isLoading is true', () => {

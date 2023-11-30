@@ -27,16 +27,16 @@ export const OpenDialogWithFocus: Story = {
     await userEvent.click(dialogTrigger);
 
     const dialogTitle = await screen.findByText('Edit profile Dialog');
-    expect(dialogTitle).toBeVisible();
+    await expect(dialogTitle).toBeVisible();
 
     const dialogDescription = await screen.findByText(
       "Make changes to your profile here. Click save when you're done.",
     );
-    expect(dialogDescription).toBeVisible();
+    await expect(dialogDescription).toBeVisible();
     // Check if the first TextInput is focused
     const dialogContent = screen.getByRole('dialog');
     const allInputs = within(dialogContent).getAllByRole('textbox');
-    expect(allInputs[0]).toHaveFocus();
+    await expect(allInputs[0]).toHaveFocus();
   },
 };
 
@@ -64,19 +64,19 @@ export const OpenedDialogScrollable: Story = {
   render: DialogScrollable,
   play: async () => {
     const dialogTitle = await screen.findByText('Long scrollable text dialog');
-    expect(dialogTitle).toBeVisible();
+    await expect(dialogTitle).toBeVisible();
 
     const dialogDescription = await screen.findByText(
       "Make changes to your profile here. Click save when you're done.",
     );
-    expect(dialogDescription).toBeVisible();
+    await expect(dialogDescription).toBeVisible();
 
     const dialogScrollableContent = await screen.findByText('Be optimistic');
-    expect(dialogScrollableContent).toBeVisible();
+    await expect(dialogScrollableContent).toBeVisible();
 
     const footerButton = screen.getByRole('button', {
       name: 'Scroll inside viewport',
     });
-    expect(footerButton).toBeVisible();
+    await expect(footerButton).toBeVisible();
   },
 };

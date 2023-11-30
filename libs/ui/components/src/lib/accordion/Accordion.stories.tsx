@@ -73,7 +73,7 @@ export const OpenAccordionItem: Story = {
     const accordionContent = await screen.findByText(
       'Yes. It adheres to the WAI-ARIA design pattern.',
     );
-    expect(accordionContent).toBeVisible();
+    await expect(accordionContent).toBeVisible();
 
     const accordionItem = accordionContent.closest('[role="region"]');
     expect(accordionItem?.getAttribute('data-state')).toBe('open');
@@ -111,7 +111,7 @@ export const MultipleOpenAccordionItem: Story = {
     const accordionContent = await screen.findByText(
       'Yes. It adheres to the WAI-ARIA design pattern.',
     );
-    expect(accordionContent).toBeVisible();
+    await expect(accordionContent).toBeVisible();
 
     const accordionItem = accordionContent.closest('[role="region"]');
     expect(accordionItem?.getAttribute('data-state')).toBe('open');
@@ -124,7 +124,7 @@ export const MultipleOpenAccordionItem: Story = {
     const ThirdAccordionContent = await screen.findByText(
       "Yes. It's animated by default, but you can disable it if you prefer.",
     );
-    expect(ThirdAccordionContent).toBeVisible();
+    await expect(ThirdAccordionContent).toBeVisible();
 
     const thirdAccordionItem = accordionContent.closest('[role="region"]');
     expect(thirdAccordionItem?.getAttribute('data-state')).toBe('open');
