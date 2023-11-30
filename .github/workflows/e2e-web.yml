@@ -1,6 +1,11 @@
-name: E2E tests
+name: E2E tests Web
 
 on:
+  pull_request:
+    paths:
+      - libs/ui/**
+      - libs/features/**
+      - '!libs/features/back-office/**'
   workflow_dispatch:
 
 concurrency:
