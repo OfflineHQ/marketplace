@@ -65,8 +65,8 @@ export const DisabledOn: Story = {
   },
   play: async ({ canvasElement }) => {
     const switchElement = screen.getByRole('switch');
-    expect(switchElement).toBeDisabled();
-    expect(switchElement).toHaveAttribute('aria-checked', 'true');
+    await expect(switchElement).toBeDisabled();
+    await expect(switchElement).toHaveAttribute('aria-checked', 'true');
   },
 };
 
@@ -76,8 +76,8 @@ export const DisabledOff: Story = {
   },
   play: async ({ canvasElement }) => {
     const switchElement = screen.getByRole('switch');
-    expect(switchElement).toBeDisabled();
-    expect(switchElement).toHaveAttribute('aria-checked', 'false');
+    await expect(switchElement).toBeDisabled();
+    await expect(switchElement).toHaveAttribute('aria-checked', 'false');
   },
 };
 

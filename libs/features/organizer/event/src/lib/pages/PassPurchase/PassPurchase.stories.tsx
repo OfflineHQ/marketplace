@@ -102,7 +102,7 @@ export const WithFullSizeAndBackButton: Story = {
     const backButton = await screen.findByRole('button', {
       name: /Go back to the event/i,
     });
-    expect(backButton).toBeVisible();
+    await expect(backButton).toBeVisible();
   },
 };
 

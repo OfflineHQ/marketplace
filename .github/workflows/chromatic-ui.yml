@@ -4,10 +4,10 @@ on:
   pull_request:
     paths:
       - libs/ui/**
-  push:
-    branches: ['main']
-    paths:
-      - libs/ui/**
+  # push:
+  #   branches: ['main']
+  #   paths:
+  #     - libs/ui/**
   workflow_dispatch:
 
 concurrency:

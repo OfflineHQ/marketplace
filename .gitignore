@@ -67,7 +67,6 @@ testem.log
 *.pem
 *.log
 *.eslintcache
-storybook-static
 static
 
 # System Files
@@ -78,4 +77,4 @@ Thumbs.db
 .sentryclirc
 
 #playwright
-playwright-report/
+playwright-report

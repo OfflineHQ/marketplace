@@ -22,7 +22,7 @@ type Story = StoryObj<typeof DateRange>;
 
 export const WithParisDates: Story = {
   play: async ({ canvasElement }) => {
-    screen.getByText(/Fri, Jan 1, 2021, 10:00 PM/i);
+    await screen.findByText(/Fri, Jan 1, 2021, 10:00 PM/i);
     screen.getByText(/Sun, Jan 3, 2021, 1:00 PM/i);
   },
 };
@@ -30,7 +30,7 @@ export const WithParisDates: Story = {
 export const WithNewYorkDates: Story = {
   args: dateRangeProps2,
   play: async ({ canvasElement }) => {
-    screen.getByText(/Thu, Feb 18, 2021, 7:00 AM/i);
+    await screen.findByText(/Thu, Feb 18, 2021, 7:00 AM/i);
     screen.getByText(/Tue, Jan 19, 2021, 7:00 AM/i);
     // Get the button by its aria-label
     const button = screen.getByLabelText('Fill Info');
