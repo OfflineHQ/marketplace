@@ -110,7 +110,8 @@
         "plugin:@nx/eslint-plugin/javascript"
       ],
       "rules": {
-        "import/no-cycle": "off"
+        "import/no-cycle": "off",
+        "@typescript-eslint/no-unused-vars": "warn"
       }
     },
     {
