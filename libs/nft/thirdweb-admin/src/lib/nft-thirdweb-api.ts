@@ -1,32 +1,42 @@
 import env from '@env/server';
 import { adminSdk } from '@gql/admin/api';
-import type {
+import {
   ClaimEventPassNftsMutation,
   ClaimEventPassNftsMutationVariables,
 } from '@gql/admin/types';
 import { OrderStatus_Enum } from '@gql/shared/types';
 import { EventPassOrderWithContractData } from '@nft/types';
+import { Ethereum, Goerli, Sepolia } from '@thirdweb-dev/chains';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
+
+function convertChainIdToThirdwebChain(chainId: string) {
+  switch (chainId) {
+    case '1':
+      return Ethereum;
+    case '5':
+      return Goerli;
+    case '11155111':
+      return Sepolia;
+    default:
+      throw new Error(`Unsupported chainId: ${chainId}`);
+  }
+}
 
 export class NftClaimable {
   sdk?: ThirdwebSDK;
 
   constructor() {
-    if (env.THIRDWEB_MASTER_PRIVATE_KEY) {
+    try {
       this.sdk = ThirdwebSDK.fromPrivateKey(
-        env.THIRDWEB_MASTER_PRIVATE_KEY as string,
-        env.CHAIN,
+        env.THIRDWEB_MASTER_PRIVATE_KEY,
+        convertChainIdToThirdwebChain(env.CHAIN),
         {
           secretKey: env.THIRDWEB_SECRET_KEY,
-          gasless: {
-            openzeppelin: {
-              relayerUrl: env.OPENZEPPELIN_URL,
-            },
-          },
         },
       );
-    } else {
-      throw new Error('THIRDWEB_MASTER_PRIVATE_KEY is undefined');
+    } catch (error) {
+      console.error(`Error initializing ThirdwebSDK: ${error.message}`);
+      throw error;
     }
   }
 

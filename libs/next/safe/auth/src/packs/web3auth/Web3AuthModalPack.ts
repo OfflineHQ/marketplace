@@ -52,7 +52,7 @@ export class Web3AuthModalPack extends AuthKitBasePack {
       await this.web3Auth.initModal({ modalConfig: modalConfig });
       // here we set ethereum provider from ethereum in case this is running on playwright, used for testing, otherwise set the provider from web3auth
       this.#provider =
-        process.env.NEXT_PUBLIC_PLAYWRIGHT && window.ethereum
+        window?.ethereum && process.env.NEXT_PUBLIC_E2E_TEST
           ? window.ethereum
           : this.web3Auth.provider;
     } catch (e) {

@@ -9,6 +9,7 @@
     "plugin:json/recommended",
     "plugin:sonarjs/recommended",
     "plugin:storybook/recommended",
+    "plugin:playwright/recommended",
     "plugin:tailwindcss/recommended"
   ],
   "settings": {
@@ -62,18 +63,25 @@
       }
     },
     {
+      "files": ["!**/*", "**/e2e/**/*.spec.ts"],
+      "extends": ["plugin:playwright/recommended"]
+    },
+    {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nx/eslint-plugin/typescript"],
       "rules": {
         "@typescript-eslint/ban-ts-comment": "off",
-        "import/no-cycle": "off"
+        "import/no-cycle": "off",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-explicit-any": "warn"
       }
     },
     {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nx/eslint-plugin/javascript"],
       "rules": {
-        "import/no-cycle": "off"
+        "import/no-cycle": "off",
+        "@typescript-eslint/no-unused-vars": "warn"
       }
     },
     {
