@@ -15,6 +15,9 @@ const meta = {
     columns,
     noResultsText: 'No results.',
   },
+  parameters: {
+    chromatic: { viewports: [1200] },
+  },
 } as Meta<typeof DataTable>;
 
 export default meta;
