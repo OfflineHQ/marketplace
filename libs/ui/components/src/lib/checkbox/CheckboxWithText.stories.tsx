@@ -56,8 +56,8 @@ export const Disabled: Story = {
     const checkboxElement = screen.getByRole('checkbox');
     const labelElement = screen.getByText('Checkbox label');
 
-    expect(checkboxElement).toBeDisabled();
-    expect(checkboxElement).toHaveAttribute('aria-checked', 'false');
+    await expect(checkboxElement).toBeDisabled();
+    await expect(checkboxElement).toHaveAttribute('aria-checked', 'false');
 
     // Ensure the label doesn't toggle the checkbox when disabled
     fireEvent.click(labelElement);

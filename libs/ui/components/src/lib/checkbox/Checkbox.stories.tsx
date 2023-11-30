@@ -42,8 +42,8 @@ export const Disabled: Story = {
   },
   play: async () => {
     const checkboxElement = screen.getByRole('checkbox');
-    expect(checkboxElement).toBeDisabled();
-    expect(checkboxElement).toHaveAttribute('aria-checked', 'false');
+    await expect(checkboxElement).toBeDisabled();
+    await expect(checkboxElement).toHaveAttribute('aria-checked', 'false');
   },
 };
 

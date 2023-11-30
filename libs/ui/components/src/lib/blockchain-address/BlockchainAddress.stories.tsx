@@ -23,6 +23,6 @@ export const Default: Story = {
     const tooltip = await within(document.body).findByRole('tooltip', {
       name: /copied/i,
     });
-    expect(tooltip).toBeVisible();
+    await expect(tooltip).toBeVisible();
   },
 };

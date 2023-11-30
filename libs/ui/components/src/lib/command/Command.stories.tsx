@@ -50,7 +50,7 @@ export const BasicCommandWithNoResult: Story = {
       'XYZ',
     );
     expect(screen.queryByRole('group')).toBeNull();
-    expect(screen.getByText('No results found.')).toBeVisible();
+    await expect(screen.getByText('No results found.')).toBeVisible();
   },
 };
 
@@ -66,7 +66,7 @@ export const CommandCombobox: Story = {
   play: async ({ canvasElement }) => {
     userEvent.click(screen.getByRole('combobox'));
     // check that Next.js item with aria-selected="true"
-    expect(await screen.findByText('Next.js')).toHaveAttribute(
+    await expect(await screen.findByText('Next.js')).toHaveAttribute(
       'aria-selected',
       'true',
     );
@@ -97,7 +97,7 @@ export const CommandComboboxWithSelection: Story = {
     // find in role group the selected item Remix
     const roleGroup = await screen.findByRole('group');
     const { getByText } = within(roleGroup);
-    expect(getByText('Remix')).toHaveAttribute('data-state', 'checked');
+    await expect(getByText('Remix')).toHaveAttribute('data-state', 'checked');
   },
 };
 
