@@ -9,9 +9,21 @@
   },
   "tasksRunnerOptions": {
     "default": {
+      "runner": "@vercel/remote-nx",
       "options": {
         "canTrackAnalytics": true,
-        "showUsageWarning": true
+        "showUsageWarning": true,
+        "cacheDirectory": "/tmp/nx-cache",
+        "cacheableOperations": [
+          "build",
+          "build-storybook",
+          "test",
+          "test-integration",
+          "lint",
+          "e2e"
+        ],
+        "token": "<token>",
+        "teamId": "<teamId>"
       }
     }
   },
@@ -115,7 +127,7 @@
   "defaultProject": "web",
   "defaultAffected": ["web", "back-office"],
   "defaultBase": "staging",
-  "cacheDirectory": ".nx/cache",
+  "cacheDirectory": "/tmp/cache",
   "nxCloudAccessToken": "MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=",
   "parallel": 5
 }
