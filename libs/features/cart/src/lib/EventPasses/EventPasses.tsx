@@ -1,4 +1,5 @@
 import type { EventCart } from '@features/cart-types';
+import { EventPassPendingOrder } from '@gql/shared/types';
 import { ConvertedCurrency } from '@next/currency';
 import {
   AccordionContent,
@@ -16,6 +17,7 @@ import {
   EventPassesActions,
   type EventPassesActionsProps,
 } from './EventPassesActions';
+import { formatTime, getTimeBeforeDeletion } from './getTimeBeforeDeletion';
 
 export interface EventPassesProps
   extends Pick<EventPassesActionsProps, 'passes'> {
@@ -74,6 +76,20 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
                   amount={pass.eventPassPricing?.priceAmount || 0}
                   currency={pass.eventPassPricing?.priceCurrency}
                 />
+              </div>
+              <div className="ml-2 flex flex-col pl-5 md:ml-3">
+                <Text variant="h5" className="pb-2 font-semibold">
+                  Time before deletion of order
+                </Text>
+                <Text variant="small" className="pb-2">
+                  {formatTime(
+                    getTimeBeforeDeletion({
+                      createdAt: (pass as EventPassPendingOrder).created_at,
+                      timeBeforeDelete: (pass as EventPassPendingOrder)
+                        .eventPassPricing?.timeBeforeDelete,
+                    }),
+                  )}
+                </Text>
               </div>
             </div>
           ) : null,
