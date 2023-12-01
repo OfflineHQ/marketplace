@@ -5,11 +5,11 @@
   "installCommand": "pnpm install",
   "crons": [
     {
-      "path": "./apps/web/crons/handlePendingOrders.ts",
+      "path": "/apps/web/crons/handlePendingOrders.ts",
       "schedule": "*/5 * * * *"
     },
     {
-      "path": "./apps/web/crons/setRates.ts",
+      "path": "/apps/web/crons/setRates.ts",
       "schedule": "0 */12 * * *"
     }
   ]
