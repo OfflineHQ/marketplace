@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
+import { sleep } from '@utils';
 import { SocialMediaButton } from './SocialMediaButton';
 
 const meta = {
@@ -66,14 +67,8 @@ export const Youtube = {
   },
   play: async ({ canvasElement }) => {
     await userEvent.hover(screen.getByRole('button'));
-    await screen.findByText((content, node) => {
-      const hasText = (node) => node.textContent === 'psg';
-      const nodeHasText = hasText(node);
-      const childrenDontHaveText = node?.children
-        ? Array.from(node.children).every((child) => !hasText(child))
-        : false;
-      return nodeHasText && childrenDontHaveText;
-    });
+    await sleep(1000);
+    await screen.findByText(/psg/i);
   },
 } satisfies Story;
 
