@@ -1,49 +1,111 @@
-import { adminSdk } from '@gql/admin/api';
 import { writeFileSync } from 'fs';
-import globby from 'globby';
+import { globby } from 'globby';
+import { GraphQLClient, gql } from 'graphql-request';
 import prettier from 'prettier';
 
 async function generate() {
   const prettierConfig = await prettier.resolveConfig('./.prettierrc.js');
-  const organizers = await adminSdk.GetAllOrganizerSlugsWithEventsSlugs();
-  console.log(organizers);
   const pages = await globby([
-    'app/**/pages.tsx',
-    '!app/api',
-    '!app/crons',
-    '!app/[locale]/pass',
+    'apps/web/app/**/page.tsx',
+    '!apps/web/app/api',
+    '!apps/web/app/crons',
+    '!apps/web/app/[locale]/pass',
   ]);
 
+  const cms = new GraphQLClient(process.env.HYGRAPH_CMS_WEBHOOK_READ_URL, {
+    headers: {
+      Authorization: process.env.HYGRAPH_CMS_READ_TOKEN_SITEMAP,
+    },
+  });
+
+  const organizers = await cms.request(gql`
+    {
+      organizers {
+        slug
+        events {
+          slug
+        }
+      }
+    }
+  `);
   const locales = ['en', 'fr'];
 
+  const filteredPages = pages
+    .filter((page) => !page.includes('(purchaseSheet)/@purchase/(.)purchase'))
+    .map((page) => page.replace('/page.tsx', ''))
+    .map((page) => page.replace(/apps\/web\/app\/?/, ''));
+
   const sitemap = `
-    <?xml version="1.0" encoding="UTF-8"?>
-    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-        ${pages
-          .map((page) => {
-            const path = page.replace('app', '').replace('.tsx', '');
-            const route = path === '/index' ? '' : path;
+  <?xml version="1.0" encoding="UTF-8"?>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      ${filteredPages
+        .map((page) => {
+          return locales
+            .map((locale) => {
+              let result = '';
+              if (
+                !page.includes('[organizerSlug]') &&
+                !page.includes('[eventSlug]')
+              ) {
+                result = `
+                    <url>
+                        <loc>${`${process.env.WEB_APP_URL}/${locale}${page}`.replace(
+                          '[locale]',
+                          '',
+                        )}</loc>
+                    </url>
+                  `;
+              }
 
-            return locales
-              .map(
-                (locale) => `
-                  <url>
-                      <loc>${`https://staging.offline.live/${locale}${route}`}</loc>
-                  </url>
-                `,
-              )
-              .join('');
-          })
-          .join('')}
-    </urlset>
-    `;
+              if (
+                page.includes('[organizerSlug]') ||
+                page.includes('[eventSlug]')
+              ) {
+                result += organizers.organizers
+                  .map(({ slug: organizerSlug, events }) => {
+                    return events
+                      .map(({ slug: eventSlug }) => {
+                        let eventPath = page;
+                        if (page.includes('[organizerSlug]')) {
+                          eventPath = eventPath.replace(
+                            '[organizerSlug]',
+                            organizerSlug,
+                          );
+                        }
+                        if (page.includes('[eventSlug]')) {
+                          eventPath = eventPath.replace(
+                            '[eventSlug]',
+                            eventSlug,
+                          );
+                        }
+                        eventPath = eventPath
+                          .replace('[locale]', '')
+                          .replace('/page', '');
+                        return `
+                            <url>
+                                <loc>${`${process.env.WEB_APP_URL}/${locale}${eventPath}`}</loc>
+                            </url>
+                            `;
+                      })
+                      .join('');
+                  })
+                  .join('');
+              }
 
-  const formatted = prettier.format(sitemap, {
+              return result;
+            })
+            .join('');
+        })
+        .join('')}
+  </urlset>
+`;
+
+  const formatted = await prettier.format(sitemap, {
     ...prettierConfig,
     parser: 'html',
   });
 
-  writeFileSync('public/sitemap.xml', formatted);
+  writeFileSync('apps/web/public/sitemap.xml', formatted);
 }
 
 generate();
