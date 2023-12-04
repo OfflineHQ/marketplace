@@ -492,6 +492,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
         maxAmountPerUser
         priceAmount
         priceCurrency
+        timeBeforeDelete
       }
       eventPassNftContract {
         contractAddress

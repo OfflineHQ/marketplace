@@ -155,6 +155,7 @@ export const GetEventWithPassesDocument = `
       eventPassPricing {
         priceAmount
         priceCurrency
+        timeBeforeDelete
       }
     }
   }
