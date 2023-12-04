@@ -66,7 +66,14 @@ export const Youtube = {
   },
   play: async ({ canvasElement }) => {
     await userEvent.hover(screen.getByRole('button'));
-    await screen.findByText(/psg/i);
+    await screen.findByText((content, node) => {
+      const hasText = (node) => node.textContent === 'psg';
+      const nodeHasText = hasText(node);
+      const childrenDontHaveText = node?.children
+        ? Array.from(node.children).every((child) => !hasText(child))
+        : false;
+      return nodeHasText && childrenDontHaveText;
+    });
   },
 } satisfies Story;
 

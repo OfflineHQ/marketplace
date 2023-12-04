@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { graphql } from 'msw';
 import { OrganizerSection } from '../OrganizerSection/OrganizerSection';
 import {
   OrganizerPageDemo,
@@ -16,6 +17,15 @@ const meta = {
   },
   parameters: {
     layout: 'fullscreen',
+    msw: {
+      handlers: [
+        graphql.query('CheckFollowingOrganizer', (req, res, ctx) => {
+          return ctx.data({
+            follow_by_pk: null,
+          });
+        }),
+      ],
+    },
   },
 } satisfies Meta<typeof OrganizerSection>;
 
