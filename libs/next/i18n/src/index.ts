@@ -1,5 +1,4 @@
 import { getNextAppURL } from '@shared/server';
-import { useNow as _useNow } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { default as en } from './messages/en.json';
 import { default as fr } from './messages/fr.json';
@@ -24,11 +23,6 @@ export function getLocalizedUrls(url: string) {
     fr: `${getNextAppURL()}/fr/${url}`,
   };
   return urls;
-}
-
-export function useNow(props: _useNow.Props = {}) {
-  if (isStorybook) return new Date();
-  return _useNow(props);
 }
 
 export { defaultLocale, getMessages, locales, messages };
