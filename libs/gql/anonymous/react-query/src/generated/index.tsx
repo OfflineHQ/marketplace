@@ -45,6 +45,7 @@ export const EventPassFieldsFragmentDoc = `
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -52,6 +53,7 @@ export const EventPassFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
   }
 }
@@ -75,6 +77,7 @@ export const GetEventWithPassesDocument = `
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -82,6 +85,7 @@ export const GetEventWithPassesDocument = `
       image {
         url
       }
+      imageClasses
     }
     eventPasses {
       id

@@ -21,6 +21,7 @@ fragment EventPassFields on EventPass {
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -28,6 +29,7 @@ fragment EventPassFields on EventPass {
       image {
         url
       }
+      imageClasses
     }
   }
 }

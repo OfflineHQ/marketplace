@@ -6,7 +6,7 @@ export const rtfProps = {
         type: 'heading-four',
         children: [
           {
-            text: 'This is a description for the event',
+            text: 'This is a basic description with a title text',
           },
         ],
       },
@@ -14,7 +14,7 @@ export const rtfProps = {
         type: 'paragraph',
         children: [
           {
-            text: 'Here is a normal text',
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse at dignissim urna. Donec sit amet tristique orci. Nunc consectetur sit amet orci nec tristique. Donec metus odio, dapibus id eros id, congue porttitor erat. Fusce ullamcorper est eros, id feugiat eros interdum sed. Fusce quis pellentesque est. Suspendisse aliquet dui sed mattis dictum. Donec ultrices ullamcorper risus at ullamcorper. Cras semper massa mollis lectus lobortis commodo. Integer nec sapien ut urna congue suscipit. Nam eu vulputate arcu.',
           },
         ],
       },
@@ -29,7 +29,7 @@ export const rtfWithImageProps = {
         type: 'heading-four',
         children: [
           {
-            text: 'This is a description for the event',
+            text: 'This is a basic description with a title text',
           },
         ],
       },
@@ -37,7 +37,7 @@ export const rtfWithImageProps = {
         type: 'paragraph',
         children: [
           {
-            text: 'Here is a normal text',
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse at dignissim urna. Donec sit amet tristique orci. Nunc consectetur sit amet orci nec tristique. Donec metus odio, dapibus id eros id, congue porttitor erat. Fusce ullamcorper est eros, id feugiat eros interdum sed. Fusce quis pellentesque est. Suspendisse aliquet dui sed mattis dictum. Donec ultrices ullamcorper risus at ullamcorper. Cras semper massa mollis lectus lobortis commodo. Integer nec sapien ut urna congue suscipit. Nam eu vulputate arcu.',
           },
         ],
       },
@@ -86,7 +86,7 @@ export const rtfWithLinkProps = {
         type: 'heading-four',
         children: [
           {
-            text: 'This is a description for the event',
+            text: 'This is a basic description with a title text',
           },
         ],
       },
@@ -94,7 +94,7 @@ export const rtfWithLinkProps = {
         type: 'paragraph',
         children: [
           {
-            text: 'Here is a normal text',
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse at dignissim urna. Donec sit amet tristique orci. Nunc consectetur sit amet orci nec tristique. Donec metus odio, dapibus id eros id, congue porttitor erat. Fusce ullamcorper est eros, id feugiat eros interdum sed. Fusce quis pellentesque est. Suspendisse aliquet dui sed mattis dictum. Donec ultrices ullamcorper risus at ullamcorper. Cras semper massa mollis lectus lobortis commodo. Integer nec sapien ut urna congue suscipit. Nam eu vulputate arcu.',
           },
         ],
       },

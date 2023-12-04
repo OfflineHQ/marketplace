@@ -210,6 +210,19 @@
     "EventDates": {
       "from": "From",
       "to": "To"
+    },
+    "SocialMediaButton": {
+      "go-to-platform": "Go to {platform}"
+    },
+    "OrganizerFollowButton": {
+      "follow": "Follow",
+      "unfollow": "Unfollow",
+      "helperTextFollow": "Click to follow \"{name}\"",
+      "helperTextUnfollow": "Click to unfollow \"{name}\""
+    },
+    "OrganizerEventsSection": {
+      "title": "Lastest Events",
+      "noEvents": "There is currently no events to display"
     }
   },
   "KYC": {

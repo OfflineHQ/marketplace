@@ -1,5 +1,5 @@
 {
-  "name": "features-organizer--event-api",
+  "name": "features-organizer-event-api",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/features/organizer/event-api/src",
   "projectType": "library",
