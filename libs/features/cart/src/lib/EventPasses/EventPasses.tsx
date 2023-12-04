@@ -1,5 +1,4 @@
 import type { EventCart } from '@features/cart-types';
-import { EventPassPendingOrder } from '@gql/shared/types';
 import { ConvertedCurrency } from '@next/currency';
 import {
   AccordionContent,
@@ -13,16 +12,17 @@ import {
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { EventPassTimeBeforeDeletion } from '../EventPassTimeBeforeDeletion/EventPassTimeBeforeDeletion';
 import {
   EventPassesActions,
   type EventPassesActionsProps,
 } from './EventPassesActions';
-import { formatTime, getTimeBeforeDeletion } from './getTimeBeforeDeletion';
 
 export interface EventPassesProps
   extends Pick<EventPassesActionsProps, 'passes'> {
   event: EventCart;
   noActions?: boolean;
+  timeRemainingDeletion?: boolean;
 }
 
 const layout = {
@@ -32,7 +32,7 @@ const layout = {
   textContainer:
     'md:space-y-4 ml-2 text-left flex flex-col justify-start md:justify-center col-span-2 md:col-span-4',
   imageContainer:
-    'relative h-20 w-20 shrink-0 overflow-hidden rounded-sm md:h-40 md:w-40 col-span-1 md:col-span-2',
+    'relative md:h-20 md:w-20 w-16 h-16 shrink-0 overflow-hidden rounded-sm md:h-40 md:w-40 col-span-1 md:col-span-2',
   button: 'self-start',
 };
 
@@ -40,6 +40,7 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
   event,
   passes,
   noActions,
+  timeRemainingDeletion,
 }) => {
   const t = useTranslations('Cart.List.Event');
   const enrichedPasses = passes.map((pass) => {
@@ -67,7 +68,7 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
                   className="font-semibold"
                 >{`${pass.quantity} x`}</Text>
               </div>
-              <div className="ml-2 flex flex-col md:ml-3">
+              <div className="relative ml-2 flex flex-col justify-center md:ml-3">
                 <Text variant="h5" className="pb-2 font-semibold">
                   {pass.name}
                 </Text>
@@ -76,20 +77,18 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
                   amount={pass.eventPassPricing?.priceAmount || 0}
                   currency={pass.eventPassPricing?.priceCurrency}
                 />
-              </div>
-              <div className="ml-2 flex flex-col pl-5 md:ml-3">
-                <Text variant="h5" className="pb-2 font-semibold">
-                  Time before deletion of order
-                </Text>
-                <Text variant="small" className="pb-2">
-                  {formatTime(
-                    getTimeBeforeDeletion({
-                      createdAt: (pass as EventPassPendingOrder).created_at,
-                      timeBeforeDelete: (pass as EventPassPendingOrder)
-                        .eventPassPricing?.timeBeforeDelete,
-                    }),
+                {timeRemainingDeletion &&
+                  pass.eventPassPricing?.timeBeforeDelete &&
+                  pass.created_at && (
+                    <div className="mt-3 flex pr-1">
+                      <EventPassTimeBeforeDeletion
+                        created_at={pass.created_at}
+                        timeBeforeDelete={
+                          pass.eventPassPricing?.timeBeforeDelete
+                        }
+                      />
+                    </div>
                   )}
-                </Text>
               </div>
             </div>
           ) : null,
@@ -108,7 +107,11 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
   );
 };
 
-export const EventPasses: React.FC<EventPassesProps> = ({ event, passes }) => {
+export const EventPasses: React.FC<EventPassesProps> = ({
+  event,
+  passes,
+  ...props
+}) => {
   const t = useTranslations('Cart.List.Event');
   return (
     <AccordionItem value={event.id as string} className="mx-5">
@@ -132,7 +135,7 @@ export const EventPasses: React.FC<EventPassesProps> = ({ event, passes }) => {
           </div>
         </div>
       </AccordionTrigger>
-      <AccordionContentWrapper event={event} passes={passes} />
+      <AccordionContentWrapper event={event} passes={passes} {...props} />
     </AccordionItem>
   );
 };
@@ -144,7 +147,7 @@ export const EventPassesSkeleton: React.FC = () => {
         <div className={layout.grid}>
           <div className={layout.imageContainer}>
             <div
-              className={`h-20 w-20 animate-pulse rounded-sm bg-muted md:h-40 md:w-40`}
+              className={`h-20 w-20 animate-pulse rounded-sm bg-image md:h-40 md:w-40`}
             />
           </div>
           <div className={`${layout.textContainer}`}>

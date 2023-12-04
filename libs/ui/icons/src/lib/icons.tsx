@@ -48,6 +48,7 @@ import {
 } from 'react-icons/hi2';
 import { LuCopy } from 'react-icons/lu';
 import { RxMagicWand } from 'react-icons/rx';
+import { TfiTimer } from 'react-icons/tfi';
 import { AccessibleIcon } from './AccessibleIcon';
 import { IconProps } from './variants';
 
@@ -111,6 +112,10 @@ export const UserIdentification: FC<IconProps> = (props) => (
     label={'User identification'}
     {...props}
   />
+);
+
+export const Timer: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={TfiTimer} label={'Timer'} {...props} />
 );
 
 export const Reveal: FC<IconProps> = (props) => (
