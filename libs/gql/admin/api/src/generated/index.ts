@@ -444,6 +444,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
         priceCurrency
         maxAmount
         maxAmountPerUser
+        timeBeforeDelete
       }
     }
   }
