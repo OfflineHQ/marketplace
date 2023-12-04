@@ -68,13 +68,12 @@ export const SinglePass: React.FC<SinglePassProps> = ({
             <div className="mx-auto mt-10 flex max-h-[380px] w-full max-w-[350px]">
               <AspectRatio variant="square">
                 <Image
-                  className="rounded-sm"
+                  className="rounded-sm object-cover"
                   src={
                     eventPassNft?.eventPass?.nftImage?.url ||
                     '/image-placeholder.svg'
                   }
                   fill
-                  style={{ objectFit: 'cover' }}
                   alt={eventPassNft?.eventPass?.event?.title || ''}
                 />
               </AspectRatio>

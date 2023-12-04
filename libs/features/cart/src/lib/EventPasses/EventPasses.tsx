@@ -25,7 +25,7 @@ export interface EventPassesProps
 
 const layout = {
   triggerContainer: 'flex space-x-3 max-h-28 md:max-h-48',
-  image: 'rounded-sm',
+  image: 'rounded-sm object-cover',
   grid: 'grid max-h-full w-full grid-cols-3 md:grid-cols-6 md:gap-4',
   textContainer:
     'md:space-y-4 ml-2 text-left flex flex-col justify-start md:justify-center col-span-2 md:col-span-4',
@@ -101,9 +101,8 @@ export const EventPasses: React.FC<EventPassesProps> = ({ event, passes }) => {
           <div className={layout.imageContainer}>
             <Image
               src={event?.heroImage?.url || '/image-placeholder.svg'}
-              className={layout.image}
+              className={`${layout.image} ${event?.heroImageClasses}`}
               fill
-              style={{ objectFit: 'cover' }}
               alt={event.title}
             />
           </div>

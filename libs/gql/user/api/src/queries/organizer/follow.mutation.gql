@@ -1,0 +1,5 @@
+mutation InsertFollowOrganizer($organizerSlug: String!) {
+  insert_follow_one(object: { organizerSlug: $organizerSlug }) {
+    organizerSlug
+  }
+}

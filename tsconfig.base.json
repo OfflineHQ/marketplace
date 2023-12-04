@@ -21,6 +21,12 @@
       "@currency/types": ["libs/currency/types/src/index.ts"],
       "@env/client": ["libs/env/client/src/index.mjs"],
       "@env/server": ["libs/env/server/src/index.mjs"],
+      "@feature/organizer/organizer-ui": [
+        "libs/features/organizer/organizer-ui/src/index.ts"
+      ],
+      "@feature/organizer/organizer-ui/server": [
+        "libs/features/organizer/organizer-ui/src/server.ts"
+      ],
       "@features/account/api": ["libs/features/account/api/src/index.ts"],
       "@features/app-nav": ["libs/features/app-nav/src/index.ts"],
       "@features/app-nav/stories": ["libs/features/app-nav/src/stories.tsx"],
@@ -76,6 +82,12 @@
       ],
       "@features/organizer/event/server": [
         "libs/features/organizer/event/src/server.ts"
+      ],
+      "@features/organizer/organizer-api": [
+        "libs/features/organizer/organizer-api/src/index.ts"
+      ],
+      "@features/organizer/organizer-types": [
+        "libs/features/organizer/organizer-types/src/index.ts"
       ],
       "@features/pass": ["libs/features/pass/src/index.ts"],
       "@features/pass-actions": ["libs/features/pass-actions/src/index.ts"],

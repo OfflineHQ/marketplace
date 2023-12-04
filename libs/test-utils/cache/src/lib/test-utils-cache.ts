@@ -57,6 +57,5 @@ export async function batchDelete(key: string) {
 }
 
 export async function resetCache() {
-  const keys = await kv.keys('*');
-  await Promise.all(keys.map((key) => kv.del(key)));
+  await kv.flushall();
 }

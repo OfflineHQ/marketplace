@@ -8,6 +8,7 @@ query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!)
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -15,6 +16,7 @@ query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!)
       image {
         url
       }
+      imageClasses
     }
     eventPasses {
       id

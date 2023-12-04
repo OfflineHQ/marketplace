@@ -22,14 +22,14 @@
           "lint",
           "e2e"
         ],
-        "token": "<token>",
-        "teamId": "<teamId>"
+        "token": "8HfZAvj1ZCUEYLuNISczuuF2",
+        "teamId": "team_cNOd6z2HTsiaB0cibAjaQSIM"
       }
     }
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "affected": {
-    "defaultBase": "staging"
+    "defaultBase": "main"
   },
   "workspaceLayout": {
     "appsDir": "apps",
