@@ -12,12 +12,12 @@ import { EventPasses, type EventPassesProps } from './EventPasses';
 
 const passPending1 = {
   ...passWithMaxAmountCart,
-  created_at: '2023-12-04T14:00:00.000Z',
+  created_at: '2023-06-05T00:00:00Z',
 } satisfies EventPassesProps['passes'][0];
 
 const passPending2 = {
   ...passWithMaxAmountPerUserCart,
-  created_at: '2023-12-04T16:00:00.000Z',
+  created_at: '2023-06-04T20:29:00Z',
 } satisfies EventPassesProps['passes'][0];
 
 export const eventPassesCart: EventPassesProps['passes'] = [
