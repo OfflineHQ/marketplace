@@ -669,16 +669,6 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     ${OrganizerFieldsFragmentDoc}`;
- const GetAllOrganizerSlugsWithEventsSlugsDocument = `
-    query GetAllOrganizerSlugsWithEventsSlugs {
-  organizers(stage: DRAFT) {
-    slug
-    events {
-      slug
-    }
-  }
-}
-    `;
  const InsertEventParametersDocument = `
     mutation InsertEventParameters($objects: [eventParameters_insert_input!]!) {
   insert_eventParameters(objects: $objects) {
@@ -887,9 +877,6 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
-    },
-    GetAllOrganizerSlugsWithEventsSlugs(variables?: Types.GetAllOrganizerSlugsWithEventsSlugsQueryVariables, options?: C): Promise<Types.GetAllOrganizerSlugsWithEventsSlugsQuery> {
-      return requester<Types.GetAllOrganizerSlugsWithEventsSlugsQuery, Types.GetAllOrganizerSlugsWithEventsSlugsQueryVariables>(GetAllOrganizerSlugsWithEventsSlugsDocument, variables, options) as Promise<Types.GetAllOrganizerSlugsWithEventsSlugsQuery>;
     },
     InsertEventParameters(variables: Types.InsertEventParametersMutationVariables, options?: C): Promise<Types.InsertEventParametersMutation> {
       return requester<Types.InsertEventParametersMutation, Types.InsertEventParametersMutationVariables>(InsertEventParametersDocument, variables, options) as Promise<Types.InsertEventParametersMutation>;
