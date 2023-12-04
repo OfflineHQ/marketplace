@@ -67,37 +67,6 @@ export const EventPassNftFieldsFragmentDoc = `
   currentOwnerAddress
 }
     `;
- const GetEventWithPassesDocument = `
-    query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
-  event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
-    id
-    slug
-    title
-    heroImage {
-      url
-    }
-    heroImageClasses
-    organizer {
-      id
-      slug
-      name
-      image {
-        url
-      }
-      imageClasses
-    }
-    eventPasses {
-      id
-      name
-      description
-      eventPassPricing {
-        priceAmount
-        priceCurrency
-      }
-    }
-  }
-}
-    `;
  const GetEventPassNftByTokenReferenceDocument = `
     query GetEventPassNftByTokenReference($organizerId: String!, $eventId: String!, $eventPassId: String!, $tokenId: bigint!, $chainId: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPassNft(
@@ -114,9 +83,6 @@ ${EventPassFieldsFragmentDoc}`;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
-    GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
-      return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;
-    },
     GetEventPassNftByTokenReference(variables: Types.GetEventPassNftByTokenReferenceQueryVariables, options?: C): Promise<Types.GetEventPassNftByTokenReferenceQuery> {
       return requester<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables, options) as Promise<Types.GetEventPassNftByTokenReferenceQuery>;
     }

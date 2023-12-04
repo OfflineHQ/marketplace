@@ -68,49 +68,6 @@ export const EventPassNftFieldsFragmentDoc = `
   currentOwnerAddress
 }
     `;
-export const GetEventWithPassesDocument = `
-    query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
-  event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
-    id
-    slug
-    title
-    heroImage {
-      url
-    }
-    heroImageClasses
-    organizer {
-      id
-      slug
-      name
-      image {
-        url
-      }
-      imageClasses
-    }
-    eventPasses {
-      id
-      name
-      description
-      eventPassPricing {
-        priceAmount
-        priceCurrency
-      }
-    }
-  }
-}
-    `;
-export const useGetEventWithPassesQuery = <
-      TData = Types.GetEventWithPassesQuery,
-      TError = Error
-    >(
-      variables: Types.GetEventWithPassesQueryVariables,
-      options?: UseQueryOptions<Types.GetEventWithPassesQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetEventWithPassesQuery, TError, TData>(
-      ['GetEventWithPasses', variables],
-      fetchDataReactQuery<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables),
-      options
-    );
 export const GetEventPassNftByTokenReferenceDocument = `
     query GetEventPassNftByTokenReference($organizerId: String!, $eventId: String!, $eventPassId: String!, $tokenId: bigint!, $chainId: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPassNft(
