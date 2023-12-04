@@ -33,19 +33,4 @@ jobs:
       parallel-commands: |
         pnpm nx format:check --verbose
         pnpm nx affected --target=test-integration --parallel=false --ci --code-coverage
-      parallel-commands-on-agents: |
         pnpm affected:parallel-ci
-  agents:
-    name: Nx Cloud - Agents
-    uses: sebpalluel/ci/.github/workflows/nx-cloud-agents.yml@latest
-    secrets:
-      ENV_FILE: ${{ secrets.ENV_FILE }}
-      NX_CLOUD_AUTH_TOKEN: MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=
-    with:
-      runs-on: ubuntu-latest
-      environment: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'preview' }}
-      node-version: 20
-      pnpm-version: 7
-      number-of-agents: 3
-      # init-commands: |
-      #   pnpm prisma generate

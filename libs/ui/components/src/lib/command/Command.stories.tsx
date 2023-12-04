@@ -1,22 +1,21 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { expect } from '@storybook/jest';
+import type { Meta, StoryObj } from '@storybook/react';
 import {
   fireEvent,
   screen,
   userEvent,
   within,
-  waitFor,
 } from '@storybook/testing-library';
 import { Command } from './Command';
 
+import { sleep } from '@utils';
 import {
+  CommandComboboxDemo,
   CommandDemo,
   CommandDialogDemo,
-  CommandComboboxDemo,
-  CommandPopoverDemo,
   CommandDropdownMenuDemo,
+  CommandPopoverDemo,
 } from './examples';
-import { sleep } from '@utils';
 
 const meta: Meta<typeof Command> = {
   component: Command,
@@ -77,8 +76,10 @@ export const CommandComboboxWithText: Story = {
   ...CommandCombobox,
   play: async ({ canvasElement }) => {
     userEvent.click(screen.getByRole('combobox'));
-    const Input = await screen.findByTestId('command-input');
-    await userEvent.type(Input, 'Re');
+    await userEvent.type(
+      await screen.findByPlaceholderText(/Search framework/i),
+      'Re',
+    );
     const roleGroup = screen.getByRole('group');
     expect(roleGroup.children.length).toBe(1);
   },
@@ -88,8 +89,10 @@ export const CommandComboboxWithSelection: Story = {
   ...CommandCombobox,
   play: async ({ canvasElement }) => {
     userEvent.click(screen.getByRole('combobox'));
-    const Input = await screen.findByTestId('command-input');
-    await userEvent.type(Input, 'Re');
+    await userEvent.type(
+      await screen.findByPlaceholderText(/Search framework/i),
+      'Re',
+    );
     userEvent.keyboard('{enter}');
     await screen.findByText('Remix');
     await sleep(100);
