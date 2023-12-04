@@ -1,7 +1,8 @@
 'use client';
+import { useNow } from '@next/i18n-ui';
 import { Badge } from '@ui/components';
 import { Timer } from '@ui/icons';
-import { useFormatter, useNow, useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 
 export type EventPassTimeBeforeDeletionClientProps = {
   timeBeforeDelete: number;

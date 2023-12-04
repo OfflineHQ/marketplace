@@ -10,3 +10,5 @@ export {
   useTableToggleColumnsControlText,
   useTableToolbarFiltersControlText,
 } from './lib/table';
+
+export { useNow } from './lib/useNow';
