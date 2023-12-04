@@ -224,8 +224,8 @@ dependencies:
     specifier: ^4.24.5
     version: 4.24.5(next@14.0.3)(react-dom@18.2.0)(react@18.2.0)
   next-intl:
-    specifier: 3.2.0
-    version: 3.2.0(next@14.0.3)(react@18.2.0)
+    specifier: 3.2.2
+    version: 3.2.2(next@14.0.3)(react@18.2.0)
   next-seo:
     specifier: ^6.4.0
     version: 6.4.0(next@14.0.3)(react-dom@18.2.0)(react@18.2.0)
@@ -20895,8 +20895,8 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /next-intl@3.2.0(next@14.0.3)(react@18.2.0):
-    resolution: {integrity: sha512-vKGokJvQOdvZG9qGNCIh2bLeoLwPzNXuER5kj1ZWK2Rg1w3vHmBMALS7WOfy7cNkk5rFOa68CYqBE2cjBGapWg==}
+  /next-intl@3.2.2(next@14.0.3)(react@18.2.0):
+    resolution: {integrity: sha512-OM5TRccppaDCVMBVxsquQj0BtV011dDdTyX0bDahd4Y00Q+/fSLG13NU59/T1Qo5WQcs/71EpwdnLJ1N0hCC1w==}
     peerDependencies:
       next: ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0 || ^14.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
