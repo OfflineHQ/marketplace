@@ -18,6 +18,7 @@ describe('isFollowingOrganizer', () => {
   let client: PgClient;
   beforeAll(async () => {
     client = await createDbClient();
+    await deleteTables(client, ['account', 'follow']);
     await applySeeds(client, ['account', 'follow']);
   });
   afterAll(async () => {

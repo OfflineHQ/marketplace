@@ -1,3 +1,4 @@
+import { userSdk } from '@gql/user/api';
 import { getCurrentUser } from '@next/next-auth/user';
 import {
   PgClient,
@@ -7,7 +8,6 @@ import {
 } from '@test-utils/db';
 import { accounts, alphaUserClient } from '@test-utils/gql';
 import { followToggleOrganizer } from './followToggleOrganizer';
-import { userSdk } from '@gql/user/api';
 
 jest.mock('@next/next-auth/user', () => {
   return {
@@ -26,6 +26,7 @@ describe('followToggleOrganizer', () => {
       .mockImplementation(async (args: any) => {
         return await alphaUser.InsertFollowOrganizer(args);
       });
+    await deleteTables(client, ['account', 'follow']);
     await applySeeds(client, ['account', 'follow']);
   });
   afterAll(async () => {
