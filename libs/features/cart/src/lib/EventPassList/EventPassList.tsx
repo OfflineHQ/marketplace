@@ -33,7 +33,10 @@ const EventPassListContent: React.FC<EventPassesContentProps> = async ({
 }) => {
   // const event = await GetEventWithPasses
   const locale = useLocale();
-  const event = await getEventWithPasses({ eventSlug, locale });
+  const event = await getEventWithPasses({
+    eventSlug,
+    locale,
+  });
   if (!event) return null;
   return (
     <EventPasses

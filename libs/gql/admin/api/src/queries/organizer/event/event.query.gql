@@ -102,6 +102,7 @@ query GetEventWithPassesOrganizer(
         maxAmountPerUser
         priceAmount
         priceCurrency
+        timeBeforeDelete
       }
       eventPassNftContract {
         contractAddress
