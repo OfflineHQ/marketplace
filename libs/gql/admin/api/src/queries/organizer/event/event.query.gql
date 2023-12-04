@@ -52,6 +52,7 @@ query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!)
         priceCurrency
         maxAmount
         maxAmountPerUser
+        timeBeforeDelete
       }
     }
   }
