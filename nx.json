@@ -22,8 +22,8 @@
           "lint",
           "e2e"
         ],
-        "token": "<token>",
-        "teamId": "<teamId>"
+        "token": "***REMOVED***",
+        "teamId": "***REMOVED***"
       }
     }
   },
