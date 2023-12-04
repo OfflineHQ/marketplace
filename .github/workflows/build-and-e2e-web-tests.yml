@@ -1,4 +1,4 @@
-name: Build and E2E web test
+name: Build and E2E web tests
 
 on:
   workflow_dispatch:
