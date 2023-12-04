@@ -6,17 +6,48 @@ import {
   passWithMaxAmountPerUser,
   passWithMaxAmountPerUserCart,
 } from '@features/organizer/event/examples';
+import { Currency_Enum } from '@gql/shared/types';
 import { Accordion } from '@ui/components';
 import { EventPasses, type EventPassesProps } from './EventPasses';
 
+const passPending1 = {
+  ...passWithMaxAmountCart,
+  created_at: '2023-12-04T14:00:00.000Z',
+} satisfies EventPassesProps['passes'][0];
+
+const passPending2 = {
+  ...passWithMaxAmountPerUserCart,
+  created_at: '2023-12-04T16:00:00.000Z',
+} satisfies EventPassesProps['passes'][0];
+
 export const eventPassesCart: EventPassesProps['passes'] = [
-  passWithMaxAmountCart,
-  passWithMaxAmountPerUserCart,
+  passPending1,
+  passPending2,
 ];
 
 export const eventCartProps: EventCart = {
   ...eventProps,
-  eventPasses: [passWithMaxAmount, passWithMaxAmountPerUser],
+  eventPasses: [
+    {
+      ...passWithMaxAmount,
+      eventPassPricing: {
+        maxAmount: 7,
+        priceCurrency: Currency_Enum.Usd,
+        priceAmount: 130000,
+        timeBeforeDelete: 14400,
+      },
+    },
+    {
+      ...passWithMaxAmountPerUser,
+      eventPassPricing: {
+        maxAmountPerUser: 3,
+        maxAmount: 30,
+        priceCurrency: Currency_Enum.Usd,
+        priceAmount: 250000,
+        timeBeforeDelete: 14400,
+      },
+    },
+  ],
 };
 
 export const eventPassesProps: EventPassesProps = {
