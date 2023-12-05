@@ -233,25 +233,19 @@ const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
 );
 SheetHeader.displayName = 'SheetHeader';
 
-export interface SheetOverlayProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  footerHeight?: string;
-  className?: string;
-}
-
-const SheetOverlay = React.forwardRef<HTMLDivElement, SheetOverlayProps>(
-  ({ footerHeight = '3.25rem', className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        `absolute inset-x-0 z-10 h-20 bg-gradient-to-t from-card to-transparent pointer-events-none`,
-        className,
-      )}
-      style={{ bottom: footerHeight }}
-      {...props}
-    />
-  ),
-);
+const SheetOverlay = React.forwardRef<
+  React.ElementRef<typeof SheetPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <SheetPrimitive.Overlay
+    className={cn(
+      'fixed inset-0 z-50 bg-background/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      className,
+    )}
+    {...props}
+    ref={ref}
+  />
+));
 SheetOverlay.displayName = 'SheetOverlay';
 
 const SheetOverflow = React.forwardRef<
@@ -278,17 +272,32 @@ const sheetFooterVariantsCva = cva('flex flex-col-reverse', {
 
 export interface SheetFooterProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof sheetFooterVariantsCva> {}
+    VariantProps<typeof sheetFooterVariantsCva> {
+  footerHeight?: string;
+}
 
 const SheetFooter = React.forwardRef<HTMLDivElement, SheetFooterProps>(
-  ({ className, variant, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(sheetFooterVariantsCva({ variant }), className)}
-      {...props}
-    >
-      {props.children}
-    </div>
+  (
+    { children, className, variant, footerHeight = '3.25rem', ...props },
+    ref,
+  ) => (
+    <>
+      <div
+        ref={ref}
+        className={
+          'pointer-events-none absolute z-10 h-20 w-full bg-gradient-to-t from-card to-transparent'
+        }
+        style={{ bottom: footerHeight }}
+        {...props}
+      />
+      <div
+        ref={ref}
+        className={cn(sheetFooterVariantsCva({ variant }), className)}
+        {...props}
+      >
+        {children}
+      </div>
+    </>
   ),
 );
 
