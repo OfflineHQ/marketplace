@@ -1,10 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/testing-library';
 import { CartNav } from './CartNav';
 import { CartNavDemo, cartNavProps } from './examples';
 
@@ -34,7 +29,7 @@ export const CartActive: Story = {
 export const CartWithHelperText: Story = {
   args: {},
   play: async ({ canvasElement }) => {
-    userEvent.click(screen.getByText('Cart'));
+    userEvent.click(await screen.findByText(/cart/i));
     // Check that the helper text is present
     await screen.findByText((content, element) => {
       return (

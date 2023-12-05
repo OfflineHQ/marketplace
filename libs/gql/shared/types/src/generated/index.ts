@@ -8460,6 +8460,167 @@ export type EventPassPricing_Variance_Fields = {
   timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
+/** Stores follow relationships. Each row represents an account following an organizer. */
+export type Follow = {
+  __typename?: 'follow';
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId: Scalars['uuid'];
+  created_at: Scalars['timestamptz'];
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug: Scalars['String'];
+};
+
+/** aggregated selection of "follow" */
+export type Follow_Aggregate = {
+  __typename?: 'follow_aggregate';
+  aggregate?: Maybe<Follow_Aggregate_Fields>;
+  nodes: Array<Follow>;
+};
+
+/** aggregate fields of "follow" */
+export type Follow_Aggregate_Fields = {
+  __typename?: 'follow_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Follow_Max_Fields>;
+  min?: Maybe<Follow_Min_Fields>;
+};
+
+
+/** aggregate fields of "follow" */
+export type Follow_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Follow_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "follow". All fields are combined with a logical 'AND'. */
+export type Follow_Bool_Exp = {
+  _and?: InputMaybe<Array<Follow_Bool_Exp>>;
+  _not?: InputMaybe<Follow_Bool_Exp>;
+  _or?: InputMaybe<Array<Follow_Bool_Exp>>;
+  accountId?: InputMaybe<Uuid_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  organizerSlug?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "follow" */
+export const enum Follow_Constraint {
+  /** unique or primary key constraint on columns "accountId", "organizerSlug" */
+  FollowPkey = 'follow_pkey'
+};
+
+/** input type for inserting data into table "follow" */
+export type Follow_Insert_Input = {
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Follow_Max_Fields = {
+  __typename?: 'follow_max_fields';
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Follow_Min_Fields = {
+  __typename?: 'follow_min_fields';
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "follow" */
+export type Follow_Mutation_Response = {
+  __typename?: 'follow_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Follow>;
+};
+
+/** on_conflict condition type for table "follow" */
+export type Follow_On_Conflict = {
+  constraint: Follow_Constraint;
+  update_columns?: Array<Follow_Update_Column>;
+  where?: InputMaybe<Follow_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "follow". */
+export type Follow_Order_By = {
+  accountId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  organizerSlug?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: follow */
+export type Follow_Pk_Columns_Input = {
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId: Scalars['uuid'];
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug: Scalars['String'];
+};
+
+/** select columns of table "follow" */
+export const enum Follow_Select_Column {
+  /** column name */
+  AccountId = 'accountId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  OrganizerSlug = 'organizerSlug'
+};
+
+/** input type for updating data in table "follow" */
+export type Follow_Set_Input = {
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "follow" */
+export type Follow_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Follow_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Follow_Stream_Cursor_Value_Input = {
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "follow" */
+export const enum Follow_Update_Column {
+  /** column name */
+  AccountId = 'accountId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  OrganizerSlug = 'organizerSlug'
+};
+
+export type Follow_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Follow_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Follow_Bool_Exp;
+};
+
 /** Boolean expression to compare columns of type "inet". All fields are combined with logical 'AND'. */
 export type Inet_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['inet']>;
@@ -9090,6 +9251,10 @@ export type Mutation_Root = {
   delete_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** delete single row from the table: "eventPassPricing" */
   delete_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
+  /** delete data from the table: "follow" */
+  delete_follow?: Maybe<Follow_Mutation_Response>;
+  /** delete single row from the table: "follow" */
+  delete_follow_by_pk?: Maybe<Follow>;
   /** delete data from the table: "kyc" */
   delete_kyc?: Maybe<Kyc_Mutation_Response>;
   /** delete data from the table: "kycLevelName" */
@@ -9172,6 +9337,10 @@ export type Mutation_Root = {
   insert_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** insert a single row into the table: "eventPassPricing" */
   insert_eventPassPricing_one?: Maybe<EventPassPricing>;
+  /** insert data into the table: "follow" */
+  insert_follow?: Maybe<Follow_Mutation_Response>;
+  /** insert a single row into the table: "follow" */
+  insert_follow_one?: Maybe<Follow>;
   /** insert data into the table: "kyc" */
   insert_kyc?: Maybe<Kyc_Mutation_Response>;
   /** insert data into the table: "kycLevelName" */
@@ -9364,6 +9533,12 @@ export type Mutation_Root = {
   update_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
   /** update multiples rows of table: "eventPassPricing" */
   update_eventPassPricing_many?: Maybe<Array<Maybe<EventPassPricing_Mutation_Response>>>;
+  /** update data of the table: "follow" */
+  update_follow?: Maybe<Follow_Mutation_Response>;
+  /** update single row of the table: "follow" */
+  update_follow_by_pk?: Maybe<Follow>;
+  /** update multiples rows of table: "follow" */
+  update_follow_many?: Maybe<Array<Maybe<Follow_Mutation_Response>>>;
   /** update data of the table: "kyc" */
   update_kyc?: Maybe<Kyc_Mutation_Response>;
   /** update data of the table: "kycLevelName" */
@@ -9688,6 +9863,19 @@ export type Mutation_RootDelete_EventPassPricing_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_FollowArgs = {
+  where: Follow_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Follow_By_PkArgs = {
+  accountId: Scalars['uuid'];
+  organizerSlug: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_KycArgs = {
   where: Kyc_Bool_Exp;
 };
@@ -9950,6 +10138,20 @@ export type Mutation_RootInsert_EventPassPricingArgs = {
 export type Mutation_RootInsert_EventPassPricing_OneArgs = {
   object: EventPassPricing_Insert_Input;
   on_conflict?: InputMaybe<EventPassPricing_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_FollowArgs = {
+  objects: Array<Follow_Insert_Input>;
+  on_conflict?: InputMaybe<Follow_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Follow_OneArgs = {
+  object: Follow_Insert_Input;
+  on_conflict?: InputMaybe<Follow_On_Conflict>;
 };
 
 
@@ -10808,6 +11010,26 @@ export type Mutation_RootUpdate_EventPassPricing_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_EventPassPricing_ManyArgs = {
   updates: Array<EventPassPricing_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_FollowArgs = {
+  _set?: InputMaybe<Follow_Set_Input>;
+  where: Follow_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Follow_By_PkArgs = {
+  _set?: InputMaybe<Follow_Set_Input>;
+  pk_columns: Follow_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Follow_ManyArgs = {
+  updates: Array<Follow_Updates>;
 };
 
 
@@ -11871,6 +12093,12 @@ export type Query_Root = {
   events: Array<Event>;
   /** Retrieve multiple events using the Relay connection interface */
   eventsConnection: EventConnection;
+  /** fetch data from the table: "follow" */
+  follow: Array<Follow>;
+  /** fetch aggregated fields from the table: "follow" */
+  follow_aggregate: Follow_Aggregate;
+  /** fetch data from the table: "follow" using primary key columns */
+  follow_by_pk?: Maybe<Follow>;
   /** fetch data from the table: "kyc" */
   kyc: Array<Kyc>;
   /** fetch data from the table: "kycLevelName" */
@@ -12307,6 +12535,30 @@ export type Query_RootEventsConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<EventWhereInput>;
+};
+
+
+export type Query_RootFollowArgs = {
+  distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Follow_Order_By>>;
+  where?: InputMaybe<Follow_Bool_Exp>;
+};
+
+
+export type Query_RootFollow_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Follow_Order_By>>;
+  where?: InputMaybe<Follow_Bool_Exp>;
+};
+
+
+export type Query_RootFollow_By_PkArgs = {
+  accountId: Scalars['uuid'];
+  organizerSlug: Scalars['String'];
 };
 
 
@@ -13790,6 +14042,14 @@ export type Subscription_Root = {
   eventPassPricing_by_pk?: Maybe<EventPassPricing>;
   /** fetch data from the table in a streaming manner: "eventPassPricing" */
   eventPassPricing_stream: Array<EventPassPricing>;
+  /** fetch data from the table: "follow" */
+  follow: Array<Follow>;
+  /** fetch aggregated fields from the table: "follow" */
+  follow_aggregate: Follow_Aggregate;
+  /** fetch data from the table: "follow" using primary key columns */
+  follow_by_pk?: Maybe<Follow>;
+  /** fetch data from the table in a streaming manner: "follow" */
+  follow_stream: Array<Follow>;
   /** fetch data from the table: "kyc" */
   kyc: Array<Kyc>;
   /** fetch data from the table: "kycLevelName" */
@@ -14171,6 +14431,37 @@ export type Subscription_RootEventPassPricing_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<EventPassPricing_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassPricing_Bool_Exp>;
+};
+
+
+export type Subscription_RootFollowArgs = {
+  distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Follow_Order_By>>;
+  where?: InputMaybe<Follow_Bool_Exp>;
+};
+
+
+export type Subscription_RootFollow_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Follow_Order_By>>;
+  where?: InputMaybe<Follow_Bool_Exp>;
+};
+
+
+export type Subscription_RootFollow_By_PkArgs = {
+  accountId: Scalars['uuid'];
+  organizerSlug: Scalars['String'];
+};
+
+
+export type Subscription_RootFollow_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Follow_Stream_Cursor_Input>>;
+  where?: InputMaybe<Follow_Bool_Exp>;
 };
 
 

@@ -11416,6 +11416,222 @@ type eventPassPricing_variance_fields {
   timeBeforeDelete: Float
 }
 
+"""
+Stores follow relationships. Each row represents an account following an organizer.
+"""
+type follow {
+  """
+  References the unique identifier of the account that is following an organizer.
+  """
+  accountId: uuid!
+  created_at: timestamptz!
+
+  """
+  Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers.
+  """
+  organizerSlug: String!
+}
+
+"""
+aggregated selection of "follow"
+"""
+type follow_aggregate {
+  aggregate: follow_aggregate_fields
+  nodes: [follow!]!
+}
+
+"""
+aggregate fields of "follow"
+"""
+type follow_aggregate_fields {
+  count(columns: [follow_select_column!], distinct: Boolean): Int!
+  max: follow_max_fields
+  min: follow_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "follow". All fields are combined with a logical 'AND'.
+"""
+input follow_bool_exp {
+  _and: [follow_bool_exp!]
+  _not: follow_bool_exp
+  _or: [follow_bool_exp!]
+  accountId: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  organizerSlug: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "follow"
+"""
+enum follow_constraint {
+  """
+  unique or primary key constraint on columns "accountId", "organizerSlug"
+  """
+  follow_pkey
+}
+
+"""
+input type for inserting data into table "follow"
+"""
+input follow_insert_input {
+  """
+  References the unique identifier of the account that is following an organizer.
+  """
+  accountId: uuid
+  created_at: timestamptz
+
+  """
+  Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers.
+  """
+  organizerSlug: String
+}
+
+"""aggregate max on columns"""
+type follow_max_fields {
+  """
+  References the unique identifier of the account that is following an organizer.
+  """
+  accountId: uuid
+  created_at: timestamptz
+
+  """
+  Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers.
+  """
+  organizerSlug: String
+}
+
+"""aggregate min on columns"""
+type follow_min_fields {
+  """
+  References the unique identifier of the account that is following an organizer.
+  """
+  accountId: uuid
+  created_at: timestamptz
+
+  """
+  Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers.
+  """
+  organizerSlug: String
+}
+
+"""
+response of any mutation on the table "follow"
+"""
+type follow_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [follow!]!
+}
+
+"""
+on_conflict condition type for table "follow"
+"""
+input follow_on_conflict {
+  constraint: follow_constraint!
+  update_columns: [follow_update_column!]! = []
+  where: follow_bool_exp
+}
+
+"""Ordering options when selecting data from "follow"."""
+input follow_order_by {
+  accountId: order_by
+  created_at: order_by
+  organizerSlug: order_by
+}
+
+"""primary key columns input for table: follow"""
+input follow_pk_columns_input {
+  """
+  References the unique identifier of the account that is following an organizer.
+  """
+  accountId: uuid!
+
+  """
+  Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers.
+  """
+  organizerSlug: String!
+}
+
+"""
+select columns of table "follow"
+"""
+enum follow_select_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  organizerSlug
+}
+
+"""
+input type for updating data in table "follow"
+"""
+input follow_set_input {
+  """
+  References the unique identifier of the account that is following an organizer.
+  """
+  accountId: uuid
+  created_at: timestamptz
+
+  """
+  Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers.
+  """
+  organizerSlug: String
+}
+
+"""
+Streaming cursor of the table "follow"
+"""
+input follow_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: follow_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input follow_stream_cursor_value_input {
+  """
+  References the unique identifier of the account that is following an organizer.
+  """
+  accountId: uuid
+  created_at: timestamptz
+
+  """
+  Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers.
+  """
+  organizerSlug: String
+}
+
+"""
+update columns of table "follow"
+"""
+enum follow_update_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  organizerSlug
+}
+
+input follow_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: follow_set_input
+
+  """filter the rows which have to be updated"""
+  where: follow_bool_exp!
+}
+
 scalar inet
 
 """
@@ -12342,6 +12558,29 @@ type mutation_root {
   delete_eventPassPricing_by_pk(id: uuid!): eventPassPricing
 
   """
+  delete data from the table: "follow"
+  """
+  delete_follow(
+    """filter the rows which have to be deleted"""
+    where: follow_bool_exp!
+  ): follow_mutation_response
+
+  """
+  delete single row from the table: "follow"
+  """
+  delete_follow_by_pk(
+    """
+    References the unique identifier of the account that is following an organizer.
+    """
+    accountId: uuid!
+
+    """
+    Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers.
+    """
+    organizerSlug: String!
+  ): follow
+
+  """
   delete data from the table: "kyc"
   """
   delete_kyc(
@@ -12719,6 +12958,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: eventPassPricing_on_conflict
   ): eventPassPricing
+
+  """
+  insert data into the table: "follow"
+  """
+  insert_follow(
+    """the rows to be inserted"""
+    objects: [follow_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: follow_on_conflict
+  ): follow_mutation_response
+
+  """
+  insert a single row into the table: "follow"
+  """
+  insert_follow_one(
+    """the row to be inserted"""
+    object: follow_insert_input!
+
+    """upsert condition"""
+    on_conflict: follow_on_conflict
+  ): follow
 
   """
   insert data into the table: "kyc"
@@ -14183,6 +14444,34 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [eventPassPricing_updates!]!
   ): [eventPassPricing_mutation_response]
+
+  """
+  update data of the table: "follow"
+  """
+  update_follow(
+    """sets the columns of the filtered rows to the given values"""
+    _set: follow_set_input
+
+    """filter the rows which have to be updated"""
+    where: follow_bool_exp!
+  ): follow_mutation_response
+
+  """
+  update single row of the table: "follow"
+  """
+  update_follow_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: follow_set_input
+    pk_columns: follow_pk_columns_input!
+  ): follow
+
+  """
+  update multiples rows of table: "follow"
+  """
+  update_follow_many(
+    """updates to execute, in order"""
+    updates: [follow_updates!]!
+  ): [follow_mutation_response]
 
   """
   update data of the table: "kyc"
@@ -16272,6 +16561,59 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: EventWhereInput
   ): EventConnection!
+
+  """
+  fetch data from the table: "follow"
+  """
+  follow(
+    """distinct select on columns"""
+    distinct_on: [follow_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [follow_order_by!]
+
+    """filter the rows returned"""
+    where: follow_bool_exp
+  ): [follow!]!
+
+  """
+  fetch aggregated fields from the table: "follow"
+  """
+  follow_aggregate(
+    """distinct select on columns"""
+    distinct_on: [follow_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [follow_order_by!]
+
+    """filter the rows returned"""
+    where: follow_bool_exp
+  ): follow_aggregate!
+
+  """fetch data from the table: "follow" using primary key columns"""
+  follow_by_pk(
+    """
+    References the unique identifier of the account that is following an organizer.
+    """
+    accountId: uuid!
+
+    """
+    Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers.
+    """
+    organizerSlug: String!
+  ): follow
 
   """
   fetch data from the table: "kyc"
@@ -18705,6 +19047,73 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassPricing_bool_exp
   ): [eventPassPricing!]!
+
+  """
+  fetch data from the table: "follow"
+  """
+  follow(
+    """distinct select on columns"""
+    distinct_on: [follow_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [follow_order_by!]
+
+    """filter the rows returned"""
+    where: follow_bool_exp
+  ): [follow!]!
+
+  """
+  fetch aggregated fields from the table: "follow"
+  """
+  follow_aggregate(
+    """distinct select on columns"""
+    distinct_on: [follow_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [follow_order_by!]
+
+    """filter the rows returned"""
+    where: follow_bool_exp
+  ): follow_aggregate!
+
+  """fetch data from the table: "follow" using primary key columns"""
+  follow_by_pk(
+    """
+    References the unique identifier of the account that is following an organizer.
+    """
+    accountId: uuid!
+
+    """
+    Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers.
+    """
+    organizerSlug: String!
+  ): follow
+
+  """
+  fetch data from the table in a streaming manner: "follow"
+  """
+  follow_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [follow_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: follow_bool_exp
+  ): [follow!]!
 
   """
   fetch data from the table: "kyc"

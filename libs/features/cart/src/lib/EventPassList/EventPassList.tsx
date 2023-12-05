@@ -13,12 +13,15 @@ import {
 } from '../EventPasses/EventPasses';
 
 export interface EventPassListProps
-  extends Pick<EventPassesContentProps, 'noActions'> {
+  extends Pick<EventPassesContentProps, 'noActions' | 'timeRemainingDeletion'> {
   allPasses?: AllPassesCart;
 }
 
 export interface EventPassesContentProps
-  extends Pick<EventPassesProps, 'passes' | 'noActions'>,
+  extends Pick<
+      EventPassesProps,
+      'passes' | 'noActions' | 'timeRemainingDeletion'
+    >,
     EventSlugs {}
 
 const EventPassListContent: React.FC<EventPassesContentProps> = async ({
@@ -26,17 +29,29 @@ const EventPassListContent: React.FC<EventPassesContentProps> = async ({
   eventSlug,
   passes,
   noActions,
+  timeRemainingDeletion,
 }) => {
   // const event = await GetEventWithPasses
   const locale = useLocale();
-  const event = await getEventWithPasses({ eventSlug, locale });
+  const event = await getEventWithPasses({
+    eventSlug,
+    locale,
+  });
   if (!event) return null;
-  return <EventPasses event={event} passes={passes} noActions={noActions} />;
+  return (
+    <EventPasses
+      event={event}
+      passes={passes}
+      noActions={noActions}
+      timeRemainingDeletion={timeRemainingDeletion}
+    />
+  );
 };
 
 export const EventPassList: React.FC<EventPassListProps> = ({
   allPasses,
   noActions,
+  timeRemainingDeletion,
 }) => {
   return (
     <Accordion type="multiple">
@@ -50,6 +65,7 @@ export const EventPassList: React.FC<EventPassListProps> = ({
                   eventSlug={eventSlug}
                   passes={eventPasses}
                   noActions={noActions}
+                  timeRemainingDeletion={timeRemainingDeletion}
                 />
               </Suspense>
             </div>

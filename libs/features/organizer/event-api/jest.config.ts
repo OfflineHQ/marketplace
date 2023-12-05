@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'features-organizer--event-api',
+  displayName: 'features-organizer-event-api',
   preset: '../../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': [

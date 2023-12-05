@@ -42,19 +42,19 @@ export const OpenedSheetWithFocus: Story = {
     await userEvent.click(dialogTrigger);
 
     const dialogTitle = await screen.findByText('Edit profile');
-    expect(dialogTitle).toBeVisible();
+    await expect(dialogTitle).toBeVisible();
 
     const dialogDescription = await screen.findByText(
       "Make changes to your profile here. Click save when you're done.",
     );
-    expect(dialogDescription).toBeVisible();
+    await expect(dialogDescription).toBeVisible();
     // Check if the first TextInput is focused
     const dialogContent = screen.getByRole('dialog');
     const allInputs = within(dialogContent).getAllByRole('textbox');
-    expect(allInputs[0]).toHaveFocus();
+    await expect(allInputs[0]).toHaveFocus();
     // check if scroll work as expected, Button "Save change" should be visible
     const saveButton = screen.getByRole('button', { name: 'Save changes' });
-    expect(saveButton).toBeVisible();
+    await expect(saveButton).toBeVisible();
   },
 };
 
@@ -80,7 +80,7 @@ export const Large: Story = {
     await userEvent.click(dialogTrigger);
 
     const dialogTitle = await screen.findByText('Edit profile');
-    expect(dialogTitle).toBeVisible();
+    await expect(dialogTitle).toBeVisible();
   },
   args: {
     size: 'lg',
@@ -93,9 +93,9 @@ export const Full: Story = {
     await userEvent.click(dialogTrigger);
 
     const dialogTitle = await screen.findByText('Edit profile');
-    expect(dialogTitle).toBeVisible();
+    await expect(dialogTitle).toBeVisible();
     const backButton = screen.getByTestId('sheet-back');
-    expect(backButton).toBeVisible();
+    await expect(backButton).toBeVisible();
   },
   args: {
     size: 'full',
@@ -108,13 +108,13 @@ export const FullWithBackButton: Story = {
     await userEvent.click(dialogTrigger);
 
     const dialogTitle = await screen.findByText('Edit profile');
-    expect(dialogTitle).toBeVisible();
+    await expect(dialogTitle).toBeVisible();
 
     // Button is wrapped inside SheetPrimitive.Close Button
-    const backButtonTxt = await screen.getByRole('button', {
+    const backButtonTxt = screen.getByRole('button', {
       name: /Go back/i,
     });
-    expect(backButtonTxt).toBeVisible();
+    await expect(backButtonTxt).toBeVisible();
   },
   args: {
     size: 'full',
@@ -128,7 +128,7 @@ export const Content: Story = {
     await userEvent.click(dialogTrigger);
 
     const dialogTitle = await screen.findByText('Edit profile');
-    expect(dialogTitle).toBeVisible();
+    await expect(dialogTitle).toBeVisible();
   },
   args: {
     size: 'content',
@@ -141,7 +141,7 @@ export const Top: Story = {
     await userEvent.click(dialogTrigger);
 
     const dialogTitle = await screen.findByText('Edit profile');
-    expect(dialogTitle).toBeVisible();
+    await expect(dialogTitle).toBeVisible();
   },
   args: {
     position: 'top',
@@ -154,7 +154,7 @@ export const Left: Story = {
     await userEvent.click(dialogTrigger);
 
     const dialogTitle = await screen.findByText('Edit profile');
-    expect(dialogTitle).toBeVisible();
+    await expect(dialogTitle).toBeVisible();
   },
   args: {
     position: 'left',
@@ -167,7 +167,7 @@ export const Bottom: Story = {
     await userEvent.click(dialogTrigger);
 
     const dialogTitle = await screen.findByText('Edit profile');
-    expect(dialogTitle).toBeVisible();
+    await expect(dialogTitle).toBeVisible();
   },
   args: {
     position: 'bottom',
@@ -180,7 +180,7 @@ export const Right: Story = {
     await userEvent.click(dialogTrigger);
 
     const dialogTitle = await screen.findByText('Edit profile');
-    expect(dialogTitle).toBeVisible();
+    await expect(dialogTitle).toBeVisible();
   },
   args: {
     position: 'right',

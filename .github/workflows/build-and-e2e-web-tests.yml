@@ -1,0 +1,40 @@
+name: Build and E2E web tests
+
+on:
+  workflow_dispatch:
+
+env:
+  NODE_OPTIONS: '--max_old_space_size=4096'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{github.ref }}
+
+      - name: Set up environment and cache dependencies
+        uses: sebpalluel/ci/.github/actions/setup-environment@latest
+
+      - name: Build and check if web affected
+        id: check
+        run: |
+          affected=$(pnpm nx affected -t=build)
+          if [[ $affected == *"web:build:production"* ]]; then
+            echo "::set-output name=web::true"
+          else
+            echo "::set-output name=web::false"
+          fi
+
+      - name: Launch docker services
+        if: steps.check.outputs.web == 'true'
+        run: pnpm docker:services & pnpm nx run web:build:production
+
+      - name: Run e2e tests
+        if: steps.check.outputs.web == 'true'
+        run: pnpm nx run web:e2e --skipInstall

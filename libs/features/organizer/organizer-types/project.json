@@ -1,0 +1,30 @@
+{
+  "name": "features-organizer-types",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/features/organizer/organizer-types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/features/organizer/organizer-types",
+        "tsConfig": "libs/features/organizer/organizer-types/tsconfig.lib.json",
+        "packageJson": "libs/features/organizer/organizer-types/package.json",
+        "main": "libs/features/organizer/organizer-types/src/index.ts",
+        "assets": ["libs/features/organizer/organizer-types/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/features/organizer/organizer-types/**/*.ts",
+          "libs/features/organizer/organizer-types/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

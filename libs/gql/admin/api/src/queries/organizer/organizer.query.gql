@@ -1,5 +1,62 @@
 query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: { slug: $slug }, locales: [$locale, en], stage: $stage) {
-    ...OrganizerFields
+    slug
+    name
+    description {
+      json
+      references {
+        ... on Asset {
+          __typename
+          id
+          url
+          mimeType
+        }
+      }
+    }
+    image {
+      url
+    }
+    imageClasses
+    heroImage {
+      url
+    }
+    heroImageClasses
+    twitterHandle
+    instagramHandle
+    tiktokHandle
+    facebookHandle
+    youtubeHandle
+    telegramHandle
+    discordWidgetId
+  }
+}
+
+query GetOrganizerFromSlug($slug: String!, $stage: Stage!) @cached {
+  organizer(where: { slug: $slug }, locales: [en], stage: $stage) {
+    id
+    slug
+  }
+}
+
+query GetOrganizerLatestEvents(
+  $organizerId: String!
+  $locale: Locale!
+  $stage: Stage!
+) @cached {
+  eventParameters(
+    where: { organizerId: { _eq: $organizerId } }
+    order_by: { dateStart: desc }
+    limit: 3
+  ) {
+    dateStart
+    dateEnd
+    event(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      title
+      heroImage {
+        url
+      }
+      heroImageClasses
+    }
   }
 }

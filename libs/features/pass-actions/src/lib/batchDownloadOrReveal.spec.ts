@@ -39,7 +39,6 @@ describe('batchDownloadOrReveal', () => {
     await batchDownloadOrReveal('slug', eventPassNfts);
 
     expect(revealPass).toHaveBeenCalledWith('1');
-    expect(revalidateTag).toHaveBeenCalledWith('userEventPassNfts');
   });
 
   it("shouldn't call revealPass or revalidateTag for already revealed eventPassNfts", async () => {

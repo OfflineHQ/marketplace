@@ -51,10 +51,9 @@ export const PassCard: React.FC<PassCardProps> = ({
         <div className="mx-auto flex max-h-[370px] w-full max-w-[350px] py-3">
           <AspectRatio variant="square">
             <Image
-              className="rounded-sm"
+              className="rounded-sm object-cover"
               src={nftImage?.url || '/image-placeholder.svg'}
               fill
-              style={{ objectFit: 'cover' }}
               alt={name}
             />
           </AspectRatio>

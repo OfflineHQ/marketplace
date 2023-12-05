@@ -1,10 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/testing-library';
 import { PassNav } from './PassNav';
 import { PassNavDemo, passNavProps } from './examples';
 
@@ -34,7 +29,7 @@ export const PassActive: Story = {
 export const PassWithHelperText: Story = {
   args: {},
   play: async ({ canvasElement }) => {
-    userEvent.click(screen.getByText('Pass'));
+    userEvent.click(await screen.findByText(/pass/i));
     // Check that the helper text is present
     await screen.findByText((content, element) => {
       return (

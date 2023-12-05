@@ -1,8 +1,9 @@
+import { accounts } from '../../libs/test-utils/gql/src';
+
+const user = accounts.alpha_user;
 export const getCurrentUser = async () => {
   return Promise.resolve({
-    id: 'mockUserId',
-    email: 'mockUserEmail',
-    roles: ['mockUserRole'],
+    ...user,
   });
 };
 export const handleUnauthenticatedUser = () => {
@@ -10,4 +11,8 @@ export const handleUnauthenticatedUser = () => {
 };
 export const getUnauthenticatedUserCookie = () => {
   return 'mockHandleUnauthenticatedUser';
+};
+
+export const isConnected = () => {
+  return true;
 };

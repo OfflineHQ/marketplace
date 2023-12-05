@@ -55,3 +55,7 @@ export async function batchDelete(key: string) {
     );
   }
 }
+
+export async function resetCache() {
+  await kv.flushall();
+}

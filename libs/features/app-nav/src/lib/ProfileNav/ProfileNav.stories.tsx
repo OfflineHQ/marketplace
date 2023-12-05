@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { screen, userEvent } from '@storybook/testing-library';
 import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
+  cryptoUserSession,
+  normalUserSession,
+  normalUserSessionWithImage,
+} from '../profile-avatar/examples';
 import { ProfileNav, ProfileNavSkeleton } from './ProfileNav';
 import {
   ProfileNavExample,
@@ -12,11 +12,6 @@ import {
   normalUserMenuItems,
   notConnectedMenuItems,
 } from './examples';
-import {
-  cryptoUserSession,
-  normalUserSession,
-  normalUserSessionWithImage,
-} from '../profile-avatar/examples';
 
 const meta = {
   component: ProfileNav,
@@ -33,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 
 export const CryptoUser: Story = {
   play: async ({ canvasElement }) => {
-    userEvent.click(screen.getByText('0x', { exact: false }));
+    userEvent.click(await screen.findByText('0x', { exact: false }));
     await screen.findByText('My Account');
     await screen.findByText('Log out');
   },
@@ -45,7 +40,7 @@ export const NormalUser: Story = {
     items: normalUserMenuItems,
   },
   play: async ({ canvasElement }) => {
-    userEvent.click(screen.getByText('@', { exact: false }));
+    userEvent.click(await screen.findByText('@', { exact: false }));
     await screen.findByText('My Account');
     await screen.findByText('Log out');
   },
@@ -65,7 +60,7 @@ export const NoUser: Story = {
     signInText: 'Sign in',
   },
   play: async ({ canvasElement }) => {
-    userEvent.click(screen.getByText('Sign in'));
+    userEvent.click(await screen.findByText('Sign in'));
     await screen.findByText('Settings');
   },
 };

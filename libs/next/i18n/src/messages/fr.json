@@ -93,7 +93,10 @@
       "Event": {
         "num-pass": "{numPass, plural, =1 {# pass} other {# pass}}",
         "edit": "Modifier",
-        "remove": "Supprimer"
+        "remove": "Supprimer",
+        "TimeBeforeDeletion": {
+          "time-before-deletion": "expire : {relativeTime}"
+        }
       },
       "no-cart": "Votre panier d'achat est vide"
     },
@@ -210,6 +213,19 @@
     "EventDates": {
       "from": "Du",
       "to": "Au"
+    },
+    "SocialMediaButton": {
+      "go-to-platform": "Allez sur {plateforme}"
+    },
+    "OrganizerFollowButton": {
+      "follow": "Suivre",
+      "unfollow": "Se désabonner",
+      "helperTextFollow": "Cliquez pour suivre \"{name}\"",
+      "helperTextUnfollow": "Cliquer pour se désabonner de \"{name}\""
+    },
+    "OrganizerEventsSection": {
+      "title": "Derniers événements",
+      "noEvents": "Il n'y a actuellement aucun événement à afficher"
     }
   },
   "KYC": {

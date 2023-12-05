@@ -1,6 +1,6 @@
 import { Decorator } from '@storybook/react';
 import { NextIntlClientProvider } from 'next-intl';
-import React, { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import messagesEn from '../libs/next/i18n/src/messages/en.json';
 import messagesfr from '../libs/next/i18n/src/messages/fr.json';
 

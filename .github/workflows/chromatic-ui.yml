@@ -5,7 +5,7 @@ on:
     paths:
       - libs/ui/**
   push:
-    branches: ['main']
+    branches: ['staging']
     paths:
       - libs/ui/**
   workflow_dispatch:

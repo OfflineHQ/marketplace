@@ -9,15 +9,27 @@
   },
   "tasksRunnerOptions": {
     "default": {
+      "runner": "@vercel/remote-nx",
       "options": {
         "canTrackAnalytics": true,
-        "showUsageWarning": true
+        "showUsageWarning": true,
+        "cacheDirectory": "/tmp/nx-cache",
+        "cacheableOperations": [
+          "build",
+          "build-storybook",
+          "test",
+          "test-integration",
+          "lint",
+          "e2e"
+        ],
+        "token": "8HfZAvj1ZCUEYLuNISczuuF2",
+        "teamId": "team_cNOd6z2HTsiaB0cibAjaQSIM"
       }
     }
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "affected": {
-    "defaultBase": "staging"
+    "defaultBase": "main"
   },
   "workspaceLayout": {
     "appsDir": "apps",
@@ -115,7 +127,7 @@
   "defaultProject": "web",
   "defaultAffected": ["web", "back-office"],
   "defaultBase": "staging",
-  "cacheDirectory": ".nx/cache",
+  "cacheDirectory": "/tmp/cache",
   "nxCloudAccessToken": "MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=",
   "parallel": 5
 }
