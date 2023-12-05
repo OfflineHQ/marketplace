@@ -31,7 +31,7 @@ async function generate() {
   const locales = ['en', 'fr'];
 
   const filteredPages = pages
-    .filter((page) => !page.includes('(purchaseSheet)/@purchase/(.)purchase'))
+    .filter((page) => !page.includes('@'))
     .map((page) => page.replace('/page.tsx', ''))
     .map((page) => page.replace(/apps\/web\/app\/?/, ''));
 
