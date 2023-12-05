@@ -49,7 +49,7 @@ async function generate() {
               ) {
                 result = `
                     <url>
-                        <loc>${`${process.env.WEB_APP_URL}/${locale}${page}`.replace(
+                        <loc>${`https://www.offline.live/${locale}${page}`.replace(
                           '[locale]',
                           '',
                         )}</loc>
@@ -83,7 +83,7 @@ async function generate() {
                           .replace('/page', '');
                         return `
                             <url>
-                                <loc>${`${process.env.WEB_APP_URL}/${locale}${eventPath}`}</loc>
+                                <loc>${`https://www.offline.live/${locale}${eventPath}`}</loc>
                             </url>
                             `;
                       })

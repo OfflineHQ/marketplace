@@ -1,346 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.staging.offline.live/en</loc>
+    <loc>https://www.offline.live/en</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/fr</loc>
+    <loc>https://www.offline.live/fr</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/en</loc>
+    <loc>https://www.offline.live/en</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/fr</loc>
+    <loc>https://www.offline.live/fr</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/en/cart</loc>
+    <loc>https://www.offline.live/en/cart</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/fr/cart</loc>
+    <loc>https://www.offline.live/fr/cart</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/en/settings</loc>
+    <loc>https://www.offline.live/en/settings</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/fr/settings</loc>
+    <loc>https://www.offline.live/fr/settings</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/en/cart/canceled</loc>
+    <loc>https://www.offline.live/en/cart/canceled</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/fr/cart/canceled</loc>
+    <loc>https://www.offline.live/fr/cart/canceled</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/en/cart/purchase</loc>
+    <loc>https://www.offline.live/en/cart/purchase</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/fr/cart/purchase</loc>
+    <loc>https://www.offline.live/fr/cart/purchase</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/en/cart/success</loc>
+    <loc>https://www.offline.live/en/cart/success</loc>
   </url>
 
   <url>
-    <loc>https://www.staging.offline.live/fr/cart/success</loc>
+    <loc>https://www.offline.live/fr/cart/success</loc>
   </url>
 
   <url>
     <loc
-      >https://www.staging.offline.live/en/organizer/test/event/test-an-event</loc
+      >https://www.offline.live/en/organizer/offline/event/offline-meet-the-team</loc
     >
   </url>
 
   <url>
     <loc
-      >https://www.staging.offline.live/en/organizer/test/event/test-anniversaire</loc
+      >https://www.offline.live/fr/organizer/offline/event/offline-meet-the-team</loc
     >
   </url>
 
   <url>
     <loc
-      >https://www.staging.offline.live/en/organizer/psg/event/psg-champions-league-final</loc
+      >https://www.offline.live/en/organizer/offline/event/offline-meet-the-team/purchase</loc
     >
   </url>
 
   <url>
     <loc
-      >https://www.staging.offline.live/en/organizer/psg/event/psg-champions-league-final-copy</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/baron-philippe-de-rothschild/event/baron-philippe-de-rothschild-mouton-cadet</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/fifa/event/fifa-deutschland-10-jahre-spaeter</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/french-bloom/event/french-bloom-discover-french-bloom-exclusive-diner</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/french-bloom/event/french-bloom-virtual-masterclass-with-a-renowned-chef</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/offline/event/offline-meet-the-team</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-stepping-into-the-shoes-of-a-player-during-training</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-question-and-answer-sessions-with-some-players</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-mystery</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/test/event/test-an-event</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/test/event/test-anniversaire</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/psg/event/psg-champions-league-final</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/psg/event/psg-champions-league-final-copy</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/baron-philippe-de-rothschild/event/baron-philippe-de-rothschild-mouton-cadet</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/fifa/event/fifa-deutschland-10-jahre-spaeter</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/french-bloom/event/french-bloom-discover-french-bloom-exclusive-diner</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/french-bloom/event/french-bloom-virtual-masterclass-with-a-renowned-chef</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/offline/event/offline-meet-the-team</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-stepping-into-the-shoes-of-a-player-during-training</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-question-and-answer-sessions-with-some-players</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-mystery</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/test/event/test-an-event/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/test/event/test-anniversaire/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/psg/event/psg-champions-league-final/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/psg/event/psg-champions-league-final-copy/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/baron-philippe-de-rothschild/event/baron-philippe-de-rothschild-mouton-cadet/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/fifa/event/fifa-deutschland-10-jahre-spaeter/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/french-bloom/event/french-bloom-discover-french-bloom-exclusive-diner/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/french-bloom/event/french-bloom-virtual-masterclass-with-a-renowned-chef/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/offline/event/offline-meet-the-team/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-stepping-into-the-shoes-of-a-player-during-training/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-question-and-answer-sessions-with-some-players/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/en/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-mystery/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/test/event/test-an-event/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/test/event/test-anniversaire/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/psg/event/psg-champions-league-final/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/psg/event/psg-champions-league-final-copy/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/baron-philippe-de-rothschild/event/baron-philippe-de-rothschild-mouton-cadet/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/fifa/event/fifa-deutschland-10-jahre-spaeter/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/french-bloom/event/french-bloom-discover-french-bloom-exclusive-diner/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/french-bloom/event/french-bloom-virtual-masterclass-with-a-renowned-chef/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/offline/event/offline-meet-the-team/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-stepping-into-the-shoes-of-a-player-during-training/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-question-and-answer-sessions-with-some-players/purchase</loc
-    >
-  </url>
-
-  <url>
-    <loc
-      >https://www.staging.offline.live/fr/organizer/montpellier-herault-sport-club/event/montpellier-herault-sport-club-mystery/purchase</loc
+      >https://www.offline.live/fr/organizer/offline/event/offline-meet-the-team/purchase</loc
     >
   </url>
 </urlset>
