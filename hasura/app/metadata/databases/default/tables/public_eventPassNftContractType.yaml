@@ -1,0 +1,4 @@
+table:
+  name: eventPassNftContractType
+  schema: public
+is_enum: true
