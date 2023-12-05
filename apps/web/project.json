@@ -138,6 +138,13 @@
       "options": {
         "config": "apps/web/playwright.config.ts"
       }
+    },
+
+    "sitemap": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["node ./scripts/generate-sitemap.mjs"]
+      }
     }
   },
   "tags": []
