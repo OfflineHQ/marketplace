@@ -20,7 +20,7 @@ export function ErrorClient({ error, reset, customMessage }: ErrorProps) {
   return (
     <AppContainer>
       <AppContainerOverflow variant="stickyFooter">
-        <CardContent className="flex w-full flex-col items-center">
+        <CardContent className="flex h-full w-full flex-col items-center">
           <div className="relative h-80 w-80 grow">
             <Image fill src="/error.svg" alt={t('error-message')} />
           </div>

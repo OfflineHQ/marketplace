@@ -1,22 +1,27 @@
 import { adminSdk } from '@gql/admin/api';
 import { Stage } from '@gql/shared/types';
 import { userSdk } from '@gql/user/api';
-import { applySeeds, createDbClient, deleteTables } from '@test-utils/db';
+import { resetCache } from '@test-utils/cache';
+import {
+  PgClient,
+  applySeeds,
+  createDbClient,
+  deleteTables,
+} from '@test-utils/db';
 import { alphaUserClient } from '@test-utils/gql';
-import { kv } from '@vercel/kv';
 import { PassCache } from './features-pass-cache';
 
 jest.mock('@next/next-auth/user');
 
 describe('PassCache Integration Test', () => {
   let passCache: PassCache;
-  let client;
+  let client: PgClient;
 
   const alphaUser = alphaUserClient();
 
   beforeAll(async () => {
     client = await createDbClient();
-    await kv.flushall();
+    await resetCache();
     await applySeeds(client, ['account', 'eventPassPricing']);
   });
 
@@ -26,6 +31,7 @@ describe('PassCache Integration Test', () => {
 
   afterAll(async () => {
     await deleteTables(client, ['account', 'eventPassPricing']);
+    await client.end();
   });
 
   it('should get passes cart when there are none and return null', async () => {

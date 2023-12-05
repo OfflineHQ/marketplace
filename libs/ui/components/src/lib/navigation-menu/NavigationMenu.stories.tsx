@@ -30,7 +30,7 @@ export const DefaultNavigationMenu: Story = {
     });
     await userEvent.hover(gettingStartedTrigger);
     const gettingStartedContent = await screen.findByText('Introduction');
-    expect(gettingStartedContent).toBeVisible();
+    await expect(gettingStartedContent).toBeVisible();
 
     const componentsTrigger = await screen.findByRole('button', {
       name: 'Components',
@@ -38,7 +38,7 @@ export const DefaultNavigationMenu: Story = {
     await userEvent.hover(componentsTrigger);
     await waitForElementToBeRemoved(() => screen.queryByText('Introduction'));
     const componentsContent = await screen.findByText('Hover Card');
-    expect(componentsContent).toBeVisible();
+    await expect(componentsContent).toBeVisible();
     await screen.findByText('Tooltip');
   },
 };

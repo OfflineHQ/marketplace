@@ -94,7 +94,10 @@
       "Event": {
         "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",
         "edit": "Edit",
-        "remove": "Remove"
+        "remove": "Remove",
+        "TimeBeforeDeletion": {
+          "time-before-deletion": "expires: {relativeTime}"
+        }
       }
     },
     "Successful": {
@@ -210,6 +213,19 @@
     "EventDates": {
       "from": "From",
       "to": "To"
+    },
+    "SocialMediaButton": {
+      "go-to-platform": "Go to {platform}"
+    },
+    "OrganizerFollowButton": {
+      "follow": "Follow",
+      "unfollow": "Unfollow",
+      "helperTextFollow": "Click to follow \"{name}\"",
+      "helperTextUnfollow": "Click to unfollow \"{name}\""
+    },
+    "OrganizerEventsSection": {
+      "title": "Lastest Events",
+      "noEvents": "There is currently no events to display"
     }
   },
   "KYC": {

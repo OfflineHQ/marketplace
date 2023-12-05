@@ -1,7 +1,5 @@
 // GlobalSettings.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 import { Settings } from './Settings';
 import { SettingsExample } from './examples';
 

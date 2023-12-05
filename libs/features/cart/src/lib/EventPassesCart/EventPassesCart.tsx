@@ -49,7 +49,10 @@ const EventPassesCartContent: React.FC<EventPassesCartProps> = async ({
   const locale = useLocale();
   const t = await getTranslations({ locale, namespace: 'Cart.List' });
   return !isCartEmpty && allPassesCart ? (
-    <EventPassList allPasses={allPassesCart} />
+    <EventPassList
+      allPasses={allPassesCart}
+      timeRemainingDeletion={!!userPassPendingOrders?.length}
+    />
   ) : (
     <div className="m-5 flex flex-col items-center">
       <Alert variant="info" className="w-max">

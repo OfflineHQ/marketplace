@@ -1,7 +1,7 @@
 'use client';
 
-import * as React from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
+import * as React from 'react';
 
 import { cn } from '@ui/shared';
 import { VariantProps, cva } from 'class-variance-authority';
@@ -12,6 +12,7 @@ const avatarSizes = {
   default: 'w-10 h-10 sm:w-12 sm:h-12 text-base',
   lg: 'w-12 h-12 sm:w-16 sm:h-16 text-lg',
   xl: 'w-16 h-16 sm:w-20 sm:h-20 text-xl',
+  '2xl': 'w-20 h-20 sm:w-24 sm:h-24 text-2xl',
 };
 
 const avatarVariants = cva(
@@ -78,22 +79,35 @@ const AvatarFallback = React.forwardRef<
 ));
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
+const avatarSkeletonVariants = cva(
+  'relative shrink-0 animate-pulse rounded-full',
+  {
+    variants: {
+      size: avatarSizes,
+      color: {
+        default: 'bg-muted',
+        highlight: 'bg-highlight',
+      },
+    },
+    defaultVariants: {
+      size: 'default',
+      color: 'default',
+    },
+  },
+);
+
 const AvatarSkeleton = React.forwardRef<
   HTMLDivElement,
-  VariantProps<typeof avatarVariants> & {
+  VariantProps<typeof avatarSkeletonVariants> & {
     className?: string;
   }
->(({ className, size, ...props }, ref) => (
+>(({ className, size, color = 'default', ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      avatarVariants({ size }),
-      'relative flex-shrink-0 animate-pulse bg-muted',
-      className,
-    )}
+    className={cn(avatarSkeletonVariants({ size, color }), className)}
     {...props}
   />
 ));
 AvatarSkeleton.displayName = 'AvatarSkeleton';
 
-export { Avatar, AvatarImage, AvatarFallback, AvatarSkeleton, avatarSizes };
+export { Avatar, AvatarFallback, AvatarImage, AvatarSkeleton, avatarSizes };
