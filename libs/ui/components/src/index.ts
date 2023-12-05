@@ -147,7 +147,6 @@ export {
   SheetNavigation,
   SheetNavigationSkeleton,
   SheetOverflow,
-  SheetOverlay,
   SheetTitle,
   SheetTitleSkeleton,
   SheetTrigger,

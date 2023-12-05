@@ -6,7 +6,6 @@ import {
   Button,
   ButtonSkeleton,
   SheetFooter,
-  SheetOverlay,
 } from '@ui/components';
 import { Cart } from '@ui/icons';
 import React, { Suspense } from 'react';
@@ -44,25 +43,23 @@ export const PassFooterSheetContent: React.FC<PassFooterSheetProps> = async ({
   return (
     <AutoAnimate className="mt-auto">
       {passesCart?.length ? (
-        <>
-          <SheetOverlay footerHeight="112px" />
-          <SheetFooter
-            variant="sticky"
-            className="flex flex-col items-start space-y-2"
+        <SheetFooter
+          variant="sticky"
+          className="flex flex-col items-start space-y-2"
+          footerHeight="112px"
+        >
+          <PassTotal passesData={passesData} passesCart={passesCart} />
+          <Link
+            {...goPaymentLink}
+            legacyBehavior
+            passHref
+            className="w-full justify-center"
           >
-            <PassTotal passesData={passesData} passesCart={passesCart} />
-            <Link
-              {...goPaymentLink}
-              legacyBehavior
-              passHref
-              className="w-full justify-center"
-            >
-              <Button className={`w-full md:w-1/3`} block icon={<Cart />}>
-                {goPaymentText}
-              </Button>
-            </Link>
-          </SheetFooter>
-        </>
+            <Button className={`w-full md:w-1/3`} block icon={<Cart />}>
+              {goPaymentText}
+            </Button>
+          </Link>
+        </SheetFooter>
       ) : null}
     </AutoAnimate>
   );
