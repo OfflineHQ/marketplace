@@ -7,30 +7,45 @@ on:
   workflow_dispatch:
 
 env:
-  CYPRESS_CACHE_FOLDER: ~/.cache/Cypress
   NODE_OPTIONS: '--max_old_space_size=4096'
-  NX_CLOUD_AUTH_TOKEN: MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  main:
-    name: Nx Cloud - Main Job
-    uses: sebpalluel/ci/.github/workflows/nx-cloud-main.yml@latest
-    secrets:
-      ENV_FILE: ${{ secrets.ENV_FILE }}
-      NX_CLOUD_AUTH_TOKEN: MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=
-    with:
-      runs-on: ubuntu-latest
-      node-version: 20
-      pnpm-version: 7
-      environment: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'preview' }}
-      init-commands: |
-        pnpm exec nx-cloud record -- pnpm docker:test
+  ci:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'preview' }}
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout [Pull Request]
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
 
-      parallel-commands: |
-        pnpm nx format:check --verbose
-        pnpm nx affected --target=test-integration --parallel=false --ci --code-coverage
-        pnpm affected:parallel-ci
+      - uses: actions/checkout@v3
+        name: Checkout [Default Branch]
+        if: ${{ github.event_name != 'pull_request' }}
+        with:
+          fetch-depth: 0
+
+      - name: Derive appropriate SHAs for base and head for nx affected commands
+        id: nx
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: staging
+
+      - name: Set up environment and cache dependencies
+        uses: sebpalluel/ci/.github/actions/setup-environment@latest
+
+      - name: Setup docker tests containers and run check 'format', 'lint', 'test'
+        run: |
+          pnpm docker:test
+          pnpm nx format:check --verbose
+          pnpm affected:parallel-ci
+
+      - name: Run integration tests
+        run: |
+          pnpm affected:test-integration

@@ -29,7 +29,7 @@
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "affected": {
-    "defaultBase": "main"
+    "defaultBase": "staging"
   },
   "workspaceLayout": {
     "appsDir": "apps",
