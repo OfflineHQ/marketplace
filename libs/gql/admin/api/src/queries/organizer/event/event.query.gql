@@ -97,6 +97,13 @@ query GetEventWithPassesOrganizer(
         url
       }
       nftDescription
+      passOptions {
+        name
+        description
+        eventDateLocation {
+          ...EventDateLocationsFields
+        }
+      }
       eventPassPricing {
         maxAmount
         maxAmountPerUser
@@ -105,7 +112,9 @@ query GetEventWithPassesOrganizer(
         timeBeforeDelete
       }
       eventPassNftContract {
+        type
         contractAddress
+        eventPassId
       }
     }
   }
