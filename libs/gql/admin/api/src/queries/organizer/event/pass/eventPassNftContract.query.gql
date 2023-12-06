@@ -3,3 +3,12 @@ query GetContractAddressFromEventPassId($eventPassId: String) @cached {
     contractAddress
   }
 }
+
+query GetEventPassNftContractDelayedRevealedFromEventPassId(
+  $eventPassId: String
+) @cached {
+  eventPassNftContract(where: { eventPassId: { _eq: $eventPassId } }) {
+    type
+    isDelayedRevealed
+  }
+}

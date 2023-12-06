@@ -17,6 +17,8 @@ query GetPassedEventsWithEventPassNfts(
     eventPassNftContracts(
       where: { eventPassNfts: { currentOwnerAddress: { _eq: $address } } }
     ) {
+      type
+      isDelayedRevealed
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name
@@ -73,6 +75,8 @@ query GetUpcomingEventsWithEventPassNfts(
     eventPassNftContracts(
       where: { eventPassNfts: { currentOwnerAddress: { _eq: $address } } }
     ) {
+      type
+      isDelayedRevealed
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name

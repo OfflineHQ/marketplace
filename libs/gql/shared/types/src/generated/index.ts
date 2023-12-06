@@ -57,6 +57,7 @@ export type Asset = Entity & Node & {
   /** The mime type of the file */
   mimeType?: Maybe<Scalars['String']>;
   nftImageEventPass: Array<EventPass>;
+  nftImageEventPassDelayedRevealed: Array<EventPassDelayedRevealed>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -170,6 +171,20 @@ export type AssetNftImageEventPassArgs = {
 
 
 /** Asset system model */
+export type AssetNftImageEventPassDelayedRevealedArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<EventPassDelayedRevealedOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+};
+
+
+/** Asset system model */
 export type AssetPublishedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
@@ -235,6 +250,7 @@ export type AssetCreateInput = {
   localizations?: InputMaybe<AssetCreateLocalizationsInput>;
   mimeType?: InputMaybe<Scalars['String']>;
   nftImageEventPass?: InputMaybe<EventPassCreateManyInlineInput>;
+  nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedCreateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   width?: InputMaybe<Scalars['Float']>;
@@ -335,6 +351,9 @@ export type AssetManyWhereInput = {
   imageOrganizer_every?: InputMaybe<OrganizerWhereInput>;
   imageOrganizer_none?: InputMaybe<OrganizerWhereInput>;
   imageOrganizer_some?: InputMaybe<OrganizerWhereInput>;
+  nftImageEventPassDelayedRevealed_every?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+  nftImageEventPassDelayedRevealed_none?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+  nftImageEventPassDelayedRevealed_some?: InputMaybe<EventPassDelayedRevealedWhereInput>;
   nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
@@ -417,6 +436,7 @@ export type AssetUpdateInput = {
   localizations?: InputMaybe<AssetUpdateLocalizationsInput>;
   mimeType?: InputMaybe<Scalars['String']>;
   nftImageEventPass?: InputMaybe<EventPassUpdateManyInlineInput>;
+  nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedUpdateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']>;
   width?: InputMaybe<Scalars['Float']>;
 };
@@ -650,6 +670,9 @@ export type AssetWhereInput = {
   mimeType_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   mimeType_starts_with?: InputMaybe<Scalars['String']>;
+  nftImageEventPassDelayedRevealed_every?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+  nftImageEventPassDelayedRevealed_none?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+  nftImageEventPassDelayedRevealed_some?: InputMaybe<EventPassDelayedRevealedWhereInput>;
   nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
@@ -851,6 +874,8 @@ export const enum EntityTypeName {
   EventDateLocation = 'EventDateLocation',
   /** Define a pass for an event with different options, price, number of passes etc. */
   EventPass = 'EventPass',
+  /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+  EventPassDelayedRevealed = 'EventPassDelayedRevealed',
   /** A model for location data (point on a map) + additional info such as street, venue etc. */
   LocationAddress = 'LocationAddress',
   /** An organizer is an entity that launch events and handle the pass benefits. */
@@ -1500,6 +1525,8 @@ export type EventPass = Entity & Node & {
   /** Get the document in other stages */
   documentInStages: Array<EventPass>;
   event?: Maybe<Event>;
+  /** This is a direct link from your `EventPass` to `EventPassDelayedReveal`, enabling access to additional, exclusive details that are revealed afterwards on the back-office. */
+  eventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   eventPassNftContract?: Maybe<EventPassNftContract>;
   eventPassOrderSums?: Maybe<EventPassOrderSums>;
   eventPassPricing?: Maybe<EventPassPricing>;
@@ -1558,6 +1585,13 @@ export type EventPassDocumentInStagesArgs = {
 
 /** Define a pass for an event with different options, price, number of passes etc. */
 export type EventPassEventArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** Define a pass for an event with different options, price, number of passes etc. */
+export type EventPassEventPassDelayedRevealedArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
@@ -1655,10 +1689,12 @@ export type EventPassConnection = {
 };
 
 export type EventPassCreateInput = {
+  clptwshsk4wx601usb3uggcu7?: InputMaybe<EventPassDelayedRevealedCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** description input for default locale (en) */
   description: Scalars['String'];
   event?: InputMaybe<EventCreateOneInlineInput>;
+  eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedCreateOneInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventPassCreateLocalizationsInput>;
   /** name input for default locale (en) */
@@ -1693,6 +1729,693 @@ export type EventPassCreateManyInlineInput = {
   connect?: InputMaybe<Array<EventPassWhereUniqueInput>>;
   /** Create and connect multiple existing EventPass documents */
   create?: InputMaybe<Array<EventPassCreateInput>>;
+};
+
+export type EventPassCreateOneInlineInput = {
+  /** Connect one existing EventPass document */
+  connect?: InputMaybe<EventPassWhereUniqueInput>;
+  /** Create and connect one EventPass document */
+  create?: InputMaybe<EventPassCreateInput>;
+};
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealed = Entity & Node & {
+  __typename?: 'EventPassDelayedRevealed';
+  /** The time the document was created */
+  createdAt: Scalars['DateTime'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  /** A brief overview or summary of the event pass */
+  description: Scalars['String'];
+  /** Get the document in other stages */
+  documentInStages: Array<EventPassDelayedRevealed>;
+  /** Links directly to `EventPass`, providing initial, temporary details about the NFT until the full reveal occurs. */
+  eventPass?: Maybe<EventPass>;
+  /** List of EventPassDelayedRevealed versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<EventPassDelayedRevealed>;
+  /** The official name of the event pass */
+  name: Scalars['String'];
+  /** Fixed description pertaining to the NFT. This content is static and non-localizable. */
+  nftDescription: Scalars['String'];
+  /** Permanent image representing the NFT. Advised resolution is 350 x 350 pixels. Image content is non-changeable and cannot be localized. */
+  nftImage: Asset;
+  /** Permanent name associated with the NFT. Cannot be changed or localized. */
+  nftName: Scalars['String'];
+  /** Define the different pass options. An option is defined for a specific location and timeframe */
+  passOptions: Array<PassOption>;
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedCreatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  inheritLocale?: Scalars['Boolean'];
+  stages?: Array<Stage>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedEventPassArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedHistoryArgs = {
+  limit?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  locales?: Array<Locale>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedNftImageArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedPassOptionsArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<PassOptionOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<PassOptionWhereInput>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedPublishedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedUpdatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type EventPassDelayedRevealedConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type EventPassDelayedRevealedConnection = {
+  __typename?: 'EventPassDelayedRevealedConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<EventPassDelayedRevealedEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type EventPassDelayedRevealedCreateInput = {
+  clptyt58r52j901t9gkjuht2t?: InputMaybe<EventPassCreateManyInlineInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** description input for default locale (en) */
+  description: Scalars['String'];
+  eventPass?: InputMaybe<EventPassCreateOneInlineInput>;
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<EventPassDelayedRevealedCreateLocalizationsInput>;
+  /** name input for default locale (en) */
+  name: Scalars['String'];
+  nftDescription: Scalars['String'];
+  nftImage: AssetCreateOneInlineInput;
+  nftName: Scalars['String'];
+  passOptions?: InputMaybe<PassOptionCreateManyInlineInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type EventPassDelayedRevealedCreateLocalizationDataInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  description: Scalars['String'];
+  name: Scalars['String'];
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type EventPassDelayedRevealedCreateLocalizationInput = {
+  /** Localization input */
+  data: EventPassDelayedRevealedCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type EventPassDelayedRevealedCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<EventPassDelayedRevealedCreateLocalizationInput>>;
+};
+
+export type EventPassDelayedRevealedCreateManyInlineInput = {
+  /** Connect multiple existing EventPassDelayedRevealed documents */
+  connect?: InputMaybe<Array<EventPassDelayedRevealedWhereUniqueInput>>;
+  /** Create and connect multiple existing EventPassDelayedRevealed documents */
+  create?: InputMaybe<Array<EventPassDelayedRevealedCreateInput>>;
+};
+
+export type EventPassDelayedRevealedCreateOneInlineInput = {
+  /** Connect one existing EventPassDelayedRevealed document */
+  connect?: InputMaybe<EventPassDelayedRevealedWhereUniqueInput>;
+  /** Create and connect one EventPassDelayedRevealed document */
+  create?: InputMaybe<EventPassDelayedRevealedCreateInput>;
+};
+
+/** An edge in a connection. */
+export type EventPassDelayedRevealedEdge = {
+  __typename?: 'EventPassDelayedRevealedEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: EventPassDelayedRevealed;
+};
+
+/** Identifies documents */
+export type EventPassDelayedRevealedManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  documentInStages_none?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  documentInStages_some?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  eventPass?: InputMaybe<EventPassWhereInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftDescription_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  passOptions_every?: InputMaybe<PassOptionWhereInput>;
+  passOptions_none?: InputMaybe<PassOptionWhereInput>;
+  passOptions_some?: InputMaybe<PassOptionWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export const enum EventPassDelayedRevealedOrderByInput {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  DescriptionAsc = 'description_ASC',
+  DescriptionDesc = 'description_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC',
+  NftDescriptionAsc = 'nftDescription_ASC',
+  NftDescriptionDesc = 'nftDescription_DESC',
+  NftNameAsc = 'nftName_ASC',
+  NftNameDesc = 'nftName_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+};
+
+export type EventPassDelayedRevealedUpdateInput = {
+  clptyt58r52j901t9gkjuht2t?: InputMaybe<EventPassUpdateManyInlineInput>;
+  /** description input for default locale (en) */
+  description?: InputMaybe<Scalars['String']>;
+  eventPass?: InputMaybe<EventPassUpdateOneInlineInput>;
+  /** Manage document localizations */
+  localizations?: InputMaybe<EventPassDelayedRevealedUpdateLocalizationsInput>;
+  /** name input for default locale (en) */
+  name?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
+  nftName?: InputMaybe<Scalars['String']>;
+  passOptions?: InputMaybe<PassOptionUpdateManyInlineInput>;
+};
+
+export type EventPassDelayedRevealedUpdateLocalizationDataInput = {
+  description?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type EventPassDelayedRevealedUpdateLocalizationInput = {
+  data: EventPassDelayedRevealedUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type EventPassDelayedRevealedUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<EventPassDelayedRevealedCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<EventPassDelayedRevealedUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<EventPassDelayedRevealedUpsertLocalizationInput>>;
+};
+
+export type EventPassDelayedRevealedUpdateManyInlineInput = {
+  /** Connect multiple existing EventPassDelayedRevealed documents */
+  connect?: InputMaybe<Array<EventPassDelayedRevealedConnectInput>>;
+  /** Create and connect multiple EventPassDelayedRevealed documents */
+  create?: InputMaybe<Array<EventPassDelayedRevealedCreateInput>>;
+  /** Delete multiple EventPassDelayedRevealed documents */
+  delete?: InputMaybe<Array<EventPassDelayedRevealedWhereUniqueInput>>;
+  /** Disconnect multiple EventPassDelayedRevealed documents */
+  disconnect?: InputMaybe<Array<EventPassDelayedRevealedWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing EventPassDelayedRevealed documents */
+  set?: InputMaybe<Array<EventPassDelayedRevealedWhereUniqueInput>>;
+  /** Update multiple EventPassDelayedRevealed documents */
+  update?: InputMaybe<Array<EventPassDelayedRevealedUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple EventPassDelayedRevealed documents */
+  upsert?: InputMaybe<Array<EventPassDelayedRevealedUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type EventPassDelayedRevealedUpdateManyInput = {
+  /** description input for default locale (en) */
+  description?: InputMaybe<Scalars['String']>;
+  /** Optional updates to localizations */
+  localizations?: InputMaybe<EventPassDelayedRevealedUpdateManyLocalizationsInput>;
+  /** name input for default locale (en) */
+  name?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']>;
+};
+
+export type EventPassDelayedRevealedUpdateManyLocalizationDataInput = {
+  description?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type EventPassDelayedRevealedUpdateManyLocalizationInput = {
+  data: EventPassDelayedRevealedUpdateManyLocalizationDataInput;
+  locale: Locale;
+};
+
+export type EventPassDelayedRevealedUpdateManyLocalizationsInput = {
+  /** Localizations to update */
+  update?: InputMaybe<Array<EventPassDelayedRevealedUpdateManyLocalizationInput>>;
+};
+
+export type EventPassDelayedRevealedUpdateOneInlineInput = {
+  /** Connect existing EventPassDelayedRevealed document */
+  connect?: InputMaybe<EventPassDelayedRevealedWhereUniqueInput>;
+  /** Create and connect one EventPassDelayedRevealed document */
+  create?: InputMaybe<EventPassDelayedRevealedCreateInput>;
+  /** Delete currently connected EventPassDelayedRevealed document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected EventPassDelayedRevealed document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single EventPassDelayedRevealed document */
+  update?: InputMaybe<EventPassDelayedRevealedUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single EventPassDelayedRevealed document */
+  upsert?: InputMaybe<EventPassDelayedRevealedUpsertWithNestedWhereUniqueInput>;
+};
+
+export type EventPassDelayedRevealedUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: EventPassDelayedRevealedUpdateInput;
+  /** Unique document search */
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+export type EventPassDelayedRevealedUpsertInput = {
+  /** Create document if it didn't exist */
+  create: EventPassDelayedRevealedCreateInput;
+  /** Update document if it exists */
+  update: EventPassDelayedRevealedUpdateInput;
+};
+
+export type EventPassDelayedRevealedUpsertLocalizationInput = {
+  create: EventPassDelayedRevealedCreateLocalizationDataInput;
+  locale: Locale;
+  update: EventPassDelayedRevealedUpdateLocalizationDataInput;
+};
+
+export type EventPassDelayedRevealedUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: EventPassDelayedRevealedUpsertInput;
+  /** Unique document search */
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type EventPassDelayedRevealedWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Identifies documents */
+export type EventPassDelayedRevealedWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  description?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  description_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  description_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  description_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  description_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  description_starts_with?: InputMaybe<Scalars['String']>;
+  documentInStages_every?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  documentInStages_none?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  documentInStages_some?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  eventPass?: InputMaybe<EventPassWhereInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  name_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  name_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  name_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  name_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  name_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftDescription_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  passOptions_every?: InputMaybe<PassOptionWhereInput>;
+  passOptions_none?: InputMaybe<PassOptionWhereInput>;
+  passOptions_some?: InputMaybe<PassOptionWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type EventPassDelayedRevealedWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<EventPassDelayedRevealedWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<EventPassDelayedRevealedWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<EventPassDelayedRevealedWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<EventPassDelayedRevealedWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References EventPassDelayedRevealed record uniquely */
+export type EventPassDelayedRevealedWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 /** An edge in a connection. */
@@ -1734,6 +2457,7 @@ export type EventPassManyWhereInput = {
   documentInStages_none?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_some?: InputMaybe<EventPassWhereStageInput>;
   event?: InputMaybe<EventWhereInput>;
+  eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -1852,9 +2576,11 @@ export const enum EventPassOrderByInput {
 };
 
 export type EventPassUpdateInput = {
+  clptwshsk4wx601usb3uggcu7?: InputMaybe<EventPassDelayedRevealedUpdateManyInlineInput>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['String']>;
   event?: InputMaybe<EventUpdateOneInlineInput>;
+  eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedUpdateOneInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventPassUpdateLocalizationsInput>;
   /** name input for default locale (en) */
@@ -1926,6 +2652,21 @@ export type EventPassUpdateManyLocalizationInput = {
 export type EventPassUpdateManyLocalizationsInput = {
   /** Localizations to update */
   update?: InputMaybe<Array<EventPassUpdateManyLocalizationInput>>;
+};
+
+export type EventPassUpdateOneInlineInput = {
+  /** Connect existing EventPass document */
+  connect?: InputMaybe<EventPassWhereUniqueInput>;
+  /** Create and connect one EventPass document */
+  create?: InputMaybe<EventPassCreateInput>;
+  /** Delete currently connected EventPass document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected EventPass document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single EventPass document */
+  update?: InputMaybe<EventPassUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single EventPass document */
+  upsert?: InputMaybe<EventPassUpsertWithNestedWhereUniqueInput>;
 };
 
 export type EventPassUpdateWithNestedWhereUniqueInput = {
@@ -2010,6 +2751,7 @@ export type EventPassWhereInput = {
   documentInStages_none?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_some?: InputMaybe<EventPassWhereStageInput>;
   event?: InputMaybe<EventWhereInput>;
+  eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -4184,7 +4926,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Asset | Event | EventPass | Organizer;
+export type ScheduledOperationAffectedDocument = Asset | Event | EventPass | EventPassDelayedRevealed | Organizer;
 
 /** A connection to a list of items. */
 export type ScheduledOperationConnection = {
@@ -6382,6 +7124,8 @@ export type EventPassNftContract = {
   __typename?: 'eventPassNftContract';
   chainId: Scalars['String'];
   contractAddress: Scalars['String'];
+  /** Timestamp of when the record was created. */
+  created_at: Scalars['timestamptz'];
   eventId: Scalars['String'];
   eventPass?: Maybe<EventPass>;
   eventPassId: Scalars['String'];
@@ -6398,7 +7142,17 @@ export type EventPassNftContract = {
   /** An object relationship */
   eventPassPricing?: Maybe<EventPassPricing>;
   id: Scalars['uuid'];
+  /** Flag indicating whether the event pass NFT is airdropped. */
+  isAirdrop: Scalars['Boolean'];
+  /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
+  isDelayedRevealed: Scalars['Boolean'];
   organizerId: Scalars['String'];
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: Maybe<Scalars['String']>;
+  /** Type of the event pass NFT contract. */
+  type?: Maybe<EventPassNftContractType_Enum>;
+  /** Timestamp of the last update to the record. */
+  updated_at: Scalars['timestamptz'];
 };
 
 
@@ -6448,6 +7202,149 @@ export type EventPassNftContractEventPassOrders_AggregateArgs = {
   where?: InputMaybe<EventPassOrder_Bool_Exp>;
 };
 
+/** Contract types representing the nature of the event pass NFT contract. */
+export type EventPassNftContractType = {
+  __typename?: 'eventPassNftContractType';
+  /** Type name for event pass NFT contract. */
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "eventPassNftContractType" */
+export type EventPassNftContractType_Aggregate = {
+  __typename?: 'eventPassNftContractType_aggregate';
+  aggregate?: Maybe<EventPassNftContractType_Aggregate_Fields>;
+  nodes: Array<EventPassNftContractType>;
+};
+
+/** aggregate fields of "eventPassNftContractType" */
+export type EventPassNftContractType_Aggregate_Fields = {
+  __typename?: 'eventPassNftContractType_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<EventPassNftContractType_Max_Fields>;
+  min?: Maybe<EventPassNftContractType_Min_Fields>;
+};
+
+
+/** aggregate fields of "eventPassNftContractType" */
+export type EventPassNftContractType_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "eventPassNftContractType". All fields are combined with a logical 'AND'. */
+export type EventPassNftContractType_Bool_Exp = {
+  _and?: InputMaybe<Array<EventPassNftContractType_Bool_Exp>>;
+  _not?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+  _or?: InputMaybe<Array<EventPassNftContractType_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "eventPassNftContractType" */
+export const enum EventPassNftContractType_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  EventPassNftContractTypePkey = 'eventPassNftContractType_pkey'
+};
+
+export const enum EventPassNftContractType_Enum {
+  DelayedReveal = 'delayed_reveal',
+  Normal = 'normal'
+};
+
+/** Boolean expression to compare columns of type "eventPassNftContractType_enum". All fields are combined with logical 'AND'. */
+export type EventPassNftContractType_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<EventPassNftContractType_Enum>;
+  _in?: InputMaybe<Array<EventPassNftContractType_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<EventPassNftContractType_Enum>;
+  _nin?: InputMaybe<Array<EventPassNftContractType_Enum>>;
+};
+
+/** input type for inserting data into table "eventPassNftContractType" */
+export type EventPassNftContractType_Insert_Input = {
+  /** Type name for event pass NFT contract. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EventPassNftContractType_Max_Fields = {
+  __typename?: 'eventPassNftContractType_max_fields';
+  /** Type name for event pass NFT contract. */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type EventPassNftContractType_Min_Fields = {
+  __typename?: 'eventPassNftContractType_min_fields';
+  /** Type name for event pass NFT contract. */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "eventPassNftContractType" */
+export type EventPassNftContractType_Mutation_Response = {
+  __typename?: 'eventPassNftContractType_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<EventPassNftContractType>;
+};
+
+/** on_conflict condition type for table "eventPassNftContractType" */
+export type EventPassNftContractType_On_Conflict = {
+  constraint: EventPassNftContractType_Constraint;
+  update_columns?: Array<EventPassNftContractType_Update_Column>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "eventPassNftContractType". */
+export type EventPassNftContractType_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: eventPassNftContractType */
+export type EventPassNftContractType_Pk_Columns_Input = {
+  /** Type name for event pass NFT contract. */
+  value: Scalars['String'];
+};
+
+/** select columns of table "eventPassNftContractType" */
+export const enum EventPassNftContractType_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "eventPassNftContractType" */
+export type EventPassNftContractType_Set_Input = {
+  /** Type name for event pass NFT contract. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "eventPassNftContractType" */
+export type EventPassNftContractType_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: EventPassNftContractType_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EventPassNftContractType_Stream_Cursor_Value_Input = {
+  /** Type name for event pass NFT contract. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "eventPassNftContractType" */
+export const enum EventPassNftContractType_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type EventPassNftContractType_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<EventPassNftContractType_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: EventPassNftContractType_Bool_Exp;
+};
+
 /** aggregated selection of "eventPassNftContract" */
 export type EventPassNftContract_Aggregate = {
   __typename?: 'eventPassNftContract_aggregate';
@@ -6456,7 +7353,23 @@ export type EventPassNftContract_Aggregate = {
 };
 
 export type EventPassNftContract_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<EventPassNftContract_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<EventPassNftContract_Aggregate_Bool_Exp_Bool_Or>;
   count?: InputMaybe<EventPassNftContract_Aggregate_Bool_Exp_Count>;
+};
+
+export type EventPassNftContract_Aggregate_Bool_Exp_Bool_And = {
+  arguments: EventPassNftContract_Select_Column_EventPassNftContract_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<EventPassNftContract_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type EventPassNftContract_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: EventPassNftContract_Select_Column_EventPassNftContract_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<EventPassNftContract_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
 };
 
 export type EventPassNftContract_Aggregate_Bool_Exp_Count = {
@@ -6502,6 +7415,7 @@ export type EventPassNftContract_Bool_Exp = {
   _or?: InputMaybe<Array<EventPassNftContract_Bool_Exp>>;
   chainId?: InputMaybe<String_Comparison_Exp>;
   contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   eventId?: InputMaybe<String_Comparison_Exp>;
   eventPassId?: InputMaybe<String_Comparison_Exp>;
   eventPassNfts?: InputMaybe<EventPassNft_Bool_Exp>;
@@ -6511,7 +7425,12 @@ export type EventPassNftContract_Bool_Exp = {
   eventPassOrders_aggregate?: InputMaybe<EventPassOrder_Aggregate_Bool_Exp>;
   eventPassPricing?: InputMaybe<EventPassPricing_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  isAirdrop?: InputMaybe<Boolean_Comparison_Exp>;
+  isDelayedRevealed?: InputMaybe<Boolean_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
+  password?: InputMaybe<String_Comparison_Exp>;
+  type?: InputMaybe<EventPassNftContractType_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "eventPassNftContract" */
@@ -6524,6 +7443,8 @@ export const enum EventPassNftContract_Constraint {
 export type EventPassNftContract_Insert_Input = {
   chainId?: InputMaybe<Scalars['String']>;
   contractAddress?: InputMaybe<Scalars['String']>;
+  /** Timestamp of when the record was created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   eventId?: InputMaybe<Scalars['String']>;
   eventPassId?: InputMaybe<Scalars['String']>;
   eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
@@ -6531,7 +7452,17 @@ export type EventPassNftContract_Insert_Input = {
   eventPassOrders?: InputMaybe<EventPassOrder_Arr_Rel_Insert_Input>;
   eventPassPricing?: InputMaybe<EventPassPricing_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
+  /** Flag indicating whether the event pass NFT is airdropped. */
+  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
+  isDelayedRevealed?: InputMaybe<Scalars['Boolean']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: InputMaybe<Scalars['String']>;
+  /** Type of the event pass NFT contract. */
+  type?: InputMaybe<EventPassNftContractType_Enum>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** aggregate max on columns */
@@ -6539,20 +7470,32 @@ export type EventPassNftContract_Max_Fields = {
   __typename?: 'eventPassNftContract_max_fields';
   chainId?: Maybe<Scalars['String']>;
   contractAddress?: Maybe<Scalars['String']>;
+  /** Timestamp of when the record was created. */
+  created_at?: Maybe<Scalars['timestamptz']>;
   eventId?: Maybe<Scalars['String']>;
   eventPassId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   organizerId?: Maybe<Scalars['String']>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: Maybe<Scalars['String']>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by max() on columns of table "eventPassNftContract" */
 export type EventPassNftContract_Max_Order_By = {
   chainId?: InputMaybe<Order_By>;
   contractAddress?: InputMaybe<Order_By>;
+  /** Timestamp of when the record was created. */
+  created_at?: InputMaybe<Order_By>;
   eventId?: InputMaybe<Order_By>;
   eventPassId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: InputMaybe<Order_By>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -6560,20 +7503,32 @@ export type EventPassNftContract_Min_Fields = {
   __typename?: 'eventPassNftContract_min_fields';
   chainId?: Maybe<Scalars['String']>;
   contractAddress?: Maybe<Scalars['String']>;
+  /** Timestamp of when the record was created. */
+  created_at?: Maybe<Scalars['timestamptz']>;
   eventId?: Maybe<Scalars['String']>;
   eventPassId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   organizerId?: Maybe<Scalars['String']>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: Maybe<Scalars['String']>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by min() on columns of table "eventPassNftContract" */
 export type EventPassNftContract_Min_Order_By = {
   chainId?: InputMaybe<Order_By>;
   contractAddress?: InputMaybe<Order_By>;
+  /** Timestamp of when the record was created. */
+  created_at?: InputMaybe<Order_By>;
   eventId?: InputMaybe<Order_By>;
   eventPassId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: InputMaybe<Order_By>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "eventPassNftContract" */
@@ -6603,6 +7558,7 @@ export type EventPassNftContract_On_Conflict = {
 export type EventPassNftContract_Order_By = {
   chainId?: InputMaybe<Order_By>;
   contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
   eventId?: InputMaybe<Order_By>;
   eventPassId?: InputMaybe<Order_By>;
   eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Order_By>;
@@ -6610,7 +7566,12 @@ export type EventPassNftContract_Order_By = {
   eventPassOrders_aggregate?: InputMaybe<EventPassOrder_Aggregate_Order_By>;
   eventPassPricing?: InputMaybe<EventPassPricing_Order_By>;
   id?: InputMaybe<Order_By>;
+  isAirdrop?: InputMaybe<Order_By>;
+  isDelayedRevealed?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  password?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "eventPassNftContract" */
@@ -6620,23 +7581,63 @@ export const enum EventPassNftContract_Select_Column {
   /** column name */
   ContractAddress = 'contractAddress',
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   EventId = 'eventId',
   /** column name */
   EventPassId = 'eventPassId',
   /** column name */
   Id = 'id',
   /** column name */
-  OrganizerId = 'organizerId'
+  IsAirdrop = 'isAirdrop',
+  /** column name */
+  IsDelayedRevealed = 'isDelayedRevealed',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Password = 'password',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** select "eventPassNftContract_aggregate_bool_exp_bool_and_arguments_columns" columns of table "eventPassNftContract" */
+export const enum EventPassNftContract_Select_Column_EventPassNftContract_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsAirdrop = 'isAirdrop',
+  /** column name */
+  IsDelayedRevealed = 'isDelayedRevealed'
+};
+
+/** select "eventPassNftContract_aggregate_bool_exp_bool_or_arguments_columns" columns of table "eventPassNftContract" */
+export const enum EventPassNftContract_Select_Column_EventPassNftContract_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsAirdrop = 'isAirdrop',
+  /** column name */
+  IsDelayedRevealed = 'isDelayedRevealed'
 };
 
 /** input type for updating data in table "eventPassNftContract" */
 export type EventPassNftContract_Set_Input = {
   chainId?: InputMaybe<Scalars['String']>;
   contractAddress?: InputMaybe<Scalars['String']>;
+  /** Timestamp of when the record was created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   eventId?: InputMaybe<Scalars['String']>;
   eventPassId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  /** Flag indicating whether the event pass NFT is airdropped. */
+  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
+  isDelayedRevealed?: InputMaybe<Scalars['Boolean']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: InputMaybe<Scalars['String']>;
+  /** Type of the event pass NFT contract. */
+  type?: InputMaybe<EventPassNftContractType_Enum>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** Streaming cursor of the table "eventPassNftContract" */
@@ -6651,10 +7652,22 @@ export type EventPassNftContract_Stream_Cursor_Input = {
 export type EventPassNftContract_Stream_Cursor_Value_Input = {
   chainId?: InputMaybe<Scalars['String']>;
   contractAddress?: InputMaybe<Scalars['String']>;
+  /** Timestamp of when the record was created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   eventId?: InputMaybe<Scalars['String']>;
   eventPassId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  /** Flag indicating whether the event pass NFT is airdropped. */
+  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
+  isDelayedRevealed?: InputMaybe<Scalars['Boolean']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: InputMaybe<Scalars['String']>;
+  /** Type of the event pass NFT contract. */
+  type?: InputMaybe<EventPassNftContractType_Enum>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** update columns of table "eventPassNftContract" */
@@ -6664,13 +7677,25 @@ export const enum EventPassNftContract_Update_Column {
   /** column name */
   ContractAddress = 'contractAddress',
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   EventId = 'eventId',
   /** column name */
   EventPassId = 'eventPassId',
   /** column name */
   Id = 'id',
   /** column name */
-  OrganizerId = 'organizerId'
+  IsAirdrop = 'isAirdrop',
+  /** column name */
+  IsDelayedRevealed = 'isDelayedRevealed',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Password = 'password',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
 };
 
 export type EventPassNftContract_Updates = {
@@ -9181,6 +10206,8 @@ export type Mutation_Root = {
   createEvent?: Maybe<Event>;
   /** Create one eventPass */
   createEventPass?: Maybe<EventPass>;
+  /** Create one eventPassDelayedRevealed */
+  createEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Create one organizer */
   createOrganizer?: Maybe<Organizer>;
   /** Create one scheduledRelease */
@@ -9191,6 +10218,8 @@ export type Mutation_Root = {
   deleteEvent?: Maybe<Event>;
   /** Delete one eventPass from _all_ existing stages. Returns deleted document. */
   deleteEventPass?: Maybe<EventPass>;
+  /** Delete one eventPassDelayedRevealed from _all_ existing stages. Returns deleted document. */
+  deleteEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Delete many Asset documents */
   deleteManyAssets: BatchPayload;
   /** Delete many Asset documents, return deleted documents */
@@ -9199,6 +10228,10 @@ export type Mutation_Root = {
   deleteManyEventPasses: BatchPayload;
   /** Delete many EventPass documents, return deleted documents */
   deleteManyEventPassesConnection: EventPassConnection;
+  /** Delete many EventPassDelayedRevealed documents */
+  deleteManyEventPassesDelayedRevealed: BatchPayload;
+  /** Delete many EventPassDelayedRevealed documents, return deleted documents */
+  deleteManyEventPassesDelayedRevealedConnection: EventPassDelayedRevealedConnection;
   /** Delete many Event documents */
   deleteManyEvents: BatchPayload;
   /** Delete many Event documents, return deleted documents */
@@ -9233,6 +10266,10 @@ export type Mutation_Root = {
   delete_eventPassNft?: Maybe<EventPassNft_Mutation_Response>;
   /** delete data from the table: "eventPassNftContract" */
   delete_eventPassNftContract?: Maybe<EventPassNftContract_Mutation_Response>;
+  /** delete data from the table: "eventPassNftContractType" */
+  delete_eventPassNftContractType?: Maybe<EventPassNftContractType_Mutation_Response>;
+  /** delete single row from the table: "eventPassNftContractType" */
+  delete_eventPassNftContractType_by_pk?: Maybe<EventPassNftContractType>;
   /** delete single row from the table: "eventPassNft" */
   delete_eventPassNft_by_pk?: Maybe<EventPassNft>;
   /** delete data from the table: "eventPassOrder" */
@@ -9317,6 +10354,10 @@ export type Mutation_Root = {
   insert_eventPassNft?: Maybe<EventPassNft_Mutation_Response>;
   /** insert data into the table: "eventPassNftContract" */
   insert_eventPassNftContract?: Maybe<EventPassNftContract_Mutation_Response>;
+  /** insert data into the table: "eventPassNftContractType" */
+  insert_eventPassNftContractType?: Maybe<EventPassNftContractType_Mutation_Response>;
+  /** insert a single row into the table: "eventPassNftContractType" */
+  insert_eventPassNftContractType_one?: Maybe<EventPassNftContractType>;
   /** insert a single row into the table: "eventPassNftContract" */
   insert_eventPassNftContract_one?: Maybe<EventPassNftContract>;
   /** insert a single row into the table: "eventPassNft" */
@@ -9391,6 +10432,8 @@ export type Mutation_Root = {
   publishEvent?: Maybe<Event>;
   /** Publish one eventPass */
   publishEventPass?: Maybe<EventPass>;
+  /** Publish one eventPassDelayedRevealed */
+  publishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Publish many Asset documents */
   publishManyAssets: BatchPayload;
   /** Publish many Asset documents */
@@ -9399,6 +10442,10 @@ export type Mutation_Root = {
   publishManyEventPasses: BatchPayload;
   /** Publish many EventPass documents */
   publishManyEventPassesConnection: EventPassConnection;
+  /** Publish many EventPassDelayedRevealed documents */
+  publishManyEventPassesDelayedRevealed: BatchPayload;
+  /** Publish many EventPassDelayedRevealed documents */
+  publishManyEventPassesDelayedRevealedConnection: EventPassDelayedRevealedConnection;
   /** Publish many Event documents */
   publishManyEvents: BatchPayload;
   /** Publish many Event documents */
@@ -9415,6 +10462,8 @@ export type Mutation_Root = {
   schedulePublishEvent?: Maybe<Event>;
   /** Schedule to publish one eventPass */
   schedulePublishEventPass?: Maybe<EventPass>;
+  /** Schedule to publish one eventPassDelayedRevealed */
+  schedulePublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Schedule to publish one organizer */
   schedulePublishOrganizer?: Maybe<Organizer>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -9423,6 +10472,8 @@ export type Mutation_Root = {
   scheduleUnpublishEvent?: Maybe<Event>;
   /** Unpublish one eventPass from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishEventPass?: Maybe<EventPass>;
+  /** Unpublish one eventPassDelayedRevealed from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Unpublish one organizer from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishOrganizer?: Maybe<Organizer>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -9431,6 +10482,8 @@ export type Mutation_Root = {
   unpublishEvent?: Maybe<Event>;
   /** Unpublish one eventPass from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishEventPass?: Maybe<EventPass>;
+  /** Unpublish one eventPassDelayedRevealed from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Unpublish many Asset documents */
   unpublishManyAssets: BatchPayload;
   /** Find many Asset documents that match criteria in specified stage and unpublish from target stages */
@@ -9439,6 +10492,10 @@ export type Mutation_Root = {
   unpublishManyEventPasses: BatchPayload;
   /** Find many EventPass documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyEventPassesConnection: EventPassConnection;
+  /** Unpublish many EventPassDelayedRevealed documents */
+  unpublishManyEventPassesDelayedRevealed: BatchPayload;
+  /** Find many EventPassDelayedRevealed documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyEventPassesDelayedRevealedConnection: EventPassDelayedRevealedConnection;
   /** Unpublish many Event documents */
   unpublishManyEvents: BatchPayload;
   /** Find many Event documents that match criteria in specified stage and unpublish from target stages */
@@ -9455,6 +10512,8 @@ export type Mutation_Root = {
   updateEvent?: Maybe<Event>;
   /** Update one eventPass */
   updateEventPass?: Maybe<EventPass>;
+  /** Update one eventPassDelayedRevealed */
+  updateEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Update many assets */
   updateManyAssets: BatchPayload;
   /** Update many Asset documents */
@@ -9463,6 +10522,10 @@ export type Mutation_Root = {
   updateManyEventPasses: BatchPayload;
   /** Update many EventPass documents */
   updateManyEventPassesConnection: EventPassConnection;
+  /** Update many eventPassesDelayedRevealed */
+  updateManyEventPassesDelayedRevealed: BatchPayload;
+  /** Update many EventPassDelayedRevealed documents */
+  updateManyEventPassesDelayedRevealedConnection: EventPassDelayedRevealedConnection;
   /** Update many events */
   updateManyEvents: BatchPayload;
   /** Update many Event documents */
@@ -9503,6 +10566,12 @@ export type Mutation_Root = {
   update_eventPassNft?: Maybe<EventPassNft_Mutation_Response>;
   /** update data of the table: "eventPassNftContract" */
   update_eventPassNftContract?: Maybe<EventPassNftContract_Mutation_Response>;
+  /** update data of the table: "eventPassNftContractType" */
+  update_eventPassNftContractType?: Maybe<EventPassNftContractType_Mutation_Response>;
+  /** update single row of the table: "eventPassNftContractType" */
+  update_eventPassNftContractType_by_pk?: Maybe<EventPassNftContractType>;
+  /** update multiples rows of table: "eventPassNftContractType" */
+  update_eventPassNftContractType_many?: Maybe<Array<Maybe<EventPassNftContractType_Mutation_Response>>>;
   /** update multiples rows of table: "eventPassNftContract" */
   update_eventPassNftContract_many?: Maybe<Array<Maybe<EventPassNftContract_Mutation_Response>>>;
   /** update single row of the table: "eventPassNft" */
@@ -9609,6 +10678,8 @@ export type Mutation_Root = {
   upsertEvent?: Maybe<Event>;
   /** Upsert one eventPass */
   upsertEventPass?: Maybe<EventPass>;
+  /** Upsert one eventPassDelayedRevealed */
+  upsertEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Upsert one organizer */
   upsertOrganizer?: Maybe<Organizer>;
 };
@@ -9629,6 +10700,12 @@ export type Mutation_RootCreateEventArgs = {
 /** mutation root */
 export type Mutation_RootCreateEventPassArgs = {
   data: EventPassCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateEventPassDelayedRevealedArgs = {
+  data: EventPassDelayedRevealedCreateInput;
 };
 
 
@@ -9663,6 +10740,12 @@ export type Mutation_RootDeleteEventPassArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteEventPassDelayedRevealedArgs = {
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteManyAssetsArgs = {
   where?: InputMaybe<AssetManyWhereInput>;
 };
@@ -9693,6 +10776,23 @@ export type Mutation_RootDeleteManyEventPassesConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<EventPassManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyEventPassesDelayedRevealedArgs = {
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyEventPassesDelayedRevealedConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
 };
 
 
@@ -9805,6 +10905,18 @@ export type Mutation_RootDelete_EventPassNftArgs = {
 /** mutation root */
 export type Mutation_RootDelete_EventPassNftContractArgs = {
   where: EventPassNftContract_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_EventPassNftContractTypeArgs = {
+  where: EventPassNftContractType_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_EventPassNftContractType_By_PkArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -10068,6 +11180,20 @@ export type Mutation_RootInsert_EventPassNftArgs = {
 export type Mutation_RootInsert_EventPassNftContractArgs = {
   objects: Array<EventPassNftContract_Insert_Input>;
   on_conflict?: InputMaybe<EventPassNftContract_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventPassNftContractTypeArgs = {
+  objects: Array<EventPassNftContractType_Insert_Input>;
+  on_conflict?: InputMaybe<EventPassNftContractType_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventPassNftContractType_OneArgs = {
+  object: EventPassNftContractType_Insert_Input;
+  on_conflict?: InputMaybe<EventPassNftContractType_On_Conflict>;
 };
 
 
@@ -10340,6 +11466,16 @@ export type Mutation_RootPublishEventPassArgs = {
 
 
 /** mutation root */
+export type Mutation_RootPublishEventPassDelayedRevealedArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  to?: Array<Stage>;
+  where: EventPassDelayedRevealedWhereUniqueInput;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
 export type Mutation_RootPublishManyAssetsArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']>;
@@ -10387,6 +11523,32 @@ export type Mutation_RootPublishManyEventPassesConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   to?: Array<Stage>;
   where?: InputMaybe<EventPassManyWhereInput>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyEventPassesDelayedRevealedArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyEventPassesDelayedRevealedConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
   withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -10490,6 +11652,18 @@ export type Mutation_RootSchedulePublishEventPassArgs = {
 
 
 /** mutation root */
+export type Mutation_RootSchedulePublishEventPassDelayedRevealedArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  to?: Array<Stage>;
+  where: EventPassDelayedRevealedWhereUniqueInput;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
 export type Mutation_RootSchedulePublishOrganizerArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']>;
@@ -10535,6 +11709,17 @@ export type Mutation_RootScheduleUnpublishEventPassArgs = {
 
 
 /** mutation root */
+export type Mutation_RootScheduleUnpublishEventPassDelayedRevealedArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootScheduleUnpublishOrganizerArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
@@ -10569,6 +11754,15 @@ export type Mutation_RootUnpublishEventPassArgs = {
   locales?: InputMaybe<Array<Locale>>;
   unpublishBase?: InputMaybe<Scalars['Boolean']>;
   where: EventPassWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishEventPassDelayedRevealedArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where: EventPassDelayedRevealedWhereUniqueInput;
 };
 
 
@@ -10617,6 +11811,30 @@ export type Mutation_RootUnpublishManyEventPassesConnectionArgs = {
   stage?: InputMaybe<Stage>;
   unpublishBase?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<EventPassManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishManyEventPassesDelayedRevealedArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishManyEventPassesDelayedRevealedConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: InputMaybe<Stage>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
 };
 
 
@@ -10699,6 +11917,13 @@ export type Mutation_RootUpdateEventPassArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateEventPassDelayedRevealedArgs = {
+  data: EventPassDelayedRevealedUpdateInput;
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateManyAssetsArgs = {
   data: AssetUpdateManyInput;
   where?: InputMaybe<AssetManyWhereInput>;
@@ -10733,6 +11958,25 @@ export type Mutation_RootUpdateManyEventPassesConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<EventPassManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyEventPassesDelayedRevealedArgs = {
+  data: EventPassDelayedRevealedUpdateManyInput;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyEventPassesDelayedRevealedConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  data: EventPassDelayedRevealedUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
 };
 
 
@@ -10897,6 +12141,26 @@ export type Mutation_RootUpdate_EventPassNftArgs = {
 export type Mutation_RootUpdate_EventPassNftContractArgs = {
   _set?: InputMaybe<EventPassNftContract_Set_Input>;
   where: EventPassNftContract_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassNftContractTypeArgs = {
+  _set?: InputMaybe<EventPassNftContractType_Set_Input>;
+  where: EventPassNftContractType_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassNftContractType_By_PkArgs = {
+  _set?: InputMaybe<EventPassNftContractType_Set_Input>;
+  pk_columns: EventPassNftContractType_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassNftContractType_ManyArgs = {
+  updates: Array<EventPassNftContractType_Updates>;
 };
 
 
@@ -11266,6 +12530,13 @@ export type Mutation_RootUpsertEventArgs = {
 export type Mutation_RootUpsertEventPassArgs = {
   upsert: EventPassUpsertInput;
   where: EventPassWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertEventPassDelayedRevealedArgs = {
+  upsert: EventPassDelayedRevealedUpsertInput;
+  where: EventPassDelayedRevealedWhereUniqueInput;
 };
 
 
@@ -12047,10 +13318,20 @@ export type Query_Root = {
   eventParameters_by_pk?: Maybe<EventParameters>;
   /** Retrieve a single eventPass */
   eventPass?: Maybe<EventPass>;
+  /** Retrieve a single eventPassDelayedRevealed */
+  eventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Retrieve document version */
+  eventPassDelayedRevealedVersion?: Maybe<DocumentVersion>;
   /** fetch data from the table: "eventPassNft" */
   eventPassNft: Array<EventPassNft>;
   /** fetch data from the table: "eventPassNftContract" */
   eventPassNftContract: Array<EventPassNftContract>;
+  /** fetch data from the table: "eventPassNftContractType" */
+  eventPassNftContractType: Array<EventPassNftContractType>;
+  /** fetch aggregated fields from the table: "eventPassNftContractType" */
+  eventPassNftContractType_aggregate: EventPassNftContractType_Aggregate;
+  /** fetch data from the table: "eventPassNftContractType" using primary key columns */
+  eventPassNftContractType_by_pk?: Maybe<EventPassNftContractType>;
   /** fetch aggregated fields from the table: "eventPassNftContract" */
   eventPassNftContract_aggregate: EventPassNftContract_Aggregate;
   /** fetch aggregated fields from the table: "eventPassNft" */
@@ -12087,6 +13368,10 @@ export type Query_Root = {
   eventPasses: Array<EventPass>;
   /** Retrieve multiple eventPasses using the Relay connection interface */
   eventPassesConnection: EventPassConnection;
+  /** Retrieve multiple eventPassesDelayedRevealed */
+  eventPassesDelayedRevealed: Array<EventPassDelayedRevealed>;
+  /** Retrieve multiple eventPassesDelayedRevealed using the Relay connection interface */
+  eventPassesDelayedRevealedConnection: EventPassDelayedRevealedConnection;
   /** Retrieve document version */
   eventVersion?: Maybe<DocumentVersion>;
   /** Retrieve multiple events */
@@ -12343,6 +13628,18 @@ export type Query_RootEventPassArgs = {
 };
 
 
+export type Query_RootEventPassDelayedRevealedArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+export type Query_RootEventPassDelayedRevealedVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
 export type Query_RootEventPassNftArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -12358,6 +13655,29 @@ export type Query_RootEventPassNftContractArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassNftContractTypeArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassNftContractType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassNftContractType_By_PkArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -12504,6 +13824,32 @@ export type Query_RootEventPassesConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<EventPassWhereInput>;
+};
+
+
+export type Query_RootEventPassesDelayedRevealedArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<EventPassDelayedRevealedOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+};
+
+
+export type Query_RootEventPassesDelayedRevealedConnectionArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<EventPassDelayedRevealedOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<EventPassDelayedRevealedWhereInput>;
 };
 
 
@@ -14000,6 +15346,14 @@ export type Subscription_Root = {
   eventPassNft: Array<EventPassNft>;
   /** fetch data from the table: "eventPassNftContract" */
   eventPassNftContract: Array<EventPassNftContract>;
+  /** fetch data from the table: "eventPassNftContractType" */
+  eventPassNftContractType: Array<EventPassNftContractType>;
+  /** fetch aggregated fields from the table: "eventPassNftContractType" */
+  eventPassNftContractType_aggregate: EventPassNftContractType_Aggregate;
+  /** fetch data from the table: "eventPassNftContractType" using primary key columns */
+  eventPassNftContractType_by_pk?: Maybe<EventPassNftContractType>;
+  /** fetch data from the table in a streaming manner: "eventPassNftContractType" */
+  eventPassNftContractType_stream: Array<EventPassNftContractType>;
   /** fetch aggregated fields from the table: "eventPassNftContract" */
   eventPassNftContract_aggregate: EventPassNftContract_Aggregate;
   /** fetch data from the table in a streaming manner: "eventPassNftContract" */
@@ -14274,6 +15628,36 @@ export type Subscription_RootEventPassNftContractArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassNftContractTypeArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassNftContractType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassNftContractType_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootEventPassNftContractType_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<EventPassNftContractType_Stream_Cursor_Input>>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
 };
 
 
