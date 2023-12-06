@@ -26,3 +26,32 @@ query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!)
     }
   }
 }
+
+query GetEventPassDelayedRevealedFromEventPassId(
+  $eventPassId: ID!
+  $locale: Locale!
+  $stage: Stage!
+) @cached {
+  eventPass(
+    where: { id: $eventPassId }
+    locales: [$locale, en]
+    stage: $stage
+  ) {
+    eventPassDelayedRevealed {
+      name
+      description
+      nftName
+      nftDescription
+      nftImage {
+        url
+      }
+      passOptions {
+        name
+        description
+        eventDateLocation {
+          ...EventDateLocationsFields
+        }
+      }
+    }
+  }
+}

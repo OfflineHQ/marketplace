@@ -536,6 +536,8 @@ export const GetPassedEventsWithEventPassNftsDocument = `
     eventPassNftContracts(
       where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
     ) {
+      type
+      isDelayedRevealed
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name
@@ -597,6 +599,8 @@ export const GetUpcomingEventsWithEventPassNftsDocument = `
     eventPassNftContracts(
       where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
     ) {
+      type
+      isDelayedRevealed
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name
