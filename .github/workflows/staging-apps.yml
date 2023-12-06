@@ -1,9 +1,6 @@
 name: Deploy staging apps
 
 on:
-  push:
-    branches:
-      - staging
   workflow_dispatch:
 
 env:

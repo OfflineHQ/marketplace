@@ -3,6 +3,7 @@ export {
   updateNftActivityWebhook,
 } from './lib/createNftActivityWebhookForEvent';
 export { getAlchemyInfosFromEventId } from './lib/getAlchemyInfosFromEventId';
+export { getEventPassDelayedRevealedFromEventPassId } from './lib/getEventPassDelayedRevealedFromEventPassId';
 export { getEventPassNftByTokenReferenceAnonymous } from './lib/getEventPassNftByTokenReferenceAnonymous';
 export { getEventPassNftByTokenReferenceUser } from './lib/getEventPassNftByTokenReferenceUser';
 export { getEventPassRevealedFilePath } from './lib/getEventPassRevealedFilePath';
