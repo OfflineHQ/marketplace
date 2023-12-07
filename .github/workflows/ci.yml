@@ -39,7 +39,7 @@ jobs:
 
       - name: Set up environment and cache dependencies
         uses: sebpalluel/ci/.github/actions/setup-environment@latest
-      - name: Setup docker tests containers and run check 'format', 'lint', 'test'
+      - name: Setup docker tests containers and run check 'format'
         run: |
           set -e
           pnpm docker:test &
