@@ -354,8 +354,8 @@ export class RoleAuthorization {
 
 //   // Sign the message using the user's Ethereum wallet
 //   // This will usually be done through a wallet provider, such as MetaMask
-//   const provider = new ethers.providers.Web3Provider(window.ethereum);
-//   const signer = provider.getSigner();
+//   const provider = new ethers.BrowserProvider(safeAuth?.getProvider() as Eip1193Provider);
+//   const signer = await provider.getSigner();
 //   const signature = await signer.signMessage(messageToSign);
 
 //   // Send the message and signature back to the service
