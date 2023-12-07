@@ -38,13 +38,13 @@ describe('getMyRoles Integration Test', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  it('Alpha User should have two roles', async () => {
+  it('Alpha User should have three roles', async () => {
     jest.spyOn(userSdk, 'GetMyRoles').mockImplementationOnce(async () => {
       return await alphaUser.GetMyRoles();
     });
 
     const result = await getMyRoles();
-    expect(result.length).toEqual(2);
+    expect(result.length).toEqual(3);
   });
 
   it('Beta User should have one role', async () => {
