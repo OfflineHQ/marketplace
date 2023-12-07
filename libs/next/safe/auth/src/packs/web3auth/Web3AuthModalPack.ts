@@ -1,4 +1,3 @@
-import { ExternalProvider } from '@ethersproject/providers';
 import { IAdapter, UserInfo } from '@web3auth/base';
 import { ModalConfig, Web3Auth, Web3AuthOptions } from '@web3auth/modal';
 
@@ -8,13 +7,15 @@ import type { AuthKitSignInData } from '../../types';
 import { Web3AuthConfig, Web3AuthEvent, Web3AuthEventListener } from './types';
 // eslint-disable-next-line import/no-unresolved
 import '@next/types';
+import { isDev } from '@shared/client';
+import { Eip1193Provider } from 'ethers6';
 
 /**
  * Web3AuthModalPack implements the SafeAuthClient interface for adapting the Web3Auth service provider
  * @class
  */
 export class Web3AuthModalPack extends AuthKitBasePack {
-  #provider: ExternalProvider | null;
+  #provider: Eip1193Provider | null;
   #config: Web3AuthConfig;
   web3Auth?: Web3Auth;
 
@@ -52,9 +53,15 @@ export class Web3AuthModalPack extends AuthKitBasePack {
       await this.web3Auth.initModal({ modalConfig: modalConfig });
       // here we set ethereum provider from ethereum in case this is running on playwright, used for testing, otherwise set the provider from web3auth
       this.#provider =
-        window?.ethereum && process.env.NEXT_PUBLIC_E2E_TEST
-          ? window.ethereum
+        window?.ethereumProviderMock && process.env.NEXT_PUBLIC_E2E_TEST
+          ? (window.ethereumProviderMock as Eip1193Provider)
           : this.web3Auth.provider;
+      console.log(
+        'this.#provider',
+        this.#provider,
+        'window.ethereumProviderMock',
+        window.ethereumProviderMock,
+      );
     } catch (e) {
       throw new Error(getErrorMessage(e));
     }
@@ -72,16 +79,18 @@ export class Web3AuthModalPack extends AuthKitBasePack {
     this.#provider = await this.web3Auth.connect();
 
     const eoa = await this.getAddress();
-    const safes = await this.getSafes(this.#config?.txServiceUrl || '');
-
+    // TODO: when docker image for safe transaction service is ready, use it instead of txServiceUrl
+    const safes = await this.getSafes(
+      !isDev() ? this.#config?.txServiceUrl || '' : '',
+    );
     return {
       eoa,
       safes,
     };
   }
 
-  getProvider(): ExternalProvider | null {
-    return this.#provider;
+  getProvider(): Eip1193Provider | null {
+    return this.#provider as Eip1193Provider;
   }
 
   /**
@@ -122,5 +131,9 @@ export class Web3AuthModalPack extends AuthKitBasePack {
    */
   unsubscribe(event: Web3AuthEvent, handler: Web3AuthEventListener): void {
     this.web3Auth?.off(event, handler);
+  }
+
+  get isAuthenticated() {
+    return !!this.web3Auth?.connected;
   }
 }

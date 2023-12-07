@@ -46,6 +46,7 @@
       "cache": true
     },
     "test": {
+      "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
@@ -128,6 +129,6 @@
   "defaultAffected": ["web", "back-office"],
   "defaultBase": "staging",
   "cacheDirectory": "/tmp/cache",
-  "nxCloudAccessToken": "MTIzMmRkZjctM2RjOS00OTRkLWE0ODgtYjIyNzk1ZjlkZTFmfHJlYWQtd3JpdGU=",
+  "nxCloudAccessToken": "",
   "parallel": 5
 }
