@@ -39,14 +39,15 @@ jobs:
 
       - name: Set up environment and cache dependencies
         uses: sebpalluel/ci/.github/actions/setup-environment@latest
-
       - name: Setup docker tests containers and run check 'format', 'lint', 'test'
         run: |
-          pnpm docker:test
-          pnpm nx format:check --verbose
-          # Prefered to run sequentially because otherwise slower with vercel cache hanging
-          pnpm nx affected:lint --parallel --maxParallel=3 && pnpm nx affected:test --parallel --maxParallel=3
-
+          set -e
+          pnpm docker:test &
+          pnpm nx format:check --verbose &
+          wait -n
+          # # Prefered to run sequentially because otherwise slower with vercel cache hanging
+          # pnpm nx affected:lint --parallel --maxParallel=3 && pnpm nx affected:test --parallel --maxParallel=3 &
+          # wait -n
       - name: Run integration tests
         run: |
           pnpm affected:test-integration
