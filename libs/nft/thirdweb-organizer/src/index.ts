@@ -23,7 +23,7 @@ class NftCollection {
     const web3Provider = new ethers.providers.Web3Provider(provider);
     const signer = web3Provider.getSigner();
     this.sdk = ThirdwebSDK.fromSigner(signer, env.NEXT_PUBLIC_CHAIN, {
-      clientId: '3ce7c20950e008cb1d6138a4a06d7e7f',
+      clientId: env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID,
       gasless: {
         openzeppelin: {
           relayerUrl: env.NEXT_PUBLIC_OPENZEPPELIN_URL,

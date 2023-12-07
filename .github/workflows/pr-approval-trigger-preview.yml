@@ -28,3 +28,10 @@ jobs:
           workflow: Build and E2E web tests
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Trigger Build and E2E Workflow for Back-office
+        uses: benc-uk/workflow-dispatch@v1.2.2
+        with:
+          workflow: Build and E2E back-office tests
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref }}
