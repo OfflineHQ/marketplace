@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "buildCommand": "pnpm nx build back-office --prod",
+  "buildCommand": "pnpm nx affected:lint & pnpm nx affected:test & pnpm nx build back-office --prod",
   "outputDirectory": "../../dist/apps/back-office/.next",
   "installCommand": "pnpm install",
   "ignoreCommand": "bash -c '[[ \"$VERCEL_GIT_COMMIT_REF\" = \"main\" ]] || [[ \"$VERCEL_GIT_COMMIT_REF\" = \"staging\" ]] || [[ \"$VERCEL_GIT_COMMIT_REF\" =~ ^pull/.* ]] && exit 0 || exit 1'"
