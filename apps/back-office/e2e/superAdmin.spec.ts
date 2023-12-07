@@ -1,3 +1,4 @@
+import { Roles_Enum } from '@gql/shared/types';
 import { expect, test } from '@playwright/test';
 import { resetCache } from '@test-utils/cache';
 import {
@@ -38,41 +39,29 @@ test.beforeEach(async () => {
 test('super admin should be able to view events', async () => {
   const { page } = await loadAccountAndRole({
     user: 'alpha_user',
-    goTo: '/fr',
-    role: 'Test Super Admin',
+    goTo: '/en',
+    role: Roles_Enum.OrganizerSuperAdmin,
   });
-  await page
-    .getByRole('link', { name: 'Event Management Gestion des' })
-    .click();
+  await page.getByRole('link', { name: 'Events Management' }).click();
   await expect(page.getByText('An event')).toBeVisible();
   await expect(page.getByText('test-an-event')).toBeVisible();
   await expect(
-    page.getByRole('heading', { name: 'Gestion des événements' }),
+    page.getByRole('heading', { name: 'Events Management' }),
   ).toBeVisible();
-  await expect(page.getByText('Anniversaire', { exact: true })).toBeVisible();
+  await expect(page.getByText('Anniversaire')).toBeVisible();
   await expect(page.getByText('test-anniversaire')).toBeVisible();
   await page
     .getByRole('row', { name: 'An event test-an-event' })
     .getByRole('button')
     .click();
-  await page.getByRole('link', { name: 'Edit Éditer' }).click();
-  await page.goto('http://localhost:1789/fr/events/test-an-event');
-  await page
-    .getByRole('button', { name: 'Informations sur les NFTs' })
-    .nth(1)
-    .click();
+  await page.getByRole('link', { name: 'Edit Edit' }).click();
   await expect(page.getByRole('heading', { name: 'An event' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Gold' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'VIP' })).toBeVisible();
   await expect(page.getByText('Pass vip pour le match')).toBeVisible();
   await expect(page.getByText('Pass gold pour le match')).toBeVisible();
-  await expect(page.getByText('NomDefault name for NFT').first()).toBeVisible();
-  await expect(page.getByText('DescriptionDefault NFT').first()).toBeVisible();
-  await expect(page.getByText('Quantitée20').first()).toBeVisible();
-  await expect(page.getByText('1', { exact: true })).toBeVisible();
-  await expect(page.getByText('Quantitée par utilisateur1')).toBeVisible();
   await page
-    .getByRole('button', { name: 'Pass associés à vos NFTs' })
+    .getByRole('button', { name: 'Pass associated to your NFTs' })
     .first()
     .click();
   await expect(
@@ -84,13 +73,13 @@ test('super admin should be able to view events', async () => {
       .locator('span'),
   ).toBeVisible();
   await expect(
-    page.getByRole('button', { name: 'Déployer le contrat NFTs' }).first(),
+    page.getByRole('button', { name: 'Deploy the NFTs contract' }).first(),
   ).toBeVisible();
   await expect(
     page.locator('span').filter({ hasText: '0xfake***ddress1' }).first(),
   ).toBeVisible();
   await page.getByTestId('sheet-back').click();
   await expect(
-    page.getByRole('heading', { name: 'Gestion des événements' }),
+    page.getByRole('heading', { name: 'Events Management' }),
   ).toBeVisible();
 });

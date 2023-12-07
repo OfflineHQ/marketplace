@@ -1,3 +1,4 @@
+import { Roles_Enum } from '@gql/shared/types';
 import { expect, test } from '@playwright/test';
 import { resetCache } from '@test-utils/cache';
 import {
@@ -38,13 +39,11 @@ test.beforeEach(async () => {
 test('human resources should not have access to events', async () => {
   const { page } = await loadAccountAndRole({
     user: 'alpha_user',
-    goTo: '/fr',
-    role: 'Ressources humaines',
+    goTo: '/en',
+    role: Roles_Enum.OrganizerHumanResources,
   });
+  await expect(page.getByRole('link', { name: 'Manage Roles' })).toBeVisible();
   await expect(
-    page.getByRole('link', { name: 'Gérer les rôles' }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole('link', { name: 'Event Management Gestion des' }),
+    page.getByRole('link', { name: 'Event Management' }),
   ).toBeHidden();
 });
