@@ -61,7 +61,7 @@ export const accounts = {
     kyc: {
       applicantId: '653bb6d8f8865a0b96363bf3',
       reviewStatus: KycStatus_Enum.Completed,
-      levelName: KycLevelName_Enum.BasicKycLevel,
+      levelName: KycLevelName_Enum.AdvancedKycLevel,
     },
   } satisfies AppUser,
   beta_user: {
