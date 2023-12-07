@@ -44,7 +44,8 @@ jobs:
         run: |
           pnpm docker:test
           pnpm nx format:check --verbose
-          pnpm affected:parallel-ci
+          # Prefered to run sequentially because otherwise slower with vercel cache hanging
+          pnpm nx affected:lint --parallel --maxParallel=3 && pnpm nx affected:test --parallel --maxParallel=3
 
       - name: Run integration tests
         run: |
