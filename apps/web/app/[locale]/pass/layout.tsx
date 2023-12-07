@@ -4,18 +4,15 @@ import { getCurrentUser } from '@next/next-auth/user';
 import { useTranslations } from 'next-intl';
 
 export interface PassLayoutProps {
-  numMintingOrders?: number;
   children: React.ReactNode;
 }
 
 export default async function PassLayout(props: PassLayoutProps) {
   const user = await getCurrentUser();
-  let userPassMintingOrders: Awaited<
-    ReturnType<typeof getEventPassOrdersIsMinting>
-  >;
+
   let numMintingOrders = 0;
   if (user) {
-    userPassMintingOrders = await getEventPassOrdersIsMinting();
+    const userPassMintingOrders = await getEventPassOrdersIsMinting();
     if (userPassMintingOrders?.length) {
       numMintingOrders = userPassMintingOrders.reduce(
         (sum, order) => sum + order.quantity,
@@ -27,14 +24,14 @@ export default async function PassLayout(props: PassLayoutProps) {
     <PassLayoutContent
       {...props}
       getUser={!!user}
-      {...(numMintingOrders > 0 ? { numMintingOrders } : {})}
+      numMintingOrders={numMintingOrders}
     />
   );
 }
 
 interface PassLayoutContentProps extends PassLayoutProps {
   getUser: boolean;
-  numMintingOrders?: number;
+  numMintingOrders: number;
 }
 
 function PassLayoutContent({

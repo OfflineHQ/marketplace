@@ -1,9 +1,8 @@
 'use client';
 
 import env from '@env/client';
-import { ExternalProvider } from '@ethersproject/providers';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
-import { ethers } from 'ethers';
+import { Signer } from 'ethers';
 import {
   createEventParametersAndWebhook,
   createEventPassNftContract,
@@ -19,9 +18,7 @@ export type NftsMetadata = {
 class NftCollection {
   sdk: ThirdwebSDK;
 
-  constructor(provider: ExternalProvider) {
-    const web3Provider = new ethers.providers.Web3Provider(provider);
-    const signer = web3Provider.getSigner();
+  constructor(signer: Signer) {
     this.sdk = ThirdwebSDK.fromSigner(signer, env.NEXT_PUBLIC_CHAIN, {
       clientId: env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID,
       gasless: {
@@ -93,7 +90,7 @@ class NftCollection {
       const hasuraMetadatas = await Promise.all(
         metadatas.map(async (metadata, i) => {
           const tokenIdInBigNumber = results[i].id;
-          const tokenId = ethers.BigNumber.from(tokenIdInBigNumber).toNumber();
+          const tokenId = BigInt(tokenIdInBigNumber.toString());
           const tokenUri = `${baseUri}${i}`;
           return {
             metadata,
