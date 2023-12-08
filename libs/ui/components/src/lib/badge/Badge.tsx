@@ -50,12 +50,12 @@ export interface BadgeProps
 }
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, variant, size, children, icon, ...props }, ref) => {
+  ({ className, variant, size = 'default', children, icon, ...props }, ref) => {
     const Icon = icon;
     const iconOnly = !children && Icon;
 
     const baseClasses = badgeVariantsCva({ variant, size, className });
-    const iconClasses = iconOnly ? 'p-1 rounded-full' : 'mr-1';
+    const iconClasses = iconOnly ? 'p-1 rounded-full' : null;
     return (
       <span
         className={cn([baseClasses, iconOnly ? iconClasses : ''])}
@@ -65,6 +65,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         {Icon && (
           <Icon.type
             size={size}
+            marginRight={iconOnly ? null : size}
             className={cn(iconOnly ? '' : iconClasses, Icon.props.className)}
             {...Icon.props}
           />

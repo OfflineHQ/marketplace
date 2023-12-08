@@ -3,7 +3,7 @@
   "buildCommand": "pnpm npm-run-all lint:all test:all build:web --aggregate-output --parallel",
   "outputDirectory": "../../dist/apps/web/.next",
   "installCommand": "pnpm install",
-  "ignoreCommand": "bash -c '[[ \"$VERCEL_GIT_COMMIT_REF\" = \"main\" ]] || [[ \"$VERCEL_GIT_COMMIT_REF\" = \"staging\" ]] || [[ \"$VERCEL_GIT_COMMIT_REF\" =~ ^pull/.* ]] && exit 1 || exit 0'",
+  "ignoreCommand": "bash -c '[[ \"$VERCEL_GIT_COMMIT_REF\" = \"main\" ]] || [[ \"$VERCEL_GIT_COMMIT_REF\" = \"staging\" ]] || [[ \"$VERCEL_GIT_COMMIT_REF\" =~ ^pull/.* ]] && exit 0 || exit 1'",
   "crons": [
     {
       "path": "/apps/web/crons/handlePendingOrders.ts",

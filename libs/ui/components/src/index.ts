@@ -112,6 +112,10 @@ export {
   navigationMenuTriggerStyle,
 } from './lib/navigation-menu/NavigationMenu';
 export {
+  PopoverInfo,
+  type PopoverInfoProps,
+} from './lib/popover-info/PopoverInfo';
+export {
   Popover,
   PopoverContent,
   PopoverDescription,

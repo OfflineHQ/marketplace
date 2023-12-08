@@ -221,7 +221,7 @@ const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
     return (
       <div
         className={cn(
-          `flex flex-col space-y-2 text-center sm:text-left px-6 pt-6 ${
+          `flex flex-col space-y-2 text-center sm:text-left px-6 pt-6 pb-3 ${
             isFullWidth(position, size) && 'pt-16'
           }`,
           className,

@@ -6,16 +6,18 @@ import {
   type EventPassNftsInfosProps,
 } from '../../molecules/EventPassNftsInfos/EventPassNftsInfos';
 
-export interface EventPassCardContentProps extends EventPassNftsInfosProps {
+export interface EventPassCardContentDelayedRevealProps
+  extends EventPassNftsInfosProps {
   event: EventFromOrganizerWithPasses;
   organizerId: string;
 }
 
-export const EventPassCardContent = ({
+//TODO - put delayed reveal form and infos here
+export const EventPassCardContentDelayedReveal = ({
   eventPass,
   event,
   organizerId,
-}: EventPassCardContentProps) => {
+}: EventPassCardContentDelayedRevealProps) => {
   return (
     <CardContent>
       <Accordion type="multiple" defaultValue={['nft-infos']}>

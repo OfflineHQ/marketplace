@@ -15,13 +15,12 @@
     "loose": true
   },
   "module": {
-    "type": "commonjs",
-    "strict": true,
-    "noInterop": true
+    "type": "commonjs"
   },
   "sourceMaps": true,
   "exclude": [
     "jest.config.ts",
+    ".*\\.spec.tsx?$",
     ".*\\.test.tsx?$",
     "./src/jest-setup.ts$",
     "./**/jest-setup.ts$",
