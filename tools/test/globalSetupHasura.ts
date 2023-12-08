@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { logger } = require('../../libs/logger/src');
 
-let retriesLeft = 5;
+let retriesLeft = 20;
 
 module.exports = async () => {
   logger.info('global-setup: Starting');
