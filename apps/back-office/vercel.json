@@ -3,5 +3,5 @@
   "buildCommand": "pnpm npm-run-all lint:all test:all build:back-office --aggregate-output --parallel",
   "outputDirectory": "../../dist/apps/back-office/.next",
   "installCommand": "pnpm install",
-  "ignoreCommand": "node -e \"process.exit(['main', 'staging'].includes(process.env.VERCEL_GIT_COMMIT_REF) || process.env.VERCEL_GIT_PULL_REQUEST_ID !== '' ? 0 : 1)\""
+  "ignoreCommand": "bash ../../tools/scripts/vercel-ignore.sh"
 }
