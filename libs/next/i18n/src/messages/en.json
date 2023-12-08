@@ -296,6 +296,12 @@
         }
       },
       "go-back-to-events": "Go back to events"
+    },
+    "EventPassTypeBadge": {
+      "type-normal-badge": "Upfront details",
+      "type-delayed-reveal-badge": "Surprise Reveal",
+      "type-normal-description": "Present all details of the event pass immediately. Ensure buyers see the full benefits and features of the pass right from the outset",
+      "type-delayed-reveal-description": " Initially display placeholder information for the event pass. The final details will be revealed later, creating a sense of mystery and anticipation. This approach can engage attendees with the element of surprise, unveiling final pass benefits and features at a predetermined time or event milestone."
     }
   },
   "UI": {
