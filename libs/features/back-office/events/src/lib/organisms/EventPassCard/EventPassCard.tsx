@@ -10,26 +10,58 @@ import {
   CardTitle,
   CardTitleSkeleton,
 } from '@ui/components';
-import {
-  EventPassCardContent,
-  type EventPassCardContentProps,
-} from '../EventPassCardContent/EventPassCardContent';
 
+import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { useTranslations } from 'next-intl';
+import { EventPassTypeBadge } from '../../atoms/EventPassTypeBadge/EventPassTypeBadge';
+import { getEventPassType } from '../../common/getEventPassType';
 import { EventPassCardFooter } from '../../molecules/EventPassCardFooter/EventPassCardFooter';
+import { EventPassCardContentDelayedReveal } from '../EventPassCardContentDelayedReveal/EventPassCardContentDelayedReveal';
+import {
+  EventPassCardContentNormal,
+  type EventPassCardContentNormalProps,
+} from '../EventPassCardContentNormal/EventPassCardContentNormal';
 
-export type EventPassCardProps = EventPassCardContentProps;
+export type EventPassCardProps = EventPassCardContentNormalProps;
 
-export const EventPassCard = ({ eventPass, ...props }: EventPassCardProps) => {
+export const EventPassCard = ({
+  eventPass,
+  event,
+  organizerId,
+  ...props
+}: EventPassCardProps) => {
   const t = useTranslations('OrganizerEvents.Sheet.EventPassCard');
+  const type = getEventPassType(eventPass);
   return (
-    <Card className="flex flex-col" key={eventPass.id} variant="distinct">
+    <Card className="flex h-fit flex-col" key={eventPass.id} variant="distinct">
       <CardHeader className="space-y-4">
-        <CardTitle>{eventPass.name}</CardTitle>
+        <CardTitle className="flex items-baseline justify-between space-x-1">
+          {eventPass.name}
+          <EventPassTypeBadge type={type} className="self-baseline" />
+        </CardTitle>
         <CardDescription>{eventPass.description}</CardDescription>
       </CardHeader>
-      <EventPassCardContent eventPass={eventPass} {...props} />
-      <EventPassCardFooter eventPass={eventPass} />
+      {type === EventPassNftContractType_Enum.Normal ? (
+        <EventPassCardContentNormal
+          eventPass={eventPass}
+          event={event}
+          organizerId={organizerId}
+          {...props}
+        />
+      ) : (
+        <EventPassCardContentDelayedReveal
+          eventPass={eventPass}
+          event={event}
+          organizerId={organizerId}
+          {...props}
+        />
+      )}
+      <EventPassCardFooter
+        eventPass={eventPass}
+        organizerId={organizerId}
+        eventId={event.id}
+        eventPassId={eventPass.id}
+      />
     </Card>
   );
 };
