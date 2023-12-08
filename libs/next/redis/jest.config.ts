@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'next-cache',
+  displayName: 'next-redis',
   preset: '../../../jest.preset.js',
   globalSetup: `${process.cwd()}/tools/test/globalSetupHasura.ts`,
   globalTeardown: `${process.cwd()}/tools/test/globalTeardownHasura.ts`,
@@ -16,6 +16,6 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/next/cache',
+  coverageDirectory: '../../../coverage/libs/next/redis',
   testEnvironment: 'node',
 };

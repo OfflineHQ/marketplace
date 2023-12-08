@@ -1,6 +1,6 @@
 import { Currency } from '@currency/api';
 import { Currency_Enum_Not_Const, CurrencyRates } from '@currency/types';
-import { Cache } from '@next/cache';
+import { NextRedis } from '@next/redis';
 import { isJestRunning } from '@utils';
 import { revalidateTag } from 'next/cache';
 
@@ -15,11 +15,11 @@ class CacheApiError extends Error {
 
 export class CurrencyCache {
   private currencyApi: Currency;
-  private cacheApi: Cache;
+  private cacheApi: NextRedis;
 
-  constructor(currencyApi?: Currency, cacheApi?: Cache) {
+  constructor(currencyApi?: Currency, cacheApi?: NextRedis) {
     this.currencyApi = currencyApi || new Currency();
-    this.cacheApi = cacheApi || new Cache();
+    this.cacheApi = cacheApi || new NextRedis();
   }
 
   getCacheKey(currency: Currency_Enum_Not_Const): string {
