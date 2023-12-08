@@ -1,1 +1,1 @@
-export {cacheWithDynamicKeys} from './lib/cacheWithDynamicKeys';
+export { cacheWithDynamicKeys } from './lib/cacheWithDynamicKeys';
