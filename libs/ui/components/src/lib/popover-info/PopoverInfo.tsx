@@ -12,7 +12,7 @@ import {
 
 export const iconSizes = {
   sm: '-top-1 -right-1',
-  default: '-top-2 -right-2',
+  default: '-top-2 -right-2 md:-top-2.5 md:-right-2.5',
   lg: '-top-3.5 -right-3.5',
 };
 
@@ -25,7 +25,7 @@ export interface PopoverInfoProps {
 }
 
 const iconSizeVariantsCva = cva(
-  'absolute flex rounded-full bg-white dark:bg-slate-200 transition-colors',
+  'absolute flex rounded-full bg-white transition-colors dark:bg-slate-200',
   {
     variants: {
       iconSize: iconSizes,
