@@ -20,25 +20,28 @@ export interface PopoverInfoProps {
   children: React.ReactNode;
   title: string;
   description: string;
-  classname?: string;
+  className?: string;
   iconSize?: keyof typeof iconSizes;
 }
 
-const iconSizeVariantsCva = cva('absolute flex rounded-full bg-white', {
-  variants: {
-    iconSize: iconSizes,
+const iconSizeVariantsCva = cva(
+  'absolute flex rounded-full bg-white dark:bg-slate-200 transition-colors',
+  {
+    variants: {
+      iconSize: iconSizes,
+    },
+    defaultVariants: {
+      iconSize: 'default',
+    },
   },
-  defaultVariants: {
-    iconSize: 'default',
-  },
-});
+);
 
 export const PopoverInfo = ({
   children,
   title,
   description,
   iconSize = 'default',
-  classname,
+  className,
 }: PopoverInfoProps) => {
   const iconClasses = iconSizeVariantsCva({ iconSize });
 
@@ -51,11 +54,11 @@ export const PopoverInfo = ({
             <FillInfo color="info" size={iconSize} className={iconClasses} />
           </div>
         </PopoverTrigger>
-        <PopoverContent className={cn('w-64', classname)}>
+        <PopoverContent className={cn('w-64', className)}>
           <PopoverHeader className="border-b">
             <PopoverTitle>{title}</PopoverTitle>
           </PopoverHeader>
-          <PopoverDescription className="py-4">
+          <PopoverDescription className="pt-4">
             {description}
           </PopoverDescription>
         </PopoverContent>

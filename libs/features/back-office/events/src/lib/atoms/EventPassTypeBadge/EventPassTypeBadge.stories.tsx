@@ -1,5 +1,6 @@
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { Meta, StoryObj } from '@storybook/react';
+import { screen, userEvent } from '@storybook/testing-library';
 import {
   EventPassTypeBadge,
   EventPassTypeBadgeProps,
@@ -22,9 +23,23 @@ export default EventPassTypeBadgeStory;
 
 type EventPassTypeBadgeStory = StoryObj<EventPassTypeBadgeProps>;
 
-export const DefaultEventPassTypeBadge: EventPassTypeBadgeStory = {
+export const Default: EventPassTypeBadgeStory = {
   args: {
     type: EventPassNftContractType_Enum.Normal,
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(await screen.findByText(/upfront details/i));
+    await screen.findByText(/Present all details of the event/i);
+  },
+};
+
+export const DelayedReveal: EventPassTypeBadgeStory = {
+  args: {
+    type: EventPassNftContractType_Enum.DelayedReveal,
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(await screen.findByText(/surprise reveal/i));
+    await screen.findByText(/Initially display placeholder/i);
   },
 };
 
