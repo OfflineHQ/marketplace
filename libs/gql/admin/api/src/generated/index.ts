@@ -474,10 +474,6 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     title
     id
     slug
-    heroImage {
-      url
-    }
-    heroImageClasses
     eventPasses {
       name
       id
@@ -505,6 +501,22 @@ ${EventDateLocationsFieldsFragmentDoc}`;
         type
         contractAddress
         eventPassId
+      }
+      eventPassDelayedRevealed {
+        name
+        description
+        nftName
+        nftDescription
+        nftImage {
+          url
+        }
+        passOptions {
+          name
+          description
+          eventDateLocation {
+            ...EventDateLocationsFields
+          }
+        }
       }
     }
   }
