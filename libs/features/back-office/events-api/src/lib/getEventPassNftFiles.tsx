@@ -5,11 +5,9 @@ import {
   type GetEventPassOrganizerFolderPath,
 } from '@features/pass-common';
 import { FolderWrapper } from '@file-upload/admin';
-import {cacheWithDynamicKeys} from '@next/cache'
+import { cacheWithDynamicKeys } from '@next/cache';
 
 export type GetEventPassNftFilesProps = GetEventPassOrganizerFolderPath;
-
-
 
 export const getEventPassNftFiles = cacheWithDynamicKeys(
   async (props: GetEventPassNftFilesProps) => {
