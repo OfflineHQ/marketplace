@@ -46,7 +46,7 @@ import {
   HiOutlineLanguage,
   HiOutlineUsers as HiOutlineUsers2,
 } from 'react-icons/hi2';
-import { LuCopy } from 'react-icons/lu';
+import { LuBookOpenCheck, LuCopy } from 'react-icons/lu';
 import { RxMagicWand } from 'react-icons/rx';
 import { TfiTimer } from 'react-icons/tfi';
 import { AccessibleIcon } from './AccessibleIcon';
@@ -94,7 +94,7 @@ import {
 
 import { TbSunMoon } from 'react-icons/tb';
 
-import { PiIdentificationCardLight } from 'react-icons/pi';
+import { PiIdentificationCardLight, PiSealQuestionBold } from 'react-icons/pi';
 
 // import and export IconType
 
@@ -106,10 +106,26 @@ export const Copy: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={LuCopy} label={'Copy'} {...props} />
 );
 
+export const InfoAvailable: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={LuBookOpenCheck}
+    label={'Info Available'}
+    {...props}
+  />
+);
+
 export const UserIdentification: FC<IconProps> = (props) => (
   <AccessibleIcon
     IconComponent={PiIdentificationCardLight}
     label={'User identification'}
+    {...props}
+  />
+);
+
+export const InfoSealed: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={PiSealQuestionBold}
+    label={'Info Sealed'}
     {...props}
   />
 );
