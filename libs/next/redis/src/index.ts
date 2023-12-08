@@ -1,7 +1,7 @@
 import env from '@env/server';
 import { VercelKV, createClient } from '@vercel/kv';
 
-export class Cache {
+export class NextRedis {
   public kv: VercelKV;
 
   constructor(url?: string, token?: string) {

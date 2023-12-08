@@ -1,6 +1,6 @@
 import { adminSdk } from '@gql/admin/api';
 import { Roles_Enum } from '@gql/shared/types';
-import { Cache } from '@next/cache';
+import { NextRedis } from '@next/redis';
 import { AppUser } from '@next/types';
 import { Roles_Enum_Not_Const_Values } from '@roles/types';
 import { randomUUID } from 'crypto';
@@ -54,10 +54,10 @@ interface DeleteInvitationProps {
 }
 
 export class RoleInvitationService {
-  private cache: Cache;
+  private cache: NextRedis;
 
-  constructor(cache?: Cache) {
-    this.cache = cache || new Cache();
+  constructor(cache?: NextRedis) {
+    this.cache = cache || new NextRedis();
   }
 
   private getInvitationKey(senderAddress: string, nonce: string): string {
