@@ -1,5 +1,4 @@
 import type {
-  GetEventPassDelayedRevealedFromEventPassIdQuery,
   GetEventWithPassesOrganizerQuery,
   GetEventsFromOrganizerIdTableQuery,
 } from '@gql/admin/types';
@@ -12,6 +11,8 @@ export type EventFromOrganizerTable = NonNullable<
   NonNullable<GetEventsFromOrganizerIdTableQuery['organizer']>['events']
 >[0];
 
+export type EventPass = EventFromOrganizerWithPasses['eventPasses'][0];
+
 export type EventPassDelayedRevealed = NonNullable<
-  GetEventPassDelayedRevealedFromEventPassIdQuery['eventPass']
->['eventPassDelayedRevealed'];
+  EventPass['eventPassDelayedRevealed']
+>;
