@@ -1,6 +1,4 @@
 import { getEventPassNftFiles } from '@features/back-office/events-api';
-import { EventFromOrganizerWithPasses } from '@features/back-office/events-types';
-import { GetEventPassOrganizerFolderPath } from '@features/pass-common';
 import {
   BlockchainAddress,
   Button,
@@ -10,11 +8,13 @@ import {
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import { Suspense } from 'react';
+import {
+  EventPassDeployButtonClient,
+  EventPassDeployButtonClientProps,
+} from './EventPassDeployButtonClient';
 
 export interface EventPassCardFooterProps
-  extends GetEventPassOrganizerFolderPath {
-  eventPass: EventFromOrganizerWithPasses['eventPasses'][0];
-}
+  extends Omit<EventPassDeployButtonClientProps, 'children'> {}
 
 function EventPassContractDeployButton({
   eventPass,
@@ -53,7 +53,6 @@ async function EventPassContractDeployButtonContent({
   texts: { deployContract, noPricingSet, numFilesDoesNotMatch },
   ...props
 }: EventPassContractDeployButtonContentProps) {
-  const isDisabled = !eventPass.eventPassPricing?.maxAmount;
   const isDisabledReasons: string[] = [];
 
   if (!eventPass.eventPassPricing?.maxAmount)
@@ -61,14 +60,23 @@ async function EventPassContractDeployButtonContent({
   else {
     const maxAmount = eventPass.eventPassPricing.maxAmount;
     const nftFiles = await getEventPassNftFiles(props);
-    console.log('nftFiles', nftFiles?.length, maxAmount);
+    if (nftFiles?.length !== maxAmount)
+      isDisabledReasons.push(numFilesDoesNotMatch);
   }
   return (
     <div className="w-full flex-col">
-      <Button block disabled={isDisabled}>
-        {deployContract}
-      </Button>
-      <HelperText message={isDisabledReasons} variant="warning" />
+      {isDisabledReasons?.length ? (
+        <>
+          <Button block disabled>
+            {deployContract}
+          </Button>
+          <HelperText message={isDisabledReasons} variant="warning" />
+        </>
+      ) : (
+        <EventPassDeployButtonClient {...props} eventPass={eventPass}>
+          {deployContract}
+        </EventPassDeployButtonClient>
+      )}
     </div>
   );
 }

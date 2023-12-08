@@ -292,7 +292,8 @@
         "EventPassCardFooter": {
           "deploy-contract": "Déployer le contrat NFTs",
           "no-pricing-set": "Vous devez d'abord définir les paramètres de vos NFTs.",
-          "copied-contract-address": "Adresse du contrat copiée"
+          "copied-contract-address": "Adresse du contrat copiée",
+          "num-files-does-not-match": "Le nombre de fichiers téléchargés pour votre pass ne correspond pas au nombre de pass que vous avez l'intention de créer."
         }
       },
       "go-back-to-events": "Retournez aux événements"
