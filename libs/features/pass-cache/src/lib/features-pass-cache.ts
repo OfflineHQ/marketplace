@@ -1,7 +1,7 @@
 import env from '@env/server';
 import { userSdk } from '@gql/user/api';
-import { Cache } from '@next/cache';
 import { getUnauthenticatedUserCookie } from '@next/next-auth/user';
+import { NextRedis } from '@next/redis';
 import { produce } from 'immer';
 
 import {
@@ -20,10 +20,10 @@ interface UpdatePassCartProps extends EventSlugs {
 }
 
 export class PassCache {
-  private cache: Cache;
+  private cache: NextRedis;
 
   constructor() {
-    this.cache = new Cache();
+    this.cache = new NextRedis();
   }
 
   async getAllPassesCart(): Promise<AllPassesCart | null> {
