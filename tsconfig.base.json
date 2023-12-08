@@ -140,6 +140,7 @@
       "@next/next-auth/options": ["libs/next/next-auth/options/src/index.ts"],
       "@next/next-auth/user": ["libs/next/next-auth/user/src/index.ts"],
       "@next/react-query": ["libs/next/react-query/src/index.ts"],
+      "@next/redis": ["libs/next/redis/src/index.ts"],
       "@next/safe/auth": ["libs/next/safe/auth/src/index.ts"],
       "@next/siwe/provider": ["libs/next/siwe/provider/src/index.ts"],
       "@next/store": ["libs/next/store/src/index.ts"],

@@ -1,6 +1,6 @@
 import { Currency } from '@currency/api';
 import { Currency_Enum_Not_Const } from '@currency/types';
-import { Cache } from '@next/cache';
+import { NextRedis } from '@next/redis';
 import { CurrencyCache } from './next-currency-cache';
 
 describe('CurrencyCache', () => {
@@ -36,9 +36,9 @@ describe('CurrencyCache', () => {
     );
   });
 
-  // CurrencyCache throws an error if it fails to set a rate in the Cache API.
-  it('should throw an error if it fails to set a rate in the Cache API', async () => {
-    const cacheApi = new Cache();
+  // CurrencyCache throws an error if it fails to set a rate in the NextRedis API.
+  it('should throw an error if it fails to set a rate in the NextRedis API', async () => {
+    const cacheApi = new NextRedis();
     cacheApi.kv.set = jest
       .fn()
       .mockRejectedValue(new Error('Failed to set rate'));
@@ -49,9 +49,9 @@ describe('CurrencyCache', () => {
     );
   });
 
-  // CurrencyCache throws an error if it fails to get a rate from the Cache API.
-  it('should throw an error if it fails to get a rate from the Cache API', async () => {
-    const cacheApi = new Cache();
+  // CurrencyCache throws an error if it fails to get a rate from the NextRedis API.
+  it('should throw an error if it fails to get a rate from the NextRedis API', async () => {
+    const cacheApi = new NextRedis();
     cacheApi.kv.get = jest
       .fn()
       .mockRejectedValue(new Error('Failed to get rate'));
@@ -65,7 +65,7 @@ describe('CurrencyCache', () => {
   // populateCacheIfEmpty() populates the cache if getRate() returns no rate.
 
   it('should populate cache if empty when getRate returns no rate', async () => {
-    const cacheApi = new Cache();
+    const cacheApi = new NextRedis();
     cacheApi.kv.get = jest.fn().mockResolvedValue(null);
     const currencyCache = new CurrencyCache(undefined, cacheApi);
     currencyCache.setRates = jest.fn();

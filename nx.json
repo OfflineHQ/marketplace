@@ -46,7 +46,6 @@
       "cache": true
     },
     "test": {
-      "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },

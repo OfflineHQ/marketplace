@@ -84,10 +84,6 @@ query GetEventWithPassesOrganizer(
     title
     id
     slug
-    heroImage {
-      url
-    }
-    heroImageClasses
     eventPasses {
       name
       id
@@ -115,6 +111,22 @@ query GetEventWithPassesOrganizer(
         type
         contractAddress
         eventPassId
+      }
+      eventPassDelayedRevealed {
+        name
+        description
+        nftName
+        nftDescription
+        nftImage {
+          url
+        }
+        passOptions {
+          name
+          description
+          eventDateLocation {
+            ...EventDateLocationsFields
+          }
+        }
       }
     }
   }

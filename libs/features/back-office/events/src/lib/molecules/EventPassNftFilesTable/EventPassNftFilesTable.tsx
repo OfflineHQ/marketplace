@@ -1,3 +1,7 @@
+import {
+  getEventPassNftFiles,
+  type GetEventPassNftFilesProps,
+} from '@features/back-office/events-api';
 import { EventFromOrganizerWithPasses } from '@features/back-office/events-types';
 import { Locale, messages } from '@next/i18n';
 import {
@@ -8,10 +12,6 @@ import {
 import { deepPick } from '@utils';
 import { NextIntlClientProvider, useLocale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
-import {
-  getEventPassNftFiles,
-  type GetEventPassNftFilesProps,
-} from '../../actions/getEventPassNftFiles';
 import { EventPassNftFilesTableClient } from './EventPassNftFilesTableClient';
 
 export interface EventPassNftFilesTableProps extends GetEventPassNftFilesProps {
@@ -23,6 +23,10 @@ export async function EventPassNftFilesTable({
   ...props
 }: EventPassNftFilesTableProps) {
   const nftFiles = await getEventPassNftFiles(props);
+  const nftFilesModifiedPath = nftFiles.map((file) => ({
+    ...file,
+    filePath: file.filePath.split('/').pop() || '',
+  }));
   const locale = useLocale() as Locale;
   const t = await getTranslations({
     locale,
@@ -40,7 +44,7 @@ export async function EventPassNftFilesTable({
   return (
     <NextIntlClientProvider locale={locale} messages={localeMessages}>
       <EventPassNftFilesTableClient
-        data={nftFiles}
+        data={nftFilesModifiedPath}
         enableRowSelection
         paginationProps={paginationProps}
         noResultsText={noResultsText}

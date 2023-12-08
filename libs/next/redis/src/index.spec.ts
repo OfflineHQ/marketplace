@@ -1,17 +1,17 @@
 import { resetCache } from '@test-utils/cache';
-import { Cache } from './index';
+import { NextRedis } from './index';
 
-describe('Cache exists', () => {
+describe('NextRedis exists', () => {
   it('should work', () => {
-    expect(new Cache()).toBeDefined();
+    expect(new NextRedis()).toBeDefined();
   });
 });
 
-describe('Cache with valid arguments', () => {
-  let cache: Cache;
+describe('NextRedis with valid arguments', () => {
+  let cache: NextRedis;
 
   beforeAll(async () => {
-    cache = new Cache();
+    cache = new NextRedis();
     await resetCache();
   });
 
