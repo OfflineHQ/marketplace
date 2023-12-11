@@ -48,7 +48,17 @@ type EventPassNftContractObject = Required<
     | 'organizerId'
   >
 > &
-  Partial<Pick<EventPassNftContract_Insert_Input, 'password'>>;
+  Partial<
+    Omit<
+      EventPassNftContract_Insert_Input,
+      | 'type'
+      | 'contractAddress'
+      | 'eventPassId'
+      | 'chainId'
+      | 'eventId'
+      | 'organizerId'
+    >
+  >;
 
 interface CommonProps extends EventPass, EventSmallData {
   address: string;
