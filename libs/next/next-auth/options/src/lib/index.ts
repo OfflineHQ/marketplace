@@ -15,6 +15,8 @@ import { getNextAppURL, isBackOffice, isProd } from '@shared/server';
 import { Provider } from 'next-auth/providers';
 
 import { KycLevelName_Enum } from '@gql/shared/types';
+import { Posthog } from '@insight/server';
+import { FeatureFlagsEnum } from '@insight/types';
 import { RoleAuthorization } from '@roles/admin';
 import { isSameRole } from '@roles/common';
 
@@ -180,11 +182,16 @@ export const createOptions = () =>
           // is session get a role mean that user is connected from back-office and asked to switch to his new role
           const sessionRole = session?.role;
           if (sessionRole) {
+            const kycFlag = await Posthog.getInstance().getFeatureFlag(
+              FeatureFlagsEnum.KYC,
+              token.user.address,
+            );
             if (!isBackOffice())
               throw new Error(
                 'Unauthorized to access roles outside of back office',
               );
             else if (
+              kycFlag &&
               !isUserKycValidated(
                 userAccount,
                 KycLevelName_Enum.AdvancedKycLevel,

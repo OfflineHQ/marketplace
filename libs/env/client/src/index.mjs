@@ -20,6 +20,7 @@ const env = createEnv({
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
     NEXT_PUBLIC_OPENZEPPELIN_URL: z.string().min(1),
     NEXT_PUBLIC_THIRDWEB_MASTER_ADDRESS: z.string().min(1),
+    NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1),
   },
   runtimeEnv: {
     NEXT_PUBLIC_APP: process.env.NEXT_PUBLIC_APP,
@@ -43,6 +44,7 @@ const env = createEnv({
     NEXT_PUBLIC_OPENZEPPELIN_URL: process.env.NEXT_PUBLIC_OPENZEPPELIN_URL,
     NEXT_PUBLIC_THIRDWEB_MASTER_ADDRESS:
       process.env.NEXT_PUBLIC_THIRDWEB_MASTER_ADDRESS,
+    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
   },
 });
 

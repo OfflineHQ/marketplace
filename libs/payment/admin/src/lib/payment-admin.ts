@@ -9,6 +9,8 @@ import {
   StripeCheckoutSessionType_Enum,
   type Locale,
 } from '@gql/shared/types';
+import { Posthog } from '@insight/server';
+import { FeatureFlagsEnum } from '@insight/types';
 import { CurrencyCache } from '@next/currency-cache';
 import { calculateUnitAmount } from '@next/currency-common';
 import { AppUser } from '@next/types';
@@ -50,40 +52,75 @@ export class Payment {
   async getStripeCustomer({ stripeCustomerId }: { stripeCustomerId: string }) {
     return this.stripe.customers.retrieve(stripeCustomerId);
   }
-  async getOrCreateStripeCustomer({ user }: { user: AppUser }) {
-    const { kyc } = user;
-    if (!kyc) throw new Error(`Missing kyc for user: ${user.id}`);
-    const existingStripeCustomer = await adminSdk.GetStripeCustomerByAccount({
-      accountId: user.id,
-    });
-    if (existingStripeCustomer && existingStripeCustomer.stripeCustomer.length)
-      return existingStripeCustomer.stripeCustomer[0];
-    const userPersonalData = await getSumSubApplicantPersonalData(
-      kyc.applicantId,
-    );
-    if (userPersonalData.review.reviewStatus !== KycStatus_Enum.Completed)
-      throw new Error(
-        `User: ${user.id} has not completed KYC: ${kyc.applicantId}`,
+  async createStripeCustomer({
+    user,
+    kycFlag,
+  }: {
+    user: AppUser;
+    kycFlag: boolean;
+  }) {
+    const { kyc, address, email } = user;
+    if (!kycFlag) {
+      const stripeCustomer = await this.stripe.customers.create({
+        email,
+        // preferred_locales: [userPersonalData.lang || 'en'],
+        // phone: userPersonalData.phone,
+        metadata: {
+          userId: user.id,
+        },
+      });
+      const createdStripeCustomer = await adminSdk.CreateStripeCustomer({
+        stripeCustomer: {
+          stripeCustomerId: stripeCustomer.id,
+          accountId: user.id,
+        },
+      });
+      return createdStripeCustomer?.insert_stripeCustomer_one;
+    } else {
+      if (!kyc) throw new Error(`Missing kyc for user: ${user.id}`);
+      const userPersonalData = await getSumSubApplicantPersonalData(
+        kyc.applicantId,
       );
-    if (!userPersonalData.email) {
-      throw new Error('Email is undefined for user: ' + user.id);
-    }
+      if (userPersonalData.review.reviewStatus !== KycStatus_Enum.Completed)
+        throw new Error(
+          `User: ${user.id} has not completed KYC: ${kyc.applicantId}`,
+        );
+      if (!userPersonalData.email) {
+        throw new Error('Email is undefined for user: ' + user.id);
+      }
 
-    const stripeCustomer = await this.stripe.customers.create({
-      email: userPersonalData.email,
-      preferred_locales: [userPersonalData.lang || 'en'],
-      phone: userPersonalData.phone,
-      metadata: {
-        userId: user.id,
-      },
-    });
-    const createdStripeCustomer = await adminSdk.CreateStripeCustomer({
-      stripeCustomer: {
-        stripeCustomerId: stripeCustomer.id,
+      const stripeCustomer = await this.stripe.customers.create({
+        email: userPersonalData.email,
+        preferred_locales: [userPersonalData.lang || 'en'],
+        phone: userPersonalData.phone,
+        metadata: {
+          userId: user.id,
+        },
+      });
+      const createdStripeCustomer = await adminSdk.CreateStripeCustomer({
+        stripeCustomer: {
+          stripeCustomerId: stripeCustomer.id,
+          accountId: user.id,
+        },
+      });
+      return createdStripeCustomer?.insert_stripeCustomer_one;
+    }
+  }
+  async getOrCreateStripeCustomer({ user }: { user: AppUser }) {
+    const { kyc, address } = user;
+    const kycFlag = await Posthog.getInstance().getFeatureFlag(
+      FeatureFlagsEnum.KYC,
+      address,
+    );
+    if (kycFlag && !kyc) throw new Error(`Missing kyc for user: ${user.id}`);
+    const existingStripeCustomerRes = await adminSdk.GetStripeCustomerByAccount(
+      {
         accountId: user.id,
       },
-    });
-    return createdStripeCustomer?.insert_stripeCustomer_one;
+    );
+    if (existingStripeCustomerRes?.stripeCustomer?.length)
+      return existingStripeCustomerRes.stripeCustomer[0];
+    return this.createStripeCustomer({ user, kycFlag });
   }
   async updateStripeCustomer({
     stripeCustomerId,
@@ -92,8 +129,8 @@ export class Payment {
     stripeCustomerId: string;
     user: AppUser;
   }) {
-    //TODO: update with payment preference etc... and eventually update StripeCustomer in db
-    return this.stripe.customers.update(stripeCustomerId, {
+    //TODO: update with payment preference etc...
+    const res = await this.stripe.customers.update(stripeCustomerId, {
       email: user.email,
       // preferred_locales: ['en'],
       // name: user.name,
@@ -102,6 +139,14 @@ export class Payment {
         userId: user.id,
       },
     });
+    // here update stripe customer in db to have updated_at set
+    await adminSdk.UpdateStripeCustomer({
+      stripeCustomerId,
+      stripeCustomer: {
+        accountId: user.id,
+      },
+    });
+    return res;
   }
 
   // Delete corresponding eventPassPendingOrders and replace them by eventPassOrders with status CONFIRMED.

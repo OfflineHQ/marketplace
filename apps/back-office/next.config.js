@@ -88,6 +88,7 @@ const nextConfig = {
     optimizePackageImports: [
       '@ui/icons',
       '@ui/components',
+      '@insight/client',
       '@features/account/api',
       '@features/appNav',
       '@features/back-office/appNav',

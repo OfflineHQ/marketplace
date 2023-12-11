@@ -6,9 +6,12 @@ import {
   KycStatus_Enum,
   Roles_Enum,
 } from '@gql/shared/types';
+import { Posthog } from '@insight/server';
 import type { User } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import { createOptions } from './';
+
+jest.mock('@insight/server');
 
 jest.mock('@next/siwe/provider', () => ({
   SiweProvider: jest.fn(() => ({})),
@@ -25,6 +28,11 @@ jest.mock('@features/account/api', () => ({
 }));
 
 describe('createOptions callbacks', () => {
+  beforeAll(() => {
+    (Posthog.getInstance as jest.Mock).mockImplementation(() => ({
+      getFeatureFlag: jest.fn().mockReturnValue(false),
+    }));
+  });
   const mockUser: User = {
     id: 'dummy',
     address: 'user-xyz',
@@ -111,6 +119,11 @@ describe('createOptions callbacks', () => {
         },
         { organizerId: 'organizer-xyz-3', role: Roles_Enum.OrganizerAdmin },
       ],
+    };
+
+    const mockOrganizerWithPendingKyc = {
+      ...mockOrganizer,
+      kyc: { ...mockOrganizer.kyc, reviewStatus: KycStatus_Enum.Pending },
     };
 
     const mockOrganizerRole = mockOrganizer.roles[2];
@@ -271,12 +284,14 @@ describe('createOptions callbacks', () => {
       );
     });
 
-    it("shouldn't return token with role if user kyc is not validated", async () => {
+    it("shouldn't return token with role if user kyc is not validated and feature flag kycFlag activated", async () => {
+      (Posthog.getInstance as jest.Mock).mockImplementationOnce(() => ({
+        getFeatureFlag: jest.fn().mockReturnValue(true),
+      }));
       process.env.APP = 'BACKOFFICE';
-      (getAccount as jest.Mock).mockResolvedValueOnce({
-        mockOrganizer,
-        kyc: { ...mockOrganizer.kyc, reviewStatus: KycStatus_Enum.Pending },
-      });
+      (getAccount as jest.Mock).mockResolvedValueOnce(
+        mockOrganizerWithPendingKyc,
+      );
       await expect(
         createOptions().callbacks.jwt({
           token: { ...mockToken, user: mockOrganizer },
@@ -294,6 +309,60 @@ describe('createOptions callbacks', () => {
       ).rejects.toThrowError(
         'Unauthorized to switch to role while the Advanced KYC is not validated',
       );
+    });
+
+    it("should return token with role even if user don't have kyc if feature flag kycFlag not activated", async () => {
+      process.env.APP = 'BACKOFFICE';
+
+      (getAccount as jest.Mock).mockResolvedValueOnce(
+        mockOrganizerWithPendingKyc,
+      );
+      await expect(
+        createOptions().callbacks.jwt({
+          token: { ...mockToken, user: mockOrganizer },
+          user: mockOrganizer,
+          trigger: 'update',
+          account: {
+            providerAccountId: 'dummy',
+            type: 'credentials',
+            provider: 'credentials',
+          },
+          session: {
+            role: mockOrganizerRole,
+          },
+        }),
+      ).resolves.toEqual({
+        exp: 1615680311,
+        iat: 1615680311,
+        sub: 'user-xyz',
+        user: { ...mockOrganizerWithPendingKyc, role: mockOrganizerRole },
+        clientId: 'back-office',
+        access: {
+          pathPermissions: [
+            {
+              match: {
+                path: `/${process.env.UPLOAD_PATH_PREFIX}/organizers/${mockOrganizerRole.organizerId}`,
+                scope: 'Grandchildren+',
+              },
+              permissions: {
+                read: {
+                  file: {
+                    downloadFile: ['*'],
+                    getFileDetails: true,
+                  },
+                },
+                write: {
+                  file: {
+                    createFile: true,
+                    deleteFile: true,
+                    overwriteFile: true,
+                  },
+                },
+              },
+            },
+          ],
+        },
+      });
     });
   });
 });
