@@ -5,7 +5,11 @@ import {
   EventPass,
   EventPassDelayedRevealed,
 } from '@features/back-office/events-types';
-import { EventPassNftContractType_Enum } from '@gql/shared/types';
+import { GetEventPassOrganizerFolderPath } from '@features/pass-common';
+import {
+  EventPassNftContractType_Enum,
+  EventPassNftContract_Insert_Input,
+} from '@gql/shared/types';
 import {
   NFTMetadata as ThirdwebNFTMetadata,
   ThirdwebSDK,
@@ -23,19 +27,42 @@ type NftsMetadata = ThirdwebNFTMetadata & {
   name: string;
 };
 
-type EventSmallData = {
-  eventId: string;
+type EventSmallData = Omit<GetEventPassOrganizerFolderPath, 'eventPassId'> & {
   eventSlug: string;
-  organizerId: string;
 };
 
-interface CommonProps extends EventPass {
-  eventId: string;
-  eventSlug: string;
-  organizerId: string;
+type EventPassNftContractObject = Required<
+  Pick<
+    EventPassNftContract_Insert_Input & {
+      contractAddress: string;
+      eventPassId: string;
+      chainId: string;
+      eventId: string;
+      organizerId: string;
+    },
+    | 'type'
+    | 'contractAddress'
+    | 'eventPassId'
+    | 'chainId'
+    | 'eventId'
+    | 'organizerId'
+  >
+> &
+  Partial<Pick<EventPassNftContract_Insert_Input, 'password'>>;
+
+interface CommonProps extends EventPass, EventSmallData {
   address: string;
   chainId: string;
 }
+
+type SaveEventPassContractIntoDbProps = {
+  props: CommonProps;
+  txResult: string;
+  baseUri: string;
+  results: TransactionResultWithId[];
+  metadatas: NftsMetadata[];
+  object: EventPassNftContractObject;
+};
 
 const CONTRACT_TYPE_NFT_DROP = 'nft-drop';
 const CONTRACT_TYPE_PACK = 'pack';
@@ -67,7 +94,7 @@ class NftCollection {
     });
   }
 
-  private async getCommonProps(
+  async getCommonProps(
     props: EventPass,
     eventData: EventSmallData,
   ): Promise<CommonProps> {
@@ -112,7 +139,7 @@ class NftCollection {
     } catch (error) {
       if (error instanceof Error) {
         throw new CollectionDeploymentError(error);
-      }
+      } else console.error(error);
     }
   }
 
@@ -141,7 +168,7 @@ class NftCollection {
     return contract;
   }
 
-  private createMetadatas(
+  createMetadatas(
     maxAmount: number,
     metadata: NftsMetadata,
     organizerId: string,
@@ -213,15 +240,13 @@ class NftCollection {
     }
   }
 
-  private async deployAnNftDropCollection(props: CommonProps) {
+  async deployDropContractAndPrepareMetadata(props: CommonProps) {
     const {
       name,
       address,
       id: eventPassId,
-      chainId,
       eventId,
       organizerId,
-      eventSlug,
       nftImage,
       nftDescription,
       nftName,
@@ -243,14 +268,7 @@ class NftCollection {
           voting_token_address: address,
         },
       );
-      await createEventPassNftContract({
-        contractAddress: txResult,
-        eventPassId,
-        chainId: chainId,
-        eventId,
-        organizerId,
-        type: EventPassNftContractType_Enum.Normal,
-      });
+
       const contract = await this.getContractWithClaimConditions(
         txResult,
         maxAmount,
@@ -263,32 +281,70 @@ class NftCollection {
         eventId,
         eventPassId,
       );
-      const results = await contract.erc721.lazyMint(metadatas);
 
-      const fullBaseUri = (await results[0].data()).uri;
-      const baseUri = fullBaseUri.slice(0, -1);
-
-      const hasuraMetadatas = await this.createHasuraMetadatas(
-        metadatas,
-        results,
-        baseUri,
-        chainId,
-        organizerId,
-        eventId,
-        eventPassId,
-        txResult,
-      );
-
-      await createEventPassNfts(hasuraMetadatas);
-      await createEventParametersAndWebhook({
-        eventId,
-        nftCollectionAddresses: [{ contractAddress: txResult }],
-        organizerId,
-        eventSlug,
-      });
+      return { contract, metadatas };
     } catch (error) {
-      throw new CollectionDeploymentError(error);
+      if (error instanceof Error) {
+        throw new CollectionDeploymentError(error);
+      }
     }
+  }
+
+  async saveEventPassContractIntoDb({
+    props,
+    txResult,
+    baseUri,
+    results,
+    metadatas,
+    object,
+  }: SaveEventPassContractIntoDbProps) {
+    const { id: eventPassId, chainId, eventId, organizerId, eventSlug } = props;
+
+    await createEventPassNftContract(object);
+
+    const hasuraMetadatas = await this.createHasuraMetadatas(
+      metadatas,
+      results,
+      baseUri,
+      chainId,
+      organizerId,
+      eventId,
+      eventPassId,
+      txResult,
+    );
+
+    await createEventPassNfts(hasuraMetadatas);
+    await createEventParametersAndWebhook({
+      eventId,
+      nftCollectionAddresses: [{ contractAddress: txResult }],
+      organizerId,
+      eventSlug,
+    });
+  }
+
+  private async deployAnNftDropCollection(props: CommonProps) {
+    const { contract, metadatas } =
+      await this.deployDropContractAndPrepareMetadata(props);
+    const results = await contract.erc721.lazyMint(metadatas);
+
+    const fullBaseUri = (await results[0].data()).uri;
+    const baseUri = fullBaseUri.slice(0, -1);
+
+    await this.saveEventPassContractIntoDb({
+      props,
+      txResult: contract.getAddress(),
+      baseUri,
+      results,
+      metadatas,
+      object: {
+        type: EventPassNftContractType_Enum.Normal,
+        eventPassId: props.id,
+        organizerId: props.organizerId,
+        eventId: props.eventId,
+        contractAddress: contract.getAddress(),
+        chainId: props.chainId,
+      },
+    });
   }
 
   private generatePassword() {
@@ -307,62 +363,14 @@ class NftCollection {
   }
 
   private async deployDelayedRevealCollection(props: CommonProps) {
-    const {
-      name,
-      address,
-      id: eventPassId,
-      chainId,
-      eventId,
-      organizerId,
-      eventSlug,
-      nftImage,
-      nftDescription,
-      nftName,
-      eventPassPricing: { maxAmount },
-    } = props;
-
-    const metadata: NftsMetadata = {
-      name: nftName,
-      description: nftDescription,
-      image: nftImage.url,
-    };
-
     try {
       const eventPassDelayedRevealed = props.eventPassDelayedRevealed;
 
       this.validateEventPassDelayedRevealed(eventPassDelayedRevealed);
-
-      const txResult = await this.sdk.deployer.deployBuiltInContract(
-        ContractType.NFT_DROP,
-        {
-          name,
-          primary_sale_recipient: address,
-          voting_token_address: address,
-        },
-      );
+      const { contract, metadatas } =
+        await this.deployDropContractAndPrepareMetadata(props);
 
       const password = this.generatePassword();
-
-      await createEventPassNftContract({
-        contractAddress: txResult,
-        eventPassId,
-        chainId: chainId,
-        eventId,
-        organizerId,
-        password,
-        type: EventPassNftContractType_Enum.DelayedReveal,
-      });
-      const contract = await this.getContractWithClaimConditions(
-        txResult,
-        maxAmount,
-      );
-      const metadatas = this.createMetadatas(
-        maxAmount,
-        metadata,
-        organizerId,
-        eventId,
-        eventPassId,
-      );
 
       const results = await contract.erc721.revealer.createDelayedRevealBatch(
         {
@@ -374,25 +382,23 @@ class NftCollection {
         password,
       );
 
-      const fullBaseUri = (await contract.erc721.getAll())[0].metadata.uri;
+      const baseUri = (await contract.erc721.getAll())[0].metadata.uri;
 
-      const hasuraMetadatas = await this.createHasuraMetadatas(
-        metadatas,
+      await this.saveEventPassContractIntoDb({
+        props,
+        txResult: contract.getAddress(),
+        baseUri,
         results,
-        fullBaseUri,
-        chainId,
-        organizerId,
-        eventId,
-        eventPassId,
-        txResult,
-      );
-
-      await createEventPassNfts(hasuraMetadatas);
-      await createEventParametersAndWebhook({
-        eventId,
-        nftCollectionAddresses: [{ contractAddress: txResult }],
-        organizerId,
-        eventSlug,
+        metadatas,
+        object: {
+          type: EventPassNftContractType_Enum.Normal,
+          eventPassId: props.id,
+          organizerId: props.organizerId,
+          eventId: props.eventId,
+          contractAddress: contract.getAddress(),
+          chainId: props.chainId,
+          password,
+        },
       });
     } catch (error) {
       throw new CollectionDeploymentError(error);
