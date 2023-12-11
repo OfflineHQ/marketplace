@@ -33,13 +33,7 @@ type EventSmallData = Omit<GetEventPassOrganizerFolderPath, 'eventPassId'> & {
 
 type EventPassNftContractObject = Required<
   Pick<
-    EventPassNftContract_Insert_Input & {
-      contractAddress: string;
-      eventPassId: string;
-      chainId: string;
-      eventId: string;
-      organizerId: string;
-    },
+    EventPassNftContract_Insert_Input,
     | 'type'
     | 'contractAddress'
     | 'eventPassId'
@@ -48,17 +42,7 @@ type EventPassNftContractObject = Required<
     | 'organizerId'
   >
 > &
-  Partial<
-    Omit<
-      EventPassNftContract_Insert_Input,
-      | 'type'
-      | 'contractAddress'
-      | 'eventPassId'
-      | 'chainId'
-      | 'eventId'
-      | 'organizerId'
-    >
-  >;
+  EventPassNftContract_Insert_Input;
 
 interface CommonProps extends EventPass, EventSmallData {
   address: string;
@@ -401,7 +385,7 @@ class NftCollection {
         results,
         metadatas,
         object: {
-          type: EventPassNftContractType_Enum.Normal,
+          type: EventPassNftContractType_Enum.DelayedReveal,
           eventPassId: props.id,
           organizerId: props.organizerId,
           eventId: props.eventId,
