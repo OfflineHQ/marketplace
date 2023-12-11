@@ -56,12 +56,6 @@ export class Web3AuthModalPack extends AuthKitBasePack {
         window?.ethereumProviderMock && process.env.NEXT_PUBLIC_E2E_TEST
           ? (window.ethereumProviderMock as Eip1193Provider)
           : this.web3Auth.provider;
-      console.log(
-        'this.#provider',
-        this.#provider,
-        'window.ethereumProviderMock',
-        window.ethereumProviderMock,
-      );
     } catch (e) {
       throw new Error(getErrorMessage(e));
     }

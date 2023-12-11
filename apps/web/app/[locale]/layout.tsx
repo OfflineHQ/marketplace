@@ -6,17 +6,18 @@ import { CurrencyProvider } from '@next/currency-provider';
 import { getMessages, locales } from '@next/i18n';
 import { getSession, isConnected } from '@next/next-auth/user';
 import { ReactQueryProviders } from '@next/react-query';
+import { Suspense } from 'react';
 import { isLocal } from '@shared/server';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
-import { Analytics } from '@web/components/Analytics';
 import { siteConfig } from '@web/config/site';
 import { Metadata, Viewport } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
+import { PHProvider, PostHogPageview, VercelAnalytics } from '@insight/client';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -115,41 +116,46 @@ export default async function RootLayout({
           fontHeading.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <NextAuthProvider session={session}>
-            <AuthProvider
-              messages={{
-                userClosedPopup: {
-                  title: t('user-closed-popup.title'),
-                  description: t('user-closed-popup.description'),
-                },
-                siweStatement: t('siwe-statement'),
-                errorSigningInWithSiwe: {
-                  title: t('error-signing-in-with-siwe.title'),
-                  description: t('error-signing-in-with-siwe.description'),
-                  tryAgainButton: t(
-                    'error-signing-in-with-siwe.try-again-button',
-                  ),
-                },
-                siweDeclined: {
-                  title: t('siwe-declined.title'),
-                  description: t('siwe-declined.description'),
-                  tryAgainButton: t('siwe-declined.try-again-button'),
-                },
-              }}
-              session={session}
-              isConnected={isConnected}
-            >
-              <ReactQueryProviders>
-                <CurrencyProvider rates={rates}>
-                  <AppNavLayout {...appNavLayout} />
-                  <Toaster />
-                </CurrencyProvider>
-              </ReactQueryProviders>
-            </AuthProvider>
-          </NextAuthProvider>
-        </ThemeProvider>
-        <Analytics />
+        <PHProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <NextAuthProvider session={session}>
+              <AuthProvider
+                messages={{
+                  userClosedPopup: {
+                    title: t('user-closed-popup.title'),
+                    description: t('user-closed-popup.description'),
+                  },
+                  siweStatement: t('siwe-statement'),
+                  errorSigningInWithSiwe: {
+                    title: t('error-signing-in-with-siwe.title'),
+                    description: t('error-signing-in-with-siwe.description'),
+                    tryAgainButton: t(
+                      'error-signing-in-with-siwe.try-again-button',
+                    ),
+                  },
+                  siweDeclined: {
+                    title: t('siwe-declined.title'),
+                    description: t('siwe-declined.description'),
+                    tryAgainButton: t('siwe-declined.try-again-button'),
+                  },
+                }}
+                session={session}
+                isConnected={isConnected}
+              >
+                <ReactQueryProviders>
+                  <CurrencyProvider rates={rates}>
+                    <AppNavLayout {...appNavLayout} />
+                    <Toaster />
+                  </CurrencyProvider>
+                </ReactQueryProviders>
+              </AuthProvider>
+            </NextAuthProvider>
+          </ThemeProvider>
+        </PHProvider>
+        <Suspense>
+          <PostHogPageview />
+        </Suspense>
+        <VercelAnalytics />
       </body>
     </html>
   );

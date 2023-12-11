@@ -5,6 +5,7 @@ import { AuthKitSignInData, Web3AuthModalPack } from '@next/safe/auth';
 import { getNextAppURL, isDev } from '@shared/client';
 import { ToastAction, useToast } from '@ui/components';
 import { MetamaskAdapter } from '@web3auth/metamask-adapter';
+import { usePostHog } from 'posthog-js/react';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -100,6 +101,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   const locale = useLocale();
   const messages = props.messages;
   const isSigningInRef = useRef(false);
+  const posthog = usePostHog();
 
   const web3AuthErrorHandler = useCallback(
     (error: any) => {
@@ -134,7 +136,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
 
       await safeAuth.signOut();
       await logoutSiwe({ refresh });
-
+      logoutUserPostHog();
       setSafeUser(undefined);
     },
     [safeAuth, logoutSiwe],
@@ -231,7 +233,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
     async (signer: ethers.Signer) => {
       try {
         if (isSigningInRef.current) {
-          console.log('Already signing in with SIWE, ignoring extra call...');
+          console.log('Already signed in with SIWE, ignoring extra call...');
           return;
         }
         isSigningInRef.current = true;
@@ -274,6 +276,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
           }
           throw new Error('Error signing in with SIWE');
         } else {
+          identifyUserPostHog(address);
           router.refresh();
         }
       } catch (error) {
@@ -305,6 +308,18 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       login,
     ],
   );
+
+  function identifyUserPostHog(address: string) {
+    console.log('identify posthog', posthog, address);
+    posthog?.identify(address, {
+      address,
+    });
+  }
+
+  function logoutUserPostHog() {
+    console.log('reset posthog');
+    posthog?.reset();
+  }
 
   async function finishLogin() {
     const isNextAuthConnected = await props?.isConnected?.();
@@ -461,9 +476,10 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
           console.log('Using E2E Auth Context');
         } else setConnecting(true);
       } else {
-        console.log('User not connected to web3auth, sign out...');
+        console.log('User not connected to web3auth');
         handleUnauthenticatedUser();
         logoutSiwe({ refresh: false });
+        logoutUserPostHog();
       }
       return () => {
         web3AuthModalPack.unsubscribe(
