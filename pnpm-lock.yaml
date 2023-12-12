@@ -113,11 +113,11 @@ dependencies:
     specifier: ^8.10.7
     version: 8.10.7(react-dom@18.2.0)(react@18.2.0)
   '@thirdweb-dev/chains':
-    specifier: ^0.1.60
-    version: 0.1.60
+    specifier: ^0.1.61
+    version: 0.1.61
   '@thirdweb-dev/sdk':
-    specifier: ^4.0.19
-    version: 4.0.19(ethers@5.7.2)(typescript@5.3.3)
+    specifier: ^4.0.21
+    version: 4.0.21(ethers@5.7.2)(typescript@5.3.3)
   '@uidotdev/usehooks':
     specifier: 2.4.1
     version: 2.4.1(react-dom@18.2.0)(react@18.2.0)
@@ -10054,8 +10054,8 @@ packages:
       '@testing-library/dom': 9.3.3
     dev: true
 
-  /@thirdweb-dev/chains@0.1.60:
-    resolution: {integrity: sha512-f0M19fDwOFTbcWhw09DikLzxvz+OBKdT0PC2r7Npj5GfWx8p40cf428Gsvmd5xDRk9mkeANYdGb3dM5iLbC3Gg==}
+  /@thirdweb-dev/chains@0.1.61:
+    resolution: {integrity: sha512-SlFXjqtqZbGqSYKv1HEhGIG03QjnkQPrgLO7WAar7/ZreEqDb3CtUzysSXnblfMqDDwe51dmWBcZ3dXXtTSZxg==}
     engines: {node: '>=18'}
     dev: false
 
@@ -10112,8 +10112,8 @@ packages:
       treeify: 1.1.0
     dev: false
 
-  /@thirdweb-dev/sdk@4.0.19(ethers@5.7.2)(typescript@5.3.3):
-    resolution: {integrity: sha512-RmGoYoyK6FGchSsexjRKE7XtnARnUNXcrMTvsCBWxh77elV7Gen/QxQv1WByRv5LHf1PGRgwXDy1uhu46fTE2g==}
+  /@thirdweb-dev/sdk@4.0.21(ethers@5.7.2)(typescript@5.3.3):
+    resolution: {integrity: sha512-ycJBeYWEXqMyLA29/vFdVJToegL1UOBguM8gHgy7mAKaCTB0X5k5U2TbCfLIkuyAayOnhovN8zMjJb65udrQng==}
     engines: {node: '>=18'}
     peerDependencies:
       '@aws-sdk/client-secrets-manager': ^3.215.0
@@ -10128,7 +10128,7 @@ packages:
       zksync-web3:
         optional: true
     dependencies:
-      '@thirdweb-dev/chains': 0.1.60
+      '@thirdweb-dev/chains': 0.1.61
       '@thirdweb-dev/contracts-js': 1.3.16(ethers@5.7.2)
       '@thirdweb-dev/crypto': 0.2.0
       '@thirdweb-dev/generated-abis': 0.0.1
