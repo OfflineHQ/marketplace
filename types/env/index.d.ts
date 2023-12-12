@@ -16,6 +16,7 @@ declare module '@env/client' {
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
     NEXT_PUBLIC_OPENZEPPELIN_URL: string;
     NEXT_PUBLIC_THIRDWEB_MASTER_ADDRESS: string;
+    NEXT_PUBLIC_POSTHOG_KEY: string;
   };
   export default env;
 }
@@ -56,6 +57,8 @@ declare module '@env/server' {
     EXCHANGE_RATE_API_KEY: string;
     WEB_APP_URL?: string;
     OPENZEPPELIN_URL: string;
+    POSTHOG_KEY: string;
+    POSTHOG_PERSONAL_API_KEY: string;
   };
   export default env;
 }
