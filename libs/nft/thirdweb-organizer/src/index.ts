@@ -278,7 +278,9 @@ class NftCollection {
 
       return { contract, metadatas };
     } catch (error) {
-      throw new Error(`Error deploying a drop contract : ${error}`);
+      if (error instanceof Error) {
+        throw new Error(`Error deploying a drop contract : ${error.message}`);
+      } else throw new Error(error);
     }
   }
 
@@ -349,7 +351,11 @@ class NftCollection {
         },
       });
     } catch (error) {
-      throw new Error(`Error deploying a normal collection : ${error}`);
+      if (error instanceof Error) {
+        throw new Error(
+          `Error deploying a normal collection : ${error.message}`,
+        );
+      } else throw new Error(error);
     }
   }
 
@@ -407,7 +413,11 @@ class NftCollection {
         },
       });
     } catch (error) {
-      throw new Error(`Error deploying a delayed reveal collection : ${error}`);
+      if (error instanceof Error) {
+        throw new Error(
+          `Error deploying a delayed reveal collection : ${error.message}`,
+        );
+      } else throw new Error(error);
     }
   }
 }

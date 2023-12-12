@@ -8,5 +8,4 @@ export default {
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../../coverage/libs/nft/thirdweb-organizer',
   testMatch: ['**/*.integration.test.ts'],
-  maxConcurrency: 1,
 };
