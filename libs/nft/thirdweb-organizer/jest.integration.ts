@@ -3,10 +3,9 @@ export default {
   displayName: 'nft-thirdweb-organizer',
   preset: '../../../jest.preset.js',
   testEnvironment: 'node',
-  transform: {
-    '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
-  },
+  globalSetup: `${process.cwd()}/tools/test/globalSetupHasura.ts`,
+  globalTeardown: `${process.cwd()}/tools/test/globalTeardownHasura.ts`,
   moduleFileExtensions: ['ts', 'js', 'html'],
-  testPathIgnorePatterns: ['.*\\.integration\\..*'],
   coverageDirectory: '../../../coverage/libs/nft/thirdweb-organizer',
+  testMatch: ['**/*.integration.test.ts'],
 };
