@@ -5,6 +5,13 @@ query GetEventPassOrdersConfirmed {
   }
 }
 
+query GetEventPassOrdersIsMinting {
+  eventPassOrder(where: { status: { _eq: IS_MINTING } }) {
+    eventPassId
+    quantity
+  }
+}
+
 query GetEventPassOrdersFromIds($eventPassOrderIds: [uuid!]!, $stage: Stage!) {
   eventPassOrder(where: { id: { _in: $eventPassOrderIds } }) {
     eventPassId
@@ -20,12 +27,10 @@ query GetEventPassOrdersFromIds($eventPassOrderIds: [uuid!]!, $stage: Stage!) {
   }
 }
 
-query GetEventPassOrdersConfirmedOrCompletedForEventPassId(
-  $eventPassId: String!
-) {
+query GetEventPassOrderPurchasedForEventPassesId($eventPassId: String!) {
   eventPassOrder(
     where: {
-      status: { _in: [CONFIRMED, COMPLETED] }
+      status: { _in: [CONFIRMED, COMPLETED, IS_MINTING] }
       eventPassId: { _eq: $eventPassId }
     }
   ) {
@@ -34,12 +39,10 @@ query GetEventPassOrdersConfirmedOrCompletedForEventPassId(
   }
 }
 
-query GetEventPassOrdersConfirmedOrCompletedForEventPassIds(
-  $eventPassIds: [String!]!
-) {
+query GetEventPassOrderPurchasedForEventPassesIds($eventPassIds: [String!]!) {
   eventPassOrder(
     where: {
-      status: { _in: [CONFIRMED, COMPLETED] }
+      status: { _in: [CONFIRMED, COMPLETED, IS_MINTING] }
       eventPassId: { _in: $eventPassIds }
     }
   ) {

@@ -1,0 +1,5 @@
+mutation DeleteFollowOrganizer($accountId: uuid!, $organizerSlug: String!) {
+  delete_follow_by_pk(accountId: $accountId, organizerSlug: $organizerSlug) {
+    organizerSlug
+  }
+}

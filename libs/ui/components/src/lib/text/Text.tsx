@@ -1,12 +1,12 @@
 // Text.tsx
 
-import * as React from 'react';
 import { cn } from '@ui/shared';
 import { cva, VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 
 const textVariants = {
-  h1: 'scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl',
-  h2: 'scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0',
+  h1: 'scroll-m-20 text-2xl md:text-3xl font-extrabold tracking-tight lg:text-4xl',
+  h2: 'scroll-m-20 border-b pb-2 text-2xl md:text-3xl font-semibold tracking-tight transition-colors first:mt-0',
   h3: 'scroll-m-20 text-2xl font-semibold tracking-tight',
   h4: 'scroll-m-20 text-xl font-semibold tracking-tight',
   h5: 'scroll-m-20 text-lg font-medium',
@@ -42,9 +42,14 @@ const textSkeletonVariantClasses = cva(
   {
     variants: {
       variant: textSkeletonVariants,
+      color: {
+        default: 'bg-muted',
+        highlight: 'bg-highlight',
+      },
     },
     defaultVariants: {
       variant: 'span',
+      color: 'default',
     },
   },
 );
@@ -76,16 +81,20 @@ const Text: React.FC<TextProps> = ({
 };
 
 interface TextSkeletonProps
-  extends React.HTMLAttributes<HTMLElement>,
+  extends Omit<React.HTMLAttributes<HTMLElement>, 'color'>,
     VariantProps<typeof textSkeletonVariantClasses> {}
 
 const TextSkeleton: React.FC<TextSkeletonProps> = ({
   variant = 'span',
+  color = 'default',
   className,
   ...props
 }) => {
   const Component = variant as AllowedHtmlElements;
-  const classNames = cn(textSkeletonVariantClasses({ variant }), className);
+  const classNames = cn(
+    textSkeletonVariantClasses({ variant, color }),
+    className,
+  );
 
   return variant !== 'p' ? (
     <Component className={classNames} {...props} />
@@ -94,7 +103,7 @@ const TextSkeleton: React.FC<TextSkeletonProps> = ({
       <Component className={classNames} {...props} />
       <small
         className={cn(
-          textSkeletonVariantClasses({ variant: 'small' }),
+          textSkeletonVariantClasses({ variant: 'small', color }),
           className,
           'h-2',
         )}
@@ -107,7 +116,7 @@ const TextSkeleton: React.FC<TextSkeletonProps> = ({
 export {
   Text,
   TextSkeleton,
+  textVariants,
   type TextProps,
   type TextSkeletonProps,
-  textVariants,
 };

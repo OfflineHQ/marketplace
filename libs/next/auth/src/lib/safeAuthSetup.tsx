@@ -2,10 +2,10 @@
 // safeAuthSetup.ts
 
 import { AuthKitSignInData, Web3AuthModalPack } from '@next/safe/auth';
-import { getNextAppURL } from '@shared/client';
+import { getNextAppURL, isDev } from '@shared/client';
 import { ToastAction, useToast } from '@ui/components';
-import { isCypressRunning } from '@utils';
 import { MetamaskAdapter } from '@web3auth/metamask-adapter';
+import { usePostHog } from 'posthog-js/react';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -18,12 +18,11 @@ import {
 } from '@web3auth/base';
 import { Web3AuthOptions } from '@web3auth/modal';
 import { LANGUAGE_TYPE, OpenloginAdapter } from '@web3auth/openlogin-adapter';
-import { ethers } from 'ethers';
+import { Eip1193Provider, ethers } from 'ethers6';
 import { getCsrfToken, signIn, signOut } from 'next-auth/react';
 import { SiweMessage } from 'siwe';
 
 import env from '@env/client';
-import { ExternalProvider } from '@ethersproject/providers';
 import { handleUnauthenticatedUser } from '@next/next-auth/user';
 import { Session } from 'next-auth';
 import { useLocale } from 'next-intl';
@@ -39,7 +38,7 @@ const chainConfigs: Record<string, ChainConfig> = {
   '5': {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     rpcTarget:
-      'https://eth-goerli.g.alchemy.com/v2/XGWYfxudDv5ACSpZegVCjkgSrskOpG3v',
+      'https://eth-goerli.g.alchemy.com/v2/suWCSUU8QCZyA8U4VHEXzGYJZobJPSfc',
     chainId: '0x5',
     displayName: 'Ethereum Goerli',
     blockExplorer: 'https://goerli.etherscan.io/',
@@ -50,21 +49,22 @@ const chainConfigs: Record<string, ChainConfig> = {
   },
   '11155111': {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    rpcTarget: 'https://eth-sepolia.g.alchemy.com/v2/OUR_API_KEY', // TODO add an alchemy app
+    rpcTarget:
+      'https://eth-sepolia.g.alchemy.com/v2/aTwl7l6SRRC22e-7joQbT7oMG6yTjUm0',
     chainId: '0xaa36a7',
     displayName: 'Ethereum Sepolia',
     blockExplorer: 'https://sepolia.etherscan.io/',
     ticker: 'ETH',
     tickerName: 'SepoliaETH',
-    safeTxServiceUrl: '', // not existing yet
+    safeTxServiceUrl: 'https://safe-transaction-sepolia.safe.global',
     decimals: 18,
   },
   // Add other chains here
 };
 
 const { safeTxServiceUrl, chainId, ...chainConfig } = (chainConfigs[
-  env.NEXT_PUBLIC_CHAIN as string
-] || chainConfigs['5']) as ChainConfig; // Default to goerli if no matching config
+  env.NEXT_PUBLIC_CHAIN
+] || chainConfigs['11155111']) as ChainConfig; // Default to sepolia if no matching config
 
 export interface SafeUser extends Partial<UserInfo>, AuthKitSignInData {}
 
@@ -93,7 +93,7 @@ export interface UseSafeAuthProps {
 export function useSafeAuth(props: UseSafeAuthProps = {}) {
   const [safeAuth, setSafeAuth] = useState<Web3AuthModalPack>();
   const [safeUser, setSafeUser] = useState<SafeUser>();
-  const [provider, setProvider] = useState<ExternalProvider | null>(null);
+  const [provider, setProvider] = useState<Eip1193Provider | null>(null);
   const [connecting, setConnecting] = useState(false);
   const { resolvedTheme } = useTheme();
   const { toast } = useToast();
@@ -101,6 +101,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   const locale = useLocale();
   const messages = props.messages;
   const isSigningInRef = useRef(false);
+  const posthog = usePostHog();
 
   const web3AuthErrorHandler = useCallback(
     (error: any) => {
@@ -135,7 +136,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
 
       await safeAuth.signOut();
       await logoutSiwe({ refresh });
-
+      logoutUserPostHog();
       setSafeUser(undefined);
     },
     [safeAuth, logoutSiwe],
@@ -146,13 +147,14 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
     if (!safeAuth) return;
 
     let userInfo: Partial<UserInfo> = {};
-    if (!isCypressRunning()) userInfo = await safeAuth.getUserInfo();
+    userInfo = await safeAuth.getUserInfo();
     let eoa: AuthKitSignInData['eoa'] = safeUser?.eoa || '';
     let safes: AuthKitSignInData['safes'] = safeUser?.safes || [];
     // here mean the page have been refreshed, so we need to get the AuthKitSignInData again
     if (!eoa) {
       eoa = await safeAuth.getAddress();
-      safes = await safeAuth.getSafes(safeTxServiceUrl || '');
+      // TODO, use a docker image for the safe transaction service in local
+      safes = await safeAuth.getSafes(!isDev() ? safeTxServiceUrl || '' : '');
     }
     const _safeUser = {
       eoa,
@@ -230,10 +232,8 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
   const loginSiwe = useCallback(
     async (signer: ethers.Signer) => {
       try {
-        // don't run this function if cypress is running, cannot mock the signature so directly provide the cookie instead
-        if (isCypressRunning()) return;
         if (isSigningInRef.current) {
-          console.log('Already signing in with SIWE, ignoring extra call...');
+          console.log('Already signed in with SIWE, ignoring extra call...');
           return;
         }
         isSigningInRef.current = true;
@@ -249,9 +249,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
           nonce: await getCsrfToken(),
         });
         const signature = await signer?.signMessage(message.prepareMessage());
-        const userInfo = !isCypressRunning()
-          ? await safeAuth?.getUserInfo()
-          : {};
+        const userInfo = await safeAuth?.getUserInfo();
         const signInRes = await signIn('credentials', {
           message: JSON.stringify(message),
           redirect: false,
@@ -278,6 +276,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
           }
           throw new Error('Error signing in with SIWE');
         } else {
+          identifyUserPostHog(address);
           router.refresh();
         }
       } catch (error) {
@@ -310,19 +309,29 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
     ],
   );
 
+  function identifyUserPostHog(address: string) {
+    console.log('identify posthog', posthog, address);
+    posthog?.identify(address, {
+      address,
+    });
+  }
+
+  function logoutUserPostHog() {
+    console.log('reset posthog');
+    posthog?.reset();
+  }
+
   async function finishLogin() {
     const isNextAuthConnected = await props?.isConnected?.();
-    console.log({
-      isNextAuthConnected,
-    });
     if (!isNextAuthConnected) {
-      const web3Provider = new ethers.providers.Web3Provider(
-        safeAuth?.getProvider() as ethers.providers.ExternalProvider,
+      const web3Provider = new ethers.BrowserProvider(
+        safeAuth?.getProvider() as Eip1193Provider,
+        {
+          chainId: parseInt(chainId as string),
+          name: chainConfig.displayName,
+        },
       );
-      const signer = web3Provider.getSigner(0);
-      console.log({
-        isNextAuthConnected,
-      });
+      const signer = await web3Provider.getSigner();
       await loginSiwe(signer);
     }
     await setupUserSession();
@@ -340,7 +349,8 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
           await finishLogin();
         }
       } catch (error) {
-        console.warn({ error });
+        console.log('web3auth connected but logout because of error in siwe');
+        console.error({ error });
         await logout({ refresh: false });
       } finally {
         setConnecting(false);
@@ -449,7 +459,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
 
       setSafeAuth(web3AuthModalPack);
 
-      const safeProvider: ExternalProvider | null =
+      const safeProvider: Eip1193Provider | null =
         web3AuthModalPack.getProvider();
       setProvider(safeProvider);
       web3AuthModalPack.subscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
@@ -457,11 +467,19 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         setConnecting(true),
       );
       // here evaluate if user is logged in with web3auth. If it's not the case we logout the user from next auth.
-      if (web3AuthModalPack?.web3Auth?.connected) {
-        setConnecting(true);
+      // useE2EAuthContext is provided by the e2e test to bypass real login
+      if (
+        web3AuthModalPack?.web3Auth?.connected ||
+        (window?.useE2EAuthContext && process.env.NEXT_PUBLIC_E2E_TEST)
+      ) {
+        if (window.useE2EAuthContext && process.env.NEXT_PUBLIC_E2E_TEST) {
+          console.log('Using E2E Auth Context');
+        } else setConnecting(true);
       } else {
+        console.log('User not connected to web3auth');
         handleUnauthenticatedUser();
         logoutSiwe({ refresh: false });
+        logoutUserPostHog();
       }
       return () => {
         web3AuthModalPack.unsubscribe(

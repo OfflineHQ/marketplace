@@ -1,8 +1,12 @@
-import * as Upload from 'upload-js-full';
-import retry from 'async-retry';
+import * as Upload from '@bytescale/sdk';
 import env from '@env/server';
+import retry from 'async-retry';
 
-export const FileCopyStatus = Upload.FileCopyStatus;
+export const enum FileCopyStatusEnum {
+  Copied = 'Copied',
+  FileNotFound = 'FileNotFound',
+  SkippedDueToCondition = 'SkippedDueToCondition',
+}
 
 export async function executeJobWithRetry(
   method: (params: any) => Promise<Upload.AsyncResponse>,
@@ -56,12 +60,10 @@ export class UploadWrapper {
   private uploadManager: Upload.UploadManager;
 
   constructor() {
-    this.uploadManager = new Upload.UploadManager(
-      new Upload.Configuration({
-        fetchApi: fetch,
-        apiKey: env.UPLOAD_SECRET_API_KEY,
-      }),
-    );
+    this.uploadManager = new Upload.UploadManager({
+      fetchApi: fetch,
+      apiKey: env.UPLOAD_SECRET_API_KEY,
+    });
   }
 
   async uploadFile(
@@ -83,12 +85,10 @@ export class FileWrapper {
   constructor(fileApi?: Upload.FileApi, jobWrapper?: JobWrapper) {
     this.fileApi =
       fileApi ||
-      new Upload.FileApi(
-        new Upload.Configuration({
-          fetchApi: fetch,
-          apiKey: env.UPLOAD_SECRET_API_KEY,
-        }),
-      );
+      new Upload.FileApi({
+        fetchApi: fetch,
+        apiKey: env.UPLOAD_SECRET_API_KEY,
+      });
     this.jobWrapper = jobWrapper || new JobWrapper();
   }
 
@@ -194,12 +194,10 @@ export class FolderWrapper {
   private folderApi: Upload.FolderApi;
 
   constructor() {
-    this.folderApi = new Upload.FolderApi(
-      new Upload.Configuration({
-        fetchApi: fetch,
-        apiKey: env.UPLOAD_SECRET_API_KEY,
-      }),
-    );
+    this.folderApi = new Upload.FolderApi({
+      fetchApi: fetch,
+      apiKey: env.UPLOAD_SECRET_API_KEY,
+    });
   }
 
   async putFolder(
@@ -231,12 +229,10 @@ export class JobWrapper {
   constructor(jobApi?: Upload.JobApi) {
     this.jobApi =
       jobApi ||
-      new Upload.JobApi(
-        new Upload.Configuration({
-          fetchApi: fetch,
-          apiKey: env.UPLOAD_SECRET_API_KEY,
-        }),
-      );
+      new Upload.JobApi({
+        fetchApi: fetch,
+        apiKey: env.UPLOAD_SECRET_API_KEY,
+      });
   }
 
   async getJob(jobOptions: Upload.GetJobParams): Promise<Upload.JobSummary> {

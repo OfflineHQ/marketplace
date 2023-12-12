@@ -1,11 +1,14 @@
-import { passPurchaseProps } from '../PassPurchase/examples';
+import { AppNavLayout } from '@features/app-nav';
+import { WithNormalUser } from '@features/app-nav/stories';
+import { Sheet } from '@ui/components';
+import { Event } from '../Event/Event';
+import { eventProps } from '../Event/examples';
 import { PassPurchaseSheet } from '../PassPurchase/PassPurchaseSheet';
+import { passPurchasePropsWithLotsOfPasses } from '../PassPurchase/examples';
 import {
   PassPurchaseSheetContainer,
   type PassPurchaseSheetContainerProps,
 } from './PassPurchaseSheetContainer';
-import { WithNormalUser } from '@features/appNav/ui/stories';
-import { AppNavLayout } from '@features/appNav/ui';
 
 export const passPurchaseContainerProps = {
   open: true,
@@ -16,9 +19,12 @@ export const PassPurchaseSheetContainerExample = ({
   ...props
 }: PassPurchaseSheetContainerProps) => (
   <AppNavLayout {...WithNormalUser.args}>
-    <PassPurchaseSheetContainer {...props}>
-      <PassPurchaseSheet {...passPurchaseProps} {...props} />
-    </PassPurchaseSheetContainer>
+    <Sheet open={true}>
+      <Event {...eventProps} />
+      <PassPurchaseSheetContainer {...props}>
+        <PassPurchaseSheet {...passPurchasePropsWithLotsOfPasses} {...props} />
+      </PassPurchaseSheetContainer>
+    </Sheet>
   </AppNavLayout>
 );
 

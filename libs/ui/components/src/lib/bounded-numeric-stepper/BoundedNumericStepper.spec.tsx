@@ -1,5 +1,5 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import * as stories from './BoundedNumericStepper.stories';
 
 const { Default, Increment, Decrement, BoundaryConditions } =
@@ -36,11 +36,11 @@ describe('BoundedNumericStepper', () => {
     expect(onChangeSpy).toHaveBeenCalledWith(0);
   });
 
-  test('increment button is disabled at max value', () => {
+  test('increment button is disabled at max value', async () => {
     render(<BoundaryConditions />);
     const incrementButton = screen.getByRole('button', {
       name: /increment value/i,
     });
-    expect(incrementButton).toBeDisabled();
+    await expect(incrementButton).toBeDisabled();
   });
 });

@@ -1,6 +1,7 @@
 /// <reference types="next-auth" />
 
 import type { Kyc } from '@gql/shared/types';
+import type { Role } from '@roles/types';
 import { DefaultJWT } from 'next-auth/jwt';
 
 // Define your additional types here
@@ -47,12 +48,15 @@ export interface AppUser {
   address: string;
   email?: string;
   organizerId?: string;
+  clientId?: string;
   kyc?: Pick<Kyc, 'applicantId' | 'reviewStatus' | 'levelName'>;
+  role?: Role;
+  roles?: Role[];
 }
 
 declare module 'next-auth/jwt' {
   interface JWT extends DefaultJWT {
-    access?: Access;
+    access?: Access | null;
     user: AppUser;
   }
 }

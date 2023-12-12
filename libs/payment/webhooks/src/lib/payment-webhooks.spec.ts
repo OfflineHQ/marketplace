@@ -138,7 +138,7 @@ describe('stripeCheckoutStatus', () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs: test');
+        throw new Error('Error claiming NFTs : Fail');
       });
     mockPayment.refundPayment = jest.fn();
 
@@ -168,7 +168,7 @@ describe('stripeCheckoutStatus', () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs: test');
+        throw new Error('Error claiming NFTs : Fail');
       });
 
     mockPayment.refundPayment = jest.fn().mockImplementationOnce(() => {
@@ -202,5 +202,60 @@ describe('stripeCheckoutStatus', () => {
 
     const result = await stripeCheckoutStatus(mockRequest, mockPayment);
     expect(result.status).toEqual(400);
+  });
+
+  it('Should call refundPayment when confirming checkout session throws an error', async () => {
+    mockPayment.webhookStripeConstructEvent = jest.fn().mockReturnValue({
+      type: StripeCheckoutSessionEnum.completed,
+      data: {
+        object: {
+          mode: 'payment',
+          payment_status: 'paid',
+          id: 'checkoutSessionId',
+          payment_intent: {
+            id: 'paymentIntentId',
+          },
+        },
+      },
+    });
+    mockPayment.confirmedStripeCheckoutSession = jest
+      .fn()
+      .mockImplementation(() => {
+        throw new Error('Error claiming NFTs: test');
+      });
+    mockPayment.refundPayment = jest.fn();
+
+    await stripeCheckoutStatus(mockRequest, mockPayment);
+
+    expect(mockPayment.refundPayment).toHaveBeenCalledWith({
+      paymentIntentId: 'paymentIntentId',
+      checkoutSessionId: 'checkoutSessionId',
+    });
+  });
+
+  it('Should not call refundPayment when confirming checkout session throws an error for something other than an NFT claim', async () => {
+    mockPayment.webhookStripeConstructEvent = jest.fn().mockReturnValue({
+      type: StripeCheckoutSessionEnum.completed,
+      data: {
+        object: {
+          mode: 'payment',
+          payment_status: 'paid',
+          id: 'checkoutSessionId',
+          payment_intent: {
+            id: 'paymentIntentId',
+          },
+        },
+      },
+    });
+    mockPayment.confirmedStripeCheckoutSession = jest
+      .fn()
+      .mockImplementation(() => {
+        throw new Error('Hasura cloud engine error');
+      });
+    mockPayment.refundPayment = jest.fn();
+
+    await stripeCheckoutStatus(mockRequest, mockPayment);
+
+    expect(mockPayment.refundPayment).not.toHaveBeenCalledWith();
   });
 });

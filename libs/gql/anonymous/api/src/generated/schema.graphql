@@ -18,7 +18,7 @@ type Aggregate {
 }
 
 """Asset system model"""
-type Asset implements Node {
+type Asset implements Entity & Node {
   """The time the document was created"""
   createdAt(
     """
@@ -101,6 +101,35 @@ type Asset implements Node {
     skip: Int
     where: EventWhereInput
   ): [Event!]!
+  heroImageOrganizer(
+    after: String
+    before: String
+    first: Int
+
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `heroImageOrganizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+    last: Int
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `heroImageOrganizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+    orderBy: OrganizerOrderByInput
+    skip: Int
+    where: OrganizerWhereInput
+  ): [Organizer!]!
 
   """List of Asset versions"""
   history(
@@ -198,6 +227,35 @@ type Asset implements Node {
     skip: Int
     where: EventPassWhereInput
   ): [EventPass!]!
+  nftImageEventPassDelayedRevealed(
+    after: String
+    before: String
+    first: Int
+
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `nftImageEventPassDelayedRevealed` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+    last: Int
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `nftImageEventPassDelayedRevealed` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+    orderBy: EventPassDelayedRevealedOrderByInput
+    skip: Int
+    where: EventPassDelayedRevealedWhereInput
+  ): [EventPassDelayedRevealed!]!
 
   """The time the document was published. Null on documents in draft stage."""
   publishedAt(
@@ -319,6 +377,7 @@ input AssetCreateInput {
   handle: String!
   height: Float
   heroImageEvent: EventCreateManyInlineInput
+  heroImageOrganizer: OrganizerCreateManyInlineInput
   imageOrganizer: OrganizerCreateManyInlineInput
 
   """
@@ -327,6 +386,7 @@ input AssetCreateInput {
   localizations: AssetCreateLocalizationsInput
   mimeType: String
   nftImageEventPass: EventPassCreateManyInlineInput
+  nftImageEventPassDelayedRevealed: EventPassDelayedRevealedCreateManyInlineInput
   size: Float
   updatedAt: DateTime
   width: Float
@@ -413,6 +473,9 @@ input AssetManyWhereInput {
   heroImageEvent_every: EventWhereInput
   heroImageEvent_none: EventWhereInput
   heroImageEvent_some: EventWhereInput
+  heroImageOrganizer_every: OrganizerWhereInput
+  heroImageOrganizer_none: OrganizerWhereInput
+  heroImageOrganizer_some: OrganizerWhereInput
   id: ID
 
   """All values containing the given string."""
@@ -444,6 +507,9 @@ input AssetManyWhereInput {
   imageOrganizer_every: OrganizerWhereInput
   imageOrganizer_none: OrganizerWhereInput
   imageOrganizer_some: OrganizerWhereInput
+  nftImageEventPassDelayedRevealed_every: EventPassDelayedRevealedWhereInput
+  nftImageEventPassDelayedRevealed_none: EventPassDelayedRevealedWhereInput
+  nftImageEventPassDelayedRevealed_some: EventPassDelayedRevealedWhereInput
   nftImageEventPass_every: EventPassWhereInput
   nftImageEventPass_none: EventPassWhereInput
   nftImageEventPass_some: EventPassWhereInput
@@ -535,12 +601,14 @@ input AssetUpdateInput {
   handle: String
   height: Float
   heroImageEvent: EventUpdateManyInlineInput
+  heroImageOrganizer: OrganizerUpdateManyInlineInput
   imageOrganizer: OrganizerUpdateManyInlineInput
 
   """Manage document localizations"""
   localizations: AssetUpdateLocalizationsInput
   mimeType: String
   nftImageEventPass: EventPassUpdateManyInlineInput
+  nftImageEventPassDelayedRevealed: EventPassDelayedRevealedUpdateManyInlineInput
   size: Float
   width: Float
 }
@@ -780,6 +848,9 @@ input AssetWhereInput {
   heroImageEvent_every: EventWhereInput
   heroImageEvent_none: EventWhereInput
   heroImageEvent_some: EventWhereInput
+  heroImageOrganizer_every: OrganizerWhereInput
+  heroImageOrganizer_none: OrganizerWhereInput
+  heroImageOrganizer_some: OrganizerWhereInput
   id: ID
 
   """All values containing the given string."""
@@ -839,6 +910,9 @@ input AssetWhereInput {
 
   """All values starting with the given string."""
   mimeType_starts_with: String
+  nftImageEventPassDelayedRevealed_every: EventPassDelayedRevealedWhereInput
+  nftImageEventPassDelayedRevealed_none: EventPassDelayedRevealedWhereInput
+  nftImageEventPassDelayedRevealed_some: EventPassDelayedRevealedWhereInput
   nftImageEventPass_every: EventPassWhereInput
   nftImageEventPass_none: EventPassWhereInput
   nftImageEventPass_some: EventPassWhereInput
@@ -1066,8 +1140,77 @@ type DocumentVersion {
   stage: Stage!
 }
 
+"""An object with an ID"""
+interface Entity {
+  """The id of the object."""
+  id: ID!
+
+  """The Stage of an object"""
+  stage: Stage!
+}
+
+"""
+This enumeration holds all typenames that implement the Entity interface. Components and models implement the Entity interface.
+"""
+enum EntityTypeName {
+  """Asset system model"""
+  Asset
+
+  """Root event model"""
+  Event
+
+  """
+  Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several.
+  """
+  EventDateLocation
+
+  """
+  Define a pass for an event with different options, price, number of passes etc.
+  """
+  EventPass
+
+  """
+  The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events.
+  """
+  EventPassDelayedRevealed
+
+  """
+  A model for location data (point on a map) + additional info such as street, venue etc.
+  """
+  LocationAddress
+
+  """
+  An organizer is an entity that launch events and handle the pass benefits.
+  """
+  Organizer
+
+  """
+  Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations.
+  """
+  PassOption
+
+  """Scheduled Operation system model"""
+  ScheduledOperation
+
+  """Scheduled Release system model"""
+  ScheduledRelease
+
+  """User system model"""
+  User
+}
+
+"""Allows to specify input to query models and components directly"""
+input EntityWhereInput {
+  """The ID of an object"""
+  id: ID!
+  stage: Stage!
+
+  """The Type name of an object"""
+  typename: EntityTypeName!
+}
+
 """Root event model"""
-type Event implements Node {
+type Event implements Entity & Node {
   """The time the document was created"""
   createdAt(
     """
@@ -1176,6 +1319,10 @@ type Event implements Node {
     skip: Int
     where: EventPassWhereInput
   ): [EventPass!]!
+
+  """
+  An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen.
+  """
   heroImage(
     """
     Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
@@ -1197,6 +1344,11 @@ type Event implements Node {
     """
     locales: [Locale!]
   ): Asset!
+
+  """
+  Optional field used to style your hero image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast)
+  """
+  heroImageClasses: String
 
   """List of Event versions"""
   history(
@@ -1390,6 +1542,7 @@ input EventCreateInput {
   eventDateLocations: EventDateLocationCreateManyInlineInput
   eventPasses: EventPassCreateManyInlineInput
   heroImage: AssetCreateOneInlineInput!
+  heroImageClasses: String
 
   """
   Inline mutations for managing document localizations excluding the default locale
@@ -1442,7 +1595,7 @@ input EventCreateOneInlineInput {
 """
 Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several.
 """
-type EventDateLocation {
+type EventDateLocation implements Entity {
   """The end date including time on the UTC timezone."""
   dateEnd: DateTime!
 
@@ -1762,6 +1915,34 @@ input EventManyWhereInput {
   eventPasses_none: EventPassWhereInput
   eventPasses_some: EventPassWhereInput
   heroImage: AssetWhereInput
+  heroImageClasses: String
+
+  """All values containing the given string."""
+  heroImageClasses_contains: String
+
+  """All values ending with the given string."""
+  heroImageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  heroImageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  heroImageClasses_not: String
+
+  """All values not containing the given string."""
+  heroImageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  heroImageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  heroImageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  heroImageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  heroImageClasses_starts_with: String
   id: ID
 
   """All values containing the given string."""
@@ -1881,6 +2062,8 @@ input EventManyWhereInput {
 enum EventOrderByInput {
   createdAt_ASC
   createdAt_DESC
+  heroImageClasses_ASC
+  heroImageClasses_DESC
   id_ASC
   id_DESC
   public_ASC
@@ -1900,7 +2083,7 @@ enum EventOrderByInput {
 """
 Define a pass for an event with different options, price, number of passes etc.
 """
-type EventPass implements Node {
+type EventPass implements Entity & Node {
   """The time the document was created"""
   createdAt(
     """
@@ -1971,6 +2154,31 @@ type EventPass implements Node {
     """
     locales: [Locale!]
   ): Event
+
+  """
+  This is a direct link from your `EventPass` to `EventPassDelayedReveal`, enabling access to additional, exclusive details that are revealed afterwards on the back-office.
+  """
+  eventPassDelayedRevealed(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `eventPassDelayedRevealed` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `eventPassDelayedRevealed` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): EventPassDelayedRevealed
   eventPassOrderSums: eventPassOrderSums
   eventPassPricing: eventPassPricing
 
@@ -2199,11 +2407,13 @@ type EventPassConnection {
 }
 
 input EventPassCreateInput {
+  clptwshsk4wx601usb3uggcu7: EventPassDelayedRevealedCreateManyInlineInput
   createdAt: DateTime
 
   """description input for default locale (en)"""
   description: String!
   event: EventCreateOneInlineInput
+  eventPassDelayedRevealed: EventPassDelayedRevealedCreateOneInlineInput
 
   """
   Inline mutations for managing document localizations excluding the default locale
@@ -2243,6 +2453,993 @@ input EventPassCreateManyInlineInput {
 
   """Create and connect multiple existing EventPass documents"""
   create: [EventPassCreateInput!]
+}
+
+input EventPassCreateOneInlineInput {
+  """Connect one existing EventPass document"""
+  connect: EventPassWhereUniqueInput
+
+  """Create and connect one EventPass document"""
+  create: EventPassCreateInput
+}
+
+"""
+The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events.
+"""
+type EventPassDelayedRevealed implements Entity & Node {
+  """The time the document was created"""
+  createdAt(
+    """
+    Variation of DateTime field to return, allows value from base document, current localization, or combined by returning the newer value of both
+    """
+    variation: SystemDateTimeFieldVariation! = COMBINED
+  ): DateTime!
+
+  """User that created this document"""
+  createdBy(
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `createdBy` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `createdBy` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): User
+
+  """A brief overview or summary of the event pass"""
+  description: String!
+
+  """Get the document in other stages"""
+  documentInStages(
+    """Decides if the current stage should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Decides if the documents should match the parent documents locale or should use the fallback order defined in the tree
+    """
+    inheritLocale: Boolean! = false
+
+    """Potential stages that should be returned"""
+    stages: [Stage!]! = [DRAFT, PUBLISHED]
+  ): [EventPassDelayedRevealed!]!
+
+  """
+  Links directly to `EventPass`, providing initial, temporary details about the NFT until the full reveal occurs.
+  """
+  eventPass(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `eventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `eventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): EventPass
+
+  """List of EventPassDelayedRevealed versions"""
+  history(
+    limit: Int! = 10
+    skip: Int! = 0
+
+    """
+    This is optional and can be used to fetch the document version history for a specific stage instead of the current one
+    """
+    stageOverride: Stage
+  ): [Version!]!
+
+  """The unique identifier"""
+  id: ID!
+
+  """System Locale field"""
+  locale: Locale!
+
+  """Get the other localizations for this document"""
+  localizations(
+    """Decides if the current locale should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Potential locales that should be returned. 
+    
+    The order of locales will also override locale fall-backing behaviour in the query's subtree.
+    
+    Note any related model with localized fields in the query's subtree will be affected.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    
+    Consider using this in conjunction with forceParentLocale on the children relation fields.
+    """
+    locales: [Locale!]! = [en, fr]
+  ): [EventPassDelayedRevealed!]!
+
+  """The official name of the event pass"""
+  name: String!
+
+  """
+  Fixed description pertaining to the NFT. This content is static and non-localizable.
+  """
+  nftDescription: String!
+
+  """
+  Permanent image representing the NFT. Advised resolution is 350 x 350 pixels. Image content is non-changeable and cannot be localized.
+  """
+  nftImage(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `nftImage` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `nftImage` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): Asset!
+
+  """
+  Permanent name associated with the NFT. Cannot be changed or localized.
+  """
+  nftName: String!
+
+  """
+  Define the different pass options. An option is defined for a specific location and timeframe
+  """
+  passOptions(
+    after: String
+    before: String
+    first: Int
+
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `passOptions` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+    last: Int
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `passOptions` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+    orderBy: PassOptionOrderByInput
+    skip: Int
+    where: PassOptionWhereInput
+  ): [PassOption!]!
+
+  """The time the document was published. Null on documents in draft stage."""
+  publishedAt(
+    """
+    Variation of DateTime field to return, allows value from base document, current localization, or combined by returning the newer value of both
+    """
+    variation: SystemDateTimeFieldVariation! = COMBINED
+  ): DateTime
+
+  """User that last published this document"""
+  publishedBy(
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `publishedBy` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `publishedBy` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): User
+  scheduledIn(
+    after: String
+    before: String
+    first: Int
+
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `scheduledIn` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+    last: Int
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `scheduledIn` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+    skip: Int
+    where: ScheduledOperationWhereInput
+  ): [ScheduledOperation!]!
+
+  """System stage field"""
+  stage: Stage!
+
+  """The time the document was updated"""
+  updatedAt(
+    """
+    Variation of DateTime field to return, allows value from base document, current localization, or combined by returning the newer value of both
+    """
+    variation: SystemDateTimeFieldVariation! = COMBINED
+  ): DateTime!
+
+  """User that last updated this document"""
+  updatedBy(
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `updatedBy` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `updatedBy` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): User
+}
+
+input EventPassDelayedRevealedConnectInput {
+  """
+  Allow to specify document position in list of connected documents, will default to appending at end of list
+  """
+  position: ConnectPositionInput
+
+  """Document to connect"""
+  where: EventPassDelayedRevealedWhereUniqueInput!
+}
+
+"""A connection to a list of items."""
+type EventPassDelayedRevealedConnection {
+  aggregate: Aggregate!
+
+  """A list of edges."""
+  edges: [EventPassDelayedRevealedEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+input EventPassDelayedRevealedCreateInput {
+  clptyt58r52j901t9gkjuht2t: EventPassCreateManyInlineInput
+  createdAt: DateTime
+
+  """description input for default locale (en)"""
+  description: String!
+  eventPass: EventPassCreateOneInlineInput
+
+  """
+  Inline mutations for managing document localizations excluding the default locale
+  """
+  localizations: EventPassDelayedRevealedCreateLocalizationsInput
+
+  """name input for default locale (en)"""
+  name: String!
+  nftDescription: String!
+  nftImage: AssetCreateOneInlineInput!
+  nftName: String!
+  passOptions: PassOptionCreateManyInlineInput
+  updatedAt: DateTime
+}
+
+input EventPassDelayedRevealedCreateLocalizationDataInput {
+  createdAt: DateTime
+  description: String!
+  name: String!
+  updatedAt: DateTime
+}
+
+input EventPassDelayedRevealedCreateLocalizationInput {
+  """Localization input"""
+  data: EventPassDelayedRevealedCreateLocalizationDataInput!
+  locale: Locale!
+}
+
+input EventPassDelayedRevealedCreateLocalizationsInput {
+  """Create localizations for the newly-created document"""
+  create: [EventPassDelayedRevealedCreateLocalizationInput!]
+}
+
+input EventPassDelayedRevealedCreateManyInlineInput {
+  """Connect multiple existing EventPassDelayedRevealed documents"""
+  connect: [EventPassDelayedRevealedWhereUniqueInput!]
+
+  """
+  Create and connect multiple existing EventPassDelayedRevealed documents
+  """
+  create: [EventPassDelayedRevealedCreateInput!]
+}
+
+input EventPassDelayedRevealedCreateOneInlineInput {
+  """Connect one existing EventPassDelayedRevealed document"""
+  connect: EventPassDelayedRevealedWhereUniqueInput
+
+  """Create and connect one EventPassDelayedRevealed document"""
+  create: EventPassDelayedRevealedCreateInput
+}
+
+"""An edge in a connection."""
+type EventPassDelayedRevealedEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: EventPassDelayedRevealed!
+}
+
+"""Identifies documents"""
+input EventPassDelayedRevealedManyWhereInput {
+  """Logical AND on all given filters."""
+  AND: [EventPassDelayedRevealedWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [EventPassDelayedRevealedWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [EventPassDelayedRevealedWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  createdAt: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  createdAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime]
+  createdBy: UserWhereInput
+  documentInStages_every: EventPassDelayedRevealedWhereStageInput
+  documentInStages_none: EventPassDelayedRevealedWhereStageInput
+  documentInStages_some: EventPassDelayedRevealedWhereStageInput
+  eventPass: EventPassWhereInput
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  nftDescription: String
+
+  """All values containing the given string."""
+  nftDescription_contains: String
+
+  """All values ending with the given string."""
+  nftDescription_ends_with: String
+
+  """All values that are contained in given list."""
+  nftDescription_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftDescription_not: String
+
+  """All values not containing the given string."""
+  nftDescription_not_contains: String
+
+  """All values not ending with the given string"""
+  nftDescription_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftDescription_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftDescription_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftDescription_starts_with: String
+  nftImage: AssetWhereInput
+  nftName: String
+
+  """All values containing the given string."""
+  nftName_contains: String
+
+  """All values ending with the given string."""
+  nftName_ends_with: String
+
+  """All values that are contained in given list."""
+  nftName_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftName_not: String
+
+  """All values not containing the given string."""
+  nftName_not_contains: String
+
+  """All values not ending with the given string"""
+  nftName_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftName_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftName_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftName_starts_with: String
+  passOptions_every: PassOptionWhereInput
+  passOptions_none: PassOptionWhereInput
+  passOptions_some: PassOptionWhereInput
+  publishedAt: DateTime
+
+  """All values greater than the given value."""
+  publishedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  publishedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  publishedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  publishedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  publishedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  publishedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  publishedAt_not_in: [DateTime]
+  publishedBy: UserWhereInput
+  scheduledIn_every: ScheduledOperationWhereInput
+  scheduledIn_none: ScheduledOperationWhereInput
+  scheduledIn_some: ScheduledOperationWhereInput
+  updatedAt: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  updatedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime]
+  updatedBy: UserWhereInput
+}
+
+enum EventPassDelayedRevealedOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  description_ASC
+  description_DESC
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  nftDescription_ASC
+  nftDescription_DESC
+  nftName_ASC
+  nftName_DESC
+  publishedAt_ASC
+  publishedAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+input EventPassDelayedRevealedUpdateInput {
+  clptyt58r52j901t9gkjuht2t: EventPassUpdateManyInlineInput
+
+  """description input for default locale (en)"""
+  description: String
+  eventPass: EventPassUpdateOneInlineInput
+
+  """Manage document localizations"""
+  localizations: EventPassDelayedRevealedUpdateLocalizationsInput
+
+  """name input for default locale (en)"""
+  name: String
+  nftDescription: String
+  nftImage: AssetUpdateOneInlineInput
+  nftName: String
+  passOptions: PassOptionUpdateManyInlineInput
+}
+
+input EventPassDelayedRevealedUpdateLocalizationDataInput {
+  description: String
+  name: String
+}
+
+input EventPassDelayedRevealedUpdateLocalizationInput {
+  data: EventPassDelayedRevealedUpdateLocalizationDataInput!
+  locale: Locale!
+}
+
+input EventPassDelayedRevealedUpdateLocalizationsInput {
+  """Localizations to create"""
+  create: [EventPassDelayedRevealedCreateLocalizationInput!]
+
+  """Localizations to delete"""
+  delete: [Locale!]
+
+  """Localizations to update"""
+  update: [EventPassDelayedRevealedUpdateLocalizationInput!]
+  upsert: [EventPassDelayedRevealedUpsertLocalizationInput!]
+}
+
+input EventPassDelayedRevealedUpdateManyInlineInput {
+  """Connect multiple existing EventPassDelayedRevealed documents"""
+  connect: [EventPassDelayedRevealedConnectInput!]
+
+  """Create and connect multiple EventPassDelayedRevealed documents"""
+  create: [EventPassDelayedRevealedCreateInput!]
+
+  """Delete multiple EventPassDelayedRevealed documents"""
+  delete: [EventPassDelayedRevealedWhereUniqueInput!]
+
+  """Disconnect multiple EventPassDelayedRevealed documents"""
+  disconnect: [EventPassDelayedRevealedWhereUniqueInput!]
+
+  """
+  Override currently-connected documents with multiple existing EventPassDelayedRevealed documents
+  """
+  set: [EventPassDelayedRevealedWhereUniqueInput!]
+
+  """Update multiple EventPassDelayedRevealed documents"""
+  update: [EventPassDelayedRevealedUpdateWithNestedWhereUniqueInput!]
+
+  """Upsert multiple EventPassDelayedRevealed documents"""
+  upsert: [EventPassDelayedRevealedUpsertWithNestedWhereUniqueInput!]
+}
+
+input EventPassDelayedRevealedUpdateManyInput {
+  """description input for default locale (en)"""
+  description: String
+
+  """Optional updates to localizations"""
+  localizations: EventPassDelayedRevealedUpdateManyLocalizationsInput
+
+  """name input for default locale (en)"""
+  name: String
+  nftDescription: String
+  nftName: String
+}
+
+input EventPassDelayedRevealedUpdateManyLocalizationDataInput {
+  description: String
+  name: String
+}
+
+input EventPassDelayedRevealedUpdateManyLocalizationInput {
+  data: EventPassDelayedRevealedUpdateManyLocalizationDataInput!
+  locale: Locale!
+}
+
+input EventPassDelayedRevealedUpdateManyLocalizationsInput {
+  """Localizations to update"""
+  update: [EventPassDelayedRevealedUpdateManyLocalizationInput!]
+}
+
+input EventPassDelayedRevealedUpdateOneInlineInput {
+  """Connect existing EventPassDelayedRevealed document"""
+  connect: EventPassDelayedRevealedWhereUniqueInput
+
+  """Create and connect one EventPassDelayedRevealed document"""
+  create: EventPassDelayedRevealedCreateInput
+
+  """Delete currently connected EventPassDelayedRevealed document"""
+  delete: Boolean
+
+  """Disconnect currently connected EventPassDelayedRevealed document"""
+  disconnect: Boolean
+
+  """Update single EventPassDelayedRevealed document"""
+  update: EventPassDelayedRevealedUpdateWithNestedWhereUniqueInput
+
+  """Upsert single EventPassDelayedRevealed document"""
+  upsert: EventPassDelayedRevealedUpsertWithNestedWhereUniqueInput
+}
+
+input EventPassDelayedRevealedUpdateWithNestedWhereUniqueInput {
+  """Document to update"""
+  data: EventPassDelayedRevealedUpdateInput!
+
+  """Unique document search"""
+  where: EventPassDelayedRevealedWhereUniqueInput!
+}
+
+input EventPassDelayedRevealedUpsertInput {
+  """Create document if it didn't exist"""
+  create: EventPassDelayedRevealedCreateInput!
+
+  """Update document if it exists"""
+  update: EventPassDelayedRevealedUpdateInput!
+}
+
+input EventPassDelayedRevealedUpsertLocalizationInput {
+  create: EventPassDelayedRevealedCreateLocalizationDataInput!
+  locale: Locale!
+  update: EventPassDelayedRevealedUpdateLocalizationDataInput!
+}
+
+input EventPassDelayedRevealedUpsertWithNestedWhereUniqueInput {
+  """Upsert data"""
+  data: EventPassDelayedRevealedUpsertInput!
+
+  """Unique document search"""
+  where: EventPassDelayedRevealedWhereUniqueInput!
+}
+
+"""
+This contains a set of filters that can be used to compare values internally
+"""
+input EventPassDelayedRevealedWhereComparatorInput {
+  """
+  This field can be used to request to check if the entry is outdated by internal comparison
+  """
+  outdated_to: Boolean
+}
+
+"""Identifies documents"""
+input EventPassDelayedRevealedWhereInput {
+  """Logical AND on all given filters."""
+  AND: [EventPassDelayedRevealedWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [EventPassDelayedRevealedWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [EventPassDelayedRevealedWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  createdAt: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  createdAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime]
+  createdBy: UserWhereInput
+  description: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values that are contained in given list."""
+  description_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  description_not: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values not ending with the given string"""
+  description_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  description_not_in: [String]
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+  documentInStages_every: EventPassDelayedRevealedWhereStageInput
+  documentInStages_none: EventPassDelayedRevealedWhereStageInput
+  documentInStages_some: EventPassDelayedRevealedWhereStageInput
+  eventPass: EventPassWhereInput
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  name: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values that are contained in given list."""
+  name_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  name_not: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values not ending with the given string"""
+  name_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  name_not_in: [String]
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+  nftDescription: String
+
+  """All values containing the given string."""
+  nftDescription_contains: String
+
+  """All values ending with the given string."""
+  nftDescription_ends_with: String
+
+  """All values that are contained in given list."""
+  nftDescription_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftDescription_not: String
+
+  """All values not containing the given string."""
+  nftDescription_not_contains: String
+
+  """All values not ending with the given string"""
+  nftDescription_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftDescription_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftDescription_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftDescription_starts_with: String
+  nftImage: AssetWhereInput
+  nftName: String
+
+  """All values containing the given string."""
+  nftName_contains: String
+
+  """All values ending with the given string."""
+  nftName_ends_with: String
+
+  """All values that are contained in given list."""
+  nftName_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftName_not: String
+
+  """All values not containing the given string."""
+  nftName_not_contains: String
+
+  """All values not ending with the given string"""
+  nftName_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftName_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftName_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftName_starts_with: String
+  passOptions_every: PassOptionWhereInput
+  passOptions_none: PassOptionWhereInput
+  passOptions_some: PassOptionWhereInput
+  publishedAt: DateTime
+
+  """All values greater than the given value."""
+  publishedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  publishedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  publishedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  publishedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  publishedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  publishedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  publishedAt_not_in: [DateTime]
+  publishedBy: UserWhereInput
+  scheduledIn_every: ScheduledOperationWhereInput
+  scheduledIn_none: ScheduledOperationWhereInput
+  scheduledIn_some: ScheduledOperationWhereInput
+  updatedAt: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  updatedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime]
+  updatedBy: UserWhereInput
+}
+
+"""
+The document in stages filter allows specifying a stage entry to cross compare the same document between different stages
+"""
+input EventPassDelayedRevealedWhereStageInput {
+  """Logical AND on all given filters."""
+  AND: [EventPassDelayedRevealedWhereStageInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [EventPassDelayedRevealedWhereStageInput!]
+
+  """Logical OR on all given filters."""
+  OR: [EventPassDelayedRevealedWhereStageInput!]
+
+  """
+  This field contains fields which can be set as true or false to specify an internal comparison
+  """
+  compareWithParent: EventPassDelayedRevealedWhereComparatorInput
+
+  """Specify the stage to compare with"""
+  stage: Stage
+}
+
+"""References EventPassDelayedRevealed record uniquely"""
+input EventPassDelayedRevealedWhereUniqueInput {
+  id: ID
 }
 
 """An edge in a connection."""
@@ -2294,6 +3491,7 @@ input EventPassManyWhereInput {
   documentInStages_none: EventPassWhereStageInput
   documentInStages_some: EventPassWhereStageInput
   event: EventWhereInput
+  eventPassDelayedRevealed: EventPassDelayedRevealedWhereInput
   id: ID
 
   """All values containing the given string."""
@@ -2453,9 +3651,12 @@ enum EventPassOrderByInput {
 }
 
 input EventPassUpdateInput {
+  clptwshsk4wx601usb3uggcu7: EventPassDelayedRevealedUpdateManyInlineInput
+
   """description input for default locale (en)"""
   description: String
   event: EventUpdateOneInlineInput
+  eventPassDelayedRevealed: EventPassDelayedRevealedUpdateOneInlineInput
 
   """Manage document localizations"""
   localizations: EventPassUpdateLocalizationsInput
@@ -2541,6 +3742,26 @@ input EventPassUpdateManyLocalizationInput {
 input EventPassUpdateManyLocalizationsInput {
   """Localizations to update"""
   update: [EventPassUpdateManyLocalizationInput!]
+}
+
+input EventPassUpdateOneInlineInput {
+  """Connect existing EventPass document"""
+  connect: EventPassWhereUniqueInput
+
+  """Create and connect one EventPass document"""
+  create: EventPassCreateInput
+
+  """Delete currently connected EventPass document"""
+  delete: Boolean
+
+  """Disconnect currently connected EventPass document"""
+  disconnect: Boolean
+
+  """Update single EventPass document"""
+  update: EventPassUpdateWithNestedWhereUniqueInput
+
+  """Upsert single EventPass document"""
+  upsert: EventPassUpsertWithNestedWhereUniqueInput
 }
 
 input EventPassUpdateWithNestedWhereUniqueInput {
@@ -2651,6 +3872,7 @@ input EventPassWhereInput {
   documentInStages_none: EventPassWhereStageInput
   documentInStages_some: EventPassWhereStageInput
   event: EventWhereInput
+  eventPassDelayedRevealed: EventPassDelayedRevealedWhereInput
   id: ID
 
   """All values containing the given string."""
@@ -2851,6 +4073,7 @@ input EventUpdateInput {
   eventDateLocations: EventDateLocationUpdateManyInlineInput
   eventPasses: EventPassUpdateManyInlineInput
   heroImage: AssetUpdateOneInlineInput
+  heroImageClasses: String
 
   """Manage document localizations"""
   localizations: EventUpdateLocalizationsInput
@@ -2913,6 +4136,7 @@ input EventUpdateManyInlineInput {
 input EventUpdateManyInput {
   """description input for default locale (en)"""
   description: RichTextAST
+  heroImageClasses: String
 
   """Optional updates to localizations"""
   localizations: EventUpdateManyLocalizationsInput
@@ -3044,6 +4268,34 @@ input EventWhereInput {
   eventPasses_none: EventPassWhereInput
   eventPasses_some: EventPassWhereInput
   heroImage: AssetWhereInput
+  heroImageClasses: String
+
+  """All values containing the given string."""
+  heroImageClasses_contains: String
+
+  """All values ending with the given string."""
+  heroImageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  heroImageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  heroImageClasses_not: String
+
+  """All values not containing the given string."""
+  heroImageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  heroImageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  heroImageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  heroImageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  heroImageClasses_starts_with: String
   id: ID
 
   """All values containing the given string."""
@@ -3299,7 +4551,7 @@ type Location {
 """
 A model for location data (point on a map) + additional info such as street, venue etc.
 """
-type LocationAddress {
+type LocationAddress implements Entity {
   """Name of the city"""
   city: String!
 
@@ -3312,7 +4564,9 @@ type LocationAddress {
   """The unique identifier"""
   id: ID!
 
-  """Place ID from google maps"""
+  """
+  Place ID from google maps. Use this tool to retrieve the correct Place ID from the location you want to open on google maps while clicking on the address provided: https://developers.google.com/maps/documentation/places/web-service/place-id#find-id
+  """
   placeId: String
   postalCode: String!
 
@@ -3661,7 +4915,7 @@ interface Node {
 """
 An organizer is an entity that launch events and handle the pass benefits.
 """
-type Organizer implements Node {
+type Organizer implements Entity & Node {
   """The time the document was created"""
   createdAt(
     """
@@ -3693,6 +4947,11 @@ type Organizer implements Node {
     locales: [Locale!]
   ): User
   description: OrganizerDescriptionRichText
+
+  """
+  The discord widge id of the organizer. You need to enable the widget in your discord server and copy the value in `server id`. For details instruction of how to enable and find the id, refer to this section https://dev.fandom.com/wiki/DiscordIntegrator#Enabling_the_widget
+  """
+  discordWidgetId: String
 
   """Get the document in other stages"""
   documentInStages(
@@ -3737,6 +4996,41 @@ type Organizer implements Node {
     where: EventWhereInput
   ): [Event!]!
 
+  """
+  The facebook handle (username) of the organizer. You can just copy the text on your facebook landing page on the URL, like 'johndoe' for 'https://www.facebook.com/johndoe'.
+  """
+  facebookHandle: String
+
+  """
+  An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen.
+  """
+  heroImage(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `heroImage` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `heroImage` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): Asset!
+
+  """
+  Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast)
+  """
+  heroImageClasses: String
+
   """List of Organizer versions"""
   history(
     limit: Int! = 10
@@ -3750,6 +5044,10 @@ type Organizer implements Node {
 
   """The unique identifier"""
   id: ID!
+
+  """
+  Image that represent the organizer, typically its logo. Advised resolution is 350 x 350 pixels, in square format with transparency (for ex: svg or png but not jpg) so that the image always look good either on light or dark mode.
+  """
   image(
     """
     Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
@@ -3771,6 +5069,16 @@ type Organizer implements Node {
     """
     locales: [Locale!]
   ): Asset!
+
+  """
+  Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast)
+  """
+  imageClasses: String
+
+  """
+  The instagram handle (username) of the organizer. You can just copy the name on your instagram landing page next to the follow button.
+  """
+  instagramHandle: String
 
   """System Locale field"""
   locale: Locale!
@@ -3862,6 +5170,21 @@ type Organizer implements Node {
   """System stage field"""
   stage: Stage!
 
+  """
+  The telegram handle (username) of the organizer. You can just copy the text on your telegram profile page in parameters after the @, like 'johndoe' for '@johndoe'.
+  """
+  telegramHandle: String
+
+  """
+  The tiktok handle (username) of the organizer. You can just copy the name on your tiktok landing page.
+  """
+  tiktokHandle: String
+
+  """
+  The twitter (X) handle (username) of the organizer. You can just copy the text on your twitter landing page after the @, like 'johndoe' for '@johndoe'.
+  """
+  twitterHandle: String
+
   """The time the document was updated"""
   updatedAt(
     """
@@ -3892,6 +5215,11 @@ type Organizer implements Node {
     """
     locales: [Locale!]
   ): User
+
+  """
+  The youtube handle (username) of the organizer. YYou can just copy the text on your youtube landing page after the @, like 'johndoe' for '@johndoe'.
+  """
+  youtubeHandle: String
 }
 
 input OrganizerConnectInput {
@@ -3920,8 +5248,14 @@ input OrganizerCreateInput {
 
   """description input for default locale (en)"""
   description: RichTextAST
+  discordWidgetId: String
   events: EventCreateManyInlineInput
+  facebookHandle: String
+  heroImage: AssetCreateOneInlineInput!
+  heroImageClasses: String
   image: AssetCreateOneInlineInput!
+  imageClasses: String
+  instagramHandle: String
 
   """
   Inline mutations for managing document localizations excluding the default locale
@@ -3929,7 +5263,11 @@ input OrganizerCreateInput {
   localizations: OrganizerCreateLocalizationsInput
   name: String!
   slug: String!
+  telegramHandle: String
+  tiktokHandle: String
+  twitterHandle: String
   updatedAt: DateTime
+  youtubeHandle: String
 }
 
 input OrganizerCreateLocalizationDataInput {
@@ -4026,12 +5364,97 @@ input OrganizerManyWhereInput {
   """All values that are not contained in given list."""
   createdAt_not_in: [DateTime]
   createdBy: UserWhereInput
+  discordWidgetId: String
+
+  """All values containing the given string."""
+  discordWidgetId_contains: String
+
+  """All values ending with the given string."""
+  discordWidgetId_ends_with: String
+
+  """All values that are contained in given list."""
+  discordWidgetId_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  discordWidgetId_not: String
+
+  """All values not containing the given string."""
+  discordWidgetId_not_contains: String
+
+  """All values not ending with the given string"""
+  discordWidgetId_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  discordWidgetId_not_in: [String]
+
+  """All values not starting with the given string."""
+  discordWidgetId_not_starts_with: String
+
+  """All values starting with the given string."""
+  discordWidgetId_starts_with: String
   documentInStages_every: OrganizerWhereStageInput
   documentInStages_none: OrganizerWhereStageInput
   documentInStages_some: OrganizerWhereStageInput
   events_every: EventWhereInput
   events_none: EventWhereInput
   events_some: EventWhereInput
+  facebookHandle: String
+
+  """All values containing the given string."""
+  facebookHandle_contains: String
+
+  """All values ending with the given string."""
+  facebookHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  facebookHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  facebookHandle_not: String
+
+  """All values not containing the given string."""
+  facebookHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  facebookHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  facebookHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  facebookHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  facebookHandle_starts_with: String
+  heroImage: AssetWhereInput
+  heroImageClasses: String
+
+  """All values containing the given string."""
+  heroImageClasses_contains: String
+
+  """All values ending with the given string."""
+  heroImageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  heroImageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  heroImageClasses_not: String
+
+  """All values not containing the given string."""
+  heroImageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  heroImageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  heroImageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  heroImageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  heroImageClasses_starts_with: String
   id: ID
 
   """All values containing the given string."""
@@ -4061,6 +5484,62 @@ input OrganizerManyWhereInput {
   """All values starting with the given string."""
   id_starts_with: ID
   image: AssetWhereInput
+  imageClasses: String
+
+  """All values containing the given string."""
+  imageClasses_contains: String
+
+  """All values ending with the given string."""
+  imageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  imageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  imageClasses_not: String
+
+  """All values not containing the given string."""
+  imageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  imageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  imageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  imageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  imageClasses_starts_with: String
+  instagramHandle: String
+
+  """All values containing the given string."""
+  instagramHandle_contains: String
+
+  """All values ending with the given string."""
+  instagramHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  instagramHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  instagramHandle_not: String
+
+  """All values not containing the given string."""
+  instagramHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  instagramHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  instagramHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  instagramHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  instagramHandle_starts_with: String
   name: String
 
   """All values containing the given string."""
@@ -4143,6 +5622,90 @@ input OrganizerManyWhereInput {
 
   """All values starting with the given string."""
   slug_starts_with: String
+  telegramHandle: String
+
+  """All values containing the given string."""
+  telegramHandle_contains: String
+
+  """All values ending with the given string."""
+  telegramHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  telegramHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  telegramHandle_not: String
+
+  """All values not containing the given string."""
+  telegramHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  telegramHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  telegramHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  telegramHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  telegramHandle_starts_with: String
+  tiktokHandle: String
+
+  """All values containing the given string."""
+  tiktokHandle_contains: String
+
+  """All values ending with the given string."""
+  tiktokHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  tiktokHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  tiktokHandle_not: String
+
+  """All values not containing the given string."""
+  tiktokHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  tiktokHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  tiktokHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  tiktokHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  tiktokHandle_starts_with: String
+  twitterHandle: String
+
+  """All values containing the given string."""
+  twitterHandle_contains: String
+
+  """All values ending with the given string."""
+  twitterHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  twitterHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  twitterHandle_not: String
+
+  """All values not containing the given string."""
+  twitterHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  twitterHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  twitterHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  twitterHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  twitterHandle_starts_with: String
   updatedAt: DateTime
 
   """All values greater than the given value."""
@@ -4166,33 +5729,89 @@ input OrganizerManyWhereInput {
   """All values that are not contained in given list."""
   updatedAt_not_in: [DateTime]
   updatedBy: UserWhereInput
+  youtubeHandle: String
+
+  """All values containing the given string."""
+  youtubeHandle_contains: String
+
+  """All values ending with the given string."""
+  youtubeHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  youtubeHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  youtubeHandle_not: String
+
+  """All values not containing the given string."""
+  youtubeHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  youtubeHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  youtubeHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  youtubeHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  youtubeHandle_starts_with: String
 }
 
 enum OrganizerOrderByInput {
   createdAt_ASC
   createdAt_DESC
+  discordWidgetId_ASC
+  discordWidgetId_DESC
+  facebookHandle_ASC
+  facebookHandle_DESC
+  heroImageClasses_ASC
+  heroImageClasses_DESC
   id_ASC
   id_DESC
+  imageClasses_ASC
+  imageClasses_DESC
+  instagramHandle_ASC
+  instagramHandle_DESC
   name_ASC
   name_DESC
   publishedAt_ASC
   publishedAt_DESC
   slug_ASC
   slug_DESC
+  telegramHandle_ASC
+  telegramHandle_DESC
+  tiktokHandle_ASC
+  tiktokHandle_DESC
+  twitterHandle_ASC
+  twitterHandle_DESC
   updatedAt_ASC
   updatedAt_DESC
+  youtubeHandle_ASC
+  youtubeHandle_DESC
 }
 
 input OrganizerUpdateInput {
   """description input for default locale (en)"""
   description: RichTextAST
+  discordWidgetId: String
   events: EventUpdateManyInlineInput
+  facebookHandle: String
+  heroImage: AssetUpdateOneInlineInput
+  heroImageClasses: String
   image: AssetUpdateOneInlineInput
+  imageClasses: String
+  instagramHandle: String
 
   """Manage document localizations"""
   localizations: OrganizerUpdateLocalizationsInput
   name: String
   slug: String
+  telegramHandle: String
+  tiktokHandle: String
+  twitterHandle: String
+  youtubeHandle: String
 }
 
 input OrganizerUpdateLocalizationDataInput {
@@ -4244,9 +5863,18 @@ input OrganizerUpdateManyInlineInput {
 input OrganizerUpdateManyInput {
   """description input for default locale (en)"""
   description: RichTextAST
+  discordWidgetId: String
+  facebookHandle: String
+  heroImageClasses: String
+  imageClasses: String
+  instagramHandle: String
 
   """Optional updates to localizations"""
   localizations: OrganizerUpdateManyLocalizationsInput
+  telegramHandle: String
+  tiktokHandle: String
+  twitterHandle: String
+  youtubeHandle: String
 }
 
 input OrganizerUpdateManyLocalizationDataInput {
@@ -4359,12 +5987,97 @@ input OrganizerWhereInput {
   """All values that are not contained in given list."""
   createdAt_not_in: [DateTime]
   createdBy: UserWhereInput
+  discordWidgetId: String
+
+  """All values containing the given string."""
+  discordWidgetId_contains: String
+
+  """All values ending with the given string."""
+  discordWidgetId_ends_with: String
+
+  """All values that are contained in given list."""
+  discordWidgetId_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  discordWidgetId_not: String
+
+  """All values not containing the given string."""
+  discordWidgetId_not_contains: String
+
+  """All values not ending with the given string"""
+  discordWidgetId_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  discordWidgetId_not_in: [String]
+
+  """All values not starting with the given string."""
+  discordWidgetId_not_starts_with: String
+
+  """All values starting with the given string."""
+  discordWidgetId_starts_with: String
   documentInStages_every: OrganizerWhereStageInput
   documentInStages_none: OrganizerWhereStageInput
   documentInStages_some: OrganizerWhereStageInput
   events_every: EventWhereInput
   events_none: EventWhereInput
   events_some: EventWhereInput
+  facebookHandle: String
+
+  """All values containing the given string."""
+  facebookHandle_contains: String
+
+  """All values ending with the given string."""
+  facebookHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  facebookHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  facebookHandle_not: String
+
+  """All values not containing the given string."""
+  facebookHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  facebookHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  facebookHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  facebookHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  facebookHandle_starts_with: String
+  heroImage: AssetWhereInput
+  heroImageClasses: String
+
+  """All values containing the given string."""
+  heroImageClasses_contains: String
+
+  """All values ending with the given string."""
+  heroImageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  heroImageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  heroImageClasses_not: String
+
+  """All values not containing the given string."""
+  heroImageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  heroImageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  heroImageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  heroImageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  heroImageClasses_starts_with: String
   id: ID
 
   """All values containing the given string."""
@@ -4394,6 +6107,62 @@ input OrganizerWhereInput {
   """All values starting with the given string."""
   id_starts_with: ID
   image: AssetWhereInput
+  imageClasses: String
+
+  """All values containing the given string."""
+  imageClasses_contains: String
+
+  """All values ending with the given string."""
+  imageClasses_ends_with: String
+
+  """All values that are contained in given list."""
+  imageClasses_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  imageClasses_not: String
+
+  """All values not containing the given string."""
+  imageClasses_not_contains: String
+
+  """All values not ending with the given string"""
+  imageClasses_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  imageClasses_not_in: [String]
+
+  """All values not starting with the given string."""
+  imageClasses_not_starts_with: String
+
+  """All values starting with the given string."""
+  imageClasses_starts_with: String
+  instagramHandle: String
+
+  """All values containing the given string."""
+  instagramHandle_contains: String
+
+  """All values ending with the given string."""
+  instagramHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  instagramHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  instagramHandle_not: String
+
+  """All values not containing the given string."""
+  instagramHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  instagramHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  instagramHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  instagramHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  instagramHandle_starts_with: String
   name: String
 
   """All values containing the given string."""
@@ -4476,6 +6245,90 @@ input OrganizerWhereInput {
 
   """All values starting with the given string."""
   slug_starts_with: String
+  telegramHandle: String
+
+  """All values containing the given string."""
+  telegramHandle_contains: String
+
+  """All values ending with the given string."""
+  telegramHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  telegramHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  telegramHandle_not: String
+
+  """All values not containing the given string."""
+  telegramHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  telegramHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  telegramHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  telegramHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  telegramHandle_starts_with: String
+  tiktokHandle: String
+
+  """All values containing the given string."""
+  tiktokHandle_contains: String
+
+  """All values ending with the given string."""
+  tiktokHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  tiktokHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  tiktokHandle_not: String
+
+  """All values not containing the given string."""
+  tiktokHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  tiktokHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  tiktokHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  tiktokHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  tiktokHandle_starts_with: String
+  twitterHandle: String
+
+  """All values containing the given string."""
+  twitterHandle_contains: String
+
+  """All values ending with the given string."""
+  twitterHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  twitterHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  twitterHandle_not: String
+
+  """All values not containing the given string."""
+  twitterHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  twitterHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  twitterHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  twitterHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  twitterHandle_starts_with: String
   updatedAt: DateTime
 
   """All values greater than the given value."""
@@ -4499,6 +6352,34 @@ input OrganizerWhereInput {
   """All values that are not contained in given list."""
   updatedAt_not_in: [DateTime]
   updatedBy: UserWhereInput
+  youtubeHandle: String
+
+  """All values containing the given string."""
+  youtubeHandle_contains: String
+
+  """All values ending with the given string."""
+  youtubeHandle_ends_with: String
+
+  """All values that are contained in given list."""
+  youtubeHandle_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  youtubeHandle_not: String
+
+  """All values not containing the given string."""
+  youtubeHandle_not_contains: String
+
+  """All values not ending with the given string"""
+  youtubeHandle_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  youtubeHandle_not_in: [String]
+
+  """All values not starting with the given string."""
+  youtubeHandle_not_starts_with: String
+
+  """All values starting with the given string."""
+  youtubeHandle_starts_with: String
 }
 
 """
@@ -4557,7 +6438,7 @@ type PageInfo {
 """
 Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations.
 """
-type PassOption {
+type PassOption implements Entity {
   """
   Description of the option, like "Access to the event on Day 1"
   """
@@ -4587,7 +6468,7 @@ type PassOption {
     This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
     """
     locales: [Locale!]
-  ): EventDateLocation!
+  ): EventDateLocation
 
   """The unique identifier"""
   id: ID!
@@ -4626,7 +6507,7 @@ type PassOption {
 input PassOptionCreateInput {
   """description input for default locale (en)"""
   description: String
-  eventDateLocation: EventDateLocationCreateOneInlineInput!
+  eventDateLocation: EventDateLocationCreateOneInlineInput
 
   """
   Inline mutations for managing document localizations excluding the default locale
@@ -4874,7 +6755,7 @@ input PassOptionWhereUniqueInput {
 scalar RichTextAST
 
 """Scheduled Operation system model"""
-type ScheduledOperation implements Node {
+type ScheduledOperation implements Entity & Node {
   affectedDocuments(
     after: String
     before: String
@@ -5039,7 +6920,7 @@ type ScheduledOperation implements Node {
   ): User
 }
 
-union ScheduledOperationAffectedDocument = Asset | Event | EventPass | Organizer
+union ScheduledOperationAffectedDocument = Asset | Event | EventPass | EventPassDelayedRevealed | Organizer
 
 """A connection to a list of items."""
 type ScheduledOperationConnection {
@@ -5283,7 +7164,7 @@ input ScheduledOperationWhereUniqueInput {
 }
 
 """Scheduled Release system model"""
-type ScheduledRelease implements Node {
+type ScheduledRelease implements Entity & Node {
   """The time the document was created"""
   createdAt: DateTime!
 
@@ -5819,7 +7700,7 @@ enum SystemDateTimeFieldVariation {
 }
 
 """User system model"""
-type User implements Node {
+type User implements Entity & Node {
   """The time the document was created"""
   createdAt: DateTime!
 
@@ -6564,6 +8445,9 @@ type mutation_root {
   """Create one eventPass"""
   createEventPass(data: EventPassCreateInput!): EventPass
 
+  """Create one eventPassDelayedRevealed"""
+  createEventPassDelayedRevealed(data: EventPassDelayedRevealedCreateInput!): EventPassDelayedRevealed
+
   """Create one organizer"""
   createOrganizer(data: OrganizerCreateInput!): Organizer
 
@@ -6589,6 +8473,14 @@ type mutation_root {
     """Document to delete"""
     where: EventPassWhereUniqueInput!
   ): EventPass
+
+  """
+  Delete one eventPassDelayedRevealed from _all_ existing stages. Returns deleted document.
+  """
+  deleteEventPassDelayedRevealed(
+    """Document to delete"""
+    where: EventPassDelayedRevealedWhereUniqueInput!
+  ): EventPassDelayedRevealed
 
   """Delete many Asset documents"""
   deleteManyAssets(
@@ -6625,6 +8517,26 @@ type mutation_root {
     """Documents to delete"""
     where: EventPassManyWhereInput
   ): EventPassConnection!
+
+  """Delete many EventPassDelayedRevealed documents"""
+  deleteManyEventPassesDelayedRevealed(
+    """Documents to delete"""
+    where: EventPassDelayedRevealedManyWhereInput
+  ): BatchPayload!
+
+  """
+  Delete many EventPassDelayedRevealed documents, return deleted documents
+  """
+  deleteManyEventPassesDelayedRevealedConnection(
+    after: ID
+    before: ID
+    first: Int
+    last: Int
+    skip: Int
+
+    """Documents to delete"""
+    where: EventPassDelayedRevealedManyWhereInput
+  ): EventPassDelayedRevealedConnection!
 
   """Delete many Event documents"""
   deleteManyEvents(
@@ -6738,6 +8650,24 @@ type mutation_root {
     withDefaultLocale: Boolean = true
   ): EventPass
 
+  """Publish one eventPassDelayedRevealed"""
+  publishEventPassDelayedRevealed(
+    """Optional localizations to publish"""
+    locales: [Locale!]
+
+    """Whether to publish the base document"""
+    publishBase: Boolean = true
+
+    """Publishing target stage"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Document to publish"""
+    where: EventPassDelayedRevealedWhereUniqueInput!
+
+    """Whether to include the default locale when publishBase is set"""
+    withDefaultLocale: Boolean = true
+  ): EventPassDelayedRevealed
+
   """Publish many Asset documents"""
   publishManyAssets(
     """Document localizations to publish"""
@@ -6827,6 +8757,51 @@ type mutation_root {
     """Whether to include the default locale when publishBase is true"""
     withDefaultLocale: Boolean = true
   ): EventPassConnection!
+
+  """Publish many EventPassDelayedRevealed documents"""
+  publishManyEventPassesDelayedRevealed(
+    """Document localizations to publish"""
+    locales: [Locale!]
+
+    """Whether to publish the base document"""
+    publishBase: Boolean = true
+
+    """Stages to publish documents to"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Identifies documents in each stage to be published"""
+    where: EventPassDelayedRevealedManyWhereInput
+
+    """Whether to include the default locale when publishBase is true"""
+    withDefaultLocale: Boolean = true
+  ): BatchPayload!
+
+  """Publish many EventPassDelayedRevealed documents"""
+  publishManyEventPassesDelayedRevealedConnection(
+    after: ID
+    before: ID
+    first: Int
+
+    """Stage to find matching documents in"""
+    from: Stage = DRAFT
+    last: Int
+
+    """Document localizations to publish"""
+    locales: [Locale!]
+
+    """Whether to publish the base document"""
+    publishBase: Boolean = true
+    skip: Int
+
+    """Stages to publish documents to"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Identifies documents in each stage to be published"""
+    where: EventPassDelayedRevealedManyWhereInput
+
+    """Whether to include the default locale when publishBase is true"""
+    withDefaultLocale: Boolean = true
+  ): EventPassDelayedRevealedConnection!
 
   """Publish many Event documents"""
   publishManyEvents(
@@ -7014,6 +8989,32 @@ type mutation_root {
     withDefaultLocale: Boolean = true
   ): EventPass
 
+  """Schedule to publish one eventPassDelayedRevealed"""
+  schedulePublishEventPassDelayedRevealed(
+    """Optional localizations to publish"""
+    locales: [Locale!]
+
+    """Whether to publish the base document"""
+    publishBase: Boolean = true
+
+    """
+    Release at point in time, will create new release containing this operation
+    """
+    releaseAt: DateTime
+
+    """Optionally attach this scheduled operation to an existing release"""
+    releaseId: String
+
+    """Publishing target stage"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Document to publish"""
+    where: EventPassDelayedRevealedWhereUniqueInput!
+
+    """Whether to include the default locale when publishBase is set"""
+    withDefaultLocale: Boolean = true
+  ): EventPassDelayedRevealed
+
   """Schedule to publish one organizer"""
   schedulePublishOrganizer(
     """Optional localizations to publish"""
@@ -7128,6 +9129,35 @@ type mutation_root {
   ): EventPass
 
   """
+  Unpublish one eventPassDelayedRevealed from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only.
+  """
+  scheduleUnpublishEventPassDelayedRevealed(
+    """Stages to unpublish document from"""
+    from: [Stage!]! = [PUBLISHED]
+
+    """
+    Optional locales to unpublish. Unpublishing the default locale will completely remove the document from the selected stages
+    """
+    locales: [Locale!]
+
+    """
+    Release at point in time, will create new release containing this operation
+    """
+    releaseAt: DateTime
+
+    """Optionally attach this scheduled operation to an existing release"""
+    releaseId: String
+
+    """
+    Unpublish complete document including default localization and relations from stages. Can be disabled.
+    """
+    unpublishBase: Boolean = true
+
+    """Document to unpublish"""
+    where: EventPassDelayedRevealedWhereUniqueInput!
+  ): EventPassDelayedRevealed
+
+  """
   Unpublish one organizer from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only.
   """
   scheduleUnpublishOrganizer(
@@ -7219,6 +9249,27 @@ type mutation_root {
     where: EventPassWhereUniqueInput!
   ): EventPass
 
+  """
+  Unpublish one eventPassDelayedRevealed from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only.
+  """
+  unpublishEventPassDelayedRevealed(
+    """Stages to unpublish document from"""
+    from: [Stage!]! = [PUBLISHED]
+
+    """
+    Optional locales to unpublish. Unpublishing the default locale will completely remove the document from the selected stages
+    """
+    locales: [Locale!]
+
+    """
+    Unpublish complete document including default localization and relations from stages. Can be disabled.
+    """
+    unpublishBase: Boolean = true
+
+    """Document to unpublish"""
+    where: EventPassDelayedRevealedWhereUniqueInput!
+  ): EventPassDelayedRevealed
+
   """Unpublish many Asset documents"""
   unpublishManyAssets(
     """Stages to unpublish documents from"""
@@ -7300,6 +9351,47 @@ type mutation_root {
     """Identifies documents in draft stage"""
     where: EventPassManyWhereInput
   ): EventPassConnection!
+
+  """Unpublish many EventPassDelayedRevealed documents"""
+  unpublishManyEventPassesDelayedRevealed(
+    """Stages to unpublish documents from"""
+    from: [Stage!]! = [PUBLISHED]
+
+    """Locales to unpublish"""
+    locales: [Locale!]
+
+    """Whether to unpublish the base document and default localization"""
+    unpublishBase: Boolean = true
+
+    """Identifies documents in each stage"""
+    where: EventPassDelayedRevealedManyWhereInput
+  ): BatchPayload!
+
+  """
+  Find many EventPassDelayedRevealed documents that match criteria in specified stage and unpublish from target stages
+  """
+  unpublishManyEventPassesDelayedRevealedConnection(
+    after: ID
+    before: ID
+    first: Int
+
+    """Stages to unpublish documents from"""
+    from: [Stage!]! = [PUBLISHED]
+    last: Int
+
+    """Locales to unpublish"""
+    locales: [Locale!]
+    skip: Int
+
+    """Stage to find matching documents in"""
+    stage: Stage = DRAFT
+
+    """Whether to unpublish the base document and default localization"""
+    unpublishBase: Boolean = true
+
+    """Identifies documents in draft stage"""
+    where: EventPassDelayedRevealedManyWhereInput
+  ): EventPassDelayedRevealedConnection!
 
   """Unpublish many Event documents"""
   unpublishManyEvents(
@@ -7413,6 +9505,9 @@ type mutation_root {
   """Update one eventPass"""
   updateEventPass(data: EventPassUpdateInput!, where: EventPassWhereUniqueInput!): EventPass
 
+  """Update one eventPassDelayedRevealed"""
+  updateEventPassDelayedRevealed(data: EventPassDelayedRevealedUpdateInput!, where: EventPassDelayedRevealedWhereUniqueInput!): EventPassDelayedRevealed
+
   """Update many assets"""
   updateManyAssets(
     """Updates to document content"""
@@ -7460,6 +9555,30 @@ type mutation_root {
     """Documents to apply update on"""
     where: EventPassManyWhereInput
   ): EventPassConnection!
+
+  """Update many eventPassesDelayedRevealed"""
+  updateManyEventPassesDelayedRevealed(
+    """Updates to document content"""
+    data: EventPassDelayedRevealedUpdateManyInput!
+
+    """Documents to apply update on"""
+    where: EventPassDelayedRevealedManyWhereInput
+  ): BatchPayload!
+
+  """Update many EventPassDelayedRevealed documents"""
+  updateManyEventPassesDelayedRevealedConnection(
+    after: ID
+    before: ID
+
+    """Updates to document content"""
+    data: EventPassDelayedRevealedUpdateManyInput!
+    first: Int
+    last: Int
+    skip: Int
+
+    """Documents to apply update on"""
+    where: EventPassDelayedRevealedManyWhereInput
+  ): EventPassDelayedRevealedConnection!
 
   """Update many events"""
   updateManyEvents(
@@ -7523,6 +9642,9 @@ type mutation_root {
 
   """Upsert one eventPass"""
   upsertEventPass(upsert: EventPassUpsertInput!, where: EventPassWhereUniqueInput!): EventPass
+
+  """Upsert one eventPassDelayedRevealed"""
+  upsertEventPassDelayedRevealed(upsert: EventPassDelayedRevealedUpsertInput!, where: EventPassDelayedRevealedWhereUniqueInput!): EventPassDelayedRevealed
 
   """Upsert one organizer"""
   upsertOrganizer(upsert: OrganizerUpsertInput!, where: OrganizerWhereUniqueInput!): Organizer
@@ -7612,6 +9734,12 @@ type query_root {
     where: AssetWhereInput
   ): AssetConnection!
 
+  """Fetches an object given its ID"""
+  entities(
+    """The where parameters to query components"""
+    where: [EntityWhereInput!]!
+  ): [Entity!]
+
   """Retrieve a single event"""
   event(
     """
@@ -7641,6 +9769,24 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: EventPassWhereUniqueInput!
   ): EventPass
+
+  """Retrieve a single eventPassDelayedRevealed"""
+  eventPassDelayedRevealed(
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPassDelayedRevealed` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: EventPassDelayedRevealedWhereUniqueInput!
+  ): EventPassDelayedRevealed
+
+  """Retrieve document version"""
+  eventPassDelayedRevealedVersion(where: VersionWhereInput!): DocumentVersion
 
   """
   fetch data from the table: "eventPassNft"
@@ -7753,6 +9899,52 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: EventPassWhereInput
   ): EventPassConnection!
+
+  """Retrieve multiple eventPassesDelayedRevealed"""
+  eventPassesDelayedRevealed(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPassDelayedRevealed` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    orderBy: EventPassDelayedRevealedOrderByInput
+    skip: Int
+    stage: Stage! = PUBLISHED
+    where: EventPassDelayedRevealedWhereInput
+  ): [EventPassDelayedRevealed!]!
+
+  """
+  Retrieve multiple eventPassesDelayedRevealed using the Relay connection interface
+  """
+  eventPassesDelayedRevealedConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPassDelayedRevealed` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    orderBy: EventPassDelayedRevealedOrderByInput
+    skip: Int
+    stage: Stage! = PUBLISHED
+    where: EventPassDelayedRevealedWhereInput
+  ): EventPassDelayedRevealedConnection!
 
   """Retrieve document version"""
   eventVersion(where: VersionWhereInput!): DocumentVersion

@@ -1,8 +1,8 @@
-import { transferPassQrCodeBatch } from './transferPassQrCodeBatch';
-import { FileWrapper } from '@file-upload/admin';
-import type { BatchTransferInput } from '@features/pass-types';
-import { mockEventPassNft } from './revealPass.spec';
 import env from '@env/server';
+import type { BatchTransferInput } from '@features/pass-types';
+import { FileWrapper } from '@file-upload/admin';
+import { mockEventPassNft } from './revealPass.spec';
+import { transferPassQrCodeBatch } from './transferPassQrCodeBatch';
 
 jest.mock('@file-upload/admin');
 
@@ -53,21 +53,21 @@ describe('transferPassQrCodeBatch', () => {
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       {
         destination:
-          '/local/users/test-address/test-organizer/events/test-event/test-id/test-event-test-id-12421',
+          '/local/users/test-address/test-organizer/events/test-event/test-id/test-event-test-id-12421.png',
         source:
-          '/local/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421',
+          '/local/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421.png',
       },
       {
         destination:
-          '/local/users/test-address/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421',
+          '/local/users/test-address/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421.png',
         source:
-          '/local/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421',
+          '/local/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421.png',
       },
       {
         destination:
-          '/local/users/test-address/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421',
+          '/local/users/test-address/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421.png',
         source:
-          '/local/users/0xFormerOwner3/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421',
+          '/local/users/0xFormerOwner3/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421.png',
       },
     ]);
 
@@ -77,9 +77,9 @@ describe('transferPassQrCodeBatch', () => {
     expect(
       FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
-      '/local/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421',
-      '/local/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421',
-      '/local/users/0xFormerOwner3/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421',
+      '/local/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421.png',
+      '/local/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421.png',
+      '/local/users/0xFormerOwner3/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421.png',
     ]);
   });
 

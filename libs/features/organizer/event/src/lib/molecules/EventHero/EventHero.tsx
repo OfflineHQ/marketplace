@@ -3,7 +3,6 @@ import { EventDatesServer, type EventDatesServerProps } from '@next/date';
 import {
   AspectRatio,
   AspectRatioSkeleton,
-  ButtonSkeleton,
   Text,
   TextSkeleton,
 } from '@ui/components';
@@ -13,8 +12,6 @@ import {
   EventLocations,
   type EventLocationsProps,
 } from '../../molecules/EventLocations/EventLocations';
-import { EventHeroButton, type EventHeroButtonProps } from './EventHeroButton';
-
 import {
   EventOrganizerButton,
   EventOrganizerButtonSkeleton,
@@ -23,22 +20,20 @@ import {
 export interface EventHeroProps
   extends EventDatesServerProps,
     EventLocationsProps,
-    EventHeroButtonProps,
-    Pick<Event, 'heroImage' | 'title' | 'organizer'> {}
+    Pick<Event, 'heroImage' | 'heroImageClasses' | 'title' | 'organizer'> {}
 
 const layout = {
   grid: 'grid grid-cols-1 items-center gap-8 md:grid-cols-2',
-  image: 'rounded-sm',
+  image: 'rounded-sm object-cover',
   textContainer: 'md:space-y-4 items-start h-full flex flex-col',
   text: 'mb-2 md:mb-4',
 };
 
 export const EventHero: React.FC<EventHeroProps> = ({
   heroImage,
+  heroImageClasses,
   title,
   organizer,
-  purchaseLink,
-  purchaseText,
   ...locationDatesProps
 }) => {
   return (
@@ -47,13 +42,11 @@ export const EventHero: React.FC<EventHeroProps> = ({
         <Image
           src={heroImage?.url || '/image-placeholder.svg'}
           fill
-          className={layout.image}
-          style={{ objectFit: 'cover' }}
+          className={`${layout.image} ${heroImageClasses}`}
           alt={title}
         />
       </AspectRatio>
       <div className={layout.textContainer}>
-        <div className="hidden md:flex" />
         <div className="flex flex-col space-y-4">
           <Text variant="h2" className={layout.text}>
             {title}
@@ -63,9 +56,6 @@ export const EventHero: React.FC<EventHeroProps> = ({
           </div>
           <EventDatesServer {...locationDatesProps} />
           <EventLocations {...locationDatesProps} />
-        </div>
-        <div className="hidden w-full grow flex-col justify-end md:flex">
-          <EventHeroButton {...{ purchaseLink, purchaseText }} />
         </div>
       </div>
     </div>
@@ -77,7 +67,6 @@ export const EventHeroSkeleton: React.FC = () => {
     <div className={layout.grid}>
       <AspectRatioSkeleton variant="widescreen" className={`${layout.image}`} />
       <div className={layout.textContainer}>
-        <div className="hidden md:flex" />
         <div className="flex w-full flex-col space-y-8">
           <TextSkeleton variant="h1" />
           <EventOrganizerButtonSkeleton />
@@ -85,9 +74,6 @@ export const EventHeroSkeleton: React.FC = () => {
             <TextSkeleton variant="h5" className="w-full md:w-3/4" />
             <TextSkeleton variant="h5" />
           </div>
-        </div>
-        <div className="hidden w-full grow flex-col justify-end md:flex">
-          <ButtonSkeleton className="w-full" />
         </div>
       </div>
     </div>

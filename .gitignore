@@ -67,7 +67,6 @@ testem.log
 *.pem
 *.log
 *.eslintcache
-storybook-static
 static
 
 # System Files
@@ -76,3 +75,6 @@ Thumbs.db
 
 # Sentry Auth Token
 .sentryclirc
+
+#playwright
+playwright-report

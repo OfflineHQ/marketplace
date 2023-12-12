@@ -1,0 +1,55 @@
+name: Build and E2E back-office tests
+
+on:
+  workflow_dispatch:
+
+env:
+  NODE_OPTIONS: '--max_old_space_size=4096'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout [Pull Request]
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - uses: actions/checkout@v3
+        name: Checkout [Default Branch]
+        if: ${{ github.event_name != 'pull_request' }}
+        with:
+          fetch-depth: 0
+
+      - name: Derive appropriate SHAs for base and head for nx affected commands
+        id: nx
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: staging
+
+      - name: Set up environment and cache dependencies
+        uses: sebpalluel/ci/.github/actions/setup-environment@latest
+
+      - name: Build and check if back-office affected
+        id: check
+        run: |
+          affected=$(pnpm nx affected -t=build)
+          if [[ $affected == *"back-office:build:production"* ]]; then
+            echo "::set-output name=back-office::true"
+          else
+            echo "::set-output name=back-office::false"
+          fi
+
+      - name: Launch docker services
+        if: steps.check.outputs.back-office == 'true'
+        run: pnpm docker:services & pnpm nx run back-office:build:production
+
+      - name: Run e2e tests
+        if: steps.check.outputs.back-office == 'true'
+        run: pnpm nx run back-office:e2e --skipInstall

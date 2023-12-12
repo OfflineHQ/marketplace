@@ -26,7 +26,7 @@ export const OpenPopoverWithFocus: Story = {
     await screen.findByText('Dimensions');
     const dialogContent = screen.getByRole('dialog');
     const allInputs = within(dialogContent).getAllByRole('textbox');
-    expect(allInputs[0]).toHaveFocus();
+    await expect(allInputs[0]).toHaveFocus();
   },
   render: PopoverDemo,
 };
@@ -52,7 +52,7 @@ export const OpenPopoverWithNoHeader: Story = {
     userEvent.click(screen.getByRole('button'));
     const dialogContent = await screen.findByRole('dialog');
     const allInputs = within(dialogContent).getAllByRole('textbox');
-    expect(allInputs[0]).toHaveFocus();
+    await expect(allInputs[0]).toHaveFocus();
   },
   render: PopoverDemoWithNoHeader,
 };

@@ -7,13 +7,20 @@ import type { JWT, JWTOptions } from 'next-auth/jwt';
 
 import env from '@env/server';
 import { getAccount } from '@features/account/api';
-import { Roles } from '@next/hasura/utils';
+import { isUserKycValidated } from '@kyc/common';
 import { nextAuthCookieName } from '@next/next-auth/common';
 import { SiweProvider } from '@next/siwe/provider';
 import { AppUser } from '@next/types';
 import { getNextAppURL, isBackOffice, isProd } from '@shared/server';
 import { Provider } from 'next-auth/providers';
-import { NextRequest } from 'next/server';
+
+import { KycLevelName_Enum } from '@gql/shared/types';
+import { Posthog } from '@insight/server';
+import { FeatureFlagsEnum } from '@insight/types';
+import { RoleAuthorization } from '@roles/admin';
+import { isSameRole } from '@roles/common';
+
+const authz = new RoleAuthorization();
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -22,33 +29,38 @@ import { NextRequest } from 'next/server';
 //   return token;
 // };
 
-const getJwtAccessOptions = (user: JWT['user']): JWT['access'] => {
+const getJwtAccessOptions = async (user: JWT['user']) => {
+  //TODO handle access depending of role
   if (isBackOffice()) {
-    return {
-      pathPermissions: [
-        {
-          match: {
-            path: `/${env.UPLOAD_PATH_PREFIX}/organizers/${user.organizerId}`,
-            scope: 'Grandchildren+',
-          },
-          permissions: {
-            read: {
-              file: {
-                downloadFile: ['*'],
-                getFileDetails: true,
+    if (!user.role) return undefined;
+    const canReadWritePass = await authz.readAndWritePassesFile(user);
+    return canReadWritePass
+      ? {
+          pathPermissions: [
+            {
+              match: {
+                path: `/${env.UPLOAD_PATH_PREFIX}/organizers/${user.role?.organizerId}`,
+                scope: 'Grandchildren+',
+              },
+              permissions: {
+                read: {
+                  file: {
+                    downloadFile: ['*'],
+                    getFileDetails: true,
+                  },
+                },
+                write: {
+                  file: {
+                    createFile: true,
+                    deleteFile: true,
+                    overwriteFile: true,
+                  },
+                },
               },
             },
-            write: {
-              file: {
-                createFile: true,
-                deleteFile: true,
-                overwriteFile: true,
-              },
-            },
-          },
-        },
-      ],
-    };
+          ],
+        }
+      : undefined;
   } else
     return {
       pathPermissions: [
@@ -109,7 +121,7 @@ export const providers: Array<Provider> = [SiweProvider()];
 const hostName = new URL(getNextAppURL()).hostname;
 const useSecureCookies = getNextAppURL().startsWith('https://');
 
-export const createOptions = (req: NextRequest) =>
+export const createOptions = () =>
   ({
     cookies: {
       sessionToken: {
@@ -155,42 +167,89 @@ export const createOptions = (req: NextRequest) =>
           user,
           account,
           trigger,
+          session,
         }: {
           token: JWT;
           user?: AppUser;
           account?: Account | null;
           trigger?: string;
+          session?: any;
         } = args;
         const appUser = user;
         // user is connected but has been updated on hasura, need to get the updated jwt with user
         if (trigger === 'update' && token) {
-          const account = (await getAccount(token.user.address)) as AppUser;
+          const userAccount = (await getAccount(token.user.address)) as AppUser;
+          // is session get a role mean that user is connected from back-office and asked to switch to his new role
+          const sessionRole = session?.role;
+          if (sessionRole) {
+            const kycFlag = await Posthog.getInstance().getFeatureFlag(
+              FeatureFlagsEnum.KYC,
+              token.user.address,
+            );
+            if (!isBackOffice())
+              throw new Error(
+                'Unauthorized to access roles outside of back office',
+              );
+            else if (
+              kycFlag &&
+              !isUserKycValidated(
+                userAccount,
+                KycLevelName_Enum.AdvancedKycLevel,
+              )
+            )
+              throw new Error(
+                'Unauthorized to switch to role while the Advanced KYC is not validated',
+              );
+            else if (
+              !userAccount.roles?.find((role) =>
+                isSameRole({ role, roleToCompare: sessionRole }),
+              )
+            )
+              throw new Error('Unauthorized to switch to this role');
+            userAccount.role = session.role;
+          }
+          const access = await getJwtAccessOptions(userAccount);
+          if (isBackOffice()) {
+            return {
+              ...token,
+              user: {
+                ...token.user,
+                kyc: userAccount.kyc,
+                role: userAccount.role,
+                roles: userAccount.roles,
+              },
+              access,
+              clientId: 'back-office',
+            };
+          }
           return {
             ...token,
             user: {
               ...token.user,
-              kyc: account.kyc,
+              kyc: userAccount.kyc,
             },
-            access: getJwtAccessOptions(account),
+            access,
           };
         }
         // User is connected, set the role for Hasura + Upload.js permissions to secure access to the user's pass or organizer folder
         else if (appUser && account) {
-          token.access = getJwtAccessOptions(appUser);
+          token.access = await getJwtAccessOptions(appUser);
           if (isBackOffice()) {
             return {
+              ...token,
               user: appUser,
               provider: account.provider,
               providerType: account.type,
-              role: Roles.organizer,
               access: token.access,
+              clientId: 'back-office',
             };
           }
           return {
+            ...token,
             user: appUser,
             provider: account.provider,
             providerType: account.type,
-            role: Roles.user,
+            role: 'user',
             access: token.access,
           };
         }

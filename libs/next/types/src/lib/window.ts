@@ -1,8 +1,8 @@
-import type { ExternalProvider } from '@ethersproject/providers';
+import { Eip1193Provider } from 'ethers6';
 
 declare global {
   interface Window {
-    ethereum?: ExternalProvider;
-    STORYBOOK_ENV?: boolean;
+    ethereumProviderMock?: Eip1193Provider;
+    useE2EAuthContext?: () => Promise<string>;
   }
 }

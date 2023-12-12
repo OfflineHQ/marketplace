@@ -1,20 +1,24 @@
+import { Sheet } from '@ui/components';
+import { lotsOfPasses } from '../../molecules/PassTotal/examples';
 import { passListProps } from '../../organisms/PassList/examples';
+import { eventProps } from '../Event/examples';
+import {
+  PassPurchaseCard,
+  type PassPurchaseCardProps,
+} from './PassPurchaseCard';
 import {
   PassPurchaseSheet,
   PassPurchaseSheetSkeleton,
   type PassPurchaseSheetProps,
   type PassPurchaseSheetSkeletonProps,
 } from './PassPurchaseSheet';
-import { PassPurchaseCard } from './PassPurchaseCard';
-import { lotsOfPasses } from '../../molecules/PassTotal/examples';
-import { eventProps } from '../Event/examples';
-import { Sheet } from '@ui/components';
 
 export const passPurchaseProps = {
   ...passListProps,
   backButtonText: 'Go back to the event',
   goPaymentText: 'Go to payment',
   goPaymentLink: { href: '/dummy' },
+  closeLink: { href: '/dummy' },
   title: 'Pass selection',
   organizerSlug: eventProps?.organizer?.slug || '',
   eventSlug: eventProps.slug,
@@ -34,7 +38,7 @@ export const PassPurchaseSheetExample = (props: PassPurchaseSheetProps) => {
   );
 };
 
-export const PassPurchaseCardExample = (props: PassPurchaseSheetProps) => (
+export const PassPurchaseCardExample = (props: PassPurchaseCardProps) => (
   <PassPurchaseCard {...props} />
 );
 

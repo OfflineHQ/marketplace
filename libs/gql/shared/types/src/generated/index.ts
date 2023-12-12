@@ -15,7 +15,9 @@ export type Scalars = {
   Long: any;
   RichTextAST: any;
   bigint: any;
+  inet: any;
   jsonb: any;
+  oid: any;
   timestamp: any;
   timestamptz: any;
   uuid: any;
@@ -27,7 +29,7 @@ export type Aggregate = {
 };
 
 /** Asset system model */
-export type Asset = Node & {
+export type Asset = Entity & Node & {
   __typename?: 'Asset';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -42,6 +44,7 @@ export type Asset = Node & {
   /** The height of the file */
   height?: Maybe<Scalars['Float']>;
   heroImageEvent: Array<Event>;
+  heroImageOrganizer: Array<Organizer>;
   /** List of Asset versions */
   history: Array<Version>;
   /** The unique identifier */
@@ -54,6 +57,7 @@ export type Asset = Node & {
   /** The mime type of the file */
   mimeType?: Maybe<Scalars['String']>;
   nftImageEventPass: Array<EventPass>;
+  nftImageEventPassDelayedRevealed: Array<EventPassDelayedRevealed>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -110,6 +114,20 @@ export type AssetHeroImageEventArgs = {
 
 
 /** Asset system model */
+export type AssetHeroImageOrganizerArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<OrganizerOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<OrganizerWhereInput>;
+};
+
+
+/** Asset system model */
 export type AssetHistoryArgs = {
   limit?: Scalars['Int'];
   skip?: Scalars['Int'];
@@ -149,6 +167,20 @@ export type AssetNftImageEventPassArgs = {
   orderBy?: InputMaybe<EventPassOrderByInput>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<EventPassWhereInput>;
+};
+
+
+/** Asset system model */
+export type AssetNftImageEventPassDelayedRevealedArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<EventPassDelayedRevealedOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<EventPassDelayedRevealedWhereInput>;
 };
 
 
@@ -212,11 +244,13 @@ export type AssetCreateInput = {
   handle: Scalars['String'];
   height?: InputMaybe<Scalars['Float']>;
   heroImageEvent?: InputMaybe<EventCreateManyInlineInput>;
+  heroImageOrganizer?: InputMaybe<OrganizerCreateManyInlineInput>;
   imageOrganizer?: InputMaybe<OrganizerCreateManyInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<AssetCreateLocalizationsInput>;
   mimeType?: InputMaybe<Scalars['String']>;
   nftImageEventPass?: InputMaybe<EventPassCreateManyInlineInput>;
+  nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedCreateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   width?: InputMaybe<Scalars['Float']>;
@@ -292,6 +326,9 @@ export type AssetManyWhereInput = {
   heroImageEvent_every?: InputMaybe<EventWhereInput>;
   heroImageEvent_none?: InputMaybe<EventWhereInput>;
   heroImageEvent_some?: InputMaybe<EventWhereInput>;
+  heroImageOrganizer_every?: InputMaybe<OrganizerWhereInput>;
+  heroImageOrganizer_none?: InputMaybe<OrganizerWhereInput>;
+  heroImageOrganizer_some?: InputMaybe<OrganizerWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -314,6 +351,9 @@ export type AssetManyWhereInput = {
   imageOrganizer_every?: InputMaybe<OrganizerWhereInput>;
   imageOrganizer_none?: InputMaybe<OrganizerWhereInput>;
   imageOrganizer_some?: InputMaybe<OrganizerWhereInput>;
+  nftImageEventPassDelayedRevealed_every?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+  nftImageEventPassDelayedRevealed_none?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+  nftImageEventPassDelayedRevealed_some?: InputMaybe<EventPassDelayedRevealedWhereInput>;
   nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
@@ -390,11 +430,13 @@ export type AssetUpdateInput = {
   handle?: InputMaybe<Scalars['String']>;
   height?: InputMaybe<Scalars['Float']>;
   heroImageEvent?: InputMaybe<EventUpdateManyInlineInput>;
+  heroImageOrganizer?: InputMaybe<OrganizerUpdateManyInlineInput>;
   imageOrganizer?: InputMaybe<OrganizerUpdateManyInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<AssetUpdateLocalizationsInput>;
   mimeType?: InputMaybe<Scalars['String']>;
   nftImageEventPass?: InputMaybe<EventPassUpdateManyInlineInput>;
+  nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedUpdateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']>;
   width?: InputMaybe<Scalars['Float']>;
 };
@@ -584,6 +626,9 @@ export type AssetWhereInput = {
   heroImageEvent_every?: InputMaybe<EventWhereInput>;
   heroImageEvent_none?: InputMaybe<EventWhereInput>;
   heroImageEvent_some?: InputMaybe<EventWhereInput>;
+  heroImageOrganizer_every?: InputMaybe<OrganizerWhereInput>;
+  heroImageOrganizer_none?: InputMaybe<OrganizerWhereInput>;
+  heroImageOrganizer_some?: InputMaybe<OrganizerWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -625,6 +670,9 @@ export type AssetWhereInput = {
   mimeType_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   mimeType_starts_with?: InputMaybe<Scalars['String']>;
+  nftImageEventPassDelayedRevealed_every?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+  nftImageEventPassDelayedRevealed_none?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+  nftImageEventPassDelayedRevealed_some?: InputMaybe<EventPassDelayedRevealedWhereInput>;
   nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
@@ -808,8 +856,51 @@ export type DocumentVersion = {
   stage: Stage;
 };
 
+/** An object with an ID */
+export type Entity = {
+  /** The id of the object. */
+  id: Scalars['ID'];
+  /** The Stage of an object */
+  stage: Stage;
+};
+
+/** This enumeration holds all typenames that implement the Entity interface. Components and models implement the Entity interface. */
+export const enum EntityTypeName {
+  /** Asset system model */
+  Asset = 'Asset',
+  /** Root event model */
+  Event = 'Event',
+  /** Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several. */
+  EventDateLocation = 'EventDateLocation',
+  /** Define a pass for an event with different options, price, number of passes etc. */
+  EventPass = 'EventPass',
+  /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+  EventPassDelayedRevealed = 'EventPassDelayedRevealed',
+  /** A model for location data (point on a map) + additional info such as street, venue etc. */
+  LocationAddress = 'LocationAddress',
+  /** An organizer is an entity that launch events and handle the pass benefits. */
+  Organizer = 'Organizer',
+  /** Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations. */
+  PassOption = 'PassOption',
+  /** Scheduled Operation system model */
+  ScheduledOperation = 'ScheduledOperation',
+  /** Scheduled Release system model */
+  ScheduledRelease = 'ScheduledRelease',
+  /** User system model */
+  User = 'User'
+};
+
+/** Allows to specify input to query models and components directly */
+export type EntityWhereInput = {
+  /** The ID of an object */
+  id: Scalars['ID'];
+  stage: Stage;
+  /** The Type name of an object */
+  typename: EntityTypeName;
+};
+
 /** Root event model */
-export type Event = Node & {
+export type Event = Entity & Node & {
   __typename?: 'Event';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -823,10 +914,12 @@ export type Event = Node & {
    * This is only for information purpose but it should match your 'Event Pass' locations and dates
    */
   eventDateLocations: Array<EventDateLocation>;
-  eventParameters: Array<EventParameters>;
-  eventParameters_aggregate: EventParameters_Aggregate;
+  eventParameters?: Maybe<EventParameters>;
   eventPasses: Array<EventPass>;
+  /** An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen. */
   heroImage: Asset;
+  /** Optional field used to style your hero image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
+  heroImageClasses?: Maybe<Scalars['String']>;
   /** List of Event versions */
   history: Array<Version>;
   /** The unique identifier */
@@ -889,26 +982,6 @@ export type EventEventDateLocationsArgs = {
   orderBy?: InputMaybe<EventDateLocationOrderByInput>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<EventDateLocationWhereInput>;
-};
-
-
-/** Root event model */
-export type EventEventParametersArgs = {
-  distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventParameters_Order_By>>;
-  where?: InputMaybe<EventParameters_Bool_Exp>;
-};
-
-
-/** Root event model */
-export type EventEventParameters_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventParameters_Order_By>>;
-  where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
 
@@ -1017,6 +1090,7 @@ export type EventCreateInput = {
   eventDateLocations?: InputMaybe<EventDateLocationCreateManyInlineInput>;
   eventPasses?: InputMaybe<EventPassCreateManyInlineInput>;
   heroImage: AssetCreateOneInlineInput;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventCreateLocalizationsInput>;
   organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
@@ -1061,7 +1135,7 @@ export type EventCreateOneInlineInput = {
 };
 
 /** Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several. */
-export type EventDateLocation = {
+export type EventDateLocation = Entity & {
   __typename?: 'EventDateLocation';
   /** The end date including time on the UTC timezone. */
   dateEnd: Scalars['DateTime'];
@@ -1317,6 +1391,25 @@ export type EventManyWhereInput = {
   eventPasses_none?: InputMaybe<EventPassWhereInput>;
   eventPasses_some?: InputMaybe<EventPassWhereInput>;
   heroImage?: InputMaybe<AssetWhereInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -1402,6 +1495,8 @@ export type EventManyWhereInput = {
 export const enum EventOrderByInput {
   CreatedAtAsc = 'createdAt_ASC',
   CreatedAtDesc = 'createdAt_DESC',
+  HeroImageClassesAsc = 'heroImageClasses_ASC',
+  HeroImageClassesDesc = 'heroImageClasses_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
   PublicAsc = 'public_ASC',
@@ -1419,7 +1514,7 @@ export const enum EventOrderByInput {
 };
 
 /** Define a pass for an event with different options, price, number of passes etc. */
-export type EventPass = Node & {
+export type EventPass = Entity & Node & {
   __typename?: 'EventPass';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -1430,6 +1525,8 @@ export type EventPass = Node & {
   /** Get the document in other stages */
   documentInStages: Array<EventPass>;
   event?: Maybe<Event>;
+  /** This is a direct link from your `EventPass` to `EventPassDelayedReveal`, enabling access to additional, exclusive details that are revealed afterwards on the back-office. */
+  eventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   eventPassNftContract?: Maybe<EventPassNftContract>;
   eventPassOrderSums?: Maybe<EventPassOrderSums>;
   eventPassPricing?: Maybe<EventPassPricing>;
@@ -1488,6 +1585,13 @@ export type EventPassDocumentInStagesArgs = {
 
 /** Define a pass for an event with different options, price, number of passes etc. */
 export type EventPassEventArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** Define a pass for an event with different options, price, number of passes etc. */
+export type EventPassEventPassDelayedRevealedArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
@@ -1585,10 +1689,12 @@ export type EventPassConnection = {
 };
 
 export type EventPassCreateInput = {
+  clptwshsk4wx601usb3uggcu7?: InputMaybe<EventPassDelayedRevealedCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** description input for default locale (en) */
   description: Scalars['String'];
   event?: InputMaybe<EventCreateOneInlineInput>;
+  eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedCreateOneInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventPassCreateLocalizationsInput>;
   /** name input for default locale (en) */
@@ -1623,6 +1729,693 @@ export type EventPassCreateManyInlineInput = {
   connect?: InputMaybe<Array<EventPassWhereUniqueInput>>;
   /** Create and connect multiple existing EventPass documents */
   create?: InputMaybe<Array<EventPassCreateInput>>;
+};
+
+export type EventPassCreateOneInlineInput = {
+  /** Connect one existing EventPass document */
+  connect?: InputMaybe<EventPassWhereUniqueInput>;
+  /** Create and connect one EventPass document */
+  create?: InputMaybe<EventPassCreateInput>;
+};
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealed = Entity & Node & {
+  __typename?: 'EventPassDelayedRevealed';
+  /** The time the document was created */
+  createdAt: Scalars['DateTime'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  /** A brief overview or summary of the event pass */
+  description: Scalars['String'];
+  /** Get the document in other stages */
+  documentInStages: Array<EventPassDelayedRevealed>;
+  /** Links directly to `EventPass`, providing initial, temporary details about the NFT until the full reveal occurs. */
+  eventPass?: Maybe<EventPass>;
+  /** List of EventPassDelayedRevealed versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<EventPassDelayedRevealed>;
+  /** The official name of the event pass */
+  name: Scalars['String'];
+  /** Fixed description pertaining to the NFT. This content is static and non-localizable. */
+  nftDescription: Scalars['String'];
+  /** Permanent image representing the NFT. Advised resolution is 350 x 350 pixels. Image content is non-changeable and cannot be localized. */
+  nftImage: Asset;
+  /** Permanent name associated with the NFT. Cannot be changed or localized. */
+  nftName: Scalars['String'];
+  /** Define the different pass options. An option is defined for a specific location and timeframe */
+  passOptions: Array<PassOption>;
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedCreatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  inheritLocale?: Scalars['Boolean'];
+  stages?: Array<Stage>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedEventPassArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedHistoryArgs = {
+  limit?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  locales?: Array<Locale>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedNftImageArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedPassOptionsArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<PassOptionOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<PassOptionWhereInput>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedPublishedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedUpdatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
+export type EventPassDelayedRevealedUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type EventPassDelayedRevealedConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type EventPassDelayedRevealedConnection = {
+  __typename?: 'EventPassDelayedRevealedConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<EventPassDelayedRevealedEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type EventPassDelayedRevealedCreateInput = {
+  clptyt58r52j901t9gkjuht2t?: InputMaybe<EventPassCreateManyInlineInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** description input for default locale (en) */
+  description: Scalars['String'];
+  eventPass?: InputMaybe<EventPassCreateOneInlineInput>;
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<EventPassDelayedRevealedCreateLocalizationsInput>;
+  /** name input for default locale (en) */
+  name: Scalars['String'];
+  nftDescription: Scalars['String'];
+  nftImage: AssetCreateOneInlineInput;
+  nftName: Scalars['String'];
+  passOptions?: InputMaybe<PassOptionCreateManyInlineInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type EventPassDelayedRevealedCreateLocalizationDataInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  description: Scalars['String'];
+  name: Scalars['String'];
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type EventPassDelayedRevealedCreateLocalizationInput = {
+  /** Localization input */
+  data: EventPassDelayedRevealedCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type EventPassDelayedRevealedCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<EventPassDelayedRevealedCreateLocalizationInput>>;
+};
+
+export type EventPassDelayedRevealedCreateManyInlineInput = {
+  /** Connect multiple existing EventPassDelayedRevealed documents */
+  connect?: InputMaybe<Array<EventPassDelayedRevealedWhereUniqueInput>>;
+  /** Create and connect multiple existing EventPassDelayedRevealed documents */
+  create?: InputMaybe<Array<EventPassDelayedRevealedCreateInput>>;
+};
+
+export type EventPassDelayedRevealedCreateOneInlineInput = {
+  /** Connect one existing EventPassDelayedRevealed document */
+  connect?: InputMaybe<EventPassDelayedRevealedWhereUniqueInput>;
+  /** Create and connect one EventPassDelayedRevealed document */
+  create?: InputMaybe<EventPassDelayedRevealedCreateInput>;
+};
+
+/** An edge in a connection. */
+export type EventPassDelayedRevealedEdge = {
+  __typename?: 'EventPassDelayedRevealedEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: EventPassDelayedRevealed;
+};
+
+/** Identifies documents */
+export type EventPassDelayedRevealedManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  documentInStages_none?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  documentInStages_some?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  eventPass?: InputMaybe<EventPassWhereInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftDescription_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  passOptions_every?: InputMaybe<PassOptionWhereInput>;
+  passOptions_none?: InputMaybe<PassOptionWhereInput>;
+  passOptions_some?: InputMaybe<PassOptionWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export const enum EventPassDelayedRevealedOrderByInput {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  DescriptionAsc = 'description_ASC',
+  DescriptionDesc = 'description_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC',
+  NftDescriptionAsc = 'nftDescription_ASC',
+  NftDescriptionDesc = 'nftDescription_DESC',
+  NftNameAsc = 'nftName_ASC',
+  NftNameDesc = 'nftName_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+};
+
+export type EventPassDelayedRevealedUpdateInput = {
+  clptyt58r52j901t9gkjuht2t?: InputMaybe<EventPassUpdateManyInlineInput>;
+  /** description input for default locale (en) */
+  description?: InputMaybe<Scalars['String']>;
+  eventPass?: InputMaybe<EventPassUpdateOneInlineInput>;
+  /** Manage document localizations */
+  localizations?: InputMaybe<EventPassDelayedRevealedUpdateLocalizationsInput>;
+  /** name input for default locale (en) */
+  name?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
+  nftName?: InputMaybe<Scalars['String']>;
+  passOptions?: InputMaybe<PassOptionUpdateManyInlineInput>;
+};
+
+export type EventPassDelayedRevealedUpdateLocalizationDataInput = {
+  description?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type EventPassDelayedRevealedUpdateLocalizationInput = {
+  data: EventPassDelayedRevealedUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type EventPassDelayedRevealedUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<EventPassDelayedRevealedCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<EventPassDelayedRevealedUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<EventPassDelayedRevealedUpsertLocalizationInput>>;
+};
+
+export type EventPassDelayedRevealedUpdateManyInlineInput = {
+  /** Connect multiple existing EventPassDelayedRevealed documents */
+  connect?: InputMaybe<Array<EventPassDelayedRevealedConnectInput>>;
+  /** Create and connect multiple EventPassDelayedRevealed documents */
+  create?: InputMaybe<Array<EventPassDelayedRevealedCreateInput>>;
+  /** Delete multiple EventPassDelayedRevealed documents */
+  delete?: InputMaybe<Array<EventPassDelayedRevealedWhereUniqueInput>>;
+  /** Disconnect multiple EventPassDelayedRevealed documents */
+  disconnect?: InputMaybe<Array<EventPassDelayedRevealedWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing EventPassDelayedRevealed documents */
+  set?: InputMaybe<Array<EventPassDelayedRevealedWhereUniqueInput>>;
+  /** Update multiple EventPassDelayedRevealed documents */
+  update?: InputMaybe<Array<EventPassDelayedRevealedUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple EventPassDelayedRevealed documents */
+  upsert?: InputMaybe<Array<EventPassDelayedRevealedUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type EventPassDelayedRevealedUpdateManyInput = {
+  /** description input for default locale (en) */
+  description?: InputMaybe<Scalars['String']>;
+  /** Optional updates to localizations */
+  localizations?: InputMaybe<EventPassDelayedRevealedUpdateManyLocalizationsInput>;
+  /** name input for default locale (en) */
+  name?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']>;
+};
+
+export type EventPassDelayedRevealedUpdateManyLocalizationDataInput = {
+  description?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type EventPassDelayedRevealedUpdateManyLocalizationInput = {
+  data: EventPassDelayedRevealedUpdateManyLocalizationDataInput;
+  locale: Locale;
+};
+
+export type EventPassDelayedRevealedUpdateManyLocalizationsInput = {
+  /** Localizations to update */
+  update?: InputMaybe<Array<EventPassDelayedRevealedUpdateManyLocalizationInput>>;
+};
+
+export type EventPassDelayedRevealedUpdateOneInlineInput = {
+  /** Connect existing EventPassDelayedRevealed document */
+  connect?: InputMaybe<EventPassDelayedRevealedWhereUniqueInput>;
+  /** Create and connect one EventPassDelayedRevealed document */
+  create?: InputMaybe<EventPassDelayedRevealedCreateInput>;
+  /** Delete currently connected EventPassDelayedRevealed document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected EventPassDelayedRevealed document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single EventPassDelayedRevealed document */
+  update?: InputMaybe<EventPassDelayedRevealedUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single EventPassDelayedRevealed document */
+  upsert?: InputMaybe<EventPassDelayedRevealedUpsertWithNestedWhereUniqueInput>;
+};
+
+export type EventPassDelayedRevealedUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: EventPassDelayedRevealedUpdateInput;
+  /** Unique document search */
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+export type EventPassDelayedRevealedUpsertInput = {
+  /** Create document if it didn't exist */
+  create: EventPassDelayedRevealedCreateInput;
+  /** Update document if it exists */
+  update: EventPassDelayedRevealedUpdateInput;
+};
+
+export type EventPassDelayedRevealedUpsertLocalizationInput = {
+  create: EventPassDelayedRevealedCreateLocalizationDataInput;
+  locale: Locale;
+  update: EventPassDelayedRevealedUpdateLocalizationDataInput;
+};
+
+export type EventPassDelayedRevealedUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: EventPassDelayedRevealedUpsertInput;
+  /** Unique document search */
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type EventPassDelayedRevealedWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Identifies documents */
+export type EventPassDelayedRevealedWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  description?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  description_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  description_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  description_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  description_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  description_starts_with?: InputMaybe<Scalars['String']>;
+  documentInStages_every?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  documentInStages_none?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  documentInStages_some?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
+  eventPass?: InputMaybe<EventPassWhereInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  name_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  name_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  name_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  name_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  name_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftDescription_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  passOptions_every?: InputMaybe<PassOptionWhereInput>;
+  passOptions_none?: InputMaybe<PassOptionWhereInput>;
+  passOptions_some?: InputMaybe<PassOptionWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type EventPassDelayedRevealedWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<EventPassDelayedRevealedWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<EventPassDelayedRevealedWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<EventPassDelayedRevealedWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<EventPassDelayedRevealedWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References EventPassDelayedRevealed record uniquely */
+export type EventPassDelayedRevealedWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 /** An edge in a connection. */
@@ -1664,6 +2457,7 @@ export type EventPassManyWhereInput = {
   documentInStages_none?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_some?: InputMaybe<EventPassWhereStageInput>;
   event?: InputMaybe<EventWhereInput>;
+  eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -1782,9 +2576,11 @@ export const enum EventPassOrderByInput {
 };
 
 export type EventPassUpdateInput = {
+  clptwshsk4wx601usb3uggcu7?: InputMaybe<EventPassDelayedRevealedUpdateManyInlineInput>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['String']>;
   event?: InputMaybe<EventUpdateOneInlineInput>;
+  eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedUpdateOneInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventPassUpdateLocalizationsInput>;
   /** name input for default locale (en) */
@@ -1856,6 +2652,21 @@ export type EventPassUpdateManyLocalizationInput = {
 export type EventPassUpdateManyLocalizationsInput = {
   /** Localizations to update */
   update?: InputMaybe<Array<EventPassUpdateManyLocalizationInput>>;
+};
+
+export type EventPassUpdateOneInlineInput = {
+  /** Connect existing EventPass document */
+  connect?: InputMaybe<EventPassWhereUniqueInput>;
+  /** Create and connect one EventPass document */
+  create?: InputMaybe<EventPassCreateInput>;
+  /** Delete currently connected EventPass document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected EventPass document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single EventPass document */
+  update?: InputMaybe<EventPassUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single EventPass document */
+  upsert?: InputMaybe<EventPassUpsertWithNestedWhereUniqueInput>;
 };
 
 export type EventPassUpdateWithNestedWhereUniqueInput = {
@@ -1940,6 +2751,7 @@ export type EventPassWhereInput = {
   documentInStages_none?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_some?: InputMaybe<EventPassWhereStageInput>;
   event?: InputMaybe<EventWhereInput>;
+  eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -2082,6 +2894,7 @@ export type EventUpdateInput = {
   eventDateLocations?: InputMaybe<EventDateLocationUpdateManyInlineInput>;
   eventPasses?: InputMaybe<EventPassUpdateManyInlineInput>;
   heroImage?: InputMaybe<AssetUpdateOneInlineInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventUpdateLocalizationsInput>;
   organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
@@ -2132,6 +2945,7 @@ export type EventUpdateManyInlineInput = {
 export type EventUpdateManyInput = {
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<EventUpdateManyLocalizationsInput>;
   public?: InputMaybe<Scalars['Boolean']>;
@@ -2239,6 +3053,25 @@ export type EventWhereInput = {
   eventPasses_none?: InputMaybe<EventPassWhereInput>;
   eventPasses_some?: InputMaybe<EventPassWhereInput>;
   heroImage?: InputMaybe<AssetWhereInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -2431,7 +3264,7 @@ export type LocationDistanceArgs = {
 };
 
 /** A model for location data (point on a map) + additional info such as street, venue etc. */
-export type LocationAddress = {
+export type LocationAddress = Entity & {
   __typename?: 'LocationAddress';
   /** Name of the city */
   city: Scalars['String'];
@@ -2441,7 +3274,7 @@ export type LocationAddress = {
   country: Scalars['String'];
   /** The unique identifier */
   id: Scalars['ID'];
-  /** Place ID from google maps */
+  /** Place ID from google maps. Use this tool to retrieve the correct Place ID from the location you want to open on google maps while clicking on the address provided: https://developers.google.com/maps/documentation/places/web-service/place-id#find-id */
   placeId?: Maybe<Scalars['String']>;
   postalCode: Scalars['String'];
   /** System stage field */
@@ -2697,21 +3530,34 @@ export type Node = {
 };
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
-export type Organizer = Node & {
+export type Organizer = Entity & Node & {
   __typename?: 'Organizer';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
   /** User that created this document */
   createdBy?: Maybe<User>;
   description?: Maybe<OrganizerDescriptionRichText>;
+  /** The discord widge id of the organizer. You need to enable the widget in your discord server and copy the value in `server id`. For details instruction of how to enable and find the id, refer to this section https://dev.fandom.com/wiki/DiscordIntegrator#Enabling_the_widget */
+  discordWidgetId?: Maybe<Scalars['String']>;
   /** Get the document in other stages */
   documentInStages: Array<Organizer>;
   events: Array<Event>;
+  /** The facebook handle (username) of the organizer. You can just copy the text on your facebook landing page on the URL, like 'johndoe' for 'https://www.facebook.com/johndoe'. */
+  facebookHandle?: Maybe<Scalars['String']>;
+  /** An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen. */
+  heroImage: Asset;
+  /** Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
+  heroImageClasses?: Maybe<Scalars['String']>;
   /** List of Organizer versions */
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
+  /** Image that represent the organizer, typically its logo. Advised resolution is 350 x 350 pixels, in square format with transparency (for ex: svg or png but not jpg) so that the image always look good either on light or dark mode. */
   image: Asset;
+  /** Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
+  imageClasses?: Maybe<Scalars['String']>;
+  /** The instagram handle (username) of the organizer. You can just copy the name on your instagram landing page next to the follow button. */
+  instagramHandle?: Maybe<Scalars['String']>;
   /** System Locale field */
   locale: Locale;
   /** Get the other localizations for this document */
@@ -2727,10 +3573,18 @@ export type Organizer = Node & {
   slug: Scalars['String'];
   /** System stage field */
   stage: Stage;
+  /** The telegram handle (username) of the organizer. You can just copy the text on your telegram profile page in parameters after the @, like 'johndoe' for '@johndoe'. */
+  telegramHandle?: Maybe<Scalars['String']>;
+  /** The tiktok handle (username) of the organizer. You can just copy the name on your tiktok landing page. */
+  tiktokHandle?: Maybe<Scalars['String']>;
+  /** The twitter (X) handle (username) of the organizer. You can just copy the text on your twitter landing page after the @, like 'johndoe' for '@johndoe'. */
+  twitterHandle?: Maybe<Scalars['String']>;
   /** The time the document was updated */
   updatedAt: Scalars['DateTime'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
+  /** The youtube handle (username) of the organizer. YYou can just copy the text on your youtube landing page after the @, like 'johndoe' for '@johndoe'. */
+  youtubeHandle?: Maybe<Scalars['String']>;
 };
 
 
@@ -2766,6 +3620,13 @@ export type OrganizerEventsArgs = {
   orderBy?: InputMaybe<EventOrderByInput>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<EventWhereInput>;
+};
+
+
+/** An organizer is an entity that launch events and handle the pass benefits. */
+export type OrganizerHeroImageArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
 };
 
 
@@ -2850,13 +3711,23 @@ export type OrganizerCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
+  discordWidgetId?: InputMaybe<Scalars['String']>;
   events?: InputMaybe<EventCreateManyInlineInput>;
+  facebookHandle?: InputMaybe<Scalars['String']>;
+  heroImage: AssetCreateOneInlineInput;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
   image: AssetCreateOneInlineInput;
+  imageClasses?: InputMaybe<Scalars['String']>;
+  instagramHandle?: InputMaybe<Scalars['String']>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<OrganizerCreateLocalizationsInput>;
   name: Scalars['String'];
   slug: Scalars['String'];
+  telegramHandle?: InputMaybe<Scalars['String']>;
+  tiktokHandle?: InputMaybe<Scalars['String']>;
+  twitterHandle?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
+  youtubeHandle?: InputMaybe<Scalars['String']>;
 };
 
 export type OrganizerCreateLocalizationDataInput = {
@@ -2949,12 +3820,70 @@ export type OrganizerManyWhereInput = {
   /** All values that are not contained in given list. */
   createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
+  discordWidgetId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  discordWidgetId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  discordWidgetId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  discordWidgetId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  discordWidgetId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  discordWidgetId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  discordWidgetId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  discordWidgetId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  discordWidgetId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  discordWidgetId_starts_with?: InputMaybe<Scalars['String']>;
   documentInStages_every?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_none?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_some?: InputMaybe<OrganizerWhereStageInput>;
   events_every?: InputMaybe<EventWhereInput>;
   events_none?: InputMaybe<EventWhereInput>;
   events_some?: InputMaybe<EventWhereInput>;
+  facebookHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  facebookHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  facebookHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  facebookHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  facebookHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  facebookHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  facebookHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  facebookHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  facebookHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  facebookHandle_starts_with?: InputMaybe<Scalars['String']>;
+  heroImage?: InputMaybe<AssetWhereInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -2975,6 +3904,44 @@ export type OrganizerManyWhereInput = {
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
   image?: InputMaybe<AssetWhereInput>;
+  imageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  imageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  imageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  imageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  imageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  imageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  imageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  imageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  imageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  imageClasses_starts_with?: InputMaybe<Scalars['String']>;
+  instagramHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  instagramHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  instagramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  instagramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  instagramHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  instagramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  instagramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  instagramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  instagramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  instagramHandle_starts_with?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']>;
@@ -3032,6 +3999,63 @@ export type OrganizerManyWhereInput = {
   slug_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   slug_starts_with?: InputMaybe<Scalars['String']>;
+  telegramHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  telegramHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  telegramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  telegramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  telegramHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  telegramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  telegramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  telegramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  telegramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  telegramHandle_starts_with?: InputMaybe<Scalars['String']>;
+  tiktokHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  tiktokHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  tiktokHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  tiktokHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  tiktokHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  tiktokHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  tiktokHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  tiktokHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  tiktokHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  tiktokHandle_starts_with?: InputMaybe<Scalars['String']>;
+  twitterHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  twitterHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  twitterHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  twitterHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  twitterHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  twitterHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  twitterHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  twitterHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  twitterHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  twitterHandle_starts_with?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -3048,32 +4072,79 @@ export type OrganizerManyWhereInput = {
   /** All values that are not contained in given list. */
   updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
+  youtubeHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  youtubeHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  youtubeHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  youtubeHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  youtubeHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  youtubeHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  youtubeHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  youtubeHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  youtubeHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  youtubeHandle_starts_with?: InputMaybe<Scalars['String']>;
 };
 
 export const enum OrganizerOrderByInput {
   CreatedAtAsc = 'createdAt_ASC',
   CreatedAtDesc = 'createdAt_DESC',
+  DiscordWidgetIdAsc = 'discordWidgetId_ASC',
+  DiscordWidgetIdDesc = 'discordWidgetId_DESC',
+  FacebookHandleAsc = 'facebookHandle_ASC',
+  FacebookHandleDesc = 'facebookHandle_DESC',
+  HeroImageClassesAsc = 'heroImageClasses_ASC',
+  HeroImageClassesDesc = 'heroImageClasses_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  ImageClassesAsc = 'imageClasses_ASC',
+  ImageClassesDesc = 'imageClasses_DESC',
+  InstagramHandleAsc = 'instagramHandle_ASC',
+  InstagramHandleDesc = 'instagramHandle_DESC',
   NameAsc = 'name_ASC',
   NameDesc = 'name_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   SlugAsc = 'slug_ASC',
   SlugDesc = 'slug_DESC',
+  TelegramHandleAsc = 'telegramHandle_ASC',
+  TelegramHandleDesc = 'telegramHandle_DESC',
+  TiktokHandleAsc = 'tiktokHandle_ASC',
+  TiktokHandleDesc = 'tiktokHandle_DESC',
+  TwitterHandleAsc = 'twitterHandle_ASC',
+  TwitterHandleDesc = 'twitterHandle_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC'
+  UpdatedAtDesc = 'updatedAt_DESC',
+  YoutubeHandleAsc = 'youtubeHandle_ASC',
+  YoutubeHandleDesc = 'youtubeHandle_DESC'
 };
 
 export type OrganizerUpdateInput = {
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
+  discordWidgetId?: InputMaybe<Scalars['String']>;
   events?: InputMaybe<EventUpdateManyInlineInput>;
+  facebookHandle?: InputMaybe<Scalars['String']>;
+  heroImage?: InputMaybe<AssetUpdateOneInlineInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<AssetUpdateOneInlineInput>;
+  imageClasses?: InputMaybe<Scalars['String']>;
+  instagramHandle?: InputMaybe<Scalars['String']>;
   /** Manage document localizations */
   localizations?: InputMaybe<OrganizerUpdateLocalizationsInput>;
   name?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
+  telegramHandle?: InputMaybe<Scalars['String']>;
+  tiktokHandle?: InputMaybe<Scalars['String']>;
+  twitterHandle?: InputMaybe<Scalars['String']>;
+  youtubeHandle?: InputMaybe<Scalars['String']>;
 };
 
 export type OrganizerUpdateLocalizationDataInput = {
@@ -3115,8 +4186,17 @@ export type OrganizerUpdateManyInlineInput = {
 export type OrganizerUpdateManyInput = {
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
+  discordWidgetId?: InputMaybe<Scalars['String']>;
+  facebookHandle?: InputMaybe<Scalars['String']>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
+  imageClasses?: InputMaybe<Scalars['String']>;
+  instagramHandle?: InputMaybe<Scalars['String']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<OrganizerUpdateManyLocalizationsInput>;
+  telegramHandle?: InputMaybe<Scalars['String']>;
+  tiktokHandle?: InputMaybe<Scalars['String']>;
+  twitterHandle?: InputMaybe<Scalars['String']>;
+  youtubeHandle?: InputMaybe<Scalars['String']>;
 };
 
 export type OrganizerUpdateManyLocalizationDataInput = {
@@ -3207,12 +4287,70 @@ export type OrganizerWhereInput = {
   /** All values that are not contained in given list. */
   createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
+  discordWidgetId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  discordWidgetId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  discordWidgetId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  discordWidgetId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  discordWidgetId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  discordWidgetId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  discordWidgetId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  discordWidgetId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  discordWidgetId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  discordWidgetId_starts_with?: InputMaybe<Scalars['String']>;
   documentInStages_every?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_none?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_some?: InputMaybe<OrganizerWhereStageInput>;
   events_every?: InputMaybe<EventWhereInput>;
   events_none?: InputMaybe<EventWhereInput>;
   events_some?: InputMaybe<EventWhereInput>;
+  facebookHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  facebookHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  facebookHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  facebookHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  facebookHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  facebookHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  facebookHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  facebookHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  facebookHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  facebookHandle_starts_with?: InputMaybe<Scalars['String']>;
+  heroImage?: InputMaybe<AssetWhereInput>;
+  heroImageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -3233,6 +4371,44 @@ export type OrganizerWhereInput = {
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
   image?: InputMaybe<AssetWhereInput>;
+  imageClasses?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  imageClasses_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  imageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  imageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  imageClasses_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  imageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  imageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  imageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  imageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  imageClasses_starts_with?: InputMaybe<Scalars['String']>;
+  instagramHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  instagramHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  instagramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  instagramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  instagramHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  instagramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  instagramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  instagramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  instagramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  instagramHandle_starts_with?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']>;
@@ -3290,6 +4466,63 @@ export type OrganizerWhereInput = {
   slug_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   slug_starts_with?: InputMaybe<Scalars['String']>;
+  telegramHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  telegramHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  telegramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  telegramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  telegramHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  telegramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  telegramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  telegramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  telegramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  telegramHandle_starts_with?: InputMaybe<Scalars['String']>;
+  tiktokHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  tiktokHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  tiktokHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  tiktokHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  tiktokHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  tiktokHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  tiktokHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  tiktokHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  tiktokHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  tiktokHandle_starts_with?: InputMaybe<Scalars['String']>;
+  twitterHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  twitterHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  twitterHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  twitterHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  twitterHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  twitterHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  twitterHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  twitterHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  twitterHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  twitterHandle_starts_with?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -3306,6 +4539,25 @@ export type OrganizerWhereInput = {
   /** All values that are not contained in given list. */
   updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
+  youtubeHandle?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  youtubeHandle_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  youtubeHandle_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  youtubeHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  youtubeHandle_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  youtubeHandle_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  youtubeHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  youtubeHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  youtubeHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  youtubeHandle_starts_with?: InputMaybe<Scalars['String']>;
 };
 
 /** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
@@ -3330,12 +4582,6 @@ export type OrganizerWhereUniqueInput = {
 };
 
 /** References Organizer record uniquely */
-export type OrganizerWhereUniqueInput_Remote_Rel_Accountorganizer = {
-  name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
-};
-
-/** References Organizer record uniquely */
 export type OrganizerWhereUniqueInput_Remote_Rel_EventParametersorganizer = {
   name?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
@@ -3343,6 +4589,12 @@ export type OrganizerWhereUniqueInput_Remote_Rel_EventParametersorganizer = {
 
 /** References Organizer record uniquely */
 export type OrganizerWhereUniqueInput_Remote_Rel_EventPassNftorganizer = {
+  name?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']>;
+};
+
+/** References Organizer record uniquely */
+export type OrganizerWhereUniqueInput_Remote_Rel_RoleAssignmentsorganizer = {
   name?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
 };
@@ -3363,7 +4615,7 @@ export type PageInfo = {
 };
 
 /** Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations. */
-export type PassOption = {
+export type PassOption = Entity & {
   __typename?: 'PassOption';
   /** Description of the option, like "Access to the event on Day 1" */
   description?: Maybe<Scalars['String']>;
@@ -3371,7 +4623,7 @@ export type PassOption = {
    * Define the location and date for this option.
    * Important ! It will determine the release and availability for the Pass access.
    */
-  eventDateLocation: EventDateLocation;
+  eventDateLocation?: Maybe<EventDateLocation>;
   /** The unique identifier */
   id: Scalars['ID'];
   /** System Locale field */
@@ -3401,7 +4653,7 @@ export type PassOptionLocalizationsArgs = {
 export type PassOptionCreateInput = {
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['String']>;
-  eventDateLocation: EventDateLocationCreateOneInlineInput;
+  eventDateLocation?: InputMaybe<EventDateLocationCreateOneInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<PassOptionCreateLocalizationsInput>;
   /** name input for default locale (en) */
@@ -3593,7 +4845,7 @@ export type PassOptionWhereUniqueInput = {
 };
 
 /** Scheduled Operation system model */
-export type ScheduledOperation = Node & {
+export type ScheduledOperation = Entity & Node & {
   __typename?: 'ScheduledOperation';
   affectedDocuments: Array<ScheduledOperationAffectedDocument>;
   /** The time the document was created */
@@ -3674,7 +4926,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Asset | Event | EventPass | Organizer;
+export type ScheduledOperationAffectedDocument = Asset | Event | EventPass | EventPassDelayedRevealed | Organizer;
 
 /** A connection to a list of items. */
 export type ScheduledOperationConnection = {
@@ -3861,7 +5113,7 @@ export type ScheduledOperationWhereUniqueInput = {
 };
 
 /** Scheduled Release system model */
-export type ScheduledRelease = Node & {
+export type ScheduledRelease = Entity & Node & {
   __typename?: 'ScheduledRelease';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -4232,7 +5484,7 @@ export const enum SystemDateTimeFieldVariation {
 };
 
 /** User system model */
-export type User = Node & {
+export type User = Entity & Node & {
   __typename?: 'User';
   /** The time the document was created */
   createdAt: Scalars['DateTime'];
@@ -4485,11 +5737,12 @@ export type Account = {
   email?: Maybe<Scalars['String']>;
   emailVerified: Scalars['Boolean'];
   id: Scalars['uuid'];
-  isOrganizer: Scalars['Boolean'];
   /** An object relationship */
   kyc?: Maybe<Kyc>;
-  organizer?: Maybe<Organizer>;
-  organizerId?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  roles: Array<RoleAssignments>;
+  /** An aggregate relationship */
+  roles_aggregate: RoleAssignments_Aggregate;
   /** An object relationship */
   stripeCustomer?: Maybe<StripeCustomer>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -4497,10 +5750,22 @@ export type Account = {
 
 
 /** An account can represent an user or organizer. It store essential informations and is used as the root class for relationships with other tables */
-export type AccountOrganizerArgs = {
-  locales?: Array<Locale>;
-  stage?: Stage;
-  where: OrganizerWhereUniqueInput_Remote_Rel_Accountorganizer;
+export type AccountRolesArgs = {
+  distinct_on?: InputMaybe<Array<RoleAssignments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<RoleAssignments_Order_By>>;
+  where?: InputMaybe<RoleAssignments_Bool_Exp>;
+};
+
+
+/** An account can represent an user or organizer. It store essential informations and is used as the root class for relationships with other tables */
+export type AccountRoles_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<RoleAssignments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<RoleAssignments_Order_By>>;
+  where?: InputMaybe<RoleAssignments_Bool_Exp>;
 };
 
 /** aggregated selection of "account" */
@@ -4535,9 +5800,9 @@ export type Account_Bool_Exp = {
   email?: InputMaybe<String_Comparison_Exp>;
   emailVerified?: InputMaybe<Boolean_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
-  isOrganizer?: InputMaybe<Boolean_Comparison_Exp>;
   kyc?: InputMaybe<Kyc_Bool_Exp>;
-  organizerId?: InputMaybe<String_Comparison_Exp>;
+  roles?: InputMaybe<RoleAssignments_Bool_Exp>;
+  roles_aggregate?: InputMaybe<RoleAssignments_Aggregate_Bool_Exp>;
   stripeCustomer?: InputMaybe<StripeCustomer_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
@@ -4557,9 +5822,8 @@ export type Account_Insert_Input = {
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['uuid']>;
-  isOrganizer?: InputMaybe<Scalars['Boolean']>;
   kyc?: InputMaybe<Kyc_Obj_Rel_Insert_Input>;
-  organizerId?: InputMaybe<Scalars['String']>;
+  roles?: InputMaybe<RoleAssignments_Arr_Rel_Insert_Input>;
   stripeCustomer?: InputMaybe<StripeCustomer_Obj_Rel_Insert_Input>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
@@ -4571,7 +5835,6 @@ export type Account_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
-  organizerId?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -4582,7 +5845,6 @@ export type Account_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
-  organizerId?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -4616,9 +5878,8 @@ export type Account_Order_By = {
   email?: InputMaybe<Order_By>;
   emailVerified?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  isOrganizer?: InputMaybe<Order_By>;
   kyc?: InputMaybe<Kyc_Order_By>;
-  organizerId?: InputMaybe<Order_By>;
+  roles_aggregate?: InputMaybe<RoleAssignments_Aggregate_Order_By>;
   stripeCustomer?: InputMaybe<StripeCustomer_Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
@@ -4641,10 +5902,6 @@ export const enum Account_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  IsOrganizer = 'isOrganizer',
-  /** column name */
-  OrganizerId = 'organizerId',
-  /** column name */
   UpdatedAt = 'updated_at'
 };
 
@@ -4655,8 +5912,6 @@ export type Account_Set_Input = {
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['uuid']>;
-  isOrganizer?: InputMaybe<Scalars['Boolean']>;
-  organizerId?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -4675,8 +5930,6 @@ export type Account_Stream_Cursor_Value_Input = {
   email?: InputMaybe<Scalars['String']>;
   emailVerified?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['uuid']>;
-  isOrganizer?: InputMaybe<Scalars['Boolean']>;
-  organizerId?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -4693,10 +5946,6 @@ export const enum Account_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  IsOrganizer = 'isOrganizer',
-  /** column name */
-  OrganizerId = 'organizerId',
-  /** column name */
   UpdatedAt = 'updated_at'
 };
 
@@ -4705,6 +5954,594 @@ export type Account_Updates = {
   _set?: InputMaybe<Account_Set_Input>;
   /** filter the rows which have to be updated */
   where: Account_Bool_Exp;
+};
+
+/** History of auditable actions on audited tables, from audit.if_modified_func() */
+export type Audit_Logged_Actions = {
+  __typename?: 'audit_logged_actions';
+  /** Action type; I = insert, D = delete, U = update, T = truncate */
+  action: Scalars['String'];
+  /** Wall clock time at which audited event's trigger call occurred */
+  action_tstamp_clk: Scalars['timestamptz'];
+  /** Statement start timestamp for tx in which audited event occurred */
+  action_tstamp_stm: Scalars['timestamptz'];
+  /** Transaction start timestamp for tx in which audited event occurred */
+  action_tstamp_tx: Scalars['timestamptz'];
+  /** Application name set when this audit event occurred. Can be changed in-session by client. */
+  application_name?: Maybe<Scalars['String']>;
+  /** New values of fields changed by UPDATE. Null except for row-level UPDATE events. */
+  changed_fields?: Maybe<Scalars['jsonb']>;
+  /** IP address of client that issued query. Null for unix domain socket. */
+  client_addr?: Maybe<Scalars['inet']>;
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: Maybe<Scalars['Int']>;
+  /** Top-level query that caused this auditable event. May be more than one statement. */
+  client_query?: Maybe<Scalars['String']>;
+  /** Unique identifier for each auditable event */
+  event_id: Scalars['bigint'];
+  hasura_user?: Maybe<Scalars['jsonb']>;
+  /** Table OID. Changes with drop/create. Get with 'tablename'::regclass */
+  relid: Scalars['oid'];
+  /** Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple. */
+  row_data?: Maybe<Scalars['jsonb']>;
+  /** Database schema audited table for this event is in */
+  schema_name: Scalars['String'];
+  /** Login / session user whose statement caused the audited event */
+  session_user_name?: Maybe<Scalars['String']>;
+  /** 't' if audit event is from an FOR EACH STATEMENT trigger, 'f' for FOR EACH ROW */
+  statement_only: Scalars['Boolean'];
+  /** Non-schema-qualified table name of table event occured in */
+  table_name: Scalars['String'];
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: Maybe<Scalars['bigint']>;
+};
+
+
+/** History of auditable actions on audited tables, from audit.if_modified_func() */
+export type Audit_Logged_ActionsChanged_FieldsArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+
+/** History of auditable actions on audited tables, from audit.if_modified_func() */
+export type Audit_Logged_ActionsHasura_UserArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+
+/** History of auditable actions on audited tables, from audit.if_modified_func() */
+export type Audit_Logged_ActionsRow_DataArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregated selection of "audit.logged_actions" */
+export type Audit_Logged_Actions_Aggregate = {
+  __typename?: 'audit_logged_actions_aggregate';
+  aggregate?: Maybe<Audit_Logged_Actions_Aggregate_Fields>;
+  nodes: Array<Audit_Logged_Actions>;
+};
+
+/** aggregate fields of "audit.logged_actions" */
+export type Audit_Logged_Actions_Aggregate_Fields = {
+  __typename?: 'audit_logged_actions_aggregate_fields';
+  avg?: Maybe<Audit_Logged_Actions_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Audit_Logged_Actions_Max_Fields>;
+  min?: Maybe<Audit_Logged_Actions_Min_Fields>;
+  stddev?: Maybe<Audit_Logged_Actions_Stddev_Fields>;
+  stddev_pop?: Maybe<Audit_Logged_Actions_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Audit_Logged_Actions_Stddev_Samp_Fields>;
+  sum?: Maybe<Audit_Logged_Actions_Sum_Fields>;
+  var_pop?: Maybe<Audit_Logged_Actions_Var_Pop_Fields>;
+  var_samp?: Maybe<Audit_Logged_Actions_Var_Samp_Fields>;
+  variance?: Maybe<Audit_Logged_Actions_Variance_Fields>;
+};
+
+
+/** aggregate fields of "audit.logged_actions" */
+export type Audit_Logged_Actions_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Audit_Logged_Actions_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Audit_Logged_Actions_Append_Input = {
+  /** New values of fields changed by UPDATE. Null except for row-level UPDATE events. */
+  changed_fields?: InputMaybe<Scalars['jsonb']>;
+  hasura_user?: InputMaybe<Scalars['jsonb']>;
+  /** Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple. */
+  row_data?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type Audit_Logged_Actions_Avg_Fields = {
+  __typename?: 'audit_logged_actions_avg_fields';
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: Maybe<Scalars['Float']>;
+  /** Unique identifier for each auditable event */
+  event_id?: Maybe<Scalars['Float']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "audit.logged_actions". All fields are combined with a logical 'AND'. */
+export type Audit_Logged_Actions_Bool_Exp = {
+  _and?: InputMaybe<Array<Audit_Logged_Actions_Bool_Exp>>;
+  _not?: InputMaybe<Audit_Logged_Actions_Bool_Exp>;
+  _or?: InputMaybe<Array<Audit_Logged_Actions_Bool_Exp>>;
+  action?: InputMaybe<String_Comparison_Exp>;
+  action_tstamp_clk?: InputMaybe<Timestamptz_Comparison_Exp>;
+  action_tstamp_stm?: InputMaybe<Timestamptz_Comparison_Exp>;
+  action_tstamp_tx?: InputMaybe<Timestamptz_Comparison_Exp>;
+  application_name?: InputMaybe<String_Comparison_Exp>;
+  changed_fields?: InputMaybe<Jsonb_Comparison_Exp>;
+  client_addr?: InputMaybe<Inet_Comparison_Exp>;
+  client_port?: InputMaybe<Int_Comparison_Exp>;
+  client_query?: InputMaybe<String_Comparison_Exp>;
+  event_id?: InputMaybe<Bigint_Comparison_Exp>;
+  hasura_user?: InputMaybe<Jsonb_Comparison_Exp>;
+  relid?: InputMaybe<Oid_Comparison_Exp>;
+  row_data?: InputMaybe<Jsonb_Comparison_Exp>;
+  schema_name?: InputMaybe<String_Comparison_Exp>;
+  session_user_name?: InputMaybe<String_Comparison_Exp>;
+  statement_only?: InputMaybe<Boolean_Comparison_Exp>;
+  table_name?: InputMaybe<String_Comparison_Exp>;
+  transaction_id?: InputMaybe<Bigint_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "audit.logged_actions" */
+export const enum Audit_Logged_Actions_Constraint {
+  /** unique or primary key constraint on columns "event_id" */
+  LoggedActionsPkey = 'logged_actions_pkey'
+};
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Audit_Logged_Actions_Delete_At_Path_Input = {
+  /** New values of fields changed by UPDATE. Null except for row-level UPDATE events. */
+  changed_fields?: InputMaybe<Array<Scalars['String']>>;
+  hasura_user?: InputMaybe<Array<Scalars['String']>>;
+  /** Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple. */
+  row_data?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Audit_Logged_Actions_Delete_Elem_Input = {
+  /** New values of fields changed by UPDATE. Null except for row-level UPDATE events. */
+  changed_fields?: InputMaybe<Scalars['Int']>;
+  hasura_user?: InputMaybe<Scalars['Int']>;
+  /** Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple. */
+  row_data?: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Audit_Logged_Actions_Delete_Key_Input = {
+  /** New values of fields changed by UPDATE. Null except for row-level UPDATE events. */
+  changed_fields?: InputMaybe<Scalars['String']>;
+  hasura_user?: InputMaybe<Scalars['String']>;
+  /** Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple. */
+  row_data?: InputMaybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "audit.logged_actions" */
+export type Audit_Logged_Actions_Inc_Input = {
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: InputMaybe<Scalars['Int']>;
+  /** Unique identifier for each auditable event */
+  event_id?: InputMaybe<Scalars['bigint']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "audit.logged_actions" */
+export type Audit_Logged_Actions_Insert_Input = {
+  /** Action type; I = insert, D = delete, U = update, T = truncate */
+  action?: InputMaybe<Scalars['String']>;
+  /** Wall clock time at which audited event's trigger call occurred */
+  action_tstamp_clk?: InputMaybe<Scalars['timestamptz']>;
+  /** Statement start timestamp for tx in which audited event occurred */
+  action_tstamp_stm?: InputMaybe<Scalars['timestamptz']>;
+  /** Transaction start timestamp for tx in which audited event occurred */
+  action_tstamp_tx?: InputMaybe<Scalars['timestamptz']>;
+  /** Application name set when this audit event occurred. Can be changed in-session by client. */
+  application_name?: InputMaybe<Scalars['String']>;
+  /** New values of fields changed by UPDATE. Null except for row-level UPDATE events. */
+  changed_fields?: InputMaybe<Scalars['jsonb']>;
+  /** IP address of client that issued query. Null for unix domain socket. */
+  client_addr?: InputMaybe<Scalars['inet']>;
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: InputMaybe<Scalars['Int']>;
+  /** Top-level query that caused this auditable event. May be more than one statement. */
+  client_query?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for each auditable event */
+  event_id?: InputMaybe<Scalars['bigint']>;
+  hasura_user?: InputMaybe<Scalars['jsonb']>;
+  /** Table OID. Changes with drop/create. Get with 'tablename'::regclass */
+  relid?: InputMaybe<Scalars['oid']>;
+  /** Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple. */
+  row_data?: InputMaybe<Scalars['jsonb']>;
+  /** Database schema audited table for this event is in */
+  schema_name?: InputMaybe<Scalars['String']>;
+  /** Login / session user whose statement caused the audited event */
+  session_user_name?: InputMaybe<Scalars['String']>;
+  /** 't' if audit event is from an FOR EACH STATEMENT trigger, 'f' for FOR EACH ROW */
+  statement_only?: InputMaybe<Scalars['Boolean']>;
+  /** Non-schema-qualified table name of table event occured in */
+  table_name?: InputMaybe<Scalars['String']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: InputMaybe<Scalars['bigint']>;
+};
+
+/** aggregate max on columns */
+export type Audit_Logged_Actions_Max_Fields = {
+  __typename?: 'audit_logged_actions_max_fields';
+  /** Action type; I = insert, D = delete, U = update, T = truncate */
+  action?: Maybe<Scalars['String']>;
+  /** Wall clock time at which audited event's trigger call occurred */
+  action_tstamp_clk?: Maybe<Scalars['timestamptz']>;
+  /** Statement start timestamp for tx in which audited event occurred */
+  action_tstamp_stm?: Maybe<Scalars['timestamptz']>;
+  /** Transaction start timestamp for tx in which audited event occurred */
+  action_tstamp_tx?: Maybe<Scalars['timestamptz']>;
+  /** Application name set when this audit event occurred. Can be changed in-session by client. */
+  application_name?: Maybe<Scalars['String']>;
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: Maybe<Scalars['Int']>;
+  /** Top-level query that caused this auditable event. May be more than one statement. */
+  client_query?: Maybe<Scalars['String']>;
+  /** Unique identifier for each auditable event */
+  event_id?: Maybe<Scalars['bigint']>;
+  /** Database schema audited table for this event is in */
+  schema_name?: Maybe<Scalars['String']>;
+  /** Login / session user whose statement caused the audited event */
+  session_user_name?: Maybe<Scalars['String']>;
+  /** Non-schema-qualified table name of table event occured in */
+  table_name?: Maybe<Scalars['String']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: Maybe<Scalars['bigint']>;
+};
+
+/** aggregate min on columns */
+export type Audit_Logged_Actions_Min_Fields = {
+  __typename?: 'audit_logged_actions_min_fields';
+  /** Action type; I = insert, D = delete, U = update, T = truncate */
+  action?: Maybe<Scalars['String']>;
+  /** Wall clock time at which audited event's trigger call occurred */
+  action_tstamp_clk?: Maybe<Scalars['timestamptz']>;
+  /** Statement start timestamp for tx in which audited event occurred */
+  action_tstamp_stm?: Maybe<Scalars['timestamptz']>;
+  /** Transaction start timestamp for tx in which audited event occurred */
+  action_tstamp_tx?: Maybe<Scalars['timestamptz']>;
+  /** Application name set when this audit event occurred. Can be changed in-session by client. */
+  application_name?: Maybe<Scalars['String']>;
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: Maybe<Scalars['Int']>;
+  /** Top-level query that caused this auditable event. May be more than one statement. */
+  client_query?: Maybe<Scalars['String']>;
+  /** Unique identifier for each auditable event */
+  event_id?: Maybe<Scalars['bigint']>;
+  /** Database schema audited table for this event is in */
+  schema_name?: Maybe<Scalars['String']>;
+  /** Login / session user whose statement caused the audited event */
+  session_user_name?: Maybe<Scalars['String']>;
+  /** Non-schema-qualified table name of table event occured in */
+  table_name?: Maybe<Scalars['String']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: Maybe<Scalars['bigint']>;
+};
+
+/** response of any mutation on the table "audit.logged_actions" */
+export type Audit_Logged_Actions_Mutation_Response = {
+  __typename?: 'audit_logged_actions_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Audit_Logged_Actions>;
+};
+
+/** on_conflict condition type for table "audit.logged_actions" */
+export type Audit_Logged_Actions_On_Conflict = {
+  constraint: Audit_Logged_Actions_Constraint;
+  update_columns?: Array<Audit_Logged_Actions_Update_Column>;
+  where?: InputMaybe<Audit_Logged_Actions_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "audit.logged_actions". */
+export type Audit_Logged_Actions_Order_By = {
+  action?: InputMaybe<Order_By>;
+  action_tstamp_clk?: InputMaybe<Order_By>;
+  action_tstamp_stm?: InputMaybe<Order_By>;
+  action_tstamp_tx?: InputMaybe<Order_By>;
+  application_name?: InputMaybe<Order_By>;
+  changed_fields?: InputMaybe<Order_By>;
+  client_addr?: InputMaybe<Order_By>;
+  client_port?: InputMaybe<Order_By>;
+  client_query?: InputMaybe<Order_By>;
+  event_id?: InputMaybe<Order_By>;
+  hasura_user?: InputMaybe<Order_By>;
+  relid?: InputMaybe<Order_By>;
+  row_data?: InputMaybe<Order_By>;
+  schema_name?: InputMaybe<Order_By>;
+  session_user_name?: InputMaybe<Order_By>;
+  statement_only?: InputMaybe<Order_By>;
+  table_name?: InputMaybe<Order_By>;
+  transaction_id?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: audit.logged_actions */
+export type Audit_Logged_Actions_Pk_Columns_Input = {
+  /** Unique identifier for each auditable event */
+  event_id: Scalars['bigint'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Audit_Logged_Actions_Prepend_Input = {
+  /** New values of fields changed by UPDATE. Null except for row-level UPDATE events. */
+  changed_fields?: InputMaybe<Scalars['jsonb']>;
+  hasura_user?: InputMaybe<Scalars['jsonb']>;
+  /** Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple. */
+  row_data?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "audit.logged_actions" */
+export const enum Audit_Logged_Actions_Select_Column {
+  /** column name */
+  Action = 'action',
+  /** column name */
+  ActionTstampClk = 'action_tstamp_clk',
+  /** column name */
+  ActionTstampStm = 'action_tstamp_stm',
+  /** column name */
+  ActionTstampTx = 'action_tstamp_tx',
+  /** column name */
+  ApplicationName = 'application_name',
+  /** column name */
+  ChangedFields = 'changed_fields',
+  /** column name */
+  ClientAddr = 'client_addr',
+  /** column name */
+  ClientPort = 'client_port',
+  /** column name */
+  ClientQuery = 'client_query',
+  /** column name */
+  EventId = 'event_id',
+  /** column name */
+  HasuraUser = 'hasura_user',
+  /** column name */
+  Relid = 'relid',
+  /** column name */
+  RowData = 'row_data',
+  /** column name */
+  SchemaName = 'schema_name',
+  /** column name */
+  SessionUserName = 'session_user_name',
+  /** column name */
+  StatementOnly = 'statement_only',
+  /** column name */
+  TableName = 'table_name',
+  /** column name */
+  TransactionId = 'transaction_id'
+};
+
+/** input type for updating data in table "audit.logged_actions" */
+export type Audit_Logged_Actions_Set_Input = {
+  /** Action type; I = insert, D = delete, U = update, T = truncate */
+  action?: InputMaybe<Scalars['String']>;
+  /** Wall clock time at which audited event's trigger call occurred */
+  action_tstamp_clk?: InputMaybe<Scalars['timestamptz']>;
+  /** Statement start timestamp for tx in which audited event occurred */
+  action_tstamp_stm?: InputMaybe<Scalars['timestamptz']>;
+  /** Transaction start timestamp for tx in which audited event occurred */
+  action_tstamp_tx?: InputMaybe<Scalars['timestamptz']>;
+  /** Application name set when this audit event occurred. Can be changed in-session by client. */
+  application_name?: InputMaybe<Scalars['String']>;
+  /** New values of fields changed by UPDATE. Null except for row-level UPDATE events. */
+  changed_fields?: InputMaybe<Scalars['jsonb']>;
+  /** IP address of client that issued query. Null for unix domain socket. */
+  client_addr?: InputMaybe<Scalars['inet']>;
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: InputMaybe<Scalars['Int']>;
+  /** Top-level query that caused this auditable event. May be more than one statement. */
+  client_query?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for each auditable event */
+  event_id?: InputMaybe<Scalars['bigint']>;
+  hasura_user?: InputMaybe<Scalars['jsonb']>;
+  /** Table OID. Changes with drop/create. Get with 'tablename'::regclass */
+  relid?: InputMaybe<Scalars['oid']>;
+  /** Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple. */
+  row_data?: InputMaybe<Scalars['jsonb']>;
+  /** Database schema audited table for this event is in */
+  schema_name?: InputMaybe<Scalars['String']>;
+  /** Login / session user whose statement caused the audited event */
+  session_user_name?: InputMaybe<Scalars['String']>;
+  /** 't' if audit event is from an FOR EACH STATEMENT trigger, 'f' for FOR EACH ROW */
+  statement_only?: InputMaybe<Scalars['Boolean']>;
+  /** Non-schema-qualified table name of table event occured in */
+  table_name?: InputMaybe<Scalars['String']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: InputMaybe<Scalars['bigint']>;
+};
+
+/** aggregate stddev on columns */
+export type Audit_Logged_Actions_Stddev_Fields = {
+  __typename?: 'audit_logged_actions_stddev_fields';
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: Maybe<Scalars['Float']>;
+  /** Unique identifier for each auditable event */
+  event_id?: Maybe<Scalars['Float']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Audit_Logged_Actions_Stddev_Pop_Fields = {
+  __typename?: 'audit_logged_actions_stddev_pop_fields';
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: Maybe<Scalars['Float']>;
+  /** Unique identifier for each auditable event */
+  event_id?: Maybe<Scalars['Float']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Audit_Logged_Actions_Stddev_Samp_Fields = {
+  __typename?: 'audit_logged_actions_stddev_samp_fields';
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: Maybe<Scalars['Float']>;
+  /** Unique identifier for each auditable event */
+  event_id?: Maybe<Scalars['Float']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "audit_logged_actions" */
+export type Audit_Logged_Actions_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Audit_Logged_Actions_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Audit_Logged_Actions_Stream_Cursor_Value_Input = {
+  /** Action type; I = insert, D = delete, U = update, T = truncate */
+  action?: InputMaybe<Scalars['String']>;
+  /** Wall clock time at which audited event's trigger call occurred */
+  action_tstamp_clk?: InputMaybe<Scalars['timestamptz']>;
+  /** Statement start timestamp for tx in which audited event occurred */
+  action_tstamp_stm?: InputMaybe<Scalars['timestamptz']>;
+  /** Transaction start timestamp for tx in which audited event occurred */
+  action_tstamp_tx?: InputMaybe<Scalars['timestamptz']>;
+  /** Application name set when this audit event occurred. Can be changed in-session by client. */
+  application_name?: InputMaybe<Scalars['String']>;
+  /** New values of fields changed by UPDATE. Null except for row-level UPDATE events. */
+  changed_fields?: InputMaybe<Scalars['jsonb']>;
+  /** IP address of client that issued query. Null for unix domain socket. */
+  client_addr?: InputMaybe<Scalars['inet']>;
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: InputMaybe<Scalars['Int']>;
+  /** Top-level query that caused this auditable event. May be more than one statement. */
+  client_query?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for each auditable event */
+  event_id?: InputMaybe<Scalars['bigint']>;
+  hasura_user?: InputMaybe<Scalars['jsonb']>;
+  /** Table OID. Changes with drop/create. Get with 'tablename'::regclass */
+  relid?: InputMaybe<Scalars['oid']>;
+  /** Record value. Null for statement-level trigger. For INSERT this is the new tuple. For DELETE and UPDATE it is the old tuple. */
+  row_data?: InputMaybe<Scalars['jsonb']>;
+  /** Database schema audited table for this event is in */
+  schema_name?: InputMaybe<Scalars['String']>;
+  /** Login / session user whose statement caused the audited event */
+  session_user_name?: InputMaybe<Scalars['String']>;
+  /** 't' if audit event is from an FOR EACH STATEMENT trigger, 'f' for FOR EACH ROW */
+  statement_only?: InputMaybe<Scalars['Boolean']>;
+  /** Non-schema-qualified table name of table event occured in */
+  table_name?: InputMaybe<Scalars['String']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: InputMaybe<Scalars['bigint']>;
+};
+
+/** aggregate sum on columns */
+export type Audit_Logged_Actions_Sum_Fields = {
+  __typename?: 'audit_logged_actions_sum_fields';
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: Maybe<Scalars['Int']>;
+  /** Unique identifier for each auditable event */
+  event_id?: Maybe<Scalars['bigint']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: Maybe<Scalars['bigint']>;
+};
+
+/** update columns of table "audit.logged_actions" */
+export const enum Audit_Logged_Actions_Update_Column {
+  /** column name */
+  Action = 'action',
+  /** column name */
+  ActionTstampClk = 'action_tstamp_clk',
+  /** column name */
+  ActionTstampStm = 'action_tstamp_stm',
+  /** column name */
+  ActionTstampTx = 'action_tstamp_tx',
+  /** column name */
+  ApplicationName = 'application_name',
+  /** column name */
+  ChangedFields = 'changed_fields',
+  /** column name */
+  ClientAddr = 'client_addr',
+  /** column name */
+  ClientPort = 'client_port',
+  /** column name */
+  ClientQuery = 'client_query',
+  /** column name */
+  EventId = 'event_id',
+  /** column name */
+  HasuraUser = 'hasura_user',
+  /** column name */
+  Relid = 'relid',
+  /** column name */
+  RowData = 'row_data',
+  /** column name */
+  SchemaName = 'schema_name',
+  /** column name */
+  SessionUserName = 'session_user_name',
+  /** column name */
+  StatementOnly = 'statement_only',
+  /** column name */
+  TableName = 'table_name',
+  /** column name */
+  TransactionId = 'transaction_id'
+};
+
+export type Audit_Logged_Actions_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<Audit_Logged_Actions_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<Audit_Logged_Actions_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<Audit_Logged_Actions_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<Audit_Logged_Actions_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Audit_Logged_Actions_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<Audit_Logged_Actions_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Audit_Logged_Actions_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Audit_Logged_Actions_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Audit_Logged_Actions_Var_Pop_Fields = {
+  __typename?: 'audit_logged_actions_var_pop_fields';
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: Maybe<Scalars['Float']>;
+  /** Unique identifier for each auditable event */
+  event_id?: Maybe<Scalars['Float']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Audit_Logged_Actions_Var_Samp_Fields = {
+  __typename?: 'audit_logged_actions_var_samp_fields';
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: Maybe<Scalars['Float']>;
+  /** Unique identifier for each auditable event */
+  event_id?: Maybe<Scalars['Float']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Audit_Logged_Actions_Variance_Fields = {
+  __typename?: 'audit_logged_actions_variance_fields';
+  /** Remote peer IP port address of client that issued query. Undefined for unix socket. */
+  client_port?: Maybe<Scalars['Float']>;
+  /** Unique identifier for each auditable event */
+  event_id?: Maybe<Scalars['Float']>;
+  /** Identifier of transaction that made the change. May wrap, but unique paired with action_tstamp_tx. */
+  transaction_id?: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
@@ -5287,6 +7124,8 @@ export type EventPassNftContract = {
   __typename?: 'eventPassNftContract';
   chainId: Scalars['String'];
   contractAddress: Scalars['String'];
+  /** Timestamp of when the record was created. */
+  created_at: Scalars['timestamptz'];
   eventId: Scalars['String'];
   eventPass?: Maybe<EventPass>;
   eventPassId: Scalars['String'];
@@ -5303,7 +7142,17 @@ export type EventPassNftContract = {
   /** An object relationship */
   eventPassPricing?: Maybe<EventPassPricing>;
   id: Scalars['uuid'];
+  /** Flag indicating whether the event pass NFT is airdropped. */
+  isAirdrop: Scalars['Boolean'];
+  /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
+  isDelayedRevealed: Scalars['Boolean'];
   organizerId: Scalars['String'];
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: Maybe<Scalars['String']>;
+  /** Type of the event pass NFT contract. */
+  type: EventPassNftContractType_Enum;
+  /** Timestamp of the last update to the record. */
+  updated_at: Scalars['timestamptz'];
 };
 
 
@@ -5353,6 +7202,149 @@ export type EventPassNftContractEventPassOrders_AggregateArgs = {
   where?: InputMaybe<EventPassOrder_Bool_Exp>;
 };
 
+/** Contract types representing the nature of the event pass NFT contract. */
+export type EventPassNftContractType = {
+  __typename?: 'eventPassNftContractType';
+  /** Type name for event pass NFT contract. */
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "eventPassNftContractType" */
+export type EventPassNftContractType_Aggregate = {
+  __typename?: 'eventPassNftContractType_aggregate';
+  aggregate?: Maybe<EventPassNftContractType_Aggregate_Fields>;
+  nodes: Array<EventPassNftContractType>;
+};
+
+/** aggregate fields of "eventPassNftContractType" */
+export type EventPassNftContractType_Aggregate_Fields = {
+  __typename?: 'eventPassNftContractType_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<EventPassNftContractType_Max_Fields>;
+  min?: Maybe<EventPassNftContractType_Min_Fields>;
+};
+
+
+/** aggregate fields of "eventPassNftContractType" */
+export type EventPassNftContractType_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "eventPassNftContractType". All fields are combined with a logical 'AND'. */
+export type EventPassNftContractType_Bool_Exp = {
+  _and?: InputMaybe<Array<EventPassNftContractType_Bool_Exp>>;
+  _not?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+  _or?: InputMaybe<Array<EventPassNftContractType_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "eventPassNftContractType" */
+export const enum EventPassNftContractType_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  EventPassNftContractTypePkey = 'eventPassNftContractType_pkey'
+};
+
+export const enum EventPassNftContractType_Enum {
+  DelayedReveal = 'delayed_reveal',
+  Normal = 'normal'
+};
+
+/** Boolean expression to compare columns of type "eventPassNftContractType_enum". All fields are combined with logical 'AND'. */
+export type EventPassNftContractType_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<EventPassNftContractType_Enum>;
+  _in?: InputMaybe<Array<EventPassNftContractType_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<EventPassNftContractType_Enum>;
+  _nin?: InputMaybe<Array<EventPassNftContractType_Enum>>;
+};
+
+/** input type for inserting data into table "eventPassNftContractType" */
+export type EventPassNftContractType_Insert_Input = {
+  /** Type name for event pass NFT contract. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type EventPassNftContractType_Max_Fields = {
+  __typename?: 'eventPassNftContractType_max_fields';
+  /** Type name for event pass NFT contract. */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type EventPassNftContractType_Min_Fields = {
+  __typename?: 'eventPassNftContractType_min_fields';
+  /** Type name for event pass NFT contract. */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "eventPassNftContractType" */
+export type EventPassNftContractType_Mutation_Response = {
+  __typename?: 'eventPassNftContractType_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<EventPassNftContractType>;
+};
+
+/** on_conflict condition type for table "eventPassNftContractType" */
+export type EventPassNftContractType_On_Conflict = {
+  constraint: EventPassNftContractType_Constraint;
+  update_columns?: Array<EventPassNftContractType_Update_Column>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "eventPassNftContractType". */
+export type EventPassNftContractType_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: eventPassNftContractType */
+export type EventPassNftContractType_Pk_Columns_Input = {
+  /** Type name for event pass NFT contract. */
+  value: Scalars['String'];
+};
+
+/** select columns of table "eventPassNftContractType" */
+export const enum EventPassNftContractType_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "eventPassNftContractType" */
+export type EventPassNftContractType_Set_Input = {
+  /** Type name for event pass NFT contract. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "eventPassNftContractType" */
+export type EventPassNftContractType_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: EventPassNftContractType_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EventPassNftContractType_Stream_Cursor_Value_Input = {
+  /** Type name for event pass NFT contract. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "eventPassNftContractType" */
+export const enum EventPassNftContractType_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type EventPassNftContractType_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<EventPassNftContractType_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: EventPassNftContractType_Bool_Exp;
+};
+
 /** aggregated selection of "eventPassNftContract" */
 export type EventPassNftContract_Aggregate = {
   __typename?: 'eventPassNftContract_aggregate';
@@ -5361,7 +7353,23 @@ export type EventPassNftContract_Aggregate = {
 };
 
 export type EventPassNftContract_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<EventPassNftContract_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<EventPassNftContract_Aggregate_Bool_Exp_Bool_Or>;
   count?: InputMaybe<EventPassNftContract_Aggregate_Bool_Exp_Count>;
+};
+
+export type EventPassNftContract_Aggregate_Bool_Exp_Bool_And = {
+  arguments: EventPassNftContract_Select_Column_EventPassNftContract_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<EventPassNftContract_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type EventPassNftContract_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: EventPassNftContract_Select_Column_EventPassNftContract_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<EventPassNftContract_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
 };
 
 export type EventPassNftContract_Aggregate_Bool_Exp_Count = {
@@ -5407,6 +7415,7 @@ export type EventPassNftContract_Bool_Exp = {
   _or?: InputMaybe<Array<EventPassNftContract_Bool_Exp>>;
   chainId?: InputMaybe<String_Comparison_Exp>;
   contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   eventId?: InputMaybe<String_Comparison_Exp>;
   eventPassId?: InputMaybe<String_Comparison_Exp>;
   eventPassNfts?: InputMaybe<EventPassNft_Bool_Exp>;
@@ -5416,12 +7425,17 @@ export type EventPassNftContract_Bool_Exp = {
   eventPassOrders_aggregate?: InputMaybe<EventPassOrder_Aggregate_Bool_Exp>;
   eventPassPricing?: InputMaybe<EventPassPricing_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  isAirdrop?: InputMaybe<Boolean_Comparison_Exp>;
+  isDelayedRevealed?: InputMaybe<Boolean_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
+  password?: InputMaybe<String_Comparison_Exp>;
+  type?: InputMaybe<EventPassNftContractType_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "eventPassNftContract" */
 export const enum EventPassNftContract_Constraint {
-  /** unique or primary key constraint on columns "contractAddress", "chainId" */
+  /** unique or primary key constraint on columns "chainId", "contractAddress" */
   EventPassNftContractContractAddressChainIdKey = 'eventPassNftContract_contractAddress_chainId_key'
 };
 
@@ -5429,6 +7443,8 @@ export const enum EventPassNftContract_Constraint {
 export type EventPassNftContract_Insert_Input = {
   chainId?: InputMaybe<Scalars['String']>;
   contractAddress?: InputMaybe<Scalars['String']>;
+  /** Timestamp of when the record was created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   eventId?: InputMaybe<Scalars['String']>;
   eventPassId?: InputMaybe<Scalars['String']>;
   eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
@@ -5436,7 +7452,17 @@ export type EventPassNftContract_Insert_Input = {
   eventPassOrders?: InputMaybe<EventPassOrder_Arr_Rel_Insert_Input>;
   eventPassPricing?: InputMaybe<EventPassPricing_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
+  /** Flag indicating whether the event pass NFT is airdropped. */
+  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
+  isDelayedRevealed?: InputMaybe<Scalars['Boolean']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: InputMaybe<Scalars['String']>;
+  /** Type of the event pass NFT contract. */
+  type?: InputMaybe<EventPassNftContractType_Enum>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** aggregate max on columns */
@@ -5444,20 +7470,32 @@ export type EventPassNftContract_Max_Fields = {
   __typename?: 'eventPassNftContract_max_fields';
   chainId?: Maybe<Scalars['String']>;
   contractAddress?: Maybe<Scalars['String']>;
+  /** Timestamp of when the record was created. */
+  created_at?: Maybe<Scalars['timestamptz']>;
   eventId?: Maybe<Scalars['String']>;
   eventPassId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   organizerId?: Maybe<Scalars['String']>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: Maybe<Scalars['String']>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by max() on columns of table "eventPassNftContract" */
 export type EventPassNftContract_Max_Order_By = {
   chainId?: InputMaybe<Order_By>;
   contractAddress?: InputMaybe<Order_By>;
+  /** Timestamp of when the record was created. */
+  created_at?: InputMaybe<Order_By>;
   eventId?: InputMaybe<Order_By>;
   eventPassId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: InputMaybe<Order_By>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -5465,20 +7503,32 @@ export type EventPassNftContract_Min_Fields = {
   __typename?: 'eventPassNftContract_min_fields';
   chainId?: Maybe<Scalars['String']>;
   contractAddress?: Maybe<Scalars['String']>;
+  /** Timestamp of when the record was created. */
+  created_at?: Maybe<Scalars['timestamptz']>;
   eventId?: Maybe<Scalars['String']>;
   eventPassId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   organizerId?: Maybe<Scalars['String']>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: Maybe<Scalars['String']>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by min() on columns of table "eventPassNftContract" */
 export type EventPassNftContract_Min_Order_By = {
   chainId?: InputMaybe<Order_By>;
   contractAddress?: InputMaybe<Order_By>;
+  /** Timestamp of when the record was created. */
+  created_at?: InputMaybe<Order_By>;
   eventId?: InputMaybe<Order_By>;
   eventPassId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: InputMaybe<Order_By>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "eventPassNftContract" */
@@ -5508,6 +7558,7 @@ export type EventPassNftContract_On_Conflict = {
 export type EventPassNftContract_Order_By = {
   chainId?: InputMaybe<Order_By>;
   contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
   eventId?: InputMaybe<Order_By>;
   eventPassId?: InputMaybe<Order_By>;
   eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Order_By>;
@@ -5515,7 +7566,12 @@ export type EventPassNftContract_Order_By = {
   eventPassOrders_aggregate?: InputMaybe<EventPassOrder_Aggregate_Order_By>;
   eventPassPricing?: InputMaybe<EventPassPricing_Order_By>;
   id?: InputMaybe<Order_By>;
+  isAirdrop?: InputMaybe<Order_By>;
+  isDelayedRevealed?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  password?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "eventPassNftContract" */
@@ -5525,23 +7581,63 @@ export const enum EventPassNftContract_Select_Column {
   /** column name */
   ContractAddress = 'contractAddress',
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   EventId = 'eventId',
   /** column name */
   EventPassId = 'eventPassId',
   /** column name */
   Id = 'id',
   /** column name */
-  OrganizerId = 'organizerId'
+  IsAirdrop = 'isAirdrop',
+  /** column name */
+  IsDelayedRevealed = 'isDelayedRevealed',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Password = 'password',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** select "eventPassNftContract_aggregate_bool_exp_bool_and_arguments_columns" columns of table "eventPassNftContract" */
+export const enum EventPassNftContract_Select_Column_EventPassNftContract_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsAirdrop = 'isAirdrop',
+  /** column name */
+  IsDelayedRevealed = 'isDelayedRevealed'
+};
+
+/** select "eventPassNftContract_aggregate_bool_exp_bool_or_arguments_columns" columns of table "eventPassNftContract" */
+export const enum EventPassNftContract_Select_Column_EventPassNftContract_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsAirdrop = 'isAirdrop',
+  /** column name */
+  IsDelayedRevealed = 'isDelayedRevealed'
 };
 
 /** input type for updating data in table "eventPassNftContract" */
 export type EventPassNftContract_Set_Input = {
   chainId?: InputMaybe<Scalars['String']>;
   contractAddress?: InputMaybe<Scalars['String']>;
+  /** Timestamp of when the record was created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   eventId?: InputMaybe<Scalars['String']>;
   eventPassId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  /** Flag indicating whether the event pass NFT is airdropped. */
+  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
+  isDelayedRevealed?: InputMaybe<Scalars['Boolean']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: InputMaybe<Scalars['String']>;
+  /** Type of the event pass NFT contract. */
+  type?: InputMaybe<EventPassNftContractType_Enum>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** Streaming cursor of the table "eventPassNftContract" */
@@ -5556,10 +7652,22 @@ export type EventPassNftContract_Stream_Cursor_Input = {
 export type EventPassNftContract_Stream_Cursor_Value_Input = {
   chainId?: InputMaybe<Scalars['String']>;
   contractAddress?: InputMaybe<Scalars['String']>;
+  /** Timestamp of when the record was created. */
+  created_at?: InputMaybe<Scalars['timestamptz']>;
   eventId?: InputMaybe<Scalars['String']>;
   eventPassId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['uuid']>;
+  /** Flag indicating whether the event pass NFT is airdropped. */
+  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
+  isDelayedRevealed?: InputMaybe<Scalars['Boolean']>;
   organizerId?: InputMaybe<Scalars['String']>;
+  /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
+  password?: InputMaybe<Scalars['String']>;
+  /** Type of the event pass NFT contract. */
+  type?: InputMaybe<EventPassNftContractType_Enum>;
+  /** Timestamp of the last update to the record. */
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** update columns of table "eventPassNftContract" */
@@ -5569,13 +7677,25 @@ export const enum EventPassNftContract_Update_Column {
   /** column name */
   ContractAddress = 'contractAddress',
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   EventId = 'eventId',
   /** column name */
   EventPassId = 'eventPassId',
   /** column name */
   Id = 'id',
   /** column name */
-  OrganizerId = 'organizerId'
+  IsAirdrop = 'isAirdrop',
+  /** column name */
+  IsDelayedRevealed = 'isDelayedRevealed',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Password = 'password',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
 };
 
 export type EventPassNftContract_Updates = {
@@ -5713,11 +7833,11 @@ export type EventPassNft_Bool_Exp = {
 
 /** unique or primary key constraints on table "eventPassNft" */
 export const enum EventPassNft_Constraint {
-  /** unique or primary key constraint on columns "tokenId", "contractAddress", "chainId" */
+  /** unique or primary key constraint on columns "chainId", "contractAddress", "tokenId" */
   EventPassNftContractAddressTokenIdChainIdKey = 'eventPassNft_contractAddress_tokenId_chainId_key',
   /** unique or primary key constraint on columns "id" */
   EventPassNftPkey = 'eventPassNft_pkey',
-  /** unique or primary key constraint on columns "tokenId", "contractAddress", "chainId" */
+  /** unique or primary key constraint on columns "chainId", "contractAddress", "tokenId" */
   EventPassNftUniqueNft = 'event_pass_nft_unique_nft'
 };
 
@@ -6871,7 +8991,7 @@ export type EventPassPendingOrder_Bool_Exp = {
 
 /** unique or primary key constraints on table "eventPassPendingOrder" */
 export const enum EventPassPendingOrder_Constraint {
-  /** unique or primary key constraint on columns "accountId", "eventPassId" */
+  /** unique or primary key constraint on columns "eventPassId", "accountId" */
   EventPassPendingOrderEventPassIdAccountIdKey = 'eventPassPendingOrder_eventPassId_accountId_key',
   /** unique or primary key constraint on columns "id" */
   EventPassPendingOrderPkey = 'eventPassPendingOrder_pkey'
@@ -7363,6 +9483,180 @@ export type EventPassPricing_Variance_Fields = {
   maxAmountPerUser?: Maybe<Scalars['Float']>;
   priceAmount?: Maybe<Scalars['Float']>;
   timeBeforeDelete?: Maybe<Scalars['Float']>;
+};
+
+/** Stores follow relationships. Each row represents an account following an organizer. */
+export type Follow = {
+  __typename?: 'follow';
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId: Scalars['uuid'];
+  created_at: Scalars['timestamptz'];
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug: Scalars['String'];
+};
+
+/** aggregated selection of "follow" */
+export type Follow_Aggregate = {
+  __typename?: 'follow_aggregate';
+  aggregate?: Maybe<Follow_Aggregate_Fields>;
+  nodes: Array<Follow>;
+};
+
+/** aggregate fields of "follow" */
+export type Follow_Aggregate_Fields = {
+  __typename?: 'follow_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Follow_Max_Fields>;
+  min?: Maybe<Follow_Min_Fields>;
+};
+
+
+/** aggregate fields of "follow" */
+export type Follow_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Follow_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "follow". All fields are combined with a logical 'AND'. */
+export type Follow_Bool_Exp = {
+  _and?: InputMaybe<Array<Follow_Bool_Exp>>;
+  _not?: InputMaybe<Follow_Bool_Exp>;
+  _or?: InputMaybe<Array<Follow_Bool_Exp>>;
+  accountId?: InputMaybe<Uuid_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  organizerSlug?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "follow" */
+export const enum Follow_Constraint {
+  /** unique or primary key constraint on columns "accountId", "organizerSlug" */
+  FollowPkey = 'follow_pkey'
+};
+
+/** input type for inserting data into table "follow" */
+export type Follow_Insert_Input = {
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Follow_Max_Fields = {
+  __typename?: 'follow_max_fields';
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Follow_Min_Fields = {
+  __typename?: 'follow_min_fields';
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "follow" */
+export type Follow_Mutation_Response = {
+  __typename?: 'follow_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Follow>;
+};
+
+/** on_conflict condition type for table "follow" */
+export type Follow_On_Conflict = {
+  constraint: Follow_Constraint;
+  update_columns?: Array<Follow_Update_Column>;
+  where?: InputMaybe<Follow_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "follow". */
+export type Follow_Order_By = {
+  accountId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  organizerSlug?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: follow */
+export type Follow_Pk_Columns_Input = {
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId: Scalars['uuid'];
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug: Scalars['String'];
+};
+
+/** select columns of table "follow" */
+export const enum Follow_Select_Column {
+  /** column name */
+  AccountId = 'accountId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  OrganizerSlug = 'organizerSlug'
+};
+
+/** input type for updating data in table "follow" */
+export type Follow_Set_Input = {
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "follow" */
+export type Follow_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Follow_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Follow_Stream_Cursor_Value_Input = {
+  /** References the unique identifier of the account that is following an organizer. */
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
+  organizerSlug?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "follow" */
+export const enum Follow_Update_Column {
+  /** column name */
+  AccountId = 'accountId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  OrganizerSlug = 'organizerSlug'
+};
+
+export type Follow_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Follow_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Follow_Bool_Exp;
+};
+
+/** Boolean expression to compare columns of type "inet". All fields are combined with logical 'AND'. */
+export type Inet_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['inet']>;
+  _gt?: InputMaybe<Scalars['inet']>;
+  _gte?: InputMaybe<Scalars['inet']>;
+  _in?: InputMaybe<Array<Scalars['inet']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['inet']>;
+  _lte?: InputMaybe<Scalars['inet']>;
+  _neq?: InputMaybe<Scalars['inet']>;
+  _nin?: InputMaybe<Array<Scalars['inet']>>;
 };
 
 export type Jsonb_Cast_Exp = {
@@ -7912,6 +10206,8 @@ export type Mutation_Root = {
   createEvent?: Maybe<Event>;
   /** Create one eventPass */
   createEventPass?: Maybe<EventPass>;
+  /** Create one eventPassDelayedRevealed */
+  createEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Create one organizer */
   createOrganizer?: Maybe<Organizer>;
   /** Create one scheduledRelease */
@@ -7922,6 +10218,8 @@ export type Mutation_Root = {
   deleteEvent?: Maybe<Event>;
   /** Delete one eventPass from _all_ existing stages. Returns deleted document. */
   deleteEventPass?: Maybe<EventPass>;
+  /** Delete one eventPassDelayedRevealed from _all_ existing stages. Returns deleted document. */
+  deleteEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Delete many Asset documents */
   deleteManyAssets: BatchPayload;
   /** Delete many Asset documents, return deleted documents */
@@ -7930,6 +10228,10 @@ export type Mutation_Root = {
   deleteManyEventPasses: BatchPayload;
   /** Delete many EventPass documents, return deleted documents */
   deleteManyEventPassesConnection: EventPassConnection;
+  /** Delete many EventPassDelayedRevealed documents */
+  deleteManyEventPassesDelayedRevealed: BatchPayload;
+  /** Delete many EventPassDelayedRevealed documents, return deleted documents */
+  deleteManyEventPassesDelayedRevealedConnection: EventPassDelayedRevealedConnection;
   /** Delete many Event documents */
   deleteManyEvents: BatchPayload;
   /** Delete many Event documents, return deleted documents */
@@ -7948,6 +10250,10 @@ export type Mutation_Root = {
   delete_account?: Maybe<Account_Mutation_Response>;
   /** delete single row from the table: "account" */
   delete_account_by_pk?: Maybe<Account>;
+  /** delete data from the table: "audit.logged_actions" */
+  delete_audit_logged_actions?: Maybe<Audit_Logged_Actions_Mutation_Response>;
+  /** delete single row from the table: "audit.logged_actions" */
+  delete_audit_logged_actions_by_pk?: Maybe<Audit_Logged_Actions>;
   /** delete data from the table: "currency" */
   delete_currency?: Maybe<Currency_Mutation_Response>;
   /** delete single row from the table: "currency" */
@@ -7960,6 +10266,10 @@ export type Mutation_Root = {
   delete_eventPassNft?: Maybe<EventPassNft_Mutation_Response>;
   /** delete data from the table: "eventPassNftContract" */
   delete_eventPassNftContract?: Maybe<EventPassNftContract_Mutation_Response>;
+  /** delete data from the table: "eventPassNftContractType" */
+  delete_eventPassNftContractType?: Maybe<EventPassNftContractType_Mutation_Response>;
+  /** delete single row from the table: "eventPassNftContractType" */
+  delete_eventPassNftContractType_by_pk?: Maybe<EventPassNftContractType>;
   /** delete single row from the table: "eventPassNft" */
   delete_eventPassNft_by_pk?: Maybe<EventPassNft>;
   /** delete data from the table: "eventPassOrder" */
@@ -7978,6 +10288,10 @@ export type Mutation_Root = {
   delete_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** delete single row from the table: "eventPassPricing" */
   delete_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
+  /** delete data from the table: "follow" */
+  delete_follow?: Maybe<Follow_Mutation_Response>;
+  /** delete single row from the table: "follow" */
+  delete_follow_by_pk?: Maybe<Follow>;
   /** delete data from the table: "kyc" */
   delete_kyc?: Maybe<Kyc_Mutation_Response>;
   /** delete data from the table: "kycLevelName" */
@@ -7998,6 +10312,12 @@ export type Mutation_Root = {
   delete_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** delete single row from the table: "orderStatus" */
   delete_orderStatus_by_pk?: Maybe<OrderStatus>;
+  /** delete data from the table: "roleAssignments" */
+  delete_roleAssignments?: Maybe<RoleAssignments_Mutation_Response>;
+  /** delete data from the table: "roles" */
+  delete_roles?: Maybe<Roles_Mutation_Response>;
+  /** delete single row from the table: "roles" */
+  delete_roles_by_pk?: Maybe<Roles>;
   /** delete data from the table: "stripeCheckoutSession" */
   delete_stripeCheckoutSession?: Maybe<StripeCheckoutSession_Mutation_Response>;
   /** delete data from the table: "stripeCheckoutSessionType" */
@@ -8018,6 +10338,10 @@ export type Mutation_Root = {
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert a single row into the table: "account" */
   insert_account_one?: Maybe<Account>;
+  /** insert data into the table: "audit.logged_actions" */
+  insert_audit_logged_actions?: Maybe<Audit_Logged_Actions_Mutation_Response>;
+  /** insert a single row into the table: "audit.logged_actions" */
+  insert_audit_logged_actions_one?: Maybe<Audit_Logged_Actions>;
   /** insert data into the table: "currency" */
   insert_currency?: Maybe<Currency_Mutation_Response>;
   /** insert a single row into the table: "currency" */
@@ -8030,6 +10354,10 @@ export type Mutation_Root = {
   insert_eventPassNft?: Maybe<EventPassNft_Mutation_Response>;
   /** insert data into the table: "eventPassNftContract" */
   insert_eventPassNftContract?: Maybe<EventPassNftContract_Mutation_Response>;
+  /** insert data into the table: "eventPassNftContractType" */
+  insert_eventPassNftContractType?: Maybe<EventPassNftContractType_Mutation_Response>;
+  /** insert a single row into the table: "eventPassNftContractType" */
+  insert_eventPassNftContractType_one?: Maybe<EventPassNftContractType>;
   /** insert a single row into the table: "eventPassNftContract" */
   insert_eventPassNftContract_one?: Maybe<EventPassNftContract>;
   /** insert a single row into the table: "eventPassNft" */
@@ -8050,6 +10378,10 @@ export type Mutation_Root = {
   insert_eventPassPricing?: Maybe<EventPassPricing_Mutation_Response>;
   /** insert a single row into the table: "eventPassPricing" */
   insert_eventPassPricing_one?: Maybe<EventPassPricing>;
+  /** insert data into the table: "follow" */
+  insert_follow?: Maybe<Follow_Mutation_Response>;
+  /** insert a single row into the table: "follow" */
+  insert_follow_one?: Maybe<Follow>;
   /** insert data into the table: "kyc" */
   insert_kyc?: Maybe<Kyc_Mutation_Response>;
   /** insert data into the table: "kycLevelName" */
@@ -8070,6 +10402,14 @@ export type Mutation_Root = {
   insert_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** insert a single row into the table: "orderStatus" */
   insert_orderStatus_one?: Maybe<OrderStatus>;
+  /** insert data into the table: "roleAssignments" */
+  insert_roleAssignments?: Maybe<RoleAssignments_Mutation_Response>;
+  /** insert a single row into the table: "roleAssignments" */
+  insert_roleAssignments_one?: Maybe<RoleAssignments>;
+  /** insert data into the table: "roles" */
+  insert_roles?: Maybe<Roles_Mutation_Response>;
+  /** insert a single row into the table: "roles" */
+  insert_roles_one?: Maybe<Roles>;
   /** insert data into the table: "stripeCheckoutSession" */
   insert_stripeCheckoutSession?: Maybe<StripeCheckoutSession_Mutation_Response>;
   /** insert data into the table: "stripeCheckoutSessionType" */
@@ -8092,6 +10432,8 @@ export type Mutation_Root = {
   publishEvent?: Maybe<Event>;
   /** Publish one eventPass */
   publishEventPass?: Maybe<EventPass>;
+  /** Publish one eventPassDelayedRevealed */
+  publishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Publish many Asset documents */
   publishManyAssets: BatchPayload;
   /** Publish many Asset documents */
@@ -8100,6 +10442,10 @@ export type Mutation_Root = {
   publishManyEventPasses: BatchPayload;
   /** Publish many EventPass documents */
   publishManyEventPassesConnection: EventPassConnection;
+  /** Publish many EventPassDelayedRevealed documents */
+  publishManyEventPassesDelayedRevealed: BatchPayload;
+  /** Publish many EventPassDelayedRevealed documents */
+  publishManyEventPassesDelayedRevealedConnection: EventPassDelayedRevealedConnection;
   /** Publish many Event documents */
   publishManyEvents: BatchPayload;
   /** Publish many Event documents */
@@ -8116,6 +10462,8 @@ export type Mutation_Root = {
   schedulePublishEvent?: Maybe<Event>;
   /** Schedule to publish one eventPass */
   schedulePublishEventPass?: Maybe<EventPass>;
+  /** Schedule to publish one eventPassDelayedRevealed */
+  schedulePublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Schedule to publish one organizer */
   schedulePublishOrganizer?: Maybe<Organizer>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -8124,6 +10472,8 @@ export type Mutation_Root = {
   scheduleUnpublishEvent?: Maybe<Event>;
   /** Unpublish one eventPass from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishEventPass?: Maybe<EventPass>;
+  /** Unpublish one eventPassDelayedRevealed from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Unpublish one organizer from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishOrganizer?: Maybe<Organizer>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -8132,6 +10482,8 @@ export type Mutation_Root = {
   unpublishEvent?: Maybe<Event>;
   /** Unpublish one eventPass from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishEventPass?: Maybe<EventPass>;
+  /** Unpublish one eventPassDelayedRevealed from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Unpublish many Asset documents */
   unpublishManyAssets: BatchPayload;
   /** Find many Asset documents that match criteria in specified stage and unpublish from target stages */
@@ -8140,6 +10492,10 @@ export type Mutation_Root = {
   unpublishManyEventPasses: BatchPayload;
   /** Find many EventPass documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyEventPassesConnection: EventPassConnection;
+  /** Unpublish many EventPassDelayedRevealed documents */
+  unpublishManyEventPassesDelayedRevealed: BatchPayload;
+  /** Find many EventPassDelayedRevealed documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyEventPassesDelayedRevealedConnection: EventPassDelayedRevealedConnection;
   /** Unpublish many Event documents */
   unpublishManyEvents: BatchPayload;
   /** Find many Event documents that match criteria in specified stage and unpublish from target stages */
@@ -8156,6 +10512,8 @@ export type Mutation_Root = {
   updateEvent?: Maybe<Event>;
   /** Update one eventPass */
   updateEventPass?: Maybe<EventPass>;
+  /** Update one eventPassDelayedRevealed */
+  updateEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Update many assets */
   updateManyAssets: BatchPayload;
   /** Update many Asset documents */
@@ -8164,6 +10522,10 @@ export type Mutation_Root = {
   updateManyEventPasses: BatchPayload;
   /** Update many EventPass documents */
   updateManyEventPassesConnection: EventPassConnection;
+  /** Update many eventPassesDelayedRevealed */
+  updateManyEventPassesDelayedRevealed: BatchPayload;
+  /** Update many EventPassDelayedRevealed documents */
+  updateManyEventPassesDelayedRevealedConnection: EventPassDelayedRevealedConnection;
   /** Update many events */
   updateManyEvents: BatchPayload;
   /** Update many Event documents */
@@ -8182,6 +10544,12 @@ export type Mutation_Root = {
   update_account_by_pk?: Maybe<Account>;
   /** update multiples rows of table: "account" */
   update_account_many?: Maybe<Array<Maybe<Account_Mutation_Response>>>;
+  /** update data of the table: "audit.logged_actions" */
+  update_audit_logged_actions?: Maybe<Audit_Logged_Actions_Mutation_Response>;
+  /** update single row of the table: "audit.logged_actions" */
+  update_audit_logged_actions_by_pk?: Maybe<Audit_Logged_Actions>;
+  /** update multiples rows of table: "audit.logged_actions" */
+  update_audit_logged_actions_many?: Maybe<Array<Maybe<Audit_Logged_Actions_Mutation_Response>>>;
   /** update data of the table: "currency" */
   update_currency?: Maybe<Currency_Mutation_Response>;
   /** update single row of the table: "currency" */
@@ -8198,6 +10566,12 @@ export type Mutation_Root = {
   update_eventPassNft?: Maybe<EventPassNft_Mutation_Response>;
   /** update data of the table: "eventPassNftContract" */
   update_eventPassNftContract?: Maybe<EventPassNftContract_Mutation_Response>;
+  /** update data of the table: "eventPassNftContractType" */
+  update_eventPassNftContractType?: Maybe<EventPassNftContractType_Mutation_Response>;
+  /** update single row of the table: "eventPassNftContractType" */
+  update_eventPassNftContractType_by_pk?: Maybe<EventPassNftContractType>;
+  /** update multiples rows of table: "eventPassNftContractType" */
+  update_eventPassNftContractType_many?: Maybe<Array<Maybe<EventPassNftContractType_Mutation_Response>>>;
   /** update multiples rows of table: "eventPassNftContract" */
   update_eventPassNftContract_many?: Maybe<Array<Maybe<EventPassNftContract_Mutation_Response>>>;
   /** update single row of the table: "eventPassNft" */
@@ -8228,6 +10602,12 @@ export type Mutation_Root = {
   update_eventPassPricing_by_pk?: Maybe<EventPassPricing>;
   /** update multiples rows of table: "eventPassPricing" */
   update_eventPassPricing_many?: Maybe<Array<Maybe<EventPassPricing_Mutation_Response>>>;
+  /** update data of the table: "follow" */
+  update_follow?: Maybe<Follow_Mutation_Response>;
+  /** update single row of the table: "follow" */
+  update_follow_by_pk?: Maybe<Follow>;
+  /** update multiples rows of table: "follow" */
+  update_follow_many?: Maybe<Array<Maybe<Follow_Mutation_Response>>>;
   /** update data of the table: "kyc" */
   update_kyc?: Maybe<Kyc_Mutation_Response>;
   /** update data of the table: "kycLevelName" */
@@ -8258,6 +10638,16 @@ export type Mutation_Root = {
   update_orderStatus_by_pk?: Maybe<OrderStatus>;
   /** update multiples rows of table: "orderStatus" */
   update_orderStatus_many?: Maybe<Array<Maybe<OrderStatus_Mutation_Response>>>;
+  /** update data of the table: "roleAssignments" */
+  update_roleAssignments?: Maybe<RoleAssignments_Mutation_Response>;
+  /** update multiples rows of table: "roleAssignments" */
+  update_roleAssignments_many?: Maybe<Array<Maybe<RoleAssignments_Mutation_Response>>>;
+  /** update data of the table: "roles" */
+  update_roles?: Maybe<Roles_Mutation_Response>;
+  /** update single row of the table: "roles" */
+  update_roles_by_pk?: Maybe<Roles>;
+  /** update multiples rows of table: "roles" */
+  update_roles_many?: Maybe<Array<Maybe<Roles_Mutation_Response>>>;
   /** update data of the table: "stripeCheckoutSession" */
   update_stripeCheckoutSession?: Maybe<StripeCheckoutSession_Mutation_Response>;
   /** update data of the table: "stripeCheckoutSessionType" */
@@ -8288,6 +10678,8 @@ export type Mutation_Root = {
   upsertEvent?: Maybe<Event>;
   /** Upsert one eventPass */
   upsertEventPass?: Maybe<EventPass>;
+  /** Upsert one eventPassDelayedRevealed */
+  upsertEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Upsert one organizer */
   upsertOrganizer?: Maybe<Organizer>;
 };
@@ -8308,6 +10700,12 @@ export type Mutation_RootCreateEventArgs = {
 /** mutation root */
 export type Mutation_RootCreateEventPassArgs = {
   data: EventPassCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateEventPassDelayedRevealedArgs = {
+  data: EventPassDelayedRevealedCreateInput;
 };
 
 
@@ -8342,6 +10740,12 @@ export type Mutation_RootDeleteEventPassArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteEventPassDelayedRevealedArgs = {
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteManyAssetsArgs = {
   where?: InputMaybe<AssetManyWhereInput>;
 };
@@ -8372,6 +10776,23 @@ export type Mutation_RootDeleteManyEventPassesConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<EventPassManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyEventPassesDelayedRevealedArgs = {
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyEventPassesDelayedRevealedConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
 };
 
 
@@ -8440,6 +10861,18 @@ export type Mutation_RootDelete_Account_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Audit_Logged_ActionsArgs = {
+  where: Audit_Logged_Actions_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Audit_Logged_Actions_By_PkArgs = {
+  event_id: Scalars['bigint'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_CurrencyArgs = {
   where: Currency_Bool_Exp;
 };
@@ -8472,6 +10905,18 @@ export type Mutation_RootDelete_EventPassNftArgs = {
 /** mutation root */
 export type Mutation_RootDelete_EventPassNftContractArgs = {
   where: EventPassNftContract_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_EventPassNftContractTypeArgs = {
+  where: EventPassNftContractType_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_EventPassNftContractType_By_PkArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -8526,6 +10971,19 @@ export type Mutation_RootDelete_EventPassPricingArgs = {
 /** mutation root */
 export type Mutation_RootDelete_EventPassPricing_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_FollowArgs = {
+  where: Follow_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Follow_By_PkArgs = {
+  accountId: Scalars['uuid'];
+  organizerSlug: Scalars['String'];
 };
 
 
@@ -8585,6 +11043,24 @@ export type Mutation_RootDelete_OrderStatusArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_OrderStatus_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_RoleAssignmentsArgs = {
+  where: RoleAssignments_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_RolesArgs = {
+  where: Roles_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Roles_By_PkArgs = {
   value: Scalars['String'];
 };
 
@@ -8652,6 +11128,20 @@ export type Mutation_RootInsert_Account_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Audit_Logged_ActionsArgs = {
+  objects: Array<Audit_Logged_Actions_Insert_Input>;
+  on_conflict?: InputMaybe<Audit_Logged_Actions_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Audit_Logged_Actions_OneArgs = {
+  object: Audit_Logged_Actions_Insert_Input;
+  on_conflict?: InputMaybe<Audit_Logged_Actions_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_CurrencyArgs = {
   objects: Array<Currency_Insert_Input>;
   on_conflict?: InputMaybe<Currency_On_Conflict>;
@@ -8690,6 +11180,20 @@ export type Mutation_RootInsert_EventPassNftArgs = {
 export type Mutation_RootInsert_EventPassNftContractArgs = {
   objects: Array<EventPassNftContract_Insert_Input>;
   on_conflict?: InputMaybe<EventPassNftContract_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventPassNftContractTypeArgs = {
+  objects: Array<EventPassNftContractType_Insert_Input>;
+  on_conflict?: InputMaybe<EventPassNftContractType_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventPassNftContractType_OneArgs = {
+  object: EventPassNftContractType_Insert_Input;
+  on_conflict?: InputMaybe<EventPassNftContractType_On_Conflict>;
 };
 
 
@@ -8764,6 +11268,20 @@ export type Mutation_RootInsert_EventPassPricing_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_FollowArgs = {
+  objects: Array<Follow_Insert_Input>;
+  on_conflict?: InputMaybe<Follow_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Follow_OneArgs = {
+  object: Follow_Insert_Input;
+  on_conflict?: InputMaybe<Follow_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_KycArgs = {
   objects: Array<Kyc_Insert_Input>;
   on_conflict?: InputMaybe<Kyc_On_Conflict>;
@@ -8830,6 +11348,34 @@ export type Mutation_RootInsert_OrderStatusArgs = {
 export type Mutation_RootInsert_OrderStatus_OneArgs = {
   object: OrderStatus_Insert_Input;
   on_conflict?: InputMaybe<OrderStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_RoleAssignmentsArgs = {
+  objects: Array<RoleAssignments_Insert_Input>;
+  on_conflict?: InputMaybe<RoleAssignments_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_RoleAssignments_OneArgs = {
+  object: RoleAssignments_Insert_Input;
+  on_conflict?: InputMaybe<RoleAssignments_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_RolesArgs = {
+  objects: Array<Roles_Insert_Input>;
+  on_conflict?: InputMaybe<Roles_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Roles_OneArgs = {
+  object: Roles_Insert_Input;
+  on_conflict?: InputMaybe<Roles_On_Conflict>;
 };
 
 
@@ -8920,6 +11466,16 @@ export type Mutation_RootPublishEventPassArgs = {
 
 
 /** mutation root */
+export type Mutation_RootPublishEventPassDelayedRevealedArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  to?: Array<Stage>;
+  where: EventPassDelayedRevealedWhereUniqueInput;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
 export type Mutation_RootPublishManyAssetsArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']>;
@@ -8967,6 +11523,32 @@ export type Mutation_RootPublishManyEventPassesConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   to?: Array<Stage>;
   where?: InputMaybe<EventPassManyWhereInput>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyEventPassesDelayedRevealedArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyEventPassesDelayedRevealedConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
   withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -9070,6 +11652,18 @@ export type Mutation_RootSchedulePublishEventPassArgs = {
 
 
 /** mutation root */
+export type Mutation_RootSchedulePublishEventPassDelayedRevealedArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  to?: Array<Stage>;
+  where: EventPassDelayedRevealedWhereUniqueInput;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
 export type Mutation_RootSchedulePublishOrganizerArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']>;
@@ -9115,6 +11709,17 @@ export type Mutation_RootScheduleUnpublishEventPassArgs = {
 
 
 /** mutation root */
+export type Mutation_RootScheduleUnpublishEventPassDelayedRevealedArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootScheduleUnpublishOrganizerArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
@@ -9149,6 +11754,15 @@ export type Mutation_RootUnpublishEventPassArgs = {
   locales?: InputMaybe<Array<Locale>>;
   unpublishBase?: InputMaybe<Scalars['Boolean']>;
   where: EventPassWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishEventPassDelayedRevealedArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where: EventPassDelayedRevealedWhereUniqueInput;
 };
 
 
@@ -9197,6 +11811,30 @@ export type Mutation_RootUnpublishManyEventPassesConnectionArgs = {
   stage?: InputMaybe<Stage>;
   unpublishBase?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<EventPassManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishManyEventPassesDelayedRevealedArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishManyEventPassesDelayedRevealedConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: InputMaybe<Stage>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
 };
 
 
@@ -9279,6 +11917,13 @@ export type Mutation_RootUpdateEventPassArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateEventPassDelayedRevealedArgs = {
+  data: EventPassDelayedRevealedUpdateInput;
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateManyAssetsArgs = {
   data: AssetUpdateManyInput;
   where?: InputMaybe<AssetManyWhereInput>;
@@ -9313,6 +11958,25 @@ export type Mutation_RootUpdateManyEventPassesConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<EventPassManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyEventPassesDelayedRevealedArgs = {
+  data: EventPassDelayedRevealedUpdateManyInput;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyEventPassesDelayedRevealedConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  data: EventPassDelayedRevealedUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
 };
 
 
@@ -9389,6 +12053,38 @@ export type Mutation_RootUpdate_Account_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Audit_Logged_ActionsArgs = {
+  _append?: InputMaybe<Audit_Logged_Actions_Append_Input>;
+  _delete_at_path?: InputMaybe<Audit_Logged_Actions_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Audit_Logged_Actions_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Audit_Logged_Actions_Delete_Key_Input>;
+  _inc?: InputMaybe<Audit_Logged_Actions_Inc_Input>;
+  _prepend?: InputMaybe<Audit_Logged_Actions_Prepend_Input>;
+  _set?: InputMaybe<Audit_Logged_Actions_Set_Input>;
+  where: Audit_Logged_Actions_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Audit_Logged_Actions_By_PkArgs = {
+  _append?: InputMaybe<Audit_Logged_Actions_Append_Input>;
+  _delete_at_path?: InputMaybe<Audit_Logged_Actions_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Audit_Logged_Actions_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Audit_Logged_Actions_Delete_Key_Input>;
+  _inc?: InputMaybe<Audit_Logged_Actions_Inc_Input>;
+  _prepend?: InputMaybe<Audit_Logged_Actions_Prepend_Input>;
+  _set?: InputMaybe<Audit_Logged_Actions_Set_Input>;
+  pk_columns: Audit_Logged_Actions_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Audit_Logged_Actions_ManyArgs = {
+  updates: Array<Audit_Logged_Actions_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_CurrencyArgs = {
   _set?: InputMaybe<Currency_Set_Input>;
   where: Currency_Bool_Exp;
@@ -9445,6 +12141,26 @@ export type Mutation_RootUpdate_EventPassNftArgs = {
 export type Mutation_RootUpdate_EventPassNftContractArgs = {
   _set?: InputMaybe<EventPassNftContract_Set_Input>;
   where: EventPassNftContract_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassNftContractTypeArgs = {
+  _set?: InputMaybe<EventPassNftContractType_Set_Input>;
+  where: EventPassNftContractType_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassNftContractType_By_PkArgs = {
+  _set?: InputMaybe<EventPassNftContractType_Set_Input>;
+  pk_columns: EventPassNftContractType_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventPassNftContractType_ManyArgs = {
+  updates: Array<EventPassNftContractType_Updates>;
 };
 
 
@@ -9562,6 +12278,26 @@ export type Mutation_RootUpdate_EventPassPricing_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_FollowArgs = {
+  _set?: InputMaybe<Follow_Set_Input>;
+  where: Follow_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Follow_By_PkArgs = {
+  _set?: InputMaybe<Follow_Set_Input>;
+  pk_columns: Follow_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Follow_ManyArgs = {
+  updates: Array<Follow_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_KycArgs = {
   _set?: InputMaybe<Kyc_Set_Input>;
   where: Kyc_Bool_Exp;
@@ -9664,6 +12400,39 @@ export type Mutation_RootUpdate_OrderStatus_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_RoleAssignmentsArgs = {
+  _set?: InputMaybe<RoleAssignments_Set_Input>;
+  where: RoleAssignments_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_RoleAssignments_ManyArgs = {
+  updates: Array<RoleAssignments_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_RolesArgs = {
+  _set?: InputMaybe<Roles_Set_Input>;
+  where: Roles_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Roles_By_PkArgs = {
+  _set?: InputMaybe<Roles_Set_Input>;
+  pk_columns: Roles_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Roles_ManyArgs = {
+  updates: Array<Roles_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_StripeCheckoutSessionArgs = {
   _set?: InputMaybe<StripeCheckoutSession_Set_Input>;
   where: StripeCheckoutSession_Bool_Exp;
@@ -9761,6 +12530,13 @@ export type Mutation_RootUpsertEventArgs = {
 export type Mutation_RootUpsertEventPassArgs = {
   upsert: EventPassUpsertInput;
   where: EventPassWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertEventPassDelayedRevealedArgs = {
+  upsert: EventPassDelayedRevealedUpsertInput;
+  where: EventPassDelayedRevealedWhereUniqueInput;
 };
 
 
@@ -9900,7 +12676,7 @@ export type NftTransfer_Bool_Exp = {
 export const enum NftTransfer_Constraint {
   /** unique or primary key constraint on columns "id" */
   NftTransferPkey = 'nftTransfer_pkey',
-  /** unique or primary key constraint on columns "tokenId", "contractAddress", "transactionHash" */
+  /** unique or primary key constraint on columns "transactionHash", "contractAddress", "tokenId" */
   NftTransferUniqueTransfer = 'nft_transfer_unique_transfer'
 };
 
@@ -10332,6 +13108,19 @@ export type NftTransfer_Variance_Order_By = {
   tokenId?: InputMaybe<Order_By>;
 };
 
+/** Boolean expression to compare columns of type "oid". All fields are combined with logical 'AND'. */
+export type Oid_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['oid']>;
+  _gt?: InputMaybe<Scalars['oid']>;
+  _gte?: InputMaybe<Scalars['oid']>;
+  _in?: InputMaybe<Array<Scalars['oid']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['oid']>;
+  _lte?: InputMaybe<Scalars['oid']>;
+  _neq?: InputMaybe<Scalars['oid']>;
+  _nin?: InputMaybe<Array<Scalars['oid']>>;
+};
+
 /** columns and relationships of "orderStatus" */
 export type OrderStatus = {
   __typename?: 'orderStatus';
@@ -10379,6 +13168,7 @@ export const enum OrderStatus_Enum {
   Completed = 'COMPLETED',
   Confirmed = 'CONFIRMED',
   Error = 'ERROR',
+  IsMinting = 'IS_MINTING',
   Refunded = 'REFUNDED',
   Unauthorized = 'UNAUTHORIZED'
 };
@@ -10504,24 +13294,44 @@ export type Query_Root = {
   assets: Array<Asset>;
   /** Retrieve multiple assets using the Relay connection interface */
   assetsConnection: AssetConnection;
+  /** fetch data from the table: "audit.logged_actions" */
+  audit_logged_actions: Array<Audit_Logged_Actions>;
+  /** fetch aggregated fields from the table: "audit.logged_actions" */
+  audit_logged_actions_aggregate: Audit_Logged_Actions_Aggregate;
+  /** fetch data from the table: "audit.logged_actions" using primary key columns */
+  audit_logged_actions_by_pk?: Maybe<Audit_Logged_Actions>;
   /** fetch data from the table: "currency" */
   currency: Array<Currency>;
   /** fetch aggregated fields from the table: "currency" */
   currency_aggregate: Currency_Aggregate;
   /** fetch data from the table: "currency" using primary key columns */
   currency_by_pk?: Maybe<Currency>;
+  /** Fetches an object given its ID */
+  entities?: Maybe<Array<Entity>>;
   /** Retrieve a single event */
   event?: Maybe<Event>;
+  /** fetch data from the table: "eventParameters" */
   eventParameters: Array<EventParameters>;
+  /** fetch aggregated fields from the table: "eventParameters" */
   eventParameters_aggregate: EventParameters_Aggregate;
   /** fetch data from the table: "eventParameters" using primary key columns */
   eventParameters_by_pk?: Maybe<EventParameters>;
   /** Retrieve a single eventPass */
   eventPass?: Maybe<EventPass>;
+  /** Retrieve a single eventPassDelayedRevealed */
+  eventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Retrieve document version */
+  eventPassDelayedRevealedVersion?: Maybe<DocumentVersion>;
   /** fetch data from the table: "eventPassNft" */
   eventPassNft: Array<EventPassNft>;
   /** fetch data from the table: "eventPassNftContract" */
   eventPassNftContract: Array<EventPassNftContract>;
+  /** fetch data from the table: "eventPassNftContractType" */
+  eventPassNftContractType: Array<EventPassNftContractType>;
+  /** fetch aggregated fields from the table: "eventPassNftContractType" */
+  eventPassNftContractType_aggregate: EventPassNftContractType_Aggregate;
+  /** fetch data from the table: "eventPassNftContractType" using primary key columns */
+  eventPassNftContractType_by_pk?: Maybe<EventPassNftContractType>;
   /** fetch aggregated fields from the table: "eventPassNftContract" */
   eventPassNftContract_aggregate: EventPassNftContract_Aggregate;
   /** fetch aggregated fields from the table: "eventPassNft" */
@@ -10558,12 +13368,22 @@ export type Query_Root = {
   eventPasses: Array<EventPass>;
   /** Retrieve multiple eventPasses using the Relay connection interface */
   eventPassesConnection: EventPassConnection;
+  /** Retrieve multiple eventPassesDelayedRevealed */
+  eventPassesDelayedRevealed: Array<EventPassDelayedRevealed>;
+  /** Retrieve multiple eventPassesDelayedRevealed using the Relay connection interface */
+  eventPassesDelayedRevealedConnection: EventPassDelayedRevealedConnection;
   /** Retrieve document version */
   eventVersion?: Maybe<DocumentVersion>;
   /** Retrieve multiple events */
   events: Array<Event>;
   /** Retrieve multiple events using the Relay connection interface */
   eventsConnection: EventConnection;
+  /** fetch data from the table: "follow" */
+  follow: Array<Follow>;
+  /** fetch aggregated fields from the table: "follow" */
+  follow_aggregate: Follow_Aggregate;
+  /** fetch data from the table: "follow" using primary key columns */
+  follow_by_pk?: Maybe<Follow>;
   /** fetch data from the table: "kyc" */
   kyc: Array<Kyc>;
   /** fetch data from the table: "kycLevelName" */
@@ -10604,6 +13424,16 @@ export type Query_Root = {
   organizers: Array<Organizer>;
   /** Retrieve multiple organizers using the Relay connection interface */
   organizersConnection: OrganizerConnection;
+  /** fetch data from the table: "roleAssignments" */
+  roleAssignments: Array<RoleAssignments>;
+  /** fetch aggregated fields from the table: "roleAssignments" */
+  roleAssignments_aggregate: RoleAssignments_Aggregate;
+  /** fetch data from the table: "roles" */
+  roles: Array<Roles>;
+  /** fetch aggregated fields from the table: "roles" */
+  roles_aggregate: Roles_Aggregate;
+  /** fetch data from the table: "roles" using primary key columns */
+  roles_by_pk?: Maybe<Roles>;
   /** Retrieve a single scheduledOperation */
   scheduledOperation?: Maybe<ScheduledOperation>;
   /** Retrieve multiple scheduledOperations */
@@ -10710,6 +13540,29 @@ export type Query_RootAssetsConnectionArgs = {
 };
 
 
+export type Query_RootAudit_Logged_ActionsArgs = {
+  distinct_on?: InputMaybe<Array<Audit_Logged_Actions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Audit_Logged_Actions_Order_By>>;
+  where?: InputMaybe<Audit_Logged_Actions_Bool_Exp>;
+};
+
+
+export type Query_RootAudit_Logged_Actions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Audit_Logged_Actions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Audit_Logged_Actions_Order_By>>;
+  where?: InputMaybe<Audit_Logged_Actions_Bool_Exp>;
+};
+
+
+export type Query_RootAudit_Logged_Actions_By_PkArgs = {
+  event_id: Scalars['bigint'];
+};
+
+
 export type Query_RootCurrencyArgs = {
   distinct_on?: InputMaybe<Array<Currency_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -10730,6 +13583,11 @@ export type Query_RootCurrency_AggregateArgs = {
 
 export type Query_RootCurrency_By_PkArgs = {
   value: Scalars['String'];
+};
+
+
+export type Query_RootEntitiesArgs = {
+  where: Array<EntityWhereInput>;
 };
 
 
@@ -10770,6 +13628,18 @@ export type Query_RootEventPassArgs = {
 };
 
 
+export type Query_RootEventPassDelayedRevealedArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+export type Query_RootEventPassDelayedRevealedVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
 export type Query_RootEventPassNftArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -10785,6 +13655,29 @@ export type Query_RootEventPassNftContractArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassNftContractTypeArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassNftContractType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+};
+
+
+export type Query_RootEventPassNftContractType_By_PkArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -10934,6 +13827,32 @@ export type Query_RootEventPassesConnectionArgs = {
 };
 
 
+export type Query_RootEventPassesDelayedRevealedArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<EventPassDelayedRevealedOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+};
+
+
+export type Query_RootEventPassesDelayedRevealedConnectionArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<EventPassDelayedRevealedOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<EventPassDelayedRevealedWhereInput>;
+};
+
+
 export type Query_RootEventVersionArgs = {
   where: VersionWhereInput;
 };
@@ -10962,6 +13881,30 @@ export type Query_RootEventsConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<EventWhereInput>;
+};
+
+
+export type Query_RootFollowArgs = {
+  distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Follow_Order_By>>;
+  where?: InputMaybe<Follow_Bool_Exp>;
+};
+
+
+export type Query_RootFollow_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Follow_Order_By>>;
+  where?: InputMaybe<Follow_Bool_Exp>;
+};
+
+
+export type Query_RootFollow_By_PkArgs = {
+  accountId: Scalars['uuid'];
+  organizerSlug: Scalars['String'];
 };
 
 
@@ -11122,6 +14065,47 @@ export type Query_RootOrganizersConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<OrganizerWhereInput>;
+};
+
+
+export type Query_RootRoleAssignmentsArgs = {
+  distinct_on?: InputMaybe<Array<RoleAssignments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<RoleAssignments_Order_By>>;
+  where?: InputMaybe<RoleAssignments_Bool_Exp>;
+};
+
+
+export type Query_RootRoleAssignments_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<RoleAssignments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<RoleAssignments_Order_By>>;
+  where?: InputMaybe<RoleAssignments_Bool_Exp>;
+};
+
+
+export type Query_RootRolesArgs = {
+  distinct_on?: InputMaybe<Array<Roles_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Roles_Order_By>>;
+  where?: InputMaybe<Roles_Bool_Exp>;
+};
+
+
+export type Query_RootRoles_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Roles_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Roles_Order_By>>;
+  where?: InputMaybe<Roles_Bool_Exp>;
+};
+
+
+export type Query_RootRoles_By_PkArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -11313,6 +14297,486 @@ export type Query_RootUsersConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<UserWhereInput>;
+};
+
+/** Table to assign roles to accounts, allowing a many-to-many relationship. Each account can have multiple roles and each role can be assigned to multiple accounts. This is part of the RBAC system integration. */
+export type RoleAssignments = {
+  __typename?: 'roleAssignments';
+  accountId: Scalars['uuid'];
+  created_at: Scalars['timestamptz'];
+  eventId: Scalars['String'];
+  id: Scalars['uuid'];
+  invitedById: Scalars['uuid'];
+  /** An object relationship */
+  inviter: Account;
+  organizer?: Maybe<Organizer>;
+  organizerId: Scalars['String'];
+  role: Roles_Enum;
+};
+
+
+/** Table to assign roles to accounts, allowing a many-to-many relationship. Each account can have multiple roles and each role can be assigned to multiple accounts. This is part of the RBAC system integration. */
+export type RoleAssignmentsOrganizerArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: OrganizerWhereUniqueInput_Remote_Rel_RoleAssignmentsorganizer;
+};
+
+/** aggregated selection of "roleAssignments" */
+export type RoleAssignments_Aggregate = {
+  __typename?: 'roleAssignments_aggregate';
+  aggregate?: Maybe<RoleAssignments_Aggregate_Fields>;
+  nodes: Array<RoleAssignments>;
+};
+
+export type RoleAssignments_Aggregate_Bool_Exp = {
+  count?: InputMaybe<RoleAssignments_Aggregate_Bool_Exp_Count>;
+};
+
+export type RoleAssignments_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<RoleAssignments_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<RoleAssignments_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "roleAssignments" */
+export type RoleAssignments_Aggregate_Fields = {
+  __typename?: 'roleAssignments_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<RoleAssignments_Max_Fields>;
+  min?: Maybe<RoleAssignments_Min_Fields>;
+};
+
+
+/** aggregate fields of "roleAssignments" */
+export type RoleAssignments_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<RoleAssignments_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "roleAssignments" */
+export type RoleAssignments_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<RoleAssignments_Max_Order_By>;
+  min?: InputMaybe<RoleAssignments_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "roleAssignments" */
+export type RoleAssignments_Arr_Rel_Insert_Input = {
+  data: Array<RoleAssignments_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<RoleAssignments_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "roleAssignments". All fields are combined with a logical 'AND'. */
+export type RoleAssignments_Bool_Exp = {
+  _and?: InputMaybe<Array<RoleAssignments_Bool_Exp>>;
+  _not?: InputMaybe<RoleAssignments_Bool_Exp>;
+  _or?: InputMaybe<Array<RoleAssignments_Bool_Exp>>;
+  accountId?: InputMaybe<Uuid_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  eventId?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  invitedById?: InputMaybe<Uuid_Comparison_Exp>;
+  inviter?: InputMaybe<Account_Bool_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  role?: InputMaybe<Roles_Enum_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "roleAssignments" */
+export const enum RoleAssignments_Constraint {
+  /** unique or primary key constraint on columns "organizerId", "accountId", "role", "eventId" */
+  UniqueRoleAssignment = 'unique_role_assignment'
+};
+
+/** input type for inserting data into table "roleAssignments" */
+export type RoleAssignments_Insert_Input = {
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  invitedById?: InputMaybe<Scalars['uuid']>;
+  inviter?: InputMaybe<Account_Obj_Rel_Insert_Input>;
+  organizerId?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<Roles_Enum>;
+};
+
+/** aggregate max on columns */
+export type RoleAssignments_Max_Fields = {
+  __typename?: 'roleAssignments_max_fields';
+  accountId?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  eventId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  invitedById?: Maybe<Scalars['uuid']>;
+  organizerId?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "roleAssignments" */
+export type RoleAssignments_Max_Order_By = {
+  accountId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  invitedById?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type RoleAssignments_Min_Fields = {
+  __typename?: 'roleAssignments_min_fields';
+  accountId?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  eventId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  invitedById?: Maybe<Scalars['uuid']>;
+  organizerId?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "roleAssignments" */
+export type RoleAssignments_Min_Order_By = {
+  accountId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  invitedById?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "roleAssignments" */
+export type RoleAssignments_Mutation_Response = {
+  __typename?: 'roleAssignments_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<RoleAssignments>;
+};
+
+/** on_conflict condition type for table "roleAssignments" */
+export type RoleAssignments_On_Conflict = {
+  constraint: RoleAssignments_Constraint;
+  update_columns?: Array<RoleAssignments_Update_Column>;
+  where?: InputMaybe<RoleAssignments_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "roleAssignments". */
+export type RoleAssignments_Order_By = {
+  accountId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  invitedById?: InputMaybe<Order_By>;
+  inviter?: InputMaybe<Account_Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  role?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "roleAssignments" */
+export const enum RoleAssignments_Select_Column {
+  /** column name */
+  AccountId = 'accountId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  InvitedById = 'invitedById',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Role = 'role'
+};
+
+/** input type for updating data in table "roleAssignments" */
+export type RoleAssignments_Set_Input = {
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  invitedById?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<Roles_Enum>;
+};
+
+/** Streaming cursor of the table "roleAssignments" */
+export type RoleAssignments_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: RoleAssignments_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type RoleAssignments_Stream_Cursor_Value_Input = {
+  accountId?: InputMaybe<Scalars['uuid']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  invitedById?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<Roles_Enum>;
+};
+
+/** update columns of table "roleAssignments" */
+export const enum RoleAssignments_Update_Column {
+  /** column name */
+  AccountId = 'accountId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  InvitedById = 'invitedById',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Role = 'role'
+};
+
+export type RoleAssignments_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<RoleAssignments_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: RoleAssignments_Bool_Exp;
+};
+
+/** Stores user roles defining access levels and permissions within the Offline platform. */
+export type Roles = {
+  __typename?: 'roles';
+  /**
+   *
+   *     organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.
+   *     organizer_admin: Full Read & Write permissions on web2 and web3 components.
+   *     organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.
+   *     organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.
+   *     organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.
+   *     organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.
+   *     organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.
+   *     organizer_guest: Limited access to web2. Can view public content without web3 permissions.
+   *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
+   *
+   */
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "roles" */
+export type Roles_Aggregate = {
+  __typename?: 'roles_aggregate';
+  aggregate?: Maybe<Roles_Aggregate_Fields>;
+  nodes: Array<Roles>;
+};
+
+/** aggregate fields of "roles" */
+export type Roles_Aggregate_Fields = {
+  __typename?: 'roles_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Roles_Max_Fields>;
+  min?: Maybe<Roles_Min_Fields>;
+};
+
+
+/** aggregate fields of "roles" */
+export type Roles_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Roles_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "roles". All fields are combined with a logical 'AND'. */
+export type Roles_Bool_Exp = {
+  _and?: InputMaybe<Array<Roles_Bool_Exp>>;
+  _not?: InputMaybe<Roles_Bool_Exp>;
+  _or?: InputMaybe<Array<Roles_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "roles" */
+export const enum Roles_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  RolesPkey = 'roles_pkey'
+};
+
+export const enum Roles_Enum {
+  OrganizerAdmin = 'organizer_admin',
+  OrganizerAuditor = 'organizer_auditor',
+  OrganizerContentManager = 'organizer_content_manager',
+  OrganizerFinanceManager = 'organizer_finance_manager',
+  OrganizerGuest = 'organizer_guest',
+  OrganizerHumanResources = 'organizer_human_resources',
+  OrganizerOperationsManager = 'organizer_operations_manager',
+  OrganizerSuperAdmin = 'organizer_super_admin',
+  OrganizerValidator = 'organizer_validator'
+};
+
+/** Boolean expression to compare columns of type "roles_enum". All fields are combined with logical 'AND'. */
+export type Roles_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Roles_Enum>;
+  _in?: InputMaybe<Array<Roles_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Roles_Enum>;
+  _nin?: InputMaybe<Array<Roles_Enum>>;
+};
+
+/** input type for inserting data into table "roles" */
+export type Roles_Insert_Input = {
+  /**
+   *
+   *     organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.
+   *     organizer_admin: Full Read & Write permissions on web2 and web3 components.
+   *     organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.
+   *     organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.
+   *     organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.
+   *     organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.
+   *     organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.
+   *     organizer_guest: Limited access to web2. Can view public content without web3 permissions.
+   *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
+   *
+   */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Roles_Max_Fields = {
+  __typename?: 'roles_max_fields';
+  /**
+   *
+   *     organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.
+   *     organizer_admin: Full Read & Write permissions on web2 and web3 components.
+   *     organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.
+   *     organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.
+   *     organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.
+   *     organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.
+   *     organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.
+   *     organizer_guest: Limited access to web2. Can view public content without web3 permissions.
+   *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
+   *
+   */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Roles_Min_Fields = {
+  __typename?: 'roles_min_fields';
+  /**
+   *
+   *     organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.
+   *     organizer_admin: Full Read & Write permissions on web2 and web3 components.
+   *     organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.
+   *     organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.
+   *     organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.
+   *     organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.
+   *     organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.
+   *     organizer_guest: Limited access to web2. Can view public content without web3 permissions.
+   *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
+   *
+   */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "roles" */
+export type Roles_Mutation_Response = {
+  __typename?: 'roles_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Roles>;
+};
+
+/** on_conflict condition type for table "roles" */
+export type Roles_On_Conflict = {
+  constraint: Roles_Constraint;
+  update_columns?: Array<Roles_Update_Column>;
+  where?: InputMaybe<Roles_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "roles". */
+export type Roles_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: roles */
+export type Roles_Pk_Columns_Input = {
+  /**
+   *
+   *     organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.
+   *     organizer_admin: Full Read & Write permissions on web2 and web3 components.
+   *     organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.
+   *     organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.
+   *     organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.
+   *     organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.
+   *     organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.
+   *     organizer_guest: Limited access to web2. Can view public content without web3 permissions.
+   *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
+   *
+   */
+  value: Scalars['String'];
+};
+
+/** select columns of table "roles" */
+export const enum Roles_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "roles" */
+export type Roles_Set_Input = {
+  /**
+   *
+   *     organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.
+   *     organizer_admin: Full Read & Write permissions on web2 and web3 components.
+   *     organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.
+   *     organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.
+   *     organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.
+   *     organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.
+   *     organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.
+   *     organizer_guest: Limited access to web2. Can view public content without web3 permissions.
+   *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
+   *
+   */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "roles" */
+export type Roles_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Roles_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Roles_Stream_Cursor_Value_Input = {
+  /**
+   *
+   *     organizer_super_admin: Full Read & Write permissions on web2 and web3 components. Can assign roles and access system configurations.
+   *     organizer_admin: Full Read & Write permissions on web2 and web3 components.
+   *     organizer_operations_manager: Read & Write access to web2 components. Handles event setup, monitoring, analytics, etc.
+   *     organizer_finance_manager: Read & Write access to web3 components. Manages fund transfers, balance checks, and transaction approvals within limits.
+   *     organizer_content_manager: Read & Write access to web2 components. Manages content creation, editing, media uploads, and metadata modifications.
+   *     organizer_validator: Read & Write access on web2 and web3. Updates NFT traits and validates tickets and exclusive access during events.
+   *     organizer_auditor: Read-only access on web2 and web3. Conducts compliance checks and reviews transactions and operations.
+   *     organizer_guest: Limited access to web2. Can view public content without web3 permissions.
+   *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
+   *
+   */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** update columns of table "roles" */
+export const enum Roles_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type Roles_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Roles_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Roles_Bool_Exp;
 };
 
 /** Table to store Stripe Checkout Sessions for tracking user checkout processes. Sessions are deleted once they are successful or expired. */
@@ -11854,6 +15318,14 @@ export type Subscription_Root = {
   account_by_pk?: Maybe<Account>;
   /** fetch data from the table in a streaming manner: "account" */
   account_stream: Array<Account>;
+  /** fetch data from the table: "audit.logged_actions" */
+  audit_logged_actions: Array<Audit_Logged_Actions>;
+  /** fetch aggregated fields from the table: "audit.logged_actions" */
+  audit_logged_actions_aggregate: Audit_Logged_Actions_Aggregate;
+  /** fetch data from the table: "audit.logged_actions" using primary key columns */
+  audit_logged_actions_by_pk?: Maybe<Audit_Logged_Actions>;
+  /** fetch data from the table in a streaming manner: "audit.logged_actions" */
+  audit_logged_actions_stream: Array<Audit_Logged_Actions>;
   /** fetch data from the table: "currency" */
   currency: Array<Currency>;
   /** fetch aggregated fields from the table: "currency" */
@@ -11862,7 +15334,9 @@ export type Subscription_Root = {
   currency_by_pk?: Maybe<Currency>;
   /** fetch data from the table in a streaming manner: "currency" */
   currency_stream: Array<Currency>;
+  /** fetch data from the table: "eventParameters" */
   eventParameters: Array<EventParameters>;
+  /** fetch aggregated fields from the table: "eventParameters" */
   eventParameters_aggregate: EventParameters_Aggregate;
   /** fetch data from the table: "eventParameters" using primary key columns */
   eventParameters_by_pk?: Maybe<EventParameters>;
@@ -11872,6 +15346,14 @@ export type Subscription_Root = {
   eventPassNft: Array<EventPassNft>;
   /** fetch data from the table: "eventPassNftContract" */
   eventPassNftContract: Array<EventPassNftContract>;
+  /** fetch data from the table: "eventPassNftContractType" */
+  eventPassNftContractType: Array<EventPassNftContractType>;
+  /** fetch aggregated fields from the table: "eventPassNftContractType" */
+  eventPassNftContractType_aggregate: EventPassNftContractType_Aggregate;
+  /** fetch data from the table: "eventPassNftContractType" using primary key columns */
+  eventPassNftContractType_by_pk?: Maybe<EventPassNftContractType>;
+  /** fetch data from the table in a streaming manner: "eventPassNftContractType" */
+  eventPassNftContractType_stream: Array<EventPassNftContractType>;
   /** fetch aggregated fields from the table: "eventPassNftContract" */
   eventPassNftContract_aggregate: EventPassNftContract_Aggregate;
   /** fetch data from the table in a streaming manner: "eventPassNftContract" */
@@ -11914,6 +15396,14 @@ export type Subscription_Root = {
   eventPassPricing_by_pk?: Maybe<EventPassPricing>;
   /** fetch data from the table in a streaming manner: "eventPassPricing" */
   eventPassPricing_stream: Array<EventPassPricing>;
+  /** fetch data from the table: "follow" */
+  follow: Array<Follow>;
+  /** fetch aggregated fields from the table: "follow" */
+  follow_aggregate: Follow_Aggregate;
+  /** fetch data from the table: "follow" using primary key columns */
+  follow_by_pk?: Maybe<Follow>;
+  /** fetch data from the table in a streaming manner: "follow" */
+  follow_stream: Array<Follow>;
   /** fetch data from the table: "kyc" */
   kyc: Array<Kyc>;
   /** fetch data from the table: "kycLevelName" */
@@ -11954,6 +15444,20 @@ export type Subscription_Root = {
   orderStatus_by_pk?: Maybe<OrderStatus>;
   /** fetch data from the table in a streaming manner: "orderStatus" */
   orderStatus_stream: Array<OrderStatus>;
+  /** fetch data from the table: "roleAssignments" */
+  roleAssignments: Array<RoleAssignments>;
+  /** fetch aggregated fields from the table: "roleAssignments" */
+  roleAssignments_aggregate: RoleAssignments_Aggregate;
+  /** fetch data from the table in a streaming manner: "roleAssignments" */
+  roleAssignments_stream: Array<RoleAssignments>;
+  /** fetch data from the table: "roles" */
+  roles: Array<Roles>;
+  /** fetch aggregated fields from the table: "roles" */
+  roles_aggregate: Roles_Aggregate;
+  /** fetch data from the table: "roles" using primary key columns */
+  roles_by_pk?: Maybe<Roles>;
+  /** fetch data from the table in a streaming manner: "roles" */
+  roles_stream: Array<Roles>;
   /** fetch data from the table: "stripeCheckoutSession" */
   stripeCheckoutSession: Array<StripeCheckoutSession>;
   /** fetch data from the table: "stripeCheckoutSessionType" */
@@ -12016,6 +15520,36 @@ export type Subscription_RootAccount_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<Account_Stream_Cursor_Input>>;
   where?: InputMaybe<Account_Bool_Exp>;
+};
+
+
+export type Subscription_RootAudit_Logged_ActionsArgs = {
+  distinct_on?: InputMaybe<Array<Audit_Logged_Actions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Audit_Logged_Actions_Order_By>>;
+  where?: InputMaybe<Audit_Logged_Actions_Bool_Exp>;
+};
+
+
+export type Subscription_RootAudit_Logged_Actions_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Audit_Logged_Actions_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Audit_Logged_Actions_Order_By>>;
+  where?: InputMaybe<Audit_Logged_Actions_Bool_Exp>;
+};
+
+
+export type Subscription_RootAudit_Logged_Actions_By_PkArgs = {
+  event_id: Scalars['bigint'];
+};
+
+
+export type Subscription_RootAudit_Logged_Actions_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Audit_Logged_Actions_Stream_Cursor_Input>>;
+  where?: InputMaybe<Audit_Logged_Actions_Bool_Exp>;
 };
 
 
@@ -12094,6 +15628,36 @@ export type Subscription_RootEventPassNftContractArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassNftContractTypeArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassNftContractType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
+};
+
+
+export type Subscription_RootEventPassNftContractType_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootEventPassNftContractType_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<EventPassNftContractType_Stream_Cursor_Input>>;
+  where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
 };
 
 
@@ -12254,6 +15818,37 @@ export type Subscription_RootEventPassPricing_StreamArgs = {
 };
 
 
+export type Subscription_RootFollowArgs = {
+  distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Follow_Order_By>>;
+  where?: InputMaybe<Follow_Bool_Exp>;
+};
+
+
+export type Subscription_RootFollow_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Follow_Order_By>>;
+  where?: InputMaybe<Follow_Bool_Exp>;
+};
+
+
+export type Subscription_RootFollow_By_PkArgs = {
+  accountId: Scalars['uuid'];
+  organizerSlug: Scalars['String'];
+};
+
+
+export type Subscription_RootFollow_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Follow_Stream_Cursor_Input>>;
+  where?: InputMaybe<Follow_Bool_Exp>;
+};
+
+
 export type Subscription_RootKycArgs = {
   distinct_on?: InputMaybe<Array<Kyc_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -12401,6 +15996,61 @@ export type Subscription_RootOrderStatus_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<OrderStatus_Stream_Cursor_Input>>;
   where?: InputMaybe<OrderStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootRoleAssignmentsArgs = {
+  distinct_on?: InputMaybe<Array<RoleAssignments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<RoleAssignments_Order_By>>;
+  where?: InputMaybe<RoleAssignments_Bool_Exp>;
+};
+
+
+export type Subscription_RootRoleAssignments_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<RoleAssignments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<RoleAssignments_Order_By>>;
+  where?: InputMaybe<RoleAssignments_Bool_Exp>;
+};
+
+
+export type Subscription_RootRoleAssignments_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<RoleAssignments_Stream_Cursor_Input>>;
+  where?: InputMaybe<RoleAssignments_Bool_Exp>;
+};
+
+
+export type Subscription_RootRolesArgs = {
+  distinct_on?: InputMaybe<Array<Roles_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Roles_Order_By>>;
+  where?: InputMaybe<Roles_Bool_Exp>;
+};
+
+
+export type Subscription_RootRoles_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Roles_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Roles_Order_By>>;
+  where?: InputMaybe<Roles_Bool_Exp>;
+};
+
+
+export type Subscription_RootRoles_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+export type Subscription_RootRoles_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Roles_Stream_Cursor_Input>>;
+  where?: InputMaybe<Roles_Bool_Exp>;
 };
 
 

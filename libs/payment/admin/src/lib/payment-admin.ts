@@ -9,6 +9,10 @@ import {
   StripeCheckoutSessionType_Enum,
   type Locale,
 } from '@gql/shared/types';
+import { Posthog } from '@insight/server';
+import { FeatureFlagsEnum } from '@insight/types';
+import { CurrencyCache } from '@next/currency-cache';
+import { calculateUnitAmount } from '@next/currency-common';
 import { AppUser } from '@next/types';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import {
@@ -48,40 +52,75 @@ export class Payment {
   async getStripeCustomer({ stripeCustomerId }: { stripeCustomerId: string }) {
     return this.stripe.customers.retrieve(stripeCustomerId);
   }
-  async getOrCreateStripeCustomer({ user }: { user: AppUser }) {
-    const { kyc } = user;
-    if (!kyc) throw new Error(`Missing kyc for user: ${user.id}`);
-    const existingStripeCustomer = await adminSdk.GetStripeCustomerByAccount({
-      accountId: user.id,
-    });
-    if (existingStripeCustomer && existingStripeCustomer.stripeCustomer.length)
-      return existingStripeCustomer.stripeCustomer[0];
-    const userPersonalData = await getSumSubApplicantPersonalData(
-      kyc.applicantId,
-    );
-    if (userPersonalData.review.reviewStatus !== KycStatus_Enum.Completed)
-      throw new Error(
-        `User: ${user.id} has not completed KYC: ${kyc.applicantId}`,
+  async createStripeCustomer({
+    user,
+    kycFlag,
+  }: {
+    user: AppUser;
+    kycFlag: boolean;
+  }) {
+    const { kyc, address, email } = user;
+    if (!kycFlag) {
+      const stripeCustomer = await this.stripe.customers.create({
+        email,
+        // preferred_locales: [userPersonalData.lang || 'en'],
+        // phone: userPersonalData.phone,
+        metadata: {
+          userId: user.id,
+        },
+      });
+      const createdStripeCustomer = await adminSdk.CreateStripeCustomer({
+        stripeCustomer: {
+          stripeCustomerId: stripeCustomer.id,
+          accountId: user.id,
+        },
+      });
+      return createdStripeCustomer?.insert_stripeCustomer_one;
+    } else {
+      if (!kyc) throw new Error(`Missing kyc for user: ${user.id}`);
+      const userPersonalData = await getSumSubApplicantPersonalData(
+        kyc.applicantId,
       );
-    if (!userPersonalData.email) {
-      throw new Error('Email is undefined for user: ' + user.id);
-    }
+      if (userPersonalData.review.reviewStatus !== KycStatus_Enum.Completed)
+        throw new Error(
+          `User: ${user.id} has not completed KYC: ${kyc.applicantId}`,
+        );
+      if (!userPersonalData.email) {
+        throw new Error('Email is undefined for user: ' + user.id);
+      }
 
-    const stripeCustomer = await this.stripe.customers.create({
-      email: userPersonalData.email,
-      preferred_locales: [userPersonalData.lang || 'en'],
-      phone: userPersonalData.phone,
-      metadata: {
-        userId: user.id,
-      },
-    });
-    const createdStripeCustomer = await adminSdk.CreateStripeCustomer({
-      stripeCustomer: {
-        stripeCustomerId: stripeCustomer.id,
+      const stripeCustomer = await this.stripe.customers.create({
+        email: userPersonalData.email,
+        preferred_locales: [userPersonalData.lang || 'en'],
+        phone: userPersonalData.phone,
+        metadata: {
+          userId: user.id,
+        },
+      });
+      const createdStripeCustomer = await adminSdk.CreateStripeCustomer({
+        stripeCustomer: {
+          stripeCustomerId: stripeCustomer.id,
+          accountId: user.id,
+        },
+      });
+      return createdStripeCustomer?.insert_stripeCustomer_one;
+    }
+  }
+  async getOrCreateStripeCustomer({ user }: { user: AppUser }) {
+    const { kyc, address } = user;
+    const kycFlag = await Posthog.getInstance().getFeatureFlag(
+      FeatureFlagsEnum.KYC,
+      address,
+    );
+    if (kycFlag && !kyc) throw new Error(`Missing kyc for user: ${user.id}`);
+    const existingStripeCustomerRes = await adminSdk.GetStripeCustomerByAccount(
+      {
         accountId: user.id,
       },
-    });
-    return createdStripeCustomer?.insert_stripeCustomer_one;
+    );
+    if (existingStripeCustomerRes?.stripeCustomer?.length)
+      return existingStripeCustomerRes.stripeCustomer[0];
+    return this.createStripeCustomer({ user, kycFlag });
   }
   async updateStripeCustomer({
     stripeCustomerId,
@@ -90,8 +129,8 @@ export class Payment {
     stripeCustomerId: string;
     user: AppUser;
   }) {
-    //TODO: update with payment preference etc... and eventually update StripeCustomer in db
-    return this.stripe.customers.update(stripeCustomerId, {
+    //TODO: update with payment preference etc...
+    const res = await this.stripe.customers.update(stripeCustomerId, {
       email: user.email,
       // preferred_locales: ['en'],
       // name: user.name,
@@ -100,6 +139,14 @@ export class Payment {
         userId: user.id,
       },
     });
+    // here update stripe customer in db to have updated_at set
+    await adminSdk.UpdateStripeCustomer({
+      stripeCustomerId,
+      stripeCustomer: {
+        accountId: user.id,
+      },
+    });
+    return res;
   }
 
   // Delete corresponding eventPassPendingOrders and replace them by eventPassOrders with status CONFIRMED.
@@ -135,25 +182,6 @@ export class Payment {
       updates: eventPassOrdersId.map((id) => ({
         _set: {
           status: OrderStatus_Enum.Cancelled,
-        },
-        where: {
-          id: {
-            _eq: id,
-          },
-        },
-      })),
-    });
-  }
-
-  async markEventPassOrderAsCompleted({
-    eventPassOrdersId,
-  }: {
-    eventPassOrdersId: string[];
-  }) {
-    return adminSdk.UpdateEventPassOrdersStatus({
-      updates: eventPassOrdersId.map((id) => ({
-        _set: {
-          status: OrderStatus_Enum.Completed,
         },
         where: {
           id: {
@@ -203,6 +231,7 @@ export class Payment {
     locale: Locale;
     currency: string;
   }) {
+    const currencyCache = new CurrencyCache();
     const existingStripeCheckoutSession =
       await adminSdk.GetStripeCheckoutSessionForUser({
         stripeCustomerId: stripeCustomer.id,
@@ -229,7 +258,10 @@ export class Payment {
           .map((order) => order.id)
           .join(',')}`,
       );
-    const lineItems = orders.map((order) => {
+
+    const rates = await currencyCache.getRates();
+
+    const lineItemsPromises = orders.map(async (order) => {
       if (
         !order.eventPassPricing?.priceCurrency ||
         !order.eventPassPricing?.priceAmount
@@ -238,12 +270,36 @@ export class Payment {
           'Price currency or Price amount is undefined for order: ' + order.id,
         );
       }
+      if (order.eventPassPricing?.priceAmount < 0) {
+        throw new Error('Price amount is negative for order: ' + order.id);
+      }
+
+      if (Object.keys(rates).length === 0) {
+        throw new Error('Rates are empty for order: ' + order.id);
+      }
+
+      let currencyStripe: string;
+      let unitAmount: number;
+
+      if (currency === order.eventPassPricing.priceCurrency) {
+        currencyStripe = currency.toLowerCase();
+        unitAmount = order.eventPassPricing.priceAmount;
+      } else {
+        currencyStripe = currency.toLowerCase();
+        unitAmount = calculateUnitAmount(
+          {
+            amount: order.eventPassPricing.priceAmount,
+            currency: order.eventPassPricing.priceCurrency,
+          },
+          rates,
+        );
+      }
 
       return {
         quantity: order.quantity,
         price_data: {
-          currency: order.eventPassPricing.priceCurrency,
-          unit_amount: order.eventPassPricing.priceAmount,
+          currency: currencyStripe,
+          unit_amount: unitAmount,
           product_data: {
             name: order.eventPass?.name as string,
             images: [order.eventPass?.nftImage?.url as string],
@@ -276,12 +332,13 @@ export class Payment {
         'Email is null for stripe customer: ' + stripeCustomer.id,
       );
     }
+    const lineItems = await Promise.all(lineItemsPromises);
 
     const session = await this.stripe.checkout.sessions.create({
       line_items: lineItems,
       client_reference_id: user.id,
       customer: stripeCustomer.id,
-      currency,
+      currency: currency.toLowerCase(),
       locale,
       metadata,
       mode: 'payment',
@@ -298,7 +355,6 @@ export class Payment {
       //   setup_future_usage: 'on_session', // see alternative with 'off_session' here: https://stripe.com/docs/payments/save-during-payment
       // }
     });
-
     await adminSdk.SetEventPassOrdersStripeCheckoutSessionId({
       updates: orders.map(({ id }) => ({
         _set: {
@@ -414,28 +470,23 @@ export class Payment {
       stripeCheckoutSessionId,
     });
 
-    let totalAmount = 0;
-
-    const checkOrderPromises = orders.map(async (order) => {
-      try {
+    try {
+      const checkOrderPromises = orders.map(async (order) => {
         await this.nftClaimable.checkOrder(order);
-        fetch(`${getNextAppURL()}/api/order/claim/${order.id}`);
-      } catch (error) {
-        if (order.eventPassPricing?.priceAmount) {
-          totalAmount += order.eventPassPricing.priceAmount * order.quantity;
-        }
-      }
-    });
-
-    await Promise.allSettled(checkOrderPromises);
+        return order;
+      });
+      const checkedOrders = await Promise.all(checkOrderPromises);
+      const fetchPromises = checkedOrders.map((order) =>
+        fetch(`${getNextAppURL()}/api/order/claim/${order.id}`),
+      );
+      Promise.all(fetchPromises);
+    } catch (error) {
+      throw new Error(`Error claiming NFTs : ${error.message}`);
+    }
 
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
     });
-
-    if (totalAmount !== 0) {
-      throw new Error(`Some orders failed for an amount of : ${totalAmount}`);
-    }
   }
 
   async refundPartialPayment({

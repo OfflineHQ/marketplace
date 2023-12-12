@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { graphql } from 'msw';
 
 import { CartCancelled } from './CartCancelled';
 import {
@@ -11,11 +12,20 @@ import {
 const meta: Meta<typeof CartCancelled> = {
   render: CartCancelledExample,
   component: CartCancelled,
-  parameters: {
-    layout: 'fullscreen',
-  },
   args: {
     passes: [passOrder1, passOrder2],
+  },
+  parameters: {
+    layout: 'fullscreen',
+    msw: {
+      handlers: [
+        graphql.query('GetEventWithPasses', (req, res, ctx) => {
+          return ctx.data({
+            event: null,
+          });
+        }),
+      ],
+    },
   },
 };
 

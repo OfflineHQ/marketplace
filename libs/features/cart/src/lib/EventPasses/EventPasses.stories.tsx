@@ -1,3 +1,4 @@
+import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
 
@@ -21,17 +22,17 @@ type Story = StoryObj<typeof EventPasses>;
 
 export const Default: Story = {};
 
-export const Opened: Story = {
+export const OpenedWithNoTimeDeletion: Story = {
   play: async () => {
     const accordionTrigger = await screen.findByRole('button', {
       name: /Lorem ipsum/i,
     });
     accordionTrigger.click();
     await screen.findByText(/6 x/i);
-    await screen.findByText(/General Admission/i);
+    screen.getByText(/General Admission/i);
     await screen.findByText(/€1,237.86/i);
-    await screen.findByText(/3 x/i);
-    await screen.findByText(/VIP Pass/i);
+    screen.getByText(/3 x/i);
+    screen.getByText(/VIP Pass/i);
     await screen.findByText(/€2,380.50/i);
     userEvent.click(
       screen.getByRole('button', {
@@ -46,6 +47,71 @@ export const Opened: Story = {
   },
 };
 
+export const OpenedWithTimeRemainingDeletion: Story = {
+  args: {
+    timeRemainingDeletion: true,
+  },
+  play: async () => {
+    const accordionTrigger = await screen.findByRole('button', {
+      name: /Lorem ipsum/i,
+    });
+    accordionTrigger.click();
+    await screen.findByText(/6 x/i);
+    screen.getByText(/General Admission/i);
+    await screen.findByText(/€1,237.86/i);
+    screen.getByText(/expires: in 4 hours/i);
+    screen.getByText(/3 x/i);
+    screen.getByText(/VIP Pass/i);
+    screen.getByText(/€2,380.50/i);
+    screen.getByText(/expires: in 29 minutes/i);
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /Edit/i,
+      }),
+    );
+    userEvent.click(
+      screen.getByRole('button', {
+        name: /Delete/i,
+      }),
+    );
+  },
+};
+
+export const OpenedWithNoActions: Story = {
+  args: {
+    noActions: true,
+  },
+  play: async () => {
+    const accordionTrigger = await screen.findByRole('button', {
+      name: /Lorem ipsum/i,
+    });
+    accordionTrigger.click();
+    await screen.findByText(/6 x/i);
+    screen.getByText(/General Admission/i);
+    await screen.findByText(/€1,237.86/i);
+    expect(screen.queryByText(/Edit/i)).toBeNull();
+    expect(screen.queryByText(/Delete/i)).toBeNull();
+  },
+};
+
+export const OpenedMobile: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  ...OpenedWithTimeRemainingDeletion,
+};
+
 export const Skeleton: Story = {
   render: () => <EventPassesSkeleton />,
+};
+
+export const SkeletonMobile: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  ...Skeleton,
 };

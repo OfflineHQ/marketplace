@@ -1,0 +1,37 @@
+name: Manual Trigger for Preview Apps
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  # # For now we build web from e2e
+  # preview-apps:
+  #   if: github.event.review.state == 'approved' && github.event.pull_request.base.ref != 'main'
+  #   runs-on: ubuntu-latest
+  #   environment: preview
+  #   steps:
+  #     - name: Trigger Preview Apps Workflow
+  #       uses: benc-uk/workflow-dispatch@v1.2.2
+  #       with:
+  #         workflow: Deploy preview apps
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         ref: ${{ github.event.pull_request.head.ref }}
+  e2e-web:
+    if: github.event.review.state == 'approved' && github.event.pull_request.base.ref != 'main'
+    runs-on: ubuntu-latest
+    environment: preview
+    steps:
+      - name: Trigger Build and E2E Workflow for Web
+        uses: benc-uk/workflow-dispatch@v1.2.2
+        with:
+          workflow: Build and E2E web tests
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Trigger Build and E2E Workflow for Back-office
+        uses: benc-uk/workflow-dispatch@v1.2.2
+        with:
+          workflow: Build and E2E back-office tests
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref }}

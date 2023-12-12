@@ -12,3 +12,4 @@ hasura/app/**
 .next/**
 .vscode/**
 **/generated/**
+/.nx/cache

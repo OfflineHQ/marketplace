@@ -12,6 +12,7 @@ import {
 } from 'react-icons/ai';
 import { BiCircle, BiHelpCircle, BiXCircle } from 'react-icons/bi';
 import {
+  BsCalendarWeek,
   BsCurrencyExchange,
   BsDownload,
   BsQrCode,
@@ -43,8 +44,11 @@ import {
   HiOutlineArrowUpCircle,
   HiOutlineCalendarDays,
   HiOutlineLanguage,
+  HiOutlineUsers as HiOutlineUsers2,
 } from 'react-icons/hi2';
+import { LuBookOpenCheck, LuCopy } from 'react-icons/lu';
 import { RxMagicWand } from 'react-icons/rx';
+import { TfiTimer } from 'react-icons/tfi';
 import { AccessibleIcon } from './AccessibleIcon';
 import { IconProps } from './variants';
 
@@ -73,11 +77,24 @@ import {
   MdOutlineNotificationsActive,
   MdOutlineNotificationsNone,
 } from 'react-icons/md';
-import { RiMoonFill, RiSunLine } from 'react-icons/ri';
+import {
+  RiDiscordLine,
+  RiFacebookCircleLine,
+  RiInstagramLine,
+  RiMoonFill,
+  RiStarFill,
+  RiStarLine,
+  RiSunLine,
+  RiTelegramLine,
+  RiTiktokLine,
+  RiTwitchLine,
+  RiTwitterXLine,
+  RiYoutubeLine,
+} from 'react-icons/ri';
 
 import { TbSunMoon } from 'react-icons/tb';
 
-import { PiIdentificationCardLight } from 'react-icons/pi';
+import { PiIdentificationCardLight, PiSealQuestionBold } from 'react-icons/pi';
 
 // import and export IconType
 
@@ -85,12 +102,36 @@ import type { IconType as ReactIcon } from 'react-icons';
 
 export type IconType = ReactIcon;
 
+export const Copy: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={LuCopy} label={'Copy'} {...props} />
+);
+
+export const InfoAvailable: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={LuBookOpenCheck}
+    label={'Info Available'}
+    {...props}
+  />
+);
+
 export const UserIdentification: FC<IconProps> = (props) => (
   <AccessibleIcon
     IconComponent={PiIdentificationCardLight}
     label={'User identification'}
     {...props}
   />
+);
+
+export const InfoSealed: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={PiSealQuestionBold}
+    label={'Info Sealed'}
+    {...props}
+  />
+);
+
+export const Timer: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={TfiTimer} label={'Timer'} {...props} />
 );
 
 export const Reveal: FC<IconProps> = (props) => (
@@ -149,6 +190,14 @@ export const CurrencySettings: FC<IconProps> = (props) => (
 
 export const Download: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={BsDownload} label={'Download'} {...props} />
+);
+
+export const EventManagement: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={BsCalendarWeek}
+    label={'Event Management'}
+    {...props}
+  />
 );
 
 export const OutlineArrowRight: FC<IconProps> = (props) => (
@@ -311,8 +360,60 @@ export const FillMoon: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={RiMoonFill} label={'Fill Moon'} {...props} />
 );
 
+export const Star: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiStarLine} label={'Star'} {...props} />
+);
+
+export const StarFill: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiStarFill} label={'Star Fill'} {...props} />
+);
+
+export const Telegram: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={RiTelegramLine}
+    label={'Telegram'}
+    {...props}
+  />
+);
+
+export const Discord: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiDiscordLine} label={'Discord'} {...props} />
+);
+
+export const Youtube: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiYoutubeLine} label={'Youtube'} {...props} />
+);
+
+export const TikTok: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiTiktokLine} label={'TikTok'} {...props} />
+);
+
+export const Twitch: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiTwitchLine} label={'Twitch'} {...props} />
+);
+
 export const Sun: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={RiSunLine} label={'Sun'} {...props} />
+);
+
+export const Twitter: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiTwitterXLine} label={'Twitter'} {...props} />
+);
+
+export const Facebook: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={RiFacebookCircleLine}
+    label={'Facebook'}
+    {...props}
+  />
+);
+
+export const Instagram: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={RiInstagramLine}
+    label={'Instagram'}
+    {...props}
+  />
 );
 
 export const Award: FC<IconProps> = (props) => (
@@ -388,6 +489,10 @@ export const UserAdd: FC<IconProps> = (props) => (
 );
 
 export const Users: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={HiOutlineUsers2} label={'Users'} {...props} />
+);
+
+export const UserRoles: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={HiOutlineUsers} label={'Users'} {...props} />
 );
 

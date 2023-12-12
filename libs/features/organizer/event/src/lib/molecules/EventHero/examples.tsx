@@ -43,8 +43,6 @@ export const eventHeroProps: EventHeroProps = {
   // followers: [],
   ...eventLocationsProps,
   ...eventDatesProps,
-  purchaseLink: { href: { pathname: '/dummy' } },
-  purchaseText: 'Select passes',
   organizer,
 };
 
@@ -55,7 +53,5 @@ export const event2HeroProps: EventHeroProps = {
   title: 'World cup 2023',
   ...event2LocationsProps,
   ...event2DatesProps,
-  purchaseLink: { href: { pathname: '/dummy' } },
-  purchaseText: 'Select passes',
   organizer: organizer2,
 };

@@ -7,7 +7,6 @@ export const AccountFieldsFragmentDoc = `
   address
   email
   emailVerified
-  organizerId
 }
     `;
 export const KycFieldsFragmentDoc = `
@@ -39,8 +38,11 @@ export const EventListFieldsFragmentDoc = `
   slug
   title
   heroImage {
+    width
+    height
     url
   }
+  heroImageClasses
 }
     `;
 export const OrganizerFieldsFragmentDoc = `
@@ -48,20 +50,10 @@ export const OrganizerFieldsFragmentDoc = `
   id
   slug
   name
-  description {
-    json
-    references {
-      ... on Asset {
-        __typename
-        id
-        url
-        mimeType
-      }
-    }
-  }
   image {
     url
   }
+  imageClasses
 }
     `;
 export const EventDateLocationsFieldsFragmentDoc = `
@@ -107,6 +99,7 @@ export const EventPassFieldsFragmentDoc = `
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -114,6 +107,7 @@ export const EventPassFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
   }
 }
@@ -127,6 +121,13 @@ export const EventPassNftFieldsFragmentDoc = `
   organizerId
   isRevealed
   currentOwnerAddress
+}
+    `;
+export const RoleAssignmentsFieldsFragmentDoc = `
+    fragment RoleAssignmentsFields on roleAssignments {
+  role
+  organizerId
+  eventId
 }
     `;
 export const StripeCheckoutSessionFieldsFragmentDoc = `
@@ -163,10 +164,14 @@ export const StripeCustomerFieldsFragmentDoc = `
     kyc {
       ...KycFields
     }
+    roles {
+      ...RoleAssignmentsFields
+    }
   }
 }
     ${AccountFieldsFragmentDoc}
-${KycFieldsFragmentDoc}`;
+${KycFieldsFragmentDoc}
+${RoleAssignmentsFieldsFragmentDoc}`;
  const GetAccountByEmailDocument = `
     query GetAccountByEmail($email: String!) {
   account(where: {email: {_eq: $email}}) {
@@ -178,6 +183,13 @@ ${KycFieldsFragmentDoc}`;
 }
     ${AccountFieldsFragmentDoc}
 ${KycFieldsFragmentDoc}`;
+ const GetAccountByAddressDocument = `
+    query GetAccountByAddress($address: String!) {
+  account(where: {address: {_eq: $address}}) {
+    ...AccountFields
+  }
+}
+    ${AccountFieldsFragmentDoc}`;
  const GetAccountByIdDocument = `
     query GetAccountById($id: uuid!) {
   account(where: {id: {_eq: $id}}) {
@@ -264,7 +276,7 @@ ${KycFieldsFragmentDoc}`;
     `;
  const GetEventPassOrderFromIdDocument = `
     query GetEventPassOrderFromId($id: uuid!) {
-  eventPassOrder(where: {id: {_eq: $id}}) {
+  eventPassOrder_by_pk(id: $id) {
     id
     eventPassId
     quantity
@@ -398,6 +410,7 @@ ${KycFieldsFragmentDoc}`;
       image {
         url
       }
+      imageClasses
     }
     eventDateLocations {
       ...EventDateLocationsFields
@@ -415,13 +428,9 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
-      id
-      slug
-      name
-      image {
-        url
-      }
+      ...OrganizerFields
     }
     eventDateLocations {
       ...EventDateLocationsFields
@@ -435,41 +444,84 @@ ${EventDateLocationsFieldsFragmentDoc}`;
         priceCurrency
         maxAmount
         maxAmountPerUser
+        timeBeforeDelete
       }
     }
   }
 }
-    ${EventDateLocationsFieldsFragmentDoc}`;
- const GetEventsFromOrganizerIdDocument = `
-    query GetEventsFromOrganizerId($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
+    ${OrganizerFieldsFragmentDoc}
+${EventDateLocationsFieldsFragmentDoc}`;
+ const GetEventsFromOrganizerIdTableDocument = `
+    query GetEventsFromOrganizerIdTable($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {id: $id}, locales: [$locale, en], stage: $stage) {
     events {
       title
-      id
       slug
-      heroImage {
-        url
-      }
-      eventPasses {
-        name
-        id
-        description
-        nftName
-        nftImage {
-          url
-        }
-        nftDescription
-        eventPassPricing {
-          maxAmount
-        }
-        eventPassNftContract {
-          contractAddress
-        }
+      eventParameters {
+        dateStart
+        dateEnd
+        dateSaleStart
+        dateSaleEnd
+        timezone
       }
     }
   }
 }
     `;
+ const GetEventWithPassesOrganizerDocument = `
+    query GetEventWithPassesOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
+  event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
+    title
+    id
+    slug
+    eventPasses {
+      name
+      id
+      description
+      nftName
+      nftImage {
+        url
+      }
+      nftDescription
+      passOptions {
+        name
+        description
+        eventDateLocation {
+          ...EventDateLocationsFields
+        }
+      }
+      eventPassPricing {
+        maxAmount
+        maxAmountPerUser
+        priceAmount
+        priceCurrency
+        timeBeforeDelete
+      }
+      eventPassNftContract {
+        type
+        contractAddress
+        eventPassId
+      }
+      eventPassDelayedRevealed {
+        name
+        description
+        nftName
+        nftDescription
+        nftImage {
+          url
+        }
+        passOptions {
+          name
+          description
+          eventDateLocation {
+            ...EventDateLocationsFields
+          }
+        }
+      }
+    }
+  }
+}
+    ${EventDateLocationsFieldsFragmentDoc}`;
  const GetEventPassesDocument = `
     query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPasses(
@@ -494,6 +546,28 @@ ${EventDateLocationsFieldsFragmentDoc}`;
       description
       eventDateLocation {
         ...EventDateLocationsFields
+      }
+    }
+  }
+}
+    ${EventDateLocationsFieldsFragmentDoc}`;
+ const GetEventPassDelayedRevealedFromEventPassIdDocument = `
+    query GetEventPassDelayedRevealedFromEventPassId($eventPassId: ID!, $locale: Locale!, $stage: Stage!) @cached {
+  eventPass(where: {id: $eventPassId}, locales: [$locale, en], stage: $stage) {
+    eventPassDelayedRevealed {
+      name
+      description
+      nftName
+      nftDescription
+      nftImage {
+        url
+      }
+      passOptions {
+        name
+        description
+        eventDateLocation {
+          ...EventDateLocationsFields
+        }
       }
     }
   }
@@ -594,6 +668,14 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetEventPassNftContractDelayedRevealedFromEventPassIdDocument = `
+    query GetEventPassNftContractDelayedRevealedFromEventPassId($eventPassId: String) @cached {
+  eventPassNftContract(where: {eventPassId: {_eq: $eventPassId}}) {
+    type
+    isDelayedRevealed
+  }
+}
+    `;
  const GetEventPassOrderSumsDocument = `
     query GetEventPassOrderSums($eventPassId: String!) {
   eventPassOrderSums_by_pk(eventPassId: $eventPassId) {
@@ -625,13 +707,83 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+ const DeleteFollowOrganizerDocument = `
+    mutation DeleteFollowOrganizer($accountId: uuid!, $organizerSlug: String!) {
+  delete_follow_by_pk(accountId: $accountId, organizerSlug: $organizerSlug) {
+    organizerSlug
+  }
+}
+    `;
+ const CheckFollowingOrganizerDocument = `
+    query CheckFollowingOrganizer($accountId: uuid!, $organizerSlug: String!) {
+  follow_by_pk(accountId: $accountId, organizerSlug: $organizerSlug) {
+    accountId
+    organizerSlug
+  }
+}
+    `;
  const GetOrganizerDocument = `
     query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
-    ...OrganizerFields
+    slug
+    name
+    description {
+      json
+      references {
+        ... on Asset {
+          __typename
+          id
+          url
+          mimeType
+        }
+      }
+    }
+    image {
+      url
+    }
+    imageClasses
+    heroImage {
+      url
+    }
+    heroImageClasses
+    twitterHandle
+    instagramHandle
+    tiktokHandle
+    facebookHandle
+    youtubeHandle
+    telegramHandle
+    discordWidgetId
   }
 }
-    ${OrganizerFieldsFragmentDoc}`;
+    `;
+ const GetOrganizerFromSlugDocument = `
+    query GetOrganizerFromSlug($slug: String!, $stage: Stage!) @cached {
+  organizer(where: {slug: $slug}, locales: [en], stage: $stage) {
+    id
+    slug
+  }
+}
+    `;
+ const GetOrganizerLatestEventsDocument = `
+    query GetOrganizerLatestEvents($organizerId: String!, $locale: Locale!, $stage: Stage!) @cached {
+  eventParameters(
+    where: {organizerId: {_eq: $organizerId}}
+    order_by: {dateStart: desc}
+    limit: 3
+  ) {
+    dateStart
+    dateEnd
+    event(where: {}, locales: [$locale, en], stage: $stage) {
+      slug
+      title
+      heroImage {
+        url
+      }
+      heroImageClasses
+    }
+  }
+}
+    `;
  const InsertEventParametersDocument = `
     mutation InsertEventParameters($objects: [eventParameters_insert_input!]!) {
   insert_eventParameters(objects: $objects) {
@@ -669,6 +821,22 @@ ${EventPassFieldsFragmentDoc}`;
   }
 }
     ${EventPassNftFieldsFragmentDoc}`;
+ const CreateRoleAssignmentDocument = `
+    mutation CreateRoleAssignment($input: roleAssignments_insert_input!) {
+  insert_roleAssignments_one(object: $input) {
+    role
+  }
+}
+    `;
+ const GetRoleMinimalDocument = `
+    query GetRoleMinimal($accountId: uuid!, $role: roles_enum!, $organizerId: String!, $eventId: String) {
+  roleAssignments(
+    where: {accountId: {_eq: $accountId}, role: {_eq: $role}, organizerId: {_eq: $organizerId}, eventId: {_eq: $eventId}}
+  ) {
+    id
+  }
+}
+    `;
  const CreateStripeCheckoutSessionDocument = `
     mutation CreateStripeCheckoutSession($stripeCheckoutSession: stripeCheckoutSession_insert_input!) {
   insert_stripeCheckoutSession_one(object: $stripeCheckoutSession) {
@@ -729,6 +897,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetAccountByEmail(variables: Types.GetAccountByEmailQueryVariables, options?: C): Promise<Types.GetAccountByEmailQuery> {
       return requester<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables, options) as Promise<Types.GetAccountByEmailQuery>;
     },
+    GetAccountByAddress(variables: Types.GetAccountByAddressQueryVariables, options?: C): Promise<Types.GetAccountByAddressQuery> {
+      return requester<Types.GetAccountByAddressQuery, Types.GetAccountByAddressQueryVariables>(GetAccountByAddressDocument, variables, options) as Promise<Types.GetAccountByAddressQuery>;
+    },
     GetAccountById(variables: Types.GetAccountByIdQueryVariables, options?: C): Promise<Types.GetAccountByIdQuery> {
       return requester<Types.GetAccountByIdQuery, Types.GetAccountByIdQueryVariables>(GetAccountByIdDocument, variables, options) as Promise<Types.GetAccountByIdQuery>;
     },
@@ -780,11 +951,17 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
       return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;
     },
-    GetEventsFromOrganizerId(variables: Types.GetEventsFromOrganizerIdQueryVariables, options?: C): Promise<Types.GetEventsFromOrganizerIdQuery> {
-      return requester<Types.GetEventsFromOrganizerIdQuery, Types.GetEventsFromOrganizerIdQueryVariables>(GetEventsFromOrganizerIdDocument, variables, options) as Promise<Types.GetEventsFromOrganizerIdQuery>;
+    GetEventsFromOrganizerIdTable(variables: Types.GetEventsFromOrganizerIdTableQueryVariables, options?: C): Promise<Types.GetEventsFromOrganizerIdTableQuery> {
+      return requester<Types.GetEventsFromOrganizerIdTableQuery, Types.GetEventsFromOrganizerIdTableQueryVariables>(GetEventsFromOrganizerIdTableDocument, variables, options) as Promise<Types.GetEventsFromOrganizerIdTableQuery>;
+    },
+    GetEventWithPassesOrganizer(variables: Types.GetEventWithPassesOrganizerQueryVariables, options?: C): Promise<Types.GetEventWithPassesOrganizerQuery> {
+      return requester<Types.GetEventWithPassesOrganizerQuery, Types.GetEventWithPassesOrganizerQueryVariables>(GetEventWithPassesOrganizerDocument, variables, options) as Promise<Types.GetEventWithPassesOrganizerQuery>;
     },
     GetEventPasses(variables: Types.GetEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassesQuery> {
       return requester<Types.GetEventPassesQuery, Types.GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<Types.GetEventPassesQuery>;
+    },
+    GetEventPassDelayedRevealedFromEventPassId(variables: Types.GetEventPassDelayedRevealedFromEventPassIdQueryVariables, options?: C): Promise<Types.GetEventPassDelayedRevealedFromEventPassIdQuery> {
+      return requester<Types.GetEventPassDelayedRevealedFromEventPassIdQuery, Types.GetEventPassDelayedRevealedFromEventPassIdQueryVariables>(GetEventPassDelayedRevealedFromEventPassIdDocument, variables, options) as Promise<Types.GetEventPassDelayedRevealedFromEventPassIdQuery>;
     },
     UpdateEventPassNftFromNftTransfer(variables: Types.UpdateEventPassNftFromNftTransferMutationVariables, options?: C): Promise<Types.UpdateEventPassNftFromNftTransferMutation> {
       return requester<Types.UpdateEventPassNftFromNftTransferMutation, Types.UpdateEventPassNftFromNftTransferMutationVariables>(UpdateEventPassNftFromNftTransferDocument, variables, options) as Promise<Types.UpdateEventPassNftFromNftTransferMutation>;
@@ -807,6 +984,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetContractAddressFromEventPassId(variables?: Types.GetContractAddressFromEventPassIdQueryVariables, options?: C): Promise<Types.GetContractAddressFromEventPassIdQuery> {
       return requester<Types.GetContractAddressFromEventPassIdQuery, Types.GetContractAddressFromEventPassIdQueryVariables>(GetContractAddressFromEventPassIdDocument, variables, options) as Promise<Types.GetContractAddressFromEventPassIdQuery>;
     },
+    GetEventPassNftContractDelayedRevealedFromEventPassId(variables?: Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQueryVariables, options?: C): Promise<Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQuery> {
+      return requester<Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQuery, Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQueryVariables>(GetEventPassNftContractDelayedRevealedFromEventPassIdDocument, variables, options) as Promise<Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQuery>;
+    },
     GetEventPassOrderSums(variables: Types.GetEventPassOrderSumsQueryVariables, options?: C): Promise<Types.GetEventPassOrderSumsQuery> {
       return requester<Types.GetEventPassOrderSumsQuery, Types.GetEventPassOrderSumsQueryVariables>(GetEventPassOrderSumsDocument, variables, options) as Promise<Types.GetEventPassOrderSumsQuery>;
     },
@@ -816,8 +996,20 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     UpdateEventPassPricing(variables: Types.UpdateEventPassPricingMutationVariables, options?: C): Promise<Types.UpdateEventPassPricingMutation> {
       return requester<Types.UpdateEventPassPricingMutation, Types.UpdateEventPassPricingMutationVariables>(UpdateEventPassPricingDocument, variables, options) as Promise<Types.UpdateEventPassPricingMutation>;
     },
+    DeleteFollowOrganizer(variables: Types.DeleteFollowOrganizerMutationVariables, options?: C): Promise<Types.DeleteFollowOrganizerMutation> {
+      return requester<Types.DeleteFollowOrganizerMutation, Types.DeleteFollowOrganizerMutationVariables>(DeleteFollowOrganizerDocument, variables, options) as Promise<Types.DeleteFollowOrganizerMutation>;
+    },
+    CheckFollowingOrganizer(variables: Types.CheckFollowingOrganizerQueryVariables, options?: C): Promise<Types.CheckFollowingOrganizerQuery> {
+      return requester<Types.CheckFollowingOrganizerQuery, Types.CheckFollowingOrganizerQueryVariables>(CheckFollowingOrganizerDocument, variables, options) as Promise<Types.CheckFollowingOrganizerQuery>;
+    },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
+    },
+    GetOrganizerFromSlug(variables: Types.GetOrganizerFromSlugQueryVariables, options?: C): Promise<Types.GetOrganizerFromSlugQuery> {
+      return requester<Types.GetOrganizerFromSlugQuery, Types.GetOrganizerFromSlugQueryVariables>(GetOrganizerFromSlugDocument, variables, options) as Promise<Types.GetOrganizerFromSlugQuery>;
+    },
+    GetOrganizerLatestEvents(variables: Types.GetOrganizerLatestEventsQueryVariables, options?: C): Promise<Types.GetOrganizerLatestEventsQuery> {
+      return requester<Types.GetOrganizerLatestEventsQuery, Types.GetOrganizerLatestEventsQueryVariables>(GetOrganizerLatestEventsDocument, variables, options) as Promise<Types.GetOrganizerLatestEventsQuery>;
     },
     InsertEventParameters(variables: Types.InsertEventParametersMutationVariables, options?: C): Promise<Types.InsertEventParametersMutation> {
       return requester<Types.InsertEventParametersMutation, Types.InsertEventParametersMutationVariables>(InsertEventParametersDocument, variables, options) as Promise<Types.InsertEventParametersMutation>;
@@ -830,6 +1022,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassNftByIdMinimal(variables: Types.GetEventPassNftByIdMinimalQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdMinimalQuery> {
       return requester<Types.GetEventPassNftByIdMinimalQuery, Types.GetEventPassNftByIdMinimalQueryVariables>(GetEventPassNftByIdMinimalDocument, variables, options) as Promise<Types.GetEventPassNftByIdMinimalQuery>;
+    },
+    CreateRoleAssignment(variables: Types.CreateRoleAssignmentMutationVariables, options?: C): Promise<Types.CreateRoleAssignmentMutation> {
+      return requester<Types.CreateRoleAssignmentMutation, Types.CreateRoleAssignmentMutationVariables>(CreateRoleAssignmentDocument, variables, options) as Promise<Types.CreateRoleAssignmentMutation>;
+    },
+    GetRoleMinimal(variables: Types.GetRoleMinimalQueryVariables, options?: C): Promise<Types.GetRoleMinimalQuery> {
+      return requester<Types.GetRoleMinimalQuery, Types.GetRoleMinimalQueryVariables>(GetRoleMinimalDocument, variables, options) as Promise<Types.GetRoleMinimalQuery>;
     },
     CreateStripeCheckoutSession(variables: Types.CreateStripeCheckoutSessionMutationVariables, options?: C): Promise<Types.CreateStripeCheckoutSessionMutation> {
       return requester<Types.CreateStripeCheckoutSessionMutation, Types.CreateStripeCheckoutSessionMutationVariables>(CreateStripeCheckoutSessionDocument, variables, options) as Promise<Types.CreateStripeCheckoutSessionMutation>;

@@ -1,19 +1,20 @@
-import React from 'react';
 import { EventWithEventPassNfts } from '@features/pass-types';
 import {
+  AspectRatio,
+  Badge,
   Button,
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-  AspectRatio,
-  Badge,
-  Text,
   Separator,
+  Text,
 } from '@ui/components';
-import Image from 'next/image';
+import { Download } from '@ui/icons';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
+import React from 'react';
 import {
   UserPassEventPassActions,
   type UserPassEventPassActionsFunctionsProps,
@@ -22,7 +23,6 @@ import {
   RevealPassesDialog,
   type RevealPassesDialogProps,
 } from '../RevealPassesDialog/RevealPassesDialog';
-import { Download } from '@ui/icons';
 
 import { DownloadButtonClient } from './DownloadButtonClient';
 
@@ -49,19 +49,19 @@ export const UserPassEventCard: React.FC<UserPassEventCardProps> = ({
 
   return (
     <Card
-      className="flex flex-col"
+      className="flex w-full flex-col"
       variant="distinct"
       key={eventPassNftContract.eventPass?.id}
     >
       <CardHeader className="space-y-4">
         <AspectRatio variant="classic">
           <Image
+            className="rounded-sm object-cover"
             src={
               eventPassNftContract.eventPass?.nftImage?.url ||
               '/image-placeholder.svg'
             }
             fill
-            style={{ objectFit: 'cover' }}
             alt={eventPassNftContract.eventPass?.name as string}
           />
         </AspectRatio>

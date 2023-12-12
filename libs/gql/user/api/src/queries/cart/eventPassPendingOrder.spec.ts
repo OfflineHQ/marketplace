@@ -5,6 +5,7 @@ import type {
 import {
   applySeeds,
   createDbClient,
+  deleteAllTables,
   deleteTables,
   seedDb,
   type PgClient,
@@ -34,11 +35,7 @@ describe('tests for eventPassPendingOrder user', () => {
 
   beforeAll(async () => {
     client = await createDbClient();
-    await deleteTables(client, [
-      'account',
-      'eventPassPendingOrder',
-      'eventPassPricing',
-    ]);
+    await deleteAllTables(client);
     await applySeeds(client, ['account', 'eventPassPricing']);
   });
   afterAll(async () => {

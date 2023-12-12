@@ -1,1 +1,1 @@
-export { rtfProps, rtfWithImageProps } from './lib/examples';
+export { rtfProps, rtfWithImageProps, rtfWithLinkProps } from './lib/examples';

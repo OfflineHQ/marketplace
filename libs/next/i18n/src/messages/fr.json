@@ -33,7 +33,7 @@
       "dark": "Sombre",
       "auto": "Automatique"
     },
-    "currency-select-text": "Sélectionnez la devise avec laquelle vous souhaitez faire vos achats.",
+    "currency-select-text": "Sélectionnez votre devise",
     "eur": "EUR",
     "usd": "USD"
   },
@@ -49,7 +49,16 @@
         "sign-out-title": "Vous avez été déconnecté",
         "sign-out-description": "À bientôt 👋 !",
         "sign-in": "Se connecter",
-        "settings": "Paramètres"
+        "settings": "Paramètres",
+        "copied-address": "Adresse copiée !",
+        "switch-to-my-account": "Revenir à mon compte",
+        "my-current-role": "Mon rôle actuel",
+        "switch-to-role": "Passer au rôle",
+        "switch-to-role-toast-error-title": "Erreur lors de la tentative de changement de rôle",
+        "switch-to-my-account-toast-title": "Compte utilisateur",
+        "switch-to-my-account-toast-description": "Vous êtes maintenant connecté avec votre propre compte",
+        "switch-to-my-account-toast-error-title": "Erreur lors de la tentative de basculement vers votre compte",
+        "switch-to-role-toast-title": "Passé au rôle :"
       }
     },
     "Pass": {
@@ -60,6 +69,12 @@
       "text": "Panier",
       "helper-text": "Accédez à votre panier",
       "helper-text-purchase": "Terminez votre achat"
+    },
+    "MenuNav": {
+      "go-to-text": "Allez à ...",
+      "my-roles-text": "Mes rôles",
+      "manage-roles-text": "Gérer les rôles",
+      "events-management-text": "Gestion des événements"
     }
   },
   "Cart": {
@@ -78,16 +93,20 @@
       "Event": {
         "num-pass": "{numPass, plural, =1 {# pass} other {# pass}}",
         "edit": "Modifier",
-        "remove": "Supprimer"
+        "remove": "Supprimer",
+        "TimeBeforeDeletion": {
+          "time-before-deletion": "expire : {relativeTime}"
+        }
       },
       "no-cart": "Votre panier d'achat est vide"
     },
     "Successful": {
       "title": "Achat réussi ! 🎉",
-      "description": "Merci pour votre achat. Vos pass devraient disponibles dans quelques minutes.",
+      "description": "Merci pour votre achat. Vos pass devraient être disponibles dans quelques minutes.",
       "continue-shopping-button": "Aller à la page d'accueil"
     },
     "Cancelled": {
+      "title": "Achat annulé",
       "description": "Votre achat a été annulé avec succès. Nous sommes désolés de vous voir partir. Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contacter. N'hésitez pas à continuer vos achats si vous changez d'avis.",
       "continue-shopping-button": "Aller à la page d'accueil"
     }
@@ -102,7 +121,7 @@
       "title": "{title} #{number, number}",
       "sold-for": "Vendu pour :",
       "see-event-button": "Voir l'événement",
-      "back-event-button": "Revenir à l'événement",
+      "back-event-button": "Revenir à mes pass",
       "download-button": "Télécharger le pass",
       "reveal-button": "Révéler le pass",
       "IsPassRevealedAlert": {
@@ -163,6 +182,7 @@
       "no-pass": "Vous n'avez pas encore de pass.",
       "past": "Passé",
       "title": "Pass",
+      "minting-success-message-badge": "{numPass, plural, =1 {1 pass en cours de création} other {# pass en cours de création}}",
       "upcoming": "À venir"
     }
   },
@@ -184,7 +204,7 @@
           "purchase-button": "Passer au paiement",
           "total": {
             "pass-selected": "{totalPasses, plural, =1 {# pass sélectionné} other {# pass sélectionnés}}",
-            "price": "Prix total : {totalPrice}"
+            "price": "Prix total : {convertedAmount}"
           },
           "finalize-payment": "Finaliser mon achat"
         }
@@ -193,6 +213,19 @@
     "EventDates": {
       "from": "Du",
       "to": "Au"
+    },
+    "SocialMediaButton": {
+      "go-to-platform": "Allez sur {plateforme}"
+    },
+    "OrganizerFollowButton": {
+      "follow": "Suivre",
+      "unfollow": "Se désabonner",
+      "helperTextFollow": "Cliquez pour suivre \"{name}\"",
+      "helperTextUnfollow": "Cliquer pour se désabonner de \"{name}\""
+    },
+    "OrganizerEventsSection": {
+      "title": "Derniers événements",
+      "noEvents": "Il n'y a actuellement aucun événement à afficher"
     }
   },
   "KYC": {
@@ -212,5 +245,87 @@
     "back-to-home": "Aller à la page d'accueil",
     "retry": "Réessayer",
     "error-message": "Un problème est survenu"
+  },
+  "Roles": {
+    "RoleBadge": {
+      "organizer-admin": "Admin de l'organisateur",
+      "organizer-auditor": "Auditeur de l'organisateur",
+      "organizer-content-manager": "Gestionnaire de contenu de l'organisateur",
+      "organizer-finance-manager": "Gestionnaire financier de l'organisateur",
+      "organizer-guest": "Invité de l'organisateur",
+      "organizer-human-resources": "Ressources humaines de l'organisateur",
+      "organizer-operations-manager": "Responsable des opérations de l'organisateur",
+      "organizer-super-admin": "Super Admin de l'organisateur",
+      "organizer-validator": "Validateur de l'organisateur"
+    }
+  },
+  "OrganizerEvents": {
+    "no-events": "Vous n'avez pas encore d'événement.",
+    "Table": {
+      "header-title": "Titre",
+      "header-slug": "Slug",
+      "header-date-start": "Date de début",
+      "header-edit": "Éditer",
+      "title": "Gestion des événements",
+      "search-placeholder": "Filtrer les événements..."
+    },
+    "Sheet": {
+      "EventPassCard": {
+        "EventPassNftsInfos": {
+          "title": "Informations sur les NFTs",
+          "name": "Nom",
+          "description": "Description",
+          "max-amount": "Quantitée",
+          "max-amount-per-user": "Quantitée par utilisateur",
+          "price": "Prix",
+          "no-event-pass-pricing": "Aucun prix et quantitée définis pour ce pass.",
+          "image": "Image"
+        },
+        "EventPassNftFiles": {
+          "title": "Pass associés à vos NFTs"
+        },
+        "EventPassNftFilesTable": {
+          "header-file-path": "Fichier",
+          "header-show": "Montrer le fichier",
+          "header-delete": "Supprimer le fichier"
+        },
+        "EventPassCardFooter": {
+          "deploy-contract": "Déployer le contrat NFTs",
+          "no-pricing-set": "Vous devez d'abord définir les paramètres de vos NFTs.",
+          "copied-contract-address": "Adresse du contrat copiée",
+          "num-files-does-not-match": "Le nombre de fichiers téléchargés pour votre pass ne correspond pas au nombre de pass que vous avez l'intention de créer."
+        }
+      },
+      "go-back-to-events": "Retournez aux événements"
+    },
+    "EventPassTypeBadge": {
+      "type-normal-badge": "Détails préalables",
+      "type-delayed-reveal-badge": "Révélation surprise",
+      "type-normal-description": "Présentez immédiatement tous les détails du pass. Assurez-vous que les acheteurs voient tous les avantages et caractéristiques du pass dès le début.",
+      "type-delayed-reveal-description": "Affichez initialement des informations provisoires pour le pass. Les détails finaux seront révélés plus tard, créant un sentiment de mystère et d'anticipation. Cette approche peut engager les participants avec l'élément de surprise, en dévoilant les avantages et caractéristiques finaux du pass à un moment ou une étape de l'événement prédéterminée."
+    }
+  },
+  "UI": {
+    "Table": {
+      "no-results": "Pas de résultat.",
+      "column-header-asc": "Trier par ordre ascendant",
+      "column-header-desc": "Trier par order descendant",
+      "column-header-hide": "Cacher la colonne",
+      "pagination-row-of": "sur",
+      "pagination-row-selected": "séléctionné(es)",
+      "pagination-rows-per-page": "Lignes par page",
+      "pagination-page": "Page",
+      "pagination-first-page": "Première page",
+      "pagination-previous-page": "Page précédente",
+      "pagination-next-page": "Prochaine page",
+      "pagination-page-of": "sur",
+      "pagination-last-page": "Dernière page",
+      "filters-reset": "Réinitialiser",
+      "filters-value-selected": "valeur(s) sélectionnée(s)",
+      "filters-no-result-found": "pas de résultat trouvé",
+      "filters-clear-filters": "effacer les filtres",
+      "toggle-columns-view": "Vue",
+      "toggle-columns-toggle-columns": "Sélectionner les colonnes"
+    }
   }
 }

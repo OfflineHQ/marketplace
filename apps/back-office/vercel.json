@@ -1,6 +1,13 @@
 {
   "framework": "nextjs",
-  "buildCommand": "cd ../.. && pnpm nx build back-office --prod",
+  "buildCommand": "pnpm npm-run-all lint:all test:all build:back-office --aggregate-output --parallel",
   "outputDirectory": "../../dist/apps/back-office/.next",
-  "installCommand": "pnpm install"
+  "installCommand": "pnpm install",
+  "ignoreCommand": "bash ../../tools/scripts/vercel-ignore.sh",
+  "rewrites": [
+    {
+      "source": "/ingest/:path*",
+      "destination": "https://eu.posthog.com/:path*"
+    }
+  ]
 }

@@ -23,6 +23,11 @@ export const toUserCurrency = (
       dinero: dineroObject,
       currency: userCurrency,
     };
+
+  if (!rates[money.currency as string]) {
+    throw new Error(`No rates found for currency: ${money.currency}`);
+  }
+
   const currencyRate = rates[money.currency as string][toCurrency.code];
   const adjustedRate = {
     [toCurrency.code]: {

@@ -18,6 +18,11 @@
           "input": "libs/ui/shared/src/assets",
           "glob": "**/*",
           "output": "assets"
+        },
+        {
+          "input": "libs/currency/api/src/rates",
+          "glob": "**/*",
+          "output": "rates"
         }
       ],
       "configurations": {
@@ -86,7 +91,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
@@ -107,7 +112,7 @@
     "storybook": {
       "executor": "@nx/storybook:storybook",
       "options": {
-        "port": 4401,
+        "port": 4403,
         "quiet": true,
         "configDir": "apps/back-office/.storybook"
       },
@@ -134,7 +139,14 @@
     "test-storybook": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "test-storybook -c apps/back-office/.storybook --url=http://localhost:4401"
+        "command": "test-storybook -c apps/back-office/.storybook --url=http://localhost:4403"
+      }
+    },
+    "e2e": {
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/back-office"],
+      "options": {
+        "config": "apps/back-office/playwright.config.ts"
       }
     }
   },

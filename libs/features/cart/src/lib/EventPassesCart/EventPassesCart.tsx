@@ -3,7 +3,7 @@ import { PassCache } from '@features/pass-cache';
 import { AllPassesCart, UserPassPendingOrder } from '@features/cart-types';
 import { Alert } from '@ui/components';
 import { useLocale } from 'next-intl';
-import { getTranslator } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import Image, { StaticImageData } from 'next/image';
 import { Suspense } from 'react';
 import {
@@ -47,9 +47,12 @@ const EventPassesCartContent: React.FC<EventPassesCartProps> = async ({
     Object.values(organizer).every((event) => event.length === 0),
   );
   const locale = useLocale();
-  const t = await getTranslator(locale, 'Cart.List');
+  const t = await getTranslations({ locale, namespace: 'Cart.List' });
   return !isCartEmpty && allPassesCart ? (
-    <EventPassList allPasses={allPassesCart} />
+    <EventPassList
+      allPasses={allPassesCart}
+      timeRemainingDeletion={!!userPassPendingOrders?.length}
+    />
   ) : (
     <div className="m-5 flex flex-col items-center">
       <Alert variant="info" className="w-max">

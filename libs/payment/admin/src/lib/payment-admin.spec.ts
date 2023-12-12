@@ -1,27 +1,70 @@
+import { CurrencyRates } from '@currency/types';
 import env from '@env/server';
 import * as kycApi from '@features/kyc-api';
 import { adminSdk } from '@gql/admin/api';
 import {
+  Currency_Enum,
   KycStatus_Enum,
   Locale,
   OrderStatus_Enum,
   StripeCheckoutSessionType_Enum,
 } from '@gql/shared/types';
+import { Posthog } from '@insight/server';
+import { calculateUnitAmount } from '@next/currency-common';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import { StripeCustomer } from '@payment/types';
 import { accounts } from '@test-utils/gql';
 import { Payment } from './payment-admin';
 
+jest.mock('stripe');
+jest.mock('@insight/server');
 jest.mock('@nft/thirdweb-admin');
 jest.mock('@features/kyc-api');
+jest.mock('@gql/admin/api');
+jest.mock('@next/currency-cache', () => {
+  return {
+    CurrencyCache: jest.fn().mockImplementation(() => {
+      return {
+        getRates: jest.fn().mockResolvedValue({
+          EUR: { USD: 1.18, EUR: 1 },
+          USD: { USD: 1, EUR: 0.85 },
+        }),
+      };
+    }),
+  };
+});
 
 describe('Payment', () => {
+  const stripeCustomerId = 'stripeCustomerId';
+  const stripeSessionId = 'sessionId';
+  const createdStripeCustomer = {
+    insert_stripeCustomer_one: {
+      id: stripeCustomerId,
+      accountId: accounts.alpha_user.id,
+    },
+  };
   let payment: Payment;
   let nftClaimableMock: jest.Mocked<NftClaimable>;
+
+  beforeAll(() => {
+    (Posthog.getInstance as jest.Mock).mockImplementation(() => ({
+      getFeatureFlag: jest.fn().mockReturnValue(false),
+    }));
+  });
 
   beforeEach(() => {
     nftClaimableMock = new NftClaimable() as jest.Mocked<NftClaimable>;
     payment = new Payment();
+    payment.stripe.checkout = {
+      sessions: {
+        create: jest.fn().mockResolvedValue({}),
+        expire: jest.fn().mockResolvedValue({}),
+        retrieve: jest.fn().mockResolvedValue({}),
+      },
+    } as any;
+    payment.stripe.refunds = {
+      create: jest.fn().mockResolvedValue({}),
+    } as any;
   });
   afterEach(() => {
     jest.restoreAllMocks();
@@ -34,10 +77,8 @@ describe('Payment', () => {
 
   describe('webhookStripeConstructEvent', () => {
     beforeEach(() => {
-      payment.stripe = {
-        webhooks: {
-          constructEvent: jest.fn(),
-        },
+      payment.stripe.webhooks = {
+        constructEvent: jest.fn(),
       } as any;
     });
     it('should call stripe.webhooks.constructEvent with correct parameters', () => {
@@ -67,7 +108,6 @@ describe('Payment', () => {
   });
   describe('getStripeCustomer', () => {
     it('should call stripe.customers.retrieve with correct parameters', async () => {
-      const stripeCustomerId = 'stripeCustomerId';
       payment.stripe.customers = {
         retrieve: jest.fn().mockResolvedValue({}),
       } as any;
@@ -78,7 +118,6 @@ describe('Payment', () => {
     });
 
     it('should throw error when stripe.customers.retrieve fails', async () => {
-      const stripeCustomerId = 'stripeCustomerId';
       payment.stripe.customers = {
         retrieve: jest.fn().mockRejectedValue(new Error('Stripe error')),
       } as any;
@@ -88,11 +127,19 @@ describe('Payment', () => {
     });
   });
   describe('getOrCreateStripeCustomer', () => {
-    it('should throw error when user kyc is missing', async () => {
-      const user = { id: 'userId', address: 'address' };
-      await expect(
-        payment.getOrCreateStripeCustomer({ user: accounts.google_user }),
-      ).rejects.toThrow(`Missing kyc for user: ${accounts.google_user.id}`);
+    it("shouldn't throw error when user kyc is missing and kycFlag activated", async () => {
+      const stripeCustomer = { id: 'stripeCustomerId' };
+      payment.stripe.customers = {
+        create: jest.fn().mockResolvedValue(stripeCustomer),
+      } as any;
+      adminSdk.CreateStripeCustomer = jest
+        .fn()
+        .mockResolvedValue(createdStripeCustomer);
+
+      const res = await payment.getOrCreateStripeCustomer({
+        user: accounts.google_user,
+      });
+      expect(res).toBe(createdStripeCustomer.insert_stripeCustomer_one);
     });
 
     it('should return existing stripe customer if it exists', async () => {
@@ -106,7 +153,48 @@ describe('Payment', () => {
       expect(result).toEqual(existingStripeCustomer.stripeCustomer[0]);
     });
 
-    it('should create a new stripe customer and store it if it does not exist', async () => {
+    it('should throw error when user kyc is missing and kycFlag activated', async () => {
+      (Posthog.getInstance as jest.Mock).mockImplementationOnce(() => ({
+        getFeatureFlag: jest.fn().mockReturnValue(true),
+      }));
+      await expect(
+        payment.getOrCreateStripeCustomer({ user: accounts.google_user }),
+      ).rejects.toThrow(`Missing kyc for user: ${accounts.google_user.id}`);
+    });
+
+    it('should create a new stripe customer and store it if it does not exist if kycFlag not activated', async () => {
+      const stripeCustomer = { id: 'stripeCustomerId' };
+      payment.stripe.customers = {
+        create: jest.fn().mockResolvedValue(stripeCustomer),
+      } as any;
+      adminSdk.GetStripeCustomerByAccount = jest.fn().mockResolvedValue(null);
+      adminSdk.CreateStripeCustomer = jest
+        .fn()
+        .mockResolvedValue(createdStripeCustomer);
+
+      const result = await payment.getOrCreateStripeCustomer({
+        user: accounts.alpha_user,
+      });
+
+      expect(payment.stripe.customers.create).toHaveBeenCalledWith({
+        email: accounts.alpha_user.email,
+        metadata: {
+          userId: accounts.alpha_user.id,
+        },
+      });
+      expect(adminSdk.CreateStripeCustomer).toHaveBeenCalledWith({
+        stripeCustomer: {
+          stripeCustomerId: stripeCustomer.id,
+          accountId: accounts.alpha_user.id,
+        },
+      });
+      expect(result).toEqual(createdStripeCustomer.insert_stripeCustomer_one);
+    });
+
+    it('should create a new stripe customer and store it if it does not exist while retrieving getSumSubApplicantPersonalData if kycFlag activated', async () => {
+      (Posthog.getInstance as jest.Mock).mockImplementationOnce(() => ({
+        getFeatureFlag: jest.fn().mockReturnValue(true),
+      }));
       const userPersonalData = {
         email: 'email',
         lang: 'en',
@@ -124,7 +212,6 @@ describe('Payment', () => {
         createdAt: 'dummy',
       };
       const stripeCustomer = { id: 'stripeCustomerId' };
-      const createdStripeCustomer = { insert_stripeCustomer_one: {} };
 
       adminSdk.GetStripeCustomerByAccount = jest.fn().mockResolvedValue(null);
       (kycApi.getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(
@@ -163,7 +250,6 @@ describe('Payment', () => {
   });
   describe('updateStripeCustomer', () => {
     it('should call stripe.customers.update with correct parameters', async () => {
-      const stripeCustomerId = 'stripeCustomerId';
       payment.stripe.customers = {
         update: jest.fn().mockResolvedValue({}),
       } as any;
@@ -183,7 +269,6 @@ describe('Payment', () => {
     });
 
     it('should return the updated customer', async () => {
-      const stripeCustomerId = 'stripeCustomerId';
       const updatedCustomer = { id: 'updatedCustomerId' };
       payment.stripe.customers = {
         update: jest.fn().mockResolvedValue(updatedCustomer),
@@ -196,7 +281,6 @@ describe('Payment', () => {
     });
 
     it('should throw error when stripe.customers.update fails', async () => {
-      const stripeCustomerId = 'stripeCustomerId';
       payment.stripe.customers = {
         update: jest.fn().mockRejectedValue(new Error('Stripe error')),
       } as any;
@@ -315,26 +399,6 @@ describe('Payment', () => {
     });
   });
 
-  describe('markEventPassOrderAsCompleted', () => {
-    it('should call adminSdk.UpdateEventPassOrdersStatus with correct parameters', async () => {
-      const eventPassOrdersId = ['order1', 'order2'];
-      adminSdk.UpdateEventPassOrdersStatus = jest.fn().mockReturnValue({});
-      await payment.markEventPassOrderAsCompleted({ eventPassOrdersId });
-      expect(adminSdk.UpdateEventPassOrdersStatus).toHaveBeenCalledWith({
-        updates: eventPassOrdersId.map((id) => ({
-          _set: {
-            status: OrderStatus_Enum.Completed,
-          },
-          where: {
-            id: {
-              _eq: id,
-            },
-          },
-        })),
-      });
-    });
-  });
-
   describe('markEventPassOrderAsRefunded', () => {
     it('should call adminSdk.UpdateEventPassOrdersStatus with correct parameters', async () => {
       const eventPassOrdersId = ['order1', 'order2'];
@@ -365,9 +429,6 @@ describe('Payment', () => {
       },
     ];
     beforeEach(() => {
-      payment.stripe.checkout.sessions = {
-        create: jest.fn().mockResolvedValue({}),
-      } as any;
       adminSdk.SetEventPassOrdersStripeCheckoutSessionId = jest
         .fn()
         .mockResolvedValue({});
@@ -406,7 +467,6 @@ describe('Payment', () => {
       payment.moveEventPassPendingOrdersToConfirmed = jest
         .fn()
         .mockResolvedValue(eventPassOrders);
-
       await payment.createStripeCheckoutSession({
         user: accounts.alpha_user,
         stripeCustomer: stripeCustomer as StripeCustomer,
@@ -563,7 +623,6 @@ describe('Payment', () => {
   });
   describe('getStripeActiveCheckoutSessionForUser', () => {
     it('should call adminSdk.GetStripeCheckoutSessionForUser with correct parameters and return null if no active session', async () => {
-      const stripeCustomerId = 'customerId';
       adminSdk.GetStripeCheckoutSessionForUser = jest
         .fn()
         .mockResolvedValue({ stripeCheckoutSession: [] });
@@ -579,8 +638,6 @@ describe('Payment', () => {
     });
 
     it('should call adminSdk.GetStripeCheckoutSessionForUser and stripe.checkout.sessions.retrieve with correct parameters and return the result', async () => {
-      const stripeCustomerId = 'customerId';
-      const stripeSessionId = 'sessionId';
       adminSdk.GetStripeCheckoutSessionForUser = jest
         .fn()
         .mockResolvedValue({ stripeCheckoutSession: [{ stripeSessionId }] });
@@ -625,14 +682,13 @@ describe('Payment', () => {
     });
   });
   describe('confirmedStripeCheckoutSession', () => {
-    it('should call getEventPassOrdersFromStripeCheckoutSession, nftClaimable.claimAllMetadatas, markEventPassOrderAsCompleted, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
+    it('should call getEventPassOrdersFromStripeCheckoutSession, nftClaimable.checkOrder, markEventPassOrderAsCompleted, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
       const stripeCheckoutSessionId = 'sessionId';
       const orders = [{ id: 'order1' }, { id: 'order2' }];
       payment.getEventPassOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue(orders);
-      payment.nftClaimable.claimAllMetadatas = jest.fn().mockResolvedValue({});
-      payment.markEventPassOrderAsCompleted = jest.fn().mockResolvedValue({});
+      payment.nftClaimable.checkOrder = jest.fn().mockResolvedValue({});
       adminSdk.DeleteStripeCheckoutSession = jest.fn().mockResolvedValue({});
 
       await payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId });
@@ -640,11 +696,14 @@ describe('Payment', () => {
       expect(
         payment.getEventPassOrdersFromStripeCheckoutSession,
       ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
-      expect(payment.nftClaimable.claimAllMetadatas).toHaveBeenCalledWith(
-        orders,
+      expect(payment.nftClaimable.checkOrder).toHaveBeenCalledTimes(
+        orders.length,
       );
-      expect(payment.markEventPassOrderAsCompleted).toHaveBeenCalledWith({
-        eventPassOrdersId: orders.map((order) => order.id),
+      orders.forEach((order, index) => {
+        expect(payment.nftClaimable.checkOrder).toHaveBeenNthCalledWith(
+          index + 1,
+          order,
+        );
       });
       expect(adminSdk.DeleteStripeCheckoutSession).toHaveBeenCalledWith({
         stripeSessionId: stripeCheckoutSessionId,
@@ -663,20 +722,20 @@ describe('Payment', () => {
       expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
 
-    it('should throw an error when claimAllMetadatas fails', async () => {
-      payment.nftClaimable.claimAllMetadatas = jest
+    it('should throw an error when checkOrder fails', async () => {
+      payment.nftClaimable.checkOrder = jest
         .fn()
         .mockRejectedValue(new Error('Failed to claim NFTs'));
       payment.getEventPassOrdersFromStripeCheckoutSession = jest
         .fn()
-        .mockResolvedValue([]);
+        .mockResolvedValue([{ id: 'order1' }, { id: 'order2' }]);
       adminSdk.DeleteStripeCheckoutSession = jest.fn();
 
       await expect(
         payment.confirmedStripeCheckoutSession({
           stripeCheckoutSessionId: 'test',
         }),
-      ).rejects.toThrow('Error claiming NFTs: Failed to claim NFTs');
+      ).rejects.toThrow('Error claiming NFTs : Failed to claim NFTs');
       expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
   });
@@ -725,5 +784,122 @@ describe('Payment', () => {
         `Refund failed for paymentIntentId: ${paymentIntentId} with status: ${refund.status}`,
       );
     });
+  });
+
+  describe('calculateUnitAmount', () => {
+    it('should return calculated amount if currency is not the same as priceCurrency and currency has a lower rate', () => {
+      const order = {
+        eventPassPricing: {
+          amount: 100,
+          currency: Currency_Enum.Usd,
+        },
+      };
+      const rates = {
+        USD: {
+          USD: 1,
+          EUR: 0.85,
+        },
+        EUR: {
+          USD: 1.15,
+          EUR: 1,
+        },
+      } as CurrencyRates;
+
+      const result = calculateUnitAmount(order.eventPassPricing, rates);
+
+      expect(result).toEqual(85);
+    });
+  });
+
+  it('should return calculated amount if currency is not the same as priceCurrency and currency has a higher rate', () => {
+    const order = {
+      eventPassPricing: {
+        amount: 100,
+        currency: Currency_Enum.Usd,
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 1.15,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 0.85,
+      },
+    } as CurrencyRates;
+
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
+
+    expect(result).toEqual(115);
+  });
+
+  it('should return calculated amount if currency is not the same complex amount', () => {
+    const order = {
+      eventPassPricing: {
+        amount: 123456,
+        currency: Currency_Enum.Usd,
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 0.85,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 1.15,
+      },
+    } as CurrencyRates;
+
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
+
+    expect(result).toEqual(104938);
+  });
+
+  it('should return calculated amount if currency is not the same complex amount complex rate', () => {
+    const order = {
+      eventPassPricing: {
+        amount: 123456789,
+        currency: Currency_Enum.Usd,
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 0.798,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 1.15,
+      },
+    } as CurrencyRates;
+
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
+
+    expect(result).toEqual(98518518);
+  });
+
+  it('should handle large priceAmount without overflow', () => {
+    const order = {
+      eventPassPricing: {
+        amount: Number.MAX_SAFE_INTEGER,
+        currency: Currency_Enum.Usd,
+      },
+    };
+    const rates = {
+      USD: {
+        EUR: 0.85,
+        USD: 1,
+      },
+      EUR: {
+        EUR: 1,
+        USD: 1.15,
+      },
+    } as CurrencyRates;
+
+    const result = calculateUnitAmount(order.eventPassPricing, rates);
+
+    expect(result).toBeCloseTo(Number.MAX_SAFE_INTEGER * 0.85);
   });
 });

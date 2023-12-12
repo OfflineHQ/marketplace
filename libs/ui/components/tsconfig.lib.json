@@ -11,6 +11,7 @@
   "exclude": [
     "jest.config.ts",
     "src/**/examples.tsx",
+    "src/**/examples/*",
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     "src/**/*.spec.tsx",
@@ -24,5 +25,11 @@
     "src/**/*.stories.jsx",
     "src/**/*.stories.tsx"
   ],
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
+  "include": [
+    "../../../types/**/*.d.ts",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
 }

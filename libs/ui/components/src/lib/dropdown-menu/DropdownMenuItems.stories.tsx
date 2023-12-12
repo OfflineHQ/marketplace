@@ -1,10 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/testing-library';
 import { DropdownMenuItems } from './DropdownMenuItems';
 import { DropdownMenuItemsDemo, menuItems } from './examples';
 
@@ -27,5 +22,39 @@ export const OpenedDropdownMenuItems: Story = {
 
     await screen.findByText('My Account');
     await screen.findByText('Log out');
+  },
+};
+
+export const DropdownMenuItemsWithRadios: Story = {
+  args: {
+    items: [
+      {
+        type: 'sub-radios',
+        text: 'Labels',
+        value: '1',
+        subItems: [
+          {
+            text: 'Radio 1',
+            type: 'item',
+            value: '1',
+          },
+          {
+            text: 'Radio 2',
+            type: 'item',
+            value: '2',
+          },
+          {
+            text: 'Radio 3',
+            type: 'item',
+            value: '3',
+          },
+        ],
+      },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    userEvent.click(screen.getByText('Open'));
+    userEvent.hover(await screen.findByText(/Labels/i));
+    await screen.findByText(/Radio 1/i);
   },
 };

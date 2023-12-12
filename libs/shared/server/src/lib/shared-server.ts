@@ -41,3 +41,7 @@ export function isBackOffice(): boolean {
 export function getHasuraEndpoint(): string {
   return env.HASURA_PROJECT_ENDPOINT;
 }
+
+export function isLocal(): boolean {
+  return !process.env.VERCEL_ENV;
+}

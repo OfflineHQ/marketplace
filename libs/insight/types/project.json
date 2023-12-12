@@ -1,0 +1,29 @@
+{
+  "name": "insight-types",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/insight/types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/insight/types",
+        "main": "libs/insight/types/src/index.ts",
+        "tsConfig": "libs/insight/types/tsconfig.lib.json",
+        "assets": ["libs/insight/types/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/insight/types/**/*.ts",
+          "libs/insight/types/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

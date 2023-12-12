@@ -19,4 +19,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/back-office',
+  testPathIgnorePatterns: ['/node_modules/', '/e2e/'],
 };
