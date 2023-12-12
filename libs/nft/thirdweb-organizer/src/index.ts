@@ -278,9 +278,7 @@ class NftCollection {
 
       return { contract, metadatas };
     } catch (error) {
-      if (error instanceof Error) {
-        throw new CollectionDeploymentError(error);
-      }
+      throw new Error(`Error deploying a drop contract : ${error}`);
     }
   }
 
@@ -292,53 +290,67 @@ class NftCollection {
     metadatas,
     object,
   }: SaveEventPassContractIntoDbProps) {
-    const { id: eventPassId, chainId, eventId, organizerId, eventSlug } = props;
+    try {
+      const {
+        id: eventPassId,
+        chainId,
+        eventId,
+        organizerId,
+        eventSlug,
+      } = props;
 
-    await createEventPassNftContract(object);
+      await createEventPassNftContract(object);
 
-    const hasuraMetadatas = await this.createHasuraMetadatas(
-      metadatas,
-      results,
-      baseUri,
-      chainId,
-      organizerId,
-      eventId,
-      eventPassId,
-      txResult,
-    );
+      const hasuraMetadatas = await this.createHasuraMetadatas(
+        metadatas,
+        results,
+        baseUri,
+        chainId,
+        organizerId,
+        eventId,
+        eventPassId,
+        txResult,
+      );
 
-    await createEventPassNfts(hasuraMetadatas);
-    await createEventParametersAndWebhook({
-      eventId,
-      nftCollectionAddresses: [{ contractAddress: txResult }],
-      organizerId,
-      eventSlug,
-    });
+      await createEventPassNfts(hasuraMetadatas);
+      await createEventParametersAndWebhook({
+        eventId,
+        nftCollectionAddresses: [{ contractAddress: txResult }],
+        organizerId,
+        eventSlug,
+      });
+    } catch (error) {
+      throw new Error(`Error saving the event pass data into db : ${error}`);
+    }
   }
 
   private async deployAnNftDropCollection(props: CommonProps) {
-    const { contract, metadatas } =
-      await this.deployDropContractAndPrepareMetadata(props);
-    const results = await contract.erc721.lazyMint(metadatas);
+    try {
+      const { contract, metadatas } =
+        await this.deployDropContractAndPrepareMetadata(props);
+      const results = await contract.erc721.lazyMint(metadatas);
 
-    const fullBaseUri = (await results[0].data()).uri;
-    const baseUri = fullBaseUri.slice(0, -1);
+      const fullBaseUri = (await results[0].data()).uri;
+      const baseUri = fullBaseUri.slice(0, -1);
 
-    await this.saveEventPassContractIntoDb({
-      props,
-      txResult: contract.getAddress(),
-      baseUri,
-      results,
-      metadatas,
-      object: {
-        type: EventPassNftContractType_Enum.Normal,
-        eventPassId: props.id,
-        organizerId: props.organizerId,
-        eventId: props.eventId,
-        contractAddress: contract.getAddress(),
-        chainId: props.chainId,
-      },
-    });
+      await this.saveEventPassContractIntoDb({
+        props,
+        txResult: contract.getAddress(),
+        baseUri,
+        results,
+        metadatas,
+        object: {
+          type: EventPassNftContractType_Enum.Normal,
+          eventPassId: props.id,
+          organizerId: props.organizerId,
+          eventId: props.eventId,
+          contractAddress: contract.getAddress(),
+          chainId: props.chainId,
+        },
+      });
+    } catch (error) {
+      throw new Error(`Error deploying a normal collection : ${error}`);
+    }
   }
 
   private generatePassword() {
@@ -395,7 +407,7 @@ class NftCollection {
         },
       });
     } catch (error) {
-      throw new CollectionDeploymentError(error);
+      throw new Error(`Error deploying a delayed reveal collection : ${error}`);
     }
   }
 }
