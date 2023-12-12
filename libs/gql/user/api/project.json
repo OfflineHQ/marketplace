@@ -15,7 +15,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/gql/user/api/**/*.{ts, gql, graphql}"]
@@ -26,7 +26,8 @@
       "outputs": ["{workspaceRoot}/coverage/libs/gql/user/api"],
       "options": {
         "jestConfig": "libs/gql/user/api/jest.config.ts",
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "runInBand": true
       }
     }
   },

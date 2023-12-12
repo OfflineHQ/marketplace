@@ -1,10 +1,10 @@
 'use client';
 
-import * as React from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import { Close } from '@ui/icons';
-import { closeClasses } from '../shared/close';
+import * as React from 'react';
 import { arrowClasses } from '../shared/arrow';
+import { closeClasses } from '../shared/close';
 
 import { cn } from '@ui/shared';
 
@@ -85,9 +85,9 @@ PopoverDescription.displayName = 'PopoverDescription';
 
 export {
   Popover,
-  PopoverTrigger,
   PopoverContent,
+  PopoverDescription,
   PopoverHeader,
   PopoverTitle,
-  PopoverDescription,
+  PopoverTrigger,
 };

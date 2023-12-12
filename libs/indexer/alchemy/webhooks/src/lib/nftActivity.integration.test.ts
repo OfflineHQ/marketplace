@@ -7,7 +7,6 @@ import {
   deleteAllTables,
   type PgClient,
 } from '@test-utils/db';
-import { Network } from 'alchemy-sdk';
 import { nftActivity } from './nftActivity';
 import { createMockAlchemyRequest } from './testUtils';
 
@@ -20,7 +19,6 @@ jest.mock('./utils', () => ({
 
 // Specific mock data for each test case
 const mockActivity = {
-  network: Network.ETH_GOERLI,
   fromAddress: '0x1bBEdB07706728A19c9dB82d3c420670D8040592', // from account seed
   toAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D', // to account seed
   contractAddress: '0xfakecontractaddress1', // from eventPassNftContract seed
@@ -42,7 +40,6 @@ const mockActivity = {
 } satisfies Activity;
 
 const mockActivity2 = {
-  network: Network.ETH_GOERLI,
   fromAddress: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F', // from account seed
   toAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D', // to account seed
   contractAddress: '0xfakecontractaddress1', // from eventPassNftContract seed
@@ -64,7 +61,6 @@ const mockActivity2 = {
 } satisfies Activity;
 
 const mockActivity3 = {
-  network: Network.ETH_GOERLI,
   fromAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
   toAddress: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
   contractAddress: '0xfakecontractaddress2',
@@ -171,9 +167,9 @@ describe('nftActivity integration test', () => {
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       {
         source:
-          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
+          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png',
         destination:
-          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
+          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png',
       },
     ]);
     expect(
@@ -182,7 +178,7 @@ describe('nftActivity integration test', () => {
     expect(
       FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
-      '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
+      '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png',
     ]);
   });
 
@@ -202,15 +198,15 @@ describe('nftActivity integration test', () => {
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       {
         source:
-          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
+          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png',
         destination:
-          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
+          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png',
       },
       {
         destination:
-          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/fake-event-pass-2/clizzpvidao620buvxit1ynko-fake-event-pass-2-1512512512',
+          '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/fake-event-pass-2/clizzpvidao620buvxit1ynko-fake-event-pass-2-1512512512.png',
         source:
-          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/fake-event-pass-2/clizzpvidao620buvxit1ynko-fake-event-pass-2-1512512512',
+          '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/fake-event-pass-2/clizzpvidao620buvxit1ynko-fake-event-pass-2-1512512512.png',
       },
     ]);
     expect(
@@ -219,8 +215,8 @@ describe('nftActivity integration test', () => {
     expect(
       FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
-      '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432',
-      '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/fake-event-pass-2/clizzpvidao620buvxit1ynko-fake-event-pass-2-1512512512',
+      '/local/users/0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png',
+      '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/fake-event-pass-2/clizzpvidao620buvxit1ynko-fake-event-pass-2-1512512512.png',
     ]);
   });
 

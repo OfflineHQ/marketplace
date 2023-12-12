@@ -61,10 +61,6 @@ export function isJestRunning() {
   return process.env.JEST_WORKER_ID !== undefined;
 }
 
-export function isCypressRunning() {
-  return window && (window as any).Cypress !== undefined;
-}
-
 export function truncateString(str: string, maxChars: number): string {
   if (maxChars < 5) {
     throw new Error(
@@ -112,3 +108,11 @@ export function checkCookie(name: string) {
   // Return false if the cookie with the requested name can't be found
   return false;
 }
+
+export const slugify = (str: string) =>
+  str
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');

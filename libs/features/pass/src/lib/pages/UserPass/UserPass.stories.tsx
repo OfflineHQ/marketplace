@@ -68,6 +68,20 @@ export const WithUserNoData: Story = {
   },
 };
 
+export const WithUserMintingOrders: Story = {
+  args: {
+    children: (
+      <UserPassListExample
+        noPassImage="/empty-pass.svg"
+        batchDownloadOrReveal={batchDownloadOrReveal}
+        actionsFunctions={actionsFunctions}
+        eventsParameters={[eventParameters2]}
+      />
+    ),
+  },
+  render: (args) => <UserPassExample numMintingOrders={4} {...args} />,
+};
+
 export const WithUserDialogTimezone: Story = {
   args: {
     children: (
@@ -126,7 +140,7 @@ export const DownloadPassesSuccess: Story = {
     await clickOnBatchDownloadButton();
     // Check for a toast on success
     const toastElement = await screen.findByRole('status');
-    expect(toastElement).not.toHaveClass('destructive');
+    await expect(toastElement).not.toHaveClass('destructive');
   },
 };
 
@@ -148,7 +162,7 @@ export const DownloadPassesError: Story = {
     await clickOnBatchDownloadButton();
     // Check for a toast on error
     const toastElement = await screen.findByRole('alert');
-    expect(toastElement).toHaveClass('destructive');
+    await expect(toastElement).toHaveClass('destructive');
   },
 };
 
@@ -171,7 +185,7 @@ export const BatchRevealDialogSuccess: Story = {
     // Check for a toast on success
     userEvent.click(await screen.findByLabelText('Reveal'));
     const toastElement = await screen.findByRole('status');
-    expect(toastElement).not.toHaveClass('destructive');
+    await expect(toastElement).not.toHaveClass('destructive');
   },
 };
 
@@ -221,7 +235,7 @@ export const DownloadOnePassSuccess: Story = {
     expect(await screen.findByRole('status')).toBeInTheDocument();
     // Check for a toast on success
     const toastDescription = await screen.findByText(/Pass downloaded/i);
-    expect(toastDescription).toBeVisible();
+    await expect(toastDescription).toBeVisible();
   },
 };
 
@@ -248,7 +262,7 @@ export const DownloadOnePassError: Story = {
     expect(await screen.findByRole('status')).toBeInTheDocument();
     // Check for a toast on error
     const toastElement = await screen.findByRole('alert');
-    expect(toastElement).toHaveClass('destructive');
+    await expect(toastElement).toHaveClass('destructive');
     expect(toastElement).toHaveTextContent(/Error/i);
   },
 };
@@ -271,7 +285,7 @@ export const RevealOnePassSuccess: Story = {
     await clickOnRevealButton();
     // Check for a toast on success
     const toastDescription = await screen.findByText(/Pass revealed/i);
-    expect(toastDescription).toBeVisible();
+    await expect(toastDescription).toBeVisible();
   },
 };
 
@@ -296,7 +310,7 @@ export const RevealOnePassError: Story = {
     await clickOnRevealButton();
     // Check for a toast on error
     const toastElement = await screen.findByRole('alert');
-    expect(toastElement).toHaveClass('destructive');
+    await expect(toastElement).toHaveClass('destructive');
     expect(toastElement).toHaveTextContent(/Error/i);
   },
 };

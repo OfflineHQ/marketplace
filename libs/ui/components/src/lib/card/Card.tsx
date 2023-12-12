@@ -1,28 +1,31 @@
 import * as React from 'react';
 
 import { cn } from '@ui/shared';
-import { TextSkeleton } from '../text/Text';
 import { VariantProps, cva } from 'class-variance-authority';
+import { TextSkeleton, TextSkeletonProps } from '../text/Text';
 
 const variants = {
   default: 'border shadow-sm',
   noBorder: '',
-  stickyFooter: 'relative border shadow-sm flex flex-col h-full',
   distinct: 'border shadow-md bg-muted rounded-sm text-card-muted-foreground',
+  insideDistinct: 'border shadow-xs bg-muted rounded-sm',
 };
 
-const cardVariantsCva = cva('rounded-lg bg-card text-card-foreground', {
-  variants: {
-    variant: variants,
-    noBorder: {
-      true: 'border-none shadow-none',
+const cardVariantsCva = cva(
+  'flex flex-col rounded-lg bg-card text-card-foreground',
+  {
+    variants: {
+      variant: variants,
+      noBorder: {
+        true: 'border-none shadow-none',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      noBorder: false,
     },
   },
-  defaultVariants: {
-    variant: 'default',
-    noBorder: false,
-  },
-});
+);
 
 export interface CardProps
   extends React.HTMLAttributes<HTMLDivElement>,
@@ -44,13 +47,28 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 );
 Card.displayName = 'Card';
 
+const headerVariants = {
+  default: '',
+  distinct: 'bg-highlight',
+};
+
+const cardHeaderVariantsCva = cva('flex flex-col space-y-1.5 p-6', {
+  variants: {
+    variant: headerVariants,
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
 const CardHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> &
+    VariantProps<typeof cardHeaderVariantsCva>
+>(({ className, variant, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex flex-col space-y-1.5 p-6', className)}
+    className={cn(cardHeaderVariantsCva({ variant }), className)}
     {...props}
   />
 ));
@@ -74,7 +92,7 @@ CardTitle.displayName = 'CardTitle';
 
 const CardTitleSkeleton = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
+  TextSkeletonProps
 >(({ className, ...props }, ref) => (
   <TextSkeleton className={className} variant="h4" {...props} />
 ));
@@ -94,23 +112,46 @@ CardDescription.displayName = 'CardDescription';
 
 const CardDescriptionSkeleton = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  TextSkeletonProps
 >(({ className, ...props }, ref) => (
   <TextSkeleton className={className} variant="p" {...props} />
 ));
 CardDescriptionSkeleton.displayName = 'CardDescriptionSkeleton';
 
-const CardContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('p-6 pt-0 flex-grow', className)} {...props} />
-));
+const contentVariants = {
+  default: 'p-6 pt-0 flex-grow',
+};
+
+const cardContentVariantsCva = cva('', {
+  variants: {
+    variant: contentVariants,
+    isMain: {
+      true: 'mb-16 md:mb-0',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+    isMain: false,
+  },
+});
+
+export interface CardContentProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardContentVariantsCva> {}
+
+const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
+  ({ className, variant, isMain, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(cardContentVariantsCva({ variant, isMain }), className)}
+      {...props}
+    />
+  ),
+);
 CardContent.displayName = 'CardContent';
 
 const footerVariants = {
   default: 'p-6 pt-0 relative',
-  sticky: 'mt-auto pb-3 pt-0 px-6 relative',
 };
 
 const cardFooterVariantsCva = cva('flex items-center', {
@@ -140,26 +181,6 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
 
 CardFooter.displayName = 'CardFooter';
 
-export interface CardOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
-  footerHeight?: string;
-  className?: string;
-}
-
-const CardOverlay = React.forwardRef<HTMLDivElement, CardOverlayProps>(
-  ({ footerHeight = '3.25rem', className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        `absolute inset-x-0 z-10 h-20 bg-gradient-to-t from-card to-transparent pointer-events-none`,
-        className,
-      )}
-      style={{ bottom: footerHeight }}
-      {...props}
-    />
-  ),
-);
-CardOverlay.displayName = 'CardOverlay';
-
 const CardOverflow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -170,13 +191,12 @@ CardOverflow.displayName = 'CardOverflow';
 
 export {
   Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
   CardContent,
-  CardTitleSkeleton,
+  CardDescription,
   CardDescriptionSkeleton,
+  CardFooter,
+  CardHeader,
   CardOverflow,
-  CardOverlay,
+  CardTitle,
+  CardTitleSkeleton,
 };

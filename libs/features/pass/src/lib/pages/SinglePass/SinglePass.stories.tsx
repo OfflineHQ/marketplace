@@ -1,14 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 
 import { SinglePass } from './SinglePass';
 import {
+  SinglePassNoUserExample,
+  SinglePassOwnerExample,
   SinglePassSkeletonExample,
   eventPassNft1,
   eventPassNft2,
-  SinglePassNoUserExample,
-  SinglePassOwnerExample,
   owner,
 } from './examples';
 
@@ -31,7 +30,7 @@ type Story = StoryObj<typeof meta>;
 export const NotRevealedPass: Story = {
   render: SinglePassNoUserExample,
   play: async ({ container }) => {
-    screen.getByText(/unrevealed pass/i);
+    await screen.findByText(/unrevealed pass/i);
     screen.getByRole('button', { name: /event/i });
     screen.getByRole('button', { name: /Test Organizer/i });
     userEvent.click(screen.getByRole('button', { name: /VIP Access/i }));
@@ -79,7 +78,7 @@ export const RevealedPass: Story = {
     eventPassNft: eventPassNft2,
   },
   play: async ({ container }) => {
-    screen.getByText(/caution/i);
+    await screen.findByText(/caution/i);
     screen.getByRole('button', { name: /event/i });
     screen.getByRole('button', { name: /Test Organizer 2/i });
   },
@@ -100,8 +99,8 @@ export const OwnerNotRevealedPass: Story = {
     user: owner,
   },
   play: async ({ container }) => {
-    screen.getByText(/action required/i);
-    screen.getByRole('button', { name: /event/i });
+    await screen.findByText(/action required/i);
+    screen.getByRole('button', { name: /passes/i });
     screen.getByRole('button', { name: /Test Organizer/i });
     screen.getByRole('button', { name: /reveal/i });
   },
@@ -135,7 +134,7 @@ export const OwnerRevealedPass: Story = {
     eventPassNft: eventPassNft2,
   },
   play: async ({ container }) => {
-    screen.getByRole('button', { name: /event/i });
+    await screen.findByRole('button', { name: /passes/i });
     screen.getByRole('button', { name: /Test Organizer 2/i });
     screen.getByRole('button', { name: /download/i });
   },

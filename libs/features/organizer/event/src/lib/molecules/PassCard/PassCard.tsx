@@ -41,33 +41,37 @@ export const PassCard: React.FC<PassCardProps> = ({
 }) => {
   const t = useTranslations('Organizer.Event.PassPurchase.Pass');
   return (
-    <Card className={`flex h-fit flex-col justify-between ${className}`}>
+    <Card
+      className={`flex h-fit flex-col justify-between ${className}`}
+      variant="distinct"
+    >
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>{description}</CardDescription>
         <div className="mx-auto flex max-h-[370px] w-full max-w-[350px] py-3">
           <AspectRatio variant="square">
             <Image
-              className="rounded-sm"
+              className="rounded-sm object-cover"
               src={nftImage?.url || '/image-placeholder.svg'}
               fill
-              style={{ objectFit: 'cover' }}
               alt={name}
             />
           </AspectRatio>
         </div>
         <PassOptions passOptions={passOptions || []} />
       </CardHeader>
-      <CardFooter className="flex items-center justify-between">
-        <ConvertedCurrency
-          variant="h5"
-          currency={eventPassPricing?.priceCurrency}
-          amount={eventPassPricing?.priceAmount || 0}
-        />
-        {hasConfirmedPasses ? null : (
-          <PassCardSelect {...props} eventPassPricing={eventPassPricing} />
-        )}
-      </CardFooter>
+      {eventPassPricing ? (
+        <CardFooter className="flex items-center justify-between">
+          <ConvertedCurrency
+            variant="h5"
+            currency={eventPassPricing?.priceCurrency}
+            amount={eventPassPricing?.priceAmount || 0}
+          />
+          {hasConfirmedPasses ? null : (
+            <PassCardSelect {...props} eventPassPricing={eventPassPricing} />
+          )}
+        </CardFooter>
+      ) : null}
     </Card>
   );
 };

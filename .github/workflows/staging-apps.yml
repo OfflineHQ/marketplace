@@ -1,10 +1,14 @@
 name: Deploy staging apps
 
 on:
-  push:
-    branches:
-      - staging
   workflow_dispatch:
+
+env:
+  NODE_OPTIONS: '--max_old_space_size=4096'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy-staging:
@@ -27,8 +31,8 @@ jobs:
         uses: actions/cache@v2
         id: cache-vercel
         with:
-          path: ~/.npm # adjust this path if needed
-          key: vercel-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.pnpm # adjust this path if needed
+          key: vercel-${{ runner.os }}
 
       - name: Install Vercel CLI
         run: |
@@ -37,18 +41,23 @@ jobs:
             npm install --global vercel@latest
           fi
 
-      # Deploy app
       - name: Check if app should be built
         id: app_check_build
         run: |
-          npx --y nx-ignore ${{ matrix.app }}
-          echo "build_required=$?" >> $GITHUB_ENV
+          output=$(npx --y nx-ignore ${{ matrix.app }}) || true
+          if [[ "$output" == *"✅ - Build can proceed"* ]]; then
+            echo "BUILD_REQUIRED_${{ matrix.app }}=true" >> $GITHUB_ENV
+          else
+            echo "BUILD_REQUIRED_${{ matrix.app }}=false" >> $GITHUB_ENV
+          fi
 
       - name: App // Vercel Environment Information and Deploy Staging to Vercel
+        env:
+          BUILD_REQUIRED: ${{ env[format('BUILD_REQUIRED_{0}', matrix.app)] }}
         run: |
-          if [[ $build_required == '1' ]]; then
-            cd apps/${{ matrix.app }} && vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }} &&
-            vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
+          if [[ $BUILD_REQUIRED == true ]]; then
+            vercel pull --yes --environment=preview --git-branch=staging --token=${{ secrets.VERCEL_TOKEN }} --local-config=apps/${{ matrix.app }}/vercel.json &&
+            vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --local-config=apps/${{ matrix.app }}/vercel.json
           else
             echo "Build not required - skipping Vercel Environment Information and Deploy Staging to Vercel"
           fi

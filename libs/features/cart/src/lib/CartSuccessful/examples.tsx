@@ -1,5 +1,5 @@
-import { AppNavLayout } from '@features/appNav/ui';
-import { WithNormalUser } from '@features/appNav/ui/stories';
+import { AppNavLayout } from '@features/app-nav';
+import { WithNormalUser } from '@features/app-nav/stories';
 
 import { CartSuccessful, type CartSuccessfulProps } from './CartSuccessful';
 

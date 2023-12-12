@@ -6,6 +6,7 @@ import {
   OrderStatus_Enum,
   Stage,
 } from '@gql/shared/types';
+import { Posthog } from '@insight/server';
 import { StripeCustomer } from '@payment/types';
 import {
   applySeeds,
@@ -18,8 +19,10 @@ import {
 import { accounts, alphaUserClient } from '@test-utils/gql';
 import { Payment } from './payment-admin';
 
+jest.mock('@insight/server');
 jest.mock('@features/kyc-api');
 jest.mock('@nft/thirdweb-admin');
+jest.mock('stripe');
 
 const payment = new Payment();
 
@@ -46,6 +49,9 @@ describe('Payment integration', () => {
       },
     } as any;
   });
+  (Posthog.getInstance as jest.Mock).mockImplementation(() => ({
+    getFeatureFlag: jest.fn().mockReturnValue(true),
+  }));
 
   afterAll(async () => {
     await deleteAllTables(client);
@@ -217,13 +223,69 @@ describe('Payment integration', () => {
         });
       expect(stripeSessionForUser).not.toBeNull();
 
-      console.log(stripeSession);
       // Verify that the order are assigned to the checkout session
       const orders = await payment.getEventPassOrdersFromStripeCheckoutSession({
         stripeCheckoutSessionId: stripeSession.stripeSessionId,
       });
-      console.log(orders);
       expect(orders.length).toBe(2);
+    });
+  });
+
+  // TODO remove once flag is removed
+  describe('getOrCreateStripeCustomer with kycFlag false', () => {
+    beforeEach(() => {
+      (Posthog.getInstance as jest.Mock).mockImplementation(() => ({
+        getFeatureFlag: jest.fn().mockReturnValue(false),
+      }));
+    });
+
+    it('should return existing stripe customer if it exists in db', async () => {
+      const existingStripeCustomer = {
+        accountId: accounts.alpha_user.id,
+        stripeCustomerId: 'cus_OnE9GqPxIIPYtB',
+      };
+      adminSdk.GetStripeCustomerByAccount = jest
+        .fn()
+        .mockResolvedValue({ stripeCustomer: [existingStripeCustomer] });
+
+      const res = await payment.getOrCreateStripeCustomer({
+        user: accounts.alpha_user,
+      });
+
+      expect(res).toEqual(existingStripeCustomer);
+      expect(payment.stripe.customers.create).not.toHaveBeenCalled();
+      expect(adminSdk.CreateStripeCustomer).not.toHaveBeenCalled();
+    });
+
+    it('should create a new stripe customer if it does not exist in db', async () => {
+      adminSdk.GetStripeCustomerByAccount = jest
+        .fn()
+        .mockResolvedValue({ stripeCustomer: [] });
+
+      const newStripeCustomer = {
+        id: 'new_stripe_customer_id',
+      };
+      payment.stripe.customers.create = jest
+        .fn()
+        .mockResolvedValue(newStripeCustomer);
+
+      const createdStripeCustomer = {
+        insert_stripeCustomer_one: {
+          stripeCustomerId: newStripeCustomer.id,
+          accountId: accounts.alpha_user.id,
+        },
+      };
+      adminSdk.CreateStripeCustomer = jest
+        .fn()
+        .mockResolvedValue(createdStripeCustomer);
+
+      const res = await payment.getOrCreateStripeCustomer({
+        user: accounts.alpha_user,
+      });
+
+      expect(res).toEqual(createdStripeCustomer.insert_stripeCustomer_one);
+      expect(payment.stripe.customers.create).toHaveBeenCalled();
+      expect(adminSdk.CreateStripeCustomer).toHaveBeenCalled();
     });
   });
 });

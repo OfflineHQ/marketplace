@@ -1,8 +1,8 @@
 import { sleep } from '@utils';
 import {
   UserPassList,
-  UserPassListSkeleton,
   UserPassListProps,
+  UserPassListSkeleton,
 } from './UserPassList';
 export { eventParameters, eventParameters2 } from '../UserPassEvent/examples';
 
@@ -16,9 +16,6 @@ export const UserPassListSkeletonExample = () => {
 
 export const actionsFunctions = {
   revealPass: async () => {
-    await sleep(1000);
-  },
-  downloadPass: async () => {
     await sleep(1000);
   },
 } satisfies UserPassListProps['actionsFunctions'];

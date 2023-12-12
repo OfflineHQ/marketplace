@@ -1,10 +1,9 @@
 'use client';
 
-import { DropdownMenuItem, DropdownMenuShortcut } from './DropdownMenu';
-import { useToast, type ToastT } from '../toast/useToast';
-import { iconCVA } from '@ui/icons';
 import { cn } from '@ui/shared';
 import { getErrorMessage, type ErrorWithMessage } from '@utils';
+import { useToast, type ToastT } from '../toast/useToast';
+import { DropdownMenuItem, DropdownMenuShortcut } from './DropdownMenu';
 
 export interface HandleActionProps {
   action?: (() => void) | undefined;
@@ -13,7 +12,13 @@ export interface HandleActionProps {
 }
 
 export interface MenuItem extends HandleActionProps {
-  type: 'label' | 'separator' | 'item' | 'sub' | 'children';
+  type:
+    | 'label'
+    | 'separator'
+    | 'item'
+    | 'sub-items'
+    | 'children'
+    | 'sub-radios';
   text?: string;
   children?: React.ReactNode;
   wrapper?: React.ReactElement;
@@ -23,6 +28,7 @@ export interface MenuItem extends HandleActionProps {
   subItems?: MenuItem[];
   current?: boolean;
   className?: string;
+  value?: string;
 }
 
 export interface DropdownMenuItemClientProps {

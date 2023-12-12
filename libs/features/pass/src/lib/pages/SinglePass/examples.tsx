@@ -11,8 +11,8 @@ import {
 } from './SinglePass';
 import type { User } from 'next-auth';
 
-import { WithNoUser, WithNormalUser } from '@features/appNav/ui/stories';
-import { AppNavLayout } from '@features/appNav/ui';
+import { WithNoUser, WithNormalUser } from '@features/app-nav/stories';
+import { AppNavLayout } from '@features/app-nav';
 
 export const owner: User = {
   id: '123',

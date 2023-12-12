@@ -1,24 +1,22 @@
 'use client';
 
-import { useSelectedLayoutSegment } from 'next/navigation';
 import {
-  Card,
+  AppContainer,
+  AppContainerFooter,
+  AppContainerOverflow,
+} from '@features/app-nav';
+import {
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter,
-  CardOverflow,
-  CardContent,
-  Button,
-  ButtonSkeleton,
-  CardOverlay,
-  Text,
-  CardDescription,
 } from '@ui/components';
-import { NoUserPassFooterClient } from './NoUserPassFooterClient';
+import { useSelectedLayoutSegment } from 'next/navigation';
 import {
   NoPassPlaceholder,
   type NoPassPlaceholderProps,
 } from '../../molecules/NoPassPlaceholder/NoPassPlaceholder';
+import { NoUserPassFooterClient } from './NoUserPassFooterClient';
 
 export interface NoUserPassProps
   extends Pick<NoPassPlaceholderProps, 'noPassImage'> {
@@ -38,26 +36,23 @@ export const NoUserPass: React.FC<NoUserPassProps> = ({
   const activeTab = useSelectedLayoutSegment();
   // getLocalCart();
   return (
-    <section className="container">
-      <Card variant="stickyFooter" noBorder>
-        <CardOverflow>
-          <CardHeader>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>{description}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {!!activeTab && activeTab === 'organizer' ? (
-              children
-            ) : (
-              <NoPassPlaceholder noPassImage={noPassImage} />
-            )}
-          </CardContent>
-        </CardOverflow>
-        <CardOverlay />
-        <CardFooter className="justify-center" variant="sticky">
-          <NoUserPassFooterClient signInText={signInText} />
-        </CardFooter>
-      </Card>
-    </section>
+    <AppContainer>
+      <AppContainerOverflow variant="stickyFooter">
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {!!activeTab && activeTab === 'organizer' ? (
+            children
+          ) : (
+            <NoPassPlaceholder noPassImage={noPassImage} />
+          )}
+        </CardContent>
+      </AppContainerOverflow>
+      <AppContainerFooter>
+        <NoUserPassFooterClient signInText={signInText} />
+      </AppContainerFooter>
+    </AppContainer>
   );
 };

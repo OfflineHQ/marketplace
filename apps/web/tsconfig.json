@@ -26,6 +26,7 @@
     "**/*.js",
     "**/*.jsx",
     "../../libs/next/types/**/*.ts",
+    "../../types/**/*.d.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "../../dist/apps/web/.next/types/**/*.ts",
@@ -33,13 +34,15 @@
     "../../apps/web/dist/.next/types/**/*.ts"
   ],
   "exclude": [
+    "./e2e/**/*",
     "../../dist/apps/web/.next/types/**/*.ts",
+    "**/**/examples.tsx",
     "node_modules",
     "jest.config.ts",
-    "**/*.stories.ts",
-    "**/*.stories.js",
-    "**/*.stories.jsx",
-    "**/*.stories.tsx"
+    "**/**/*.stories.ts",
+    "**/**/*.stories.js",
+    "**/**/*.stories.jsx",
+    "**/**/*.stories.tsx"
   ],
   "references": [
     {

@@ -1,12 +1,6 @@
 {
   "root": true,
-  "plugins": [
-    "@nx/nx",
-    "eslint-plugin-prettier",
-    "markdown",
-    "sonarjs",
-    "tailwindcss"
-  ],
+  "plugins": ["@nx/eslint-plugin", "markdown", "sonarjs", "tailwindcss"],
   "extends": [
     "eslint-config-prettier",
     "plugin:import/recommended",
@@ -15,13 +9,14 @@
     "plugin:json/recommended",
     "plugin:sonarjs/recommended",
     "plugin:storybook/recommended",
+    "plugin:playwright/recommended",
     "plugin:tailwindcss/recommended"
   ],
   "settings": {
     "import/resolver": {
       "node": "true",
       "typescript": {
-        "project": ["apps/**/tsconfig.*?.json", "libs/**/tsconfig.*?.json"]
+        "project": ["apps/*/tsconfig.json", "libs/*/tsconfig.json"]
       }
     },
     "tailwindcss": {
@@ -32,6 +27,10 @@
     }
   },
   "rules": {
+    "import/named": "off",
+    "import/namespace": "off",
+    "import/default": "off",
+    "import/no-named-as-default-member": "off",
     "tailwindcss/no-custom-classname": [
       "error",
       {
@@ -64,18 +63,25 @@
       }
     },
     {
+      "files": ["!**/*", "**/e2e/**/*.spec.ts"],
+      "extends": ["plugin:playwright/recommended"]
+    },
+    {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/typescript"],
+      "extends": ["plugin:@nx/eslint-plugin/typescript"],
       "rules": {
         "@typescript-eslint/ban-ts-comment": "off",
-        "import/no-cycle": "error"
+        "import/no-cycle": "off",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-explicit-any": "warn"
       }
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nx/javascript"],
+      "extends": ["plugin:@nx/eslint-plugin/javascript"],
       "rules": {
-        "import/no-cycle": "error"
+        "import/no-cycle": "off",
+        "@typescript-eslint/no-unused-vars": "warn"
       }
     },
     {

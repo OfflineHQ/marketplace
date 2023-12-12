@@ -1,1 +1,4 @@
-export { updateEventPassCart } from './lib/updateEventPassCart';
+export {
+  updateEventPassCart,
+  type UpdateEventPassCartProps,
+} from './lib/updateEventPassCart';

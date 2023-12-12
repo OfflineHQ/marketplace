@@ -18,6 +18,11 @@
           "input": "libs/ui/shared/src/assets",
           "glob": "**/*",
           "output": "assets"
+        },
+        {
+          "input": "libs/currency/api/src/rates",
+          "glob": "**/*",
+          "output": "rates"
         }
       ],
       "configurations": {
@@ -83,7 +88,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/web/**/*.{ts,tsx,js,jsx,gql,graphql}"]
@@ -130,6 +135,20 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "test-storybook -c apps/web/.storybook --url=http://localhost:4401"
+      }
+    },
+    "e2e": {
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/web"],
+      "options": {
+        "config": "apps/web/playwright.config.ts"
+      }
+    },
+
+    "sitemap": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["node ./scripts/generate-sitemap.mjs"]
       }
     }
   },

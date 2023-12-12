@@ -1,7 +1,5 @@
 'use client';
 
-import { Link } from '@next/navigation';
-import { PropsFrom } from '@next/types';
 import type { DialogPortalProps, DialogProps } from '@radix-ui/react-dialog';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { ChevronBack, Close } from '@ui/icons';
@@ -9,9 +7,8 @@ import { cn } from '@ui/shared';
 import { VariantProps, cva } from 'class-variance-authority';
 import * as React from 'react';
 import { ButtonSkeleton, buttonVariantsCva } from '../button/Button';
-import { backClasses } from '../shared/back';
 import { closeClasses } from '../shared/close';
-import { TextSkeleton } from '../text/Text';
+import { TextSkeleton, TextSkeletonProps } from '../text/Text';
 
 const Sheet = SheetPrimitive.Root;
 
@@ -29,6 +26,7 @@ const portalVariants = cva('fixed inset-0 z-50 flex', {
   defaultVariants: { position: 'right' },
 });
 
+const backClasses = 'absolute z-10 ml-2 mt-2';
 interface SheetPortalProps
   extends DialogPortalProps,
     VariantProps<typeof portalVariants> {}
@@ -117,8 +115,8 @@ function isFullWidth(
 }
 
 export interface SheetNavigationProps {
-  backButtonText?: string;
-  backButtonLink?: PropsFrom<typeof Link>;
+  backButtonText?: React.ReactNode;
+  wrapper?: React.ReactElement;
   backButtonAction?: () => void;
   position?: SheetContentProps['position'];
   size?: SheetContentProps['size'];
@@ -126,17 +124,16 @@ export interface SheetNavigationProps {
 
 const SheetNavigation: React.FC<SheetNavigationProps> = ({
   backButtonText,
-  backButtonLink,
+  wrapper,
   backButtonAction,
   position,
   size,
 }) => {
-  const closeButtonClasses = buttonVariantsCva({
-    variant: 'ghost',
-    size: 'sm',
-  });
-
   const renderButton = (buttonType: string) => {
+    const closeButtonClasses = buttonVariantsCva({
+      variant: buttonType === 'close' ? 'ghost' : 'secondary',
+      size: 'sm',
+    });
     const classNames = cn(
       buttonType === 'close' ? closeClasses : backClasses,
       closeButtonClasses,
@@ -149,28 +146,22 @@ const SheetNavigation: React.FC<SheetNavigationProps> = ({
         ? null
         : backButtonText && <div className="pl-2">{backButtonText}</div>;
 
-    return (
+    const button = (
       <SheetPrimitive.Close
         data-testid={testId}
         className={classNames}
         onClick={backButtonAction}
       >
-        <Icon /> {buttonText}
+        <Icon size={buttonType === 'close' ? 'lg' : 'sm'} /> {buttonText}
       </SheetPrimitive.Close>
     );
+
+    return wrapper ? React.cloneElement(wrapper, {}, button) : button;
   };
 
-  return backButtonLink ? (
-    <Link {...backButtonLink} passHref>
-      {isFullWidth(position, size)
-        ? renderButton('back')
-        : renderButton('close')}
-    </Link>
-  ) : isFullWidth(position, size) ? (
-    renderButton('back')
-  ) : (
-    renderButton('close')
-  );
+  return isFullWidth(position, size)
+    ? renderButton('back')
+    : renderButton('close');
 };
 
 const SheetNavigationSkeleton: React.FC<SheetNavigationProps> = ({
@@ -230,8 +221,8 @@ const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
     return (
       <div
         className={cn(
-          `flex flex-col space-y-2 text-center sm:text-left px-6 pt-6 ${
-            isFullWidth(position, size) && 'pt-12 md:pt-14'
+          `flex flex-col space-y-2 text-center sm:text-left px-6 pt-6 pb-3 ${
+            isFullWidth(position, size) && 'pt-16'
           }`,
           className,
         )}
@@ -242,25 +233,19 @@ const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
 );
 SheetHeader.displayName = 'SheetHeader';
 
-export interface SheetOverlayProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  footerHeight?: string;
-  className?: string;
-}
-
-const SheetOverlay = React.forwardRef<HTMLDivElement, SheetOverlayProps>(
-  ({ footerHeight = '3.25rem', className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        `absolute inset-x-0 z-10 h-20 bg-gradient-to-t from-card to-transparent pointer-events-none`,
-        className,
-      )}
-      style={{ bottom: footerHeight }}
-      {...props}
-    />
-  ),
-);
+const SheetOverlay = React.forwardRef<
+  React.ElementRef<typeof SheetPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
+>(({ className, ...props }, ref) => (
+  <SheetPrimitive.Overlay
+    className={cn(
+      'fixed inset-0 z-50 bg-background/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      className,
+    )}
+    {...props}
+    ref={ref}
+  />
+));
 SheetOverlay.displayName = 'SheetOverlay';
 
 const SheetOverflow = React.forwardRef<
@@ -287,17 +272,32 @@ const sheetFooterVariantsCva = cva('flex flex-col-reverse', {
 
 export interface SheetFooterProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof sheetFooterVariantsCva> {}
+    VariantProps<typeof sheetFooterVariantsCva> {
+  footerHeight?: string;
+}
 
 const SheetFooter = React.forwardRef<HTMLDivElement, SheetFooterProps>(
-  ({ className, variant, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(sheetFooterVariantsCva({ variant }), className)}
-      {...props}
-    >
-      {props.children}
-    </div>
+  (
+    { children, className, variant, footerHeight = '3.25rem', ...props },
+    ref,
+  ) => (
+    <>
+      <div
+        ref={ref}
+        className={
+          'pointer-events-none absolute z-10 h-20 w-full bg-gradient-to-t from-card to-transparent'
+        }
+        style={{ bottom: footerHeight }}
+        {...props}
+      />
+      <div
+        ref={ref}
+        className={cn(sheetFooterVariantsCva({ variant }), className)}
+        {...props}
+      >
+        {children}
+      </div>
+    </>
   ),
 );
 
@@ -318,8 +318,8 @@ const SheetTitle = React.forwardRef<
 SheetTitle.displayName = SheetPrimitive.Title.displayName;
 
 const SheetTitleSkeleton = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
+  React.ElementRef<typeof SheetPrimitive.Title>,
+  TextSkeletonProps
 >(({ className, ...props }, ref) => (
   <TextSkeleton className={className} variant="h3" {...props} />
 ));
@@ -337,8 +337,8 @@ const SheetDescription = React.forwardRef<
 ));
 
 const SheetDescriptionSkeleton = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  React.ElementRef<typeof SheetPrimitive.Description>,
+  TextSkeletonProps
 >(({ className, ...props }, ref) => (
   <TextSkeleton className={className} variant="p" {...props} />
 ));

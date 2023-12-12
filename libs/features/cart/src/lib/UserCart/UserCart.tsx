@@ -1,11 +1,12 @@
 import {
-  Card,
+  AppContainer,
+  AppContainerFooter,
+  AppContainerOverflow,
+} from '@features/app-nav';
+import {
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardOverflow,
-  CardOverlay,
   CardTitle,
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
@@ -26,25 +27,20 @@ export const UserCart: React.FC<UserCartProps> = ({
 }) => {
   const t = useTranslations('Cart.UserCart');
   return (
-    <section className="container">
-      <Card variant="stickyFooter" noBorder>
-        <CardOverflow>
-          <CardHeader>
-            <CardTitle>{t('title')}</CardTitle>
-            <CardDescription>{t('description')}</CardDescription>
-          </CardHeader>
-          <CardContent className="px-1">
-            <EventPassesCart
-              userPassPendingOrders={userPassPendingOrders}
-              noCartImage={noCartImage}
-            />
-          </CardContent>
-        </CardOverflow>
-        <CardOverlay />
-        <CardFooter className="justify-center" variant="sticky">
-          {children}
-        </CardFooter>
-      </Card>
-    </section>
+    <AppContainer>
+      <AppContainerOverflow variant="stickyFooter">
+        <CardHeader>
+          <CardTitle>{t('title')}</CardTitle>
+          <CardDescription>{t('description')}</CardDescription>
+        </CardHeader>
+        <CardContent className="px-1">
+          <EventPassesCart
+            userPassPendingOrders={userPassPendingOrders}
+            noCartImage={noCartImage}
+          />
+        </CardContent>
+      </AppContainerOverflow>
+      <AppContainerFooter>{children}</AppContainerFooter>
+    </AppContainer>
   );
 };

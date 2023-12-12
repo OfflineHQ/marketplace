@@ -1,23 +1,22 @@
+import { Button } from '../button/Button';
+import { TextInput } from '../text-input/TextInput';
+import { Text, TextSkeleton } from '../text/Text';
 import {
   Sheet,
   SheetContent,
   SheetDescription,
+  SheetDescriptionSkeleton,
   SheetFooter,
   SheetHeader,
+  SheetNavigation,
+  SheetNavigationSkeleton,
+  SheetOverflow,
   SheetTitle,
+  SheetTitleSkeleton,
   SheetTrigger,
   type SheetContentProps,
   type SheetNavigationProps,
-  SheetOverflow,
-  SheetOverlay,
-  SheetTitleSkeleton,
-  SheetDescriptionSkeleton,
-  SheetNavigation,
-  SheetNavigationSkeleton,
 } from './Sheet';
-import { Button } from '../button/Button';
-import { TextInput } from '../text-input/TextInput';
-import { Text, TextSkeleton } from '../text/Text';
 
 export const long_text = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl.\n\n
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl. Donec auctor, libero eget ultricies tincidunt, nisl nunc aliquam nunc, vitae dignissim nisl nunc ac nisl.\n\n
@@ -44,7 +43,6 @@ export const SheetDemo: React.FC<SheetDemoProps> = (props) => {
             <Text variant="p">{long_text}</Text>
           </div>
         </SheetOverflow>
-        <SheetOverlay footerHeight="4rem" />
         <SheetFooter variant="sticky">
           <Button type="submit">Save changes</Button>
         </SheetFooter>

@@ -1,5 +1,5 @@
+import { rtfProps, rtfWithImageProps } from '@next/hygraph/examples';
 import { type EventDetailsProps } from './EventDetails';
-import { rtfWithImageProps, rtfProps } from '@next/hygraph/examples';
 
 export const eventDetailsProps: EventDetailsProps = {
   description: {

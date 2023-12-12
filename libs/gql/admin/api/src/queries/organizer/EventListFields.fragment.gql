@@ -4,6 +4,9 @@ fragment EventListFields on Event {
   slug
   title
   heroImage {
+    width
+    height
     url
   }
+  heroImageClasses
 }

@@ -16,6 +16,7 @@
     "lokalise.i18n-ally",
     "ms-azuretools.vscode-docker",
     "bradlc.vscode-tailwindcss",
-    "irongeek.vscode-env"
+    "irongeek.vscode-env",
+    "ms-playwright.playwright"
   ]
 }

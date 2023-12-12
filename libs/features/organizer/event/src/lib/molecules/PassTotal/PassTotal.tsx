@@ -5,7 +5,7 @@ import { Currency_Enum } from '@gql/shared/types';
 import { ConvertedCurrency } from '@next/currency';
 import { Text, TextSkeleton } from '@ui/components';
 import { useLocale } from 'next-intl';
-import { getTranslator } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import React, { Suspense } from 'react';
 
 export interface PassTotalProps {
@@ -40,7 +40,10 @@ export const PassTotalContent: React.FC<PassTotalProps> = async ({
     }
   }
   const locale = useLocale();
-  const t = await getTranslator(locale, 'Organizer.Event.PassPurchase.Footer');
+  const t = await getTranslations({
+    locale,
+    namespace: 'Organizer.Event.PassPurchase.Footer',
+  });
   return (
     <div className="flex-col">
       <Text variant="small">
@@ -48,13 +51,19 @@ export const PassTotalContent: React.FC<PassTotalProps> = async ({
           totalPasses,
         })}
       </Text>
-      <ConvertedCurrency variant="h5" {...money} />
+      <ConvertedCurrency
+        variant="h5"
+        translationFn={(convertedAmount) =>
+          t('total.price', { convertedAmount })
+        }
+        {...money}
+      />
     </div>
   );
 };
 
 export const PassTotalSkeleton: React.FC = () => (
-  <div className="flex-col">
+  <div className="flex-col space-y-3 py-2">
     <TextSkeleton variant="small" />
     <TextSkeleton variant="h5" />
   </div>

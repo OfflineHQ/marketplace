@@ -1,15 +1,16 @@
 {
   "framework": "nextjs",
-  "buildCommand": "cd ../.. && pnpm nx build web --prod",
+  "buildCommand": "pnpm npm-run-all lint:all test:all build:web --aggregate-output --parallel",
   "outputDirectory": "../../dist/apps/web/.next",
   "installCommand": "pnpm install",
+  "ignoreCommand": "bash ../../tools/scripts/vercel-ignore.sh",
   "crons": [
     {
-      "path": "/crons/handlePendingOrders.ts",
+      "path": "/apps/web/crons/handlePendingOrders.ts",
       "schedule": "*/5 * * * *"
     },
     {
-      "path": "/crons/setRates.ts",
+      "path": "/apps/web/crons/setRates.ts",
       "schedule": "0 */12 * * *"
     }
   ]

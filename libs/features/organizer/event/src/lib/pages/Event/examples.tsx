@@ -1,18 +1,24 @@
+import { AppNavLayout } from '@features/app-nav';
+import { WithNormalUser } from '@features/app-nav/stories';
 import {
-  eventHeroProps,
-  event2HeroProps,
-} from '../../molecules/EventHero/examples';
-import {
-  eventDetailsProps,
   eventDetails2Props,
+  eventDetailsProps,
 } from '../../molecules/EventDetails/examples';
+import {
+  event2HeroProps,
+  eventHeroProps,
+} from '../../molecules/EventHero/examples';
 import { Event, EventSkeleton, type EventProps } from './Event';
-import { WithNormalUser } from '@features/appNav/ui/stories';
-import { AppNavLayout } from '@features/appNav/ui';
 
 export const eventProps: EventProps = {
   ...eventHeroProps,
   ...eventDetailsProps,
+  purchaseLink: {
+    href: {
+      pathname: 'dummy',
+    },
+  },
+  purchaseText: 'Purchase',
   id: 'fake_event_1',
   slug: 'event-slug',
 };

@@ -14,7 +14,6 @@ export interface PassCardSelectClientProps
   extends Omit<BoundedNumericStepperProps, 'onChange' | 'disabled'>,
     EventSlugs {
   eventPassId: string;
-  updateEventPassCart: typeof updateEventPassCart;
 }
 
 //TODO: here handle error cases from updateEventPassCart (display with toast)

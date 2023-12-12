@@ -60,5 +60,8 @@ select_permissions:
       columns:
         - eventId
         - eventPassId
+        - isAirdrop
+        - isDelayedRevealed
         - organizerId
+        - type
       filter: {}

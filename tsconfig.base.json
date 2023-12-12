@@ -21,22 +21,38 @@
       "@currency/types": ["libs/currency/types/src/index.ts"],
       "@env/client": ["libs/env/client/src/index.mjs"],
       "@env/server": ["libs/env/server/src/index.mjs"],
+      "@feature/organizer/organizer-ui": [
+        "libs/features/organizer/organizer-ui/src/index.ts"
+      ],
+      "@feature/organizer/organizer-ui/server": [
+        "libs/features/organizer/organizer-ui/src/server.ts"
+      ],
       "@features/account/api": ["libs/features/account/api/src/index.ts"],
-      "@features/appNav/ui": ["libs/features/appNav/ui/src/index.ts"],
-      "@features/appNav/ui/stories": [
-        "libs/features/appNav/ui/src/stories.tsx"
+      "@features/app-nav": ["libs/features/app-nav/src/index.ts"],
+      "@features/app-nav/stories": ["libs/features/app-nav/src/stories.tsx"],
+      "@features/back-office/app-nav": [
+        "libs/features/back-office/app-nav/src/index.ts"
       ],
-      "@features/back-office/dashboard": [
-        "libs/features/back-office/dashboard/src/index.ts"
+      "@features/back-office/app-nav/stories": [
+        "libs/features/back-office/app-nav/src/stories.tsx"
       ],
-      "@features/back-office/dashboard-api": [
-        "libs/features/back-office/dashboard-api/src/index.ts"
+      "@features/back-office/events": [
+        "libs/features/back-office/events/src/index.ts"
       ],
-      "@features/back-office/dashboard-types": [
-        "libs/features/back-office/dashboard-types/src/index.ts"
+      "@features/back-office/events-api": [
+        "libs/features/back-office/events-api/src/index.ts"
       ],
-      "@features/back-office/dashboard/server": [
-        "libs/features/back-office/dashboard/src/server.ts"
+      "@features/back-office/events-types": [
+        "libs/features/back-office/events-types/src/index.ts"
+      ],
+      "@features/back-office/roles": [
+        "libs/features/back-office/roles/src/index.ts"
+      ],
+      "@features/back-office/roles-actions": [
+        "libs/features/back-office/roles-actions/src/index.ts"
+      ],
+      "@features/back-office/roles-api": [
+        "libs/features/back-office/roles-api/src/index.ts"
       ],
       "@features/cart": ["libs/features/cart/src/index.ts"],
       "@features/cart-actions": ["libs/features/cart-actions/src/index.ts"],
@@ -67,6 +83,12 @@
       "@features/organizer/event/server": [
         "libs/features/organizer/event/src/server.ts"
       ],
+      "@features/organizer/organizer-api": [
+        "libs/features/organizer/organizer-api/src/index.ts"
+      ],
+      "@features/organizer/organizer-types": [
+        "libs/features/organizer/organizer-types/src/index.ts"
+      ],
       "@features/pass": ["libs/features/pass/src/index.ts"],
       "@features/pass-actions": ["libs/features/pass-actions/src/index.ts"],
       "@features/pass-api": ["libs/features/pass-api/src/index.ts"],
@@ -95,6 +117,9 @@
       "@indexer/alchemy/webhooks": [
         "libs/indexer/alchemy/webhooks/src/index.ts"
       ],
+      "@insight/client": ["libs/insight/client/src/index.ts"],
+      "@insight/server": ["libs/insight/server/src/index.ts"],
+      "@insight/types": ["libs/insight/types/src/index.ts"],
       "@kyc/admin": ["libs/kyc/admin/src/index.ts"],
       "@kyc/common": ["libs/features/kyc-common/src/index.ts"],
       "@kyc/types": ["libs/kyc/types/src/index.ts"],
@@ -109,15 +134,16 @@
       "@next/date": ["libs/next/date/src/index.ts"],
       "@next/hasura/api": ["libs/next/hasura/api/src/index.ts"],
       "@next/hasura/react-query": ["libs/next/hasura/react-query/src/index.ts"],
-      "@next/hasura/utils": ["libs/next/hasura/utils/src/index.ts"],
       "@next/hygraph": ["libs/next/hygraph/src/index.ts"],
       "@next/hygraph/examples": ["libs/next/hygraph/src/examples.tsx"],
       "@next/i18n": ["libs/next/i18n/src/index.ts"],
+      "@next/i18n-ui": ["libs/next/i18n-ui/src/index.ts"],
       "@next/navigation": ["libs/next/navigation/src/index.ts"],
       "@next/next-auth/common": ["libs/next/next-auth/common/src/index.ts"],
       "@next/next-auth/options": ["libs/next/next-auth/options/src/index.ts"],
       "@next/next-auth/user": ["libs/next/next-auth/user/src/index.ts"],
       "@next/react-query": ["libs/next/react-query/src/index.ts"],
+      "@next/redis": ["libs/next/redis/src/index.ts"],
       "@next/safe/auth": ["libs/next/safe/auth/src/index.ts"],
       "@next/siwe/provider": ["libs/next/siwe/provider/src/index.ts"],
       "@next/store": ["libs/next/store/src/index.ts"],
@@ -131,6 +157,9 @@
       "@payment/admin": ["libs/payment/admin/src/index.ts"],
       "@payment/types": ["libs/payment/types/src/index.ts"],
       "@payment/webhooks": ["libs/payment/webhooks/src/index.ts"],
+      "@roles/admin": ["libs/roles/admin/src/index.ts"],
+      "@roles/common": ["libs/roles/common/src/index.ts"],
+      "@roles/types": ["libs/roles/types/src/index.ts"],
       "@server/task": ["libs/server/task/src/index.ts"],
       "@shared/client": ["libs/shared/client/src/index.ts"],
       "@shared/server": ["libs/shared/server/src/index.ts"],
@@ -147,11 +176,10 @@
       "@ui/shared": ["libs/ui/shared/src/index.ts"],
       "@ui/theme": ["libs/ui/theme/src/index.ts"],
       "@utils": ["libs/utils/src/index.ts"],
-      "@web/*": ["apps/web/*"],
-      "@workspace": ["libs/workspace/src/index.ts"]
+      "@web/*": ["apps/web/*"]
     }
   },
-  "typeRoots": ["types", "node_modules/@types"],
-  "include": ["**/*.ts", "types/**/*.d.ts"],
+  "typeRoots": ["node_modules/@types", "./types"],
+  "include": ["**/*.ts", "./types/**/*.d.ts"],
   "exclude": ["node_modules", "tmp"]
 }

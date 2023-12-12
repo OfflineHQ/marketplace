@@ -12,3 +12,4 @@ hasura/app/**
 .next
 .swcrc
 mockServiceWorker.js
+.nx

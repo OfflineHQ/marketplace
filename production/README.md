@@ -52,7 +52,6 @@ Click on the button below to deploy the web app to Vercel. This will create a ne
     "lint",
     "lint:fix",
     "affected:lint",
-    "workspace-lint",
     "format",
     "format:check",
     "format:write",

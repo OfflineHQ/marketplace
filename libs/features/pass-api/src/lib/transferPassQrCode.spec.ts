@@ -1,6 +1,6 @@
-import { transferPassQrCode } from './transferPassQrCode'; // adjust the path accordingly
-import { FileWrapper, FileCopyStatus } from '@file-upload/admin';
+import { FileCopyStatusEnum, FileWrapper } from '@file-upload/admin';
 import { mockEventPassNft } from './revealPass.spec';
+import { transferPassQrCode } from './transferPassQrCode'; // adjust the path accordingly
 
 jest.mock('@file-upload/admin');
 
@@ -8,7 +8,7 @@ describe('transferPassQrCode', () => {
   const mockFormerOwnerAddress = 'oldAddress';
   it('should transfer QR code successfully', async () => {
     (FileWrapper.prototype.copyFile as jest.Mock).mockResolvedValueOnce({
-      status: FileCopyStatus.Copied,
+      status: FileCopyStatusEnum.Copied,
     });
 
     await transferPassQrCode(mockFormerOwnerAddress, mockEventPassNft);
@@ -19,16 +19,16 @@ describe('transferPassQrCode', () => {
 
   it('should throw error if file copy is unsuccessful', async () => {
     (FileWrapper.prototype.copyFile as jest.Mock).mockResolvedValueOnce({
-      status: FileCopyStatus.FileNotFound,
+      status: FileCopyStatusEnum.FileNotFound,
     });
     await expect(
       transferPassQrCode(mockFormerOwnerAddress, mockEventPassNft),
-    ).rejects.toThrow(FileCopyStatus.FileNotFound);
+    ).rejects.toThrow(FileCopyStatusEnum.FileNotFound);
   });
 
   it('should throw error if file deletion is unsuccessful', async () => {
     (FileWrapper.prototype.copyFile as jest.Mock).mockResolvedValueOnce({
-      status: FileCopyStatus.Copied,
+      status: FileCopyStatusEnum.Copied,
     });
     (FileWrapper.prototype.deleteFile as jest.Mock).mockRejectedValueOnce(
       new Error('DeleteFailed'),

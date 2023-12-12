@@ -7,6 +7,16 @@ export const AccountFieldsFragmentDoc = `
   email
 }
     `;
+export const OrganizerFieldsFragmentDoc = `
+    fragment OrganizerFields on Organizer {
+  image {
+    url
+  }
+  imageClasses
+  name
+  slug
+}
+    `;
 export const EventDateLocationsFieldsFragmentDoc = `
     fragment EventDateLocationsFields on EventDateLocation {
   locationAddress {
@@ -50,6 +60,7 @@ export const EventPassFieldsFragmentDoc = `
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -57,6 +68,7 @@ export const EventPassFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
   }
 }
@@ -69,6 +81,13 @@ export const EventPassNftFieldsFragmentDoc = `
   organizerId
   isRevealed
   currentOwnerAddress
+}
+    `;
+export const RoleAssignmentsFieldsFragmentDoc = `
+    fragment RoleAssignmentsFields on roleAssignments {
+  role
+  organizerId
+  eventId
 }
     `;
  const GetAccountDocument = `
@@ -94,6 +113,7 @@ export const EventPassNftFieldsFragmentDoc = `
     heroImage {
       url
     }
+    heroImageClasses
     organizer {
       id
       slug
@@ -101,6 +121,7 @@ export const EventPassNftFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
     eventPasses {
       id
@@ -109,6 +130,7 @@ export const EventPassNftFieldsFragmentDoc = `
       eventPassPricing {
         priceAmount
         priceCurrency
+        timeBeforeDelete
       }
     }
   }
@@ -117,6 +139,14 @@ export const EventPassNftFieldsFragmentDoc = `
  const GetEventPassOrdersConfirmedDocument = `
     query GetEventPassOrdersConfirmed {
   eventPassOrder(where: {status: {_eq: CONFIRMED}}) {
+    eventPassId
+    quantity
+  }
+}
+    `;
+ const GetEventPassOrdersIsMintingDocument = `
+    query GetEventPassOrdersIsMinting {
+  eventPassOrder(where: {status: {_eq: IS_MINTING}}) {
     eventPassId
     quantity
   }
@@ -138,20 +168,20 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
- const GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument = `
-    query GetEventPassOrdersConfirmedOrCompletedForEventPassId($eventPassId: String!) {
+ const GetEventPassOrderPurchasedForEventPassesIdDocument = `
+    query GetEventPassOrderPurchasedForEventPassesId($eventPassId: String!) {
   eventPassOrder(
-    where: {status: {_in: [CONFIRMED, COMPLETED]}, eventPassId: {_eq: $eventPassId}}
+    where: {status: {_in: [CONFIRMED, COMPLETED, IS_MINTING]}, eventPassId: {_eq: $eventPassId}}
   ) {
     eventPassId
     quantity
   }
 }
     `;
- const GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument = `
-    query GetEventPassOrdersConfirmedOrCompletedForEventPassIds($eventPassIds: [String!]!) {
+ const GetEventPassOrderPurchasedForEventPassesIdsDocument = `
+    query GetEventPassOrderPurchasedForEventPassesIds($eventPassIds: [String!]!) {
   eventPassOrder(
-    where: {status: {_in: [CONFIRMED, COMPLETED]}, eventPassId: {_in: $eventPassIds}}
+    where: {status: {_in: [CONFIRMED, COMPLETED, IS_MINTING]}, eventPassId: {_in: $eventPassIds}}
   ) {
     eventPassId
     quantity
@@ -276,6 +306,13 @@ export const EventPassNftFieldsFragmentDoc = `
   }
 }
     `;
+ const InsertFollowOrganizerDocument = `
+    mutation InsertFollowOrganizer($organizerSlug: String!) {
+  insert_follow_one(object: {organizerSlug: $organizerSlug}) {
+    organizerSlug
+  }
+}
+    `;
  const GetPassedEventsWithEventPassNftsDocument = `
     query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
@@ -288,9 +325,14 @@ export const EventPassNftFieldsFragmentDoc = `
     eventPassNftContracts(
       where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
     ) {
+      type
+      isDelayedRevealed
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name
+        event {
+          slug
+        }
         nftImage {
           url
         }
@@ -308,6 +350,7 @@ export const EventPassNftFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
       id
@@ -316,6 +359,7 @@ export const EventPassNftFieldsFragmentDoc = `
       heroImage {
         url
       }
+      heroImageClasses
     }
   }
 }
@@ -332,9 +376,14 @@ export const EventPassNftFieldsFragmentDoc = `
     eventPassNftContracts(
       where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
     ) {
+      type
+      isDelayedRevealed
       eventPass(locales: [$locale, en], stage: $stage) {
         id
         name
+        event {
+          slug
+        }
         nftImage {
           url
         }
@@ -352,6 +401,7 @@ export const EventPassNftFieldsFragmentDoc = `
       image {
         url
       }
+      imageClasses
     }
     event(where: {}, locales: [$locale, en], stage: $stage) {
       id
@@ -360,6 +410,7 @@ export const EventPassNftFieldsFragmentDoc = `
       heroImage {
         url
       }
+      heroImageClasses
     }
   }
 }
@@ -377,6 +428,39 @@ export const EventPassNftFieldsFragmentDoc = `
 }
     ${EventPassNftFieldsFragmentDoc}
 ${EventPassFieldsFragmentDoc}`;
+ const GetMyRolesDocument = `
+    query GetMyRoles {
+  roleAssignments {
+    ...RoleAssignmentsFields
+  }
+}
+    ${RoleAssignmentsFieldsFragmentDoc}`;
+ const GetMyRolesWithOrganizerInfosDocument = `
+    query GetMyRolesWithOrganizerInfos($stage: Stage!) {
+  roleAssignments {
+    ...RoleAssignmentsFields
+    organizer(where: {}, locales: [en], stage: $stage) {
+      ...OrganizerFields
+    }
+  }
+}
+    ${RoleAssignmentsFieldsFragmentDoc}
+${OrganizerFieldsFragmentDoc}`;
+ const GetMyRolesWithOrganizerAndInviterInfosDocument = `
+    query GetMyRolesWithOrganizerAndInviterInfos($stage: Stage!) {
+  roleAssignments {
+    ...RoleAssignmentsFields
+    organizer(where: {}, locales: [en], stage: $stage) {
+      ...OrganizerFields
+    }
+    inviter {
+      address
+      email
+    }
+  }
+}
+    ${RoleAssignmentsFieldsFragmentDoc}
+${OrganizerFieldsFragmentDoc}`;
  const GetStripeCustomerDocument = `
     query GetStripeCustomer {
   stripeCustomer {
@@ -400,14 +484,17 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventPassOrdersConfirmed(variables?: Types.GetEventPassOrdersConfirmedQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedQuery> {
       return requester<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedQuery>;
     },
+    GetEventPassOrdersIsMinting(variables?: Types.GetEventPassOrdersIsMintingQueryVariables, options?: C): Promise<Types.GetEventPassOrdersIsMintingQuery> {
+      return requester<Types.GetEventPassOrdersIsMintingQuery, Types.GetEventPassOrdersIsMintingQueryVariables>(GetEventPassOrdersIsMintingDocument, variables, options) as Promise<Types.GetEventPassOrdersIsMintingQuery>;
+    },
     GetEventPassOrdersFromIds(variables: Types.GetEventPassOrdersFromIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrdersFromIdsQuery> {
       return requester<Types.GetEventPassOrdersFromIdsQuery, Types.GetEventPassOrdersFromIdsQueryVariables>(GetEventPassOrdersFromIdsDocument, variables, options) as Promise<Types.GetEventPassOrdersFromIdsQuery>;
     },
-    GetEventPassOrdersConfirmedOrCompletedForEventPassId(variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery> {
-      return requester<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdQuery>;
+    GetEventPassOrderPurchasedForEventPassesId(variables: Types.GetEventPassOrderPurchasedForEventPassesIdQueryVariables, options?: C): Promise<Types.GetEventPassOrderPurchasedForEventPassesIdQuery> {
+      return requester<Types.GetEventPassOrderPurchasedForEventPassesIdQuery, Types.GetEventPassOrderPurchasedForEventPassesIdQueryVariables>(GetEventPassOrderPurchasedForEventPassesIdDocument, variables, options) as Promise<Types.GetEventPassOrderPurchasedForEventPassesIdQuery>;
     },
-    GetEventPassOrdersConfirmedOrCompletedForEventPassIds(variables: Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery> {
-      return requester<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery, Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQueryVariables>(GetEventPassOrdersConfirmedOrCompletedForEventPassIdsDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedOrCompletedForEventPassIdsQuery>;
+    GetEventPassOrderPurchasedForEventPassesIds(variables: Types.GetEventPassOrderPurchasedForEventPassesIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery> {
+      return requester<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery, Types.GetEventPassOrderPurchasedForEventPassesIdsQueryVariables>(GetEventPassOrderPurchasedForEventPassesIdsDocument, variables, options) as Promise<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery>;
     },
     UpsertEventPassPendingOrder(variables: Types.UpsertEventPassPendingOrderMutationVariables, options?: C): Promise<Types.UpsertEventPassPendingOrderMutation> {
       return requester<Types.UpsertEventPassPendingOrderMutation, Types.UpsertEventPassPendingOrderMutationVariables>(UpsertEventPassPendingOrderDocument, variables, options) as Promise<Types.UpsertEventPassPendingOrderMutation>;
@@ -439,6 +526,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetKyc(variables?: Types.GetKycQueryVariables, options?: C): Promise<Types.GetKycQuery> {
       return requester<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables, options) as Promise<Types.GetKycQuery>;
     },
+    InsertFollowOrganizer(variables: Types.InsertFollowOrganizerMutationVariables, options?: C): Promise<Types.InsertFollowOrganizerMutation> {
+      return requester<Types.InsertFollowOrganizerMutation, Types.InsertFollowOrganizerMutationVariables>(InsertFollowOrganizerDocument, variables, options) as Promise<Types.InsertFollowOrganizerMutation>;
+    },
     GetPassedEventsWithEventPassNfts(variables: Types.GetPassedEventsWithEventPassNftsQueryVariables, options?: C): Promise<Types.GetPassedEventsWithEventPassNftsQuery> {
       return requester<Types.GetPassedEventsWithEventPassNftsQuery, Types.GetPassedEventsWithEventPassNftsQueryVariables>(GetPassedEventsWithEventPassNftsDocument, variables, options) as Promise<Types.GetPassedEventsWithEventPassNftsQuery>;
     },
@@ -447,6 +537,15 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassNftByTokenReference(variables: Types.GetEventPassNftByTokenReferenceQueryVariables, options?: C): Promise<Types.GetEventPassNftByTokenReferenceQuery> {
       return requester<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables, options) as Promise<Types.GetEventPassNftByTokenReferenceQuery>;
+    },
+    GetMyRoles(variables?: Types.GetMyRolesQueryVariables, options?: C): Promise<Types.GetMyRolesQuery> {
+      return requester<Types.GetMyRolesQuery, Types.GetMyRolesQueryVariables>(GetMyRolesDocument, variables, options) as Promise<Types.GetMyRolesQuery>;
+    },
+    GetMyRolesWithOrganizerInfos(variables: Types.GetMyRolesWithOrganizerInfosQueryVariables, options?: C): Promise<Types.GetMyRolesWithOrganizerInfosQuery> {
+      return requester<Types.GetMyRolesWithOrganizerInfosQuery, Types.GetMyRolesWithOrganizerInfosQueryVariables>(GetMyRolesWithOrganizerInfosDocument, variables, options) as Promise<Types.GetMyRolesWithOrganizerInfosQuery>;
+    },
+    GetMyRolesWithOrganizerAndInviterInfos(variables: Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables, options?: C): Promise<Types.GetMyRolesWithOrganizerAndInviterInfosQuery> {
+      return requester<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables>(GetMyRolesWithOrganizerAndInviterInfosDocument, variables, options) as Promise<Types.GetMyRolesWithOrganizerAndInviterInfosQuery>;
     },
     GetStripeCustomer(variables?: Types.GetStripeCustomerQueryVariables, options?: C): Promise<Types.GetStripeCustomerQuery> {
       return requester<Types.GetStripeCustomerQuery, Types.GetStripeCustomerQueryVariables>(GetStripeCustomerDocument, variables, options) as Promise<Types.GetStripeCustomerQuery>;

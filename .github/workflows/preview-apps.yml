@@ -1,23 +1,23 @@
 name: Deploy preview apps
 
 on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-    branches-ignore:
-      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  NODE_OPTIONS: '--max_old_space_size=4096'
 
 jobs:
-  deploy-preview:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Set up environment and cache dependencies
-        uses: sebpalluel/ci/.github/actions/setup-environment@latest
+        with:
+          ref: ${{ github.ref }}
 
       - name: Get PR sha
         id: get_pull_request_sha
@@ -34,46 +34,6 @@ jobs:
           api_key: ${{ secrets.NEON_API_KEY }}
           username: ${{ secrets.PG_USERNAME }}
           password: ${{ secrets.PG_PASSWORD }}
-
-      - name: Cache Vercel CLI
-        uses: actions/cache@v2
-        id: cache-vercel
-        with:
-          path: ~/.npm # adjust this path if needed
-          key: vercel-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install Vercel CLI
-        run: |
-          if [ -z "$(npm list -g --depth=0 | grep vercel)" ]
-          then
-            npm install --global vercel@latest
-          fi
-
-      - name: Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Save environment variables to a file
-        run: |
-          echo "HASURA_CLOUD_ACCESS_TOKEN=$HASURA_CLOUD_ACCESS_TOKEN" >> env_vars.txt
-          echo "HASURA_GRAPHQL_ADMIN_SECRET=$HASURA_GRAPHQL_ADMIN_SECRET" >> env_vars.txt
-          echo "HYGRAPH_CMS_WEBHOOK_READ_URL=$HYGRAPH_CMS_WEBHOOK_READ_URL" >> env_vars.txt
-          echo "HYGRAPH_CMS_READ_TOKEN=$HYGRAPH_CMS_READ_TOKEN" >> env_vars.txt
-          echo "HASURA_GRAPHQL_JWT_SECRET=$HASURA_GRAPHQL_JWT_SECRET" >> env_vars.txt
-          echo "HASURA_GRAPHQL_DATABASE_URL=$HASURA_GRAPHQL_DATABASE_URL" >> env_vars.txt
-        env:
-          HASURA_CLOUD_ACCESS_TOKEN: ${{secrets.HASURA_CLOUD_ACCESS_TOKEN}}
-          HASURA_GRAPHQL_ADMIN_SECRET: ${{secrets.HASURA_GRAPHQL_ADMIN_SECRET}}
-          HYGRAPH_CMS_WEBHOOK_READ_URL: ${{secrets.HYGRAPH_CMS_WEBHOOK_READ_URL}}
-          HYGRAPH_CMS_READ_TOKEN: ${{secrets.HYGRAPH_CMS_READ_TOKEN}}
-          HASURA_GRAPHQL_JWT_SECRET: ${{secrets.HASURA_GRAPHQL_JWT_SECRET}}
-          HASURA_GRAPHQL_DATABASE_URL: ${{steps.create_branch.outputs.db_url}}/neondb
-
-      - name: Upload env_vars.txt as an artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: env-vars
-          path: ./env_vars.txt
-          retention-days: 5 # set the retention period to 5 days
 
       # - name: Create Hasura Cloud preview app
       #   id: hasura_cloud_preview
@@ -99,37 +59,65 @@ jobs:
 
       # - name: Set Hasura GraphQL endpoint to .env
       #   run: |
-      #     echo HASURA_GRAPHQL_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
+      #     echo HASURA_PROJECT_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
       #     echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=${{steps.hasura_cloud_preview.outputs.graphQLEndpoint}} >> .env
 
-      # TODO remove this, was temporary to fix missing env issue
-      - name: Set Hasura GraphQL endpoint to .env
+  deploy:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: ['web', 'back-office']
+    env:
+      VERCEL_PROJECT_ID: ${{ matrix.app == 'web' && secrets.VERCEL_PROJECT_ID_WEB || secrets.VERCEL_PROJECT_ID_BACK_OFFICE }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+
+      - name: Set up environment and cache dependencies
+        uses: sebpalluel/ci/.github/actions/setup-environment@latest
+
+      - name: Cache Vercel CLI
+        uses: actions/cache@v2
+        id: cache-vercel
+        with:
+          path: ~/.pnpm # adjust this path if needed
+          key: vercel-${{ runner.os }}
+
+      - name: Install Vercel CLI
         run: |
-          echo HASURA_GRAPHQL_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
-          echo HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
-          echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .env
-          echo NEXTAUTH_URL=https://www.preview.offline.live/ >> .env
+          if [ -z "$(npm list -g --depth=0 | grep vercel)" ]
+          then
+            npm install --global vercel@latest
+          fi
+
+      - name: Check if app should be built
+        id: app_check_build
+        run: |
+          output=$(npx --y nx-ignore ${{ matrix.app }}) || true
+          if [[ "$output" == *"✅ - Build can proceed"* ]]; then
+            echo "BUILD_REQUIRED_${{ matrix.app }}=true" >> $GITHUB_ENV
+          else
+            echo "BUILD_REQUIRED_${{ matrix.app }}=false" >> $GITHUB_ENV
+          fi
 
       - name: Deploy Preview to Vercel
         id: deploy_vercel
+        env:
+          BUILD_REQUIRED: ${{ env[format('BUILD_REQUIRED_{0}', matrix.app)] }}
         run: |
-          preview_url=$(vercel deploy --token=${{secrets.VERCEL_TOKEN}})
-          echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
-
-      - name: Comment on Pull Request
-        uses: thollander/actions-comment-pull-request@v2
-        with:
-          message: |
-            Vercel Preview URL :rocket: : ${{env.PREVIEW_URL}}
-            Neon branch :elephant: : https://console.neon.tech/app/projects/${{secrets.NEON_PROJECT_ID}}/branches/${{steps.create_branch.outputs.branch_id}}
-            Hasura Console :computer: : ${{steps.hasura_cloud_preview.outputs.consoleURL}}
-
-      - name: Save PREVIEW_URL as artifact
-        run: echo ${{env.PREVIEW_URL}} > preview_url.txt
-
-      - name: Save PREVIEW_URL as cache
-        uses: actions/cache@v3
-        id: cache-preview-url
-        with:
-          path: ./preview_url.txt
-          key: preview-url-${{ env.PULL_REQUEST_SHA }}
+          if [[ $BUILD_REQUIRED == true ]]; then
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }} --local-config=apps/${{ matrix.app }}/vercel.json
+            # TODO remove this when Hasura correctly deployed, was temporary to fix missing env issue
+            echo HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .vercel/.env.preview.local
+            echo NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ >> .vercel/.env.preview.local
+            echo NEXTAUTH_URL=https://www.preview.offline.live/ >> .vercel/.env.preview.local
+            #
+            vercel build --token=${{ secrets.VERCEL_TOKEN }} --local-config=apps/${{ matrix.app }}/vercel.json
+            preview_url=$(vercel deploy -e HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live/ -e NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT=https://www.hasura.staging.offline.live  -e NEXTAUTH_URL=https://www.preview.offline.live/ --token=${{secrets.VERCEL_TOKEN}} --prebuilt --local-config=apps/${{ matrix.app }}/vercel.json --global-config=.vercel)
+            echo "PREVIEW_URL_${{ matrix.app }}=$preview_url" >> $GITHUB_ENV
+          else
+            echo "Build not required - skipping Deploy Preview to Vercel"
+          fi

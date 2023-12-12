@@ -1,3 +1,10 @@
+import {
+  AppContainer,
+  AppContainerFooter,
+  AppContainerNavBack,
+  AppContainerNavBackSkeleton,
+  AppContainerOverflow,
+} from '@features/app-nav';
 import { EventOrganizerButton, PassOptions } from '@features/organizer/event';
 import { EventPassNft } from '@features/pass-types';
 import { ConvertedCurrency } from '@next/currency';
@@ -8,14 +15,8 @@ import {
   AspectRatioSkeleton,
   Button,
   ButtonSkeleton,
-  Card,
   CardContent,
-  CardFooter,
   CardHeader,
-  CardNavBack,
-  CardNavBackSkeleton,
-  CardOverflow,
-  CardOverlay,
   Label,
   Separator,
   Text,
@@ -48,11 +49,12 @@ export const SinglePass: React.FC<SinglePassProps> = ({
   const backgroundImage = eventPassNft?.eventPass?.event?.heroImage.url || '';
   const backText = isOwner ? t('back-event-button') : t('see-event-button');
   const backRoute = isOwner
-    ? `/pass/event/${eventPassNft?.eventPass?.event?.slug}`
+    ? `/pass`
     : `/organizer/${eventPassNft?.eventPass?.event?.organizer?.slug}/event/${eventPassNft?.eventPass?.event?.slug}`;
   return (
-    <Card variant="stickyFooter" noBorder className="w-full">
-      <CardOverflow>
+    <AppContainer>
+      <AppContainerNavBack text={backText} href={{ href: backRoute }} />
+      <AppContainerOverflow variant={isOwner ? 'stickyFooter' : 'default'}>
         <div
           style={
             {
@@ -62,24 +64,16 @@ export const SinglePass: React.FC<SinglePassProps> = ({
           // eslint-disable-next-line tailwindcss/no-custom-classname
           className="flex-col bg-overlay-background md:max-h-[400px]"
         >
-          <div className="absolute z-10 mt-3 pl-3">
-            <CardNavBack
-              text={backText}
-              variant="secondary"
-              href={{ href: backRoute }}
-            />
-          </div>
           <CardHeader>
             <div className="mx-auto mt-10 flex max-h-[380px] w-full max-w-[350px]">
               <AspectRatio variant="square">
                 <Image
-                  className="rounded-sm"
+                  className="rounded-sm object-cover"
                   src={
                     eventPassNft?.eventPass?.nftImage?.url ||
                     '/image-placeholder.svg'
                   }
                   fill
-                  style={{ objectFit: 'cover' }}
                   alt={eventPassNft?.eventPass?.event?.title || ''}
                 />
               </AspectRatio>
@@ -94,7 +88,7 @@ export const SinglePass: React.FC<SinglePassProps> = ({
             </div>
           </CardHeader>
         </div>
-        <CardContent className="space-y-2 md:relative md:space-y-4">
+        <CardContent className="space-y-2 md:relative md:space-y-4" isMain>
           <div className="hidden flex-col space-y-4 pt-10 md:flex">
             <Text variant="h2">
               {t('title', {
@@ -132,27 +126,24 @@ export const SinglePass: React.FC<SinglePassProps> = ({
             passOptions={eventPassNft.eventPass?.passOptions || []}
           />
         </CardContent>
-      </CardOverflow>
+      </AppContainerOverflow>
       {isOwner ? (
-        <>
-          <CardOverlay />
-          <CardFooter className="justify-center" variant="sticky">
-            <Button
-              className={`w-full md:w-1/3`}
-              block
-              onClick={eventPassNft.isRevealed ? downloadPass : revealPass}
-              icon={eventPassNft.isRevealed ? <Download /> : <Reveal />}
-            >
-              {eventPassNft.isRevealed
-                ? t('download-button')
-                : t('reveal-button')}
-            </Button>
-            {/* Here can display if pass revealed or not */}
-            {/* In case user connected and is owner of the pass, put call to action button 'Reveal Pass' or 'Download Pass'/'Add to Google/Apple Wallet' */}
-          </CardFooter>
-        </>
+        <AppContainerFooter className="justify-center">
+          <Button
+            className={`w-full md:w-1/3`}
+            block
+            onClick={eventPassNft.isRevealed ? downloadPass : revealPass}
+            icon={eventPassNft.isRevealed ? <Download /> : <Reveal />}
+          >
+            {eventPassNft.isRevealed
+              ? t('download-button')
+              : t('reveal-button')}
+          </Button>
+          {/* Here can display if pass revealed or not */}
+          {/* In case user connected and is owner of the pass, put call to action button 'Reveal Pass' or 'Download Pass'/'Add to Google/Apple Wallet' */}
+        </AppContainerFooter>
       ) : null}
-    </Card>
+    </AppContainer>
   );
 };
 
@@ -160,9 +151,9 @@ export const SinglePassSkeleton: React.FC<{ isOwner?: boolean }> = ({
   isOwner = false,
 }) => {
   return (
-    <Card variant="stickyFooter" noBorder className="w-full">
-      <CardOverflow>
-        <CardNavBackSkeleton />
+    <AppContainer>
+      <AppContainerOverflow variant={isOwner ? 'stickyFooter' : 'default'}>
+        <AppContainerNavBackSkeleton />
         <CardHeader>
           <div className="mx-auto mt-10 flex max-h-[380px] w-full max-w-[350px]">
             <AspectRatioSkeleton variant="square" className="mx-auto my-2" />
@@ -176,12 +167,12 @@ export const SinglePassSkeleton: React.FC<{ isOwner?: boolean }> = ({
           <AlertSkeleton />
           <ButtonSkeleton />
         </CardContent>
-      </CardOverflow>
+      </AppContainerOverflow>
       {isOwner ? (
-        <CardFooter className="justify-center" variant="sticky">
+        <AppContainerFooter>
           <ButtonSkeleton />
-        </CardFooter>
+        </AppContainerFooter>
       ) : null}
-    </Card>
+    </AppContainer>
   );
 };

@@ -2,6 +2,8 @@ export {
   Accordion,
   AccordionContent,
   AccordionItem,
+  AccordionItemSkeleton,
+  AccordionSkeleton,
   AccordionTrigger,
 } from './lib/accordion/Accordion';
 export {
@@ -110,6 +112,10 @@ export {
   navigationMenuTriggerStyle,
 } from './lib/navigation-menu/NavigationMenu';
 export {
+  PopoverInfo,
+  type PopoverInfoProps,
+} from './lib/popover-info/PopoverInfo';
+export {
   Popover,
   PopoverContent,
   PopoverDescription,
@@ -127,6 +133,13 @@ export {
   SelectTrigger,
   SelectValue,
 } from './lib/select/Select';
+
+export {
+  SelectItems,
+  type SelectItemProps,
+  type SelectItemsProps,
+} from './lib/select/SelectItems';
+
 export { Separator } from './lib/separator/Separator';
 export {
   Sheet,
@@ -138,7 +151,6 @@ export {
   SheetNavigation,
   SheetNavigationSkeleton,
   SheetOverflow,
-  SheetOverlay,
   SheetTitle,
   SheetTitleSkeleton,
   SheetTrigger,
@@ -165,10 +177,11 @@ export {
   ToastViewport,
 } from './lib/toast/Toast';
 export { Toaster } from './lib/toast/Toaster';
-export { useToast, type ToastT } from './lib/toast/useToast';
+export { toast, useToast, type ToastT } from './lib/toast/useToast';
 
 export { Ping, type PingProps } from './lib/Ping/Ping';
-export { Badge, BadgeSkeleton } from './lib/badge/Badge';
+export { Badge, BadgeSkeleton, type BadgeProps } from './lib/badge/Badge';
+export { BlockchainAddress } from './lib/blockchain-address/BlockchainAddress';
 export {
   BoundedNumericStepper,
   type BoundedNumericStepperProps,
@@ -181,12 +194,62 @@ export {
   CardFooter,
   CardHeader,
   CardOverflow,
-  CardOverlay,
   CardTitle,
   CardTitleSkeleton,
 } from './lib/card/Card';
-export { CardNavBack, CardNavBackSkeleton } from './lib/card/CardNavBack';
 export { Progress } from './lib/progress/Progress';
+export { Toggle, type ToggleProps } from './lib/toggle/Toggle';
 export { Tooltip, TooltipWrapper } from './lib/tooltip/Tooltip';
 
-export { Tabs, TabsContent, TabsList, TabsTrigger } from './lib/tabs/Tabs';
+export {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsSkeleton,
+  TabsTrigger,
+  TabsTriggerSkeleton,
+} from './lib/tabs/Tabs';
+
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableSkeleton,
+} from './lib/table/Table';
+
+export {
+  DataTableFacetedFilter,
+  type DataTableFacetedFilterProps,
+} from './lib/data-table/DataTableFacetedFilter';
+
+export {
+  DataTableColumnHeader,
+  type DataTableColumnHeaderProps,
+} from './lib/data-table/DataTableColumnHeader';
+
+export {
+  DataTablePagination,
+  type DataTablePaginationProps,
+} from './lib/data-table/DataTablePagination';
+
+export {
+  DataTableRowActions,
+  type DataTableRowActionsProps,
+} from './lib/data-table/DataTableRowActions';
+
+export {
+  DataTableToolbar,
+  type DataTableToolbarProps,
+} from './lib/data-table/DataTableToolbar';
+
+export {
+  DataTableViewOptions,
+  type DataTableViewOptionsProps,
+} from './lib/data-table/DataTableViewOptions';
+
+export { DataTable, type DataTableProps } from './lib/data-table/DataTable';

@@ -1,43 +1,56 @@
-'use server';
+'use client';
 
-import { revealPass, downloadPass } from '@features/pass-api';
+import * as Bytescale from '@bytescale/sdk';
+import env from '@env/client';
+import { getEventPassRevealedFilePath, revealPass } from '@features/pass-api';
 import { EventWithEventPassNfts } from '@features/pass-types';
-import { revalidateTag } from 'next/cache';
+import { getCurrentUser } from '@next/next-auth/user';
+import { getNextAppURL } from '@shared/client';
+
+async function downloadPass(slug: string, id: string, tokenId: string) {
+  try {
+    await Bytescale.AuthManager.beginAuthSession({
+      accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
+      authUrl: `${getNextAppURL()}/api/bytescale/jwt`,
+      authHeaders: async () => Promise.resolve({}),
+    });
+
+    const user = await getCurrentUser();
+    const filePath = await getEventPassRevealedFilePath(id, user?.address);
+
+    const fileApi = new Bytescale.FileApi({
+      fetchApi: fetch,
+      apiKey: env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY,
+    });
+
+    const fileData = await fileApi.downloadFile({
+      accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
+      filePath: filePath,
+    });
+
+    const fileBlob = await fileData.blob();
+
+    const csvURL = URL.createObjectURL(fileBlob);
+    const link = document.createElement('a');
+    link.href = csvURL;
+    link.setAttribute('download', `${slug}-${tokenId}.png`);
+    link.click();
+
+    Bytescale.AuthManager.endAuthSession();
+  } catch (error) {
+    Bytescale.AuthManager.endAuthSession();
+    console.error(error);
+  }
+}
 
 export async function batchDownloadOrReveal(
+  slug: string,
   eventPassNfts: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts'],
 ) {
-  let revealCalled = false;
-  console.log('eventPassNfts', eventPassNfts);
-  const promises = eventPassNfts.map((eventPassNft) => {
-    console.log('eventPassNft', eventPassNft);
+  for (const eventPassNft of eventPassNfts) {
     if (!eventPassNft.isRevealed) {
-      revealCalled = true;
-      return revealPass(eventPassNft.id)
-        .then(() => ({ status: 'fulfilled' }))
-        .catch((error) => {
-          throw error;
-        });
-    } else {
-      return downloadPass(eventPassNft.id)
-        .then(() => ({ status: 'fulfilled' }))
-        .catch((error) => {
-          throw error;
-        });
+      await revealPass(eventPassNft.id);
     }
-  });
-
-  const results = await Promise.allSettled(promises);
-
-  console.log('results', results);
-
-  results.forEach((result, index) => {
-    if (result.status === 'rejected') {
-      throw result.reason;
-    }
-  });
-
-  if (revealCalled) {
-    revalidateTag('userEventPassNfts');
+    await downloadPass(slug, eventPassNft.id, eventPassNft.tokenId);
   }
 }

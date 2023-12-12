@@ -31,6 +31,19 @@ const SENTRY_DSN = process.env.SENTRY_AUTH_TOKEN
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false, path: false };
+
+    return config;
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/ingest/:path*',
+        destination: 'https://eu.posthog.com/:path*',
+      },
+    ];
+  },
   compiler: {
     // TODO set back when in 'real' prod. For now useful for debug
     // removeConsole:
@@ -41,19 +54,18 @@ const nextConfig = {
   },
   transpilePackages: ['@ui/components', '@ui/theme', '@ui/icons'],
   images: {
-    domains: ['media.graphassets.com'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'picsum.photos',
+        hostname: 'media.graphassets.com',
         port: '',
-        pathname: '/seed/hero/**',
+        pathname: '/**',
       },
     ],
   },
   // optimize build with vercel nft (node file tracing) https://nextjs.org/docs/advanced-features/output-file-tracing
-  // outputFileTracingRoot needed for monorepo
   // output: 'standalone',
+  // outputFileTracingRoot needed for monorepo
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
@@ -68,12 +80,14 @@ const nextConfig = {
     optimizePackageImports: [
       '@ui/icons',
       '@ui/components',
+      '@insight/client',
       '@features/account/api',
-      '@features/appNav/ui',
+      '@features/appNav',
       '@features/cart',
       '@features/cart/server',
       '@features/kyc',
       '@features/kyc/server',
+      '@features/navigation',
       '@features/organizer/event',
       '@features/organizer/event/server',
       '@features/pass',
@@ -92,8 +106,6 @@ const nextConfig = {
     ],
     // https://vercel.com/docs/concepts/deployments/skew-protection#enabling-skew-protection
     useDeploymentId: true,
-    // If use with serverActions is desired
-    serverActions: true,
     useDeploymentIdServerActions: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
   },

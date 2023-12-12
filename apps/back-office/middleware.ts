@@ -4,8 +4,12 @@ import { withAuth } from 'next-auth/middleware';
 import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
+// TODO adapt this list to roles with restricted access to some routes + update tests
 const authPages = [
-  '/user',
+  'user',
+  'events',
+  'events/*',
+  'my-roles',
   // Add more restricted pages if needed
 ];
 
@@ -35,7 +39,9 @@ const authMiddleware = withAuth(
 
 export default function middleware(req: NextRequest) {
   const restrictedPathnameRegex = RegExp(
-    `^(/(${locales.join('|')})/)?(${authPages.join('|')})/?$`,
+    `^(/(${locales.join('|')})/)?(${authPages
+      .map((page) => page.replace('*', '.*'))
+      .join('|')})/?$`,
     'i',
   );
   const isAuthPage = restrictedPathnameRegex.test(req.nextUrl.pathname);

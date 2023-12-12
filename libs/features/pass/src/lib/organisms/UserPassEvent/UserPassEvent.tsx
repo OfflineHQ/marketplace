@@ -25,7 +25,7 @@ export type UserPassEventProps = Omit<
 
 const layout = {
   triggerContainer: 'flex space-x-3',
-  image: 'rounded-sm',
+  image: 'rounded-sm object-cover',
   grid: 'grid max-h-full w-full grid-cols-1 md:grid-cols-6 md:gap-4',
   textContainer:
     'mt-4 space-y-2 md:space-y-4 md:ml-2 text-left flex flex-col justify-start md:justify-center col-span-2 md:col-span-4',
@@ -68,7 +68,6 @@ export const UserPassEvent: React.FC<UserPassEventProps> = ({
               }
               className={layout.image}
               fill
-              style={{ objectFit: 'cover' }}
               alt={eventParameters.event?.title as string}
             />
           </div>
@@ -99,13 +98,17 @@ export const UserPassEvent: React.FC<UserPassEventProps> = ({
         </div>
       </AccordionTrigger>
       <AccordionContent className="grid grid-cols-1 gap-y-4 md:grid-cols-4 md:gap-4">
-        {eventParameters.eventPassNftContracts.map((eventPassNftContract) => (
-          <UserPassEventCard
-            eventPassNftContract={eventPassNftContract}
-            eventParameters={eventParameters}
-            {...props}
-          />
-        ))}
+        {eventParameters.eventPassNftContracts.map(
+          (eventPassNftContract, index) => (
+            <div key={index} className="flex h-full w-full">
+              <UserPassEventCard
+                eventPassNftContract={eventPassNftContract}
+                eventParameters={eventParameters}
+                {...props}
+              />
+            </div>
+          ),
+        )}
       </AccordionContent>
     </AccordionItem>
   );

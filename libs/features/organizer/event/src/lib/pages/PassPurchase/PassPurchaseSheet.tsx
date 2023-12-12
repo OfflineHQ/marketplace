@@ -1,35 +1,35 @@
 // PassPurchaseSheet.tsx
-import { Link } from '@next/navigation';
-import { PropsFrom } from '@next/types';
 import {
   SheetDescription,
   SheetDescriptionSkeleton,
   SheetHeader,
+  SheetNavigation,
   SheetNavigationSkeleton,
   SheetOverflow,
   SheetTitle,
   SheetTitleSkeleton,
   type SheetNavigationProps,
 } from '@ui/components';
+import { useLocale } from 'next-intl';
+import Link, { LinkProps } from 'next/link';
 import { PassFooterServer } from '../../organisms/PassFooter/PassFooterServer';
-import { PassFooterSheetClient } from '../../organisms/PassFooter/PassFooterSheetClient';
+import {
+  PassFooterSheet,
+  type PassFooterSheetProps,
+} from '../../organisms/PassFooter/PassFooterSheet';
 import {
   PassList,
   PassListProps,
   PassListSkeleton,
 } from '../../organisms/PassList/PassList';
-import {
-  PassPurchaseSheetNavigationClient,
-  type PassPurchaseSheetNavigationClientProps,
-} from './PassPurchaseSheetNavigationClient';
 
 export interface PassPurchaseSheetProps
-  extends PassPurchaseSheetNavigationClientProps,
-    PassListProps {
-  goPaymentText: string;
-  goPaymentLink: PropsFrom<typeof Link>;
+  extends SheetNavigationProps,
+    PassListProps,
+    PassFooterSheetProps {
   title: string;
   description: string;
+  closeLink: LinkProps;
 }
 
 export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
@@ -38,19 +38,20 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
   description,
   title,
   backButtonText,
-  backButtonLink,
   organizerSlug,
   eventSlug,
   hasConfirmedPasses,
+  closeLink,
   ...footerProps
 }) => {
+  const locale = useLocale();
   return (
     <>
-      <SheetHeader size={size}>
-        <SheetTitle>{title}</SheetTitle>
-        <SheetDescription>{description}</SheetDescription>
-      </SheetHeader>
-      <SheetOverflow className="py-3">
+      <SheetOverflow className="space-y-4">
+        <SheetHeader size={size}>
+          <SheetTitle>{title}</SheetTitle>
+          <SheetDescription>{description}</SheetDescription>
+        </SheetHeader>
         <PassList
           passes={passes}
           organizerSlug={organizerSlug}
@@ -59,16 +60,17 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
         />
       </SheetOverflow>
       <PassFooterServer>
-        <PassFooterSheetClient
+        <PassFooterSheet
           passes={passes}
           organizerSlug={organizerSlug}
           eventSlug={eventSlug}
           {...footerProps}
         />
       </PassFooterServer>
-      <PassPurchaseSheetNavigationClient
-        size={size}
+      <SheetNavigation
+        wrapper={<Link {...closeLink} />}
         backButtonText={backButtonText}
+        size={size}
       />
     </>
   );

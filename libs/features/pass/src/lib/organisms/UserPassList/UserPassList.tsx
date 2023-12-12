@@ -1,14 +1,14 @@
-import { Accordion, Text, Alert } from '@ui/components';
-import {
-  UserPassEvent,
-  type UserPassEventProps,
-} from '../UserPassEvent/UserPassEvent';
+import { Accordion } from '@ui/components';
 import { useTranslations } from 'next-intl';
-import { UserPassEventSkeleton } from '../UserPassEvent/UserPassEvent';
 import {
   NoPassPlaceholder,
   type NoPassPlaceholderProps,
 } from '../../molecules/NoPassPlaceholder/NoPassPlaceholder';
+import {
+  UserPassEvent,
+  UserPassEventSkeleton,
+  type UserPassEventProps,
+} from '../UserPassEvent/UserPassEvent';
 
 export interface UserPassListProps
   extends Pick<NoPassPlaceholderProps, 'noPassImage'> {
@@ -24,6 +24,7 @@ export const UserPassList: React.FC<UserPassListProps> = ({
   batchDownloadOrReveal,
 }) => {
   const t = useTranslations('Pass.UserPass');
+
   return eventsParameters.length ? (
     <Accordion
       type="multiple"

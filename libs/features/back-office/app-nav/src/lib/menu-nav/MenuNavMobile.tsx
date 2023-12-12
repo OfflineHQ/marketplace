@@ -1,0 +1,37 @@
+'use client';
+import { usePathname, useRouter } from '@next/navigation';
+import {
+  Select,
+  SelectItems,
+  SelectItemsProps,
+  SelectTrigger,
+  SelectValue,
+} from '@ui/components';
+import { Menu } from '@ui/icons';
+
+export type MenuNavMobileProps = SelectItemsProps & {
+  goToText: string;
+};
+
+export const MenuNavMobile: React.FC<MenuNavMobileProps> = ({
+  items,
+  goToText,
+  ...props
+}) => {
+  const pathname = usePathname();
+  const defaultValue = items.find((item) => item.value === pathname)?.value;
+  const router = useRouter();
+  if (items.length === 0) return null;
+  return (
+    <Select
+      defaultValue={defaultValue}
+      onValueChange={(value) => router.push(value)}
+    >
+      <SelectTrigger className="flex min-w-min space-x-2">
+        <Menu />
+        <SelectValue placeholder={goToText} />
+      </SelectTrigger>
+      <SelectItems items={items} {...props} />
+    </Select>
+  );
+};

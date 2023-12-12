@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-pascal-case */
-import * as React from 'react';
-import { VariantProps, cva } from 'class-variance-authority';
-import { cn } from '@ui/shared';
 import { IconProps } from '@ui/icons';
+import { backgroundColors, cn, textColors } from '@ui/shared';
+import { VariantProps, cva } from 'class-variance-authority';
+import * as React from 'react';
 
 const badgeSizes = {
   sm: 'text-xs px-2.5 py-0.5',
@@ -18,19 +18,15 @@ const badgeVariants = {
   destructive:
     'bg-destructive hover:bg-destructive/80 border-transparent text-destructive-foreground',
   outline: 'text-foreground',
-  blue: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-  dark: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-  red: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
-  green: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-  yellow:
-    'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
-  orange:
-    'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
-  indigo:
-    'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300',
-  purple:
-    'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
-  pink: 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300',
+  blue: textColors.blue + ' ' + backgroundColors.blue,
+  dark: textColors.dark + ' ' + backgroundColors.dark,
+  red: textColors.red + ' ' + backgroundColors.red,
+  green: textColors.green + ' ' + backgroundColors.green,
+  yellow: textColors.yellow + ' ' + backgroundColors.yellow,
+  orange: textColors.orange + ' ' + backgroundColors.orange,
+  indigo: textColors.indigo + ' ' + backgroundColors.indigo,
+  purple: textColors.purple + ' ' + backgroundColors.purple,
+  pink: textColors.pink + ' ' + backgroundColors.pink,
 };
 
 const badgeVariantsCva = cva(
@@ -54,12 +50,12 @@ export interface BadgeProps
 }
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, variant, size, children, icon, ...props }, ref) => {
+  ({ className, variant, size = 'default', children, icon, ...props }, ref) => {
     const Icon = icon;
     const iconOnly = !children && Icon;
 
     const baseClasses = badgeVariantsCva({ variant, size, className });
-    const iconClasses = iconOnly ? 'p-1 rounded-full' : 'mr-1';
+    const iconClasses = iconOnly ? 'p-1 rounded-full' : null;
     return (
       <span
         className={cn([baseClasses, iconOnly ? iconClasses : ''])}
@@ -69,6 +65,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         {Icon && (
           <Icon.type
             size={size}
+            marginRight={iconOnly ? null : size}
             className={cn(iconOnly ? '' : iconClasses, Icon.props.className)}
             {...Icon.props}
           />

@@ -47,7 +47,7 @@
             to_source:
               field_mapping:
                 id: eventId
-              relationship_type: array
+              relationship_type: object
               source: default
               table:
                 name: eventParameters

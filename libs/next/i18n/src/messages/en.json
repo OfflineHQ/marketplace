@@ -33,7 +33,7 @@
       "dark": "Dark",
       "auto": "Automatic"
     },
-    "currency-select-text": "Select the currency you want to shop with",
+    "currency-select-text": "Select your currency",
     "eur": "EUR",
     "usd": "USD"
   },
@@ -49,7 +49,16 @@
         "sign-out-title": "You have been signed out",
         "sign-out-description": "See you soon 👋 !",
         "sign-in": "Sign in",
-        "settings": "Settings"
+        "settings": "Settings",
+        "copied-address": "Address copied!",
+        "switch-to-my-account": "Switch to my account",
+        "my-current-role": "My current role",
+        "switch-to-role": "Switch to role",
+        "switch-to-role-toast-title": "Switched to role:",
+        "switch-to-role-toast-error-title": "Error while trying to switch to role",
+        "switch-to-my-account-toast-title": "User account",
+        "switch-to-my-account-toast-description": "You are now connected with your own account",
+        "switch-to-my-account-toast-error-title": "Error while trying to switch to your account"
       }
     },
     "Pass": {
@@ -60,6 +69,12 @@
       "text": "Cart",
       "helper-text": "Go to your cart",
       "helper-text-purchase": "Finish your purchase"
+    },
+    "MenuNav": {
+      "go-to-text": "Go to ...",
+      "my-roles-text": "My Roles",
+      "manage-roles-text": "Manage Roles",
+      "events-management-text": "Events Management"
     }
   },
   "Cart": {
@@ -79,7 +94,10 @@
       "Event": {
         "num-pass": "{numPass, plural, =1 {# pass} other {# passes}}",
         "edit": "Edit",
-        "remove": "Remove"
+        "remove": "Remove",
+        "TimeBeforeDeletion": {
+          "time-before-deletion": "expires: {relativeTime}"
+        }
       }
     },
     "Successful": {
@@ -98,6 +116,7 @@
       "title": "Pass",
       "no-pass": "You don't have any pass yet",
       "upcoming": "Upcoming",
+      "minting-success-message-badge": "{numPass, plural, =1 {1 pass incoming} other {# passes incoming}}",
       "past": "Past",
       "DateRange": {
         "from": "From",
@@ -154,7 +173,7 @@
       "title": "{title} #{number, number}",
       "sold-for": "Sold for:",
       "see-event-button": "See the event",
-      "back-event-button": "Come back to the event",
+      "back-event-button": "Come back to my passes",
       "download-button": "Download the pass",
       "reveal-button": "Reveal the pass",
       "IsPassRevealedAlert": {
@@ -185,7 +204,7 @@
           "purchase-button": "Go to payment",
           "total": {
             "pass-selected": "{totalPasses, plural, =1 {# pass selected} other {# passes selected}}",
-            "price": "Total Price: {totalPrice}"
+            "price": "Total Price: {convertedAmount}"
           },
           "finalize-payment": "Finalize my purchase"
         }
@@ -194,6 +213,19 @@
     "EventDates": {
       "from": "From",
       "to": "To"
+    },
+    "SocialMediaButton": {
+      "go-to-platform": "Go to {platform}"
+    },
+    "OrganizerFollowButton": {
+      "follow": "Follow",
+      "unfollow": "Unfollow",
+      "helperTextFollow": "Click to follow \"{name}\"",
+      "helperTextUnfollow": "Click to unfollow \"{name}\""
+    },
+    "OrganizerEventsSection": {
+      "title": "Lastest Events",
+      "noEvents": "There is currently no events to display"
     }
   },
   "KYC": {
@@ -213,5 +245,87 @@
     "back-to-home": "Go to Homepage",
     "retry": "Try again",
     "error-message": "Something went wrong"
+  },
+  "Roles": {
+    "RoleBadge": {
+      "organizer-admin": "Organizer Admin",
+      "organizer-auditor": "Organizer Auditor",
+      "organizer-content-manager": "Organizer Content Manager",
+      "organizer-finance-manager": "Organizer Finance Manager",
+      "organizer-guest": "Organizer Guest",
+      "organizer-human-resources": "Organizer Human Resources",
+      "organizer-operations-manager": "Organizer Operations Manager",
+      "organizer-super-admin": "Organizer Super Admin",
+      "organizer-validator": "Organizer Validator"
+    }
+  },
+  "OrganizerEvents": {
+    "no-events": "You don't have any event yet",
+    "Table": {
+      "header-title": "Title",
+      "header-slug": "Slug",
+      "header-date-start": "Start Date",
+      "header-edit": "Edit",
+      "title": "Events Management",
+      "search-placeholder": "Filter events..."
+    },
+    "Sheet": {
+      "EventPassCard": {
+        "EventPassNftsInfos": {
+          "title": "NFTs Informations",
+          "name": "Name",
+          "description": "Description",
+          "max-amount": "Amount",
+          "max-amount-per-user": "Amount per user",
+          "price": "Price",
+          "no-event-pass-pricing": "No pricing and amount defined for this pass",
+          "image": "Image"
+        },
+        "EventPassNftFiles": {
+          "title": "Pass associated to your NFTs"
+        },
+        "EventPassNftFilesTable": {
+          "header-file-path": "File",
+          "header-show": "Show the file",
+          "header-delete": "Delete the file"
+        },
+        "EventPassCardFooter": {
+          "deploy-contract": "Deploy the NFTs contract",
+          "no-pricing-set": "You need to define your NFTs parameters first",
+          "copied-contract-address": "Contract address copied",
+          "num-files-does-not-match": "The number of files uploaded for your pass doesn't match the number of pass you intend to mint"
+        }
+      },
+      "go-back-to-events": "Go back to events"
+    },
+    "EventPassTypeBadge": {
+      "type-normal-badge": "Upfront details",
+      "type-delayed-reveal-badge": "Surprise Reveal",
+      "type-normal-description": "Present all details of the event pass immediately. Ensure buyers see the full benefits and features of the pass right from the outset",
+      "type-delayed-reveal-description": " Initially display placeholder information for the event pass. The final details will be revealed later, creating a sense of mystery and anticipation. This approach can engage attendees with the element of surprise, unveiling final pass benefits and features at a predetermined time or event milestone."
+    }
+  },
+  "UI": {
+    "Table": {
+      "no-results": "No results.",
+      "column-header-asc": "Sort ascending",
+      "column-header-desc": "Sort descending",
+      "column-header-hide": "Hide column",
+      "pagination-row-of": "of",
+      "pagination-row-selected": "selected",
+      "pagination-rows-per-page": "Rows par page",
+      "pagination-page": "Page",
+      "pagination-first-page": "First page",
+      "pagination-previous-page": "Previous page",
+      "pagination-next-page": "Next page",
+      "pagination-page-of": "of",
+      "pagination-last-page": "Last page",
+      "filters-reset": "Reset",
+      "filters-value-selected": "value(s) selected",
+      "filters-no-result-found": "no result found",
+      "filters-clear-filters": "clear filters",
+      "toggle-columns-view": "View",
+      "toggle-columns-toggle-columns": "Toggle columns"
+    }
   }
 }

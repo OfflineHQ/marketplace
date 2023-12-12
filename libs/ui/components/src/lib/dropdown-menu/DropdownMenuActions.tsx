@@ -1,21 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from './DropdownMenu';
 import { Button, type ButtonProps } from '../button/Button';
+import { DropdownMenu, DropdownMenuTrigger } from './DropdownMenu';
 
 import {
   DropdownMenuItems,

@@ -3,7 +3,7 @@
 import { Calendar as CalendarIcon } from '@ui/icons';
 import { cn } from '@ui/shared';
 import { NextIntlClientProvider, useLocale } from 'next-intl';
-import { getFormatter, getTimeZone, getTranslator } from 'next-intl/server';
+import { getFormatter, getTimeZone, getTranslations } from 'next-intl/server';
 import { FC, Suspense } from 'react';
 import { DateRangeSkeleton } from './DateRange';
 import { DateRangeContent } from './DateRangeContent';
@@ -29,9 +29,12 @@ async function DateRangeServer({
   className,
 }: DateRangeProps) {
   const locale = useLocale();
-  const t = await getTranslator(locale, 'Pass.UserPass.DateRange');
-  const userTimezone = await getTimeZone(locale);
-  const format = await getFormatter(locale);
+  const t = await getTranslations({
+    locale,
+    namespace: 'Pass.UserPass.DateRange',
+  });
+  const userTimezone = await getTimeZone({ locale });
+  const format = await getFormatter({ locale });
   const textProps = {
     fromText: t('from'),
     toText: t('to'),
