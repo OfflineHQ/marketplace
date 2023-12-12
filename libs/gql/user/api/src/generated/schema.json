@@ -43380,9 +43380,13 @@
             "description": "Type of the event pass NFT contract.",
             "args": [],
             "type": {
-              "kind": "ENUM",
-              "name": "eventPassNftContractType_enum",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "eventPassNftContractType_enum",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null

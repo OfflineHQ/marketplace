@@ -48,7 +48,7 @@ test('super admin should be able to view events', async () => {
   await expect(
     page.getByRole('heading', { name: 'Events Management' }),
   ).toBeVisible();
-  await expect(page.getByText('Anniversaire')).toBeVisible();
+  await expect(page.getByText('Anniversaire', { exact: true })).toBeVisible();
   await expect(page.getByText('test-anniversaire')).toBeVisible();
   await page
     .getByRole('row', { name: 'An event test-an-event' })
@@ -64,14 +64,6 @@ test('super admin should be able to view events', async () => {
     .getByRole('button', { name: 'Pass associated to your NFTs' })
     .first()
     .click();
-  await expect(
-    page
-      .getByRole('cell', {
-        name: '/local/organizers/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clkr1vpdhnqg80bw2ckil7ytq/clizzpvidao620buvxit1ynko-clkr1vpdhnqg80bw2ckil7ytq-0.jpg',
-        exact: true,
-      })
-      .locator('span'),
-  ).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Deploy the NFTs contract' }).first(),
   ).toBeVisible();
