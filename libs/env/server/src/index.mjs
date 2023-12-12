@@ -37,6 +37,8 @@ const env = createEnv({
     EXCHANGE_RATE_API_KEY: z.string().min(1),
     OPENZEPPELIN_URL: z.string().min(1),
     WEB_APP_URL: z.string().optional(),
+    POSTHOG_KEY: z.string().min(1),
+    POSTHOG_PERSONAL_API_KEY: z.string().min(1),
   },
   runtimeEnv: {
     APP: process.env.APP,
@@ -76,6 +78,8 @@ const env = createEnv({
     EXCHANGE_RATE_API_KEY: process.env.EXCHANGE_RATE_API_KEY,
     OPENZEPPELIN_URL: process.env.OPENZEPPELIN_URL,
     WEB_APP_URL: process.env.WEB_APP_URL,
+    POSTHOG_KEY: process.env.POSTHOG_KEY,
+    POSTHOG_PERSONAL_API_KEY: process.env.POSTHOG_PERSONAL_API_KEY,
   },
 });
 

@@ -1,7 +1,6 @@
 {
   "extends": [".eslintrc.json"],
   "rules": {
-    "import/no-named-as-default": "error",
     "import/no-cycle": "error",
     "import/no-unused-modules": "error",
     "import/no-deprecated": "error"

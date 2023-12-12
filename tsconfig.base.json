@@ -117,6 +117,9 @@
       "@indexer/alchemy/webhooks": [
         "libs/indexer/alchemy/webhooks/src/index.ts"
       ],
+      "@insight/client": ["libs/insight/client/src/index.ts"],
+      "@insight/server": ["libs/insight/server/src/index.ts"],
+      "@insight/types": ["libs/insight/types/src/index.ts"],
       "@kyc/admin": ["libs/kyc/admin/src/index.ts"],
       "@kyc/common": ["libs/features/kyc-common/src/index.ts"],
       "@kyc/types": ["libs/kyc/types/src/index.ts"],
@@ -173,8 +176,7 @@
       "@ui/shared": ["libs/ui/shared/src/index.ts"],
       "@ui/theme": ["libs/ui/theme/src/index.ts"],
       "@utils": ["libs/utils/src/index.ts"],
-      "@web/*": ["apps/web/*"],
-      "@workspace": ["libs/workspace/src/index.ts"]
+      "@web/*": ["apps/web/*"]
     }
   },
   "typeRoots": ["node_modules/@types", "./types"],

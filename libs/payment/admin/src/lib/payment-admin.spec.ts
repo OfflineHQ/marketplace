@@ -9,14 +9,18 @@ import {
   OrderStatus_Enum,
   StripeCheckoutSessionType_Enum,
 } from '@gql/shared/types';
+import { Posthog } from '@insight/server';
 import { calculateUnitAmount } from '@next/currency-common';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import { StripeCustomer } from '@payment/types';
 import { accounts } from '@test-utils/gql';
 import { Payment } from './payment-admin';
 
+jest.mock('stripe');
+jest.mock('@insight/server');
 jest.mock('@nft/thirdweb-admin');
 jest.mock('@features/kyc-api');
+jest.mock('@gql/admin/api');
 jest.mock('@next/currency-cache', () => {
   return {
     CurrencyCache: jest.fn().mockImplementation(() => {
@@ -31,12 +35,36 @@ jest.mock('@next/currency-cache', () => {
 });
 
 describe('Payment', () => {
+  const stripeCustomerId = 'stripeCustomerId';
+  const stripeSessionId = 'sessionId';
+  const createdStripeCustomer = {
+    insert_stripeCustomer_one: {
+      id: stripeCustomerId,
+      accountId: accounts.alpha_user.id,
+    },
+  };
   let payment: Payment;
   let nftClaimableMock: jest.Mocked<NftClaimable>;
+
+  beforeAll(() => {
+    (Posthog.getInstance as jest.Mock).mockImplementation(() => ({
+      getFeatureFlag: jest.fn().mockReturnValue(false),
+    }));
+  });
 
   beforeEach(() => {
     nftClaimableMock = new NftClaimable() as jest.Mocked<NftClaimable>;
     payment = new Payment();
+    payment.stripe.checkout = {
+      sessions: {
+        create: jest.fn().mockResolvedValue({}),
+        expire: jest.fn().mockResolvedValue({}),
+        retrieve: jest.fn().mockResolvedValue({}),
+      },
+    } as any;
+    payment.stripe.refunds = {
+      create: jest.fn().mockResolvedValue({}),
+    } as any;
   });
   afterEach(() => {
     jest.restoreAllMocks();
@@ -49,10 +77,8 @@ describe('Payment', () => {
 
   describe('webhookStripeConstructEvent', () => {
     beforeEach(() => {
-      payment.stripe = {
-        webhooks: {
-          constructEvent: jest.fn(),
-        },
+      payment.stripe.webhooks = {
+        constructEvent: jest.fn(),
       } as any;
     });
     it('should call stripe.webhooks.constructEvent with correct parameters', () => {
@@ -82,7 +108,6 @@ describe('Payment', () => {
   });
   describe('getStripeCustomer', () => {
     it('should call stripe.customers.retrieve with correct parameters', async () => {
-      const stripeCustomerId = 'stripeCustomerId';
       payment.stripe.customers = {
         retrieve: jest.fn().mockResolvedValue({}),
       } as any;
@@ -93,7 +118,6 @@ describe('Payment', () => {
     });
 
     it('should throw error when stripe.customers.retrieve fails', async () => {
-      const stripeCustomerId = 'stripeCustomerId';
       payment.stripe.customers = {
         retrieve: jest.fn().mockRejectedValue(new Error('Stripe error')),
       } as any;
@@ -103,11 +127,19 @@ describe('Payment', () => {
     });
   });
   describe('getOrCreateStripeCustomer', () => {
-    it('should throw error when user kyc is missing', async () => {
-      const user = { id: 'userId', address: 'address' };
-      await expect(
-        payment.getOrCreateStripeCustomer({ user: accounts.google_user }),
-      ).rejects.toThrow(`Missing kyc for user: ${accounts.google_user.id}`);
+    it("shouldn't throw error when user kyc is missing and kycFlag activated", async () => {
+      const stripeCustomer = { id: 'stripeCustomerId' };
+      payment.stripe.customers = {
+        create: jest.fn().mockResolvedValue(stripeCustomer),
+      } as any;
+      adminSdk.CreateStripeCustomer = jest
+        .fn()
+        .mockResolvedValue(createdStripeCustomer);
+
+      const res = await payment.getOrCreateStripeCustomer({
+        user: accounts.google_user,
+      });
+      expect(res).toBe(createdStripeCustomer.insert_stripeCustomer_one);
     });
 
     it('should return existing stripe customer if it exists', async () => {
@@ -121,7 +153,48 @@ describe('Payment', () => {
       expect(result).toEqual(existingStripeCustomer.stripeCustomer[0]);
     });
 
-    it('should create a new stripe customer and store it if it does not exist', async () => {
+    it('should throw error when user kyc is missing and kycFlag activated', async () => {
+      (Posthog.getInstance as jest.Mock).mockImplementationOnce(() => ({
+        getFeatureFlag: jest.fn().mockReturnValue(true),
+      }));
+      await expect(
+        payment.getOrCreateStripeCustomer({ user: accounts.google_user }),
+      ).rejects.toThrow(`Missing kyc for user: ${accounts.google_user.id}`);
+    });
+
+    it('should create a new stripe customer and store it if it does not exist if kycFlag not activated', async () => {
+      const stripeCustomer = { id: 'stripeCustomerId' };
+      payment.stripe.customers = {
+        create: jest.fn().mockResolvedValue(stripeCustomer),
+      } as any;
+      adminSdk.GetStripeCustomerByAccount = jest.fn().mockResolvedValue(null);
+      adminSdk.CreateStripeCustomer = jest
+        .fn()
+        .mockResolvedValue(createdStripeCustomer);
+
+      const result = await payment.getOrCreateStripeCustomer({
+        user: accounts.alpha_user,
+      });
+
+      expect(payment.stripe.customers.create).toHaveBeenCalledWith({
+        email: accounts.alpha_user.email,
+        metadata: {
+          userId: accounts.alpha_user.id,
+        },
+      });
+      expect(adminSdk.CreateStripeCustomer).toHaveBeenCalledWith({
+        stripeCustomer: {
+          stripeCustomerId: stripeCustomer.id,
+          accountId: accounts.alpha_user.id,
+        },
+      });
+      expect(result).toEqual(createdStripeCustomer.insert_stripeCustomer_one);
+    });
+
+    it('should create a new stripe customer and store it if it does not exist while retrieving getSumSubApplicantPersonalData if kycFlag activated', async () => {
+      (Posthog.getInstance as jest.Mock).mockImplementationOnce(() => ({
+        getFeatureFlag: jest.fn().mockReturnValue(true),
+      }));
       const userPersonalData = {
         email: 'email',
         lang: 'en',
@@ -139,7 +212,6 @@ describe('Payment', () => {
         createdAt: 'dummy',
       };
       const stripeCustomer = { id: 'stripeCustomerId' };
-      const createdStripeCustomer = { insert_stripeCustomer_one: {} };
 
       adminSdk.GetStripeCustomerByAccount = jest.fn().mockResolvedValue(null);
       (kycApi.getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(
@@ -178,7 +250,6 @@ describe('Payment', () => {
   });
   describe('updateStripeCustomer', () => {
     it('should call stripe.customers.update with correct parameters', async () => {
-      const stripeCustomerId = 'stripeCustomerId';
       payment.stripe.customers = {
         update: jest.fn().mockResolvedValue({}),
       } as any;
@@ -198,7 +269,6 @@ describe('Payment', () => {
     });
 
     it('should return the updated customer', async () => {
-      const stripeCustomerId = 'stripeCustomerId';
       const updatedCustomer = { id: 'updatedCustomerId' };
       payment.stripe.customers = {
         update: jest.fn().mockResolvedValue(updatedCustomer),
@@ -211,7 +281,6 @@ describe('Payment', () => {
     });
 
     it('should throw error when stripe.customers.update fails', async () => {
-      const stripeCustomerId = 'stripeCustomerId';
       payment.stripe.customers = {
         update: jest.fn().mockRejectedValue(new Error('Stripe error')),
       } as any;
@@ -360,9 +429,6 @@ describe('Payment', () => {
       },
     ];
     beforeEach(() => {
-      payment.stripe.checkout.sessions = {
-        create: jest.fn().mockResolvedValue({}),
-      } as any;
       adminSdk.SetEventPassOrdersStripeCheckoutSessionId = jest
         .fn()
         .mockResolvedValue({});
@@ -557,7 +623,6 @@ describe('Payment', () => {
   });
   describe('getStripeActiveCheckoutSessionForUser', () => {
     it('should call adminSdk.GetStripeCheckoutSessionForUser with correct parameters and return null if no active session', async () => {
-      const stripeCustomerId = 'customerId';
       adminSdk.GetStripeCheckoutSessionForUser = jest
         .fn()
         .mockResolvedValue({ stripeCheckoutSession: [] });
@@ -573,8 +638,6 @@ describe('Payment', () => {
     });
 
     it('should call adminSdk.GetStripeCheckoutSessionForUser and stripe.checkout.sessions.retrieve with correct parameters and return the result', async () => {
-      const stripeCustomerId = 'customerId';
-      const stripeSessionId = 'sessionId';
       adminSdk.GetStripeCheckoutSessionForUser = jest
         .fn()
         .mockResolvedValue({ stripeCheckoutSession: [{ stripeSessionId }] });

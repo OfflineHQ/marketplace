@@ -36,6 +36,14 @@ const nextConfig = {
 
     return config;
   },
+  async rewrites() {
+    return [
+      {
+        source: '/ingest/:path*',
+        destination: 'https://eu.posthog.com/:path*',
+      },
+    ];
+  },
   compiler: {
     // TODO set back when in 'real' prod. For now useful for debug
     // removeConsole:
@@ -56,8 +64,8 @@ const nextConfig = {
     ],
   },
   // optimize build with vercel nft (node file tracing) https://nextjs.org/docs/advanced-features/output-file-tracing
-  // outputFileTracingRoot needed for monorepo
   // output: 'standalone',
+  // outputFileTracingRoot needed for monorepo
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
     outputFileTracingExcludes: {
@@ -72,6 +80,7 @@ const nextConfig = {
     optimizePackageImports: [
       '@ui/icons',
       '@ui/components',
+      '@insight/client',
       '@features/account/api',
       '@features/appNav',
       '@features/cart',
