@@ -287,7 +287,7 @@ describe('NftCollection', () => {
 
       await expect(
         nftCollection.deployDropContractAndPrepareMetadata(mockProps),
-      ).rejects.toThrow('Error deploying a collection: Test error');
+      ).rejects.toThrow('Error deploying a drop contract : Test error');
     });
   });
 });
