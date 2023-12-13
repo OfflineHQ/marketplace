@@ -80,6 +80,10 @@ export class NftClaimable {
   }) {
     const { password, contractAddress } = props;
 
+    if (!this.sdk) {
+      throw new Error('SDK is undefined');
+    }
+
     try {
       const contract = await this.sdk.getContract(contractAddress);
 
