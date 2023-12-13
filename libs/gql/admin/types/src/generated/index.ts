@@ -285,6 +285,13 @@ export type GetEventPassNftContractDelayedRevealedFromEventPassIdQueryVariables 
 
 export type GetEventPassNftContractDelayedRevealedFromEventPassIdQuery = { __typename?: 'query_root', eventPassNftContract: Array<{ __typename?: 'eventPassNftContract', type: Types.EventPassNftContractType_Enum, isDelayedRevealed: boolean }> };
 
+export type GetEventPassNftContractDelayedRevealPasswordQueryVariables = Types.Exact<{
+  contractAddress?: Types.InputMaybe<Types.Scalars['String']>;
+}>;
+
+
+export type GetEventPassNftContractDelayedRevealPasswordQuery = { __typename?: 'query_root', eventPassNftContract: Array<{ __typename?: 'eventPassNftContract', type: Types.EventPassNftContractType_Enum, isDelayedRevealed: boolean, password?: string | null }> };
+
 export type GetEventPassOrderSumsQueryVariables = Types.Exact<{
   eventPassId: Types.Scalars['String'];
 }>;
