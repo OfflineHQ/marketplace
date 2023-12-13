@@ -36,6 +36,7 @@ describe('NftClaimable integration test', () => {
       'eventPassNftContract',
       'eventPassPricing',
       'eventPassOrder',
+      'eventPassNft',
     ]);
     const res = await adminSdk.GetEventPassOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId:
@@ -50,6 +51,7 @@ describe('NftClaimable integration test', () => {
       'eventPassNftContract',
       'eventPassPricing',
       'eventPassOrder',
+      'eventPassNft',
     ]);
   });
 
@@ -57,7 +59,7 @@ describe('NftClaimable integration test', () => {
     await client.end();
   });
 
-  it('should update the database when claimAllMetadatas is called', async () => {
+  it('should update the database when claimOrder is called', async () => {
     await nftClaimable.claimOrder(order);
 
     const updatedOrder = await adminSdk.GetAccountEventPassOrderForEventPasses({
@@ -103,6 +105,95 @@ describe('NftClaimable integration test', () => {
         expect.objectContaining({ message: 'claimTo failed' }),
       );
       consoleSpy.mockRestore();
+    });
+  });
+  describe('revealDelayedContract', () => {
+    let nftClaimable: NftClaimable;
+    let contractAddress: string;
+    let password: string;
+
+    beforeEach(() => {
+      nftClaimable = new NftClaimable();
+      contractAddress = '0xfakecontractaddress1';
+      password = 'password';
+
+      nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
+        erc721: {
+          revealer: {
+            reveal: jest.fn().mockResolvedValue(true),
+          },
+        },
+      });
+    });
+
+    it('should call reveal on the contract with correct parameters', async () => {
+      await nftClaimable.revealDelayedContract({ password, contractAddress });
+
+      expect(nftClaimable.sdk.getContract).toHaveBeenCalledWith(
+        contractAddress,
+      );
+      expect(
+        (await nftClaimable.sdk.getContract('0x123')).erc721.revealer.reveal,
+      ).toHaveBeenCalledWith(0, password);
+    });
+
+    it('should update the status of isDelayedReveal and return the list of currentOwnerAddress', async () => {
+      const owners = await nftClaimable.revealDelayedContract({
+        password,
+        contractAddress,
+      });
+
+      const eventPassNftContract = (
+        await adminSdk.GetEventPassNftContractDelayedRevealedFromEventPassId({
+          eventPassId: 'clj8raobj7g8l0aw3bfw6dny4',
+        })
+      ).eventPassNftContract[0];
+
+      expect(eventPassNftContract.isDelayedRevealed).toBe(true);
+      expect(owners).toEqual([
+        {
+          currentOwnerAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
+          tokenId: 12432,
+        },
+        {
+          currentOwnerAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
+          tokenId: 1234124,
+        },
+        {
+          currentOwnerAddress: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
+          tokenId: 11234514,
+        },
+      ]);
+    });
+
+    it('should throw an error when reveal fails', async () => {
+      nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
+        erc721: {
+          revealer: {
+            reveal: jest.fn().mockRejectedValue(new Error('reveal failed')),
+          },
+        },
+      });
+
+      await expect(
+        nftClaimable.revealDelayedContract({ password, contractAddress }),
+      ).rejects.toThrowError(
+        `Error revealing the delayed contract at address ${contractAddress} : reveal failed`,
+      );
+    });
+
+    it('should throw an error when update reveal status fails', async () => {
+      adminSdk.UpdateEventPassNftContractDelayedRevealStatus = jest
+        .fn()
+        .mockRejectedValue(new Error('update failed'));
+
+      await expect(
+        nftClaimable.revealDelayedContract({ password, contractAddress }),
+      ).rejects.toThrowError(
+        new Error(
+          `Error revealing the delayed contract at address ${contractAddress} : update failed`,
+        ),
+      );
     });
   });
 });
