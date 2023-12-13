@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "buildCommand": "pnpm npm-run-all lint:all test:all build:back-office --aggregate-output --parallel",
+  "buildCommand": "pnpm nx run next-auth-options:test",
   "outputDirectory": "../../dist/apps/back-office/.next",
   "installCommand": "pnpm install",
   "ignoreCommand": "bash ../../tools/scripts/vercel-ignore.sh",
