@@ -19,7 +19,7 @@ import { NoUserCartFooterClient } from './NoUserCartFooterClient';
 
 export type NoUserCartProps = EventPassesCartProps;
 
-export const NoUserCart: React.FC<NoUserCartProps> = ({ noCartImage }) => {
+export const NoUserCart: React.FC<NoUserCartProps> = (props) => {
   const t = useTranslations('Cart.NoUserCart');
   return (
     <AppContainer>
@@ -29,7 +29,7 @@ export const NoUserCart: React.FC<NoUserCartProps> = ({ noCartImage }) => {
           <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
         <CardContent className="px-1">
-          <EventPassesCart noCartImage={noCartImage} />
+          <EventPassesCart {...props} />
         </CardContent>
       </AppContainerOverflow>
       <AppContainerFooter>

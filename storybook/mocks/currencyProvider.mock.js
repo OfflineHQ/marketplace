@@ -34,7 +34,6 @@ export const CurrencyProvider = ({ children }) => {
 // export const useCurrency = () => useContext(CurrencyContext);
 
 export function useCurrency() {
-  console.log('useCurrency');
   // Your mock implementation here
   return {
     rates: {

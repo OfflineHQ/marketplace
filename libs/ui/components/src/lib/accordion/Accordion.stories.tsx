@@ -1,7 +1,6 @@
-import { expect } from '@storybook/jest';
 // Accordion.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
+import { expect, screen, userEvent } from '@storybook/test';
 
 import { sleep } from '@utils';
 import {

@@ -3,7 +3,7 @@
   "buildCommand": "pnpm npm-run-all lint:all test:all build:web --aggregate-output --parallel",
   "outputDirectory": "../../dist/apps/web/.next",
   "installCommand": "pnpm install",
-  "ignoreCommand": "bash ../../tools/scripts/vercel-ignore.sh",
+  "ignoreCommand": "node ../../tools/scripts/vercel-ignore.js",
   "crons": [
     {
       "path": "/apps/web/crons/handlePendingOrders.ts",

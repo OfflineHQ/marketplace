@@ -1,9 +1,9 @@
+import { NotFound } from '@features/navigation';
 import { Event, EventSkeleton } from '@features/organizer/event';
 import { getEvent } from '@features/organizer/event-api';
 import { getLocalizedUrls } from '@next/i18n';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { NotFound } from '@features/navigation';
 import { Suspense } from 'react';
 
 interface EventSectionProps {
@@ -19,8 +19,13 @@ export async function generateMetadata({
   params,
 }: EventSectionProps): Promise<Metadata> {
   const { locale } = params;
-
-  const event = await getEvent({ eventSlug, locale });
+  let event: Awaited<ReturnType<typeof getEvent>>;
+  try {
+    event = await getEvent({ eventSlug, locale });
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
 
   if (!event || event.organizer?.slug !== organizerSlug) {
     return {
@@ -88,7 +93,13 @@ interface EventSectionContentProps {
 
 async function EventSectionContent({ locale }: EventSectionContentProps) {
   const t = await getTranslations({ locale, namespace: 'Organizer.Event' });
-  const event = await getEvent({ eventSlug, locale });
+  let event: Awaited<ReturnType<typeof getEvent>>;
+  try {
+    event = await getEvent({ eventSlug, locale });
+  } catch (error) {
+    console.error(error);
+    return <NotFound />;
+  }
   // in case the event is not found or the organizer slug is not the same as the one in the url redirect to 404
   if (!event || event.organizer?.slug !== organizerSlug) {
     return <NotFound />;

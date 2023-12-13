@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/test';
 import { PassNav } from './PassNav';
 import { PassNavDemo, passNavProps } from './examples';
 

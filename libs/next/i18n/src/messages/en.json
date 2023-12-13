@@ -272,14 +272,11 @@
     "Sheet": {
       "EventPassCard": {
         "EventPassNftsInfos": {
-          "title": "NFTs Informations",
           "name": "Name",
           "description": "Description",
-          "max-amount": "Amount",
-          "max-amount-per-user": "Amount per user",
-          "price": "Price",
-          "no-event-pass-pricing": "No pricing and amount defined for this pass",
-          "image": "Image"
+          "image": "Image",
+          "normal-title": "NFTs Informations",
+          "delayed-reveal-placeholder-title": "Placeholder NFTs Informations"
         },
         "EventPassNftFiles": {
           "title": "Pass associated to your NFTs"
@@ -291,9 +288,21 @@
         },
         "EventPassCardFooter": {
           "deploy-contract": "Deploy the NFTs contract",
-          "no-pricing-set": "You need to define your NFTs parameters first",
+          "no-pricing-set": "You need to define your sale parameters first",
           "copied-contract-address": "Contract address copied",
           "num-files-does-not-match": "The number of files uploaded for your pass doesn't match the number of pass you intend to mint"
+        },
+        "EventPassSaleParameters": {
+          "title": "Sale Parameters",
+          "max-amount": "Amount",
+          "max-amount-per-user": "Amount per user",
+          "price": "Price"
+        },
+        "EventPassNftDelayedInfos": {
+          "title": "Nfts Informations after the reveal",
+          "image": "Image",
+          "name": "Name",
+          "description": "Description"
         }
       },
       "go-back-to-events": "Go back to events"

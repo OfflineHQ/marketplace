@@ -1,5 +1,3 @@
-import { PassCache } from '@features/pass-cache';
-
 import { AllPassesCart, UserPassPendingOrder } from '@features/cart-types';
 import { Alert } from '@ui/components';
 import { useLocale } from 'next-intl';
@@ -10,11 +8,11 @@ import {
   EventPassList,
   EventPassListSkeleton,
 } from '../EventPassList/EventPassList';
-const passCache = new PassCache();
 
 export interface EventPassesCartProps {
   noCartImage: string | StaticImageData;
   userPassPendingOrders?: UserPassPendingOrder[];
+  getAllPassesCart?: () => Promise<AllPassesCart | null>;
 }
 
 export const EventPassesCart: React.FC<EventPassesCartProps> = (props) => (
@@ -26,23 +24,27 @@ export const EventPassesCart: React.FC<EventPassesCartProps> = (props) => (
 const EventPassesCartContent: React.FC<EventPassesCartProps> = async ({
   noCartImage,
   userPassPendingOrders,
+  getAllPassesCart,
 }) => {
-  const allPassesCart = userPassPendingOrders
-    ? userPassPendingOrders.reduce((acc, order) => {
-        const organizerSlug = order.eventPass?.event?.organizer?.slug;
-        const eventSlug = order.eventPass?.event?.slug;
-        if (organizerSlug && eventSlug) {
-          if (!acc[organizerSlug]) {
-            acc[organizerSlug] = {};
-          }
-          if (!acc[organizerSlug][eventSlug]) {
-            acc[organizerSlug][eventSlug] = [];
-          }
-          acc[organizerSlug][eventSlug].push(order);
+  let allPassesCart: AllPassesCart | null = null;
+  if (userPassPendingOrders) {
+    allPassesCart = userPassPendingOrders.reduce((acc, order) => {
+      const organizerSlug = order.eventPass?.event?.organizer?.slug;
+      const eventSlug = order.eventPass?.event?.slug;
+      if (organizerSlug && eventSlug) {
+        if (!acc[organizerSlug]) {
+          acc[organizerSlug] = {};
         }
-        return acc;
-      }, {} as AllPassesCart)
-    : await passCache.getAllPassesCart();
+        if (!acc[organizerSlug][eventSlug]) {
+          acc[organizerSlug][eventSlug] = [];
+        }
+        acc[organizerSlug][eventSlug].push(order);
+      }
+      return acc;
+    }, {} as AllPassesCart);
+  } else if (getAllPassesCart) {
+    allPassesCart = await getAllPassesCart();
+  }
   const isCartEmpty = Object.values(allPassesCart || {}).every((organizer) =>
     Object.values(organizer).every((event) => event.length === 0),
   );

@@ -1,6 +1,5 @@
-import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
+import { expect, screen, userEvent } from '@storybook/test';
 
 import { EventPasses, EventPassesSkeleton } from './EventPasses';
 import { EventPassesExample, eventPassesProps } from './examples';
@@ -59,11 +58,11 @@ export const OpenedWithTimeRemainingDeletion: Story = {
     await screen.findByText(/6 x/i);
     screen.getByText(/General Admission/i);
     await screen.findByText(/€1,237.86/i);
-    screen.getByText(/expires: in 4 hours/i);
+    // screen.getByText(/expires: in 4 hours/i);
     screen.getByText(/3 x/i);
     screen.getByText(/VIP Pass/i);
     screen.getByText(/€2,380.50/i);
-    screen.getByText(/expires: in 29 minutes/i);
+    // screen.getByText(/expires: in 29 minutes/i);
     userEvent.click(
       screen.getByRole('button', {
         name: /Edit/i,

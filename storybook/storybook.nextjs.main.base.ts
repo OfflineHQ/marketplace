@@ -10,6 +10,8 @@ export const mainConfig = {
     '@storybook/addon-interactions',
     '@storybook/addon-a11y',
     'storybook-dark-mode',
+    'msw-storybook-addon',
+    'storybook-addon-module-mock',
     // Add PostCSS into addons for compiling tailwind below
     {
       name: '@storybook/addon-styling',

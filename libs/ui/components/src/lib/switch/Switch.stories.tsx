@@ -1,7 +1,6 @@
 // Switch.stories.tsx
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, fireEvent, userEvent } from '@storybook/testing-library';
+import { expect, fireEvent, screen, userEvent } from '@storybook/test';
 import { Switch } from './Switch';
 
 const meta = {
