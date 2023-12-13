@@ -22,7 +22,7 @@
         {
           "input": "libs/currency/api/src/rates",
           "glob": "**/*",
-          "output": "rates"
+          "output": "dist/apps/web/rates"
         }
       ],
       "configurations": {
@@ -49,7 +49,7 @@
           {
             "input": "libs/currency/api/src/rates",
             "glob": "**/*",
-            "output": "rates"
+            "output": "dist/apps/web/rates"
           }
         ]
       },
