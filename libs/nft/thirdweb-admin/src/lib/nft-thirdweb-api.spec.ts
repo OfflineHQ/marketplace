@@ -110,12 +110,10 @@ describe('NftClaimable integration test', () => {
   describe('revealDelayedContract', () => {
     let nftClaimable: NftClaimable;
     let contractAddress: string;
-    let password: string;
 
     beforeEach(() => {
       nftClaimable = new NftClaimable();
-      contractAddress = '0xfakecontractaddress1';
-      password = 'password';
+      contractAddress = '0xFakeDelayedReveal';
 
       nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
         erc721: {
@@ -126,42 +124,28 @@ describe('NftClaimable integration test', () => {
       });
     });
 
-    it('should call reveal on the contract with correct parameters', async () => {
-      await nftClaimable.revealDelayedContract({ password, contractAddress });
-
-      expect(nftClaimable.sdk.getContract).toHaveBeenCalledWith(
-        contractAddress,
-      );
-      expect(
-        (await nftClaimable.sdk.getContract('0x123')).erc721.revealer.reveal,
-      ).toHaveBeenCalledWith(0, password);
-    });
-
     it('should update the status of isDelayedReveal and return the list of currentOwnerAddress', async () => {
-      const owners = await nftClaimable.revealDelayedContract({
-        password,
-        contractAddress,
-      });
+      const owners = await nftClaimable.revealDelayedContract(contractAddress);
 
       const eventPassNftContract = (
         await adminSdk.GetEventPassNftContractDelayedRevealedFromEventPassId({
-          eventPassId: 'clj8raobj7g8l0aw3bfw6dny4',
+          eventPassId: 'fakeEventPassDelayedRevealId',
         })
       ).eventPassNftContract[0];
 
       expect(eventPassNftContract.isDelayedRevealed).toBe(true);
-      expect(owners).toEqual([
+      expect(owners.eventPassNft).toEqual([
         {
           currentOwnerAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
-          tokenId: 12432,
+          tokenId: 0,
         },
         {
-          currentOwnerAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
-          tokenId: 1234124,
+          currentOwnerAddress: '0xc0ffee254729296a45a3885639AC7E10F9d54979',
+          tokenId: 1,
         },
         {
           currentOwnerAddress: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
-          tokenId: 11234514,
+          tokenId: 2,
         },
       ]);
     });
@@ -176,7 +160,7 @@ describe('NftClaimable integration test', () => {
       });
 
       await expect(
-        nftClaimable.revealDelayedContract({ password, contractAddress }),
+        nftClaimable.revealDelayedContract(contractAddress),
       ).rejects.toThrowError(
         `Error revealing the delayed contract at address ${contractAddress} : reveal failed`,
       );
@@ -188,7 +172,7 @@ describe('NftClaimable integration test', () => {
         .mockRejectedValue(new Error('update failed'));
 
       await expect(
-        nftClaimable.revealDelayedContract({ password, contractAddress }),
+        nftClaimable.revealDelayedContract(contractAddress),
       ).rejects.toThrowError(
         new Error(
           `Error revealing the delayed contract at address ${contractAddress} : update failed`,
