@@ -45,6 +45,11 @@
             "input": "libs/ui/shared/src/assets",
             "glob": "**/*",
             "output": "assets"
+          },
+          {
+            "input": "libs/currency/api/src/rates",
+            "glob": "**/*",
+            "output": "rates"
           }
         ]
       },
