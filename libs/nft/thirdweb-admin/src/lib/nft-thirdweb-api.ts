@@ -4,7 +4,10 @@ import {
   ClaimEventPassNftsMutation,
   ClaimEventPassNftsMutationVariables,
 } from '@gql/admin/types';
-import { OrderStatus_Enum } from '@gql/shared/types';
+import {
+  EventPassNftContractType_Enum,
+  OrderStatus_Enum,
+} from '@gql/shared/types';
 import { EventPassOrderWithContractData } from '@nft/types';
 import { Ethereum, Goerli, Sepolia } from '@thirdweb-dev/chains';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
@@ -71,6 +74,51 @@ export class NftClaimable {
       } else {
         throw error;
       }
+    }
+  }
+
+  async revealDelayedContract(contractAddress: string) {
+    if (!this.sdk) {
+      throw new Error('SDK is undefined');
+    }
+
+    try {
+      const eventPassNftContract = (
+        await adminSdk.GetEventPassNftContractDelayedRevealPassword({
+          contractAddress,
+        })
+      ).eventPassNftContract[0];
+
+      if (
+        eventPassNftContract.type !==
+          EventPassNftContractType_Enum.DelayedReveal ||
+        eventPassNftContract.isDelayedRevealed ||
+        !eventPassNftContract.password
+      ) {
+        throw new Error(
+          `Event pass NFT contract for address ${contractAddress} does not meet the required conditions for reveal.`,
+        );
+      }
+      const contract = await this.sdk.getContract(contractAddress);
+
+      await contract.erc721.revealer.reveal(0, eventPassNftContract.password);
+
+      await adminSdk.UpdateEventPassNftContractDelayedRevealStatus({
+        contractAddress,
+      });
+
+      return adminSdk.GetListCurrentOwnerAddressForContractAddress({
+        contractAddress,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(
+          `Error revealing the delayed contract at address ${contractAddress} : ${error.message}`,
+        );
+      } else
+        throw new Error(
+          `Error revealing the delayed contract at address ${contractAddress} : ${error}`,
+        );
     }
   }
 

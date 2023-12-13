@@ -148,3 +148,114 @@ VALUES
 		'2023-08-24 08:52:40.506189+01',
 		'2023-08-24 08:52:40.506189+01'
 	);
+
+INSERT INTO
+	public."eventPassNft" (
+		"contractAddress",
+		"tokenId",
+		metadata,
+		error,
+		"tokenUri",
+		"chainId",
+		"eventId",
+		"eventPassId",
+		"organizerId",
+		"currentOwnerAddress",
+		"lastNftTransferId",
+		"isRevealed",
+		id,
+		created_at,
+		updated_at
+	)
+VALUES
+	(
+		'0xFakeDelayedReveal',
+		0,
+		'{}',
+		NULL,
+		'ipfs://244224/5.json',
+		'5',
+		'clizzpvidao620buvxit1ynko',
+		'fakeEventPassDelayedRevealId',
+		'clizzky8kap2t0bw7wka9a2id',
+		'0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
+		NULL,
+		false,
+		'07a1e4b0-18e0-4bd9-8c95-abd05af67717',
+		'2023-08-24 08:35:47.155813+01',
+		'2023-08-24 08:35:47.155813+01'
+	);
+
+INSERT INTO
+	public."eventPassNft" (
+		"contractAddress",
+		"tokenId",
+		metadata,
+		error,
+		"tokenUri",
+		"chainId",
+		"eventId",
+		"eventPassId",
+		"organizerId",
+		"currentOwnerAddress",
+		"lastNftTransferId",
+		"isRevealed",
+		id,
+		created_at,
+		updated_at
+	)
+VALUES
+	(
+		'0xFakeDelayedReveal',
+		1,
+		'{}',
+		NULL,
+		'ipfs://244224/12432.json',
+		'5',
+		'clizzpvidao620buvxit1ynko',
+		'fakeEventPassDelayedRevealId',
+		'clizzky8kap2t0bw7wka9a2id',
+		'0xc0ffee254729296a45a3885639AC7E10F9d54979',
+		NULL,
+		true,
+		'4457be03-e6dc-4141-9439-2109a098ef65',
+		'2023-08-24 08:36:29.158476+01',
+		'2023-08-24 08:36:29.158476+01'
+	);
+
+INSERT INTO
+	public."eventPassNft" (
+		"contractAddress",
+		"tokenId",
+		metadata,
+		error,
+		"tokenUri",
+		"chainId",
+		"eventId",
+		"eventPassId",
+		"organizerId",
+		"currentOwnerAddress",
+		"lastNftTransferId",
+		"isRevealed",
+		id,
+		created_at,
+		updated_at
+	)
+VALUES
+	(
+		'0xFakeDelayedReveal',
+		2,
+		'{}',
+		NULL,
+		'ipfs://14144/11234514.json',
+		'5',
+		'clizzpvidao620buvxit1ynko',
+		'fakeEventPassDelayedRevealId',
+		'clizzky8kap2t0bw7wka9a2id',
+		'0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
+		'c9898849-1682-49a1-9698-baf506bf2a99',
+		false,
+		'fc46a8d9-adc7-4dc7-95d5-8442d2930439',
+		'2023-08-24 08:42:52.698713+01',
+		'2023-08-24 08:42:52.698713+01'
+	);

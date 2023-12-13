@@ -16,3 +16,10 @@ query GetEventPassNftByContractsAndTokenIds(
     organizerId
   }
 }
+
+query GetListCurrentOwnerAddressForContractAddress($contractAddress: String) {
+  eventPassNft(where: { contractAddress: { _eq: $contractAddress } }) {
+    currentOwnerAddress
+    tokenId
+  }
+}

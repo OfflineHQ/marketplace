@@ -29,7 +29,7 @@ test.beforeEach(async () => {
 });
 
 test('user should be able to buy a pass', async () => {
-  const { page, account } = await loadAccount({
+  const { page } = await loadAccount({
     user: 'alpha_user',
     goTo: '/en/organizer/test/event/test-an-event',
   });

@@ -650,6 +650,14 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetListCurrentOwnerAddressForContractAddressDocument = `
+    query GetListCurrentOwnerAddressForContractAddress($contractAddress: String) {
+  eventPassNft(where: {contractAddress: {_eq: $contractAddress}}) {
+    currentOwnerAddress
+    tokenId
+  }
+}
+    `;
  const CreateEventPassNftContractDocument = `
     mutation CreateEventPassNftContract($object: eventPassNftContract_insert_input!) {
   insert_eventPassNftContract_one(object: $object) {
@@ -658,6 +666,16 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     eventId
     eventPassId
     organizerId
+  }
+}
+    `;
+ const UpdateEventPassNftContractDelayedRevealStatusDocument = `
+    mutation UpdateEventPassNftContractDelayedRevealStatus($contractAddress: String) {
+  update_eventPassNftContract(
+    where: {contractAddress: {_eq: $contractAddress}}
+    _set: {isDelayedRevealed: true}
+  ) {
+    affected_rows
   }
 }
     `;
@@ -673,6 +691,15 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   eventPassNftContract(where: {eventPassId: {_eq: $eventPassId}}) {
     type
     isDelayedRevealed
+  }
+}
+    `;
+ const GetEventPassNftContractDelayedRevealPasswordDocument = `
+    query GetEventPassNftContractDelayedRevealPassword($contractAddress: String) @cached {
+  eventPassNftContract(where: {contractAddress: {_eq: $contractAddress}}) {
+    type
+    isDelayedRevealed
+    password
   }
 }
     `;
@@ -978,14 +1005,23 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventPassNftByContractsAndTokenIds(variables: Types.GetEventPassNftByContractsAndTokenIdsQueryVariables, options?: C): Promise<Types.GetEventPassNftByContractsAndTokenIdsQuery> {
       return requester<Types.GetEventPassNftByContractsAndTokenIdsQuery, Types.GetEventPassNftByContractsAndTokenIdsQueryVariables>(GetEventPassNftByContractsAndTokenIdsDocument, variables, options) as Promise<Types.GetEventPassNftByContractsAndTokenIdsQuery>;
     },
+    GetListCurrentOwnerAddressForContractAddress(variables?: Types.GetListCurrentOwnerAddressForContractAddressQueryVariables, options?: C): Promise<Types.GetListCurrentOwnerAddressForContractAddressQuery> {
+      return requester<Types.GetListCurrentOwnerAddressForContractAddressQuery, Types.GetListCurrentOwnerAddressForContractAddressQueryVariables>(GetListCurrentOwnerAddressForContractAddressDocument, variables, options) as Promise<Types.GetListCurrentOwnerAddressForContractAddressQuery>;
+    },
     CreateEventPassNftContract(variables: Types.CreateEventPassNftContractMutationVariables, options?: C): Promise<Types.CreateEventPassNftContractMutation> {
       return requester<Types.CreateEventPassNftContractMutation, Types.CreateEventPassNftContractMutationVariables>(CreateEventPassNftContractDocument, variables, options) as Promise<Types.CreateEventPassNftContractMutation>;
+    },
+    UpdateEventPassNftContractDelayedRevealStatus(variables?: Types.UpdateEventPassNftContractDelayedRevealStatusMutationVariables, options?: C): Promise<Types.UpdateEventPassNftContractDelayedRevealStatusMutation> {
+      return requester<Types.UpdateEventPassNftContractDelayedRevealStatusMutation, Types.UpdateEventPassNftContractDelayedRevealStatusMutationVariables>(UpdateEventPassNftContractDelayedRevealStatusDocument, variables, options) as Promise<Types.UpdateEventPassNftContractDelayedRevealStatusMutation>;
     },
     GetContractAddressFromEventPassId(variables?: Types.GetContractAddressFromEventPassIdQueryVariables, options?: C): Promise<Types.GetContractAddressFromEventPassIdQuery> {
       return requester<Types.GetContractAddressFromEventPassIdQuery, Types.GetContractAddressFromEventPassIdQueryVariables>(GetContractAddressFromEventPassIdDocument, variables, options) as Promise<Types.GetContractAddressFromEventPassIdQuery>;
     },
     GetEventPassNftContractDelayedRevealedFromEventPassId(variables?: Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQueryVariables, options?: C): Promise<Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQuery> {
       return requester<Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQuery, Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQueryVariables>(GetEventPassNftContractDelayedRevealedFromEventPassIdDocument, variables, options) as Promise<Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQuery>;
+    },
+    GetEventPassNftContractDelayedRevealPassword(variables?: Types.GetEventPassNftContractDelayedRevealPasswordQueryVariables, options?: C): Promise<Types.GetEventPassNftContractDelayedRevealPasswordQuery> {
+      return requester<Types.GetEventPassNftContractDelayedRevealPasswordQuery, Types.GetEventPassNftContractDelayedRevealPasswordQueryVariables>(GetEventPassNftContractDelayedRevealPasswordDocument, variables, options) as Promise<Types.GetEventPassNftContractDelayedRevealPasswordQuery>;
     },
     GetEventPassOrderSums(variables: Types.GetEventPassOrderSumsQueryVariables, options?: C): Promise<Types.GetEventPassOrderSumsQuery> {
       return requester<Types.GetEventPassOrderSumsQuery, Types.GetEventPassOrderSumsQueryVariables>(GetEventPassOrderSumsDocument, variables, options) as Promise<Types.GetEventPassOrderSumsQuery>;

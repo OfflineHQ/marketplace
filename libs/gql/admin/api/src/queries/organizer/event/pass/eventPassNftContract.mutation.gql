@@ -9,3 +9,14 @@ mutation CreateEventPassNftContract(
     organizerId
   }
 }
+
+mutation UpdateEventPassNftContractDelayedRevealStatus(
+  $contractAddress: String
+) {
+  update_eventPassNftContract(
+    where: { contractAddress: { _eq: $contractAddress } }
+    _set: { isDelayedRevealed: true }
+  ) {
+    affected_rows
+  }
+}
