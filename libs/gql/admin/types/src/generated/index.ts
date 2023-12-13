@@ -250,12 +250,26 @@ export type GetEventPassNftByContractsAndTokenIdsQueryVariables = Types.Exact<{
 
 export type GetEventPassNftByContractsAndTokenIdsQuery = { __typename?: 'query_root', eventPassNft: Array<{ __typename?: 'eventPassNft', tokenId: any, eventId: string, eventPassId: string, organizerId: string }> };
 
+export type GetListCurrentOwnerAddressForContractAddressQueryVariables = Types.Exact<{
+  contractAddress?: Types.InputMaybe<Types.Scalars['String']>;
+}>;
+
+
+export type GetListCurrentOwnerAddressForContractAddressQuery = { __typename?: 'query_root', eventPassNft: Array<{ __typename?: 'eventPassNft', currentOwnerAddress?: string | null, tokenId: any }> };
+
 export type CreateEventPassNftContractMutationVariables = Types.Exact<{
   object: Types.EventPassNftContract_Insert_Input;
 }>;
 
 
 export type CreateEventPassNftContractMutation = { __typename?: 'mutation_root', insert_eventPassNftContract_one?: { __typename?: 'eventPassNftContract', chainId: string, contractAddress: string, eventId: string, eventPassId: string, organizerId: string } | null };
+
+export type UpdateEventPassNftContractDelayedRevealStatusMutationVariables = Types.Exact<{
+  contractAddress?: Types.InputMaybe<Types.Scalars['String']>;
+}>;
+
+
+export type UpdateEventPassNftContractDelayedRevealStatusMutation = { __typename?: 'mutation_root', update_eventPassNftContract?: { __typename?: 'eventPassNftContract_mutation_response', affected_rows: number } | null };
 
 export type GetContractAddressFromEventPassIdQueryVariables = Types.Exact<{
   eventPassId?: Types.InputMaybe<Types.Scalars['String']>;

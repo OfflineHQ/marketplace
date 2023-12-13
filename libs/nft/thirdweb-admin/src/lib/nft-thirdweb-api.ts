@@ -74,6 +74,38 @@ export class NftClaimable {
     }
   }
 
+  async revealDelayedContract(props: {
+    password: string;
+    contractAddress: string;
+  }) {
+    const { password, contractAddress } = props;
+
+    try {
+      const contract = await this.sdk.getContract(contractAddress);
+
+      await contract.erc721.revealer.reveal(0, password);
+
+      await adminSdk.UpdateEventPassNftContractDelayedRevealStatus({
+        contractAddress,
+      });
+
+      return (
+        await adminSdk.GetListCurrentOwnerAddressForContractAddress({
+          contractAddress,
+        })
+      ).eventPassNft;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(
+          `Error revealing the delayed contract at address ${contractAddress} : ${error.message}`,
+        );
+      } else
+        throw new Error(
+          `Error revealing the delayed contract at address ${contractAddress} : ${error}`,
+        );
+    }
+  }
+
   async claimOrder(
     this: NftClaimable,
     order: EventPassOrderWithContractData,
