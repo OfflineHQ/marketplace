@@ -1,10 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
 import { EventHero, EventHeroSkeleton } from './EventHero';
 import { eventHeroProps } from './examples';
 

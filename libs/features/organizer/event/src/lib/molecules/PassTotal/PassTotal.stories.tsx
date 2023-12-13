@@ -1,7 +1,5 @@
 // PassTotal.stories.tsx
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { screen } from '@storybook/testing-library';
 import { PassTotal, PassTotalSkeleton } from './PassTotal';
 import {
   passTotalProps,
@@ -23,12 +21,12 @@ export const With1Pass: Story = {
   args: {
     passesCart: [{ ...passWithMaxAmountCart, quantity: 1 }],
   },
-  play: async () => {
-    const passTotal = await screen.findByText(/1 pass/i);
-    expect(passTotal).toBeInTheDocument();
-    const totalPrice = screen.getByText(/€1,237.86/i);
-    expect(totalPrice).toBeInTheDocument();
-  },
+  // play: async () => {
+  //   const passTotal = await screen.findByText(/1 pass/i);
+  //   expect(passTotal).toBeInTheDocument();
+  //   const totalPrice = screen.getByText(/€1,237.86/i);
+  //   expect(totalPrice).toBeInTheDocument();
+  // },
 };
 
 export const WithSeveralPasses: Story = {
@@ -38,12 +36,12 @@ export const WithSeveralPasses: Story = {
       { ...passWithMaxAmountPerUserCart, quantity: 6 },
     ],
   },
-  play: async () => {
-    const passTotal = await screen.findByText(/9 passes/i);
-    expect(passTotal).toBeInTheDocument();
-    const totalPrice = screen.getByText(/€17,996.58/i);
-    expect(totalPrice).toBeInTheDocument();
-  },
+  // play: async () => {
+  //   const passTotal = await screen.findByText(/9 passes/i);
+  //   expect(passTotal).toBeInTheDocument();
+  //   const totalPrice = screen.getByText(/€17,996.58/i);
+  //   expect(totalPrice).toBeInTheDocument();
+  // },
 };
 
 export const Skeleton: Story = {

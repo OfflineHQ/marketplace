@@ -1,7 +1,6 @@
 // BoundedNumericStepper.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { expect, screen, userEvent } from '@storybook/test';
 import { BoundedNumericStepper } from './BoundedNumericStepper';
 
 const meta = {

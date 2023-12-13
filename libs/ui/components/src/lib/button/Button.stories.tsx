@@ -1,11 +1,11 @@
-import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
 import {
+  expect,
   screen,
   userEvent,
   waitForElementToBeRemoved,
   within,
-} from '@storybook/testing-library';
+} from '@storybook/test';
 import { delayData } from '@test-utils/functions';
 import { Settings } from '@ui/icons';
 

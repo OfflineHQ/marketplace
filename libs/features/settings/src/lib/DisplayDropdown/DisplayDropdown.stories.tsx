@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/test';
 import { DisplayDropdown } from './DisplayDropdown';
 import { DisplayDropdownExample, displayItems } from './examples';
 

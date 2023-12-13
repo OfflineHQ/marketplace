@@ -11,7 +11,6 @@ import {
 } from '@next/i18n-ui';
 import { deepPick } from '@utils';
 import { NextIntlClientProvider, useLocale } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
 import { EventPassNftFilesTableClient } from './EventPassNftFilesTableClient';
 
 export interface EventPassNftFilesTableProps extends GetEventPassNftFilesProps {
@@ -28,10 +27,6 @@ export async function EventPassNftFilesTable({
     filePath: file.filePath.split('/').pop() || '',
   }));
   const locale = useLocale() as Locale;
-  const t = await getTranslations({
-    locale,
-    namespace: 'OrganizerEvents.Sheet.EventPassCard.EventPassNftFilesTable',
-  });
   const headerControlText = await getTableHeaderControlText(locale);
   const noResultsText = await getTableNoResultText(locale);
   const paginationPropsText = await getTablePaginationControlText(locale);

@@ -23,7 +23,6 @@ export const EventPassTimeBeforeDeletionClient: React.FC<
   const deletionTime = new Date(
     new Date(created_at).getTime() + timeBeforeDelete * 1000,
   );
-
   return (
     <Badge variant="orange" icon={<Timer />}>
       {t('time-before-deletion', {

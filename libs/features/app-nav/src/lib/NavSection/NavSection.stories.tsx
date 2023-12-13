@@ -1,12 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
+import { Cart as CartIcon } from '@ui/icons';
 import { NavSection, NavSectionSkeleton } from './NavSection';
-import { Cart as CartIcon, QrCode } from '@ui/icons';
 import { NavSectionDemo, cartNavProps } from './examples';
 
 const meta = {

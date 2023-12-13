@@ -1,10 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/test';
 import { HoverCard } from './HoverCard';
 import { HoverCardDemo } from './examples';
 

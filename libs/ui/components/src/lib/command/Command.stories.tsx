@@ -1,11 +1,5 @@
-import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  fireEvent,
-  screen,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
+import { expect, fireEvent, screen, userEvent, within } from '@storybook/test';
 import { Command } from './Command';
 
 import { sleep } from '@utils';

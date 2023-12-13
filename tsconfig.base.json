@@ -170,6 +170,7 @@
       "@test-utils/hasura": ["libs/test-utils/hasura/src/index.ts"],
       "@test-utils/next-intl": ["libs/test-utils/next-intl/src/index.tsx"],
       "@test-utils/react-query": ["libs/test-utils/react-query/src/index.tsx"],
+      "@test-utils/ui-mocks": ["libs/test-utils/ui-mocks/src/index.ts"],
       "@ui/components": ["libs/ui/components/src/index.ts"],
       "@ui/hooks": ["libs/ui/hooks/src/index.ts"],
       "@ui/icons": ["libs/ui/icons/src/index.ts"],

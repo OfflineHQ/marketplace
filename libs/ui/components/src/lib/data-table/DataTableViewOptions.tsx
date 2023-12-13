@@ -25,13 +25,14 @@ export function DataTableViewOptions<TData>({
   table,
   controlText,
 }: DataTableViewOptionsProps<TData>) {
+  console.log('table', table, 'controlText', controlText);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
           size="sm"
-          className="ml-auto hidden h-8 lg:flex"
+          className="ml-auto hidden h-8 md:flex"
         >
           <MixerHorizontalIcon className="mr-2 h-4 w-4" />
           {controlText.view}

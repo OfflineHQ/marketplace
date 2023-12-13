@@ -1,6 +1,4 @@
-import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, within } from '@storybook/testing-library';
 import { Progress, progressSizes, progressVariants } from './Progress';
 
 const meta: Meta = {

@@ -9,6 +9,7 @@ module.exports = {
   ],
   features: {
     storyStoreV7: !isCI,
+    // experimentalNextRSC: true, // to activate when v8 supported by nx
   },
   ...mainConfig,
 };

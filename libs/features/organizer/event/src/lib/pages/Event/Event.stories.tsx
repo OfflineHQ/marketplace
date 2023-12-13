@@ -1,13 +1,11 @@
 // Event.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 import { Event } from './Event';
 import {
-  eventProps,
-  event2Props,
   EventExample,
   EventLoadingExample,
+  event2Props,
+  eventProps,
 } from './examples';
 
 const meta = {

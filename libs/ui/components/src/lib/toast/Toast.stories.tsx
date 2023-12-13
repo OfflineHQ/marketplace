@@ -1,11 +1,11 @@
-import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/react';
 import {
+  expect,
   fireEvent,
   screen,
   userEvent,
   waitForElementToBeRemoved,
-} from '@storybook/testing-library';
+} from '@storybook/test';
 import { sleep } from '@utils';
 import { ToastAction } from './Toast';
 import { Toaster } from './Toaster';
