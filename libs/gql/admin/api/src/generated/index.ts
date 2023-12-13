@@ -694,6 +694,15 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetEventPassNftContractDelayedRevealPasswordDocument = `
+    query GetEventPassNftContractDelayedRevealPassword($contractAddress: String) @cached {
+  eventPassNftContract(where: {contractAddress: {_eq: $contractAddress}}) {
+    type
+    isDelayedRevealed
+    password
+  }
+}
+    `;
  const GetEventPassOrderSumsDocument = `
     query GetEventPassOrderSums($eventPassId: String!) {
   eventPassOrderSums_by_pk(eventPassId: $eventPassId) {
@@ -1010,6 +1019,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassNftContractDelayedRevealedFromEventPassId(variables?: Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQueryVariables, options?: C): Promise<Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQuery> {
       return requester<Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQuery, Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQueryVariables>(GetEventPassNftContractDelayedRevealedFromEventPassIdDocument, variables, options) as Promise<Types.GetEventPassNftContractDelayedRevealedFromEventPassIdQuery>;
+    },
+    GetEventPassNftContractDelayedRevealPassword(variables?: Types.GetEventPassNftContractDelayedRevealPasswordQueryVariables, options?: C): Promise<Types.GetEventPassNftContractDelayedRevealPasswordQuery> {
+      return requester<Types.GetEventPassNftContractDelayedRevealPasswordQuery, Types.GetEventPassNftContractDelayedRevealPasswordQueryVariables>(GetEventPassNftContractDelayedRevealPasswordDocument, variables, options) as Promise<Types.GetEventPassNftContractDelayedRevealPasswordQuery>;
     },
     GetEventPassOrderSums(variables: Types.GetEventPassOrderSumsQueryVariables, options?: C): Promise<Types.GetEventPassOrderSumsQuery> {
       return requester<Types.GetEventPassOrderSumsQuery, Types.GetEventPassOrderSumsQueryVariables>(GetEventPassOrderSumsDocument, variables, options) as Promise<Types.GetEventPassOrderSumsQuery>;
