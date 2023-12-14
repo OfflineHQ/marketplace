@@ -1,4 +1,5 @@
 import { composeStories } from '@storybook/react';
+import '@testing-library/jest-dom/extend-expect';
 import {
   fireEvent,
   render,
