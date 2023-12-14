@@ -25,7 +25,7 @@ export function i18nUiTablesServerMocks() {
   mockTablePaginationControlText.mockReturnValue(
     Promise.resolve({
       rowOf: 'of',
-      rowSelected: 'row selected',
+      rowSelected: 'selected',
       rowsPerPage: 'rows per page',
       page: 'page',
       pageOf: 'of',
