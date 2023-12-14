@@ -1,12 +1,6 @@
 // Dialog.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { expect } from '@storybook/jest';
-import {
-  fireEvent,
-  screen,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
+import { expect, fireEvent, screen, userEvent, within } from '@storybook/test';
 import { DialogExample, DialogNoHeader, DialogScrollable } from './examples';
 
 import { Dialog } from './Dialog';

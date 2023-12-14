@@ -1,13 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 
 import { RichTextField, RichTextFieldSkeleton } from './RichTextField';
 import {
   rtfProps,
+  rtfWithAllKindsOfTextProps,
   rtfWithImageProps,
   rtfWithLinkProps,
-  rtfWithAllKindsOfTextProps,
 } from './examples';
 
 // Import the stories you want to reuse

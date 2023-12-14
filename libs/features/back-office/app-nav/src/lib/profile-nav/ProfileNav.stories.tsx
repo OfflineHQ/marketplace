@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 // import { cryptoUserSession } from '../profile-avatar/examples';
-import { screen, userEvent } from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/test';
 import { sleep } from '@utils';
 import { organizerRoleAdmin } from '../role-avatar/examples';
 import { ProfileNav, ProfileNavSkeleton } from './ProfileNav';

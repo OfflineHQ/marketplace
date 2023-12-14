@@ -1,7 +1,6 @@
-import { expect } from '@storybook/jest';
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import { screen, userEvent } from '@storybook/testing-library';
+import { expect, screen, userEvent } from '@storybook/test';
 import { sleep } from '@utils';
 import { AppNavLayout } from './AppNavLayout';
 import {

@@ -48,6 +48,7 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
   return user ? (
     <UserCart
       userPassPendingOrders={userPassPendingOrders}
+      getAllPassesCart={passCache.getAllPassesCart}
       noCartImage="/empty-cart.svg"
     >
       {!kycFlag || isUserKycValidated(user) ? (
@@ -73,7 +74,10 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
       )}
     </UserCart>
   ) : (
-    <NoUserCart noCartImage="/empty-cart.svg" />
+    <NoUserCart
+      noCartImage="/empty-cart.svg"
+      getAllPassesCart={passCache.getAllPassesCart}
+    />
   );
 };
 

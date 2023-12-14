@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
+import { fireEvent, screen, userEvent } from '@storybook/test';
 import { DropdownMenuItems } from './DropdownMenuItems';
 import { DropdownMenuItemsDemo, menuItems } from './examples';
 
@@ -54,7 +54,9 @@ export const DropdownMenuItemsWithRadios: Story = {
   },
   play: async ({ canvasElement }) => {
     userEvent.click(screen.getByText('Open'));
-    userEvent.hover(await screen.findByText(/Labels/i));
+    const labelsElement = await screen.findByText(/Labels/i);
+    fireEvent.pointerOver(labelsElement);
+    fireEvent.click(labelsElement);
     await screen.findByText(/Radio 1/i);
   },
 };

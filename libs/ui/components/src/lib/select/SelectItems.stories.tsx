@@ -1,7 +1,6 @@
 // Select.stories.tsx
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent, within } from '@storybook/testing-library';
+import { expect, screen, userEvent, within } from '@storybook/test';
 import { SelectItems } from './SelectItems';
 import { SelectItemsDemo, menuItems } from './examples';
 

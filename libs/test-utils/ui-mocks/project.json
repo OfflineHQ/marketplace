@@ -1,0 +1,16 @@
+{
+  "name": "test-utils-ui-mocks",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/test-utils/ui-mocks/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/test-utils/ui-mocks/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

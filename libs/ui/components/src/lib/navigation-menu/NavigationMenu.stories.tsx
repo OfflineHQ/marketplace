@@ -1,12 +1,11 @@
 // NavigationMenu.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect } from '@storybook/jest';
 import {
-  fireEvent,
+  expect,
   screen,
   userEvent,
   waitForElementToBeRemoved,
-} from '@storybook/testing-library';
+} from '@storybook/test';
 import { NavigationMenu } from './NavigationMenu';
 import { NavigationMenuDemo } from './examples';
 

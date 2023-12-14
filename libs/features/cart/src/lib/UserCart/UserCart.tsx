@@ -23,6 +23,7 @@ export interface UserCartProps extends EventPassesCartProps {
 export const UserCart: React.FC<UserCartProps> = ({
   userPassPendingOrders,
   noCartImage,
+  getAllPassesCart,
   children,
 }) => {
   const t = useTranslations('Cart.UserCart');
@@ -37,6 +38,7 @@ export const UserCart: React.FC<UserCartProps> = ({
           <EventPassesCart
             userPassPendingOrders={userPassPendingOrders}
             noCartImage={noCartImage}
+            getAllPassesCart={getAllPassesCart}
           />
         </CardContent>
       </AppContainerOverflow>

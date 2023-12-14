@@ -1,14 +1,9 @@
 // Tooltip.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
-import { Tooltip, TooltipProps } from './Tooltip';
-import { Button } from '../button/Button';
+import { screen, userEvent } from '@storybook/test';
 import { Plus } from '@ui/icons';
+import { Button } from '../button/Button';
+import { Tooltip } from './Tooltip';
 
 const meta = {
   title: 'Atoms/Tooltip',

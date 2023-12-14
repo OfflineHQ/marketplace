@@ -1,5 +1,4 @@
-import { expect } from '@storybook/jest';
-import { screen, userEvent, within } from '@storybook/testing-library';
+import { expect, screen, userEvent, within } from '@storybook/test';
 import { BlockchainAddress } from './BlockchainAddress';
 
 import type { Meta, StoryObj } from '@storybook/react';
