@@ -1,9 +1,7 @@
 // GlobalSettings.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 import { GlobalSettings } from './GlobalSettings';
-import { globalSettingsProps, GlobalSettingsExample } from './examples';
+import { GlobalSettingsExample, globalSettingsProps } from './examples';
 
 const meta = {
   component: GlobalSettings,

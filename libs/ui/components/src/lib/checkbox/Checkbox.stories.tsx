@@ -1,7 +1,6 @@
-import { expect } from '@storybook/jest';
 // Checkbox.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, fireEvent } from '@storybook/testing-library';
+import { expect, fireEvent, screen } from '@storybook/test';
 import { Checkbox } from './Checkbox';
 
 const meta = {

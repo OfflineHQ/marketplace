@@ -1,6 +1,6 @@
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { Meta, StoryObj } from '@storybook/react';
-import { screen, userEvent } from '@storybook/testing-library';
+import { screen, userEvent } from '@storybook/test';
 import {
   EventPassTypeBadge,
   EventPassTypeBadgeProps,

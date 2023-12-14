@@ -1,7 +1,6 @@
 // PassPurchaseSheet.stories.tsx
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import { screen } from '@storybook/testing-library';
+import { expect, screen } from '@storybook/test';
 import { graphql } from 'msw';
 import { default as passCardMeta } from '../../molecules/PassCard/PassCard.stories';
 import { PassPurchaseSheet } from './PassPurchaseSheet';

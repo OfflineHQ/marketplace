@@ -51,7 +51,7 @@ export function DataTableToolbar<TData, TValue>({
       <div className="flex flex-1 items-center space-x-2">
         {searchProps && (
           <Input
-            {...searchProps}
+            placeholder={searchProps.placeholder}
             icon={<OutlineSearch />}
             value={
               (table

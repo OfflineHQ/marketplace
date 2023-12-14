@@ -272,14 +272,11 @@
     "Sheet": {
       "EventPassCard": {
         "EventPassNftsInfos": {
-          "title": "Informations sur les NFTs",
           "name": "Nom",
           "description": "Description",
-          "max-amount": "Quantitée",
-          "max-amount-per-user": "Quantitée par utilisateur",
-          "price": "Prix",
-          "no-event-pass-pricing": "Aucun prix et quantitée définis pour ce pass.",
-          "image": "Image"
+          "image": "Image",
+          "normal-title": "Informations sur les NFTs",
+          "delayed-reveal-placeholder-title": "Informations provisoires sur les NFTs"
         },
         "EventPassNftFiles": {
           "title": "Pass associés à vos NFTs"
@@ -291,9 +288,21 @@
         },
         "EventPassCardFooter": {
           "deploy-contract": "Déployer le contrat NFTs",
-          "no-pricing-set": "Vous devez d'abord définir les paramètres de vos NFTs.",
+          "no-pricing-set": "Vous devez d'abord définir vos paramètres de vente.",
           "copied-contract-address": "Adresse du contrat copiée",
           "num-files-does-not-match": "Le nombre de fichiers téléchargés pour votre pass ne correspond pas au nombre de pass que vous avez l'intention de créer."
+        },
+        "EventPassSaleParameters": {
+          "title": "Paramètres de vente",
+          "max-amount": "Quantitée",
+          "max-amount-per-user": "Quantitée par utilisateur",
+          "price": "Prix"
+        },
+        "EventPassNftDelayedInfos": {
+          "title": "Informations sur les NFTs après la révélation",
+          "image": "Image",
+          "name": "Nom",
+          "description": "Déscription"
         }
       },
       "go-back-to-events": "Retournez aux événements"

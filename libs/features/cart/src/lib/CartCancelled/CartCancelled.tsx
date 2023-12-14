@@ -3,7 +3,7 @@ import {
   AppContainerFooter,
   AppContainerOverflow,
 } from '@features/app-nav';
-import { UserPassOrder } from '@features/cart-types';
+import { AllPassesCart, UserPassOrder } from '@features/cart-types';
 import { Link } from '@next/navigation';
 import {
   Alert,
@@ -22,7 +22,7 @@ export type CartCancelledProps = {
 
 export const CartCancelled: FC<CartCancelledProps> = ({ passes }) => {
   const t = useTranslations('Cart.Cancelled');
-  const allPasses = passes?.reduce((acc, pass) => {
+  const allPasses: AllPassesCart = passes?.reduce((acc, pass) => {
     const organizerSlug = pass.eventPass?.event?.organizer?.slug;
     const eventSlug = pass.eventPass?.event?.slug;
     if (organizerSlug && eventSlug) {

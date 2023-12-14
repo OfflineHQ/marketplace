@@ -1,9 +1,16 @@
 import { AppNavLayout } from '@features/app-nav';
 import { WithNormalUser } from '@features/app-nav/stories';
+import { UserPassPendingOrder } from '@features/cart-types';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { Button } from '@ui/components';
 import { useTranslations } from 'next-intl';
+import { passOrder1, passOrderWithEvent2 } from '../CartSuccessful/examples';
 import { UserCart, UserCartProps } from './UserCart';
+
+export const userPassPendingOrders1: UserPassPendingOrder[] = [
+  passOrder1,
+  passOrderWithEvent2,
+];
 
 export function UserCartExample({
   userPassPendingOrders,
@@ -24,19 +31,3 @@ export function UserCartExample({
     </NextAuthProvider>
   );
 }
-
-// export function UserCartNoCartExample() {
-//   ResetPassesCartLocal();
-//   return (
-//     <NextAuthProvider>
-//       <AuthProvider>
-//         <AppNavLayout {...WithNoUser.args}>
-//           <UserCartSection
-//             EventPassesFetcher={FakeEventPassesFetcher}
-//             noCartImage={EmptyCartImage}
-//           />
-//         </AppNavLayout>
-//       </AuthProvider>
-//     </NextAuthProvider>
-//   );
-// }

@@ -1,4 +1,9 @@
-import { UserPassOrder } from '@features/cart-types';
+import {
+  AppContainer,
+  AppContainerFooter,
+  AppContainerOverflow,
+} from '@features/app-nav';
+import { AllPassesCart, UserPassOrder } from '@features/cart-types';
 import { Link } from '@next/navigation';
 import {
   Alert,
@@ -10,11 +15,6 @@ import {
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 import { EventPassList } from '../EventPassList/EventPassList';
-import {
-  AppContainer,
-  AppContainerOverflow,
-  AppContainerFooter,
-} from '@features/app-nav';
 
 export type CartSuccessfulProps = {
   passes: UserPassOrder[];
@@ -22,7 +22,7 @@ export type CartSuccessfulProps = {
 
 export const CartSuccessful: FC<CartSuccessfulProps> = ({ passes }) => {
   const t = useTranslations('Cart.Successful');
-  const allPasses = passes?.reduce((acc, pass) => {
+  const allPasses: AllPassesCart = passes?.reduce((acc, pass) => {
     const organizerSlug = pass.eventPass?.event?.organizer?.slug;
     const eventSlug = pass.eventPass?.event?.slug;
     if (organizerSlug && eventSlug) {

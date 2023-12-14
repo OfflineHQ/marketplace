@@ -1,7 +1,6 @@
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { screen, userEvent, within } from '@storybook/testing-library';
+import { expect, screen, userEvent, within } from '@storybook/test';
 import { DataTable } from './DataTable';
 import { columns } from './examples/columns';
 import { priorities, statuses } from './examples/data/data';

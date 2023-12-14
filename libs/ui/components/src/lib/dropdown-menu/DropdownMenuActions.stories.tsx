@@ -1,11 +1,5 @@
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import {
-  screen,
-  fireEvent,
-  userEvent,
-  within,
-} from '@storybook/testing-library';
+import { expect, screen, userEvent } from '@storybook/test';
 import { DropdownMenuActions } from './DropdownMenuActions';
 import { menuItems } from './examples';
 

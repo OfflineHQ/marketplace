@@ -1,4 +1,4 @@
-import type { EventCart } from '@features/cart-types';
+import type { AllPassesCart, EventCart } from '@features/cart-types';
 import {
   event2Props,
   eventProps,
@@ -7,9 +7,11 @@ import {
   passWeekend,
 } from '@features/organizer/event/examples';
 import { eventCartProps, eventPassesCart } from '../EventPasses/examples';
-import { EventPassList } from './EventPassList';
+import { EventPassList, EventPassListSkeleton } from './EventPassList';
 
-const eventCart2Props: EventCart = {
+export const eventCart1Props: EventCart = eventCartProps;
+
+export const eventCart2Props: EventCart = {
   ...event2Props,
   eventPasses: [passFamily, passWeekend, passPremium],
 };
@@ -19,18 +21,19 @@ const eventPassesCart2: typeof eventPassesCart = [
   { eventPassId: passFamily.id, quantity: 2 },
 ];
 
-const allPassesEventsCart: Record<string, Record<string, EventCart>> = {};
-allPassesEventsCart[eventProps?.organizer?.slug || 0] = {};
-allPassesEventsCart[eventCartProps?.organizer?.slug || 0][eventCartProps.slug] =
-  eventCartProps;
-allPassesEventsCart[event2Props?.organizer?.slug || 0] = {};
-allPassesEventsCart[event2Props?.organizer?.slug || 0][event2Props.slug] =
-  eventCart2Props;
+export const allPassesEventsCart: AllPassesCart = {
+  [eventProps?.organizer?.slug || 0]: {
+    [eventCartProps.slug]: eventPassesCart,
+  },
+  [event2Props?.organizer?.slug || 0]: {
+    [event2Props.slug]: eventPassesCart2,
+  },
+};
 
 export const EventPassListExample = () => {
   return <EventPassList allPasses={allPassesEventsCart} />;
 };
 
 export const EventPassListLoadingExample = () => {
-  return <EventPassList allPasses={allPassesEventsCart} />;
+  return <EventPassListSkeleton />;
 };

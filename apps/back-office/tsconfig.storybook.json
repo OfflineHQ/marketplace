@@ -21,6 +21,7 @@
     "**/*.stories.jsx",
     "**/*.stories.tsx",
     "**/*.mdx",
+    "../../libs/test-utils/ui-mocks/**/*.ts",
     "../../libs/features/**/*.stories.ts",
     "../../libs/features/**/*.stories.js",
     "../../libs/features/**/*.stories.jsx",

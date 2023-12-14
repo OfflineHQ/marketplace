@@ -18,7 +18,7 @@ export const MenuNavDesktop: React.FC<MenuNavDesktopProps> = ({
     items.length > 0 &&
     items.map(({ type, value, icon, text, ...props }) => {
       return type === 'item' ? (
-        <NavLink href={value as string}>
+        <NavLink href={value as string} key={value}>
           <>
             {icon && (
               <icon.type
