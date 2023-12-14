@@ -9909,6 +9909,9 @@ type eventPassNft {
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String!
+
+  """An object relationship"""
+  packNftContract: packNftContract
   packNftContractId: uuid
 
   """
@@ -10303,7 +10306,7 @@ enum eventPassNftContract_constraint {
   """
   unique or primary key constraint on columns "chainId", "contractAddress"
   """
-  eventPassNftContract_chainId_contractAddress_key
+  eventPassNftContract_contractAddress_chainId_key
 }
 
 """
@@ -10801,6 +10804,7 @@ input eventPassNft_bool_exp {
   nftTransfers: nftTransfer_bool_exp
   nftTransfers_aggregate: nftTransfer_aggregate_bool_exp
   organizerId: String_comparison_exp
+  packNftContract: packNftContract_bool_exp
   packNftContractId: uuid_comparison_exp
   tokenId: bigint_comparison_exp
   tokenUri: String_comparison_exp
@@ -10919,6 +10923,7 @@ input eventPassNft_insert_input {
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String
+  packNftContract: packNftContract_obj_rel_insert_input
   packNftContractId: uuid
 
   """
@@ -11172,6 +11177,7 @@ input eventPassNft_order_by {
   metadata: order_by
   nftTransfers_aggregate: nftTransfer_aggregate_order_by
   organizerId: order_by
+  packNftContract: packNftContract_order_by
   packNftContractId: order_by
   tokenId: order_by
   tokenUri: order_by
@@ -18027,6 +18033,16 @@ type packNftContract_mutation_response {
 
   """data from the rows affected by the mutation"""
   returning: [packNftContract!]!
+}
+
+"""
+input type for inserting object relation for remote table "packNftContract"
+"""
+input packNftContract_obj_rel_insert_input {
+  data: packNftContract_insert_input!
+
+  """upsert condition"""
+  on_conflict: packNftContract_on_conflict
 }
 
 """

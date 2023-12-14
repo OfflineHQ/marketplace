@@ -7063,6 +7063,8 @@ export type EventPassNft = {
   organizer?: Maybe<Organizer>;
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId: Scalars['String'];
+  /** An object relationship */
+  packNftContract?: Maybe<PackNftContract>;
   packNftContractId?: Maybe<Scalars['uuid']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId: Scalars['bigint'];
@@ -7437,7 +7439,7 @@ export type EventPassNftContract_Bool_Exp = {
 /** unique or primary key constraints on table "eventPassNftContract" */
 export const enum EventPassNftContract_Constraint {
   /** unique or primary key constraint on columns "chainId", "contractAddress" */
-  EventPassNftContractChainIdContractAddressKey = 'eventPassNftContract_chainId_contractAddress_key'
+  EventPassNftContractContractAddressChainIdKey = 'eventPassNftContract_contractAddress_chainId_key'
 };
 
 /** input type for inserting data into table "eventPassNftContract" */
@@ -7827,6 +7829,7 @@ export type EventPassNft_Bool_Exp = {
   nftTransfers?: InputMaybe<NftTransfer_Bool_Exp>;
   nftTransfers_aggregate?: InputMaybe<NftTransfer_Aggregate_Bool_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
+  packNftContract?: InputMaybe<PackNftContract_Bool_Exp>;
   packNftContractId?: InputMaybe<Uuid_Comparison_Exp>;
   tokenId?: InputMaybe<Bigint_Comparison_Exp>;
   tokenUri?: InputMaybe<String_Comparison_Exp>;
@@ -7896,6 +7899,7 @@ export type EventPassNft_Insert_Input = {
   nftTransfers?: InputMaybe<NftTransfer_Arr_Rel_Insert_Input>;
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId?: InputMaybe<Scalars['String']>;
+  packNftContract?: InputMaybe<PackNftContract_Obj_Rel_Insert_Input>;
   packNftContractId?: InputMaybe<Scalars['uuid']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: InputMaybe<Scalars['bigint']>;
@@ -8053,6 +8057,7 @@ export type EventPassNft_Order_By = {
   metadata?: InputMaybe<Order_By>;
   nftTransfers_aggregate?: InputMaybe<NftTransfer_Aggregate_Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  packNftContract?: InputMaybe<PackNftContract_Order_By>;
   packNftContractId?: InputMaybe<Order_By>;
   tokenId?: InputMaybe<Order_By>;
   tokenUri?: InputMaybe<Order_By>;
@@ -13547,6 +13552,13 @@ export type PackNftContract_Mutation_Response = {
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<PackNftContract>;
+};
+
+/** input type for inserting object relation for remote table "packNftContract" */
+export type PackNftContract_Obj_Rel_Insert_Input = {
+  data: PackNftContract_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<PackNftContract_On_Conflict>;
 };
 
 /** on_conflict condition type for table "packNftContract" */

@@ -49327,6 +49327,18 @@
             "deprecationReason": null
           },
           {
+            "name": "packNftContract",
+            "description": "An object relationship",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "packNftContract",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "packNftContractId",
             "description": null,
             "args": [],
@@ -51568,7 +51580,7 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "eventPassNftContract_chainId_contractAddress_key",
+            "name": "eventPassNftContract_contractAddress_chainId_key",
             "description": "unique or primary key constraint on columns \"chainId\", \"contractAddress\"",
             "isDeprecated": false,
             "deprecationReason": null
@@ -54224,6 +54236,18 @@
             "deprecationReason": null
           },
           {
+            "name": "packNftContract",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "packNftContract_bool_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "packNftContractId",
             "description": null,
             "type": {
@@ -54609,6 +54633,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packNftContract",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "packNftContract_obj_rel_insert_input",
               "ofType": null
             },
             "defaultValue": null,
@@ -55702,6 +55738,18 @@
             "type": {
               "kind": "ENUM",
               "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packNftContract",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "packNftContract_order_by",
               "ofType": null
             },
             "defaultValue": null,
@@ -87710,6 +87758,45 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "packNftContract_obj_rel_insert_input",
+        "description": "input type for inserting object relation for remote table \"packNftContract\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "data",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "packNftContract_insert_input",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "on_conflict",
+            "description": "upsert condition",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "packNftContract_on_conflict",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
