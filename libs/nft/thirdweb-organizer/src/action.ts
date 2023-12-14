@@ -18,6 +18,7 @@ import type {
   EventPassNft_Insert_Input,
 } from '@gql/shared/types';
 import { defaultLocale } from '@next/i18n';
+import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 
 export async function createEventPassNftContract(
   object: EventPassNftContract_Insert_Input,
@@ -77,4 +78,12 @@ export async function createEventParametersAndWebhook({
       },
     ]);
   }
+}
+
+export async function getUnopenedNftPackAmount(contractAddress: string) {
+  const sdk = new ThirdwebSDK('goerli');
+  const contract = await sdk.getContract(contractAddress, 'pack');
+  const packId = 0;
+  const contents = await contract.getPackContents(packId);
+  return contents.erc721Rewards;
 }
