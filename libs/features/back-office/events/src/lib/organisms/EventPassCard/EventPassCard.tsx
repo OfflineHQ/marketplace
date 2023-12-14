@@ -22,7 +22,7 @@ import {
   type EventPassCardContentNormalProps,
 } from '../EventPassCardContentNormal/EventPassCardContentNormal';
 
-export type EventPassCardProps = EventPassCardContentNormalProps;
+export type EventPassCardProps = Omit<EventPassCardContentNormalProps, 'title'>;
 
 export const EventPassCard = ({
   eventPass,
