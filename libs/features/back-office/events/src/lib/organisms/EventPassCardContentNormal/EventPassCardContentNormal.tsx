@@ -9,7 +9,7 @@ import {
 import { EventPassSaleParameters } from '../../molecules/EventPassSaleParameters/EventPassSaleParameters';
 
 export interface EventPassCardContentNormalProps
-  extends EventPassNftsInfosProps {
+  extends Omit<EventPassNftsInfosProps, 'title'> {
   event: EventFromOrganizerWithPasses;
   organizerId: string;
 }
