@@ -41,6 +41,9 @@ object_relationships:
         remote_table:
           name: nftTransfer
           schema: public
+  - name: packNftContract
+    using:
+      foreign_key_constraint_on: packNftContractId
 array_relationships:
   - name: nftTransfers
     using:

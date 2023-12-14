@@ -15,6 +15,7 @@
 - "!include public_kycStatus.yaml"
 - "!include public_nftTransfer.yaml"
 - "!include public_orderStatus.yaml"
+- "!include public_packNftContract.yaml"
 - "!include public_roleAssignments.yaml"
 - "!include public_roles.yaml"
 - "!include public_stripeCheckoutSession.yaml"
