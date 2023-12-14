@@ -19,9 +19,7 @@ async function isCommitPartOfPullRequest(owner, repo, commit_sha) {
 }
 
 // Get the current branch name
-const branch_name = execSync('git rev-parse --abbrev-ref HEAD', {
-  encoding: 'utf8',
-}).trim();
+const branch_name = process.env.VERCEL_GIT_COMMIT_REF;
 
 // Check if the branch is 'main' or 'staging'
 if (branch_name === 'main' || branch_name === 'staging') {
