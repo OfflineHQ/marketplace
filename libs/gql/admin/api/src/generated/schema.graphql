@@ -9909,6 +9909,7 @@ type eventPassNft {
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String!
+  packNftContractId: uuid
 
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
@@ -10302,7 +10303,7 @@ enum eventPassNftContract_constraint {
   """
   unique or primary key constraint on columns "chainId", "contractAddress"
   """
-  eventPassNftContract_contractAddress_chainId_key
+  eventPassNftContract_chainId_contractAddress_key
 }
 
 """
@@ -10800,6 +10801,7 @@ input eventPassNft_bool_exp {
   nftTransfers: nftTransfer_bool_exp
   nftTransfers_aggregate: nftTransfer_aggregate_bool_exp
   organizerId: String_comparison_exp
+  packNftContractId: uuid_comparison_exp
   tokenId: bigint_comparison_exp
   tokenUri: String_comparison_exp
   updated_at: timestamptz_comparison_exp
@@ -10917,6 +10919,7 @@ input eventPassNft_insert_input {
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String
+  packNftContractId: uuid
 
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
@@ -10965,6 +10968,7 @@ type eventPassNft_max_fields {
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String
+  packNftContractId: uuid
 
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
@@ -11015,6 +11019,7 @@ input eventPassNft_max_order_by {
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: order_by
+  packNftContractId: order_by
 
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
@@ -11063,6 +11068,7 @@ type eventPassNft_min_fields {
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String
+  packNftContractId: uuid
 
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
@@ -11113,6 +11119,7 @@ input eventPassNft_min_order_by {
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: order_by
+  packNftContractId: order_by
 
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
@@ -11165,6 +11172,7 @@ input eventPassNft_order_by {
   metadata: order_by
   nftTransfers_aggregate: nftTransfer_aggregate_order_by
   organizerId: order_by
+  packNftContractId: order_by
   tokenId: order_by
   tokenUri: order_by
   updated_at: order_by
@@ -11222,6 +11230,9 @@ enum eventPassNft_select_column {
 
   """column name"""
   organizerId
+
+  """column name"""
+  packNftContractId
 
   """column name"""
   tokenId
@@ -11296,6 +11307,7 @@ input eventPassNft_set_input {
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String
+  packNftContractId: uuid
 
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
@@ -11419,6 +11431,7 @@ input eventPassNft_stream_cursor_value_input {
 
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String
+  packNftContractId: uuid
 
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
@@ -11489,6 +11502,9 @@ enum eventPassNft_update_column {
 
   """column name"""
   organizerId
+
+  """column name"""
+  packNftContractId
 
   """column name"""
   tokenId
@@ -14160,6 +14176,19 @@ type mutation_root {
   delete_orderStatus_by_pk(value: String!): orderStatus
 
   """
+  delete data from the table: "packNftContract"
+  """
+  delete_packNftContract(
+    """filter the rows which have to be deleted"""
+    where: packNftContract_bool_exp!
+  ): packNftContract_mutation_response
+
+  """
+  delete single row from the table: "packNftContract"
+  """
+  delete_packNftContract_by_pk(id: uuid!): packNftContract
+
+  """
   delete data from the table: "roleAssignments"
   """
   delete_roleAssignments(
@@ -14617,6 +14646,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: orderStatus_on_conflict
   ): orderStatus
+
+  """
+  insert data into the table: "packNftContract"
+  """
+  insert_packNftContract(
+    """the rows to be inserted"""
+    objects: [packNftContract_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: packNftContract_on_conflict
+  ): packNftContract_mutation_response
+
+  """
+  insert a single row into the table: "packNftContract"
+  """
+  insert_packNftContract_one(
+    """the row to be inserted"""
+    object: packNftContract_insert_input!
+
+    """upsert condition"""
+    on_conflict: packNftContract_on_conflict
+  ): packNftContract
 
   """
   insert data into the table: "roleAssignments"
@@ -16382,6 +16433,82 @@ type mutation_root {
   ): [orderStatus_mutation_response]
 
   """
+  update data of the table: "packNftContract"
+  """
+  update_packNftContract(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: packNftContract_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: packNftContract_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: packNftContract_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: packNftContract_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: packNftContract_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: packNftContract_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: packNftContract_set_input
+
+    """filter the rows which have to be updated"""
+    where: packNftContract_bool_exp!
+  ): packNftContract_mutation_response
+
+  """
+  update single row of the table: "packNftContract"
+  """
+  update_packNftContract_by_pk(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: packNftContract_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: packNftContract_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: packNftContract_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: packNftContract_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: packNftContract_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: packNftContract_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: packNftContract_set_input
+    pk_columns: packNftContract_pk_columns_input!
+  ): packNftContract
+
+  """
+  update multiples rows of table: "packNftContract"
+  """
+  update_packNftContract_many(
+    """updates to execute, in order"""
+    updates: [packNftContract_updates!]!
+  ): [packNftContract_mutation_response]
+
+  """
   update data of the table: "roleAssignments"
   """
   update_roleAssignments(
@@ -17696,6 +17823,424 @@ enum order_by {
   desc_nulls_last
 }
 
+"""packNftContract model to manage the NFTs associated with each pack."""
+type packNftContract {
+  chainId: String!
+  contractAddress: String!
+  created_at: timestamptz!
+  eventId: String!
+  eventPassIds(
+    """JSON select path"""
+    path: String
+  ): jsonb!
+
+  """An array relationship"""
+  eventPassNfts(
+    """distinct select on columns"""
+    distinct_on: [eventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNft_bool_exp
+  ): [eventPassNft!]!
+
+  """An aggregate relationship"""
+  eventPassNfts_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNft_bool_exp
+  ): eventPassNft_aggregate!
+  id: uuid!
+  organizerId: String!
+  packId: String!
+  rewardsPerPack: Int!
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "packNftContract"
+"""
+type packNftContract_aggregate {
+  aggregate: packNftContract_aggregate_fields
+  nodes: [packNftContract!]!
+}
+
+"""
+aggregate fields of "packNftContract"
+"""
+type packNftContract_aggregate_fields {
+  avg: packNftContract_avg_fields
+  count(columns: [packNftContract_select_column!], distinct: Boolean): Int!
+  max: packNftContract_max_fields
+  min: packNftContract_min_fields
+  stddev: packNftContract_stddev_fields
+  stddev_pop: packNftContract_stddev_pop_fields
+  stddev_samp: packNftContract_stddev_samp_fields
+  sum: packNftContract_sum_fields
+  var_pop: packNftContract_var_pop_fields
+  var_samp: packNftContract_var_samp_fields
+  variance: packNftContract_variance_fields
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input packNftContract_append_input {
+  eventPassIds: jsonb
+}
+
+"""aggregate avg on columns"""
+type packNftContract_avg_fields {
+  rewardsPerPack: Float
+}
+
+"""
+Boolean expression to filter rows from the table "packNftContract". All fields are combined with a logical 'AND'.
+"""
+input packNftContract_bool_exp {
+  _and: [packNftContract_bool_exp!]
+  _not: packNftContract_bool_exp
+  _or: [packNftContract_bool_exp!]
+  chainId: String_comparison_exp
+  contractAddress: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  eventId: String_comparison_exp
+  eventPassIds: jsonb_comparison_exp
+  eventPassNfts: eventPassNft_bool_exp
+  eventPassNfts_aggregate: eventPassNft_aggregate_bool_exp
+  id: uuid_comparison_exp
+  organizerId: String_comparison_exp
+  packId: String_comparison_exp
+  rewardsPerPack: Int_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "packNftContract"
+"""
+enum packNftContract_constraint {
+  """
+  unique or primary key constraint on columns "chainId", "contractAddress"
+  """
+  packNftContract_contractAddress_chainId_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  packNftContract_pkey
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input packNftContract_delete_at_path_input {
+  eventPassIds: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input packNftContract_delete_elem_input {
+  eventPassIds: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input packNftContract_delete_key_input {
+  eventPassIds: String
+}
+
+"""
+input type for incrementing numeric columns in table "packNftContract"
+"""
+input packNftContract_inc_input {
+  rewardsPerPack: Int
+}
+
+"""
+input type for inserting data into table "packNftContract"
+"""
+input packNftContract_insert_input {
+  chainId: String
+  contractAddress: String
+  created_at: timestamptz
+  eventId: String
+  eventPassIds: jsonb
+  eventPassNfts: eventPassNft_arr_rel_insert_input
+  id: uuid
+  organizerId: String
+  packId: String
+  rewardsPerPack: Int
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type packNftContract_max_fields {
+  chainId: String
+  contractAddress: String
+  created_at: timestamptz
+  eventId: String
+  id: uuid
+  organizerId: String
+  packId: String
+  rewardsPerPack: Int
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type packNftContract_min_fields {
+  chainId: String
+  contractAddress: String
+  created_at: timestamptz
+  eventId: String
+  id: uuid
+  organizerId: String
+  packId: String
+  rewardsPerPack: Int
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "packNftContract"
+"""
+type packNftContract_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [packNftContract!]!
+}
+
+"""
+on_conflict condition type for table "packNftContract"
+"""
+input packNftContract_on_conflict {
+  constraint: packNftContract_constraint!
+  update_columns: [packNftContract_update_column!]! = []
+  where: packNftContract_bool_exp
+}
+
+"""Ordering options when selecting data from "packNftContract"."""
+input packNftContract_order_by {
+  chainId: order_by
+  contractAddress: order_by
+  created_at: order_by
+  eventId: order_by
+  eventPassIds: order_by
+  eventPassNfts_aggregate: eventPassNft_aggregate_order_by
+  id: order_by
+  organizerId: order_by
+  packId: order_by
+  rewardsPerPack: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: packNftContract"""
+input packNftContract_pk_columns_input {
+  id: uuid!
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input packNftContract_prepend_input {
+  eventPassIds: jsonb
+}
+
+"""
+select columns of table "packNftContract"
+"""
+enum packNftContract_select_column {
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventId
+
+  """column name"""
+  eventPassIds
+
+  """column name"""
+  id
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  packId
+
+  """column name"""
+  rewardsPerPack
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "packNftContract"
+"""
+input packNftContract_set_input {
+  chainId: String
+  contractAddress: String
+  created_at: timestamptz
+  eventId: String
+  eventPassIds: jsonb
+  id: uuid
+  organizerId: String
+  packId: String
+  rewardsPerPack: Int
+  updated_at: timestamptz
+}
+
+"""aggregate stddev on columns"""
+type packNftContract_stddev_fields {
+  rewardsPerPack: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type packNftContract_stddev_pop_fields {
+  rewardsPerPack: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type packNftContract_stddev_samp_fields {
+  rewardsPerPack: Float
+}
+
+"""
+Streaming cursor of the table "packNftContract"
+"""
+input packNftContract_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: packNftContract_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input packNftContract_stream_cursor_value_input {
+  chainId: String
+  contractAddress: String
+  created_at: timestamptz
+  eventId: String
+  eventPassIds: jsonb
+  id: uuid
+  organizerId: String
+  packId: String
+  rewardsPerPack: Int
+  updated_at: timestamptz
+}
+
+"""aggregate sum on columns"""
+type packNftContract_sum_fields {
+  rewardsPerPack: Int
+}
+
+"""
+update columns of table "packNftContract"
+"""
+enum packNftContract_update_column {
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventId
+
+  """column name"""
+  eventPassIds
+
+  """column name"""
+  id
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  packId
+
+  """column name"""
+  rewardsPerPack
+
+  """column name"""
+  updated_at
+}
+
+input packNftContract_updates {
+  """append existing jsonb value of filtered columns with new jsonb value"""
+  _append: packNftContract_append_input
+
+  """
+  delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+  """
+  _delete_at_path: packNftContract_delete_at_path_input
+
+  """
+  delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+  """
+  _delete_elem: packNftContract_delete_elem_input
+
+  """
+  delete key/value pair or string element. key/value pairs are matched based on their key value
+  """
+  _delete_key: packNftContract_delete_key_input
+
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: packNftContract_inc_input
+
+  """prepend existing jsonb value of filtered columns with new jsonb value"""
+  _prepend: packNftContract_prepend_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: packNftContract_set_input
+
+  """filter the rows which have to be updated"""
+  where: packNftContract_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type packNftContract_var_pop_fields {
+  rewardsPerPack: Float
+}
+
+"""aggregate var_samp on columns"""
+type packNftContract_var_samp_fields {
+  rewardsPerPack: Float
+}
+
+"""aggregate variance on columns"""
+type packNftContract_variance_fields {
+  rewardsPerPack: Float
+}
+
 type query_root {
   """
   fetch data from the table: "account"
@@ -18794,6 +19339,49 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: OrganizerWhereInput
   ): OrganizerConnection!
+
+  """
+  fetch data from the table: "packNftContract"
+  """
+  packNftContract(
+    """distinct select on columns"""
+    distinct_on: [packNftContract_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftContract_order_by!]
+
+    """filter the rows returned"""
+    where: packNftContract_bool_exp
+  ): [packNftContract!]!
+
+  """
+  fetch aggregated fields from the table: "packNftContract"
+  """
+  packNftContract_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packNftContract_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftContract_order_by!]
+
+    """filter the rows returned"""
+    where: packNftContract_bool_exp
+  ): packNftContract_aggregate!
+
+  """fetch data from the table: "packNftContract" using primary key columns"""
+  packNftContract_by_pk(id: uuid!): packNftContract
 
   """
   fetch data from the table: "roleAssignments"
@@ -21347,6 +21935,63 @@ type subscription_root {
     """filter the rows returned"""
     where: orderStatus_bool_exp
   ): [orderStatus!]!
+
+  """
+  fetch data from the table: "packNftContract"
+  """
+  packNftContract(
+    """distinct select on columns"""
+    distinct_on: [packNftContract_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftContract_order_by!]
+
+    """filter the rows returned"""
+    where: packNftContract_bool_exp
+  ): [packNftContract!]!
+
+  """
+  fetch aggregated fields from the table: "packNftContract"
+  """
+  packNftContract_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packNftContract_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftContract_order_by!]
+
+    """filter the rows returned"""
+    where: packNftContract_bool_exp
+  ): packNftContract_aggregate!
+
+  """fetch data from the table: "packNftContract" using primary key columns"""
+  packNftContract_by_pk(id: uuid!): packNftContract
+
+  """
+  fetch data from the table in a streaming manner: "packNftContract"
+  """
+  packNftContract_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [packNftContract_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: packNftContract_bool_exp
+  ): [packNftContract!]!
 
   """
   fetch data from the table: "roleAssignments"

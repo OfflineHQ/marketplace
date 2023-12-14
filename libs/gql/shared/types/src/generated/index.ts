@@ -7063,6 +7063,7 @@ export type EventPassNft = {
   organizer?: Maybe<Organizer>;
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId: Scalars['String'];
+  packNftContractId?: Maybe<Scalars['uuid']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId: Scalars['bigint'];
   /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
@@ -7436,7 +7437,7 @@ export type EventPassNftContract_Bool_Exp = {
 /** unique or primary key constraints on table "eventPassNftContract" */
 export const enum EventPassNftContract_Constraint {
   /** unique or primary key constraint on columns "chainId", "contractAddress" */
-  EventPassNftContractContractAddressChainIdKey = 'eventPassNftContract_contractAddress_chainId_key'
+  EventPassNftContractChainIdContractAddressKey = 'eventPassNftContract_chainId_contractAddress_key'
 };
 
 /** input type for inserting data into table "eventPassNftContract" */
@@ -7826,6 +7827,7 @@ export type EventPassNft_Bool_Exp = {
   nftTransfers?: InputMaybe<NftTransfer_Bool_Exp>;
   nftTransfers_aggregate?: InputMaybe<NftTransfer_Aggregate_Bool_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
+  packNftContractId?: InputMaybe<Uuid_Comparison_Exp>;
   tokenId?: InputMaybe<Bigint_Comparison_Exp>;
   tokenUri?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -7894,6 +7896,7 @@ export type EventPassNft_Insert_Input = {
   nftTransfers?: InputMaybe<NftTransfer_Arr_Rel_Insert_Input>;
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId?: InputMaybe<Scalars['String']>;
+  packNftContractId?: InputMaybe<Scalars['uuid']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: InputMaybe<Scalars['bigint']>;
   /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
@@ -7922,6 +7925,7 @@ export type EventPassNft_Max_Fields = {
   lastNftTransferId?: Maybe<Scalars['uuid']>;
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId?: Maybe<Scalars['String']>;
+  packNftContractId?: Maybe<Scalars['uuid']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: Maybe<Scalars['bigint']>;
   /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
@@ -7949,6 +7953,7 @@ export type EventPassNft_Max_Order_By = {
   lastNftTransferId?: InputMaybe<Order_By>;
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId?: InputMaybe<Order_By>;
+  packNftContractId?: InputMaybe<Order_By>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: InputMaybe<Order_By>;
   /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
@@ -7977,6 +7982,7 @@ export type EventPassNft_Min_Fields = {
   lastNftTransferId?: Maybe<Scalars['uuid']>;
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId?: Maybe<Scalars['String']>;
+  packNftContractId?: Maybe<Scalars['uuid']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: Maybe<Scalars['bigint']>;
   /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
@@ -8004,6 +8010,7 @@ export type EventPassNft_Min_Order_By = {
   lastNftTransferId?: InputMaybe<Order_By>;
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId?: InputMaybe<Order_By>;
+  packNftContractId?: InputMaybe<Order_By>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: InputMaybe<Order_By>;
   /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
@@ -8046,6 +8053,7 @@ export type EventPassNft_Order_By = {
   metadata?: InputMaybe<Order_By>;
   nftTransfers_aggregate?: InputMaybe<NftTransfer_Aggregate_Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  packNftContractId?: InputMaybe<Order_By>;
   tokenId?: InputMaybe<Order_By>;
   tokenUri?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -8088,6 +8096,8 @@ export const enum EventPassNft_Select_Column {
   Metadata = 'metadata',
   /** column name */
   OrganizerId = 'organizerId',
+  /** column name */
+  PackNftContractId = 'packNftContractId',
   /** column name */
   TokenId = 'tokenId',
   /** column name */
@@ -8132,6 +8142,7 @@ export type EventPassNft_Set_Input = {
   metadata?: InputMaybe<Scalars['jsonb']>;
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId?: InputMaybe<Scalars['String']>;
+  packNftContractId?: InputMaybe<Scalars['uuid']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: InputMaybe<Scalars['bigint']>;
   /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
@@ -8210,6 +8221,7 @@ export type EventPassNft_Stream_Cursor_Value_Input = {
   metadata?: InputMaybe<Scalars['jsonb']>;
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId?: InputMaybe<Scalars['String']>;
+  packNftContractId?: InputMaybe<Scalars['uuid']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: InputMaybe<Scalars['bigint']>;
   /** The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction. */
@@ -8256,6 +8268,8 @@ export const enum EventPassNft_Update_Column {
   Metadata = 'metadata',
   /** column name */
   OrganizerId = 'organizerId',
+  /** column name */
+  PackNftContractId = 'packNftContractId',
   /** column name */
   TokenId = 'tokenId',
   /** column name */
@@ -10312,6 +10326,10 @@ export type Mutation_Root = {
   delete_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** delete single row from the table: "orderStatus" */
   delete_orderStatus_by_pk?: Maybe<OrderStatus>;
+  /** delete data from the table: "packNftContract" */
+  delete_packNftContract?: Maybe<PackNftContract_Mutation_Response>;
+  /** delete single row from the table: "packNftContract" */
+  delete_packNftContract_by_pk?: Maybe<PackNftContract>;
   /** delete data from the table: "roleAssignments" */
   delete_roleAssignments?: Maybe<RoleAssignments_Mutation_Response>;
   /** delete data from the table: "roles" */
@@ -10402,6 +10420,10 @@ export type Mutation_Root = {
   insert_orderStatus?: Maybe<OrderStatus_Mutation_Response>;
   /** insert a single row into the table: "orderStatus" */
   insert_orderStatus_one?: Maybe<OrderStatus>;
+  /** insert data into the table: "packNftContract" */
+  insert_packNftContract?: Maybe<PackNftContract_Mutation_Response>;
+  /** insert a single row into the table: "packNftContract" */
+  insert_packNftContract_one?: Maybe<PackNftContract>;
   /** insert data into the table: "roleAssignments" */
   insert_roleAssignments?: Maybe<RoleAssignments_Mutation_Response>;
   /** insert a single row into the table: "roleAssignments" */
@@ -10638,6 +10660,12 @@ export type Mutation_Root = {
   update_orderStatus_by_pk?: Maybe<OrderStatus>;
   /** update multiples rows of table: "orderStatus" */
   update_orderStatus_many?: Maybe<Array<Maybe<OrderStatus_Mutation_Response>>>;
+  /** update data of the table: "packNftContract" */
+  update_packNftContract?: Maybe<PackNftContract_Mutation_Response>;
+  /** update single row of the table: "packNftContract" */
+  update_packNftContract_by_pk?: Maybe<PackNftContract>;
+  /** update multiples rows of table: "packNftContract" */
+  update_packNftContract_many?: Maybe<Array<Maybe<PackNftContract_Mutation_Response>>>;
   /** update data of the table: "roleAssignments" */
   update_roleAssignments?: Maybe<RoleAssignments_Mutation_Response>;
   /** update multiples rows of table: "roleAssignments" */
@@ -11048,6 +11076,18 @@ export type Mutation_RootDelete_OrderStatus_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_PackNftContractArgs = {
+  where: PackNftContract_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_PackNftContract_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_RoleAssignmentsArgs = {
   where: RoleAssignments_Bool_Exp;
 };
@@ -11348,6 +11388,20 @@ export type Mutation_RootInsert_OrderStatusArgs = {
 export type Mutation_RootInsert_OrderStatus_OneArgs = {
   object: OrderStatus_Insert_Input;
   on_conflict?: InputMaybe<OrderStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_PackNftContractArgs = {
+  objects: Array<PackNftContract_Insert_Input>;
+  on_conflict?: InputMaybe<PackNftContract_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_PackNftContract_OneArgs = {
+  object: PackNftContract_Insert_Input;
+  on_conflict?: InputMaybe<PackNftContract_On_Conflict>;
 };
 
 
@@ -12400,6 +12454,38 @@ export type Mutation_RootUpdate_OrderStatus_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_PackNftContractArgs = {
+  _append?: InputMaybe<PackNftContract_Append_Input>;
+  _delete_at_path?: InputMaybe<PackNftContract_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<PackNftContract_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<PackNftContract_Delete_Key_Input>;
+  _inc?: InputMaybe<PackNftContract_Inc_Input>;
+  _prepend?: InputMaybe<PackNftContract_Prepend_Input>;
+  _set?: InputMaybe<PackNftContract_Set_Input>;
+  where: PackNftContract_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_PackNftContract_By_PkArgs = {
+  _append?: InputMaybe<PackNftContract_Append_Input>;
+  _delete_at_path?: InputMaybe<PackNftContract_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<PackNftContract_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<PackNftContract_Delete_Key_Input>;
+  _inc?: InputMaybe<PackNftContract_Inc_Input>;
+  _prepend?: InputMaybe<PackNftContract_Prepend_Input>;
+  _set?: InputMaybe<PackNftContract_Set_Input>;
+  pk_columns: PackNftContract_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_PackNftContract_ManyArgs = {
+  updates: Array<PackNftContract_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_RoleAssignmentsArgs = {
   _set?: InputMaybe<RoleAssignments_Set_Input>;
   where: RoleAssignments_Bool_Exp;
@@ -13278,6 +13364,368 @@ export const enum Order_By {
   DescNullsLast = 'desc_nulls_last'
 };
 
+/** packNftContract model to manage the NFTs associated with each pack. */
+export type PackNftContract = {
+  __typename?: 'packNftContract';
+  chainId: Scalars['String'];
+  contractAddress: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  eventId: Scalars['String'];
+  eventPassIds: Scalars['jsonb'];
+  /** An array relationship */
+  eventPassNfts: Array<EventPassNft>;
+  /** An aggregate relationship */
+  eventPassNfts_aggregate: EventPassNft_Aggregate;
+  id: Scalars['uuid'];
+  organizerId: Scalars['String'];
+  packId: Scalars['String'];
+  rewardsPerPack: Scalars['Int'];
+  updated_at: Scalars['timestamptz'];
+};
+
+
+/** packNftContract model to manage the NFTs associated with each pack. */
+export type PackNftContractEventPassIdsArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+
+/** packNftContract model to manage the NFTs associated with each pack. */
+export type PackNftContractEventPassNftsArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
+  where?: InputMaybe<EventPassNft_Bool_Exp>;
+};
+
+
+/** packNftContract model to manage the NFTs associated with each pack. */
+export type PackNftContractEventPassNfts_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
+  where?: InputMaybe<EventPassNft_Bool_Exp>;
+};
+
+/** aggregated selection of "packNftContract" */
+export type PackNftContract_Aggregate = {
+  __typename?: 'packNftContract_aggregate';
+  aggregate?: Maybe<PackNftContract_Aggregate_Fields>;
+  nodes: Array<PackNftContract>;
+};
+
+/** aggregate fields of "packNftContract" */
+export type PackNftContract_Aggregate_Fields = {
+  __typename?: 'packNftContract_aggregate_fields';
+  avg?: Maybe<PackNftContract_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<PackNftContract_Max_Fields>;
+  min?: Maybe<PackNftContract_Min_Fields>;
+  stddev?: Maybe<PackNftContract_Stddev_Fields>;
+  stddev_pop?: Maybe<PackNftContract_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<PackNftContract_Stddev_Samp_Fields>;
+  sum?: Maybe<PackNftContract_Sum_Fields>;
+  var_pop?: Maybe<PackNftContract_Var_Pop_Fields>;
+  var_samp?: Maybe<PackNftContract_Var_Samp_Fields>;
+  variance?: Maybe<PackNftContract_Variance_Fields>;
+};
+
+
+/** aggregate fields of "packNftContract" */
+export type PackNftContract_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<PackNftContract_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type PackNftContract_Append_Input = {
+  eventPassIds?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type PackNftContract_Avg_Fields = {
+  __typename?: 'packNftContract_avg_fields';
+  rewardsPerPack?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "packNftContract". All fields are combined with a logical 'AND'. */
+export type PackNftContract_Bool_Exp = {
+  _and?: InputMaybe<Array<PackNftContract_Bool_Exp>>;
+  _not?: InputMaybe<PackNftContract_Bool_Exp>;
+  _or?: InputMaybe<Array<PackNftContract_Bool_Exp>>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  eventId?: InputMaybe<String_Comparison_Exp>;
+  eventPassIds?: InputMaybe<Jsonb_Comparison_Exp>;
+  eventPassNfts?: InputMaybe<EventPassNft_Bool_Exp>;
+  eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Bool_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  packId?: InputMaybe<String_Comparison_Exp>;
+  rewardsPerPack?: InputMaybe<Int_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "packNftContract" */
+export const enum PackNftContract_Constraint {
+  /** unique or primary key constraint on columns "chainId", "contractAddress" */
+  PackNftContractContractAddressChainIdKey = 'packNftContract_contractAddress_chainId_key',
+  /** unique or primary key constraint on columns "id" */
+  PackNftContractPkey = 'packNftContract_pkey'
+};
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type PackNftContract_Delete_At_Path_Input = {
+  eventPassIds?: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type PackNftContract_Delete_Elem_Input = {
+  eventPassIds?: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type PackNftContract_Delete_Key_Input = {
+  eventPassIds?: InputMaybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "packNftContract" */
+export type PackNftContract_Inc_Input = {
+  rewardsPerPack?: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "packNftContract" */
+export type PackNftContract_Insert_Input = {
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventPassIds?: InputMaybe<Scalars['jsonb']>;
+  eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']>;
+  rewardsPerPack?: InputMaybe<Scalars['Int']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type PackNftContract_Max_Fields = {
+  __typename?: 'packNftContract_max_fields';
+  chainId?: Maybe<Scalars['String']>;
+  contractAddress?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  eventId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizerId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']>;
+  rewardsPerPack?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type PackNftContract_Min_Fields = {
+  __typename?: 'packNftContract_min_fields';
+  chainId?: Maybe<Scalars['String']>;
+  contractAddress?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  eventId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  organizerId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']>;
+  rewardsPerPack?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "packNftContract" */
+export type PackNftContract_Mutation_Response = {
+  __typename?: 'packNftContract_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<PackNftContract>;
+};
+
+/** on_conflict condition type for table "packNftContract" */
+export type PackNftContract_On_Conflict = {
+  constraint: PackNftContract_Constraint;
+  update_columns?: Array<PackNftContract_Update_Column>;
+  where?: InputMaybe<PackNftContract_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "packNftContract". */
+export type PackNftContract_Order_By = {
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  eventId?: InputMaybe<Order_By>;
+  eventPassIds?: InputMaybe<Order_By>;
+  eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  packId?: InputMaybe<Order_By>;
+  rewardsPerPack?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: packNftContract */
+export type PackNftContract_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type PackNftContract_Prepend_Input = {
+  eventPassIds?: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "packNftContract" */
+export const enum PackNftContract_Select_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  EventPassIds = 'eventPassIds',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  PackId = 'packId',
+  /** column name */
+  RewardsPerPack = 'rewardsPerPack',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "packNftContract" */
+export type PackNftContract_Set_Input = {
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventPassIds?: InputMaybe<Scalars['jsonb']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']>;
+  rewardsPerPack?: InputMaybe<Scalars['Int']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type PackNftContract_Stddev_Fields = {
+  __typename?: 'packNftContract_stddev_fields';
+  rewardsPerPack?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type PackNftContract_Stddev_Pop_Fields = {
+  __typename?: 'packNftContract_stddev_pop_fields';
+  rewardsPerPack?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type PackNftContract_Stddev_Samp_Fields = {
+  __typename?: 'packNftContract_stddev_samp_fields';
+  rewardsPerPack?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "packNftContract" */
+export type PackNftContract_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: PackNftContract_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type PackNftContract_Stream_Cursor_Value_Input = {
+  chainId?: InputMaybe<Scalars['String']>;
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventId?: InputMaybe<Scalars['String']>;
+  eventPassIds?: InputMaybe<Scalars['jsonb']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  organizerId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']>;
+  rewardsPerPack?: InputMaybe<Scalars['Int']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate sum on columns */
+export type PackNftContract_Sum_Fields = {
+  __typename?: 'packNftContract_sum_fields';
+  rewardsPerPack?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "packNftContract" */
+export const enum PackNftContract_Update_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'eventId',
+  /** column name */
+  EventPassIds = 'eventPassIds',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  PackId = 'packId',
+  /** column name */
+  RewardsPerPack = 'rewardsPerPack',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type PackNftContract_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<PackNftContract_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<PackNftContract_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<PackNftContract_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<PackNftContract_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<PackNftContract_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<PackNftContract_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<PackNftContract_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: PackNftContract_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type PackNftContract_Var_Pop_Fields = {
+  __typename?: 'packNftContract_var_pop_fields';
+  rewardsPerPack?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type PackNftContract_Var_Samp_Fields = {
+  __typename?: 'packNftContract_var_samp_fields';
+  rewardsPerPack?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type PackNftContract_Variance_Fields = {
+  __typename?: 'packNftContract_variance_fields';
+  rewardsPerPack?: Maybe<Scalars['Float']>;
+};
+
 export type Query_Root = {
   __typename?: 'query_root';
   /** fetch data from the table: "account" */
@@ -13424,6 +13872,12 @@ export type Query_Root = {
   organizers: Array<Organizer>;
   /** Retrieve multiple organizers using the Relay connection interface */
   organizersConnection: OrganizerConnection;
+  /** fetch data from the table: "packNftContract" */
+  packNftContract: Array<PackNftContract>;
+  /** fetch aggregated fields from the table: "packNftContract" */
+  packNftContract_aggregate: PackNftContract_Aggregate;
+  /** fetch data from the table: "packNftContract" using primary key columns */
+  packNftContract_by_pk?: Maybe<PackNftContract>;
   /** fetch data from the table: "roleAssignments" */
   roleAssignments: Array<RoleAssignments>;
   /** fetch aggregated fields from the table: "roleAssignments" */
@@ -14065,6 +14519,29 @@ export type Query_RootOrganizersConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<OrganizerWhereInput>;
+};
+
+
+export type Query_RootPackNftContractArgs = {
+  distinct_on?: InputMaybe<Array<PackNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PackNftContract_Order_By>>;
+  where?: InputMaybe<PackNftContract_Bool_Exp>;
+};
+
+
+export type Query_RootPackNftContract_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<PackNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PackNftContract_Order_By>>;
+  where?: InputMaybe<PackNftContract_Bool_Exp>;
+};
+
+
+export type Query_RootPackNftContract_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -15444,6 +15921,14 @@ export type Subscription_Root = {
   orderStatus_by_pk?: Maybe<OrderStatus>;
   /** fetch data from the table in a streaming manner: "orderStatus" */
   orderStatus_stream: Array<OrderStatus>;
+  /** fetch data from the table: "packNftContract" */
+  packNftContract: Array<PackNftContract>;
+  /** fetch aggregated fields from the table: "packNftContract" */
+  packNftContract_aggregate: PackNftContract_Aggregate;
+  /** fetch data from the table: "packNftContract" using primary key columns */
+  packNftContract_by_pk?: Maybe<PackNftContract>;
+  /** fetch data from the table in a streaming manner: "packNftContract" */
+  packNftContract_stream: Array<PackNftContract>;
   /** fetch data from the table: "roleAssignments" */
   roleAssignments: Array<RoleAssignments>;
   /** fetch aggregated fields from the table: "roleAssignments" */
@@ -15996,6 +16481,36 @@ export type Subscription_RootOrderStatus_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<OrderStatus_Stream_Cursor_Input>>;
   where?: InputMaybe<OrderStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootPackNftContractArgs = {
+  distinct_on?: InputMaybe<Array<PackNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PackNftContract_Order_By>>;
+  where?: InputMaybe<PackNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootPackNftContract_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<PackNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PackNftContract_Order_By>>;
+  where?: InputMaybe<PackNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootPackNftContract_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootPackNftContract_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<PackNftContract_Stream_Cursor_Input>>;
+  where?: InputMaybe<PackNftContract_Bool_Exp>;
 };
 
 
