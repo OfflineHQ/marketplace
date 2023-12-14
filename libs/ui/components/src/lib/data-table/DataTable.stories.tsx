@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 
 import { expect, screen, userEvent, within } from '@storybook/test';
+import { Card } from '../card/Card';
 import { DataTable } from './DataTable';
 import { columns } from './examples/columns';
 import { priorities, statuses } from './examples/data/data';
@@ -139,5 +140,19 @@ export const DataTableWithToolbarToggleColumns: Story = {
     await userEvent.click(dropdown.getByText(/Priority/i));
     expect(screen.queryByText(/High/i)).not.toBeInTheDocument();
     await userEvent.click(await screen.findByRole('button', { name: /view/i }));
+  },
+};
+
+export const InsideCardDistinct: Story = {
+  args: {
+    ...DataTableWithToolbarToggleColumns.args,
+    variant: 'insideDistinct',
+  },
+  render: (props) => {
+    return (
+      <Card variant="distinct" className="m-0 h-full p-4">
+        <DataTable {...props} />
+      </Card>
+    );
   },
 };

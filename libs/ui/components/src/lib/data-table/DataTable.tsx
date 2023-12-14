@@ -26,6 +26,7 @@ import {
 } from '../table/Table';
 
 import { cn } from '@ui/shared';
+import { VariantProps, cva } from 'class-variance-authority';
 import {
   DataTablePagination,
   type DataTablePaginationProps,
@@ -35,23 +36,36 @@ import {
   type DataTableToolbarProps,
 } from './DataTableToolbar';
 
-export interface DataTableProps<TData, TValue> {
+const variants = {
+  default: 'border',
+  insideDistinct: 'border-highlight',
+};
+const dataTableVariantsCva = cva('', {
+  variants: {
+    variant: variants,
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+});
+
+export interface DataTableProps<TData, TValue>
+  extends VariantProps<typeof dataTableVariantsCva> {
   className?: string;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   showHeader?: boolean;
-  enableRowSelection?: boolean;
   toolbarProps?: Omit<DataTableToolbarProps<TData, TValue>, 'table'>;
   paginationProps?: Omit<DataTablePaginationProps<TData>, 'table'>;
   noResultsText: string;
 }
 
 export function DataTable<TData, TValue>({
+  variant = 'default',
   className,
   columns,
   data,
   showHeader = true,
-  enableRowSelection = false,
   toolbarProps,
   paginationProps,
   noResultsText,
@@ -64,6 +78,8 @@ export function DataTable<TData, TValue>({
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
+  const hasSelectionColumn = columns.some((column) => column.id === 'select');
+
   const table = useReactTable({
     data,
     columns,
@@ -73,7 +89,7 @@ export function DataTable<TData, TValue>({
       rowSelection,
       columnFilters,
     },
-    enableRowSelection,
+    enableRowSelection: hasSelectionColumn,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -91,7 +107,12 @@ export function DataTable<TData, TValue>({
       {toolbarProps ? (
         <DataTableToolbar table={table} {...toolbarProps} />
       ) : null}
-      <div className="flex h-full grow overflow-auto rounded-md border">
+      <div
+        className={cn(
+          'flex h-full grow overflow-auto rounded-md',
+          dataTableVariantsCva({ variant }),
+        )}
+      >
         <Table>
           {showHeader ? (
             <TableHeader>
@@ -149,7 +170,7 @@ export function DataTable<TData, TValue>({
       {paginationProps ? (
         <DataTablePagination
           table={table}
-          enableRowSelection={enableRowSelection}
+          enableRowSelection={hasSelectionColumn}
           {...paginationProps}
         />
       ) : null}
