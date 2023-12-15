@@ -36,5 +36,5 @@ export const WithCardAndForm: Story = {
 };
 
 export const Skeleton: Story = {
-  render: () => <TabsSkeleton numTabs={2} color="highlight" />,
+  render: () => <TabsSkeleton numTabs={2} />,
 };

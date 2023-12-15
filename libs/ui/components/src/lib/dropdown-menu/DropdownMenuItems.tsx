@@ -44,7 +44,7 @@ const DropdownMenuItems: React.FC<DropdownMenuItemsProps> = ({
       {items.map(({ icon, ...item }, index) => {
         switch (item.type) {
           case 'separator':
-            return <DropdownMenuSeparator key={index} />;
+            return <DropdownMenuSeparator key={index} {...item} />;
 
           case 'label':
             return (

@@ -37,8 +37,18 @@ export const FavoriteDisabled = {
   },
 } satisfies Story;
 
-export const FavoriteHighlight = {
+export const FavoriteGhost = {
   args: {
-    variant: 'highlight',
+    variant: 'ghost',
+  },
+} satisfies Story;
+
+export const FavoriteGhostDistinctClicked = {
+  ...FavoriteGhost,
+  render: (props) => (
+    <ToggleDemo {...props} className="distinct w-fit bg-distinct p-3" />
+  ),
+  play: async () => {
+    await userEvent.click(screen.getByRole('button'));
   },
 } satisfies Story;

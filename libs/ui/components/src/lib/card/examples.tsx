@@ -149,9 +149,9 @@ export function CardWithForm() {
   );
 }
 
-export function CardSkeleton() {
+export function CardSkeleton({ variant = 'default' }: CardProps) {
   return (
-    <Card className="w-full md:w-[380px]">
+    <Card className="w-full md:w-[380px]" variant={variant}>
       <CardHeader>
         <CardTitleSkeleton />
         <CardDescriptionSkeleton />
