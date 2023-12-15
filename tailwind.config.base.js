@@ -31,7 +31,10 @@ module.exports = {
     extend: {
       colors: {
         border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
+        input: {
+          DEFAULT: 'hsl(var(--input))',
+          distinct: 'hsl(var(--input-distinct))',
+        },
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
@@ -70,6 +73,10 @@ module.exports = {
         muted: {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
+        },
+        distinct: {
+          DEFAULT: 'hsl(var(--distinct))',
+          border: 'hsl(var(--distinct-border))',
         },
         highlight: {
           DEFAULT: 'hsl(var(--highlight))',
