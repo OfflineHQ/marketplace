@@ -3,10 +3,14 @@ import { textColors } from '@ui/shared';
 import { useState } from 'react';
 import { Toggle, ToggleProps } from './Toggle';
 
-export const ToggleDemo = ({ pressed, ...props }: ToggleProps) => {
+export const ToggleDemo = ({
+  pressed,
+  className,
+  ...props
+}: ToggleProps & { className?: string }) => {
   const [checked, setChecked] = useState(pressed);
   return (
-    <div>
+    <div className={className}>
       <Toggle
         {...props}
         pressed={checked}

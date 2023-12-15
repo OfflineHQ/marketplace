@@ -40,7 +40,6 @@ export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   showHeader?: boolean;
-  enableRowSelection?: boolean;
   toolbarProps?: Omit<DataTableToolbarProps<TData, TValue>, 'table'>;
   paginationProps?: Omit<DataTablePaginationProps<TData>, 'table'>;
   noResultsText: string;
@@ -51,7 +50,6 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   showHeader = true,
-  enableRowSelection = false,
   toolbarProps,
   paginationProps,
   noResultsText,
@@ -64,6 +62,9 @@ export function DataTable<TData, TValue>({
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
+  // here we determine from the columns if we need to show the selection column in the table along as the pagination
+  const hasSelectionColumn = columns.some((column) => column.id === 'select');
+
   const table = useReactTable({
     data,
     columns,
@@ -73,7 +74,7 @@ export function DataTable<TData, TValue>({
       rowSelection,
       columnFilters,
     },
-    enableRowSelection,
+    enableRowSelection: hasSelectionColumn,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -87,12 +88,16 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn('space-y-4 w-full', className)}>
       {toolbarProps ? (
         <DataTableToolbar table={table} {...toolbarProps} />
       ) : null}
-      <div className="flex h-full grow overflow-auto rounded-md border">
-        <Table>
+      <div
+        className={cn(
+          'flex h-full w-full grow overflow-auto rounded-md border',
+        )}
+      >
+        <Table className="h-full w-full">
           {showHeader ? (
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -149,7 +154,7 @@ export function DataTable<TData, TValue>({
       {paginationProps ? (
         <DataTablePagination
           table={table}
-          enableRowSelection={enableRowSelection}
+          enableRowSelection={hasSelectionColumn}
           {...paginationProps}
         />
       ) : null}

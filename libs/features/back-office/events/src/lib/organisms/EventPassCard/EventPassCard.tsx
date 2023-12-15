@@ -70,14 +70,14 @@ export const EventPassCardSkeleton = () => {
   return (
     <Card className="flex flex-col" variant="distinct">
       <CardHeader className="space-y-4">
-        <CardTitleSkeleton color="highlight" />
-        <CardDescriptionSkeleton color="highlight" />
+        <CardTitleSkeleton />
+        <CardDescriptionSkeleton />
       </CardHeader>
       <CardContent>
-        <AccordionSkeleton numItems={2} color="highlight" />
+        <AccordionSkeleton numItems={2} />
       </CardContent>
       <CardFooter>
-        <ButtonSkeleton className="w-full" color="highlight" />
+        <ButtonSkeleton className="w-full" />
       </CardFooter>
     </Card>
   );

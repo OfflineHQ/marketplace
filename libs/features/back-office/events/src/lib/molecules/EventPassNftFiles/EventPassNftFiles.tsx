@@ -29,9 +29,7 @@ export function EventPassNftFiles({
       <AccordionTrigger>{t('title')}</AccordionTrigger>
       <AccordionContent>
         {eventPass.eventPassPricing?.maxAmount ? (
-          <Suspense
-            fallback={<TableSkeleton rows={10} cols={2} variant="highlight" />}
-          >
+          <Suspense fallback={<TableSkeleton rows={10} cols={2} />}>
             <EventPassNftFilesTable eventPass={eventPass} {...props} />
           </Suspense>
         ) : null}

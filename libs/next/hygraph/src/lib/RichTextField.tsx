@@ -91,15 +91,15 @@ export const RichTextField: React.FC<RichTextFieldProps> = (props) => {
 export const RichTextFieldSkeleton: React.FC = () => {
   return (
     <div className="animate-pulse space-y-8">
-      <div className="h-5 w-3/4 rounded-full bg-muted"></div>
-      <div className="h-3 w-1/2 rounded-full bg-muted"></div>
-      <div className="h-3 w-2/3 rounded-full bg-muted"></div>
-      <div className="h-3 w-3/5 rounded-full bg-muted"></div>
-      <div className="h-3 w-1/2 rounded-full bg-muted"></div>
-      <div className="h-3 w-3/4 rounded-full bg-muted"></div>
-      <div className="h-3 w-1/3 rounded-full bg-muted"></div>
-      <div className="h-3 w-2/5 rounded-full bg-muted"></div>
-      <div className="h-3 w-1/2 rounded-full bg-muted"></div>
+      <div className="h-5 w-3/4 rounded-full bg-skeleton"></div>
+      <div className="h-3 w-1/2 rounded-full bg-skeleton"></div>
+      <div className="h-3 w-2/3 rounded-full bg-skeleton"></div>
+      <div className="h-3 w-3/5 rounded-full bg-skeleton"></div>
+      <div className="h-3 w-1/2 rounded-full bg-skeleton"></div>
+      <div className="h-3 w-3/4 rounded-full bg-skeleton"></div>
+      <div className="h-3 w-1/3 rounded-full bg-skeleton"></div>
+      <div className="h-3 w-2/5 rounded-full bg-skeleton"></div>
+      <div className="h-3 w-1/2 rounded-full bg-skeleton"></div>
     </div>
   );
 };
