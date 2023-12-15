@@ -81,15 +81,11 @@ interface TextSkeletonProps
 
 const TextSkeleton: React.FC<TextSkeletonProps> = ({
   variant = 'span',
-  color = 'default',
   className,
   ...props
 }) => {
   const Component = variant as AllowedHtmlElements;
-  const classNames = cn(
-    textSkeletonVariantClasses({ variant, color }),
-    className,
-  );
+  const classNames = cn(textSkeletonVariantClasses({ variant }), className);
 
   return variant !== 'p' ? (
     <Component className={classNames} {...props} />
@@ -98,7 +94,7 @@ const TextSkeleton: React.FC<TextSkeletonProps> = ({
       <Component className={classNames} {...props} />
       <small
         className={cn(
-          textSkeletonVariantClasses({ variant: 'small', color }),
+          textSkeletonVariantClasses({ variant: 'small' }),
           className,
           'h-2',
         )}
