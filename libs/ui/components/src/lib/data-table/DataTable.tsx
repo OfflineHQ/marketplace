@@ -62,6 +62,7 @@ export function DataTable<TData, TValue>({
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
+  // here we determine from the columns if we need to show the selection column in the table along as the pagination
   const hasSelectionColumn = columns.some((column) => column.id === 'select');
 
   const table = useReactTable({
