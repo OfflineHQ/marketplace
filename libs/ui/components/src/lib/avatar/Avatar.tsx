@@ -80,18 +80,13 @@ const AvatarFallback = React.forwardRef<
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
 const avatarSkeletonVariants = cva(
-  'relative shrink-0 animate-pulse rounded-full',
+  'relative shrink-0 animate-pulse rounded-full bg-skeleton',
   {
     variants: {
       size: avatarSizes,
-      color: {
-        default: 'bg-muted',
-        highlight: 'bg-highlight',
-      },
     },
     defaultVariants: {
       size: 'default',
-      color: 'default',
     },
   },
 );
@@ -101,10 +96,10 @@ const AvatarSkeleton = React.forwardRef<
   VariantProps<typeof avatarSkeletonVariants> & {
     className?: string;
   }
->(({ className, size, color = 'default', ...props }, ref) => (
+>(({ className, size, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(avatarSkeletonVariants({ size, color }), className)}
+    className={cn(avatarSkeletonVariants({ size }), className)}
     {...props}
   />
 ));

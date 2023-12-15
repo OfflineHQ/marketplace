@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 
 import { expect, screen, userEvent, within } from '@storybook/test';
+import { sleep } from '@utils';
+import { Card } from '../card/Card';
 import { DataTable } from './DataTable';
 import { columns } from './examples/columns';
 import { priorities, statuses } from './examples/data/data';
@@ -139,5 +141,70 @@ export const DataTableWithToolbarToggleColumns: Story = {
     await userEvent.click(dropdown.getByText(/Priority/i));
     expect(screen.queryByText(/High/i)).not.toBeInTheDocument();
     await userEvent.click(await screen.findByRole('button', { name: /view/i }));
+  },
+};
+
+export const DataTableWithSelectedRows: Story = {
+  ...DataTableWithToolbarToggleColumns,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(
+      screen.getByRole('checkbox', { name: /select all/i }),
+    );
+    expect(screen.getByText(/10 of 100 selected/i)).toBeInTheDocument();
+  },
+};
+
+export const DataTableWithSelectedRowsDark: Story = {
+  ...DataTableWithSelectedRows,
+  play: async ({ canvasElement }) => {
+    await sleep(100);
+    await userEvent.click(
+      screen.getByRole('checkbox', { name: /select all/i }),
+    );
+    expect(screen.getByText(/10 of 100 selected/i)).toBeInTheDocument();
+  },
+  parameters: {
+    darkMode: {
+      isDark: true,
+    },
+  },
+};
+
+export const InsideCardDistinct: Story = {
+  args: {
+    ...DataTableWithToolbarToggleColumns.args,
+  },
+  render: (props) => {
+    return (
+      <Card variant="distinct" className="m-0 h-full p-4">
+        <DataTable {...props} />
+      </Card>
+    );
+  },
+};
+
+export const InsideCardDistinctSelectedRows: Story = {
+  ...InsideCardDistinct,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(
+      screen.getByRole('checkbox', { name: /select all/i }),
+    );
+    expect(screen.getByText(/10 of 100 selected/i)).toBeInTheDocument();
+  },
+};
+
+export const InsideCardDistinctSelectedRowsDark: Story = {
+  ...InsideCardDistinctSelectedRows,
+  play: async ({ canvasElement }) => {
+    await sleep(100);
+    await userEvent.click(
+      screen.getByRole('checkbox', { name: /select all/i }),
+    );
+    expect(screen.getByText(/10 of 100 selected/i)).toBeInTheDocument();
+  },
+  parameters: {
+    darkMode: {
+      isDark: true,
+    },
   },
 };

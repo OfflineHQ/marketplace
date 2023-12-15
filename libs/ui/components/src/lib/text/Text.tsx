@@ -38,18 +38,13 @@ const textVariantClasses = cva('', {
 });
 
 const textSkeletonVariantClasses = cva(
-  'max-w-full shrink-0 animate-pulse rounded-full bg-muted',
+  'max-w-full shrink-0 animate-pulse rounded-full bg-skeleton',
   {
     variants: {
       variant: textSkeletonVariants,
-      color: {
-        default: 'bg-muted',
-        highlight: 'bg-highlight',
-      },
     },
     defaultVariants: {
       variant: 'span',
-      color: 'default',
     },
   },
 );
@@ -86,15 +81,11 @@ interface TextSkeletonProps
 
 const TextSkeleton: React.FC<TextSkeletonProps> = ({
   variant = 'span',
-  color = 'default',
   className,
   ...props
 }) => {
   const Component = variant as AllowedHtmlElements;
-  const classNames = cn(
-    textSkeletonVariantClasses({ variant, color }),
-    className,
-  );
+  const classNames = cn(textSkeletonVariantClasses({ variant }), className);
 
   return variant !== 'p' ? (
     <Component className={classNames} {...props} />
@@ -103,7 +94,7 @@ const TextSkeleton: React.FC<TextSkeletonProps> = ({
       <Component className={classNames} {...props} />
       <small
         className={cn(
-          textSkeletonVariantClasses({ variant: 'small', color }),
+          textSkeletonVariantClasses({ variant: 'small' }),
           className,
           'h-2',
         )}

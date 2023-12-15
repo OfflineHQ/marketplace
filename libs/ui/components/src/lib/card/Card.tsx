@@ -7,8 +7,8 @@ import { TextSkeleton, TextSkeletonProps } from '../text/Text';
 const variants = {
   default: 'border shadow-sm',
   noBorder: '',
-  distinct: 'border shadow-md bg-muted rounded-sm text-card-muted-foreground',
-  insideDistinct: 'border shadow-xs bg-muted rounded-sm',
+  distinct: 'border shadow-md bg-distinct distinct rounded-sm',
+  insideDistinct: 'border shadow-xs bg-distinct distinct rounded-sm',
 };
 
 const cardVariantsCva = cva(
@@ -47,28 +47,13 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 );
 Card.displayName = 'Card';
 
-const headerVariants = {
-  default: '',
-  distinct: 'bg-highlight',
-};
-
-const cardHeaderVariantsCva = cva('flex flex-col space-y-1.5 p-6', {
-  variants: {
-    variant: headerVariants,
-  },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
-
 const CardHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> &
-    VariantProps<typeof cardHeaderVariantsCva>
->(({ className, variant, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(cardHeaderVariantsCva({ variant }), className)}
+    className={cn('flex flex-col space-y-1.5 p-6', className)}
     {...props}
   />
 ));
