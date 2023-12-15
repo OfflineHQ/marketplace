@@ -10,6 +10,9 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
+    --distinct: 210 40% 96.1%;
+    --distinct-border: 214.3 31.8% 81.4%;
+
     --highlight: 215 40% 86.1%;
 
     --image: 216 12.2% 83.9%;
@@ -18,7 +21,8 @@
     --popover-foreground: 222.2 84% 4.9%;
 
     --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 81.4%;
+    --input-distinct: 214.3 31.8% 71.4%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -63,6 +67,9 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
+    --distinct: 217.2 32.6% 17.5%;
+    --distinct-border: 217.2 32.6% 30.5%;
+
     --highlight: 223 47% 15%;
 
     --image: 217 19.1% 26.7%;
@@ -73,8 +80,10 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
+    --border: 217.2 32.6% 23.5%;
+
+    --input: 217.2 32.6% 30.5%;
+    --input-distinct: 217.2 32.6% 39.5%;
 
     --card: 224 71% 4%;
     --card-foreground: 213 31% 91%;
@@ -111,9 +120,28 @@
 }
 
 @layer base {
-  * {
+  :not(.distinct) * {
     @apply border-border;
   }
+  .distinct * {
+    @apply border-distinct-border;
+  }
+  .distinct .border-input {
+    @apply border-input-distinct;
+  }
+  .distinct .border-success {
+    @apply border-success-border;
+  }
+  .distinct .border-info {
+    @apply border-info-border;
+  }
+  .distinct .border-failure {
+    @apply border-failure-border;
+  }
+  .distinct .border-warning {
+    @apply border-warning-border;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings:
