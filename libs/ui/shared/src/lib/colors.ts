@@ -1,13 +1,13 @@
 export const textColors = {
-  blue: 'text-blue-800 dark:text-blue-300',
-  dark: 'text-gray-800 dark:text-gray-300',
-  red: 'text-red-800 dark:text-red-300',
-  green: 'text-green-800 dark:text-green-300',
-  yellow: 'text-yellow-800 dark:text-yellow-300',
-  orange: 'text-orange-800 dark:text-orange-300',
-  indigo: 'text-indigo-800 dark:text-indigo-300',
-  purple: 'text-purple-800 dark:text-purple-300',
-  pink: 'text-pink-800 dark:text-pink-300',
+  blue: 'text-blue-600 dark:text-blue-300',
+  dark: 'text-gray-600 dark:text-gray-300',
+  red: 'text-red-600 dark:text-red-300',
+  green: 'text-green-600 dark:text-green-300',
+  yellow: 'text-yellow-600 dark:text-yellow-300',
+  orange: 'text-orange-600 dark:text-orange-300',
+  indigo: 'text-indigo-600 dark:text-indigo-300',
+  purple: 'text-purple-600 dark:text-purple-300',
+  pink: 'text-pink-600 dark:text-pink-300',
 };
 
 export const backgroundColors = {
