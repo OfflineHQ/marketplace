@@ -26,7 +26,6 @@ import {
 } from '../table/Table';
 
 import { cn } from '@ui/shared';
-import { VariantProps, cva } from 'class-variance-authority';
 import {
   DataTablePagination,
   type DataTablePaginationProps,
@@ -36,21 +35,7 @@ import {
   type DataTableToolbarProps,
 } from './DataTableToolbar';
 
-const variants = {
-  default: 'border',
-  insideDistinct: 'border-highlight',
-};
-const dataTableVariantsCva = cva('', {
-  variants: {
-    variant: variants,
-  },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
-
-export interface DataTableProps<TData, TValue>
-  extends VariantProps<typeof dataTableVariantsCva> {
+export interface DataTableProps<TData, TValue> {
   className?: string;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -61,7 +46,6 @@ export interface DataTableProps<TData, TValue>
 }
 
 export function DataTable<TData, TValue>({
-  variant = 'default',
   className,
   columns,
   data,
@@ -103,17 +87,16 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn('space-y-4 w-full', className)}>
       {toolbarProps ? (
         <DataTableToolbar table={table} {...toolbarProps} />
       ) : null}
       <div
         className={cn(
-          'flex h-full grow overflow-auto rounded-md',
-          dataTableVariantsCva({ variant }),
+          'flex h-full w-full grow overflow-auto rounded-md border',
         )}
       >
-        <Table>
+        <Table className="h-full w-full">
           {showHeader ? (
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

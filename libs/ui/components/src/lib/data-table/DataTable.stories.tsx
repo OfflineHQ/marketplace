@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 
 import { expect, screen, userEvent, within } from '@storybook/test';
+import { sleep } from '@utils';
 import { Card } from '../card/Card';
 import { DataTable } from './DataTable';
 import { columns } from './examples/columns';
@@ -143,10 +144,35 @@ export const DataTableWithToolbarToggleColumns: Story = {
   },
 };
 
+export const DataTableWithSelectedRows: Story = {
+  ...DataTableWithToolbarToggleColumns,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(
+      screen.getByRole('checkbox', { name: /select all/i }),
+    );
+    expect(screen.getByText(/10 of 100 selected/i)).toBeInTheDocument();
+  },
+};
+
+export const DataTableWithSelectedRowsDark: Story = {
+  ...DataTableWithSelectedRows,
+  play: async ({ canvasElement }) => {
+    await sleep(100);
+    await userEvent.click(
+      screen.getByRole('checkbox', { name: /select all/i }),
+    );
+    expect(screen.getByText(/10 of 100 selected/i)).toBeInTheDocument();
+  },
+  parameters: {
+    darkMode: {
+      isDark: true,
+    },
+  },
+};
+
 export const InsideCardDistinct: Story = {
   args: {
     ...DataTableWithToolbarToggleColumns.args,
-    variant: 'insideDistinct',
   },
   render: (props) => {
     return (
@@ -154,5 +180,31 @@ export const InsideCardDistinct: Story = {
         <DataTable {...props} />
       </Card>
     );
+  },
+};
+
+export const InsideCardDistinctSelectedRows: Story = {
+  ...InsideCardDistinct,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(
+      screen.getByRole('checkbox', { name: /select all/i }),
+    );
+    expect(screen.getByText(/10 of 100 selected/i)).toBeInTheDocument();
+  },
+};
+
+export const InsideCardDistinctSelectedRowsDark: Story = {
+  ...InsideCardDistinctSelectedRows,
+  play: async ({ canvasElement }) => {
+    await sleep(100);
+    await userEvent.click(
+      screen.getByRole('checkbox', { name: /select all/i }),
+    );
+    expect(screen.getByText(/10 of 100 selected/i)).toBeInTheDocument();
+  },
+  parameters: {
+    darkMode: {
+      isDark: true,
+    },
   },
 };
