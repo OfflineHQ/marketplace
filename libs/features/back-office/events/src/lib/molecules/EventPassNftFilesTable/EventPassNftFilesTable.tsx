@@ -40,7 +40,6 @@ export async function EventPassNftFilesTable({
     <NextIntlClientProvider locale={locale} messages={localeMessages}>
       <EventPassNftFilesTableClient
         data={nftFilesModifiedPath}
-        enableRowSelection
         paginationProps={paginationProps}
         noResultsText={noResultsText}
         headerControlText={headerControlText}
