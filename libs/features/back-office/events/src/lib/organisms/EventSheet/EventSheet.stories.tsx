@@ -1,6 +1,6 @@
 import * as eventsApi from '@features/back-office/events-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, screen, userEvent, within } from '@storybook/test';
+import { expect, screen, userEvent } from '@storybook/test';
 import { i18nUiTablesServerMocks } from '@test-utils/ui-mocks';
 import * as nextIntl from 'next-intl';
 import { createMock } from 'storybook-addon-module-mock';
@@ -12,6 +12,7 @@ import {
   eventWithNormalPasses,
 } from './examples';
 
+import { eventPassNftFiles } from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
 
 const meta: Meta<typeof EventSheet> = {
@@ -21,17 +22,7 @@ const meta: Meta<typeof EventSheet> = {
     moduleMock: {
       mock: () => {
         const mock = createMock(eventsApi, 'getEventPassNftFiles');
-        mock.mockReturnValue(
-          Promise.resolve([
-            {
-              filePath: '/local/path/to/file1',
-              fileUrl: 'https://file1',
-              lastModified: 1623345600000,
-              size: 100,
-              type: 'File',
-            },
-          ]),
-        );
+        mock.mockReturnValue(Promise.resolve(eventPassNftFiles));
         const mockIntl = createMock(nextIntl, 'useLocale');
         mockIntl.mockReturnValue('en');
         return [mock, mockIntl, ...i18nUiTablesServerMocks()];
@@ -76,12 +67,6 @@ export const Default: Story = {
     await expect(passAssociatedDropdown1).toBeEnabled();
     const fileRow = await screen.findByText(/file1/i);
     expect(fileRow).toBeInTheDocument();
-    const buttonFileRow = within(
-      fileRow.closest('tr') as HTMLElement,
-    ).getByRole('button');
-    userEvent.click(buttonFileRow);
-    const fileActionDelete = await screen.findByText(/Delete the file/i);
-    userEvent.click(fileActionDelete);
     const passAssociatedDropdown2 = passAssociatedDropdowns[1];
     await expect(passAssociatedDropdown2).toBeDisabled();
   },

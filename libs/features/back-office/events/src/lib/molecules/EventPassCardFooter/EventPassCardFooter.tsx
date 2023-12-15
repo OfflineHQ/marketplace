@@ -1,4 +1,3 @@
-import { getEventPassNftFiles } from '@features/back-office/events-api';
 import {
   BlockchainAddress,
   Button,
@@ -8,6 +7,7 @@ import {
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import { Suspense } from 'react';
+import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
 import {
   EventPassDeployButtonClient,
   EventPassDeployButtonClientProps,

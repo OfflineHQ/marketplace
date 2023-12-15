@@ -36,6 +36,7 @@ export const EventPassCardContentNormal = ({
           organizerId={organizerId}
           eventId={event.id}
           eventPassId={eventPass.id}
+          eventSlug={event.slug}
         />
       </Accordion>
     </CardContent>
