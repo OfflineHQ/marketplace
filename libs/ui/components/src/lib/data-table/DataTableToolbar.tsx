@@ -3,7 +3,12 @@
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { Column, Table } from '@tanstack/react-table';
 import { OutlineSearch } from '@ui/icons';
+import { AutoAnimate } from '../auto-animate/AutoAnimate';
 import { Button } from '../button/Button';
+import {
+  DropdownMenuActions,
+  DropdownMenuActionsProps,
+} from '../dropdown-menu/DropdownMenuActions';
 import { Input } from '../input/Input';
 import {
   DataTableFacetedFilter,
@@ -34,6 +39,7 @@ export interface DataTableToolbarProps<TData, TValue> {
   >['controlText'] & {
     reset: string;
   };
+  menuActions?: Omit<DropdownMenuActionsProps, 'isLoading'>;
   toggleColumnsText?: DataTableViewOptionsProps<TData>['controlText'];
 }
 
@@ -43,8 +49,10 @@ export function DataTableToolbar<TData, TValue>({
   filtersConfig = [],
   filtersConfigText,
   toggleColumnsText,
+  menuActions,
 }: DataTableToolbarProps<TData, TValue>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+  const numSelectedItems = table.getFilteredSelectedRowModel().rows.length;
 
   return (
     <div className="flex items-center justify-between">
@@ -81,20 +89,36 @@ export function DataTableToolbar<TData, TValue>({
             )
           );
         })}
-        {isFiltered && filtersConfigText && (
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3"
-          >
-            {filtersConfigText.reset}
-            <Cross2Icon className="ml-2 h-4 w-4" />
-          </Button>
-        )}
+
+        <AutoAnimate>
+          {isFiltered && filtersConfigText && (
+            <Button
+              variant="ghost"
+              onClick={() => table.resetColumnFilters()}
+              className="h-8 px-2 lg:px-3"
+            >
+              {filtersConfigText.reset}
+              <Cross2Icon className="ml-2 h-4 w-4" />
+            </Button>
+          )}
+        </AutoAnimate>
       </div>
       {toggleColumnsText && (
         <DataTableViewOptions table={table} controlText={toggleColumnsText} />
       )}
+      <AutoAnimate>
+        {!!menuActions && !!numSelectedItems && (
+          <DropdownMenuActions
+            {...menuActions}
+            ping={{
+              isActive: true,
+              number: numSelectedItems,
+            }}
+            className="mx-2 h-auto w-auto lg:mx-3"
+            buttonClassName="w-8 h-8"
+          />
+        )}
+      </AutoAnimate>
     </div>
   );
 }

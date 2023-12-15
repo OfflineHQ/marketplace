@@ -54,6 +54,7 @@ import { IconProps } from './variants';
 
 import {
   IoChevronBack,
+  IoCloudUploadOutline,
   IoLocationOutline,
   IoWarning,
   IoWarningOutline,
@@ -136,6 +137,14 @@ export const Timer: FC<IconProps> = (props) => (
 
 export const Reveal: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={RxMagicWand} label={'Reveal'} {...props} />
+);
+
+export const Upload: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={IoCloudUploadOutline}
+    label={'Upload'}
+    {...props}
+  />
 );
 
 export const ChevronBack: FC<IconProps> = (props) => (

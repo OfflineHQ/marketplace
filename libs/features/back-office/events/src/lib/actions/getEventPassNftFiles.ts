@@ -1,3 +1,4 @@
+'use server';
 import { FileSummary } from '@bytescale/sdk';
 import env from '@env/server';
 import {
@@ -15,14 +16,11 @@ export const getEventPassNftFiles = cacheWithDynamicKeys(
     const folderPath = getEventPassOrganizerFolderPath(props);
     const list = await folder.listFolder({
       accountId: env.UPLOAD_ACCOUNT_ID,
-      folderPath: folderPath,
+      folderPath,
     });
     return list.items.filter((item): item is FileSummary => 'filePath' in item);
   },
   (props: [GetEventPassNftFilesProps]) => [
-    props[0].organizerId,
-    props[0].eventId,
-    props[0].eventPassId,
-    'getEventPassNftFiles',
+    `${props[0].organizerId}-${props[0].eventId}-${props[0].eventPassId}-getEventPassNftFiles`,
   ],
 );

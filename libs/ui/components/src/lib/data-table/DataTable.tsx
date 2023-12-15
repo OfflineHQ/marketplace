@@ -3,6 +3,8 @@
 import {
   ColumnDef,
   ColumnFiltersState,
+  Row,
+  RowSelectionState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -40,27 +42,59 @@ export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   showHeader?: boolean;
+  selectKey?: string;
+  initialRowSelection?: RowSelectionState; // replace 'any' with the correct type
+  initialColumnFilters?: ColumnFiltersState;
+  initialSorting?: SortingState;
+  onRowSelectionChange?: (selection: RowSelectionState) => void; // replace 'any' with the correct type
+  onColumnFiltersChange?: (filters: ColumnFiltersState) => void;
+  onSortingChange?: (sorting: SortingState) => void;
   toolbarProps?: Omit<DataTableToolbarProps<TData, TValue>, 'table'>;
   paginationProps?: Omit<DataTablePaginationProps<TData>, 'table'>;
   noResultsText: string;
+  children?: React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
   className,
   columns,
   data,
+  selectKey,
   showHeader = true,
   toolbarProps,
   paginationProps,
   noResultsText,
+  initialRowSelection,
+  initialColumnFilters,
+  initialSorting,
+  onRowSelectionChange,
+  onColumnFiltersChange,
+  onSortingChange,
+  children,
 }: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>(
+    initialRowSelection || {},
+  );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
+    initialColumnFilters || [],
   );
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>(
+    initialSorting || [],
+  );
+
+  React.useEffect(() => {
+    onRowSelectionChange && onRowSelectionChange(rowSelection);
+  }, [rowSelection, onRowSelectionChange]);
+
+  React.useEffect(() => {
+    onColumnFiltersChange && onColumnFiltersChange(columnFilters);
+  }, [columnFilters, onColumnFiltersChange]);
+
+  React.useEffect(() => {
+    onSortingChange && onSortingChange(sorting);
+  }, [sorting, onSortingChange]);
 
   // here we determine from the columns if we need to show the selection column in the table along as the pagination
   const hasSelectionColumn = columns.some((column) => column.id === 'select');
@@ -74,6 +108,14 @@ export function DataTable<TData, TValue>({
       rowSelection,
       columnFilters,
     },
+    ...(selectKey
+      ? {
+          getRowId: (originalRow: TData, index: number, parent?: Row<TData>) =>
+            selectKey
+              ? (originalRow[selectKey as keyof TData] as string)
+              : index.toString(),
+        }
+      : {}),
     enableRowSelection: hasSelectionColumn,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -87,17 +129,25 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  // here if data change mean that we need to get the new rowSelection from the new table state
+  React.useEffect(() => {
+    const rowSelectedFiltered = Object.keys(
+      table.getFilteredSelectedRowModel().rowsById,
+    ).reduce((acc, key) => ({ ...acc, [key]: true }), {});
+    setRowSelection(rowSelectedFiltered);
+  }, [data, table]);
+
   return (
     <div className={cn('space-y-4 w-full', className)}>
-      {toolbarProps ? (
+      {toolbarProps && data.length ? (
         <DataTableToolbar table={table} {...toolbarProps} />
       ) : null}
       <div
         className={cn(
-          'flex h-full w-full grow overflow-auto rounded-md border',
+          'flex-grow h-full w-full overflow-auto rounded-md border',
         )}
       >
-        <Table className="h-full w-full">
+        <Table>
           {showHeader ? (
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -144,14 +194,14 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {noResultsText}
+                  {children || noResultsText}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      {paginationProps ? (
+      {paginationProps && data.length ? (
         <DataTablePagination
           table={table}
           enableRowSelection={hasSelectionColumn}

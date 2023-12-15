@@ -284,7 +284,12 @@
         "EventPassNftFilesTable": {
           "header-file-path": "Fichier",
           "header-show": "Montrer le fichier",
-          "header-delete": "Supprimer le fichier"
+          "header-delete": "Supprimer le fichier",
+          "search-placeholder": "Chercher un fichier...",
+          "menu-actions-label": "{numFilesSelected, plural, =1 {# fichier sélectionné} other {# fichiers sélectionnés}}",
+          "menu-actions-download": "{numFilesSelected, plural, =1 {télécharger le fichier} other {télécharger # fichiers}}",
+          "menu-actions-helper-text": "Appliquer une action sur les fichiers sélectionnés",
+          "header-download": "Téléchargez le fichier"
         },
         "EventPassCardFooter": {
           "deploy-contract": "Déployer le contrat NFTs",
@@ -303,6 +308,13 @@
           "image": "Image",
           "name": "Nom",
           "description": "Déscription"
+        },
+        "EventPassFilesUploader": {
+          "trigger-button": "Ajoutez vos fichiers",
+          "title": "Téléchargez vos fichiers",
+          "close-button": "Fermer",
+          "description": "Le seul format accepté est <strong>.png</strong> et vous devez télécharger <strong>{numFilesRemaining, number} {numFilesRemaining, plural, one {fichier} other {fichiers}}</strong> pour le pass d'événement \"{eventPassName}\".",
+          "missing-files": "Il vous reste <strong>{missingFilesNumber, number} {missingFilesNumber, plural, one {fichier} other {fichiers}}</strong> à télécharger pour votre pass."
         }
       },
       "go-back-to-events": "Retournez aux événements"

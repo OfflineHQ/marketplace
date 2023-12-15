@@ -25,7 +25,6 @@ export function DataTableViewOptions<TData>({
   table,
   controlText,
 }: DataTableViewOptionsProps<TData>) {
-  console.log('table', table, 'controlText', controlText);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
