@@ -73,6 +73,11 @@ module.exports = {
         muted: {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
+          distinct: 'hsl(var(--muted-distinct))',
+        },
+        skeleton: {
+          DEFAULT: 'hsl(var(--skeleton))',
+          distinct: 'hsl(var(--skeleton-distinct))',
         },
         distinct: {
           DEFAULT: 'hsl(var(--distinct))',

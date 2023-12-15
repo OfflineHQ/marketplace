@@ -7,8 +7,12 @@
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
+    --skeleton: 210 40% 96.1%;
+    --skeleton-distinct: 214.3 31.8% 81.4%;
+
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
+    --muted-distinct: 214.3 31.8% 81.4%;
 
     --distinct: 210 40% 96.1%;
     --distinct-border: 214.3 31.8% 81.4%;
@@ -64,8 +68,12 @@
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
+    --skeleton: 217.2 32.6% 17.5%;
+    --skeleton-distinct: 217.2 32.6% 30.5%;
+
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
+    --muted-distinct: 217.2 32.6% 30.5%;
 
     --distinct: 217.2 32.6% 17.5%;
     --distinct-border: 217.2 32.6% 30.5%;
@@ -140,6 +148,12 @@
   }
   .distinct .border-warning {
     @apply border-warning-border;
+  }
+  .distinct .bg-skeleton {
+    @apply bg-skeleton-distinct;
+  }
+  .distinct .bg-muted {
+    @apply bg-muted-distinct;
   }
 
   body {
