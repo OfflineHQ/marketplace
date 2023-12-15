@@ -121,7 +121,7 @@ export const UserPassEventSkeleton: React.FC = () => {
         <div className={layout.grid}>
           <div className={layout.imageContainer}>
             <div
-              className={`h-full w-full animate-pulse rounded-sm bg-muted `}
+              className={`h-full w-full animate-pulse rounded-sm bg-skeleton`}
             />
           </div>
           <div className={`${layout.textContainer} mb-4 space-y-4`}>
