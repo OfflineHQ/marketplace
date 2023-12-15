@@ -83,15 +83,14 @@ module.exports = {
           DEFAULT: 'hsl(var(--distinct))',
           border: 'hsl(var(--distinct-border))',
         },
-        highlight: {
-          DEFAULT: 'hsl(var(--highlight))',
-        },
         image: {
           DEFAULT: 'hsl(var(--image))',
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
+          distinct: 'hsl(var(--accent-distinct))',
+          'distinct-foreground': 'hsl(var(--accent-distinct-foreground))',
         },
         popover: {
           DEFAULT: 'hsl(var(--popover))',

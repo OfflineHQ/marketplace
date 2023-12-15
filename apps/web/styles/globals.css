@@ -17,8 +17,6 @@
     --distinct: 210 40% 96.1%;
     --distinct-border: 214.3 31.8% 81.4%;
 
-    --highlight: 215 40% 86.1%;
-
     --image: 216 12.2% 83.9%;
 
     --popover: 0 0% 100%;
@@ -39,6 +37,8 @@
 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
+    --accent-distinct: 215 40% 86.1%;
+    --accent-distinct-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -78,12 +78,12 @@
     --distinct: 217.2 32.6% 17.5%;
     --distinct-border: 217.2 32.6% 30.5%;
 
-    --highlight: 223 47% 15%;
-
     --image: 217 19.1% 26.7%;
 
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
+    --accent-distinct: 223 47% 28%;
+    --accent-distinct-foreground: 210 40% 98%;
 
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
@@ -148,6 +148,21 @@
   }
   .distinct .border-warning {
     @apply border-warning-border;
+  }
+  .distinct .bg-skeleton {
+    @apply bg-skeleton-distinct;
+  }
+  .distinct .bg-muted {
+    @apply bg-muted-distinct;
+  }
+  .distinct .bg-accent {
+    @apply bg-accent-distinct;
+  }
+  .distinct .bg-accent\/50 {
+    @apply bg-accent-distinct/50;
+  }
+  .distinct .text-accent-foreground {
+    @apply text-accent-distinct-foreground;
   }
 
   body {
