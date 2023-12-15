@@ -38,14 +38,14 @@ export const OrganizerHero: React.FC<OrganizerHeroProps> = ({
         }}
         alt={title}
       />
-      <div className="relative flex max-w-fit items-center rounded-full bg-muted p-2 opacity-90">
+      <div className="distinct relative flex max-w-fit items-center rounded-full bg-distinct p-2 opacity-90">
         <Avatar size="xl" className="m-1">
           <AvatarFallback>{getInitials(name)}</AvatarFallback>
           <AvatarImage src={image?.url} className={imageClasses as string} />
         </Avatar>
         <div className="ml-2 mr-4 flex-col md:space-y-1">
           <Text variant="h2">{name}</Text>
-          <OrganizerFollowButton name={name} slug={slug} variant="highlight" />
+          <OrganizerFollowButton name={name} slug={slug} variant="ghost" />
         </div>
       </div>
     </div>
@@ -55,11 +55,11 @@ export const OrganizerHero: React.FC<OrganizerHeroProps> = ({
 export const OrganizerHeroSkeleton: React.FC = () => (
   <div className="relative mb-2 flex h-52 items-end px-2 md:h-[18.25rem] md:px-6">
     <div className="absolute left-0 top-0 h-40 w-full animate-pulse bg-image object-cover dark:bg-image md:h-60"></div>
-    <div className="relative flex max-w-fit items-center rounded-full bg-muted p-2 opacity-90">
-      <AvatarSkeleton color="highlight" size="xl" className="m-1" />
+    <div className="distinct relative flex max-w-fit items-center rounded-full bg-skeleton p-2 opacity-90">
+      <AvatarSkeleton size="xl" className="m-1" />
       <div className="ml-2 mr-4 flex-col space-y-2 md:space-y-4">
-        <TextSkeleton variant="h2" color="highlight" />
-        <ButtonSkeleton size="sm" color="highlight"></ButtonSkeleton>
+        <TextSkeleton variant="h2" />
+        <ButtonSkeleton size="sm"></ButtonSkeleton>
       </div>
     </div>
   </div>
