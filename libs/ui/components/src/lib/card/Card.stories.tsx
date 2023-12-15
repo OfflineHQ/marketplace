@@ -57,3 +57,10 @@ export const InsideDistinct: Story = {
 export const Loading: Story = {
   render: CardSkeleton,
 };
+
+export const LoadingDistinct: Story = {
+  ...Loading,
+  args: {
+    variant: 'distinct',
+  },
+};

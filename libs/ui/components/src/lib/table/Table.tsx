@@ -2,8 +2,6 @@ import * as React from 'react';
 
 import { cn } from '@ui/shared';
 
-import { VariantProps, cva } from 'class-variance-authority';
-
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
@@ -45,7 +43,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      'border-t bg-muted/50 font-medium [&>tr]:last:border-b-0',
+      'border-t bg-accent/50 font-medium [&>tr]:last:border-b-0',
       className,
     )}
     {...props}
@@ -60,7 +58,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      'border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
+      'border-b transition-colors hover:bg-accent/50 data-[state=selected]:bg-accent',
       className,
     )}
     {...props}
@@ -75,7 +73,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      'h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0',
+      'h-12 px-4 text-left align-middle font-medium text-accent-foreground [&:has([role=checkbox])]:pr-0',
       className,
     )}
     {...props}
@@ -101,72 +99,47 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn('mt-4 text-sm text-muted-foreground', className)}
+    className={cn('mt-4 text-sm text-accent-foreground', className)}
     {...props}
   />
 ));
 TableCaption.displayName = 'TableCaption';
 
-const tableSkeletonVariantsCva = cva('', {
-  variants: {
-    variant: {
-      default: 'bg-muted',
-      highlight: 'bg-highlight',
-    },
-  },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
-
-interface ColsSkeletonProps
-  extends VariantProps<typeof tableSkeletonVariantsCva> {
+interface ColsSkeletonProps {
   cols: number;
 }
 
-const CellSkeleton = ({
-  variant,
-}: VariantProps<typeof tableSkeletonVariantsCva>) => (
+const CellSkeleton = () => (
   <TableCell>
-    <div
-      className={cn(tableSkeletonVariantsCva({ variant }), 'h-4 w-32 rounded')}
-    />
+    <div className="h-4 w-32 rounded bg-skeleton" />
   </TableCell>
 );
 
-const HeaderSkeleton = ({
-  variant,
-}: VariantProps<typeof tableSkeletonVariantsCva>) => (
+const HeaderSkeleton = () => (
   <TableHead>
-    <div
-      className={cn(tableSkeletonVariantsCva({ variant }), 'h-4 w-16 rounded')}
-    />
+    <div className={cn('h-4 w-16 rounded bg-skeleton')} />
   </TableHead>
 );
 
-const FooterSkeleton = ({
-  variant,
-}: VariantProps<typeof tableSkeletonVariantsCva>) => (
+const FooterSkeleton = () => (
   <TableCell>
-    <div
-      className={cn(tableSkeletonVariantsCva({ variant }), 'h-4 w-16 rounded')}
-    />
+    <div className={cn('h-4 w-16 rounded bg-skeleton')} />
   </TableCell>
 );
 
-const SkeletonRow: React.FC<ColsSkeletonProps> = ({ cols, variant }) => (
+const SkeletonRow: React.FC<ColsSkeletonProps> = ({ cols }) => (
   <TableRow className="animate-pulse">
     {Array.from({ length: cols }, (_, i) => (
-      <CellSkeleton variant={variant} key={i} />
+      <CellSkeleton key={i} />
     ))}
   </TableRow>
 );
 
-const HeaderRowSkeleton: React.FC<ColsSkeletonProps> = ({ cols, variant }) => (
+const HeaderRowSkeleton: React.FC<ColsSkeletonProps> = ({ cols }) => (
   <TableHeader className="animate-pulse">
     <TableRow>
       {Array.from({ length: cols }, (_, i) => (
-        <HeaderSkeleton variant={variant} key={i} />
+        <HeaderSkeleton key={i} />
       ))}
     </TableRow>
   </TableHeader>
@@ -176,16 +149,12 @@ interface TableSkeletonProps extends ColsSkeletonProps {
   rows: number;
 }
 
-const TableSkeleton: React.FC<TableSkeletonProps> = ({
-  rows,
-  cols,
-  variant,
-}) => (
+const TableSkeleton: React.FC<TableSkeletonProps> = ({ rows, cols }) => (
   <Table>
-    <HeaderRowSkeleton cols={cols} variant={variant} />
+    <HeaderRowSkeleton cols={cols} />
     <TableBody>
       {Array.from({ length: rows }, (_, i) => (
-        <SkeletonRow key={i} cols={cols} variant={variant} />
+        <SkeletonRow key={i} cols={cols} />
       ))}
     </TableBody>
     <TableFooter>{/* <FooterRowSkeleton cols={cols} /> */}</TableFooter>

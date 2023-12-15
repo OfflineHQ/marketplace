@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { TableExample } from './examples';
 import { Table, TableSkeleton } from './Table';
+import { TableExample } from './examples';
 
 const meta = {
   title: 'Molecules/Table',
@@ -25,9 +25,13 @@ export const Skeleton: Story = {
   render: () => <TableSkeleton rows={8} cols={4} />,
 };
 
-export const SkeletonHighlight: Story = {
+export const SkeletonDistinct: Story = {
   parameters: {
     layout: 'fullscreen',
   },
-  render: () => <TableSkeleton rows={8} cols={4} variant="highlight" />,
+  render: () => (
+    <div className="distinct bg-distinct">
+      <TableSkeleton rows={8} cols={4} />
+    </div>
+  ),
 };

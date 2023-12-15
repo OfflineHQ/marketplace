@@ -38,18 +38,13 @@ const textVariantClasses = cva('', {
 });
 
 const textSkeletonVariantClasses = cva(
-  'max-w-full shrink-0 animate-pulse rounded-full bg-muted',
+  'max-w-full shrink-0 animate-pulse rounded-full bg-skeleton',
   {
     variants: {
       variant: textSkeletonVariants,
-      color: {
-        default: 'bg-muted',
-        highlight: 'bg-highlight',
-      },
     },
     defaultVariants: {
       variant: 'span',
-      color: 'default',
     },
   },
 );
