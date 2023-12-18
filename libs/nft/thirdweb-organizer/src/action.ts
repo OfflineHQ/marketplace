@@ -9,13 +9,17 @@ import {
 import { adminSdk } from '@gql/admin/api';
 import type {
   CreateEventPassNftContractMutation,
+  GetEventPassNftContractNftsQuery,
+  GetEventPassNftContractNftsQueryVariables,
   InsertEventParametersMutation,
   InsertEventPassNftsMutation,
+  UpdateNftsWithPackIdMutationVariables,
 } from '@gql/admin/types';
 import type {
   EventParameters_Insert_Input,
   EventPassNftContract_Insert_Input,
   EventPassNft_Insert_Input,
+  PackNftContract_Insert_Input,
 } from '@gql/shared/types';
 import { defaultLocale } from '@next/i18n';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
@@ -26,7 +30,21 @@ export async function createEventPassNftContract(
   CreateEventPassNftContractMutation['insert_eventPassNftContract_one']
 > {
   const data = await adminSdk.CreateEventPassNftContract({ object });
-  return data?.insert_eventPassNftContract_one || null;
+  return data?.insert_eventPassNftContract_one;
+}
+
+export async function createPackNftContract(
+  object: PackNftContract_Insert_Input,
+) {
+  const data = await adminSdk.CreatePackNftContract({ object });
+  return data?.insert_packNftContract_one;
+}
+
+export async function updateNftsWithPackId(
+  updates: UpdateNftsWithPackIdMutationVariables,
+) {
+  const data = await adminSdk.UpdateNftsWithPackId(updates);
+  return data?.update_eventPassNft_many;
 }
 
 export async function createEventPassNfts(
@@ -41,6 +59,13 @@ async function InsertEventParameters(
 ): Promise<InsertEventParametersMutation['insert_eventParameters']> {
   const data = await adminSdk.InsertEventParameters({ objects });
   return data?.insert_eventParameters;
+}
+
+export async function getEventPassNftContractNfts(
+  id: GetEventPassNftContractNftsQueryVariables,
+): Promise<GetEventPassNftContractNftsQuery['eventPassNftContract'][0]> {
+  const data = await adminSdk.GetEventPassNftContractNfts(id);
+  return data?.eventPassNftContract[0];
 }
 
 export async function createEventParametersAndWebhook({

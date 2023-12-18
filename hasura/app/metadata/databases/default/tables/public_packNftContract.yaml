@@ -7,7 +7,6 @@ array_relationships:
       manual_configuration:
         column_mapping:
           chainId: chainId
-          contractAddress: contractAddress
           eventId: eventId
           id: packNftContractId
         insertion_order: null
