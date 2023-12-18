@@ -1203,6 +1203,7 @@ enum EntityTypeName {
 input EntityWhereInput {
   """The ID of an object"""
   id: ID!
+  locale: Locale
   stage: Stage!
 
   """The Type name of an object"""

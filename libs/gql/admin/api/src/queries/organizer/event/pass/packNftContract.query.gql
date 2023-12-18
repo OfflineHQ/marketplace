@@ -1,0 +1,15 @@
+query GetPackNftContractFromPackId($packId: String) @cached {
+  packNftContract(where: { packId: { _eq: $packId } }) {
+    id
+    chainId
+    rewardsPerPack
+    contractAddress
+    eventId
+    eventPassIds
+    eventPassNfts {
+      tokenId
+      contractAddress
+      eventPassId
+    }
+  }
+}

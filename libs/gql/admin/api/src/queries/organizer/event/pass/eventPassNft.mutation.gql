@@ -61,3 +61,15 @@ mutation ClaimEventPassNfts($updates: [eventPassNft_updates!]!) {
     }
   }
 }
+
+mutation UpdateNftsWithPackId($updates: [eventPassNft_updates!]!) {
+  update_eventPassNft_many(updates: $updates) {
+    affected_rows
+    returning {
+      id
+      contractAddress
+      tokenId
+      packNftContractId
+    }
+  }
+}

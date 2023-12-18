@@ -638,6 +638,19 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+ const UpdateNftsWithPackIdDocument = `
+    mutation UpdateNftsWithPackId($updates: [eventPassNft_updates!]!) {
+  update_eventPassNft_many(updates: $updates) {
+    affected_rows
+    returning {
+      id
+      contractAddress
+      tokenId
+      packNftContractId
+    }
+  }
+}
+    `;
  const GetEventPassNftByContractsAndTokenIdsDocument = `
     query GetEventPassNftByContractsAndTokenIds($contractAddresses: [String!]!, $chainId: String!, $tokenIds: [bigint!]!) @cached {
   eventPassNft(
@@ -703,6 +716,23 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetEventPassNftContractNftsDocument = `
+    query GetEventPassNftContractNfts($eventPassId: String) @cached {
+  eventPassNftContract(where: {eventPassId: {_eq: $eventPassId}}) {
+    contractAddress
+    eventPassId
+    eventPassNfts {
+      id
+      packNftContractId
+      currentOwnerAddress
+      contractAddress
+      eventId
+      tokenId
+      eventPassId
+    }
+  }
+}
+    `;
  const GetEventPassOrderSumsDocument = `
     query GetEventPassOrderSums($eventPassId: String!) {
   eventPassOrderSums_by_pk(eventPassId: $eventPassId) {
@@ -731,6 +761,37 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     priceCurrency
     maxAmount
     maxAmountPerUser
+  }
+}
+    `;
+ const CreatePackNftContractDocument = `
+    mutation CreatePackNftContract($object: packNftContract_insert_input!) {
+  insert_packNftContract_one(object: $object) {
+    id
+    chainId
+    contractAddress
+    eventId
+    eventPassIds
+    organizerId
+    rewardsPerPack
+    packId
+  }
+}
+    `;
+ const GetPackNftContractFromPackIdDocument = `
+    query GetPackNftContractFromPackId($packId: String) @cached {
+  packNftContract(where: {packId: {_eq: $packId}}) {
+    id
+    chainId
+    rewardsPerPack
+    contractAddress
+    eventId
+    eventPassIds
+    eventPassNfts {
+      tokenId
+      contractAddress
+      eventPassId
+    }
   }
 }
     `;
@@ -1002,6 +1063,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     ClaimEventPassNfts(variables: Types.ClaimEventPassNftsMutationVariables, options?: C): Promise<Types.ClaimEventPassNftsMutation> {
       return requester<Types.ClaimEventPassNftsMutation, Types.ClaimEventPassNftsMutationVariables>(ClaimEventPassNftsDocument, variables, options) as Promise<Types.ClaimEventPassNftsMutation>;
     },
+    UpdateNftsWithPackId(variables: Types.UpdateNftsWithPackIdMutationVariables, options?: C): Promise<Types.UpdateNftsWithPackIdMutation> {
+      return requester<Types.UpdateNftsWithPackIdMutation, Types.UpdateNftsWithPackIdMutationVariables>(UpdateNftsWithPackIdDocument, variables, options) as Promise<Types.UpdateNftsWithPackIdMutation>;
+    },
     GetEventPassNftByContractsAndTokenIds(variables: Types.GetEventPassNftByContractsAndTokenIdsQueryVariables, options?: C): Promise<Types.GetEventPassNftByContractsAndTokenIdsQuery> {
       return requester<Types.GetEventPassNftByContractsAndTokenIdsQuery, Types.GetEventPassNftByContractsAndTokenIdsQueryVariables>(GetEventPassNftByContractsAndTokenIdsDocument, variables, options) as Promise<Types.GetEventPassNftByContractsAndTokenIdsQuery>;
     },
@@ -1023,6 +1087,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventPassNftContractDelayedRevealPassword(variables?: Types.GetEventPassNftContractDelayedRevealPasswordQueryVariables, options?: C): Promise<Types.GetEventPassNftContractDelayedRevealPasswordQuery> {
       return requester<Types.GetEventPassNftContractDelayedRevealPasswordQuery, Types.GetEventPassNftContractDelayedRevealPasswordQueryVariables>(GetEventPassNftContractDelayedRevealPasswordDocument, variables, options) as Promise<Types.GetEventPassNftContractDelayedRevealPasswordQuery>;
     },
+    GetEventPassNftContractNfts(variables?: Types.GetEventPassNftContractNftsQueryVariables, options?: C): Promise<Types.GetEventPassNftContractNftsQuery> {
+      return requester<Types.GetEventPassNftContractNftsQuery, Types.GetEventPassNftContractNftsQueryVariables>(GetEventPassNftContractNftsDocument, variables, options) as Promise<Types.GetEventPassNftContractNftsQuery>;
+    },
     GetEventPassOrderSums(variables: Types.GetEventPassOrderSumsQueryVariables, options?: C): Promise<Types.GetEventPassOrderSumsQuery> {
       return requester<Types.GetEventPassOrderSumsQuery, Types.GetEventPassOrderSumsQueryVariables>(GetEventPassOrderSumsDocument, variables, options) as Promise<Types.GetEventPassOrderSumsQuery>;
     },
@@ -1031,6 +1098,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     UpdateEventPassPricing(variables: Types.UpdateEventPassPricingMutationVariables, options?: C): Promise<Types.UpdateEventPassPricingMutation> {
       return requester<Types.UpdateEventPassPricingMutation, Types.UpdateEventPassPricingMutationVariables>(UpdateEventPassPricingDocument, variables, options) as Promise<Types.UpdateEventPassPricingMutation>;
+    },
+    CreatePackNftContract(variables: Types.CreatePackNftContractMutationVariables, options?: C): Promise<Types.CreatePackNftContractMutation> {
+      return requester<Types.CreatePackNftContractMutation, Types.CreatePackNftContractMutationVariables>(CreatePackNftContractDocument, variables, options) as Promise<Types.CreatePackNftContractMutation>;
+    },
+    GetPackNftContractFromPackId(variables?: Types.GetPackNftContractFromPackIdQueryVariables, options?: C): Promise<Types.GetPackNftContractFromPackIdQuery> {
+      return requester<Types.GetPackNftContractFromPackIdQuery, Types.GetPackNftContractFromPackIdQueryVariables>(GetPackNftContractFromPackIdDocument, variables, options) as Promise<Types.GetPackNftContractFromPackIdQuery>;
     },
     DeleteFollowOrganizer(variables: Types.DeleteFollowOrganizerMutationVariables, options?: C): Promise<Types.DeleteFollowOrganizerMutation> {
       return requester<Types.DeleteFollowOrganizerMutation, Types.DeleteFollowOrganizerMutationVariables>(DeleteFollowOrganizerDocument, variables, options) as Promise<Types.DeleteFollowOrganizerMutation>;

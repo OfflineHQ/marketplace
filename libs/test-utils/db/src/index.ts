@@ -21,6 +21,7 @@ export const SeedTable = {
   nftTransfer: 10,
   roleAssignments: 11,
   follow: 12,
+  packNftContract: 13,
 };
 
 export type SeedTableName = keyof typeof SeedTable;
