@@ -790,6 +790,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     eventPassNfts {
       tokenId
       contractAddress
+      currentOwnerAddress
       eventPassId
     }
   }
