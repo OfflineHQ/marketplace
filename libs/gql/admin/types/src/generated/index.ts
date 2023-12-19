@@ -340,7 +340,7 @@ export type GetPackNftContractFromPackIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetPackNftContractFromPackIdQuery = { __typename?: 'query_root', packNftContract: Array<{ __typename?: 'packNftContract', id: any, chainId: string, rewardsPerPack: number, contractAddress: string, eventId: string, eventPassIds: any, eventPassNfts: Array<{ __typename?: 'eventPassNft', tokenId: any, contractAddress: string, eventPassId: string }> }> };
+export type GetPackNftContractFromPackIdQuery = { __typename?: 'query_root', packNftContract: Array<{ __typename?: 'packNftContract', id: any, chainId: string, rewardsPerPack: number, contractAddress: string, eventId: string, eventPassIds: any, eventPassNfts: Array<{ __typename?: 'eventPassNft', tokenId: any, contractAddress: string, currentOwnerAddress?: string | null, eventPassId: string }> }> };
 
 export type DeleteFollowOrganizerMutationVariables = Types.Exact<{
   accountId: Types.Scalars['uuid'];

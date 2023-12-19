@@ -1,5 +1,6 @@
 'use server';
 
+import env from '@env/server';
 import { getEvent } from '@features/organizer/event-api';
 import {
   createNftActivityWebhookForEvent,
@@ -105,10 +106,27 @@ export async function createEventParametersAndWebhook({
   }
 }
 
-export async function getUnopenedNftPackAmount(contractAddress: string) {
+export async function getUnopenedNftPackAmount(packId: string) {
+  const packNftContract = (
+    await adminSdk.GetPackNftContractFromPackId({
+      packId: packId,
+    })
+  ).packNftContract;
+
+  const nfts = packNftContract[0].eventPassNfts;
+  const supply: Record<string, number> = {};
+
+  for (const nft of nfts) {
+    if (nft.currentOwnerAddress !== env.THIRDWEB_MASTER_ADDRESS) continue;
+    if (supply[nft.eventPassId]) supply[nft.eventPassId] += 1;
+    else supply[nft.eventPassId] = 1;
+  }
+
+  return supply;
+}
+
+export async function getPackSupply(contractAddress: string) {
   const sdk = new ThirdwebSDK('goerli');
-  const contract = await sdk.getContract(contractAddress, 'pack');
-  const packId = 0;
-  const contents = await contract.getPackContents(packId);
-  return contents.erc721Rewards;
+  const pack = await sdk.getContract(contractAddress, 'pack');
+  return pack.erc1155.totalSupply(0);
 }
