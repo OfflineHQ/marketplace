@@ -116,6 +116,13 @@ class CollectionDeploymentError extends Error {
   }
 }
 
+class PackDeploymentError extends Error {
+  constructor(error: Error) {
+    super(`Error deploying a pack: ${error.message}`);
+    this.name = 'PackDeploymentError';
+  }
+}
+
 class NftCollection {
   private sdk: ThirdwebSDK;
 
@@ -581,26 +588,58 @@ class NftCollection {
     return { selectedNfts, approvalData };
   }
 
+  private validateDeployAPackInputs(pack: Pack, eventData: EventSmallData) {
+    const requiredFields = ['id', 'name', 'image', 'eventPassIds', 'eventId'];
+
+    for (const field of requiredFields) {
+      if (!pack[field]) {
+        throw new Error(`Missing required field in pack: ${field}`);
+      }
+    }
+
+    if (!eventData.eventId || !eventData.organizerId) {
+      throw new Error(
+        'Missing required field in eventData: eventId or organizerId',
+      );
+    }
+
+    pack.eventPassIds.forEach((eventPassId, index) => {
+      if (!eventPassId.id || !eventPassId.amount) {
+        throw new Error(
+          `Missing required field in eventPassIds at index ${index}: id or amount`,
+        );
+      }
+    });
+  }
+
   async deployAPack(pack: Pack, eventData: EventSmallData) {
-    const { selectedNfts, approvalData } =
-      await this.getSelectedNftsFromPack(pack);
+    try {
+      this.validateDeployAPackInputs(pack, eventData);
 
-    const [address, chainIdNumber] = await this.getAddressAndChainId();
+      const { selectedNfts, approvalData } =
+        await this.getSelectedNftsFromPack(pack);
 
-    const txResult = await this.deployAndCreatePack({
-      address,
-      pack,
-      selectedNfts,
-      approvalData,
-    });
+      const [address, chainIdNumber] = await this.getAddressAndChainId();
 
-    await this.savePackContractIntoDb({
-      txResult,
-      selectedNfts,
-      eventData,
-      pack,
-      chainIdNumber,
-    });
+      const txResult = await this.deployAndCreatePack({
+        address,
+        pack,
+        selectedNfts,
+        approvalData,
+      });
+
+      await this.savePackContractIntoDb({
+        txResult,
+        selectedNfts,
+        eventData,
+        pack,
+        chainIdNumber,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new PackDeploymentError(error);
+      } else console.error(error);
+    }
   }
 }
 
