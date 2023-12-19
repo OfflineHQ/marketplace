@@ -604,7 +604,7 @@ class NftCollection {
     }
 
     pack.eventPassIds.forEach((eventPassId, index) => {
-      if (!eventPassId.id || !eventPassId.amount) {
+      if (!eventPassId.id || !eventPassId.amount || eventPassId.amount <= 0) {
         throw new Error(
           `Missing required field in eventPassIds at index ${index}: id or amount`,
         );

@@ -126,7 +126,7 @@ export async function getUnopenedNftPackAmount(packId: string) {
 }
 
 export async function getPackSupply(contractAddress: string) {
-  const sdk = new ThirdwebSDK('goerli');
+  const sdk = new ThirdwebSDK(env.CHAIN);
   const pack = await sdk.getContract(contractAddress, 'pack');
   return pack.erc1155.totalSupply(0);
 }
