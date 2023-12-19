@@ -5,18 +5,16 @@ import {
   EventPass,
   EventPassDelayedRevealed,
 } from '@features/back-office/events-types';
-import { GetEventPassOrganizerFolderPath } from '@features/pass-common';
 import { GetEventPassNftContractNftsQuery } from '@gql/admin/types';
+import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import {
-  EventPassNftContractType_Enum,
-  EventPassNftContract_Insert_Input,
-} from '@gql/shared/types';
-import { EventPassNft } from '@nft/types';
-import {
-  NFTMetadata as ThirdwebNFTMetadata,
-  ThirdwebSDK,
-  TransactionResultWithId,
-} from '@thirdweb-dev/sdk';
+  ContractType,
+  EventPassNftContractObject,
+  EventSmallData,
+  NftsMetadata,
+  RequiredEventPassNft,
+} from '@nft/types';
+import { ThirdwebSDK, TransactionResultWithId } from '@thirdweb-dev/sdk';
 import * as crypto from 'crypto';
 import { Signer, ethers } from 'ethers';
 import {
@@ -28,33 +26,13 @@ import {
   updateNftsWithPackId,
 } from './action';
 
-type NftsMetadata = ThirdwebNFTMetadata & {
-  name: string;
-};
-
-type EventSmallData = Omit<GetEventPassOrganizerFolderPath, 'eventPassId'> & {
-  eventSlug: string;
-};
-
-type EventPassNftContractObject = Required<
-  Pick<
-    EventPassNftContract_Insert_Input,
-    | 'type'
-    | 'contractAddress'
-    | 'eventPassId'
-    | 'chainId'
-    | 'eventId'
-    | 'organizerId'
-  >
-> &
-  EventPassNftContract_Insert_Input;
-
 interface CommonProps extends EventPass, EventSmallData {
   address: string;
   chainId: string;
 }
 
 type Pack = {
+  //TODO: change to Pack from hygraph
   id: string;
   name: string;
   image: string;
@@ -74,10 +52,6 @@ type SaveEventPassContractIntoDbProps = {
   metadatas: NftsMetadata[];
   object: EventPassNftContractObject;
 };
-
-type RequiredEventPassNft = Required<
-  Pick<EventPassNft, 'contractAddress' | 'tokenId'>
->;
 
 type SavePackContractIntoDbProps = {
   chainIdNumber: number;
@@ -100,14 +74,7 @@ type DeployAndCreatePackProps = {
   }[];
 };
 
-const CONTRACT_TYPE_NFT_DROP = 'nft-drop';
-const CONTRACT_TYPE_PACK = 'pack';
 const BASE_URL = 'https://www.offline.live/pass/organizer/';
-
-enum ContractType {
-  NFT_DROP = CONTRACT_TYPE_NFT_DROP,
-  PACK = CONTRACT_TYPE_PACK,
-}
 
 class CollectionDeploymentError extends Error {
   constructor(error: Error) {

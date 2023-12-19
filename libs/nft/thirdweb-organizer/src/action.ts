@@ -23,6 +23,7 @@ import type {
   PackNftContract_Insert_Input,
 } from '@gql/shared/types';
 import { defaultLocale } from '@next/i18n';
+import { ContractType } from '@nft/types';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 
 export async function createEventPassNftContract(
@@ -127,6 +128,6 @@ export async function getUnopenedNftPackAmount(packId: string) {
 
 export async function getPackSupply(contractAddress: string) {
   const sdk = new ThirdwebSDK(env.CHAIN);
-  const pack = await sdk.getContract(contractAddress, 'pack');
+  const pack = await sdk.getContract(contractAddress, ContractType.PACK);
   return pack.erc1155.totalSupply(0);
 }
