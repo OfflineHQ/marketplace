@@ -97,11 +97,24 @@ export class Currency {
     baseCurrency: string,
   ): Promise<{ [key: string]: number }> {
     try {
-      const __filename = fileURLToPath(import.meta.url);
-      const __dirname = path.dirname(__filename);
-      const filePath = path.join(__dirname, `rates/${baseCurrency}.json`);
-      const data = await fs.promises.readFile(filePath, 'utf8');
-      return JSON.parse(data);
+      // here mean that we are in production build but not in production vercel (so for instance local test or e2e test)
+      if (process.env.NODE_ENV === 'production') {
+        const projectRoot = process.cwd(); // This points to /dist/apps/web or /dist/apps/back-office
+        const filePath = path.join(
+          projectRoot,
+          '../../libs/currency/api/src/rates',
+          `${baseCurrency}.json`,
+        );
+        const data = await fs.promises.readFile(filePath, 'utf8');
+        return JSON.parse(data);
+      } else {
+        // Existing logic for non-preview or non-production environments
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        const filePath = path.join(__dirname, `rates/${baseCurrency}.json`);
+        const data = await fs.promises.readFile(filePath, 'utf8');
+        return JSON.parse(data);
+      }
     } catch (error) {
       console.error('Failed to fetch from local JSON files:', error);
       throw new Error('Could not retrieve data');

@@ -5,49 +5,44 @@ import {
   EventPass,
   EventPassDelayedRevealed,
 } from '@features/back-office/events-types';
-import { GetEventPassOrganizerFolderPath } from '@features/pass-common';
+import { GetEventPassNftContractNftsQuery } from '@gql/admin/types';
+import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import {
-  EventPassNftContractType_Enum,
-  EventPassNftContract_Insert_Input,
-} from '@gql/shared/types';
-import {
-  NFTMetadata as ThirdwebNFTMetadata,
-  ThirdwebSDK,
-  TransactionResultWithId,
-} from '@thirdweb-dev/sdk';
+  ContractType,
+  EventPassNftContractObject,
+  EventSmallData,
+  NftsMetadata,
+  RequiredEventPassNft,
+} from '@nft/types';
+import { ThirdwebSDK, TransactionResultWithId } from '@thirdweb-dev/sdk';
 import * as crypto from 'crypto';
 import { Signer, ethers } from 'ethers';
 import {
   createEventParametersAndWebhook,
   createEventPassNftContract,
   createEventPassNfts,
+  createPackNftContract,
+  getEventPassNftContractNfts,
+  updateNftsWithPackId,
 } from './action';
-
-type NftsMetadata = ThirdwebNFTMetadata & {
-  name: string;
-};
-
-type EventSmallData = Omit<GetEventPassOrganizerFolderPath, 'eventPassId'> & {
-  eventSlug: string;
-};
-
-type EventPassNftContractObject = Required<
-  Pick<
-    EventPassNftContract_Insert_Input,
-    | 'type'
-    | 'contractAddress'
-    | 'eventPassId'
-    | 'chainId'
-    | 'eventId'
-    | 'organizerId'
-  >
-> &
-  EventPassNftContract_Insert_Input;
 
 interface CommonProps extends EventPass, EventSmallData {
   address: string;
   chainId: string;
 }
+
+type Pack = {
+  //TODO: change to Pack from hygraph
+  id: string;
+  name: string;
+  image: string;
+  eventPassIds: {
+    id: string;
+    amount: number;
+  }[];
+  eventId: string;
+  rewardsPerPack?: number;
+};
 
 type SaveEventPassContractIntoDbProps = {
   props: CommonProps;
@@ -58,19 +53,40 @@ type SaveEventPassContractIntoDbProps = {
   object: EventPassNftContractObject;
 };
 
-const CONTRACT_TYPE_NFT_DROP = 'nft-drop';
-const CONTRACT_TYPE_PACK = 'pack';
-const BASE_URL = 'https://www.offline.live/pass/organizer/';
+type SavePackContractIntoDbProps = {
+  chainIdNumber: number;
+  eventData: {
+    eventId: string;
+    organizerId: string;
+  };
+  pack: Pack;
+  txResult: string;
+  selectedNfts: RequiredEventPassNft[];
+};
 
-enum ContractType {
-  NFT_DROP = CONTRACT_TYPE_NFT_DROP,
-  PACK = CONTRACT_TYPE_PACK,
-}
+type DeployAndCreatePackProps = {
+  pack: Pack;
+  address: string;
+  selectedNfts: RequiredEventPassNft[];
+  approvalData: {
+    contractAddress: string;
+    eventPassId: string;
+  }[];
+};
+
+const BASE_URL = 'https://www.offline.live/pass/organizer/';
 
 class CollectionDeploymentError extends Error {
   constructor(error: Error) {
     super(`Error deploying a collection: ${error.message}`);
     this.name = 'CollectionDeploymentError';
+  }
+}
+
+class PackDeploymentError extends Error {
+  constructor(error: Error) {
+    super(`Error deploying a pack: ${error.message}`);
+    this.name = 'PackDeploymentError';
   }
 }
 
@@ -88,14 +104,20 @@ class NftCollection {
     });
   }
 
-  async getCommonProps(
-    props: EventPass,
-    eventData: EventSmallData,
-  ): Promise<CommonProps> {
+  async getAddressAndChainId(): Promise<[string, number]> {
     const [address, chainIdNumber] = await Promise.all([
       this.sdk.wallet.getAddress(),
       this.sdk.wallet.getChainId(),
     ]);
+
+    return [address, chainIdNumber];
+  }
+
+  async getCommonProps(
+    props: EventPass,
+    eventData: EventSmallData,
+  ): Promise<CommonProps> {
+    const [address, chainIdNumber] = await this.getAddressAndChainId();
     const chainId = chainIdNumber.toString();
 
     return {
@@ -418,6 +440,172 @@ class NftCollection {
           `Error deploying a delayed reveal collection : ${error.message}`,
         );
       } else throw new Error(error);
+    }
+  }
+
+  async savePackContractIntoDb(props: SavePackContractIntoDbProps) {
+    const { chainIdNumber, eventData, pack, txResult, selectedNfts } = props;
+
+    const packNftContract = await createPackNftContract({
+      chainId: chainIdNumber.toString(),
+      eventId: eventData.eventId,
+      eventPassIds: pack.eventPassIds,
+      organizerId: eventData.organizerId,
+      ...(pack.rewardsPerPack !== undefined && {
+        rewardsPerPack: pack.rewardsPerPack,
+      }),
+      packId: pack.id,
+      contractAddress: txResult,
+    });
+
+    const updates = selectedNfts.map((nft) => {
+      return {
+        _set: { packNftContractId: packNftContract.id },
+        where: {
+          contractAddress: { _eq: nft.contractAddress },
+          tokenId: { _eq: nft.tokenId },
+        },
+      };
+    });
+    await updateNftsWithPackId({ updates });
+  }
+
+  async deployAndCreatePack(props: DeployAndCreatePackProps): Promise<string> {
+    const { pack, address, selectedNfts, approvalData } = props;
+
+    const txResult = await this.sdk.deployer.deployBuiltInContract(
+      ContractType.PACK,
+      {
+        name: pack.name,
+        primary_sale_recipient: address,
+        voting_token_address: address,
+      },
+    );
+
+    for (const data of approvalData) {
+      const eventPassContract = await this.sdk.getContract(
+        data.contractAddress,
+      );
+
+      const amount = pack.eventPassIds.find(
+        (eventPass) => eventPass.id === data.eventPassId,
+      ).amount;
+
+      await eventPassContract.erc721.claimTo(address, amount);
+      await eventPassContract.erc721.setApprovalForAll(txResult, true);
+    }
+
+    const contract = await this.sdk.getContract(txResult, ContractType.PACK);
+
+    const erc721Rewards = selectedNfts.map((nft) => ({
+      contractAddress: nft.contractAddress,
+      tokenId: nft.tokenId,
+    }));
+
+    const packData = {
+      packMetadata: {
+        name: pack.name,
+        image: pack.image,
+      },
+      erc721Rewards: erc721Rewards,
+      ...(pack.rewardsPerPack !== undefined && {
+        rewardsPerPack: pack.rewardsPerPack,
+      }),
+    };
+
+    await contract.create(packData);
+
+    return txResult;
+  }
+
+  async getSelectedNftsFromPack(pack: Pack) {
+    const eventPassNftContracts: GetEventPassNftContractNftsQuery['eventPassNftContract'][0][] =
+      await Promise.all(
+        pack.eventPassIds.map((eventPass) =>
+          getEventPassNftContractNfts({ eventPassId: eventPass.id }),
+        ),
+      );
+
+    const allEventPassNfts = eventPassNftContracts.flatMap(
+      (contract) => contract.eventPassNfts,
+    );
+
+    const selectedNfts = [];
+    const approvalData = eventPassNftContracts.map((contract) => ({
+      contractAddress: contract.contractAddress,
+      eventPassId: contract.eventPassId,
+    }));
+
+    for (const eventPass of pack.eventPassIds) {
+      const requiredAmount = eventPass.amount;
+      const availableNfts = allEventPassNfts.filter(
+        (nft) => nft.eventPassId === eventPass.id && !nft.currentOwnerAddress,
+      );
+
+      if (availableNfts.length < requiredAmount) {
+        throw new Error(
+          `Not enough available NFTs for eventPassId ${eventPass.id}`,
+        );
+      }
+
+      const selectedNftsForCurrentPass = availableNfts.slice(0, requiredAmount);
+      selectedNfts.push(...selectedNftsForCurrentPass);
+    }
+
+    return { selectedNfts, approvalData };
+  }
+
+  private validateDeployAPackInputs(pack: Pack, eventData: EventSmallData) {
+    const requiredFields = ['id', 'name', 'image', 'eventPassIds', 'eventId'];
+
+    for (const field of requiredFields) {
+      if (!pack[field]) {
+        throw new Error(`Missing required field in pack: ${field}`);
+      }
+    }
+
+    if (!eventData.eventId || !eventData.organizerId) {
+      throw new Error(
+        'Missing required field in eventData: eventId or organizerId',
+      );
+    }
+
+    pack.eventPassIds.forEach((eventPassId, index) => {
+      if (!eventPassId.id || !eventPassId.amount || eventPassId.amount <= 0) {
+        throw new Error(
+          `Missing required field in eventPassIds at index ${index}: id or amount`,
+        );
+      }
+    });
+  }
+
+  async deployAPack(pack: Pack, eventData: EventSmallData) {
+    try {
+      this.validateDeployAPackInputs(pack, eventData);
+
+      const { selectedNfts, approvalData } =
+        await this.getSelectedNftsFromPack(pack);
+
+      const [address, chainIdNumber] = await this.getAddressAndChainId();
+
+      const txResult = await this.deployAndCreatePack({
+        address,
+        pack,
+        selectedNfts,
+        approvalData,
+      });
+
+      await this.savePackContractIntoDb({
+        txResult,
+        selectedNfts,
+        eventData,
+        pack,
+        chainIdNumber,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new PackDeploymentError(error);
+      } else console.error(error);
     }
   }
 }

@@ -306,4 +306,408 @@ describe('NftCollection', () => {
       );
     });
   });
+
+  describe('savePackContractIntoDb', () => {
+    const props = {
+      chainIdNumber: 5,
+      eventData: {
+        eventId: 'clizzpvidao620buvxit1ynko',
+        organizerId: 'clizzky8kap2t0bw7wka9a2id',
+      },
+      pack: {
+        id: 'mocked_pack_id',
+        eventPassIds: [{ id: 'fakeEventPassDelayedRevealId', amount: 1 }],
+        rewardsPerPack: 1,
+        name: 'mocked_pack_name',
+        image: 'mocked_pack_image',
+        eventId: 'clizzpvidao620buvxit1ynko',
+      },
+      txResult: 'mocked_tx_result',
+      selectedNfts: [
+        {
+          contractAddress: '0xFakeDelayedReveal',
+          tokenId: 0,
+        },
+        {
+          contractAddress: '0xFakeDelayedReveal',
+          tokenId: 1,
+        },
+      ],
+    };
+    beforeEach(async () => {
+      await applySeeds(client, ['eventPassNft']);
+    });
+
+    it('should successfully save pack contract into db', async () => {
+      await nftCollection.savePackContractIntoDb(props);
+
+      const packNftContract = (
+        await adminSdk.GetPackNftContractFromPackId({
+          packId: props.pack.id,
+        })
+      ).packNftContract;
+
+      expect(packNftContract[0]).toEqual(
+        expect.objectContaining({
+          chainId: props.chainIdNumber.toString(),
+          eventId: props.eventData.eventId,
+          eventPassIds: props.pack.eventPassIds,
+          rewardsPerPack: props.pack.rewardsPerPack,
+          contractAddress: props.txResult,
+          eventPassNfts: [
+            {
+              tokenId: 0,
+              contractAddress: '0xFakeDelayedReveal',
+              eventPassId: 'fakeEventPassDelayedRevealId',
+              currentOwnerAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
+            },
+            {
+              tokenId: 1,
+              contractAddress: '0xFakeDelayedReveal',
+              eventPassId: 'fakeEventPassDelayedRevealId',
+              currentOwnerAddress: '0xc0ffee254729296a45a3885639AC7E10F9d54979',
+            },
+          ],
+        }),
+      );
+    });
+  });
+  describe('getSelectedNftsFromPack', () => {
+    let nftCollection: NftCollection;
+    let client: PgClient;
+
+    beforeAll(async () => {
+      client = await createDbClient();
+    });
+
+    afterAll(async () => {
+      await deleteAllTables(client);
+      await client.end();
+    });
+
+    beforeEach(async () => {
+      await deleteAllTables(client);
+      await applySeeds(client, ['eventPassNft', 'eventPassNftContract']);
+      nftCollection = new NftCollection({} as Signer);
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should successfully get selected NFTs from pack', async () => {
+      const pack = {
+        id: 'mocked_pack_id',
+        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        rewardsPerPack: 1,
+        name: 'mocked_pack_name',
+        image: 'mocked_pack_image',
+        eventId: 'clizzpvidao620buvxit1ynko',
+      };
+
+      const { selectedNfts } =
+        await nftCollection.getSelectedNftsFromPack(pack);
+
+      expect(selectedNfts).toEqual([
+        {
+          id: '6aa08394-865e-489f-bba2-04cbb10cd44e',
+          packNftContractId: null,
+          currentOwnerAddress: null,
+          contractAddress: '0xFakePack',
+          eventId: 'clizzpvidao620buvxit1ynko',
+          tokenId: 0,
+          eventPassId: 'FakePackId',
+        },
+        {
+          id: '52641e81-57cf-4f2d-bdd3-fa56cca377e4',
+          packNftContractId: null,
+          currentOwnerAddress: null,
+          contractAddress: '0xFakePack',
+          eventId: 'clizzpvidao620buvxit1ynko',
+          tokenId: 1,
+          eventPassId: 'FakePackId',
+        },
+      ]);
+    });
+
+    it('should throw an error if not enough available NFTs', async () => {
+      const pack = {
+        id: 'mocked_pack_id',
+        eventPassIds: [{ id: 'FakePackId', amount: 4 }],
+        rewardsPerPack: 1,
+        name: 'mocked_pack_name',
+        image: 'mocked_pack_image',
+        eventId: 'clizzpvidao620buvxit1ynko',
+      };
+
+      await expect(nftCollection.getSelectedNftsFromPack(pack)).rejects.toThrow(
+        new Error('Not enough available NFTs for eventPassId FakePackId'),
+      );
+    });
+  });
+  describe('deployAPack', () => {
+    let nftCollection: NftCollection;
+    let client: PgClient;
+
+    beforeAll(async () => {
+      client = await createDbClient();
+    });
+
+    afterAll(async () => {
+      await deleteAllTables(client);
+      await client.end();
+    });
+
+    beforeEach(async () => {
+      await deleteAllTables(client);
+      await applySeeds(client, ['eventPassNft', 'eventPassNftContract']);
+      nftCollection = new NftCollection({} as Signer);
+      nftCollection.deployAndCreatePack = jest
+        .fn()
+        .mockResolvedValue('fake_tx_result');
+      nftCollection.getAddressAndChainId = jest
+        .fn()
+        .mockResolvedValue(['mocked_address', 5]);
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should successfully deploy a pack', async () => {
+      const pack = {
+        id: 'mocked_pack_id',
+        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        rewardsPerPack: 2,
+        name: 'mocked_pack_name',
+        image: 'mocked_pack_image',
+        eventId: 'clizzpvidao620buvxit1ynko',
+      };
+
+      const eventData = {
+        eventId: 'clizzpvidao620buvxit1ynko',
+        organizerId: 'clizzky8kap2t0bw7wka9a2id',
+        eventSlug: 'mockSlug',
+      };
+
+      await nftCollection.deployAPack(pack, eventData);
+
+      const packNftContract = (
+        await adminSdk.GetPackNftContractFromPackId({
+          packId: pack.id,
+        })
+      ).packNftContract;
+
+      expect(packNftContract[0]).toEqual(
+        expect.objectContaining({
+          chainId: '5',
+          eventId: 'clizzpvidao620buvxit1ynko',
+          eventPassIds: [
+            {
+              amount: 2,
+              id: 'FakePackId',
+            },
+          ],
+          rewardsPerPack: 2,
+          contractAddress: 'fake_tx_result',
+          eventPassNfts: [
+            {
+              tokenId: 0,
+              contractAddress: '0xFakePack',
+              eventPassId: 'FakePackId',
+              currentOwnerAddress: null,
+            },
+            {
+              tokenId: 1,
+              contractAddress: '0xFakePack',
+              eventPassId: 'FakePackId',
+              currentOwnerAddress: null,
+            },
+          ],
+        }),
+      );
+
+      expect(nftCollection.deployAndCreatePack).toHaveBeenCalledWith({
+        address: 'mocked_address',
+        pack,
+        selectedNfts: [
+          {
+            id: '6aa08394-865e-489f-bba2-04cbb10cd44e',
+            packNftContractId: null,
+            currentOwnerAddress: null,
+            contractAddress: '0xFakePack',
+            eventId: 'clizzpvidao620buvxit1ynko',
+            tokenId: 0,
+            eventPassId: 'FakePackId',
+          },
+          {
+            id: '52641e81-57cf-4f2d-bdd3-fa56cca377e4',
+            packNftContractId: null,
+            currentOwnerAddress: null,
+            contractAddress: '0xFakePack',
+            eventId: 'clizzpvidao620buvxit1ynko',
+            tokenId: 1,
+            eventPassId: 'FakePackId',
+          },
+        ],
+        approvalData: [
+          {
+            contractAddress: '0xFakePack',
+            eventPassId: 'FakePackId',
+          },
+        ],
+      });
+    });
+  });
+
+  describe('deployAPack - errors', () => {
+    let nftCollection: NftCollection;
+    let client: PgClient;
+
+    beforeAll(async () => {
+      client = await createDbClient();
+    });
+
+    afterAll(async () => {
+      await deleteAllTables(client);
+      await client.end();
+    });
+
+    beforeEach(async () => {
+      await deleteAllTables(client);
+      await applySeeds(client, ['eventPassNft', 'eventPassNftContract']);
+      nftCollection = new NftCollection({} as Signer);
+      nftCollection.deployAndCreatePack = jest
+        .fn()
+        .mockResolvedValue('fake_tx_result');
+      nftCollection.getAddressAndChainId = jest
+        .fn()
+        .mockResolvedValue(['mocked_address', 5]);
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should throw an error if pack is missing required fields', async () => {
+      const pack = {
+        id: 'mocked_pack_id',
+        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        rewardsPerPack: 2,
+        name: '',
+        image: 'mocked_pack_image',
+        eventId: 'clizzpvidao620buvxit1ynko',
+      };
+
+      const eventData = {
+        eventId: 'clizzpvidao620buvxit1ynko',
+        organizerId: 'clizzky8kap2t0bw7wka9a2id',
+        eventSlug: 'mockSlug',
+      };
+
+      await expect(nftCollection.deployAPack(pack, eventData)).rejects.toThrow(
+        new Error(
+          'Error deploying a pack: Missing required field in pack: name',
+        ),
+      );
+    });
+
+    it('should throw an error if eventData is missing required fields', async () => {
+      const pack = {
+        id: 'mocked_pack_id',
+        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        rewardsPerPack: 2,
+        name: 'mocked_pack_name',
+        image: 'mocked_pack_image',
+        eventId: 'clizzpvidao620buvxit1ynko',
+      };
+
+      const eventData = {
+        eventId: '',
+        organizerId: 'clizzky8kap2t0bw7wka9a2id',
+        eventSlug: 'mockSlug',
+      };
+
+      await expect(nftCollection.deployAPack(pack, eventData)).rejects.toThrow(
+        new Error(
+          'Error deploying a pack: Missing required field in eventData: eventId or organizerId',
+        ),
+      );
+    });
+
+    it('should throw an error if deployAndCreatePack fails', async () => {
+      const pack = {
+        id: 'mocked_pack_id',
+        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        rewardsPerPack: 2,
+        name: 'mocked_pack_name',
+        image: 'mocked_pack_image',
+        eventId: 'clizzpvidao620buvxit1ynko',
+      };
+
+      const eventData = {
+        eventId: 'clizzpvidao620buvxit1ynko',
+        organizerId: 'clizzky8kap2t0bw7wka9a2id',
+        eventSlug: 'mockSlug',
+      };
+
+      nftCollection.deployAndCreatePack = jest
+        .fn()
+        .mockRejectedValue(new Error('Error in deployAndCreatePack'));
+
+      await expect(nftCollection.deployAPack(pack, eventData)).rejects.toThrow(
+        new Error('Error deploying a pack: Error in deployAndCreatePack'),
+      );
+    });
+
+    it('should throw an error if savePackContractIntoDb fails', async () => {
+      const pack = {
+        id: 'mocked_pack_id',
+        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        rewardsPerPack: 2,
+        name: 'mocked_pack_name',
+        image: 'mocked_pack_image',
+        eventId: 'clizzpvidao620buvxit1ynko',
+      };
+
+      const eventData = {
+        eventId: 'clizzpvidao620buvxit1ynko',
+        organizerId: 'clizzky8kap2t0bw7wka9a2id',
+        eventSlug: 'mockSlug',
+      };
+
+      nftCollection.savePackContractIntoDb = jest
+        .fn()
+        .mockRejectedValue(new Error('Error in savePackContractIntoDb'));
+
+      await expect(nftCollection.deployAPack(pack, eventData)).rejects.toThrow(
+        new Error('Error deploying a pack: Error in savePackContractIntoDb'),
+      );
+    });
+
+    it('should throw an error if getSelectedNftsFromPack fails', async () => {
+      const pack = {
+        id: 'mocked_pack_id',
+        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        rewardsPerPack: 2,
+        name: 'mocked_pack_name',
+        image: 'mocked_pack_image',
+        eventId: 'clizzpvidao620buvxit1ynko',
+      };
+
+      const eventData = {
+        eventId: 'clizzpvidao620buvxit1ynko',
+        organizerId: 'clizzky8kap2t0bw7wka9a2id',
+        eventSlug: 'mockSlug',
+      };
+
+      nftCollection.getSelectedNftsFromPack = jest
+        .fn()
+        .mockRejectedValue(new Error('Error in getSelectedNftsFromPack'));
+
+      await expect(nftCollection.deployAPack(pack, eventData)).rejects.toThrow(
+        new Error('Error deploying a pack: Error in getSelectedNftsFromPack'),
+      );
+    });
+  });
 });

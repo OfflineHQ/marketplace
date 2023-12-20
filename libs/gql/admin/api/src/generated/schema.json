@@ -6204,6 +6204,18 @@
             "deprecationReason": null
           },
           {
+            "name": "locale",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "Locale",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "stage",
             "description": null,
             "type": {
@@ -50031,13 +50043,9 @@
             "description": "Type of the event pass NFT contract.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "eventPassNftContractType_enum",
-                "ofType": null
-              }
+              "kind": "ENUM",
+              "name": "eventPassNftContractType_enum",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null

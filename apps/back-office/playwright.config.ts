@@ -16,6 +16,7 @@ const baseURL = process.env['BASE_URL'] || 'http://localhost:1789';
  */
 export default defineConfig({
   ...nxE2EPreset(__filename, { testDir: './e2e' }),
+  globalSetup: require.resolve('../../tools/test/globalSetupHasura.ts'),
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL,
