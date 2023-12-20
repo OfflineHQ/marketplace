@@ -85,6 +85,10 @@ export function DataTable<TData, TValue>({
   );
 
   React.useEffect(() => {
+    setRowSelection(initialRowSelection || {});
+  }, [initialRowSelection]);
+
+  React.useEffect(() => {
     onRowSelectionChange && onRowSelectionChange(rowSelection);
   }, [rowSelection, onRowSelectionChange]);
 

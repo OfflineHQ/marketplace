@@ -28,7 +28,7 @@ export interface EventPassFilesTableProps
 
 export function EventPassFilesUploader(props: EventPassFilesTableProps) {
   return (
-    <Suspense fallback={<ButtonSkeleton />}>
+    <Suspense fallback={<ButtonSkeleton className="inline-flex" />}>
       <EventPassFilesUploaderContent {...props} />
     </Suspense>
   );

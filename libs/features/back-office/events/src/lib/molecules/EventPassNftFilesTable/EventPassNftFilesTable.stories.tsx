@@ -1,12 +1,13 @@
-import * as eventsApi from '@features/back-office/events-api';
 import * as authProvider from '@next/auth';
 import * as uploaderProvider from '@next/uploader-provider';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import * as nextIntl from 'next-intl';
+import * as checkPass from '../../actions/checkEventPassFilesHash';
 import * as deleteFile from '../../actions/deleteEventPassFile';
+import * as getPass from '../../actions/getEventPassNftFiles';
 
-import { screen, userEvent, within } from '@storybook/test';
+import { screen, userEvent, waitFor, within } from '@storybook/test';
 import { i18nUiTablesServerMocks } from '@test-utils/ui-mocks';
 import { sleep } from '@utils';
 import { createMock, getMock } from 'storybook-addon-module-mock';
@@ -23,7 +24,7 @@ const meta = {
     layout: 'fullscreen',
     moduleMock: {
       mock: () => {
-        const mock = createMock(eventsApi, 'getEventPassNftFiles');
+        const mock = createMock(getPass, 'getEventPassNftFiles');
         mock.mockReturnValue(Promise.resolve(eventPassNftFiles));
         const mockIntl = createMock(nextIntl, 'useLocale');
         mockIntl.mockReturnValue('en');
@@ -40,6 +41,11 @@ const meta = {
           await sleep(300);
           return Promise.resolve();
         });
+        const mockCheckPass = createMock(
+          checkPass,
+          'checkEventPassNftFilesHash',
+        );
+        mockCheckPass.mockReturnValue(Promise.resolve([]));
         return [
           mock,
           mockIntl,
@@ -47,6 +53,7 @@ const meta = {
           mockAuth,
           mockAuth,
           mockDeleteFile,
+          mockCheckPass,
           ...i18nUiTablesServerMocks(),
         ];
       },
@@ -63,11 +70,24 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+const openButtonFileRow = async (fileRow: HTMLElement) => {
+  let buttonFileRow = within(fileRow.closest('tr') as HTMLElement).queryByRole(
+    'button',
+  );
+  while (buttonFileRow && buttonFileRow.getAttribute('data-state') !== 'open') {
+    await userEvent.click(buttonFileRow);
+    buttonFileRow = within(fileRow.closest('tr') as HTMLElement).queryByRole(
+      'button',
+    );
+  }
+};
+
 export const Default: Story = {
   args: {
     organizerId: 'organizerId',
     eventId: 'eventId',
     eventPassId: 'eventPassId',
+    eventSlug: 'eventSlug',
     eventPass: eventPassNftVipNoContractDelayedReveal,
   },
 };
@@ -77,10 +97,8 @@ export const WithFileSelectedAndActions: Story = {
   play: async ({ canvasElement, parameters }) => {
     const file1 = await screen.findByText(/file1/i);
     const fileRow = file1.closest('tr') as HTMLElement;
-    const buttonFileRow = within(
-      fileRow.closest('tr') as HTMLElement,
-    ).getByRole('button');
-    await userEvent.click(buttonFileRow);
+
+    await openButtonFileRow(fileRow);
     expect(await screen.findByText(/Download the file/i)).toBeInTheDocument();
     userEvent.click(await screen.findByText(/Delete the file/i));
     await screen.findByRole('status');
@@ -89,8 +107,7 @@ export const WithFileSelectedAndActions: Story = {
       organizerId: 'organizerId',
       eventId: 'eventId',
       eventPassId: 'eventPassId',
-      filePath:
-        '/local/organizers/testOrganizerId/events/testEventId/testEventPassId/file1',
+      filePath: '/local/path/to/file1',
     });
     const fileCheckbox = within(fileRow).getByRole('checkbox');
     await userEvent.click(fileCheckbox);
@@ -108,24 +125,26 @@ export const WithFileSelectedAndActions: Story = {
   },
 };
 
-export const withNoFiles: Story = {
+export const WithNoFiles: Story = {
   ...Default,
   play: async ({ canvasElement, parameters }) => {
-    const mock = getMock(parameters, eventsApi, 'getEventPassNftFiles');
+    const mock = getMock(parameters, getPass, 'getEventPassNftFiles');
     mock.mockReturnValue(Promise.resolve([]));
-    expect(
-      await screen.findByRole('button', { name: /upload your files/i }),
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /upload your files/i }),
+      ).toBeInTheDocument();
+    });
   },
 };
 
-export const withNoFilesUploadModale: Story = {
+export const WithNoFilesUploadModale: Story = {
   ...Default,
   parameters: {
     chromatic: { disableSnapshot: true },
   },
   play: async ({ canvasElement, parameters }) => {
-    const mock = getMock(parameters, eventsApi, 'getEventPassNftFiles');
+    const mock = getMock(parameters, getPass, 'getEventPassNftFiles');
     mock.mockReturnValue(Promise.resolve([]));
     userEvent.click(
       await screen.findByRole('button', { name: /upload your files/i }),
@@ -134,7 +153,7 @@ export const withNoFilesUploadModale: Story = {
   },
 };
 
-export const withEventPassNftContract: Story = {
+export const WithEventPassNftContract: Story = {
   ...Default,
   args: {
     ...Default.args,
@@ -144,12 +163,9 @@ export const withEventPassNftContract: Story = {
     chromatic: { disableSnapshot: true },
   },
   play: async ({ canvasElement, parameters }) => {
-    const file1 = await screen.findByText(/file1/i);
-    const fileRow = file1.closest('tr') as HTMLElement;
-    const buttonFileRow = within(
-      fileRow.closest('tr') as HTMLElement,
-    ).getByRole('button');
-    await userEvent.click(buttonFileRow);
+    const file4 = await screen.findByText(/file4/i);
+    const fileRow = file4.closest('tr') as HTMLElement;
+    await openButtonFileRow(fileRow);
     expect(await screen.findByText(/show the file/i)).toBeInTheDocument();
     expect(screen.queryByText(/delete the file/i)).toBeNull();
     userEvent.click(await screen.findByText(/Download the file/i));
@@ -169,14 +185,38 @@ export const withEventPassNftContract: Story = {
   },
 };
 
-export const withEventPassNftContractAndNoFiles: Story = {
+export const WithEventPassNftContractAndNoFiles: Story = {
   ...withEventPassNftContract,
   parameters: {
     chromatic: { disableSnapshot: true },
   },
   play: async ({ canvasElement, parameters }) => {
-    const mock = getMock(parameters, eventsApi, 'getEventPassNftFiles');
+    const mock = getMock(parameters, getPass, 'getEventPassNftFiles');
     mock.mockReturnValue(Promise.resolve([]));
     expect(await screen.findByText(/No results/i)).toBeInTheDocument();
+  },
+};
+
+export const WithDuplicatedFiles: Story = {
+  ...Default,
+  play: async ({ canvasElement, parameters }) => {
+    const mock = getMock(parameters, checkPass, 'checkEventPassNftFilesHash');
+    mock.mockReturnValue(
+      Promise.resolve([
+        [eventPassNftFiles[0].filePath, eventPassNftFiles[3].filePath],
+        [
+          eventPassNftFiles[1].filePath,
+          eventPassNftFiles[2].filePath,
+          eventPassNftFiles[5].filePath,
+        ],
+      ]),
+    );
+    expect(await screen.findByText(/duplicates/i)).toBeInTheDocument();
+    userEvent.click(
+      await screen.findByRole('button', {
+        name: /Menu Actions/i,
+      }),
+    );
+    expect(await screen.findByText(/delete/i)).toBeInTheDocument();
   },
 };
