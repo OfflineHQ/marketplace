@@ -7154,7 +7154,7 @@ export type EventPassNftContract = {
   /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
   password?: Maybe<Scalars['String']>;
   /** Type of the event pass NFT contract. */
-  type: EventPassNftContractType_Enum;
+  type?: Maybe<EventPassNftContractType_Enum>;
   /** Timestamp of the last update to the record. */
   updated_at: Scalars['timestamptz'];
 };
