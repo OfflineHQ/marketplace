@@ -93,3 +93,33 @@ VALUES
         '2023-07-19 12:58:46.636737+00',
         '2023-07-19 12:58:46.636737+00'
     );
+
+INSERT INTO public."eventPassNftContract" (
+    id,
+    "chainId",
+    "contractAddress",
+    "eventId",
+    "eventPassId",
+    "organizerId",
+    "type",
+    "password",
+    "isDelayedRevealed",
+    "isAirdrop",
+    "created_at",
+    "updated_at"
+)
+VALUES
+    (
+        'abca4d1b-467a-49be-b54f-57730ee67236',
+        '5',
+        '0xFakePack',
+        'clizzpvidao620buvxit1ynko',
+        'FakePackId',
+        'clizzky8kap2t0bw7wka9a2id',
+        'normal',
+        'Km8WWeg3NfJbyys3u6Cs7LegurpZd9mH',
+        false,
+        false,
+        '2023-07-19 12:58:46.636737+00',
+        '2023-07-19 12:58:46.636737+00'
+    );

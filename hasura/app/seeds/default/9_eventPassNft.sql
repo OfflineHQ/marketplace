@@ -259,3 +259,114 @@ VALUES
 		'2023-08-24 08:42:52.698713+01',
 		'2023-08-24 08:42:52.698713+01'
 	);
+
+INSERT INTO
+	public."eventPassNft" (
+		"contractAddress",
+		"tokenId",
+		metadata,
+		error,
+		"tokenUri",
+		"chainId",
+		"eventId",
+		"eventPassId",
+		"organizerId",
+		"currentOwnerAddress",
+		"lastNftTransferId",
+		"isRevealed",
+		id,
+		created_at,
+		updated_at
+	)
+VALUES
+	(
+		'0xFakePack',
+		0,
+		'{}',
+		NULL,
+		'ipfs://244224/5.json',
+		'5',
+		'clizzpvidao620buvxit1ynko',
+		'FakePackId',
+		'clizzky8kap2t0bw7wka9a2id',
+		NULL,
+		NULL,
+		false,
+		'6aa08394-865e-489f-bba2-04cbb10cd44e',
+		'2023-08-24 08:35:47.155813+01',
+		'2023-08-24 08:35:47.155813+01'
+	);
+
+INSERT INTO
+	public."eventPassNft" (
+		"contractAddress",
+		"tokenId",
+		metadata,
+		error,
+		"tokenUri",
+		"chainId",
+		"eventId",
+		"eventPassId",
+		"organizerId",
+		"currentOwnerAddress",
+		"lastNftTransferId",
+		"isRevealed",
+		id,
+		created_at,
+		updated_at
+	)
+VALUES
+	(
+		'0xFakePack',
+		1,
+		'{}',
+		NULL,
+		'ipfs://244224/12432.json',
+		'5',
+		'clizzpvidao620buvxit1ynko',
+		'FakePackId',
+		'clizzky8kap2t0bw7wka9a2id',
+		NULL,
+		NULL,
+		true,
+		'52641e81-57cf-4f2d-bdd3-fa56cca377e4',
+		'2023-08-24 08:36:29.158476+01',
+		'2023-08-24 08:36:29.158476+01'
+	);
+
+INSERT INTO
+	public."eventPassNft" (
+		"contractAddress",
+		"tokenId",
+		metadata,
+		error,
+		"tokenUri",
+		"chainId",
+		"eventId",
+		"eventPassId",
+		"organizerId",
+		"currentOwnerAddress",
+		"lastNftTransferId",
+		"isRevealed",
+		id,
+		created_at,
+		updated_at
+	)
+VALUES
+	(
+		'0xFakePack',
+		2,
+		'{}',
+		NULL,
+		'ipfs://14144/11234514.json',
+		'5',
+		'clizzpvidao620buvxit1ynko',
+		'FakePackId',
+		'clizzky8kap2t0bw7wka9a2id',
+		NULL,
+		'c9898849-1682-49a1-9698-baf506bf2a99',
+		false,
+		'a36f1f0a-8aea-4e47-9300-7373d5feead9',
+		'2023-08-24 08:42:52.698713+01',
+		'2023-08-24 08:42:52.698713+01'
+	);

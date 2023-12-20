@@ -28,7 +28,9 @@ module.exports = async () => {
   //   logger.error(e);
   // } finally {
   // await for hasura to be ready
-  const hasuraUrl = `http://localhost:9696/healthz`;
+  const hasuraUrl = `http://localhost:${
+    process.env.E2E_TEST ? '8080' : '9696'
+  }/healthz`;
   logger.info(`Waiting for hasura to be ready at ${hasuraUrl}`);
   let hasuraReady = false;
   while (!hasuraReady) {
