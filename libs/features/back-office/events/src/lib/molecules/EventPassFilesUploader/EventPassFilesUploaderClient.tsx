@@ -15,11 +15,6 @@ import { useUploader } from '@next/uploader-provider';
 import { Alert } from '@ui/components';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import {
-  DuplicatesType,
-  checkEventPassNftFilesHash,
-} from '../../actions/checkEventPassFilesHash';
-import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
 import { resetEventPassNftFiles } from '../../actions/resetEventPassNftFiles';
 
 export type GetEventPassFilesClientProps = GetEventPassOrganizerFolderPath & {
@@ -44,7 +39,6 @@ export function EventPassFilesUploaderClient({
     'OrganizerEvents.Sheet.EventPassCard.EventPassFilesUploader',
   ); // 'OrganizerEvents.Sheet.EventPassCard.EventPassFilesUploader
   const [missingFilesNumber, setMissingFilesNumber] = useState(0);
-  const [duplicates, setDuplicates] = useState<DuplicatesType>([]);
   const path = getEventPassOrganizerFolderPath({
     organizerId,
     eventId,
@@ -123,29 +117,7 @@ export function EventPassFilesUploaderClient({
     if (uploadedFiles.length) {
       const allCurrentFiles = [...currentFiles, ...uploadedFiles];
       setMissingFilesNumber(maxFileCount - allCurrentFiles.length);
-      const existingFiles = await getEventPassNftFiles({
-        organizerId,
-        eventId,
-        eventPassId,
-      });
-      console.log('onUpdate', uploadedFiles);
-      const duplicates = await checkEventPassNftFilesHash({
-        organizerId,
-        eventId,
-        eventPassId,
-        filesPath: allCurrentFiles.map((file) => file.filePath),
-      });
-      console.log('duplicates', duplicates);
     }
-    if (!maxFileCount) {
-      return { errorMessage: 'No maxAmount set.' };
-    }
-    // if (fileCount >= maxFileCount) {
-    //   return { errorMessage: 'Already enough files.' };
-    // }
-    // if (!File.name.endsWith('.png')) {
-    //   return { errorMessage: 'File is not a .png' };
-    // }
   }
   return sessionReady ? (
     <div className="flex-col space-y-2">

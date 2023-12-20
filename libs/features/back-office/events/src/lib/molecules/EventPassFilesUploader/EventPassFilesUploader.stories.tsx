@@ -1,9 +1,9 @@
-import * as eventsApi from '@features/back-office/events-api';
 import * as authProvider from '@next/auth';
 import * as uploaderProvider from '@next/uploader-provider';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import * as nextIntl from 'next-intl';
+import * as getPass from '../../actions/getEventPassNftFiles';
 
 import { screen, userEvent } from '@storybook/test';
 import { createMock, getMock } from 'storybook-addon-module-mock';
@@ -19,7 +19,7 @@ const meta = {
     layout: 'fullscreen',
     moduleMock: {
       mock: () => {
-        const mock = createMock(eventsApi, 'getEventPassNftFiles');
+        const mock = createMock(getPass, 'getEventPassNftFiles');
         mock.mockReturnValue(Promise.resolve(eventPassNftFiles));
         const mockIntl = createMock(nextIntl, 'useLocale');
         mockIntl.mockReturnValue('en');
@@ -31,6 +31,7 @@ const meta = {
             eoa: '0x123',
           },
         });
+
         return [mock, mockIntl, mockUploader, mockAuth, mockAuth];
       },
     },

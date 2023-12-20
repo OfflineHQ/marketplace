@@ -45,6 +45,4 @@ export const checkEventPassNftFilesHash = cacheWithDynamicKeys(
   ],
 );
 
-export type DuplicatesType = Awaited<
-  ReturnType<typeof checkEventPassNftFilesHash>
->;
+export type DuplicatesType = Array<Array<string>>;

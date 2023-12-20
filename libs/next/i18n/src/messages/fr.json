@@ -289,7 +289,8 @@
           "menu-actions-label": "{numFilesSelected, plural, =1 {# fichier sélectionné} other {# fichiers sélectionnés}}",
           "menu-actions-download": "{numFilesSelected, plural, =1 {télécharger le fichier} other {télécharger # fichiers}}",
           "menu-actions-helper-text": "Appliquer une action sur les fichiers sélectionnés",
-          "header-download": "Téléchargez le fichier"
+          "header-download": "Téléchargez le fichier",
+          "duplicates-alert": "{count, plural, one {Un groupe de fichiers a} other {# groupes de fichiers ont}} été détectés comme ayant le même contenu et ont été automatiquement sélectionnés pour la suppression :\n{duplicates}"
         },
         "EventPassCardFooter": {
           "deploy-contract": "Déployer le contrat NFTs",

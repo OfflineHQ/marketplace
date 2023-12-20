@@ -1,9 +1,9 @@
-import * as eventsApi from '@features/back-office/events-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
 import { i18nUiTablesServerMocks } from '@test-utils/ui-mocks';
 import * as nextIntl from 'next-intl';
 import { createMock } from 'storybook-addon-module-mock';
+import * as getPass from '../../actions/getEventPassNftFiles';
 
 import {
   EventSheetExample,
@@ -21,7 +21,7 @@ const meta: Meta<typeof EventSheet> = {
     layout: 'fullscreen',
     moduleMock: {
       mock: () => {
-        const mock = createMock(eventsApi, 'getEventPassNftFiles');
+        const mock = createMock(getPass, 'getEventPassNftFiles');
         mock.mockReturnValue(Promise.resolve(eventPassNftFiles));
         const mockIntl = createMock(nextIntl, 'useLocale');
         mockIntl.mockReturnValue('en');
