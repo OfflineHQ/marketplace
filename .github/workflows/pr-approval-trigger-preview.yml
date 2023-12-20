@@ -17,21 +17,14 @@ jobs:
   #         workflow: Deploy preview apps
   #         token: ${{ secrets.GITHUB_TOKEN }}
   #         ref: ${{ github.event.pull_request.head.ref }}
-  e2e-web:
+  e2e:
     if: github.event.review.state == 'approved' && github.event.pull_request.base.ref != 'main'
     runs-on: ubuntu-latest
     environment: preview
     steps:
-      - name: Trigger Build and E2E Workflow for Web
+      - name: Trigger Build and E2E Workflow
         uses: benc-uk/workflow-dispatch@v1.2.2
         with:
-          workflow: Build and E2E web tests
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.event.pull_request.head.ref }}
-
-      - name: Trigger Build and E2E Workflow for Back-office
-        uses: benc-uk/workflow-dispatch@v1.2.2
-        with:
-          workflow: Build and E2E back-office tests
+          workflow: Build and E2E tests
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.event.pull_request.head.ref }}
