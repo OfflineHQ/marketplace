@@ -97,7 +97,8 @@ export class Currency {
     baseCurrency: string,
   ): Promise<{ [key: string]: number }> {
     try {
-      if (process.env.NODE_ENV !== 'development') {
+      // here mean that we are in production build but not in production vercel (so for instance local test or e2e test)
+      if (process.env.NODE_ENV === 'production') {
         // Dynamic import for JSON file
         const __dirname = path.dirname(fileURLToPath(import.meta.url));
         const filePath = path.join(__dirname, `rates/${baseCurrency}.json`);
