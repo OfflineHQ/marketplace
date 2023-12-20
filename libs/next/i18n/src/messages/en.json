@@ -291,7 +291,7 @@
           "menu-actions-download": "{numFilesSelected, plural, =1 {download the file} other {download # files}}",
           "menu-actions-helper-text": "Apply an action on the selected files",
           "header-download": "Download the file",
-          "duplicates-alert": "{count, plural, one {One group of files has} other {# groups of files have}} been detected to have the same content and have been automatically selected for deletion:\n{duplicates}"
+          "duplicates-alert": "{count, plural, one {One group of files has} other {# groups of files have}} been detected to have the same content and have been automatically selected for deletion:<br></br><br></br>"
         },
         "EventPassCardFooter": {
           "deploy-contract": "Deploy the NFTs contract",

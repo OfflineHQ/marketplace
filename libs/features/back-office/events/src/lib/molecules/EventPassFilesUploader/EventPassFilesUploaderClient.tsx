@@ -116,7 +116,10 @@ export function EventPassFilesUploaderClient({
   }: UploadWidgetOnUpdateEvent) {
     if (uploadedFiles.length) {
       const allCurrentFiles = [...currentFiles, ...uploadedFiles];
-      setMissingFilesNumber(maxFileCount - allCurrentFiles.length);
+      if (eventPass.eventPassPricing?.maxAmount)
+        setMissingFilesNumber(
+          eventPass.eventPassPricing?.maxAmount - allCurrentFiles.length,
+        );
     }
   }
   return sessionReady ? (

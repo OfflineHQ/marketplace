@@ -19,7 +19,7 @@ import {
 } from '@ui/components';
 import { Delete, Download, SeeDetails } from '@ui/icons';
 import { cn } from '@ui/shared';
-import { useFormatter, useLocale, useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import {
   DuplicatesType,
@@ -59,11 +59,14 @@ export function EventPassNftFilesTableClient({
     'OrganizerEvents.Sheet.EventPassCard.EventPassNftFilesTable',
   );
   const locale = useLocale();
-  const format = useFormatter();
   const formatDuplicates = (duplicates: DuplicatesType) => {
-    return duplicates.map(
-      (group) => `\`${format.list(group, { type: 'conjunction' })}\``,
-    );
+    return duplicates.map((group, index) => (
+      <ul key={index}>
+        {group.map((filePath) => (
+          <li key={filePath}>{filePath.split('/').pop()}</li>
+        ))}
+      </ul>
+    ));
   };
   const [duplicates, setDuplicates] = useState<DuplicatesType>([]);
   const columns: ColumnDef<EventPassFileWithName>[] = [
@@ -239,7 +242,7 @@ export function EventPassNftFilesTableClient({
             });
           });
           setInitialRowSelection(newSelection);
-        }
+        } else setDuplicates([]);
       });
     }
   }, [data, organizerId, eventId, eventPassId]);
@@ -250,8 +253,11 @@ export function EventPassNftFilesTableClient({
         <Alert variant="destructive">
           {t.rich('duplicates-alert', {
             count: duplicates.length,
-            duplicates: formatDuplicates(duplicates).join('\n'),
+            br: () => <br />,
           })}
+          <div className="flex-col space-y-2">
+            {formatDuplicates(duplicates).map((group) => group)}
+          </div>
         </Alert>
       )}
       <DataTable<EventPassFileWithName, unknown>
