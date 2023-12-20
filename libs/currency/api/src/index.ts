@@ -97,11 +97,20 @@ export class Currency {
     baseCurrency: string,
   ): Promise<{ [key: string]: number }> {
     try {
-      const __filename = fileURLToPath(import.meta.url);
-      const __dirname = path.dirname(__filename);
-      const filePath = path.join(__dirname, `rates/${baseCurrency}.json`);
-      const data = await fs.promises.readFile(filePath, 'utf8');
-      return JSON.parse(data);
+      if (process.env.NODE_ENV !== 'development') {
+        // Dynamic import for JSON file
+        const __dirname = path.dirname(fileURLToPath(import.meta.url));
+        const filePath = path.join(__dirname, `rates/${baseCurrency}.json`);
+        const module = await import(`file://${filePath}`);
+        return module.default;
+      } else {
+        // Existing logic for non-preview or non-production environments
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        const filePath = path.join(__dirname, `rates/${baseCurrency}.json`);
+        const data = await fs.promises.readFile(filePath, 'utf8');
+        return JSON.parse(data);
+      }
     } catch (error) {
       console.error('Failed to fetch from local JSON files:', error);
       throw new Error('Could not retrieve data');
