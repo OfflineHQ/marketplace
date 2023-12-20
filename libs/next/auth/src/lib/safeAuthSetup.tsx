@@ -88,6 +88,8 @@ export interface UseSafeAuthProps {
   };
   session?: Session | null;
   isConnected?: () => boolean;
+  chainConfig?: ChainConfig;
+  chainId?: string;
 }
 
 export function useSafeAuth(props: UseSafeAuthProps = {}) {
@@ -501,5 +503,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
     loginSiwe,
     logoutSiwe,
     connecting,
+    chainConfig,
+    chainId,
   };
 }

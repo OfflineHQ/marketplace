@@ -16,7 +16,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <html>
+    <html lang="en">
       <body>{/* <UIError error={error} reset={reset} /> */}</body>
     </html>
   );

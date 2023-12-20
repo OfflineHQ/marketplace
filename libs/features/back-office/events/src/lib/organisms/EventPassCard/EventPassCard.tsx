@@ -61,6 +61,8 @@ export const EventPassCard = ({
         organizerId={organizerId}
         eventId={event.id}
         eventPassId={eventPass.id}
+        eventSlug={event.slug}
+        eventPassType={type}
       />
     </Card>
   );

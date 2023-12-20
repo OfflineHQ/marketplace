@@ -1,6 +1,6 @@
 export default function NotFound() {
   return (
-    <html>
+    <html lang="en">
       <body>Not Found</body>
     </html>
   );
