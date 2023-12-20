@@ -1,4 +1,4 @@
-name: Build and E2E back-office tests
+name: Build and E2E tests
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  e2e:
+  build_and_e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -37,20 +37,21 @@ jobs:
       - name: Set up environment and cache dependencies
         uses: sebpalluel/ci/.github/actions/setup-environment@latest
 
-      - name: Build and check if back-office affected
+      - name: Build and check if back-office or web affected
         id: check
         run: |
           affected=$(pnpm nx affected -t=build)
-          if [[ $affected == *"back-office:build:production"* ]]; then
-            echo "::set-output name=back-office::true"
-          else
-            echo "::set-output name=back-office::false"
-          fi
+          echo "::set-output name=back-office::$(echo $affected | grep -q 'back-office:build:production' && echo true || echo false)"
+          echo "::set-output name=web::$(echo $affected | grep -q 'web:build:production' && echo true || echo false)"
 
       - name: Launch docker services
-        if: steps.check.outputs.back-office == 'true'
-        run: pnpm docker:services & pnpm nx run back-office:build:production
+        if: steps.check.outputs.back-office == 'true' || steps.check.outputs.web == 'true'
+        run: pnpm docker:services
 
-      - name: Run e2e tests
+      - name: Run e2e tests for back-office
         if: steps.check.outputs.back-office == 'true'
         run: pnpm nx run back-office:e2e --skipInstall
+
+      - name: Run e2e tests for web
+        if: steps.check.outputs.web == 'true'
+        run: pnpm nx run web:e2e --skipInstall
