@@ -9,6 +9,7 @@ const DiscordWidget = ({ handle }: { handle: string }) => {
       className="m-0 h-72 w-80 p-0 md:h-80 md:w-72"
     >
       <iframe
+        title="discord-widget"
         src={discordUrl}
         allowTransparency
         frameBorder="0"

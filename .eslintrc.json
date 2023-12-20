@@ -1,6 +1,12 @@
 {
   "root": true,
-  "plugins": ["@nx/eslint-plugin", "markdown", "sonarjs", "tailwindcss"],
+  "plugins": [
+    "@nx/eslint-plugin",
+    "markdown",
+    "sonarjs",
+    "tailwindcss",
+    "jsx-a11y"
+  ],
   "extends": [
     "eslint-config-prettier",
     "plugin:import/recommended",
@@ -10,20 +16,27 @@
     "plugin:sonarjs/recommended",
     "plugin:storybook/recommended",
     "plugin:playwright/recommended",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "plugin:jsx-a11y/recommended"
   ],
   "settings": {
     "import/resolver": {
       "node": "true",
       "typescript": {
-        "project": ["apps/*/tsconfig.json", "libs/*/tsconfig.json"]
+        "project": [
+          "apps/*/tsconfig.json",
+          "libs/*/tsconfig.json"
+        ]
       }
     },
     "tailwindcss": {
       "config": "libs/ui/components/tailwind.config.js"
     },
     "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
+      "@typescript-eslint/parser": [
+        ".ts",
+        ".tsx"
+      ]
     }
   },
   "rules": {
@@ -55,20 +68,34 @@
   },
   "overrides": [
     {
-      "files": ["*"],
-      "extends": ["plugin:sonarjs/recommended"],
+      "files": [
+        "*"
+      ],
+      "extends": [
+        "plugin:sonarjs/recommended"
+      ],
       "rules": {
         "sonarjs/cognitive-complexity": "warn",
         "sonarjs/no-duplicate-string": "off"
       }
     },
     {
-      "files": ["!**/*", "**/e2e/**/*.spec.ts"],
-      "extends": ["plugin:playwright/recommended"]
+      "files": [
+        "!**/*",
+        "**/e2e/**/*.spec.ts"
+      ],
+      "extends": [
+        "plugin:playwright/recommended"
+      ]
     },
     {
-      "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nx/eslint-plugin/typescript"],
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "extends": [
+        "plugin:@nx/eslint-plugin/typescript"
+      ],
       "rules": {
         "@typescript-eslint/ban-ts-comment": "off",
         "import/no-cycle": "off",
@@ -77,20 +104,31 @@
       }
     },
     {
-      "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nx/eslint-plugin/javascript"],
+      "files": [
+        "*.js",
+        "*.jsx"
+      ],
+      "extends": [
+        "plugin:@nx/eslint-plugin/javascript"
+      ],
       "rules": {
         "import/no-cycle": "off",
         "@typescript-eslint/no-unused-vars": "warn"
       }
     },
     {
-      "files": ["*.json"],
-      "extends": ["plugin:json/recommended"],
+      "files": [
+        "*.json"
+      ],
+      "extends": [
+        "plugin:json/recommended"
+      ],
       "rules": {}
     },
     {
-      "files": ["**/*.md"],
+      "files": [
+        "**/*.md"
+      ],
       "processor": "markdown/markdown"
     }
   ]
