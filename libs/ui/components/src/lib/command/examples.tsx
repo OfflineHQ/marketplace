@@ -1,25 +1,24 @@
 'use client';
-import React from 'react';
 import {
+  ArrowUpCircle,
   Calculator,
   Calendar,
-  CreditCard,
-  Settings,
-  Smile,
-  User,
   Check,
   ChevronsUpDown,
-  ArrowUpCircle,
-  OutlineSuccessCircle,
   Circle,
-  HelpCircle,
-  XCircle,
-  MoreHorizontal,
-  Edit,
-  Tags,
+  CreditCard,
   Delete,
+  HelpCircle,
   IconProps,
+  MoreHorizontal,
+  OutlineSuccessCircle,
+  Settings,
+  Smile,
+  Tags,
+  User,
+  XCircle,
 } from '@ui/icons';
+import React from 'react';
 
 import {
   Command,
@@ -374,6 +373,7 @@ export function CommandDropdownMenuDemo() {
                 <Command>
                   <CommandInput
                     placeholder="Filter label..."
+                    // eslint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus={true}
                   />
                   <CommandList>

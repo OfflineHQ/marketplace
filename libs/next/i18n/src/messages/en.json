@@ -297,7 +297,8 @@
           "deploy-contract": "Deploy the NFTs contract",
           "no-pricing-set": "You need to define your sale parameters first",
           "copied-contract-address": "Contract address copied",
-          "num-files-does-not-match": "The number of files uploaded for your pass doesn't match the number of pass you intend to mint"
+          "num-files-does-not-match": "The number of files uploaded for your pass doesn't match the number of pass you intend to mint",
+          "some-files-are-duplicates": "Some of your files are duplicates, please remove them before deploying the contract"
         },
         "EventPassSaleParameters": {
           "title": "Sale Parameters",

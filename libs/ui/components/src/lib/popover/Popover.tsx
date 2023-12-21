@@ -71,7 +71,9 @@ const PopoverTitle = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLHeadingElement>) => (
-  <h4 className={cn('font-medium leading-none', className)} {...props} />
+  <h4 className={cn('font-medium leading-none', className)} {...props}>
+    {props.children}
+  </h4>
 );
 PopoverTitle.displayName = 'PopoverTitle';
 

@@ -296,7 +296,8 @@
           "deploy-contract": "Déployer le contrat NFTs",
           "no-pricing-set": "Vous devez d'abord définir vos paramètres de vente.",
           "copied-contract-address": "Adresse du contrat copiée",
-          "num-files-does-not-match": "Le nombre de fichiers téléchargés pour votre pass ne correspond pas au nombre de pass que vous avez l'intention de créer."
+          "num-files-does-not-match": "Le nombre de fichiers téléchargés pour votre pass ne correspond pas au nombre de pass que vous avez l'intention de créer.",
+          "some-files-are-duplicates": "Certains de vos fichiers sont des doublons, veuillez les supprimer avant de déployer le contrat."
         },
         "EventPassSaleParameters": {
           "title": "Paramètres de vente",
