@@ -7,6 +7,8 @@ import NftCollection from '@nft/thirdweb-organizer';
 import { EventSmallData } from '@nft/types';
 import { Button, ButtonSkeleton } from '@ui/components';
 import { ethers } from 'ethers6';
+import { checkEventPassNftFilesHash } from '../../actions/checkEventPassFilesHash';
+import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
 
 export interface EventPassDeployButtonClientProps extends EventSmallData {
   eventPassId: string;
@@ -26,22 +28,41 @@ export function EventPassDeployButtonClient({
   const { provider, chainConfig, chainId } = useAuthContext();
   async function deployContract() {
     if (!provider) return;
-    const web3Provider = new ethers.BrowserProvider(provider, {
-      chainId: parseInt(chainId as string),
-      name: chainConfig.displayName,
-    });
-    const signer = await web3Provider.getSigner();
-    // TODO to update once thirdweb support diem or ethers6
-    const sdk = new NftCollection(signer as any);
-    await sdk.deployACollection(
-      eventPass,
-      {
-        organizerId,
+    try {
+      const eventPassFiles = await getEventPassNftFiles({
+        eventPassId: eventPass.id,
         eventId,
-        eventSlug,
-      },
-      eventPassType,
-    );
+        organizerId,
+      });
+      if (eventPassFiles?.length !== eventPass.eventPassPricing?.maxAmount)
+        throw new Error('numFilesDoesNotMatch');
+      const duplicates = await checkEventPassNftFilesHash({
+        filesPath: eventPassFiles.map((file) => file.filePath),
+        eventPassId: eventPass.id,
+        eventId,
+        organizerId,
+      });
+      if (duplicates.length) throw new Error('someFilesAreDuplicates');
+
+      const web3Provider = new ethers.BrowserProvider(provider, {
+        chainId: parseInt(chainId as string),
+        name: chainConfig.displayName,
+      });
+      const signer = await web3Provider.getSigner();
+      // TODO to update once thirdweb support diem or ethers6
+      const sdk = new NftCollection(signer as any);
+      await sdk.deployACollection(
+        eventPass,
+        {
+          organizerId,
+          eventId,
+          eventSlug,
+        },
+        eventPassType,
+      );
+    } catch (error) {
+      console.error(error);
+    }
   }
   //TODO add deploy button + await for sdk with signer
   return provider ? (
