@@ -2,6 +2,8 @@ import * as authProvider from '@next/auth';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
+import * as deploy from '../../actions/deployCollectionWrapper';
+import * as renameFiles from '../../actions/renameEventPassNftFiles';
 
 import {
   EventSheetExample,
@@ -10,7 +12,7 @@ import {
   eventWithNormalPasses,
 } from './examples';
 
-import { getMock } from 'storybook-addon-module-mock';
+import { createMock, getMock } from 'storybook-addon-module-mock';
 import { eventPassNftFilesTableMocks } from '../../molecules/EventPassNftFilesTable/EventPassNftFilesTable.stories';
 import { eventPassNftFiles } from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
@@ -20,12 +22,19 @@ const meta: Meta<typeof EventSheet> = {
   parameters: {
     layout: 'fullscreen',
     moduleMock: {
-      mock: eventPassNftFilesTableMocks,
+      mock: () => {
+        const mockRename = createMock(renameFiles, 'renameEventPassNftFiles');
+        mockRename.mockReturnValue(Promise.resolve());
+        const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
+        mockDeploy.mockReturnValue(Promise.resolve());
+        return [mockRename, mockDeploy, ...eventPassNftFilesTableMocks()];
+      },
     },
   },
   render: EventSheetExample,
   args: {
     event: eventWithNormalPasses,
+    organizerId: 'organizer-1',
   },
 };
 
@@ -154,13 +163,18 @@ export const WithClickOnDeploy: Story = {
   },
   play: async ({ container, parameters }) => {
     const mockAuth = getMock(parameters, authProvider, 'useAuthContext');
+    const mockRename = getMock(
+      parameters,
+      renameFiles,
+      'renameEventPassNftFiles',
+    );
+    mockRename.mockReturnValue(Promise.resolve());
     mockAuth.mockReturnValue({
       user: {
         id: '0x1234',
       },
-      provider: {
-        chainId: 4,
-      },
+      getSigner: () => Promise.resolve({}),
+      provider: {},
     });
     const buttonElement = await screen.findByText(
       /Deploy the NFTs contract/i,
@@ -169,7 +183,18 @@ export const WithClickOnDeploy: Story = {
         timeout: 5000,
       },
     );
+    const mockDeploy = getMock(parameters, deploy, 'deployCollectionWrapper');
     await expect(buttonElement).toBeEnabled();
+    await userEvent.click(buttonElement);
+    expect(mockDeploy).toBeCalledTimes(1);
+    const args = mockDeploy.mock.calls[0][0];
+    expect(args).toMatchObject({
+      signer: {},
+      eventPassId: eventPassWithEnoughFiles.eventPasses[0].id,
+      organizerId: 'organizer-1',
+      eventId: eventPassWithEnoughFiles.id,
+      eventSlug: eventPassWithEnoughFiles.slug,
+    });
   },
 };
 
