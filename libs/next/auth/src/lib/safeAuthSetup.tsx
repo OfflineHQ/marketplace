@@ -18,6 +18,7 @@ import {
 } from '@web3auth/base';
 import { Web3AuthOptions } from '@web3auth/modal';
 import { LANGUAGE_TYPE, OpenloginAdapter } from '@web3auth/openlogin-adapter';
+import { ethers as ethers5 } from 'ethers';
 import { Eip1193Provider, ethers } from 'ethers6';
 import { getCsrfToken, signIn, signOut } from 'next-auth/react';
 import { SiweMessage } from 'siwe';
@@ -323,9 +324,28 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
     posthog?.reset();
   }
 
+  async function getSigner() {
+    if (!safeAuth || !safeAuth?.getProvider()) return;
+    // TODO once thirdweb support ethers6 set back
+    // const web3Provider = new ethers.BrowserProvider(
+    //   safeAuth.getProvider() as Eip1193Provider,
+    //   {
+    //     chainId: parseInt(chainId as string),
+    //     name: chainConfig.displayName,
+    //   },
+    // );
+    // return web3Provider.getSigner();
+    const ether5Provider = new ethers5.providers.Web3Provider(
+      safeAuth.getProvider() as Eip1193Provider,
+    );
+    return ether5Provider.getSigner();
+  }
+
   async function finishLogin() {
     const isNextAuthConnected = await props?.isConnected?.();
     if (!isNextAuthConnected) {
+      // TODO once thirdweb support ethers6 set back
+      // const signer = await getSigner();
       const web3Provider = new ethers.BrowserProvider(
         safeAuth?.getProvider() as Eip1193Provider,
         {
@@ -334,6 +354,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         },
       );
       const signer = await web3Provider.getSigner();
+      if (!signer) throw new Error('No signer found');
       await loginSiwe(signer);
     }
     await setupUserSession();
@@ -505,5 +526,6 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
     connecting,
     chainConfig,
     chainId,
+    getSigner,
   };
 }

@@ -38,6 +38,7 @@ interface AuthContextValue {
   connecting: ReturnType<typeof useSafeAuth>['connecting'];
   chainId: ReturnType<typeof useSafeAuth>['chainId'];
   chainConfig: ReturnType<typeof useSafeAuth>['chainConfig'];
+  getSigner: ReturnType<typeof useSafeAuth>['getSigner'];
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);

@@ -3,12 +3,12 @@
 import { EventPass } from '@features/back-office/events-types';
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { useAuthContext } from '@next/auth';
-import NftCollection from '@nft/thirdweb-organizer';
 import { EventSmallData } from '@nft/types';
 import { Button, ButtonSkeleton } from '@ui/components';
-import { ethers } from 'ethers6';
 import { checkEventPassNftFilesHash } from '../../actions/checkEventPassFilesHash';
 import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
+import { renameEventPassNftFiles } from '../../actions/renameEventPassNftFiles';
+import { deployCollectionWrapper } from './deployCollectionWrapper';
 
 export interface EventPassDeployButtonClientProps extends EventSmallData {
   eventPassId: string;
@@ -25,7 +25,7 @@ export function EventPassDeployButtonClient({
   eventSlug,
   eventPassType,
 }: EventPassDeployButtonClientProps) {
-  const { provider, chainConfig, chainId } = useAuthContext();
+  const { provider, getSigner } = useAuthContext();
   async function deployContract() {
     if (!provider) return;
     try {
@@ -36,30 +36,33 @@ export function EventPassDeployButtonClient({
       });
       if (eventPassFiles?.length !== eventPass.eventPassPricing?.maxAmount)
         throw new Error('numFilesDoesNotMatch');
+      const filesPath = eventPassFiles.map((file) => file.filePath);
       const duplicates = await checkEventPassNftFilesHash({
-        filesPath: eventPassFiles.map((file) => file.filePath),
+        filesPath,
         eventPassId: eventPass.id,
         eventId,
         organizerId,
       });
       if (duplicates.length) throw new Error('someFilesAreDuplicates');
 
-      const web3Provider = new ethers.BrowserProvider(provider, {
-        chainId: parseInt(chainId as string),
-        name: chainConfig.displayName,
+      await renameEventPassNftFiles({
+        filesPath,
+        eventPassId: eventPass.id,
+        eventId,
+        organizerId,
       });
-      const signer = await web3Provider.getSigner();
-      // TODO to update once thirdweb support diem or ethers6
-      const sdk = new NftCollection(signer as any);
-      await sdk.deployACollection(
-        eventPass,
-        {
-          organizerId,
-          eventId,
-          eventSlug,
-        },
+
+      const signer = await getSigner();
+      if (!signer) throw new Error('noSigner');
+      await deployCollectionWrapper({
+        signer,
+        eventPassId: eventPass.id,
+        organizerId,
+        eventId,
+        eventSlug,
         eventPassType,
-      );
+        eventPass,
+      });
     } catch (error) {
       console.error(error);
     }
