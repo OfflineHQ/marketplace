@@ -1,3 +1,4 @@
+import { Locale, messages } from '@next/i18n';
 import {
   BlockchainAddress,
   Button,
@@ -5,7 +6,8 @@ import {
   CardFooter,
   HelperText,
 } from '@ui/components';
-import { useTranslations } from 'next-intl';
+import { deepPick } from '@utils';
+import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
 import { Suspense } from 'react';
 import { checkEventPassNftFilesHash } from '../../actions/checkEventPassFilesHash';
 import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
@@ -86,6 +88,10 @@ async function EventPassContractDeployButtonContent({
       if (duplicates.length) isDisabledReasons.push(someFilesAreDuplicates);
     }
   }
+  const locale = useLocale() as Locale;
+  const localeMessages = deepPick(messages[locale], [
+    'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter.EventPassDeployButtonClient',
+  ]);
   return (
     <div className="w-full flex-col">
       {isDisabledReasons?.length ? (
@@ -96,14 +102,16 @@ async function EventPassContractDeployButtonContent({
           <HelperText message={isDisabledReasons} variant="warning" />
         </>
       ) : (
-        <EventPassDeployButtonClient
-          {...props}
-          eventPass={eventPass}
-          organizerId={organizerId}
-          eventId={eventId}
-        >
-          {deployContract}
-        </EventPassDeployButtonClient>
+        <NextIntlClientProvider locale={locale} messages={localeMessages}>
+          <EventPassDeployButtonClient
+            {...props}
+            eventPass={eventPass}
+            organizerId={organizerId}
+            eventId={eventId}
+          >
+            {deployContract}
+          </EventPassDeployButtonClient>
+        </NextIntlClientProvider>
       )}
     </div>
   );

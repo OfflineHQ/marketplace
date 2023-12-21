@@ -353,6 +353,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
           name: chainConfig.displayName,
         },
       );
+
       const signer = await web3Provider.getSigner();
       if (!signer) throw new Error('No signer found');
       await loginSiwe(signer);

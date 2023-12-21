@@ -4,11 +4,15 @@ import { EventPass } from '@features/back-office/events-types';
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { useAuthContext } from '@next/auth';
 import { EventSmallData } from '@nft/types';
-import { Button, ButtonSkeleton } from '@ui/components';
+import { Button, ButtonSkeleton, useToast } from '@ui/components';
+import { getErrorMessage } from '@utils';
+import { useLocale, useTranslations } from 'next-intl';
 import { checkEventPassNftFilesHash } from '../../actions/checkEventPassFilesHash';
+import { deployCollectionWrapper } from '../../actions/deployCollectionWrapper';
 import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
 import { renameEventPassNftFiles } from '../../actions/renameEventPassNftFiles';
-import { deployCollectionWrapper } from '../../actions/deployCollectionWrapper';
+import { resetEventPassNftFiles } from '../../actions/resetEventPassNftFiles';
+import { resetEventPasses } from '../../actions/resetEventPasses';
 
 export interface EventPassDeployButtonClientProps extends EventSmallData {
   eventPassId: string;
@@ -25,7 +29,12 @@ export function EventPassDeployButtonClient({
   eventSlug,
   eventPassType,
 }: EventPassDeployButtonClientProps) {
+  const { toast } = useToast();
   const { provider, getSigner } = useAuthContext();
+  const t = useTranslations(
+    'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter.EventPassDeployButtonClient',
+  );
+  const locale = useLocale();
   async function deployContract() {
     if (!provider) return;
     try {
@@ -63,8 +72,30 @@ export function EventPassDeployButtonClient({
         eventPassType,
         eventPass,
       });
+      toast({
+        title: t('success-title'),
+        description: t('success-description', {
+          eventPassName: eventPass.name,
+        }),
+      });
+      await resetEventPassNftFiles({
+        locale,
+        eventSlug,
+        eventPassId: eventPass.id,
+        eventId,
+        organizerId,
+      });
+      await resetEventPasses({
+        eventSlug,
+        locale,
+      });
     } catch (error) {
       console.error(error);
+      toast({
+        title: t('error-title'),
+        description: getErrorMessage(error),
+        variant: 'destructive',
+      });
     }
   }
   //TODO add deploy button + await for sdk with signer

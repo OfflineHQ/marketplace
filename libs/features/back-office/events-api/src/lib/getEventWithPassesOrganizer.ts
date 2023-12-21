@@ -10,11 +10,18 @@ interface GetEventWithPassesOrganizer {
 
 export const getEventWithPassesOrganizer = cache(
   async ({ slug, locale }: GetEventWithPassesOrganizer) => {
-    const data = await adminSdk.GetEventWithPassesOrganizer({
-      slug,
-      locale: locale as Locale,
-      stage: env.HYGRAPH_STAGE as Stage,
-    });
+    const data = await adminSdk.GetEventWithPassesOrganizer(
+      {
+        slug,
+        locale: locale as Locale,
+        stage: env.HYGRAPH_STAGE as Stage,
+      },
+      {
+        next: {
+          tags: [`${slug}-getEventWithPassesOrganizer`],
+        },
+      },
+    );
     return data?.event;
   },
 );

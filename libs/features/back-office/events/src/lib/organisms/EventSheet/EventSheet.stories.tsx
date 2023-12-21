@@ -12,7 +12,7 @@ import {
   eventWithNormalPasses,
 } from './examples';
 
-import { createMock, getMock } from 'storybook-addon-module-mock';
+import { createMock, getMock, render } from 'storybook-addon-module-mock';
 import { eventPassNftFilesTableMocks } from '../../molecules/EventPassNftFilesTable/EventPassNftFilesTable.stories';
 import { eventPassNftFiles } from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
@@ -195,6 +195,14 @@ export const WithClickOnDeploy: Story = {
       eventId: eventPassWithEnoughFiles.id,
       eventSlug: eventPassWithEnoughFiles.slug,
     });
+    expect(
+      await screen.findByText(/successfully deployed/i),
+    ).toBeInTheDocument();
+    mockDeploy.mockRejectedValueOnce(new Error('error'));
+    render(parameters);
+    await expect(buttonElement).toBeEnabled();
+    await userEvent.click(buttonElement);
+    expect(await screen.findByText(/error during/i)).toBeInTheDocument();
   },
 };
 

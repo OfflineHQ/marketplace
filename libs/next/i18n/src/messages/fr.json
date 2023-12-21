@@ -297,7 +297,11 @@
           "no-pricing-set": "Vous devez d'abord définir vos paramètres de vente.",
           "copied-contract-address": "Adresse du contrat copiée",
           "num-files-does-not-match": "Le nombre de fichiers téléchargés pour votre pass ne correspond pas au nombre de pass que vous avez l'intention de créer.",
-          "some-files-are-duplicates": "Certains de vos fichiers sont des doublons, veuillez les supprimer avant de déployer le contrat."
+          "some-files-are-duplicates": "Certains de vos fichiers sont des doublons, veuillez les supprimer avant de déployer le contrat.",
+          "EventPassDeployButtonClient": {
+            "success-title": "Contrat déployé avec succès 🎉 !",
+            "success-description": "Le contrat {eventPassName} est maintenant actif sur la blockchain. Votre pass événementiel est prêt à être utilisé."
+          }
         },
         "EventPassSaleParameters": {
           "title": "Paramètres de vente",
@@ -313,6 +317,7 @@
         },
         "EventPassFilesUploader": {
           "trigger-button": "Ajoutez vos fichiers",
+          "number-files-reached": "Vous avez atteint le nombre maximum de fichiers pour votre pass.",
           "title": "Téléchargez vos fichiers",
           "close-button": "Fermer",
           "description": "Le seul format accepté est <strong>.png</strong> et vous devez télécharger <strong>{numFilesRemaining, number} {numFilesRemaining, plural, one {fichier} other {fichiers}}</strong> pour le pass d'événement \"{eventPassName}\".",

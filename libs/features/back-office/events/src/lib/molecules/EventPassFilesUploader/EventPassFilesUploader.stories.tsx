@@ -66,3 +66,23 @@ export const Skeleton: Story = {
     expect(screen.queryByText(/Upload an image/i)).not.toBeInTheDocument();
   },
 };
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    eventPass: {
+      ...eventPassNftVIPWithContract,
+      eventPassPricing: {
+        ...eventPassNftVIPWithContract.eventPassPricing,
+        maxAmount: 0,
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    expect(
+      await screen.findByText(
+        /You have reached the maximum number of files for your pass/i,
+      ),
+    ).toBeInTheDocument();
+  },
+};

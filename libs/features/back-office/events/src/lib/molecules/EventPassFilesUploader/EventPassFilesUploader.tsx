@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  HelperText,
 } from '@ui/components';
 import { Upload } from '@ui/icons';
 import { useLocale } from 'next-intl';
@@ -45,15 +46,24 @@ async function EventPassFilesUploaderContent({
     namespace: 'OrganizerEvents.Sheet.EventPassCard.EventPassFilesUploader',
   });
   const currentFiles = await getEventPassNftFiles(props);
-  const maxFileCount =
+  const isDisabledReasons: string[] = [];
+  let maxFileCount =
     (eventPass.eventPassPricing?.maxAmount || 0) - currentFiles.length;
+  if (maxFileCount < 0) maxFileCount = 0;
+  if (!maxFileCount) isDisabledReasons.push(t('number-files-reached'));
+  console.log('maxFileCount', maxFileCount);
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button icon={<Upload />} className={buttonClassName}>
+        <Button
+          icon={<Upload />}
+          className={buttonClassName}
+          disabled={!maxFileCount}
+        >
           {t('trigger-button')}
         </Button>
       </DialogTrigger>
+      <HelperText message={isDisabledReasons} variant="info" />
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t('title')}</DialogTitle>
