@@ -5,7 +5,7 @@ import {
   EventPassNftContractType_Enum,
 } from '@gql/shared/types';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
-import { Sheet, SheetContent } from '@ui/components';
+import { Sheet, SheetContent, Toaster } from '@ui/components';
 import {
   eventPassNftVIPWithContract,
   eventPassNftVipNoContractDelayedReveal,
@@ -92,6 +92,7 @@ export const EventSheetExample = (props: EventSheetProps) => {
           </Sheet>
         </AuthProvider>
       </NextAuthProvider>
+      <Toaster />
     </AppNavLayout>
   );
 };

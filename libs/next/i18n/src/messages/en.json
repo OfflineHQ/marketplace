@@ -298,7 +298,12 @@
           "no-pricing-set": "You need to define your sale parameters first",
           "copied-contract-address": "Contract address copied",
           "num-files-does-not-match": "The number of files uploaded for your pass doesn't match the number of pass you intend to mint",
-          "some-files-are-duplicates": "Some of your files are duplicates, please remove them before deploying the contract"
+          "some-files-are-duplicates": "Some of your files are duplicates, please remove them before deploying the contract",
+          "EventPassDeployButtonClient": {
+            "success-title": "Contract successfully deployed 🎉!",
+            "success-description": "The {eventPassName} contract is now live on the blockchain. Your event pass is ready for use.",
+            "error-title": "There's been an error during the deployement of your contract"
+          }
         },
         "EventPassSaleParameters": {
           "title": "Sale Parameters",
@@ -314,6 +319,7 @@
         },
         "EventPassFilesUploader": {
           "trigger-button": "Upload your files",
+          "number-files-reached": "You have reached the maximum number of files for your pass",
           "title": "Upload your files",
           "close-button": "Close",
           "description": "The only accepted format is <strong>.png</strong> and you need to upload <strong>{numFilesRemaining, number} {numFilesRemaining, plural,  one {file}  other {files} }</strong> for the event pass \"{eventPassName}\"",
