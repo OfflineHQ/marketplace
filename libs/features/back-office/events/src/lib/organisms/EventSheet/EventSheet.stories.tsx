@@ -1,9 +1,7 @@
+import * as authProvider from '@next/auth';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
-import { i18nUiTablesServerMocks } from '@test-utils/ui-mocks';
-import * as nextIntl from 'next-intl';
-import { createMock } from 'storybook-addon-module-mock';
-import * as getPass from '../../actions/getEventPassNftFiles';
+import * as checkPass from '../../actions/checkEventPassFilesHash';
 
 import {
   EventSheetExample,
@@ -12,6 +10,8 @@ import {
   eventWithNormalPasses,
 } from './examples';
 
+import { getMock } from 'storybook-addon-module-mock';
+import { eventPassNftFilesTableMocks } from '../../molecules/EventPassNftFilesTable/EventPassNftFilesTable.stories';
 import { eventPassNftFiles } from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
 
@@ -20,13 +20,7 @@ const meta: Meta<typeof EventSheet> = {
   parameters: {
     layout: 'fullscreen',
     moduleMock: {
-      mock: () => {
-        const mock = createMock(getPass, 'getEventPassNftFiles');
-        mock.mockReturnValue(Promise.resolve(eventPassNftFiles));
-        const mockIntl = createMock(nextIntl, 'useLocale');
-        mockIntl.mockReturnValue('en');
-        return [mock, mockIntl, ...i18nUiTablesServerMocks()];
-      },
+      mock: eventPassNftFilesTableMocks,
     },
   },
   render: EventSheetExample,
@@ -107,6 +101,75 @@ export const WithDelayedPasses: Story = {
         /The number of files uploaded for your pass doesn't match the number of pass you intend to mint/i,
       ),
     ).toBeInTheDocument();
+  },
+};
+
+export const WithDuplicateFiles: Story = {
+  ...WithDelayedPasses,
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+  play: async ({ container, parameters }) => {
+    const mock = getMock(parameters, checkPass, 'checkEventPassNftFilesHash');
+    mock.mockReturnValue(
+      Promise.resolve([
+        [eventPassNftFiles[0].filePath, eventPassNftFiles[3].filePath],
+      ]),
+    );
+    const buttonElement = await screen.findByText(
+      /Deploy the NFTs contract/i,
+      {},
+      {
+        timeout: 5000,
+      },
+    );
+    await expect(buttonElement).toBeDisabled();
+    expect(
+      screen.getByText(
+        /Some of your files are duplicates, please remove them before deploying the contract/i,
+      ),
+    ).toBeInTheDocument();
+  },
+};
+
+const eventPassWithEnoughFiles = {
+  ...eventWithDelayedPasses,
+  eventPasses: [
+    {
+      ...eventWithDelayedPasses.eventPasses[1],
+      eventPassPricing: {
+        ...eventWithDelayedPasses.eventPasses[1].eventPassPricing,
+        maxAmount: 6,
+      },
+    },
+  ],
+};
+
+export const WithClickOnDeploy: Story = {
+  args: {
+    event: eventPassWithEnoughFiles,
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+  play: async ({ container, parameters }) => {
+    const mockAuth = getMock(parameters, authProvider, 'useAuthContext');
+    mockAuth.mockReturnValue({
+      user: {
+        id: '0x1234',
+      },
+      provider: {
+        chainId: 4,
+      },
+    });
+    const buttonElement = await screen.findByText(
+      /Deploy the NFTs contract/i,
+      {},
+      {
+        timeout: 5000,
+      },
+    );
+    await expect(buttonElement).toBeEnabled();
   },
 };
 
