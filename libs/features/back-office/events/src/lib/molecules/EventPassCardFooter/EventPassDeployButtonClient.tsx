@@ -8,7 +8,7 @@ import { Button, ButtonSkeleton } from '@ui/components';
 import { checkEventPassNftFilesHash } from '../../actions/checkEventPassFilesHash';
 import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
 import { renameEventPassNftFiles } from '../../actions/renameEventPassNftFiles';
-import { deployCollectionWrapper } from './deployCollectionWrapper';
+import { deployCollectionWrapper } from '../../actions/deployCollectionWrapper';
 
 export interface EventPassDeployButtonClientProps extends EventSmallData {
   eventPassId: string;
