@@ -42,9 +42,9 @@ jobs:
       - name: Build and check if back-office or web affected
         id: check
         run: |
-          affected=$(pnpm nx affected -t=build)
-          echo "back-office=$(echo $affected | grep -q 'back-office:build:production' && echo true || echo false)" >> $GITHUB_ENV
-          echo "web=$(echo $affected | grep -q 'web:build:production' && echo true || echo false)" >> $GITHUB_ENV
+          pnpm nx affected -t=build | tee affected.log
+          echo "back-office=$(grep -q 'back-office:build:production' affected.log && echo true || echo false)" >> $GITHUB_ENV
+          echo "web=$(grep -q 'web:build:production' affected.log && echo true || echo false)" >> $GITHUB_ENV
 
       - name: Launch docker services
         if: ${{ env.back-office == 'true' || env.web == 'true' }}
