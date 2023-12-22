@@ -150,7 +150,7 @@
       "@next/types": ["libs/next/types/src/index.ts"],
       "@next/uploader-provider": ["libs/next/uploader-provider/src/index.ts"],
       "@next/zustand": ["libs/next/zustand/src/index.ts"],
-      "@nft/eventPass": ["libs/nft/eventPass/src/index.ts"],
+      "@nft/event-pass": ["libs/nft/event-pass/src/index.ts"],
       "@nft/thirdweb-admin": ["libs/nft/thirdweb-admin/src/index.ts"],
       "@nft/thirdweb-organizer": ["libs/nft/thirdweb-organizer/src/index.ts"],
       "@nft/types": ["libs/nft/types/src/index.ts"],
