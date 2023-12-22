@@ -23,9 +23,9 @@ export function EventPassNftsInfos({
   return (
     <AccordionItem value="nft-infos">
       <AccordionTrigger>{title}</AccordionTrigger>
-      <AccordionContent className="grid gap-4 border-y py-4">
+      <AccordionContent className="grid gap-4 py-4">
         <>
-          <div className="grid grid-cols-2 gap-4 border-b py-2">
+          <div className="grid grid-cols-2 gap-4 border-b border-border/50 py-2">
             <p className="font-medium">{t('image')}</p>
             <p className="text-right">
               <AspectRatio variant="classic">
@@ -38,7 +38,7 @@ export function EventPassNftsInfos({
               </AspectRatio>
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-4 border-b py-2">
+          <div className="grid grid-cols-2 gap-4 border-b border-border/50 py-2">
             <p className="font-medium">{t('name')}</p>
             <p className="text-right">{eventPass.nftName}</p>
           </div>

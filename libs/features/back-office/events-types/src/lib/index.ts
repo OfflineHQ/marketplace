@@ -1,3 +1,4 @@
+import { FileSummary } from '@bytescale/sdk';
 import type {
   GetEventWithPassesOrganizerQuery,
   GetEventsFromOrganizerIdTableQuery,
@@ -16,3 +17,7 @@ export type EventPass = EventFromOrganizerWithPasses['eventPasses'][0];
 export type EventPassDelayedRevealed = NonNullable<
   EventPass['eventPassDelayedRevealed']
 >;
+
+export interface EventPassFileWithName extends FileSummary {
+  fileName: string;
+}

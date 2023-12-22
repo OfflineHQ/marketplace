@@ -284,13 +284,24 @@
         "EventPassNftFilesTable": {
           "header-file-path": "Fichier",
           "header-show": "Montrer le fichier",
-          "header-delete": "Supprimer le fichier"
+          "header-delete": "Supprimer le fichier",
+          "search-placeholder": "Chercher un fichier...",
+          "menu-actions-label": "{numFilesSelected, plural, =1 {# fichier sélectionné} other {# fichiers sélectionnés}}",
+          "menu-actions-download": "{numFilesSelected, plural, =1 {télécharger le fichier} other {télécharger # fichiers}}",
+          "menu-actions-helper-text": "Appliquer une action sur les fichiers sélectionnés",
+          "header-download": "Téléchargez le fichier",
+          "duplicates-alert": "{count, plural, one {Un groupe de fichiers a} other {# groupes de fichiers ont}} été détectés comme ayant le même contenu et ont été automatiquement sélectionnés pour la suppression :<br></br><br></br>"
         },
         "EventPassCardFooter": {
           "deploy-contract": "Déployer le contrat NFTs",
           "no-pricing-set": "Vous devez d'abord définir vos paramètres de vente.",
           "copied-contract-address": "Adresse du contrat copiée",
-          "num-files-does-not-match": "Le nombre de fichiers téléchargés pour votre pass ne correspond pas au nombre de pass que vous avez l'intention de créer."
+          "num-files-does-not-match": "Le nombre de fichiers téléchargés pour votre pass ne correspond pas au nombre de pass que vous avez l'intention de créer.",
+          "some-files-are-duplicates": "Certains de vos fichiers sont des doublons, veuillez les supprimer avant de déployer le contrat.",
+          "EventPassDeployButtonClient": {
+            "success-title": "Contrat déployé avec succès 🎉 !",
+            "success-description": "Le contrat {eventPassName} est maintenant actif sur la blockchain. Votre pass événementiel est prêt à être utilisé."
+          }
         },
         "EventPassSaleParameters": {
           "title": "Paramètres de vente",
@@ -303,6 +314,14 @@
           "image": "Image",
           "name": "Nom",
           "description": "Déscription"
+        },
+        "EventPassFilesUploader": {
+          "trigger-button": "Ajoutez vos fichiers",
+          "number-files-reached": "Vous avez atteint le nombre maximum de fichiers pour votre pass.",
+          "title": "Téléchargez vos fichiers",
+          "close-button": "Fermer",
+          "description": "Le seul format accepté est <strong>.png</strong> et vous devez télécharger <strong>{numFilesRemaining, number} {numFilesRemaining, plural, one {fichier} other {fichiers}}</strong> pour le pass d'événement \"{eventPassName}\".",
+          "missing-files": "Il vous reste <strong>{missingFilesNumber, number} {missingFilesNumber, plural, one {fichier} other {fichiers}}</strong> à télécharger pour votre pass."
         }
       },
       "go-back-to-events": "Retournez aux événements"

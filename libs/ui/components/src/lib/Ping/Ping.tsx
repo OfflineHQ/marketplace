@@ -23,7 +23,7 @@ export const Ping: React.FC<PingProps> = ({
       {((number && number > 0) || isActive) && (
         <span
           className={cn(
-            `absolute z-10 ${position} flex ${size} items-center justify-center`,
+            `absolute z-10 ${position} flex ${size} items-center justify-center pointer-events-none`,
           )}
         >
           <span

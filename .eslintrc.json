@@ -1,6 +1,12 @@
 {
   "root": true,
-  "plugins": ["@nx/eslint-plugin", "markdown", "sonarjs", "tailwindcss"],
+  "plugins": [
+    "@nx/eslint-plugin",
+    "markdown",
+    "sonarjs",
+    "tailwindcss",
+    "jsx-a11y"
+  ],
   "extends": [
     "eslint-config-prettier",
     "plugin:import/recommended",
@@ -10,7 +16,8 @@
     "plugin:sonarjs/recommended",
     "plugin:storybook/recommended",
     "plugin:playwright/recommended",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "plugin:jsx-a11y/recommended"
   ],
   "settings": {
     "import/resolver": {

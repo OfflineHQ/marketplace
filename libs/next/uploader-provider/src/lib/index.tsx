@@ -11,7 +11,7 @@ interface BytescaleProviderProps {
 }
 
 interface UploaderContextValue {
-  uploader: boolean;
+  sessionReady: boolean;
 }
 
 const UploaderContext = createContext<UploaderContextValue | undefined>(
@@ -30,24 +30,25 @@ export const UploaderProvider: React.FC<BytescaleProviderProps> = ({
   children,
 }) => {
   const { safeUser } = useAuthContext();
-  const [uploader, setUploader] = useState(false);
+  const [sessionReady, setSessionReady] = useState(false);
 
   useEffect(() => {
-    if (safeUser && !uploader) {
+    if (safeUser && !sessionReady) {
+      Bytescale.AuthManager.endAuthSession();
       Bytescale.AuthManager.beginAuthSession({
         accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
         authUrl: `${getNextAppURL()}/api/bytescale/jwt`,
         authHeaders: async () => Promise.resolve({}),
       });
-      setUploader(true);
-    } else if (!safeUser && uploader) {
+      setSessionReady(true);
+    } else if (!safeUser && sessionReady) {
       Bytescale.AuthManager.endAuthSession();
-      setUploader(false);
+      setSessionReady(false);
     }
-  }, [safeUser, uploader]);
+  }, [safeUser, sessionReady]);
 
   return (
-    <UploaderContext.Provider value={{ uploader }}>
+    <UploaderContext.Provider value={{ sessionReady }}>
       {children}
     </UploaderContext.Provider>
   );

@@ -1,9 +1,9 @@
-import * as eventsApi from '@features/back-office/events-api';
+import * as authProvider from '@next/auth';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, screen, userEvent, within } from '@storybook/test';
-import { i18nUiTablesServerMocks } from '@test-utils/ui-mocks';
-import * as nextIntl from 'next-intl';
-import { createMock } from 'storybook-addon-module-mock';
+import { expect, screen, userEvent } from '@storybook/test';
+import * as checkPass from '../../actions/checkEventPassFilesHash';
+import * as deploy from '../../actions/deployCollectionWrapper';
+import * as renameFiles from '../../actions/renameEventPassNftFiles';
 
 import {
   EventSheetExample,
@@ -12,6 +12,9 @@ import {
   eventWithNormalPasses,
 } from './examples';
 
+import { createMock, getMock, render } from 'storybook-addon-module-mock';
+import { eventPassNftFilesTableMocks } from '../../molecules/EventPassNftFilesTable/EventPassNftFilesTable.stories';
+import { eventPassNftFiles } from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
 
 const meta: Meta<typeof EventSheet> = {
@@ -20,27 +23,18 @@ const meta: Meta<typeof EventSheet> = {
     layout: 'fullscreen',
     moduleMock: {
       mock: () => {
-        const mock = createMock(eventsApi, 'getEventPassNftFiles');
-        mock.mockReturnValue(
-          Promise.resolve([
-            {
-              filePath: '/local/path/to/file1',
-              fileUrl: 'https://file1',
-              lastModified: 1623345600000,
-              size: 100,
-              type: 'File',
-            },
-          ]),
-        );
-        const mockIntl = createMock(nextIntl, 'useLocale');
-        mockIntl.mockReturnValue('en');
-        return [mock, mockIntl, ...i18nUiTablesServerMocks()];
+        const mockRename = createMock(renameFiles, 'renameEventPassNftFiles');
+        mockRename.mockReturnValue(Promise.resolve());
+        const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
+        mockDeploy.mockReturnValue(Promise.resolve());
+        return [mockRename, mockDeploy, ...eventPassNftFilesTableMocks()];
       },
     },
   },
   render: EventSheetExample,
   args: {
     event: eventWithNormalPasses,
+    organizerId: 'organizer-1',
   },
 };
 
@@ -76,12 +70,6 @@ export const Default: Story = {
     await expect(passAssociatedDropdown1).toBeEnabled();
     const fileRow = await screen.findByText(/file1/i);
     expect(fileRow).toBeInTheDocument();
-    const buttonFileRow = within(
-      fileRow.closest('tr') as HTMLElement,
-    ).getByRole('button');
-    userEvent.click(buttonFileRow);
-    const fileActionDelete = await screen.findByText(/Delete the file/i);
-    userEvent.click(fileActionDelete);
     const passAssociatedDropdown2 = passAssociatedDropdowns[1];
     await expect(passAssociatedDropdown2).toBeDisabled();
   },
@@ -122,6 +110,99 @@ export const WithDelayedPasses: Story = {
         /The number of files uploaded for your pass doesn't match the number of pass you intend to mint/i,
       ),
     ).toBeInTheDocument();
+  },
+};
+
+export const WithDuplicateFiles: Story = {
+  ...WithDelayedPasses,
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+  play: async ({ container, parameters }) => {
+    const mock = getMock(parameters, checkPass, 'checkEventPassNftFilesHash');
+    mock.mockReturnValue(
+      Promise.resolve([
+        [eventPassNftFiles[0].filePath, eventPassNftFiles[3].filePath],
+      ]),
+    );
+    const buttonElement = await screen.findByText(
+      /Deploy the NFTs contract/i,
+      {},
+      {
+        timeout: 5000,
+      },
+    );
+    await expect(buttonElement).toBeDisabled();
+    expect(
+      screen.getByText(
+        /Some of your files are duplicates, please remove them before deploying the contract/i,
+      ),
+    ).toBeInTheDocument();
+  },
+};
+
+const eventPassWithEnoughFiles = {
+  ...eventWithDelayedPasses,
+  eventPasses: [
+    {
+      ...eventWithDelayedPasses.eventPasses[1],
+      eventPassPricing: {
+        ...eventWithDelayedPasses.eventPasses[1].eventPassPricing,
+        maxAmount: 6,
+      },
+    },
+  ],
+};
+
+export const WithClickOnDeploy: Story = {
+  args: {
+    event: eventPassWithEnoughFiles,
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+  play: async ({ container, parameters }) => {
+    const mockAuth = getMock(parameters, authProvider, 'useAuthContext');
+    const mockRename = getMock(
+      parameters,
+      renameFiles,
+      'renameEventPassNftFiles',
+    );
+    mockRename.mockReturnValue(Promise.resolve());
+    mockAuth.mockReturnValue({
+      user: {
+        id: '0x1234',
+      },
+      getSigner: () => Promise.resolve({}),
+      provider: {},
+    });
+    const buttonElement = await screen.findByText(
+      /Deploy the NFTs contract/i,
+      {},
+      {
+        timeout: 5000,
+      },
+    );
+    const mockDeploy = getMock(parameters, deploy, 'deployCollectionWrapper');
+    await expect(buttonElement).toBeEnabled();
+    await userEvent.click(buttonElement);
+    expect(mockDeploy).toBeCalledTimes(1);
+    const args = mockDeploy.mock.calls[0][0];
+    expect(args).toMatchObject({
+      signer: {},
+      eventPassId: eventPassWithEnoughFiles.eventPasses[0].id,
+      organizerId: 'organizer-1',
+      eventId: eventPassWithEnoughFiles.id,
+      eventSlug: eventPassWithEnoughFiles.slug,
+    });
+    expect(
+      await screen.findByText(/successfully deployed/i),
+    ).toBeInTheDocument();
+    mockDeploy.mockRejectedValueOnce(new Error('error'));
+    render(parameters);
+    await expect(buttonElement).toBeEnabled();
+    await userEvent.click(buttonElement);
+    expect(await screen.findByText(/error during/i)).toBeInTheDocument();
   },
 };
 

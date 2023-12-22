@@ -64,12 +64,15 @@ export function DataTableColumnHeader<TData, TValue>({
             </DropdownMenuItem>
           )}
           {column.columnDef.enableSorting !== false && (
+            <DropdownMenuSeparator />
+          )}
+          {column.columnDef.enableSorting !== false && (
             <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
               <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
               {controlText.desc}
             </DropdownMenuItem>
           )}
-          <DropdownMenuSeparator />
+          {column.columnDef.enableHiding !== false && <DropdownMenuSeparator />}
           {column.columnDef.enableHiding !== false && (
             <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
               <EyeNoneIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
