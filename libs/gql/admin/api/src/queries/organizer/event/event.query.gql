@@ -111,6 +111,7 @@ query GetEventWithPassesOrganizer(
         type
         contractAddress
         eventPassId
+        isDelayedRevealed
       }
       eventPassDelayedRevealed {
         name

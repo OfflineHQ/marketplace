@@ -300,7 +300,13 @@
           "some-files-are-duplicates": "Certains de vos fichiers sont des doublons, veuillez les supprimer avant de déployer le contrat.",
           "EventPassDeployButtonClient": {
             "success-title": "Contrat déployé avec succès 🎉 !",
-            "success-description": "Le contrat {eventPassName} est maintenant actif sur la blockchain. Votre pass événementiel est prêt à être utilisé."
+            "success-description": "Le contrat {eventPassName} est maintenant actif sur la blockchain. Votre pass événementiel est prêt à être utilisé.",
+            "error-title": "Une erreur s'est produite lors du déploiement de votre contrat."
+          },
+          "EventPassContractRevealButtonClient": {
+            "reveal-contract": "Révélez votre pass d'événement",
+            "success-title": "Votre pass d'événement a été révélé 🎉 !",
+            "error-title": "Il y a eu une erreur lors de la révélation de votre pass d'événement."
           }
         },
         "EventPassSaleParameters": {
