@@ -136,8 +136,6 @@ describe('createOptions callbacks', () => {
     });
 
     it('should return correct token with updated role if role is part of user roleAssignments', async () => {
-      process.env.APP = 'BACKOFFICE';
-
       (getAccount as jest.Mock).mockResolvedValueOnce({ ...mockOrganizer });
       const result = await createOptions().callbacks.jwt({
         token: { ...mockToken, user: mockOrganizer },
@@ -188,7 +186,6 @@ describe('createOptions callbacks', () => {
     });
 
     it('should return correct token with no role and no access if user update token without role', async () => {
-      process.env.APP = 'BACKOFFICE';
       (getAccount as jest.Mock).mockResolvedValueOnce({
         ...mockOrganizer,
         role: null,
@@ -222,7 +219,7 @@ describe('createOptions callbacks', () => {
           role: Roles_Enum.OrganizerContentManager,
         },
       };
-      process.env.APP = 'BACKOFFICE';
+
       const result = await createOptions().callbacks.jwt({
         token: mockToken,
         user: mockOrganizerNotAuthorized,
@@ -246,8 +243,6 @@ describe('createOptions callbacks', () => {
     });
 
     it("shouldn't return token with role if role is not part of user roleAssignments", async () => {
-      process.env.APP = 'BACKOFFICE';
-
       (getAccount as jest.Mock).mockResolvedValueOnce(mockOrganizer);
       await expect(
         createOptions().callbacks.jwt({
@@ -295,7 +290,6 @@ describe('createOptions callbacks', () => {
       (Posthog.getInstance as jest.Mock).mockImplementationOnce(() => ({
         getFeatureFlag: jest.fn().mockReturnValue(true),
       }));
-      process.env.APP = 'BACKOFFICE';
       (getAccount as jest.Mock).mockResolvedValueOnce(
         mockOrganizerWithPendingKyc,
       );
@@ -319,8 +313,6 @@ describe('createOptions callbacks', () => {
     });
 
     it("should return token with role even if user don't have kyc if feature flag kycFlag not activated", async () => {
-      process.env.APP = 'BACKOFFICE';
-
       (getAccount as jest.Mock).mockResolvedValueOnce(
         mockOrganizerWithPendingKyc,
       );
