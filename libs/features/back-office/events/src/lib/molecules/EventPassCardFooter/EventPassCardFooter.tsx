@@ -1,3 +1,4 @@
+import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { Locale, messages } from '@next/i18n';
 import {
   BlockchainAddress,
@@ -11,6 +12,7 @@ import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
 import { Suspense } from 'react';
 import { checkEventPassNftFilesHash } from '../../actions/checkEventPassFilesHash';
 import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
+import { EventPassContractRevealButtonClient } from './EventPassContractRevealButtonClient';
 import {
   EventPassDeployButtonClient,
   EventPassDeployButtonClientProps,
@@ -117,15 +119,28 @@ async function EventPassContractDeployButtonContent({
   );
 }
 
-function EventPassContractDeployed({ eventPass }: EventPassCardFooterProps) {
+function EventPassContractDeployed({
+  eventPass,
+  eventPassType,
+  ...props
+}: EventPassCardFooterProps) {
   const t = useTranslations(
     'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter',
   );
   return (
-    <BlockchainAddress
-      address={eventPass.eventPassNftContract?.contractAddress as string}
-      copiedText={t('copied-contract-address')}
-    />
+    <div className="w-full flex-col space-y-4">
+      <BlockchainAddress
+        address={eventPass.eventPassNftContract?.contractAddress as string}
+        copiedText={t('copied-contract-address')}
+      />
+      {eventPassType === EventPassNftContractType_Enum.DelayedReveal &&
+        !eventPass?.eventPassNftContract?.isDelayedRevealed && (
+          <EventPassContractRevealButtonClient
+            eventPass={eventPass}
+            {...props}
+          />
+        )}
+    </div>
   );
 }
 

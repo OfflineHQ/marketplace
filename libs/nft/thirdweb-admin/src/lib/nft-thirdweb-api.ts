@@ -83,12 +83,16 @@ export class NftClaimable {
     }
 
     try {
-      const eventPassNftContract = (
-        await adminSdk.GetEventPassNftContractDelayedRevealPassword({
-          contractAddress,
-        })
-      ).eventPassNftContract[0];
+      const res = await adminSdk.GetEventPassNftContractDelayedRevealPassword({
+        contractAddress,
+      });
+      const eventPassNftContract = res?.eventPassNftContract?.[0];
 
+      if (!eventPassNftContract) {
+        throw new Error(
+          `Event pass NFT contract for address ${contractAddress} not found.`,
+        );
+      }
       if (
         eventPassNftContract.type !==
           EventPassNftContractType_Enum.DelayedReveal ||

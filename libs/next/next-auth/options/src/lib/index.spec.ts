@@ -1,5 +1,4 @@
 // import env from '@env/server';
-// import { isBackOffice } from '@shared/server';
 import { getAccount } from '@features/account/api';
 import {
   KycLevelName_Enum,
@@ -7,6 +6,7 @@ import {
   Roles_Enum,
 } from '@gql/shared/types';
 import { Posthog } from '@insight/server';
+import { isBackOffice } from '@shared/server';
 import type { User } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import { createOptions } from './';
@@ -17,10 +17,10 @@ jest.mock('@next/siwe/provider', () => ({
   SiweProvider: jest.fn(() => ({})),
 }));
 
-// jest.mock('@shared/server', () => ({
-//   ...jest.requireActual('@shared/server'),
-//   isBackOffice: jest.fn(),
-// }));
+jest.mock('@shared/server', () => ({
+  ...jest.requireActual('@shared/server'),
+  isBackOffice: jest.fn(),
+}));
 
 jest.mock('@features/account/api', () => ({
   ...jest.requireActual('@features/account/api'),
@@ -46,6 +46,9 @@ describe('createOptions callbacks', () => {
     user: mockUser,
   };
   describe('User in web app', () => {
+    beforeEach(() => {
+      (isBackOffice as jest.Mock).mockReturnValue(false);
+    });
     it('should add access, provider, providerType, and role fields to token if user and account are provided', async () => {
       const result = await createOptions().callbacks.jwt({
         token: mockToken,
@@ -128,9 +131,11 @@ describe('createOptions callbacks', () => {
 
     const mockOrganizerRole = mockOrganizer.roles[2];
 
-    it('should return correct token with updated role if role is part of user roleAssignments', async () => {
-      process.env.APP = 'BACKOFFICE';
+    beforeEach(() => {
+      (isBackOffice as jest.Mock).mockReturnValue(true);
+    });
 
+    it('should return correct token with updated role if role is part of user roleAssignments', async () => {
       (getAccount as jest.Mock).mockResolvedValueOnce({ ...mockOrganizer });
       const result = await createOptions().callbacks.jwt({
         token: { ...mockToken, user: mockOrganizer },
@@ -181,7 +186,6 @@ describe('createOptions callbacks', () => {
     });
 
     it('should return correct token with no role and no access if user update token without role', async () => {
-      process.env.APP = 'BACKOFFICE';
       (getAccount as jest.Mock).mockResolvedValueOnce({
         ...mockOrganizer,
         role: null,
@@ -215,7 +219,7 @@ describe('createOptions callbacks', () => {
           role: Roles_Enum.OrganizerContentManager,
         },
       };
-      process.env.APP = 'BACKOFFICE';
+
       const result = await createOptions().callbacks.jwt({
         token: mockToken,
         user: mockOrganizerNotAuthorized,
@@ -239,8 +243,6 @@ describe('createOptions callbacks', () => {
     });
 
     it("shouldn't return token with role if role is not part of user roleAssignments", async () => {
-      process.env.APP = 'BACKOFFICE';
-
       (getAccount as jest.Mock).mockResolvedValueOnce(mockOrganizer);
       await expect(
         createOptions().callbacks.jwt({
@@ -263,8 +265,8 @@ describe('createOptions callbacks', () => {
     });
 
     it("shouldn't return token with role if app is not back office", async () => {
-      process.env.APP = 'WEB';
       (getAccount as jest.Mock).mockResolvedValueOnce(mockOrganizer);
+      (isBackOffice as jest.Mock).mockReturnValue(false);
       await expect(
         createOptions().callbacks.jwt({
           token: { ...mockToken, user: mockOrganizer },
@@ -288,7 +290,6 @@ describe('createOptions callbacks', () => {
       (Posthog.getInstance as jest.Mock).mockImplementationOnce(() => ({
         getFeatureFlag: jest.fn().mockReturnValue(true),
       }));
-      process.env.APP = 'BACKOFFICE';
       (getAccount as jest.Mock).mockResolvedValueOnce(
         mockOrganizerWithPendingKyc,
       );
@@ -312,8 +313,6 @@ describe('createOptions callbacks', () => {
     });
 
     it("should return token with role even if user don't have kyc if feature flag kycFlag not activated", async () => {
-      process.env.APP = 'BACKOFFICE';
-
       (getAccount as jest.Mock).mockResolvedValueOnce(
         mockOrganizerWithPendingKyc,
       );
