@@ -64,6 +64,7 @@ export const eventWithDelayedPasses: EventSheetProps['event'] = {
         contractAddress: '0xabcdef123456789',
         type: EventPassNftContractType_Enum.DelayedReveal,
         eventPassId: 'pass-2001',
+        isDelayedRevealed: true,
       },
       eventPassDelayedRevealed: {
         name: 'Early Bird Revealed',
