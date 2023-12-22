@@ -5,7 +5,11 @@ import {
   EventPassNftContractType_Enum,
 } from '@gql/shared/types';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
-import { Sheet, SheetContent } from '@ui/components';
+import { Sheet, SheetContent, Toaster } from '@ui/components';
+import {
+  eventPassNftVIPWithContract,
+  eventPassNftVipNoContractDelayedReveal,
+} from '../../molecules/EventPassNftFilesTable/examples';
 import {
   EventSheet,
   EventSheetSkeleton,
@@ -17,31 +21,7 @@ export const eventWithNormalPasses: EventSheetProps['event'] = {
   id: 'evt-12345',
   slug: 'epic-music-festival',
   eventPasses: [
-    {
-      __typename: 'EventPass',
-      name: 'VIP Access',
-      id: 'pass-1001',
-      description:
-        'Exclusive VIP pass with backstage access and premium seating',
-      nftName: 'EpicFestVIP',
-      nftDescription:
-        'Limited Edition NFT for VIP attendees of Epic Music Festival',
-      nftImage: {
-        url: 'https://picsum.photos/id/620/350/350',
-      },
-      passOptions: [],
-      eventPassPricing: {
-        maxAmount: 100,
-        priceAmount: 42500,
-        priceCurrency: Currency_Enum.Eur,
-        timeBeforeDelete: 3600,
-      },
-      eventPassNftContract: {
-        contractAddress: '0x123456789abcdef',
-        type: EventPassNftContractType_Enum.Normal,
-        eventPassId: 'pass-1001',
-      },
-    },
+    eventPassNftVIPWithContract,
     {
       name: 'General Admission',
       id: 'pass-1002',
@@ -64,7 +44,6 @@ export const eventWithDelayedPasses: EventSheetProps['event'] = {
   slug: 'delayed-passes-event',
   eventPasses: [
     {
-      __typename: 'EventPass',
       name: 'Early Bird',
       id: 'pass-2001',
       description: 'Early bird pass to be revealed later',
@@ -97,34 +76,7 @@ export const eventWithDelayedPasses: EventSheetProps['event'] = {
         passOptions: [],
       },
     },
-    {
-      name: 'VIP Access',
-      id: 'pass-2002',
-      description: 'VIP pass to be revealed later',
-      nftName: 'DelayedEventVIP',
-      nftDescription: 'VIP NFT for Delayed Passes Event to be revealed later',
-      nftImage: {
-        url: 'https://picsum.photos/id/623/350/350',
-      },
-      passOptions: [],
-      eventPassPricing: {
-        maxAmount: 100,
-        priceAmount: 28000,
-        priceCurrency: Currency_Enum.Eur,
-        timeBeforeDelete: 3600,
-      },
-      eventPassNftContract: null,
-      eventPassDelayedRevealed: {
-        name: 'VIP Access Revealed',
-        description: 'VIP pass with exclusive benefits',
-        nftName: 'RevealedEventVIP',
-        nftDescription: 'VIP NFT for Delayed Passes Event',
-        nftImage: {
-          url: 'https://picsum.photos/id/626/350/350',
-        },
-        passOptions: [],
-      },
-    },
+    eventPassNftVipNoContractDelayedReveal,
   ],
 };
 
@@ -140,6 +92,7 @@ export const EventSheetExample = (props: EventSheetProps) => {
           </Sheet>
         </AuthProvider>
       </NextAuthProvider>
+      <Toaster />
     </AppNavLayout>
   );
 };

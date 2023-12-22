@@ -40,8 +40,8 @@ export async function executeJobWithRetry(
 
   try {
     await retry(checkJobStatus, {
-      retries: 5, // the number of retries
-      minTimeout: 0, // the number of milliseconds before starting the first retry
+      retries: 10, // the number of retries
+      minTimeout: 2000, // the number of milliseconds before starting the first retry
       onRetry: (error) =>
         console.log(`Retrying due to error: ${error.message}`), // called when a retry is happening
       errorFilter: (error) =>

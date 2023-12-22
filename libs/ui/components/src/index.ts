@@ -55,6 +55,7 @@ export {
 } from './lib/currency-dropdown/CurrencyDropdown';
 export {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,

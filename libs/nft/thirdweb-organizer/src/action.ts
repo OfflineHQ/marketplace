@@ -10,10 +10,7 @@ import {
 import { adminSdk } from '@gql/admin/api';
 import type {
   CreateEventPassNftContractMutation,
-  GetEventPassNftContractNftsQuery,
   GetEventPassNftContractNftsQueryVariables,
-  InsertEventParametersMutation,
-  InsertEventPassNftsMutation,
   UpdateNftsWithPackIdMutationVariables,
 } from '@gql/admin/types';
 import type {
@@ -51,21 +48,19 @@ export async function updateNftsWithPackId(
 
 export async function createEventPassNfts(
   objects: EventPassNft_Insert_Input[],
-): Promise<InsertEventPassNftsMutation['insert_eventPassNft']> {
+) {
   const data = await adminSdk.InsertEventPassNfts({ objects });
   return data?.insert_eventPassNft || null;
 }
 
-async function InsertEventParameters(
-  objects: EventParameters_Insert_Input[],
-): Promise<InsertEventParametersMutation['insert_eventParameters']> {
+async function InsertEventParameters(objects: EventParameters_Insert_Input[]) {
   const data = await adminSdk.InsertEventParameters({ objects });
   return data?.insert_eventParameters;
 }
 
 export async function getEventPassNftContractNfts(
   id: GetEventPassNftContractNftsQueryVariables,
-): Promise<GetEventPassNftContractNftsQuery['eventPassNftContract'][0]> {
+) {
   const data = await adminSdk.GetEventPassNftContractNfts(id);
   return data?.eventPassNftContract[0];
 }

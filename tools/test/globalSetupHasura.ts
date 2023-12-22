@@ -29,7 +29,7 @@ module.exports = async () => {
   // } finally {
   // await for hasura to be ready
   const hasuraUrl = `http://localhost:${
-    process.env.E2E_TEST ? '8080' : '9696'
+    process.env.NODE_ENV === 'test' ? '9696' : '8080'
   }/healthz`;
   logger.info(`Waiting for hasura to be ready at ${hasuraUrl}`);
   let hasuraReady = false;
@@ -46,7 +46,7 @@ module.exports = async () => {
         }
       }
     } catch (e) {
-      logger.debug(`Hasura failure: ${e}`);
+      logger.debug(`Hasura failure at url "${hasuraUrl}": ${e}`);
       // wait 3sec for hasura to be ready
       await new Promise((resolve) => setTimeout(resolve, 3000));
       retriesLeft -= 1;

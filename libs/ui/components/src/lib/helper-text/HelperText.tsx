@@ -5,14 +5,17 @@ import { statusTextColorVariants } from '../shared/statusVariant';
 
 const helperTextVariants = statusTextColorVariants;
 
-const helperTextCva = cva('text-sm opacity-80 peer-disabled:opacity-50', {
-  variants: {
-    variant: helperTextVariants,
+const helperTextCva = cva(
+  'space-y-1 text-sm opacity-80 peer-disabled:opacity-50',
+  {
+    variants: {
+      variant: helperTextVariants,
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
   },
-  defaultVariants: {
-    variant: 'default',
-  },
-});
+);
 
 export interface HelperTextProps extends VariantProps<typeof helperTextCva> {
   children?: React.ReactNode;

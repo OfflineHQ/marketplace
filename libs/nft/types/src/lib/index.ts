@@ -1,5 +1,6 @@
 import { GetEventPassOrganizerFolderPath } from '@features/pass-common';
 import type {
+  GetEventPassNftContractNftsQuery,
   GetEventPassOrderFromIdQuery,
   GetEventPassOrdersFromStripeCheckoutSessionQuery,
   UpdateEventPassNftFromNftTransferMutation,
@@ -47,7 +48,7 @@ export type EventSmallData = Omit<
   eventSlug: string;
 };
 
-export type NftsMetadata = ThirdwebNFTMetadata & {
+export type NftsMetadata = Omit<ThirdwebNFTMetadata, 'id' | 'uri'> & {
   name: string;
 };
 
@@ -66,4 +67,8 @@ export type EventPassNftContractObject = Required<
 
 export type RequiredEventPassNft = Required<
   Pick<EventPassNft, 'contractAddress' | 'tokenId'>
+>;
+
+export type EventPassNftContractNfts = NonNullable<
+  GetEventPassNftContractNftsQuery['eventPassNftContract'][0]['eventPassNfts']
 >;

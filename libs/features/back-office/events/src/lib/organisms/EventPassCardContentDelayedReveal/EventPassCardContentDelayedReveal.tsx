@@ -42,6 +42,7 @@ export const EventPassCardContentDelayedReveal = ({
           organizerId={organizerId}
           eventId={event.id}
           eventPassId={eventPass.id}
+          eventSlug={event.slug}
         />
       </Accordion>
     </CardContent>

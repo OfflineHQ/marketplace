@@ -36,6 +36,9 @@ interface AuthContextValue {
   loginSiwe: ReturnType<typeof useSafeAuth>['loginSiwe'];
   logoutSiwe: ReturnType<typeof useSafeAuth>['logoutSiwe'];
   connecting: ReturnType<typeof useSafeAuth>['connecting'];
+  chainId: ReturnType<typeof useSafeAuth>['chainId'];
+  chainConfig: ReturnType<typeof useSafeAuth>['chainConfig'];
+  getSigner: ReturnType<typeof useSafeAuth>['getSigner'];
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);

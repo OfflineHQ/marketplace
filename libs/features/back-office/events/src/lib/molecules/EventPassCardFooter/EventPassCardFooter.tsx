@@ -1,4 +1,4 @@
-import { getEventPassNftFiles } from '@features/back-office/events-api';
+import { Locale, messages } from '@next/i18n';
 import {
   BlockchainAddress,
   Button,
@@ -6,8 +6,11 @@ import {
   CardFooter,
   HelperText,
 } from '@ui/components';
-import { useTranslations } from 'next-intl';
+import { deepPick } from '@utils';
+import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
 import { Suspense } from 'react';
+import { checkEventPassNftFilesHash } from '../../actions/checkEventPassFilesHash';
+import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
 import {
   EventPassDeployButtonClient,
   EventPassDeployButtonClientProps,
@@ -27,6 +30,7 @@ function EventPassContractDeployButton({
     deployContract: t('deploy-contract'),
     noPricingSet: t('no-pricing-set'),
     numFilesDoesNotMatch: t('num-files-does-not-match'),
+    someFilesAreDuplicates: t('some-files-are-duplicates'),
   };
   return (
     <Suspense fallback={<ButtonSkeleton className="w-full" />}>
@@ -45,12 +49,20 @@ interface EventPassContractDeployButtonContentProps
     deployContract: string;
     noPricingSet: string;
     numFilesDoesNotMatch: string;
+    someFilesAreDuplicates: string;
   };
 }
 
 async function EventPassContractDeployButtonContent({
   eventPass,
-  texts: { deployContract, noPricingSet, numFilesDoesNotMatch },
+  texts: {
+    deployContract,
+    noPricingSet,
+    numFilesDoesNotMatch,
+    someFilesAreDuplicates,
+  },
+  organizerId,
+  eventId,
   ...props
 }: EventPassContractDeployButtonContentProps) {
   const isDisabledReasons: string[] = [];
@@ -59,10 +71,27 @@ async function EventPassContractDeployButtonContent({
     isDisabledReasons.push(noPricingSet);
   else {
     const maxAmount = eventPass.eventPassPricing.maxAmount;
-    const nftFiles = await getEventPassNftFiles(props);
+    const nftFiles = await getEventPassNftFiles({
+      organizerId,
+      eventId,
+      eventPassId: eventPass.id,
+    });
     if (nftFiles?.length !== maxAmount)
       isDisabledReasons.push(numFilesDoesNotMatch);
+    if (nftFiles?.length) {
+      const duplicates = await checkEventPassNftFilesHash({
+        filesPath: nftFiles.map((file) => file.filePath),
+        organizerId,
+        eventId,
+        eventPassId: eventPass.id,
+      });
+      if (duplicates.length) isDisabledReasons.push(someFilesAreDuplicates);
+    }
   }
+  const locale = useLocale() as Locale;
+  const localeMessages = deepPick(messages[locale], [
+    'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter.EventPassDeployButtonClient',
+  ]);
   return (
     <div className="w-full flex-col">
       {isDisabledReasons?.length ? (
@@ -73,9 +102,16 @@ async function EventPassContractDeployButtonContent({
           <HelperText message={isDisabledReasons} variant="warning" />
         </>
       ) : (
-        <EventPassDeployButtonClient {...props} eventPass={eventPass}>
-          {deployContract}
-        </EventPassDeployButtonClient>
+        <NextIntlClientProvider locale={locale} messages={localeMessages}>
+          <EventPassDeployButtonClient
+            {...props}
+            eventPass={eventPass}
+            organizerId={organizerId}
+            eventId={eventId}
+          >
+            {deployContract}
+          </EventPassDeployButtonClient>
+        </NextIntlClientProvider>
       )}
     </div>
   );

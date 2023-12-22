@@ -9,6 +9,7 @@ import { GetEventPassNftContractNftsQuery } from '@gql/admin/types';
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import {
   ContractType,
+  EventPassNftContractNfts,
   EventPassNftContractObject,
   EventSmallData,
   NftsMetadata,
@@ -251,7 +252,7 @@ class NftCollection {
       }
     }
 
-    if (!props.eventPassPricing.maxAmount) {
+    if (!props.eventPassPricing?.maxAmount) {
       throw new Error('Missing required field: eventPassPricing.maxAmount');
     }
   }
@@ -266,7 +267,7 @@ class NftCollection {
       nftImage,
       nftDescription,
       nftName,
-      eventPassPricing: { maxAmount },
+      eventPassPricing,
     } = props;
 
     const metadata: NftsMetadata = {
@@ -274,6 +275,11 @@ class NftCollection {
       description: nftDescription,
       image: nftImage.url,
     };
+
+    if (!eventPassPricing?.maxAmount) {
+      throw new Error('Missing amount for eventPass');
+    }
+    const { maxAmount } = eventPassPricing;
 
     try {
       const txResult = await this.sdk.deployer.deployBuiltInContract(
@@ -399,7 +405,9 @@ class NftCollection {
   private async deployDelayedRevealCollection(props: CommonProps) {
     try {
       const eventPassDelayedRevealed = props.eventPassDelayedRevealed;
-
+      if (!eventPassDelayedRevealed) {
+        throw new Error('Missing eventPassDelayedRevealed');
+      }
       this.validateEventPassDelayedRevealed(eventPassDelayedRevealed);
       const { contract, metadatas } =
         await this.deployDropContractAndPrepareMetadata(props);
@@ -457,6 +465,7 @@ class NftCollection {
       packId: pack.id,
       contractAddress: txResult,
     });
+    if (!packNftContract) throw new Error('Error creating packNftContract');
 
     const updates = selectedNfts.map((nft) => {
       return {
@@ -487,9 +496,15 @@ class NftCollection {
         data.contractAddress,
       );
 
-      const amount = pack.eventPassIds.find(
+      const eventPass = pack.eventPassIds.find(
         (eventPass) => eventPass.id === data.eventPassId,
-      ).amount;
+      );
+
+      if (!eventPass) {
+        throw new Error(`No event pass found with id ${data.eventPassId}`);
+      }
+
+      const amount = eventPass.amount;
 
       await eventPassContract.erc721.claimTo(address, amount);
       await eventPassContract.erc721.setApprovalForAll(txResult, true);
@@ -526,11 +541,10 @@ class NftCollection {
         ),
       );
 
-    const allEventPassNfts = eventPassNftContracts.flatMap(
-      (contract) => contract.eventPassNfts,
-    );
+    const allEventPassNfts: EventPassNftContractNfts =
+      eventPassNftContracts.flatMap((contract) => contract.eventPassNfts);
 
-    const selectedNfts = [];
+    const selectedNfts: EventPassNftContractNfts = [];
     const approvalData = eventPassNftContracts.map((contract) => ({
       contractAddress: contract.contractAddress,
       eventPassId: contract.eventPassId,
@@ -538,7 +552,7 @@ class NftCollection {
 
     for (const eventPass of pack.eventPassIds) {
       const requiredAmount = eventPass.amount;
-      const availableNfts = allEventPassNfts.filter(
+      const availableNfts: EventPassNftContractNfts = allEventPassNfts.filter(
         (nft) => nft.eventPassId === eventPass.id && !nft.currentOwnerAddress,
       );
 
