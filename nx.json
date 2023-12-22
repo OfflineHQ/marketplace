@@ -127,7 +127,7 @@
   "defaultProject": "web",
   "defaultAffected": ["web", "back-office"],
   "defaultBase": "staging",
-  "cacheDirectory": "/tmp/cache",
+  "cacheDirectory": "/tmp/nx-cache",
   "nxCloudAccessToken": "",
   "parallel": 5
 }
