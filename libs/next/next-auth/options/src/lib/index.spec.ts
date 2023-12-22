@@ -1,5 +1,4 @@
 // import env from '@env/server';
-// import { isBackOffice } from '@shared/server';
 import { getAccount } from '@features/account/api';
 import {
   KycLevelName_Enum,
@@ -7,6 +6,7 @@ import {
   Roles_Enum,
 } from '@gql/shared/types';
 import { Posthog } from '@insight/server';
+import { isBackOffice } from '@shared/server';
 import type { User } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import { createOptions } from './';
@@ -17,10 +17,10 @@ jest.mock('@next/siwe/provider', () => ({
   SiweProvider: jest.fn(() => ({})),
 }));
 
-// jest.mock('@shared/server', () => ({
-//   ...jest.requireActual('@shared/server'),
-//   isBackOffice: jest.fn(),
-// }));
+jest.mock('@shared/server', () => ({
+  ...jest.requireActual('@shared/server'),
+  isBackOffice: jest.fn(),
+}));
 
 jest.mock('@features/account/api', () => ({
   ...jest.requireActual('@features/account/api'),
@@ -46,6 +46,9 @@ describe('createOptions callbacks', () => {
     user: mockUser,
   };
   describe('User in web app', () => {
+    beforeEach(() => {
+      (isBackOffice as jest.Mock).mockReturnValue(false);
+    });
     it('should add access, provider, providerType, and role fields to token if user and account are provided', async () => {
       const result = await createOptions().callbacks.jwt({
         token: mockToken,
@@ -127,6 +130,10 @@ describe('createOptions callbacks', () => {
     };
 
     const mockOrganizerRole = mockOrganizer.roles[2];
+
+    beforeEach(() => {
+      (isBackOffice as jest.Mock).mockReturnValue(true);
+    });
 
     it('should return correct token with updated role if role is part of user roleAssignments', async () => {
       process.env.APP = 'BACKOFFICE';
@@ -263,8 +270,8 @@ describe('createOptions callbacks', () => {
     });
 
     it("shouldn't return token with role if app is not back office", async () => {
-      process.env.APP = 'WEB';
       (getAccount as jest.Mock).mockResolvedValueOnce(mockOrganizer);
+      (isBackOffice as jest.Mock).mockReturnValue(false);
       await expect(
         createOptions().callbacks.jwt({
           token: { ...mockToken, user: mockOrganizer },
