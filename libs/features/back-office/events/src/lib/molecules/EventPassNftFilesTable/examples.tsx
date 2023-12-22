@@ -77,6 +77,7 @@ export const eventPassNftVIPWithContract: EventPassNftFilesTableProps['eventPass
       contractAddress: '0x123456789abcdef',
       type: EventPassNftContractType_Enum.Normal,
       eventPassId: 'pass-1001',
+      isDelayedRevealed: false,
     },
   };
 

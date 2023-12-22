@@ -4,6 +4,7 @@ import { expect, screen, userEvent } from '@storybook/test';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
 import * as deploy from '../../actions/deployCollectionWrapper';
 import * as renameFiles from '../../actions/renameEventPassNftFiles';
+import * as reveal from '../../actions/revealDelayedContract';
 
 import {
   EventSheetExample,
@@ -27,7 +28,14 @@ const meta: Meta<typeof EventSheet> = {
         mockRename.mockReturnValue(Promise.resolve());
         const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
         mockDeploy.mockReturnValue(Promise.resolve());
-        return [mockRename, mockDeploy, ...eventPassNftFilesTableMocks()];
+        const mockReveal = createMock(reveal, 'revealDelayedContract');
+        mockReveal.mockReturnValue(Promise.resolve());
+        return [
+          mockRename,
+          mockDeploy,
+          mockReveal,
+          ...eventPassNftFilesTableMocks(),
+        ];
       },
     },
   },
@@ -199,6 +207,45 @@ export const WithClickOnDeploy: Story = {
       await screen.findByText(/successfully deployed/i),
     ).toBeInTheDocument();
     mockDeploy.mockRejectedValueOnce(new Error('error'));
+    render(parameters);
+    await expect(buttonElement).toBeEnabled();
+    await userEvent.click(buttonElement);
+    expect(await screen.findByText(/error during/i)).toBeInTheDocument();
+  },
+};
+
+const eventPassWithPassToReveal = {
+  ...eventWithDelayedPasses,
+  eventPasses: [
+    {
+      ...eventWithDelayedPasses.eventPasses[0],
+      eventPassNftContract: {
+        ...eventWithDelayedPasses.eventPasses[0].eventPassNftContract,
+        isDelayedRevealed: false,
+      },
+    },
+  ],
+};
+
+export const WithEventPassDelayedRevealToReveal: Story = {
+  args: {
+    event: eventPassWithPassToReveal,
+  },
+  play: async ({ container, parameters }) => {
+    const textElement = await screen.findByText(/0xabcd/i);
+    expect(textElement).toBeInTheDocument();
+    const buttonElement = await screen.findByText(/reveal your event pass/i);
+    await expect(buttonElement).toBeEnabled();
+    const revealMock = getMock(parameters, reveal, 'revealDelayedContract');
+    await userEvent.click(buttonElement);
+    const args = revealMock.mock.calls[0][0];
+    expect(revealMock).toBeCalledTimes(1);
+    expect(args).toMatch(
+      eventPassWithPassToReveal.eventPasses[0].eventPassNftContract
+        ?.contractAddress,
+    );
+    expect(await screen.findByText(/has been revealed/i)).toBeInTheDocument();
+    revealMock.mockRejectedValueOnce(new Error('error'));
     render(parameters);
     await expect(buttonElement).toBeEnabled();
     await userEvent.click(buttonElement);

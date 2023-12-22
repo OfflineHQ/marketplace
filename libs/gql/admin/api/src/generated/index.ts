@@ -501,6 +501,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
         type
         contractAddress
         eventPassId
+        isDelayedRevealed
       }
       eventPassDelayedRevealed {
         name

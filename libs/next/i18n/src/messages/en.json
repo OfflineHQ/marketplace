@@ -303,6 +303,12 @@
             "success-title": "Contract successfully deployed 🎉!",
             "success-description": "The {eventPassName} contract is now live on the blockchain. Your event pass is ready for use.",
             "error-title": "There's been an error during the deployement of your contract"
+          },
+          "EventPassContractRevealButtonClient": {
+            "reveal-contract": "Reveal your event pass",
+            "success-title": "Your event pass has been revealed 🎉!",
+            "success-description": "The NFTs informations for after the reveal of \"{eventPassName}\" are now accessible to all users",
+            "error-title": "There's been an error during the reveal of your event pass"
           }
         },
         "EventPassSaleParameters": {
