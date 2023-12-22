@@ -5,6 +5,8 @@ on:
 
 env:
   NODE_OPTIONS: '--max_old_space_size=4096'
+  web: 'false'
+  back-office: 'false'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -41,17 +43,16 @@ jobs:
         id: check
         run: |
           affected=$(pnpm nx affected -t=build)
-          echo "::set-output name=back-office::$(echo $affected | grep -q 'back-office:build:production' && echo true || echo false)"
-          echo "::set-output name=web::$(echo $affected | grep -q 'web:build:production' && echo true || echo false)"
+          echo "back-office=$(echo $affected | grep -q 'back-office:build:production' && echo true || echo false)" >> $GITHUB_ENV
+          echo "web=$(echo $affected | grep -q 'web:build:production' && echo true || echo false)" >> $GITHUB_ENV
 
       - name: Launch docker services
-        if: steps.check.outputs.back-office == 'true' || steps.check.outputs.web == 'true'
+        if: ${{ env.back-office == 'true' || env.web == 'true' }}
         run: pnpm docker:services
 
       - name: Run e2e tests for back-office
-        if: steps.check.outputs.back-office == 'true'
+        if: ${{ env.back-office == 'true' }}
         run: pnpm nx run back-office:e2e --skipInstall
-
       - name: Run e2e tests for web
-        if: steps.check.outputs.web == 'true'
+        if: ${{ env.web == 'true' }}
         run: pnpm nx run web:e2e --skipInstall
