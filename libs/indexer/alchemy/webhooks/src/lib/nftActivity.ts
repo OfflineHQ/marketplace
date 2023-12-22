@@ -4,7 +4,7 @@ import type {
   AlchemyNFTActivityEvent,
   AlchemyRequest,
 } from '@indexer/alchemy/types';
-import { EventPassNftWrapper } from '@nft/eventPass';
+import { EventPassNftWrapper } from '@nft/event-pass';
 import type { NftTransferWithoutMetadata } from '@nft/types';
 import { hexToBigInt } from '@utils';
 import { WebhookType } from 'alchemy-sdk';
