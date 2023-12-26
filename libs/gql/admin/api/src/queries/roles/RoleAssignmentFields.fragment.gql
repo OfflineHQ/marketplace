@@ -1,0 +1,5 @@
+fragment RoleAssignmentFields on roleAssignment {
+  role
+  organizerId
+  eventId
+}

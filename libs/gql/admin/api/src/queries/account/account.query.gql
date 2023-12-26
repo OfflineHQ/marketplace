@@ -5,7 +5,7 @@ query GetAccount($address: String!) {
       ...KycFields
     }
     roles {
-      ...RoleAssignmentsFields
+      ...RoleAssignmentFields
     }
   }
 }
