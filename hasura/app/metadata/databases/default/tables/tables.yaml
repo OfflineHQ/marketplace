@@ -1,2 +1,5 @@
 - "!include public_account.yaml"
+- "!include public_currency.yaml"
+- "!include public_passAmount.yaml"
+- "!include public_passPricing.yaml"
 - "!include public_timezone.yaml"
