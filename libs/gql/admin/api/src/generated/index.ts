@@ -197,6 +197,30 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     `;
+ const DeletePendingOrdersDocument = `
+    mutation DeletePendingOrders($ids: [uuid!]!) {
+  delete_pendingOrder(where: {id: {_in: $ids}}) {
+    affected_rows
+  }
+}
+    `;
+ const GetPendingOrdersDocument = `
+    query GetPendingOrders {
+  pendingOrder {
+    created_at
+    id
+    eventPassId
+    packId
+    account {
+      email
+      address
+    }
+    passAmount {
+      timeBeforeDelete
+    }
+  }
+}
+    `;
  const CreateKycDocument = `
     mutation CreateKyc($kyc: kyc_insert_input!) {
   insert_kyc_one(object: $kyc) {
@@ -272,6 +296,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrdersFromStripeCheckoutSession(variables: Types.GetOrdersFromStripeCheckoutSessionQueryVariables, options?: C): Promise<Types.GetOrdersFromStripeCheckoutSessionQuery> {
       return requester<Types.GetOrdersFromStripeCheckoutSessionQuery, Types.GetOrdersFromStripeCheckoutSessionQueryVariables>(GetOrdersFromStripeCheckoutSessionDocument, variables, options) as Promise<Types.GetOrdersFromStripeCheckoutSessionQuery>;
+    },
+    DeletePendingOrders(variables: Types.DeletePendingOrdersMutationVariables, options?: C): Promise<Types.DeletePendingOrdersMutation> {
+      return requester<Types.DeletePendingOrdersMutation, Types.DeletePendingOrdersMutationVariables>(DeletePendingOrdersDocument, variables, options) as Promise<Types.DeletePendingOrdersMutation>;
+    },
+    GetPendingOrders(variables?: Types.GetPendingOrdersQueryVariables, options?: C): Promise<Types.GetPendingOrdersQuery> {
+      return requester<Types.GetPendingOrdersQuery, Types.GetPendingOrdersQueryVariables>(GetPendingOrdersDocument, variables, options) as Promise<Types.GetPendingOrdersQuery>;
     },
     CreateKyc(variables: Types.CreateKycMutationVariables, options?: C): Promise<Types.CreateKycMutation> {
       return requester<Types.CreateKycMutation, Types.CreateKycMutationVariables>(CreateKycDocument, variables, options) as Promise<Types.CreateKycMutation>;

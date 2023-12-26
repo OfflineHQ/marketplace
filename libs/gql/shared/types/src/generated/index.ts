@@ -6583,10 +6583,10 @@ export type EventPassNft = {
   packId?: Maybe<Scalars['String']>;
   /** An object relationship */
   packNftContract?: Maybe<PackNftContract>;
-  /** An object relationship */
-  passAmount?: Maybe<PassAmount>;
-  /** An object relationship */
-  passPricing?: Maybe<PassPricing>;
+  /** A computed field, executes function "get_event_pass_nft_pass_amount" */
+  passAmount?: Maybe<Array<PassAmount>>;
+  /** A computed field, executes function "get_event_pass_nft_pass_pricing" */
+  passPricing?: Maybe<Array<PassPricing>>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId: Scalars['bigint'];
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
@@ -6641,6 +6641,26 @@ export type EventPassNftOrganizerArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
   where: OrganizerWhereUniqueInput_Remote_Rel_EventPassNftorganizer;
+};
+
+
+/** columns and relationships of "eventPassNft" */
+export type EventPassNftPassAmountArgs = {
+  distinct_on?: InputMaybe<Array<PassAmount_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PassAmount_Order_By>>;
+  where?: InputMaybe<PassAmount_Bool_Exp>;
+};
+
+
+/** columns and relationships of "eventPassNft" */
+export type EventPassNftPassPricingArgs = {
+  distinct_on?: InputMaybe<Array<PassPricing_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PassPricing_Order_By>>;
+  where?: InputMaybe<PassPricing_Bool_Exp>;
 };
 
 /** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
@@ -7440,8 +7460,6 @@ export type EventPassNft_Insert_Input = {
   organizerId?: InputMaybe<Scalars['String']>;
   packId?: InputMaybe<Scalars['String']>;
   packNftContract?: InputMaybe<PackNftContract_Obj_Rel_Insert_Input>;
-  passAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
-  passPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: InputMaybe<Scalars['bigint']>;
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
@@ -7599,8 +7617,8 @@ export type EventPassNft_Order_By = {
   organizerId?: InputMaybe<Order_By>;
   packId?: InputMaybe<Order_By>;
   packNftContract?: InputMaybe<PackNftContract_Order_By>;
-  passAmount?: InputMaybe<PassAmount_Order_By>;
-  passPricing?: InputMaybe<PassPricing_Order_By>;
+  passAmount_aggregate?: InputMaybe<PassAmount_Aggregate_Order_By>;
+  passPricing_aggregate?: InputMaybe<PassPricing_Aggregate_Order_By>;
   tokenId?: InputMaybe<Order_By>;
   tokenUri?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -12120,10 +12138,10 @@ export type Order = {
   packId?: Maybe<Scalars['String']>;
   /** An object relationship */
   packNftContract?: Maybe<PackNftContract>;
-  /** An object relationship */
-  passAmount?: Maybe<PassAmount>;
-  /** An object relationship */
-  passPricing?: Maybe<PassPricing>;
+  /** A computed field, executes function "get_order_pass_amount" */
+  passAmount?: Maybe<Array<PassAmount>>;
+  /** A computed field, executes function "get_order_pass_pricing" */
+  passPricing?: Maybe<Array<PassPricing>>;
   quantity: Scalars['Int'];
   status: OrderStatus_Enum;
   stripeCheckoutSessionId?: Maybe<Scalars['String']>;
@@ -12142,6 +12160,26 @@ export type OrderEventPassArgs = {
 export type OrderPackArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
+};
+
+
+/** Order a quantity of Event Pass or Pack (linked to Hygraph model EventPass or Pack) and associated to an Account */
+export type OrderPassAmountArgs = {
+  distinct_on?: InputMaybe<Array<PassAmount_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PassAmount_Order_By>>;
+  where?: InputMaybe<PassAmount_Bool_Exp>;
+};
+
+
+/** Order a quantity of Event Pass or Pack (linked to Hygraph model EventPass or Pack) and associated to an Account */
+export type OrderPassPricingArgs = {
+  distinct_on?: InputMaybe<Array<PassPricing_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PassPricing_Order_By>>;
+  where?: InputMaybe<PassPricing_Bool_Exp>;
 };
 
 /** columns and relationships of "orderStatus" */
@@ -12417,8 +12455,6 @@ export type Order_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   packId?: InputMaybe<Scalars['String']>;
   packNftContract?: InputMaybe<PackNftContract_Obj_Rel_Insert_Input>;
-  passAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
-  passPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
   quantity?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<OrderStatus_Enum>;
   stripeCheckoutSessionId?: InputMaybe<Scalars['String']>;
@@ -12501,8 +12537,8 @@ export type Order_Order_By = {
   id?: InputMaybe<Order_By>;
   packId?: InputMaybe<Order_By>;
   packNftContract?: InputMaybe<PackNftContract_Order_By>;
-  passAmount?: InputMaybe<PassAmount_Order_By>;
-  passPricing?: InputMaybe<PassPricing_Order_By>;
+  passAmount_aggregate?: InputMaybe<PassAmount_Aggregate_Order_By>;
+  passPricing_aggregate?: InputMaybe<PassPricing_Aggregate_Order_By>;
   quantity?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   stripeCheckoutSessionId?: InputMaybe<Order_By>;
@@ -13387,12 +13423,34 @@ export type PassAmount_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "passAmount" */
+export type PassAmount_Aggregate_Order_By = {
+  avg?: InputMaybe<PassAmount_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<PassAmount_Max_Order_By>;
+  min?: InputMaybe<PassAmount_Min_Order_By>;
+  stddev?: InputMaybe<PassAmount_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<PassAmount_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<PassAmount_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<PassAmount_Sum_Order_By>;
+  var_pop?: InputMaybe<PassAmount_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<PassAmount_Var_Samp_Order_By>;
+  variance?: InputMaybe<PassAmount_Variance_Order_By>;
+};
+
 /** aggregate avg on columns */
 export type PassAmount_Avg_Fields = {
   __typename?: 'passAmount_avg_fields';
   maxAmount?: Maybe<Scalars['Float']>;
   maxAmountPerUser?: Maybe<Scalars['Float']>;
   timeBeforeDelete?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "passAmount" */
+export type PassAmount_Avg_Order_By = {
+  maxAmount?: InputMaybe<Order_By>;
+  maxAmountPerUser?: InputMaybe<Order_By>;
+  timeBeforeDelete?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "passAmount". All fields are combined with a logical 'AND'. */
@@ -13454,6 +13512,18 @@ export type PassAmount_Max_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
+/** order by max() on columns of table "passAmount" */
+export type PassAmount_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  maxAmount?: InputMaybe<Order_By>;
+  maxAmountPerUser?: InputMaybe<Order_By>;
+  packId?: InputMaybe<Order_By>;
+  timeBeforeDelete?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type PassAmount_Min_Fields = {
   __typename?: 'passAmount_min_fields';
@@ -13465,6 +13535,18 @@ export type PassAmount_Min_Fields = {
   packId?: Maybe<Scalars['String']>;
   timeBeforeDelete?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "passAmount" */
+export type PassAmount_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  maxAmount?: InputMaybe<Order_By>;
+  maxAmountPerUser?: InputMaybe<Order_By>;
+  packId?: InputMaybe<Order_By>;
+  timeBeforeDelete?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "passAmount" */
@@ -13551,6 +13633,13 @@ export type PassAmount_Stddev_Fields = {
   timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev() on columns of table "passAmount" */
+export type PassAmount_Stddev_Order_By = {
+  maxAmount?: InputMaybe<Order_By>;
+  maxAmountPerUser?: InputMaybe<Order_By>;
+  timeBeforeDelete?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_pop on columns */
 export type PassAmount_Stddev_Pop_Fields = {
   __typename?: 'passAmount_stddev_pop_fields';
@@ -13559,12 +13648,26 @@ export type PassAmount_Stddev_Pop_Fields = {
   timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev_pop() on columns of table "passAmount" */
+export type PassAmount_Stddev_Pop_Order_By = {
+  maxAmount?: InputMaybe<Order_By>;
+  maxAmountPerUser?: InputMaybe<Order_By>;
+  timeBeforeDelete?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_samp on columns */
 export type PassAmount_Stddev_Samp_Fields = {
   __typename?: 'passAmount_stddev_samp_fields';
   maxAmount?: Maybe<Scalars['Float']>;
   maxAmountPerUser?: Maybe<Scalars['Float']>;
   timeBeforeDelete?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "passAmount" */
+export type PassAmount_Stddev_Samp_Order_By = {
+  maxAmount?: InputMaybe<Order_By>;
+  maxAmountPerUser?: InputMaybe<Order_By>;
+  timeBeforeDelete?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "passAmount" */
@@ -13594,6 +13697,13 @@ export type PassAmount_Sum_Fields = {
   maxAmount?: Maybe<Scalars['Int']>;
   maxAmountPerUser?: Maybe<Scalars['Int']>;
   timeBeforeDelete?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "passAmount" */
+export type PassAmount_Sum_Order_By = {
+  maxAmount?: InputMaybe<Order_By>;
+  maxAmountPerUser?: InputMaybe<Order_By>;
+  timeBeforeDelete?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "passAmount" */
@@ -13635,6 +13745,13 @@ export type PassAmount_Var_Pop_Fields = {
   timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_pop() on columns of table "passAmount" */
+export type PassAmount_Var_Pop_Order_By = {
+  maxAmount?: InputMaybe<Order_By>;
+  maxAmountPerUser?: InputMaybe<Order_By>;
+  timeBeforeDelete?: InputMaybe<Order_By>;
+};
+
 /** aggregate var_samp on columns */
 export type PassAmount_Var_Samp_Fields = {
   __typename?: 'passAmount_var_samp_fields';
@@ -13643,12 +13760,26 @@ export type PassAmount_Var_Samp_Fields = {
   timeBeforeDelete?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_samp() on columns of table "passAmount" */
+export type PassAmount_Var_Samp_Order_By = {
+  maxAmount?: InputMaybe<Order_By>;
+  maxAmountPerUser?: InputMaybe<Order_By>;
+  timeBeforeDelete?: InputMaybe<Order_By>;
+};
+
 /** aggregate variance on columns */
 export type PassAmount_Variance_Fields = {
   __typename?: 'passAmount_variance_fields';
   maxAmount?: Maybe<Scalars['Float']>;
   maxAmountPerUser?: Maybe<Scalars['Float']>;
   timeBeforeDelete?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "passAmount" */
+export type PassAmount_Variance_Order_By = {
+  maxAmount?: InputMaybe<Order_By>;
+  maxAmountPerUser?: InputMaybe<Order_By>;
+  timeBeforeDelete?: InputMaybe<Order_By>;
 };
 
 /** The passPricing table stores pricing information for an eventPass or Pack. */
@@ -13693,10 +13824,30 @@ export type PassPricing_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "passPricing" */
+export type PassPricing_Aggregate_Order_By = {
+  avg?: InputMaybe<PassPricing_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<PassPricing_Max_Order_By>;
+  min?: InputMaybe<PassPricing_Min_Order_By>;
+  stddev?: InputMaybe<PassPricing_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<PassPricing_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<PassPricing_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<PassPricing_Sum_Order_By>;
+  var_pop?: InputMaybe<PassPricing_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<PassPricing_Var_Samp_Order_By>;
+  variance?: InputMaybe<PassPricing_Variance_Order_By>;
+};
+
 /** aggregate avg on columns */
 export type PassPricing_Avg_Fields = {
   __typename?: 'passPricing_avg_fields';
   amount?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "passPricing" */
+export type PassPricing_Avg_Order_By = {
+  amount?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "passPricing". All fields are combined with a logical 'AND'. */
@@ -13746,6 +13897,16 @@ export type PassPricing_Max_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
+/** order by max() on columns of table "passPricing" */
+export type PassPricing_Max_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  packId?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type PassPricing_Min_Fields = {
   __typename?: 'passPricing_min_fields';
@@ -13755,6 +13916,16 @@ export type PassPricing_Min_Fields = {
   id?: Maybe<Scalars['uuid']>;
   packId?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "passPricing" */
+export type PassPricing_Min_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  packId?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "passPricing" */
@@ -13831,16 +14002,31 @@ export type PassPricing_Stddev_Fields = {
   amount?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev() on columns of table "passPricing" */
+export type PassPricing_Stddev_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_pop on columns */
 export type PassPricing_Stddev_Pop_Fields = {
   __typename?: 'passPricing_stddev_pop_fields';
   amount?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev_pop() on columns of table "passPricing" */
+export type PassPricing_Stddev_Pop_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_samp on columns */
 export type PassPricing_Stddev_Samp_Fields = {
   __typename?: 'passPricing_stddev_samp_fields';
   amount?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "passPricing" */
+export type PassPricing_Stddev_Samp_Order_By = {
+  amount?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "passPricing" */
@@ -13866,6 +14052,11 @@ export type PassPricing_Stream_Cursor_Value_Input = {
 export type PassPricing_Sum_Fields = {
   __typename?: 'passPricing_sum_fields';
   amount?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "passPricing" */
+export type PassPricing_Sum_Order_By = {
+  amount?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "passPricing" */
@@ -13901,16 +14092,31 @@ export type PassPricing_Var_Pop_Fields = {
   amount?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_pop() on columns of table "passPricing" */
+export type PassPricing_Var_Pop_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
 /** aggregate var_samp on columns */
 export type PassPricing_Var_Samp_Fields = {
   __typename?: 'passPricing_var_samp_fields';
   amount?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_samp() on columns of table "passPricing" */
+export type PassPricing_Var_Samp_Order_By = {
+  amount?: InputMaybe<Order_By>;
+};
+
 /** aggregate variance on columns */
 export type PassPricing_Variance_Fields = {
   __typename?: 'passPricing_variance_fields';
   amount?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "passPricing" */
+export type PassPricing_Variance_Order_By = {
+  amount?: InputMaybe<Order_By>;
 };
 
 /** Order a quantity of Event Pass or Pack (linked to Hygraph model EventPass or Pack) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users. */
@@ -13929,10 +14135,10 @@ export type PendingOrder = {
   packId?: Maybe<Scalars['String']>;
   /** An object relationship */
   packNftContract?: Maybe<PackNftContract>;
-  /** An object relationship */
-  passAmount?: Maybe<PassAmount>;
-  /** An object relationship */
-  passPricing?: Maybe<PassPricing>;
+  /** A computed field, executes function "get_pending_order_pass_amount" */
+  passAmount?: Maybe<Array<PassAmount>>;
+  /** A computed field, executes function "get_pending_order_pass_pricing" */
+  passPricing?: Maybe<Array<PassPricing>>;
   quantity: Scalars['Int'];
 };
 
@@ -13948,6 +14154,26 @@ export type PendingOrderEventPassArgs = {
 export type PendingOrderPackArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
+};
+
+
+/** Order a quantity of Event Pass or Pack (linked to Hygraph model EventPass or Pack) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users. */
+export type PendingOrderPassAmountArgs = {
+  distinct_on?: InputMaybe<Array<PassAmount_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PassAmount_Order_By>>;
+  where?: InputMaybe<PassAmount_Bool_Exp>;
+};
+
+
+/** Order a quantity of Event Pass or Pack (linked to Hygraph model EventPass or Pack) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users. */
+export type PendingOrderPassPricingArgs = {
+  distinct_on?: InputMaybe<Array<PassPricing_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PassPricing_Order_By>>;
+  where?: InputMaybe<PassPricing_Bool_Exp>;
 };
 
 /** aggregated selection of "pendingOrder" */
@@ -14029,8 +14255,6 @@ export type PendingOrder_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   packId?: InputMaybe<Scalars['String']>;
   packNftContract?: InputMaybe<PackNftContract_Obj_Rel_Insert_Input>;
-  passAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
-  passPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
   quantity?: InputMaybe<Scalars['Int']>;
 };
 
@@ -14082,8 +14306,8 @@ export type PendingOrder_Order_By = {
   id?: InputMaybe<Order_By>;
   packId?: InputMaybe<Order_By>;
   packNftContract?: InputMaybe<PackNftContract_Order_By>;
-  passAmount?: InputMaybe<PassAmount_Order_By>;
-  passPricing?: InputMaybe<PassPricing_Order_By>;
+  passAmount_aggregate?: InputMaybe<PassAmount_Aggregate_Order_By>;
+  passPricing_aggregate?: InputMaybe<PassPricing_Aggregate_Order_By>;
   quantity?: InputMaybe<Order_By>;
 };
 
