@@ -1,0 +1,3 @@
+table:
+  name: packOrderSums
+  schema: public
