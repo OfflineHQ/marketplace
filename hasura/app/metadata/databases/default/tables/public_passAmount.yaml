@@ -19,4 +19,3 @@ select_permissions:
         - maxAmountPerUser
         - timeBeforeDelete
       filter: {}
-
