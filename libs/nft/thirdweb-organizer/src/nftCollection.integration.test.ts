@@ -411,7 +411,7 @@ describe('NftCollection', () => {
       expect(selectedNfts).toEqual([
         {
           id: '6aa08394-865e-489f-bba2-04cbb10cd44e',
-          packNftContractId: null,
+          packId: null,
           currentOwnerAddress: null,
           contractAddress: '0xFakePack',
           eventId: 'clizzpvidao620buvxit1ynko',
@@ -420,7 +420,7 @@ describe('NftCollection', () => {
         },
         {
           id: '52641e81-57cf-4f2d-bdd3-fa56cca377e4',
-          packNftContractId: null,
+          packId: null,
           currentOwnerAddress: null,
           contractAddress: '0xFakePack',
           eventId: 'clizzpvidao620buvxit1ynko',
@@ -533,7 +533,7 @@ describe('NftCollection', () => {
         selectedNfts: [
           {
             id: '6aa08394-865e-489f-bba2-04cbb10cd44e',
-            packNftContractId: null,
+            packId: null,
             currentOwnerAddress: null,
             contractAddress: '0xFakePack',
             eventId: 'clizzpvidao620buvxit1ynko',
@@ -542,7 +542,7 @@ describe('NftCollection', () => {
           },
           {
             id: '52641e81-57cf-4f2d-bdd3-fa56cca377e4',
-            packNftContractId: null,
+            packId: null,
             currentOwnerAddress: null,
             contractAddress: '0xFakePack',
             eventId: 'clizzpvidao620buvxit1ynko',

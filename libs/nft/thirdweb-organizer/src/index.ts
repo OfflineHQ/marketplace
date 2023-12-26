@@ -469,7 +469,7 @@ class NftCollection {
 
     const updates = selectedNfts.map((nft) => {
       return {
-        _set: { packNftContractId: packNftContract.id },
+        _set: { packId: packNftContract.packId },
         where: {
           contractAddress: { _eq: nft.contractAddress },
           tokenId: { _eq: nft.tokenId },
