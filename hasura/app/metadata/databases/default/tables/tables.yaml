@@ -17,6 +17,8 @@
 - "!include public_passAmount.yaml"
 - "!include public_passPricing.yaml"
 - "!include public_pendingOrder.yaml"
+- "!include public_roleAssignment.yaml"
+- "!include public_roles.yaml"
 - "!include public_stripeCheckoutSession.yaml"
 - "!include public_stripeCheckoutSessionType.yaml"
 - "!include public_stripeCustomer.yaml"
