@@ -67,7 +67,7 @@ export type MovePendingOrdersToConfirmedMutationVariables = Types.Exact<{
 }>;
 
 
-export type MovePendingOrdersToConfirmedMutation = { __typename?: 'mutation_root', delete_pendingOrder?: { __typename?: 'pendingOrder_mutation_response', affected_rows: number } | null, insert_order?: { __typename?: 'order_mutation_response', returning: Array<{ __typename?: 'order', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId?: string | null, packId?: string | null, accountId: any, created_at: any, passPricing?: { __typename?: 'passPricing', amount: number, currency: Types.Currency_Enum } | null, eventPass?: { __typename?: 'EventPass', id: string, name: string, nftImage: { __typename?: 'Asset', url: string }, event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> } | null };
+export type MovePendingOrdersToConfirmedMutation = { __typename?: 'mutation_root', delete_pendingOrder?: { __typename?: 'pendingOrder_mutation_response', affected_rows: number } | null, insert_order?: { __typename?: 'order_mutation_response', returning: Array<{ __typename?: 'order', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId?: string | null, packId?: string | null, accountId: any, created_at: any, passPricing?: Array<{ __typename?: 'passPricing', amount: number, currency: Types.Currency_Enum }> | null, eventPass?: { __typename?: 'EventPass', id: string, name: string, nftImage: { __typename?: 'Asset', url: string }, event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> } | null };
 
 export type GetAccountOrderForEventPassesQueryVariables = Types.Exact<{
   accountId: Types.Scalars['uuid'];
@@ -82,14 +82,26 @@ export type GetOrderFromIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetOrderFromIdQuery = { __typename?: 'query_root', order_by_pk?: { __typename?: 'order', id: any, eventPassId?: string | null, packId?: string | null, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null, passPricing?: { __typename?: 'passPricing', amount: number } | null } | null };
+export type GetOrderFromIdQuery = { __typename?: 'query_root', order_by_pk?: { __typename?: 'order', id: any, eventPassId?: string | null, packId?: string | null, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null, passPricing?: Array<{ __typename?: 'passPricing', amount: number }> | null } | null };
 
 export type GetOrdersFromStripeCheckoutSessionQueryVariables = Types.Exact<{
   stripeCheckoutSessionId: Types.Scalars['String'];
 }>;
 
 
-export type GetOrdersFromStripeCheckoutSessionQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', id: any, eventPassId?: string | null, packId?: string | null, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null, passPricing?: { __typename?: 'passPricing', amount: number } | null }> };
+export type GetOrdersFromStripeCheckoutSessionQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', id: any, eventPassId?: string | null, packId?: string | null, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null, passPricing?: Array<{ __typename?: 'passPricing', amount: number }> | null }> };
+
+export type DeletePendingOrdersMutationVariables = Types.Exact<{
+  ids: Array<Types.Scalars['uuid']> | Types.Scalars['uuid'];
+}>;
+
+
+export type DeletePendingOrdersMutation = { __typename?: 'mutation_root', delete_pendingOrder?: { __typename?: 'pendingOrder_mutation_response', affected_rows: number } | null };
+
+export type GetPendingOrdersQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetPendingOrdersQuery = { __typename?: 'query_root', pendingOrder: Array<{ __typename?: 'pendingOrder', created_at: any, id: any, eventPassId?: string | null, packId?: string | null, account?: { __typename?: 'account', email?: string | null, address: string } | null, passAmount?: Array<{ __typename?: 'passAmount', timeBeforeDelete: number }> | null }> };
 
 export type KycFieldsFragment = { __typename?: 'kyc', applicantId?: string | null, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null };
 

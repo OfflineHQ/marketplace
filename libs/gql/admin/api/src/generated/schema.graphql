@@ -9261,11 +9261,45 @@ type eventPassNft {
   """An object relationship"""
   packNftContract: packNftContract
 
-  """An object relationship"""
-  passAmount: passAmount
+  """
+  A computed field, executes function "get_event_pass_nft_pass_amount"
+  """
+  passAmount(
+    """distinct select on columns"""
+    distinct_on: [passAmount_select_column!]
 
-  """An object relationship"""
-  passPricing: passPricing
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passAmount_order_by!]
+
+    """filter the rows returned"""
+    where: passAmount_bool_exp
+  ): [passAmount!]
+
+  """
+  A computed field, executes function "get_event_pass_nft_pass_pricing"
+  """
+  passPricing(
+    """distinct select on columns"""
+    distinct_on: [passPricing_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passPricing_order_by!]
+
+    """filter the rows returned"""
+    where: passPricing_bool_exp
+  ): [passPricing!]
 
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
@@ -10345,8 +10379,6 @@ input eventPassNft_insert_input {
   organizerId: String
   packId: String
   packNftContract: packNftContract_obj_rel_insert_input
-  passAmount: passAmount_obj_rel_insert_input
-  passPricing: passPricing_obj_rel_insert_input
 
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
@@ -10600,8 +10632,8 @@ input eventPassNft_order_by {
   organizerId: order_by
   packId: order_by
   packNftContract: packNftContract_order_by
-  passAmount: passAmount_order_by
-  passPricing: passPricing_order_by
+  passAmount_aggregate: passAmount_aggregate_order_by
+  passPricing_aggregate: passPricing_aggregate_order_by
   tokenId: order_by
   tokenUri: order_by
   updated_at: order_by
@@ -16345,11 +16377,45 @@ type order {
   """An object relationship"""
   packNftContract: packNftContract
 
-  """An object relationship"""
-  passAmount: passAmount
+  """
+  A computed field, executes function "get_order_pass_amount"
+  """
+  passAmount(
+    """distinct select on columns"""
+    distinct_on: [passAmount_select_column!]
 
-  """An object relationship"""
-  passPricing: passPricing
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passAmount_order_by!]
+
+    """filter the rows returned"""
+    where: passAmount_bool_exp
+  ): [passAmount!]
+
+  """
+  A computed field, executes function "get_order_pass_pricing"
+  """
+  passPricing(
+    """distinct select on columns"""
+    distinct_on: [passPricing_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passPricing_order_by!]
+
+    """filter the rows returned"""
+    where: passPricing_bool_exp
+  ): [passPricing!]
   quantity: Int!
   status: orderStatus_enum!
   stripeCheckoutSessionId: String
@@ -16663,8 +16729,6 @@ input order_insert_input {
   id: uuid
   packId: String
   packNftContract: packNftContract_obj_rel_insert_input
-  passAmount: passAmount_obj_rel_insert_input
-  passPricing: passPricing_obj_rel_insert_input
   quantity: Int
   status: orderStatus_enum
   stripeCheckoutSessionId: String
@@ -16753,8 +16817,8 @@ input order_order_by {
   id: order_by
   packId: order_by
   packNftContract: packNftContract_order_by
-  passAmount: passAmount_order_by
-  passPricing: passPricing_order_by
+  passAmount_aggregate: passAmount_aggregate_order_by
+  passPricing_aggregate: passPricing_aggregate_order_by
   quantity: order_by
   status: order_by
   stripeCheckoutSessionId: order_by
@@ -17764,11 +17828,37 @@ type passAmount_aggregate_fields {
   variance: passAmount_variance_fields
 }
 
+"""
+order by aggregate values of table "passAmount"
+"""
+input passAmount_aggregate_order_by {
+  avg: passAmount_avg_order_by
+  count: order_by
+  max: passAmount_max_order_by
+  min: passAmount_min_order_by
+  stddev: passAmount_stddev_order_by
+  stddev_pop: passAmount_stddev_pop_order_by
+  stddev_samp: passAmount_stddev_samp_order_by
+  sum: passAmount_sum_order_by
+  var_pop: passAmount_var_pop_order_by
+  var_samp: passAmount_var_samp_order_by
+  variance: passAmount_variance_order_by
+}
+
 """aggregate avg on columns"""
 type passAmount_avg_fields {
   maxAmount: Float
   maxAmountPerUser: Float
   timeBeforeDelete: Float
+}
+
+"""
+order by avg() on columns of table "passAmount"
+"""
+input passAmount_avg_order_by {
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  timeBeforeDelete: order_by
 }
 
 """
@@ -17845,6 +17935,20 @@ type passAmount_max_fields {
   updated_at: timestamptz
 }
 
+"""
+order by max() on columns of table "passAmount"
+"""
+input passAmount_max_order_by {
+  created_at: order_by
+  eventPassId: order_by
+  id: order_by
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  packId: order_by
+  timeBeforeDelete: order_by
+  updated_at: order_by
+}
+
 """aggregate min on columns"""
 type passAmount_min_fields {
   created_at: timestamptz
@@ -17855,6 +17959,20 @@ type passAmount_min_fields {
   packId: String
   timeBeforeDelete: Int
   updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "passAmount"
+"""
+input passAmount_min_order_by {
+  created_at: order_by
+  eventPassId: order_by
+  id: order_by
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  packId: order_by
+  timeBeforeDelete: order_by
+  updated_at: order_by
 }
 
 """
@@ -17959,6 +18077,15 @@ type passAmount_stddev_fields {
   timeBeforeDelete: Float
 }
 
+"""
+order by stddev() on columns of table "passAmount"
+"""
+input passAmount_stddev_order_by {
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  timeBeforeDelete: order_by
+}
+
 """aggregate stddev_pop on columns"""
 type passAmount_stddev_pop_fields {
   maxAmount: Float
@@ -17966,11 +18093,29 @@ type passAmount_stddev_pop_fields {
   timeBeforeDelete: Float
 }
 
+"""
+order by stddev_pop() on columns of table "passAmount"
+"""
+input passAmount_stddev_pop_order_by {
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  timeBeforeDelete: order_by
+}
+
 """aggregate stddev_samp on columns"""
 type passAmount_stddev_samp_fields {
   maxAmount: Float
   maxAmountPerUser: Float
   timeBeforeDelete: Float
+}
+
+"""
+order by stddev_samp() on columns of table "passAmount"
+"""
+input passAmount_stddev_samp_order_by {
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  timeBeforeDelete: order_by
 }
 
 """
@@ -18002,6 +18147,15 @@ type passAmount_sum_fields {
   maxAmount: Int
   maxAmountPerUser: Int
   timeBeforeDelete: Int
+}
+
+"""
+order by sum() on columns of table "passAmount"
+"""
+input passAmount_sum_order_by {
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  timeBeforeDelete: order_by
 }
 
 """
@@ -18054,6 +18208,15 @@ type passAmount_var_pop_fields {
   timeBeforeDelete: Float
 }
 
+"""
+order by var_pop() on columns of table "passAmount"
+"""
+input passAmount_var_pop_order_by {
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  timeBeforeDelete: order_by
+}
+
 """aggregate var_samp on columns"""
 type passAmount_var_samp_fields {
   maxAmount: Float
@@ -18061,11 +18224,29 @@ type passAmount_var_samp_fields {
   timeBeforeDelete: Float
 }
 
+"""
+order by var_samp() on columns of table "passAmount"
+"""
+input passAmount_var_samp_order_by {
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  timeBeforeDelete: order_by
+}
+
 """aggregate variance on columns"""
 type passAmount_variance_fields {
   maxAmount: Float
   maxAmountPerUser: Float
   timeBeforeDelete: Float
+}
+
+"""
+order by variance() on columns of table "passAmount"
+"""
+input passAmount_variance_order_by {
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  timeBeforeDelete: order_by
 }
 
 """
@@ -18106,9 +18287,33 @@ type passPricing_aggregate_fields {
   variance: passPricing_variance_fields
 }
 
+"""
+order by aggregate values of table "passPricing"
+"""
+input passPricing_aggregate_order_by {
+  avg: passPricing_avg_order_by
+  count: order_by
+  max: passPricing_max_order_by
+  min: passPricing_min_order_by
+  stddev: passPricing_stddev_order_by
+  stddev_pop: passPricing_stddev_pop_order_by
+  stddev_samp: passPricing_stddev_samp_order_by
+  sum: passPricing_sum_order_by
+  var_pop: passPricing_var_pop_order_by
+  var_samp: passPricing_var_samp_order_by
+  variance: passPricing_variance_order_by
+}
+
 """aggregate avg on columns"""
 type passPricing_avg_fields {
   amount: Float
+}
+
+"""
+order by avg() on columns of table "passPricing"
+"""
+input passPricing_avg_order_by {
+  amount: order_by
 }
 
 """
@@ -18167,6 +18372,18 @@ type passPricing_max_fields {
   updated_at: timestamptz
 }
 
+"""
+order by max() on columns of table "passPricing"
+"""
+input passPricing_max_order_by {
+  amount: order_by
+  created_at: order_by
+  eventPassId: order_by
+  id: order_by
+  packId: order_by
+  updated_at: order_by
+}
+
 """aggregate min on columns"""
 type passPricing_min_fields {
   amount: Int
@@ -18175,6 +18392,18 @@ type passPricing_min_fields {
   id: uuid
   packId: String
   updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "passPricing"
+"""
+input passPricing_min_order_by {
+  amount: order_by
+  created_at: order_by
+  eventPassId: order_by
+  id: order_by
+  packId: order_by
+  updated_at: order_by
 }
 
 """
@@ -18267,14 +18496,35 @@ type passPricing_stddev_fields {
   amount: Float
 }
 
+"""
+order by stddev() on columns of table "passPricing"
+"""
+input passPricing_stddev_order_by {
+  amount: order_by
+}
+
 """aggregate stddev_pop on columns"""
 type passPricing_stddev_pop_fields {
   amount: Float
 }
 
+"""
+order by stddev_pop() on columns of table "passPricing"
+"""
+input passPricing_stddev_pop_order_by {
+  amount: order_by
+}
+
 """aggregate stddev_samp on columns"""
 type passPricing_stddev_samp_fields {
   amount: Float
+}
+
+"""
+order by stddev_samp() on columns of table "passPricing"
+"""
+input passPricing_stddev_samp_order_by {
+  amount: order_by
 }
 
 """
@@ -18302,6 +18552,13 @@ input passPricing_stream_cursor_value_input {
 """aggregate sum on columns"""
 type passPricing_sum_fields {
   amount: Int
+}
+
+"""
+order by sum() on columns of table "passPricing"
+"""
+input passPricing_sum_order_by {
+  amount: order_by
 }
 
 """
@@ -18346,14 +18603,35 @@ type passPricing_var_pop_fields {
   amount: Float
 }
 
+"""
+order by var_pop() on columns of table "passPricing"
+"""
+input passPricing_var_pop_order_by {
+  amount: order_by
+}
+
 """aggregate var_samp on columns"""
 type passPricing_var_samp_fields {
   amount: Float
 }
 
+"""
+order by var_samp() on columns of table "passPricing"
+"""
+input passPricing_var_samp_order_by {
+  amount: order_by
+}
+
 """aggregate variance on columns"""
 type passPricing_variance_fields {
   amount: Float
+}
+
+"""
+order by variance() on columns of table "passPricing"
+"""
+input passPricing_variance_order_by {
+  amount: order_by
 }
 
 """
@@ -18398,11 +18676,45 @@ type pendingOrder {
   """An object relationship"""
   packNftContract: packNftContract
 
-  """An object relationship"""
-  passAmount: passAmount
+  """
+  A computed field, executes function "get_pending_order_pass_amount"
+  """
+  passAmount(
+    """distinct select on columns"""
+    distinct_on: [passAmount_select_column!]
 
-  """An object relationship"""
-  passPricing: passPricing
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passAmount_order_by!]
+
+    """filter the rows returned"""
+    where: passAmount_bool_exp
+  ): [passAmount!]
+
+  """
+  A computed field, executes function "get_pending_order_pass_pricing"
+  """
+  passPricing(
+    """distinct select on columns"""
+    distinct_on: [passPricing_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passPricing_order_by!]
+
+    """filter the rows returned"""
+    where: passPricing_bool_exp
+  ): [passPricing!]
   quantity: Int!
 }
 
@@ -18495,8 +18807,6 @@ input pendingOrder_insert_input {
   id: uuid
   packId: String
   packNftContract: packNftContract_obj_rel_insert_input
-  passAmount: passAmount_obj_rel_insert_input
-  passPricing: passPricing_obj_rel_insert_input
   quantity: Int
 }
 
@@ -18550,8 +18860,8 @@ input pendingOrder_order_by {
   id: order_by
   packId: order_by
   packNftContract: packNftContract_order_by
-  passAmount: passAmount_order_by
-  passPricing: passPricing_order_by
+  passAmount_aggregate: passAmount_aggregate_order_by
+  passPricing_aggregate: passPricing_aggregate_order_by
   quantity: order_by
 }
 
