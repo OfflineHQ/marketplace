@@ -11,15 +11,6 @@ object_relationships:
         remote_table:
           name: eventPassOrderSums
           schema: public
-  - name: packOrderSums
-    using:
-      manual_configuration:
-        column_mapping:
-          packId: packId
-        insertion_order: null
-        remote_table:
-          name: packOrderSums
-          schema: public
   - name: passPricing
     using:
       manual_configuration:

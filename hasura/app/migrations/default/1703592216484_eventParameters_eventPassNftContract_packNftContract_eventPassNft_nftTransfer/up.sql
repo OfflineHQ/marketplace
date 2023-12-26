@@ -178,7 +178,7 @@ CREATE TABLE "public"."eventPassNft"(
   "chainId" text NOT NULL,
   "eventId" text NOT NULL,
   "eventPassId" text NOT NULL,
-  "packNftContractId" uuid NULL REFERENCES "public"."packNftContract"("id") ON UPDATE NO action ON DELETE NO action,
+  "packId" text,
   "organizerId" text NOT NULL,
   "currentOwnerAddress" text,
   "lastNftTransferId" uuid REFERENCES "public"."nftTransfer"("id") ON UPDATE NO action ON DELETE NO action,
@@ -219,3 +219,4 @@ CREATE TRIGGER set_eventPassNft_updated_at
   BEFORE UPDATE ON "public"."eventPassNft"
   FOR EACH ROW
   EXECUTE FUNCTION public.set_current_timestamp_updated_at();
+

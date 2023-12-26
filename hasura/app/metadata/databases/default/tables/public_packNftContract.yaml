@@ -1,6 +1,16 @@
 table:
   name: packNftContract
   schema: public
+  object_relationships:
+  - name: packOrderSums
+    using:
+      manual_configuration:
+        column_mapping:
+          packId: packId
+        insertion_order: null
+        remote_table:
+          name: packOrderSums
+          schema: public
 array_relationships:
   - name: eventPassNfts
     using:
@@ -8,7 +18,7 @@ array_relationships:
         column_mapping:
           chainId: chainId
           eventId: eventId
-          id: packNftContractId
+          packId: packId
         insertion_order: null
         remote_table:
           name: eventPassNft
