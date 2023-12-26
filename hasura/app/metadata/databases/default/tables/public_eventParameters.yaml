@@ -1,0 +1,3 @@
+table:
+  name: eventParameters
+  schema: public
