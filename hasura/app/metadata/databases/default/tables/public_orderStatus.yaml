@@ -1,4 +1,4 @@
 table:
-  name: currency
+  name: orderStatus
   schema: public
 is_enum: true
