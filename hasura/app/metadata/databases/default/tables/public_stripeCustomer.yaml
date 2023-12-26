@@ -1,3 +1,12 @@
 table:
   name: stripeCustomer
   schema: public
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - stripeCustomerId
+        - accountId
+      filter:
+        accountId:
+          _eq: X-Hasura-User-Id

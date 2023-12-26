@@ -1,3 +1,16 @@
 table:
   name: kyc
   schema: public
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - applicantId
+        - externalUserId
+        - createDate
+        - reviewStatus
+        - levelName
+        - updated_at
+      filter:
+        externalUserId:
+          _eq: X-Hasura-User-Id
