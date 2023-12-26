@@ -1,0 +1,56 @@
+- name: Hygraph CMS Remote Schema
+  definition:
+    url: '{{HYGRAPH_CMS_WEBHOOK_READ_URL}}'
+    timeout_seconds: 60
+    customization: {}
+    headers:
+      - name: Authorization
+        value_from_env: HYGRAPH_CMS_READ_TOKEN
+  comment: ''
+  remote_relationships:
+    - relationships: []
+      type_name: Organizer
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                id: eventPassId
+              relationship_type: object
+              source: default
+              table:
+                name: eventPassPricing
+                schema: public
+          name: eventPassPricing
+        - definition:
+            to_source:
+              field_mapping:
+                id: eventPassId
+              relationship_type: object
+              source: default
+              table:
+                name: eventPassOrderSums
+                schema: public
+          name: eventPassOrderSums
+        - definition:
+            to_source:
+              field_mapping:
+                id: eventPassId
+              relationship_type: object
+              source: default
+              table:
+                name: eventPassNftContract
+                schema: public
+          name: eventPassNftContract
+      type_name: EventPass
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                id: eventId
+              relationship_type: object
+              source: default
+              table:
+                name: eventParameters
+                schema: public
+          name: eventParameters
+      type_name: Event
