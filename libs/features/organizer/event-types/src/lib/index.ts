@@ -19,10 +19,10 @@ export type EventPasses = NonNullable<GetEventPassesQuery['eventPasses']>;
 
 export type EventPass = EventPasses[0];
 
-export type EventPassPendingOrders = NonNullable<
+export type PendingOrders = NonNullable<
   GetEventPassPendingOrderForEventPassesQuery['eventPassPendingOrder']
 >;
 
-export type EventPassPendingOrder = EventPassPendingOrders[0];
+export type PendingOrder = PendingOrders[0];
 
 export type PassOption = EventPass['passOptions'][0];
