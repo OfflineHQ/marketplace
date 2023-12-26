@@ -1,3 +1,112 @@
 table:
   name: pendingOrder
   schema: public
+object_relationships:
+  - name: account
+    using:
+      manual_configuration:
+        column_mapping:
+          accountId: id
+        insertion_order: null
+        remote_table:
+          name: account
+          schema: public
+  - name: eventPassNftContract
+    using:
+      manual_configuration:
+        column_mapping:
+          eventPassId: eventPassId
+        insertion_order: null
+        remote_table:
+          name: eventPassNftContract
+          schema: public
+  - name: packNftContract
+    using:
+      manual_configuration:
+        column_mapping:
+          packId: packId
+        insertion_order: null
+        remote_table:
+          name: packNftContract
+          schema: public
+  - name: passPricing
+    using:
+      manual_configuration:
+        column_mapping:
+          eventPassId: eventPassId
+          packId: packId
+        insertion_order: null
+        remote_table:
+          name: passPricing
+          schema: public
+  - name: passAmount
+    using:
+      manual_configuration:
+        column_mapping:
+          eventPassId: eventPassId
+          packId: packId
+        insertion_order: null
+        remote_table:
+          name: passAmount
+          schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - eventPassId
+        remote_field:
+          eventPass:
+            arguments:
+              where:
+                id: $eventPassId
+        remote_schema: Hygraph CMS Remote Schema
+    name: eventPass
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - packId
+        remote_field:
+          eventPass:
+            arguments:
+              where:
+                id: $packId
+        remote_schema: Hygraph CMS Remote Schema
+    name: pack
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      set:
+        accountId: X-Hasura-User-Id
+      columns:
+        - packId
+        - eventPassId
+        - quantity
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - eventPassId
+        - packId
+        - accountId
+        - quantity
+        - created_at
+      filter:
+        accountId:
+          _eq: X-Hasura-User-Id
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - quantity
+      filter:
+        accountId:
+          _eq: X-Hasura-User-Id
+      check: {}
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        accountId:
+          _eq: X-Hasura-User-Id

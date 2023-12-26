@@ -1,3 +1,17 @@
 table:
   name: packOrderSums
   schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - packId
+        - totalReserved
+      filter: {}
+  - role: user
+    permission:
+      columns:
+        - packId
+        - totalReserved
+      filter: {}
+

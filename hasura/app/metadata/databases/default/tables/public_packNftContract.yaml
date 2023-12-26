@@ -1,3 +1,15 @@
 table:
   name: packNftContract
   schema: public
+array_relationships:
+  - name: eventPassNfts
+    using:
+      manual_configuration:
+        column_mapping:
+          chainId: chainId
+          eventId: eventId
+          id: packNftContractId
+        insertion_order: null
+        remote_table:
+          name: eventPassNft
+          schema: public
