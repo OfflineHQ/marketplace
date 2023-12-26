@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { EventPassPendingOrder } from '@gql/shared/types';
+import { PendingOrder } from '@gql/shared/types';
 import { isJestRunning } from '@utils';
 import { Client } from 'pg';
 
@@ -113,5 +113,5 @@ export const eventPassPendingOrders = {
       quantity: 2,
       created_at: '2023-07-19 12:58:46.636737+00',
     },
-  ] satisfies EventPassPendingOrder[],
+  ] satisfies PendingOrder[],
 };

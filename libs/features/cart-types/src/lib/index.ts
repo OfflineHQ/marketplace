@@ -1,4 +1,4 @@
-import { EventPassPendingOrder } from '@features/organizer/event-types';
+import { PendingOrder } from '@features/organizer/event-types';
 import type { GetEventWithPassesQuery } from '@gql/admin/types';
 import type {
   GetEventPassOrdersFromIdsQuery,
@@ -11,7 +11,7 @@ export type UserPassPendingOrder =
   GetEventPassPendingOrdersQuery['eventPassPendingOrder'][0];
 
 export interface EventPassCart
-  extends Pick<EventPassPendingOrder, 'eventPassId' | 'quantity'> {
+  extends Pick<PendingOrder, 'eventPassId' | 'quantity'> {
   created_at?: string;
 }
 
