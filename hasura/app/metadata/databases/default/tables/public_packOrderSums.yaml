@@ -14,4 +14,3 @@ select_permissions:
         - packId
         - totalReserved
       filter: {}
-

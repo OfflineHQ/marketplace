@@ -11,15 +11,6 @@ array_relationships:
         remote_table:
           name: eventPassNftContract
           schema: public
-  - name: packNftContracts
-    using:
-      manual_configuration:
-        column_mapping:
-          eventId: eventId
-        insertion_order: null
-        remote_table:
-          name: packNftContract
-          schema: public
   - name: eventPassNfts
     using:
       manual_configuration:
@@ -28,6 +19,15 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: eventPassNft
+          schema: public
+  - name: packNftContracts
+    using:
+      manual_configuration:
+        column_mapping:
+          eventId: eventId
+        insertion_order: null
+        remote_table:
+          name: packNftContract
           schema: public
 remote_relationships:
   - definition:

@@ -107,6 +107,66 @@ CREATE TABLE "public"."order"(
   CHECK (("eventPassId" IS NOT NULL AND "packId" IS NULL) OR ("eventPassId" IS NULL AND "packId" IS NOT NULL))
 );
 
+CREATE FUNCTION public.get_order_pass_amount("order" "public"."order")
+  RETURNS "passAmount"
+  AS $$
+DECLARE
+  result "passAmount";
+BEGIN
+  IF "order"."packId" IS NULL THEN
+    SELECT
+      * INTO result
+    FROM
+      "passAmount"
+    WHERE
+      "eventPassId" = "order"."eventPassId"
+    LIMIT 1;
+  ELSE
+    SELECT
+      * INTO result
+    FROM
+      "passAmount"
+    WHERE
+      "eventPassId" = "order"."eventPassId"
+      AND "packId" = "order"."packId"
+    LIMIT 1;
+  END IF;
+  RETURN result;
+END;
+$$
+LANGUAGE plpgsql
+STABLE;
+
+CREATE FUNCTION public.get_order_pass_pricing("order" "public"."order")
+  RETURNS "passPricing"
+  AS $$
+DECLARE
+  result "passPricing";
+BEGIN
+  IF "order"."packId" IS NULL THEN
+    SELECT
+      * INTO result
+    FROM
+      "passPricing"
+    WHERE
+      "eventPassId" = "order"."eventPassId"
+    LIMIT 1;
+  ELSE
+    SELECT
+      * INTO result
+    FROM
+      "passPricing"
+    WHERE
+      "eventPassId" = "order"."eventPassId"
+      AND "packId" = "order"."packId"
+    LIMIT 1;
+  END IF;
+  RETURN result;
+END;
+$$
+LANGUAGE plpgsql
+STABLE;
+
 CREATE TABLE "public"."pendingOrder"(
   "id" uuid NOT NULL DEFAULT gen_random_uuid(),
   "eventPassId" text,
@@ -126,6 +186,66 @@ CREATE UNIQUE INDEX idx_pendingorder_packid_accountid ON "public"."pendingOrder"
 WHERE
   "packId" IS NOT NULL;
 
+CREATE FUNCTION public.get_pending_order_pass_amount("pendingOrder" "public"."pendingOrder")
+  RETURNS "passAmount"
+  AS $$
+DECLARE
+  result "passAmount";
+BEGIN
+  IF "pendingOrder"."packId" IS NULL THEN
+    SELECT
+      * INTO result
+    FROM
+      "passAmount"
+    WHERE
+      "eventPassId" = "pendingOrder"."eventPassId"
+    LIMIT 1;
+  ELSE
+    SELECT
+      * INTO result
+    FROM
+      "passAmount"
+    WHERE
+      "eventPassId" = "pendingOrder"."eventPassId"
+      AND "packId" = "pendingOrder"."packId"
+    LIMIT 1;
+  END IF;
+  RETURN result;
+END;
+$$
+LANGUAGE plpgsql
+STABLE;
+
+CREATE FUNCTION public.get_pending_order_pass_pricing("pendingOrder" "public"."pendingOrder")
+  RETURNS "passPricing"
+  AS $$
+DECLARE
+  result "passPricing";
+BEGIN
+  IF "pendingOrder"."packId" IS NULL THEN
+    SELECT
+      * INTO result
+    FROM
+      "passPricing"
+    WHERE
+      "eventPassId" = "pendingOrder"."eventPassId"
+    LIMIT 1;
+  ELSE
+    SELECT
+      * INTO result
+    FROM
+      "passPricing"
+    WHERE
+      "eventPassId" = "pendingOrder"."eventPassId"
+      AND "packId" = "pendingOrder"."packId"
+    LIMIT 1;
+  END IF;
+  RETURN result;
+END;
+$$
+LANGUAGE plpgsql
+STABLE;
+
 COMMENT ON TABLE "public"."pendingOrder" IS 'Order a quantity of Event Pass or Pack (linked to Hygraph model EventPass or Pack) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users.';
 
 COMMENT ON TABLE "public"."order" IS 'Order a quantity of Event Pass or Pack (linked to Hygraph model EventPass or Pack) and associated to an Account';
@@ -134,3 +254,4 @@ CREATE TRIGGER set_order_updated_at
   BEFORE UPDATE ON "public"."order"
   FOR EACH ROW
   EXECUTE FUNCTION public.set_current_timestamp_updated_at();
+

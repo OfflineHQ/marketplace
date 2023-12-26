@@ -9,7 +9,7 @@ insert_permissions:
         accountId: x-hasura-User-Id
       columns:
         - organizerSlug
-    comment: ''
+    comment: ""
 select_permissions:
   - role: user
     permission:
@@ -20,11 +20,11 @@ select_permissions:
       filter:
         accountId:
           _eq: X-Hasura-User-Id
-    comment: ''
+    comment: ""
 delete_permissions:
   - role: user
     permission:
       filter:
         accountId:
           _eq: X-Hasura-User-Id
-    comment: ''
+    comment: ""

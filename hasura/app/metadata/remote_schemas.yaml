@@ -6,7 +6,7 @@
     headers:
       - name: Authorization
         value_from_env: HYGRAPH_CMS_READ_TOKEN
-  comment: ''
+  comment: ""
   remote_relationships:
     - relationships: []
       type_name: Organizer

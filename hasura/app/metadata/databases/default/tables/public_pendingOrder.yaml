@@ -1,6 +1,19 @@
 table:
   name: pendingOrder
   schema: public
+computed_fields:
+  - name: passAmount
+    definition:
+      function:
+        schema: public
+        name: get_pending_order_pass_amount
+        session_argument: null
+  - name: passPricing
+    definition:
+      function:
+        schema: public
+        name: get_pending_order_pass_pricing
+        session_argument: null
 object_relationships:
   - name: account
     using:
@@ -28,26 +41,6 @@ object_relationships:
         insertion_order: null
         remote_table:
           name: packNftContract
-          schema: public
-  - name: passPricing
-    using:
-      manual_configuration:
-        column_mapping:
-          eventPassId: eventPassId
-          packId: packId
-        insertion_order: null
-        remote_table:
-          name: passPricing
-          schema: public
-  - name: passAmount
-    using:
-      manual_configuration:
-        column_mapping:
-          eventPassId: eventPassId
-          packId: packId
-        insertion_order: null
-        remote_table:
-          name: passAmount
           schema: public
 remote_relationships:
   - definition:
