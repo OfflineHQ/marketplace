@@ -180,7 +180,7 @@
 --   "chainId" text NOT NULL,
 --   "eventId" text NOT NULL,
 --   "eventPassId" text NOT NULL,
---   "packNftContractId" uuid NULL REFERENCES "public"."packNftContract"("id") ON UPDATE NO action ON DELETE NO action,
+--   "packId" text,
 --   "organizerId" text NOT NULL,
 --   "currentOwnerAddress" text,
 --   "lastNftTransferId" uuid REFERENCES "public"."nftTransfer"("id") ON UPDATE NO action ON DELETE NO action,
