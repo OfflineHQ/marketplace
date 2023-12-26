@@ -1,16 +1,3 @@
 table:
   name: eventPassOrderSums
   schema: public
-select_permissions:
-  - role: anonymous
-    permission:
-      columns:
-        - eventPassId
-        - totalReserved
-      filter: {}
-  - role: user
-    permission:
-      columns:
-        - eventPassId
-        - totalReserved
-      filter: {}
