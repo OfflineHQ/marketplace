@@ -1,0 +1,5 @@
+mutation CreateRoleAssignment($input: roleAssignment_insert_input!) {
+  insert_roleAssignment_one(object: $input) {
+    role
+  }
+}

@@ -1,6 +1,7 @@
 fragment AccountFields on account {
   id
   address
+  scwAddress
   email
-  emailVerified
+  phone
 }
