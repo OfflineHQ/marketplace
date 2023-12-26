@@ -1,0 +1,6 @@
+fragment AccountFields on account {
+  id
+  address
+  email
+  emailVerified
+}

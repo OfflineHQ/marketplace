@@ -44,129 +44,129 @@ generates:
       - 'add':
           content: 'export const adminSdk = getSdk(fetchData({admin:true}));'
           placement: 'append'
-  # user
-  libs/gql/user/api/src/generated/schema.json:
-    plugins:
-      - 'introspection'
-    schema:
-      - &userSchema
-        ${NEXT_PUBLIC_HASURA_URL:http://localhost:8080/v1/graphql}:
-          headers:
-            'x-hasura-admin-secret': ${HASURA_GRAPHQL_ADMIN_SECRET:password}
-            'x-hasura-default-role': 'user'
-            'x-hasura-role': 'user'
-  libs/gql/user/api/src/generated/schema.graphql:
-    plugins:
-      - 'schema-ast'
-    schema:
-      - *userSchema
-  libs/gql/user/types/src/generated/index.ts:
-    preset: import-types
-    presetConfig:
-      typesPath: '@gql/shared/types'
-      importTypesNamespace: 'Types'
-    schema:
-      - *userSchema
-    documents: './libs/gql/user/api/src/queries/**/*.{graphql,gql}'
-    plugins:
-      - 'typescript-operations':
-          preResolveTypes: true
-  libs/gql/user/react-query/src/generated/index.tsx:
-    preset: import-types
-    presetConfig:
-      typesPath: '@gql/user/types'
-      importTypesNamespace: 'Types'
-    schema:
-      - *userSchema
-    documents: './libs/gql/user/api/src/queries/**/*.{graphql,gql}'
-    plugins:
-      - 'typescript-react-query':
-          fetcher:
-            func: '@next/hasura/react-query#fetchDataReactQuery'
-            isReactHook: false
-          errorType: Error
-  libs/gql/user/api/src/generated/index.ts:
-    preset: import-types
-    presetConfig:
-      typesPath: '@gql/user/types'
-      importTypesNamespace: 'Types'
-    documents: './libs/gql/user/api/src/queries/**/*.{graphql,gql}'
-    plugins:
-      - 'typescript-generic-sdk':
-          noExport: true
-          documentMode: 'string'
-      - 'add':
-          content: 'import { fetchData } from "@next/hasura/api";'
-          placement: 'prepend'
-      - 'add':
-          content: 'export const userSdk = getSdk(fetchData());'
-          placement: 'append'
-  # anonymous
-  libs/gql/anonymous/api/src/generated/schema.json:
-    plugins:
-      - 'introspection'
-    schema:
-      - &anonymousSchema
-        ${NEXT_PUBLIC_HASURA_URL:http://localhost:8080/v1/graphql}:
-          headers:
-            'x-hasura-admin-secret': ${HASURA_GRAPHQL_ADMIN_SECRET:password}
-            'x-hasura-default-role': 'anonymous'
-            'x-hasura-role': 'anonymous'
-  libs/gql/anonymous/api/src/generated/schema.graphql:
-    plugins:
-      - 'schema-ast'
-    schema:
-      - *anonymousSchema
-  libs/gql/anonymous/types/src/generated/index.ts:
-    preset: import-types
-    presetConfig:
-      typesPath: '@gql/shared/types'
-      importTypesNamespace: 'Types'
-    schema:
-      - *anonymousSchema
-    documents: './libs/gql/anonymous/api/src/queries/**/*.{graphql,gql}'
-    plugins:
-      - 'typescript-operations':
-          preResolveTypes: true
-  libs/gql/anonymous/api/src/generated/index.ts:
-    preset: import-types
-    presetConfig:
-      typesPath: '@gql/anonymous/types'
-      importTypesNamespace: 'Types'
-    documents: './libs/gql/anonymous/api/src/queries/**/*.{graphql,gql}'
-    plugins:
-      - 'typescript-generic-sdk':
-          noExport: true
-          documentMode: 'string'
-      - 'add':
-          content: 'import { fetchData } from "@next/hasura/api";'
-          placement: 'prepend'
-      - 'add':
-          content: 'export const anonymousSdk = getSdk(fetchData());'
-          placement: 'append'
-  libs/gql/anonymous/react-query/src/generated/index.tsx:
-    preset: import-types
-    presetConfig:
-      typesPath: '@gql/anonymous/types'
-      importTypesNamespace: 'Types'
-    schema:
-      - *anonymousSchema
-    documents: './libs/gql/anonymous/api/src/queries/**/*.{graphql,gql}'
-    plugins:
-      - 'typescript-react-query':
-          fetcher:
-            func: '@next/hasura/react-query#fetchDataReactQuery'
-            isReactHook: false
-          errorType: Error
+  # # user
+  # libs/gql/user/api/src/generated/schema.json:
+  #   plugins:
+  #     - 'introspection'
+  #   schema:
+  #     - &userSchema
+  #       ${NEXT_PUBLIC_HASURA_URL:http://localhost:8080/v1/graphql}:
+  #         headers:
+  #           'x-hasura-admin-secret': ${HASURA_GRAPHQL_ADMIN_SECRET:password}
+  #           'x-hasura-default-role': 'user'
+  #           'x-hasura-role': 'user'
+  # libs/gql/user/api/src/generated/schema.graphql:
+  #   plugins:
+  #     - 'schema-ast'
+  #   schema:
+  #     - *userSchema
+  # libs/gql/user/types/src/generated/index.ts:
+  #   preset: import-types
+  #   presetConfig:
+  #     typesPath: '@gql/shared/types'
+  #     importTypesNamespace: 'Types'
+  #   schema:
+  #     - *userSchema
+  #   documents: './libs/gql/user/api/src/queries/**/*.{graphql,gql}'
+  #   plugins:
+  #     - 'typescript-operations':
+  #         preResolveTypes: true
+  # libs/gql/user/react-query/src/generated/index.tsx:
+  #   preset: import-types
+  #   presetConfig:
+  #     typesPath: '@gql/user/types'
+  #     importTypesNamespace: 'Types'
+  #   schema:
+  #     - *userSchema
+  #   documents: './libs/gql/user/api/src/queries/**/*.{graphql,gql}'
+  #   plugins:
+  #     - 'typescript-react-query':
+  #         fetcher:
+  #           func: '@next/hasura/react-query#fetchDataReactQuery'
+  #           isReactHook: false
+  #         errorType: Error
+  # libs/gql/user/api/src/generated/index.ts:
+  #   preset: import-types
+  #   presetConfig:
+  #     typesPath: '@gql/user/types'
+  #     importTypesNamespace: 'Types'
+  #   documents: './libs/gql/user/api/src/queries/**/*.{graphql,gql}'
+  #   plugins:
+  #     - 'typescript-generic-sdk':
+  #         noExport: true
+  #         documentMode: 'string'
+  #     - 'add':
+  #         content: 'import { fetchData } from "@next/hasura/api";'
+  #         placement: 'prepend'
+  #     - 'add':
+  #         content: 'export const userSdk = getSdk(fetchData());'
+  #         placement: 'append'
+  # # anonymous
+  # libs/gql/anonymous/api/src/generated/schema.json:
+  #   plugins:
+  #     - 'introspection'
+  #   schema:
+  #     - &anonymousSchema
+  #       ${NEXT_PUBLIC_HASURA_URL:http://localhost:8080/v1/graphql}:
+  #         headers:
+  #           'x-hasura-admin-secret': ${HASURA_GRAPHQL_ADMIN_SECRET:password}
+  #           'x-hasura-default-role': 'anonymous'
+  #           'x-hasura-role': 'anonymous'
+  # libs/gql/anonymous/api/src/generated/schema.graphql:
+  #   plugins:
+  #     - 'schema-ast'
+  #   schema:
+  #     - *anonymousSchema
+  # libs/gql/anonymous/types/src/generated/index.ts:
+  #   preset: import-types
+  #   presetConfig:
+  #     typesPath: '@gql/shared/types'
+  #     importTypesNamespace: 'Types'
+  #   schema:
+  #     - *anonymousSchema
+  #   documents: './libs/gql/anonymous/api/src/queries/**/*.{graphql,gql}'
+  #   plugins:
+  #     - 'typescript-operations':
+  #         preResolveTypes: true
+  # libs/gql/anonymous/api/src/generated/index.ts:
+  #   preset: import-types
+  #   presetConfig:
+  #     typesPath: '@gql/anonymous/types'
+  #     importTypesNamespace: 'Types'
+  #   documents: './libs/gql/anonymous/api/src/queries/**/*.{graphql,gql}'
+  #   plugins:
+  #     - 'typescript-generic-sdk':
+  #         noExport: true
+  #         documentMode: 'string'
+  #     - 'add':
+  #         content: 'import { fetchData } from "@next/hasura/api";'
+  #         placement: 'prepend'
+  #     - 'add':
+  #         content: 'export const anonymousSdk = getSdk(fetchData());'
+  #         placement: 'append'
+  # libs/gql/anonymous/react-query/src/generated/index.tsx:
+  #   preset: import-types
+  #   presetConfig:
+  #     typesPath: '@gql/anonymous/types'
+  #     importTypesNamespace: 'Types'
+  #   schema:
+  #     - *anonymousSchema
+  #   documents: './libs/gql/anonymous/api/src/queries/**/*.{graphql,gql}'
+  #   plugins:
+  #     - 'typescript-react-query':
+  #         fetcher:
+  #           func: '@next/hasura/react-query#fetchDataReactQuery'
+  #           isReactHook: false
+  #         errorType: Error
 
-    # ## hasura
-    # #  doesn't support yet separated fragments so it fail
-    # #  TODO: follow up on this issue https://github.com/dotansimha/graphql-code-generator/issues/7700
-    # #  ref: https://www.graphql-code-generator.com/plugins/other/hasura-allow-list
-    # hasura/app/metadata/query_collections.yaml:
-    #   documents: './libs/next/gql/*/src/queries/**/*.{graphql,gql}'
-    #   plugins:
-    #     - 'hasura-allow-list'
-    #   hooks:
-    #     afterOneFileWrite:
-    #       - make restart-hasura
+  # ## hasura
+  # #  doesn't support yet separated fragments so it fail
+  # #  TODO: follow up on this issue https://github.com/dotansimha/graphql-code-generator/issues/7700
+  # #  ref: https://www.graphql-code-generator.com/plugins/other/hasura-allow-list
+  # hasura/app/metadata/query_collections.yaml:
+  #   documents: './libs/next/gql/*/src/queries/**/*.{graphql,gql}'
+  #   plugins:
+  #     - 'hasura-allow-list'
+  #   hooks:
+  #     afterOneFileWrite:
+  #       - make restart-hasura
