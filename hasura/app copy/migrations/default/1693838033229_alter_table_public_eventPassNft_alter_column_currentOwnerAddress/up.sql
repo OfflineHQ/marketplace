@@ -1,1 +1,3 @@
-alter table "public"."eventPassNft" alter column "currentOwnerAddress" drop not null;
+ALTER TABLE "public"."eventPassNft"
+  ALTER COLUMN "currentOwnerAddress" DROP NOT NULL;
+

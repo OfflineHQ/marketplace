@@ -1,1 +1,3 @@
-INSERT INTO "public"."orderStatus"("value") VALUES (E'REFUNDED');
+INSERT INTO "public"."orderStatus"("value")
+  VALUES (E'REFUNDED');
+
