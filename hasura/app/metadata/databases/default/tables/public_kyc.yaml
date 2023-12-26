@@ -1,0 +1,3 @@
+table:
+  name: kyc
+  schema: public
