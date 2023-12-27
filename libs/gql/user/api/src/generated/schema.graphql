@@ -2182,8 +2182,6 @@ type EventPass implements Entity & Node {
     locales: [Locale!]
   ): EventPassDelayedRevealed
   eventPassNftContract: eventPassNftContract
-  eventPassOrderSums: eventPassOrderSums
-  eventPassPricing: eventPassPricing
 
   """List of EventPass versions"""
   history(
@@ -2260,6 +2258,7 @@ type EventPass implements Entity & Node {
   Permanent name associated with the NFT. Cannot be changed or localized.
   """
   nftName: String!
+  passAmount: passAmount
 
   """
   Define the different pass options. An option is defined for a specific location and timeframe
@@ -2293,6 +2292,7 @@ type EventPass implements Entity & Node {
     skip: Int
     where: PassOptionWhereInput
   ): [PassOption!]!
+  passPricing: passPricing
 
   """The time the document was published. Null on documents in draft stage."""
   publishedAt(
@@ -6432,7 +6432,7 @@ input OrganizerWhereUniqueInput_remote_rel_eventPassNftorganizer {
 }
 
 """References Organizer record uniquely"""
-input OrganizerWhereUniqueInput_remote_rel_roleAssignmentsorganizer {
+input OrganizerWhereUniqueInput_remote_rel_roleAssignmentorganizer {
   name: String
   slug: String
 }
@@ -8044,21 +8044,21 @@ input VersionWhereInput {
 }
 
 """
-An account can represent an user or organizer. It store essential informations and is used as the root class for relationships with other tables
+An account can represent a user or a role on an organizer. It stores essential information and is used as the root class for relationships with other tables
 """
 type account {
   address: String!
   email: String
-  emailVerified: Boolean!
   id: uuid!
 
   """An object relationship"""
   kyc: kyc
+  phone: String
 
   """An array relationship"""
   roles(
     """distinct select on columns"""
-    distinct_on: [roleAssignments_select_column!]
+    distinct_on: [roleAssignment_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -8067,11 +8067,12 @@ type account {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [roleAssignments_order_by!]
+    order_by: [roleAssignment_order_by!]
 
     """filter the rows returned"""
-    where: roleAssignments_bool_exp
-  ): [roleAssignments!]!
+    where: roleAssignment_bool_exp
+  ): [roleAssignment!]!
+  scwAddress: String
 
   """An object relationship"""
   stripeCustomer: stripeCustomer
@@ -8086,10 +8087,11 @@ input account_bool_exp {
   _or: [account_bool_exp!]
   address: String_comparison_exp
   email: String_comparison_exp
-  emailVerified: Boolean_comparison_exp
   id: uuid_comparison_exp
   kyc: kyc_bool_exp
-  roles: roleAssignments_bool_exp
+  phone: String_comparison_exp
+  roles: roleAssignment_bool_exp
+  scwAddress: String_comparison_exp
   stripeCustomer: stripeCustomer_bool_exp
 }
 
@@ -8097,10 +8099,11 @@ input account_bool_exp {
 input account_order_by {
   address: order_by
   email: order_by
-  emailVerified: order_by
   id: order_by
   kyc: kyc_order_by
-  roles_aggregate: roleAssignments_aggregate_order_by
+  phone: order_by
+  roles_aggregate: roleAssignment_aggregate_order_by
+  scwAddress: order_by
   stripeCustomer: stripeCustomer_order_by
 }
 
@@ -8115,10 +8118,13 @@ enum account_select_column {
   email
 
   """column name"""
-  emailVerified
+  id
 
   """column name"""
-  id
+  phone
+
+  """column name"""
+  scwAddress
 }
 
 """
@@ -8136,8 +8142,9 @@ input account_stream_cursor_input {
 input account_stream_cursor_value_input {
   address: String
   email: String
-  emailVerified: Boolean
   id: uuid
+  phone: String
+  scwAddress: String
 }
 
 scalar bigint
@@ -8191,9 +8198,24 @@ enum cursor_ordering {
 The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling.
 """
 type eventParameters {
+  """
+  The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event.
+  """
   dateEnd: timestamp
+
+  """
+  The "dateSaleEnd" column indicates the end date and time for the sale of event passes. By providing a clear cut-off point for sales, this timestamp aids in the strategic planning and closure of the pass sale period.
+  """
   dateSaleEnd: timestamp
+
+  """
+  The "dateSaleStart" column denotes the start date and time for when the event passes become available for sale. This timestamp, free from timezone specifics, is critical for controlling the sales window, allowing for precise planning and marketing of the event passes.
+  """
   dateSaleStart: timestamp
+
+  """
+  The "dateStart" column represents the start date and time of the event. This timestamp, set in a timezone-neutral format, indicates when the event officially begins. It is crucial for scheduling and coordinating event-related activities.
+  """
   dateStart: timestamp
   event(
     """
@@ -8259,6 +8281,11 @@ type eventParameters {
     where: OrganizerWhereUniqueInput_remote_rel_eventParametersorganizer!
   ): Organizer
   organizerId: String!
+  status: eventStatus_enum
+
+  """
+  The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations.
+  """
   timezone: String
 }
 
@@ -8277,6 +8304,7 @@ input eventParameters_bool_exp {
   eventPassNftContracts: eventPassNftContract_bool_exp
   eventPassNfts: eventPassNft_bool_exp
   organizerId: String_comparison_exp
+  status: eventStatus_enum_comparison_exp
   timezone: String_comparison_exp
 }
 
@@ -8290,6 +8318,7 @@ input eventParameters_order_by {
   eventPassNftContracts_aggregate: eventPassNftContract_aggregate_order_by
   eventPassNfts_aggregate: eventPassNft_aggregate_order_by
   organizerId: order_by
+  status: order_by
   timezone: order_by
 }
 
@@ -8316,6 +8345,9 @@ enum eventParameters_select_column {
   organizerId
 
   """column name"""
+  status
+
+  """column name"""
   timezone
 }
 
@@ -8332,24 +8364,44 @@ input eventParameters_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input eventParameters_stream_cursor_value_input {
+  """
+  The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event.
+  """
   dateEnd: timestamp
+
+  """
+  The "dateSaleEnd" column indicates the end date and time for the sale of event passes. By providing a clear cut-off point for sales, this timestamp aids in the strategic planning and closure of the pass sale period.
+  """
   dateSaleEnd: timestamp
+
+  """
+  The "dateSaleStart" column denotes the start date and time for when the event passes become available for sale. This timestamp, free from timezone specifics, is critical for controlling the sales window, allowing for precise planning and marketing of the event passes.
+  """
   dateSaleStart: timestamp
+
+  """
+  The "dateStart" column represents the start date and time of the event. This timestamp, set in a timezone-neutral format, indicates when the event officially begins. It is crucial for scheduling and coordinating event-related activities.
+  """
   dateStart: timestamp
   eventId: String
   organizerId: String
+  status: eventStatus_enum
+
+  """
+  The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations.
+  """
   timezone: String
 }
 
 """
-The eventPassNft model is designed to consolidate and store the metadata associated with each event pass NFT. It centralizes fixed metadata, enabling the system to retrieve NFT details without frequently querying external APIs. It integrates with the existing nftTransfer model, providing a holistic view of each event pass NFT's journey and characteristics within the platform.
+columns and relationships of "eventPassNft"
 """
 type eventPassNft {
   """Denotes the specific blockchain or network of the event pass NFT"""
   chainId: String!
 
   """
-  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain.
   """
   contractAddress: String!
   created_at: timestamptz!
@@ -8400,9 +8452,6 @@ type eventPassNft {
 
   """An object relationship"""
   eventPassNftContract: eventPassNftContract
-
-  """An object relationship"""
-  eventPassPricing: eventPassPricing
   id: uuid!
 
   """
@@ -8439,13 +8488,25 @@ type eventPassNft {
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String!
 
+  """An object relationship"""
+  packAmount: passAmount
+
+  """An object relationship"""
+  packPricing: passPricing
+
+  """An object relationship"""
+  passAmount: passAmount
+
+  """An object relationship"""
+  passPricing: passPricing
+
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
   """
   tokenId: bigint!
 
   """
-  The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction.
+  The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction.
   """
   tokenUri: String
   updated_at: timestamptz!
@@ -8455,6 +8516,9 @@ type eventPassNft {
 The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes.
 """
 type eventPassNftContract {
+  """
+  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
+  """
   eventId: String!
   eventPass(
     """
@@ -8491,45 +8555,6 @@ type eventPassNftContract {
   """An object relationship"""
   eventPassOrderSums: eventPassOrderSums
 
-  """An array relationship"""
-  eventPassOrders(
-    """distinct select on columns"""
-    distinct_on: [eventPassOrder_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassOrder_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassOrder_bool_exp
-  ): [eventPassOrder!]!
-
-  """An aggregate relationship"""
-  eventPassOrders_aggregate(
-    """distinct select on columns"""
-    distinct_on: [eventPassOrder_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassOrder_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassOrder_bool_exp
-  ): eventPassOrder_aggregate!
-
-  """An object relationship"""
-  eventPassPricing: eventPassPricing
-
   """Flag indicating whether the event pass NFT is airdropped."""
   isAirdrop: Boolean!
 
@@ -8537,7 +8562,49 @@ type eventPassNftContract {
   Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal.
   """
   isDelayedRevealed: Boolean!
+
+  """An array relationship"""
+  orders(
+    """distinct select on columns"""
+    distinct_on: [order_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [order_order_by!]
+
+    """filter the rows returned"""
+    where: order_bool_exp
+  ): [order!]!
+
+  """An aggregate relationship"""
+  orders_aggregate(
+    """distinct select on columns"""
+    distinct_on: [order_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [order_order_by!]
+
+    """filter the rows returned"""
+    where: order_bool_exp
+  ): order_aggregate!
   organizerId: String!
+
+  """An object relationship"""
+  passAmount: passAmount
+
+  """An object relationship"""
+  passPricing: passPricing
 
   """Type of the event pass NFT contract."""
   type: eventPassNftContractType_enum!
@@ -8579,12 +8646,13 @@ input eventPassNftContract_bool_exp {
   eventPassId: String_comparison_exp
   eventPassNfts: eventPassNft_bool_exp
   eventPassOrderSums: eventPassOrderSums_bool_exp
-  eventPassOrders: eventPassOrder_bool_exp
-  eventPassOrders_aggregate: eventPassOrder_aggregate_bool_exp
-  eventPassPricing: eventPassPricing_bool_exp
   isAirdrop: Boolean_comparison_exp
   isDelayedRevealed: Boolean_comparison_exp
+  orders: order_bool_exp
+  orders_aggregate: order_aggregate_bool_exp
   organizerId: String_comparison_exp
+  passAmount: passAmount_bool_exp
+  passPricing: passPricing_bool_exp
   type: eventPassNftContractType_enum_comparison_exp
 }
 
@@ -8592,6 +8660,9 @@ input eventPassNftContract_bool_exp {
 order by max() on columns of table "eventPassNftContract"
 """
 input eventPassNftContract_max_order_by {
+  """
+  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
+  """
   eventId: order_by
   eventPassId: order_by
   organizerId: order_by
@@ -8601,6 +8672,9 @@ input eventPassNftContract_max_order_by {
 order by min() on columns of table "eventPassNftContract"
 """
 input eventPassNftContract_min_order_by {
+  """
+  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
+  """
   eventId: order_by
   eventPassId: order_by
   organizerId: order_by
@@ -8612,11 +8686,12 @@ input eventPassNftContract_order_by {
   eventPassId: order_by
   eventPassNfts_aggregate: eventPassNft_aggregate_order_by
   eventPassOrderSums: eventPassOrderSums_order_by
-  eventPassOrders_aggregate: eventPassOrder_aggregate_order_by
-  eventPassPricing: eventPassPricing_order_by
   isAirdrop: order_by
   isDelayedRevealed: order_by
+  orders_aggregate: order_aggregate_order_by
   organizerId: order_by
+  passAmount: passAmount_order_by
+  passPricing: passPricing_order_by
   type: order_by
 }
 
@@ -8656,6 +8731,9 @@ input eventPassNftContract_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input eventPassNftContract_stream_cursor_value_input {
+  """
+  A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform.
+  """
   eventId: String
   eventPassId: String
 
@@ -8715,12 +8793,15 @@ input eventPassNft_bool_exp {
   eventParameters: eventParameters_bool_exp
   eventPassId: String_comparison_exp
   eventPassNftContract: eventPassNftContract_bool_exp
-  eventPassPricing: eventPassPricing_bool_exp
   id: uuid_comparison_exp
   isRevealed: Boolean_comparison_exp
   lastNftTransferId: uuid_comparison_exp
   metadata: jsonb_comparison_exp
   organizerId: String_comparison_exp
+  packAmount: passAmount_bool_exp
+  packPricing: passPricing_bool_exp
+  passAmount: passAmount_bool_exp
+  passPricing: passPricing_bool_exp
   tokenId: bigint_comparison_exp
   tokenUri: String_comparison_exp
   updated_at: timestamptz_comparison_exp
@@ -8734,7 +8815,7 @@ input eventPassNft_max_order_by {
   chainId: order_by
 
   """
-  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain.
   """
   contractAddress: order_by
   created_at: order_by
@@ -8770,7 +8851,7 @@ input eventPassNft_max_order_by {
   tokenId: order_by
 
   """
-  The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction.
+  The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction.
   """
   tokenUri: order_by
   updated_at: order_by
@@ -8784,7 +8865,7 @@ input eventPassNft_min_order_by {
   chainId: order_by
 
   """
-  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain.
   """
   contractAddress: order_by
   created_at: order_by
@@ -8820,7 +8901,7 @@ input eventPassNft_min_order_by {
   tokenId: order_by
 
   """
-  The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction.
+  The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction.
   """
   tokenUri: order_by
   updated_at: order_by
@@ -8837,12 +8918,15 @@ input eventPassNft_order_by {
   eventParameters: eventParameters_order_by
   eventPassId: order_by
   eventPassNftContract: eventPassNftContract_order_by
-  eventPassPricing: eventPassPricing_order_by
   id: order_by
   isRevealed: order_by
   lastNftTransferId: order_by
   metadata: order_by
   organizerId: order_by
+  packAmount: passAmount_order_by
+  packPricing: passPricing_order_by
+  passAmount: passAmount_order_by
+  passPricing: passPricing_order_by
   tokenId: order_by
   tokenUri: order_by
   updated_at: order_by
@@ -8945,7 +9029,7 @@ input eventPassNft_stream_cursor_value_input {
   chainId: String
 
   """
-  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain.
   """
   contractAddress: String
   created_at: timestamptz
@@ -8991,7 +9075,7 @@ input eventPassNft_stream_cursor_value_input {
   tokenId: bigint
 
   """
-  The designated URI for the event pass NFT's metadata blob, providing a stable reference for data extraction.
+  The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction.
   """
   tokenUri: String
   updated_at: timestamptz
@@ -9035,40 +9119,6 @@ input eventPassNft_variance_order_by {
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
   """
   tokenId: order_by
-}
-
-"""
-Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account
-"""
-type eventPassOrder {
-  """An object relationship"""
-  account: account
-  accountId: uuid!
-  created_at: timestamptz!
-  eventPass(
-    """
-    Defines which locales should be returned.
-    
-    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
-    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
-    
-    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
-    """
-    locales: [Locale!]! = [en]
-    stage: Stage! = PUBLISHED
-  ): EventPass
-  eventPassId: String!
-
-  """An object relationship"""
-  eventPassNftContract: eventPassNftContract
-
-  """An object relationship"""
-  eventPassPricing: eventPassPricing
-  id: uuid!
-  quantity: Int!
-  status: orderStatus_enum!
-  stripeCheckoutSessionId: String
-  updated_at: timestamptz!
 }
 
 """Hold the sums for the Event Pass Orders"""
@@ -9122,546 +9172,20 @@ input eventPassOrderSums_stream_cursor_value_input {
   totalReserved: Int
 }
 
-"""
-aggregated selection of "eventPassOrder"
-"""
-type eventPassOrder_aggregate {
-  aggregate: eventPassOrder_aggregate_fields
-  nodes: [eventPassOrder!]!
-}
-
-input eventPassOrder_aggregate_bool_exp {
-  count: eventPassOrder_aggregate_bool_exp_count
-}
-
-input eventPassOrder_aggregate_bool_exp_count {
-  arguments: [eventPassOrder_select_column!]
-  distinct: Boolean
-  filter: eventPassOrder_bool_exp
-  predicate: Int_comparison_exp!
+enum eventStatus_enum {
+  DRAFT
+  PUBLISHED
 }
 
 """
-aggregate fields of "eventPassOrder"
+Boolean expression to compare columns of type "eventStatus_enum". All fields are combined with logical 'AND'.
 """
-type eventPassOrder_aggregate_fields {
-  avg: eventPassOrder_avg_fields
-  count(columns: [eventPassOrder_select_column!], distinct: Boolean): Int!
-  max: eventPassOrder_max_fields
-  min: eventPassOrder_min_fields
-  stddev: eventPassOrder_stddev_fields
-  stddev_pop: eventPassOrder_stddev_pop_fields
-  stddev_samp: eventPassOrder_stddev_samp_fields
-  sum: eventPassOrder_sum_fields
-  var_pop: eventPassOrder_var_pop_fields
-  var_samp: eventPassOrder_var_samp_fields
-  variance: eventPassOrder_variance_fields
-}
-
-"""
-order by aggregate values of table "eventPassOrder"
-"""
-input eventPassOrder_aggregate_order_by {
-  avg: eventPassOrder_avg_order_by
-  count: order_by
-  max: eventPassOrder_max_order_by
-  min: eventPassOrder_min_order_by
-  stddev: eventPassOrder_stddev_order_by
-  stddev_pop: eventPassOrder_stddev_pop_order_by
-  stddev_samp: eventPassOrder_stddev_samp_order_by
-  sum: eventPassOrder_sum_order_by
-  var_pop: eventPassOrder_var_pop_order_by
-  var_samp: eventPassOrder_var_samp_order_by
-  variance: eventPassOrder_variance_order_by
-}
-
-"""aggregate avg on columns"""
-type eventPassOrder_avg_fields {
-  quantity: Float
-}
-
-"""
-order by avg() on columns of table "eventPassOrder"
-"""
-input eventPassOrder_avg_order_by {
-  quantity: order_by
-}
-
-"""
-Boolean expression to filter rows from the table "eventPassOrder". All fields are combined with a logical 'AND'.
-"""
-input eventPassOrder_bool_exp {
-  _and: [eventPassOrder_bool_exp!]
-  _not: eventPassOrder_bool_exp
-  _or: [eventPassOrder_bool_exp!]
-  account: account_bool_exp
-  accountId: uuid_comparison_exp
-  created_at: timestamptz_comparison_exp
-  eventPassId: String_comparison_exp
-  eventPassNftContract: eventPassNftContract_bool_exp
-  eventPassPricing: eventPassPricing_bool_exp
-  id: uuid_comparison_exp
-  quantity: Int_comparison_exp
-  status: orderStatus_enum_comparison_exp
-  stripeCheckoutSessionId: String_comparison_exp
-  updated_at: timestamptz_comparison_exp
-}
-
-"""aggregate max on columns"""
-type eventPassOrder_max_fields {
-  accountId: uuid
-  created_at: timestamptz
-  eventPassId: String
-  id: uuid
-  quantity: Int
-  stripeCheckoutSessionId: String
-  updated_at: timestamptz
-}
-
-"""
-order by max() on columns of table "eventPassOrder"
-"""
-input eventPassOrder_max_order_by {
-  accountId: order_by
-  created_at: order_by
-  eventPassId: order_by
-  id: order_by
-  quantity: order_by
-  stripeCheckoutSessionId: order_by
-  updated_at: order_by
-}
-
-"""aggregate min on columns"""
-type eventPassOrder_min_fields {
-  accountId: uuid
-  created_at: timestamptz
-  eventPassId: String
-  id: uuid
-  quantity: Int
-  stripeCheckoutSessionId: String
-  updated_at: timestamptz
-}
-
-"""
-order by min() on columns of table "eventPassOrder"
-"""
-input eventPassOrder_min_order_by {
-  accountId: order_by
-  created_at: order_by
-  eventPassId: order_by
-  id: order_by
-  quantity: order_by
-  stripeCheckoutSessionId: order_by
-  updated_at: order_by
-}
-
-"""Ordering options when selecting data from "eventPassOrder"."""
-input eventPassOrder_order_by {
-  account: account_order_by
-  accountId: order_by
-  created_at: order_by
-  eventPassId: order_by
-  eventPassNftContract: eventPassNftContract_order_by
-  eventPassPricing: eventPassPricing_order_by
-  id: order_by
-  quantity: order_by
-  status: order_by
-  stripeCheckoutSessionId: order_by
-  updated_at: order_by
-}
-
-"""
-select columns of table "eventPassOrder"
-"""
-enum eventPassOrder_select_column {
-  """column name"""
-  accountId
-
-  """column name"""
-  created_at
-
-  """column name"""
-  eventPassId
-
-  """column name"""
-  id
-
-  """column name"""
-  quantity
-
-  """column name"""
-  status
-
-  """column name"""
-  stripeCheckoutSessionId
-
-  """column name"""
-  updated_at
-}
-
-"""aggregate stddev on columns"""
-type eventPassOrder_stddev_fields {
-  quantity: Float
-}
-
-"""
-order by stddev() on columns of table "eventPassOrder"
-"""
-input eventPassOrder_stddev_order_by {
-  quantity: order_by
-}
-
-"""aggregate stddev_pop on columns"""
-type eventPassOrder_stddev_pop_fields {
-  quantity: Float
-}
-
-"""
-order by stddev_pop() on columns of table "eventPassOrder"
-"""
-input eventPassOrder_stddev_pop_order_by {
-  quantity: order_by
-}
-
-"""aggregate stddev_samp on columns"""
-type eventPassOrder_stddev_samp_fields {
-  quantity: Float
-}
-
-"""
-order by stddev_samp() on columns of table "eventPassOrder"
-"""
-input eventPassOrder_stddev_samp_order_by {
-  quantity: order_by
-}
-
-"""
-Streaming cursor of the table "eventPassOrder"
-"""
-input eventPassOrder_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: eventPassOrder_stream_cursor_value_input!
-
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input eventPassOrder_stream_cursor_value_input {
-  accountId: uuid
-  created_at: timestamptz
-  eventPassId: String
-  id: uuid
-  quantity: Int
-  status: orderStatus_enum
-  stripeCheckoutSessionId: String
-  updated_at: timestamptz
-}
-
-"""aggregate sum on columns"""
-type eventPassOrder_sum_fields {
-  quantity: Int
-}
-
-"""
-order by sum() on columns of table "eventPassOrder"
-"""
-input eventPassOrder_sum_order_by {
-  quantity: order_by
-}
-
-"""aggregate var_pop on columns"""
-type eventPassOrder_var_pop_fields {
-  quantity: Float
-}
-
-"""
-order by var_pop() on columns of table "eventPassOrder"
-"""
-input eventPassOrder_var_pop_order_by {
-  quantity: order_by
-}
-
-"""aggregate var_samp on columns"""
-type eventPassOrder_var_samp_fields {
-  quantity: Float
-}
-
-"""
-order by var_samp() on columns of table "eventPassOrder"
-"""
-input eventPassOrder_var_samp_order_by {
-  quantity: order_by
-}
-
-"""aggregate variance on columns"""
-type eventPassOrder_variance_fields {
-  quantity: Float
-}
-
-"""
-order by variance() on columns of table "eventPassOrder"
-"""
-input eventPassOrder_variance_order_by {
-  quantity: order_by
-}
-
-"""
-Pending Order with as quantity for Event Pass (linked to Hygraph model EventPass) and associated to an Account. 
-  Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users.
-"""
-type eventPassPendingOrder {
-  """An object relationship"""
-  account: account
-  accountId: uuid!
-  created_at: timestamptz!
-  eventPass(
-    """
-    Defines which locales should be returned.
-    
-    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
-    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
-    
-    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
-    """
-    locales: [Locale!]! = [en]
-    stage: Stage! = PUBLISHED
-  ): EventPass
-  eventPassId: String!
-
-  """An object relationship"""
-  eventPassPricing: eventPassPricing
-  id: uuid!
-  quantity: Int!
-}
-
-"""
-Boolean expression to filter rows from the table "eventPassPendingOrder". All fields are combined with a logical 'AND'.
-"""
-input eventPassPendingOrder_bool_exp {
-  _and: [eventPassPendingOrder_bool_exp!]
-  _not: eventPassPendingOrder_bool_exp
-  _or: [eventPassPendingOrder_bool_exp!]
-  account: account_bool_exp
-  accountId: uuid_comparison_exp
-  created_at: timestamptz_comparison_exp
-  eventPassId: String_comparison_exp
-  eventPassPricing: eventPassPricing_bool_exp
-  id: uuid_comparison_exp
-  quantity: Int_comparison_exp
-}
-
-"""
-unique or primary key constraints on table "eventPassPendingOrder"
-"""
-enum eventPassPendingOrder_constraint {
-  """
-  unique or primary key constraint on columns "eventPassId", "accountId"
-  """
-  eventPassPendingOrder_eventPassId_accountId_key
-
-  """
-  unique or primary key constraint on columns "id"
-  """
-  eventPassPendingOrder_pkey
-}
-
-"""
-input type for incrementing numeric columns in table "eventPassPendingOrder"
-"""
-input eventPassPendingOrder_inc_input {
-  quantity: Int
-}
-
-"""
-input type for inserting data into table "eventPassPendingOrder"
-"""
-input eventPassPendingOrder_insert_input {
-  eventPassId: String
-  quantity: Int
-}
-
-"""
-response of any mutation on the table "eventPassPendingOrder"
-"""
-type eventPassPendingOrder_mutation_response {
-  """number of rows affected by the mutation"""
-  affected_rows: Int!
-
-  """data from the rows affected by the mutation"""
-  returning: [eventPassPendingOrder!]!
-}
-
-"""
-on_conflict condition type for table "eventPassPendingOrder"
-"""
-input eventPassPendingOrder_on_conflict {
-  constraint: eventPassPendingOrder_constraint!
-  update_columns: [eventPassPendingOrder_update_column!]! = []
-  where: eventPassPendingOrder_bool_exp
-}
-
-"""Ordering options when selecting data from "eventPassPendingOrder"."""
-input eventPassPendingOrder_order_by {
-  account: account_order_by
-  accountId: order_by
-  created_at: order_by
-  eventPassId: order_by
-  eventPassPricing: eventPassPricing_order_by
-  id: order_by
-  quantity: order_by
-}
-
-"""primary key columns input for table: eventPassPendingOrder"""
-input eventPassPendingOrder_pk_columns_input {
-  id: uuid!
-}
-
-"""
-select columns of table "eventPassPendingOrder"
-"""
-enum eventPassPendingOrder_select_column {
-  """column name"""
-  accountId
-
-  """column name"""
-  created_at
-
-  """column name"""
-  eventPassId
-
-  """column name"""
-  id
-
-  """column name"""
-  quantity
-}
-
-"""
-input type for updating data in table "eventPassPendingOrder"
-"""
-input eventPassPendingOrder_set_input {
-  quantity: Int
-}
-
-"""
-Streaming cursor of the table "eventPassPendingOrder"
-"""
-input eventPassPendingOrder_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: eventPassPendingOrder_stream_cursor_value_input!
-
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input eventPassPendingOrder_stream_cursor_value_input {
-  accountId: uuid
-  created_at: timestamptz
-  eventPassId: String
-  id: uuid
-  quantity: Int
-}
-
-"""
-update columns of table "eventPassPendingOrder"
-"""
-enum eventPassPendingOrder_update_column {
-  """column name"""
-  quantity
-}
-
-input eventPassPendingOrder_updates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: eventPassPendingOrder_inc_input
-
-  """sets the columns of the filtered rows to the given values"""
-  _set: eventPassPendingOrder_set_input
-
-  """filter the rows which have to be updated"""
-  where: eventPassPendingOrder_bool_exp!
-}
-
-"""
-The EventPassPricing table stores pricing information related to each Event Pass. It includes the price amount, the currency in which the price is denoted, and the maximum quantity that can be ordered both overall and per user. Each row in the table represents a unique combination of these attributes for a specific Event Pass. This table is key in managing the sales and availability of Event Passes.
-"""
-type eventPassPricing {
-  eventPassId: String!
-  maxAmount: Int!
-  maxAmountPerUser: Int
-  priceAmount: Int!
-  priceCurrency: currency_enum!
-  timeBeforeDelete: Int!
-}
-
-"""
-Boolean expression to filter rows from the table "eventPassPricing". All fields are combined with a logical 'AND'.
-"""
-input eventPassPricing_bool_exp {
-  _and: [eventPassPricing_bool_exp!]
-  _not: eventPassPricing_bool_exp
-  _or: [eventPassPricing_bool_exp!]
-  eventPassId: String_comparison_exp
-  maxAmount: Int_comparison_exp
-  maxAmountPerUser: Int_comparison_exp
-  priceAmount: Int_comparison_exp
-  priceCurrency: currency_enum_comparison_exp
-  timeBeforeDelete: Int_comparison_exp
-}
-
-"""Ordering options when selecting data from "eventPassPricing"."""
-input eventPassPricing_order_by {
-  eventPassId: order_by
-  maxAmount: order_by
-  maxAmountPerUser: order_by
-  priceAmount: order_by
-  priceCurrency: order_by
-  timeBeforeDelete: order_by
-}
-
-"""
-select columns of table "eventPassPricing"
-"""
-enum eventPassPricing_select_column {
-  """column name"""
-  eventPassId
-
-  """column name"""
-  maxAmount
-
-  """column name"""
-  maxAmountPerUser
-
-  """column name"""
-  priceAmount
-
-  """column name"""
-  priceCurrency
-
-  """column name"""
-  timeBeforeDelete
-}
-
-"""
-Streaming cursor of the table "eventPassPricing"
-"""
-input eventPassPricing_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: eventPassPricing_stream_cursor_value_input!
-
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input eventPassPricing_stream_cursor_value_input {
-  eventPassId: String
-  maxAmount: Int
-  maxAmountPerUser: Int
-  priceAmount: Int
-  priceCurrency: currency_enum
-  timeBeforeDelete: Int
+input eventStatus_enum_comparison_exp {
+  _eq: eventStatus_enum
+  _in: [eventStatus_enum!]
+  _is_null: Boolean
+  _neq: eventStatus_enum
+  _nin: [eventStatus_enum!]
 }
 
 """
@@ -9828,20 +9352,20 @@ columns and relationships of "kyc"
 """
 type kyc {
   """Unique identifier for the applicant provided by Sumsub."""
-  applicantId: String!
+  applicantId: String
 
   """
   The date and time when the applicant was created in Sumsub. Stored in UTC timestamp.
   """
   createDate: timestamptz!
 
-  """UUID referencing to the user ID in the existing accounts table."""
+  """UUID referencing the user ID in the existing accounts table."""
   externalUserId: uuid!
 
-  """Level of KYC verification, which refers to kycLevelName."""
+  """Level of KYC verification, referring to kycLevelName."""
   levelName: kycLevelName_enum
 
-  """Status of the applicant’s review in Sumsub, which refers to kycStatus."""
+  """Status of the applicant’s review in Sumsub, referring to kycStatus."""
   reviewStatus: kycStatus_enum
 
   """Timestamp automatically updated whenever the kyc row changes."""
@@ -9953,13 +9477,13 @@ input kyc_stream_cursor_value_input {
   """
   createDate: timestamptz
 
-  """UUID referencing to the user ID in the existing accounts table."""
+  """UUID referencing the user ID in the existing accounts table."""
   externalUserId: uuid
 
-  """Level of KYC verification, which refers to kycLevelName."""
+  """Level of KYC verification, referring to kycLevelName."""
   levelName: kycLevelName_enum
 
-  """Status of the applicant’s review in Sumsub, which refers to kycStatus."""
+  """Status of the applicant’s review in Sumsub, referring to kycStatus."""
   reviewStatus: kycStatus_enum
 
   """Timestamp automatically updated whenever the kyc row changes."""
@@ -10129,19 +9653,6 @@ type mutation_root {
   ): ScheduledRelease
 
   """
-  delete data from the table: "eventPassPendingOrder"
-  """
-  delete_eventPassPendingOrder(
-    """filter the rows which have to be deleted"""
-    where: eventPassPendingOrder_bool_exp!
-  ): eventPassPendingOrder_mutation_response
-
-  """
-  delete single row from the table: "eventPassPendingOrder"
-  """
-  delete_eventPassPendingOrder_by_pk(id: uuid!): eventPassPendingOrder
-
-  """
   delete data from the table: "follow"
   """
   delete_follow(
@@ -10165,34 +9676,25 @@ type mutation_root {
   ): follow
 
   """
-  delete data from the table: "roleAssignments"
+  delete data from the table: "pendingOrder"
   """
-  delete_roleAssignments(
+  delete_pendingOrder(
     """filter the rows which have to be deleted"""
-    where: roleAssignments_bool_exp!
-  ): roleAssignments_mutation_response
+    where: pendingOrder_bool_exp!
+  ): pendingOrder_mutation_response
 
   """
-  insert data into the table: "eventPassPendingOrder"
+  delete single row from the table: "pendingOrder"
   """
-  insert_eventPassPendingOrder(
-    """the rows to be inserted"""
-    objects: [eventPassPendingOrder_insert_input!]!
-
-    """upsert condition"""
-    on_conflict: eventPassPendingOrder_on_conflict
-  ): eventPassPendingOrder_mutation_response
+  delete_pendingOrder_by_pk(id: uuid!): pendingOrder
 
   """
-  insert a single row into the table: "eventPassPendingOrder"
+  delete data from the table: "roleAssignment"
   """
-  insert_eventPassPendingOrder_one(
-    """the row to be inserted"""
-    object: eventPassPendingOrder_insert_input!
-
-    """upsert condition"""
-    on_conflict: eventPassPendingOrder_on_conflict
-  ): eventPassPendingOrder
+  delete_roleAssignment(
+    """filter the rows which have to be deleted"""
+    where: roleAssignment_bool_exp!
+  ): roleAssignment_mutation_response
 
   """
   insert data into the table: "follow"
@@ -10215,6 +9717,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: follow_on_conflict
   ): follow
+
+  """
+  insert data into the table: "pendingOrder"
+  """
+  insert_pendingOrder(
+    """the rows to be inserted"""
+    objects: [pendingOrder_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: pendingOrder_on_conflict
+  ): pendingOrder_mutation_response
+
+  """
+  insert a single row into the table: "pendingOrder"
+  """
+  insert_pendingOrder_one(
+    """the row to be inserted"""
+    object: pendingOrder_insert_input!
+
+    """upsert condition"""
+    on_conflict: pendingOrder_on_conflict
+  ): pendingOrder
 
   """Publish one asset"""
   publishAsset(
@@ -11255,38 +10779,38 @@ type mutation_root {
   updateScheduledRelease(data: ScheduledReleaseUpdateInput!, where: ScheduledReleaseWhereUniqueInput!): ScheduledRelease
 
   """
-  update data of the table: "eventPassPendingOrder"
+  update data of the table: "pendingOrder"
   """
-  update_eventPassPendingOrder(
+  update_pendingOrder(
     """increments the numeric columns with given value of the filtered values"""
-    _inc: eventPassPendingOrder_inc_input
+    _inc: pendingOrder_inc_input
 
     """sets the columns of the filtered rows to the given values"""
-    _set: eventPassPendingOrder_set_input
+    _set: pendingOrder_set_input
 
     """filter the rows which have to be updated"""
-    where: eventPassPendingOrder_bool_exp!
-  ): eventPassPendingOrder_mutation_response
+    where: pendingOrder_bool_exp!
+  ): pendingOrder_mutation_response
 
   """
-  update single row of the table: "eventPassPendingOrder"
+  update single row of the table: "pendingOrder"
   """
-  update_eventPassPendingOrder_by_pk(
+  update_pendingOrder_by_pk(
     """increments the numeric columns with given value of the filtered values"""
-    _inc: eventPassPendingOrder_inc_input
+    _inc: pendingOrder_inc_input
 
     """sets the columns of the filtered rows to the given values"""
-    _set: eventPassPendingOrder_set_input
-    pk_columns: eventPassPendingOrder_pk_columns_input!
-  ): eventPassPendingOrder
+    _set: pendingOrder_set_input
+    pk_columns: pendingOrder_pk_columns_input!
+  ): pendingOrder
 
   """
-  update multiples rows of table: "eventPassPendingOrder"
+  update multiples rows of table: "pendingOrder"
   """
-  update_eventPassPendingOrder_many(
+  update_pendingOrder_many(
     """updates to execute, in order"""
-    updates: [eventPassPendingOrder_updates!]!
-  ): [eventPassPendingOrder_mutation_response]
+    updates: [pendingOrder_updates!]!
+  ): [pendingOrder_mutation_response]
 
   """Upsert one asset"""
   upsertAsset(upsert: AssetUpsertInput!, where: AssetWhereUniqueInput!): Asset
@@ -11302,6 +10826,62 @@ type mutation_root {
 
   """Upsert one organizer"""
   upsertOrganizer(upsert: OrganizerUpsertInput!, where: OrganizerWhereUniqueInput!): Organizer
+}
+
+"""
+Order a quantity of Event Pass or Pack (linked to Hygraph model EventPass or Pack) and associated to an Account
+"""
+type order {
+  """An object relationship"""
+  account: account
+  accountId: uuid!
+  created_at: timestamptz!
+  eventPass(
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+  ): EventPass
+  eventPassId: String
+
+  """An object relationship"""
+  eventPassNftContract: eventPassNftContract
+  id: uuid!
+  pack(
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+  ): EventPass
+
+  """An object relationship"""
+  packAmount: passAmount
+  packId: String
+
+  """An object relationship"""
+  packPricing: passPricing
+
+  """An object relationship"""
+  passAmount: passAmount
+
+  """An object relationship"""
+  passPricing: passPricing
+  quantity: Int!
+  status: orderStatus_enum!
+  stripeCheckoutSessionId: String
+  updated_at: timestamptz!
 }
 
 enum orderStatus_enum {
@@ -11325,6 +10905,95 @@ input orderStatus_enum_comparison_exp {
   _nin: [orderStatus_enum!]
 }
 
+"""
+aggregated selection of "order"
+"""
+type order_aggregate {
+  aggregate: order_aggregate_fields
+  nodes: [order!]!
+}
+
+input order_aggregate_bool_exp {
+  count: order_aggregate_bool_exp_count
+}
+
+input order_aggregate_bool_exp_count {
+  arguments: [order_select_column!]
+  distinct: Boolean
+  filter: order_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "order"
+"""
+type order_aggregate_fields {
+  avg: order_avg_fields
+  count(columns: [order_select_column!], distinct: Boolean): Int!
+  max: order_max_fields
+  min: order_min_fields
+  stddev: order_stddev_fields
+  stddev_pop: order_stddev_pop_fields
+  stddev_samp: order_stddev_samp_fields
+  sum: order_sum_fields
+  var_pop: order_var_pop_fields
+  var_samp: order_var_samp_fields
+  variance: order_variance_fields
+}
+
+"""
+order by aggregate values of table "order"
+"""
+input order_aggregate_order_by {
+  avg: order_avg_order_by
+  count: order_by
+  max: order_max_order_by
+  min: order_min_order_by
+  stddev: order_stddev_order_by
+  stddev_pop: order_stddev_pop_order_by
+  stddev_samp: order_stddev_samp_order_by
+  sum: order_sum_order_by
+  var_pop: order_var_pop_order_by
+  var_samp: order_var_samp_order_by
+  variance: order_variance_order_by
+}
+
+"""aggregate avg on columns"""
+type order_avg_fields {
+  quantity: Float
+}
+
+"""
+order by avg() on columns of table "order"
+"""
+input order_avg_order_by {
+  quantity: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "order". All fields are combined with a logical 'AND'.
+"""
+input order_bool_exp {
+  _and: [order_bool_exp!]
+  _not: order_bool_exp
+  _or: [order_bool_exp!]
+  account: account_bool_exp
+  accountId: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  eventPassId: String_comparison_exp
+  eventPassNftContract: eventPassNftContract_bool_exp
+  id: uuid_comparison_exp
+  packAmount: passAmount_bool_exp
+  packId: String_comparison_exp
+  packPricing: passPricing_bool_exp
+  passAmount: passAmount_bool_exp
+  passPricing: passPricing_bool_exp
+  quantity: Int_comparison_exp
+  status: orderStatus_enum_comparison_exp
+  stripeCheckoutSessionId: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
 """column ordering options"""
 enum order_by {
   """in ascending order, nulls last"""
@@ -11344,6 +11013,630 @@ enum order_by {
 
   """in descending order, nulls last"""
   desc_nulls_last
+}
+
+"""aggregate max on columns"""
+type order_max_fields {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  packId: String
+  quantity: Int
+  stripeCheckoutSessionId: String
+  updated_at: timestamptz
+}
+
+"""
+order by max() on columns of table "order"
+"""
+input order_max_order_by {
+  accountId: order_by
+  created_at: order_by
+  eventPassId: order_by
+  id: order_by
+  packId: order_by
+  quantity: order_by
+  stripeCheckoutSessionId: order_by
+  updated_at: order_by
+}
+
+"""aggregate min on columns"""
+type order_min_fields {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  packId: String
+  quantity: Int
+  stripeCheckoutSessionId: String
+  updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "order"
+"""
+input order_min_order_by {
+  accountId: order_by
+  created_at: order_by
+  eventPassId: order_by
+  id: order_by
+  packId: order_by
+  quantity: order_by
+  stripeCheckoutSessionId: order_by
+  updated_at: order_by
+}
+
+"""Ordering options when selecting data from "order"."""
+input order_order_by {
+  account: account_order_by
+  accountId: order_by
+  created_at: order_by
+  eventPassId: order_by
+  eventPassNftContract: eventPassNftContract_order_by
+  id: order_by
+  packAmount: passAmount_order_by
+  packId: order_by
+  packPricing: passPricing_order_by
+  passAmount: passAmount_order_by
+  passPricing: passPricing_order_by
+  quantity: order_by
+  status: order_by
+  stripeCheckoutSessionId: order_by
+  updated_at: order_by
+}
+
+"""
+select columns of table "order"
+"""
+enum order_select_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  id
+
+  """column name"""
+  packId
+
+  """column name"""
+  quantity
+
+  """column name"""
+  status
+
+  """column name"""
+  stripeCheckoutSessionId
+
+  """column name"""
+  updated_at
+}
+
+"""aggregate stddev on columns"""
+type order_stddev_fields {
+  quantity: Float
+}
+
+"""
+order by stddev() on columns of table "order"
+"""
+input order_stddev_order_by {
+  quantity: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type order_stddev_pop_fields {
+  quantity: Float
+}
+
+"""
+order by stddev_pop() on columns of table "order"
+"""
+input order_stddev_pop_order_by {
+  quantity: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type order_stddev_samp_fields {
+  quantity: Float
+}
+
+"""
+order by stddev_samp() on columns of table "order"
+"""
+input order_stddev_samp_order_by {
+  quantity: order_by
+}
+
+"""
+Streaming cursor of the table "order"
+"""
+input order_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: order_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input order_stream_cursor_value_input {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  packId: String
+  quantity: Int
+  status: orderStatus_enum
+  stripeCheckoutSessionId: String
+  updated_at: timestamptz
+}
+
+"""aggregate sum on columns"""
+type order_sum_fields {
+  quantity: Int
+}
+
+"""
+order by sum() on columns of table "order"
+"""
+input order_sum_order_by {
+  quantity: order_by
+}
+
+"""aggregate var_pop on columns"""
+type order_var_pop_fields {
+  quantity: Float
+}
+
+"""
+order by var_pop() on columns of table "order"
+"""
+input order_var_pop_order_by {
+  quantity: order_by
+}
+
+"""aggregate var_samp on columns"""
+type order_var_samp_fields {
+  quantity: Float
+}
+
+"""
+order by var_samp() on columns of table "order"
+"""
+input order_var_samp_order_by {
+  quantity: order_by
+}
+
+"""aggregate variance on columns"""
+type order_variance_fields {
+  quantity: Float
+}
+
+"""
+order by variance() on columns of table "order"
+"""
+input order_variance_order_by {
+  quantity: order_by
+}
+
+"""Hold the sums for the Pack Orders"""
+type packOrderSums {
+  packId: String!
+  totalReserved: Int!
+}
+
+"""
+Boolean expression to filter rows from the table "packOrderSums". All fields are combined with a logical 'AND'.
+"""
+input packOrderSums_bool_exp {
+  _and: [packOrderSums_bool_exp!]
+  _not: packOrderSums_bool_exp
+  _or: [packOrderSums_bool_exp!]
+  packId: String_comparison_exp
+  totalReserved: Int_comparison_exp
+}
+
+"""Ordering options when selecting data from "packOrderSums"."""
+input packOrderSums_order_by {
+  packId: order_by
+  totalReserved: order_by
+}
+
+"""
+select columns of table "packOrderSums"
+"""
+enum packOrderSums_select_column {
+  """column name"""
+  packId
+
+  """column name"""
+  totalReserved
+}
+
+"""
+Streaming cursor of the table "packOrderSums"
+"""
+input packOrderSums_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: packOrderSums_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input packOrderSums_stream_cursor_value_input {
+  packId: String
+  totalReserved: Int
+}
+
+"""
+The passAmount table stores quantity information related to each eventPass or Pack
+"""
+type passAmount {
+  eventPassId: String
+  maxAmount: Int!
+  maxAmountPerUser: Int
+  packId: String
+  timeBeforeDelete: Int!
+}
+
+"""
+Boolean expression to filter rows from the table "passAmount". All fields are combined with a logical 'AND'.
+"""
+input passAmount_bool_exp {
+  _and: [passAmount_bool_exp!]
+  _not: passAmount_bool_exp
+  _or: [passAmount_bool_exp!]
+  eventPassId: String_comparison_exp
+  maxAmount: Int_comparison_exp
+  maxAmountPerUser: Int_comparison_exp
+  packId: String_comparison_exp
+  timeBeforeDelete: Int_comparison_exp
+}
+
+"""Ordering options when selecting data from "passAmount"."""
+input passAmount_order_by {
+  eventPassId: order_by
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  packId: order_by
+  timeBeforeDelete: order_by
+}
+
+"""
+select columns of table "passAmount"
+"""
+enum passAmount_select_column {
+  """column name"""
+  eventPassId
+
+  """column name"""
+  maxAmount
+
+  """column name"""
+  maxAmountPerUser
+
+  """column name"""
+  packId
+
+  """column name"""
+  timeBeforeDelete
+}
+
+"""
+Streaming cursor of the table "passAmount"
+"""
+input passAmount_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: passAmount_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input passAmount_stream_cursor_value_input {
+  eventPassId: String
+  maxAmount: Int
+  maxAmountPerUser: Int
+  packId: String
+  timeBeforeDelete: Int
+}
+
+"""
+The passPricing table stores pricing information for an eventPass or Pack.
+"""
+type passPricing {
+  amount: Int!
+  currency: currency_enum!
+  eventPassId: String
+  packId: String
+}
+
+"""
+Boolean expression to filter rows from the table "passPricing". All fields are combined with a logical 'AND'.
+"""
+input passPricing_bool_exp {
+  _and: [passPricing_bool_exp!]
+  _not: passPricing_bool_exp
+  _or: [passPricing_bool_exp!]
+  amount: Int_comparison_exp
+  currency: currency_enum_comparison_exp
+  eventPassId: String_comparison_exp
+  packId: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "passPricing"."""
+input passPricing_order_by {
+  amount: order_by
+  currency: order_by
+  eventPassId: order_by
+  packId: order_by
+}
+
+"""
+select columns of table "passPricing"
+"""
+enum passPricing_select_column {
+  """column name"""
+  amount
+
+  """column name"""
+  currency
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  packId
+}
+
+"""
+Streaming cursor of the table "passPricing"
+"""
+input passPricing_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: passPricing_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input passPricing_stream_cursor_value_input {
+  amount: Int
+  currency: currency_enum
+  eventPassId: String
+  packId: String
+}
+
+"""
+Order a quantity of Event Pass or Pack (linked to Hygraph model EventPass or Pack) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users.
+"""
+type pendingOrder {
+  """An object relationship"""
+  account: account
+  accountId: uuid!
+  created_at: timestamptz!
+  eventPass(
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+  ): EventPass
+  eventPassId: String
+
+  """An object relationship"""
+  eventPassNftContract: eventPassNftContract
+  id: uuid!
+  pack(
+    """
+    Defines which locales should be returned.
+    
+    Note that `EventPass` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+  ): EventPass
+
+  """An object relationship"""
+  packAmount: passAmount
+  packId: String
+
+  """An object relationship"""
+  packPricing: passPricing
+
+  """An object relationship"""
+  passAmount: passAmount
+
+  """An object relationship"""
+  passPricing: passPricing
+  quantity: Int!
+}
+
+"""
+Boolean expression to filter rows from the table "pendingOrder". All fields are combined with a logical 'AND'.
+"""
+input pendingOrder_bool_exp {
+  _and: [pendingOrder_bool_exp!]
+  _not: pendingOrder_bool_exp
+  _or: [pendingOrder_bool_exp!]
+  account: account_bool_exp
+  accountId: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  eventPassId: String_comparison_exp
+  eventPassNftContract: eventPassNftContract_bool_exp
+  id: uuid_comparison_exp
+  packAmount: passAmount_bool_exp
+  packId: String_comparison_exp
+  packPricing: passPricing_bool_exp
+  passAmount: passAmount_bool_exp
+  passPricing: passPricing_bool_exp
+  quantity: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "pendingOrder"
+"""
+enum pendingOrder_constraint {
+  """
+  unique or primary key constraint on columns "eventPassId", "accountId"
+  """
+  idx_pendingorder_eventpassid_accountid
+
+  """
+  unique or primary key constraint on columns "accountId", "packId"
+  """
+  idx_pendingorder_packid_accountid
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  pendingOrder_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "pendingOrder"
+"""
+input pendingOrder_inc_input {
+  quantity: Int
+}
+
+"""
+input type for inserting data into table "pendingOrder"
+"""
+input pendingOrder_insert_input {
+  eventPassId: String
+  packId: String
+  quantity: Int
+}
+
+"""
+response of any mutation on the table "pendingOrder"
+"""
+type pendingOrder_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [pendingOrder!]!
+}
+
+"""
+on_conflict condition type for table "pendingOrder"
+"""
+input pendingOrder_on_conflict {
+  constraint: pendingOrder_constraint!
+  update_columns: [pendingOrder_update_column!]! = []
+  where: pendingOrder_bool_exp
+}
+
+"""Ordering options when selecting data from "pendingOrder"."""
+input pendingOrder_order_by {
+  account: account_order_by
+  accountId: order_by
+  created_at: order_by
+  eventPassId: order_by
+  eventPassNftContract: eventPassNftContract_order_by
+  id: order_by
+  packAmount: passAmount_order_by
+  packId: order_by
+  packPricing: passPricing_order_by
+  passAmount: passAmount_order_by
+  passPricing: passPricing_order_by
+  quantity: order_by
+}
+
+"""primary key columns input for table: pendingOrder"""
+input pendingOrder_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "pendingOrder"
+"""
+enum pendingOrder_select_column {
+  """column name"""
+  accountId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  id
+
+  """column name"""
+  packId
+
+  """column name"""
+  quantity
+}
+
+"""
+input type for updating data in table "pendingOrder"
+"""
+input pendingOrder_set_input {
+  quantity: Int
+}
+
+"""
+Streaming cursor of the table "pendingOrder"
+"""
+input pendingOrder_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: pendingOrder_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input pendingOrder_stream_cursor_value_input {
+  accountId: uuid
+  created_at: timestamptz
+  eventPassId: String
+  id: uuid
+  packId: String
+  quantity: Int
+}
+
+"""
+update columns of table "pendingOrder"
+"""
+enum pendingOrder_update_column {
+  """column name"""
+  quantity
+}
+
+input pendingOrder_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: pendingOrder_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: pendingOrder_set_input
+
+  """filter the rows which have to be updated"""
+  where: pendingOrder_bool_exp!
 }
 
 type query_root {
@@ -11550,26 +11843,6 @@ type query_root {
   eventPassNft_by_pk(id: uuid!): eventPassNft
 
   """
-  fetch data from the table: "eventPassOrder"
-  """
-  eventPassOrder(
-    """distinct select on columns"""
-    distinct_on: [eventPassOrder_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassOrder_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassOrder_bool_exp
-  ): [eventPassOrder!]!
-
-  """
   fetch data from the table: "eventPassOrderSums"
   """
   eventPassOrderSums(
@@ -11593,74 +11866,6 @@ type query_root {
   fetch data from the table: "eventPassOrderSums" using primary key columns
   """
   eventPassOrderSums_by_pk(eventPassId: String!): eventPassOrderSums
-
-  """
-  fetch aggregated fields from the table: "eventPassOrder"
-  """
-  eventPassOrder_aggregate(
-    """distinct select on columns"""
-    distinct_on: [eventPassOrder_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassOrder_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassOrder_bool_exp
-  ): eventPassOrder_aggregate!
-
-  """fetch data from the table: "eventPassOrder" using primary key columns"""
-  eventPassOrder_by_pk(id: uuid!): eventPassOrder
-
-  """
-  fetch data from the table: "eventPassPendingOrder"
-  """
-  eventPassPendingOrder(
-    """distinct select on columns"""
-    distinct_on: [eventPassPendingOrder_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassPendingOrder_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassPendingOrder_bool_exp
-  ): [eventPassPendingOrder!]!
-
-  """
-  fetch data from the table: "eventPassPendingOrder" using primary key columns
-  """
-  eventPassPendingOrder_by_pk(id: uuid!): eventPassPendingOrder
-
-  """
-  fetch data from the table: "eventPassPricing"
-  """
-  eventPassPricing(
-    """distinct select on columns"""
-    distinct_on: [eventPassPricing_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassPricing_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassPricing_bool_exp
-  ): [eventPassPricing!]!
 
   """Retrieve document version"""
   eventPassVersion(where: VersionWhereInput!): DocumentVersion
@@ -11857,7 +12062,7 @@ type query_root {
 
   """fetch data from the table: "kyc" using primary key columns"""
   kyc_by_pk(
-    """UUID referencing to the user ID in the existing accounts table."""
+    """UUID referencing the user ID in the existing accounts table."""
     externalUserId: uuid!
   ): kyc
 
@@ -11877,6 +12082,49 @@ type query_root {
     locales: [Locale!]! = [en]
     stage: Stage! = PUBLISHED
   ): Node
+
+  """
+  fetch data from the table: "order"
+  """
+  order(
+    """distinct select on columns"""
+    distinct_on: [order_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [order_order_by!]
+
+    """filter the rows returned"""
+    where: order_bool_exp
+  ): [order!]!
+
+  """
+  fetch aggregated fields from the table: "order"
+  """
+  order_aggregate(
+    """distinct select on columns"""
+    distinct_on: [order_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [order_order_by!]
+
+    """filter the rows returned"""
+    where: order_bool_exp
+  ): order_aggregate!
+
+  """fetch data from the table: "order" using primary key columns"""
+  order_by_pk(id: uuid!): order
 
   """Retrieve a single organizer"""
   organizer(
@@ -11941,11 +12189,11 @@ type query_root {
   ): OrganizerConnection!
 
   """
-  fetch data from the table: "roleAssignments"
+  fetch data from the table: "packOrderSums"
   """
-  roleAssignments(
+  packOrderSums(
     """distinct select on columns"""
-    distinct_on: [roleAssignments_select_column!]
+    distinct_on: [packOrderSums_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -11954,11 +12202,97 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [roleAssignments_order_by!]
+    order_by: [packOrderSums_order_by!]
 
     """filter the rows returned"""
-    where: roleAssignments_bool_exp
-  ): [roleAssignments!]!
+    where: packOrderSums_bool_exp
+  ): [packOrderSums!]!
+
+  """fetch data from the table: "packOrderSums" using primary key columns"""
+  packOrderSums_by_pk(packId: String!): packOrderSums
+
+  """
+  fetch data from the table: "passAmount"
+  """
+  passAmount(
+    """distinct select on columns"""
+    distinct_on: [passAmount_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passAmount_order_by!]
+
+    """filter the rows returned"""
+    where: passAmount_bool_exp
+  ): [passAmount!]!
+
+  """
+  fetch data from the table: "passPricing"
+  """
+  passPricing(
+    """distinct select on columns"""
+    distinct_on: [passPricing_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passPricing_order_by!]
+
+    """filter the rows returned"""
+    where: passPricing_bool_exp
+  ): [passPricing!]!
+
+  """
+  fetch data from the table: "pendingOrder"
+  """
+  pendingOrder(
+    """distinct select on columns"""
+    distinct_on: [pendingOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [pendingOrder_order_by!]
+
+    """filter the rows returned"""
+    where: pendingOrder_bool_exp
+  ): [pendingOrder!]!
+
+  """fetch data from the table: "pendingOrder" using primary key columns"""
+  pendingOrder_by_pk(id: uuid!): pendingOrder
+
+  """
+  fetch data from the table: "roleAssignment"
+  """
+  roleAssignment(
+    """distinct select on columns"""
+    distinct_on: [roleAssignment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roleAssignment_order_by!]
+
+    """filter the rows returned"""
+    where: roleAssignment_bool_exp
+  ): [roleAssignment!]!
 
   """Retrieve a single scheduledOperation"""
   scheduledOperation(
@@ -12171,7 +12505,7 @@ type query_root {
 """
 Table to assign roles to accounts, allowing a many-to-many relationship. Each account can have multiple roles and each role can be assigned to multiple accounts. This is part of the RBAC system integration.
 """
-type roleAssignments {
+type roleAssignment {
   accountId: uuid!
   created_at: timestamptz!
   eventId: String!
@@ -12191,28 +12525,28 @@ type roleAssignments {
     """
     locales: [Locale!]! = [en]
     stage: Stage! = PUBLISHED
-    where: OrganizerWhereUniqueInput_remote_rel_roleAssignmentsorganizer!
+    where: OrganizerWhereUniqueInput_remote_rel_roleAssignmentorganizer!
   ): Organizer
   organizerId: String!
   role: roles_enum!
 }
 
 """
-order by aggregate values of table "roleAssignments"
+order by aggregate values of table "roleAssignment"
 """
-input roleAssignments_aggregate_order_by {
+input roleAssignment_aggregate_order_by {
   count: order_by
-  max: roleAssignments_max_order_by
-  min: roleAssignments_min_order_by
+  max: roleAssignment_max_order_by
+  min: roleAssignment_min_order_by
 }
 
 """
-Boolean expression to filter rows from the table "roleAssignments". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "roleAssignment". All fields are combined with a logical 'AND'.
 """
-input roleAssignments_bool_exp {
-  _and: [roleAssignments_bool_exp!]
-  _not: roleAssignments_bool_exp
-  _or: [roleAssignments_bool_exp!]
+input roleAssignment_bool_exp {
+  _and: [roleAssignment_bool_exp!]
+  _not: roleAssignment_bool_exp
+  _or: [roleAssignment_bool_exp!]
   accountId: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
   eventId: String_comparison_exp
@@ -12224,9 +12558,9 @@ input roleAssignments_bool_exp {
 }
 
 """
-order by max() on columns of table "roleAssignments"
+order by max() on columns of table "roleAssignment"
 """
-input roleAssignments_max_order_by {
+input roleAssignment_max_order_by {
   accountId: order_by
   created_at: order_by
   eventId: order_by
@@ -12236,9 +12570,9 @@ input roleAssignments_max_order_by {
 }
 
 """
-order by min() on columns of table "roleAssignments"
+order by min() on columns of table "roleAssignment"
 """
-input roleAssignments_min_order_by {
+input roleAssignment_min_order_by {
   accountId: order_by
   created_at: order_by
   eventId: order_by
@@ -12248,18 +12582,18 @@ input roleAssignments_min_order_by {
 }
 
 """
-response of any mutation on the table "roleAssignments"
+response of any mutation on the table "roleAssignment"
 """
-type roleAssignments_mutation_response {
+type roleAssignment_mutation_response {
   """number of rows affected by the mutation"""
   affected_rows: Int!
 
   """data from the rows affected by the mutation"""
-  returning: [roleAssignments!]!
+  returning: [roleAssignment!]!
 }
 
-"""Ordering options when selecting data from "roleAssignments"."""
-input roleAssignments_order_by {
+"""Ordering options when selecting data from "roleAssignment"."""
+input roleAssignment_order_by {
   accountId: order_by
   created_at: order_by
   eventId: order_by
@@ -12271,9 +12605,9 @@ input roleAssignments_order_by {
 }
 
 """
-select columns of table "roleAssignments"
+select columns of table "roleAssignment"
 """
-enum roleAssignments_select_column {
+enum roleAssignment_select_column {
   """column name"""
   accountId
 
@@ -12297,18 +12631,18 @@ enum roleAssignments_select_column {
 }
 
 """
-Streaming cursor of the table "roleAssignments"
+Streaming cursor of the table "roleAssignment"
 """
-input roleAssignments_stream_cursor_input {
+input roleAssignment_stream_cursor_input {
   """Stream column input with initial value"""
-  initial_value: roleAssignments_stream_cursor_value_input!
+  initial_value: roleAssignment_stream_cursor_value_input!
 
   """cursor ordering"""
   ordering: cursor_ordering
 }
 
 """Initial value of the column from where the streaming should start"""
-input roleAssignments_stream_cursor_value_input {
+input roleAssignment_stream_cursor_value_input {
   accountId: uuid
   created_at: timestamptz
   eventId: String
@@ -12544,26 +12878,6 @@ type subscription_root {
   ): [eventPassNft!]!
 
   """
-  fetch data from the table: "eventPassOrder"
-  """
-  eventPassOrder(
-    """distinct select on columns"""
-    distinct_on: [eventPassOrder_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassOrder_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassOrder_bool_exp
-  ): [eventPassOrder!]!
-
-  """
   fetch data from the table: "eventPassOrderSums"
   """
   eventPassOrderSums(
@@ -12601,116 +12915,6 @@ type subscription_root {
     """filter the rows returned"""
     where: eventPassOrderSums_bool_exp
   ): [eventPassOrderSums!]!
-
-  """
-  fetch aggregated fields from the table: "eventPassOrder"
-  """
-  eventPassOrder_aggregate(
-    """distinct select on columns"""
-    distinct_on: [eventPassOrder_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassOrder_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassOrder_bool_exp
-  ): eventPassOrder_aggregate!
-
-  """fetch data from the table: "eventPassOrder" using primary key columns"""
-  eventPassOrder_by_pk(id: uuid!): eventPassOrder
-
-  """
-  fetch data from the table in a streaming manner: "eventPassOrder"
-  """
-  eventPassOrder_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [eventPassOrder_stream_cursor_input]!
-
-    """filter the rows returned"""
-    where: eventPassOrder_bool_exp
-  ): [eventPassOrder!]!
-
-  """
-  fetch data from the table: "eventPassPendingOrder"
-  """
-  eventPassPendingOrder(
-    """distinct select on columns"""
-    distinct_on: [eventPassPendingOrder_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassPendingOrder_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassPendingOrder_bool_exp
-  ): [eventPassPendingOrder!]!
-
-  """
-  fetch data from the table: "eventPassPendingOrder" using primary key columns
-  """
-  eventPassPendingOrder_by_pk(id: uuid!): eventPassPendingOrder
-
-  """
-  fetch data from the table in a streaming manner: "eventPassPendingOrder"
-  """
-  eventPassPendingOrder_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [eventPassPendingOrder_stream_cursor_input]!
-
-    """filter the rows returned"""
-    where: eventPassPendingOrder_bool_exp
-  ): [eventPassPendingOrder!]!
-
-  """
-  fetch data from the table: "eventPassPricing"
-  """
-  eventPassPricing(
-    """distinct select on columns"""
-    distinct_on: [eventPassPricing_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassPricing_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassPricing_bool_exp
-  ): [eventPassPricing!]!
-
-  """
-  fetch data from the table in a streaming manner: "eventPassPricing"
-  """
-  eventPassPricing_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [eventPassPricing_stream_cursor_input]!
-
-    """filter the rows returned"""
-    where: eventPassPricing_bool_exp
-  ): [eventPassPricing!]!
 
   """
   fetch data from the table: "follow"
@@ -12781,7 +12985,7 @@ type subscription_root {
 
   """fetch data from the table: "kyc" using primary key columns"""
   kyc_by_pk(
-    """UUID referencing to the user ID in the existing accounts table."""
+    """UUID referencing the user ID in the existing accounts table."""
     externalUserId: uuid!
   ): kyc
 
@@ -12800,11 +13004,11 @@ type subscription_root {
   ): [kyc!]!
 
   """
-  fetch data from the table: "roleAssignments"
+  fetch data from the table: "order"
   """
-  roleAssignments(
+  order(
     """distinct select on columns"""
-    distinct_on: [roleAssignments_select_column!]
+    distinct_on: [order_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -12813,25 +13017,224 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [roleAssignments_order_by!]
+    order_by: [order_order_by!]
 
     """filter the rows returned"""
-    where: roleAssignments_bool_exp
-  ): [roleAssignments!]!
+    where: order_bool_exp
+  ): [order!]!
 
   """
-  fetch data from the table in a streaming manner: "roleAssignments"
+  fetch aggregated fields from the table: "order"
   """
-  roleAssignments_stream(
+  order_aggregate(
+    """distinct select on columns"""
+    distinct_on: [order_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [order_order_by!]
+
+    """filter the rows returned"""
+    where: order_bool_exp
+  ): order_aggregate!
+
+  """fetch data from the table: "order" using primary key columns"""
+  order_by_pk(id: uuid!): order
+
+  """
+  fetch data from the table in a streaming manner: "order"
+  """
+  order_stream(
     """maximum number of rows returned in a single batch"""
     batch_size: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [roleAssignments_stream_cursor_input]!
+    cursor: [order_stream_cursor_input]!
 
     """filter the rows returned"""
-    where: roleAssignments_bool_exp
-  ): [roleAssignments!]!
+    where: order_bool_exp
+  ): [order!]!
+
+  """
+  fetch data from the table: "packOrderSums"
+  """
+  packOrderSums(
+    """distinct select on columns"""
+    distinct_on: [packOrderSums_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packOrderSums_order_by!]
+
+    """filter the rows returned"""
+    where: packOrderSums_bool_exp
+  ): [packOrderSums!]!
+
+  """fetch data from the table: "packOrderSums" using primary key columns"""
+  packOrderSums_by_pk(packId: String!): packOrderSums
+
+  """
+  fetch data from the table in a streaming manner: "packOrderSums"
+  """
+  packOrderSums_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [packOrderSums_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: packOrderSums_bool_exp
+  ): [packOrderSums!]!
+
+  """
+  fetch data from the table: "passAmount"
+  """
+  passAmount(
+    """distinct select on columns"""
+    distinct_on: [passAmount_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passAmount_order_by!]
+
+    """filter the rows returned"""
+    where: passAmount_bool_exp
+  ): [passAmount!]!
+
+  """
+  fetch data from the table in a streaming manner: "passAmount"
+  """
+  passAmount_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [passAmount_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: passAmount_bool_exp
+  ): [passAmount!]!
+
+  """
+  fetch data from the table: "passPricing"
+  """
+  passPricing(
+    """distinct select on columns"""
+    distinct_on: [passPricing_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passPricing_order_by!]
+
+    """filter the rows returned"""
+    where: passPricing_bool_exp
+  ): [passPricing!]!
+
+  """
+  fetch data from the table in a streaming manner: "passPricing"
+  """
+  passPricing_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [passPricing_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: passPricing_bool_exp
+  ): [passPricing!]!
+
+  """
+  fetch data from the table: "pendingOrder"
+  """
+  pendingOrder(
+    """distinct select on columns"""
+    distinct_on: [pendingOrder_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [pendingOrder_order_by!]
+
+    """filter the rows returned"""
+    where: pendingOrder_bool_exp
+  ): [pendingOrder!]!
+
+  """fetch data from the table: "pendingOrder" using primary key columns"""
+  pendingOrder_by_pk(id: uuid!): pendingOrder
+
+  """
+  fetch data from the table in a streaming manner: "pendingOrder"
+  """
+  pendingOrder_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [pendingOrder_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: pendingOrder_bool_exp
+  ): [pendingOrder!]!
+
+  """
+  fetch data from the table: "roleAssignment"
+  """
+  roleAssignment(
+    """distinct select on columns"""
+    distinct_on: [roleAssignment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [roleAssignment_order_by!]
+
+    """filter the rows returned"""
+    where: roleAssignment_bool_exp
+  ): [roleAssignment!]!
+
+  """
+  fetch data from the table in a streaming manner: "roleAssignment"
+  """
+  roleAssignment_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [roleAssignment_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: roleAssignment_bool_exp
+  ): [roleAssignment!]!
 
   """
   fetch data from the table: "stripeCustomer"
