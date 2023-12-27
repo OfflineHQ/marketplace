@@ -39,7 +39,7 @@ export async function updateEventPassCart({
         eventPassIds: [eventPassId],
       });
     } else
-      await userSdk.UpsertPendingOrder({
+      await userSdk.UpsertEventPassPendingOrder({
         object: {
           eventPassId,
           quantity,

@@ -1,0 +1,57 @@
+query GetPendingOrderForEventPass($eventPassId: String!) {
+  pendingOrder(where: { eventPassId: { _eq: $eventPassId } }) {
+    id
+    eventPassId
+    quantity
+    created_at
+  }
+}
+
+query GetPendingOrderForEventPasses($eventPassIds: [String!]) {
+  pendingOrder(where: { eventPassId: { _in: $eventPassIds } }) {
+    id
+    eventPassId
+    quantity
+    created_at
+  }
+}
+
+query GetPendingOrders($stage: Stage!) {
+  pendingOrder {
+    id
+    eventPassId
+    packId
+    quantity
+    created_at
+    passAmount {
+      timeBeforeDelete
+    }
+    packAmount {
+      timeBeforeDelete
+    }
+    eventPass(locales: [en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+    pack(locales: [en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+
+query GetPendingOrdersMinimal {
+  pendingOrder {
+    eventPassId
+    packId
+    quantity
+  }
+}

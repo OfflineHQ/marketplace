@@ -162,7 +162,7 @@ export class PassCache {
     const passes = Object.values(passesCart).flatMap((eventPasses) =>
       Object.values(eventPasses).flatMap((passes) => passes),
     );
-    const res = await userSdk.UpsertPendingOrders({
+    const res = await userSdk.UpsertEventPassPendingOrders({
       objects: passes,
       stage: env.HYGRAPH_STAGE as Stage,
     });

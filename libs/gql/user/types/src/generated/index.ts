@@ -16,6 +16,122 @@ export type GetAccountByEmailQueryVariables = Types.Exact<{
 
 export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, email?: string | null }> };
 
+export type GetEventWithPassesQueryVariables = Types.Exact<{
+  slug: Types.Scalars['String'];
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type GetEventWithPassesQuery = { __typename?: 'query_root', event?: { __typename?: 'Event', id: string, slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', url: string }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, imageClasses?: string | null, image: { __typename?: 'Asset', url: string } } | null, eventPasses: Array<{ __typename?: 'EventPass', id: string, name: string, description: string, passPricing?: { __typename?: 'passPricing', amount: number, currency: Types.Currency_Enum } | null, passAmount?: { __typename?: 'passAmount', maxAmount: number, maxAmountPerUser?: number | null, timeBeforeDelete: number } | null }> } | null };
+
+export type GetOrdersConfirmedQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetOrdersConfirmedQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', eventPassId?: string | null, quantity: number }> };
+
+export type GetOrdersIsMintingQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetOrdersIsMintingQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', eventPassId?: string | null, quantity: number }> };
+
+export type GetOrdersFromIdsQueryVariables = Types.Exact<{
+  orderIds: Array<Types.Scalars['uuid']> | Types.Scalars['uuid'];
+  stage: Types.Stage;
+}>;
+
+
+export type GetOrdersFromIdsQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', eventPassId?: string | null, quantity: number, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> };
+
+export type GetOrderPurchasedForEventPassesIdQueryVariables = Types.Exact<{
+  eventPassId: Types.Scalars['String'];
+}>;
+
+
+export type GetOrderPurchasedForEventPassesIdQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', eventPassId?: string | null, quantity: number }> };
+
+export type GetOrderPurchasedForEventPassesIdsQueryVariables = Types.Exact<{
+  eventPassIds: Array<Types.Scalars['String']> | Types.Scalars['String'];
+}>;
+
+
+export type GetOrderPurchasedForEventPassesIdsQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', eventPassId?: string | null, quantity: number }> };
+
+export type UpsertEventPassPendingOrderMutationVariables = Types.Exact<{
+  object: Types.PendingOrder_Insert_Input;
+}>;
+
+
+export type UpsertEventPassPendingOrderMutation = { __typename?: 'mutation_root', insert_pendingOrder_one?: { __typename?: 'pendingOrder', id: any, quantity: number, eventPassId?: string | null, created_at: any } | null };
+
+export type UpsertEventPassPendingOrdersMutationVariables = Types.Exact<{
+  objects: Array<Types.PendingOrder_Insert_Input> | Types.PendingOrder_Insert_Input;
+  stage: Types.Stage;
+}>;
+
+
+export type UpsertEventPassPendingOrdersMutation = { __typename?: 'mutation_root', insert_pendingOrder?: { __typename?: 'pendingOrder_mutation_response', returning: Array<{ __typename?: 'pendingOrder', id: any, eventPassId?: string | null, quantity: number, created_at: any, passAmount?: { __typename?: 'passAmount', timeBeforeDelete: number } | null, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> } | null };
+
+export type UpsertPackPendingOrderMutationVariables = Types.Exact<{
+  object: Types.PendingOrder_Insert_Input;
+}>;
+
+
+export type UpsertPackPendingOrderMutation = { __typename?: 'mutation_root', insert_pendingOrder_one?: { __typename?: 'pendingOrder', id: any, quantity: number, packId?: string | null, created_at: any } | null };
+
+export type UpsertPackPendingOrdersMutationVariables = Types.Exact<{
+  objects: Array<Types.PendingOrder_Insert_Input> | Types.PendingOrder_Insert_Input;
+  stage: Types.Stage;
+}>;
+
+
+export type UpsertPackPendingOrdersMutation = { __typename?: 'mutation_root', insert_pendingOrder?: { __typename?: 'pendingOrder_mutation_response', returning: Array<{ __typename?: 'pendingOrder', id: any, packId?: string | null, quantity: number, created_at: any, packAmount?: { __typename?: 'passAmount', timeBeforeDelete: number } | null, pack?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> } | null };
+
+export type DeletePendingOrderMutationVariables = Types.Exact<{
+  pendingOrderId: Types.Scalars['uuid'];
+}>;
+
+
+export type DeletePendingOrderMutation = { __typename?: 'mutation_root', delete_pendingOrder_by_pk?: { __typename?: 'pendingOrder', id: any } | null };
+
+export type DeletePendingOrdersMutationVariables = Types.Exact<{
+  eventPassIds: Array<Types.Scalars['String']> | Types.Scalars['String'];
+}>;
+
+
+export type DeletePendingOrdersMutation = { __typename?: 'mutation_root', delete_pendingOrder?: { __typename?: 'pendingOrder_mutation_response', affected_rows: number } | null };
+
+export type DeleteAllPendingOrdersMutationVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type DeleteAllPendingOrdersMutation = { __typename?: 'mutation_root', delete_pendingOrder?: { __typename?: 'pendingOrder_mutation_response', affected_rows: number } | null };
+
+export type GetPendingOrderForEventPassQueryVariables = Types.Exact<{
+  eventPassId: Types.Scalars['String'];
+}>;
+
+
+export type GetPendingOrderForEventPassQuery = { __typename?: 'query_root', pendingOrder: Array<{ __typename?: 'pendingOrder', id: any, eventPassId?: string | null, quantity: number, created_at: any }> };
+
+export type GetPendingOrderForEventPassesQueryVariables = Types.Exact<{
+  eventPassIds?: Types.InputMaybe<Array<Types.Scalars['String']> | Types.Scalars['String']>;
+}>;
+
+
+export type GetPendingOrderForEventPassesQuery = { __typename?: 'query_root', pendingOrder: Array<{ __typename?: 'pendingOrder', id: any, eventPassId?: string | null, quantity: number, created_at: any }> };
+
+export type GetPendingOrdersQueryVariables = Types.Exact<{
+  stage: Types.Stage;
+}>;
+
+
+export type GetPendingOrdersQuery = { __typename?: 'query_root', pendingOrder: Array<{ __typename?: 'pendingOrder', id: any, eventPassId?: string | null, packId?: string | null, quantity: number, created_at: any, passAmount?: { __typename?: 'passAmount', timeBeforeDelete: number } | null, packAmount?: { __typename?: 'passAmount', timeBeforeDelete: number } | null, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null, pack?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> };
+
+export type GetPendingOrdersMinimalQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetPendingOrdersMinimalQuery = { __typename?: 'query_root', pendingOrder: Array<{ __typename?: 'pendingOrder', eventPassId?: string | null, packId?: string | null, quantity: number }> };
+
 export type EventDateLocationsFieldsFragment = { __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } };
 
 export type OrganizerFieldsFragment = { __typename?: 'Organizer', imageClasses?: string | null, name: string, slug: string, image: { __typename?: 'Asset', url: string } };

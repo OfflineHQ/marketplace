@@ -49,7 +49,7 @@ describe('updateEventPassCart', () => {
   it('should upsert event pass pending order if user is logged in and quantity is not 0', async () => {
     (getCurrentUser as jest.Mock).mockResolvedValue({});
     await updateEventPassCart(mockProps);
-    expect(userSdk.UpsertPendingOrder).toHaveBeenCalledWith({
+    expect(userSdk.UpsertEventPassPendingOrder).toHaveBeenCalledWith({
       object: {
         eventPassId: mockProps.eventPassId,
         quantity: mockProps.quantity,

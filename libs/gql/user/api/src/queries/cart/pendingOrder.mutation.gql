@@ -1,0 +1,109 @@
+mutation UpsertEventPassPendingOrder($object: pendingOrder_insert_input!) {
+  insert_pendingOrder_one(
+    object: $object
+    on_conflict: {
+      constraint: idx_pendingorder_eventpassid_accountid
+      update_columns: [quantity]
+    }
+  ) {
+    id
+    quantity
+    eventPassId
+    created_at
+  }
+}
+
+mutation UpsertEventPassPendingOrders(
+  $objects: [pendingOrder_insert_input!]!
+  $stage: Stage!
+) {
+  insert_pendingOrder(
+    objects: $objects
+    on_conflict: {
+      constraint: idx_pendingorder_eventpassid_accountid
+      update_columns: [quantity]
+    }
+  ) {
+    returning {
+      id
+      eventPassId
+      quantity
+      created_at
+      passAmount {
+        timeBeforeDelete
+      }
+      eventPass(locales: [en], stage: $stage) {
+        event {
+          slug
+          organizer {
+            slug
+          }
+        }
+      }
+    }
+  }
+}
+
+mutation UpsertPackPendingOrder($object: pendingOrder_insert_input!) {
+  insert_pendingOrder_one(
+    object: $object
+    on_conflict: {
+      constraint: idx_pendingorder_packid_accountid
+      update_columns: [quantity]
+    }
+  ) {
+    id
+    quantity
+    packId
+    created_at
+  }
+}
+
+mutation UpsertPackPendingOrders(
+  $objects: [pendingOrder_insert_input!]!
+  $stage: Stage!
+) {
+  insert_pendingOrder(
+    objects: $objects
+    on_conflict: {
+      constraint: idx_pendingorder_packid_accountid
+      update_columns: [quantity]
+    }
+  ) {
+    returning {
+      id
+      packId
+      quantity
+      created_at
+      packAmount {
+        timeBeforeDelete
+      }
+      pack(locales: [en], stage: $stage) {
+        event {
+          slug
+          organizer {
+            slug
+          }
+        }
+      }
+    }
+  }
+}
+
+mutation DeletePendingOrder($pendingOrderId: uuid!) {
+  delete_pendingOrder_by_pk(id: $pendingOrderId) {
+    id
+  }
+}
+
+mutation DeletePendingOrders($eventPassIds: [String!]!) {
+  delete_pendingOrder(where: { eventPassId: { _in: $eventPassIds } }) {
+    affected_rows
+  }
+}
+
+mutation DeleteAllPendingOrders {
+  delete_pendingOrder(where: {}) {
+    affected_rows
+  }
+}

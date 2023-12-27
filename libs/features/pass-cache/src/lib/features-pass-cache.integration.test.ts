@@ -92,9 +92,9 @@ describe('PassCache Integration Test', () => {
 
   it('should transfer passes cart to DB and delete cache cart', async () => {
     jest
-      .spyOn(userSdk, 'UpsertPendingOrders')
+      .spyOn(userSdk, 'UpsertEventPassPendingOrders')
       .mockImplementation(async (params) => {
-        return await alphaUser.UpsertPendingOrders({
+        return await alphaUser.UpsertEventPassPendingOrders({
           objects: params.objects,
           stage: 'DRAFT' as Stage,
         });
