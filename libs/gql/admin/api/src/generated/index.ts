@@ -59,8 +59,8 @@ export const OrganizerFieldsFragmentDoc = `
   imageClasses
 }
     `;
-export const AmountFieldsFragmentDoc = `
-    fragment AmountFields on passAmount {
+export const PassAmountFieldsFragmentDoc = `
+    fragment PassAmountFields on passAmount {
   maxAmount
   maxAmountPerUser
   timeBeforeDelete
@@ -85,10 +85,59 @@ export const EventDateLocationsFieldsFragmentDoc = `
   dateEnd
 }
     `;
-export const PricingFieldsFragmentDoc = `
-    fragment PricingFields on passPricing {
+export const PassPricingFieldsFragmentDoc = `
+    fragment PassPricingFields on passPricing {
   amount
   currency
+}
+    `;
+export const EventPassFieldsFragmentDoc = `
+    fragment EventPassFields on EventPass {
+  name
+  nftImage {
+    url
+  }
+  description
+  passOptions {
+    name
+    description
+    eventDateLocation {
+      ...EventDateLocationsFields
+    }
+  }
+  passPricing {
+    ...PassPricingFields
+  }
+  event {
+    slug
+    title
+    heroImage {
+      url
+    }
+    heroImageClasses
+    organizer {
+      id
+      slug
+      name
+      image {
+        url
+      }
+      imageClasses
+    }
+  }
+}
+    ${EventDateLocationsFieldsFragmentDoc}
+${PassPricingFieldsFragmentDoc}`;
+export const EventPassNftFieldsFragmentDoc = `
+    fragment EventPassNftFields on eventPassNft {
+  id
+  tokenId
+  eventId
+  eventPassId
+  packId
+  organizerId
+  isRevealed
+  currentOwnerAddress
 }
     `;
 export const RoleAssignmentFieldsFragmentDoc = `
@@ -407,18 +456,18 @@ ${EventDateLocationsFieldsFragmentDoc}`;
       name
       description
       passAmount {
-        ...AmountFields
+        ...PassAmountFields
       }
       passPricing {
-        ...PricingFields
+        ...PassPricingFields
       }
     }
   }
 }
     ${OrganizerFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}
-${AmountFieldsFragmentDoc}
-${PricingFieldsFragmentDoc}`;
+${PassAmountFieldsFragmentDoc}
+${PassPricingFieldsFragmentDoc}`;
  const GetEventsFromOrganizerIdTableDocument = `
     query GetEventsFromOrganizerIdTable($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {id: $id}, locales: [$locale, en], stage: $stage) {
@@ -459,10 +508,10 @@ ${PricingFieldsFragmentDoc}`;
         }
       }
       passAmount {
-        ...AmountFields
+        ...PassAmountFields
       }
       passPricing {
-        ...PricingFields
+        ...PassPricingFields
       }
       eventPassNftContract {
         type
@@ -490,8 +539,8 @@ ${PricingFieldsFragmentDoc}`;
   }
 }
     ${EventDateLocationsFieldsFragmentDoc}
-${AmountFieldsFragmentDoc}
-${PricingFieldsFragmentDoc}`;
+${PassAmountFieldsFragmentDoc}
+${PassPricingFieldsFragmentDoc}`;
  const GetEventPassesDocument = `
     query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPasses(
@@ -506,10 +555,10 @@ ${PricingFieldsFragmentDoc}`;
       url
     }
     passAmount {
-      ...AmountFields
+      ...PassAmountFields
     }
     passPricing {
-      ...PricingFields
+      ...PassPricingFields
     }
     passOptions {
       name
@@ -520,8 +569,8 @@ ${PricingFieldsFragmentDoc}`;
     }
   }
 }
-    ${AmountFieldsFragmentDoc}
-${PricingFieldsFragmentDoc}
+    ${PassAmountFieldsFragmentDoc}
+${PassPricingFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}`;
  const GetEventPassDelayedRevealedFromEventPassIdDocument = `
     query GetEventPassDelayedRevealedFromEventPassId($eventPassId: ID!, $locale: Locale!, $stage: Stage!) @cached {
@@ -867,6 +916,43 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+ const InsertEventParametersDocument = `
+    mutation InsertEventParameters($objects: [eventParameters_insert_input!]!) {
+  insert_eventParameters(objects: $objects) {
+    returning {
+      id
+      activityWebhookId
+      eventId
+    }
+  }
+}
+    `;
+ const GetAlchemyInfosFromEventIdDocument = `
+    query GetAlchemyInfosFromEventId($eventId: String) {
+  eventParameters(where: {eventId: {_eq: $eventId}}) {
+    activityWebhookId
+    signingKey
+  }
+}
+    `;
+ const GetEventPassNftByIdDocument = `
+    query GetEventPassNftById($id: uuid!, $locale: Locale!, $stage: Stage!) @cached {
+  eventPassNft_by_pk(id: $id) {
+    ...EventPassNftFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      ...EventPassFields
+    }
+  }
+}
+    ${EventPassNftFieldsFragmentDoc}
+${EventPassFieldsFragmentDoc}`;
+ const GetEventPassNftByIdMinimalDocument = `
+    query GetEventPassNftByIdMinimal($id: uuid!) {
+  eventPassNft_by_pk(id: $id) {
+    ...EventPassNftFields
+  }
+}
+    ${EventPassNftFieldsFragmentDoc}`;
  const CreateRoleAssignmentDocument = `
     mutation CreateRoleAssignment($input: roleAssignment_insert_input!) {
   insert_roleAssignment_one(object: $input) {
@@ -1038,6 +1124,18 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrganizerLatestEvents(variables: Types.GetOrganizerLatestEventsQueryVariables, options?: C): Promise<Types.GetOrganizerLatestEventsQuery> {
       return requester<Types.GetOrganizerLatestEventsQuery, Types.GetOrganizerLatestEventsQueryVariables>(GetOrganizerLatestEventsDocument, variables, options) as Promise<Types.GetOrganizerLatestEventsQuery>;
+    },
+    InsertEventParameters(variables: Types.InsertEventParametersMutationVariables, options?: C): Promise<Types.InsertEventParametersMutation> {
+      return requester<Types.InsertEventParametersMutation, Types.InsertEventParametersMutationVariables>(InsertEventParametersDocument, variables, options) as Promise<Types.InsertEventParametersMutation>;
+    },
+    GetAlchemyInfosFromEventId(variables?: Types.GetAlchemyInfosFromEventIdQueryVariables, options?: C): Promise<Types.GetAlchemyInfosFromEventIdQuery> {
+      return requester<Types.GetAlchemyInfosFromEventIdQuery, Types.GetAlchemyInfosFromEventIdQueryVariables>(GetAlchemyInfosFromEventIdDocument, variables, options) as Promise<Types.GetAlchemyInfosFromEventIdQuery>;
+    },
+    GetEventPassNftById(variables: Types.GetEventPassNftByIdQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdQuery> {
+      return requester<Types.GetEventPassNftByIdQuery, Types.GetEventPassNftByIdQueryVariables>(GetEventPassNftByIdDocument, variables, options) as Promise<Types.GetEventPassNftByIdQuery>;
+    },
+    GetEventPassNftByIdMinimal(variables: Types.GetEventPassNftByIdMinimalQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdMinimalQuery> {
+      return requester<Types.GetEventPassNftByIdMinimalQuery, Types.GetEventPassNftByIdMinimalQueryVariables>(GetEventPassNftByIdMinimalDocument, variables, options) as Promise<Types.GetEventPassNftByIdMinimalQuery>;
     },
     CreateRoleAssignment(variables: Types.CreateRoleAssignmentMutationVariables, options?: C): Promise<Types.CreateRoleAssignmentMutation> {
       return requester<Types.CreateRoleAssignmentMutation, Types.CreateRoleAssignmentMutationVariables>(CreateRoleAssignmentDocument, variables, options) as Promise<Types.CreateRoleAssignmentMutation>;
