@@ -1,0 +1,34 @@
+fragment EventPassFields on EventPass {
+  name
+  nftImage {
+    url
+  }
+  description
+  passOptions {
+    name
+    description
+    eventDateLocation {
+      ...EventDateLocationsFields
+    }
+  }
+  passPricing {
+    ...PassPricingFields
+  }
+  event {
+    slug
+    title
+    heroImage {
+      url
+    }
+    heroImageClasses
+    organizer {
+      id
+      slug
+      name
+      image {
+        url
+      }
+      imageClasses
+    }
+  }
+}

@@ -12,10 +12,10 @@ query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!)
       url
     }
     passAmount {
-      ...AmountFields
+      ...PassAmountFields
     }
     passPricing {
-      ...PricingFields
+      ...PassPricingFields
     }
     passOptions {
       name
