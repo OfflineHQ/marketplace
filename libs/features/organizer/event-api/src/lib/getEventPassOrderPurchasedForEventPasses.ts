@@ -5,20 +5,20 @@ interface getExistingEventPassesProps {
   eventPassIds: string[];
 }
 
-export const getEventPassOrderPurchasedForEventPasses = async ({
+export const getOrderPurchasedForEventPasses = async ({
   eventPassIds,
 }: getExistingEventPassesProps) => {
   const user = await getCurrentUser();
   if (!user) {
     return null;
   }
-  const data = await userSdk.GetEventPassOrderPurchasedForEventPassesIds(
+  const data = await userSdk.GetOrderPurchasedForEventPassesIds(
     {
       eventPassIds,
     },
     {
       next: {
-        tags: ['GetEventPassOrderPurchasedForEventPassesIds'],
+        tags: ['GetOrderPurchasedForEventPassesIds'],
       },
     },
   );

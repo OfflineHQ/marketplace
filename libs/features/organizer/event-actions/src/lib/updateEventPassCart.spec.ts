@@ -41,7 +41,7 @@ describe('updateEventPassCart', () => {
   it('should delete event pass pending orders if user is logged in and quantity is 0', async () => {
     (getCurrentUser as jest.Mock).mockResolvedValue({});
     await updateEventPassCart({ ...mockProps, quantity: 0 });
-    expect(userSdk.DeleteEventPassPendingOrders).toHaveBeenCalledWith({
+    expect(userSdk.DeletePendingOrders).toHaveBeenCalledWith({
       eventPassIds: [mockProps.eventPassId],
     });
   });
@@ -49,7 +49,7 @@ describe('updateEventPassCart', () => {
   it('should upsert event pass pending order if user is logged in and quantity is not 0', async () => {
     (getCurrentUser as jest.Mock).mockResolvedValue({});
     await updateEventPassCart(mockProps);
-    expect(userSdk.UpsertEventPassPendingOrder).toHaveBeenCalledWith({
+    expect(userSdk.UpsertPendingOrder).toHaveBeenCalledWith({
       object: {
         eventPassId: mockProps.eventPassId,
         quantity: mockProps.quantity,

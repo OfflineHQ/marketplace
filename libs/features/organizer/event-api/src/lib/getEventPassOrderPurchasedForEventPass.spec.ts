@@ -1,24 +1,24 @@
 import { userSdk } from '@gql/user/api';
 import { getCurrentUser } from '@next/next-auth/user';
-import { getEventPassOrderPurchasedForEventPass } from './getEventPassOrderPurchasedForEventPass';
+import { getOrderPurchasedForEventPass } from './getOrderPurchasedForEventPass';
 
 jest.mock('@next/next-auth/user');
 
 jest.mock('@gql/user/api', () => ({
   userSdk: {
-    GetEventPassOrderPurchasedForEventPassesId: jest.fn().mockResolvedValue({
+    GetOrderPurchasedForEventPassesId: jest.fn().mockResolvedValue({
       eventPassOrder: [{ id: 'test-order' }],
     }),
   },
 }));
 
-describe('getEventPassOrderPurchasedForEventPass', () => {
+describe('getOrderPurchasedForEventPass', () => {
   const mockEventPassId = 'test-pass';
 
   it('should return null if user is not authenticated', async () => {
     (getCurrentUser as jest.Mock).mockResolvedValue(null);
 
-    const result = await getEventPassOrderPurchasedForEventPass({
+    const result = await getOrderPurchasedForEventPass({
       eventPassId: mockEventPassId,
     });
 
@@ -29,20 +29,16 @@ describe('getEventPassOrderPurchasedForEventPass', () => {
     const mockUser = { id: 'test-user' };
     (getCurrentUser as jest.Mock).mockResolvedValue(mockUser);
 
-    const result = await getEventPassOrderPurchasedForEventPass({
+    const result = await getOrderPurchasedForEventPass({
       eventPassId: mockEventPassId,
     });
 
     expect(result).toEqual([{ id: 'test-order' }]);
-    expect(
-      userSdk.GetEventPassOrderPurchasedForEventPassesId,
-    ).toHaveBeenCalledWith(
+    expect(userSdk.GetOrderPurchasedForEventPassesId).toHaveBeenCalledWith(
       { eventPassId: mockEventPassId },
       {
         next: {
-          tags: [
-            `GetEventPassOrderPurchasedForEventPassesId-${mockEventPassId}`,
-          ],
+          tags: [`GetOrderPurchasedForEventPassesId-${mockEventPassId}`],
         },
       },
     );

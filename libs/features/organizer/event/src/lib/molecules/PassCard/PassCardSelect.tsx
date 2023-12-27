@@ -2,8 +2,8 @@ import { Badge, ButtonSkeleton } from '@ui/components';
 
 import {
   getEventPassCart,
-  getEventPassOrderPurchasedForEventPass,
   getEventPassOrderSums,
+  getOrderPurchasedForEventPass,
 } from '@features/organizer/event-api';
 import type { EventPass, EventSlugs } from '@features/organizer/event-types';
 import { useLocale } from 'next-intl';
@@ -41,7 +41,7 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
     eventSlug,
     eventPassId: id,
   });
-  const existingEventPasses = await getEventPassOrderPurchasedForEventPass({
+  const existingEventPasses = await getOrderPurchasedForEventPass({
     eventPassId: id,
   });
   // here compute the max amount of tickets that can be bought
