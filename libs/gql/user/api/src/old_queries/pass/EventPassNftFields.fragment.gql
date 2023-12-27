@@ -1,8 +1,0 @@
-fragment EventPassNftFields on eventPassNft {
-  tokenId
-  eventId
-  eventPassId
-  organizerId
-  isRevealed
-  currentOwnerAddress
-}
