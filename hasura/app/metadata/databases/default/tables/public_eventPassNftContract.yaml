@@ -1,7 +1,6 @@
 table:
   name: eventPassNftContract
   schema: public
-
 object_relationships:
   - name: eventPassOrderSums
     using:

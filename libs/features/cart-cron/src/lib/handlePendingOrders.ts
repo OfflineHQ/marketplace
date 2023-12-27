@@ -13,7 +13,12 @@ export default async function handler() {
     const ordersToDelete: string[] = [];
     const accountsToNotify: Record<
       string,
-      { address: string; email: string | null; eventPassIds: string[] }
+      {
+        address: string;
+        email: string | null;
+        eventPassIds: string[];
+        packIds: string[];
+      }
     > = {};
 
     for (const order of pendingOrders) {
@@ -21,7 +26,9 @@ export default async function handler() {
 
       const deletionTime =
         orderCreationTime +
-        (order?.eventPassPricing?.timeBeforeDelete || 14400); // default to 4 hours
+        (order?.passAmount?.timeBeforeDelete ||
+          order?.packAmount?.timeBeforeDelete ||
+          14400); // default to 4 hours
       if (currentTime >= deletionTime) {
         ordersToDelete.push(order.id);
         if (order.account?.address) {
@@ -29,12 +36,20 @@ export default async function handler() {
             accountsToNotify[order.account.address] = {
               address: order.account.address,
               email: order.account.email || null,
-              eventPassIds: [order.eventPassId],
+              eventPassIds: order.eventPassId ? [order.eventPassId] : [],
+              packIds: order.packId ? [order.packId] : [],
             };
           } else {
-            accountsToNotify[order.account.address].eventPassIds.push(
-              order.eventPassId,
-            );
+            if (order.eventPassId) {
+              accountsToNotify[order.account.address].eventPassIds.push(
+                order.eventPassId,
+              );
+            }
+            if (order.packId) {
+              accountsToNotify[order.account.address].packIds.push(
+                order.packId,
+              );
+            }
           }
         }
       }

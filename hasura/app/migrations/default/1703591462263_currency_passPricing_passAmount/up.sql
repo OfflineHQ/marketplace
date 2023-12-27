@@ -46,9 +46,7 @@ CREATE TABLE "public"."passAmount"(
   "maxAmount" integer NOT NULL CHECK ("maxAmount" > 0),
   "maxAmountPerUser" integer CHECK ("maxAmountPerUser" IS NULL OR "maxAmountPerUser" > 0),
   "timeBeforeDelete" integer NOT NULL DEFAULT '14400',
-  "currency" text NOT NULL DEFAULT 'EUR',
   PRIMARY KEY ("id"),
-  FOREIGN KEY ("currency") REFERENCES "public"."currency"("value") ON UPDATE NO action ON DELETE NO action,
   CHECK (("eventPassId" IS NOT NULL AND "packId" IS NULL) OR ("eventPassId" IS NULL AND "packId" IS NOT NULL))
 );
 

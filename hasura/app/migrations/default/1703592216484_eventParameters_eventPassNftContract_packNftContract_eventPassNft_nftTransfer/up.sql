@@ -190,66 +190,6 @@ CREATE TABLE "public"."eventPassNft"(
   UNIQUE ("contractAddress", "tokenId", "chainId")
 );
 
-CREATE FUNCTION public.get_event_pass_nft_pass_amount("eventPassNft" "public"."eventPassNft")
-  RETURNS "passAmount"
-  AS $$
-DECLARE
-  result "passAmount";
-BEGIN
-  IF "eventPassNft"."packId" IS NULL THEN
-    SELECT
-      * INTO result
-    FROM
-      "passAmount"
-    WHERE
-      "eventPassId" = "eventPassNft"."eventPassId"
-    LIMIT 1;
-  ELSE
-    SELECT
-      * INTO result
-    FROM
-      "passAmount"
-    WHERE
-      "eventPassId" = "eventPassNft"."eventPassId"
-      AND "packId" = "eventPassNft"."packId"
-    LIMIT 1;
-  END IF;
-  RETURN result;
-END;
-$$
-LANGUAGE plpgsql
-STABLE;
-
-CREATE FUNCTION public.get_event_pass_nft_pass_pricing("eventPassNft" "public"."eventPassNft")
-  RETURNS "passPricing"
-  AS $$
-DECLARE
-  result "passPricing";
-BEGIN
-  IF "eventPassNft"."packId" IS NULL THEN
-    SELECT
-      * INTO result
-    FROM
-      "passPricing"
-    WHERE
-      "eventPassId" = "eventPassNft"."eventPassId"
-    LIMIT 1;
-  ELSE
-    SELECT
-      * INTO result
-    FROM
-      "passPricing"
-    WHERE
-      "eventPassId" = "eventPassNft"."eventPassId"
-      AND "packId" = "eventPassNft"."packId"
-    LIMIT 1;
-  END IF;
-  RETURN result;
-END;
-$$
-LANGUAGE plpgsql
-STABLE;
-
 COMMENT ON COLUMN "public"."eventPassNft"."contractAddress" IS E'Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain.';
 
 COMMENT ON COLUMN "public"."eventPassNft"."tokenId" IS E'The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.';
