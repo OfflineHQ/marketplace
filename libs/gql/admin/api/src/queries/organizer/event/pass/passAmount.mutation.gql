@@ -1,0 +1,21 @@
+mutation CreatePassAmount($passAmount: passAmount_insert_input!) {
+  insert_passAmount_one(object: $passAmount) {
+    id
+    eventPassId
+    packId
+    maxAmount
+    maxAmountPerUser
+    timeBeforeDelete
+  }
+}
+
+mutation UpdatePassAmount($id: uuid!, $passAmount: passAmount_set_input!) {
+  update_passAmount_by_pk(pk_columns: { id: $id }, _set: $passAmount) {
+    id
+    eventPassId
+    packId
+    maxAmount
+    maxAmountPerUser
+    timeBeforeDelete
+  }
+}
