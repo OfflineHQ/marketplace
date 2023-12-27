@@ -1,44 +1,36 @@
-import handler from './handlePendingOrders';
 import {
+  applySeeds,
   createDbClient,
   deleteTables,
   seedDb,
   type PgClient,
-  applySeeds,
 } from '@test-utils/db';
+import handler from './handlePendingOrders';
 
 describe('Cron job - handlePendingOrders', () => {
   let client: PgClient;
 
   beforeAll(async () => {
     client = await createDbClient();
-    await deleteTables(client, [
-      'account',
-      'eventPassPendingOrder',
-      'eventPassPricing',
-    ]);
+    await deleteTables(client, ['account', 'pendingOrder', 'eventPassPricing']);
     await applySeeds(client, ['account', 'eventPassPricing']);
   });
 
   afterAll(async () => {
-    await deleteTables(client, [
-      'account',
-      'eventPassPendingOrder',
-      'eventPassPricing',
-    ]);
+    await deleteTables(client, ['account', 'pendingOrder', 'eventPassPricing']);
     await client.end();
   });
 
   beforeEach(async () => {
-    await deleteTables(client, ['eventPassPendingOrder']);
-    await seedDb(client, 'eventPassPendingOrder');
+    await deleteTables(client, ['pendingOrder']);
+    await seedDb(client, 'pendingOrder');
   });
 
   beforeEach(() => {
     jest.useFakeTimers();
   });
 
-  it('should delete expired eventPassPendingOrders and return the accounts to notify', async () => {
+  it('should delete expired pendingOrders and return the accounts to notify', async () => {
     // Mock the current time
     // set the current time to 2023-07-19 12:58:46 + 14400 seconds = 4 hours => 2023-07-19 16:59:00
     const date = new Date(Date.UTC(2023, 6, 19, 16, 59)); // 2023-07-19 16:59:00 have to set it to 6 for July because months are 0-indexed
@@ -63,7 +55,7 @@ describe('Cron job - handlePendingOrders', () => {
     });
   });
 
-  it('should delete all eventPassPendingOrders and return all the accounts to notify if date pass the last order', async () => {
+  it('should delete all pendingOrders and return all the accounts to notify if date pass the last order', async () => {
     // Mock the current time
     // set the current time to 2023-07-19 12:58:46 + 14400 seconds = 4 hours => 2023-07-19 16:59:00
     const date = new Date(Date.UTC(2023, 6, 19, 17)); // 2023-07-19 16:59:00 have to set it to 6 for July because months are 0-indexed

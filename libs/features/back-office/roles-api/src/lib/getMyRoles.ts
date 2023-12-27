@@ -12,5 +12,5 @@ export const getMyRoles = cache(async () => {
       },
     },
   );
-  return data?.roleAssignments;
+  return data?.roleAssignment;
 });

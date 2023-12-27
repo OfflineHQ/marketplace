@@ -28,7 +28,7 @@ describe('getMyRoles Integration Test', () => {
   beforeAll(async () => {
     client = await createDbClient();
     await deleteAllTables(client);
-    await applySeeds(client, ['account', 'roleAssignments']);
+    await applySeeds(client, ['account', 'roleAssignment']);
   });
 
   afterAll(async () => {

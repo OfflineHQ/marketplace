@@ -1,6 +1,6 @@
-export { getEventPassOrdersConfirmed } from './lib/getEventPassOrdersConfirmed';
-export { getEventPassOrdersFromStripeCheckoutSession } from './lib/getEventPassOrdersFromStripeCheckoutSession';
-export { getEventPassOrdersIsMinting } from './lib/getEventPassOrdersIsMinting';
-export { getEventPassPendingOrders } from './lib/getEventPassPendingOrders';
-export { getEventPassPendingOrdersMinimal } from './lib/getEventPassPendingOrdersMinimal';
 export { getEventWithPasses } from './lib/getEventWithPasses';
+export { getOrdersConfirmed } from './lib/getOrdersConfirmed';
+export { getOrdersFromStripeCheckoutSession } from './lib/getOrdersFromStripeCheckoutSession';
+export { getOrdersIsMinting } from './lib/getOrdersIsMinting';
+export { getPendingOrders } from './lib/getPendingOrders';
+export { getPendingOrdersMinimal } from './lib/getPendingOrdersMinimal';
