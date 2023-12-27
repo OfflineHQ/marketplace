@@ -26,6 +26,9 @@ query GetOrderFromId($id: uuid!) {
     eventPassNftContract {
       contractAddress
     }
+    packNftContract {
+      contractAddress
+    }
     account {
       address
     }
@@ -43,6 +46,9 @@ query GetOrdersFromStripeCheckoutSession($stripeCheckoutSessionId: String!) {
     quantity
     status
     eventPassNftContract {
+      contractAddress
+    }
+    packNftContract {
       contractAddress
     }
     account {
