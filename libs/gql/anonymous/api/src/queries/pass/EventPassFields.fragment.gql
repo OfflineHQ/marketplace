@@ -11,9 +11,8 @@ fragment EventPassFields on EventPass {
       ...EventDateLocationsFields
     }
   }
-  eventPassPricing {
-    priceAmount
-    priceCurrency
+  passPricing {
+    ...PassPricingFields
   }
   event {
     slug
