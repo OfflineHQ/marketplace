@@ -1,0 +1,24 @@
+query GetEventPassNftByTokenReference(
+  $organizerId: String!
+  $eventId: String!
+  $eventPassId: String!
+  $tokenId: bigint!
+  $chainId: String!
+  $locale: Locale!
+  $stage: Stage!
+) @cached {
+  eventPassNft(
+    where: {
+      organizerId: { _eq: $organizerId }
+      eventId: { _eq: $eventId }
+      eventPassId: { _eq: $eventPassId }
+      tokenId: { _eq: $tokenId }
+      chainId: { _eq: $chainId }
+    }
+  ) {
+    ...EventPassNftFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      ...EventPassFields
+    }
+  }
+}
