@@ -14,6 +14,6 @@ export interface EventPassCart
   created_at?: string;
 }
 
-export type UserPassOrder = GetOrdersFromIdsQuery['eventPassOrder'][0];
+export type UserPassOrder = GetOrdersFromIdsQuery['order'][0];
 
 export type AllPassesCart = Record<string, Record<string, EventPassCart[]>>; // EventPasses will be grouped by organizerSlug -> eventSlug -> passes

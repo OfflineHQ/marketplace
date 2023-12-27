@@ -226,7 +226,7 @@ describe('tests for pendingOrder user', () => {
     ).rejects.toThrow();
   });
 
-  it("should return an error in case eventPassId doesn't have a corresponding eventPassPricing", async () => {
+  it("should return an error in case eventPassId doesn't have a corresponding passAmount", async () => {
     await expect(
       alphaUser.UpsertEventPassPendingOrders({
         objects: [{ ...order1, eventPassId: 'fake-dummy' }],

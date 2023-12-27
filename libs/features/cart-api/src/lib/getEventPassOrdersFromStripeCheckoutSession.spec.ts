@@ -42,7 +42,7 @@ describe('getOrdersFromStripeCheckoutSession', () => {
   it('should return event pass orders if customer id matches', async () => {
     const mockSession = {
       customer: 'test-customer-id',
-      metadata: { eventPassOrderIds: '1,2,3' },
+      metadata: { orderIds: '1,2,3' },
     };
     const mockCustomer = { stripeCustomerId: 'test-customer-id' };
     const mockOrders = [
@@ -60,7 +60,7 @@ describe('getOrdersFromStripeCheckoutSession', () => {
       .mockResolvedValue(mockCustomer);
     mockedUserSdk.GetOrdersFromIds = jest
       .fn()
-      .mockResolvedValue({ eventPassOrder: mockOrders });
+      .mockResolvedValue({ order: mockOrders });
 
     const result = await getOrdersFromStripeCheckoutSession(
       props,
@@ -73,7 +73,7 @@ describe('getOrdersFromStripeCheckoutSession', () => {
   it('should throw an error if customer id does not match', async () => {
     const mockSession = {
       customer: 'test-customer-id',
-      metadata: { eventPassOrderIds: '1,2,3' },
+      metadata: { orderIds: '1,2,3' },
     };
     const mockCustomer = { stripeCustomerId: 'different-customer-id' };
 

@@ -34,23 +34,25 @@ describe('NftClaimable integration test', () => {
     await applySeeds(client, [
       'account',
       'eventPassNftContract',
-      'eventPassPricing',
-      'eventPassOrder',
+      'passAmount',
+      'passPricing',
+      'order',
       'eventPassNft',
     ]);
     const res = await adminSdk.GetOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId:
         'cs_test_a17kYy8IpmWsLecscKe5pRQNP5hir8ysWC9sturzdXMfh7Y94gYJIAyePN',
     });
-    order = res.eventPassOrder[0] as Order;
+    order = res.order[0] as Order;
   });
 
   afterEach(async () => {
     await deleteTables(client, [
       'account',
       'eventPassNftContract',
-      'eventPassPricing',
-      'eventPassOrder',
+      'passAmount',
+      'passPricing',
+      'order',
       'eventPassNft',
     ]);
   });
@@ -66,9 +68,7 @@ describe('NftClaimable integration test', () => {
       accountId: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
       eventPassIds: 'fake-event-pass-2',
     });
-    expect(updatedOrder.eventPassOrder[0].status).toBe(
-      OrderStatus_Enum.Completed,
-    );
+    expect(updatedOrder.order[0].status).toBe(OrderStatus_Enum.Completed);
   });
 
   describe('with fails', () => {

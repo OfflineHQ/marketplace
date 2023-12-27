@@ -14,5 +14,5 @@ export const getOrdersConfirmed = async () => {
       },
     },
   );
-  return data?.eventPassOrder;
+  return data?.order;
 };

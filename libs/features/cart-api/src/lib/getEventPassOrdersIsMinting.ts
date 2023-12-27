@@ -5,5 +5,5 @@ export const getOrdersIsMinting = async () => {
     {},
     { cache: 'no-store' }, // TODO: remove this when we have a proper cache invalidation strategy
   );
-  return res.eventPassOrder;
+  return res.order;
 };

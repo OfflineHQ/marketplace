@@ -43,7 +43,7 @@ test.beforeEach(async () => {
     'eventPassNftContract',
     'eventPassNft',
     'eventParameters',
-    'eventPassOrder',
+    'order',
   ]);
 });
 test('user should be able to download and reveal his pass', async () => {

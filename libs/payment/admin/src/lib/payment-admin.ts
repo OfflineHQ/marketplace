@@ -149,7 +149,7 @@ export class Payment {
     return res;
   }
 
-  // Delete corresponding pendingOrders and replace them by eventPassOrders with status CONFIRMED.
+  // Delete corresponding pendingOrders and replace them by orders with status CONFIRMED.
   async movePendingOrdersToConfirmed({
     pendingOrders,
     accountId,
@@ -170,16 +170,12 @@ export class Payment {
       locale,
       stage: env.HYGRAPH_STAGE as Stage,
     });
-    return res?.insert_eventPassOrder?.returning;
+    return res?.insert_order?.returning;
   }
 
-  async markOrderAsCancelled({
-    eventPassOrdersId,
-  }: {
-    eventPassOrdersId: string[];
-  }) {
+  async markOrderAsCancelled({ ordersId }: { ordersId: string[] }) {
     return adminSdk.UpdateOrdersStatus({
-      updates: eventPassOrdersId.map((id) => ({
+      updates: ordersId.map((id) => ({
         _set: {
           status: OrderStatus_Enum.Cancelled,
         },
@@ -192,13 +188,9 @@ export class Payment {
     });
   }
 
-  async markOrderAsRefunded({
-    eventPassOrdersId,
-  }: {
-    eventPassOrdersId: string[];
-  }) {
+  async markOrderAsRefunded({ ordersId }: { ordersId: string[] }) {
     return adminSdk.UpdateOrdersStatus({
-      updates: eventPassOrdersId.map((id) => ({
+      updates: ordersId.map((id) => ({
         _set: {
           status: OrderStatus_Enum.Refunded,
         },
@@ -216,7 +208,7 @@ export class Payment {
   //ref:https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method
 
   //ref: https://stripe.com/docs/api/checkout/sessions/create
-  // TODO, store the checkout session and link it with the eventPassOrder in a new model StripeCheckoutSession. Make it recoverable in case of expiration and redirect user in case it's pending on the cart page.
+  // TODO, store the checkout session and link it with the order in a new model StripeCheckoutSession. Make it recoverable in case of expiration and redirect user in case it's pending on the cart page.
   // set to expired in case it overlap the saleEnd of the eventPass and make sur it's not recovered in that case.
   async createStripeCheckoutSession({
     user,
@@ -252,7 +244,7 @@ export class Payment {
     });
     if (!orders || !orders.length)
       throw new Error(
-        `No eventPassOrders created for user: ${
+        `No orders created for user: ${
           user.id
         } and pendingOrders: ${pendingOrders
           .map((order) => order.id)
@@ -318,7 +310,7 @@ export class Payment {
 
     const metadata = {
       userId: user.id,
-      eventPassOrderIds: orders.map((order) => order.id).join(','),
+      orderIds: orders.map((order) => order.id).join(','),
       organizerSlugs: orders
         .map((order) => order.eventPass?.event?.organizer?.slug)
         .join(','),
@@ -388,7 +380,7 @@ export class Payment {
       stripeCheckoutSessionId,
     });
     await this.markOrderAsCancelled({
-      eventPassOrdersId: orders.map((order) => order.id),
+      ordersId: orders.map((order) => order.id),
     });
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
@@ -403,7 +395,7 @@ export class Payment {
     const res = await adminSdk.GetOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
-    return res.eventPassOrder;
+    return res.order;
   }
 
   async getStripeActiveCheckoutSessionForUser({
@@ -454,7 +446,7 @@ export class Payment {
       stripeCheckoutSessionId,
     });
     await this.markOrderAsCancelled({
-      eventPassOrdersId: orders.map((order) => order.id),
+      ordersId: orders.map((order) => order.id),
     });
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
@@ -534,7 +526,7 @@ export class Payment {
         stripeCheckoutSessionId: checkoutSessionId,
       });
       await this.markOrderAsRefunded({
-        eventPassOrdersId: orders.map((order) => order.id),
+        ordersId: orders.map((order) => order.id),
       });
       await adminSdk.DeleteStripeCheckoutSession({
         stripeSessionId: checkoutSessionId,
