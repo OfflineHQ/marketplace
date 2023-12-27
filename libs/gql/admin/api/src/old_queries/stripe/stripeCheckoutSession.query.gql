@@ -1,7 +1,0 @@
-query GetStripeCheckoutSessionForUser($stripeCustomerId: String!) {
-  stripeCheckoutSession(
-    where: { stripeCustomerId: { _eq: $stripeCustomerId } }
-  ) {
-    ...StripeCheckoutSessionFields
-  }
-}

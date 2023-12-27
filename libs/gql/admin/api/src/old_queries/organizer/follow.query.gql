@@ -1,6 +1,0 @@
-query CheckFollowingOrganizer($accountId: uuid!, $organizerSlug: String!) {
-  follow_by_pk(accountId: $accountId, organizerSlug: $organizerSlug) {
-    accountId
-    organizerSlug
-  }
-}
