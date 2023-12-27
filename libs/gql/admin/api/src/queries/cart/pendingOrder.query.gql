@@ -11,5 +11,8 @@ query GetPendingOrders {
     passAmount {
       timeBeforeDelete
     }
+    packAmount {
+      timeBeforeDelete
+    }
   }
 }

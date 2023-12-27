@@ -49,9 +49,7 @@
 -- 		OR "maxAmountPerUser" > 0
 -- 	),
 -- 	timeBeforeDelete integer NOT NULL DEFAULT '14400',
--- 	"currency" text NOT NULL DEFAULT 'EUR',
 -- 	PRIMARY KEY ("id"),
--- 	FOREIGN KEY ("currency") REFERENCES "public"."currency"("value") ON UPDATE no action ON DELETE no action,
 -- 	CHECK (
 -- 		(
 -- 			"eventPassId" IS NOT NULL

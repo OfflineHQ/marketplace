@@ -12,12 +12,22 @@ describe('Cron job - handlePendingOrders', () => {
 
   beforeAll(async () => {
     client = await createDbClient();
-    await deleteTables(client, ['account', 'pendingOrder', 'eventPassPricing']);
-    await applySeeds(client, ['account', 'eventPassPricing']);
+    await deleteTables(client, [
+      'account',
+      'pendingOrder',
+      'passAmount',
+      'passPricing',
+    ]);
+    await applySeeds(client, ['account', 'passAmount', 'passPricing']);
   });
 
   afterAll(async () => {
-    await deleteTables(client, ['account', 'pendingOrder', 'eventPassPricing']);
+    await deleteTables(client, [
+      'account',
+      'pendingOrder',
+      'passAmount',
+      'passPricing',
+    ]);
     await client.end();
   });
 
@@ -46,6 +56,7 @@ describe('Cron job - handlePendingOrders', () => {
           address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
           email: 'alpha_user@test.io',
           eventPassIds: ['clj8raobj7g8l0aw3bfw6dny4', 'fake-event-pass-2'],
+          packIds: [],
         },
       ],
       ordersToDelete: [
@@ -71,11 +82,13 @@ describe('Cron job - handlePendingOrders', () => {
           address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
           email: 'alpha_user@test.io',
           eventPassIds: ['clj8raobj7g8l0aw3bfw6dny4', 'fake-event-pass-2'],
+          packIds: [],
         },
         {
           address: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
           email: null,
           eventPassIds: ['clj8raobj7g8l0aw3bfw6dny4'],
+          packIds: [],
         },
       ],
       ordersToDelete: [
