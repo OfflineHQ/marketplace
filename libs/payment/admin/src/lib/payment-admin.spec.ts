@@ -418,9 +418,9 @@ describe('Payment', () => {
     const orders = [
       {
         id: 'order1',
-        eventPassPricing: {
-          priceCurrency: 'usd',
-          priceAmount: 100,
+        passPricing: {
+          currency: Currency_Enum.Usd,
+          amount: 100,
         },
       },
     ];
@@ -563,7 +563,7 @@ describe('Payment', () => {
         stripeCheckoutSession: {
           stripeSessionId: sessionId,
           stripeCustomerId: stripeCustomer.id,
-          type: StripeCheckoutSessionType_Enum.Order,
+          type: StripeCheckoutSessionType_Enum.EventPassOrder,
         },
       });
     });
@@ -571,7 +571,22 @@ describe('Payment', () => {
   describe('expireStripeCheckoutSession', () => {
     it('should call stripe.checkout.sessions.expire, getOrdersFromStripeCheckoutSession, markOrderAsCancelled, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
       const stripeCheckoutSessionId = 'sessionId';
-      const orders = [{ id: 'order1' }, { id: 'order2' }];
+      const orders = [
+        {
+          id: 'order1',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 100,
+          },
+        },
+        {
+          id: 'order2',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 200,
+          },
+        },
+      ];
       payment.stripe.checkout.sessions.expire = jest.fn().mockResolvedValue({});
       payment.getOrdersFromStripeCheckoutSession = jest
         .fn()
@@ -653,7 +668,22 @@ describe('Payment', () => {
   describe('canceledStripeCheckoutSession', () => {
     it('should call getOrdersFromStripeCheckoutSession, markOrderAsCancelled, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
       const stripeCheckoutSessionId = 'sessionId';
-      const orders = [{ id: 'order1' }, { id: 'order2' }];
+      const orders = [
+        {
+          id: 'order1',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 100,
+          },
+        },
+        {
+          id: 'order2',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 200,
+          },
+        },
+      ];
       payment.getOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue(orders);
@@ -676,7 +706,22 @@ describe('Payment', () => {
   describe('confirmedStripeCheckoutSession', () => {
     it('should call getOrdersFromStripeCheckoutSession, nftClaimable.checkOrder, markOrderAsCompleted, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
       const stripeCheckoutSessionId = 'sessionId';
-      const orders = [{ id: 'order1' }, { id: 'order2' }];
+      const orders = [
+        {
+          id: 'order1',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 100,
+          },
+        },
+        {
+          id: 'order2',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 200,
+          },
+        },
+      ];
       payment.getOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue(orders);
@@ -736,7 +781,22 @@ describe('Payment', () => {
       const paymentIntentId = 'paymentIntentId';
       const checkoutSessionId = 'checkoutSessionId';
       const refund = { status: 'succeeded' };
-      const orders = [{ id: 'order1' }, { id: 'order2' }];
+      const orders = [
+        {
+          id: 'order1',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 100,
+          },
+        },
+        {
+          id: 'order2',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 200,
+          },
+        },
+      ];
       payment.stripe.refunds.create = jest.fn().mockResolvedValue(refund);
       payment.getOrdersFromStripeCheckoutSession = jest
         .fn()
@@ -781,7 +841,7 @@ describe('Payment', () => {
   describe('calculateUnitAmount', () => {
     it('should return calculated amount if currency is not the same as priceCurrency and currency has a lower rate', () => {
       const order = {
-        eventPassPricing: {
+        passPricing: {
           amount: 100,
           currency: Currency_Enum.Usd,
         },
@@ -797,7 +857,7 @@ describe('Payment', () => {
         },
       } as CurrencyRates;
 
-      const result = calculateUnitAmount(order.eventPassPricing, rates);
+      const result = calculateUnitAmount(order.passPricing, rates);
 
       expect(result).toEqual(85);
     });
@@ -805,7 +865,7 @@ describe('Payment', () => {
 
   it('should return calculated amount if currency is not the same as priceCurrency and currency has a higher rate', () => {
     const order = {
-      eventPassPricing: {
+      passPricing: {
         amount: 100,
         currency: Currency_Enum.Usd,
       },
@@ -821,14 +881,14 @@ describe('Payment', () => {
       },
     } as CurrencyRates;
 
-    const result = calculateUnitAmount(order.eventPassPricing, rates);
+    const result = calculateUnitAmount(order.passPricing, rates);
 
     expect(result).toEqual(115);
   });
 
   it('should return calculated amount if currency is not the same complex amount', () => {
     const order = {
-      eventPassPricing: {
+      passPricing: {
         amount: 123456,
         currency: Currency_Enum.Usd,
       },
@@ -844,14 +904,14 @@ describe('Payment', () => {
       },
     } as CurrencyRates;
 
-    const result = calculateUnitAmount(order.eventPassPricing, rates);
+    const result = calculateUnitAmount(order.passPricing, rates);
 
     expect(result).toEqual(104938);
   });
 
   it('should return calculated amount if currency is not the same complex amount complex rate', () => {
     const order = {
-      eventPassPricing: {
+      passPricing: {
         amount: 123456789,
         currency: Currency_Enum.Usd,
       },
@@ -867,14 +927,14 @@ describe('Payment', () => {
       },
     } as CurrencyRates;
 
-    const result = calculateUnitAmount(order.eventPassPricing, rates);
+    const result = calculateUnitAmount(order.passPricing, rates);
 
     expect(result).toEqual(98518518);
   });
 
-  it('should handle large priceAmount without overflow', () => {
+  it('should handle large amount without overflow', () => {
     const order = {
-      eventPassPricing: {
+      passPricing: {
         amount: Number.MAX_SAFE_INTEGER,
         currency: Currency_Enum.Usd,
       },
@@ -890,7 +950,7 @@ describe('Payment', () => {
       },
     } as CurrencyRates;
 
-    const result = calculateUnitAmount(order.eventPassPricing, rates);
+    const result = calculateUnitAmount(order.passPricing, rates);
 
     expect(result).toBeCloseTo(Number.MAX_SAFE_INTEGER * 0.85);
   });
