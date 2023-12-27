@@ -30,12 +30,12 @@ mutation SetOrdersStripeCheckoutSessionId($updates: [order_updates!]!) {
 }
 
 mutation MovePendingOrdersToConfirmed(
-  $pendingOrdersIds: [uuid!]!
+  $pendingOrderIds: [uuid!]!
   $objects: [order_insert_input!]!
   $locale: Locale!
   $stage: Stage!
 ) {
-  delete_pendingOrder(where: { id: { _in: $pendingOrdersIds } }) {
+  delete_pendingOrder(where: { id: { _in: $pendingOrderIds } }) {
     affected_rows
   }
   insert_order(objects: $objects) {
