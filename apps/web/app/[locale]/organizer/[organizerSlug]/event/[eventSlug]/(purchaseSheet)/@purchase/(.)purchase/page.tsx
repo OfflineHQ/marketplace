@@ -4,8 +4,8 @@ import {
   PassPurchaseSheetSkeleton,
 } from '@features/organizer/event';
 import {
-  getEventPassOrdersConfirmed,
   getEventPasses,
+  getOrdersConfirmed,
 } from '@features/organizer/event-api';
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
@@ -48,7 +48,7 @@ const PurchaseSectionContent: React.FC<PurchaseSectionContentProps> = async ({
     namespace: 'Organizer.Event.PassPurchase',
   });
   const passes = await getEventPasses({ eventSlug, locale });
-  const confirmedPasses = await getEventPassOrdersConfirmed();
+  const confirmedPasses = await getOrdersConfirmed();
   return (
     <PassPurchaseSheet
       passes={passes}
