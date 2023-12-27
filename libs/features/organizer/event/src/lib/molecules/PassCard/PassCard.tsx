@@ -32,7 +32,8 @@ export interface PassCardProps extends EventPass, PassCardSelectProps {
 export const PassCard: React.FC<PassCardProps> = ({
   name,
   description,
-  eventPassPricing,
+  passAmount,
+  passPricing,
   passOptions,
   nftImage,
   className,
@@ -60,15 +61,11 @@ export const PassCard: React.FC<PassCardProps> = ({
         </div>
         <PassOptions passOptions={passOptions || []} />
       </CardHeader>
-      {eventPassPricing ? (
+      {passAmount && passPricing ? (
         <CardFooter className="flex items-center justify-between">
-          <ConvertedCurrency
-            variant="h5"
-            currency={eventPassPricing?.priceCurrency}
-            amount={eventPassPricing?.priceAmount || 0}
-          />
+          <ConvertedCurrency variant="h5" {...passPricing} />
           {hasConfirmedPasses ? null : (
-            <PassCardSelect {...props} eventPassPricing={eventPassPricing} />
+            <PassCardSelect {...props} passAmount={passAmount} />
           )}
         </CardFooter>
       ) : null}
