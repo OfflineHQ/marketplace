@@ -1,4 +1,4 @@
-fragment AmountFields on passAmount {
+fragment PassAmountFields on passAmount {
   maxAmount
   maxAmountPerUser
   timeBeforeDelete

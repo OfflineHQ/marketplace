@@ -48,10 +48,10 @@ query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!)
       name
       description
       passAmount {
-        ...AmountFields
+        ...PassAmountFields
       }
       passPricing {
-        ...PricingFields
+        ...PassPricingFields
       }
     }
   }
@@ -100,10 +100,10 @@ query GetEventWithPassesOrganizer(
         }
       }
       passAmount {
-        ...AmountFields
+        ...PassAmountFields
       }
       passPricing {
-        ...PricingFields
+        ...PassPricingFields
       }
       eventPassNftContract {
         type
