@@ -60,7 +60,7 @@ export type SetOrdersStripeCheckoutSessionIdMutationVariables = Types.Exact<{
 export type SetOrdersStripeCheckoutSessionIdMutation = { __typename?: 'mutation_root', update_order_many?: Array<{ __typename?: 'order_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'order', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId?: string | null, packId?: string | null, accountId: any, created_at: any, stripeCheckoutSessionId?: string | null }> } | null> | null };
 
 export type MovePendingOrdersToConfirmedMutationVariables = Types.Exact<{
-  pendingOrdersIds: Array<Types.Scalars['uuid']> | Types.Scalars['uuid'];
+  pendingOrderIds: Array<Types.Scalars['uuid']> | Types.Scalars['uuid'];
   objects: Array<Types.Order_Insert_Input> | Types.Order_Insert_Input;
   locale: Types.Locale;
   stage: Types.Stage;
@@ -329,7 +329,7 @@ export type GetPackNftContractFromPackIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetPackNftContractFromPackIdQuery = { __typename?: 'query_root', packNftContract: Array<{ __typename?: 'packNftContract', id: any, chainId: string, rewardsPerPack: number, contractAddress: string, eventId: string, eventPassIds: any, eventPassNfts: Array<{ __typename?: 'eventPassNft', tokenId: any, contractAddress: string, currentOwnerAddress?: string | null, eventPassId: string }> }> };
+export type GetPackNftContractFromPackIdQuery = { __typename?: 'query_root', packNftContract: Array<{ __typename?: 'packNftContract', id: any, chainId: string, rewardsPerPack: number, contractAddress: string, eventId: string, eventPassIds: any, eventPassNfts: Array<{ __typename?: 'eventPassNft', tokenId: any, contractAddress: string, currentOwnerAddress?: string | null, eventPassId: string, packId?: string | null }> }> };
 
 export type CreatePassAmountMutationVariables = Types.Exact<{
   passAmount: Types.PassAmount_Insert_Input;

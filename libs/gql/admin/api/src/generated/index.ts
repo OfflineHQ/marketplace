@@ -248,8 +248,8 @@ ${KycFieldsFragmentDoc}`;
 }
     `;
  const MovePendingOrdersToConfirmedDocument = `
-    mutation MovePendingOrdersToConfirmed($pendingOrdersIds: [uuid!]!, $objects: [order_insert_input!]!, $locale: Locale!, $stage: Stage!) {
-  delete_pendingOrder(where: {id: {_in: $pendingOrdersIds}}) {
+    mutation MovePendingOrdersToConfirmed($pendingOrderIds: [uuid!]!, $objects: [order_insert_input!]!, $locale: Locale!, $stage: Stage!) {
+  delete_pendingOrder(where: {id: {_in: $pendingOrderIds}}) {
     affected_rows
   }
   insert_order(objects: $objects) {
@@ -802,6 +802,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
       contractAddress
       currentOwnerAddress
       eventPassId
+      packId
     }
   }
 }
