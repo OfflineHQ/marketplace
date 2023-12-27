@@ -25,7 +25,7 @@ test.afterEach(async () => {
 });
 
 test.beforeEach(async () => {
-  await applySeeds(client, ['account', 'kyc', 'eventPassPricing']);
+  await applySeeds(client, ['account', 'kyc', 'passAmount', 'passPricing']);
 });
 
 test('user should be able to buy a pass', async () => {
