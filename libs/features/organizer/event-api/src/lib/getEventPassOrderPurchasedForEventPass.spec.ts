@@ -7,7 +7,7 @@ jest.mock('@next/next-auth/user');
 jest.mock('@gql/user/api', () => ({
   userSdk: {
     GetOrderPurchasedForEventPassesId: jest.fn().mockResolvedValue({
-      eventPassOrder: [{ id: 'test-order' }],
+      order: [{ id: 'test-order' }],
     }),
   },
 }));

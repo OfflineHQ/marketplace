@@ -68,7 +68,7 @@ describe('Payment integration', () => {
       'eventParameters',
       'eventPassPricing',
       'pendingOrder',
-      'eventPassOrder',
+      'order',
       'eventPassNft',
       'stripeCustomer',
       'stripeCheckoutSession',
@@ -138,7 +138,7 @@ describe('Payment integration', () => {
         locale,
       });
 
-      // Verify the eventPassOrders are created with status CONFIRMED
+      // Verify the orders are created with status CONFIRMED
       for (const order of res) {
         expect(order.status).toEqual(OrderStatus_Enum.Confirmed);
         expect(order.accountId).toEqual(accountId);

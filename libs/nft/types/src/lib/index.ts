@@ -33,8 +33,8 @@ export type EventPassNftAfterMutation = NonNullable<
 >['returning'][0];
 
 export type OrderWithContractData =
-  GetOrdersFromStripeCheckoutSessionQuery['eventPassOrder'][0] &
-    GetOrderFromIdQuery['eventPassOrder_by_pk'];
+  GetOrdersFromStripeCheckoutSessionQuery['order'][0] &
+    GetOrderFromIdQuery['order_by_pk'];
 
 export enum ContractType {
   NFT_DROP = 'nft-drop',

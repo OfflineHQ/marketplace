@@ -4,7 +4,7 @@ import { getEventPassOrderSums } from './getEventPassOrderSums';
 jest.mock('@gql/admin/api', () => ({
   adminSdk: {
     GetEventPassOrderSums: jest.fn().mockResolvedValue({
-      eventPassOrderSums_by_pk: { totalReserved: 10 },
+      orderSums_by_pk: { totalReserved: 10 },
     }),
   },
 }));

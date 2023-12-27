@@ -22,11 +22,11 @@ export const getOrdersFromStripeCheckoutSession = async (
     payment.getStripeCustomerId(session.customer) === customer?.stripeCustomerId
   ) {
     const metadata = session.metadata as StripeCheckoutSessionMetadataOrder;
-    const eventPassOrderIds = metadata.eventPassOrderIds.split(',');
+    const orderIds = metadata.orderIds.split(',');
     const res = await userSdk.GetOrdersFromIds({
-      eventPassOrderIds,
+      orderIds,
       stage: env.HYGRAPH_STAGE as Stage,
     });
-    return res.eventPassOrder;
+    return res.order;
   } else throw new Error('Customer or Stripe Checkout session not found');
 };

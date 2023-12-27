@@ -22,5 +22,5 @@ export const getOrderPurchasedForEventPasses = async ({
       },
     },
   );
-  return data?.eventPassOrder;
+  return data?.order;
 };
