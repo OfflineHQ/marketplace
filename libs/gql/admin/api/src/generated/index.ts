@@ -78,8 +78,8 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     `;
- const UpdateOrderStatusDocument = `
-    mutation UpdateOrderStatus($updates: [order_updates!]!) {
+ const UpdateOrdersStatusDocument = `
+    mutation UpdateOrdersStatus($updates: [order_updates!]!) {
   update_order_many(updates: $updates) {
     affected_rows
     returning {
@@ -279,8 +279,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetAccountById(variables: Types.GetAccountByIdQueryVariables, options?: C): Promise<Types.GetAccountByIdQuery> {
       return requester<Types.GetAccountByIdQuery, Types.GetAccountByIdQueryVariables>(GetAccountByIdDocument, variables, options) as Promise<Types.GetAccountByIdQuery>;
     },
-    UpdateOrderStatus(variables: Types.UpdateOrderStatusMutationVariables, options?: C): Promise<Types.UpdateOrderStatusMutation> {
-      return requester<Types.UpdateOrderStatusMutation, Types.UpdateOrderStatusMutationVariables>(UpdateOrderStatusDocument, variables, options) as Promise<Types.UpdateOrderStatusMutation>;
+    UpdateOrdersStatus(variables: Types.UpdateOrdersStatusMutationVariables, options?: C): Promise<Types.UpdateOrdersStatusMutation> {
+      return requester<Types.UpdateOrdersStatusMutation, Types.UpdateOrdersStatusMutationVariables>(UpdateOrdersStatusDocument, variables, options) as Promise<Types.UpdateOrdersStatusMutation>;
     },
     SetOrderStripeCheckoutSessionId(variables: Types.SetOrderStripeCheckoutSessionIdMutationVariables, options?: C): Promise<Types.SetOrderStripeCheckoutSessionIdMutation> {
       return requester<Types.SetOrderStripeCheckoutSessionIdMutation, Types.SetOrderStripeCheckoutSessionIdMutationVariables>(SetOrderStripeCheckoutSessionIdDocument, variables, options) as Promise<Types.SetOrderStripeCheckoutSessionIdMutation>;
