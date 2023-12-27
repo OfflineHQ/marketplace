@@ -1,0 +1,25 @@
+query GetEventPassNftByContractsAndTokenIds(
+  $contractAddresses: [String!]!
+  $chainId: String!
+  $tokenIds: [bigint!]!
+) @cached {
+  eventPassNft(
+    where: {
+      contractAddress: { _in: $contractAddresses }
+      chainId: { _eq: $chainId }
+      tokenId: { _in: $tokenIds }
+    }
+  ) {
+    tokenId
+    eventId
+    eventPassId
+    organizerId
+  }
+}
+
+query GetListCurrentOwnerAddressForContractAddress($contractAddress: String) {
+  eventPassNft(where: { contractAddress: { _eq: $contractAddress } }) {
+    currentOwnerAddress
+    tokenId
+  }
+}
