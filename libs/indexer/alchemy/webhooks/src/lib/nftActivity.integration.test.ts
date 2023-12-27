@@ -109,6 +109,7 @@ describe('nftActivity integration test', () => {
       'account',
       'eventPassNftContract',
       'eventParameters',
+      'nftTransfer',
       'eventPassNft',
     ]);
     fileWrapper = new FileWrapper();
@@ -128,6 +129,7 @@ describe('nftActivity integration test', () => {
       'account',
       'eventPassNftContract',
       'eventParameters',
+      'nftTransfer',
       'eventPassNft',
     ]);
   });
