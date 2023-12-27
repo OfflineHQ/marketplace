@@ -16,7 +16,7 @@ import { calculateUnitAmount } from '@next/currency-common';
 import { AppUser } from '@next/types';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import {
-  StripeCheckoutSessionMetadataEventPassOrder,
+  StripeCheckoutSessionMetadataOrder,
   StripeCreateSessionLineItem,
   StripeCustomer,
 } from '@payment/types';
@@ -149,19 +149,19 @@ export class Payment {
     return res;
   }
 
-  // Delete corresponding eventPassPendingOrders and replace them by eventPassOrders with status CONFIRMED.
-  async moveEventPassPendingOrdersToConfirmed({
-    eventPassPendingOrders,
+  // Delete corresponding pendingOrders and replace them by eventPassOrders with status CONFIRMED.
+  async movePendingOrdersToConfirmed({
+    pendingOrders,
     accountId,
     locale,
   }: {
-    eventPassPendingOrders: UserPassPendingOrder[];
+    pendingOrders: UserPassPendingOrder[];
     accountId: string;
     locale: Locale;
   }) {
-    const res = await adminSdk.MoveEventPassPendingOrdersToConfirmed({
-      eventPassPendingOrderIds: eventPassPendingOrders.map((order) => order.id),
-      objects: eventPassPendingOrders.map((order) => ({
+    const res = await adminSdk.MovePendingOrdersToConfirmed({
+      pendingOrderIds: pendingOrders.map((order) => order.id),
+      objects: pendingOrders.map((order) => ({
         eventPassId: order.eventPassId,
         status: OrderStatus_Enum.Confirmed,
         accountId,
@@ -173,12 +173,12 @@ export class Payment {
     return res?.insert_eventPassOrder?.returning;
   }
 
-  async markEventPassOrderAsCancelled({
+  async markOrderAsCancelled({
     eventPassOrdersId,
   }: {
     eventPassOrdersId: string[];
   }) {
-    return adminSdk.UpdateEventPassOrdersStatus({
+    return adminSdk.UpdateOrdersStatus({
       updates: eventPassOrdersId.map((id) => ({
         _set: {
           status: OrderStatus_Enum.Cancelled,
@@ -192,12 +192,12 @@ export class Payment {
     });
   }
 
-  async markEventPassOrderAsRefunded({
+  async markOrderAsRefunded({
     eventPassOrdersId,
   }: {
     eventPassOrdersId: string[];
   }) {
-    return adminSdk.UpdateEventPassOrdersStatus({
+    return adminSdk.UpdateOrdersStatus({
       updates: eventPassOrdersId.map((id) => ({
         _set: {
           status: OrderStatus_Enum.Refunded,
@@ -221,13 +221,13 @@ export class Payment {
   async createStripeCheckoutSession({
     user,
     stripeCustomer,
-    eventPassPendingOrders,
+    pendingOrders,
     locale,
     currency,
   }: {
     user: AppUser;
     stripeCustomer: StripeCustomer;
-    eventPassPendingOrders: UserPassPendingOrder[];
+    pendingOrders: UserPassPendingOrder[];
     locale: Locale;
     currency: string;
   }) {
@@ -245,8 +245,8 @@ export class Payment {
       );
     const success_url = `${this.baseUrl}/cart/success?session_id={CHECKOUT_SESSION_ID}`;
     const cancel_url = `${this.baseUrl}/cart/canceled?session_id={CHECKOUT_SESSION_ID}`;
-    const orders = await this.moveEventPassPendingOrdersToConfirmed({
-      eventPassPendingOrders,
+    const orders = await this.movePendingOrdersToConfirmed({
+      pendingOrders,
       accountId: user.id,
       locale,
     });
@@ -254,7 +254,7 @@ export class Payment {
       throw new Error(
         `No eventPassOrders created for user: ${
           user.id
-        } and eventPassPendingOrders: ${eventPassPendingOrders
+        } and pendingOrders: ${pendingOrders
           .map((order) => order.id)
           .join(',')}`,
       );
@@ -305,7 +305,7 @@ export class Payment {
             images: [order.eventPass?.nftImage?.url as string],
             metadata: {
               userId: user.id,
-              eventPassPendingOrderId: order.id,
+              pendingOrderId: order.id,
               eventPassId: order.eventPassId,
               eventSlug: order.eventPass?.event?.slug as string,
               organizerSlug: order.eventPass?.event?.organizer?.slug as string,
@@ -325,7 +325,7 @@ export class Payment {
       eventSlugs: orders.map((order) => order.eventPass?.event?.slug).join(','),
       eventPassIds: orders.map((order) => order.eventPassId).join(','),
       // orders: JSON.stringify(orders),
-    } satisfies StripeCheckoutSessionMetadataEventPassOrder;
+    } satisfies StripeCheckoutSessionMetadataOrder;
 
     if (!stripeCustomer.email) {
       throw new Error(
@@ -355,7 +355,7 @@ export class Payment {
       //   setup_future_usage: 'on_session', // see alternative with 'off_session' here: https://stripe.com/docs/payments/save-during-payment
       // }
     });
-    await adminSdk.SetEventPassOrdersStripeCheckoutSessionId({
+    await adminSdk.SetOrdersStripeCheckoutSessionId({
       updates: orders.map(({ id }) => ({
         _set: {
           stripeCheckoutSessionId: session.id,
@@ -371,7 +371,7 @@ export class Payment {
       stripeCheckoutSession: {
         stripeSessionId: session.id,
         stripeCustomerId: stripeCustomer.id,
-        type: StripeCheckoutSessionType_Enum.EventPassOrder,
+        type: StripeCheckoutSessionType_Enum.Order,
       },
     });
     return res.insert_stripeCheckoutSession_one;
@@ -384,10 +384,10 @@ export class Payment {
     stripeCheckoutSessionId: string;
   }) {
     await this.stripe.checkout.sessions.expire(stripeCheckoutSessionId);
-    const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
+    const orders = await this.getOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
-    await this.markEventPassOrderAsCancelled({
+    await this.markOrderAsCancelled({
       eventPassOrdersId: orders.map((order) => order.id),
     });
     await adminSdk.DeleteStripeCheckoutSession({
@@ -395,12 +395,12 @@ export class Payment {
     });
   }
 
-  async getEventPassOrdersFromStripeCheckoutSession({
+  async getOrdersFromStripeCheckoutSession({
     stripeCheckoutSessionId,
   }: {
     stripeCheckoutSessionId: string;
   }) {
-    const res = await adminSdk.GetEventPassOrdersFromStripeCheckoutSession({
+    const res = await adminSdk.GetOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
     return res.eventPassOrder;
@@ -450,10 +450,10 @@ export class Payment {
   }: {
     stripeCheckoutSessionId: string;
   }) {
-    const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
+    const orders = await this.getOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
-    await this.markEventPassOrderAsCancelled({
+    await this.markOrderAsCancelled({
       eventPassOrdersId: orders.map((order) => order.id),
     });
     await adminSdk.DeleteStripeCheckoutSession({
@@ -466,7 +466,7 @@ export class Payment {
   }: {
     stripeCheckoutSessionId: string;
   }) {
-    const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
+    const orders = await this.getOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
 
@@ -530,10 +530,10 @@ export class Payment {
       );
     }
     if (['succeeded', 'pending'].includes(refund.status)) {
-      const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
+      const orders = await this.getOrdersFromStripeCheckoutSession({
         stripeCheckoutSessionId: checkoutSessionId,
       });
-      await this.markEventPassOrderAsRefunded({
+      await this.markOrderAsRefunded({
         eventPassOrdersId: orders.map((order) => order.id),
       });
       await adminSdk.DeleteStripeCheckoutSession({

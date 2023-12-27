@@ -97,7 +97,7 @@ export const queryDb = async (client: Client, sql: string) => {
   await client.query(sql);
 };
 
-export const eventPassPendingOrders = {
+export const pendingOrders = {
   alpha_user: [
     {
       id: 'd4951f86-1a8f-410a-bbc1-607f1c7933b9',
