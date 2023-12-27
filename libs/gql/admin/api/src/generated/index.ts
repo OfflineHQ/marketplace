@@ -147,6 +147,19 @@ export const RoleAssignmentFieldsFragmentDoc = `
   eventId
 }
     `;
+export const StripeCheckoutSessionFieldsFragmentDoc = `
+    fragment StripeCheckoutSessionFields on stripeCheckoutSession {
+  stripeSessionId
+  stripeCustomerId
+  type
+}
+    `;
+export const StripeCustomerFieldsFragmentDoc = `
+    fragment StripeCustomerFields on stripeCustomer {
+  stripeCustomerId
+  accountId
+}
+    `;
  const UpdateAccountDocument = `
     mutation UpdateAccount($id: uuid!, $account: account_set_input!) {
   update_account_by_pk(_set: $account, pk_columns: {id: $id}) {
@@ -969,6 +982,51 @@ ${EventPassFieldsFragmentDoc}`;
   }
 }
     `;
+ const CreateStripeCheckoutSessionDocument = `
+    mutation CreateStripeCheckoutSession($stripeCheckoutSession: stripeCheckoutSession_insert_input!) {
+  insert_stripeCheckoutSession_one(object: $stripeCheckoutSession) {
+    ...StripeCheckoutSessionFields
+  }
+}
+    ${StripeCheckoutSessionFieldsFragmentDoc}`;
+ const DeleteStripeCheckoutSessionDocument = `
+    mutation DeleteStripeCheckoutSession($stripeSessionId: String!) {
+  delete_stripeCheckoutSession_by_pk(stripeSessionId: $stripeSessionId) {
+    ...StripeCheckoutSessionFields
+  }
+}
+    ${StripeCheckoutSessionFieldsFragmentDoc}`;
+ const GetStripeCheckoutSessionForUserDocument = `
+    query GetStripeCheckoutSessionForUser($stripeCustomerId: String!) {
+  stripeCheckoutSession(where: {stripeCustomerId: {_eq: $stripeCustomerId}}) {
+    ...StripeCheckoutSessionFields
+  }
+}
+    ${StripeCheckoutSessionFieldsFragmentDoc}`;
+ const CreateStripeCustomerDocument = `
+    mutation CreateStripeCustomer($stripeCustomer: stripeCustomer_insert_input!) {
+  insert_stripeCustomer_one(object: $stripeCustomer) {
+    ...StripeCustomerFields
+  }
+}
+    ${StripeCustomerFieldsFragmentDoc}`;
+ const UpdateStripeCustomerDocument = `
+    mutation UpdateStripeCustomer($stripeCustomerId: String!, $stripeCustomer: stripeCustomer_set_input!) {
+  update_stripeCustomer_by_pk(
+    pk_columns: {stripeCustomerId: $stripeCustomerId}
+    _set: $stripeCustomer
+  ) {
+    ...StripeCustomerFields
+  }
+}
+    ${StripeCustomerFieldsFragmentDoc}`;
+ const GetStripeCustomerByAccountDocument = `
+    query GetStripeCustomerByAccount($accountId: uuid!) {
+  stripeCustomer(where: {accountId: {_eq: $accountId}}) {
+    ...StripeCustomerFields
+  }
+}
+    ${StripeCustomerFieldsFragmentDoc}`;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -1142,6 +1200,24 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetRoleMinimal(variables: Types.GetRoleMinimalQueryVariables, options?: C): Promise<Types.GetRoleMinimalQuery> {
       return requester<Types.GetRoleMinimalQuery, Types.GetRoleMinimalQueryVariables>(GetRoleMinimalDocument, variables, options) as Promise<Types.GetRoleMinimalQuery>;
+    },
+    CreateStripeCheckoutSession(variables: Types.CreateStripeCheckoutSessionMutationVariables, options?: C): Promise<Types.CreateStripeCheckoutSessionMutation> {
+      return requester<Types.CreateStripeCheckoutSessionMutation, Types.CreateStripeCheckoutSessionMutationVariables>(CreateStripeCheckoutSessionDocument, variables, options) as Promise<Types.CreateStripeCheckoutSessionMutation>;
+    },
+    DeleteStripeCheckoutSession(variables: Types.DeleteStripeCheckoutSessionMutationVariables, options?: C): Promise<Types.DeleteStripeCheckoutSessionMutation> {
+      return requester<Types.DeleteStripeCheckoutSessionMutation, Types.DeleteStripeCheckoutSessionMutationVariables>(DeleteStripeCheckoutSessionDocument, variables, options) as Promise<Types.DeleteStripeCheckoutSessionMutation>;
+    },
+    GetStripeCheckoutSessionForUser(variables: Types.GetStripeCheckoutSessionForUserQueryVariables, options?: C): Promise<Types.GetStripeCheckoutSessionForUserQuery> {
+      return requester<Types.GetStripeCheckoutSessionForUserQuery, Types.GetStripeCheckoutSessionForUserQueryVariables>(GetStripeCheckoutSessionForUserDocument, variables, options) as Promise<Types.GetStripeCheckoutSessionForUserQuery>;
+    },
+    CreateStripeCustomer(variables: Types.CreateStripeCustomerMutationVariables, options?: C): Promise<Types.CreateStripeCustomerMutation> {
+      return requester<Types.CreateStripeCustomerMutation, Types.CreateStripeCustomerMutationVariables>(CreateStripeCustomerDocument, variables, options) as Promise<Types.CreateStripeCustomerMutation>;
+    },
+    UpdateStripeCustomer(variables: Types.UpdateStripeCustomerMutationVariables, options?: C): Promise<Types.UpdateStripeCustomerMutation> {
+      return requester<Types.UpdateStripeCustomerMutation, Types.UpdateStripeCustomerMutationVariables>(UpdateStripeCustomerDocument, variables, options) as Promise<Types.UpdateStripeCustomerMutation>;
+    },
+    GetStripeCustomerByAccount(variables: Types.GetStripeCustomerByAccountQueryVariables, options?: C): Promise<Types.GetStripeCustomerByAccountQuery> {
+      return requester<Types.GetStripeCustomerByAccountQuery, Types.GetStripeCustomerByAccountQueryVariables>(GetStripeCustomerByAccountDocument, variables, options) as Promise<Types.GetStripeCustomerByAccountQuery>;
     }
   };
 }

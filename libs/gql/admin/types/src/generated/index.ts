@@ -455,3 +455,50 @@ export type GetRoleMinimalQueryVariables = Types.Exact<{
 
 
 export type GetRoleMinimalQuery = { __typename?: 'query_root', roleAssignment: Array<{ __typename?: 'roleAssignment', id: any }> };
+
+export type StripeCheckoutSessionFieldsFragment = { __typename?: 'stripeCheckoutSession', stripeSessionId: string, stripeCustomerId: string, type: Types.StripeCheckoutSessionType_Enum };
+
+export type StripeCustomerFieldsFragment = { __typename?: 'stripeCustomer', stripeCustomerId: string, accountId: any };
+
+export type CreateStripeCheckoutSessionMutationVariables = Types.Exact<{
+  stripeCheckoutSession: Types.StripeCheckoutSession_Insert_Input;
+}>;
+
+
+export type CreateStripeCheckoutSessionMutation = { __typename?: 'mutation_root', insert_stripeCheckoutSession_one?: { __typename?: 'stripeCheckoutSession', stripeSessionId: string, stripeCustomerId: string, type: Types.StripeCheckoutSessionType_Enum } | null };
+
+export type DeleteStripeCheckoutSessionMutationVariables = Types.Exact<{
+  stripeSessionId: Types.Scalars['String'];
+}>;
+
+
+export type DeleteStripeCheckoutSessionMutation = { __typename?: 'mutation_root', delete_stripeCheckoutSession_by_pk?: { __typename?: 'stripeCheckoutSession', stripeSessionId: string, stripeCustomerId: string, type: Types.StripeCheckoutSessionType_Enum } | null };
+
+export type GetStripeCheckoutSessionForUserQueryVariables = Types.Exact<{
+  stripeCustomerId: Types.Scalars['String'];
+}>;
+
+
+export type GetStripeCheckoutSessionForUserQuery = { __typename?: 'query_root', stripeCheckoutSession: Array<{ __typename?: 'stripeCheckoutSession', stripeSessionId: string, stripeCustomerId: string, type: Types.StripeCheckoutSessionType_Enum }> };
+
+export type CreateStripeCustomerMutationVariables = Types.Exact<{
+  stripeCustomer: Types.StripeCustomer_Insert_Input;
+}>;
+
+
+export type CreateStripeCustomerMutation = { __typename?: 'mutation_root', insert_stripeCustomer_one?: { __typename?: 'stripeCustomer', stripeCustomerId: string, accountId: any } | null };
+
+export type UpdateStripeCustomerMutationVariables = Types.Exact<{
+  stripeCustomerId: Types.Scalars['String'];
+  stripeCustomer: Types.StripeCustomer_Set_Input;
+}>;
+
+
+export type UpdateStripeCustomerMutation = { __typename?: 'mutation_root', update_stripeCustomer_by_pk?: { __typename?: 'stripeCustomer', stripeCustomerId: string, accountId: any } | null };
+
+export type GetStripeCustomerByAccountQueryVariables = Types.Exact<{
+  accountId: Types.Scalars['uuid'];
+}>;
+
+
+export type GetStripeCustomerByAccountQuery = { __typename?: 'query_root', stripeCustomer: Array<{ __typename?: 'stripeCustomer', stripeCustomerId: string, accountId: any }> };
