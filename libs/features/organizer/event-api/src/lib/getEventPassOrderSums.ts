@@ -1,4 +1,5 @@
 import { adminSdk } from '@gql/admin/api';
+import { GetEventPassOrderSumsQuery } from '@gql/admin/types';
 import { cache } from 'react';
 
 export const getEventPassOrderSums = cache(
@@ -15,7 +16,7 @@ export const getEventPassOrderSums = cache(
       data?.eventPassOrderSums_by_pk ||
       ({
         totalReserved: 0,
-      } satisfies OrderSumsGetEventPassOrderSumsQuery['eventPassOrderSums_by_pk'])
+      } satisfies GetEventPassOrderSumsQuery['eventPassOrderSums_by_pk'])
     );
   },
 );
