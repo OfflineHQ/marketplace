@@ -16,7 +16,13 @@ describe('tests for order user', () => {
   beforeAll(async () => {
     client = await createDbClient();
     await deleteAllTables(client);
-    await applySeeds(client, ['account', 'passPricing', 'passAmount']);
+    await applySeeds(client, [
+      'account',
+      'passPricing',
+      'passAmount',
+      'stripeCheckoutSession',
+      'stripeCustomer',
+    ]);
   });
 
   beforeEach(async () => {

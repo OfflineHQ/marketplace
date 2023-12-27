@@ -3,7 +3,7 @@ import { Order, OrderStatus_Enum } from '@gql/shared/types';
 import {
   applySeeds,
   createDbClient,
-  deleteTables,
+  deleteAllTables,
   type PgClient,
 } from '@test-utils/db';
 import { describe } from 'node:test';
@@ -16,6 +16,7 @@ describe('NftClaimable integration test', () => {
 
   beforeAll(async () => {
     client = await createDbClient();
+    await deleteAllTables(client);
   });
 
   beforeEach(async () => {
@@ -36,7 +37,10 @@ describe('NftClaimable integration test', () => {
       'eventPassNftContract',
       'passAmount',
       'passPricing',
+      'stripeCheckoutSession',
+      'stripeCustomer',
       'order',
+      'nftTransfer',
       'eventPassNft',
     ]);
     const res = await adminSdk.GetOrdersFromStripeCheckoutSession({
@@ -47,14 +51,7 @@ describe('NftClaimable integration test', () => {
   });
 
   afterEach(async () => {
-    await deleteTables(client, [
-      'account',
-      'eventPassNftContract',
-      'passAmount',
-      'passPricing',
-      'order',
-      'eventPassNft',
-    ]);
+    await deleteAllTables(client);
   });
 
   afterAll(async () => {
