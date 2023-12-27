@@ -69,10 +69,9 @@ async function EventPassContractDeployButtonContent({
 }: EventPassContractDeployButtonContentProps) {
   const isDisabledReasons: string[] = [];
 
-  if (!eventPass.eventPassPricing?.maxAmount)
-    isDisabledReasons.push(noPricingSet);
+  if (!eventPass.passAmount?.maxAmount) isDisabledReasons.push(noPricingSet);
   else {
-    const maxAmount = eventPass.eventPassPricing.maxAmount;
+    const maxAmount = eventPass.passAmount.maxAmount;
     const nftFiles = await getEventPassNftFiles({
       organizerId,
       eventId,

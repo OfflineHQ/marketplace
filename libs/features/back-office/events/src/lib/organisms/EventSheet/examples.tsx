@@ -32,7 +32,8 @@ export const eventWithNormalPasses: EventSheetProps['event'] = {
         url: 'https://picsum.photos/id/621/350/350',
       },
       passOptions: [],
-      eventPassPricing: null,
+      passAmount: null,
+      passPricing: null,
       eventPassNftContract: null,
     },
   ],
@@ -54,11 +55,13 @@ export const eventWithDelayedPasses: EventSheetProps['event'] = {
         url: 'https://picsum.photos/id/622/350/350',
       },
       passOptions: [],
-      eventPassPricing: {
+      passAmount: {
         maxAmount: 200,
-        priceAmount: 20000,
-        priceCurrency: Currency_Enum.Eur,
         timeBeforeDelete: 3600,
+      },
+      passPricing: {
+        amount: 20000,
+        currency: Currency_Enum.Eur,
       },
       eventPassNftContract: {
         contractAddress: '0xabcdef123456789',

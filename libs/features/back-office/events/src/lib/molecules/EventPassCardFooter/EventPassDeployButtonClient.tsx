@@ -43,7 +43,7 @@ export function EventPassDeployButtonClient({
         eventId,
         organizerId,
       });
-      if (eventPassFiles?.length !== eventPass.eventPassPricing?.maxAmount)
+      if (eventPassFiles?.length !== eventPass.passAmount?.maxAmount)
         throw new Error('numFilesDoesNotMatch');
       const filesPath = eventPassFiles.map((file) => file.filePath);
       const duplicates = await checkEventPassNftFilesHash({

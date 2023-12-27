@@ -72,8 +72,8 @@ export const Disabled: Story = {
   args: {
     eventPass: {
       ...eventPassNftVIPWithContract,
-      eventPassPricing: {
-        ...eventPassNftVIPWithContract.eventPassPricing,
+      passAmount: {
+        ...eventPassNftVIPWithContract.passAmount,
         maxAmount: 0,
       },
     },

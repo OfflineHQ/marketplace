@@ -48,7 +48,7 @@ async function EventPassFilesUploaderContent({
   const currentFiles = await getEventPassNftFiles(props);
   const isDisabledReasons: string[] = [];
   let maxFileCount =
-    (eventPass.eventPassPricing?.maxAmount || 0) - currentFiles.length;
+    (eventPass.passAmount?.maxAmount || 0) - currentFiles.length;
   if (maxFileCount < 0) maxFileCount = 0;
   if (!maxFileCount) isDisabledReasons.push(t('number-files-reached'));
   console.log('maxFileCount', maxFileCount);

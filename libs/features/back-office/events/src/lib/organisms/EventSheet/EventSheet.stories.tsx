@@ -154,8 +154,8 @@ const eventPassWithEnoughFiles = {
   eventPasses: [
     {
       ...eventWithDelayedPasses.eventPasses[1],
-      eventPassPricing: {
-        ...eventWithDelayedPasses.eventPasses[1].eventPassPricing,
+      passAmount: {
+        ...eventWithDelayedPasses.eventPasses[1].passAmount,
         maxAmount: 6,
       },
     },

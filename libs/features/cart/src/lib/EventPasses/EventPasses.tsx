@@ -74,18 +74,16 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
                 </Text>
                 <ConvertedCurrency
                   variant="small"
-                  amount={pass.eventPassPricing?.priceAmount || 0}
-                  currency={pass.eventPassPricing?.priceCurrency}
+                  amount={pass.passPricing?.amount || 0}
+                  currency={pass.passPricing?.currency}
                 />
                 {timeRemainingDeletion &&
-                  pass.eventPassPricing?.timeBeforeDelete &&
+                  pass.passAmount?.timeBeforeDelete &&
                   pass.created_at && (
                     <div className="mt-3 flex pr-1">
                       <EventPassTimeBeforeDeletion
                         created_at={pass.created_at}
-                        timeBeforeDelete={
-                          pass.eventPassPricing?.timeBeforeDelete
-                        }
+                        timeBeforeDelete={pass.passAmount?.timeBeforeDelete}
                       />
                     </div>
                   )}
