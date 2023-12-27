@@ -1,0 +1,19 @@
+mutation CreatePassPricing($passPricing: passPricing_insert_input!) {
+  insert_passPricing_one(object: $passPricing) {
+    id
+    eventPassId
+    packId
+    amount
+    currency
+  }
+}
+
+mutation UpdatePassPricing($id: uuid!, $passPricing: passPricing_set_input!) {
+  update_passPricing_by_pk(pk_columns: { id: $id }, _set: $passPricing) {
+    id
+    eventPassId
+    packId
+    amount
+    currency
+  }
+}

@@ -1543,8 +1543,10 @@ export type EventPass = Entity & Node & {
   nftImage: Asset;
   /** Permanent name associated with the NFT. Cannot be changed or localized. */
   nftName: Scalars['String'];
+  passAmount?: Maybe<PassAmount>;
   /** Define the different pass options. An option is defined for a specific location and timeframe */
   passOptions: Array<PassOption>;
+  passPricing?: Maybe<PassPricing>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */

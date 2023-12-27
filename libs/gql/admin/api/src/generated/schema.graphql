@@ -2258,6 +2258,7 @@ type EventPass implements Entity & Node {
   Permanent name associated with the NFT. Cannot be changed or localized.
   """
   nftName: String!
+  passAmount: passAmount
 
   """
   Define the different pass options. An option is defined for a specific location and timeframe
@@ -2291,6 +2292,7 @@ type EventPass implements Entity & Node {
     skip: Int
     where: PassOptionWhereInput
   ): [PassOption!]!
+  passPricing: passPricing
 
   """The time the document was published. Null on documents in draft stage."""
   publishedAt(
