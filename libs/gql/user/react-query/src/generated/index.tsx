@@ -8,6 +8,23 @@ export const AccountFieldsFragmentDoc = `
   email
 }
     `;
+export const OrganizerFieldsFragmentDoc = `
+    fragment OrganizerFields on Organizer {
+  image {
+    url
+  }
+  imageClasses
+  name
+  slug
+}
+    `;
+export const PassAmountFieldsFragmentDoc = `
+    fragment PassAmountFields on passAmount {
+  maxAmount
+  maxAmountPerUser
+  timeBeforeDelete
+}
+    `;
 export const EventDateLocationsFieldsFragmentDoc = `
     fragment EventDateLocationsFields on EventDateLocation {
   locationAddress {
@@ -27,27 +44,64 @@ export const EventDateLocationsFieldsFragmentDoc = `
   dateEnd
 }
     `;
-export const OrganizerFieldsFragmentDoc = `
-    fragment OrganizerFields on Organizer {
-  image {
-    url
-  }
-  imageClasses
-  name
-  slug
-}
-    `;
-export const PassAmountFieldsFragmentDoc = `
-    fragment PassAmountFields on passAmount {
-  maxAmount
-  maxAmountPerUser
-  timeBeforeDelete
-}
-    `;
 export const PassPricingFieldsFragmentDoc = `
     fragment PassPricingFields on passPricing {
   amount
   currency
+}
+    `;
+export const EventPassFieldsFragmentDoc = `
+    fragment EventPassFields on EventPass {
+  name
+  nftImage {
+    url
+  }
+  description
+  passOptions {
+    name
+    description
+    eventDateLocation {
+      ...EventDateLocationsFields
+    }
+  }
+  passPricing {
+    ...PassPricingFields
+  }
+  event {
+    slug
+    title
+    heroImage {
+      url
+    }
+    heroImageClasses
+    organizer {
+      id
+      slug
+      name
+      image {
+        url
+      }
+      imageClasses
+    }
+  }
+}
+    ${EventDateLocationsFieldsFragmentDoc}
+${PassPricingFieldsFragmentDoc}`;
+export const EventPassNftFieldsFragmentDoc = `
+    fragment EventPassNftFields on eventPassNft {
+  tokenId
+  eventId
+  eventPassId
+  organizerId
+  isRevealed
+  currentOwnerAddress
+}
+    `;
+export const RoleAssignmentFieldsFragmentDoc = `
+    fragment RoleAssignmentFields on roleAssignment {
+  role
+  organizerId
+  eventId
 }
     `;
 export const GetAccountDocument = `
@@ -518,6 +572,27 @@ export const useGetPendingOrdersMinimalQuery = <
       fetchDataReactQuery<Types.GetPendingOrdersMinimalQuery, Types.GetPendingOrdersMinimalQueryVariables>(GetPendingOrdersMinimalDocument, variables),
       options
     );
+export const GetKycDocument = `
+    query GetKyc {
+  kyc {
+    applicantId
+    reviewStatus
+    levelName
+  }
+}
+    `;
+export const useGetKycQuery = <
+      TData = Types.GetKycQuery,
+      TError = Error
+    >(
+      variables?: Types.GetKycQueryVariables,
+      options?: UseQueryOptions<Types.GetKycQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetKycQuery, TError, TData>(
+      variables === undefined ? ['GetKyc'] : ['GetKyc', variables],
+      fetchDataReactQuery<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables),
+      options
+    );
 export const InsertFollowOrganizerDocument = `
     mutation InsertFollowOrganizer($organizerSlug: String!) {
   insert_follow_one(object: {organizerSlug: $organizerSlug}) {
@@ -532,5 +607,245 @@ export const useInsertFollowOrganizerMutation = <
     useMutation<Types.InsertFollowOrganizerMutation, TError, Types.InsertFollowOrganizerMutationVariables, TContext>(
       ['InsertFollowOrganizer'],
       (variables?: Types.InsertFollowOrganizerMutationVariables) => fetchDataReactQuery<Types.InsertFollowOrganizerMutation, Types.InsertFollowOrganizerMutationVariables>(InsertFollowOrganizerDocument, variables)(),
+      options
+    );
+export const GetPassedEventsWithEventPassNftsDocument = `
+    query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
+  eventParameters(
+    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_lt: $currentDate}}
+    order_by: {dateEnd: desc}
+  ) {
+    dateStart
+    dateEnd
+    timezone
+    eventPassNftContracts(
+      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+    ) {
+      type
+      isDelayedRevealed
+      eventPass(locales: [$locale, en], stage: $stage) {
+        id
+        name
+        event {
+          slug
+        }
+        nftImage {
+          url
+        }
+      }
+      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+        id
+        isRevealed
+        tokenId
+      }
+    }
+    organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      id
+      slug
+      name
+      image {
+        url
+      }
+      imageClasses
+    }
+    event(where: {}, locales: [$locale, en], stage: $stage) {
+      id
+      slug
+      title
+      heroImage {
+        url
+      }
+      heroImageClasses
+    }
+  }
+}
+    `;
+export const useGetPassedEventsWithEventPassNftsQuery = <
+      TData = Types.GetPassedEventsWithEventPassNftsQuery,
+      TError = Error
+    >(
+      variables: Types.GetPassedEventsWithEventPassNftsQueryVariables,
+      options?: UseQueryOptions<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>(
+      ['GetPassedEventsWithEventPassNfts', variables],
+      fetchDataReactQuery<Types.GetPassedEventsWithEventPassNftsQuery, Types.GetPassedEventsWithEventPassNftsQueryVariables>(GetPassedEventsWithEventPassNftsDocument, variables),
+      options
+    );
+export const GetUpcomingEventsWithEventPassNftsDocument = `
+    query GetUpcomingEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
+  eventParameters(
+    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_gte: $currentDate}}
+    order_by: {dateStart: asc}
+  ) {
+    dateStart
+    dateEnd
+    timezone
+    eventPassNftContracts(
+      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+    ) {
+      type
+      isDelayedRevealed
+      eventPass(locales: [$locale, en], stage: $stage) {
+        id
+        name
+        event {
+          slug
+        }
+        nftImage {
+          url
+        }
+      }
+      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+        id
+        isRevealed
+        tokenId
+      }
+    }
+    organizer(where: {}, locales: [$locale, en], stage: $stage) {
+      id
+      slug
+      name
+      image {
+        url
+      }
+      imageClasses
+    }
+    event(where: {}, locales: [$locale, en], stage: $stage) {
+      id
+      slug
+      title
+      heroImage {
+        url
+      }
+      heroImageClasses
+    }
+  }
+}
+    `;
+export const useGetUpcomingEventsWithEventPassNftsQuery = <
+      TData = Types.GetUpcomingEventsWithEventPassNftsQuery,
+      TError = Error
+    >(
+      variables: Types.GetUpcomingEventsWithEventPassNftsQueryVariables,
+      options?: UseQueryOptions<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>(
+      ['GetUpcomingEventsWithEventPassNfts', variables],
+      fetchDataReactQuery<Types.GetUpcomingEventsWithEventPassNftsQuery, Types.GetUpcomingEventsWithEventPassNftsQueryVariables>(GetUpcomingEventsWithEventPassNftsDocument, variables),
+      options
+    );
+export const GetEventPassNftByTokenReferenceDocument = `
+    query GetEventPassNftByTokenReference($organizerId: String!, $eventId: String!, $eventPassId: String!, $tokenId: bigint!, $chainId: String!, $locale: Locale!, $stage: Stage!) @cached {
+  eventPassNft(
+    where: {organizerId: {_eq: $organizerId}, eventId: {_eq: $eventId}, eventPassId: {_eq: $eventPassId}, tokenId: {_eq: $tokenId}, chainId: {_eq: $chainId}}
+  ) {
+    ...EventPassNftFields
+    eventPass(locales: [$locale, en], stage: $stage) {
+      ...EventPassFields
+    }
+  }
+}
+    ${EventPassNftFieldsFragmentDoc}
+${EventPassFieldsFragmentDoc}`;
+export const useGetEventPassNftByTokenReferenceQuery = <
+      TData = Types.GetEventPassNftByTokenReferenceQuery,
+      TError = Error
+    >(
+      variables: Types.GetEventPassNftByTokenReferenceQueryVariables,
+      options?: UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>(
+      ['GetEventPassNftByTokenReference', variables],
+      fetchDataReactQuery<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables),
+      options
+    );
+export const GetMyRolesDocument = `
+    query GetMyRoles {
+  roleAssignment {
+    ...RoleAssignmentFields
+  }
+}
+    ${RoleAssignmentFieldsFragmentDoc}`;
+export const useGetMyRolesQuery = <
+      TData = Types.GetMyRolesQuery,
+      TError = Error
+    >(
+      variables?: Types.GetMyRolesQueryVariables,
+      options?: UseQueryOptions<Types.GetMyRolesQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetMyRolesQuery, TError, TData>(
+      variables === undefined ? ['GetMyRoles'] : ['GetMyRoles', variables],
+      fetchDataReactQuery<Types.GetMyRolesQuery, Types.GetMyRolesQueryVariables>(GetMyRolesDocument, variables),
+      options
+    );
+export const GetMyRolesWithOrganizerInfosDocument = `
+    query GetMyRolesWithOrganizerInfos($stage: Stage!) {
+  roleAssignment {
+    ...RoleAssignmentFields
+    organizer(where: {}, locales: [en], stage: $stage) {
+      ...OrganizerFields
+    }
+  }
+}
+    ${RoleAssignmentFieldsFragmentDoc}
+${OrganizerFieldsFragmentDoc}`;
+export const useGetMyRolesWithOrganizerInfosQuery = <
+      TData = Types.GetMyRolesWithOrganizerInfosQuery,
+      TError = Error
+    >(
+      variables: Types.GetMyRolesWithOrganizerInfosQueryVariables,
+      options?: UseQueryOptions<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>(
+      ['GetMyRolesWithOrganizerInfos', variables],
+      fetchDataReactQuery<Types.GetMyRolesWithOrganizerInfosQuery, Types.GetMyRolesWithOrganizerInfosQueryVariables>(GetMyRolesWithOrganizerInfosDocument, variables),
+      options
+    );
+export const GetMyRolesWithOrganizerAndInviterInfosDocument = `
+    query GetMyRolesWithOrganizerAndInviterInfos($stage: Stage!) {
+  roleAssignment {
+    ...RoleAssignmentFields
+    organizer(where: {}, locales: [en], stage: $stage) {
+      ...OrganizerFields
+    }
+    inviter {
+      address
+      email
+    }
+  }
+}
+    ${RoleAssignmentFieldsFragmentDoc}
+${OrganizerFieldsFragmentDoc}`;
+export const useGetMyRolesWithOrganizerAndInviterInfosQuery = <
+      TData = Types.GetMyRolesWithOrganizerAndInviterInfosQuery,
+      TError = Error
+    >(
+      variables: Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables,
+      options?: UseQueryOptions<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>(
+      ['GetMyRolesWithOrganizerAndInviterInfos', variables],
+      fetchDataReactQuery<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables>(GetMyRolesWithOrganizerAndInviterInfosDocument, variables),
+      options
+    );
+export const GetStripeCustomerDocument = `
+    query GetStripeCustomer {
+  stripeCustomer {
+    stripeCustomerId
+    accountId
+  }
+}
+    `;
+export const useGetStripeCustomerQuery = <
+      TData = Types.GetStripeCustomerQuery,
+      TError = Error
+    >(
+      variables?: Types.GetStripeCustomerQueryVariables,
+      options?: UseQueryOptions<Types.GetStripeCustomerQuery, TError, TData>
+    ) =>
+    useQuery<Types.GetStripeCustomerQuery, TError, TData>(
+      variables === undefined ? ['GetStripeCustomer'] : ['GetStripeCustomer', variables],
+      fetchDataReactQuery<Types.GetStripeCustomerQuery, Types.GetStripeCustomerQueryVariables>(GetStripeCustomerDocument, variables),
       options
     );
