@@ -224,6 +224,9 @@ ${KycFieldsFragmentDoc}`;
     passAmount {
       timeBeforeDelete
     }
+    packAmount {
+      timeBeforeDelete
+    }
   }
 }
     `;
