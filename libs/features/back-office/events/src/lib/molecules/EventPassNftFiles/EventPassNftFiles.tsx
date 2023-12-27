@@ -29,13 +29,10 @@ export function EventPassNftFiles({
     'OrganizerEvents.Sheet.EventPassCard.EventPassFilesUploader',
   ]);
   return (
-    <AccordionItem
-      value="nft-pass"
-      disabled={!eventPass.eventPassPricing?.maxAmount}
-    >
+    <AccordionItem value="nft-pass" disabled={!eventPass.passAmount?.maxAmount}>
       <AccordionTrigger>{t('title')}</AccordionTrigger>
       <AccordionContent className="w-full flex-col space-y-4 py-4">
-        {eventPass.eventPassPricing?.maxAmount ? (
+        {eventPass.passAmount?.maxAmount ? (
           <>
             {!eventPass.eventPassNftContract && (
               <NextIntlClientProvider locale={locale} messages={localeMessages}>

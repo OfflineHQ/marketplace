@@ -30,21 +30,25 @@ export const eventCartProps: EventCart = {
   eventPasses: [
     {
       ...passWithMaxAmount,
-      eventPassPricing: {
+      passAmount: {
         maxAmount: 7,
-        priceCurrency: Currency_Enum.Usd,
-        priceAmount: 130000,
         timeBeforeDelete: 14400,
+      },
+      passPricing: {
+        currency: Currency_Enum.Usd,
+        amount: 130000,
       },
     },
     {
       ...passWithMaxAmountPerUser,
-      eventPassPricing: {
+      passAmount: {
         maxAmountPerUser: 3,
         maxAmount: 30,
-        priceCurrency: Currency_Enum.Usd,
-        priceAmount: 250000,
         timeBeforeDelete: 14400,
+      },
+      passPricing: {
+        currency: Currency_Enum.Usd,
+        amount: 250000,
       },
     },
   ],
