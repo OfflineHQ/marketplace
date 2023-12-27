@@ -254,15 +254,12 @@ export class Payment {
     const rates = await currencyCache.getRates();
 
     const lineItemsPromises = orders.map(async (order) => {
-      if (
-        !order.eventPassPricing?.priceCurrency ||
-        !order.eventPassPricing?.priceAmount
-      ) {
+      if (!order.passPricing?.currency || !order.passPricing?.amount) {
         throw new Error(
           'Price currency or Price amount is undefined for order: ' + order.id,
         );
       }
-      if (order.eventPassPricing?.priceAmount < 0) {
+      if (order.passPricing?.amount < 0) {
         throw new Error('Price amount is negative for order: ' + order.id);
       }
 
@@ -273,15 +270,15 @@ export class Payment {
       let currencyStripe: string;
       let unitAmount: number;
 
-      if (currency === order.eventPassPricing.priceCurrency) {
+      if (currency === order.passPricing.currency) {
         currencyStripe = currency.toLowerCase();
-        unitAmount = order.eventPassPricing.priceAmount;
+        unitAmount = order.passPricing.amount;
       } else {
         currencyStripe = currency.toLowerCase();
         unitAmount = calculateUnitAmount(
           {
-            amount: order.eventPassPricing.priceAmount,
-            currency: order.eventPassPricing.priceCurrency,
+            amount: order.passPricing.amount,
+            currency: order.passPricing.currency,
           },
           rates,
         );
@@ -363,7 +360,7 @@ export class Payment {
       stripeCheckoutSession: {
         stripeSessionId: session.id,
         stripeCustomerId: stripeCustomer.id,
-        type: StripeCheckoutSessionType_Enum.Order,
+        type: StripeCheckoutSessionType_Enum.EventPassOrder,
       },
     });
     return res.insert_stripeCheckoutSession_one;

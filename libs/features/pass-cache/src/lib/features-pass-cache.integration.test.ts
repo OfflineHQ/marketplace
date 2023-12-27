@@ -22,7 +22,7 @@ describe('PassCache Integration Test', () => {
   beforeAll(async () => {
     client = await createDbClient();
     await resetCache();
-    await applySeeds(client, ['account', 'eventPassPricing']);
+    await applySeeds(client, ['account', 'passAmount', 'passPricing']);
   });
 
   beforeEach(() => {
@@ -30,7 +30,7 @@ describe('PassCache Integration Test', () => {
   });
 
   afterAll(async () => {
-    await deleteTables(client, ['account', 'eventPassPricing']);
+    await deleteTables(client, ['account', 'passAmount', 'passPricing']);
     await client.end();
   });
 
