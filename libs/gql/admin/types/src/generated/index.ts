@@ -127,6 +127,32 @@ export type DeleteKycMutationVariables = Types.Exact<{
 
 export type DeleteKycMutation = { __typename?: 'mutation_root', delete_kyc_by_pk?: { __typename?: 'kyc', externalUserId: any } | null };
 
+export type NftTransferFieldsFragment = { __typename?: 'nftTransfer', id: any, contractAddress: string, fromAddress: string, toAddress: string, transactionHash: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId?: string | null, packId?: string | null, packAmount?: number | null, tokenId: any, created_at: any };
+
+export type UpsertNftTransferMutationVariables = Types.Exact<{
+  objects: Array<Types.NftTransfer_Insert_Input> | Types.NftTransfer_Insert_Input;
+}>;
+
+
+export type UpsertNftTransferMutation = { __typename?: 'mutation_root', insert_nftTransfer?: { __typename?: 'nftTransfer_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'nftTransfer', id: any, contractAddress: string, fromAddress: string, toAddress: string, transactionHash: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId?: string | null, packId?: string | null, packAmount?: number | null, tokenId: any, created_at: any }> } | null };
+
+export type GetNftTransferByTxHashQueryVariables = Types.Exact<{
+  txHash: Types.Scalars['String'];
+  chainId: Types.Scalars['String'];
+}>;
+
+
+export type GetNftTransferByTxHashQuery = { __typename?: 'query_root', nftTransfer: Array<{ __typename?: 'nftTransfer', id: any, contractAddress: string, fromAddress: string, toAddress: string, transactionHash: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId?: string | null, packId?: string | null, packAmount?: number | null, tokenId: any, created_at: any }> };
+
+export type GetNftTransferByTokenIdAndCollectionQueryVariables = Types.Exact<{
+  tokenId: Types.Scalars['bigint'];
+  contractAddress: Types.Scalars['String'];
+  chainId: Types.Scalars['String'];
+}>;
+
+
+export type GetNftTransferByTokenIdAndCollectionQuery = { __typename?: 'query_root', nftTransfer: Array<{ __typename?: 'nftTransfer', id: any, contractAddress: string, fromAddress: string, toAddress: string, transactionHash: string, chainId: string, blockNumber: any, eventId: string, organizerId: string, eventPassId?: string | null, packId?: string | null, packAmount?: number | null, tokenId: any, created_at: any }> };
+
 export type RoleAssignmentFieldsFragment = { __typename?: 'roleAssignment', role: Types.Roles_Enum, organizerId: string, eventId: string };
 
 export type CreateRoleAssignmentMutationVariables = Types.Exact<{

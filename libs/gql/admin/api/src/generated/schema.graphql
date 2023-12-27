@@ -15400,7 +15400,7 @@ type nftTransfer {
   """
   Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass.
   """
-  eventPassId: String!
+  eventPassId: String
 
   """
   Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFTs movement.
@@ -15412,6 +15412,16 @@ type nftTransfer {
   Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers.
   """
   organizerId: String!
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Int
+
+  """
+  Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.
+  """
+  packId: String
 
   """
   Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.
@@ -15500,6 +15510,11 @@ type nftTransfer_avg_fields {
   blockNumber: Float
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Float
+
+  """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
   """
   tokenId: Float
@@ -15513,6 +15528,11 @@ input nftTransfer_avg_order_by {
   The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.
   """
   blockNumber: order_by
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: order_by
 
   """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
@@ -15536,6 +15556,8 @@ input nftTransfer_bool_exp {
   fromAddress: String_comparison_exp
   id: uuid_comparison_exp
   organizerId: String_comparison_exp
+  packAmount: Int_comparison_exp
+  packId: String_comparison_exp
   toAddress: String_comparison_exp
   tokenId: bigint_comparison_exp
   transactionHash: String_comparison_exp
@@ -15546,14 +15568,14 @@ unique or primary key constraints on table "nftTransfer"
 """
 enum nftTransfer_constraint {
   """
-  unique or primary key constraint on columns "transactionHash", "contractAddress", "tokenId"
-  """
-  nftTransfer_contractAddress_transactionHash_tokenId_key
-
-  """
   unique or primary key constraint on columns "id"
   """
   nftTransfer_pkey
+
+  """
+  unique or primary key constraint on columns "transactionHash", "contractAddress", "tokenId"
+  """
+  nft_transfer_unique_transfer
 }
 
 """
@@ -15564,6 +15586,11 @@ input nftTransfer_inc_input {
   The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.
   """
   blockNumber: bigint
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Int
 
   """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
@@ -15611,6 +15638,16 @@ input nftTransfer_insert_input {
   Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers.
   """
   organizerId: String
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Int
+
+  """
+  Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.
+  """
+  packId: String
 
   """
   Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.
@@ -15666,6 +15703,16 @@ type nftTransfer_max_fields {
   Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers.
   """
   organizerId: String
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Int
+
+  """
+  Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.
+  """
+  packId: String
 
   """
   Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.
@@ -15725,6 +15772,16 @@ input nftTransfer_max_order_by {
   organizerId: order_by
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: order_by
+
+  """
+  Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.
+  """
+  packId: order_by
+
+  """
   Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.
   """
   toAddress: order_by
@@ -15778,6 +15835,16 @@ type nftTransfer_min_fields {
   Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers.
   """
   organizerId: String
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Int
+
+  """
+  Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.
+  """
+  packId: String
 
   """
   Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.
@@ -15837,6 +15904,16 @@ input nftTransfer_min_order_by {
   organizerId: order_by
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: order_by
+
+  """
+  Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.
+  """
+  packId: order_by
+
+  """
   Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.
   """
   toAddress: order_by
@@ -15893,6 +15970,8 @@ input nftTransfer_order_by {
   fromAddress: order_by
   id: order_by
   organizerId: order_by
+  packAmount: order_by
+  packId: order_by
   toAddress: order_by
   tokenId: order_by
   transactionHash: order_by
@@ -15933,6 +16012,12 @@ enum nftTransfer_select_column {
 
   """column name"""
   organizerId
+
+  """column name"""
+  packAmount
+
+  """column name"""
+  packId
 
   """column name"""
   toAddress
@@ -15986,6 +16071,16 @@ input nftTransfer_set_input {
   organizerId: String
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Int
+
+  """
+  Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.
+  """
+  packId: String
+
+  """
   Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.
   """
   toAddress: String
@@ -16009,6 +16104,11 @@ type nftTransfer_stddev_fields {
   blockNumber: Float
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Float
+
+  """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
   """
   tokenId: Float
@@ -16024,6 +16124,11 @@ input nftTransfer_stddev_order_by {
   blockNumber: order_by
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: order_by
+
+  """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
   """
   tokenId: order_by
@@ -16035,6 +16140,11 @@ type nftTransfer_stddev_pop_fields {
   The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.
   """
   blockNumber: Float
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Float
 
   """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
@@ -16052,6 +16162,11 @@ input nftTransfer_stddev_pop_order_by {
   blockNumber: order_by
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: order_by
+
+  """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
   """
   tokenId: order_by
@@ -16063,6 +16178,11 @@ type nftTransfer_stddev_samp_fields {
   The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.
   """
   blockNumber: Float
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Float
 
   """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
@@ -16078,6 +16198,11 @@ input nftTransfer_stddev_samp_order_by {
   The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.
   """
   blockNumber: order_by
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: order_by
 
   """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
@@ -16136,6 +16261,16 @@ input nftTransfer_stream_cursor_value_input {
   organizerId: String
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Int
+
+  """
+  Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.
+  """
+  packId: String
+
+  """
   Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.
   """
   toAddress: String
@@ -16159,6 +16294,11 @@ type nftTransfer_sum_fields {
   blockNumber: bigint
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Int
+
+  """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
   """
   tokenId: bigint
@@ -16172,6 +16312,11 @@ input nftTransfer_sum_order_by {
   The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.
   """
   blockNumber: order_by
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: order_by
 
   """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
@@ -16211,6 +16356,12 @@ enum nftTransfer_update_column {
   organizerId
 
   """column name"""
+  packAmount
+
+  """column name"""
+  packId
+
+  """column name"""
   toAddress
 
   """column name"""
@@ -16239,6 +16390,11 @@ type nftTransfer_var_pop_fields {
   blockNumber: Float
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Float
+
+  """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
   """
   tokenId: Float
@@ -16254,6 +16410,11 @@ input nftTransfer_var_pop_order_by {
   blockNumber: order_by
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: order_by
+
+  """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
   """
   tokenId: order_by
@@ -16265,6 +16426,11 @@ type nftTransfer_var_samp_fields {
   The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.
   """
   blockNumber: Float
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Float
 
   """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
@@ -16282,6 +16448,11 @@ input nftTransfer_var_samp_order_by {
   blockNumber: order_by
 
   """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: order_by
+
+  """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
   """
   tokenId: order_by
@@ -16293,6 +16464,11 @@ type nftTransfer_variance_fields {
   The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.
   """
   blockNumber: Float
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: Float
 
   """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
@@ -16308,6 +16484,11 @@ input nftTransfer_variance_order_by {
   The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.
   """
   blockNumber: order_by
+
+  """
+  Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.
+  """
+  packAmount: order_by
 
   """
   The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.
