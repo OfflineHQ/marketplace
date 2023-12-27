@@ -2,9 +2,9 @@ import { userSdk } from '@gql/user/api';
 import { Payment } from '@payment/admin';
 import { accounts } from '@test-utils/gql';
 import {
-  getEventPassOrdersFromStripeCheckoutSession,
-  GetEventPassOrdersFromStripeCheckoutSessionProps,
-} from './getEventPassOrdersFromStripeCheckoutSession';
+  getOrdersFromStripeCheckoutSession,
+  GetOrdersFromStripeCheckoutSessionProps,
+} from './getOrdersFromStripeCheckoutSession';
 
 // Mock the Payment and userSdk classes
 jest.mock('@payment/admin', () => {
@@ -24,9 +24,9 @@ jest.mock('@gql/user/api');
 
 const mockedUserSdk = userSdk;
 
-describe('getEventPassOrdersFromStripeCheckoutSession', () => {
+describe('getOrdersFromStripeCheckoutSession', () => {
   let mockedPayment: jest.Mocked<Payment>;
-  const props: GetEventPassOrdersFromStripeCheckoutSessionProps = {
+  const props: GetOrdersFromStripeCheckoutSessionProps = {
     stripeCheckoutSessionId: 'test-session-id',
     user: accounts.alpha_user,
   };
@@ -45,7 +45,7 @@ describe('getEventPassOrdersFromStripeCheckoutSession', () => {
       metadata: { eventPassOrderIds: '1,2,3' },
     };
     const mockCustomer = { stripeCustomerId: 'test-customer-id' };
-    const mockEventPassOrders = [
+    const mockOrders = [
       {
         id: '1',
         eventPassId: '1',
@@ -58,16 +58,16 @@ describe('getEventPassOrdersFromStripeCheckoutSession', () => {
     mockedPayment.getOrCreateStripeCustomer = jest
       .fn()
       .mockResolvedValue(mockCustomer);
-    mockedUserSdk.GetEventPassOrdersFromIds = jest
+    mockedUserSdk.GetOrdersFromIds = jest
       .fn()
-      .mockResolvedValue({ eventPassOrder: mockEventPassOrders });
+      .mockResolvedValue({ eventPassOrder: mockOrders });
 
-    const result = await getEventPassOrdersFromStripeCheckoutSession(
+    const result = await getOrdersFromStripeCheckoutSession(
       props,
       mockedPayment,
     );
 
-    expect(result).toEqual(mockEventPassOrders);
+    expect(result).toEqual(mockOrders);
   });
 
   it('should throw an error if customer id does not match', async () => {
@@ -85,7 +85,7 @@ describe('getEventPassOrdersFromStripeCheckoutSession', () => {
       .mockResolvedValue(mockCustomer);
 
     await expect(
-      getEventPassOrdersFromStripeCheckoutSession(props, mockedPayment),
+      getOrdersFromStripeCheckoutSession(props, mockedPayment),
     ).rejects.toThrow('Customer or Stripe Checkout session not found');
   });
 });

@@ -1,7 +1,7 @@
 import { userSdk } from '@gql/user/api';
 
-export const getEventPassOrdersConfirmed = async () => {
-  const res = await userSdk.GetEventPassOrdersConfirmed(
+export const getOrdersConfirmed = async () => {
+  const res = await userSdk.GetOrdersConfirmed(
     {},
     { cache: 'no-store' }, // TODO: remove this when we have a proper cache invalidation strategy
   );

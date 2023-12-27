@@ -4,8 +4,8 @@ import { NextResponse } from 'next/server';
 export default async function handler() {
   try {
     // Fetch all pending orders
-    const response = await adminSdk.GetEventPassPendingOrders();
-    const pendingOrders = response.eventPassPendingOrder;
+    const response = await adminSdk.GetPendingOrders();
+    const pendingOrders = response.pendingOrder;
 
     // Filter out the orders that need to be deleted
     const currentTime = Math.floor(Date.now() / 1000); // Current UNIX timestamp
@@ -41,7 +41,7 @@ export default async function handler() {
     }
 
     // Delete the expired orders
-    await adminSdk.DeleteEventPassPendingOrders({ ids: ordersToDelete });
+    await adminSdk.DeletePendingOrders({ ids: ordersToDelete });
 
     // TODO : send email to accountsToNotify if authorized in settings and add notification
 

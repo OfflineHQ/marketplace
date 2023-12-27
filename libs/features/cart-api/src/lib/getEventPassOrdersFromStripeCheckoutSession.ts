@@ -3,18 +3,15 @@ import { Stage } from '@gql/shared/types';
 import { userSdk } from '@gql/user/api';
 import { AppUser } from '@next/types';
 import { Payment } from '@payment/admin';
-import { StripeCheckoutSessionMetadataEventPassOrder } from '@payment/types';
+import { StripeCheckoutSessionMetadataOrder } from '@payment/types';
 
-export type GetEventPassOrdersFromStripeCheckoutSessionProps = {
+export type GetOrdersFromStripeCheckoutSessionProps = {
   stripeCheckoutSessionId: string;
   user: AppUser;
 };
 
-export const getEventPassOrdersFromStripeCheckoutSession = async (
-  {
-    stripeCheckoutSessionId,
-    user,
-  }: GetEventPassOrdersFromStripeCheckoutSessionProps,
+export const getOrdersFromStripeCheckoutSession = async (
+  { stripeCheckoutSessionId, user }: GetOrdersFromStripeCheckoutSessionProps,
   payment = new Payment(),
 ) => {
   const session = await payment.getStripeCheckoutSession({
@@ -24,10 +21,9 @@ export const getEventPassOrdersFromStripeCheckoutSession = async (
   if (
     payment.getStripeCustomerId(session.customer) === customer?.stripeCustomerId
   ) {
-    const metadata =
-      session.metadata as StripeCheckoutSessionMetadataEventPassOrder;
+    const metadata = session.metadata as StripeCheckoutSessionMetadataOrder;
     const eventPassOrderIds = metadata.eventPassOrderIds.split(',');
-    const res = await userSdk.GetEventPassOrdersFromIds({
+    const res = await userSdk.GetOrdersFromIds({
       eventPassOrderIds,
       stage: env.HYGRAPH_STAGE as Stage,
     });

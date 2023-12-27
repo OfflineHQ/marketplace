@@ -1,5 +1,5 @@
-import { getAccount } from './getAccount';
 import { createAccount } from './createAccount';
+import { getAccount } from './getAccount';
 import { handleAccount } from './handleAccount';
 
 jest.mock('./getAccount');
@@ -10,7 +10,6 @@ describe('handleAccount test', () => {
     id: 'some-unique-id',
     address: '0x123',
     email: 'test@safsaf.safsaf',
-    emailVerified: false,
     roles: null,
   };
 
