@@ -1,11 +1,53 @@
 import * as Types from '@gql/user/types';
 
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
 import { fetchDataReactQuery } from '@next/hasura/react-query';
 export const AccountFieldsFragmentDoc = `
     fragment AccountFields on account {
   id
   email
+}
+    `;
+export const EventDateLocationsFieldsFragmentDoc = `
+    fragment EventDateLocationsFields on EventDateLocation {
+  locationAddress {
+    coordinates {
+      latitude
+      longitude
+    }
+    city
+    country
+    placeId
+    postalCode
+    state
+    street
+    venue
+  }
+  dateStart
+  dateEnd
+}
+    `;
+export const OrganizerFieldsFragmentDoc = `
+    fragment OrganizerFields on Organizer {
+  image {
+    url
+  }
+  imageClasses
+  name
+  slug
+}
+    `;
+export const PassAmountFieldsFragmentDoc = `
+    fragment PassAmountFields on passAmount {
+  maxAmount
+  maxAmountPerUser
+  timeBeforeDelete
+}
+    `;
+export const PassPricingFieldsFragmentDoc = `
+    fragment PassPricingFields on passPricing {
+  amount
+  currency
 }
     `;
 export const GetAccountDocument = `
@@ -44,5 +86,21 @@ export const useGetAccountByEmailQuery = <
     useQuery<Types.GetAccountByEmailQuery, TError, TData>(
       ['GetAccountByEmail', variables],
       fetchDataReactQuery<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables),
+      options
+    );
+export const InsertFollowOrganizerDocument = `
+    mutation InsertFollowOrganizer($organizerSlug: String!) {
+  insert_follow_one(object: {organizerSlug: $organizerSlug}) {
+    organizerSlug
+  }
+}
+    `;
+export const useInsertFollowOrganizerMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<Types.InsertFollowOrganizerMutation, TError, Types.InsertFollowOrganizerMutationVariables, TContext>) =>
+    useMutation<Types.InsertFollowOrganizerMutation, TError, Types.InsertFollowOrganizerMutationVariables, TContext>(
+      ['InsertFollowOrganizer'],
+      (variables?: Types.InsertFollowOrganizerMutationVariables) => fetchDataReactQuery<Types.InsertFollowOrganizerMutation, Types.InsertFollowOrganizerMutationVariables>(InsertFollowOrganizerDocument, variables)(),
       options
     );
