@@ -6,8 +6,8 @@ jest.mock('@next/next-auth/user');
 
 jest.mock('@gql/user/api', () => ({
   userSdk: {
-    GetEventPassPendingOrderForEventPasses: jest.fn().mockResolvedValue({
-      eventPassPendingOrder: [{ id: 'test-order' }],
+    GetPendingOrderForEventPasses: jest.fn().mockResolvedValue({
+      pendingOrder: [{ id: 'test-order' }],
     }),
   },
 }));
@@ -44,7 +44,7 @@ describe('getEventPassesCart', () => {
     const result = await getEventPassesCart(mockEventPassesCartProps);
 
     expect(result).toEqual([{ id: 'test-order' }]);
-    expect(userSdk.GetEventPassPendingOrderForEventPasses).toHaveBeenCalledWith(
+    expect(userSdk.GetPendingOrderForEventPasses).toHaveBeenCalledWith(
       { eventPassIds: mockEventPassesCartProps.eventPassIds },
       {
         next: {

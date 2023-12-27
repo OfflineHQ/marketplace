@@ -22,7 +22,7 @@ export const getEventPassCart = async ({
       eventPassId,
     });
   }
-  const data = await userSdk.GetEventPassPendingOrderForEventPass(
+  const data = await userSdk.GetPendingOrderForEventPass(
     {
       eventPassId,
     },
@@ -32,5 +32,5 @@ export const getEventPassCart = async ({
       },
     },
   );
-  return data?.eventPassPendingOrder?.[0];
+  return data?.pendingOrder?.[0];
 };

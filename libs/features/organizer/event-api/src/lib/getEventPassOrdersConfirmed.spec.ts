@@ -1,22 +1,22 @@
 import { userSdk } from '@gql/user/api';
 import { getCurrentUser } from '@next/next-auth/user';
-import { getEventPassOrdersConfirmed } from './getEventPassOrdersConfirmed';
+import { getOrdersConfirmed } from './getOrdersConfirmed';
 
 jest.mock('@next/next-auth/user');
 
 jest.mock('@gql/user/api', () => ({
   userSdk: {
-    GetEventPassOrdersConfirmed: jest.fn().mockResolvedValue({
+    GetOrdersConfirmed: jest.fn().mockResolvedValue({
       eventPassOrder: [{ id: 'test-order' }],
     }),
   },
 }));
 
-describe('getEventPassOrdersConfirmed', () => {
+describe('getOrdersConfirmed', () => {
   it('should return null if user is not authenticated', async () => {
     (getCurrentUser as jest.Mock).mockResolvedValue(null);
 
-    const result = await getEventPassOrdersConfirmed();
+    const result = await getOrdersConfirmed();
 
     expect(result).toBeNull();
   });
@@ -25,14 +25,14 @@ describe('getEventPassOrdersConfirmed', () => {
     const mockUser = { id: 'test-user' };
     (getCurrentUser as jest.Mock).mockResolvedValue(mockUser);
 
-    const result = await getEventPassOrdersConfirmed();
+    const result = await getOrdersConfirmed();
 
     expect(result).toEqual([{ id: 'test-order' }]);
-    expect(userSdk.GetEventPassOrdersConfirmed).toHaveBeenCalledWith(
+    expect(userSdk.GetOrdersConfirmed).toHaveBeenCalledWith(
       {},
       {
         next: {
-          tags: ['GetEventPassOrdersConfirmed'],
+          tags: ['GetOrdersConfirmed'],
         },
       },
     );

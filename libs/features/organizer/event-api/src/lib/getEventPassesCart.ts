@@ -18,7 +18,7 @@ export const getEventPassesCart = async ({
   if (!user) {
     return await passCache.getPassesCart({ organizerSlug, eventSlug });
   }
-  const data = await userSdk.GetEventPassPendingOrderForEventPasses(
+  const data = await userSdk.GetPendingOrderForEventPasses(
     {
       eventPassIds,
     },
@@ -28,5 +28,5 @@ export const getEventPassesCart = async ({
       },
     },
   );
-  return data?.eventPassPendingOrder;
+  return data?.pendingOrder;
 };

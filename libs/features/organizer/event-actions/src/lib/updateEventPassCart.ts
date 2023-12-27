@@ -35,11 +35,11 @@ export async function updateEventPassCart({
       });
   } else {
     if (quantity === 0) {
-      await userSdk.DeleteEventPassPendingOrders({
+      await userSdk.DeletePendingOrders({
         eventPassIds: [eventPassId],
       });
     } else
-      await userSdk.UpsertEventPassPendingOrder({
+      await userSdk.UpsertPendingOrder({
         object: {
           eventPassId,
           quantity,
@@ -47,7 +47,7 @@ export async function updateEventPassCart({
       });
   }
   // give a 404 error, server action bug ?
-  // revalidateTag(`getEventPassOrderSum-${eventPassId}`);
+  // revalidateTag(`getOrderSum-${eventPassId}`);
   // revalidateTag(`getEventPassCart-${eventPassId}`);
   // revalidateTag('getEventPassesCart');
 }
