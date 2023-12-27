@@ -8,7 +8,7 @@ export type StripeCreateSessionLineItem =
 
 export type StripeCheckoutSession = Stripe.Checkout.Session;
 
-export type StripeCheckoutSessionMetadataEventPassOrder = {
+export type StripeCheckoutSessionMetadataOrder = {
   userId: string;
   eventPassOrderIds: string;
   organizerSlugs: string;

@@ -106,7 +106,7 @@ export class RoleInvitationService {
       organizerId,
       eventId,
     });
-    return !!resRole?.roleAssignments?.[0];
+    return !!resRole?.roleAssignment?.[0];
   }
 
   async createInvitation(

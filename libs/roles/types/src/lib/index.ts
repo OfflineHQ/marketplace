@@ -16,5 +16,5 @@ export const Roles_Enum_Not_Const_Values = {
 export type Role = Pick<RoleAssignments, 'role' | 'organizerId' | 'eventId'>;
 
 export type RoleWithOrganizer = Role & {
-  organizer: GetMyRolesWithOrganizerInfosQuery['roleAssignments'][0]['organizer'];
+  organizer: GetMyRolesWithOrganizerInfosQuery['roleAssignment'][0]['organizer'];
 };
