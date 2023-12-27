@@ -1,0 +1,12 @@
+mutation CreatePackNftContract($object: packNftContract_insert_input!) {
+  insert_packNftContract_one(object: $object) {
+    id
+    chainId
+    contractAddress
+    eventId
+    eventPassIds
+    organizerId
+    rewardsPerPack
+    packId
+  }
+}

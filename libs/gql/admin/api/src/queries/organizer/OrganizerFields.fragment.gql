@@ -1,0 +1,10 @@
+# eslint-disable-next-line @graphql-eslint/no-one-place-fragments
+fragment OrganizerFields on Organizer {
+  id
+  slug
+  name
+  image {
+    url
+  }
+  imageClasses
+}

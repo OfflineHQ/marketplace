@@ -1,0 +1,39 @@
+query GetContractAddressFromEventPassId($eventPassId: String) @cached {
+  eventPassNftContract(where: { eventPassId: { _eq: $eventPassId } }) {
+    contractAddress
+  }
+}
+
+query GetEventPassNftContractDelayedRevealedFromEventPassId(
+  $eventPassId: String
+) @cached {
+  eventPassNftContract(where: { eventPassId: { _eq: $eventPassId } }) {
+    type
+    isDelayedRevealed
+  }
+}
+
+query GetEventPassNftContractDelayedRevealPassword($contractAddress: String)
+@cached {
+  eventPassNftContract(where: { contractAddress: { _eq: $contractAddress } }) {
+    type
+    isDelayedRevealed
+    password
+  }
+}
+
+query GetEventPassNftContractNfts($eventPassId: String) @cached {
+  eventPassNftContract(where: { eventPassId: { _eq: $eventPassId } }) {
+    contractAddress
+    eventPassId
+    eventPassNfts {
+      id
+      packId
+      currentOwnerAddress
+      contractAddress
+      eventId
+      tokenId
+      eventPassId
+    }
+  }
+}
