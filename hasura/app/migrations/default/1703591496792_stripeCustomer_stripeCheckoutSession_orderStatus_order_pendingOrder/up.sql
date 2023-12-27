@@ -118,13 +118,12 @@ CREATE TABLE "public"."pendingOrder"(
   CHECK (("eventPassId" IS NOT NULL AND "packId" IS NULL) OR ("eventPassId" IS NULL AND "packId" IS NOT NULL))
 );
 
-CREATE UNIQUE INDEX idx_pendingorder_eventpassid_accountid ON "public"."pendingOrder"("eventPassId", "accountId")
-WHERE
-  "eventPassId" IS NOT NULL;
+-- Add unique constraints
+ALTER TABLE "public"."pendingOrder"
+  ADD CONSTRAINT idx_pendingorder_eventpassid_accountid UNIQUE ("eventPassId", "accountId");
 
-CREATE UNIQUE INDEX idx_pendingorder_packid_accountid ON "public"."pendingOrder"("packId", "accountId")
-WHERE
-  "packId" IS NOT NULL;
+ALTER TABLE "public"."pendingOrder"
+  ADD CONSTRAINT idx_pendingorder_packid_accountid UNIQUE ("packId", "accountId");
 
 COMMENT ON TABLE "public"."pendingOrder" IS 'Order a quantity of Event Pass or Pack (linked to Hygraph model EventPass or Pack) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users.';
 
