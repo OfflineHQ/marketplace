@@ -2,6 +2,12 @@ import * as Types from '@gql/anonymous/types';
 
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { fetchDataReactQuery } from '@next/hasura/react-query';
+export const PassAmountFieldsFragmentDoc = `
+    fragment PassAmountFields on passAmount {
+  maxAmount
+  maxAmountPerUser
+}
+    `;
 export const EventDateLocationsFieldsFragmentDoc = `
     fragment EventDateLocationsFields on EventDateLocation {
   locationAddress {
@@ -21,6 +27,12 @@ export const EventDateLocationsFieldsFragmentDoc = `
   dateEnd
 }
     `;
+export const PassPricingFieldsFragmentDoc = `
+    fragment PassPricingFields on passPricing {
+  amount
+  currency
+}
+    `;
 export const EventPassFieldsFragmentDoc = `
     fragment EventPassFields on EventPass {
   name
@@ -35,9 +47,8 @@ export const EventPassFieldsFragmentDoc = `
       ...EventDateLocationsFields
     }
   }
-  eventPassPricing {
-    priceAmount
-    priceCurrency
+  passPricing {
+    ...PassPricingFields
   }
   event {
     slug
@@ -57,7 +68,8 @@ export const EventPassFieldsFragmentDoc = `
     }
   }
 }
-    ${EventDateLocationsFieldsFragmentDoc}`;
+    ${EventDateLocationsFieldsFragmentDoc}
+${PassPricingFieldsFragmentDoc}`;
 export const EventPassNftFieldsFragmentDoc = `
     fragment EventPassNftFields on eventPassNft {
   tokenId

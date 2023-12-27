@@ -1,0 +1,4 @@
+fragment PassAmountFields on passAmount {
+  maxAmount
+  maxAmountPerUser
+}
