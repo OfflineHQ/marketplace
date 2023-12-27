@@ -12,7 +12,10 @@ import { Suspense } from 'react';
 import { PassCardSelectClient } from './PassCardSelectClient';
 
 export interface PassCardSelectProps
-  extends Omit<EventPass, 'description' | 'name' | 'passOptions' | 'nftImage'>,
+  extends Omit<
+      EventPass,
+      'description' | 'name' | 'passOptions' | 'nftImage' | 'passPricing'
+    >,
     EventSlugs {}
 
 export const PassCardSelect: React.FC<PassCardSelectProps> = (props) => {
@@ -24,7 +27,7 @@ export const PassCardSelect: React.FC<PassCardSelectProps> = (props) => {
 };
 
 export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
-  eventPassPricing,
+  passAmount,
   organizerSlug,
   eventSlug,
   id,
@@ -46,13 +49,12 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
   });
   // here compute the max amount of tickets that can be bought
   const totalReserved = eventPassOrderSums?.totalReserved ?? 0;
-  const maxAvailableTickets =
-    (eventPassPricing?.maxAmount || 0) - totalReserved;
+  const maxAvailableTickets = (passAmount?.maxAmount || 0) - totalReserved;
   // if don't have a limit by customer simply return the max available
   let maxVal = maxAvailableTickets;
   if (
-    eventPassPricing?.maxAmountPerUser &&
-    eventPassPricing.maxAmountPerUser <= maxAvailableTickets
+    passAmount?.maxAmountPerUser &&
+    passAmount.maxAmountPerUser <= maxAvailableTickets
   ) {
     // check if customer already have some passes bought or in purchase process and deduce it from the max amount per user
     if (existingEventPasses?.length) {
@@ -61,12 +63,12 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
         0,
       );
       maxVal =
-        eventPassPricing.maxAmountPerUser - existingEventPassesSum > 0
-          ? eventPassPricing.maxAmountPerUser - existingEventPassesSum
+        passAmount.maxAmountPerUser - existingEventPassesSum > 0
+          ? passAmount.maxAmountPerUser - existingEventPassesSum
           : 0;
     }
     // if no existing passes simply return the max amount per user
-    else maxVal = eventPassPricing.maxAmountPerUser;
+    else maxVal = passAmount.maxAmountPerUser;
   }
   return (
     <div className="flex gap-1">
