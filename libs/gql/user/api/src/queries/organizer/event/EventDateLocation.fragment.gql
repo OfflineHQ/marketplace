@@ -1,0 +1,18 @@
+# eslint-disable-next-line @graphql-eslint/no-one-place-fragments
+fragment EventDateLocationsFields on EventDateLocation {
+  locationAddress {
+    coordinates {
+      latitude
+      longitude
+    }
+    city
+    country
+    placeId
+    postalCode
+    state
+    street
+    venue
+  }
+  dateStart
+  dateEnd
+}
