@@ -33,10 +33,15 @@ describe('tests for pendingOrder user', () => {
   beforeAll(async () => {
     client = await createDbClient();
     await deleteAllTables(client);
-    await applySeeds(client, ['account', 'eventPassPricing']);
+    await applySeeds(client, ['account', 'passPricing', 'passAmount']);
   });
   afterAll(async () => {
-    await deleteTables(client, ['account', 'pendingOrder', 'eventPassPricing']);
+    await deleteTables(client, [
+      'account',
+      'pendingOrder',
+      'passPricing',
+      'passAmount',
+    ]);
     await client.end();
   });
   afterEach(async () => {
