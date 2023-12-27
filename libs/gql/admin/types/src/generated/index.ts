@@ -52,12 +52,12 @@ export type UpdateOrdersStatusMutationVariables = Types.Exact<{
 
 export type UpdateOrdersStatusMutation = { __typename?: 'mutation_root', update_order_many?: Array<{ __typename?: 'order_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'order', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId?: string | null, packId?: string | null, accountId: any, created_at: any }> } | null> | null };
 
-export type SetOrderStripeCheckoutSessionIdMutationVariables = Types.Exact<{
+export type SetOrdersStripeCheckoutSessionIdMutationVariables = Types.Exact<{
   updates: Array<Types.Order_Updates> | Types.Order_Updates;
 }>;
 
 
-export type SetOrderStripeCheckoutSessionIdMutation = { __typename?: 'mutation_root', update_order_many?: Array<{ __typename?: 'order_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'order', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId?: string | null, packId?: string | null, accountId: any, created_at: any, stripeCheckoutSessionId?: string | null }> } | null> | null };
+export type SetOrdersStripeCheckoutSessionIdMutation = { __typename?: 'mutation_root', update_order_many?: Array<{ __typename?: 'order_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'order', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId?: string | null, packId?: string | null, accountId: any, created_at: any, stripeCheckoutSessionId?: string | null }> } | null> | null };
 
 export type MovePendingOrdersToConfirmedMutationVariables = Types.Exact<{
   pendingOrdersIds: Array<Types.Scalars['uuid']> | Types.Scalars['uuid'];
@@ -82,14 +82,14 @@ export type GetOrderFromIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetOrderFromIdQuery = { __typename?: 'query_root', order_by_pk?: { __typename?: 'order', id: any, eventPassId?: string | null, packId?: string | null, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null, passPricing?: Array<{ __typename?: 'passPricing', amount: number }> | null } | null };
+export type GetOrderFromIdQuery = { __typename?: 'query_root', order_by_pk?: { __typename?: 'order', id: any, eventPassId?: string | null, packId?: string | null, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, packNftContract?: { __typename?: 'packNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null, passPricing?: Array<{ __typename?: 'passPricing', amount: number }> | null } | null };
 
 export type GetOrdersFromStripeCheckoutSessionQueryVariables = Types.Exact<{
   stripeCheckoutSessionId: Types.Scalars['String'];
 }>;
 
 
-export type GetOrdersFromStripeCheckoutSessionQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', id: any, eventPassId?: string | null, packId?: string | null, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null, passPricing?: Array<{ __typename?: 'passPricing', amount: number }> | null }> };
+export type GetOrdersFromStripeCheckoutSessionQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', id: any, eventPassId?: string | null, packId?: string | null, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, packNftContract?: { __typename?: 'packNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null, passPricing?: Array<{ __typename?: 'passPricing', amount: number }> | null }> };
 
 export type DeletePendingOrdersMutationVariables = Types.Exact<{
   ids: Array<Types.Scalars['uuid']> | Types.Scalars['uuid'];

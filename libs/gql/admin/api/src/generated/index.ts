@@ -94,8 +94,8 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     `;
- const SetOrderStripeCheckoutSessionIdDocument = `
-    mutation SetOrderStripeCheckoutSessionId($updates: [order_updates!]!) {
+ const SetOrdersStripeCheckoutSessionIdDocument = `
+    mutation SetOrdersStripeCheckoutSessionId($updates: [order_updates!]!) {
   update_order_many(updates: $updates) {
     affected_rows
     returning {
@@ -168,6 +168,9 @@ ${KycFieldsFragmentDoc}`;
     eventPassNftContract {
       contractAddress
     }
+    packNftContract {
+      contractAddress
+    }
     account {
       address
     }
@@ -186,6 +189,9 @@ ${KycFieldsFragmentDoc}`;
     quantity
     status
     eventPassNftContract {
+      contractAddress
+    }
+    packNftContract {
       contractAddress
     }
     account {
@@ -282,8 +288,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     UpdateOrdersStatus(variables: Types.UpdateOrdersStatusMutationVariables, options?: C): Promise<Types.UpdateOrdersStatusMutation> {
       return requester<Types.UpdateOrdersStatusMutation, Types.UpdateOrdersStatusMutationVariables>(UpdateOrdersStatusDocument, variables, options) as Promise<Types.UpdateOrdersStatusMutation>;
     },
-    SetOrderStripeCheckoutSessionId(variables: Types.SetOrderStripeCheckoutSessionIdMutationVariables, options?: C): Promise<Types.SetOrderStripeCheckoutSessionIdMutation> {
-      return requester<Types.SetOrderStripeCheckoutSessionIdMutation, Types.SetOrderStripeCheckoutSessionIdMutationVariables>(SetOrderStripeCheckoutSessionIdDocument, variables, options) as Promise<Types.SetOrderStripeCheckoutSessionIdMutation>;
+    SetOrdersStripeCheckoutSessionId(variables: Types.SetOrdersStripeCheckoutSessionIdMutationVariables, options?: C): Promise<Types.SetOrdersStripeCheckoutSessionIdMutation> {
+      return requester<Types.SetOrdersStripeCheckoutSessionIdMutation, Types.SetOrdersStripeCheckoutSessionIdMutationVariables>(SetOrdersStripeCheckoutSessionIdDocument, variables, options) as Promise<Types.SetOrdersStripeCheckoutSessionIdMutation>;
     },
     MovePendingOrdersToConfirmed(variables: Types.MovePendingOrdersToConfirmedMutationVariables, options?: C): Promise<Types.MovePendingOrdersToConfirmedMutation> {
       return requester<Types.MovePendingOrdersToConfirmedMutation, Types.MovePendingOrdersToConfirmedMutationVariables>(MovePendingOrdersToConfirmedDocument, variables, options) as Promise<Types.MovePendingOrdersToConfirmedMutation>;
