@@ -1,0 +1,5 @@
+fragment StripeCheckoutSessionFields on stripeCheckoutSession {
+  stripeSessionId
+  stripeCustomerId
+  type
+}
