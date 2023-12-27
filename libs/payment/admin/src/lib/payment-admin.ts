@@ -344,6 +344,13 @@ export class Payment {
       //   setup_future_usage: 'on_session', // see alternative with 'off_session' here: https://stripe.com/docs/payments/save-during-payment
       // }
     });
+    const res = await adminSdk.CreateStripeCheckoutSession({
+      stripeCheckoutSession: {
+        stripeSessionId: session.id,
+        stripeCustomerId: stripeCustomer.id,
+        type: StripeCheckoutSessionType_Enum.EventPassOrder,
+      },
+    });
     await adminSdk.SetOrdersStripeCheckoutSessionId({
       updates: orders.map(({ id }) => ({
         _set: {
@@ -355,13 +362,6 @@ export class Payment {
           },
         },
       })),
-    });
-    const res = await adminSdk.CreateStripeCheckoutSession({
-      stripeCheckoutSession: {
-        stripeSessionId: session.id,
-        stripeCustomerId: stripeCustomer.id,
-        type: StripeCheckoutSessionType_Enum.EventPassOrder,
-      },
     });
     return res.insert_stripeCheckoutSession_one;
   }
