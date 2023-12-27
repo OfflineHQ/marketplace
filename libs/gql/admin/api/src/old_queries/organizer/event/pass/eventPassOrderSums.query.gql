@@ -1,5 +1,0 @@
-query GetEventPassOrderSums($eventPassId: String!) {
-  eventPassOrderSums_by_pk(eventPassId: $eventPassId) {
-    totalReserved
-  }
-}

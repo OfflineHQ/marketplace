@@ -1,6 +1,0 @@
-query GetAlchemyInfosFromEventId($eventId: String) {
-  eventParameters(where: { eventId: { _eq: $eventId } }) {
-    activityWebhookId
-    signingKey
-  }
-}
