@@ -1,4 +1,4 @@
-import { RoleAssignments, Roles_Enum } from '@gql/shared/types';
+import { RoleAssignment, Roles_Enum } from '@gql/shared/types';
 import { GetMyRolesWithOrganizerInfosQuery } from '@gql/user/types';
 
 export const Roles_Enum_Not_Const_Values = {
@@ -13,7 +13,7 @@ export const Roles_Enum_Not_Const_Values = {
   OrganizerValidator: Roles_Enum.OrganizerValidator,
 };
 
-export type Role = Pick<RoleAssignments, 'role' | 'organizerId' | 'eventId'>;
+export type Role = Pick<RoleAssignment, 'role' | 'organizerId' | 'eventId'>;
 
 export type RoleWithOrganizer = Role & {
   organizer: GetMyRolesWithOrganizerInfosQuery['roleAssignment'][0]['organizer'];
