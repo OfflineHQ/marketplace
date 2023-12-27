@@ -45,12 +45,12 @@ export type GetAccountByIdQueryVariables = Types.Exact<{
 
 export type GetAccountByIdQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', address: string }> };
 
-export type UpdateOrderStatusMutationVariables = Types.Exact<{
+export type UpdateOrdersStatusMutationVariables = Types.Exact<{
   updates: Array<Types.Order_Updates> | Types.Order_Updates;
 }>;
 
 
-export type UpdateOrderStatusMutation = { __typename?: 'mutation_root', update_order_many?: Array<{ __typename?: 'order_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'order', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId?: string | null, packId?: string | null, accountId: any, created_at: any }> } | null> | null };
+export type UpdateOrdersStatusMutation = { __typename?: 'mutation_root', update_order_many?: Array<{ __typename?: 'order_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'order', id: any, quantity: number, status: Types.OrderStatus_Enum, eventPassId?: string | null, packId?: string | null, accountId: any, created_at: any }> } | null> | null };
 
 export type SetOrderStripeCheckoutSessionIdMutationVariables = Types.Exact<{
   updates: Array<Types.Order_Updates> | Types.Order_Updates;

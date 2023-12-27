@@ -1,4 +1,4 @@
-mutation UpdateOrderStatus($updates: [order_updates!]!) {
+mutation UpdateOrdersStatus($updates: [order_updates!]!) {
   update_order_many(updates: $updates) {
     affected_rows
     returning {
@@ -13,7 +13,7 @@ mutation UpdateOrderStatus($updates: [order_updates!]!) {
   }
 }
 
-mutation SetOrderStripeCheckoutSessionId($updates: [order_updates!]!) {
+mutation SetOrdersStripeCheckoutSessionId($updates: [order_updates!]!) {
   update_order_many(updates: $updates) {
     affected_rows
     returning {

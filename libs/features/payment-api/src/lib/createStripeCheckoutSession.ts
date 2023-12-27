@@ -9,12 +9,12 @@ import { Payment } from '@payment/admin';
 import { StripeCustomer } from '@payment/types';
 
 export interface CreateStripeCheckoutSessionInput {
-  eventPassPendingOrders: UserPassPendingOrder[];
+  pendingOrders: UserPassPendingOrder[];
   locale: Locale;
 }
 
 export async function createStripeCheckoutSession({
-  eventPassPendingOrders,
+  pendingOrders,
   locale,
 }: CreateStripeCheckoutSessionInput) {
   const payment = new Payment();
@@ -28,7 +28,7 @@ export async function createStripeCheckoutSession({
   await payment.createStripeCheckoutSession({
     user,
     stripeCustomer: stripeCustomer as StripeCustomer,
-    eventPassPendingOrders,
+    pendingOrders,
     locale,
     currency: getCurrencyPreference(),
   });

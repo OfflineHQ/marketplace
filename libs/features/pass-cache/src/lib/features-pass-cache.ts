@@ -162,12 +162,12 @@ export class PassCache {
     const passes = Object.values(passesCart).flatMap((eventPasses) =>
       Object.values(eventPasses).flatMap((passes) => passes),
     );
-    const res = await userSdk.UpsertEventPassPendingOrders({
+    const res = await userSdk.UpsertPendingOrders({
       objects: passes,
       stage: env.HYGRAPH_STAGE as Stage,
     });
     await this.deleteAllPassesCart();
 
-    return res?.insert_eventPassPendingOrder?.returning || null;
+    return res?.insert_pendingOrder?.returning || null;
   }
 }

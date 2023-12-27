@@ -92,9 +92,9 @@ describe('PassCache Integration Test', () => {
 
   it('should transfer passes cart to DB and delete cache cart', async () => {
     jest
-      .spyOn(userSdk, 'UpsertEventPassPendingOrders')
+      .spyOn(userSdk, 'UpsertPendingOrders')
       .mockImplementation(async (params) => {
-        return await alphaUser.UpsertEventPassPendingOrders({
+        return await alphaUser.UpsertPendingOrders({
           objects: params.objects,
           stage: 'DRAFT' as Stage,
         });
@@ -117,14 +117,12 @@ describe('PassCache Integration Test', () => {
     });
     expect(emptyPassesCart).toEqual(null);
 
-    const dataFromDb = await adminSdk.GetEventPassPendingOrders();
+    const dataFromDb = await adminSdk.GetPendingOrders();
 
     expect(transferred).toBeDefined();
     const isIdInDb =
       transferred &&
-      dataFromDb.eventPassPendingOrder.some(
-        (order) => order.id === transferred[0].id,
-      );
+      dataFromDb.pendingOrder.some((order) => order.id === transferred[0].id);
     expect(isIdInDb).toEqual(true);
   });
 });

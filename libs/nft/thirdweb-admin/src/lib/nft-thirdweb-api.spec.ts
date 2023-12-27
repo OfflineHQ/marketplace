@@ -1,5 +1,5 @@
 import { adminSdk } from '@gql/admin/api';
-import { EventPassOrder, OrderStatus_Enum } from '@gql/shared/types';
+import { Order, OrderStatus_Enum } from '@gql/shared/types';
 import {
   applySeeds,
   createDbClient,
@@ -11,7 +11,7 @@ import { NftClaimable } from './nft-thirdweb-api';
 
 describe('NftClaimable integration test', () => {
   let nftClaimable: NftClaimable;
-  let order: EventPassOrder;
+  let order: Order;
   let client: PgClient;
 
   beforeAll(async () => {
@@ -38,11 +38,11 @@ describe('NftClaimable integration test', () => {
       'eventPassOrder',
       'eventPassNft',
     ]);
-    const res = await adminSdk.GetEventPassOrdersFromStripeCheckoutSession({
+    const res = await adminSdk.GetOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId:
         'cs_test_a17kYy8IpmWsLecscKe5pRQNP5hir8ysWC9sturzdXMfh7Y94gYJIAyePN',
     });
-    order = res.eventPassOrder[0] as EventPassOrder;
+    order = res.eventPassOrder[0] as Order;
   });
 
   afterEach(async () => {
@@ -62,7 +62,7 @@ describe('NftClaimable integration test', () => {
   it('should update the database when claimOrder is called', async () => {
     await nftClaimable.claimOrder(order);
 
-    const updatedOrder = await adminSdk.GetAccountEventPassOrderForEventPasses({
+    const updatedOrder = await adminSdk.GetAccountOrderForEventPasses({
       accountId: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
       eventPassIds: 'fake-event-pass-2',
     });
