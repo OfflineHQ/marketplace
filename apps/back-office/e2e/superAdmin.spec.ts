@@ -32,7 +32,7 @@ test.beforeEach(async () => {
     'eventPassPricing',
     'eventPassNftContract',
     'eventParameters',
-    'roleAssignments',
+    'roleAssignment',
   ]);
 });
 

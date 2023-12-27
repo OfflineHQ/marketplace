@@ -1,8 +1,5 @@
 export const dynamic = 'force-dynamic';
-import {
-  getEventPassOrdersConfirmed,
-  getEventPassPendingOrders,
-} from '@features/cart-api';
+import { getOrdersConfirmed, getPendingOrders } from '@features/cart-api';
 import {
   NoUserCart,
   UserCart,
@@ -90,8 +87,8 @@ export default async function CartSection({
     FeatureFlagsEnum.KYC,
     user.address,
   );
-  let userPassPendingOrders = await getEventPassPendingOrders();
-  const userPassConfirmedOrders = await getEventPassOrdersConfirmed();
+  let userPassPendingOrders = await getPendingOrders();
+  const userPassConfirmedOrders = await getOrdersConfirmed();
   // if user has confirmed orders and kyc validated, redirect to purchase page
   // if kycflag is false, redirect to purchase page because doesn't have kyc
   if (

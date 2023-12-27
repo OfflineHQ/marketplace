@@ -31,7 +31,7 @@ test.beforeEach(async () => {
     'kyc',
     'eventPassPricing',
     'eventParameters',
-    'roleAssignments',
+    'roleAssignment',
   ]);
 });
 

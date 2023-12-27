@@ -1,4 +1,4 @@
-import { getEventPassOrdersFromStripeCheckoutSession } from '@features/cart-api';
+import { getOrdersFromStripeCheckoutSession } from '@features/cart-api';
 import { CartCancelled } from '@features/cart/server';
 import { Locale } from '@gql/shared/types';
 import { Posthog } from '@insight/server';
@@ -30,7 +30,7 @@ export default async function CartCancelledPage({
     );
   }
   if (!user || (kycFlag && !isUserKycValidated(user))) return redirect('/');
-  const passes = await getEventPassOrdersFromStripeCheckoutSession({
+  const passes = await getOrdersFromStripeCheckoutSession({
     user,
     stripeCheckoutSessionId: session_id,
   });
