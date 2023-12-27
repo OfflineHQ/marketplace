@@ -1,6 +1,0 @@
-query GetStripeCustomer {
-  stripeCustomer {
-    stripeCustomerId
-    accountId
-  }
-}

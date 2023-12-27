@@ -1,4 +1,0 @@
-fragment AccountFields on account {
-  id
-  email
-}
