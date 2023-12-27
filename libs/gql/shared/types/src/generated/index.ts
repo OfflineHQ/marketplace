@@ -11565,12 +11565,16 @@ export type NftTransfer = {
   /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
   eventId: Scalars['String'];
   /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
-  eventPassId: Scalars['String'];
+  eventPassId?: Maybe<Scalars['String']>;
   /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFTs movement. */
   fromAddress: Scalars['String'];
   id: Scalars['uuid'];
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
   organizerId: Scalars['String'];
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: Maybe<Scalars['Int']>;
+  /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
+  packId?: Maybe<Scalars['String']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress: Scalars['String'];
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -11647,6 +11651,8 @@ export type NftTransfer_Avg_Fields = {
   __typename?: 'nftTransfer_avg_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: Maybe<Scalars['Float']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: Maybe<Scalars['Float']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']>;
 };
@@ -11655,6 +11661,8 @@ export type NftTransfer_Avg_Fields = {
 export type NftTransfer_Avg_Order_By = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: InputMaybe<Order_By>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -11673,6 +11681,8 @@ export type NftTransfer_Bool_Exp = {
   fromAddress?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
+  packAmount?: InputMaybe<Int_Comparison_Exp>;
+  packId?: InputMaybe<String_Comparison_Exp>;
   toAddress?: InputMaybe<String_Comparison_Exp>;
   tokenId?: InputMaybe<Bigint_Comparison_Exp>;
   transactionHash?: InputMaybe<String_Comparison_Exp>;
@@ -11680,16 +11690,18 @@ export type NftTransfer_Bool_Exp = {
 
 /** unique or primary key constraints on table "nftTransfer" */
 export const enum NftTransfer_Constraint {
-  /** unique or primary key constraint on columns "transactionHash", "contractAddress", "tokenId" */
-  NftTransferContractAddressTransactionHashTokenIdKey = 'nftTransfer_contractAddress_transactionHash_tokenId_key',
   /** unique or primary key constraint on columns "id" */
-  NftTransferPkey = 'nftTransfer_pkey'
+  NftTransferPkey = 'nftTransfer_pkey',
+  /** unique or primary key constraint on columns "transactionHash", "contractAddress", "tokenId" */
+  NftTransferUniqueTransfer = 'nft_transfer_unique_transfer'
 };
 
 /** input type for incrementing numeric columns in table "nftTransfer" */
 export type NftTransfer_Inc_Input = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: InputMaybe<Scalars['bigint']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Scalars['Int']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Scalars['bigint']>;
 };
@@ -11712,6 +11724,10 @@ export type NftTransfer_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
   organizerId?: InputMaybe<Scalars['String']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Scalars['Int']>;
+  /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
+  packId?: InputMaybe<Scalars['String']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: InputMaybe<Scalars['String']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -11739,6 +11755,10 @@ export type NftTransfer_Max_Fields = {
   id?: Maybe<Scalars['uuid']>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
   organizerId?: Maybe<Scalars['String']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: Maybe<Scalars['Int']>;
+  /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
+  packId?: Maybe<Scalars['String']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: Maybe<Scalars['String']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -11765,6 +11785,10 @@ export type NftTransfer_Max_Order_By = {
   id?: InputMaybe<Order_By>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
   organizerId?: InputMaybe<Order_By>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Order_By>;
+  /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
+  packId?: InputMaybe<Order_By>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -11792,6 +11816,10 @@ export type NftTransfer_Min_Fields = {
   id?: Maybe<Scalars['uuid']>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
   organizerId?: Maybe<Scalars['String']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: Maybe<Scalars['Int']>;
+  /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
+  packId?: Maybe<Scalars['String']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: Maybe<Scalars['String']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -11818,6 +11846,10 @@ export type NftTransfer_Min_Order_By = {
   id?: InputMaybe<Order_By>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
   organizerId?: InputMaybe<Order_By>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Order_By>;
+  /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
+  packId?: InputMaybe<Order_By>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -11860,6 +11892,8 @@ export type NftTransfer_Order_By = {
   fromAddress?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  packAmount?: InputMaybe<Order_By>;
+  packId?: InputMaybe<Order_By>;
   toAddress?: InputMaybe<Order_By>;
   tokenId?: InputMaybe<Order_By>;
   transactionHash?: InputMaybe<Order_By>;
@@ -11891,6 +11925,10 @@ export const enum NftTransfer_Select_Column {
   /** column name */
   OrganizerId = 'organizerId',
   /** column name */
+  PackAmount = 'packAmount',
+  /** column name */
+  PackId = 'packId',
+  /** column name */
   ToAddress = 'toAddress',
   /** column name */
   TokenId = 'tokenId',
@@ -11916,6 +11954,10 @@ export type NftTransfer_Set_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
   organizerId?: InputMaybe<Scalars['String']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Scalars['Int']>;
+  /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
+  packId?: InputMaybe<Scalars['String']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: InputMaybe<Scalars['String']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -11929,6 +11971,8 @@ export type NftTransfer_Stddev_Fields = {
   __typename?: 'nftTransfer_stddev_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: Maybe<Scalars['Float']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: Maybe<Scalars['Float']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']>;
 };
@@ -11937,6 +11981,8 @@ export type NftTransfer_Stddev_Fields = {
 export type NftTransfer_Stddev_Order_By = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: InputMaybe<Order_By>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -11946,6 +11992,8 @@ export type NftTransfer_Stddev_Pop_Fields = {
   __typename?: 'nftTransfer_stddev_pop_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: Maybe<Scalars['Float']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: Maybe<Scalars['Float']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']>;
 };
@@ -11954,6 +12002,8 @@ export type NftTransfer_Stddev_Pop_Fields = {
 export type NftTransfer_Stddev_Pop_Order_By = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: InputMaybe<Order_By>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -11963,6 +12013,8 @@ export type NftTransfer_Stddev_Samp_Fields = {
   __typename?: 'nftTransfer_stddev_samp_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: Maybe<Scalars['Float']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: Maybe<Scalars['Float']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']>;
 };
@@ -11971,6 +12023,8 @@ export type NftTransfer_Stddev_Samp_Fields = {
 export type NftTransfer_Stddev_Samp_Order_By = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: InputMaybe<Order_By>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -12001,6 +12055,10 @@ export type NftTransfer_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
   organizerId?: InputMaybe<Scalars['String']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Scalars['Int']>;
+  /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
+  packId?: InputMaybe<Scalars['String']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: InputMaybe<Scalars['String']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -12014,6 +12072,8 @@ export type NftTransfer_Sum_Fields = {
   __typename?: 'nftTransfer_sum_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: Maybe<Scalars['bigint']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: Maybe<Scalars['Int']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['bigint']>;
 };
@@ -12022,6 +12082,8 @@ export type NftTransfer_Sum_Fields = {
 export type NftTransfer_Sum_Order_By = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: InputMaybe<Order_By>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -12047,6 +12109,10 @@ export const enum NftTransfer_Update_Column {
   /** column name */
   OrganizerId = 'organizerId',
   /** column name */
+  PackAmount = 'packAmount',
+  /** column name */
+  PackId = 'packId',
+  /** column name */
   ToAddress = 'toAddress',
   /** column name */
   TokenId = 'tokenId',
@@ -12068,6 +12134,8 @@ export type NftTransfer_Var_Pop_Fields = {
   __typename?: 'nftTransfer_var_pop_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: Maybe<Scalars['Float']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: Maybe<Scalars['Float']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']>;
 };
@@ -12076,6 +12144,8 @@ export type NftTransfer_Var_Pop_Fields = {
 export type NftTransfer_Var_Pop_Order_By = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: InputMaybe<Order_By>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -12085,6 +12155,8 @@ export type NftTransfer_Var_Samp_Fields = {
   __typename?: 'nftTransfer_var_samp_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: Maybe<Scalars['Float']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: Maybe<Scalars['Float']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']>;
 };
@@ -12093,6 +12165,8 @@ export type NftTransfer_Var_Samp_Fields = {
 export type NftTransfer_Var_Samp_Order_By = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: InputMaybe<Order_By>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -12102,6 +12176,8 @@ export type NftTransfer_Variance_Fields = {
   __typename?: 'nftTransfer_variance_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: Maybe<Scalars['Float']>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: Maybe<Scalars['Float']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']>;
 };
@@ -12110,6 +12186,8 @@ export type NftTransfer_Variance_Fields = {
 export type NftTransfer_Variance_Order_By = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
   blockNumber?: InputMaybe<Order_By>;
+  /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
+  packAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };

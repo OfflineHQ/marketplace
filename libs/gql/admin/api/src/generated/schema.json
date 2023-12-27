@@ -74674,13 +74674,9 @@
             "description": "Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass.",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -74729,6 +74725,30 @@
                 "name": "String",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
+            "description": "Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -75316,6 +75336,18 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": "The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.",
             "args": [],
@@ -75342,6 +75374,18 @@
           {
             "name": "blockNumber",
             "description": "The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
             "type": {
               "kind": "ENUM",
               "name": "order_by",
@@ -75535,6 +75579,30 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Int_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "toAddress",
             "description": null,
             "type": {
@@ -75584,14 +75652,14 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "nftTransfer_contractAddress_transactionHash_tokenId_key",
-            "description": "unique or primary key constraint on columns \"transactionHash\", \"contractAddress\", \"tokenId\"",
+            "name": "nftTransfer_pkey",
+            "description": "unique or primary key constraint on columns \"id\"",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "nftTransfer_pkey",
-            "description": "unique or primary key constraint on columns \"id\"",
+            "name": "nft_transfer_unique_transfer",
+            "description": "unique or primary key constraint on columns \"transactionHash\", \"contractAddress\", \"tokenId\"",
             "isDeprecated": false,
             "deprecationReason": null
           }
@@ -75610,6 +75678,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -75738,6 +75818,30 @@
           {
             "name": "organizerId",
             "description": "Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
+            "description": "Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -75892,6 +75996,30 @@
           {
             "name": "organizerId",
             "description": "Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
+            "description": "Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -76058,6 +76186,30 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
+            "description": "Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "toAddress",
             "description": "Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.",
             "type": {
@@ -76202,6 +76354,30 @@
           {
             "name": "organizerId",
             "description": "Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
+            "description": "Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -76358,6 +76534,30 @@
           {
             "name": "organizerId",
             "description": "Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
+            "description": "Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.",
             "type": {
               "kind": "ENUM",
               "name": "order_by",
@@ -76676,6 +76876,30 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "toAddress",
             "description": null,
             "type": {
@@ -76801,6 +77025,18 @@
           },
           {
             "name": "organizerId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -76941,6 +77177,30 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
+            "description": "Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "toAddress",
             "description": "Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.",
             "type": {
@@ -76999,6 +77259,18 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": "The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.",
             "args": [],
@@ -77035,6 +77307,18 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": "The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.",
             "type": {
@@ -77059,6 +77343,18 @@
           {
             "name": "blockNumber",
             "description": "The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -77105,6 +77401,18 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": "The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.",
             "type": {
@@ -77129,6 +77437,18 @@
           {
             "name": "blockNumber",
             "description": "The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -77165,6 +77485,18 @@
           {
             "name": "blockNumber",
             "description": "The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
             "type": {
               "kind": "ENUM",
               "name": "order_by",
@@ -77345,6 +77677,30 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
+            "description": "Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "toAddress",
             "description": "Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.",
             "type": {
@@ -77403,6 +77759,18 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": "The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.",
             "args": [],
@@ -77429,6 +77797,18 @@
           {
             "name": "blockNumber",
             "description": "The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
             "type": {
               "kind": "ENUM",
               "name": "order_by",
@@ -77513,6 +77893,18 @@
           },
           {
             "name": "organizerId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packId",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -77607,6 +77999,18 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": "The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.",
             "args": [],
@@ -77643,6 +78047,18 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": "The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.",
             "type": {
@@ -77667,6 +78083,18 @@
           {
             "name": "blockNumber",
             "description": "The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -77713,6 +78141,18 @@
             "deprecationReason": null
           },
           {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tokenId",
             "description": "The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.",
             "type": {
@@ -77737,6 +78177,18 @@
           {
             "name": "blockNumber",
             "description": "The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -77773,6 +78225,18 @@
           {
             "name": "blockNumber",
             "description": "The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.",
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "packAmount",
+            "description": "Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.",
             "type": {
               "kind": "ENUM",
               "name": "order_by",

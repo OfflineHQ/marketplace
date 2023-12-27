@@ -170,6 +170,53 @@
 --
 -- COMMENT ON COLUMN "public"."nftTransfer"."tokenId" IS E'The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.';
 --
+-- Create nftTransfer table
+-- CREATE TABLE "public"."nftTransfer"(
+--   "contractAddress" text NOT NULL,
+--   "fromAddress" text NOT NULL,
+--   "toAddress" text NOT NULL,
+--   "transactionHash" text NOT NULL,
+--   "chainId" text NOT NULL,
+--   "blockNumber" bigint NOT NULL,
+--   "eventId" text NOT NULL,
+--   "organizerId" text NOT NULL,
+--   "eventPassId" text,
+--   "packId" text,
+--   "packAmount" integer,
+--   "tokenId" bigint NOT NULL,
+--   "id" uuid NOT NULL DEFAULT gen_random_uuid(),
+--   "created_at" timestamptz NOT NULL DEFAULT now(),
+--   PRIMARY KEY ("id"),
+--   CONSTRAINT nft_transfer_unique_transfer UNIQUE ("contractAddress", "transactionHash", "tokenId"),
+--   CHECK (("eventPassId" IS NOT NULL AND "packId" IS NULL AND "packAmount" IS NULL) OR ("eventPassId" IS NULL AND "packId" IS NOT NULL AND "packAmount" >= 1))
+-- );
+--
+-- COMMENT ON TABLE "public"."nftTransfer" IS E'The nftTransfer model is built to record and chronicle the transfer of NFTs between addresses. This model is crucial in tracing the movement of an NFT, especially when validating that an event pass has reached its intended recipient. Such a system facilitates debugging and reduces the need for excessive querying of our indexer. Entries in this table are populated through two primary avenues: either via an activity webhook responding to real-time NFT transfers or through a regular cron job as a failsafe, ensuring data integrity even if the webhook fails to capture certain events.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."contractAddress" IS E'Identifies the smart contract associated with the NFT. This provides a direct link to the NFTs origin and behavior on the blockchain.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."fromAddress" IS E'Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFTs movement.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."toAddress" IS E'Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."transactionHash" IS E'Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."chainId" IS E'Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."blockNumber" IS E'The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."eventId" IS E'Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."organizerId" IS E'Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."eventPassId" IS E'Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."tokenId" IS E'The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."packId" IS E'Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.';
+--
+-- COMMENT ON COLUMN "public"."nftTransfer"."packAmount" IS E'Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.';
+--
 -- -- Create eventPassNft table
 -- CREATE TABLE "public"."eventPassNft"(
 --   "contractAddress" text NOT NULL,

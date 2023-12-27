@@ -17,6 +17,24 @@ export const KycFieldsFragmentDoc = `
   levelName
 }
     `;
+export const NftTransferFieldsFragmentDoc = `
+    fragment NftTransferFields on nftTransfer {
+  id
+  contractAddress
+  fromAddress
+  toAddress
+  transactionHash
+  chainId
+  blockNumber
+  eventId
+  organizerId
+  eventPassId
+  packId
+  packAmount
+  tokenId
+  created_at
+}
+    `;
 export const RoleAssignmentFieldsFragmentDoc = `
     fragment RoleAssignmentFields on roleAssignment {
   role
@@ -251,6 +269,36 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     `;
+ const UpsertNftTransferDocument = `
+    mutation UpsertNftTransfer($objects: [nftTransfer_insert_input!]!) {
+  insert_nftTransfer(
+    objects: $objects
+    on_conflict: {constraint: nft_transfer_unique_transfer, update_columns: []}
+  ) {
+    affected_rows
+    returning {
+      ...NftTransferFields
+    }
+  }
+}
+    ${NftTransferFieldsFragmentDoc}`;
+ const GetNftTransferByTxHashDocument = `
+    query GetNftTransferByTxHash($txHash: String!, $chainId: String!) {
+  nftTransfer(where: {transactionHash: {_eq: $txHash}, chainId: {_eq: $chainId}}) {
+    ...NftTransferFields
+  }
+}
+    ${NftTransferFieldsFragmentDoc}`;
+ const GetNftTransferByTokenIdAndCollectionDocument = `
+    query GetNftTransferByTokenIdAndCollection($tokenId: bigint!, $contractAddress: String!, $chainId: String!) {
+  nftTransfer(
+    where: {tokenId: {_eq: $tokenId}, contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}}
+    order_by: {blockNumber: desc}
+  ) {
+    ...NftTransferFields
+  }
+}
+    ${NftTransferFieldsFragmentDoc}`;
  const CreateRoleAssignmentDocument = `
     mutation CreateRoleAssignment($input: roleAssignment_insert_input!) {
   insert_roleAssignment_one(object: $input) {
@@ -320,6 +368,15 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     DeleteKyc(variables: Types.DeleteKycMutationVariables, options?: C): Promise<Types.DeleteKycMutation> {
       return requester<Types.DeleteKycMutation, Types.DeleteKycMutationVariables>(DeleteKycDocument, variables, options) as Promise<Types.DeleteKycMutation>;
+    },
+    UpsertNftTransfer(variables: Types.UpsertNftTransferMutationVariables, options?: C): Promise<Types.UpsertNftTransferMutation> {
+      return requester<Types.UpsertNftTransferMutation, Types.UpsertNftTransferMutationVariables>(UpsertNftTransferDocument, variables, options) as Promise<Types.UpsertNftTransferMutation>;
+    },
+    GetNftTransferByTxHash(variables: Types.GetNftTransferByTxHashQueryVariables, options?: C): Promise<Types.GetNftTransferByTxHashQuery> {
+      return requester<Types.GetNftTransferByTxHashQuery, Types.GetNftTransferByTxHashQueryVariables>(GetNftTransferByTxHashDocument, variables, options) as Promise<Types.GetNftTransferByTxHashQuery>;
+    },
+    GetNftTransferByTokenIdAndCollection(variables: Types.GetNftTransferByTokenIdAndCollectionQueryVariables, options?: C): Promise<Types.GetNftTransferByTokenIdAndCollectionQuery> {
+      return requester<Types.GetNftTransferByTokenIdAndCollectionQuery, Types.GetNftTransferByTokenIdAndCollectionQueryVariables>(GetNftTransferByTokenIdAndCollectionDocument, variables, options) as Promise<Types.GetNftTransferByTokenIdAndCollectionQuery>;
     },
     CreateRoleAssignment(variables: Types.CreateRoleAssignmentMutationVariables, options?: C): Promise<Types.CreateRoleAssignmentMutation> {
       return requester<Types.CreateRoleAssignmentMutation, Types.CreateRoleAssignmentMutationVariables>(CreateRoleAssignmentDocument, variables, options) as Promise<Types.CreateRoleAssignmentMutation>;

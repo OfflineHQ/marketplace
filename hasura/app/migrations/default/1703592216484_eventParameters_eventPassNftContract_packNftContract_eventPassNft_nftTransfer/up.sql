@@ -138,12 +138,15 @@ CREATE TABLE "public"."nftTransfer"(
   "blockNumber" bigint NOT NULL,
   "eventId" text NOT NULL,
   "organizerId" text NOT NULL,
-  "eventPassId" text NOT NULL,
+  "eventPassId" text,
+  "packId" text,
+  "packAmount" integer,
   "tokenId" bigint NOT NULL,
   "id" uuid NOT NULL DEFAULT gen_random_uuid(),
   "created_at" timestamptz NOT NULL DEFAULT now(),
   PRIMARY KEY ("id"),
-  UNIQUE ("contractAddress", "transactionHash", "tokenId")
+  CONSTRAINT nft_transfer_unique_transfer UNIQUE ("contractAddress", "transactionHash", "tokenId"),
+  CHECK (("eventPassId" IS NOT NULL AND "packId" IS NULL AND "packAmount" IS NULL) OR ("eventPassId" IS NULL AND "packId" IS NOT NULL AND "packAmount" >= 1))
 );
 
 COMMENT ON TABLE "public"."nftTransfer" IS E'The nftTransfer model is built to record and chronicle the transfer of NFTs between addresses. This model is crucial in tracing the movement of an NFT, especially when validating that an event pass has reached its intended recipient. Such a system facilitates debugging and reduces the need for excessive querying of our indexer. Entries in this table are populated through two primary avenues: either via an activity webhook responding to real-time NFT transfers or through a regular cron job as a failsafe, ensuring data integrity even if the webhook fails to capture certain events.';
@@ -167,6 +170,10 @@ COMMENT ON COLUMN "public"."nftTransfer"."organizerId" IS E'Identifies the organ
 COMMENT ON COLUMN "public"."nftTransfer"."eventPassId" IS E'Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass.';
 
 COMMENT ON COLUMN "public"."nftTransfer"."tokenId" IS E'The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms.';
+
+COMMENT ON COLUMN "public"."nftTransfer"."packId" IS E'Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack.';
+
+COMMENT ON COLUMN "public"."nftTransfer"."packAmount" IS E'Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack.';
 
 -- Create eventPassNft table
 CREATE TABLE "public"."eventPassNft"(
