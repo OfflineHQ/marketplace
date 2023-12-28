@@ -1,5 +1,0 @@
-fragment RoleAssignmentsFields on roleAssignments {
-  role
-  organizerId
-  eventId
-}

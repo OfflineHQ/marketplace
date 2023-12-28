@@ -9,7 +9,7 @@ import { getCurrentUser } from '@next/next-auth/user';
 
 export const useKyc = async (locale: Locale) => {
   const user = await getCurrentUser();
-  let applicantId: string | undefined = '';
+  let applicantId: string | undefined | null = '';
   if (!user) return { user: null, accessToken: '' };
   if (!user.kyc) {
     // here check that user don't have an existing kyc

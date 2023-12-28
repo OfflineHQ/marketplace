@@ -13,7 +13,7 @@ import {
   createDbClient,
   deleteAllTables,
   deleteTables,
-  eventPassPendingOrders,
+  pendingOrders,
   type PgClient,
 } from '@test-utils/db';
 import { accounts, alphaUserClient } from '@test-utils/gql';
@@ -66,9 +66,11 @@ describe('Payment integration', () => {
       'account',
       'eventPassNftContract',
       'eventParameters',
-      'eventPassPricing',
-      'eventPassPendingOrder',
-      'eventPassOrder',
+      'passAmount',
+      'passPricing',
+      'pendingOrder',
+      'order',
+      'nftTransfer',
       'eventPassNft',
       'stripeCustomer',
       'stripeCheckoutSession',
@@ -125,30 +127,30 @@ describe('Payment integration', () => {
     });
   });
 
-  describe('moveEventPassPendingOrdersToConfirmed', () => {
-    it('should move eventPassPendingOrders to confirmed and delete existing eventPassPendingOrders', async () => {
-      // Prepare the eventPassPendingOrders, accountId, and locale
+  describe('movePendingOrdersToConfirmed', () => {
+    it('should move pendingOrders to confirmed and delete existing pendingOrders', async () => {
+      // Prepare the pendingOrders, accountId, and locale
       const accountId = accounts.alpha_user.id;
       const locale = Locale.En;
 
       // Call the method
-      const res = await payment.moveEventPassPendingOrdersToConfirmed({
-        eventPassPendingOrders: eventPassPendingOrders.alpha_user,
+      const res = await payment.movePendingOrdersToConfirmed({
+        pendingOrders: pendingOrders.alpha_user,
         accountId,
         locale,
       });
 
-      // Verify the eventPassOrders are created with status CONFIRMED
+      // Verify the orders are created with status CONFIRMED
       for (const order of res) {
         expect(order.status).toEqual(OrderStatus_Enum.Confirmed);
         expect(order.accountId).toEqual(accountId);
       }
 
-      // Verify the eventPassPendingOrders are deleted
-      const data = await alphaUser.GetEventPassPendingOrders({
+      // Verify the pendingOrders are deleted
+      const data = await alphaUser.GetPendingOrders({
         stage: 'DRAFT' as Stage,
       });
-      const orders = data.eventPassPendingOrder;
+      const orders = data.pendingOrder;
       expect(orders?.length).toBe(0);
     });
   });
@@ -177,7 +179,7 @@ describe('Payment integration', () => {
         payment.createStripeCheckoutSession({
           user,
           stripeCustomer: stripeCustomer as StripeCustomer,
-          eventPassPendingOrders: eventPassPendingOrders.alpha_user,
+          pendingOrders: pendingOrders.alpha_user,
           locale,
           currency,
         }),
@@ -192,7 +194,7 @@ describe('Payment integration', () => {
         payment.createStripeCheckoutSession({
           user,
           stripeCustomer: stripeCustomer as StripeCustomer,
-          eventPassPendingOrders: [],
+          pendingOrders: [],
           locale,
           currency,
         }),
@@ -207,7 +209,7 @@ describe('Payment integration', () => {
       const stripeSession = await payment.createStripeCheckoutSession({
         user,
         stripeCustomer: stripeCustomer as StripeCustomer,
-        eventPassPendingOrders: eventPassPendingOrders.alpha_user,
+        pendingOrders: pendingOrders.alpha_user,
         locale,
         currency,
       });
@@ -224,7 +226,7 @@ describe('Payment integration', () => {
       expect(stripeSessionForUser).not.toBeNull();
 
       // Verify that the order are assigned to the checkout session
-      const orders = await payment.getEventPassOrdersFromStripeCheckoutSession({
+      const orders = await payment.getOrdersFromStripeCheckoutSession({
         stripeCheckoutSessionId: stripeSession.stripeSessionId,
       });
       expect(orders.length).toBe(2);

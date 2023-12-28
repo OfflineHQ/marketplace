@@ -1,8 +1,8 @@
 import { GetEventPassOrganizerFolderPath } from '@features/pass-common';
 import type {
   GetEventPassNftContractNftsQuery,
-  GetEventPassOrderFromIdQuery,
-  GetEventPassOrdersFromStripeCheckoutSessionQuery,
+  GetOrderFromIdQuery,
+  GetOrdersFromStripeCheckoutSessionQuery,
   UpdateEventPassNftFromNftTransferMutation,
 } from '@gql/admin/types';
 import type {
@@ -32,9 +32,9 @@ export type EventPassNftAfterMutation = NonNullable<
   >[0]
 >['returning'][0];
 
-export type EventPassOrderWithContractData =
-  GetEventPassOrdersFromStripeCheckoutSessionQuery['eventPassOrder'][0] &
-    GetEventPassOrderFromIdQuery['eventPassOrder_by_pk'];
+export type OrderWithContractData =
+  GetOrdersFromStripeCheckoutSessionQuery['order'][0] &
+    GetOrderFromIdQuery['order_by_pk'];
 
 export enum ContractType {
   NFT_DROP = 'nft-drop',

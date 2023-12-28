@@ -3,6 +3,7 @@ fragment EventPassNftFields on eventPassNft {
   tokenId
   eventId
   eventPassId
+  packId
   organizerId
   isRevealed
   currentOwnerAddress

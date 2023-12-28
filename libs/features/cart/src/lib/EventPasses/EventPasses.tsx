@@ -59,7 +59,7 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
       <div className="mt-3 flex flex-col">
         {enrichedPasses.map((pass, index) =>
           pass.quantity ? (
-            <div key={pass.eventPassId + index} className="mb-5 flex md:mb-8">
+            <div key={index} className="mb-5 flex md:mb-8">
               <div
                 className={`flex items-center ${layout.imageContainer} h-auto md:h-auto`}
               >
@@ -74,18 +74,16 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
                 </Text>
                 <ConvertedCurrency
                   variant="small"
-                  amount={pass.eventPassPricing?.priceAmount || 0}
-                  currency={pass.eventPassPricing?.priceCurrency}
+                  amount={pass.passPricing?.amount || 0}
+                  currency={pass.passPricing?.currency}
                 />
                 {timeRemainingDeletion &&
-                  pass.eventPassPricing?.timeBeforeDelete &&
+                  pass.passAmount?.timeBeforeDelete &&
                   pass.created_at && (
                     <div className="mt-3 flex pr-1">
                       <EventPassTimeBeforeDeletion
                         created_at={pass.created_at}
-                        timeBeforeDelete={
-                          pass.eventPassPricing?.timeBeforeDelete
-                        }
+                        timeBeforeDelete={pass.passAmount?.timeBeforeDelete}
                       />
                     </div>
                   )}

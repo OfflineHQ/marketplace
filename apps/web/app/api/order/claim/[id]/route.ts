@@ -4,8 +4,7 @@ import { NftClaimable } from '@nft/thirdweb-admin';
 export const maxDuration = 300;
 
 export async function GET(req: Request, { params: { id } }) {
-  const order = (await adminSdk.GetEventPassOrderFromId({ id }))
-    .eventPassOrder_by_pk;
+  const order = (await adminSdk.GetOrderFromId({ id })).order_by_pk;
   const nft = new NftClaimable();
 
   if (!order) {

@@ -82,7 +82,7 @@ describe('NftCollection', () => {
   beforeEach(async () => {
     mockFromSigner.mockReset();
     await deleteAllTables(client);
-    await applySeeds(client, ['eventPassPricing']);
+    await applySeeds(client, ['passAmount']);
   });
 
   afterEach(() => {
@@ -335,12 +335,15 @@ describe('NftCollection', () => {
       ],
     };
     beforeEach(async () => {
-      await applySeeds(client, ['eventPassNft']);
+      await applySeeds(client, ['nftTransfer', 'eventPassNft']);
+    });
+    afterEach(async () => {
+      jest.clearAllMocks();
+      await deleteAllTables(client);
     });
 
     it('should successfully save pack contract into db', async () => {
       await nftCollection.savePackContractIntoDb(props);
-
       const packNftContract = (
         await adminSdk.GetPackNftContractFromPackId({
           packId: props.pack.id,
@@ -357,12 +360,14 @@ describe('NftCollection', () => {
           eventPassNfts: [
             {
               tokenId: 0,
+              packId: props.pack.id,
               contractAddress: '0xFakeDelayedReveal',
               eventPassId: 'fakeEventPassDelayedRevealId',
               currentOwnerAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
             },
             {
               tokenId: 1,
+              packId: props.pack.id,
               contractAddress: '0xFakeDelayedReveal',
               eventPassId: 'fakeEventPassDelayedRevealId',
               currentOwnerAddress: '0xc0ffee254729296a45a3885639AC7E10F9d54979',
@@ -374,20 +379,20 @@ describe('NftCollection', () => {
   });
   describe('getSelectedNftsFromPack', () => {
     let nftCollection: NftCollection;
-    let client: PgClient;
 
-    beforeAll(async () => {
-      client = await createDbClient();
-    });
+    beforeAll(async () => {});
 
     afterAll(async () => {
       await deleteAllTables(client);
-      await client.end();
     });
 
     beforeEach(async () => {
       await deleteAllTables(client);
-      await applySeeds(client, ['eventPassNft', 'eventPassNftContract']);
+      await applySeeds(client, [
+        'nftTransfer',
+        'eventPassNft',
+        'eventPassNftContract',
+      ]);
       nftCollection = new NftCollection({} as Signer);
     });
 
@@ -398,7 +403,7 @@ describe('NftCollection', () => {
     it('should successfully get selected NFTs from pack', async () => {
       const pack = {
         id: 'mocked_pack_id',
-        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        eventPassIds: [{ id: 'fakeEventPassPackId2', amount: 2 }],
         rewardsPerPack: 1,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
@@ -410,30 +415,30 @@ describe('NftCollection', () => {
 
       expect(selectedNfts).toEqual([
         {
-          id: '6aa08394-865e-489f-bba2-04cbb10cd44e',
-          packNftContractId: null,
+          id: '52641e81-57cf-4f2d-bdd3-fa56cca377e4',
+          packId: null,
           currentOwnerAddress: null,
-          contractAddress: '0xFakePack',
+          contractAddress: '0xFakePack2',
           eventId: 'clizzpvidao620buvxit1ynko',
           tokenId: 0,
-          eventPassId: 'FakePackId',
+          eventPassId: 'fakeEventPassPackId2',
         },
         {
-          id: '52641e81-57cf-4f2d-bdd3-fa56cca377e4',
-          packNftContractId: null,
+          id: 'a36f1f0a-8aea-4e47-9300-7373d5feead9',
+          packId: null,
           currentOwnerAddress: null,
-          contractAddress: '0xFakePack',
+          contractAddress: '0xFakePack2',
           eventId: 'clizzpvidao620buvxit1ynko',
           tokenId: 1,
-          eventPassId: 'FakePackId',
+          eventPassId: 'fakeEventPassPackId2',
         },
       ]);
     });
 
-    it('should throw an error if not enough available NFTs', async () => {
+    it("should throw an error if eventPassNftContract doesn't exist", async () => {
       const pack = {
         id: 'mocked_pack_id',
-        eventPassIds: [{ id: 'FakePackId', amount: 4 }],
+        eventPassIds: [{ id: 'notExistingEventPassId', amount: 2 }],
         rewardsPerPack: 1,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
@@ -441,26 +446,45 @@ describe('NftCollection', () => {
       };
 
       await expect(nftCollection.getSelectedNftsFromPack(pack)).rejects.toThrow(
-        new Error('Not enough available NFTs for eventPassId FakePackId'),
+        new Error(
+          "One of your eventPassId doesn't have an eventPassNftContract",
+        ),
+      );
+    });
+
+    it('should throw an error if not enough available NFTs', async () => {
+      const pack = {
+        id: 'mocked_pack_id',
+        eventPassIds: [{ id: 'fakeEventPassPackId2', amount: 4 }],
+        rewardsPerPack: 1,
+        name: 'mocked_pack_name',
+        image: 'mocked_pack_image',
+        eventId: 'clizzpvidao620buvxit1ynko',
+      };
+
+      await expect(nftCollection.getSelectedNftsFromPack(pack)).rejects.toThrow(
+        new Error(
+          'Not enough available NFTs for eventPassId fakeEventPassPackId2',
+        ),
       );
     });
   });
   describe('deployAPack', () => {
     let nftCollection: NftCollection;
-    let client: PgClient;
 
-    beforeAll(async () => {
-      client = await createDbClient();
-    });
+    beforeAll(async () => {});
 
     afterAll(async () => {
       await deleteAllTables(client);
-      await client.end();
     });
 
     beforeEach(async () => {
       await deleteAllTables(client);
-      await applySeeds(client, ['eventPassNft', 'eventPassNftContract']);
+      await applySeeds(client, [
+        'nftTransfer',
+        'eventPassNft',
+        'eventPassNftContract',
+      ]);
       nftCollection = new NftCollection({} as Signer);
       nftCollection.deployAndCreatePack = jest
         .fn()
@@ -477,7 +501,7 @@ describe('NftCollection', () => {
     it('should successfully deploy a pack', async () => {
       const pack = {
         id: 'mocked_pack_id',
-        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        eventPassIds: [{ id: 'fakeEventPassPackId2', amount: 2 }],
         rewardsPerPack: 2,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
@@ -505,7 +529,7 @@ describe('NftCollection', () => {
           eventPassIds: [
             {
               amount: 2,
-              id: 'FakePackId',
+              id: 'fakeEventPassPackId2',
             },
           ],
           rewardsPerPack: 2,
@@ -513,14 +537,16 @@ describe('NftCollection', () => {
           eventPassNfts: [
             {
               tokenId: 0,
-              contractAddress: '0xFakePack',
-              eventPassId: 'FakePackId',
+              packId: pack.id,
+              contractAddress: '0xFakePack2',
+              eventPassId: 'fakeEventPassPackId2',
               currentOwnerAddress: null,
             },
             {
               tokenId: 1,
-              contractAddress: '0xFakePack',
-              eventPassId: 'FakePackId',
+              packId: pack.id,
+              contractAddress: '0xFakePack2',
+              eventPassId: 'fakeEventPassPackId2',
               currentOwnerAddress: null,
             },
           ],
@@ -532,28 +558,28 @@ describe('NftCollection', () => {
         pack,
         selectedNfts: [
           {
-            id: '6aa08394-865e-489f-bba2-04cbb10cd44e',
-            packNftContractId: null,
+            id: '52641e81-57cf-4f2d-bdd3-fa56cca377e4',
+            packId: null,
             currentOwnerAddress: null,
-            contractAddress: '0xFakePack',
+            contractAddress: '0xFakePack2',
             eventId: 'clizzpvidao620buvxit1ynko',
             tokenId: 0,
-            eventPassId: 'FakePackId',
+            eventPassId: 'fakeEventPassPackId2',
           },
           {
-            id: '52641e81-57cf-4f2d-bdd3-fa56cca377e4',
-            packNftContractId: null,
+            id: 'a36f1f0a-8aea-4e47-9300-7373d5feead9',
+            packId: null,
             currentOwnerAddress: null,
-            contractAddress: '0xFakePack',
+            contractAddress: '0xFakePack2',
             eventId: 'clizzpvidao620buvxit1ynko',
             tokenId: 1,
-            eventPassId: 'FakePackId',
+            eventPassId: 'fakeEventPassPackId2',
           },
         ],
         approvalData: [
           {
-            contractAddress: '0xFakePack',
-            eventPassId: 'FakePackId',
+            contractAddress: '0xFakePack2',
+            eventPassId: 'fakeEventPassPackId2',
           },
         ],
       });
@@ -562,20 +588,20 @@ describe('NftCollection', () => {
 
   describe('deployAPack - errors', () => {
     let nftCollection: NftCollection;
-    let client: PgClient;
 
-    beforeAll(async () => {
-      client = await createDbClient();
-    });
+    beforeAll(async () => {});
 
     afterAll(async () => {
       await deleteAllTables(client);
-      await client.end();
     });
 
     beforeEach(async () => {
       await deleteAllTables(client);
-      await applySeeds(client, ['eventPassNft', 'eventPassNftContract']);
+      await applySeeds(client, [
+        'nftTransfer',
+        'eventPassNft',
+        'eventPassNftContract',
+      ]);
       nftCollection = new NftCollection({} as Signer);
       nftCollection.deployAndCreatePack = jest
         .fn()
@@ -592,7 +618,7 @@ describe('NftCollection', () => {
     it('should throw an error if pack is missing required fields', async () => {
       const pack = {
         id: 'mocked_pack_id',
-        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        eventPassIds: [{ id: 'fakeEventPassPackId2', amount: 2 }],
         rewardsPerPack: 2,
         name: '',
         image: 'mocked_pack_image',
@@ -615,7 +641,7 @@ describe('NftCollection', () => {
     it('should throw an error if eventData is missing required fields', async () => {
       const pack = {
         id: 'mocked_pack_id',
-        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        eventPassIds: [{ id: 'fakeEventPassPackId2', amount: 2 }],
         rewardsPerPack: 2,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
@@ -638,7 +664,7 @@ describe('NftCollection', () => {
     it('should throw an error if deployAndCreatePack fails', async () => {
       const pack = {
         id: 'mocked_pack_id',
-        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        eventPassIds: [{ id: 'fakeEventPassPackId2', amount: 2 }],
         rewardsPerPack: 2,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
@@ -663,7 +689,7 @@ describe('NftCollection', () => {
     it('should throw an error if savePackContractIntoDb fails', async () => {
       const pack = {
         id: 'mocked_pack_id',
-        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        eventPassIds: [{ id: 'fakeEventPassPackId2', amount: 2 }],
         rewardsPerPack: 2,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
@@ -688,7 +714,7 @@ describe('NftCollection', () => {
     it('should throw an error if getSelectedNftsFromPack fails', async () => {
       const pack = {
         id: 'mocked_pack_id',
-        eventPassIds: [{ id: 'FakePackId', amount: 2 }],
+        eventPassIds: [{ id: 'fakeEventPassPackId2', amount: 2 }],
         rewardsPerPack: 2,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',

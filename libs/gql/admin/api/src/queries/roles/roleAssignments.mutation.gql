@@ -1,5 +1,0 @@
-mutation CreateRoleAssignment($input: roleAssignments_insert_input!) {
-  insert_roleAssignments_one(object: $input) {
-    role
-  }
-}

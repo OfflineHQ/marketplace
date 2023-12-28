@@ -24,7 +24,7 @@ export async function deleteEventPasses({
       eventSlug,
     });
   } else {
-    await userSdk.DeleteEventPassPendingOrders({
+    await userSdk.DeletePendingOrders({
       eventPassIds,
     });
   }

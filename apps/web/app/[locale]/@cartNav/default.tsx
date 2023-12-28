@@ -3,7 +3,7 @@ import {
   NavSectionSkeleton,
   type CartNavProps,
 } from '@features/app-nav';
-import { getEventPassPendingOrdersMinimal } from '@features/cart-api';
+import { getPendingOrdersMinimal } from '@features/cart-api';
 import { getCurrentUser } from '@next/next-auth/user';
 import { Suspense } from 'react';
 
@@ -27,13 +27,13 @@ export default async function CartNavSection({
 
 async function CartNavSectionContent({ locale }: { locale: string }) {
   let userPassPendingOrders: Awaited<
-    ReturnType<typeof getEventPassPendingOrdersMinimal>
+    ReturnType<typeof getPendingOrdersMinimal>
   >;
   let navProps: Pick<CartNavProps, 'ping'> = {};
   let numPendingOrders = 0;
   const user = await getCurrentUser();
   if (user) {
-    userPassPendingOrders = await getEventPassPendingOrdersMinimal();
+    userPassPendingOrders = await getPendingOrdersMinimal();
     if (userPassPendingOrders?.length) {
       numPendingOrders = userPassPendingOrders.reduce(
         (sum, order) => sum + order.quantity,

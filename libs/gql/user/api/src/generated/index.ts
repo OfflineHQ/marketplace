@@ -17,6 +17,13 @@ export const OrganizerFieldsFragmentDoc = `
   slug
 }
     `;
+export const PassAmountFieldsFragmentDoc = `
+    fragment PassAmountFields on passAmount {
+  maxAmount
+  maxAmountPerUser
+  timeBeforeDelete
+}
+    `;
 export const EventDateLocationsFieldsFragmentDoc = `
     fragment EventDateLocationsFields on EventDateLocation {
   locationAddress {
@@ -36,6 +43,12 @@ export const EventDateLocationsFieldsFragmentDoc = `
   dateEnd
 }
     `;
+export const PassPricingFieldsFragmentDoc = `
+    fragment PassPricingFields on passPricing {
+  amount
+  currency
+}
+    `;
 export const EventPassFieldsFragmentDoc = `
     fragment EventPassFields on EventPass {
   name
@@ -50,9 +63,8 @@ export const EventPassFieldsFragmentDoc = `
       ...EventDateLocationsFields
     }
   }
-  eventPassPricing {
-    priceAmount
-    priceCurrency
+  passPricing {
+    ...PassPricingFields
   }
   event {
     slug
@@ -72,7 +84,8 @@ export const EventPassFieldsFragmentDoc = `
     }
   }
 }
-    ${EventDateLocationsFieldsFragmentDoc}`;
+    ${EventDateLocationsFieldsFragmentDoc}
+${PassPricingFieldsFragmentDoc}`;
 export const EventPassNftFieldsFragmentDoc = `
     fragment EventPassNftFields on eventPassNft {
   tokenId
@@ -83,8 +96,8 @@ export const EventPassNftFieldsFragmentDoc = `
   currentOwnerAddress
 }
     `;
-export const RoleAssignmentsFieldsFragmentDoc = `
-    fragment RoleAssignmentsFields on roleAssignments {
+export const RoleAssignmentFieldsFragmentDoc = `
+    fragment RoleAssignmentFields on roleAssignment {
   role
   organizerId
   eventId
@@ -127,34 +140,36 @@ export const RoleAssignmentsFieldsFragmentDoc = `
       id
       name
       description
-      eventPassPricing {
-        priceAmount
-        priceCurrency
-        timeBeforeDelete
+      passPricing {
+        ...PassPricingFields
+      }
+      passAmount {
+        ...PassAmountFields
       }
     }
   }
 }
-    `;
- const GetEventPassOrdersConfirmedDocument = `
-    query GetEventPassOrdersConfirmed {
-  eventPassOrder(where: {status: {_eq: CONFIRMED}}) {
+    ${PassPricingFieldsFragmentDoc}
+${PassAmountFieldsFragmentDoc}`;
+ const GetOrdersConfirmedDocument = `
+    query GetOrdersConfirmed {
+  order(where: {status: {_eq: CONFIRMED}}) {
     eventPassId
     quantity
   }
 }
     `;
- const GetEventPassOrdersIsMintingDocument = `
-    query GetEventPassOrdersIsMinting {
-  eventPassOrder(where: {status: {_eq: IS_MINTING}}) {
+ const GetOrdersIsMintingDocument = `
+    query GetOrdersIsMinting {
+  order(where: {status: {_eq: IS_MINTING}}) {
     eventPassId
     quantity
   }
 }
     `;
- const GetEventPassOrdersFromIdsDocument = `
-    query GetEventPassOrdersFromIds($eventPassOrderIds: [uuid!]!, $stage: Stage!) {
-  eventPassOrder(where: {id: {_in: $eventPassOrderIds}}) {
+ const GetOrdersFromIdsDocument = `
+    query GetOrdersFromIds($orderIds: [uuid!]!, $stage: Stage!) {
+  order(where: {id: {_in: $orderIds}}) {
     eventPassId
     quantity
     eventPass(locales: [en], stage: $stage) {
@@ -168,9 +183,9 @@ export const RoleAssignmentsFieldsFragmentDoc = `
   }
 }
     `;
- const GetEventPassOrderPurchasedForEventPassesIdDocument = `
-    query GetEventPassOrderPurchasedForEventPassesId($eventPassId: String!) {
-  eventPassOrder(
+ const GetOrderPurchasedForEventPassesIdDocument = `
+    query GetOrderPurchasedForEventPassesId($eventPassId: String!) {
+  order(
     where: {status: {_in: [CONFIRMED, COMPLETED, IS_MINTING]}, eventPassId: {_eq: $eventPassId}}
   ) {
     eventPassId
@@ -178,9 +193,9 @@ export const RoleAssignmentsFieldsFragmentDoc = `
   }
 }
     `;
- const GetEventPassOrderPurchasedForEventPassesIdsDocument = `
-    query GetEventPassOrderPurchasedForEventPassesIds($eventPassIds: [String!]!) {
-  eventPassOrder(
+ const GetOrderPurchasedForEventPassesIdsDocument = `
+    query GetOrderPurchasedForEventPassesIds($eventPassIds: [String!]!) {
+  order(
     where: {status: {_in: [CONFIRMED, COMPLETED, IS_MINTING]}, eventPassId: {_in: $eventPassIds}}
   ) {
     eventPassId
@@ -189,10 +204,10 @@ export const RoleAssignmentsFieldsFragmentDoc = `
 }
     `;
  const UpsertEventPassPendingOrderDocument = `
-    mutation UpsertEventPassPendingOrder($object: eventPassPendingOrder_insert_input!) {
-  insert_eventPassPendingOrder_one(
+    mutation UpsertEventPassPendingOrder($object: pendingOrder_insert_input!) {
+  insert_pendingOrder_one(
     object: $object
-    on_conflict: {constraint: eventPassPendingOrder_eventPassId_accountId_key, update_columns: [quantity]}
+    on_conflict: {constraint: idx_pendingorder_eventpassid_accountid, update_columns: [quantity]}
   ) {
     id
     quantity
@@ -202,17 +217,17 @@ export const RoleAssignmentsFieldsFragmentDoc = `
 }
     `;
  const UpsertEventPassPendingOrdersDocument = `
-    mutation UpsertEventPassPendingOrders($objects: [eventPassPendingOrder_insert_input!]!, $stage: Stage!) {
-  insert_eventPassPendingOrder(
+    mutation UpsertEventPassPendingOrders($objects: [pendingOrder_insert_input!]!, $stage: Stage!) {
+  insert_pendingOrder(
     objects: $objects
-    on_conflict: {constraint: eventPassPendingOrder_eventPassId_accountId_key, update_columns: [quantity]}
+    on_conflict: {constraint: idx_pendingorder_eventpassid_accountid, update_columns: [quantity]}
   ) {
     returning {
       id
       eventPassId
       quantity
       created_at
-      eventPassPricing {
+      passAmount {
         timeBeforeDelete
       }
       eventPass(locales: [en], stage: $stage) {
@@ -227,30 +242,69 @@ export const RoleAssignmentsFieldsFragmentDoc = `
   }
 }
     `;
- const DeleteEventPassPendingOrderDocument = `
-    mutation DeleteEventPassPendingOrder($eventPassPendingOrderId: uuid!) {
-  delete_eventPassPendingOrder_by_pk(id: $eventPassPendingOrderId) {
+ const UpsertPackPendingOrderDocument = `
+    mutation UpsertPackPendingOrder($object: pendingOrder_insert_input!) {
+  insert_pendingOrder_one(
+    object: $object
+    on_conflict: {constraint: idx_pendingorder_packid_accountid, update_columns: [quantity]}
+  ) {
+    id
+    quantity
+    packId
+    created_at
+  }
+}
+    `;
+ const UpsertPackPendingOrdersDocument = `
+    mutation UpsertPackPendingOrders($objects: [pendingOrder_insert_input!]!, $stage: Stage!) {
+  insert_pendingOrder(
+    objects: $objects
+    on_conflict: {constraint: idx_pendingorder_packid_accountid, update_columns: [quantity]}
+  ) {
+    returning {
+      id
+      packId
+      quantity
+      created_at
+      packAmount {
+        timeBeforeDelete
+      }
+      pack(locales: [en], stage: $stage) {
+        event {
+          slug
+          organizer {
+            slug
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+ const DeletePendingOrderDocument = `
+    mutation DeletePendingOrder($pendingOrderId: uuid!) {
+  delete_pendingOrder_by_pk(id: $pendingOrderId) {
     id
   }
 }
     `;
- const DeleteEventPassPendingOrdersDocument = `
-    mutation DeleteEventPassPendingOrders($eventPassIds: [String!]!) {
-  delete_eventPassPendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
+ const DeletePendingOrdersDocument = `
+    mutation DeletePendingOrders($eventPassIds: [String!]!) {
+  delete_pendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
     affected_rows
   }
 }
     `;
- const DeleteAllEventPassPendingOrdersDocument = `
-    mutation DeleteAllEventPassPendingOrders {
-  delete_eventPassPendingOrder(where: {}) {
+ const DeleteAllPendingOrdersDocument = `
+    mutation DeleteAllPendingOrders {
+  delete_pendingOrder(where: {}) {
     affected_rows
   }
 }
     `;
- const GetEventPassPendingOrderForEventPassDocument = `
-    query GetEventPassPendingOrderForEventPass($eventPassId: String!) {
-  eventPassPendingOrder(where: {eventPassId: {_eq: $eventPassId}}) {
+ const GetPendingOrderForEventPassDocument = `
+    query GetPendingOrderForEventPass($eventPassId: String!) {
+  pendingOrder(where: {eventPassId: {_eq: $eventPassId}}) {
     id
     eventPassId
     quantity
@@ -258,9 +312,9 @@ export const RoleAssignmentsFieldsFragmentDoc = `
   }
 }
     `;
- const GetEventPassPendingOrderForEventPassesDocument = `
-    query GetEventPassPendingOrderForEventPasses($eventPassIds: [String!]) {
-  eventPassPendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
+ const GetPendingOrderForEventPassesDocument = `
+    query GetPendingOrderForEventPasses($eventPassIds: [String!]) {
+  pendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
     id
     eventPassId
     quantity
@@ -268,14 +322,18 @@ export const RoleAssignmentsFieldsFragmentDoc = `
   }
 }
     `;
- const GetEventPassPendingOrdersDocument = `
-    query GetEventPassPendingOrders($stage: Stage!) {
-  eventPassPendingOrder {
+ const GetPendingOrdersDocument = `
+    query GetPendingOrders($stage: Stage!) {
+  pendingOrder {
     id
     eventPassId
+    packId
     quantity
     created_at
-    eventPassPricing {
+    passAmount {
+      timeBeforeDelete
+    }
+    packAmount {
       timeBeforeDelete
     }
     eventPass(locales: [en], stage: $stage) {
@@ -286,13 +344,22 @@ export const RoleAssignmentsFieldsFragmentDoc = `
         }
       }
     }
+    pack(locales: [en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
   }
 }
     `;
- const GetEventPassPendingOrdersMinimalDocument = `
-    query GetEventPassPendingOrdersMinimal {
-  eventPassPendingOrder {
+ const GetPendingOrdersMinimalDocument = `
+    query GetPendingOrdersMinimal {
+  pendingOrder {
     eventPassId
+    packId
     quantity
   }
 }
@@ -430,26 +497,26 @@ export const RoleAssignmentsFieldsFragmentDoc = `
 ${EventPassFieldsFragmentDoc}`;
  const GetMyRolesDocument = `
     query GetMyRoles {
-  roleAssignments {
-    ...RoleAssignmentsFields
+  roleAssignment {
+    ...RoleAssignmentFields
   }
 }
-    ${RoleAssignmentsFieldsFragmentDoc}`;
+    ${RoleAssignmentFieldsFragmentDoc}`;
  const GetMyRolesWithOrganizerInfosDocument = `
     query GetMyRolesWithOrganizerInfos($stage: Stage!) {
-  roleAssignments {
-    ...RoleAssignmentsFields
+  roleAssignment {
+    ...RoleAssignmentFields
     organizer(where: {}, locales: [en], stage: $stage) {
       ...OrganizerFields
     }
   }
 }
-    ${RoleAssignmentsFieldsFragmentDoc}
+    ${RoleAssignmentFieldsFragmentDoc}
 ${OrganizerFieldsFragmentDoc}`;
  const GetMyRolesWithOrganizerAndInviterInfosDocument = `
     query GetMyRolesWithOrganizerAndInviterInfos($stage: Stage!) {
-  roleAssignments {
-    ...RoleAssignmentsFields
+  roleAssignment {
+    ...RoleAssignmentFields
     organizer(where: {}, locales: [en], stage: $stage) {
       ...OrganizerFields
     }
@@ -459,7 +526,7 @@ ${OrganizerFieldsFragmentDoc}`;
     }
   }
 }
-    ${RoleAssignmentsFieldsFragmentDoc}
+    ${RoleAssignmentFieldsFragmentDoc}
 ${OrganizerFieldsFragmentDoc}`;
  const GetStripeCustomerDocument = `
     query GetStripeCustomer {
@@ -481,20 +548,20 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
       return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;
     },
-    GetEventPassOrdersConfirmed(variables?: Types.GetEventPassOrdersConfirmedQueryVariables, options?: C): Promise<Types.GetEventPassOrdersConfirmedQuery> {
-      return requester<Types.GetEventPassOrdersConfirmedQuery, Types.GetEventPassOrdersConfirmedQueryVariables>(GetEventPassOrdersConfirmedDocument, variables, options) as Promise<Types.GetEventPassOrdersConfirmedQuery>;
+    GetOrdersConfirmed(variables?: Types.GetOrdersConfirmedQueryVariables, options?: C): Promise<Types.GetOrdersConfirmedQuery> {
+      return requester<Types.GetOrdersConfirmedQuery, Types.GetOrdersConfirmedQueryVariables>(GetOrdersConfirmedDocument, variables, options) as Promise<Types.GetOrdersConfirmedQuery>;
     },
-    GetEventPassOrdersIsMinting(variables?: Types.GetEventPassOrdersIsMintingQueryVariables, options?: C): Promise<Types.GetEventPassOrdersIsMintingQuery> {
-      return requester<Types.GetEventPassOrdersIsMintingQuery, Types.GetEventPassOrdersIsMintingQueryVariables>(GetEventPassOrdersIsMintingDocument, variables, options) as Promise<Types.GetEventPassOrdersIsMintingQuery>;
+    GetOrdersIsMinting(variables?: Types.GetOrdersIsMintingQueryVariables, options?: C): Promise<Types.GetOrdersIsMintingQuery> {
+      return requester<Types.GetOrdersIsMintingQuery, Types.GetOrdersIsMintingQueryVariables>(GetOrdersIsMintingDocument, variables, options) as Promise<Types.GetOrdersIsMintingQuery>;
     },
-    GetEventPassOrdersFromIds(variables: Types.GetEventPassOrdersFromIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrdersFromIdsQuery> {
-      return requester<Types.GetEventPassOrdersFromIdsQuery, Types.GetEventPassOrdersFromIdsQueryVariables>(GetEventPassOrdersFromIdsDocument, variables, options) as Promise<Types.GetEventPassOrdersFromIdsQuery>;
+    GetOrdersFromIds(variables: Types.GetOrdersFromIdsQueryVariables, options?: C): Promise<Types.GetOrdersFromIdsQuery> {
+      return requester<Types.GetOrdersFromIdsQuery, Types.GetOrdersFromIdsQueryVariables>(GetOrdersFromIdsDocument, variables, options) as Promise<Types.GetOrdersFromIdsQuery>;
     },
-    GetEventPassOrderPurchasedForEventPassesId(variables: Types.GetEventPassOrderPurchasedForEventPassesIdQueryVariables, options?: C): Promise<Types.GetEventPassOrderPurchasedForEventPassesIdQuery> {
-      return requester<Types.GetEventPassOrderPurchasedForEventPassesIdQuery, Types.GetEventPassOrderPurchasedForEventPassesIdQueryVariables>(GetEventPassOrderPurchasedForEventPassesIdDocument, variables, options) as Promise<Types.GetEventPassOrderPurchasedForEventPassesIdQuery>;
+    GetOrderPurchasedForEventPassesId(variables: Types.GetOrderPurchasedForEventPassesIdQueryVariables, options?: C): Promise<Types.GetOrderPurchasedForEventPassesIdQuery> {
+      return requester<Types.GetOrderPurchasedForEventPassesIdQuery, Types.GetOrderPurchasedForEventPassesIdQueryVariables>(GetOrderPurchasedForEventPassesIdDocument, variables, options) as Promise<Types.GetOrderPurchasedForEventPassesIdQuery>;
     },
-    GetEventPassOrderPurchasedForEventPassesIds(variables: Types.GetEventPassOrderPurchasedForEventPassesIdsQueryVariables, options?: C): Promise<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery> {
-      return requester<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery, Types.GetEventPassOrderPurchasedForEventPassesIdsQueryVariables>(GetEventPassOrderPurchasedForEventPassesIdsDocument, variables, options) as Promise<Types.GetEventPassOrderPurchasedForEventPassesIdsQuery>;
+    GetOrderPurchasedForEventPassesIds(variables: Types.GetOrderPurchasedForEventPassesIdsQueryVariables, options?: C): Promise<Types.GetOrderPurchasedForEventPassesIdsQuery> {
+      return requester<Types.GetOrderPurchasedForEventPassesIdsQuery, Types.GetOrderPurchasedForEventPassesIdsQueryVariables>(GetOrderPurchasedForEventPassesIdsDocument, variables, options) as Promise<Types.GetOrderPurchasedForEventPassesIdsQuery>;
     },
     UpsertEventPassPendingOrder(variables: Types.UpsertEventPassPendingOrderMutationVariables, options?: C): Promise<Types.UpsertEventPassPendingOrderMutation> {
       return requester<Types.UpsertEventPassPendingOrderMutation, Types.UpsertEventPassPendingOrderMutationVariables>(UpsertEventPassPendingOrderDocument, variables, options) as Promise<Types.UpsertEventPassPendingOrderMutation>;
@@ -502,26 +569,32 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     UpsertEventPassPendingOrders(variables: Types.UpsertEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.UpsertEventPassPendingOrdersMutation> {
       return requester<Types.UpsertEventPassPendingOrdersMutation, Types.UpsertEventPassPendingOrdersMutationVariables>(UpsertEventPassPendingOrdersDocument, variables, options) as Promise<Types.UpsertEventPassPendingOrdersMutation>;
     },
-    DeleteEventPassPendingOrder(variables: Types.DeleteEventPassPendingOrderMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrderMutation> {
-      return requester<Types.DeleteEventPassPendingOrderMutation, Types.DeleteEventPassPendingOrderMutationVariables>(DeleteEventPassPendingOrderDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrderMutation>;
+    UpsertPackPendingOrder(variables: Types.UpsertPackPendingOrderMutationVariables, options?: C): Promise<Types.UpsertPackPendingOrderMutation> {
+      return requester<Types.UpsertPackPendingOrderMutation, Types.UpsertPackPendingOrderMutationVariables>(UpsertPackPendingOrderDocument, variables, options) as Promise<Types.UpsertPackPendingOrderMutation>;
     },
-    DeleteEventPassPendingOrders(variables: Types.DeleteEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrdersMutation> {
-      return requester<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrdersMutation>;
+    UpsertPackPendingOrders(variables: Types.UpsertPackPendingOrdersMutationVariables, options?: C): Promise<Types.UpsertPackPendingOrdersMutation> {
+      return requester<Types.UpsertPackPendingOrdersMutation, Types.UpsertPackPendingOrdersMutationVariables>(UpsertPackPendingOrdersDocument, variables, options) as Promise<Types.UpsertPackPendingOrdersMutation>;
     },
-    DeleteAllEventPassPendingOrders(variables?: Types.DeleteAllEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteAllEventPassPendingOrdersMutation> {
-      return requester<Types.DeleteAllEventPassPendingOrdersMutation, Types.DeleteAllEventPassPendingOrdersMutationVariables>(DeleteAllEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteAllEventPassPendingOrdersMutation>;
+    DeletePendingOrder(variables: Types.DeletePendingOrderMutationVariables, options?: C): Promise<Types.DeletePendingOrderMutation> {
+      return requester<Types.DeletePendingOrderMutation, Types.DeletePendingOrderMutationVariables>(DeletePendingOrderDocument, variables, options) as Promise<Types.DeletePendingOrderMutation>;
     },
-    GetEventPassPendingOrderForEventPass(variables: Types.GetEventPassPendingOrderForEventPassQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrderForEventPassQuery> {
-      return requester<Types.GetEventPassPendingOrderForEventPassQuery, Types.GetEventPassPendingOrderForEventPassQueryVariables>(GetEventPassPendingOrderForEventPassDocument, variables, options) as Promise<Types.GetEventPassPendingOrderForEventPassQuery>;
+    DeletePendingOrders(variables: Types.DeletePendingOrdersMutationVariables, options?: C): Promise<Types.DeletePendingOrdersMutation> {
+      return requester<Types.DeletePendingOrdersMutation, Types.DeletePendingOrdersMutationVariables>(DeletePendingOrdersDocument, variables, options) as Promise<Types.DeletePendingOrdersMutation>;
     },
-    GetEventPassPendingOrderForEventPasses(variables?: Types.GetEventPassPendingOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrderForEventPassesQuery> {
-      return requester<Types.GetEventPassPendingOrderForEventPassesQuery, Types.GetEventPassPendingOrderForEventPassesQueryVariables>(GetEventPassPendingOrderForEventPassesDocument, variables, options) as Promise<Types.GetEventPassPendingOrderForEventPassesQuery>;
+    DeleteAllPendingOrders(variables?: Types.DeleteAllPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteAllPendingOrdersMutation> {
+      return requester<Types.DeleteAllPendingOrdersMutation, Types.DeleteAllPendingOrdersMutationVariables>(DeleteAllPendingOrdersDocument, variables, options) as Promise<Types.DeleteAllPendingOrdersMutation>;
     },
-    GetEventPassPendingOrders(variables: Types.GetEventPassPendingOrdersQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersQuery> {
-      return requester<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables, options) as Promise<Types.GetEventPassPendingOrdersQuery>;
+    GetPendingOrderForEventPass(variables: Types.GetPendingOrderForEventPassQueryVariables, options?: C): Promise<Types.GetPendingOrderForEventPassQuery> {
+      return requester<Types.GetPendingOrderForEventPassQuery, Types.GetPendingOrderForEventPassQueryVariables>(GetPendingOrderForEventPassDocument, variables, options) as Promise<Types.GetPendingOrderForEventPassQuery>;
     },
-    GetEventPassPendingOrdersMinimal(variables?: Types.GetEventPassPendingOrdersMinimalQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersMinimalQuery> {
-      return requester<Types.GetEventPassPendingOrdersMinimalQuery, Types.GetEventPassPendingOrdersMinimalQueryVariables>(GetEventPassPendingOrdersMinimalDocument, variables, options) as Promise<Types.GetEventPassPendingOrdersMinimalQuery>;
+    GetPendingOrderForEventPasses(variables?: Types.GetPendingOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetPendingOrderForEventPassesQuery> {
+      return requester<Types.GetPendingOrderForEventPassesQuery, Types.GetPendingOrderForEventPassesQueryVariables>(GetPendingOrderForEventPassesDocument, variables, options) as Promise<Types.GetPendingOrderForEventPassesQuery>;
+    },
+    GetPendingOrders(variables: Types.GetPendingOrdersQueryVariables, options?: C): Promise<Types.GetPendingOrdersQuery> {
+      return requester<Types.GetPendingOrdersQuery, Types.GetPendingOrdersQueryVariables>(GetPendingOrdersDocument, variables, options) as Promise<Types.GetPendingOrdersQuery>;
+    },
+    GetPendingOrdersMinimal(variables?: Types.GetPendingOrdersMinimalQueryVariables, options?: C): Promise<Types.GetPendingOrdersMinimalQuery> {
+      return requester<Types.GetPendingOrdersMinimalQuery, Types.GetPendingOrdersMinimalQueryVariables>(GetPendingOrdersMinimalDocument, variables, options) as Promise<Types.GetPendingOrdersMinimalQuery>;
     },
     GetKyc(variables?: Types.GetKycQueryVariables, options?: C): Promise<Types.GetKycQuery> {
       return requester<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables, options) as Promise<Types.GetKycQuery>;

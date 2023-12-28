@@ -1,0 +1,5 @@
+mutation DeletePendingOrders($ids: [uuid!]!) {
+  delete_pendingOrder(where: { id: { _in: $ids } }) {
+    affected_rows
+  }
+}

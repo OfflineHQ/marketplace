@@ -8,7 +8,7 @@ array_relationships:
         column_mapping:
           chainId: chainId
           eventId: eventId
-          id: packNftContractId
+          packId: packId
         insertion_order: null
         remote_table:
           name: eventPassNft

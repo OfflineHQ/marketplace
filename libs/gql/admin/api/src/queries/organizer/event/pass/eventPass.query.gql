@@ -11,11 +11,11 @@ query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!)
     nftImage {
       url
     }
-    eventPassPricing {
-      maxAmount
-      maxAmountPerUser
-      priceAmount
-      priceCurrency
+    passAmount {
+      ...PassAmountFields
+    }
+    passPricing {
+      ...PassPricingFields
     }
     passOptions {
       name

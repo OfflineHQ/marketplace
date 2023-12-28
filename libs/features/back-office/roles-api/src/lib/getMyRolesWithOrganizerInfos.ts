@@ -16,5 +16,5 @@ export const getMyRolesWithOrganizerInfos = cache(async () => {
       },
     },
   );
-  return data?.roleAssignments;
+  return data?.roleAssignment;
 });

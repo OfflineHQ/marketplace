@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { EventPassPendingOrder } from '@gql/shared/types';
+import { PendingOrder } from '@gql/shared/types';
 import { isJestRunning } from '@utils';
 import { Client } from 'pg';
 
@@ -10,18 +10,19 @@ let dbName = '';
 export const SeedTable = {
   account: 0,
   kyc: 1,
-  eventPassPricing: 2,
-  eventPassPendingOrder: 3,
-  eventPassNftContract: 4,
-  eventParameters: 5,
-  stripeCustomer: 6,
-  stripeCheckoutSession: 7,
-  eventPassOrder: 8,
-  eventPassNft: 9,
+  passAmount: 2,
+  passPricing: 3,
+  pendingOrder: 4,
+  eventPassNftContract: 5,
+  eventParameters: 6,
+  stripeCustomer: 7,
+  stripeCheckoutSession: 8,
+  order: 9,
   nftTransfer: 10,
-  roleAssignments: 11,
-  follow: 12,
-  packNftContract: 13,
+  eventPassNft: 11,
+  roleAssignment: 12,
+  follow: 13,
+  packNftContract: 14,
 };
 
 export type SeedTableName = keyof typeof SeedTable;
@@ -96,7 +97,7 @@ export const queryDb = async (client: Client, sql: string) => {
   await client.query(sql);
 };
 
-export const eventPassPendingOrders = {
+export const pendingOrders = {
   alpha_user: [
     {
       id: 'd4951f86-1a8f-410a-bbc1-607f1c7933b9',
@@ -112,5 +113,5 @@ export const eventPassPendingOrders = {
       quantity: 2,
       created_at: '2023-07-19 12:58:46.636737+00',
     },
-  ] satisfies EventPassPendingOrder[],
+  ] satisfies PendingOrder[],
 };

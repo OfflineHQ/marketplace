@@ -1,0 +1,18 @@
+query GetPendingOrders {
+  pendingOrder {
+    created_at
+    id
+    eventPassId
+    packId
+    account {
+      email
+      address
+    }
+    passAmount {
+      timeBeforeDelete
+    }
+    packAmount {
+      timeBeforeDelete
+    }
+  }
+}

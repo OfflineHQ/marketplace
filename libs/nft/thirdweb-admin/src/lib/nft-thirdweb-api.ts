@@ -8,7 +8,7 @@ import {
   EventPassNftContractType_Enum,
   OrderStatus_Enum,
 } from '@gql/shared/types';
-import { EventPassOrderWithContractData } from '@nft/types';
+import { OrderWithContractData } from '@nft/types';
 import { Ethereum, Goerli, Sepolia } from '@thirdweb-dev/chains';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 
@@ -43,7 +43,7 @@ export class NftClaimable {
     }
   }
 
-  async checkOrder(order: EventPassOrderWithContractData) {
+  async checkOrder(order: OrderWithContractData) {
     if (!this.sdk) {
       throw new Error('SDK is undefined');
     }
@@ -128,7 +128,7 @@ export class NftClaimable {
 
   async claimOrder(
     this: NftClaimable,
-    order: EventPassOrderWithContractData,
+    order: OrderWithContractData,
   ): Promise<ClaimEventPassNftsMutation> {
     const contractAddress = order.eventPassNftContract?.contractAddress;
     const toAddress = order.account?.address;
@@ -147,7 +147,7 @@ export class NftClaimable {
         toAddress,
         order.quantity,
       );
-      await adminSdk.UpdateEventPassOrdersStatus({
+      await adminSdk.UpdateOrdersStatus({
         updates: [
           {
             _set: {
@@ -171,7 +171,7 @@ export class NftClaimable {
         })),
       });
     } catch (e) {
-      await adminSdk.UpdateEventPassOrdersStatus({
+      await adminSdk.UpdateOrdersStatus({
         updates: [
           {
             _set: {

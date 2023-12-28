@@ -1,9 +1,9 @@
 import { adminSdk } from '@gql/admin/api';
-import { EventPassOrder, OrderStatus_Enum } from '@gql/shared/types';
+import { Order, OrderStatus_Enum } from '@gql/shared/types';
 import {
   applySeeds,
   createDbClient,
-  deleteTables,
+  deleteAllTables,
   type PgClient,
 } from '@test-utils/db';
 import { describe } from 'node:test';
@@ -11,11 +11,12 @@ import { NftClaimable } from './nft-thirdweb-api';
 
 describe('NftClaimable integration test', () => {
   let nftClaimable: NftClaimable;
-  let order: EventPassOrder;
+  let order: Order;
   let client: PgClient;
 
   beforeAll(async () => {
     client = await createDbClient();
+    await deleteAllTables(client);
   });
 
   beforeEach(async () => {
@@ -34,25 +35,23 @@ describe('NftClaimable integration test', () => {
     await applySeeds(client, [
       'account',
       'eventPassNftContract',
-      'eventPassPricing',
-      'eventPassOrder',
+      'passAmount',
+      'passPricing',
+      'stripeCheckoutSession',
+      'stripeCustomer',
+      'order',
+      'nftTransfer',
       'eventPassNft',
     ]);
-    const res = await adminSdk.GetEventPassOrdersFromStripeCheckoutSession({
+    const res = await adminSdk.GetOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId:
         'cs_test_a17kYy8IpmWsLecscKe5pRQNP5hir8ysWC9sturzdXMfh7Y94gYJIAyePN',
     });
-    order = res.eventPassOrder[0] as EventPassOrder;
+    order = res.order[0] as Order;
   });
 
   afterEach(async () => {
-    await deleteTables(client, [
-      'account',
-      'eventPassNftContract',
-      'eventPassPricing',
-      'eventPassOrder',
-      'eventPassNft',
-    ]);
+    await deleteAllTables(client);
   });
 
   afterAll(async () => {
@@ -62,13 +61,11 @@ describe('NftClaimable integration test', () => {
   it('should update the database when claimOrder is called', async () => {
     await nftClaimable.claimOrder(order);
 
-    const updatedOrder = await adminSdk.GetAccountEventPassOrderForEventPasses({
+    const updatedOrder = await adminSdk.GetAccountOrderForEventPasses({
       accountId: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
       eventPassIds: 'fake-event-pass-2',
     });
-    expect(updatedOrder.eventPassOrder[0].status).toBe(
-      OrderStatus_Enum.Completed,
-    );
+    expect(updatedOrder.order[0].status).toBe(OrderStatus_Enum.Completed);
   });
 
   describe('with fails', () => {

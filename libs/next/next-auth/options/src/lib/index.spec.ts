@@ -135,7 +135,7 @@ describe('createOptions callbacks', () => {
       (isBackOffice as jest.Mock).mockReturnValue(true);
     });
 
-    it('should return correct token with updated role if role is part of user roleAssignments', async () => {
+    it('should return correct token with updated role if role is part of user roleAssignment', async () => {
       (getAccount as jest.Mock).mockResolvedValueOnce({ ...mockOrganizer });
       const result = await createOptions().callbacks.jwt({
         token: { ...mockToken, user: mockOrganizer },
@@ -242,7 +242,7 @@ describe('createOptions callbacks', () => {
       });
     });
 
-    it("shouldn't return token with role if role is not part of user roleAssignments", async () => {
+    it("shouldn't return token with role if role is not part of user roleAssignment", async () => {
       (getAccount as jest.Mock).mockResolvedValueOnce(mockOrganizer);
       await expect(
         createOptions().callbacks.jwt({

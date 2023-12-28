@@ -8,7 +8,7 @@ export const getEventPassOrderSums = cache(
       { eventPassId },
       {
         next: {
-          tags: [`getEventPassOrderSum-${eventPassId}`],
+          tags: [`getOrderSum-${eventPassId}`],
         },
       },
     );

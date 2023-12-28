@@ -21,10 +21,11 @@ query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!)
       id
       name
       description
-      eventPassPricing {
-        priceAmount
-        priceCurrency
-        timeBeforeDelete
+      passPricing {
+        ...PassPricingFields
+      }
+      passAmount {
+        ...PassAmountFields
       }
     }
   }

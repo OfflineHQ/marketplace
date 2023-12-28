@@ -44,7 +44,9 @@ export const EventPassesActions: React.FC<EventPassesActionsProps> = ({
               await deleteEventPasses({
                 organizerSlug,
                 eventSlug,
-                eventPassIds: passes.map(({ eventPassId }) => eventPassId),
+                eventPassIds: passes
+                  .filter(({ eventPassId }) => !!eventPassId)
+                  .map(({ eventPassId }) => eventPassId as string),
               });
               // pb with revalidatePath or revalidateTag, (error 404 in updateEventPassCart) so refresh for now
               router.refresh();

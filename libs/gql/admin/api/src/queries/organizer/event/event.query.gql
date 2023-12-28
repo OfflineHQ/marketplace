@@ -47,12 +47,11 @@ query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!)
       id
       name
       description
-      eventPassPricing {
-        priceAmount
-        priceCurrency
-        maxAmount
-        maxAmountPerUser
-        timeBeforeDelete
+      passAmount {
+        ...PassAmountFields
+      }
+      passPricing {
+        ...PassPricingFields
       }
     }
   }
@@ -100,12 +99,11 @@ query GetEventWithPassesOrganizer(
           ...EventDateLocationsFields
         }
       }
-      eventPassPricing {
-        maxAmount
-        maxAmountPerUser
-        priceAmount
-        priceCurrency
-        timeBeforeDelete
+      passAmount {
+        ...PassAmountFields
+      }
+      passPricing {
+        ...PassPricingFields
       }
       eventPassNftContract {
         type

@@ -1,6 +1,6 @@
 // import type { BoundedNumericStepperProps } from '@ui/components';
 import type { GetEventPassesQuery, GetEventQuery } from '@gql/admin/types';
-import type { GetEventPassPendingOrderForEventPassesQuery } from '@gql/user/types';
+import type { GetPendingOrderForEventPassesQuery } from '@gql/user/types';
 export interface EventSlugs {
   eventSlug: string;
   organizerSlug: string;
@@ -19,10 +19,10 @@ export type EventPasses = NonNullable<GetEventPassesQuery['eventPasses']>;
 
 export type EventPass = EventPasses[0];
 
-export type EventPassPendingOrders = NonNullable<
-  GetEventPassPendingOrderForEventPassesQuery['eventPassPendingOrder']
+export type PendingOrders = NonNullable<
+  GetPendingOrderForEventPassesQuery['pendingOrder']
 >;
 
-export type EventPassPendingOrder = EventPassPendingOrders[0];
+export type PendingOrder = PendingOrders[0];
 
 export type PassOption = EventPass['passOptions'][0];

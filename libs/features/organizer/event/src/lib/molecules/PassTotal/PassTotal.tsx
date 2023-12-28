@@ -30,13 +30,12 @@ export const PassTotalContent: React.FC<PassTotalProps> = async ({
 
   const money: Money = {
     amount: 0,
-    currency:
-      passesData[0].eventPassPricing?.priceCurrency || Currency_Enum.Eur,
+    currency: passesData[0].passPricing?.currency || Currency_Enum.Eur,
   };
   for (const { quantity, eventPassId } of passesCart) {
     const pass = passesData.find(({ id }) => id === eventPassId);
     if (pass) {
-      money.amount += quantity * (pass.eventPassPricing?.priceAmount || 0);
+      money.amount += quantity * (pass.passPricing?.amount || 0);
     }
   }
   const locale = useLocale();

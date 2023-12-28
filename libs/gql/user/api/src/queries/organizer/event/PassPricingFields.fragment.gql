@@ -1,0 +1,4 @@
+fragment PassPricingFields on passPricing {
+  amount
+  currency
+}

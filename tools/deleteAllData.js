@@ -14,7 +14,7 @@ const deleteAllData = async () => {
   await client.connect();
 
   const tablesToDelete =
-    '"follow", "roleAssignments", "nftTransfer", "eventPassNft", "eventPassOrder", "stripeCheckoutSession", "stripeCustomer", "eventParameters", "eventPassNftContract", "eventPassPendingOrder", "eventPassPricing", "kyc", "account"';
+    '"packNftContract", "follow", "roleAssignment", "eventPassNft", "nftTransfer", "order", "stripeCheckoutSession", "stripeCustomer", "eventParameters", "eventPassNftContract", "pendingOrder", "passPricing", "passAmount", "kyc", "account"';
   await client.query(`TRUNCATE TABLE ${tablesToDelete} CASCADE;`);
   // Close the connection
   await client.end();

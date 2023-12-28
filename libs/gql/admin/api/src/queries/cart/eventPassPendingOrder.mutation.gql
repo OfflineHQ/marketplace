@@ -1,5 +1,0 @@
-mutation DeleteEventPassPendingOrders($ids: [uuid!]!) {
-  delete_eventPassPendingOrder(where: { id: { _in: $ids } }) {
-    affected_rows
-  }
-}

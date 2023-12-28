@@ -2180,8 +2180,6 @@ type EventPass implements Entity & Node {
     """
     locales: [Locale!]
   ): EventPassDelayedRevealed
-  eventPassOrderSums: eventPassOrderSums
-  eventPassPricing: eventPassPricing
 
   """List of EventPass versions"""
   history(
@@ -2258,6 +2256,7 @@ type EventPass implements Entity & Node {
   Permanent name associated with the NFT. Cannot be changed or localized.
   """
   nftName: String!
+  passAmount: passAmount
 
   """
   Define the different pass options. An option is defined for a specific location and timeframe
@@ -2291,6 +2290,7 @@ type EventPass implements Entity & Node {
     skip: Int
     where: PassOptionWhereInput
   ): [PassOption!]!
+  passPricing: passPricing
 
   """The time the document was published. Null on documents in draft stage."""
   publishedAt(
@@ -8072,14 +8072,14 @@ enum cursor_ordering {
 }
 
 """
-The eventPassNft model is designed to consolidate and store the metadata associated with each event pass NFT. It centralizes fixed metadata, enabling the system to retrieve NFT details without frequently querying external APIs. It integrates with the existing nftTransfer model, providing a holistic view of each event pass NFT's journey and characteristics within the platform.
+columns and relationships of "eventPassNft"
 """
 type eventPassNft {
   """Denotes the specific blockchain or network of the event pass NFT"""
   chainId: String!
 
   """
-  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain.
   """
   contractAddress: String!
 
@@ -8119,9 +8119,6 @@ type eventPassNft {
   """Directly relates to a specific Event Pass within the system"""
   eventPassId: String!
 
-  """An object relationship"""
-  eventPassPricing: eventPassPricing
-
   """
   Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform.
   """
@@ -8151,6 +8148,18 @@ type eventPassNft {
   """Ties the event pass NFT to a specific organizer within the platform"""
   organizerId: String!
 
+  """An object relationship"""
+  packAmount: passAmount
+
+  """An object relationship"""
+  packPricing: passPricing
+
+  """An object relationship"""
+  passAmount: passAmount
+
+  """An object relationship"""
+  passPricing: passPricing
+
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
   """
@@ -8169,10 +8178,13 @@ input eventPassNft_bool_exp {
   currentOwnerAddress: String_comparison_exp
   eventId: String_comparison_exp
   eventPassId: String_comparison_exp
-  eventPassPricing: eventPassPricing_bool_exp
   isRevealed: Boolean_comparison_exp
   metadata: jsonb_comparison_exp
   organizerId: String_comparison_exp
+  packAmount: passAmount_bool_exp
+  packPricing: passPricing_bool_exp
+  passAmount: passAmount_bool_exp
+  passPricing: passPricing_bool_exp
   tokenId: bigint_comparison_exp
 }
 
@@ -8183,10 +8195,13 @@ input eventPassNft_order_by {
   currentOwnerAddress: order_by
   eventId: order_by
   eventPassId: order_by
-  eventPassPricing: eventPassPricing_order_by
   isRevealed: order_by
   metadata: order_by
   organizerId: order_by
+  packAmount: passAmount_order_by
+  packPricing: passPricing_order_by
+  passAmount: passAmount_order_by
+  passPricing: passPricing_order_by
   tokenId: order_by
 }
 
@@ -8239,7 +8254,7 @@ input eventPassNft_stream_cursor_value_input {
   chainId: String
 
   """
-  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFT's origin and behavior on the blockchain.
+  Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain.
   """
   contractAddress: String
 
@@ -8322,80 +8337,6 @@ input eventPassOrderSums_stream_cursor_input {
 input eventPassOrderSums_stream_cursor_value_input {
   eventPassId: String
   totalReserved: Int
-}
-
-"""
-The EventPassPricing table stores pricing information related to each Event Pass. It includes the price amount, the currency in which the price is denoted, and the maximum quantity that can be ordered both overall and per user. Each row in the table represents a unique combination of these attributes for a specific Event Pass. This table is key in managing the sales and availability of Event Passes.
-"""
-type eventPassPricing {
-  eventPassId: String!
-  maxAmount: Int!
-  maxAmountPerUser: Int
-  priceAmount: Int!
-  priceCurrency: currency_enum!
-}
-
-"""
-Boolean expression to filter rows from the table "eventPassPricing". All fields are combined with a logical 'AND'.
-"""
-input eventPassPricing_bool_exp {
-  _and: [eventPassPricing_bool_exp!]
-  _not: eventPassPricing_bool_exp
-  _or: [eventPassPricing_bool_exp!]
-  eventPassId: String_comparison_exp
-  maxAmount: Int_comparison_exp
-  maxAmountPerUser: Int_comparison_exp
-  priceAmount: Int_comparison_exp
-  priceCurrency: currency_enum_comparison_exp
-}
-
-"""Ordering options when selecting data from "eventPassPricing"."""
-input eventPassPricing_order_by {
-  eventPassId: order_by
-  maxAmount: order_by
-  maxAmountPerUser: order_by
-  priceAmount: order_by
-  priceCurrency: order_by
-}
-
-"""
-select columns of table "eventPassPricing"
-"""
-enum eventPassPricing_select_column {
-  """column name"""
-  eventPassId
-
-  """column name"""
-  maxAmount
-
-  """column name"""
-  maxAmountPerUser
-
-  """column name"""
-  priceAmount
-
-  """column name"""
-  priceCurrency
-}
-
-"""
-Streaming cursor of the table "eventPassPricing"
-"""
-input eventPassPricing_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: eventPassPricing_stream_cursor_value_input!
-
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input eventPassPricing_stream_cursor_value_input {
-  eventPassId: String
-  maxAmount: Int
-  maxAmountPerUser: Int
-  priceAmount: Int
-  priceCurrency: currency_enum
 }
 
 scalar jsonb
@@ -9672,6 +9613,191 @@ enum order_by {
   desc_nulls_last
 }
 
+"""Hold the sums for the Pack Orders"""
+type packOrderSums {
+  packId: String!
+  totalReserved: Int!
+}
+
+"""
+Boolean expression to filter rows from the table "packOrderSums". All fields are combined with a logical 'AND'.
+"""
+input packOrderSums_bool_exp {
+  _and: [packOrderSums_bool_exp!]
+  _not: packOrderSums_bool_exp
+  _or: [packOrderSums_bool_exp!]
+  packId: String_comparison_exp
+  totalReserved: Int_comparison_exp
+}
+
+"""Ordering options when selecting data from "packOrderSums"."""
+input packOrderSums_order_by {
+  packId: order_by
+  totalReserved: order_by
+}
+
+"""
+select columns of table "packOrderSums"
+"""
+enum packOrderSums_select_column {
+  """column name"""
+  packId
+
+  """column name"""
+  totalReserved
+}
+
+"""
+Streaming cursor of the table "packOrderSums"
+"""
+input packOrderSums_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: packOrderSums_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input packOrderSums_stream_cursor_value_input {
+  packId: String
+  totalReserved: Int
+}
+
+"""
+The passAmount table stores quantity information related to each eventPass or Pack
+"""
+type passAmount {
+  eventPassId: String
+  maxAmount: Int!
+  maxAmountPerUser: Int
+  packId: String
+}
+
+"""
+Boolean expression to filter rows from the table "passAmount". All fields are combined with a logical 'AND'.
+"""
+input passAmount_bool_exp {
+  _and: [passAmount_bool_exp!]
+  _not: passAmount_bool_exp
+  _or: [passAmount_bool_exp!]
+  eventPassId: String_comparison_exp
+  maxAmount: Int_comparison_exp
+  maxAmountPerUser: Int_comparison_exp
+  packId: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "passAmount"."""
+input passAmount_order_by {
+  eventPassId: order_by
+  maxAmount: order_by
+  maxAmountPerUser: order_by
+  packId: order_by
+}
+
+"""
+select columns of table "passAmount"
+"""
+enum passAmount_select_column {
+  """column name"""
+  eventPassId
+
+  """column name"""
+  maxAmount
+
+  """column name"""
+  maxAmountPerUser
+
+  """column name"""
+  packId
+}
+
+"""
+Streaming cursor of the table "passAmount"
+"""
+input passAmount_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: passAmount_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input passAmount_stream_cursor_value_input {
+  eventPassId: String
+  maxAmount: Int
+  maxAmountPerUser: Int
+  packId: String
+}
+
+"""
+The passPricing table stores pricing information for an eventPass or Pack.
+"""
+type passPricing {
+  amount: Int!
+  currency: currency_enum!
+  eventPassId: String
+  packId: String
+}
+
+"""
+Boolean expression to filter rows from the table "passPricing". All fields are combined with a logical 'AND'.
+"""
+input passPricing_bool_exp {
+  _and: [passPricing_bool_exp!]
+  _not: passPricing_bool_exp
+  _or: [passPricing_bool_exp!]
+  amount: Int_comparison_exp
+  currency: currency_enum_comparison_exp
+  eventPassId: String_comparison_exp
+  packId: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "passPricing"."""
+input passPricing_order_by {
+  amount: order_by
+  currency: order_by
+  eventPassId: order_by
+  packId: order_by
+}
+
+"""
+select columns of table "passPricing"
+"""
+enum passPricing_select_column {
+  """column name"""
+  amount
+
+  """column name"""
+  currency
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  packId
+}
+
+"""
+Streaming cursor of the table "passPricing"
+"""
+input passPricing_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: passPricing_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input passPricing_stream_cursor_value_input {
+  amount: Int
+  currency: currency_enum
+  eventPassId: String
+  packId: String
+}
+
 type query_root {
   """Retrieve a single asset"""
   asset(
@@ -9833,26 +9959,6 @@ type query_root {
   fetch data from the table: "eventPassOrderSums" using primary key columns
   """
   eventPassOrderSums_by_pk(eventPassId: String!): eventPassOrderSums
-
-  """
-  fetch data from the table: "eventPassPricing"
-  """
-  eventPassPricing(
-    """distinct select on columns"""
-    distinct_on: [eventPassPricing_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [eventPassPricing_order_by!]
-
-    """filter the rows returned"""
-    where: eventPassPricing_bool_exp
-  ): [eventPassPricing!]!
 
   """Retrieve document version"""
   eventPassVersion(where: VersionWhereInput!): DocumentVersion
@@ -10072,6 +10178,69 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: OrganizerWhereInput
   ): OrganizerConnection!
+
+  """
+  fetch data from the table: "packOrderSums"
+  """
+  packOrderSums(
+    """distinct select on columns"""
+    distinct_on: [packOrderSums_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packOrderSums_order_by!]
+
+    """filter the rows returned"""
+    where: packOrderSums_bool_exp
+  ): [packOrderSums!]!
+
+  """fetch data from the table: "packOrderSums" using primary key columns"""
+  packOrderSums_by_pk(packId: String!): packOrderSums
+
+  """
+  fetch data from the table: "passAmount"
+  """
+  passAmount(
+    """distinct select on columns"""
+    distinct_on: [passAmount_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passAmount_order_by!]
+
+    """filter the rows returned"""
+    where: passAmount_bool_exp
+  ): [passAmount!]!
+
+  """
+  fetch data from the table: "passPricing"
+  """
+  passPricing(
+    """distinct select on columns"""
+    distinct_on: [passPricing_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passPricing_order_by!]
+
+    """filter the rows returned"""
+    where: passPricing_bool_exp
+  ): [passPricing!]!
 
   """Retrieve a single scheduledOperation"""
   scheduledOperation(
@@ -10330,11 +10499,11 @@ type subscription_root {
   ): [eventPassOrderSums!]!
 
   """
-  fetch data from the table: "eventPassPricing"
+  fetch data from the table: "packOrderSums"
   """
-  eventPassPricing(
+  packOrderSums(
     """distinct select on columns"""
-    distinct_on: [eventPassPricing_select_column!]
+    distinct_on: [packOrderSums_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -10343,23 +10512,94 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [eventPassPricing_order_by!]
+    order_by: [packOrderSums_order_by!]
 
     """filter the rows returned"""
-    where: eventPassPricing_bool_exp
-  ): [eventPassPricing!]!
+    where: packOrderSums_bool_exp
+  ): [packOrderSums!]!
+
+  """fetch data from the table: "packOrderSums" using primary key columns"""
+  packOrderSums_by_pk(packId: String!): packOrderSums
 
   """
-  fetch data from the table in a streaming manner: "eventPassPricing"
+  fetch data from the table in a streaming manner: "packOrderSums"
   """
-  eventPassPricing_stream(
+  packOrderSums_stream(
     """maximum number of rows returned in a single batch"""
     batch_size: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [eventPassPricing_stream_cursor_input]!
+    cursor: [packOrderSums_stream_cursor_input]!
 
     """filter the rows returned"""
-    where: eventPassPricing_bool_exp
-  ): [eventPassPricing!]!
+    where: packOrderSums_bool_exp
+  ): [packOrderSums!]!
+
+  """
+  fetch data from the table: "passAmount"
+  """
+  passAmount(
+    """distinct select on columns"""
+    distinct_on: [passAmount_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passAmount_order_by!]
+
+    """filter the rows returned"""
+    where: passAmount_bool_exp
+  ): [passAmount!]!
+
+  """
+  fetch data from the table in a streaming manner: "passAmount"
+  """
+  passAmount_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [passAmount_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: passAmount_bool_exp
+  ): [passAmount!]!
+
+  """
+  fetch data from the table: "passPricing"
+  """
+  passPricing(
+    """distinct select on columns"""
+    distinct_on: [passPricing_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [passPricing_order_by!]
+
+    """filter the rows returned"""
+    where: passPricing_bool_exp
+  ): [passPricing!]!
+
+  """
+  fetch data from the table in a streaming manner: "passPricing"
+  """
+  passPricing_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [passPricing_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: passPricing_bool_exp
+  ): [passPricing!]!
 }

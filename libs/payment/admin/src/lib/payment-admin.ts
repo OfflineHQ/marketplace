@@ -16,7 +16,7 @@ import { calculateUnitAmount } from '@next/currency-common';
 import { AppUser } from '@next/types';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import {
-  StripeCheckoutSessionMetadataEventPassOrder,
+  StripeCheckoutSessionMetadataOrder,
   StripeCreateSessionLineItem,
   StripeCustomer,
 } from '@payment/types';
@@ -77,7 +77,8 @@ export class Payment {
       });
       return createdStripeCustomer?.insert_stripeCustomer_one;
     } else {
-      if (!kyc) throw new Error(`Missing kyc for user: ${user.id}`);
+      if (!kyc || !kyc.applicantId)
+        throw new Error(`Missing kyc for user: ${user.id}`);
       const userPersonalData = await getSumSubApplicantPersonalData(
         kyc.applicantId,
       );
@@ -149,19 +150,19 @@ export class Payment {
     return res;
   }
 
-  // Delete corresponding eventPassPendingOrders and replace them by eventPassOrders with status CONFIRMED.
-  async moveEventPassPendingOrdersToConfirmed({
-    eventPassPendingOrders,
+  // Delete corresponding pendingOrders and replace them by orders with status CONFIRMED.
+  async movePendingOrdersToConfirmed({
+    pendingOrders,
     accountId,
     locale,
   }: {
-    eventPassPendingOrders: UserPassPendingOrder[];
+    pendingOrders: UserPassPendingOrder[];
     accountId: string;
     locale: Locale;
   }) {
-    const res = await adminSdk.MoveEventPassPendingOrdersToConfirmed({
-      eventPassPendingOrderIds: eventPassPendingOrders.map((order) => order.id),
-      objects: eventPassPendingOrders.map((order) => ({
+    const res = await adminSdk.MovePendingOrdersToConfirmed({
+      pendingOrderIds: pendingOrders.map((order) => order.id),
+      objects: pendingOrders.map((order) => ({
         eventPassId: order.eventPassId,
         status: OrderStatus_Enum.Confirmed,
         accountId,
@@ -170,16 +171,12 @@ export class Payment {
       locale,
       stage: env.HYGRAPH_STAGE as Stage,
     });
-    return res?.insert_eventPassOrder?.returning;
+    return res?.insert_order?.returning;
   }
 
-  async markEventPassOrderAsCancelled({
-    eventPassOrdersId,
-  }: {
-    eventPassOrdersId: string[];
-  }) {
-    return adminSdk.UpdateEventPassOrdersStatus({
-      updates: eventPassOrdersId.map((id) => ({
+  async markOrderAsCancelled({ ordersId }: { ordersId: string[] }) {
+    return adminSdk.UpdateOrdersStatus({
+      updates: ordersId.map((id) => ({
         _set: {
           status: OrderStatus_Enum.Cancelled,
         },
@@ -192,13 +189,9 @@ export class Payment {
     });
   }
 
-  async markEventPassOrderAsRefunded({
-    eventPassOrdersId,
-  }: {
-    eventPassOrdersId: string[];
-  }) {
-    return adminSdk.UpdateEventPassOrdersStatus({
-      updates: eventPassOrdersId.map((id) => ({
+  async markOrderAsRefunded({ ordersId }: { ordersId: string[] }) {
+    return adminSdk.UpdateOrdersStatus({
+      updates: ordersId.map((id) => ({
         _set: {
           status: OrderStatus_Enum.Refunded,
         },
@@ -216,18 +209,18 @@ export class Payment {
   //ref:https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method
 
   //ref: https://stripe.com/docs/api/checkout/sessions/create
-  // TODO, store the checkout session and link it with the eventPassOrder in a new model StripeCheckoutSession. Make it recoverable in case of expiration and redirect user in case it's pending on the cart page.
+  // TODO, store the checkout session and link it with the order in a new model StripeCheckoutSession. Make it recoverable in case of expiration and redirect user in case it's pending on the cart page.
   // set to expired in case it overlap the saleEnd of the eventPass and make sur it's not recovered in that case.
   async createStripeCheckoutSession({
     user,
     stripeCustomer,
-    eventPassPendingOrders,
+    pendingOrders,
     locale,
     currency,
   }: {
     user: AppUser;
     stripeCustomer: StripeCustomer;
-    eventPassPendingOrders: UserPassPendingOrder[];
+    pendingOrders: UserPassPendingOrder[];
     locale: Locale;
     currency: string;
   }) {
@@ -245,16 +238,16 @@ export class Payment {
       );
     const success_url = `${this.baseUrl}/cart/success?session_id={CHECKOUT_SESSION_ID}`;
     const cancel_url = `${this.baseUrl}/cart/canceled?session_id={CHECKOUT_SESSION_ID}`;
-    const orders = await this.moveEventPassPendingOrdersToConfirmed({
-      eventPassPendingOrders,
+    const orders = await this.movePendingOrdersToConfirmed({
+      pendingOrders,
       accountId: user.id,
       locale,
     });
     if (!orders || !orders.length)
       throw new Error(
-        `No eventPassOrders created for user: ${
+        `No orders created for user: ${
           user.id
-        } and eventPassPendingOrders: ${eventPassPendingOrders
+        } and pendingOrders: ${pendingOrders
           .map((order) => order.id)
           .join(',')}`,
       );
@@ -262,15 +255,12 @@ export class Payment {
     const rates = await currencyCache.getRates();
 
     const lineItemsPromises = orders.map(async (order) => {
-      if (
-        !order.eventPassPricing?.priceCurrency ||
-        !order.eventPassPricing?.priceAmount
-      ) {
+      if (!order.passPricing?.currency || !order.passPricing?.amount) {
         throw new Error(
           'Price currency or Price amount is undefined for order: ' + order.id,
         );
       }
-      if (order.eventPassPricing?.priceAmount < 0) {
+      if (order.passPricing?.amount < 0) {
         throw new Error('Price amount is negative for order: ' + order.id);
       }
 
@@ -281,15 +271,15 @@ export class Payment {
       let currencyStripe: string;
       let unitAmount: number;
 
-      if (currency === order.eventPassPricing.priceCurrency) {
+      if (currency === order.passPricing.currency) {
         currencyStripe = currency.toLowerCase();
-        unitAmount = order.eventPassPricing.priceAmount;
+        unitAmount = order.passPricing.amount;
       } else {
         currencyStripe = currency.toLowerCase();
         unitAmount = calculateUnitAmount(
           {
-            amount: order.eventPassPricing.priceAmount,
-            currency: order.eventPassPricing.priceCurrency,
+            amount: order.passPricing.amount,
+            currency: order.passPricing.currency,
           },
           rates,
         );
@@ -305,8 +295,9 @@ export class Payment {
             images: [order.eventPass?.nftImage?.url as string],
             metadata: {
               userId: user.id,
-              eventPassPendingOrderId: order.id,
-              eventPassId: order.eventPassId,
+              pendingOrderId: order.id,
+              eventPassId: order.eventPassId as string,
+              packId: order.packId as string,
               eventSlug: order.eventPass?.event?.slug as string,
               organizerSlug: order.eventPass?.event?.organizer?.slug as string,
               // could add more if needed
@@ -318,14 +309,21 @@ export class Payment {
 
     const metadata = {
       userId: user.id,
-      eventPassOrderIds: orders.map((order) => order.id).join(','),
+      orderIds: orders.map((order) => order.id).join(','),
       organizerSlugs: orders
         .map((order) => order.eventPass?.event?.organizer?.slug)
         .join(','),
       eventSlugs: orders.map((order) => order.eventPass?.event?.slug).join(','),
-      eventPassIds: orders.map((order) => order.eventPassId).join(','),
+      eventPassIds: orders
+        .filter(({ eventPassId }) => !!eventPassId)
+        .map((order) => order.eventPassId)
+        .join(','),
+      packIds: orders
+        .filter(({ packId }) => !!packId)
+        .map((order) => order.packId)
+        .join(','),
       // orders: JSON.stringify(orders),
-    } satisfies StripeCheckoutSessionMetadataEventPassOrder;
+    } satisfies StripeCheckoutSessionMetadataOrder;
 
     if (!stripeCustomer.email) {
       throw new Error(
@@ -355,7 +353,14 @@ export class Payment {
       //   setup_future_usage: 'on_session', // see alternative with 'off_session' here: https://stripe.com/docs/payments/save-during-payment
       // }
     });
-    await adminSdk.SetEventPassOrdersStripeCheckoutSessionId({
+    const res = await adminSdk.CreateStripeCheckoutSession({
+      stripeCheckoutSession: {
+        stripeSessionId: session.id,
+        stripeCustomerId: stripeCustomer.id,
+        type: StripeCheckoutSessionType_Enum.EventPassOrder,
+      },
+    });
+    await adminSdk.SetOrdersStripeCheckoutSessionId({
       updates: orders.map(({ id }) => ({
         _set: {
           stripeCheckoutSessionId: session.id,
@@ -367,13 +372,6 @@ export class Payment {
         },
       })),
     });
-    const res = await adminSdk.CreateStripeCheckoutSession({
-      stripeCheckoutSession: {
-        stripeSessionId: session.id,
-        stripeCustomerId: stripeCustomer.id,
-        type: StripeCheckoutSessionType_Enum.EventPassOrder,
-      },
-    });
     return res.insert_stripeCheckoutSession_one;
   }
 
@@ -384,26 +382,26 @@ export class Payment {
     stripeCheckoutSessionId: string;
   }) {
     await this.stripe.checkout.sessions.expire(stripeCheckoutSessionId);
-    const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
+    const orders = await this.getOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
-    await this.markEventPassOrderAsCancelled({
-      eventPassOrdersId: orders.map((order) => order.id),
+    await this.markOrderAsCancelled({
+      ordersId: orders.map((order) => order.id),
     });
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
     });
   }
 
-  async getEventPassOrdersFromStripeCheckoutSession({
+  async getOrdersFromStripeCheckoutSession({
     stripeCheckoutSessionId,
   }: {
     stripeCheckoutSessionId: string;
   }) {
-    const res = await adminSdk.GetEventPassOrdersFromStripeCheckoutSession({
+    const res = await adminSdk.GetOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
-    return res.eventPassOrder;
+    return res.order;
   }
 
   async getStripeActiveCheckoutSessionForUser({
@@ -450,11 +448,11 @@ export class Payment {
   }: {
     stripeCheckoutSessionId: string;
   }) {
-    const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
+    const orders = await this.getOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
-    await this.markEventPassOrderAsCancelled({
-      eventPassOrdersId: orders.map((order) => order.id),
+    await this.markOrderAsCancelled({
+      ordersId: orders.map((order) => order.id),
     });
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
@@ -466,7 +464,7 @@ export class Payment {
   }: {
     stripeCheckoutSessionId: string;
   }) {
-    const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
+    const orders = await this.getOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
 
@@ -530,11 +528,11 @@ export class Payment {
       );
     }
     if (['succeeded', 'pending'].includes(refund.status)) {
-      const orders = await this.getEventPassOrdersFromStripeCheckoutSession({
+      const orders = await this.getOrdersFromStripeCheckoutSession({
         stripeCheckoutSessionId: checkoutSessionId,
       });
-      await this.markEventPassOrderAsRefunded({
-        eventPassOrdersId: orders.map((order) => order.id),
+      await this.markOrderAsRefunded({
+        ordersId: orders.map((order) => order.id),
       });
       await adminSdk.DeleteStripeCheckoutSession({
         stripeSessionId: checkoutSessionId,

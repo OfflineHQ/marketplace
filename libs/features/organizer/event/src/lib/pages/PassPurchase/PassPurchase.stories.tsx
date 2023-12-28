@@ -22,16 +22,13 @@ const meta = {
     msw: {
       handlers: [
         ...passCardMeta.parameters.msw.handlers,
-        graphql.query(
-          'GetEventPassPendingOrderForEventPasses',
-          (req, res, ctx) => {
-            return res(
-              ctx.data({
-                eventPassPendingOrder: null,
-              }),
-            );
-          },
-        ),
+        graphql.query('GetPendingOrderForEventPasses', (req, res, ctx) => {
+          return res(
+            ctx.data({
+              pendingOrder: null,
+            }),
+          );
+        }),
       ],
     },
   },

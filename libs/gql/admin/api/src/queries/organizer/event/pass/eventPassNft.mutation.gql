@@ -69,7 +69,7 @@ mutation UpdateNftsWithPackId($updates: [eventPassNft_updates!]!) {
       id
       contractAddress
       tokenId
-      packNftContractId
+      packId
     }
   }
 }
