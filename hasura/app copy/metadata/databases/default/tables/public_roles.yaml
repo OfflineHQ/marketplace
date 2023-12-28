@@ -1,4 +1,0 @@
-table:
-  name: roles
-  schema: public
-is_enum: true
