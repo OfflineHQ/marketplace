@@ -1,5 +1,5 @@
 import { deleteAllEventPassesCart } from '@features/cart-actions';
-import { getEventPassPendingOrders } from '@features/cart-api';
+import { getPendingOrders } from '@features/cart-api';
 import {
   createStripeCheckoutSession,
   getStripeActiveCheckoutSession,
@@ -33,12 +33,12 @@ export default async function CartPurchase({
   let session = await getStripeActiveCheckoutSession();
   // if no session means the user has pending orders that need to be transfered to the checkout session as confirmed
   if (!session) {
-    const pendingOrders = await getEventPassPendingOrders();
+    const pendingOrders = await getPendingOrders();
     // if no pending orders means the user has no cart so redirect to the home page
     if (!pendingOrders?.length) return redirect('/');
     session = await createStripeCheckoutSession({
       locale,
-      eventPassPendingOrders: pendingOrders,
+      pendingOrders: pendingOrders,
     });
   }
   // if use have a session, make sur to clean all the pending orders and cache if user happen to have some

@@ -3,8 +3,8 @@ import { NotFound } from '@features/navigation';
 import { PassPurchaseCard } from '@features/organizer/event';
 import {
   getEvent,
-  getEventPassOrdersConfirmed,
   getEventPasses,
+  getOrdersConfirmed,
 } from '@features/organizer/event-api';
 import type { EventPass } from '@features/organizer/event-types';
 import { useTranslations } from 'next-intl';
@@ -22,7 +22,7 @@ export default async function PurchaseSection({
 }: PurchaseSectionProps) {
   const { eventSlug, organizerSlug, locale } = params;
   const passes = await getEventPasses({ eventSlug, locale });
-  const confirmedPasses = await getEventPassOrdersConfirmed();
+  const confirmedPasses = await getOrdersConfirmed();
   const event = await getEvent({ eventSlug, locale });
   // in case the event is not found or the organizer slug is not the same as the one in the url redirect to 404
   if (!event || event.organizer?.slug !== organizerSlug) {

@@ -159,14 +159,14 @@ generates:
             isReactHook: false
           errorType: Error
 
-    # ## hasura
-    # #  doesn't support yet separated fragments so it fail
-    # #  TODO: follow up on this issue https://github.com/dotansimha/graphql-code-generator/issues/7700
-    # #  ref: https://www.graphql-code-generator.com/plugins/other/hasura-allow-list
-    # hasura/app/metadata/query_collections.yaml:
-    #   documents: './libs/next/gql/*/src/queries/**/*.{graphql,gql}'
-    #   plugins:
-    #     - 'hasura-allow-list'
-    #   hooks:
-    #     afterOneFileWrite:
-    #       - make restart-hasura
+  # ## hasura
+  # #  doesn't support yet separated fragments so it fail
+  # #  TODO: follow up on this issue https://github.com/dotansimha/graphql-code-generator/issues/7700
+  # #  ref: https://www.graphql-code-generator.com/plugins/other/hasura-allow-list
+  # hasura/app/metadata/query_collections.yaml:
+  #   documents: './libs/next/gql/*/src/queries/**/*.{graphql,gql}'
+  #   plugins:
+  #     - 'hasura-allow-list'
+  #   hooks:
+  #     afterOneFileWrite:
+  #       - make restart-hasura

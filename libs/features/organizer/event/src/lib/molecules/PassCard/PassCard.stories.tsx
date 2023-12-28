@@ -27,22 +27,16 @@ const meta = {
             },
           });
         }),
-        graphql.query(
-          'GetEventPassPendingOrderForEventPass',
-          (req, res, ctx) => {
-            return ctx.data({
-              eventPassPendingOrder: null,
-            });
-          },
-        ),
-        graphql.query(
-          'GetEventPassOrderPurchasedForEventPassesId',
-          (req, res, ctx) => {
-            return ctx.data({
-              eventPassOrder: [],
-            });
-          },
-        ),
+        graphql.query('GetPendingOrderForEventPass', (req, res, ctx) => {
+          return ctx.data({
+            pendingOrder: null,
+          });
+        }),
+        graphql.query('GetOrderPurchasedForEventPassesId', (req, res, ctx) => {
+          return ctx.data({
+            order: [],
+          });
+        }),
       ],
     },
   },
@@ -63,22 +57,16 @@ export const Default: Story = {
             },
           });
         }),
-        graphql.query(
-          'GetEventPassPendingOrderForEventPass',
-          (req, res, ctx) => {
-            return ctx.data({
-              eventPassPendingOrder: null,
-            });
-          },
-        ),
-        graphql.query(
-          'GetEventPassOrderPurchasedForEventPassesId',
-          (req, res, ctx) => {
-            return ctx.data({
-              eventPassOrder: [],
-            });
-          },
-        ),
+        graphql.query('GetPendingOrderForEventPass', (req, res, ctx) => {
+          return ctx.data({
+            pendingOrder: null,
+          });
+        }),
+        graphql.query('GetOrderPurchasedForEventPassesId', (req, res, ctx) => {
+          return ctx.data({
+            order: [],
+          });
+        }),
       ],
     },
   },
@@ -90,14 +78,11 @@ export const BoundaryConditions: Story = {
     msw: {
       handlers: [
         ...Default.parameters.msw.handlers,
-        graphql.query(
-          'GetEventPassPendingOrderForEventPass',
-          (req, res, ctx) => {
-            return ctx.json({
-              eventPassPendingOrder: { quantity: 6 },
-            });
-          },
-        ),
+        graphql.query('GetPendingOrderForEventPass', (req, res, ctx) => {
+          return ctx.json({
+            pendingOrder: { quantity: 6 },
+          });
+        }),
       ],
     },
   },

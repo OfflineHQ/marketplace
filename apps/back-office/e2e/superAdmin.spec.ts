@@ -29,10 +29,11 @@ test.beforeEach(async () => {
   await applySeeds(client, [
     'account',
     'kyc',
-    'eventPassPricing',
+    'passAmount',
+    'passPricing',
     'eventPassNftContract',
     'eventParameters',
-    'roleAssignments',
+    'roleAssignment',
   ]);
 });
 

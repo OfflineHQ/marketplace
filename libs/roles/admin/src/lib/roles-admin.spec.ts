@@ -117,7 +117,7 @@ describe('RoleInvitationService', () => {
 
       // Mock the adminSdk.GetRoleMinimal method to return a mock role assignment
       adminSdk.GetRoleMinimal = jest.fn().mockResolvedValue({
-        roleAssignments: [
+        roleAssignment: [
           {
             id: 'roleAssignment123',
           },
@@ -156,7 +156,7 @@ describe('RoleInvitationService', () => {
 
       // Mock the adminSdk.GetRoleMinimal method to return an empty array
       adminSdk.GetRoleMinimal = jest.fn().mockResolvedValue({
-        roleAssignments: [],
+        roleAssignment: [],
       });
 
       // Act

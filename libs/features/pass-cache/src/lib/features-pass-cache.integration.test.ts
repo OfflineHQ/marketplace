@@ -22,7 +22,7 @@ describe('PassCache Integration Test', () => {
   beforeAll(async () => {
     client = await createDbClient();
     await resetCache();
-    await applySeeds(client, ['account', 'eventPassPricing']);
+    await applySeeds(client, ['account', 'passAmount', 'passPricing']);
   });
 
   beforeEach(() => {
@@ -30,7 +30,7 @@ describe('PassCache Integration Test', () => {
   });
 
   afterAll(async () => {
-    await deleteTables(client, ['account', 'eventPassPricing']);
+    await deleteTables(client, ['account', 'passAmount', 'passPricing']);
     await client.end();
   });
 
@@ -117,14 +117,12 @@ describe('PassCache Integration Test', () => {
     });
     expect(emptyPassesCart).toEqual(null);
 
-    const dataFromDb = await adminSdk.GetEventPassPendingOrders();
+    const dataFromDb = await adminSdk.GetPendingOrders();
 
     expect(transferred).toBeDefined();
     const isIdInDb =
       transferred &&
-      dataFromDb.eventPassPendingOrder.some(
-        (order) => order.id === transferred[0].id,
-      );
+      dataFromDb.pendingOrder.some((order) => order.id === transferred[0].id);
     expect(isIdInDb).toEqual(true);
   });
 });

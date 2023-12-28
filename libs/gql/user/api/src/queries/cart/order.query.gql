@@ -1,0 +1,52 @@
+query GetOrdersConfirmed {
+  order(where: { status: { _eq: CONFIRMED } }) {
+    eventPassId
+    quantity
+  }
+}
+
+query GetOrdersIsMinting {
+  order(where: { status: { _eq: IS_MINTING } }) {
+    eventPassId
+    quantity
+  }
+}
+
+query GetOrdersFromIds($orderIds: [uuid!]!, $stage: Stage!) {
+  order(where: { id: { _in: $orderIds } }) {
+    eventPassId
+    quantity
+    eventPass(locales: [en], stage: $stage) {
+      event {
+        slug
+        organizer {
+          slug
+        }
+      }
+    }
+  }
+}
+
+query GetOrderPurchasedForEventPassesId($eventPassId: String!) {
+  order(
+    where: {
+      status: { _in: [CONFIRMED, COMPLETED, IS_MINTING] }
+      eventPassId: { _eq: $eventPassId }
+    }
+  ) {
+    eventPassId
+    quantity
+  }
+}
+
+query GetOrderPurchasedForEventPassesIds($eventPassIds: [String!]!) {
+  order(
+    where: {
+      status: { _in: [CONFIRMED, COMPLETED, IS_MINTING] }
+      eventPassId: { _in: $eventPassIds }
+    }
+  ) {
+    eventPassId
+    quantity
+  }
+}

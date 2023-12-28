@@ -26,7 +26,7 @@ array_relationships:
       foreign_key_constraint_on:
         column: accountId
         table:
-          name: roleAssignments
+          name: roleAssignment
           schema: public
 select_permissions:
   - role: user
@@ -34,8 +34,9 @@ select_permissions:
       columns:
         - id
         - address
+        - scwAddress
         - email
-        - emailVerified
+        - phone
       filter:
         id:
           _eq: X-Hasura-User-Id

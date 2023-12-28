@@ -18,29 +18,29 @@
               relationship_type: object
               source: default
               table:
-                name: eventPassPricing
-                schema: public
-          name: eventPassPricing
-        - definition:
-            to_source:
-              field_mapping:
-                id: eventPassId
-              relationship_type: object
-              source: default
-              table:
-                name: eventPassOrderSums
-                schema: public
-          name: eventPassOrderSums
-        - definition:
-            to_source:
-              field_mapping:
-                id: eventPassId
-              relationship_type: object
-              source: default
-              table:
                 name: eventPassNftContract
                 schema: public
           name: eventPassNftContract
+        - definition:
+            to_source:
+              field_mapping:
+                id: eventPassId
+              relationship_type: object
+              source: default
+              table:
+                name: passAmount
+                schema: public
+          name: passAmount
+        - definition:
+            to_source:
+              field_mapping:
+                id: eventPassId
+              relationship_type: object
+              source: default
+              table:
+                name: passPricing
+                schema: public
+          name: passPricing
       type_name: EventPass
     - relationships:
         - definition:

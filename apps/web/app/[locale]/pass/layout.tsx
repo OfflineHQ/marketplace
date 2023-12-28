@@ -1,4 +1,4 @@
-import { getEventPassOrdersIsMinting } from '@features/cart-api';
+import { getOrdersIsMinting } from '@features/cart-api';
 import { NoUserPass, UserPass } from '@features/pass';
 import { getCurrentUser } from '@next/next-auth/user';
 import { useTranslations } from 'next-intl';
@@ -12,7 +12,7 @@ export default async function PassLayout(props: PassLayoutProps) {
 
   let numMintingOrders = 0;
   if (user) {
-    const userPassMintingOrders = await getEventPassOrdersIsMinting();
+    const userPassMintingOrders = await getOrdersIsMinting();
     if (userPassMintingOrders?.length) {
       numMintingOrders = userPassMintingOrders.reduce(
         (sum, order) => sum + order.quantity,

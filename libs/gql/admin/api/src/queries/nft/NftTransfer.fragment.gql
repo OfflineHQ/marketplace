@@ -9,6 +9,8 @@ fragment NftTransferFields on nftTransfer {
   eventId
   organizerId
   eventPassId
+  packId
+  packAmount
   tokenId
   created_at
 }

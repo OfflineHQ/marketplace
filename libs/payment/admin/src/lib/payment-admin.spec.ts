@@ -292,9 +292,9 @@ describe('Payment', () => {
       ).rejects.toThrow('Stripe error');
     });
   });
-  describe('moveEventPassPendingOrdersToConfirmed', () => {
-    it('should call adminSdk.MoveEventPassPendingOrdersToConfirmed with correct parameters', async () => {
-      const eventPassPendingOrders = [
+  describe('movePendingOrdersToConfirmed', () => {
+    it('should call adminSdk.MovePendingOrdersToConfirmed with correct parameters', async () => {
+      const pendingOrders = [
         {
           id: 'order1',
           eventPassId: 'eventPass1',
@@ -327,22 +327,18 @@ describe('Payment', () => {
       const accountId = 'accountId';
       const locale = Locale.En;
       const returning = [{ id: 'order1' }, { id: 'order2' }];
-      adminSdk.MoveEventPassPendingOrdersToConfirmed = jest
-        .fn()
-        .mockResolvedValue({
-          insert_eventPassOrder: { returning },
-        });
+      adminSdk.MovePendingOrdersToConfirmed = jest.fn().mockResolvedValue({
+        insert_order: { returning },
+      });
 
-      const result = await payment.moveEventPassPendingOrdersToConfirmed({
-        eventPassPendingOrders,
+      const result = await payment.movePendingOrdersToConfirmed({
+        pendingOrders,
         accountId,
         locale,
       });
 
-      expect(
-        adminSdk.MoveEventPassPendingOrdersToConfirmed,
-      ).toHaveBeenCalledWith({
-        eventPassPendingOrderIds: ['order1', 'order2'],
+      expect(adminSdk.MovePendingOrdersToConfirmed).toHaveBeenCalledWith({
+        pendingOrderIds: ['order1', 'order2'],
         objects: [
           {
             eventPassId: 'eventPass1',
@@ -363,29 +359,29 @@ describe('Payment', () => {
       expect(result).toEqual(returning);
     });
 
-    it('should throw error when adminSdk.MoveEventPassPendingOrdersToConfirmed fails', async () => {
+    it('should throw error when adminSdk.MovePendingOrdersToConfirmed fails', async () => {
       const accountId = 'accountId';
       const locale = Locale.En;
-      adminSdk.MoveEventPassPendingOrdersToConfirmed = jest
+      adminSdk.MovePendingOrdersToConfirmed = jest
         .fn()
         .mockRejectedValue(new Error('SDK error'));
 
       await expect(
-        payment.moveEventPassPendingOrdersToConfirmed({
-          eventPassPendingOrders: [],
+        payment.movePendingOrdersToConfirmed({
+          pendingOrders: [],
           accountId,
           locale,
         }),
       ).rejects.toThrow('SDK error');
     });
   });
-  describe('markEventPassOrderAsCancelled', () => {
-    it('should call adminSdk.UpdateEventPassOrdersStatus with correct parameters', async () => {
-      const eventPassOrdersId = ['order1', 'order2'];
-      adminSdk.UpdateEventPassOrdersStatus = jest.fn().mockReturnValue({});
-      await payment.markEventPassOrderAsCancelled({ eventPassOrdersId });
-      expect(adminSdk.UpdateEventPassOrdersStatus).toHaveBeenCalledWith({
-        updates: eventPassOrdersId.map((id) => ({
+  describe('markOrderAsCancelled', () => {
+    it('should call adminSdk.UpdateOrdersStatus with correct parameters', async () => {
+      const ordersId = ['order1', 'order2'];
+      adminSdk.UpdateOrdersStatus = jest.fn().mockReturnValue({});
+      await payment.markOrderAsCancelled({ ordersId });
+      expect(adminSdk.UpdateOrdersStatus).toHaveBeenCalledWith({
+        updates: ordersId.map((id) => ({
           _set: {
             status: OrderStatus_Enum.Cancelled,
           },
@@ -399,13 +395,13 @@ describe('Payment', () => {
     });
   });
 
-  describe('markEventPassOrderAsRefunded', () => {
-    it('should call adminSdk.UpdateEventPassOrdersStatus with correct parameters', async () => {
-      const eventPassOrdersId = ['order1', 'order2'];
-      adminSdk.UpdateEventPassOrdersStatus = jest.fn().mockReturnValue({});
-      await payment.markEventPassOrderAsRefunded({ eventPassOrdersId });
-      expect(adminSdk.UpdateEventPassOrdersStatus).toHaveBeenCalledWith({
-        updates: eventPassOrdersId.map((id) => ({
+  describe('markOrderAsRefunded', () => {
+    it('should call adminSdk.UpdateOrdersStatus with correct parameters', async () => {
+      const ordersId = ['order1', 'order2'];
+      adminSdk.UpdateOrdersStatus = jest.fn().mockReturnValue({});
+      await payment.markOrderAsRefunded({ ordersId });
+      expect(adminSdk.UpdateOrdersStatus).toHaveBeenCalledWith({
+        updates: ordersId.map((id) => ({
           _set: {
             status: OrderStatus_Enum.Refunded,
           },
@@ -419,24 +415,24 @@ describe('Payment', () => {
     });
   });
   describe('createStripeCheckoutSession', () => {
-    const eventPassOrders = [
+    const orders = [
       {
         id: 'order1',
-        eventPassPricing: {
-          priceCurrency: 'usd',
-          priceAmount: 100,
+        passPricing: {
+          currency: Currency_Enum.Usd,
+          amount: 100,
         },
       },
     ];
     beforeEach(() => {
-      adminSdk.SetEventPassOrdersStripeCheckoutSessionId = jest
+      adminSdk.SetOrdersStripeCheckoutSessionId = jest
         .fn()
         .mockResolvedValue({});
       adminSdk.CreateStripeCheckoutSession = jest.fn().mockResolvedValue({});
     });
     it('should throw error if user already has an active checkout session', async () => {
       const stripeCustomer = { id: 'stripeCustomerId', email: 'email' };
-      const eventPassPendingOrders = [];
+      const pendingOrders = [];
       const locale = Locale.En;
       const currency = 'usd';
       adminSdk.GetStripeCheckoutSessionForUser = jest.fn().mockResolvedValue({
@@ -447,7 +443,7 @@ describe('Payment', () => {
         payment.createStripeCheckoutSession({
           user: accounts.alpha_user,
           stripeCustomer: stripeCustomer as StripeCustomer,
-          eventPassPendingOrders,
+          pendingOrders,
           locale,
           currency,
         }),
@@ -456,29 +452,27 @@ describe('Payment', () => {
       );
     });
 
-    it('should call moveEventPassPendingOrdersToConfirmed with correct parameters', async () => {
+    it('should call movePendingOrdersToConfirmed with correct parameters', async () => {
       const stripeCustomer = { id: 'stripeCustomerId', email: 'email' };
-      const eventPassPendingOrders = [];
+      const pendingOrders = [];
       const locale = Locale.En;
       const currency = 'usd';
       adminSdk.GetStripeCheckoutSessionForUser = jest.fn().mockResolvedValue({
         stripeCheckoutSession: [],
       });
-      payment.moveEventPassPendingOrdersToConfirmed = jest
+      payment.movePendingOrdersToConfirmed = jest
         .fn()
-        .mockResolvedValue(eventPassOrders);
+        .mockResolvedValue(orders);
       await payment.createStripeCheckoutSession({
         user: accounts.alpha_user,
         stripeCustomer: stripeCustomer as StripeCustomer,
-        eventPassPendingOrders,
+        pendingOrders,
         locale,
         currency,
       });
 
-      expect(
-        payment.moveEventPassPendingOrdersToConfirmed,
-      ).toHaveBeenCalledWith({
-        eventPassPendingOrders,
+      expect(payment.movePendingOrdersToConfirmed).toHaveBeenCalledWith({
+        pendingOrders,
         accountId: accounts.alpha_user.id,
         locale,
       });
@@ -489,16 +483,16 @@ describe('Payment', () => {
         id: 'stripeCustomerId',
         email: 'stripeCustomerEmail',
       };
-      const eventPassPendingOrders = [];
+      const pendingOrders = [];
 
       const locale = Locale.En;
       const currency = 'usd';
       adminSdk.GetStripeCheckoutSessionForUser = jest.fn().mockResolvedValue({
         stripeCheckoutSession: [],
       });
-      payment.moveEventPassPendingOrdersToConfirmed = jest
+      payment.movePendingOrdersToConfirmed = jest
         .fn()
-        .mockResolvedValue(eventPassOrders);
+        .mockResolvedValue(orders);
       payment.stripe.checkout.sessions.create = jest
         .fn()
         .mockResolvedValue({ id: 'sessionId' });
@@ -506,7 +500,7 @@ describe('Payment', () => {
       await payment.createStripeCheckoutSession({
         user: accounts.alpha_user,
         stripeCustomer: stripeCustomer as StripeCustomer,
-        eventPassPendingOrders,
+        pendingOrders,
         locale,
         currency,
       });
@@ -522,25 +516,25 @@ describe('Payment', () => {
       );
     });
 
-    it('should call adminSdk.SetEventPassOrdersStripeCheckoutSessionId and adminSdk.CreateStripeCheckoutSession with correct parameters', async () => {
+    it('should call adminSdk.SetOrdersStripeCheckoutSessionId and adminSdk.CreateStripeCheckoutSession with correct parameters', async () => {
       const stripeCustomer = {
         id: 'stripeCustomerId',
         email: 'stripeCustomerEmail',
       };
-      const eventPassPendingOrders = [];
+      const pendingOrders = [];
       const locale = Locale.En;
       const currency = 'usd';
       const sessionId = 'sessionId';
       adminSdk.GetStripeCheckoutSessionForUser = jest.fn().mockResolvedValue({
         stripeCheckoutSession: [],
       });
-      payment.moveEventPassPendingOrdersToConfirmed = jest
+      payment.movePendingOrdersToConfirmed = jest
         .fn()
-        .mockResolvedValue(eventPassOrders);
+        .mockResolvedValue(orders);
       payment.stripe.checkout.sessions.create = jest
         .fn()
         .mockResolvedValue({ id: sessionId });
-      adminSdk.SetEventPassOrdersStripeCheckoutSessionId = jest
+      adminSdk.SetOrdersStripeCheckoutSessionId = jest
         .fn()
         .mockResolvedValue({});
       adminSdk.CreateStripeCheckoutSession = jest.fn().mockResolvedValue({});
@@ -548,15 +542,13 @@ describe('Payment', () => {
       await payment.createStripeCheckoutSession({
         user: accounts.alpha_user,
         stripeCustomer: stripeCustomer as StripeCustomer,
-        eventPassPendingOrders,
+        pendingOrders,
         locale,
         currency,
       });
 
-      expect(
-        adminSdk.SetEventPassOrdersStripeCheckoutSessionId,
-      ).toHaveBeenCalledWith({
-        updates: eventPassOrders.map(({ id }) => ({
+      expect(adminSdk.SetOrdersStripeCheckoutSessionId).toHaveBeenCalledWith({
+        updates: orders.map(({ id }) => ({
           _set: {
             stripeCheckoutSessionId: sessionId,
           },
@@ -577,14 +569,29 @@ describe('Payment', () => {
     });
   });
   describe('expireStripeCheckoutSession', () => {
-    it('should call stripe.checkout.sessions.expire, getEventPassOrdersFromStripeCheckoutSession, markEventPassOrderAsCancelled, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
+    it('should call stripe.checkout.sessions.expire, getOrdersFromStripeCheckoutSession, markOrderAsCancelled, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
       const stripeCheckoutSessionId = 'sessionId';
-      const orders = [{ id: 'order1' }, { id: 'order2' }];
+      const orders = [
+        {
+          id: 'order1',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 100,
+          },
+        },
+        {
+          id: 'order2',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 200,
+          },
+        },
+      ];
       payment.stripe.checkout.sessions.expire = jest.fn().mockResolvedValue({});
-      payment.getEventPassOrdersFromStripeCheckoutSession = jest
+      payment.getOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue(orders);
-      payment.markEventPassOrderAsCancelled = jest.fn().mockResolvedValue({});
+      payment.markOrderAsCancelled = jest.fn().mockResolvedValue({});
       adminSdk.DeleteStripeCheckoutSession = jest.fn().mockResolvedValue({});
 
       await payment.expireStripeCheckoutSession({ stripeCheckoutSessionId });
@@ -592,33 +599,33 @@ describe('Payment', () => {
       expect(payment.stripe.checkout.sessions.expire).toHaveBeenCalledWith(
         stripeCheckoutSessionId,
       );
-      expect(
-        payment.getEventPassOrdersFromStripeCheckoutSession,
-      ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
-      expect(payment.markEventPassOrderAsCancelled).toHaveBeenCalledWith({
-        eventPassOrdersId: orders.map((order) => order.id),
+      expect(payment.getOrdersFromStripeCheckoutSession).toHaveBeenCalledWith({
+        stripeCheckoutSessionId,
+      });
+      expect(payment.markOrderAsCancelled).toHaveBeenCalledWith({
+        ordersId: orders.map((order) => order.id),
       });
       expect(adminSdk.DeleteStripeCheckoutSession).toHaveBeenCalledWith({
         stripeSessionId: stripeCheckoutSessionId,
       });
     });
   });
-  describe('getEventPassOrdersFromStripeCheckoutSession', () => {
-    it('should call adminSdk.GetEventPassOrdersFromStripeCheckoutSession with correct parameters and return the result', async () => {
+  describe('getOrdersFromStripeCheckoutSession', () => {
+    it('should call adminSdk.GetOrdersFromStripeCheckoutSession with correct parameters and return the result', async () => {
       const stripeCheckoutSessionId = 'sessionId';
-      const eventPassOrder = [{ id: 'order1' }, { id: 'order2' }];
-      adminSdk.GetEventPassOrdersFromStripeCheckoutSession = jest
+      const order = [{ id: 'order1' }, { id: 'order2' }];
+      adminSdk.GetOrdersFromStripeCheckoutSession = jest
         .fn()
-        .mockResolvedValue({ eventPassOrder });
+        .mockResolvedValue({ order });
 
-      const result = await payment.getEventPassOrdersFromStripeCheckoutSession({
+      const result = await payment.getOrdersFromStripeCheckoutSession({
         stripeCheckoutSessionId,
       });
 
-      expect(
-        adminSdk.GetEventPassOrdersFromStripeCheckoutSession,
-      ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
-      expect(result).toEqual(eventPassOrder);
+      expect(adminSdk.GetOrdersFromStripeCheckoutSession).toHaveBeenCalledWith({
+        stripeCheckoutSessionId,
+      });
+      expect(result).toEqual(order);
     });
   });
   describe('getStripeActiveCheckoutSessionForUser', () => {
@@ -659,22 +666,37 @@ describe('Payment', () => {
     });
   });
   describe('canceledStripeCheckoutSession', () => {
-    it('should call getEventPassOrdersFromStripeCheckoutSession, markEventPassOrderAsCancelled, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
+    it('should call getOrdersFromStripeCheckoutSession, markOrderAsCancelled, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
       const stripeCheckoutSessionId = 'sessionId';
-      const orders = [{ id: 'order1' }, { id: 'order2' }];
-      payment.getEventPassOrdersFromStripeCheckoutSession = jest
+      const orders = [
+        {
+          id: 'order1',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 100,
+          },
+        },
+        {
+          id: 'order2',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 200,
+          },
+        },
+      ];
+      payment.getOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue(orders);
-      payment.markEventPassOrderAsCancelled = jest.fn().mockResolvedValue({});
+      payment.markOrderAsCancelled = jest.fn().mockResolvedValue({});
       adminSdk.DeleteStripeCheckoutSession = jest.fn().mockResolvedValue({});
 
       await payment.canceledStripeCheckoutSession({ stripeCheckoutSessionId });
 
-      expect(
-        payment.getEventPassOrdersFromStripeCheckoutSession,
-      ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
-      expect(payment.markEventPassOrderAsCancelled).toHaveBeenCalledWith({
-        eventPassOrdersId: orders.map((order) => order.id),
+      expect(payment.getOrdersFromStripeCheckoutSession).toHaveBeenCalledWith({
+        stripeCheckoutSessionId,
+      });
+      expect(payment.markOrderAsCancelled).toHaveBeenCalledWith({
+        ordersId: orders.map((order) => order.id),
       });
       expect(adminSdk.DeleteStripeCheckoutSession).toHaveBeenCalledWith({
         stripeSessionId: stripeCheckoutSessionId,
@@ -682,10 +704,25 @@ describe('Payment', () => {
     });
   });
   describe('confirmedStripeCheckoutSession', () => {
-    it('should call getEventPassOrdersFromStripeCheckoutSession, nftClaimable.checkOrder, markEventPassOrderAsCompleted, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
+    it('should call getOrdersFromStripeCheckoutSession, nftClaimable.checkOrder, markOrderAsCompleted, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
       const stripeCheckoutSessionId = 'sessionId';
-      const orders = [{ id: 'order1' }, { id: 'order2' }];
-      payment.getEventPassOrdersFromStripeCheckoutSession = jest
+      const orders = [
+        {
+          id: 'order1',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 100,
+          },
+        },
+        {
+          id: 'order2',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 200,
+          },
+        },
+      ];
+      payment.getOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue(orders);
       payment.nftClaimable.checkOrder = jest.fn().mockResolvedValue({});
@@ -693,9 +730,9 @@ describe('Payment', () => {
 
       await payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId });
 
-      expect(
-        payment.getEventPassOrdersFromStripeCheckoutSession,
-      ).toHaveBeenCalledWith({ stripeCheckoutSessionId });
+      expect(payment.getOrdersFromStripeCheckoutSession).toHaveBeenCalledWith({
+        stripeCheckoutSessionId,
+      });
       expect(payment.nftClaimable.checkOrder).toHaveBeenCalledTimes(
         orders.length,
       );
@@ -709,8 +746,8 @@ describe('Payment', () => {
         stripeSessionId: stripeCheckoutSessionId,
       });
     });
-    it('should throw an error when getEventPassOrdersFromStripeCheckoutSession fails', async () => {
-      payment.getEventPassOrdersFromStripeCheckoutSession = jest
+    it('should throw an error when getOrdersFromStripeCheckoutSession fails', async () => {
+      payment.getOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockRejectedValue(new Error('Failed to get orders'));
       adminSdk.DeleteStripeCheckoutSession = jest.fn();
@@ -726,7 +763,7 @@ describe('Payment', () => {
       payment.nftClaimable.checkOrder = jest
         .fn()
         .mockRejectedValue(new Error('Failed to claim NFTs'));
-      payment.getEventPassOrdersFromStripeCheckoutSession = jest
+      payment.getOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue([{ id: 'order1' }, { id: 'order2' }]);
       adminSdk.DeleteStripeCheckoutSession = jest.fn();
@@ -740,16 +777,31 @@ describe('Payment', () => {
     });
   });
   describe('refundPayment', () => {
-    it('should call stripe.refunds.create, getEventPassOrdersFromStripeCheckoutSession, markEventPassOrderAsRefunded, and adminSdk.DeleteStripeCheckoutSession with correct parameters and return the refund', async () => {
+    it('should call stripe.refunds.create, getOrdersFromStripeCheckoutSession, markOrderAsRefunded, and adminSdk.DeleteStripeCheckoutSession with correct parameters and return the refund', async () => {
       const paymentIntentId = 'paymentIntentId';
       const checkoutSessionId = 'checkoutSessionId';
       const refund = { status: 'succeeded' };
-      const orders = [{ id: 'order1' }, { id: 'order2' }];
+      const orders = [
+        {
+          id: 'order1',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 100,
+          },
+        },
+        {
+          id: 'order2',
+          passPricing: {
+            currency: Currency_Enum.Usd,
+            amount: 200,
+          },
+        },
+      ];
       payment.stripe.refunds.create = jest.fn().mockResolvedValue(refund);
-      payment.getEventPassOrdersFromStripeCheckoutSession = jest
+      payment.getOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue(orders);
-      payment.markEventPassOrderAsRefunded = jest.fn().mockResolvedValue({});
+      payment.markOrderAsRefunded = jest.fn().mockResolvedValue({});
       adminSdk.DeleteStripeCheckoutSession = jest.fn().mockResolvedValue({});
 
       const result = await payment.refundPayment({
@@ -760,11 +812,11 @@ describe('Payment', () => {
       expect(payment.stripe.refunds.create).toHaveBeenCalledWith({
         payment_intent: paymentIntentId,
       });
-      expect(
-        payment.getEventPassOrdersFromStripeCheckoutSession,
-      ).toHaveBeenCalledWith({ stripeCheckoutSessionId: checkoutSessionId });
-      expect(payment.markEventPassOrderAsRefunded).toHaveBeenCalledWith({
-        eventPassOrdersId: orders.map((order) => order.id),
+      expect(payment.getOrdersFromStripeCheckoutSession).toHaveBeenCalledWith({
+        stripeCheckoutSessionId: checkoutSessionId,
+      });
+      expect(payment.markOrderAsRefunded).toHaveBeenCalledWith({
+        ordersId: orders.map((order) => order.id),
       });
       expect(adminSdk.DeleteStripeCheckoutSession).toHaveBeenCalledWith({
         stripeSessionId: checkoutSessionId,
@@ -789,7 +841,7 @@ describe('Payment', () => {
   describe('calculateUnitAmount', () => {
     it('should return calculated amount if currency is not the same as priceCurrency and currency has a lower rate', () => {
       const order = {
-        eventPassPricing: {
+        passPricing: {
           amount: 100,
           currency: Currency_Enum.Usd,
         },
@@ -805,7 +857,7 @@ describe('Payment', () => {
         },
       } as CurrencyRates;
 
-      const result = calculateUnitAmount(order.eventPassPricing, rates);
+      const result = calculateUnitAmount(order.passPricing, rates);
 
       expect(result).toEqual(85);
     });
@@ -813,7 +865,7 @@ describe('Payment', () => {
 
   it('should return calculated amount if currency is not the same as priceCurrency and currency has a higher rate', () => {
     const order = {
-      eventPassPricing: {
+      passPricing: {
         amount: 100,
         currency: Currency_Enum.Usd,
       },
@@ -829,14 +881,14 @@ describe('Payment', () => {
       },
     } as CurrencyRates;
 
-    const result = calculateUnitAmount(order.eventPassPricing, rates);
+    const result = calculateUnitAmount(order.passPricing, rates);
 
     expect(result).toEqual(115);
   });
 
   it('should return calculated amount if currency is not the same complex amount', () => {
     const order = {
-      eventPassPricing: {
+      passPricing: {
         amount: 123456,
         currency: Currency_Enum.Usd,
       },
@@ -852,14 +904,14 @@ describe('Payment', () => {
       },
     } as CurrencyRates;
 
-    const result = calculateUnitAmount(order.eventPassPricing, rates);
+    const result = calculateUnitAmount(order.passPricing, rates);
 
     expect(result).toEqual(104938);
   });
 
   it('should return calculated amount if currency is not the same complex amount complex rate', () => {
     const order = {
-      eventPassPricing: {
+      passPricing: {
         amount: 123456789,
         currency: Currency_Enum.Usd,
       },
@@ -875,14 +927,14 @@ describe('Payment', () => {
       },
     } as CurrencyRates;
 
-    const result = calculateUnitAmount(order.eventPassPricing, rates);
+    const result = calculateUnitAmount(order.passPricing, rates);
 
     expect(result).toEqual(98518518);
   });
 
-  it('should handle large priceAmount without overflow', () => {
+  it('should handle large amount without overflow', () => {
     const order = {
-      eventPassPricing: {
+      passPricing: {
         amount: Number.MAX_SAFE_INTEGER,
         currency: Currency_Enum.Usd,
       },
@@ -898,7 +950,7 @@ describe('Payment', () => {
       },
     } as CurrencyRates;
 
-    const result = calculateUnitAmount(order.eventPassPricing, rates);
+    const result = calculateUnitAmount(order.passPricing, rates);
 
     expect(result).toBeCloseTo(Number.MAX_SAFE_INTEGER * 0.85);
   });

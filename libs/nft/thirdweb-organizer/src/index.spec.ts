@@ -66,7 +66,7 @@ describe('NftCollection', () => {
           nftImage: 'Test NftImage',
           nftDescription: 'Test NftDescription',
           nftName: 'Test NftName',
-          eventPassPricing: {
+          passAmount: {
             maxAmount: 10,
           },
         };
@@ -260,7 +260,7 @@ describe('NftCollection', () => {
         nftImage: { url: 'Test NftImage' },
         nftDescription: 'Test NftDescription',
         nftName: 'Test NftName',
-        eventPassPricing: {
+        passAmount: {
           maxAmount: 10,
         },
       };
@@ -272,9 +272,7 @@ describe('NftCollection', () => {
 
       expect(result).toHaveProperty('contract');
       expect(result).toHaveProperty('metadatas');
-      expect(result.metadatas.length).toBe(
-        mockProps.eventPassPricing.maxAmount,
-      );
+      expect(result.metadatas.length).toBe(mockProps.passAmount.maxAmount);
       expect(result.contract.getAddress()).toBe('mocked_contract_address');
     });
 

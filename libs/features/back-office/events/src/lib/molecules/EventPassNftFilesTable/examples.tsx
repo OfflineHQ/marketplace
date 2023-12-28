@@ -67,11 +67,13 @@ export const eventPassNftVIPWithContract: EventPassNftFilesTableProps['eventPass
       url: 'https://picsum.photos/id/620/350/350',
     },
     passOptions: [],
-    eventPassPricing: {
+    passAmount: {
       maxAmount: 100,
-      priceAmount: 42500,
-      priceCurrency: Currency_Enum.Eur,
       timeBeforeDelete: 3600,
+    },
+    passPricing: {
+      amount: 42500,
+      currency: Currency_Enum.Eur,
     },
     eventPassNftContract: {
       contractAddress: '0x123456789abcdef',
@@ -92,11 +94,13 @@ export const eventPassNftVipNoContractDelayedReveal: EventPassNftFilesTableProps
       url: 'https://picsum.photos/id/623/350/350',
     },
     passOptions: [],
-    eventPassPricing: {
+    passAmount: {
       maxAmount: 100,
-      priceAmount: 28000,
-      priceCurrency: Currency_Enum.Eur,
       timeBeforeDelete: 3600,
+    },
+    passPricing: {
+      amount: 28000,
+      currency: Currency_Enum.Eur,
     },
     eventPassNftContract: null,
     eventPassDelayedRevealed: {

@@ -1,0 +1,27 @@
+query GetMyRoles {
+  roleAssignment {
+    ...RoleAssignmentFields
+  }
+}
+
+query GetMyRolesWithOrganizerInfos($stage: Stage!) {
+  roleAssignment {
+    ...RoleAssignmentFields
+    organizer(where: {}, locales: [en], stage: $stage) {
+      ...OrganizerFields
+    }
+  }
+}
+
+query GetMyRolesWithOrganizerAndInviterInfos($stage: Stage!) {
+  roleAssignment {
+    ...RoleAssignmentFields
+    organizer(where: {}, locales: [en], stage: $stage) {
+      ...OrganizerFields
+    }
+    inviter {
+      address
+      email
+    }
+  }
+}

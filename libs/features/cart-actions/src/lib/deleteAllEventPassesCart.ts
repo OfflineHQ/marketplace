@@ -10,6 +10,6 @@ export async function deleteAllEventPassesCart() {
   await passCache.deleteAllPassesCart();
   const user = await getCurrentUser();
   if (user) {
-    await userSdk.DeleteAllEventPassPendingOrders();
+    await userSdk.DeleteAllPendingOrders();
   }
 }

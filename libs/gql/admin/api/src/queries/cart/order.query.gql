@@ -1,0 +1,61 @@
+query GetAccountOrderForEventPasses(
+  $accountId: uuid!
+  $eventPassIds: [String!]
+) {
+  order(
+    where: {
+      accountId: { _eq: $accountId }
+      eventPassId: { _in: $eventPassIds }
+    }
+  ) {
+    eventPassId
+    packId
+    quantity
+    status
+    created_at
+  }
+}
+
+query GetOrderFromId($id: uuid!) {
+  order_by_pk(id: $id) {
+    id
+    eventPassId
+    packId
+    quantity
+    status
+    eventPassNftContract {
+      contractAddress
+    }
+    packNftContract {
+      contractAddress
+    }
+    account {
+      address
+    }
+    passPricing {
+      amount
+    }
+  }
+}
+
+query GetOrdersFromStripeCheckoutSession($stripeCheckoutSessionId: String!) {
+  order(where: { stripeCheckoutSessionId: { _eq: $stripeCheckoutSessionId } }) {
+    id
+    eventPassId
+    packId
+    quantity
+    status
+    eventPassNftContract {
+      contractAddress
+    }
+    packNftContract {
+      contractAddress
+    }
+    account {
+      address
+    }
+    passPricing {
+      amount
+    }
+  }
+}

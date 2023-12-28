@@ -11,14 +11,23 @@ object_relationships:
         remote_table:
           name: eventPassOrderSums
           schema: public
-  - name: eventPassPricing
+  - name: passAmount
     using:
       manual_configuration:
         column_mapping:
           eventPassId: eventPassId
         insertion_order: null
         remote_table:
-          name: eventPassPricing
+          name: passAmount
+          schema: public
+  - name: passPricing
+    using:
+      manual_configuration:
+        column_mapping:
+          eventPassId: eventPassId
+        insertion_order: null
+        remote_table:
+          name: passPricing
           schema: public
 array_relationships:
   - name: eventPassNfts
@@ -33,14 +42,14 @@ array_relationships:
         remote_table:
           name: eventPassNft
           schema: public
-  - name: eventPassOrders
+  - name: orders
     using:
       manual_configuration:
         column_mapping:
           eventPassId: eventPassId
         insertion_order: null
         remote_table:
-          name: eventPassOrder
+          name: order
           schema: public
 remote_relationships:
   - definition:

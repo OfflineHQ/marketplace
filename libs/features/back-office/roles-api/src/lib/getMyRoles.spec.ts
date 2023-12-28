@@ -12,7 +12,7 @@ jest.mock('@next/next-auth/user', () => {
 
 describe('GetMyRoles', () => {
   const userSdkMock = jest.spyOn(userSdk, 'GetMyRoles').mockResolvedValue({
-    roleAssignments: [backOfficeAccounts.alpha_organizer_super_admin_user.role],
+    roleAssignment: [backOfficeAccounts.alpha_organizer_super_admin_user.role],
   });
 
   beforeEach(() => {

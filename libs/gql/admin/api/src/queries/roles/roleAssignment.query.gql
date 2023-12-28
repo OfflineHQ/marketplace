@@ -1,0 +1,17 @@
+query GetRoleMinimal(
+  $accountId: uuid!
+  $role: roles_enum!
+  $organizerId: String!
+  $eventId: String
+) {
+  roleAssignment(
+    where: {
+      accountId: { _eq: $accountId }
+      role: { _eq: $role }
+      organizerId: { _eq: $organizerId }
+      eventId: { _eq: $eventId }
+    }
+  ) {
+    id
+  }
+}

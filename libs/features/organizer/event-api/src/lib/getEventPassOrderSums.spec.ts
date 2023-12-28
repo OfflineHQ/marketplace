@@ -22,7 +22,7 @@ describe('getEventPassOrderSums', () => {
       { eventPassId: mockEventPassId },
       {
         next: {
-          tags: [`getEventPassOrderSum-${mockEventPassId}`],
+          tags: [`getOrderSum-${mockEventPassId}`],
         },
       },
     );

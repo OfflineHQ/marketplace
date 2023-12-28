@@ -5,7 +5,6 @@ import {
   EventPass,
   EventPassDelayedRevealed,
 } from '@features/back-office/events-types';
-import { GetEventPassNftContractNftsQuery } from '@gql/admin/types';
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import {
   ContractType,
@@ -243,7 +242,7 @@ class NftCollection {
       'nftImage',
       'nftDescription',
       'nftName',
-      'eventPassPricing',
+      'passAmount',
     ];
 
     for (const field of requiredFields) {
@@ -252,8 +251,8 @@ class NftCollection {
       }
     }
 
-    if (!props.eventPassPricing?.maxAmount) {
-      throw new Error('Missing required field: eventPassPricing.maxAmount');
+    if (!props.passAmount?.maxAmount) {
+      throw new Error('Missing required field: passAmount.maxAmount');
     }
   }
 
@@ -267,7 +266,7 @@ class NftCollection {
       nftImage,
       nftDescription,
       nftName,
-      eventPassPricing,
+      passAmount,
     } = props;
 
     const metadata: NftsMetadata = {
@@ -276,10 +275,10 @@ class NftCollection {
       image: nftImage.url,
     };
 
-    if (!eventPassPricing?.maxAmount) {
+    if (!passAmount?.maxAmount) {
       throw new Error('Missing amount for eventPass');
     }
-    const { maxAmount } = eventPassPricing;
+    const { maxAmount } = passAmount;
 
     try {
       const txResult = await this.sdk.deployer.deployBuiltInContract(
@@ -453,7 +452,6 @@ class NftCollection {
 
   async savePackContractIntoDb(props: SavePackContractIntoDbProps) {
     const { chainIdNumber, eventData, pack, txResult, selectedNfts } = props;
-
     const packNftContract = await createPackNftContract({
       chainId: chainIdNumber.toString(),
       eventId: eventData.eventId,
@@ -469,7 +467,7 @@ class NftCollection {
 
     const updates = selectedNfts.map((nft) => {
       return {
-        _set: { packNftContractId: packNftContract.id },
+        _set: { packId: packNftContract.packId },
         where: {
           contractAddress: { _eq: nft.contractAddress },
           tokenId: { _eq: nft.tokenId },
@@ -534,15 +532,21 @@ class NftCollection {
   }
 
   async getSelectedNftsFromPack(pack: Pack) {
-    const eventPassNftContracts: GetEventPassNftContractNftsQuery['eventPassNftContract'][0][] =
-      await Promise.all(
-        pack.eventPassIds.map((eventPass) =>
-          getEventPassNftContractNfts({ eventPassId: eventPass.id }),
-        ),
-      );
+    const eventPassNftContracts = await Promise.all(
+      pack.eventPassIds.map((eventPass) =>
+        getEventPassNftContractNfts({ eventPassId: eventPass.id }),
+      ),
+    );
 
     const allEventPassNfts: EventPassNftContractNfts =
-      eventPassNftContracts.flatMap((contract) => contract.eventPassNfts);
+      eventPassNftContracts.flatMap((contract) => {
+        if (!contract) {
+          throw new Error(
+            "One of your eventPassId doesn't have an eventPassNftContract",
+          );
+        }
+        return contract.eventPassNfts;
+      });
 
     const selectedNfts: EventPassNftContractNfts = [];
     const approvalData = eventPassNftContracts.map((contract) => ({

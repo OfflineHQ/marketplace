@@ -38,11 +38,15 @@ test.beforeEach(async () => {
   await applySeeds(client, [
     'account',
     'kyc',
-    'eventPassPricing',
+    'passAmount',
+    'passPricing',
     'eventPassNftContract',
+    'nftTransfer',
     'eventPassNft',
     'eventParameters',
-    'eventPassOrder',
+    'stripeCustomer',
+    'stripeCheckoutSession',
+    'order',
   ]);
 });
 test('user should be able to download and reveal his pass', async () => {

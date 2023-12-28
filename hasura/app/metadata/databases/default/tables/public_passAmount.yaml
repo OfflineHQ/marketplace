@@ -1,0 +1,21 @@
+table:
+  name: passAmount
+  schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - packId
+        - eventPassId
+        - maxAmount
+        - maxAmountPerUser
+      filter: {}
+  - role: user
+    permission:
+      columns:
+        - packId
+        - eventPassId
+        - maxAmount
+        - maxAmountPerUser
+        - timeBeforeDelete
+      filter: {}

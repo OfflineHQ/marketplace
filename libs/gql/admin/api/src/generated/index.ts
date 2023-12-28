@@ -5,8 +5,9 @@ export const AccountFieldsFragmentDoc = `
     fragment AccountFields on account {
   id
   address
+  scwAddress
   email
-  emailVerified
+  phone
 }
     `;
 export const KycFieldsFragmentDoc = `
@@ -28,6 +29,8 @@ export const NftTransferFieldsFragmentDoc = `
   eventId
   organizerId
   eventPassId
+  packId
+  packAmount
   tokenId
   created_at
 }
@@ -56,6 +59,13 @@ export const OrganizerFieldsFragmentDoc = `
   imageClasses
 }
     `;
+export const PassAmountFieldsFragmentDoc = `
+    fragment PassAmountFields on passAmount {
+  maxAmount
+  maxAmountPerUser
+  timeBeforeDelete
+}
+    `;
 export const EventDateLocationsFieldsFragmentDoc = `
     fragment EventDateLocationsFields on EventDateLocation {
   locationAddress {
@@ -75,6 +85,12 @@ export const EventDateLocationsFieldsFragmentDoc = `
   dateEnd
 }
     `;
+export const PassPricingFieldsFragmentDoc = `
+    fragment PassPricingFields on passPricing {
+  amount
+  currency
+}
+    `;
 export const EventPassFieldsFragmentDoc = `
     fragment EventPassFields on EventPass {
   name
@@ -89,9 +105,8 @@ export const EventPassFieldsFragmentDoc = `
       ...EventDateLocationsFields
     }
   }
-  eventPassPricing {
-    priceAmount
-    priceCurrency
+  passPricing {
+    ...PassPricingFields
   }
   event {
     slug
@@ -111,20 +126,22 @@ export const EventPassFieldsFragmentDoc = `
     }
   }
 }
-    ${EventDateLocationsFieldsFragmentDoc}`;
+    ${EventDateLocationsFieldsFragmentDoc}
+${PassPricingFieldsFragmentDoc}`;
 export const EventPassNftFieldsFragmentDoc = `
     fragment EventPassNftFields on eventPassNft {
   id
   tokenId
   eventId
   eventPassId
+  packId
   organizerId
   isRevealed
   currentOwnerAddress
 }
     `;
-export const RoleAssignmentsFieldsFragmentDoc = `
-    fragment RoleAssignmentsFields on roleAssignments {
+export const RoleAssignmentFieldsFragmentDoc = `
+    fragment RoleAssignmentFields on roleAssignment {
   role
   organizerId
   eventId
@@ -165,13 +182,13 @@ export const StripeCustomerFieldsFragmentDoc = `
       ...KycFields
     }
     roles {
-      ...RoleAssignmentsFields
+      ...RoleAssignmentFields
     }
   }
 }
     ${AccountFieldsFragmentDoc}
 ${KycFieldsFragmentDoc}
-${RoleAssignmentsFieldsFragmentDoc}`;
+${RoleAssignmentFieldsFragmentDoc}`;
  const GetAccountByEmailDocument = `
     query GetAccountByEmail($email: String!) {
   account(where: {email: {_eq: $email}}) {
@@ -197,30 +214,32 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     `;
- const UpdateEventPassOrdersStatusDocument = `
-    mutation UpdateEventPassOrdersStatus($updates: [eventPassOrder_updates!]!) {
-  update_eventPassOrder_many(updates: $updates) {
+ const UpdateOrdersStatusDocument = `
+    mutation UpdateOrdersStatus($updates: [order_updates!]!) {
+  update_order_many(updates: $updates) {
     affected_rows
     returning {
       id
       quantity
       status
       eventPassId
+      packId
       accountId
       created_at
     }
   }
 }
     `;
- const SetEventPassOrdersStripeCheckoutSessionIdDocument = `
-    mutation SetEventPassOrdersStripeCheckoutSessionId($updates: [eventPassOrder_updates!]!) {
-  update_eventPassOrder_many(updates: $updates) {
+ const SetOrdersStripeCheckoutSessionIdDocument = `
+    mutation SetOrdersStripeCheckoutSessionId($updates: [order_updates!]!) {
+  update_order_many(updates: $updates) {
     affected_rows
     returning {
       id
       quantity
       status
       eventPassId
+      packId
       accountId
       created_at
       stripeCheckoutSessionId
@@ -228,22 +247,23 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     `;
- const MoveEventPassPendingOrdersToConfirmedDocument = `
-    mutation MoveEventPassPendingOrdersToConfirmed($eventPassPendingOrderIds: [uuid!]!, $objects: [eventPassOrder_insert_input!]!, $locale: Locale!, $stage: Stage!) {
-  delete_eventPassPendingOrder(where: {id: {_in: $eventPassPendingOrderIds}}) {
+ const MovePendingOrdersToConfirmedDocument = `
+    mutation MovePendingOrdersToConfirmed($pendingOrderIds: [uuid!]!, $objects: [order_insert_input!]!, $locale: Locale!, $stage: Stage!) {
+  delete_pendingOrder(where: {id: {_in: $pendingOrderIds}}) {
     affected_rows
   }
-  insert_eventPassOrder(objects: $objects) {
+  insert_order(objects: $objects) {
     returning {
       id
       quantity
       status
       eventPassId
+      packId
       accountId
       created_at
-      eventPassPricing {
-        priceAmount
-        priceCurrency
+      passPricing {
+        amount
+        currency
       }
       eventPass(locales: [$locale, en], stage: $stage) {
         id
@@ -262,76 +282,85 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     `;
- const GetAccountEventPassOrderForEventPassesDocument = `
-    query GetAccountEventPassOrderForEventPasses($accountId: uuid!, $eventPassIds: [String!]) {
-  eventPassOrder(
-    where: {accountId: {_eq: $accountId}, eventPassId: {_in: $eventPassIds}}
-  ) {
+ const GetAccountOrderForEventPassesDocument = `
+    query GetAccountOrderForEventPasses($accountId: uuid!, $eventPassIds: [String!]) {
+  order(where: {accountId: {_eq: $accountId}, eventPassId: {_in: $eventPassIds}}) {
     eventPassId
+    packId
     quantity
     status
     created_at
   }
 }
     `;
- const GetEventPassOrderFromIdDocument = `
-    query GetEventPassOrderFromId($id: uuid!) {
-  eventPassOrder_by_pk(id: $id) {
+ const GetOrderFromIdDocument = `
+    query GetOrderFromId($id: uuid!) {
+  order_by_pk(id: $id) {
     id
     eventPassId
+    packId
     quantity
     status
     eventPassNftContract {
       contractAddress
     }
-    account {
-      address
-    }
-    eventPassPricing {
-      priceAmount
-    }
-  }
-}
-    `;
- const GetEventPassOrdersFromStripeCheckoutSessionDocument = `
-    query GetEventPassOrdersFromStripeCheckoutSession($stripeCheckoutSessionId: String!) {
-  eventPassOrder(
-    where: {stripeCheckoutSessionId: {_eq: $stripeCheckoutSessionId}}
-  ) {
-    id
-    eventPassId
-    quantity
-    status
-    eventPassNftContract {
+    packNftContract {
       contractAddress
     }
     account {
       address
     }
-    eventPassPricing {
-      priceAmount
+    passPricing {
+      amount
     }
   }
 }
     `;
- const DeleteEventPassPendingOrdersDocument = `
-    mutation DeleteEventPassPendingOrders($ids: [uuid!]!) {
-  delete_eventPassPendingOrder(where: {id: {_in: $ids}}) {
+ const GetOrdersFromStripeCheckoutSessionDocument = `
+    query GetOrdersFromStripeCheckoutSession($stripeCheckoutSessionId: String!) {
+  order(where: {stripeCheckoutSessionId: {_eq: $stripeCheckoutSessionId}}) {
+    id
+    eventPassId
+    packId
+    quantity
+    status
+    eventPassNftContract {
+      contractAddress
+    }
+    packNftContract {
+      contractAddress
+    }
+    account {
+      address
+    }
+    passPricing {
+      amount
+    }
+  }
+}
+    `;
+ const DeletePendingOrdersDocument = `
+    mutation DeletePendingOrders($ids: [uuid!]!) {
+  delete_pendingOrder(where: {id: {_in: $ids}}) {
     affected_rows
   }
 }
     `;
- const GetEventPassPendingOrdersDocument = `
-    query GetEventPassPendingOrders {
-  eventPassPendingOrder {
+ const GetPendingOrdersDocument = `
+    query GetPendingOrders {
+  pendingOrder {
     created_at
     id
     eventPassId
+    packId
     account {
       email
       address
     }
-    eventPassPricing {
+    passAmount {
+      timeBeforeDelete
+    }
+    packAmount {
       timeBeforeDelete
     }
   }
@@ -439,18 +468,19 @@ ${EventDateLocationsFieldsFragmentDoc}`;
       id
       name
       description
-      eventPassPricing {
-        priceAmount
-        priceCurrency
-        maxAmount
-        maxAmountPerUser
-        timeBeforeDelete
+      passAmount {
+        ...PassAmountFields
+      }
+      passPricing {
+        ...PassPricingFields
       }
     }
   }
 }
     ${OrganizerFieldsFragmentDoc}
-${EventDateLocationsFieldsFragmentDoc}`;
+${EventDateLocationsFieldsFragmentDoc}
+${PassAmountFieldsFragmentDoc}
+${PassPricingFieldsFragmentDoc}`;
  const GetEventsFromOrganizerIdTableDocument = `
     query GetEventsFromOrganizerIdTable($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {id: $id}, locales: [$locale, en], stage: $stage) {
@@ -490,12 +520,11 @@ ${EventDateLocationsFieldsFragmentDoc}`;
           ...EventDateLocationsFields
         }
       }
-      eventPassPricing {
-        maxAmount
-        maxAmountPerUser
-        priceAmount
-        priceCurrency
-        timeBeforeDelete
+      passAmount {
+        ...PassAmountFields
+      }
+      passPricing {
+        ...PassPricingFields
       }
       eventPassNftContract {
         type
@@ -522,7 +551,9 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     }
   }
 }
-    ${EventDateLocationsFieldsFragmentDoc}`;
+    ${EventDateLocationsFieldsFragmentDoc}
+${PassAmountFieldsFragmentDoc}
+${PassPricingFieldsFragmentDoc}`;
  const GetEventPassesDocument = `
     query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPasses(
@@ -536,11 +567,11 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     nftImage {
       url
     }
-    eventPassPricing {
-      maxAmount
-      maxAmountPerUser
-      priceAmount
-      priceCurrency
+    passAmount {
+      ...PassAmountFields
+    }
+    passPricing {
+      ...PassPricingFields
     }
     passOptions {
       name
@@ -551,7 +582,9 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     }
   }
 }
-    ${EventDateLocationsFieldsFragmentDoc}`;
+    ${PassAmountFieldsFragmentDoc}
+${PassPricingFieldsFragmentDoc}
+${EventDateLocationsFieldsFragmentDoc}`;
  const GetEventPassDelayedRevealedFromEventPassIdDocument = `
     query GetEventPassDelayedRevealedFromEventPassId($eventPassId: ID!, $locale: Locale!, $stage: Stage!) @cached {
   eventPass(where: {id: $eventPassId}, locales: [$locale, en], stage: $stage) {
@@ -647,7 +680,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
       id
       contractAddress
       tokenId
-      packNftContractId
+      packId
     }
   }
 }
@@ -724,7 +757,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     eventPassId
     eventPassNfts {
       id
-      packNftContractId
+      packId
       currentOwnerAddress
       contractAddress
       eventId
@@ -738,30 +771,6 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     query GetEventPassOrderSums($eventPassId: String!) {
   eventPassOrderSums_by_pk(eventPassId: $eventPassId) {
     totalReserved
-  }
-}
-    `;
- const CreateEventPassPricingDocument = `
-    mutation CreateEventPassPricing($eventPassPricing: eventPassPricing_insert_input!) {
-  insert_eventPassPricing_one(object: $eventPassPricing) {
-    id
-    eventPassId
-    priceAmount
-    priceCurrency
-    maxAmount
-    maxAmountPerUser
-  }
-}
-    `;
- const UpdateEventPassPricingDocument = `
-    mutation UpdateEventPassPricing($id: uuid!, $eventPassPricing: eventPassPricing_set_input!) {
-  update_eventPassPricing_by_pk(pk_columns: {id: $id}, _set: $eventPassPricing) {
-    id
-    eventPassId
-    priceAmount
-    priceCurrency
-    maxAmount
-    maxAmountPerUser
   }
 }
     `;
@@ -793,7 +802,54 @@ ${EventDateLocationsFieldsFragmentDoc}`;
       contractAddress
       currentOwnerAddress
       eventPassId
+      packId
     }
+  }
+}
+    `;
+ const CreatePassAmountDocument = `
+    mutation CreatePassAmount($passAmount: passAmount_insert_input!) {
+  insert_passAmount_one(object: $passAmount) {
+    id
+    eventPassId
+    packId
+    maxAmount
+    maxAmountPerUser
+    timeBeforeDelete
+  }
+}
+    `;
+ const UpdatePassAmountDocument = `
+    mutation UpdatePassAmount($id: uuid!, $passAmount: passAmount_set_input!) {
+  update_passAmount_by_pk(pk_columns: {id: $id}, _set: $passAmount) {
+    id
+    eventPassId
+    packId
+    maxAmount
+    maxAmountPerUser
+    timeBeforeDelete
+  }
+}
+    `;
+ const CreatePassPricingDocument = `
+    mutation CreatePassPricing($passPricing: passPricing_insert_input!) {
+  insert_passPricing_one(object: $passPricing) {
+    id
+    eventPassId
+    packId
+    amount
+    currency
+  }
+}
+    `;
+ const UpdatePassPricingDocument = `
+    mutation UpdatePassPricing($id: uuid!, $passPricing: passPricing_set_input!) {
+  update_passPricing_by_pk(pk_columns: {id: $id}, _set: $passPricing) {
+    id
+    eventPassId
+    packId
+    amount
+    currency
   }
 }
     `;
@@ -912,15 +968,15 @@ ${EventPassFieldsFragmentDoc}`;
 }
     ${EventPassNftFieldsFragmentDoc}`;
  const CreateRoleAssignmentDocument = `
-    mutation CreateRoleAssignment($input: roleAssignments_insert_input!) {
-  insert_roleAssignments_one(object: $input) {
+    mutation CreateRoleAssignment($input: roleAssignment_insert_input!) {
+  insert_roleAssignment_one(object: $input) {
     role
   }
 }
     `;
  const GetRoleMinimalDocument = `
     query GetRoleMinimal($accountId: uuid!, $role: roles_enum!, $organizerId: String!, $eventId: String) {
-  roleAssignments(
+  roleAssignment(
     where: {accountId: {_eq: $accountId}, role: {_eq: $role}, organizerId: {_eq: $organizerId}, eventId: {_eq: $eventId}}
   ) {
     id
@@ -993,29 +1049,29 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetAccountById(variables: Types.GetAccountByIdQueryVariables, options?: C): Promise<Types.GetAccountByIdQuery> {
       return requester<Types.GetAccountByIdQuery, Types.GetAccountByIdQueryVariables>(GetAccountByIdDocument, variables, options) as Promise<Types.GetAccountByIdQuery>;
     },
-    UpdateEventPassOrdersStatus(variables: Types.UpdateEventPassOrdersStatusMutationVariables, options?: C): Promise<Types.UpdateEventPassOrdersStatusMutation> {
-      return requester<Types.UpdateEventPassOrdersStatusMutation, Types.UpdateEventPassOrdersStatusMutationVariables>(UpdateEventPassOrdersStatusDocument, variables, options) as Promise<Types.UpdateEventPassOrdersStatusMutation>;
+    UpdateOrdersStatus(variables: Types.UpdateOrdersStatusMutationVariables, options?: C): Promise<Types.UpdateOrdersStatusMutation> {
+      return requester<Types.UpdateOrdersStatusMutation, Types.UpdateOrdersStatusMutationVariables>(UpdateOrdersStatusDocument, variables, options) as Promise<Types.UpdateOrdersStatusMutation>;
     },
-    SetEventPassOrdersStripeCheckoutSessionId(variables: Types.SetEventPassOrdersStripeCheckoutSessionIdMutationVariables, options?: C): Promise<Types.SetEventPassOrdersStripeCheckoutSessionIdMutation> {
-      return requester<Types.SetEventPassOrdersStripeCheckoutSessionIdMutation, Types.SetEventPassOrdersStripeCheckoutSessionIdMutationVariables>(SetEventPassOrdersStripeCheckoutSessionIdDocument, variables, options) as Promise<Types.SetEventPassOrdersStripeCheckoutSessionIdMutation>;
+    SetOrdersStripeCheckoutSessionId(variables: Types.SetOrdersStripeCheckoutSessionIdMutationVariables, options?: C): Promise<Types.SetOrdersStripeCheckoutSessionIdMutation> {
+      return requester<Types.SetOrdersStripeCheckoutSessionIdMutation, Types.SetOrdersStripeCheckoutSessionIdMutationVariables>(SetOrdersStripeCheckoutSessionIdDocument, variables, options) as Promise<Types.SetOrdersStripeCheckoutSessionIdMutation>;
     },
-    MoveEventPassPendingOrdersToConfirmed(variables: Types.MoveEventPassPendingOrdersToConfirmedMutationVariables, options?: C): Promise<Types.MoveEventPassPendingOrdersToConfirmedMutation> {
-      return requester<Types.MoveEventPassPendingOrdersToConfirmedMutation, Types.MoveEventPassPendingOrdersToConfirmedMutationVariables>(MoveEventPassPendingOrdersToConfirmedDocument, variables, options) as Promise<Types.MoveEventPassPendingOrdersToConfirmedMutation>;
+    MovePendingOrdersToConfirmed(variables: Types.MovePendingOrdersToConfirmedMutationVariables, options?: C): Promise<Types.MovePendingOrdersToConfirmedMutation> {
+      return requester<Types.MovePendingOrdersToConfirmedMutation, Types.MovePendingOrdersToConfirmedMutationVariables>(MovePendingOrdersToConfirmedDocument, variables, options) as Promise<Types.MovePendingOrdersToConfirmedMutation>;
     },
-    GetAccountEventPassOrderForEventPasses(variables: Types.GetAccountEventPassOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetAccountEventPassOrderForEventPassesQuery> {
-      return requester<Types.GetAccountEventPassOrderForEventPassesQuery, Types.GetAccountEventPassOrderForEventPassesQueryVariables>(GetAccountEventPassOrderForEventPassesDocument, variables, options) as Promise<Types.GetAccountEventPassOrderForEventPassesQuery>;
+    GetAccountOrderForEventPasses(variables: Types.GetAccountOrderForEventPassesQueryVariables, options?: C): Promise<Types.GetAccountOrderForEventPassesQuery> {
+      return requester<Types.GetAccountOrderForEventPassesQuery, Types.GetAccountOrderForEventPassesQueryVariables>(GetAccountOrderForEventPassesDocument, variables, options) as Promise<Types.GetAccountOrderForEventPassesQuery>;
     },
-    GetEventPassOrderFromId(variables: Types.GetEventPassOrderFromIdQueryVariables, options?: C): Promise<Types.GetEventPassOrderFromIdQuery> {
-      return requester<Types.GetEventPassOrderFromIdQuery, Types.GetEventPassOrderFromIdQueryVariables>(GetEventPassOrderFromIdDocument, variables, options) as Promise<Types.GetEventPassOrderFromIdQuery>;
+    GetOrderFromId(variables: Types.GetOrderFromIdQueryVariables, options?: C): Promise<Types.GetOrderFromIdQuery> {
+      return requester<Types.GetOrderFromIdQuery, Types.GetOrderFromIdQueryVariables>(GetOrderFromIdDocument, variables, options) as Promise<Types.GetOrderFromIdQuery>;
     },
-    GetEventPassOrdersFromStripeCheckoutSession(variables: Types.GetEventPassOrdersFromStripeCheckoutSessionQueryVariables, options?: C): Promise<Types.GetEventPassOrdersFromStripeCheckoutSessionQuery> {
-      return requester<Types.GetEventPassOrdersFromStripeCheckoutSessionQuery, Types.GetEventPassOrdersFromStripeCheckoutSessionQueryVariables>(GetEventPassOrdersFromStripeCheckoutSessionDocument, variables, options) as Promise<Types.GetEventPassOrdersFromStripeCheckoutSessionQuery>;
+    GetOrdersFromStripeCheckoutSession(variables: Types.GetOrdersFromStripeCheckoutSessionQueryVariables, options?: C): Promise<Types.GetOrdersFromStripeCheckoutSessionQuery> {
+      return requester<Types.GetOrdersFromStripeCheckoutSessionQuery, Types.GetOrdersFromStripeCheckoutSessionQueryVariables>(GetOrdersFromStripeCheckoutSessionDocument, variables, options) as Promise<Types.GetOrdersFromStripeCheckoutSessionQuery>;
     },
-    DeleteEventPassPendingOrders(variables: Types.DeleteEventPassPendingOrdersMutationVariables, options?: C): Promise<Types.DeleteEventPassPendingOrdersMutation> {
-      return requester<Types.DeleteEventPassPendingOrdersMutation, Types.DeleteEventPassPendingOrdersMutationVariables>(DeleteEventPassPendingOrdersDocument, variables, options) as Promise<Types.DeleteEventPassPendingOrdersMutation>;
+    DeletePendingOrders(variables: Types.DeletePendingOrdersMutationVariables, options?: C): Promise<Types.DeletePendingOrdersMutation> {
+      return requester<Types.DeletePendingOrdersMutation, Types.DeletePendingOrdersMutationVariables>(DeletePendingOrdersDocument, variables, options) as Promise<Types.DeletePendingOrdersMutation>;
     },
-    GetEventPassPendingOrders(variables?: Types.GetEventPassPendingOrdersQueryVariables, options?: C): Promise<Types.GetEventPassPendingOrdersQuery> {
-      return requester<Types.GetEventPassPendingOrdersQuery, Types.GetEventPassPendingOrdersQueryVariables>(GetEventPassPendingOrdersDocument, variables, options) as Promise<Types.GetEventPassPendingOrdersQuery>;
+    GetPendingOrders(variables?: Types.GetPendingOrdersQueryVariables, options?: C): Promise<Types.GetPendingOrdersQuery> {
+      return requester<Types.GetPendingOrdersQuery, Types.GetPendingOrdersQueryVariables>(GetPendingOrdersDocument, variables, options) as Promise<Types.GetPendingOrdersQuery>;
     },
     CreateKyc(variables: Types.CreateKycMutationVariables, options?: C): Promise<Types.CreateKycMutation> {
       return requester<Types.CreateKycMutation, Types.CreateKycMutationVariables>(CreateKycDocument, variables, options) as Promise<Types.CreateKycMutation>;
@@ -1095,17 +1151,23 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventPassOrderSums(variables: Types.GetEventPassOrderSumsQueryVariables, options?: C): Promise<Types.GetEventPassOrderSumsQuery> {
       return requester<Types.GetEventPassOrderSumsQuery, Types.GetEventPassOrderSumsQueryVariables>(GetEventPassOrderSumsDocument, variables, options) as Promise<Types.GetEventPassOrderSumsQuery>;
     },
-    CreateEventPassPricing(variables: Types.CreateEventPassPricingMutationVariables, options?: C): Promise<Types.CreateEventPassPricingMutation> {
-      return requester<Types.CreateEventPassPricingMutation, Types.CreateEventPassPricingMutationVariables>(CreateEventPassPricingDocument, variables, options) as Promise<Types.CreateEventPassPricingMutation>;
-    },
-    UpdateEventPassPricing(variables: Types.UpdateEventPassPricingMutationVariables, options?: C): Promise<Types.UpdateEventPassPricingMutation> {
-      return requester<Types.UpdateEventPassPricingMutation, Types.UpdateEventPassPricingMutationVariables>(UpdateEventPassPricingDocument, variables, options) as Promise<Types.UpdateEventPassPricingMutation>;
-    },
     CreatePackNftContract(variables: Types.CreatePackNftContractMutationVariables, options?: C): Promise<Types.CreatePackNftContractMutation> {
       return requester<Types.CreatePackNftContractMutation, Types.CreatePackNftContractMutationVariables>(CreatePackNftContractDocument, variables, options) as Promise<Types.CreatePackNftContractMutation>;
     },
     GetPackNftContractFromPackId(variables?: Types.GetPackNftContractFromPackIdQueryVariables, options?: C): Promise<Types.GetPackNftContractFromPackIdQuery> {
       return requester<Types.GetPackNftContractFromPackIdQuery, Types.GetPackNftContractFromPackIdQueryVariables>(GetPackNftContractFromPackIdDocument, variables, options) as Promise<Types.GetPackNftContractFromPackIdQuery>;
+    },
+    CreatePassAmount(variables: Types.CreatePassAmountMutationVariables, options?: C): Promise<Types.CreatePassAmountMutation> {
+      return requester<Types.CreatePassAmountMutation, Types.CreatePassAmountMutationVariables>(CreatePassAmountDocument, variables, options) as Promise<Types.CreatePassAmountMutation>;
+    },
+    UpdatePassAmount(variables: Types.UpdatePassAmountMutationVariables, options?: C): Promise<Types.UpdatePassAmountMutation> {
+      return requester<Types.UpdatePassAmountMutation, Types.UpdatePassAmountMutationVariables>(UpdatePassAmountDocument, variables, options) as Promise<Types.UpdatePassAmountMutation>;
+    },
+    CreatePassPricing(variables: Types.CreatePassPricingMutationVariables, options?: C): Promise<Types.CreatePassPricingMutation> {
+      return requester<Types.CreatePassPricingMutation, Types.CreatePassPricingMutationVariables>(CreatePassPricingDocument, variables, options) as Promise<Types.CreatePassPricingMutation>;
+    },
+    UpdatePassPricing(variables: Types.UpdatePassPricingMutationVariables, options?: C): Promise<Types.UpdatePassPricingMutation> {
+      return requester<Types.UpdatePassPricingMutation, Types.UpdatePassPricingMutationVariables>(UpdatePassPricingDocument, variables, options) as Promise<Types.UpdatePassPricingMutation>;
     },
     DeleteFollowOrganizer(variables: Types.DeleteFollowOrganizerMutationVariables, options?: C): Promise<Types.DeleteFollowOrganizerMutation> {
       return requester<Types.DeleteFollowOrganizerMutation, Types.DeleteFollowOrganizerMutationVariables>(DeleteFollowOrganizerDocument, variables, options) as Promise<Types.DeleteFollowOrganizerMutation>;

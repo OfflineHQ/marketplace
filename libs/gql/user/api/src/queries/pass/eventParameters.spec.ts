@@ -19,6 +19,7 @@ describe('tests for eventParameters', () => {
       'account',
       'eventPassNftContract',
       'eventParameters',
+      'nftTransfer',
       'eventPassNft',
     ]);
   });

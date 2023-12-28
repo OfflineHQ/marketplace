@@ -22,21 +22,19 @@ export function EventPassSaleParameters({
   return (
     <AccordionItem
       value="nft-parameters"
-      disabled={!eventPass.eventPassPricing?.maxAmount}
+      disabled={!eventPass.passAmount?.maxAmount}
     >
       <AccordionTrigger>{title}</AccordionTrigger>
       <AccordionContent className="grid gap-4 py-4">
         <>
           <div className="grid grid-cols-2 gap-4 border-b border-border/50 py-2">
             <p className="font-medium">{t('max-amount')}</p>
-            <p className="text-right">
-              {eventPass.eventPassPricing?.maxAmount}
-            </p>
+            <p className="text-right">{eventPass.passAmount?.maxAmount}</p>
           </div>
           <div className="grid grid-cols-2 gap-4 border-b border-border/50 py-2">
             <p className="font-medium">{t('max-amount-per-user')}</p>
             <p className="text-right">
-              {eventPass.eventPassPricing?.maxAmountPerUser || ''}
+              {eventPass.passAmount?.maxAmountPerUser || ''}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4 py-2">
@@ -45,8 +43,8 @@ export function EventPassSaleParameters({
               <ConvertedCurrency
                 variant={'small'}
                 className="text-right"
-                amount={eventPass.eventPassPricing?.priceAmount || 0}
-                currency={eventPass.eventPassPricing?.priceCurrency}
+                amount={eventPass.passPricing?.amount || 0}
+                currency={eventPass.passPricing?.currency}
               />
             </p>
           </div>

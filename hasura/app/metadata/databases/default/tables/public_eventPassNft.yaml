@@ -23,15 +23,6 @@ object_relationships:
         remote_table:
           name: eventPassNftContract
           schema: public
-  - name: eventPassPricing
-    using:
-      manual_configuration:
-        column_mapping:
-          eventPassId: eventPassId
-        insertion_order: null
-        remote_table:
-          name: eventPassPricing
-          schema: public
   - name: lastNftTransfer
     using:
       manual_configuration:
@@ -41,9 +32,54 @@ object_relationships:
         remote_table:
           name: nftTransfer
           schema: public
+  - name: packAmount
+    using:
+      manual_configuration:
+        column_mapping:
+          packId: packId
+        insertion_order: null
+        remote_table:
+          name: passAmount
+          schema: public
   - name: packNftContract
     using:
-      foreign_key_constraint_on: packNftContractId
+      manual_configuration:
+        column_mapping:
+          chainId: chainId
+          contractAddress: contractAddress
+          eventId: eventId
+          packId: packId
+        insertion_order: null
+        remote_table:
+          name: packNftContract
+          schema: public
+  - name: packPricing
+    using:
+      manual_configuration:
+        column_mapping:
+          packId: packId
+        insertion_order: null
+        remote_table:
+          name: passPricing
+          schema: public
+  - name: passAmount
+    using:
+      manual_configuration:
+        column_mapping:
+          eventPassId: eventPassId
+        insertion_order: null
+        remote_table:
+          name: passAmount
+          schema: public
+  - name: passPricing
+    using:
+      manual_configuration:
+        column_mapping:
+          eventPassId: eventPassId
+        insertion_order: null
+        remote_table:
+          name: passPricing
+          schema: public
 array_relationships:
   - name: nftTransfers
     using:

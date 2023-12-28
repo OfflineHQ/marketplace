@@ -60,7 +60,7 @@ export async function stripeCheckoutStatus(
     // const amount_subtotal = checkoutSession.amount_subtotal;
     // const line_items = checkoutSession.line_items.data;
     // const metadata =
-    //   checkoutSession.metadata as StripeCheckoutSessionMetadataEventPassOrder;
+    //   checkoutSession.metadata as StripeCheckoutSessionMetadataOrder;
     if (
       (event.type as StripeCheckoutSessionEnum) ===
       StripeCheckoutSessionEnum.completed

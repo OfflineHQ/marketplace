@@ -168,6 +168,6 @@ export class PassCache {
     });
     await this.deleteAllPassesCart();
 
-    return res?.insert_eventPassPendingOrder?.returning || null;
+    return res?.insert_pendingOrder?.returning || null;
   }
 }
