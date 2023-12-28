@@ -14,6 +14,7 @@ export type StripeCheckoutSessionMetadataOrder = {
   organizerSlugs: string;
   eventSlugs: string;
   eventPassIds: string;
+  packIds: string;
 };
 
 export type StripePaymentIntent = Stripe.PaymentIntent;

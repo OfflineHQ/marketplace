@@ -77,7 +77,8 @@ export class Payment {
       });
       return createdStripeCustomer?.insert_stripeCustomer_one;
     } else {
-      if (!kyc) throw new Error(`Missing kyc for user: ${user.id}`);
+      if (!kyc || !kyc.applicantId)
+        throw new Error(`Missing kyc for user: ${user.id}`);
       const userPersonalData = await getSumSubApplicantPersonalData(
         kyc.applicantId,
       );
@@ -295,7 +296,8 @@ export class Payment {
             metadata: {
               userId: user.id,
               pendingOrderId: order.id,
-              eventPassId: order.eventPassId,
+              eventPassId: order.eventPassId as string,
+              packId: order.packId as string,
               eventSlug: order.eventPass?.event?.slug as string,
               organizerSlug: order.eventPass?.event?.organizer?.slug as string,
               // could add more if needed
@@ -312,7 +314,14 @@ export class Payment {
         .map((order) => order.eventPass?.event?.organizer?.slug)
         .join(','),
       eventSlugs: orders.map((order) => order.eventPass?.event?.slug).join(','),
-      eventPassIds: orders.map((order) => order.eventPassId).join(','),
+      eventPassIds: orders
+        .filter(({ eventPassId }) => !!eventPassId)
+        .map((order) => order.eventPassId)
+        .join(','),
+      packIds: orders
+        .filter(({ packId }) => !!packId)
+        .map((order) => order.packId)
+        .join(','),
       // orders: JSON.stringify(orders),
     } satisfies StripeCheckoutSessionMetadataOrder;
 

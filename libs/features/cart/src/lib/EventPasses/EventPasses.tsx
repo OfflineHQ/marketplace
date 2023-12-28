@@ -59,7 +59,7 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
       <div className="mt-3 flex flex-col">
         {enrichedPasses.map((pass, index) =>
           pass.quantity ? (
-            <div key={pass.eventPassId + index} className="mb-5 flex md:mb-8">
+            <div key={index} className="mb-5 flex md:mb-8">
               <div
                 className={`flex items-center ${layout.imageContainer} h-auto md:h-auto`}
               >
