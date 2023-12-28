@@ -41,8 +41,11 @@ test.beforeEach(async () => {
     'passAmount',
     'passPricing',
     'eventPassNftContract',
+    'nftTransfer',
     'eventPassNft',
     'eventParameters',
+    'stripeCustomer',
+    'stripeCheckoutSession',
     'order',
   ]);
 });
