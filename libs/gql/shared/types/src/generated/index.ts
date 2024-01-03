@@ -56,6 +56,7 @@ export type Asset = Entity & Node & {
   mimeType?: Maybe<Scalars['String']>;
   nftImageEventPass: Array<EventPass>;
   nftImageEventPassDelayedRevealed: Array<EventPassDelayedRevealed>;
+  nftImagePack: Array<Pack>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -183,6 +184,20 @@ export type AssetNftImageEventPassDelayedRevealedArgs = {
 
 
 /** Asset system model */
+export type AssetNftImagePackArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<PackOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<PackWhereInput>;
+};
+
+
+/** Asset system model */
 export type AssetPublishedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
@@ -249,6 +264,7 @@ export type AssetCreateInput = {
   mimeType?: InputMaybe<Scalars['String']>;
   nftImageEventPass?: InputMaybe<EventPassCreateManyInlineInput>;
   nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedCreateManyInlineInput>;
+  nftImagePack?: InputMaybe<PackCreateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   width?: InputMaybe<Scalars['Float']>;
@@ -355,6 +371,9 @@ export type AssetManyWhereInput = {
   nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
+  nftImagePack_every?: InputMaybe<PackWhereInput>;
+  nftImagePack_none?: InputMaybe<PackWhereInput>;
+  nftImagePack_some?: InputMaybe<PackWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -435,6 +454,7 @@ export type AssetUpdateInput = {
   mimeType?: InputMaybe<Scalars['String']>;
   nftImageEventPass?: InputMaybe<EventPassUpdateManyInlineInput>;
   nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedUpdateManyInlineInput>;
+  nftImagePack?: InputMaybe<PackUpdateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']>;
   width?: InputMaybe<Scalars['Float']>;
 };
@@ -674,6 +694,9 @@ export type AssetWhereInput = {
   nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
+  nftImagePack_every?: InputMaybe<PackWhereInput>;
+  nftImagePack_none?: InputMaybe<PackWhereInput>;
+  nftImagePack_some?: InputMaybe<PackWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -870,7 +893,7 @@ export const enum EntityTypeName {
   Event = 'Event',
   /** Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several. */
   EventDateLocation = 'EventDateLocation',
-  /** Define a pass for an event with different options, price, number of passes etc. */
+  /** Define a pass for an event with different options */
   EventPass = 'EventPass',
   /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
   EventPassDelayedRevealed = 'EventPassDelayedRevealed',
@@ -878,6 +901,11 @@ export const enum EntityTypeName {
   LocationAddress = 'LocationAddress',
   /** An organizer is an entity that launch events and handle the pass benefits. */
   Organizer = 'Organizer',
+  /**
+   * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+   *
+   */
+  Pack = 'Pack',
   /** Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations. */
   PassOption = 'PassOption',
   /** Scheduled Operation system model */
@@ -915,7 +943,7 @@ export type Event = Entity & Node & {
   eventDateLocations: Array<EventDateLocation>;
   eventParameters?: Maybe<EventParameters>;
   eventPasses: Array<EventPass>;
-  /** An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen. */
+  /** An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen. Advised resolution is 1920 * 800 pixels */
   heroImage: Asset;
   /** Optional field used to style your hero image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
   heroImageClasses?: Maybe<Scalars['String']>;
@@ -1512,7 +1540,7 @@ export const enum EventOrderByInput {
   UpdatedAtDesc = 'updatedAt_DESC'
 };
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPass = Entity & Node & {
   __typename?: 'EventPass';
   /** The time the document was created */
@@ -1539,10 +1567,11 @@ export type EventPass = Entity & Node & {
   name: Scalars['String'];
   /** Fixed description pertaining to the NFT. This content is static and non-localizable. */
   nftDescription: Scalars['String'];
-  /** Permanent image representing the NFT. Advised resolution is 350 x 350 pixels. Image content is non-changeable and cannot be localized. */
+  /** Permanent image representing the NFT. Advised resolution is 800 x 800 pixels. Image content is non-changeable and cannot be localized. */
   nftImage: Asset;
   /** Permanent name associated with the NFT. Cannot be changed or localized. */
   nftName: Scalars['String'];
+  pack?: Maybe<Pack>;
   passAmount?: Maybe<PassAmount>;
   /** Define the different pass options. An option is defined for a specific location and timeframe */
   passOptions: Array<PassOption>;
@@ -1561,20 +1590,20 @@ export type EventPass = Entity & Node & {
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassCreatedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassCreatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassDocumentInStagesArgs = {
   includeCurrent?: Scalars['Boolean'];
   inheritLocale?: Scalars['Boolean'];
@@ -1582,21 +1611,21 @@ export type EventPassDocumentInStagesArgs = {
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassEventArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassEventPassDelayedRevealedArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassHistoryArgs = {
   limit?: Scalars['Int'];
   skip?: Scalars['Int'];
@@ -1604,21 +1633,28 @@ export type EventPassHistoryArgs = {
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassLocalizationsArgs = {
   includeCurrent?: Scalars['Boolean'];
   locales?: Array<Locale>;
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassNftImageArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
+export type EventPassPackArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** Define a pass for an event with different options */
 export type EventPassPassOptionsArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
@@ -1632,20 +1668,20 @@ export type EventPassPassOptionsArgs = {
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassPublishedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassPublishedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassScheduledInArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
@@ -1658,13 +1694,13 @@ export type EventPassScheduledInArgs = {
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassUpdatedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
 
 
-/** Define a pass for an event with different options, price, number of passes etc. */
+/** Define a pass for an event with different options */
 export type EventPassUpdatedByArgs = {
   forceParentLocale?: InputMaybe<Scalars['Boolean']>;
   locales?: InputMaybe<Array<Locale>>;
@@ -1701,6 +1737,7 @@ export type EventPassCreateInput = {
   nftDescription: Scalars['String'];
   nftImage: AssetCreateOneInlineInput;
   nftName: Scalars['String'];
+  pack?: InputMaybe<PackCreateOneInlineInput>;
   passOptions?: InputMaybe<PassOptionCreateManyInlineInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
@@ -1762,7 +1799,7 @@ export type EventPassDelayedRevealed = Entity & Node & {
   name: Scalars['String'];
   /** Fixed description pertaining to the NFT. This content is static and non-localizable. */
   nftDescription: Scalars['String'];
-  /** Permanent image representing the NFT. Advised resolution is 350 x 350 pixels. Image content is non-changeable and cannot be localized. */
+  /** Permanent image representing the NFT. Advised resolution is 800 x 800 pixels. Image content is non-changeable and cannot be localized. */
   nftImage: Asset;
   /** Permanent name associated with the NFT. Cannot be changed or localized. */
   nftName: Scalars['String'];
@@ -2515,6 +2552,7 @@ export type EventPassManyWhereInput = {
   nftName_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   nftName_starts_with?: InputMaybe<Scalars['String']>;
+  pack?: InputMaybe<PackWhereInput>;
   passOptions_every?: InputMaybe<PassOptionWhereInput>;
   passOptions_none?: InputMaybe<PassOptionWhereInput>;
   passOptions_some?: InputMaybe<PassOptionWhereInput>;
@@ -2587,6 +2625,7 @@ export type EventPassUpdateInput = {
   nftDescription?: InputMaybe<Scalars['String']>;
   nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
   nftName?: InputMaybe<Scalars['String']>;
+  pack?: InputMaybe<PackUpdateOneInlineInput>;
   passOptions?: InputMaybe<PassOptionUpdateManyInlineInput>;
 };
 
@@ -2828,6 +2867,7 @@ export type EventPassWhereInput = {
   nftName_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   nftName_starts_with?: InputMaybe<Scalars['String']>;
+  pack?: InputMaybe<PackWhereInput>;
   passOptions_every?: InputMaybe<PassOptionWhereInput>;
   passOptions_none?: InputMaybe<PassOptionWhereInput>;
   passOptions_some?: InputMaybe<PassOptionWhereInput>;
@@ -3543,7 +3583,7 @@ export type Organizer = Entity & Node & {
   events: Array<Event>;
   /** The facebook handle (username) of the organizer. You can just copy the text on your facebook landing page on the URL, like 'johndoe' for 'https://www.facebook.com/johndoe'. */
   facebookHandle?: Maybe<Scalars['String']>;
-  /** An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen. */
+  /** An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen. Advised resolution is 1920 * 800 pixels */
   heroImage: Asset;
   /** Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
   heroImageClasses?: Maybe<Scalars['String']>;
@@ -3551,7 +3591,7 @@ export type Organizer = Entity & Node & {
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
-  /** Image that represent the organizer, typically its logo. Advised resolution is 350 x 350 pixels, in square format with transparency (for ex: svg or png but not jpg) so that the image always look good either on light or dark mode. */
+  /** Image that represent the organizer, typically its logo. Advised resolution is 800 x 800 pixels, in square format with transparency (for ex: svg or png but not jpg) so that the image always look good either on light or dark mode. */
   image: Asset;
   /** Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
   imageClasses?: Maybe<Scalars['String']>;
@@ -4598,6 +4638,760 @@ export type OrganizerWhereUniqueInput_Remote_Rel_RoleAssignmentorganizer = {
   slug?: InputMaybe<Scalars['String']>;
 };
 
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type Pack = Entity & Node & {
+  __typename?: 'Pack';
+  /** The time the document was created */
+  createdAt: Scalars['DateTime'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  /** A brief overview detailing the contents and purpose of the Pack. */
+  description: Scalars['String'];
+  /** Get the document in other stages */
+  documentInStages: Array<Pack>;
+  /** This section allows you to select or create the event passes that will be included in your Pack. Think of it as curating a collection of exclusive access tickets, each offering unique experiences for the events. Here, you can assemble a variety of event passes that together form the enticing bundle that is your Pack. */
+  eventPasses: Array<PackEventPasses>;
+  /** List of Pack versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<Pack>;
+  /** User-friendly name of the the Pack, like "Lottery for VIP 3-Day Pass" */
+  name: Scalars['String'];
+  /** Fixed description pertaining to the NFT Pack. This content is static and non-localizable. */
+  nftDescription: Scalars['String'];
+  /** Permanent image representing the NFT Pack. Advised resolution is 800 x 800 pixels. Image content is non-changeable and cannot be localized. */
+  nftImage: Asset;
+  /** Permanent name associated with the NFT. Cannot be changed or localized. */
+  nftName: Scalars['String'];
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackCreatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  inheritLocale?: Scalars['Boolean'];
+  stages?: Array<Stage>;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackEventPassesArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackHistoryArgs = {
+  limit?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  locales?: Array<Locale>;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackNftImageArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackPublishedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackUpdatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
+export type PackUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type PackConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: PackWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type PackConnection = {
+  __typename?: 'PackConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<PackEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type PackCreateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** description input for default locale (en) */
+  description: Scalars['String'];
+  eventPasses?: InputMaybe<PackEventPassesCreateManyInlineInput>;
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<PackCreateLocalizationsInput>;
+  /** name input for default locale (en) */
+  name: Scalars['String'];
+  nftDescription: Scalars['String'];
+  nftImage: AssetCreateOneInlineInput;
+  nftName: Scalars['String'];
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PackCreateLocalizationDataInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  description: Scalars['String'];
+  name: Scalars['String'];
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PackCreateLocalizationInput = {
+  /** Localization input */
+  data: PackCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type PackCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<PackCreateLocalizationInput>>;
+};
+
+export type PackCreateManyInlineInput = {
+  /** Connect multiple existing Pack documents */
+  connect?: InputMaybe<Array<PackWhereUniqueInput>>;
+  /** Create and connect multiple existing Pack documents */
+  create?: InputMaybe<Array<PackCreateInput>>;
+};
+
+export type PackCreateOneInlineInput = {
+  /** Connect one existing Pack document */
+  connect?: InputMaybe<PackWhereUniqueInput>;
+  /** Create and connect one Pack document */
+  create?: InputMaybe<PackCreateInput>;
+};
+
+/** An edge in a connection. */
+export type PackEdge = {
+  __typename?: 'PackEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: Pack;
+};
+
+export type PackEventPasses = EventPass;
+
+export type PackEventPassesConnectInput = {
+  EventPass?: InputMaybe<EventPassConnectInput>;
+};
+
+export type PackEventPassesCreateInput = {
+  EventPass?: InputMaybe<EventPassCreateInput>;
+};
+
+export type PackEventPassesCreateManyInlineInput = {
+  /** Connect multiple existing PackEventPasses documents */
+  connect?: InputMaybe<Array<PackEventPassesWhereUniqueInput>>;
+  /** Create and connect multiple existing PackEventPasses documents */
+  create?: InputMaybe<Array<PackEventPassesCreateInput>>;
+};
+
+export type PackEventPassesUpdateManyInlineInput = {
+  /** Connect multiple existing PackEventPasses documents */
+  connect?: InputMaybe<Array<PackEventPassesConnectInput>>;
+  /** Create and connect multiple PackEventPasses documents */
+  create?: InputMaybe<Array<PackEventPassesCreateInput>>;
+  /** Delete multiple PackEventPasses documents */
+  delete?: InputMaybe<Array<PackEventPassesWhereUniqueInput>>;
+  /** Disconnect multiple PackEventPasses documents */
+  disconnect?: InputMaybe<Array<PackEventPassesWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing PackEventPasses documents */
+  set?: InputMaybe<Array<PackEventPassesWhereUniqueInput>>;
+  /** Update multiple PackEventPasses documents */
+  update?: InputMaybe<Array<PackEventPassesUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple PackEventPasses documents */
+  upsert?: InputMaybe<Array<PackEventPassesUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type PackEventPassesUpdateWithNestedWhereUniqueInput = {
+  EventPass?: InputMaybe<EventPassUpdateWithNestedWhereUniqueInput>;
+};
+
+export type PackEventPassesUpsertWithNestedWhereUniqueInput = {
+  EventPass?: InputMaybe<EventPassUpsertWithNestedWhereUniqueInput>;
+};
+
+export type PackEventPassesWhereInput = {
+  EventPass?: InputMaybe<EventPassWhereInput>;
+};
+
+export type PackEventPassesWhereUniqueInput = {
+  EventPass?: InputMaybe<EventPassWhereUniqueInput>;
+};
+
+/** Identifies documents */
+export type PackManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<PackWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<PackWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<PackWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<PackWhereStageInput>;
+  documentInStages_none?: InputMaybe<PackWhereStageInput>;
+  documentInStages_some?: InputMaybe<PackWhereStageInput>;
+  /** All values in which the union is empty */
+  eventPasses_empty?: InputMaybe<Scalars['Boolean']>;
+  /** Matches if the union contains at least one connection to the provided item to the filter */
+  eventPasses_some?: InputMaybe<PackEventPassesWhereInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftDescription_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export const enum PackOrderByInput {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  DescriptionAsc = 'description_ASC',
+  DescriptionDesc = 'description_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC',
+  NftDescriptionAsc = 'nftDescription_ASC',
+  NftDescriptionDesc = 'nftDescription_DESC',
+  NftNameAsc = 'nftName_ASC',
+  NftNameDesc = 'nftName_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+};
+
+export type PackUpdateInput = {
+  /** description input for default locale (en) */
+  description?: InputMaybe<Scalars['String']>;
+  eventPasses?: InputMaybe<PackEventPassesUpdateManyInlineInput>;
+  /** Manage document localizations */
+  localizations?: InputMaybe<PackUpdateLocalizationsInput>;
+  /** name input for default locale (en) */
+  name?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
+  nftName?: InputMaybe<Scalars['String']>;
+};
+
+export type PackUpdateLocalizationDataInput = {
+  description?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type PackUpdateLocalizationInput = {
+  data: PackUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type PackUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<PackCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<PackUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<PackUpsertLocalizationInput>>;
+};
+
+export type PackUpdateManyInlineInput = {
+  /** Connect multiple existing Pack documents */
+  connect?: InputMaybe<Array<PackConnectInput>>;
+  /** Create and connect multiple Pack documents */
+  create?: InputMaybe<Array<PackCreateInput>>;
+  /** Delete multiple Pack documents */
+  delete?: InputMaybe<Array<PackWhereUniqueInput>>;
+  /** Disconnect multiple Pack documents */
+  disconnect?: InputMaybe<Array<PackWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing Pack documents */
+  set?: InputMaybe<Array<PackWhereUniqueInput>>;
+  /** Update multiple Pack documents */
+  update?: InputMaybe<Array<PackUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple Pack documents */
+  upsert?: InputMaybe<Array<PackUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type PackUpdateManyInput = {
+  /** description input for default locale (en) */
+  description?: InputMaybe<Scalars['String']>;
+  /** Optional updates to localizations */
+  localizations?: InputMaybe<PackUpdateManyLocalizationsInput>;
+  /** name input for default locale (en) */
+  name?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']>;
+};
+
+export type PackUpdateManyLocalizationDataInput = {
+  description?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+export type PackUpdateManyLocalizationInput = {
+  data: PackUpdateManyLocalizationDataInput;
+  locale: Locale;
+};
+
+export type PackUpdateManyLocalizationsInput = {
+  /** Localizations to update */
+  update?: InputMaybe<Array<PackUpdateManyLocalizationInput>>;
+};
+
+export type PackUpdateOneInlineInput = {
+  /** Connect existing Pack document */
+  connect?: InputMaybe<PackWhereUniqueInput>;
+  /** Create and connect one Pack document */
+  create?: InputMaybe<PackCreateInput>;
+  /** Delete currently connected Pack document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected Pack document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single Pack document */
+  update?: InputMaybe<PackUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single Pack document */
+  upsert?: InputMaybe<PackUpsertWithNestedWhereUniqueInput>;
+};
+
+export type PackUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: PackUpdateInput;
+  /** Unique document search */
+  where: PackWhereUniqueInput;
+};
+
+export type PackUpsertInput = {
+  /** Create document if it didn't exist */
+  create: PackCreateInput;
+  /** Update document if it exists */
+  update: PackUpdateInput;
+};
+
+export type PackUpsertLocalizationInput = {
+  create: PackCreateLocalizationDataInput;
+  locale: Locale;
+  update: PackUpdateLocalizationDataInput;
+};
+
+export type PackUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: PackUpsertInput;
+  /** Unique document search */
+  where: PackWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type PackWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Identifies documents */
+export type PackWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<PackWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<PackWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<PackWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  description?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  description_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  description_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  description_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  description_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  description_starts_with?: InputMaybe<Scalars['String']>;
+  documentInStages_every?: InputMaybe<PackWhereStageInput>;
+  documentInStages_none?: InputMaybe<PackWhereStageInput>;
+  documentInStages_some?: InputMaybe<PackWhereStageInput>;
+  /** All values in which the union is empty */
+  eventPasses_empty?: InputMaybe<Scalars['Boolean']>;
+  /** Matches if the union contains at least one connection to the provided item to the filter */
+  eventPasses_some?: InputMaybe<PackEventPassesWhereInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  name_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  name_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  name_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  name_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  name_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftDescription_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type PackWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<PackWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<PackWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<PackWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<PackWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References Pack record uniquely */
+export type PackWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 /** Information about pagination in a connection. */
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -4925,7 +5719,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Asset | Event | EventPass | EventPassDelayedRevealed | Organizer;
+export type ScheduledOperationAffectedDocument = Asset | Event | EventPass | EventPassDelayedRevealed | Organizer | Pack;
 
 /** A connection to a list of items. */
 export type ScheduledOperationConnection = {
@@ -6158,10 +6952,6 @@ export type EventParameters = {
   id: Scalars['uuid'];
   organizer?: Maybe<Organizer>;
   organizerId: Scalars['String'];
-  /** An array relationship */
-  packNftContracts: Array<PackNftContract>;
-  /** An aggregate relationship */
-  packNftContracts_aggregate: PackNftContract_Aggregate;
   signingKey?: Maybe<Scalars['String']>;
   status?: Maybe<EventStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
@@ -6225,26 +7015,6 @@ export type EventParametersOrganizerArgs = {
   where: OrganizerWhereUniqueInput_Remote_Rel_EventParametersorganizer;
 };
 
-
-/** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
-export type EventParametersPackNftContractsArgs = {
-  distinct_on?: InputMaybe<Array<PackNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<PackNftContract_Order_By>>;
-  where?: InputMaybe<PackNftContract_Bool_Exp>;
-};
-
-
-/** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
-export type EventParametersPackNftContracts_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<PackNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<PackNftContract_Order_By>>;
-  where?: InputMaybe<PackNftContract_Bool_Exp>;
-};
-
 /** aggregated selection of "eventParameters" */
 export type EventParameters_Aggregate = {
   __typename?: 'eventParameters_aggregate';
@@ -6285,8 +7055,6 @@ export type EventParameters_Bool_Exp = {
   eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
-  packNftContracts?: InputMaybe<PackNftContract_Bool_Exp>;
-  packNftContracts_aggregate?: InputMaybe<PackNftContract_Aggregate_Bool_Exp>;
   signingKey?: InputMaybe<String_Comparison_Exp>;
   status?: InputMaybe<EventStatus_Enum_Comparison_Exp>;
   timezone?: InputMaybe<String_Comparison_Exp>;
@@ -6321,7 +7089,6 @@ export type EventParameters_Insert_Input = {
   eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
   organizerId?: InputMaybe<Scalars['String']>;
-  packNftContracts?: InputMaybe<PackNftContract_Arr_Rel_Insert_Input>;
   signingKey?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<EventStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
@@ -6411,7 +7178,6 @@ export type EventParameters_Order_By = {
   eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
-  packNftContracts_aggregate?: InputMaybe<PackNftContract_Aggregate_Order_By>;
   signingKey?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   timezone?: InputMaybe<Order_By>;
@@ -6585,8 +7351,6 @@ export type EventPassNft = {
   /** An object relationship */
   packAmount?: Maybe<PassAmount>;
   packId?: Maybe<Scalars['String']>;
-  /** An object relationship */
-  packNftContract?: Maybe<PackNftContract>;
   /** An object relationship */
   packPricing?: Maybe<PassPricing>;
   /** An object relationship */
@@ -7377,7 +8141,6 @@ export type EventPassNft_Bool_Exp = {
   organizerId?: InputMaybe<String_Comparison_Exp>;
   packAmount?: InputMaybe<PassAmount_Bool_Exp>;
   packId?: InputMaybe<String_Comparison_Exp>;
-  packNftContract?: InputMaybe<PackNftContract_Bool_Exp>;
   packPricing?: InputMaybe<PassPricing_Bool_Exp>;
   passAmount?: InputMaybe<PassAmount_Bool_Exp>;
   passPricing?: InputMaybe<PassPricing_Bool_Exp>;
@@ -7448,7 +8211,6 @@ export type EventPassNft_Insert_Input = {
   organizerId?: InputMaybe<Scalars['String']>;
   packAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
   packId?: InputMaybe<Scalars['String']>;
-  packNftContract?: InputMaybe<PackNftContract_Obj_Rel_Insert_Input>;
   packPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
   passAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
   passPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
@@ -7609,7 +8371,6 @@ export type EventPassNft_Order_By = {
   organizerId?: InputMaybe<Order_By>;
   packAmount?: InputMaybe<PassAmount_Order_By>;
   packId?: InputMaybe<Order_By>;
-  packNftContract?: InputMaybe<PackNftContract_Order_By>;
   packPricing?: InputMaybe<PassPricing_Order_By>;
   passAmount?: InputMaybe<PassAmount_Order_By>;
   passPricing?: InputMaybe<PassPricing_Order_By>;
@@ -9017,6 +9778,8 @@ export type Mutation_Root = {
   createEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Create one organizer */
   createOrganizer?: Maybe<Organizer>;
+  /** Create one pack */
+  createPack?: Maybe<Pack>;
   /** Create one scheduledRelease */
   createScheduledRelease?: Maybe<ScheduledRelease>;
   /** Delete one asset from _all_ existing stages. Returns deleted document. */
@@ -9047,8 +9810,14 @@ export type Mutation_Root = {
   deleteManyOrganizers: BatchPayload;
   /** Delete many Organizer documents, return deleted documents */
   deleteManyOrganizersConnection: OrganizerConnection;
+  /** Delete many Pack documents */
+  deleteManyPacks: BatchPayload;
+  /** Delete many Pack documents, return deleted documents */
+  deleteManyPacksConnection: PackConnection;
   /** Delete one organizer from _all_ existing stages. Returns deleted document. */
   deleteOrganizer?: Maybe<Organizer>;
+  /** Delete one pack from _all_ existing stages. Returns deleted document. */
+  deletePack?: Maybe<Pack>;
   /** Delete and return scheduled operation */
   deleteScheduledOperation?: Maybe<ScheduledOperation>;
   /** Delete one scheduledRelease from _all_ existing stages. Returns deleted document. */
@@ -9287,8 +10056,14 @@ export type Mutation_Root = {
   publishManyOrganizers: BatchPayload;
   /** Publish many Organizer documents */
   publishManyOrganizersConnection: OrganizerConnection;
+  /** Publish many Pack documents */
+  publishManyPacks: BatchPayload;
+  /** Publish many Pack documents */
+  publishManyPacksConnection: PackConnection;
   /** Publish one organizer */
   publishOrganizer?: Maybe<Organizer>;
+  /** Publish one pack */
+  publishPack?: Maybe<Pack>;
   /** Schedule to publish one asset */
   schedulePublishAsset?: Maybe<Asset>;
   /** Schedule to publish one event */
@@ -9299,6 +10074,8 @@ export type Mutation_Root = {
   schedulePublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Schedule to publish one organizer */
   schedulePublishOrganizer?: Maybe<Organizer>;
+  /** Schedule to publish one pack */
+  schedulePublishPack?: Maybe<Pack>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishAsset?: Maybe<Asset>;
   /** Unpublish one event from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -9309,6 +10086,8 @@ export type Mutation_Root = {
   scheduleUnpublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Unpublish one organizer from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishOrganizer?: Maybe<Organizer>;
+  /** Unpublish one pack from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishPack?: Maybe<Pack>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishAsset?: Maybe<Asset>;
   /** Unpublish one event from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -9337,8 +10116,14 @@ export type Mutation_Root = {
   unpublishManyOrganizers: BatchPayload;
   /** Find many Organizer documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyOrganizersConnection: OrganizerConnection;
+  /** Unpublish many Pack documents */
+  unpublishManyPacks: BatchPayload;
+  /** Find many Pack documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyPacksConnection: PackConnection;
   /** Unpublish one organizer from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishOrganizer?: Maybe<Organizer>;
+  /** Unpublish one pack from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishPack?: Maybe<Pack>;
   /** Update one asset */
   updateAsset?: Maybe<Asset>;
   /** Update one event */
@@ -9367,8 +10152,14 @@ export type Mutation_Root = {
   updateManyOrganizers: BatchPayload;
   /** Update many Organizer documents */
   updateManyOrganizersConnection: OrganizerConnection;
+  /** Update many packs */
+  updateManyPacks: BatchPayload;
+  /** Update many Pack documents */
+  updateManyPacksConnection: PackConnection;
   /** Update one organizer */
   updateOrganizer?: Maybe<Organizer>;
+  /** Update one pack */
+  updatePack?: Maybe<Pack>;
   /** Update one scheduledRelease */
   updateScheduledRelease?: Maybe<ScheduledRelease>;
   /** update data of the table: "account" */
@@ -9535,6 +10326,8 @@ export type Mutation_Root = {
   upsertEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
   /** Upsert one organizer */
   upsertOrganizer?: Maybe<Organizer>;
+  /** Upsert one pack */
+  upsertPack?: Maybe<Pack>;
 };
 
 
@@ -9565,6 +10358,12 @@ export type Mutation_RootCreateEventPassDelayedRevealedArgs = {
 /** mutation root */
 export type Mutation_RootCreateOrganizerArgs = {
   data: OrganizerCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreatePackArgs = {
+  data: PackCreateInput;
 };
 
 
@@ -9684,8 +10483,31 @@ export type Mutation_RootDeleteManyOrganizersConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteManyPacksArgs = {
+  where?: InputMaybe<PackManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyPacksConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<PackManyWhereInput>;
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteOrganizerArgs = {
   where: OrganizerWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeletePackArgs = {
+  where: PackWhereUniqueInput;
 };
 
 
@@ -10543,11 +11365,47 @@ export type Mutation_RootPublishManyOrganizersConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootPublishManyPacksArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<PackManyWhereInput>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyPacksConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<PackManyWhereInput>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
 export type Mutation_RootPublishOrganizerArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']>;
   to?: Array<Stage>;
   where: OrganizerWhereUniqueInput;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishPackArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  to?: Array<Stage>;
+  where: PackWhereUniqueInput;
   withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -10613,6 +11471,18 @@ export type Mutation_RootSchedulePublishOrganizerArgs = {
 
 
 /** mutation root */
+export type Mutation_RootSchedulePublishPackArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  to?: Array<Stage>;
+  where: PackWhereUniqueInput;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** mutation root */
 export type Mutation_RootScheduleUnpublishAssetArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
@@ -10664,6 +11534,17 @@ export type Mutation_RootScheduleUnpublishOrganizerArgs = {
   releaseId?: InputMaybe<Scalars['String']>;
   unpublishBase?: InputMaybe<Scalars['Boolean']>;
   where: OrganizerWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootScheduleUnpublishPackArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where: PackWhereUniqueInput;
 };
 
 
@@ -10824,11 +11705,44 @@ export type Mutation_RootUnpublishManyOrganizersConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUnpublishManyPacksArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<PackManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishManyPacksConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: InputMaybe<Stage>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<PackManyWhereInput>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUnpublishOrganizerArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
   unpublishBase?: InputMaybe<Scalars['Boolean']>;
   where: OrganizerWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishPackArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  where: PackWhereUniqueInput;
 };
 
 
@@ -10956,9 +11870,35 @@ export type Mutation_RootUpdateManyOrganizersConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateManyPacksArgs = {
+  data: PackUpdateManyInput;
+  where?: InputMaybe<PackManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyPacksConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  data: PackUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<PackManyWhereInput>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateOrganizerArgs = {
   data: OrganizerUpdateInput;
   where: OrganizerWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdatePackArgs = {
+  data: PackUpdateInput;
+  where: PackWhereUniqueInput;
 };
 
 
@@ -11554,6 +12494,13 @@ export type Mutation_RootUpsertOrganizerArgs = {
   where: OrganizerWhereUniqueInput;
 };
 
+
+/** mutation root */
+export type Mutation_RootUpsertPackArgs = {
+  upsert: PackUpsertInput;
+  where: PackWhereUniqueInput;
+};
+
 /** The nftTransfer model is built to record and chronicle the transfer of NFTs between addresses. This model is crucial in tracing the movement of an NFT, especially when validating that an event pass has reached its intended recipient. Such a system facilitates debugging and reduces the need for excessive querying of our indexer. Entries in this table are populated through two primary avenues: either via an activity webhook responding to real-time NFT transfers or through a regular cron job as a failsafe, ensuring data integrity even if the webhook fails to capture certain events. */
 export type NftTransfer = {
   __typename?: 'nftTransfer';
@@ -11565,7 +12512,7 @@ export type NftTransfer = {
   contractAddress: Scalars['String'];
   created_at: Scalars['timestamptz'];
   /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
-  eventId: Scalars['String'];
+  eventId?: Maybe<Scalars['String']>;
   /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
   eventPassId?: Maybe<Scalars['String']>;
   /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFTs movement. */
@@ -12784,12 +13731,7 @@ export type PackNftContract = {
   chainId: Scalars['String'];
   contractAddress: Scalars['String'];
   created_at: Scalars['timestamptz'];
-  eventId: Scalars['String'];
   eventPassIds: Scalars['jsonb'];
-  /** An array relationship */
-  eventPassNfts: Array<EventPassNft>;
-  /** An aggregate relationship */
-  eventPassNfts_aggregate: EventPassNft_Aggregate;
   id: Scalars['uuid'];
   organizerId: Scalars['String'];
   packId: Scalars['String'];
@@ -12803,42 +13745,11 @@ export type PackNftContractEventPassIdsArgs = {
   path?: InputMaybe<Scalars['String']>;
 };
 
-
-/** packNftContract model to manage the NFTs associated with each pack. */
-export type PackNftContractEventPassNftsArgs = {
-  distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
-  where?: InputMaybe<EventPassNft_Bool_Exp>;
-};
-
-
-/** packNftContract model to manage the NFTs associated with each pack. */
-export type PackNftContractEventPassNfts_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
-  where?: InputMaybe<EventPassNft_Bool_Exp>;
-};
-
 /** aggregated selection of "packNftContract" */
 export type PackNftContract_Aggregate = {
   __typename?: 'packNftContract_aggregate';
   aggregate?: Maybe<PackNftContract_Aggregate_Fields>;
   nodes: Array<PackNftContract>;
-};
-
-export type PackNftContract_Aggregate_Bool_Exp = {
-  count?: InputMaybe<PackNftContract_Aggregate_Bool_Exp_Count>;
-};
-
-export type PackNftContract_Aggregate_Bool_Exp_Count = {
-  arguments?: InputMaybe<Array<PackNftContract_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
-  filter?: InputMaybe<PackNftContract_Bool_Exp>;
-  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "packNftContract" */
@@ -12864,42 +13775,15 @@ export type PackNftContract_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "packNftContract" */
-export type PackNftContract_Aggregate_Order_By = {
-  avg?: InputMaybe<PackNftContract_Avg_Order_By>;
-  count?: InputMaybe<Order_By>;
-  max?: InputMaybe<PackNftContract_Max_Order_By>;
-  min?: InputMaybe<PackNftContract_Min_Order_By>;
-  stddev?: InputMaybe<PackNftContract_Stddev_Order_By>;
-  stddev_pop?: InputMaybe<PackNftContract_Stddev_Pop_Order_By>;
-  stddev_samp?: InputMaybe<PackNftContract_Stddev_Samp_Order_By>;
-  sum?: InputMaybe<PackNftContract_Sum_Order_By>;
-  var_pop?: InputMaybe<PackNftContract_Var_Pop_Order_By>;
-  var_samp?: InputMaybe<PackNftContract_Var_Samp_Order_By>;
-  variance?: InputMaybe<PackNftContract_Variance_Order_By>;
-};
-
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type PackNftContract_Append_Input = {
   eventPassIds?: InputMaybe<Scalars['jsonb']>;
-};
-
-/** input type for inserting array relation for remote table "packNftContract" */
-export type PackNftContract_Arr_Rel_Insert_Input = {
-  data: Array<PackNftContract_Insert_Input>;
-  /** upsert condition */
-  on_conflict?: InputMaybe<PackNftContract_On_Conflict>;
 };
 
 /** aggregate avg on columns */
 export type PackNftContract_Avg_Fields = {
   __typename?: 'packNftContract_avg_fields';
   rewardsPerPack?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "packNftContract" */
-export type PackNftContract_Avg_Order_By = {
-  rewardsPerPack?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "packNftContract". All fields are combined with a logical 'AND'. */
@@ -12910,10 +13794,7 @@ export type PackNftContract_Bool_Exp = {
   chainId?: InputMaybe<String_Comparison_Exp>;
   contractAddress?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  eventId?: InputMaybe<String_Comparison_Exp>;
   eventPassIds?: InputMaybe<Jsonb_Comparison_Exp>;
-  eventPassNfts?: InputMaybe<EventPassNft_Bool_Exp>;
-  eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
   packId?: InputMaybe<String_Comparison_Exp>;
@@ -12954,9 +13835,7 @@ export type PackNftContract_Insert_Input = {
   chainId?: InputMaybe<Scalars['String']>;
   contractAddress?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventId?: InputMaybe<Scalars['String']>;
   eventPassIds?: InputMaybe<Scalars['jsonb']>;
-  eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
   organizerId?: InputMaybe<Scalars['String']>;
   packId?: InputMaybe<Scalars['String']>;
@@ -12970,25 +13849,11 @@ export type PackNftContract_Max_Fields = {
   chainId?: Maybe<Scalars['String']>;
   contractAddress?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  eventId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   organizerId?: Maybe<Scalars['String']>;
   packId?: Maybe<Scalars['String']>;
   rewardsPerPack?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-/** order by max() on columns of table "packNftContract" */
-export type PackNftContract_Max_Order_By = {
-  chainId?: InputMaybe<Order_By>;
-  contractAddress?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  eventId?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  organizerId?: InputMaybe<Order_By>;
-  packId?: InputMaybe<Order_By>;
-  rewardsPerPack?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -12997,25 +13862,11 @@ export type PackNftContract_Min_Fields = {
   chainId?: Maybe<Scalars['String']>;
   contractAddress?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  eventId?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   organizerId?: Maybe<Scalars['String']>;
   packId?: Maybe<Scalars['String']>;
   rewardsPerPack?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-/** order by min() on columns of table "packNftContract" */
-export type PackNftContract_Min_Order_By = {
-  chainId?: InputMaybe<Order_By>;
-  contractAddress?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  eventId?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  organizerId?: InputMaybe<Order_By>;
-  packId?: InputMaybe<Order_By>;
-  rewardsPerPack?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "packNftContract" */
@@ -13046,9 +13897,7 @@ export type PackNftContract_Order_By = {
   chainId?: InputMaybe<Order_By>;
   contractAddress?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
-  eventId?: InputMaybe<Order_By>;
   eventPassIds?: InputMaybe<Order_By>;
-  eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
   packId?: InputMaybe<Order_By>;
@@ -13075,8 +13924,6 @@ export const enum PackNftContract_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
-  EventId = 'eventId',
-  /** column name */
   EventPassIds = 'eventPassIds',
   /** column name */
   Id = 'id',
@@ -13095,7 +13942,6 @@ export type PackNftContract_Set_Input = {
   chainId?: InputMaybe<Scalars['String']>;
   contractAddress?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventId?: InputMaybe<Scalars['String']>;
   eventPassIds?: InputMaybe<Scalars['jsonb']>;
   id?: InputMaybe<Scalars['uuid']>;
   organizerId?: InputMaybe<Scalars['String']>;
@@ -13110,31 +13956,16 @@ export type PackNftContract_Stddev_Fields = {
   rewardsPerPack?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev() on columns of table "packNftContract" */
-export type PackNftContract_Stddev_Order_By = {
-  rewardsPerPack?: InputMaybe<Order_By>;
-};
-
 /** aggregate stddev_pop on columns */
 export type PackNftContract_Stddev_Pop_Fields = {
   __typename?: 'packNftContract_stddev_pop_fields';
   rewardsPerPack?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_pop() on columns of table "packNftContract" */
-export type PackNftContract_Stddev_Pop_Order_By = {
-  rewardsPerPack?: InputMaybe<Order_By>;
-};
-
 /** aggregate stddev_samp on columns */
 export type PackNftContract_Stddev_Samp_Fields = {
   __typename?: 'packNftContract_stddev_samp_fields';
   rewardsPerPack?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "packNftContract" */
-export type PackNftContract_Stddev_Samp_Order_By = {
-  rewardsPerPack?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "packNftContract" */
@@ -13150,7 +13981,6 @@ export type PackNftContract_Stream_Cursor_Value_Input = {
   chainId?: InputMaybe<Scalars['String']>;
   contractAddress?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventId?: InputMaybe<Scalars['String']>;
   eventPassIds?: InputMaybe<Scalars['jsonb']>;
   id?: InputMaybe<Scalars['uuid']>;
   organizerId?: InputMaybe<Scalars['String']>;
@@ -13165,11 +13995,6 @@ export type PackNftContract_Sum_Fields = {
   rewardsPerPack?: Maybe<Scalars['Int']>;
 };
 
-/** order by sum() on columns of table "packNftContract" */
-export type PackNftContract_Sum_Order_By = {
-  rewardsPerPack?: InputMaybe<Order_By>;
-};
-
 /** update columns of table "packNftContract" */
 export const enum PackNftContract_Update_Column {
   /** column name */
@@ -13178,8 +14003,6 @@ export const enum PackNftContract_Update_Column {
   ContractAddress = 'contractAddress',
   /** column name */
   CreatedAt = 'created_at',
-  /** column name */
-  EventId = 'eventId',
   /** column name */
   EventPassIds = 'eventPassIds',
   /** column name */
@@ -13219,31 +14042,16 @@ export type PackNftContract_Var_Pop_Fields = {
   rewardsPerPack?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_pop() on columns of table "packNftContract" */
-export type PackNftContract_Var_Pop_Order_By = {
-  rewardsPerPack?: InputMaybe<Order_By>;
-};
-
 /** aggregate var_samp on columns */
 export type PackNftContract_Var_Samp_Fields = {
   __typename?: 'packNftContract_var_samp_fields';
   rewardsPerPack?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_samp() on columns of table "packNftContract" */
-export type PackNftContract_Var_Samp_Order_By = {
-  rewardsPerPack?: InputMaybe<Order_By>;
-};
-
 /** aggregate variance on columns */
 export type PackNftContract_Variance_Fields = {
   __typename?: 'packNftContract_variance_fields';
   rewardsPerPack?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "packNftContract" */
-export type PackNftContract_Variance_Order_By = {
-  rewardsPerPack?: InputMaybe<Order_By>;
 };
 
 /** Hold the sums for the Pack Orders */
@@ -14439,6 +15247,8 @@ export type Query_Root = {
   organizers: Array<Organizer>;
   /** Retrieve multiple organizers using the Relay connection interface */
   organizersConnection: OrganizerConnection;
+  /** Retrieve a single pack */
+  pack?: Maybe<Pack>;
   /** fetch data from the table: "packNftContract" */
   packNftContract: Array<PackNftContract>;
   /** fetch aggregated fields from the table: "packNftContract" */
@@ -14451,6 +15261,12 @@ export type Query_Root = {
   packOrderSums_aggregate: PackOrderSums_Aggregate;
   /** fetch data from the table: "packOrderSums" using primary key columns */
   packOrderSums_by_pk?: Maybe<PackOrderSums>;
+  /** Retrieve document version */
+  packVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple packs */
+  packs: Array<Pack>;
+  /** Retrieve multiple packs using the Relay connection interface */
+  packsConnection: PackConnection;
   /** fetch data from the table: "passAmount" */
   passAmount: Array<PassAmount>;
   /** fetch aggregated fields from the table: "passAmount" */
@@ -15072,6 +15888,13 @@ export type Query_RootOrganizersConnectionArgs = {
 };
 
 
+export type Query_RootPackArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: PackWhereUniqueInput;
+};
+
+
 export type Query_RootPackNftContractArgs = {
   distinct_on?: InputMaybe<Array<PackNftContract_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -15115,6 +15938,37 @@ export type Query_RootPackOrderSums_AggregateArgs = {
 
 export type Query_RootPackOrderSums_By_PkArgs = {
   packId: Scalars['String'];
+};
+
+
+export type Query_RootPackVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
+export type Query_RootPacksArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<PackOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<PackWhereInput>;
+};
+
+
+export type Query_RootPacksConnectionArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<PackOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<PackWhereInput>;
 };
 
 
