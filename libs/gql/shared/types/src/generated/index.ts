@@ -6950,6 +6950,10 @@ export type EventParameters = {
   /** An aggregate relationship */
   eventPassNfts_aggregate: EventPassNft_Aggregate;
   id: Scalars['uuid'];
+  /** A computed field, executes function "is_event_ongoing" */
+  isOngoing?: Maybe<Scalars['Boolean']>;
+  /** A computed field, executes function "is_sale_ongoing" */
+  isSaleOngoing?: Maybe<Scalars['Boolean']>;
   organizer?: Maybe<Organizer>;
   organizerId: Scalars['String'];
   signingKey?: Maybe<Scalars['String']>;
@@ -7054,6 +7058,8 @@ export type EventParameters_Bool_Exp = {
   eventPassNfts?: InputMaybe<EventPassNft_Bool_Exp>;
   eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  isOngoing?: InputMaybe<Boolean_Comparison_Exp>;
+  isSaleOngoing?: InputMaybe<Boolean_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
   signingKey?: InputMaybe<String_Comparison_Exp>;
   status?: InputMaybe<EventStatus_Enum_Comparison_Exp>;
@@ -7177,6 +7183,8 @@ export type EventParameters_Order_By = {
   eventPassNftContracts_aggregate?: InputMaybe<EventPassNftContract_Aggregate_Order_By>;
   eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
+  isOngoing?: InputMaybe<Order_By>;
+  isSaleOngoing?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
   signingKey?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
