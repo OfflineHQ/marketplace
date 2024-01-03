@@ -41,18 +41,6 @@ object_relationships:
         remote_table:
           name: passAmount
           schema: public
-  - name: packNftContract
-    using:
-      manual_configuration:
-        column_mapping:
-          chainId: chainId
-          contractAddress: contractAddress
-          eventId: eventId
-          packId: packId
-        insertion_order: null
-        remote_table:
-          name: packNftContract
-          schema: public
   - name: packPricing
     using:
       manual_configuration:
