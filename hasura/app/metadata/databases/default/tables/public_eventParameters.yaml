@@ -20,6 +20,17 @@ array_relationships:
         remote_table:
           name: eventPassNft
           schema: public
+computed_fields:
+  - name: isOngoing
+    definition:
+      function:
+        name: is_event_ongoing
+        schema: public
+  - name: isSaleOngoing
+    definition:
+      function:
+        name: is_sale_ongoing
+        schema: public
 remote_relationships:
   - definition:
       to_remote_schema:
