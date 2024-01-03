@@ -329,7 +329,7 @@ export type GetPackNftContractFromPackIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetPackNftContractFromPackIdQuery = { __typename?: 'query_root', packNftContract: Array<{ __typename?: 'packNftContract', id: any, chainId: string, rewardsPerPack: number, contractAddress: string, eventPassIds: any }> };
+export type GetPackNftContractFromPackIdQuery = { __typename?: 'query_root', packNftContract: Array<{ __typename?: 'packNftContract', id: any, chainId: string, rewardsPerPack: number, organizerId: string, contractAddress: string, eventPassIds: any, eventPassNfts: Array<{ __typename?: 'eventPassNft', tokenId: any, contractAddress: string, currentOwnerAddress?: string | null, eventPassId: string, packId?: string | null }> }> };
 
 export type CreatePassAmountMutationVariables = Types.Exact<{
   passAmount: Types.PassAmount_Insert_Input;

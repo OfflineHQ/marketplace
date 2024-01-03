@@ -18444,6 +18444,42 @@ type packNftContract {
     """JSON select path"""
     path: String
   ): jsonb!
+
+  """An array relationship"""
+  eventPassNfts(
+    """distinct select on columns"""
+    distinct_on: [eventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNft_bool_exp
+  ): [eventPassNft!]!
+
+  """An aggregate relationship"""
+  eventPassNfts_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassNft_bool_exp
+  ): eventPassNft_aggregate!
   id: uuid!
   organizerId: String!
   packId: String!
@@ -18497,6 +18533,8 @@ input packNftContract_bool_exp {
   contractAddress: String_comparison_exp
   created_at: timestamptz_comparison_exp
   eventPassIds: jsonb_comparison_exp
+  eventPassNfts: eventPassNft_bool_exp
+  eventPassNfts_aggregate: eventPassNft_aggregate_bool_exp
   id: uuid_comparison_exp
   organizerId: String_comparison_exp
   packId: String_comparison_exp
@@ -18555,6 +18593,7 @@ input packNftContract_insert_input {
   contractAddress: String
   created_at: timestamptz
   eventPassIds: jsonb
+  eventPassNfts: eventPassNft_arr_rel_insert_input
   id: uuid
   organizerId: String
   packId: String
@@ -18622,6 +18661,7 @@ input packNftContract_order_by {
   contractAddress: order_by
   created_at: order_by
   eventPassIds: order_by
+  eventPassNfts_aggregate: eventPassNft_aggregate_order_by
   id: order_by
   organizerId: order_by
   packId: order_by

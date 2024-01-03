@@ -36,11 +36,11 @@ type Pack = {
   id: string;
   name: string;
   image: string;
+  organizerId: string;
   eventPassIds: {
     id: string;
     amount: number;
   }[];
-  eventId: string;
   rewardsPerPack?: number;
 };
 
@@ -55,10 +55,6 @@ type SaveEventPassContractIntoDbProps = {
 
 type SavePackContractIntoDbProps = {
   chainIdNumber: number;
-  eventData: {
-    eventId: string;
-    organizerId: string;
-  };
   pack: Pack;
   txResult: string;
   selectedNfts: RequiredEventPassNft[];
@@ -451,16 +447,16 @@ class NftCollection {
   }
 
   async savePackContractIntoDb(props: SavePackContractIntoDbProps) {
-    const { chainIdNumber, eventData, pack, txResult, selectedNfts } = props;
+    const { chainIdNumber, pack, txResult, selectedNfts } = props;
+    const { id: packId, rewardsPerPack, eventPassIds, organizerId } = pack;
     const packNftContract = await createPackNftContract({
       chainId: chainIdNumber.toString(),
-      eventId: eventData.eventId,
-      eventPassIds: pack.eventPassIds,
-      organizerId: eventData.organizerId,
-      ...(pack.rewardsPerPack !== undefined && {
-        rewardsPerPack: pack.rewardsPerPack,
+      ...(rewardsPerPack !== undefined && {
+        rewardsPerPack,
       }),
-      packId: pack.id,
+      eventPassIds,
+      organizerId,
+      packId,
       contractAddress: txResult,
     });
     if (!packNftContract) throw new Error('Error creating packNftContract');
@@ -573,21 +569,20 @@ class NftCollection {
     return { selectedNfts, approvalData };
   }
 
-  private validateDeployAPackInputs(pack: Pack, eventData: EventSmallData) {
-    const requiredFields = ['id', 'name', 'image', 'eventPassIds', 'eventId'];
+  private validateDeployAPackInputs(pack: Pack) {
+    const requiredFields = [
+      'id',
+      'name',
+      'image',
+      'eventPassIds',
+      'organizerId',
+    ];
 
     for (const field of requiredFields) {
       if (!pack[field]) {
         throw new Error(`Missing required field in pack: ${field}`);
       }
     }
-
-    if (!eventData.eventId || !eventData.organizerId) {
-      throw new Error(
-        'Missing required field in eventData: eventId or organizerId',
-      );
-    }
-
     pack.eventPassIds.forEach((eventPassId, index) => {
       if (!eventPassId.id || !eventPassId.amount || eventPassId.amount <= 0) {
         throw new Error(
@@ -597,9 +592,9 @@ class NftCollection {
     });
   }
 
-  async deployAPack(pack: Pack, eventData: EventSmallData) {
+  async deployAPack(pack: Pack) {
     try {
-      this.validateDeployAPackInputs(pack, eventData);
+      this.validateDeployAPackInputs(pack);
 
       const { selectedNfts, approvalData } =
         await this.getSelectedNftsFromPack(pack);
@@ -616,7 +611,6 @@ class NftCollection {
       await this.savePackContractIntoDb({
         txResult,
         selectedNfts,
-        eventData,
         pack,
         chainIdNumber,
       });
