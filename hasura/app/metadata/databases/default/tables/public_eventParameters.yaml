@@ -20,15 +20,17 @@ array_relationships:
         remote_table:
           name: eventPassNft
           schema: public
-  - name: packNftContracts
-    using:
-      manual_configuration:
-        column_mapping:
-          eventId: eventId
-        insertion_order: null
-        remote_table:
-          name: packNftContract
-          schema: public
+computed_fields:
+  - name: isOngoing
+    definition:
+      function:
+        name: is_event_ongoing
+        schema: public
+  - name: isSaleOngoing
+    definition:
+      function:
+        name: is_sale_ongoing
+        schema: public
 remote_relationships:
   - definition:
       to_remote_schema:

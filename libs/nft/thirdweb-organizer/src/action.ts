@@ -53,9 +53,9 @@ export async function createEventPassNfts(
   return data?.insert_eventPassNft || null;
 }
 
-async function InsertEventParameters(objects: EventParameters_Insert_Input[]) {
-  const data = await adminSdk.InsertEventParameters({ objects });
-  return data?.insert_eventParameters;
+async function CreateEventParameters(object: EventParameters_Insert_Input) {
+  const data = await adminSdk.CreateEventParameters({ object });
+  return data?.insert_eventParameters_one;
 }
 
 export async function getEventPassNftContractNfts(
@@ -89,16 +89,14 @@ export async function createEventParametersAndWebhook({
     });
     if (!event) throw new Error('Event not found');
     if (!event.eventDateLocations?.[0]) throw new Error('Event has no date');
-    await InsertEventParameters([
-      {
-        activityWebhookId: newWebhook.id,
-        organizerId,
-        eventId,
-        signingKey: newWebhook.signingKey,
-        dateEnd: event.eventDateLocations[0].dateEnd, //TODO -> handle multiple dateLocations event ??
-        dateStart: event.eventDateLocations[0].dateStart,
-      },
-    ]);
+    await CreateEventParameters({
+      activityWebhookId: newWebhook.id,
+      organizerId,
+      eventId,
+      signingKey: newWebhook.signingKey,
+      dateEnd: event.eventDateLocations[0].dateEnd, //TODO -> handle multiple dateLocations event ??
+      dateStart: event.eventDateLocations[0].dateStart,
+    });
   }
 }
 
