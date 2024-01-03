@@ -6,8 +6,6 @@ array_relationships:
     using:
       manual_configuration:
         column_mapping:
-          chainId: chainId
-          eventId: eventId
           packId: packId
         insertion_order: null
         remote_table:
