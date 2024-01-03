@@ -188,7 +188,7 @@ export type GetEventsFromOrganizerIdTableQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetEventsFromOrganizerIdTableQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', events: Array<{ __typename?: 'Event', title: string, slug: string, eventParameters?: { __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, dateSaleStart?: any | null, dateSaleEnd?: any | null, timezone?: string | null } | null }> } | null };
+export type GetEventsFromOrganizerIdTableQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', events: Array<{ __typename?: 'Event', title: string, slug: string, eventParameters?: { __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, dateSaleStart?: any | null, dateSaleEnd?: any | null, timezone?: string | null, status?: Types.EventStatus_Enum | null, isSaleOngoing?: boolean | null, isOngoing?: boolean | null } | null }> } | null };
 
 export type GetEventWithPassesOrganizerQueryVariables = Types.Exact<{
   slug: Types.Scalars['String'];
@@ -407,12 +407,12 @@ export type EventPassFieldsFragment = { __typename?: 'EventPass', name: string, 
 
 export type EventPassNftFieldsFragment = { __typename?: 'eventPassNft', id: any, tokenId: any, eventId: string, eventPassId: string, packId?: string | null, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null };
 
-export type InsertEventParametersMutationVariables = Types.Exact<{
-  objects: Array<Types.EventParameters_Insert_Input> | Types.EventParameters_Insert_Input;
+export type CreateEventParametersMutationVariables = Types.Exact<{
+  object: Types.EventParameters_Insert_Input;
 }>;
 
 
-export type InsertEventParametersMutation = { __typename?: 'mutation_root', insert_eventParameters?: { __typename?: 'eventParameters_mutation_response', returning: Array<{ __typename?: 'eventParameters', id: any, activityWebhookId?: string | null, eventId: string }> } | null };
+export type CreateEventParametersMutation = { __typename?: 'mutation_root', insert_eventParameters_one?: { __typename?: 'eventParameters', id: any, activityWebhookId?: string | null, eventId: string } | null };
 
 export type GetAlchemyInfosFromEventIdQueryVariables = Types.Exact<{
   eventId?: Types.InputMaybe<Types.Scalars['String']>;
@@ -420,6 +420,13 @@ export type GetAlchemyInfosFromEventIdQueryVariables = Types.Exact<{
 
 
 export type GetAlchemyInfosFromEventIdQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', activityWebhookId?: string | null, signingKey?: string | null }> };
+
+export type GetEventParametersQueryVariables = Types.Exact<{
+  eventId?: Types.InputMaybe<Types.Scalars['String']>;
+}>;
+
+
+export type GetEventParametersQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, dateSaleStart?: any | null, dateSaleEnd?: any | null, timezone?: string | null, status?: Types.EventStatus_Enum | null, isSaleOngoing?: boolean | null, isOngoing?: boolean | null }> };
 
 export type GetEventPassNftByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['uuid'];

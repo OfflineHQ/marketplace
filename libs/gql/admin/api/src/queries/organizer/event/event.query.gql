@@ -69,6 +69,9 @@ query GetEventsFromOrganizerIdTable($id: ID!, $locale: Locale!, $stage: Stage!)
         dateSaleStart
         dateSaleEnd
         timezone
+        status
+        isSaleOngoing
+        isOngoing
       }
     }
   }

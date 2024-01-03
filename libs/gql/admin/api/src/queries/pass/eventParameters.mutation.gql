@@ -1,9 +1,7 @@
-mutation InsertEventParameters($objects: [eventParameters_insert_input!]!) {
-  insert_eventParameters(objects: $objects) {
-    returning {
-      id
-      activityWebhookId
-      eventId
-    }
+mutation CreateEventParameters($object: eventParameters_insert_input!) {
+  insert_eventParameters_one(object: $object) {
+    id
+    activityWebhookId
+    eventId
   }
 }
