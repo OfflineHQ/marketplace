@@ -310,12 +310,9 @@ describe('NftCollection', () => {
   describe('savePackContractIntoDb', () => {
     const props = {
       chainIdNumber: 5,
-      eventData: {
-        eventId: 'clizzpvidao620buvxit1ynko',
-        organizerId: 'clizzky8kap2t0bw7wka9a2id',
-      },
       pack: {
         id: 'mocked_pack_id',
+        organizerId: 'clizzky8kap2t0bw7wka9a2id',
         eventPassIds: [{ id: 'fakeEventPassDelayedRevealId', amount: 1 }],
         rewardsPerPack: 1,
         name: 'mocked_pack_name',
@@ -353,7 +350,7 @@ describe('NftCollection', () => {
       expect(packNftContract[0]).toEqual(
         expect.objectContaining({
           chainId: props.chainIdNumber.toString(),
-          eventId: props.eventData.eventId,
+          organizerId: props.pack.organizerId,
           eventPassIds: props.pack.eventPassIds,
           rewardsPerPack: props.pack.rewardsPerPack,
           contractAddress: props.txResult,
@@ -403,11 +400,11 @@ describe('NftCollection', () => {
     it('should successfully get selected NFTs from pack', async () => {
       const pack = {
         id: 'mocked_pack_id',
+        organizerId: 'clizzky8kap2t0bw7wka9a2id',
         eventPassIds: [{ id: 'fakeEventPassPackId2', amount: 2 }],
         rewardsPerPack: 1,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
-        eventId: 'clizzpvidao620buvxit1ynko',
       };
 
       const { selectedNfts } =
@@ -442,7 +439,7 @@ describe('NftCollection', () => {
         rewardsPerPack: 1,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
-        eventId: 'clizzpvidao620buvxit1ynko',
+        organizerId: 'clizzky8kap2t0bw7wka9a2id',
       };
 
       await expect(nftCollection.getSelectedNftsFromPack(pack)).rejects.toThrow(
@@ -459,7 +456,7 @@ describe('NftCollection', () => {
         rewardsPerPack: 1,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
-        eventId: 'clizzpvidao620buvxit1ynko',
+        organizerId: 'clizzky8kap2t0bw7wka9a2id',
       };
 
       await expect(nftCollection.getSelectedNftsFromPack(pack)).rejects.toThrow(
@@ -505,16 +502,9 @@ describe('NftCollection', () => {
         rewardsPerPack: 2,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
-        eventId: 'clizzpvidao620buvxit1ynko',
-      };
-
-      const eventData = {
-        eventId: 'clizzpvidao620buvxit1ynko',
         organizerId: 'clizzky8kap2t0bw7wka9a2id',
-        eventSlug: 'mockSlug',
       };
-
-      await nftCollection.deployAPack(pack, eventData);
+      await nftCollection.deployAPack(pack);
 
       const packNftContract = (
         await adminSdk.GetPackNftContractFromPackId({
@@ -525,13 +515,13 @@ describe('NftCollection', () => {
       expect(packNftContract[0]).toEqual(
         expect.objectContaining({
           chainId: '5',
-          eventId: 'clizzpvidao620buvxit1ynko',
           eventPassIds: [
             {
               amount: 2,
               id: 'fakeEventPassPackId2',
             },
           ],
+          organizerId: 'clizzky8kap2t0bw7wka9a2id',
           rewardsPerPack: 2,
           contractAddress: 'fake_tx_result',
           eventPassNfts: [
@@ -622,41 +612,12 @@ describe('NftCollection', () => {
         rewardsPerPack: 2,
         name: '',
         image: 'mocked_pack_image',
-        eventId: 'clizzpvidao620buvxit1ynko',
-      };
-
-      const eventData = {
-        eventId: 'clizzpvidao620buvxit1ynko',
         organizerId: 'clizzky8kap2t0bw7wka9a2id',
-        eventSlug: 'mockSlug',
       };
 
-      await expect(nftCollection.deployAPack(pack, eventData)).rejects.toThrow(
+      await expect(nftCollection.deployAPack(pack)).rejects.toThrow(
         new Error(
           'Error deploying a pack: Missing required field in pack: name',
-        ),
-      );
-    });
-
-    it('should throw an error if eventData is missing required fields', async () => {
-      const pack = {
-        id: 'mocked_pack_id',
-        eventPassIds: [{ id: 'fakeEventPassPackId2', amount: 2 }],
-        rewardsPerPack: 2,
-        name: 'mocked_pack_name',
-        image: 'mocked_pack_image',
-        eventId: 'clizzpvidao620buvxit1ynko',
-      };
-
-      const eventData = {
-        eventId: '',
-        organizerId: 'clizzky8kap2t0bw7wka9a2id',
-        eventSlug: 'mockSlug',
-      };
-
-      await expect(nftCollection.deployAPack(pack, eventData)).rejects.toThrow(
-        new Error(
-          'Error deploying a pack: Missing required field in eventData: eventId or organizerId',
         ),
       );
     });
@@ -668,20 +629,14 @@ describe('NftCollection', () => {
         rewardsPerPack: 2,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
-        eventId: 'clizzpvidao620buvxit1ynko',
-      };
-
-      const eventData = {
-        eventId: 'clizzpvidao620buvxit1ynko',
         organizerId: 'clizzky8kap2t0bw7wka9a2id',
-        eventSlug: 'mockSlug',
       };
 
       nftCollection.deployAndCreatePack = jest
         .fn()
         .mockRejectedValue(new Error('Error in deployAndCreatePack'));
 
-      await expect(nftCollection.deployAPack(pack, eventData)).rejects.toThrow(
+      await expect(nftCollection.deployAPack(pack)).rejects.toThrow(
         new Error('Error deploying a pack: Error in deployAndCreatePack'),
       );
     });
@@ -693,20 +648,14 @@ describe('NftCollection', () => {
         rewardsPerPack: 2,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
-        eventId: 'clizzpvidao620buvxit1ynko',
-      };
-
-      const eventData = {
-        eventId: 'clizzpvidao620buvxit1ynko',
         organizerId: 'clizzky8kap2t0bw7wka9a2id',
-        eventSlug: 'mockSlug',
       };
 
       nftCollection.savePackContractIntoDb = jest
         .fn()
         .mockRejectedValue(new Error('Error in savePackContractIntoDb'));
 
-      await expect(nftCollection.deployAPack(pack, eventData)).rejects.toThrow(
+      await expect(nftCollection.deployAPack(pack)).rejects.toThrow(
         new Error('Error deploying a pack: Error in savePackContractIntoDb'),
       );
     });
@@ -718,20 +667,14 @@ describe('NftCollection', () => {
         rewardsPerPack: 2,
         name: 'mocked_pack_name',
         image: 'mocked_pack_image',
-        eventId: 'clizzpvidao620buvxit1ynko',
-      };
-
-      const eventData = {
-        eventId: 'clizzpvidao620buvxit1ynko',
         organizerId: 'clizzky8kap2t0bw7wka9a2id',
-        eventSlug: 'mockSlug',
       };
 
       nftCollection.getSelectedNftsFromPack = jest
         .fn()
         .mockRejectedValue(new Error('Error in getSelectedNftsFromPack'));
 
-      await expect(nftCollection.deployAPack(pack, eventData)).rejects.toThrow(
+      await expect(nftCollection.deployAPack(pack)).rejects.toThrow(
         new Error('Error deploying a pack: Error in getSelectedNftsFromPack'),
       );
     });

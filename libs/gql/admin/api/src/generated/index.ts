@@ -793,8 +793,16 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     id
     chainId
     rewardsPerPack
+    organizerId
     contractAddress
     eventPassIds
+    eventPassNfts {
+      tokenId
+      contractAddress
+      currentOwnerAddress
+      eventPassId
+      packId
+    }
   }
 }
     `;

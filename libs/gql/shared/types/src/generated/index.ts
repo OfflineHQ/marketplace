@@ -13732,6 +13732,10 @@ export type PackNftContract = {
   contractAddress: Scalars['String'];
   created_at: Scalars['timestamptz'];
   eventPassIds: Scalars['jsonb'];
+  /** An array relationship */
+  eventPassNfts: Array<EventPassNft>;
+  /** An aggregate relationship */
+  eventPassNfts_aggregate: EventPassNft_Aggregate;
   id: Scalars['uuid'];
   organizerId: Scalars['String'];
   packId: Scalars['String'];
@@ -13743,6 +13747,26 @@ export type PackNftContract = {
 /** packNftContract model to manage the NFTs associated with each pack. */
 export type PackNftContractEventPassIdsArgs = {
   path?: InputMaybe<Scalars['String']>;
+};
+
+
+/** packNftContract model to manage the NFTs associated with each pack. */
+export type PackNftContractEventPassNftsArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
+  where?: InputMaybe<EventPassNft_Bool_Exp>;
+};
+
+
+/** packNftContract model to manage the NFTs associated with each pack. */
+export type PackNftContractEventPassNfts_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
+  where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
 
 /** aggregated selection of "packNftContract" */
@@ -13795,6 +13819,8 @@ export type PackNftContract_Bool_Exp = {
   contractAddress?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   eventPassIds?: InputMaybe<Jsonb_Comparison_Exp>;
+  eventPassNfts?: InputMaybe<EventPassNft_Bool_Exp>;
+  eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
   packId?: InputMaybe<String_Comparison_Exp>;
@@ -13836,6 +13862,7 @@ export type PackNftContract_Insert_Input = {
   contractAddress?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   eventPassIds?: InputMaybe<Scalars['jsonb']>;
+  eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']>;
   organizerId?: InputMaybe<Scalars['String']>;
   packId?: InputMaybe<Scalars['String']>;
@@ -13898,6 +13925,7 @@ export type PackNftContract_Order_By = {
   contractAddress?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   eventPassIds?: InputMaybe<Order_By>;
+  eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
   packId?: InputMaybe<Order_By>;
