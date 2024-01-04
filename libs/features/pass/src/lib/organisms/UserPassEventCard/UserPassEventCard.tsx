@@ -24,6 +24,7 @@ import {
   type RevealPassesDialogProps,
 } from '../RevealPassesDialog/RevealPassesDialog';
 
+import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { DownloadButtonClient } from './DownloadButtonClient';
 
 export interface UserPassEventCardProps
@@ -46,6 +47,10 @@ export const UserPassEventCard: React.FC<UserPassEventCardProps> = ({
   const numPassNotRevealed = eventPassNftContract.eventPassNfts.filter(
     (nft) => !nft.isRevealed,
   ).length;
+
+  const isEventPassContractNotRevealed =
+    !eventPassNftContract.isDelayedRevealed &&
+    eventPassNftContract.type === EventPassNftContractType_Enum.DelayedReveal;
 
   return (
     <Card
@@ -72,15 +77,16 @@ export const UserPassEventCard: React.FC<UserPassEventCardProps> = ({
           <div className="flex flex-col" key={index}>
             <div className="flex items-center space-x-2">
               <Text>{t('pass-number', { number: eventPassNft.tokenId })}</Text>
-              {eventPassNft.isRevealed ? (
-                <Badge variant="green" size="sm">
-                  {t('revealed')}
-                </Badge>
-              ) : (
-                <Badge variant="orange" size="sm">
-                  {t('not-revealed')}
-                </Badge>
-              )}
+              {!isEventPassContractNotRevealed &&
+                (eventPassNft.isRevealed ? (
+                  <Badge variant="green" size="sm">
+                    {t('revealed')}
+                  </Badge>
+                ) : (
+                  <Badge variant="orange" size="sm">
+                    {t('not-revealed')}
+                  </Badge>
+                ))}
               <div className="flex grow justify-end">
                 <UserPassEventPassActions
                   eventPassNft={eventPassNft}
