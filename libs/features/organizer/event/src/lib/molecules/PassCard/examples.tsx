@@ -9,7 +9,6 @@ import {
   passOptionsFormula1,
   passOptionsHolidays,
 } from '../PassOptions/examples';
-import { PassCard, type PassCardProps } from './PassCard';
 
 export const passWithMaxAmount: EventPass = {
   id: '1',
@@ -193,34 +192,4 @@ export const passPremium: EventPass = {
   // eventPassOrderSums: {
   //   totalReserved: 20,
   // },
-};
-
-export const PassCardBoundaryMaxExample = ({
-  organizerSlug,
-  eventSlug,
-  ...props
-}: PassCardProps) => {
-  // updatePassCart({
-  //   organizerSlug,
-  //   eventSlug,
-  //   pass: { ...passWithMaxAmountCart, id: props.id },
-  // });
-  return (
-    <PassCard organizerSlug={organizerSlug} eventSlug={eventSlug} {...props} />
-  );
-};
-
-export const PassCardBoundaryMaxPerUserExample = ({
-  organizerSlug,
-  eventSlug,
-  ...props
-}: PassCardProps) => {
-  // updatePassCart({
-  //   organizerSlug,
-  //   eventSlug,
-  //   pass: { ...passWithMaxAmountPerUserCart, id: props.id },
-  // });
-  return (
-    <PassCard organizerSlug={organizerSlug} eventSlug={eventSlug} {...props} />
-  );
 };
