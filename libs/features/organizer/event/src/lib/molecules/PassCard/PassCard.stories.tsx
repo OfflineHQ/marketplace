@@ -1,10 +1,10 @@
+import { expect } from '@storybook/jest';
+import { screen } from '@storybook/test';
 // PassCard.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 import { PassCard, PassCardProps, PassCardSkeleton } from './PassCard';
 import {
-  PassCardBoundaryMaxExample,
-  PassCardBoundaryMaxPerUserExample,
   passWithMaxAmount,
   passWithMaxAmountPerUser,
   passWithSoldOut,
@@ -86,22 +86,20 @@ export const BoundaryConditions: Story = {
       ],
     },
   },
-  render: PassCardBoundaryMaxExample,
-  // play: async () => {
-  //   const incrementButton = await screen.findByRole('button', {
-  //     name: /increment value/i,
-  //   });
-  //   expect(incrementButton).toBeDisabled();
-  //   const decrementButton = screen.getByRole('button', {
-  //     name: /decrement value/i,
-  //   });
-  //   expect(decrementButton).not.toBeDisabled();
-  // },
+  play: async () => {
+    const incrementButton = await screen.findByRole('button', {
+      name: /increment value/i,
+    });
+    await expect(incrementButton).toBeDisabled();
+    const decrementButton = screen.getByRole('button', {
+      name: /decrement value/i,
+    });
+    await expect(decrementButton).toBeEnabled();
+  },
 };
 
 export const BoundaryConditionsPerUser: Story = {
   args: passWithMaxAmountPerUser,
-  render: PassCardBoundaryMaxPerUserExample,
   // play: async (context) => {
   //   if (BoundaryConditions.play) await BoundaryConditions.play(context);
   // },
