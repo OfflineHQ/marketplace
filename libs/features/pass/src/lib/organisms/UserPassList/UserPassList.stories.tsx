@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { screen } from '@storybook/test';
+import { expect, screen } from '@storybook/test';
 
+import {
+  eventParametersDelayedReveal,
+  eventParametersDelayedRevealRevealed,
+} from '../UserPassEvent/examples';
 import { UserPassList } from './UserPassList';
 import {
   UserPassListExample,
@@ -55,6 +59,29 @@ export const WithMultipleEvents: Story = {
     eventsParameters: [eventParameters, eventParameters2],
   },
   play: async () => undefined,
+};
+
+export const WithDelayedRevealNotRevealed: Story = {
+  args: {
+    eventsParameters: [eventParametersDelayedReveal],
+  },
+  play: async ({ canvasElement }) => {
+    await screen.findByText(/World cup/i);
+    expect(screen.queryByText(/revealed/i)).not.toBeInTheDocument();
+  },
+};
+
+export const WithDelayedRevealRevealed: Story = {
+  args: {
+    eventsParameters: [eventParametersDelayedRevealRevealed],
+  },
+  play: async ({ canvasElement }) => {
+    await screen.findByText(/World cup/i);
+    expect(screen.getAllByText(/revealed/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/revealed/i)[1]).toBeInTheDocument();
+    expect(screen.getAllByText(/revealed/i)[2]).toBeInTheDocument();
+    expect(screen.getAllByText(/revealed/i)[3]).toBeInTheDocument();
+  },
 };
 
 export const WithSkeleton: Story = {

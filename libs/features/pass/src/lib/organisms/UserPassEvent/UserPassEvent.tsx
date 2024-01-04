@@ -15,6 +15,7 @@ import {
   type UserPassEventCardProps,
 } from '../UserPassEventCard/UserPassEventCard';
 
+import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
@@ -43,7 +44,15 @@ export const UserPassEvent: React.FC<UserPassEventProps> = ({
   let numPass = 0;
   let numPassRevealed = 0;
   let numPassNotRevealed = 0;
+  let onlyEventPassNotRevealed = false;
   for (const eventPassNftContract of eventParameters.eventPassNftContracts) {
+    if (
+      eventPassNftContract.type ===
+        EventPassNftContractType_Enum.DelayedReveal &&
+      !eventPassNftContract.isDelayedRevealed
+    ) {
+      onlyEventPassNotRevealed = true;
+    } else onlyEventPassNotRevealed = false;
     numPass += eventPassNftContract.eventPassNfts.length;
     for (const eventPassNft of eventPassNftContract.eventPassNfts) {
       if (eventPassNft.isRevealed) {
@@ -83,12 +92,12 @@ export const UserPassEvent: React.FC<UserPassEventProps> = ({
             />
             <div className={layout.passesTextContainer}>
               <Badge variant="outline">{t('num-pass', { numPass })}</Badge>
-              {numPassNotRevealed > 0 && (
+              {numPassNotRevealed > 0 && !onlyEventPassNotRevealed && (
                 <Badge variant="orange">
                   {t('num-pass-not-revealed', { numPassNotRevealed })}
                 </Badge>
               )}
-              {numPassRevealed > 0 && (
+              {numPassRevealed > 0 && !onlyEventPassNotRevealed && (
                 <Badge variant="green">
                   {t('num-pass-revealed', { numPassRevealed })}
                 </Badge>
