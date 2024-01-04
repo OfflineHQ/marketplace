@@ -68,6 +68,8 @@ export const WithDelayedRevealNotRevealed: Story = {
   play: async ({ canvasElement }) => {
     await screen.findByText(/World cup/i);
     expect(screen.queryByText(/revealed/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/download/i)).not.toBeInTheDocument();
+    //TODO use something similar to `clickOnRevealButton` to check that reveal button is not in list of actions
   },
 };
 
@@ -81,6 +83,10 @@ export const WithDelayedRevealRevealed: Story = {
     expect(screen.getAllByText(/revealed/i)[1]).toBeInTheDocument();
     expect(screen.getAllByText(/revealed/i)[2]).toBeInTheDocument();
     expect(screen.getAllByText(/revealed/i)[3]).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /download/i }),
+    ).toBeInTheDocument();
+    //TODO use something similar to `clickOnRevealButton` to check that reveal button is in list of actions
   },
 };
 
