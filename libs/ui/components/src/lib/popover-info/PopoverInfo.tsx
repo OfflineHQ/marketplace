@@ -25,7 +25,7 @@ export interface PopoverInfoProps {
 }
 
 const iconSizeVariantsCva = cva(
-  'absolute flex rounded-full bg-white transition-colors dark:bg-slate-200',
+  'absolute flex rounded-full bg-slate-100 transition-colors dark:bg-slate-800',
   {
     variants: {
       iconSize: iconSizes,
