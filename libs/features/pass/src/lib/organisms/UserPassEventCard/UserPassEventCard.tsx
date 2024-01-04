@@ -25,6 +25,7 @@ import {
 } from '../RevealPassesDialog/RevealPassesDialog';
 
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
+import { EventPassContractDelayedRevealBadge } from '../../molecules/EventPassContractDelayedRevealBadge/EventPassContractDelayedRevealBadge';
 import { DownloadButtonClient } from './DownloadButtonClient';
 
 export interface UserPassEventCardProps
@@ -71,6 +72,12 @@ export const UserPassEventCard: React.FC<UserPassEventCardProps> = ({
           />
         </AspectRatio>
         <CardTitle>{eventPassNftContract.eventPass?.name}</CardTitle>
+        {eventPassNftContract.type ===
+          EventPassNftContractType_Enum.DelayedReveal && (
+          <EventPassContractDelayedRevealBadge
+            isDelayedRevealed={eventPassNftContract.isDelayedRevealed}
+          />
+        )}
       </CardHeader>
       <CardContent className="flex min-h-fit flex-col space-y-4">
         {eventPassNftContract.eventPassNfts.map((eventPassNft, index) => (
