@@ -444,6 +444,13 @@ export type GetEventPassNftByIdMinimalQueryVariables = Types.Exact<{
 
 export type GetEventPassNftByIdMinimalQuery = { __typename?: 'query_root', eventPassNft_by_pk?: { __typename?: 'eventPassNft', id: any, tokenId: any, eventId: string, eventPassId: string, packId?: string | null, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null } | null };
 
+export type GetEventPassNftByIdWithEventPassNftContractQueryVariables = Types.Exact<{
+  id: Types.Scalars['uuid'];
+}>;
+
+
+export type GetEventPassNftByIdWithEventPassNftContractQuery = { __typename?: 'query_root', eventPassNft_by_pk?: { __typename?: 'eventPassNft', id: any, tokenId: any, eventId: string, eventPassId: string, packId?: string | null, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null, eventPassNftContract?: { __typename?: 'eventPassNftContract', type: Types.EventPassNftContractType_Enum, isDelayedRevealed: boolean } | null } | null };
+
 export type RoleAssignmentFieldsFragment = { __typename?: 'roleAssignment', role: Types.Roles_Enum, organizerId: string, eventId: string };
 
 export type CreateRoleAssignmentMutationVariables = Types.Exact<{
