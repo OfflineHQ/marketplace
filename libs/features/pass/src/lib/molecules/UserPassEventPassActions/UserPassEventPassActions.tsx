@@ -20,6 +20,7 @@ export type UserPassEventPassActionsFunctionsProps = {
 
 export interface UserPassEventPassActionsProps
   extends UserPassEventPassActionsFunctionsProps {
+  isEventPassContractNotRevealed: boolean;
   eventPassNft: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPassNfts'][0];
   eventPass: EventWithEventPassNfts['eventPassNftContracts'][0]['eventPass'];
   event: EventWithEventPassNfts['event'];
@@ -28,7 +29,14 @@ export interface UserPassEventPassActionsProps
 
 export const UserPassEventPassActions: React.FC<
   UserPassEventPassActionsProps
-> = ({ eventPassNft, eventPass, event, organizer, actionsFunctions }) => {
+> = ({
+  eventPassNft,
+  isEventPassContractNotRevealed,
+  eventPass,
+  event,
+  organizer,
+  actionsFunctions,
+}) => {
   const t = useTranslations('Pass.UserPass.UserPassEventPassActions');
   const locale = useLocale();
   const items: DropdownMenuActionsProps['items'] = [
@@ -105,31 +113,32 @@ export const UserPassEventPassActions: React.FC<
     'use server';
     return revealPassToastSuccessMessages;
   }
-
-  if (eventPassNft?.isRevealed) {
-    items.push({
-      type: 'item',
-      icon: <Download />,
-      text: t('download-pass'),
-      wrapper: (
-        <Link
-          href={`${getNextAppURL()}/api/downloadPass?id=${eventPassNft?.id}&tokenId=${eventPassNft?.tokenId}&slug=${event?.slug}-${slugify(
-            eventPass?.name || '',
-          )}`}
-        />
-      ),
-      toastError: downloadPassToastError,
-      toastSuccess: downloadPassToastSuccess,
-    });
-  } else {
-    items.push({
-      type: 'item',
-      icon: <Reveal />,
-      text: t('reveal-pass'),
-      action: revealPass,
-      toastError: revealPassToastError,
-      toastSuccess: revealPassToastSuccess,
-    });
+  if (!isEventPassContractNotRevealed) {
+    if (eventPassNft?.isRevealed) {
+      items.push({
+        type: 'item',
+        icon: <Download />,
+        text: t('download-pass'),
+        wrapper: (
+          <Link
+            href={`${getNextAppURL()}/api/downloadPass?id=${eventPassNft?.id}&tokenId=${eventPassNft?.tokenId}&slug=${event?.slug}-${slugify(
+              eventPass?.name || '',
+            )}`}
+          />
+        ),
+        toastError: downloadPassToastError,
+        toastSuccess: downloadPassToastSuccess,
+      });
+    } else {
+      items.push({
+        type: 'item',
+        icon: <Reveal />,
+        text: t('reveal-pass'),
+        action: revealPass,
+        toastError: revealPassToastError,
+        toastSuccess: revealPassToastSuccess,
+      });
+    }
   }
   items.push({
     type: 'item',

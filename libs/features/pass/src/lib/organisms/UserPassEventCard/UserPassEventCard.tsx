@@ -90,6 +90,9 @@ export const UserPassEventCard: React.FC<UserPassEventCardProps> = ({
               <div className="flex grow justify-end">
                 <UserPassEventPassActions
                   eventPassNft={eventPassNft}
+                  isEventPassContractNotRevealed={
+                    isEventPassContractNotRevealed
+                  }
                   eventPass={eventPassNftContract.eventPass}
                   event={eventParameters.event}
                   organizer={eventParameters.organizer}
@@ -103,43 +106,45 @@ export const UserPassEventCard: React.FC<UserPassEventCardProps> = ({
           </div>
         ))}
       </CardContent>
-      <CardFooter>
-        {numPassNotRevealed > 0 ? (
-          <RevealPassesDialog
-            eventPassNftContract={eventPassNftContract}
-            numPassNotRevealed={numPassNotRevealed}
-            batchDownloadOrReveal={batchDownloadOrReveal}
-          >
-            <Button className="w-full" icon={<Download />} block>
-              {t('download-passes-button', {
+      {!isEventPassContractNotRevealed && (
+        <CardFooter>
+          {numPassNotRevealed > 0 ? (
+            <RevealPassesDialog
+              eventPassNftContract={eventPassNftContract}
+              numPassNotRevealed={numPassNotRevealed}
+              batchDownloadOrReveal={batchDownloadOrReveal}
+            >
+              <Button className="w-full" icon={<Download />} block>
+                {t('download-passes-button', {
+                  numPass: eventPassNftContract.eventPassNfts.length,
+                })}
+              </Button>
+            </RevealPassesDialog>
+          ) : (
+            <DownloadButtonClient
+              buttonTxt={t('download-passes-button', {
                 numPass: eventPassNftContract.eventPassNfts.length,
               })}
-            </Button>
-          </RevealPassesDialog>
-        ) : (
-          <DownloadButtonClient
-            buttonTxt={t('download-passes-button', {
-              numPass: eventPassNftContract.eventPassNfts.length,
-            })}
-            eventPassNftContract={eventPassNftContract}
-            batchDownloadOrReveal={batchDownloadOrReveal}
-            buttonToastTxt={{
-              successTitle: t('download-passes-toast-success-title', {
-                numPass: eventPassNftContract.eventPassNfts.length,
-              }),
-              successComment: t('download-passes-toast-success-comment', {
-                numPass: eventPassNftContract.eventPassNfts.length,
-              }),
-              errorTitle: t('download-passes-toast-error-title', {
-                numPass: eventPassNftContract.eventPassNfts.length,
-              }),
-              errorComment: t('download-passes-toast-error-comment', {
-                numPass: eventPassNftContract.eventPassNfts.length,
-              }),
-            }}
-          />
-        )}
-      </CardFooter>
+              eventPassNftContract={eventPassNftContract}
+              batchDownloadOrReveal={batchDownloadOrReveal}
+              buttonToastTxt={{
+                successTitle: t('download-passes-toast-success-title', {
+                  numPass: eventPassNftContract.eventPassNfts.length,
+                }),
+                successComment: t('download-passes-toast-success-comment', {
+                  numPass: eventPassNftContract.eventPassNfts.length,
+                }),
+                errorTitle: t('download-passes-toast-error-title', {
+                  numPass: eventPassNftContract.eventPassNfts.length,
+                }),
+                errorComment: t('download-passes-toast-error-comment', {
+                  numPass: eventPassNftContract.eventPassNfts.length,
+                }),
+              }}
+            />
+          )}
+        </CardFooter>
+      )}
     </Card>
   );
 };
