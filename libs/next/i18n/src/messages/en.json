@@ -162,6 +162,12 @@
         "action-download-toast-error-description": "Something went wrong while downloading the pass. Please try again.",
         "action-download-toast-success-title": "Pass downloaded",
         "action-download-toast-success-description": "The pass has been downloaded successfully"
+      },
+      "EventPassContractDelayedRevealBadge": {
+        "not-revealed-title": "Pass Not Unveiled",
+        "revealed-title": "Pass Unveiled",
+        "revealed-description": "The details of your event pass are now revealed! Explore the complete range of benefits and features available to you. Get ready for an enhanced event experience tailored just for you.",
+        "not-revealed-description": "Your event pass details are currently hidden, adding an element of anticipation to your experience. The full features and benefits of your pass will be revealed soon. Stay tuned for the exciting details!"
       }
     },
     "NoUserPass": {

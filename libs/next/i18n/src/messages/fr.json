@@ -183,7 +183,13 @@
       "past": "Passé",
       "title": "Pass",
       "minting-success-message-badge": "{numPass, plural, =1 {1 pass en cours de création} other {# pass en cours de création}}",
-      "upcoming": "À venir"
+      "upcoming": "À venir",
+      "EventPassContractDelayedRevealBadge": {
+        "revealed-title": "Pass dévoilé",
+        "not-revealed-title": "Pass non dévoilé",
+        "revealed-description": "Les détails de votre pass d'événement sont maintenant dévoilés ! Explorez la gamme complète des avantages et fonctionnalités disponibles pour vous. Préparez-vous pour une expérience d'événement améliorée et personnalisée juste pour vous.",
+        "not-revealed-description": "Les détails de votre pass d'événement sont actuellement cachés, ajoutant un élément d'anticipation à votre expérience. Les fonctionnalités et avantages complets de votre pass seront bientôt révélés. Restez à l'écoute pour les détails excitants !"
+      }
     }
   },
   "Organizer": {

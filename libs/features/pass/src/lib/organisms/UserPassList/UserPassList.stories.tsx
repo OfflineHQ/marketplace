@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, screen } from '@storybook/test';
+import { expect, screen, userEvent } from '@storybook/test';
 
 import {
   eventParametersDelayedReveal,
@@ -69,6 +69,9 @@ export const WithDelayedRevealNotRevealed: Story = {
     await screen.findByText(/World cup/i);
     expect(screen.queryByText(/revealed/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/download/i)).not.toBeInTheDocument();
+    await userEvent.click(await screen.findByText(/pass not unveiled/i));
+    await screen.findByText(/Your event pass details are currently hidden/i);
+
     //TODO use something similar to `clickOnRevealButton` to check that reveal button is not in list of actions
   },
 };
@@ -86,6 +89,8 @@ export const WithDelayedRevealRevealed: Story = {
     expect(
       screen.getByRole('button', { name: /download/i }),
     ).toBeInTheDocument();
+    await userEvent.click(await screen.findByText(/pass unveiled/i));
+    await screen.findByText(/The details of your event pass are now revealed/i);
     //TODO use something similar to `clickOnRevealButton` to check that reveal button is in list of actions
   },
 };
