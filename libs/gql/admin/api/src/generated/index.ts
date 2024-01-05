@@ -583,6 +583,10 @@ ${PassPricingFieldsFragmentDoc}`;
         ...EventDateLocationsFields
       }
     }
+    eventPassNftContract {
+      type
+      isDelayedRevealed
+    }
   }
 }
     ${PassAmountFieldsFragmentDoc}
