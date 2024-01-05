@@ -73,7 +73,7 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
   return (
     <div className="flex gap-1">
       {maxVal <= 0 ? (
-        <Badge variant="secondary">{t('sold-out')}</Badge>
+        <Badge>{t('sold-out')}</Badge>
       ) : (
         <PassCardSelectClient
           initialValue={eventPassCart?.quantity || 0}

@@ -26,9 +26,6 @@ export const passWithMaxAmount: EventPass = {
     currency: Currency_Enum.Usd,
     amount: 130000,
   },
-  // eventPassOrderSums: {
-  //   totalReserved: 1,
-  // },
 };
 
 export const passWithMaxAmountCart: EventPassCart = {
@@ -53,9 +50,6 @@ export const passWithMaxAmountPerUser: EventPass = {
     currency: Currency_Enum.Usd,
     amount: 250000,
   },
-  // eventPassOrderSums: {
-  //   totalReserved: 10,
-  // },
 };
 
 export const passWithMaxAmountPerUserCart: EventPassCart = {
@@ -79,9 +73,6 @@ export const passWithSoldOut: EventPass = {
     currency: Currency_Enum.Usd,
     amount: 80000,
   },
-  // eventPassOrderSums: {
-  //   totalReserved: 10,
-  // },
 };
 
 export const passWithSkeleton: EventPass = {
@@ -100,9 +91,6 @@ export const passWithSkeleton: EventPass = {
     url: 'https://picsum.photos/id/623/350/350',
   },
   passOptions: [],
-  // eventPassOrderSums: {
-  //   totalReserved: 0,
-  // },
 };
 
 export const passFamily: EventPass = {
@@ -121,9 +109,6 @@ export const passFamily: EventPass = {
     url: 'https://picsum.photos/id/702/350/350',
   },
   passOptions: [],
-  // eventPassOrderSums: {
-  //   totalReserved: 2,
-  // },
 };
 
 export const passFamilyCart: EventPassCart = {
@@ -147,9 +132,6 @@ export const passEarlyBird: EventPass = {
     url: 'https://picsum.photos/id/625/350/350',
   },
   passOptions: [],
-  // eventPassOrderSums: {
-  //   totalReserved: 4,
-  // },
 };
 
 export const passWeekend: EventPass = {
@@ -168,9 +150,6 @@ export const passWeekend: EventPass = {
     url: 'https://picsum.photos/id/626/350/350',
   },
   passOptions: [],
-  // eventPassOrderSums: {
-  //   totalReserved: 6,
-  // },
 };
 
 export const passPremium: EventPass = {
@@ -189,7 +168,4 @@ export const passPremium: EventPass = {
     url: 'https://picsum.photos/id/627/350/350',
   },
   passOptions: passOptionsFootball,
-  // eventPassOrderSums: {
-  //   totalReserved: 20,
-  // },
 };
