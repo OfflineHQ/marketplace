@@ -3,7 +3,7 @@ import { Alert } from '@ui/components';
 import { useLocale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import Image, { StaticImageData } from 'next/image';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import {
   EventPassList,
   EventPassListSkeleton,
@@ -26,25 +26,35 @@ const EventPassesCartContent: React.FC<EventPassesCartProps> = async ({
   userPassPendingOrders,
   getAllPassesCart,
 }) => {
-  let allPassesCart: AllPassesCart | null = null;
-  if (userPassPendingOrders) {
-    allPassesCart = userPassPendingOrders.reduce((acc, order) => {
-      const organizerSlug = order.eventPass?.event?.organizer?.slug;
-      const eventSlug = order.eventPass?.event?.slug;
-      if (organizerSlug && eventSlug) {
-        if (!acc[organizerSlug]) {
-          acc[organizerSlug] = {};
-        }
-        if (!acc[organizerSlug][eventSlug]) {
-          acc[organizerSlug][eventSlug] = [];
-        }
-        acc[organizerSlug][eventSlug].push(order);
+  const [allPassesCart, setAllPassesCart] = useState<AllPassesCart | null>(
+    null,
+  );
+  useEffect(() => {
+    const fetchAllPassesCart = async () => {
+      let newAllPassesCart = null;
+      if (userPassPendingOrders) {
+        newAllPassesCart = userPassPendingOrders.reduce((acc, order) => {
+          const organizerSlug = order.eventPass?.event?.organizer?.slug;
+          const eventSlug = order.eventPass?.event?.slug;
+          if (organizerSlug && eventSlug) {
+            if (!acc[organizerSlug]) {
+              acc[organizerSlug] = {};
+            }
+            if (!acc[organizerSlug][eventSlug]) {
+              acc[organizerSlug][eventSlug] = [];
+            }
+            acc[organizerSlug][eventSlug].push(order);
+          }
+          return acc;
+        }, {} as AllPassesCart);
+      } else if (getAllPassesCart) {
+        newAllPassesCart = await getAllPassesCart();
       }
-      return acc;
-    }, {} as AllPassesCart);
-  } else if (getAllPassesCart) {
-    allPassesCart = await getAllPassesCart();
-  }
+      setAllPassesCart(newAllPassesCart);
+    };
+    fetchAllPassesCart();
+  }, [getAllPassesCart, userPassPendingOrders]);
+
   const isCartEmpty = Object.values(allPassesCart || {}).every((organizer) =>
     Object.values(organizer).every((event) => event.length === 0),
   );
@@ -56,8 +66,8 @@ const EventPassesCartContent: React.FC<EventPassesCartProps> = async ({
       timeRemainingDeletion={!!userPassPendingOrders?.length}
     />
   ) : (
-    <div className="m-5 flex flex-col items-center">
-      <Alert variant="info" className="w-max">
+    <div className="mx-5 flex flex-col items-center md:m-5">
+      <Alert variant="info" className="md:w-max">
         {t('no-cart')}
       </Alert>
       <div className="relative h-80 w-80 grow">

@@ -30,7 +30,7 @@ const layout = {
   image: 'rounded-sm object-cover',
   grid: 'grid max-h-full w-full grid-cols-3 md:grid-cols-6 md:gap-4',
   textContainer:
-    'md:space-y-4 ml-2 text-left flex flex-col justify-start md:justify-center col-span-2 md:col-span-4',
+    'space-y-2 md:space-y-4 ml-2 text-left flex flex-col justify-start md:justify-center col-span-2 md:col-span-4',
   imageContainer:
     'relative md:h-20 md:w-20 w-16 h-16 shrink-0 overflow-hidden rounded-sm md:h-40 md:w-40 col-span-1 md:col-span-2',
   button: 'self-start',
@@ -112,7 +112,7 @@ export const EventPasses: React.FC<EventPassesProps> = ({
 }) => {
   const t = useTranslations('Cart.List.Event');
   return (
-    <AccordionItem value={event.id as string} className="mx-5">
+    <AccordionItem value={event.slug} className="mx-5">
       <AccordionTrigger className={layout.triggerContainer}>
         <div className={layout.grid}>
           <div className={layout.imageContainer}>
