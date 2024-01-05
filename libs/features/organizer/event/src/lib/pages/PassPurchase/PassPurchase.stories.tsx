@@ -1,7 +1,8 @@
 // PassPurchaseSheet.stories.tsx
+import * as eventApi from '@features/organizer/event-api';
 import { Meta, StoryObj } from '@storybook/react';
-import { expect, screen } from '@storybook/test';
-import { graphql } from 'msw';
+import { expect, screen, userEvent } from '@storybook/test';
+import { createMock, getMock, render } from 'storybook-addon-module-mock';
 import { default as passCardMeta } from '../../molecules/PassCard/PassCard.stories';
 import { PassPurchaseSheet } from './PassPurchaseSheet';
 import {
@@ -19,17 +20,23 @@ const meta = {
   parameters: {
     ...passCardMeta.parameters,
     layout: 'fullscreen',
-    msw: {
-      handlers: [
-        ...passCardMeta.parameters.msw.handlers,
-        graphql.query('GetPendingOrderForEventPasses', (req, res, ctx) => {
-          return res(
-            ctx.data({
-              pendingOrder: null,
-            }),
-          );
-        }),
-      ],
+    moduleMock: {
+      mock: () => {
+        const mockGetEventPassesCart = createMock(
+          eventApi,
+          'getEventPassesCart',
+        );
+        mockGetEventPassesCart.mockResolvedValue([]);
+        const mockGetEventPassCart = createMock(eventApi, 'getEventPassCart');
+        mockGetEventPassCart.mockResolvedValue({
+          quantity: 0,
+        });
+        return [
+          ...passCardMeta.parameters.moduleMock.mock(),
+          mockGetEventPassesCart,
+          mockGetEventPassCart,
+        ];
+      },
     },
   },
 } satisfies Meta<typeof PassPurchaseSheet>;
@@ -39,55 +46,111 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const NoPassSelected: Story = {
-  args: {
-    ...passPurchaseProps,
-    passes: passPurchaseProps.passes.map((pass) => ({
-      ...pass,
-      amount: 0,
-    })),
+  play: async (context) => {
+    const mockGetEventPassCart = getMock(
+      context.parameters,
+      eventApi,
+      'getEventPassCart',
+    );
+    mockGetEventPassCart.mockResolvedValue({
+      quantity: 0,
+    });
+    const passCardIncrements = await screen.findAllByRole('button', {
+      name: /increment value/i,
+    });
+    expect(passCardIncrements).toHaveLength(2);
+    expect(screen.getAllByText('0')).toHaveLength(2);
   },
 };
 
 export const SelectPasses: Story = {
   ...NoPassSelected,
-  // play: async () => {
-  //   expect(await screen.findByText(/VIP Pass/i)).toBeInTheDocument();
-  //   const passCards = await screen.findAllByRole('button', {
-  //     name: /increment value/i,
-  //   });
-  //   expect(passCards).toHaveLength(2);
-  //   passCards[0].click(); // Click the first pass increment button
-  //   const cartButton = await screen.findByRole('button', {
-  //     name: /Go to payment/i,
-  //   });
-  //   expect(cartButton).toBeInTheDocument();
-  // },
+  play: async (context) => {
+    const mockGetEventPassCart = getMock(
+      context.parameters,
+      eventApi,
+      'getEventPassCart',
+    );
+    mockGetEventPassCart.mockResolvedValue({
+      quantity: 0,
+    });
+    const mockGetEventPassesCart = getMock(
+      context.parameters,
+      eventApi,
+      'getEventPassesCart',
+    );
+    expect(await screen.findByText(/VIP Pass/i)).toBeInTheDocument();
+    const passCards = await screen.findAllByRole('button', {
+      name: /increment value/i,
+    });
+    expect(passCards).toHaveLength(2);
+    await userEvent.click(passCards[0]); // Click the first pass increment button
+    mockGetEventPassesCart.mockResolvedValue([
+      {
+        id: '1',
+        eventPassId: '1',
+        quantity: 1,
+        created_at: new Date().toISOString(),
+      },
+    ]);
+    render(context.parameters);
+    const cartButton = await screen.findByRole('button', {
+      name: /Go to payment/i,
+    });
+    expect(cartButton).toBeInTheDocument();
+  },
 };
 
 export const WithLotsOfPasses: Story = {
-  args: {
-    ...passPurchasePropsWithLotsOfPasses,
-    passes: passPurchasePropsWithLotsOfPasses.passes.map((pass) => ({
-      ...pass,
-      amount: 0,
-    })),
+  args: passPurchasePropsWithLotsOfPasses,
+  play: async (context) => {
+    const mockGetEventPassCart = getMock(
+      context.parameters,
+      eventApi,
+      'getEventPassCart',
+    );
+    mockGetEventPassCart.mockResolvedValue({
+      quantity: 0,
+    });
   },
 };
 
 export const WithLotsOfPassesSelected: Story = {
   ...WithLotsOfPasses,
-  // play: async () => {
-  //   expect(await screen.findByText(/Premium pass/i)).toBeInTheDocument();
-  //   const passCards = await screen.findAllByRole('button', {
-  //     name: /increment value/i,
-  //   });
-  //   expect(passCards).toHaveLength(6);
-  //   passCards[5].click(); // Click the 6th pass increment button
-  //   const cartButton = await screen.findByRole('button', {
-  //     name: /Go to payment/i,
-  //   });
-  //   expect(cartButton).toBeInTheDocument();
-  // },
+  play: async (context) => {
+    await WithLotsOfPasses.play(context);
+    const mockGetEventPassesCart = getMock(
+      context.parameters,
+      eventApi,
+      'getEventPassesCart',
+    );
+    expect(await screen.findByText(/Premium pass/i)).toBeInTheDocument();
+    const passCards = await screen.findAllByRole('button', {
+      name: /increment value/i,
+    });
+    expect(passCards).toHaveLength(7);
+    userEvent.click(passCards[1]); // Click the 2nd pass increment button
+    await userEvent.click(passCards[5]); // Click the 6th pass increment button
+    mockGetEventPassesCart.mockResolvedValue([
+      {
+        id: '1',
+        eventPassId: '1',
+        quantity: 1,
+        created_at: new Date().toISOString(),
+      },
+      {
+        id: '2',
+        eventPassId: '2',
+        quantity: 1,
+        created_at: new Date().toISOString(),
+      },
+    ]);
+    render(context.parameters);
+    const cartButton = await screen.findByRole('button', {
+      name: /Go to payment/i,
+    });
+    expect(cartButton).toBeInTheDocument();
+  },
 };
 
 export const WithFullSizeAndBackButton: Story = {
@@ -95,7 +158,16 @@ export const WithFullSizeAndBackButton: Story = {
     ...WithLotsOfPasses.args,
     size: 'full',
   },
-  play: async () => {
+  play: async (context) => {
+    await WithLotsOfPassesSelected.play(context);
+    const mockGetEventPassCart = getMock(
+      context.parameters,
+      eventApi,
+      'getEventPassCart',
+    );
+    mockGetEventPassCart.mockResolvedValue({
+      quantity: 0,
+    });
     const backButton = await screen.findByRole('button', {
       name: /Go back to the event/i,
     });
@@ -119,6 +191,16 @@ export const Card: Story = {
     backButtonLink: { href: '/dummy' },
   },
   render: PassPurchaseCardExample,
+  play: async (context) => {
+    const mockGetEventPassCart = getMock(
+      context.parameters,
+      eventApi,
+      'getEventPassCart',
+    );
+    mockGetEventPassCart.mockResolvedValue({
+      quantity: 0,
+    });
+  },
 };
 
 export const CardWithLotsOfPassesSelected: Story = {
@@ -127,5 +209,18 @@ export const CardWithLotsOfPassesSelected: Story = {
     backButtonLink: { href: '/dummy' },
     ...WithLotsOfPassesSelected.args,
   },
+  play: WithLotsOfPassesSelected.play,
   render: PassPurchaseCardExample,
+};
+
+export const CardWithLotsOfPassesSelectedMobile: Story = {
+  ...CardWithLotsOfPassesSelected,
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  args: {
+    ...CardWithLotsOfPassesSelected.args,
+  },
 };
