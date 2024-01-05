@@ -59,7 +59,7 @@ export const SectionWithNoUserNoCartMobile: Story = {
 
 export const SectionWithNoUserWithPasses: Story = {
   args: {
-    getAllPassesCart: () => Promise.resolve(allPassesCart),
+    allPassesCart,
   },
   play: async (context) => {
     await screen.findByRole('button', {
