@@ -1,3 +1,5 @@
+import { AppContainer, AppNavLayout } from '@features/app-nav';
+import { WithNormalUser } from '@features/app-nav/stories';
 import { Sheet } from '@ui/components';
 import { lotsOfPasses } from '../../molecules/PassTotal/examples';
 import { passListProps } from '../../organisms/PassList/examples';
@@ -39,7 +41,11 @@ export const PassPurchaseSheetExample = (props: PassPurchaseSheetProps) => {
 };
 
 export const PassPurchaseCardExample = (props: PassPurchaseCardProps) => (
-  <PassPurchaseCard {...props} />
+  <AppNavLayout {...WithNormalUser.args}>
+    <AppContainer>
+      <PassPurchaseCard {...props} />
+    </AppContainer>
+  </AppNavLayout>
 );
 
 export const PassPurchaseSheetLoadingExample = (
