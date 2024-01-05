@@ -3,7 +3,7 @@ import { Alert } from '@ui/components';
 import { useLocale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import Image, { StaticImageData } from 'next/image';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import {
   EventPassList,
   EventPassListSkeleton,
@@ -11,8 +11,8 @@ import {
 
 export interface EventPassesCartProps {
   noCartImage: string | StaticImageData;
+  allPassesCart: AllPassesCart | null;
   userPassPendingOrders?: UserPassPendingOrder[];
-  getAllPassesCart?: () => Promise<AllPassesCart | null>;
 }
 
 export const EventPassesCart: React.FC<EventPassesCartProps> = (props) => (
@@ -24,36 +24,9 @@ export const EventPassesCart: React.FC<EventPassesCartProps> = (props) => (
 const EventPassesCartContent: React.FC<EventPassesCartProps> = async ({
   noCartImage,
   userPassPendingOrders,
-  getAllPassesCart,
+  allPassesCart,
 }) => {
-  const [allPassesCart, setAllPassesCart] = useState<AllPassesCart | null>(
-    null,
-  );
-  useEffect(() => {
-    const fetchAllPassesCart = async () => {
-      let newAllPassesCart = null;
-      if (userPassPendingOrders) {
-        newAllPassesCart = userPassPendingOrders.reduce((acc, order) => {
-          const organizerSlug = order.eventPass?.event?.organizer?.slug;
-          const eventSlug = order.eventPass?.event?.slug;
-          if (organizerSlug && eventSlug) {
-            if (!acc[organizerSlug]) {
-              acc[organizerSlug] = {};
-            }
-            if (!acc[organizerSlug][eventSlug]) {
-              acc[organizerSlug][eventSlug] = [];
-            }
-            acc[organizerSlug][eventSlug].push(order);
-          }
-          return acc;
-        }, {} as AllPassesCart);
-      } else if (getAllPassesCart) {
-        newAllPassesCart = await getAllPassesCart();
-      }
-      setAllPassesCart(newAllPassesCart);
-    };
-    fetchAllPassesCart();
-  }, [getAllPassesCart, userPassPendingOrders]);
+  console.log('allPassesCart', allPassesCart);
 
   const isCartEmpty = Object.values(allPassesCart || {}).every((organizer) =>
     Object.values(organizer).every((event) => event.length === 0),

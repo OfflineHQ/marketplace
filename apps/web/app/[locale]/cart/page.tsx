@@ -1,5 +1,9 @@
 export const dynamic = 'force-dynamic';
-import { getOrdersConfirmed, getPendingOrders } from '@features/cart-api';
+import {
+  getAllPassesCart,
+  getOrdersConfirmed,
+  getPendingOrders,
+} from '@features/cart-api';
 import {
   NoUserCart,
   UserCart,
@@ -28,24 +32,25 @@ interface CartSectionProps {
 }
 
 interface CartSectionContentProps
-  extends Pick<UserCartProps, 'userPassPendingOrders'> {
+  extends Pick<UserCartProps, 'userPassPendingOrders' | 'allPassesCart'> {
   user: AppUser | undefined;
   locale: Locale;
   kycFlag?: boolean;
 }
 
-const CartSectionContent: FC<CartSectionContentProps> = ({
+const CartSectionContent: FC<CartSectionContentProps> = async ({
   user,
   locale,
   userPassPendingOrders,
   kycFlag,
+  allPassesCart,
 }) => {
   const t = useTranslations('Cart.UserCart');
   const isEmptyCart = !userPassPendingOrders?.length;
   return user ? (
     <UserCart
       userPassPendingOrders={userPassPendingOrders}
-      getAllPassesCart={passCache.getAllPassesCart}
+      allPassesCart={allPassesCart}
       noCartImage="/empty-cart.svg"
     >
       {!kycFlag || isUserKycValidated(user) ? (
@@ -71,10 +76,7 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
       )}
     </UserCart>
   ) : (
-    <NoUserCart
-      noCartImage="/empty-cart.svg"
-      getAllPassesCart={passCache.getAllPassesCart}
-    />
+    <NoUserCart noCartImage="/empty-cart.svg" allPassesCart={allPassesCart} />
   );
 };
 
@@ -82,7 +84,16 @@ export default async function CartSection({
   params: { locale },
 }: CartSectionProps) {
   const user = await getCurrentUser();
-  if (!user) return <CartSectionContent user={user} locale={locale} />;
+  if (!user) {
+    const allPassesCart = await getAllPassesCart();
+    return (
+      <CartSectionContent
+        user={user}
+        locale={locale}
+        allPassesCart={allPassesCart}
+      />
+    );
+  }
   const kycFlag = await Posthog.getInstance().getFeatureFlag(
     FeatureFlagsEnum.KYC,
     user.address,
@@ -104,12 +115,15 @@ export default async function CartSection({
     if (res) userPassPendingOrders = res;
   }
 
+  const allPassesCart = await getAllPassesCart(userPassPendingOrders);
+
   return (
     <CartSectionContent
       kycFlag={kycFlag}
       user={user}
       locale={locale}
       userPassPendingOrders={userPassPendingOrders}
+      allPassesCart={allPassesCart}
     />
   );
 }
