@@ -1,6 +1,6 @@
 import * as cartApi from '@features/cart-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, screen, userEvent } from '@storybook/test';
+import { expect, screen } from '@storybook/test';
 
 import { createMock } from 'storybook-addon-module-mock';
 import { eventCart1Props, eventCart2Props } from '../EventPassList/examples';
@@ -40,19 +40,18 @@ type Story = StoryObj<typeof UserCart>;
 export const SectionWithUserOpened: Story = {
   render: UserCartExample,
   play: async (context) => {
-    userEvent.click(
-      await screen.findByRole('button', {
-        name: /Lorem ipsum/i,
-      }),
-    );
-    await userEvent.click(
-      await screen.findByRole('button', {
-        name: /World cup/i,
-      }),
-    );
     const removeButtons = await screen.findAllByRole('button', {
       name: /Remove/i,
     });
     expect(removeButtons).toHaveLength(2);
   },
+};
+
+export const SectionWithUserOpenedMobile: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  ...SectionWithUserOpened,
 };

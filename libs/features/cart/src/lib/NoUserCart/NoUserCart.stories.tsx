@@ -2,12 +2,10 @@ import * as cartApi from '@features/cart-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen } from '@storybook/test';
 
-import { createMock, getMock } from 'storybook-addon-module-mock';
+import { createMock } from 'storybook-addon-module-mock';
 import { eventCart1Props, eventCart2Props } from '../EventPassList/examples';
 import { NoUserCart } from './NoUserCart';
-import { NoUserCartExample } from './examples';
-
-// Import the stories you want to reuse
+import { NoUserCartExample, allPassesCart } from './examples';
 
 const meta: Meta<typeof NoUserCart> = {
   component: NoUserCart,
@@ -50,22 +48,40 @@ export const SectionWithNoUserNoCart: Story = {
   },
 };
 
-export const SectionWithNoUserLoading: Story = {
+export const SectionWithNoUserNoCartMobile: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  ...SectionWithNoUserNoCart,
+};
+
+export const SectionWithNoUserWithPasses: Story = {
   args: {
-    getAllPassesCart: () =>
-      Promise.resolve({
-        'organizer-slug': {
-          'event-slug': [],
-        },
-      }),
+    getAllPassesCart: () => Promise.resolve(allPassesCart),
   },
   play: async (context) => {
-    const mockGetEventWithPasses = getMock(
-      context.parameters,
-      cartApi,
-      'getEventWithPasses',
-    );
-    mockGetEventWithPasses.mockImplementation(() => new Promise({} as any));
+    await screen.findByRole('button', {
+      name: /Lorem ipsum/i,
+    });
+    await screen.findByRole('button', {
+      name: /World Cup/i,
+    });
+  },
+};
+
+export const SectionWithNoUserWithPassesMobile: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+  ...SectionWithNoUserWithPasses,
+};
+
+export const SectionWithNoUserLoading: Story = {
+  play: async (context) => {
     expect(
       screen.queryByRole('button', {
         name: /Lorem ipsum/i,
