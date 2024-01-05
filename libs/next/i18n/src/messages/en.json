@@ -213,6 +213,12 @@
             "price": "Total Price: {convertedAmount}"
           },
           "finalize-payment": "Finalize my purchase"
+        },
+        "EventPassContractDelayedRevealBadge": {
+          "not-revealed-title": "Mystery Pass",
+          "revealed-title": "Mystery Pass Unveiled",
+          "not-revealed-description": "Details to be revealed! This pass holds hidden features and exclusive benefits, set to be unveiled soon. Secure your pass now and be part of the exciting reveal!",
+          "revealed-description": "Discover what's in store! This pass offers a range of exclusive benefits and features, now fully disclosed. Don’t miss out, get your pass and enjoy the complete experience."
         }
       }
     },

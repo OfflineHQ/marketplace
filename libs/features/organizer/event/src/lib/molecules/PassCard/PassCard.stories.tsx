@@ -3,6 +3,7 @@ import { screen, userEvent } from '@storybook/test';
 // PassCard.stories.tsx
 import * as eventActions from '@features/organizer/event-actions';
 import * as eventApi from '@features/organizer/event-api';
+import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { Meta, StoryObj } from '@storybook/react';
 import { createMock, getMock } from 'storybook-addon-module-mock';
 import { PassCard, PassCardProps, PassCardSkeleton } from './PassCard';
@@ -131,6 +132,34 @@ export const SoldOut: Story = {
     });
     const soldOut = await screen.findByText(/sold out/i);
     expect(soldOut).toBeInTheDocument();
+  },
+};
+
+export const WithEventPassDelayedRevealedNotRevealed: Story = {
+  args: {
+    ...passWithMaxAmount,
+    eventPassNftContract: {
+      type: EventPassNftContractType_Enum.DelayedReveal,
+      isDelayedRevealed: false,
+    },
+  },
+  play: async () => {
+    await userEvent.click(await screen.findByText(/mystery pass/i));
+    await screen.findByText(/Details to be revealed/i);
+  },
+};
+
+export const WithEventPassDelayedRevealedRevealed: Story = {
+  args: {
+    ...passWithMaxAmount,
+    eventPassNftContract: {
+      type: EventPassNftContractType_Enum.DelayedReveal,
+      isDelayedRevealed: true,
+    },
+  },
+  play: async () => {
+    await userEvent.click(await screen.findByText(/mystery pass/i));
+    await screen.findByText(/Discover what's in store/i);
   },
 };
 
