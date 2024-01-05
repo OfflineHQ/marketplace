@@ -1,3 +1,4 @@
+export { getAllPassesCart } from './lib/getAllPassesCart';
 export { getEventWithPasses } from './lib/getEventWithPasses';
 export { getOrdersConfirmed } from './lib/getOrdersConfirmed';
 export { getOrdersFromStripeCheckoutSession } from './lib/getOrdersFromStripeCheckoutSession';
