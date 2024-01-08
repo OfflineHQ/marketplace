@@ -14,8 +14,10 @@ import {
 } from './examples';
 
 import { createMock, getMock, render } from 'storybook-addon-module-mock';
-import { eventPassNftFilesTableMocks } from '../../molecules/EventPassNftFilesTable/EventPassNftFilesTable.stories';
-import { eventPassNftFiles } from '../../molecules/EventPassNftFilesTable/examples';
+import {
+  eventPassNftFiles,
+  eventPassNftFilesTableMocks,
+} from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
 
 const meta: Meta<typeof EventSheet> = {
