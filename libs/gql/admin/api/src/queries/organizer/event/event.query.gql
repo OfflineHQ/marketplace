@@ -27,6 +27,18 @@ query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   }
 }
 
+query GetEventWithParametersMinimal(
+  $slug: String!
+  $locale: Locale!
+  $stage: Stage!
+) @cached {
+  event(where: { slug: $slug }, locales: [$locale, en], stage: $stage) {
+    eventParameters {
+      status
+    }
+  }
+}
+
 query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!)
 @cached {
   event(where: { slug: $slug }, locales: [$locale, en], stage: $stage) {
