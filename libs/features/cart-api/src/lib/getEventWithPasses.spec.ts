@@ -9,7 +9,7 @@ const mockAdminSdk = adminSdk as jest.Mocked<typeof adminSdk>;
 
 describe('getEventWithPasses', () => {
   it('returns undefined if the event status is not published', async () => {
-    mockAdminSdk.GetEventWithParametersMinimal.mockResolvedValue({
+    mockAdminSdk.GetEventWithPasses.mockResolvedValue({
       event: {
         eventParameters: {
           status: EventStatus_Enum.Draft,
@@ -26,17 +26,11 @@ describe('getEventWithPasses', () => {
 
   it('returns the event data if the event status is published', async () => {
     const mockEventData = {
-      event: { name: 'Test Event', passes: [{ id: '1', name: 'Test Pass' }] },
-    };
-
-    mockAdminSdk.GetEventWithParametersMinimal.mockResolvedValue({
       event: {
-        eventParameters: {
-          status: EventStatus_Enum.Published,
-        },
+        name: 'Test Event',
+        eventParameters: { status: EventStatus_Enum.Published },
       },
-    });
-
+    };
     mockAdminSdk.GetEventWithPasses.mockResolvedValue(mockEventData);
 
     const result = await getEventWithPasses({

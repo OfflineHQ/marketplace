@@ -2,7 +2,6 @@ import { AppContainer } from '@features/app-nav';
 import { NotFound } from '@features/navigation';
 import { PassPurchaseCard } from '@features/organizer/event';
 import {
-  getEvent,
   getEventPasses,
   getOrdersConfirmed,
 } from '@features/organizer/event-api';
@@ -22,20 +21,20 @@ export default async function PurchaseSection({
 }: PurchaseSectionProps) {
   const { eventSlug, organizerSlug, locale } = params;
   const passes = await getEventPasses({ eventSlug, locale });
-  const confirmedPasses = await getOrdersConfirmed();
-  const event = await getEvent({ eventSlug, locale });
   // in case the event is not found or the organizer slug is not the same as the one in the url redirect to 404
-  if (!event || event.organizer?.slug !== organizerSlug) {
+  if (!passes || passes.event?.organizer?.slug !== organizerSlug)
     return <NotFound />;
-  } else
+  else {
+    const confirmedPasses = await getOrdersConfirmed();
     return (
       <PurchaseSectionContent
-        passes={passes}
+        passes={passes.eventPasses}
         eventSlug={eventSlug}
         organizerSlug={organizerSlug}
         hasConfirmedPasses={!!confirmedPasses?.length}
       />
     );
+  }
 }
 
 interface PurchaseSectionContentProps {

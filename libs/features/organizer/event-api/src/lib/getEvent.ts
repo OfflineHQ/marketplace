@@ -9,20 +9,12 @@ interface GetEventProps {
 }
 
 export const getEvent = cache(async ({ eventSlug, locale }: GetEventProps) => {
-  const eventMinimal = await adminSdk.GetEventWithParametersMinimal({
-    slug: eventSlug,
-    locale: locale as Locale,
-    stage: env.HYGRAPH_STAGE as Stage,
-  });
-  if (
-    eventMinimal?.event?.eventParameters?.status !== EventStatus_Enum.Published
-  ) {
-    return;
-  }
   const data = await adminSdk.GetEvent({
     slug: eventSlug,
     locale: locale as Locale,
     stage: env.HYGRAPH_STAGE as Stage,
   });
-  return data?.event;
+  const event = data?.event;
+  if (event?.eventParameters?.status === EventStatus_Enum.Published)
+    return event;
 });
