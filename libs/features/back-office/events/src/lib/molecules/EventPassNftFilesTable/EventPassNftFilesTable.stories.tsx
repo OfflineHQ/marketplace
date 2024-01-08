@@ -43,7 +43,6 @@ export function eventPassNftFilesTableMocks() {
     mockIntl,
     mockUploader,
     mockAuth,
-    mockAuth,
     mockDeleteFile,
     mockCheckPass,
     ...i18nUiTablesServerMocks(),
