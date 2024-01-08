@@ -172,6 +172,15 @@ export type GetEventQueryVariables = Types.Exact<{
 
 export type GetEventQuery = { __typename?: 'query_root', event?: { __typename?: 'Event', id: string, slug: string, title: string, heroImageClasses?: string | null, description: { __typename?: 'EventDescriptionRichText', json: any, references: Array<{ __typename: 'Asset', id: string, url: string, mimeType?: string | null }> }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, imageClasses?: string | null, image: { __typename?: 'Asset', url: string } } | null, eventDateLocations: Array<{ __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } }>, heroImage: { __typename?: 'Asset', width?: number | null, height?: number | null, url: string } } | null };
 
+export type GetEventWithParametersMinimalQueryVariables = Types.Exact<{
+  slug: Types.Scalars['String'];
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type GetEventWithParametersMinimalQuery = { __typename?: 'query_root', event?: { __typename?: 'Event', eventParameters?: { __typename?: 'eventParameters', status?: Types.EventStatus_Enum | null } | null } | null };
+
 export type GetEventWithPassesQueryVariables = Types.Exact<{
   slug: Types.Scalars['String'];
   locale: Types.Locale;

@@ -448,6 +448,15 @@ ${KycFieldsFragmentDoc}`;
 }
     ${EventListFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}`;
+ const GetEventWithParametersMinimalDocument = `
+    query GetEventWithParametersMinimal($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
+  event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
+    eventParameters {
+      status
+    }
+  }
+}
+    `;
  const GetEventWithPassesDocument = `
     query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
@@ -1122,6 +1131,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEvent(variables: Types.GetEventQueryVariables, options?: C): Promise<Types.GetEventQuery> {
       return requester<Types.GetEventQuery, Types.GetEventQueryVariables>(GetEventDocument, variables, options) as Promise<Types.GetEventQuery>;
+    },
+    GetEventWithParametersMinimal(variables: Types.GetEventWithParametersMinimalQueryVariables, options?: C): Promise<Types.GetEventWithParametersMinimalQuery> {
+      return requester<Types.GetEventWithParametersMinimalQuery, Types.GetEventWithParametersMinimalQueryVariables>(GetEventWithParametersMinimalDocument, variables, options) as Promise<Types.GetEventWithParametersMinimalQuery>;
     },
     GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
       return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;

@@ -236,7 +236,7 @@
       "helperTextUnfollow": "Click to unfollow \"{name}\""
     },
     "OrganizerEventsSection": {
-      "title": "Lastest Events",
+      "title": "Latest Events",
       "noEvents": "There is currently no events to display"
     }
   },
