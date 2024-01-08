@@ -919,7 +919,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
  const GetOrganizerLatestEventsDocument = `
     query GetOrganizerLatestEvents($organizerId: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventParameters(
-    where: {organizerId: {_eq: $organizerId}}
+    where: {organizerId: {_eq: $organizerId}, status: {_eq: PUBLISHED}}
     order_by: {dateStart: desc}
     limit: 3
   ) {

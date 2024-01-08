@@ -66,4 +66,6 @@ select_permissions:
         - dateSaleEnd
         - timezone
         - organizerId
-      filter: {}
+      filter:
+        status:
+          _eq: PUBLISHED

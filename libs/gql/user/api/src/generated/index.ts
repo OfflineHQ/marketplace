@@ -383,7 +383,7 @@ ${PassAmountFieldsFragmentDoc}`;
  const GetPassedEventsWithEventPassNftsDocument = `
     query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
-    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_lt: $currentDate}}
+    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_lt: $currentDate}, status: {_eq: PUBLISHED}}
     order_by: {dateEnd: desc}
   ) {
     dateStart
@@ -434,7 +434,7 @@ ${PassAmountFieldsFragmentDoc}`;
  const GetUpcomingEventsWithEventPassNftsDocument = `
     query GetUpcomingEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
-    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_gte: $currentDate}}
+    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_gte: $currentDate}, status: {_eq: PUBLISHED}}
     order_by: {dateStart: asc}
   ) {
     dateStart

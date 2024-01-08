@@ -8,6 +8,7 @@ query GetPassedEventsWithEventPassNfts(
     where: {
       eventPassNfts: { currentOwnerAddress: { _eq: $address } }
       dateEnd: { _lt: $currentDate }
+      status: { _eq: PUBLISHED }
     }
     order_by: { dateEnd: desc }
   ) {
@@ -66,6 +67,7 @@ query GetUpcomingEventsWithEventPassNfts(
     where: {
       eventPassNfts: { currentOwnerAddress: { _eq: $address } }
       dateEnd: { _gte: $currentDate }
+      status: { _eq: PUBLISHED }
     }
     order_by: { dateStart: asc }
   ) {
