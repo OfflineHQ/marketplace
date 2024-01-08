@@ -149,7 +149,7 @@ export const AllbuttonSizesLoadingWithMobile = {
   ...AllbuttonSizesLoading,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
     },
     chromatic: {
       disableSnapshot: true,

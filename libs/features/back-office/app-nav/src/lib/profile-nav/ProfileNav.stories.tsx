@@ -56,7 +56,14 @@ export const WithUserNoRolesMobile: Story = {
   ...WithUserNoRoles,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };
@@ -104,7 +111,14 @@ export const WithAdminRoleMobile: Story = {
   ...WithAdminRole,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   play: async ({ canvasElement }) => {
@@ -131,7 +145,14 @@ export const WithAdminRoleLoading: Story = {
 export const WithAdminRoleLoadingMobile: Story = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   args: {

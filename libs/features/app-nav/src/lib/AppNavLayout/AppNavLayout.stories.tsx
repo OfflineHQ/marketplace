@@ -134,7 +134,14 @@ export const WithMobile: Story = {
   ...WithFallbackUser,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };

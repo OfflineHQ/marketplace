@@ -35,8 +35,8 @@ export const Default: Story = {
 
 export const WithMoreItems: Story = {
   play: async ({ container }) => {
-    const spanElement = screen.getAllByText(/10/i);
-    userEvent.click(spanElement[1].closest('button') as HTMLElement);
+    const spanElement = await screen.findByText(/10/i);
+    userEvent.click(spanElement.closest('button') as HTMLElement);
     const optionList = await screen.findByRole('listbox');
     const item = within(optionList).getByRole('option', {
       name: '50',
@@ -49,7 +49,14 @@ export const WithMobile: Story = {
   parameters: {
     layout: 'fullscreen',
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };

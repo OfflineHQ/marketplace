@@ -96,7 +96,14 @@ export const OpenedWithNoActions: Story = {
 export const OpenedMobile: Story = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   ...OpenedWithTimeRemainingDeletion,
@@ -109,7 +116,14 @@ export const Skeleton: Story = {
 export const SkeletonMobile: Story = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   ...Skeleton,

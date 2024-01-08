@@ -51,7 +51,14 @@ export const SectionWithNoUserNoCart: Story = {
 export const SectionWithNoUserNoCartMobile: Story = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   ...SectionWithNoUserNoCart,
@@ -74,7 +81,14 @@ export const SectionWithNoUserWithPasses: Story = {
 export const SectionWithNoUserWithPassesMobile: Story = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   ...SectionWithNoUserWithPasses,
