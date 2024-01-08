@@ -1,8 +1,12 @@
 import * as authProvider from '@next/auth';
+import * as uploaderProvider from '@next/uploader-provider';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
+import * as nextIntl from 'next-intl';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
+import * as deleteFile from '../../actions/deleteEventPassFile';
 import * as deploy from '../../actions/deployCollectionWrapper';
+import * as getPass from '../../actions/getEventPassNftFiles';
 import * as renameFiles from '../../actions/renameEventPassNftFiles';
 import * as reveal from '../../actions/revealDelayedContract';
 
@@ -13,8 +17,9 @@ import {
   eventWithNormalPasses,
 } from './examples';
 
+import { i18nUiTablesServerMocks } from '@test-utils/ui-mocks';
+import { sleep } from '@utils';
 import { createMock, getMock, render } from 'storybook-addon-module-mock';
-import { eventPassNftFilesTableMocks } from '../../molecules/EventPassNftFilesTable/EventPassNftFilesTable.stories';
 import { eventPassNftFiles } from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
 
@@ -30,11 +35,40 @@ const meta: Meta<typeof EventSheet> = {
         mockDeploy.mockReturnValue(Promise.resolve());
         const mockReveal = createMock(reveal, 'revealDelayedContract');
         mockReveal.mockReturnValue(Promise.resolve());
+        const mock = createMock(getPass, 'getEventPassNftFiles');
+        mock.mockReturnValue(Promise.resolve(eventPassNftFiles));
+        const mockIntl = createMock(nextIntl, 'useLocale');
+        mockIntl.mockReturnValue('en');
+        const mockUploader = createMock(uploaderProvider, 'useUploader');
+        mockUploader.mockReturnValue({ sessionReady: true });
+        const mockAuth = createMock(authProvider, 'useAuthContext');
+        mockAuth.mockReturnValue({
+          safeUser: {
+            eoa: '0x123',
+          },
+        });
+        const mockDeleteFile = createMock(deleteFile, 'deleteEventPassFile');
+        mockDeleteFile.mockImplementation(async () => {
+          await sleep(300);
+          return Promise.resolve();
+        });
+        const mockCheckPass = createMock(
+          checkPass,
+          'checkEventPassNftFilesHash',
+        );
+        mockCheckPass.mockReturnValue(Promise.resolve([]));
         return [
           mockRename,
           mockDeploy,
           mockReveal,
-          ...eventPassNftFilesTableMocks(),
+          mock,
+          mockIntl,
+          mockUploader,
+          mockAuth,
+          mockAuth,
+          mockDeleteFile,
+          mockCheckPass,
+          ...i18nUiTablesServerMocks(),
         ];
       },
     },

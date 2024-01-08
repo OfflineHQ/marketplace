@@ -20,8 +20,8 @@ const meta = {
   parameters: {
     chromatic: {
       modes: {
-        desktop: {
-          viewport: 'desktop',
+        mobile: {
+          disable: true,
         },
       },
     },
