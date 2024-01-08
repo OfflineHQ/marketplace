@@ -10,6 +10,7 @@ import {
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 import EventSection from '../../../page';
+import { NotFound } from '@features/navigation';
 
 interface PurchaseSectionProps {
   params: {
@@ -48,6 +49,7 @@ const PurchaseSectionContent: React.FC<PurchaseSectionContentProps> = async ({
     namespace: 'Organizer.Event.PassPurchase',
   });
   const passes = await getEventPasses({ eventSlug, locale });
+  if (!passes?.length) return <NotFound />;
   const confirmedPasses = await getOrdersConfirmed();
   return (
     <PassPurchaseSheet
