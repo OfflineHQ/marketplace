@@ -59,7 +59,14 @@ export const SectionWithUserNoCart: Story = {
 export const SectionWithUserNoCartMobile: Story = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   ...SectionWithUserNoCart,
@@ -81,7 +88,14 @@ export const SectionWithUserOpened: Story = {
 export const SectionWithUserOpenedMobile: Story = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   ...SectionWithUserOpened,

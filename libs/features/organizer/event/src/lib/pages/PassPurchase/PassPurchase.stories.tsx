@@ -217,7 +217,14 @@ export const CardWithLotsOfPassesSelectedMobile: Story = {
   ...CardWithLotsOfPassesSelected,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   args: {

@@ -50,7 +50,14 @@ export const WithFullSize: Story = {
 export const DefaultMobile: Story = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   render: PassPurchaseSheetContainerExample,
@@ -60,7 +67,14 @@ export const WithPassesSelectedMobile: Story = {
   ...DefaultWithPassesSelected,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };

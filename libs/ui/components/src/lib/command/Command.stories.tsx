@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { expect, fireEvent, screen, userEvent, within } from '@storybook/test';
 import { Command } from './Command';
 
-import { sleep } from '@utils';
 import {
   CommandComboboxDemo,
   CommandDemo,
@@ -10,6 +9,7 @@ import {
   CommandDropdownMenuDemo,
   CommandPopoverDemo,
 } from './examples';
+import { sleep } from '@utils';
 
 const meta: Meta<typeof Command> = {
   component: Command,
@@ -87,10 +87,10 @@ export const CommandComboboxWithSelection: Story = {
       await screen.findByPlaceholderText(/Search framework/i),
       'Re',
     );
+    await sleep(100);
     userEvent.keyboard('{enter}');
     await screen.findByText('Remix');
-    await sleep(100);
-    userEvent.click(screen.getByRole('combobox'));
+    await userEvent.click(screen.getByRole('combobox'));
     // find in role group the selected item Remix
     const roleGroup = await screen.findByRole('group');
     const { getByText } = within(roleGroup);

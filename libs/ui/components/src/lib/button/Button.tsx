@@ -35,7 +35,7 @@ const buttonVariantsCva = cva(
       variant: variants,
       size: sizes,
       isIconOnly: {
-        true: 'rounded-full p-0',
+        true: 'h-auto rounded-full p-0',
       },
       block: {
         true: 'w-full',

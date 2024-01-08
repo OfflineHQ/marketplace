@@ -257,7 +257,14 @@ export const WithMobile: Story = {
   parameters: {
     layout: 'fullscreen',
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };

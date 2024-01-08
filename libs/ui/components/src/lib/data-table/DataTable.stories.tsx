@@ -18,7 +18,13 @@ const meta = {
     noResultsText: 'No results.',
   },
   parameters: {
-    chromatic: { viewports: [1200] },
+    chromatic: {
+      modes: {
+        desktop: {
+          viewport: 'desktop',
+        },
+      },
+    },
   },
 } as Meta<typeof DataTable>;
 
