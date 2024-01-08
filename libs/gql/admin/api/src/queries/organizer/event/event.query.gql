@@ -21,6 +21,9 @@ query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
       }
       imageClasses
     }
+    eventParameters {
+      ...EventParametersFields
+    }
     eventDateLocations {
       ...EventDateLocationsFields
     }

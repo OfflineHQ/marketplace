@@ -35,6 +35,17 @@ export const NftTransferFieldsFragmentDoc = `
   created_at
 }
     `;
+export const OrganizerFieldsFragmentDoc = `
+    fragment OrganizerFields on Organizer {
+  id
+  slug
+  name
+  image {
+    url
+  }
+  imageClasses
+}
+    `;
 export const EventListFieldsFragmentDoc = `
     fragment EventListFields on Event {
   id
@@ -48,15 +59,16 @@ export const EventListFieldsFragmentDoc = `
   heroImageClasses
 }
     `;
-export const OrganizerFieldsFragmentDoc = `
-    fragment OrganizerFields on Organizer {
-  id
-  slug
-  name
-  image {
-    url
-  }
-  imageClasses
+export const EventParametersFieldsFragmentDoc = `
+    fragment EventParametersFields on eventParameters {
+  dateStart
+  dateEnd
+  dateSaleStart
+  dateSaleEnd
+  timezone
+  status
+  isSaleOngoing
+  isOngoing
 }
     `;
 export const PassAmountFieldsFragmentDoc = `
@@ -441,12 +453,16 @@ ${KycFieldsFragmentDoc}`;
       }
       imageClasses
     }
+    eventParameters {
+      ...EventParametersFields
+    }
     eventDateLocations {
       ...EventDateLocationsFields
     }
   }
 }
     ${EventListFieldsFragmentDoc}
+${EventParametersFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}`;
  const GetEventWithParametersMinimalDocument = `
     query GetEventWithParametersMinimal($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
