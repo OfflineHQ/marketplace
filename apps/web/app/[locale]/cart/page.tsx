@@ -85,7 +85,7 @@ export default async function CartSection({
 }: CartSectionProps) {
   const user = await getCurrentUser();
   if (!user) {
-    const allPassesCart = await getAllPassesCart();
+    const allPassesCart = await getAllPassesCart(passCache);
     return (
       <CartSectionContent
         user={user}
@@ -115,7 +115,10 @@ export default async function CartSection({
     if (res) userPassPendingOrders = res;
   }
 
-  const allPassesCart = await getAllPassesCart(userPassPendingOrders);
+  const allPassesCart = await getAllPassesCart(
+    passCache,
+    userPassPendingOrders,
+  );
 
   return (
     <CartSectionContent
