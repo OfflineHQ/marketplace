@@ -1,8 +1,7 @@
 import { AllPassesCart, UserPassPendingOrder } from '@features/cart-types';
 import { PassCache } from '@features/pass-cache';
-
-const passCache = new PassCache();
 export const getAllPassesCart = async (
+  passCache: PassCache = new PassCache(), // Add this line,
   userPassPendingOrders?: UserPassPendingOrder[],
 ) => {
   let allPassesCart: AllPassesCart | null = null;
