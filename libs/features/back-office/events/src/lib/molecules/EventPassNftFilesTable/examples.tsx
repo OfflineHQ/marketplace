@@ -10,7 +10,10 @@ import * as nextIntl from 'next-intl';
 import { createMock } from 'storybook-addon-module-mock';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
 import * as deleteFile from '../../actions/deleteEventPassFile';
+import * as deploy from '../../actions/deployCollectionWrapper';
 import * as getPass from '../../actions/getEventPassNftFiles';
+import * as renameFiles from '../../actions/renameEventPassNftFiles';
+import * as reveal from '../../actions/revealDelayedContract';
 import { EventPassNftFilesTableProps } from './EventPassNftFilesTable';
 
 export const eventPassNftFiles = [
@@ -144,6 +147,13 @@ export function eventPassNftFilesTableMocks() {
   });
   const mockCheckPass = createMock(checkPass, 'checkEventPassNftFilesHash');
   mockCheckPass.mockReturnValue(Promise.resolve([]));
+  const mockRename = createMock(renameFiles, 'renameEventPassNftFiles');
+  mockRename.mockReturnValue(Promise.resolve());
+  const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
+  mockDeploy.mockReturnValue(Promise.resolve());
+  const mockReveal = createMock(reveal, 'revealDelayedContract');
+  mockReveal.mockReturnValue(Promise.resolve());
+
   return [
     mock,
     mockIntl,
@@ -151,6 +161,9 @@ export function eventPassNftFilesTableMocks() {
     mockAuth,
     mockDeleteFile,
     mockCheckPass,
+    mockRename,
+    mockDeploy,
+    mockReveal,
     ...i18nUiTablesServerMocks(),
   ];
 }
