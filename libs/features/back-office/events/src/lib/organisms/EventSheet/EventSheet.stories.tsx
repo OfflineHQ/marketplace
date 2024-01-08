@@ -13,7 +13,7 @@ import {
   eventWithNormalPasses,
 } from './examples';
 
-import { getMock, render } from 'storybook-addon-module-mock';
+import { createMock, getMock, render } from 'storybook-addon-module-mock';
 import { eventPassNftFilesTableMocks } from '../../molecules/EventPassNftFilesTable/EventPassNftFilesTable.stories';
 import { eventPassNftFiles } from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
@@ -26,14 +26,14 @@ const meta: Meta<typeof EventSheet> = {
       mock: () => {
         // const mockRename = createMock(renameFiles, 'renameEventPassNftFiles');
         // mockRename.mockReturnValue(Promise.resolve());
-        // const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
-        // mockDeploy.mockReturnValue(Promise.resolve());
-        // const mockReveal = createMock(reveal, 'revealDelayedContract');
-        // mockReveal.mockReturnValue(Promise.resolve());
+        const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
+        mockDeploy.mockReturnValue(Promise.resolve());
+        const mockReveal = createMock(reveal, 'revealDelayedContract');
+        mockReveal.mockReturnValue(Promise.resolve());
         return [
           // mockRename,
-          // mockDeploy,
-          // mockReveal,
+          mockDeploy,
+          mockReveal,
           ...eventPassNftFilesTableMocks(),
         ];
       },
