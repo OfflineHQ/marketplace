@@ -10,22 +10,13 @@ interface GetEventPassesProps {
 
 export const getEventPasses = cache(
   async ({ eventSlug, locale }: GetEventPassesProps) => {
-    const eventMinimal = await adminSdk.GetEventWithParametersMinimal({
-      slug: eventSlug,
-      locale: locale as Locale,
-      stage: env.HYGRAPH_STAGE as Stage,
-    });
-    if (
-      eventMinimal?.event?.eventParameters?.status !==
-      EventStatus_Enum.Published
-    ) {
-      return;
-    }
-    const data = await adminSdk.GetEventPasses({
+    const data = await adminSdk.GetEventParametersAndEventPasses({
       eventSlug: eventSlug,
       locale: locale as Locale,
       stage: env.HYGRAPH_STAGE as Stage,
     });
-    return data?.eventPasses;
+    const event = data?.event;
+    if (event?.eventParameters?.status === EventStatus_Enum.Published)
+      return data;
   },
 );

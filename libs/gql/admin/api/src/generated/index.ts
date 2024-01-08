@@ -464,15 +464,15 @@ ${KycFieldsFragmentDoc}`;
     ${EventListFieldsFragmentDoc}
 ${EventParametersFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}`;
- const GetEventWithParametersMinimalDocument = `
-    query GetEventWithParametersMinimal($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
+ const GetEventWithParametersDocument = `
+    query GetEventWithParameters($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     eventParameters {
-      status
+      ...EventParametersFields
     }
   }
 }
-    `;
+    ${EventParametersFieldsFragmentDoc}`;
  const GetEventWithPassesDocument = `
     query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
@@ -489,6 +489,9 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     eventDateLocations {
       ...EventDateLocationsFields
     }
+    eventParameters {
+      ...EventParametersFields
+    }
     eventPasses {
       id
       name
@@ -504,6 +507,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
 }
     ${OrganizerFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}
+${EventParametersFieldsFragmentDoc}
 ${PassAmountFieldsFragmentDoc}
 ${PassPricingFieldsFragmentDoc}`;
  const GetEventsFromOrganizerIdTableDocument = `
@@ -582,8 +586,8 @@ ${PassPricingFieldsFragmentDoc}`;
     ${EventDateLocationsFieldsFragmentDoc}
 ${PassAmountFieldsFragmentDoc}
 ${PassPricingFieldsFragmentDoc}`;
- const GetEventPassesDocument = `
-    query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) @cached {
+ const GetEventParametersAndEventPassesDocument = `
+    query GetEventParametersAndEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPasses(
     where: {event: {slug: $eventSlug}}
     locales: [$locale, en]
@@ -613,10 +617,19 @@ ${PassPricingFieldsFragmentDoc}`;
       isDelayedRevealed
     }
   }
+  event(where: {slug: $eventSlug}, locales: [$locale, en], stage: $stage) {
+    organizer {
+      slug
+    }
+    eventParameters {
+      ...EventParametersFields
+    }
+  }
 }
     ${PassAmountFieldsFragmentDoc}
 ${PassPricingFieldsFragmentDoc}
-${EventDateLocationsFieldsFragmentDoc}`;
+${EventDateLocationsFieldsFragmentDoc}
+${EventParametersFieldsFragmentDoc}`;
  const GetEventPassDelayedRevealedFromEventPassIdDocument = `
     query GetEventPassDelayedRevealedFromEventPassId($eventPassId: ID!, $locale: Locale!, $stage: Stage!) @cached {
   eventPass(where: {id: $eventPassId}, locales: [$locale, en], stage: $stage) {
@@ -1148,8 +1161,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEvent(variables: Types.GetEventQueryVariables, options?: C): Promise<Types.GetEventQuery> {
       return requester<Types.GetEventQuery, Types.GetEventQueryVariables>(GetEventDocument, variables, options) as Promise<Types.GetEventQuery>;
     },
-    GetEventWithParametersMinimal(variables: Types.GetEventWithParametersMinimalQueryVariables, options?: C): Promise<Types.GetEventWithParametersMinimalQuery> {
-      return requester<Types.GetEventWithParametersMinimalQuery, Types.GetEventWithParametersMinimalQueryVariables>(GetEventWithParametersMinimalDocument, variables, options) as Promise<Types.GetEventWithParametersMinimalQuery>;
+    GetEventWithParameters(variables: Types.GetEventWithParametersQueryVariables, options?: C): Promise<Types.GetEventWithParametersQuery> {
+      return requester<Types.GetEventWithParametersQuery, Types.GetEventWithParametersQueryVariables>(GetEventWithParametersDocument, variables, options) as Promise<Types.GetEventWithParametersQuery>;
     },
     GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
       return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;
@@ -1160,8 +1173,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventWithPassesOrganizer(variables: Types.GetEventWithPassesOrganizerQueryVariables, options?: C): Promise<Types.GetEventWithPassesOrganizerQuery> {
       return requester<Types.GetEventWithPassesOrganizerQuery, Types.GetEventWithPassesOrganizerQueryVariables>(GetEventWithPassesOrganizerDocument, variables, options) as Promise<Types.GetEventWithPassesOrganizerQuery>;
     },
-    GetEventPasses(variables: Types.GetEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassesQuery> {
-      return requester<Types.GetEventPassesQuery, Types.GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<Types.GetEventPassesQuery>;
+    GetEventParametersAndEventPasses(variables: Types.GetEventParametersAndEventPassesQueryVariables, options?: C): Promise<Types.GetEventParametersAndEventPassesQuery> {
+      return requester<Types.GetEventParametersAndEventPassesQuery, Types.GetEventParametersAndEventPassesQueryVariables>(GetEventParametersAndEventPassesDocument, variables, options) as Promise<Types.GetEventParametersAndEventPassesQuery>;
     },
     GetEventPassDelayedRevealedFromEventPassId(variables: Types.GetEventPassDelayedRevealedFromEventPassIdQueryVariables, options?: C): Promise<Types.GetEventPassDelayedRevealedFromEventPassIdQuery> {
       return requester<Types.GetEventPassDelayedRevealedFromEventPassIdQuery, Types.GetEventPassDelayedRevealedFromEventPassIdQueryVariables>(GetEventPassDelayedRevealedFromEventPassIdDocument, variables, options) as Promise<Types.GetEventPassDelayedRevealedFromEventPassIdQuery>;
