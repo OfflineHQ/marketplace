@@ -1,6 +1,7 @@
 import { AppNavLayout } from '@features/back-office/app-nav';
 import { WithSuperAdminRole } from '@features/back-office/app-nav/stories';
 import { EventFromOrganizerTable } from '@features/back-office/events-types';
+import { EventStatus_Enum } from '@gql/shared/types';
 import {
   useTableHeaderControlText,
   useTableNoResultText,
@@ -20,18 +21,12 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2023-07-23 12:00:00.0',
       dateSaleEnd: '2023-08-24 12:00:00.0',
       timezone: 'Europe/London',
+      status: EventStatus_Enum.Draft,
     },
   },
   {
     title: 'Another event title',
     slug: 'test-another-event-title',
-    eventParameters: {
-      dateStart: '2023-09-15 10:00:00.0',
-      dateEnd: '2023-09-16 18:30:00.0',
-      dateSaleStart: '2023-08-10 12:00:00.0',
-      dateSaleEnd: '2023-09-14 12:00:00.0',
-      timezone: 'Europe/Paris',
-    },
   },
   {
     title: 'Upcoming concert',
@@ -42,6 +37,7 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2023-09-25 12:00:00.0',
       dateSaleEnd: '2023-10-19 12:00:00.0',
       timezone: 'America/New_York',
+      status: EventStatus_Enum.Published,
     },
   },
   {
@@ -53,6 +49,7 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2023-05-15 12:00:00.0',
       dateSaleEnd: '2023-06-29 12:00:00.0',
       timezone: 'Europe/Berlin',
+      status: EventStatus_Enum.Published,
     },
   },
   {
@@ -64,6 +61,7 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2023-10-01 12:00:00.0',
       dateSaleEnd: '2023-11-09 12:00:00.0',
       timezone: 'America/Los_Angeles',
+      status: EventStatus_Enum.Draft,
     },
   },
   {
@@ -75,6 +73,7 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2023-08-01 12:00:00.0',
       dateSaleEnd: '2023-09-04 12:00:00.0',
       timezone: 'America/New_York',
+      status: EventStatus_Enum.Draft,
     },
   },
   {
@@ -86,6 +85,7 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2023-06-01 12:00:00.0',
       dateSaleEnd: '2023-07-14 12:00:00.0',
       timezone: 'Europe/Paris',
+      status: EventStatus_Enum.Draft,
     },
   },
   {
@@ -97,6 +97,7 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2023-11-01 12:00:00.0',
       dateSaleEnd: '2023-11-30 12:00:00.0',
       timezone: 'Europe/London',
+      status: EventStatus_Enum.Draft,
     },
   },
   {
@@ -108,6 +109,7 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2024-05-01 12:00:00.0',
       dateSaleEnd: '2024-06-30 12:00:00.0',
       timezone: 'America/New_York',
+      status: EventStatus_Enum.Draft,
     },
   },
   {
@@ -119,6 +121,7 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2024-07-01 12:00:00.0',
       dateSaleEnd: '2024-09-09 12:00:00.0',
       timezone: 'Europe/Paris',
+      status: EventStatus_Enum.Draft,
     },
   },
   {
@@ -130,6 +133,7 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2024-12-01 12:00:00.0',
       dateSaleEnd: '2025-03-14 12:00:00.0',
       timezone: 'America/Los_Angeles',
+      status: EventStatus_Enum.Draft,
     },
   },
   {
@@ -141,6 +145,7 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2025-09-01 12:00:00.0',
       dateSaleEnd: '2025-11-19 12:00:00.0',
       timezone: 'Europe/London',
+      status: EventStatus_Enum.Draft,
     },
   },
   {
@@ -152,6 +157,7 @@ export const eventsTableData: EventFromOrganizerTable[] = [
       dateSaleStart: '2023-05-01 12:00:00.0',
       dateSaleEnd: '2023-06-30 12:00:00.0',
       timezone: 'America/New_York',
+      status: EventStatus_Enum.Draft,
     },
   },
 ];
