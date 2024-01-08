@@ -26,13 +26,13 @@ const meta: Meta<typeof EventSheet> = {
       mock: () => {
         // const mockRename = createMock(renameFiles, 'renameEventPassNftFiles');
         // mockRename.mockReturnValue(Promise.resolve());
-        const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
-        mockDeploy.mockReturnValue(Promise.resolve());
+        // const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
+        // mockDeploy.mockReturnValue(Promise.resolve());
         const mockReveal = createMock(reveal, 'revealDelayedContract');
         mockReveal.mockReturnValue(Promise.resolve());
         return [
           // mockRename,
-          mockDeploy,
+          // mockDeploy,
           mockReveal,
           ...eventPassNftFilesTableMocks(),
         ];
