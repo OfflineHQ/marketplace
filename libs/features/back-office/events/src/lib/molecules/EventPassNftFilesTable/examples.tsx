@@ -2,6 +2,15 @@ import {
   Currency_Enum,
   EventPassNftContractType_Enum,
 } from '@gql/shared/types';
+import * as authProvider from '@next/auth';
+import * as uploaderProvider from '@next/uploader-provider';
+import { i18nUiTablesServerMocks } from '@test-utils/ui-mocks';
+import { sleep } from '@utils';
+import * as nextIntl from 'next-intl';
+import { createMock } from 'storybook-addon-module-mock';
+import * as checkPass from '../../actions/checkEventPassFilesHash';
+import * as deleteFile from '../../actions/deleteEventPassFile';
+import * as getPass from '../../actions/getEventPassNftFiles';
 import { EventPassNftFilesTableProps } from './EventPassNftFilesTable';
 
 export const eventPassNftFiles = [
@@ -114,3 +123,34 @@ export const eventPassNftVipNoContractDelayedReveal: EventPassNftFilesTableProps
       passOptions: [],
     },
   };
+
+export function eventPassNftFilesTableMocks() {
+  const mock = createMock(getPass, 'getEventPassNftFiles');
+  mock.mockReturnValue(Promise.resolve(eventPassNftFiles));
+  const mockIntl = createMock(nextIntl, 'useLocale');
+  mockIntl.mockReturnValue('en');
+  const mockUploader = createMock(uploaderProvider, 'useUploader');
+  mockUploader.mockReturnValue({ sessionReady: true });
+  const mockAuth = createMock(authProvider, 'useAuthContext');
+  mockAuth.mockReturnValue({
+    safeUser: {
+      eoa: '0x123',
+    },
+  });
+  const mockDeleteFile = createMock(deleteFile, 'deleteEventPassFile');
+  mockDeleteFile.mockImplementation(async () => {
+    await sleep(300);
+    return Promise.resolve();
+  });
+  const mockCheckPass = createMock(checkPass, 'checkEventPassNftFilesHash');
+  mockCheckPass.mockReturnValue(Promise.resolve([]));
+  return [
+    mock,
+    mockIntl,
+    mockUploader,
+    mockAuth,
+    mockDeleteFile,
+    mockCheckPass,
+    ...i18nUiTablesServerMocks(),
+  ];
+}
