@@ -32,7 +32,7 @@ export const mainConfig = {
   },
   staticDirs: ['../../../msw', '../public'], // add msw worker to storybook and public folder from next app for images
   docs: {
-    autodocs: true,
+    autodocs: false,
   },
   webpackFinal: async (config, { configType }) => {
     // Used to fix the issue with next-intl url module

@@ -1,3 +1,4 @@
+import * as eventApi from '@features/organizer/event-api';
 import {
   passPurchaseContainerProps,
   PassPurchaseSheetContainerExample,
@@ -6,7 +7,11 @@ import {
 import { PassPurchaseSheetContainer } from './PassPurchaseSheetContainer';
 
 import { Meta, StoryObj } from '@storybook/react';
-import { default as passPurchaseMeta } from '../PassPurchase/PassPurchase.stories';
+import { getMock } from 'storybook-addon-module-mock';
+import {
+  default as passPurchaseMeta,
+  WithLotsOfPassesSelected,
+} from '../PassPurchase/PassPurchase.stories';
 
 const meta = {
   component: PassPurchaseSheetContainerExample,
@@ -19,8 +24,57 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  play: async (context) => {
+    const mockGetEventPassCart = getMock(
+      context.parameters,
+      eventApi,
+      'getEventPassCart',
+    );
+    mockGetEventPassCart.mockResolvedValue({
+      quantity: 0,
+    });
+  },
+};
+
+export const DefaultWithPassesSelected: Story = {
+  play: async (context) => {
+    await WithLotsOfPassesSelected.play(context);
+  },
+};
 
 export const WithFullSize: Story = {
   render: PassPurchaseSheetContainerWithFullSizeExample,
+};
+
+export const DefaultMobile: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
+    },
+  },
+  render: PassPurchaseSheetContainerExample,
+};
+
+export const WithPassesSelectedMobile: Story = {
+  ...DefaultWithPassesSelected,
+  parameters: {
+    viewport: {
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
+    },
+  },
 };

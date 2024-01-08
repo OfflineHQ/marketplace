@@ -1,10 +1,13 @@
+import { expect } from '@storybook/jest';
+import { screen, userEvent } from '@storybook/test';
 // PassCard.stories.tsx
+import * as eventActions from '@features/organizer/event-actions';
+import * as eventApi from '@features/organizer/event-api';
+import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { Meta, StoryObj } from '@storybook/react';
-import { graphql } from 'msw';
+import { createMock, getMock } from 'storybook-addon-module-mock';
 import { PassCard, PassCardProps, PassCardSkeleton } from './PassCard';
 import {
-  PassCardBoundaryMaxExample,
-  PassCardBoundaryMaxPerUserExample,
   passWithMaxAmount,
   passWithMaxAmountPerUser,
   passWithSoldOut,
@@ -18,26 +21,36 @@ const meta = {
     ...passWithMaxAmount,
   },
   parameters: {
-    msw: {
-      handlers: [
-        graphql.query('GetEventPassOrderSums', (req, res, ctx) => {
-          return ctx.data({
-            eventPassOrderSums_by_pk: {
-              totalReserved: 0,
-            },
-          });
-        }),
-        graphql.query('GetPendingOrderForEventPass', (req, res, ctx) => {
-          return ctx.data({
-            pendingOrder: null,
-          });
-        }),
-        graphql.query('GetOrderPurchasedForEventPassesId', (req, res, ctx) => {
-          return ctx.data({
-            order: [],
-          });
-        }),
-      ],
+    moduleMock: {
+      mock: () => {
+        const mockGetEventPassOrderSums = createMock(
+          eventApi,
+          'getEventPassOrderSums',
+        );
+        const mockGetOrderPurchasedForEventPass = createMock(
+          eventApi,
+          'getOrderPurchasedForEventPass',
+        );
+        const mockGetEventPassCart = createMock(eventApi, 'getEventPassCart');
+        mockGetEventPassOrderSums.mockResolvedValue({
+          totalReserved: 0,
+        });
+        mockGetOrderPurchasedForEventPass.mockResolvedValue([]);
+        mockGetEventPassCart.mockResolvedValue({
+          quantity: 7,
+        });
+        const mockUpdateEventPassCart = createMock(
+          eventActions,
+          'updateEventPassCart',
+        );
+        mockUpdateEventPassCart.mockResolvedValue(undefined);
+        return [
+          mockGetEventPassOrderSums,
+          mockGetOrderPurchasedForEventPass,
+          mockGetEventPassCart,
+          mockUpdateEventPassCart,
+        ];
+      },
     },
   },
 } satisfies Meta<PassCardProps>;
@@ -47,72 +60,107 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  parameters: {
-    msw: {
-      handlers: [
-        graphql.query('GetEventPassOrderSums', (req, res, ctx) => {
-          return ctx.data({
-            eventPassOrderSums_by_pk: {
-              totalReserved: 0,
-            },
-          });
-        }),
-        graphql.query('GetPendingOrderForEventPass', (req, res, ctx) => {
-          return ctx.data({
-            pendingOrder: null,
-          });
-        }),
-        graphql.query('GetOrderPurchasedForEventPassesId', (req, res, ctx) => {
-          return ctx.data({
-            order: [],
-          });
-        }),
-      ],
-    },
+  play: async (context) => {
+    const mock = getMock(context.parameters, eventApi, 'getEventPassCart');
+    mock.mockResolvedValue({
+      quantity: 0,
+    });
+    const mockUpdate = getMock(
+      context.parameters,
+      eventActions,
+      'updateEventPassCart',
+    );
+    const incrementButton = await screen.findByRole('button', {
+      name: /increment value/i,
+    });
+    await userEvent.click(incrementButton);
+    const decrementButton = screen.getByRole('button', {
+      name: /decrement value/i,
+    });
+    await userEvent.click(decrementButton);
+    expect(mockUpdate).toBeCalledTimes(2);
+    const args = mockUpdate.mock.calls[0][0];
+    expect(args).toMatchObject({
+      organizerSlug: 'organizer-slug',
+      eventSlug: 'event-slug',
+      eventPassId: '1',
+      quantity: 1,
+    });
+    const args2 = mockUpdate.mock.calls[1][0];
+    expect(args2).toMatchObject({
+      organizerSlug: 'organizer-slug',
+      eventSlug: 'event-slug',
+      eventPassId: '1',
+      quantity: 0,
+    });
   },
 };
 
 export const BoundaryConditions: Story = {
-  ...Default,
-  parameters: {
-    msw: {
-      handlers: [
-        ...Default.parameters.msw.handlers,
-        graphql.query('GetPendingOrderForEventPass', (req, res, ctx) => {
-          return ctx.json({
-            pendingOrder: { quantity: 6 },
-          });
-        }),
-      ],
-    },
+  play: async () => {
+    const incrementButton = await screen.findByRole('button', {
+      name: /increment value/i,
+    });
+    await expect(incrementButton).toBeDisabled();
+    const decrementButton = screen.getByRole('button', {
+      name: /decrement value/i,
+    });
+    await expect(decrementButton).toBeEnabled();
   },
-  render: PassCardBoundaryMaxExample,
-  // play: async () => {
-  //   const incrementButton = await screen.findByRole('button', {
-  //     name: /increment value/i,
-  //   });
-  //   expect(incrementButton).toBeDisabled();
-  //   const decrementButton = screen.getByRole('button', {
-  //     name: /decrement value/i,
-  //   });
-  //   expect(decrementButton).not.toBeDisabled();
-  // },
 };
 
 export const BoundaryConditionsPerUser: Story = {
   args: passWithMaxAmountPerUser,
-  render: PassCardBoundaryMaxPerUserExample,
-  // play: async (context) => {
-  //   if (BoundaryConditions.play) await BoundaryConditions.play(context);
-  // },
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+  play: async (context) => {
+    const mock = getMock(context.parameters, eventApi, 'getEventPassCart');
+    mock.mockResolvedValue({
+      quantity: 3,
+    });
+    if (BoundaryConditions.play) await BoundaryConditions.play(context);
+  },
 };
 
 export const SoldOut: Story = {
   args: passWithSoldOut,
-  // play: async () => {
-  //   const soldOut = await screen.findByText(/sold-out/i);
-  //   expect(soldOut).toBeInTheDocument();
-  // },
+  play: async ({ parameters }) => {
+    const mockSums = getMock(parameters, eventApi, 'getEventPassOrderSums');
+    mockSums.mockResolvedValue({
+      totalReserved: 10,
+    });
+    const soldOut = await screen.findByText(/sold out/i);
+    expect(soldOut).toBeInTheDocument();
+  },
+};
+
+export const WithEventPassDelayedRevealedNotRevealed: Story = {
+  args: {
+    ...passWithMaxAmount,
+    eventPassNftContract: {
+      type: EventPassNftContractType_Enum.DelayedReveal,
+      isDelayedRevealed: false,
+    },
+  },
+  play: async () => {
+    await userEvent.click(await screen.findByText(/mystery pass/i));
+    await screen.findByText(/Details to be revealed/i);
+  },
+};
+
+export const WithEventPassDelayedRevealedRevealed: Story = {
+  args: {
+    ...passWithMaxAmount,
+    eventPassNftContract: {
+      type: EventPassNftContractType_Enum.DelayedReveal,
+      isDelayedRevealed: true,
+    },
+  },
+  play: async () => {
+    await userEvent.click(await screen.findByText(/mystery pass/i));
+    await screen.findByText(/Discover what's in store/i);
+  },
 };
 
 export const Loading: Story = {

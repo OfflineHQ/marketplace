@@ -1,4 +1,5 @@
 export {
+  passEarlyBird,
   passFamily,
   passFamilyCart,
   passPremium,

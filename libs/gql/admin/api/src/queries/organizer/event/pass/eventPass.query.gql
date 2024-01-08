@@ -24,6 +24,10 @@ query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!)
         ...EventDateLocationsFields
       }
     }
+    eventPassNftContract {
+      type
+      isDelayedRevealed
+    }
   }
 }
 

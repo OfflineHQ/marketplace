@@ -56,7 +56,14 @@ export const Mobile: Story = {
   ...WithLongNameSocialLinksAndEvents,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };
@@ -69,7 +76,14 @@ export const SkeletonMobile: Story = {
   ...Skeleton,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };

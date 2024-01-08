@@ -1,7 +1,8 @@
+import * as cartActions from '@features/cart-actions';
 import * as cartApi from '@features/cart-api';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
-import { createMock } from 'storybook-addon-module-mock';
+import { createMock, getMock } from 'storybook-addon-module-mock';
 
 import { EventPassList } from './EventPassList';
 import {
@@ -27,8 +28,10 @@ const meta: Meta<typeof EventPassList> = {
               : eventCart2Props,
           );
         });
+        const deleteMock = createMock(cartActions, 'deleteEventPasses');
+        deleteMock.mockImplementation(() => Promise.resolve());
 
-        return [mock];
+        return [mock, deleteMock];
       },
     },
   },
@@ -79,25 +82,20 @@ export const Opened: Story = {
 export const Remove: Story = {
   ...Opened,
   play: async (context) => {
-    userEvent.click(
-      await screen.findByRole('button', {
-        name: /Lorem ipsum/i,
-      }),
+    const deleteMock = getMock(
+      context.parameters,
+      cartActions,
+      'deleteEventPasses',
     );
     const removeButtons = await screen.findAllByRole('button', {
       name: /Remove/i,
     });
-    userEvent.click(removeButtons[0]);
-    // await waitForElementToBeRemoved(() =>
-    //   screen.queryByRole('button', {
-    //     name: /Lorem ipsum/i,
-    //   }),
-    // );
-    // expect(
-    //   await screen.findByRole('button', {
-    //     name: /World cup/i,
-    //   }),
-    // );
+    await userEvent.click(removeButtons[0]);
+    expect(deleteMock).toHaveBeenCalledWith({
+      organizerSlug: eventCart1Props.organizer.slug,
+      eventSlug: eventCart1Props.slug,
+      eventPassIds: eventCart1Props.eventPasses.map((pass) => pass.id),
+    });
   },
 };
 

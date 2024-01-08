@@ -2,7 +2,6 @@ import * as authProvider from '@next/auth';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
-import * as deploy from '../../actions/deployCollectionWrapper';
 import * as renameFiles from '../../actions/renameEventPassNftFiles';
 import * as reveal from '../../actions/revealDelayedContract';
 
@@ -13,9 +12,11 @@ import {
   eventWithNormalPasses,
 } from './examples';
 
-import { createMock, getMock, render } from 'storybook-addon-module-mock';
-import { eventPassNftFilesTableMocks } from '../../molecules/EventPassNftFilesTable/EventPassNftFilesTable.stories';
-import { eventPassNftFiles } from '../../molecules/EventPassNftFilesTable/examples';
+import { getMock, render } from 'storybook-addon-module-mock';
+import {
+  eventPassNftFiles,
+  eventPassNftFilesTableMocks,
+} from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
 
 const meta: Meta<typeof EventSheet> = {
@@ -23,20 +24,7 @@ const meta: Meta<typeof EventSheet> = {
   parameters: {
     layout: 'fullscreen',
     moduleMock: {
-      mock: () => {
-        const mockRename = createMock(renameFiles, 'renameEventPassNftFiles');
-        mockRename.mockReturnValue(Promise.resolve());
-        const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
-        mockDeploy.mockReturnValue(Promise.resolve());
-        const mockReveal = createMock(reveal, 'revealDelayedContract');
-        mockReveal.mockReturnValue(Promise.resolve());
-        return [
-          mockRename,
-          mockDeploy,
-          mockReveal,
-          ...eventPassNftFilesTableMocks(),
-        ];
-      },
+      mock: eventPassNftFilesTableMocks,
     },
   },
   render: EventSheetExample,
@@ -257,7 +245,14 @@ export const WithMobile: Story = {
   parameters: {
     layout: 'fullscreen',
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };

@@ -39,7 +39,7 @@ const SheetPortal = ({ position, children, ...props }: SheetPortalProps) => (
 SheetPortal.displayName = SheetPrimitive.Portal.displayName;
 
 const sheetVariants = cva(
-  'fixed z-50 scale-100 gap-4 border bg-background opacity-100 shadow-lg',
+  'fixed z-50 scale-100 border bg-background opacity-100 shadow-lg',
   {
     variants: {
       position: {
@@ -50,7 +50,7 @@ const sheetVariants = cva(
       },
       variant: {
         default: '',
-        stickyFooter: 'relative flex flex-col pb-0',
+        stickyFooter: 'flex flex-col pb-0',
       },
       size: {
         content: '',
