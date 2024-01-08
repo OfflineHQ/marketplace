@@ -279,7 +279,8 @@
       "header-date-start": "Date de début",
       "header-edit": "Éditer",
       "title": "Gestion des événements",
-      "search-placeholder": "Filtrer les événements..."
+      "search-placeholder": "Filtrer les événements...",
+      "header-status": "Status"
     },
     "Sheet": {
       "EventPassCard": {
@@ -349,6 +350,11 @@
       "type-delayed-reveal-badge": "Révélation surprise",
       "type-normal-description": "Présentez immédiatement tous les détails du pass. Assurez-vous que les acheteurs voient tous les avantages et caractéristiques du pass dès le début.",
       "type-delayed-reveal-description": "Affichez initialement des informations provisoires pour le pass. Les détails finaux seront révélés plus tard, créant un sentiment de mystère et d'anticipation. Cette approche peut engager les participants avec l'élément de surprise, en dévoilant les avantages et caractéristiques finaux du pass à un moment ou une étape de l'événement prédéterminée."
+    },
+    "EventStatusBadge": {
+      "status-draft": "Brouillon",
+      "status-published": "Publié",
+      "status-undefined": "Indéfini"
     }
   },
   "UI": {
