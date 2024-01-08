@@ -18,44 +18,45 @@ import {
   eventPassNftVipNoContractDelayedReveal,
 } from './examples';
 
-export function eventPassNftFilesTableMocks() {
-  const mock = createMock(getPass, 'getEventPassNftFiles');
-  mock.mockReturnValue(Promise.resolve(eventPassNftFiles));
-  const mockIntl = createMock(nextIntl, 'useLocale');
-  mockIntl.mockReturnValue('en');
-  const mockUploader = createMock(uploaderProvider, 'useUploader');
-  mockUploader.mockReturnValue({ sessionReady: true });
-  const mockAuth = createMock(authProvider, 'useAuthContext');
-  mockAuth.mockReturnValue({
-    safeUser: {
-      eoa: '0x123',
-    },
-  });
-  const mockDeleteFile = createMock(deleteFile, 'deleteEventPassFile');
-  mockDeleteFile.mockImplementation(async () => {
-    await sleep(300);
-    return Promise.resolve();
-  });
-  const mockCheckPass = createMock(checkPass, 'checkEventPassNftFilesHash');
-  mockCheckPass.mockReturnValue(Promise.resolve([]));
-  return [
-    mock,
-    mockIntl,
-    mockUploader,
-    mockAuth,
-    mockAuth,
-    mockDeleteFile,
-    mockCheckPass,
-    ...i18nUiTablesServerMocks(),
-  ];
-}
-
 const meta = {
   component: EventPassNftFilesTable,
   parameters: {
     layout: 'fullscreen',
     moduleMock: {
-      mock: eventPassNftFilesTableMocks,
+      mock: () => {
+        const mock = createMock(getPass, 'getEventPassNftFiles');
+        mock.mockReturnValue(Promise.resolve(eventPassNftFiles));
+        const mockIntl = createMock(nextIntl, 'useLocale');
+        mockIntl.mockReturnValue('en');
+        const mockUploader = createMock(uploaderProvider, 'useUploader');
+        mockUploader.mockReturnValue({ sessionReady: true });
+        const mockAuth = createMock(authProvider, 'useAuthContext');
+        mockAuth.mockReturnValue({
+          safeUser: {
+            eoa: '0x123',
+          },
+        });
+        const mockDeleteFile = createMock(deleteFile, 'deleteEventPassFile');
+        mockDeleteFile.mockImplementation(async () => {
+          await sleep(300);
+          return Promise.resolve();
+        });
+        const mockCheckPass = createMock(
+          checkPass,
+          'checkEventPassNftFilesHash',
+        );
+        mockCheckPass.mockReturnValue(Promise.resolve([]));
+        return [
+          mock,
+          mockIntl,
+          mockUploader,
+          mockAuth,
+          mockAuth,
+          mockDeleteFile,
+          mockCheckPass,
+          ...i18nUiTablesServerMocks(),
+        ];
+      },
     },
   },
   render: (props) => (
