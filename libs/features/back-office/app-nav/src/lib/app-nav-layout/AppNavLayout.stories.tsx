@@ -124,7 +124,14 @@ export const WithNoUserMobile: Story = {
   parameters: {
     layout: 'fullscreen',
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   play: async ({ canvasElement }) => {
@@ -141,7 +148,14 @@ export const WithUserMobile: Story = {
   parameters: {
     layout: 'fullscreen',
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
     nextjs: {
       appDirectory: true,
@@ -167,7 +181,14 @@ export const WithSuperAdminRoleMobile: Story = {
   parameters: {
     layout: 'fullscreen',
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
     nextjs: {
       appDirectory: true,
@@ -191,7 +212,14 @@ export const WithNoUserLoadingMobile: Story = {
   parameters: {
     layout: 'fullscreen',
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };
@@ -201,7 +229,14 @@ export const WithSkeletonMobile: Story = {
   parameters: {
     layout: 'fullscreen',
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };
@@ -211,7 +246,14 @@ export const WithUserLoadingMobile: Story = {
   parameters: {
     layout: 'fullscreen',
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };

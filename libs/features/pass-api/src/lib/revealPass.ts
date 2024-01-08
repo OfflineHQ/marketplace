@@ -8,6 +8,7 @@ import { getPassOrganizer, getPassUser } from '@features/pass-common';
 import type { EventPassNftByIdMinimal } from '@features/pass-types';
 import { FileCopyStatusEnum, FileWrapper } from '@file-upload/admin';
 import { adminSdk } from '@gql/admin/api';
+import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { getCurrentUser } from '@next/next-auth/user';
 
 const fileWrapper = new FileWrapper();
@@ -15,7 +16,7 @@ const fileWrapper = new FileWrapper();
 export const eventPassCheck = async (id: string) => {
   const user = await getCurrentUser();
   if (!user) throw new Error('User not logged in');
-  const res = await adminSdk.GetEventPassNftByIdMinimal(
+  const res = await adminSdk.GetEventPassNftByIdWithEventPassNftContract(
     {
       id,
     },
@@ -25,6 +26,14 @@ export const eventPassCheck = async (id: string) => {
   if (!eventPassNft || eventPassNft.currentOwnerAddress != user.address)
     throw new Error('Event Pass not owned by user');
   if (eventPassNft.isRevealed) throw new Error('Event Pass already revealed');
+  if (!eventPassNft.eventPassNftContract)
+    throw new Error('Event Pass has no contract associated');
+  if (
+    eventPassNft.eventPassNftContract.type ===
+      EventPassNftContractType_Enum.DelayedReveal &&
+    !eventPassNft.eventPassNftContract?.isDelayedRevealed
+  )
+    throw new Error('Event Pass is not ready to be revealed');
   // TODO: backstop in case a transfer of this nft is in progress
   return eventPassNft;
 };

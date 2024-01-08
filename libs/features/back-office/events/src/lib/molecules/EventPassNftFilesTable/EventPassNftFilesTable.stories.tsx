@@ -1,54 +1,18 @@
-import * as authProvider from '@next/auth';
-import * as uploaderProvider from '@next/uploader-provider';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
-import * as nextIntl from 'next-intl';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
 import * as deleteFile from '../../actions/deleteEventPassFile';
 import * as getPass from '../../actions/getEventPassNftFiles';
 
 import { screen, userEvent, waitFor, within } from '@storybook/test';
-import { i18nUiTablesServerMocks } from '@test-utils/ui-mocks';
-import { sleep } from '@utils';
-import { createMock, getMock } from 'storybook-addon-module-mock';
+import { getMock } from 'storybook-addon-module-mock';
 import { EventPassNftFilesTable } from './EventPassNftFilesTable';
 import {
   eventPassNftFiles,
+  eventPassNftFilesTableMocks,
   eventPassNftVIPWithContract,
   eventPassNftVipNoContractDelayedReveal,
 } from './examples';
-
-export function eventPassNftFilesTableMocks() {
-  const mock = createMock(getPass, 'getEventPassNftFiles');
-  mock.mockReturnValue(Promise.resolve(eventPassNftFiles));
-  const mockIntl = createMock(nextIntl, 'useLocale');
-  mockIntl.mockReturnValue('en');
-  const mockUploader = createMock(uploaderProvider, 'useUploader');
-  mockUploader.mockReturnValue({ sessionReady: true });
-  const mockAuth = createMock(authProvider, 'useAuthContext');
-  mockAuth.mockReturnValue({
-    safeUser: {
-      eoa: '0x123',
-    },
-  });
-  const mockDeleteFile = createMock(deleteFile, 'deleteEventPassFile');
-  mockDeleteFile.mockImplementation(async () => {
-    await sleep(300);
-    return Promise.resolve();
-  });
-  const mockCheckPass = createMock(checkPass, 'checkEventPassNftFilesHash');
-  mockCheckPass.mockReturnValue(Promise.resolve([]));
-  return [
-    mock,
-    mockIntl,
-    mockUploader,
-    mockAuth,
-    mockAuth,
-    mockDeleteFile,
-    mockCheckPass,
-    ...i18nUiTablesServerMocks(),
-  ];
-}
 
 const meta = {
   component: EventPassNftFilesTable,

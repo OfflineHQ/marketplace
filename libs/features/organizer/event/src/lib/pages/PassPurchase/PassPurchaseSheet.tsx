@@ -10,7 +10,6 @@ import {
   SheetTitleSkeleton,
   type SheetNavigationProps,
 } from '@ui/components';
-import { useLocale } from 'next-intl';
 import Link, { LinkProps } from 'next/link';
 import { PassFooterServer } from '../../organisms/PassFooter/PassFooterServer';
 import {
@@ -44,7 +43,6 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
   closeLink,
   ...footerProps
 }) => {
-  const locale = useLocale();
   return (
     <>
       <SheetOverflow className="space-y-4">

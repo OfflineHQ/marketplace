@@ -43,7 +43,14 @@ export const WithDarkMode: Story = {
 export const WithMobile = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
   ...Default,
@@ -51,7 +58,14 @@ export const WithMobile = {
 export const WithMobileDarkMode = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
     darkMode: {
       isDark: true,

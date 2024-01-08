@@ -583,6 +583,10 @@ ${PassPricingFieldsFragmentDoc}`;
         ...EventDateLocationsFields
       }
     }
+    eventPassNftContract {
+      type
+      isDelayedRevealed
+    }
   }
 }
     ${PassAmountFieldsFragmentDoc}
@@ -981,6 +985,17 @@ ${EventPassFieldsFragmentDoc}`;
   }
 }
     ${EventPassNftFieldsFragmentDoc}`;
+ const GetEventPassNftByIdWithEventPassNftContractDocument = `
+    query GetEventPassNftByIdWithEventPassNftContract($id: uuid!) {
+  eventPassNft_by_pk(id: $id) {
+    ...EventPassNftFields
+    eventPassNftContract {
+      type
+      isDelayedRevealed
+    }
+  }
+}
+    ${EventPassNftFieldsFragmentDoc}`;
  const CreateRoleAssignmentDocument = `
     mutation CreateRoleAssignment($input: roleAssignment_insert_input!) {
   insert_roleAssignment_one(object: $input) {
@@ -1212,6 +1227,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassNftByIdMinimal(variables: Types.GetEventPassNftByIdMinimalQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdMinimalQuery> {
       return requester<Types.GetEventPassNftByIdMinimalQuery, Types.GetEventPassNftByIdMinimalQueryVariables>(GetEventPassNftByIdMinimalDocument, variables, options) as Promise<Types.GetEventPassNftByIdMinimalQuery>;
+    },
+    GetEventPassNftByIdWithEventPassNftContract(variables: Types.GetEventPassNftByIdWithEventPassNftContractQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdWithEventPassNftContractQuery> {
+      return requester<Types.GetEventPassNftByIdWithEventPassNftContractQuery, Types.GetEventPassNftByIdWithEventPassNftContractQueryVariables>(GetEventPassNftByIdWithEventPassNftContractDocument, variables, options) as Promise<Types.GetEventPassNftByIdWithEventPassNftContractQuery>;
     },
     CreateRoleAssignment(variables: Types.CreateRoleAssignmentMutationVariables, options?: C): Promise<Types.CreateRoleAssignmentMutation> {
       return requester<Types.CreateRoleAssignmentMutation, Types.CreateRoleAssignmentMutationVariables>(CreateRoleAssignmentDocument, variables, options) as Promise<Types.CreateRoleAssignmentMutation>;

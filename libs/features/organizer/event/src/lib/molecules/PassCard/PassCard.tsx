@@ -20,7 +20,9 @@ import Image from 'next/image';
 import { ConvertedCurrency } from '@next/currency';
 
 import type { EventPass } from '@features/organizer/event-types';
+import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { useTranslations } from 'next-intl';
+import { EventPassContractDelayedRevealBadge } from '../EventPassContractDelayedRevealBadge/EventPassContractDelayedRevealBadge';
 import { PassOptions } from '../PassOptions/PassOptions';
 import { PassCardSelect, PassCardSelectProps } from './PassCardSelect';
 
@@ -38,6 +40,7 @@ export const PassCard: React.FC<PassCardProps> = ({
   nftImage,
   className,
   hasConfirmedPasses,
+  eventPassNftContract,
   ...props
 }) => {
   const t = useTranslations('Organizer.Event.PassPurchase.Pass');
@@ -48,6 +51,14 @@ export const PassCard: React.FC<PassCardProps> = ({
     >
       <CardHeader>
         <CardTitle>{name}</CardTitle>
+        {eventPassNftContract?.type ===
+          EventPassNftContractType_Enum.DelayedReveal && (
+          <div className="pt-2">
+            <EventPassContractDelayedRevealBadge
+              isDelayedRevealed={eventPassNftContract.isDelayedRevealed}
+            />
+          </div>
+        )}
         <CardDescription>{description}</CardDescription>
         <div className="mx-auto flex max-h-[370px] w-full max-w-[350px] py-3">
           <AspectRatio variant="square">

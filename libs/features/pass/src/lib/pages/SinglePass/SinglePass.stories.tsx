@@ -46,7 +46,14 @@ export const LoadingMobile: Story = {
   ...Loading,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };
@@ -55,7 +62,14 @@ export const NotRevealedPassWithMobile: Story = {
   ...NotRevealedPass,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };
@@ -64,7 +78,14 @@ export const NotRevealedPassWithMobileDarkMode: Story = {
   ...NotRevealedPass,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
     darkMode: {
       isDark: true,
@@ -88,7 +109,14 @@ export const RevealedPassWithMobile: Story = {
   ...RevealedPass,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };
@@ -110,7 +138,14 @@ export const OwnerNotRevealedPassWithMobile: Story = {
   ...OwnerNotRevealedPass,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };
@@ -119,7 +154,14 @@ export const OwnerNotRevealedPassWithMobileDarkMode: Story = {
   ...OwnerNotRevealedPass,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
     darkMode: {
       isDark: true,
@@ -144,7 +186,14 @@ export const OwnerRevealedPassWithMobile: Story = {
   ...OwnerRevealedPass,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
   },
 };
@@ -153,7 +202,14 @@ export const OwnerRevealedPassWithMobileDarkMode: Story = {
   ...OwnerRevealedPass,
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'small_mobile',
+    },
+    chromatic: {
+      modes: {
+        mobile: {
+          viewport: 'small_mobile',
+        },
+      },
     },
     darkMode: {
       isDark: true,

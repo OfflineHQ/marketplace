@@ -1,6 +1,11 @@
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { Badge, BadgeProps, PopoverInfo } from '@ui/components';
 import { InfoAvailable, InfoSealed } from '@ui/icons';
+import {
+  backgroundColors,
+  backgroundHoverColors,
+  textColors,
+} from '@ui/shared';
 import { useTranslations } from 'next-intl';
 
 export interface EventPassTypeBadgeProps
@@ -27,10 +32,8 @@ export function EventPassTypeBadge({
     ),
   };
   const classes = {
-    [EventPassNftContractType_Enum.Normal]:
-      'bg-green-200 text-green-800 hover:bg-green-300 dark:bg-green-900 dark:text-green-100 dark:hover:bg-green-800',
-    [EventPassNftContractType_Enum.DelayedReveal]:
-      'bg-blue-200 text-blue-800 hover:bg-blue-300 dark:bg-blue-900 dark:text-blue-100 dark:hover:bg-blue-800',
+    [EventPassNftContractType_Enum.Normal]: `${textColors.green} ${backgroundColors.green} ${backgroundHoverColors.green}`,
+    [EventPassNftContractType_Enum.DelayedReveal]: `${textColors.blue} ${backgroundColors.blue} ${backgroundHoverColors.blue}`,
   };
   const icons = {
     [EventPassNftContractType_Enum.Normal]: <InfoAvailable />,

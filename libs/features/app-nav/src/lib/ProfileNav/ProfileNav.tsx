@@ -59,7 +59,7 @@ export function ProfileNav({
             </div>
           ) : (
             <div className="mt-3 flex h-16 flex-col items-center space-y-0 px-4 md:mt-0 md:flex-row md:space-x-2">
-              <AutoAnimate>
+              <AutoAnimate className="h-[36px] md:h-auto">
                 {isLoading ? (
                   <Spinner size="xl" variant="ghost" className="md:mr-2" />
                 ) : (
