@@ -20,10 +20,17 @@ import {
 export interface EventHeroProps
   extends EventDatesServerProps,
     EventLocationsProps,
-    Pick<Event, 'heroImage' | 'heroImageClasses' | 'title' | 'organizer'> {}
+    Pick<
+      Event,
+      | 'heroImage'
+      | 'heroImageClasses'
+      | 'title'
+      | 'organizer'
+      | 'eventParameters'
+    > {}
 
 const layout = {
-  grid: 'grid grid-cols-1 items-center gap-8 md:grid-cols-2',
+  grid: 'grid grid-cols-1 items-start gap-8 md:grid-cols-2',
   image: 'rounded-sm object-cover',
   textContainer: 'md:space-y-4 items-start h-full flex flex-col',
   text: 'mb-2 md:mb-4',
