@@ -8147,7 +8147,7 @@
         "fields": [
           {
             "name": "dateEnd",
-            "description": "The end date including time on the UTC timezone.",
+            "description": "The end date including time.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -8163,7 +8163,7 @@
           },
           {
             "name": "dateStart",
-            "description": "The start date including time on the UTC timezone.",
+            "description": "The start date including time.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -37601,7 +37601,7 @@
           },
           {
             "name": "eventDateLocation",
-            "description": "Define the location and date for this option.\nImportant ! It will determine the release and availability for the Pass access.",
+            "description": "Define the location and date for this option.",
             "args": [
               {
                 "name": "forceParentLocale",

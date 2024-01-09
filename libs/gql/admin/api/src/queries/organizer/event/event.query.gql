@@ -22,19 +22,10 @@ query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
       imageClasses
     }
     eventParameters {
-      ...EventParametersFields
+      ...EventParametersMinimalFields
     }
     eventDateLocations {
       ...EventDateLocationsFields
-    }
-  }
-}
-
-query GetEventWithParameters($slug: String!, $locale: Locale!, $stage: Stage!)
-@cached {
-  event(where: { slug: $slug }, locales: [$locale, en], stage: $stage) {
-    eventParameters {
-      ...EventParametersFields
     }
   }
 }

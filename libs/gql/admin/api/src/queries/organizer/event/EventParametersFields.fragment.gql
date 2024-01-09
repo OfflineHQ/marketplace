@@ -1,10 +1,10 @@
 fragment EventParametersFields on eventParameters {
+  ...EventParametersMinimalFields
   dateStart
   dateEnd
   dateSaleStart
   dateSaleEnd
   timezone
-  status
   isSaleOngoing
   isOngoing
 }

@@ -1164,9 +1164,9 @@ export type EventCreateOneInlineInput = {
 /** Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several. */
 export type EventDateLocation = Entity & {
   __typename?: 'EventDateLocation';
-  /** The end date including time on the UTC timezone. */
+  /** The end date including time. */
   dateEnd: Scalars['DateTime'];
-  /** The start date including time on the UTC timezone. */
+  /** The start date including time. */
   dateStart: Scalars['DateTime'];
   /** The unique identifier */
   id: Scalars['ID'];
@@ -5412,10 +5412,7 @@ export type PassOption = Entity & {
   __typename?: 'PassOption';
   /** Description of the option, like "Access to the event on Day 1" */
   description?: Maybe<Scalars['String']>;
-  /**
-   * Define the location and date for this option.
-   * Important ! It will determine the release and availability for the Pass access.
-   */
+  /** Define the location and date for this option. */
   eventDateLocation?: Maybe<EventDateLocation>;
   /** The unique identifier */
   id: Scalars['ID'];

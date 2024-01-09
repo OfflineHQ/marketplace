@@ -4,7 +4,7 @@ import {
   createDbClient,
   deleteTables,
 } from '@test-utils/db';
-import { adminSdk } from '../../generated';
+import { adminSdk } from '../../../generated';
 
 async function setEventDates(
   client: PgClient,
@@ -14,14 +14,14 @@ async function setEventDates(
   await client.query(
     `
     UPDATE public."eventParameters"
-    SET "dateStart" = $1, "dateEnd" = $2, "dateSaleStart" = $3, "dateSaleEnd" = $4
+    SET "dateStart" = $1, "dateEnd" = $2, "dateSaleStart" = $3, "dateSaleEnd" = $4, "status" = 'PUBLISHED'
     WHERE "eventId" = $5
   `,
     [dates.start, dates.end, dates.saleStart, dates.saleEnd, eventId],
   );
 }
 
-describe('eventParameters integration tests for computed isOngoing and isSaleOngoing', () => {
+describe('eventParameters integration tests', () => {
   process.env.TZ = 'Europe/London';
   let client: PgClient;
   beforeAll(async () => {
@@ -41,6 +41,12 @@ describe('eventParameters integration tests for computed isOngoing and isSaleOng
     jest.resetAllMocks();
   });
 
+  it('should not access eventParameters not PUBLISHED', async () => {
+    const res = await adminSdk.GetEventParameters({
+      eventId: 'clizzpvidao620buvxit1ynko',
+    });
+    expect(res.eventParameters.length).toBe(0);
+  });
   describe('eventParameters for event with timezone Europe/London, same as the one in test', () => {
     it('should return isOngoing true if event is ongoing', async () => {
       const currentDate = new Date();
