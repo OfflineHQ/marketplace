@@ -6,7 +6,12 @@ query GetAlchemyInfosFromEventId($eventId: String) {
 }
 
 query GetEventParameters($eventId: String) {
-  eventParameters(where: { eventId: { _eq: $eventId } }) {
+  eventParameters(
+    where: {
+      _and: [{ eventId: { _eq: $eventId } }, { status: { _eq: PUBLISHED } }]
+    }
+    limit: 1
+  ) {
     dateStart
     dateEnd
     dateSaleStart
