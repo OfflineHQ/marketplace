@@ -41,6 +41,7 @@ export const EventHero: React.FC<EventHeroProps> = ({
   heroImageClasses,
   title,
   organizer,
+  eventParameters,
   ...locationDatesProps
 }) => {
   return (
