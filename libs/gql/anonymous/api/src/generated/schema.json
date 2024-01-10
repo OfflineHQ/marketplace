@@ -8135,7 +8135,7 @@
         "fields": [
           {
             "name": "dateEnd",
-            "description": "The end date including time on the UTC timezone.",
+            "description": "The end date including time.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -8151,7 +8151,7 @@
           },
           {
             "name": "dateStart",
-            "description": "The start date including time on the UTC timezone.",
+            "description": "The start date including time.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -26136,6 +26136,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "clr7j9mmt0q2j01uo9zrs2fm7",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PackCreateManyInlineInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "type": {
@@ -29110,6 +29122,18 @@
         "description": null,
         "fields": null,
         "inputFields": [
+          {
+            "name": "clr7j9mmt0q2j01uo9zrs2fm7",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PackUpdateManyInlineInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "description",
             "description": "description input for default locale (en)",
@@ -32986,6 +33010,51 @@
             "deprecationReason": null
           },
           {
+            "name": "organizer",
+            "description": null,
+            "args": [
+              {
+                "name": "forceParentLocale",
+                "description": "Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.\n\nNote that `organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.\nThe first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.\n\nThis argument will affect any existing locale filtering defined in the query's tree for the subtree.",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "locales",
+                "description": "Allows to optionally override locale filtering behaviour in the query's subtree.\n\nNote that `organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.\nThe first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.\n\nThis argument will overwrite any existing locale filtering defined in the query's tree for the subtree.",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "Locale",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Organizer",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "publishedAt",
             "description": "The time the document was published. Null on documents in draft stage.",
             "args": [
@@ -33522,6 +33591,18 @@
                 "name": "String",
                 "ofType": null
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "organizer",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "OrganizerCreateOneInlineInput",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -34821,6 +34902,18 @@
             "deprecationReason": null
           },
           {
+            "name": "organizer",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "OrganizerWhereInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "publishedAt",
             "description": null,
             "type": {
@@ -35284,6 +35377,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "organizer",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "OrganizerUpdateOneInlineInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -36996,6 +37101,18 @@
             "deprecationReason": null
           },
           {
+            "name": "organizer",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "OrganizerWhereInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "publishedAt",
             "description": null,
             "type": {
@@ -37484,7 +37601,7 @@
           },
           {
             "name": "eventDateLocation",
-            "description": "Define the location and date for this option.\nImportant ! It will determine the release and availability for the Pass access.",
+            "description": "Define the location and date for this option.",
             "args": [
               {
                 "name": "forceParentLocale",

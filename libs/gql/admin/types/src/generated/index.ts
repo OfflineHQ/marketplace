@@ -331,6 +331,28 @@ export type GetPackNftContractFromPackIdQueryVariables = Types.Exact<{
 
 export type GetPackNftContractFromPackIdQuery = { __typename?: 'query_root', packNftContract: Array<{ __typename?: 'packNftContract', id: any, chainId: string, rewardsPerPack: number, organizerId: string, contractAddress: string, eventPassIds: any, eventPassNfts: Array<{ __typename?: 'eventPassNft', tokenId: any, contractAddress: string, currentOwnerAddress?: string | null, eventPassId: string, packId?: string | null }> }> };
 
+export type UpdatePackNftSupplyManyMutationVariables = Types.Exact<{
+  updates: Array<Types.PackNftSupply_Updates> | Types.PackNftSupply_Updates;
+}>;
+
+
+export type UpdatePackNftSupplyManyMutation = { __typename?: 'mutation_root', update_packNftSupply_many?: Array<{ __typename?: 'packNftSupply_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'packNftSupply', id: any, contractAddress: string, currentOwnerAddress?: string | null }> } | null> | null };
+
+export type CreatePackNftSupplyMutationVariables = Types.Exact<{
+  objects: Array<Types.PackNftSupply_Insert_Input> | Types.PackNftSupply_Insert_Input;
+}>;
+
+
+export type CreatePackNftSupplyMutation = { __typename?: 'mutation_root', insert_packNftSupply?: { __typename?: 'packNftSupply_mutation_response', affected_rows: number } | null };
+
+export type GetPackNftSupplyWithNullNftsFromCurrentOwnerAddressQueryVariables = Types.Exact<{
+  contractAddress: Types.Scalars['String'];
+  currentOwnerAddress: Types.Scalars['String'];
+}>;
+
+
+export type GetPackNftSupplyWithNullNftsFromCurrentOwnerAddressQuery = { __typename?: 'query_root', packNftSupply: Array<{ __typename?: 'packNftSupply', id: any, organizerId: string }> };
+
 export type CreatePassAmountMutationVariables = Types.Exact<{
   passAmount: Types.PassAmount_Insert_Input;
 }>;
