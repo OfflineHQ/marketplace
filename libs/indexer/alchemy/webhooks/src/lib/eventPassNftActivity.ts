@@ -45,7 +45,7 @@ export async function eventPassNftActivity(
     await extractNftTransfersFromEvent(alchemyWebhookEvent);
   if (packUpdates.length) {
     try {
-      await adminSdk.UpdateEventPassPackMany({ updates: packUpdates });
+      await adminSdk.UpdatePackNftSupplyMany({ updates: packUpdates });
     } catch {
       return new Response('Error processing pack updates into hasura', {
         status: 500,
