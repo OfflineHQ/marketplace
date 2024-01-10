@@ -22,7 +22,9 @@ import {
   createEventPassNftContract,
   createEventPassNfts,
   createPackNftContract,
+  createPackNftSupply,
   getEventPassNftContractNfts,
+  getPackSupply,
   updateNftsWithPackId,
 } from './action';
 
@@ -460,6 +462,17 @@ class NftCollection {
       contractAddress: txResult,
     });
     if (!packNftContract) throw new Error('Error creating packNftContract');
+
+    const supply = await getPackSupply(txResult);
+
+    const packNftSupplyArray = new Array(supply.toNumber()).fill({
+      packId: packNftContract.packId,
+      contractAddress: txResult,
+      chainId: env.NEXT_PUBLIC_CHAIN,
+      organizerId,
+    });
+
+    await createPackNftSupply(packNftSupplyArray);
 
     const updates = selectedNfts.map((nft) => {
       return {

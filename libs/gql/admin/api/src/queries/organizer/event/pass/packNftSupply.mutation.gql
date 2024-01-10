@@ -1,0 +1,16 @@
+mutation UpdatePackNftSupplyMany($updates: [packNftSupply_updates!]!) {
+  update_packNftSupply_many(updates: $updates) {
+    affected_rows
+    returning {
+      id
+      contractAddress
+      currentOwnerAddress
+    }
+  }
+}
+
+mutation CreatePackNftSupply($objects: [packNftSupply_insert_input!]!) {
+  insert_packNftSupply(objects: $objects) {
+    affected_rows
+  }
+}

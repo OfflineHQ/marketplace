@@ -1636,10 +1636,10 @@ input EventCreateOneInlineInput {
 Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several.
 """
 type EventDateLocation implements Entity {
-  """The end date including time on the UTC timezone."""
+  """The end date including time."""
   dateEnd: DateTime!
 
-  """The start date including time on the UTC timezone."""
+  """The start date including time."""
   dateStart: DateTime!
 
   """The unique identifier"""
@@ -5313,6 +5313,7 @@ type OrganizerConnection {
 }
 
 input OrganizerCreateInput {
+  clr7j9mmt0q2j01uo9zrs2fm7: PackCreateManyInlineInput
   createdAt: DateTime
 
   """description input for default locale (en)"""
@@ -5862,6 +5863,8 @@ enum OrganizerOrderByInput {
 }
 
 input OrganizerUpdateInput {
+  clr7j9mmt0q2j01uo9zrs2fm7: PackUpdateManyInlineInput
+
   """description input for default locale (en)"""
   description: RichTextAST
   discordWidgetId: String
@@ -6654,6 +6657,27 @@ type Pack implements Entity & Node {
   Permanent name associated with the NFT. Cannot be changed or localized.
   """
   nftName: String!
+  organizer(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): Organizer
 
   """The time the document was published. Null on documents in draft stage."""
   publishedAt(
@@ -6787,6 +6811,7 @@ input PackCreateInput {
   nftDescription: String!
   nftImage: AssetCreateOneInlineInput!
   nftName: String!
+  organizer: OrganizerCreateOneInlineInput
   updatedAt: DateTime
 }
 
@@ -7024,6 +7049,7 @@ input PackManyWhereInput {
 
   """All values starting with the given string."""
   nftName_starts_with: String
+  organizer: OrganizerWhereInput
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -7107,6 +7133,7 @@ input PackUpdateInput {
   nftDescription: String
   nftImage: AssetUpdateOneInlineInput
   nftName: String
+  organizer: OrganizerUpdateOneInlineInput
 }
 
 input PackUpdateLocalizationDataInput {
@@ -7432,6 +7459,7 @@ input PackWhereInput {
 
   """All values starting with the given string."""
   nftName_starts_with: String
+  organizer: OrganizerWhereInput
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -7537,10 +7565,7 @@ type PassOption implements Entity {
   """
   description: String
 
-  """
-  Define the location and date for this option.
-  Important ! It will determine the release and availability for the Pass access.
-  """
+  """Define the location and date for this option."""
   eventDateLocation(
     """
     Sets the locale of the resolved parent document as the only locale in the query's subtree.
@@ -13823,6 +13848,19 @@ type mutation_root {
   delete_packNftContract_by_pk(id: uuid!): packNftContract
 
   """
+  delete data from the table: "packNftSupply"
+  """
+  delete_packNftSupply(
+    """filter the rows which have to be deleted"""
+    where: packNftSupply_bool_exp!
+  ): packNftSupply_mutation_response
+
+  """
+  delete single row from the table: "packNftSupply"
+  """
+  delete_packNftSupply_by_pk(id: uuid!): packNftSupply
+
+  """
   delete data from the table: "packOrderSums"
   """
   delete_packOrderSums(
@@ -14310,6 +14348,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: packNftContract_on_conflict
   ): packNftContract
+
+  """
+  insert data into the table: "packNftSupply"
+  """
+  insert_packNftSupply(
+    """the rows to be inserted"""
+    objects: [packNftSupply_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: packNftSupply_on_conflict
+  ): packNftSupply_mutation_response
+
+  """
+  insert a single row into the table: "packNftSupply"
+  """
+  insert_packNftSupply_one(
+    """the row to be inserted"""
+    object: packNftSupply_insert_input!
+
+    """upsert condition"""
+    on_conflict: packNftSupply_on_conflict
+  ): packNftSupply
 
   """
   insert data into the table: "packOrderSums"
@@ -16337,6 +16397,34 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [packNftContract_updates!]!
   ): [packNftContract_mutation_response]
+
+  """
+  update data of the table: "packNftSupply"
+  """
+  update_packNftSupply(
+    """sets the columns of the filtered rows to the given values"""
+    _set: packNftSupply_set_input
+
+    """filter the rows which have to be updated"""
+    where: packNftSupply_bool_exp!
+  ): packNftSupply_mutation_response
+
+  """
+  update single row of the table: "packNftSupply"
+  """
+  update_packNftSupply_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: packNftSupply_set_input
+    pk_columns: packNftSupply_pk_columns_input!
+  ): packNftSupply
+
+  """
+  update multiples rows of table: "packNftSupply"
+  """
+  update_packNftSupply_many(
+    """updates to execute, in order"""
+    updates: [packNftSupply_updates!]!
+  ): [packNftSupply_mutation_response]
 
   """
   update data of the table: "packOrderSums"
@@ -18863,6 +18951,479 @@ type packNftContract_variance_fields {
   rewardsPerPack: Float
 }
 
+"""
+This table represents the supply details of pack NFTs, tracking the ownership, contents, and metadata associated with each pack.
+"""
+type packNftSupply {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String!
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String!
+  created_at: timestamptz!
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+
+  """
+  An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened.
+  """
+  eventPassNfts: [uuid!]
+  id: uuid!
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String!
+
+  """A unique identifier for the pack within the platform."""
+  packId: String!
+
+  """
+  An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened.
+  """
+  redeemableNfts: [uuid!]
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "packNftSupply"
+"""
+type packNftSupply_aggregate {
+  aggregate: packNftSupply_aggregate_fields
+  nodes: [packNftSupply!]!
+}
+
+"""
+aggregate fields of "packNftSupply"
+"""
+type packNftSupply_aggregate_fields {
+  count(columns: [packNftSupply_select_column!], distinct: Boolean): Int!
+  max: packNftSupply_max_fields
+  min: packNftSupply_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "packNftSupply". All fields are combined with a logical 'AND'.
+"""
+input packNftSupply_bool_exp {
+  _and: [packNftSupply_bool_exp!]
+  _not: packNftSupply_bool_exp
+  _or: [packNftSupply_bool_exp!]
+  chainId: String_comparison_exp
+  contractAddress: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  currentOwnerAddress: String_comparison_exp
+  error: String_comparison_exp
+  eventPassNfts: uuid_array_comparison_exp
+  id: uuid_comparison_exp
+  lastNftTransferId: uuid_comparison_exp
+  organizerId: String_comparison_exp
+  packId: String_comparison_exp
+  redeemableNfts: uuid_array_comparison_exp
+  tokenUri: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "packNftSupply"
+"""
+enum packNftSupply_constraint {
+  """
+  unique or primary key constraint on columns "chainId", "contractAddress", "packId"
+  """
+  packNftSupply_contractAddress_chainId_packId_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  packNftSupply_pkey
+}
+
+"""
+input type for inserting data into table "packNftSupply"
+"""
+input packNftSupply_insert_input {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+
+  """
+  An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened.
+  """
+  eventPassNfts: [uuid!]
+  id: uuid
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String
+
+  """A unique identifier for the pack within the platform."""
+  packId: String
+
+  """
+  An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened.
+  """
+  redeemableNfts: [uuid!]
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type packNftSupply_max_fields {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+
+  """
+  An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened.
+  """
+  eventPassNfts: [uuid!]
+  id: uuid
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String
+
+  """A unique identifier for the pack within the platform."""
+  packId: String
+
+  """
+  An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened.
+  """
+  redeemableNfts: [uuid!]
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type packNftSupply_min_fields {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+
+  """
+  An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened.
+  """
+  eventPassNfts: [uuid!]
+  id: uuid
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String
+
+  """A unique identifier for the pack within the platform."""
+  packId: String
+
+  """
+  An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened.
+  """
+  redeemableNfts: [uuid!]
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "packNftSupply"
+"""
+type packNftSupply_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [packNftSupply!]!
+}
+
+"""
+on_conflict condition type for table "packNftSupply"
+"""
+input packNftSupply_on_conflict {
+  constraint: packNftSupply_constraint!
+  update_columns: [packNftSupply_update_column!]! = []
+  where: packNftSupply_bool_exp
+}
+
+"""Ordering options when selecting data from "packNftSupply"."""
+input packNftSupply_order_by {
+  chainId: order_by
+  contractAddress: order_by
+  created_at: order_by
+  currentOwnerAddress: order_by
+  error: order_by
+  eventPassNfts: order_by
+  id: order_by
+  lastNftTransferId: order_by
+  organizerId: order_by
+  packId: order_by
+  redeemableNfts: order_by
+  tokenUri: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: packNftSupply"""
+input packNftSupply_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "packNftSupply"
+"""
+enum packNftSupply_select_column {
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  created_at
+
+  """column name"""
+  currentOwnerAddress
+
+  """column name"""
+  error
+
+  """column name"""
+  eventPassNfts
+
+  """column name"""
+  id
+
+  """column name"""
+  lastNftTransferId
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  packId
+
+  """column name"""
+  redeemableNfts
+
+  """column name"""
+  tokenUri
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "packNftSupply"
+"""
+input packNftSupply_set_input {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+
+  """
+  An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened.
+  """
+  eventPassNfts: [uuid!]
+  id: uuid
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String
+
+  """A unique identifier for the pack within the platform."""
+  packId: String
+
+  """
+  An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened.
+  """
+  redeemableNfts: [uuid!]
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""
+Streaming cursor of the table "packNftSupply"
+"""
+input packNftSupply_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: packNftSupply_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input packNftSupply_stream_cursor_value_input {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+
+  """
+  An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened.
+  """
+  eventPassNfts: [uuid!]
+  id: uuid
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String
+
+  """A unique identifier for the pack within the platform."""
+  packId: String
+
+  """
+  An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened.
+  """
+  redeemableNfts: [uuid!]
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "packNftSupply"
+"""
+enum packNftSupply_update_column {
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  created_at
+
+  """column name"""
+  currentOwnerAddress
+
+  """column name"""
+  error
+
+  """column name"""
+  eventPassNfts
+
+  """column name"""
+  id
+
+  """column name"""
+  lastNftTransferId
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  packId
+
+  """column name"""
+  redeemableNfts
+
+  """column name"""
+  tokenUri
+
+  """column name"""
+  updated_at
+}
+
+input packNftSupply_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: packNftSupply_set_input
+
+  """filter the rows which have to be updated"""
+  where: packNftSupply_bool_exp!
+}
+
 """Hold the sums for the Pack Orders"""
 type packOrderSums {
   packId: String!
@@ -21108,6 +21669,49 @@ type query_root {
 
   """fetch data from the table: "packNftContract" using primary key columns"""
   packNftContract_by_pk(id: uuid!): packNftContract
+
+  """
+  fetch data from the table: "packNftSupply"
+  """
+  packNftSupply(
+    """distinct select on columns"""
+    distinct_on: [packNftSupply_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftSupply_order_by!]
+
+    """filter the rows returned"""
+    where: packNftSupply_bool_exp
+  ): [packNftSupply!]!
+
+  """
+  fetch aggregated fields from the table: "packNftSupply"
+  """
+  packNftSupply_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packNftSupply_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftSupply_order_by!]
+
+    """filter the rows returned"""
+    where: packNftSupply_bool_exp
+  ): packNftSupply_aggregate!
+
+  """fetch data from the table: "packNftSupply" using primary key columns"""
+  packNftSupply_by_pk(id: uuid!): packNftSupply
 
   """
   fetch data from the table: "packOrderSums"
@@ -23831,6 +24435,63 @@ type subscription_root {
   ): [packNftContract!]!
 
   """
+  fetch data from the table: "packNftSupply"
+  """
+  packNftSupply(
+    """distinct select on columns"""
+    distinct_on: [packNftSupply_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftSupply_order_by!]
+
+    """filter the rows returned"""
+    where: packNftSupply_bool_exp
+  ): [packNftSupply!]!
+
+  """
+  fetch aggregated fields from the table: "packNftSupply"
+  """
+  packNftSupply_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packNftSupply_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftSupply_order_by!]
+
+    """filter the rows returned"""
+    where: packNftSupply_bool_exp
+  ): packNftSupply_aggregate!
+
+  """fetch data from the table: "packNftSupply" using primary key columns"""
+  packNftSupply_by_pk(id: uuid!): packNftSupply
+
+  """
+  fetch data from the table in a streaming manner: "packNftSupply"
+  """
+  packNftSupply_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [packNftSupply_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: packNftSupply_bool_exp
+  ): [packNftSupply!]!
+
+  """
   fetch data from the table: "packOrderSums"
   """
   packOrderSums(
@@ -24585,6 +25246,26 @@ input timezone_updates {
 }
 
 scalar uuid
+
+"""
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
+"""
+input uuid_array_comparison_exp {
+  """is the array contained in the given array value"""
+  _contained_in: [uuid!]
+
+  """does the array contain the given value"""
+  _contains: [uuid!]
+  _eq: [uuid!]
+  _gt: [uuid!]
+  _gte: [uuid!]
+  _in: [[uuid!]!]
+  _is_null: Boolean
+  _lt: [uuid!]
+  _lte: [uuid!]
+  _neq: [uuid!]
+  _nin: [[uuid!]!]
+}
 
 """
 Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.

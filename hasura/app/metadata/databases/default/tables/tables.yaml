@@ -14,6 +14,7 @@
 - "!include public_order.yaml"
 - "!include public_orderStatus.yaml"
 - "!include public_packNftContract.yaml"
+- "!include public_packNftSupply.yaml"
 - "!include public_packOrderSums.yaml"
 - "!include public_passAmount.yaml"
 - "!include public_passPricing.yaml"
