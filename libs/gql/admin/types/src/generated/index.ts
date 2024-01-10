@@ -268,6 +268,14 @@ export type GetListCurrentOwnerAddressForContractAddressQueryVariables = Types.E
 
 export type GetListCurrentOwnerAddressForContractAddressQuery = { __typename?: 'query_root', eventPassNft: Array<{ __typename?: 'eventPassNft', currentOwnerAddress?: string | null, tokenId: any }> };
 
+export type GetCurrentOwnerAddressByContractAndTokenIdQueryVariables = Types.Exact<{
+  contractAddress: Types.Scalars['String'];
+  tokenId: Types.Scalars['bigint'];
+}>;
+
+
+export type GetCurrentOwnerAddressByContractAndTokenIdQuery = { __typename?: 'query_root', eventPassNft: Array<{ __typename?: 'eventPassNft', id: any, currentOwnerAddress?: string | null }> };
+
 export type CreateEventPassNftContractMutationVariables = Types.Exact<{
   object: Types.EventPassNftContract_Insert_Input;
 }>;

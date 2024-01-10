@@ -712,6 +712,16 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetCurrentOwnerAddressByContractAndTokenIdDocument = `
+    query GetCurrentOwnerAddressByContractAndTokenId($contractAddress: String!, $tokenId: bigint!) {
+  eventPassNft(
+    where: {contractAddress: {_eq: $contractAddress}, tokenId: {_eq: $tokenId}}
+  ) {
+    id
+    currentOwnerAddress
+  }
+}
+    `;
  const CreateEventPassNftContractDocument = `
     mutation CreateEventPassNftContract($object: eventPassNftContract_insert_input!) {
   insert_eventPassNftContract_one(object: $object) {
@@ -1187,6 +1197,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetListCurrentOwnerAddressForContractAddress(variables?: Types.GetListCurrentOwnerAddressForContractAddressQueryVariables, options?: C): Promise<Types.GetListCurrentOwnerAddressForContractAddressQuery> {
       return requester<Types.GetListCurrentOwnerAddressForContractAddressQuery, Types.GetListCurrentOwnerAddressForContractAddressQueryVariables>(GetListCurrentOwnerAddressForContractAddressDocument, variables, options) as Promise<Types.GetListCurrentOwnerAddressForContractAddressQuery>;
+    },
+    GetCurrentOwnerAddressByContractAndTokenId(variables: Types.GetCurrentOwnerAddressByContractAndTokenIdQueryVariables, options?: C): Promise<Types.GetCurrentOwnerAddressByContractAndTokenIdQuery> {
+      return requester<Types.GetCurrentOwnerAddressByContractAndTokenIdQuery, Types.GetCurrentOwnerAddressByContractAndTokenIdQueryVariables>(GetCurrentOwnerAddressByContractAndTokenIdDocument, variables, options) as Promise<Types.GetCurrentOwnerAddressByContractAndTokenIdQuery>;
     },
     CreateEventPassNftContract(variables: Types.CreateEventPassNftContractMutationVariables, options?: C): Promise<Types.CreateEventPassNftContractMutation> {
       return requester<Types.CreateEventPassNftContractMutation, Types.CreateEventPassNftContractMutationVariables>(CreateEventPassNftContractDocument, variables, options) as Promise<Types.CreateEventPassNftContractMutation>;

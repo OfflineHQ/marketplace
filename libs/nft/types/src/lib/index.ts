@@ -72,3 +72,17 @@ export type RequiredEventPassNft = Required<
 export type EventPassNftContractNfts = NonNullable<
   GetEventPassNftContractNftsQuery['eventPassNftContract'][0]['eventPassNfts']
 >;
+
+export type ThirdwebEventData = {
+  packId: number;
+  opener: string;
+  numOfPacksOpened: number;
+  rewardUnitsDistributed: RewardUnitsDistributed;
+};
+
+export type RewardUnitsDistributed = {
+  assetContract: string;
+  tokenType: number;
+  tokenId: string;
+  totalAmount: number;
+}[];
