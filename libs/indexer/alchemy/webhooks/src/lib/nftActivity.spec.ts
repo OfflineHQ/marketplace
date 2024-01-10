@@ -1,10 +1,8 @@
 import type { Activity, AlchemyNFTActivityEvent } from '@indexer/alchemy/types';
 import { EventPassNftWrapper } from '@nft/event-pass';
 import { Network, WebhookType } from 'alchemy-sdk';
-import {
-  extractNftTransfersFromEvent,
-  nftActivity,
-} from './eventPassNftActivity';
+import { extractNftTransfersFromEvent } from './common';
+import { eventPassNftActivity } from './eventPassNftActivity';
 import { createMockAlchemyRequest } from './testUtils';
 import { isValidSignatureForAlchemyRequest } from './utils';
 
@@ -215,7 +213,7 @@ describe('extractNftTransfersFromEvent', () => {
 
 describe('nftActivity', () => {
   it('happy path with several nft activity being processed', async () => {
-    const response = await nftActivity(
+    const response = await eventPassNftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
       'clizzpvidao620buvxit1ynko',
     );
@@ -230,7 +228,7 @@ describe('nftActivity', () => {
   it('should return error 500 when getEventPassNftTransfersMetadata returns empty array', async () => {
     getEventPassNftTransfersMetadataSpy.mockResolvedValue([]);
 
-    const response = await nftActivity(
+    const response = await eventPassNftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
       'clizzpvidao620buvxit1ynko',
     );
@@ -242,7 +240,7 @@ describe('nftActivity', () => {
     // Override the validation to return false
     (isValidSignatureForAlchemyRequest as jest.Mock).mockReturnValueOnce(false);
 
-    const response = await nftActivity(
+    const response = await eventPassNftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
       'clizzpvidao620buvxit1ynko',
     );
@@ -256,7 +254,7 @@ describe('nftActivity', () => {
       new Error('Test error'),
     );
 
-    const response = await nftActivity(
+    const response = await eventPassNftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
       'clizzpvidao620buvxit1ynko',
     );
@@ -288,7 +286,7 @@ describe('nftActivity', () => {
       .fn()
       .mockResolvedValueOnce(JSON.stringify(invalidWebhookEvent));
 
-    const response = await nftActivity(
+    const response = await eventPassNftActivity(
       mockAlchemyRequest,
       'clizzpvidao620buvxit1ynko',
     );
