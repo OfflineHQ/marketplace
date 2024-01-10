@@ -23,6 +23,11 @@ query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
     }
     eventParameters {
       ...EventParametersMinimalFields
+      dateSaleStart
+      dateSaleEnd
+      dateStart
+      dateEnd
+      timezone
     }
     eventDateLocations {
       ...EventDateLocationsFields

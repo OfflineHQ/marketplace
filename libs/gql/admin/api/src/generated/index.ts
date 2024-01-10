@@ -460,6 +460,11 @@ ${KycFieldsFragmentDoc}`;
     }
     eventParameters {
       ...EventParametersMinimalFields
+      dateSaleStart
+      dateSaleEnd
+      dateStart
+      dateEnd
+      timezone
     }
     eventDateLocations {
       ...EventDateLocationsFields

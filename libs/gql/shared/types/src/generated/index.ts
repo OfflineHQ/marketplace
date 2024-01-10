@@ -3747,6 +3747,7 @@ export type OrganizerConnection = {
 };
 
 export type OrganizerCreateInput = {
+  clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
@@ -4166,6 +4167,7 @@ export const enum OrganizerOrderByInput {
 };
 
 export type OrganizerUpdateInput = {
+  clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackUpdateManyInlineInput>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
   discordWidgetId?: InputMaybe<Scalars['String']>;
@@ -4670,6 +4672,7 @@ export type Pack = Entity & Node & {
   nftImage: Asset;
   /** Permanent name associated with the NFT. Cannot be changed or localized. */
   nftName: Scalars['String'];
+  organizer?: Maybe<Organizer>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -4764,6 +4767,16 @@ export type PackNftImageArgs = {
  * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
  *
  */
+export type PackOrganizerArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
 export type PackPublishedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
@@ -4842,6 +4855,7 @@ export type PackCreateInput = {
   nftDescription: Scalars['String'];
   nftImage: AssetCreateOneInlineInput;
   nftName: Scalars['String'];
+  organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -5027,6 +5041,7 @@ export type PackManyWhereInput = {
   nftName_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   nftName_starts_with?: InputMaybe<Scalars['String']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -5094,6 +5109,7 @@ export type PackUpdateInput = {
   nftDescription?: InputMaybe<Scalars['String']>;
   nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
   nftName?: InputMaybe<Scalars['String']>;
+  organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
 };
 
 export type PackUpdateLocalizationDataInput = {
@@ -5336,6 +5352,7 @@ export type PackWhereInput = {
   nftName_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   nftName_starts_with?: InputMaybe<Scalars['String']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -6956,7 +6973,7 @@ export type EventParameters = {
   signingKey?: Maybe<Scalars['String']>;
   status?: Maybe<EventStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
-  timezone?: Maybe<Scalars['String']>;
+  timezone: Scalars['String'];
   updated_at: Scalars['timestamptz'];
 };
 
