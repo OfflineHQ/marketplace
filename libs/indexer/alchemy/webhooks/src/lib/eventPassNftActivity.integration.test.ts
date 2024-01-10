@@ -251,6 +251,4 @@ describe('nftActivity integration test', () => {
     );
     consoleSpy.mockRestore();
   });
-
-  // ... add more test cases as needed
 });

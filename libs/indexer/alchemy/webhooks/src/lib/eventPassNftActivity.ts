@@ -1,64 +1,76 @@
-import { getAlchemyInfosFromEventId } from '@features/pass-api';
-import { adminSdk } from '@gql/admin/api';
 import { AlchemyWrapper } from '@indexer/alchemy/admin';
 import type {
   AlchemyNFTActivityEvent,
   AlchemyRequest,
 } from '@indexer/alchemy/types';
 import { EventPassNftWrapper } from '@nft/event-pass';
-import { WebhookType } from 'alchemy-sdk';
-import { headers } from 'next/headers';
-import { extractNftTransfersFromEvent } from './common';
-import {
-  addAlchemyContextToRequest,
-  isValidSignatureForAlchemyRequest,
-} from './utils';
+import type { NftTransferWithoutMetadata } from '@nft/types';
+import { hexToBigInt } from '@utils';
+import { handleAlchemyRequest } from './common';
 
 const alchemy = new AlchemyWrapper();
+
+// https://docs.alchemy.com/reference/nft-activity-webhook
+export const extractNftTransfersFromEvent = (
+  alchemyWebhookEvent: AlchemyNFTActivityEvent,
+) => {
+  const nftActivities = alchemyWebhookEvent.event.activity;
+  const network = alchemyWebhookEvent.event.network;
+  const nftTransfers: NftTransferWithoutMetadata[] = [];
+  if (!nftActivities?.length) {
+    throw new Error('No nft activities found in event');
+  }
+  for (const activity of nftActivities) {
+    const {
+      fromAddress,
+      toAddress,
+      contractAddress,
+      blockNumber,
+      erc721TokenId,
+    } = activity;
+    const { transactionHash, removed } = activity.log;
+    if (removed) {
+      console.error(
+        `NFT transfer: ${transactionHash} in ${network} for ${contractAddress} collection, fromAddress ${fromAddress} toAddress ${toAddress} with erc721TokenId ${erc721TokenId} was removed likely due to a reorg`,
+      );
+    } else {
+      if (!erc721TokenId) {
+        console.error(`No erc721TokenId found for ${transactionHash}`);
+      } else
+        nftTransfers.push({
+          fromAddress,
+          toAddress,
+          contractAddress,
+          blockNumber: hexToBigInt(blockNumber),
+          tokenId: hexToBigInt(erc721TokenId),
+          chainId: alchemy.convertNetworkToChainId(network).toString(),
+          transactionHash,
+        });
+    }
+  }
+  return nftTransfers;
+};
 
 export async function eventPassNftActivity(
   req: AlchemyRequest,
   eventId: string,
 ) {
-  const body = await req.text();
-  const signature = headers().get('x-alchemy-signature') as string;
-  addAlchemyContextToRequest(req, body, signature);
-  const params = await getAlchemyInfosFromEventId({ eventId: eventId });
-  const signingKey = params.signingKey;
-  if (!signingKey || !isValidSignatureForAlchemyRequest(req, signingKey)) {
-    return new Response('Signature validation failed, unauthorized!', {
-      status: 403,
-    });
-  }
-  const alchemyWebhookEvent: AlchemyNFTActivityEvent = JSON.parse(body);
+  const alchemyData = await handleAlchemyRequest(req, eventId);
 
-  if (alchemyWebhookEvent.type !== WebhookType.NFT_ACTIVITY) {
-    return new Response('Invalid webhook type. Expected NFT_ACTIVITY.', {
-      status: 400,
-    });
+  if (alchemyData instanceof Response) {
+    return alchemyData;
   }
-  const chainId = alchemy.convertNetworkToChainId(
-    alchemyWebhookEvent.event.network,
+
+  const nftTransfersFromEvent = extractNftTransfersFromEvent(
+    alchemyData.alchemyWebhookEvent,
   );
-
-  const { nftTransfersFromEvent, packUpdates } =
-    await extractNftTransfersFromEvent(alchemyWebhookEvent);
-  if (packUpdates.length) {
-    try {
-      await adminSdk.UpdatePackNftSupplyMany({ updates: packUpdates });
-    } catch {
-      return new Response('Error processing pack updates into hasura', {
-        status: 500,
-      });
-    }
-  }
   if (nftTransfersFromEvent.length) {
     const eventPassNftWrapper = new EventPassNftWrapper();
     try {
       const NftTransfersNotCreated =
         await eventPassNftWrapper.getEventPassNftTransfersMetadata(
           nftTransfersFromEvent,
-          chainId,
+          alchemyData.chainId,
         );
       if (!NftTransfersNotCreated.length) {
         return new Response(

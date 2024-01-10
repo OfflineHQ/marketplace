@@ -1,8 +1,10 @@
 import type { Activity, AlchemyNFTActivityEvent } from '@indexer/alchemy/types';
 import { EventPassNftWrapper } from '@nft/event-pass';
 import { Network, WebhookType } from 'alchemy-sdk';
-import { extractNftTransfersFromEvent } from './common';
-import { eventPassNftActivity } from './eventPassNftActivity';
+import {
+  eventPassNftActivity,
+  extractNftTransfersFromEvent,
+} from './eventPassNftActivity';
 import { createMockAlchemyRequest } from './testUtils';
 import { isValidSignatureForAlchemyRequest } from './utils';
 

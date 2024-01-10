@@ -823,35 +823,6 @@ ${EventDateLocationsFieldsFragmentDoc}`;
   }
 }
     `;
- const UpdatePackNftSupplyManyDocument = `
-    mutation UpdatePackNftSupplyMany($updates: [packNftSupply_updates!]!) {
-  update_packNftSupply_many(updates: $updates) {
-    affected_rows
-    returning {
-      id
-      contractAddress
-      currentOwnerAddress
-    }
-  }
-}
-    `;
- const CreatePackNftSupplyDocument = `
-    mutation CreatePackNftSupply($objects: [packNftSupply_insert_input!]!) {
-  insert_packNftSupply(objects: $objects) {
-    affected_rows
-  }
-}
-    `;
- const GetPackNftSupplyWithNullNftsFromCurrentOwnerAddressDocument = `
-    query GetPackNftSupplyWithNullNftsFromCurrentOwnerAddress($contractAddress: String!, $currentOwnerAddress: String!) {
-  packNftSupply(
-    where: {redeemableNfts: {_is_null: true}, eventPassNfts: {_is_null: true}, contractAddress: {_eq: $contractAddress}, currentOwnerAddress: {_eq: $currentOwnerAddress}}
-  ) {
-    id
-    organizerId
-  }
-}
-    `;
  const CreatePassAmountDocument = `
     mutation CreatePassAmount($passAmount: passAmount_insert_input!) {
   insert_passAmount_one(object: $passAmount) {
@@ -1227,15 +1198,6 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetPackNftContractFromPackId(variables?: Types.GetPackNftContractFromPackIdQueryVariables, options?: C): Promise<Types.GetPackNftContractFromPackIdQuery> {
       return requester<Types.GetPackNftContractFromPackIdQuery, Types.GetPackNftContractFromPackIdQueryVariables>(GetPackNftContractFromPackIdDocument, variables, options) as Promise<Types.GetPackNftContractFromPackIdQuery>;
-    },
-    UpdatePackNftSupplyMany(variables: Types.UpdatePackNftSupplyManyMutationVariables, options?: C): Promise<Types.UpdatePackNftSupplyManyMutation> {
-      return requester<Types.UpdatePackNftSupplyManyMutation, Types.UpdatePackNftSupplyManyMutationVariables>(UpdatePackNftSupplyManyDocument, variables, options) as Promise<Types.UpdatePackNftSupplyManyMutation>;
-    },
-    CreatePackNftSupply(variables: Types.CreatePackNftSupplyMutationVariables, options?: C): Promise<Types.CreatePackNftSupplyMutation> {
-      return requester<Types.CreatePackNftSupplyMutation, Types.CreatePackNftSupplyMutationVariables>(CreatePackNftSupplyDocument, variables, options) as Promise<Types.CreatePackNftSupplyMutation>;
-    },
-    GetPackNftSupplyWithNullNftsFromCurrentOwnerAddress(variables: Types.GetPackNftSupplyWithNullNftsFromCurrentOwnerAddressQueryVariables, options?: C): Promise<Types.GetPackNftSupplyWithNullNftsFromCurrentOwnerAddressQuery> {
-      return requester<Types.GetPackNftSupplyWithNullNftsFromCurrentOwnerAddressQuery, Types.GetPackNftSupplyWithNullNftsFromCurrentOwnerAddressQueryVariables>(GetPackNftSupplyWithNullNftsFromCurrentOwnerAddressDocument, variables, options) as Promise<Types.GetPackNftSupplyWithNullNftsFromCurrentOwnerAddressQuery>;
     },
     CreatePassAmount(variables: Types.CreatePassAmountMutationVariables, options?: C): Promise<Types.CreatePassAmountMutation> {
       return requester<Types.CreatePassAmountMutation, Types.CreatePassAmountMutationVariables>(CreatePassAmountDocument, variables, options) as Promise<Types.CreatePassAmountMutation>;

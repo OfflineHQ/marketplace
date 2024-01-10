@@ -18,7 +18,6 @@ import type {
   EventPassNftContract_Insert_Input,
   EventPassNft_Insert_Input,
   PackNftContract_Insert_Input,
-  PackNftSupply_Insert_Input,
 } from '@gql/shared/types';
 import { defaultLocale } from '@next/i18n';
 import { ContractType } from '@nft/types';
@@ -66,10 +65,10 @@ export async function getEventPassNftContractNfts(
   return data?.eventPassNftContract[0];
 }
 
-export async function createPackNftSupply(packs: PackNftSupply_Insert_Input[]) {
+/*export async function createPackNftSupply(packs: PackNftSupply_Insert_Input[]) {
   const data = await adminSdk.CreatePackNftSupply({ objects: packs });
   return data?.insert_packNftSupply.affected_rows;
-}
+}*/
 
 export async function createEventParametersAndWebhook({
   eventId,

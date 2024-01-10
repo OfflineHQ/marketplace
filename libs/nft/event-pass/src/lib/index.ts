@@ -1,10 +1,7 @@
 import env from '@env/server';
 import { transferPassQrCodeBatch } from '@features/pass-api';
 import { adminSdk } from '@gql/admin/api';
-import {
-  NftTransfer_Insert_Input,
-  PackNftSupply_Updates,
-} from '@gql/shared/types';
+import { NftTransfer_Insert_Input } from '@gql/shared/types';
 import { Activity } from '@indexer/alchemy/types';
 import {
   ContractType,
@@ -198,7 +195,7 @@ export class PackNftWrapper {
     opener,
     contractAddress,
   }: HandleBundlesProps) {
-    try {
+    /*try {
       const bundles = [];
       for (let i = 0; i < numOfPacksOpened; i++) {
         const start = i * bundleSize;
@@ -224,7 +221,7 @@ export class PackNftWrapper {
         `Error handling bundles for opener ${opener} and contract ${contractAddress}: ${error}`,
       );
       throw new Error('Failed to handle bundles');
-    }
+    }*/
   }
 
   async handleEvent(
@@ -286,7 +283,7 @@ export class PackNftWrapper {
     amount: number,
     nftTransferData: NftTransfer_Insert_Input,
   ) {
-    const packUpdates: PackNftSupply_Updates[] = [];
+    /*const packUpdates: PackNftSupply_Updates[] = [];
     try {
       for (let i = 0; i < amount; i++) {
         const pack = (
@@ -320,17 +317,17 @@ export class PackNftWrapper {
         `Failed to transfer Event Pass Pack from ${nftTransferData.fromAddress} to ${nftTransferData.toAddress}: ${error.message}`,
       );
     }
-    return packUpdates;
+    return packUpdates;*/
   }
 
-  async handleErc1155Activity(activity: Activity, transactionHash: string) {
+  async handleErc1155Activity(activity: Activity) {
     const { toAddress, fromAddress, contractAddress, blockNumber } = activity;
 
     if (toAddress === '0x0000000000000000000000000000000000000000') {
       return this.handlePackOpenedEvents(
         contractAddress,
         blockNumber,
-        transactionHash,
+        activity.log.transactionHash,
       );
     } else {
       const erc1155Metadata = activity.erc1155Metadata;
@@ -339,7 +336,7 @@ export class PackNftWrapper {
         toAddress,
         fromAddress,
         contractAddress,
-        transactionHash,
+        transactionHash: activity.log.transactionHash,
         chainId: env.CHAIN,
         blockNumber: Number(blockNumber),
         tokenId: 0,
