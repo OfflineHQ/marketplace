@@ -1,1 +1,1 @@
-export * from './lib/nftActivity';
+export * from './lib/eventPassNftActivity';

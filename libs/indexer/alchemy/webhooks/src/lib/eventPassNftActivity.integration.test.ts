@@ -7,7 +7,7 @@ import {
   deleteAllTables,
   type PgClient,
 } from '@test-utils/db';
-import { nftActivity } from './nftActivity';
+import { eventPassNftActivity } from './eventPassNftActivity';
 import { createMockAlchemyRequest } from './testUtils';
 
 // Mock the FileWrapper module
@@ -138,7 +138,7 @@ describe('nftActivity integration test', () => {
   });
 
   it('happy path with several nft activity being processed - no need to transfer QR code file', async () => {
-    const response = await nftActivity(
+    const response = await eventPassNftActivity(
       createMockAlchemyRequest([mockActivity]),
       'clizzpvidao620buvxit1ynko',
     );
@@ -154,7 +154,7 @@ describe('nftActivity integration test', () => {
   });
 
   it('happy path with several nft activity being processed - transfer of QR code file', async () => {
-    const response = await nftActivity(
+    const response = await eventPassNftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2]),
       'clizzpvidao620buvxit1ynko',
     );
@@ -185,7 +185,7 @@ describe('nftActivity integration test', () => {
   });
 
   it('happy path with several nft activity being processed - from different contractAddress', async () => {
-    const response = await nftActivity(
+    const response = await eventPassNftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity2, mockActivity3]),
       'clizzpvidao620buvxit1ynko',
     );
@@ -224,7 +224,7 @@ describe('nftActivity integration test', () => {
 
   it('should log errors in case one NFT not found in DB', async () => {
     const consoleSpy = jest.spyOn(console, 'error');
-    const response = await nftActivity(
+    const response = await eventPassNftActivity(
       createMockAlchemyRequest([mockActivity, mockActivity4NoNft]),
       'clizzpvidao620buvxit1ynko',
     );
@@ -239,7 +239,7 @@ describe('nftActivity integration test', () => {
 
   it('should return error in case no NFT found in DB', async () => {
     const consoleSpy = jest.spyOn(console, 'error');
-    const response = await nftActivity(
+    const response = await eventPassNftActivity(
       createMockAlchemyRequest([mockActivity4NoNft]),
       'clizzpvidao620buvxit1ynko',
     );

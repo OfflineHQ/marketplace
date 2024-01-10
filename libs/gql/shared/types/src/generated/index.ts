@@ -1164,9 +1164,9 @@ export type EventCreateOneInlineInput = {
 /** Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several. */
 export type EventDateLocation = Entity & {
   __typename?: 'EventDateLocation';
-  /** The end date including time on the UTC timezone. */
+  /** The end date including time. */
   dateEnd: Scalars['DateTime'];
-  /** The start date including time on the UTC timezone. */
+  /** The start date including time. */
   dateStart: Scalars['DateTime'];
   /** The unique identifier */
   id: Scalars['ID'];
@@ -3747,6 +3747,7 @@ export type OrganizerConnection = {
 };
 
 export type OrganizerCreateInput = {
+  clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
@@ -4166,6 +4167,7 @@ export const enum OrganizerOrderByInput {
 };
 
 export type OrganizerUpdateInput = {
+  clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackUpdateManyInlineInput>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']>;
   discordWidgetId?: InputMaybe<Scalars['String']>;
@@ -4670,6 +4672,7 @@ export type Pack = Entity & Node & {
   nftImage: Asset;
   /** Permanent name associated with the NFT. Cannot be changed or localized. */
   nftName: Scalars['String'];
+  organizer?: Maybe<Organizer>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
@@ -4764,6 +4767,16 @@ export type PackNftImageArgs = {
  * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
  *
  */
+export type PackOrganizerArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/**
+ * The 'Pack' model represents a collection of unique NFTs (eventPasses) bundled together. It serves as a loot system for users, offering them a chance to receive one or more NFTs related to specific events. Each pack contains details about its contents and the associated event, fostering a more engaging and rewarding experience for users.
+ *
+ */
 export type PackPublishedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
@@ -4842,6 +4855,7 @@ export type PackCreateInput = {
   nftDescription: Scalars['String'];
   nftImage: AssetCreateOneInlineInput;
   nftName: Scalars['String'];
+  organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -5027,6 +5041,7 @@ export type PackManyWhereInput = {
   nftName_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   nftName_starts_with?: InputMaybe<Scalars['String']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -5094,6 +5109,7 @@ export type PackUpdateInput = {
   nftDescription?: InputMaybe<Scalars['String']>;
   nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
   nftName?: InputMaybe<Scalars['String']>;
+  organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
 };
 
 export type PackUpdateLocalizationDataInput = {
@@ -5336,6 +5352,7 @@ export type PackWhereInput = {
   nftName_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   nftName_starts_with?: InputMaybe<Scalars['String']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -5412,10 +5429,7 @@ export type PassOption = Entity & {
   __typename?: 'PassOption';
   /** Description of the option, like "Access to the event on Day 1" */
   description?: Maybe<Scalars['String']>;
-  /**
-   * Define the location and date for this option.
-   * Important ! It will determine the release and availability for the Pass access.
-   */
+  /** Define the location and date for this option. */
   eventDateLocation?: Maybe<EventDateLocation>;
   /** The unique identifier */
   id: Scalars['ID'];
@@ -9894,6 +9908,10 @@ export type Mutation_Root = {
   delete_packNftContract?: Maybe<PackNftContract_Mutation_Response>;
   /** delete single row from the table: "packNftContract" */
   delete_packNftContract_by_pk?: Maybe<PackNftContract>;
+  /** delete data from the table: "packNftSupply" */
+  delete_packNftSupply?: Maybe<PackNftSupply_Mutation_Response>;
+  /** delete single row from the table: "packNftSupply" */
+  delete_packNftSupply_by_pk?: Maybe<PackNftSupply>;
   /** delete data from the table: "packOrderSums" */
   delete_packOrderSums?: Maybe<PackOrderSums_Mutation_Response>;
   /** delete single row from the table: "packOrderSums" */
@@ -9996,6 +10014,10 @@ export type Mutation_Root = {
   insert_packNftContract?: Maybe<PackNftContract_Mutation_Response>;
   /** insert a single row into the table: "packNftContract" */
   insert_packNftContract_one?: Maybe<PackNftContract>;
+  /** insert data into the table: "packNftSupply" */
+  insert_packNftSupply?: Maybe<PackNftSupply_Mutation_Response>;
+  /** insert a single row into the table: "packNftSupply" */
+  insert_packNftSupply_one?: Maybe<PackNftSupply>;
   /** insert data into the table: "packOrderSums" */
   insert_packOrderSums?: Maybe<PackOrderSums_Mutation_Response>;
   /** insert a single row into the table: "packOrderSums" */
@@ -10266,6 +10288,12 @@ export type Mutation_Root = {
   update_packNftContract_by_pk?: Maybe<PackNftContract>;
   /** update multiples rows of table: "packNftContract" */
   update_packNftContract_many?: Maybe<Array<Maybe<PackNftContract_Mutation_Response>>>;
+  /** update data of the table: "packNftSupply" */
+  update_packNftSupply?: Maybe<PackNftSupply_Mutation_Response>;
+  /** update single row of the table: "packNftSupply" */
+  update_packNftSupply_by_pk?: Maybe<PackNftSupply>;
+  /** update multiples rows of table: "packNftSupply" */
+  update_packNftSupply_many?: Maybe<Array<Maybe<PackNftSupply_Mutation_Response>>>;
   /** update data of the table: "packOrderSums" */
   update_packOrderSums?: Maybe<PackOrderSums_Mutation_Response>;
   /** update single row of the table: "packOrderSums" */
@@ -10725,6 +10753,18 @@ export type Mutation_RootDelete_PackNftContract_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_PackNftSupplyArgs = {
+  where: PackNftSupply_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_PackNftSupply_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_PackOrderSumsArgs = {
   where: PackOrderSums_Bool_Exp;
 };
@@ -11059,6 +11099,20 @@ export type Mutation_RootInsert_PackNftContractArgs = {
 export type Mutation_RootInsert_PackNftContract_OneArgs = {
   object: PackNftContract_Insert_Input;
   on_conflict?: InputMaybe<PackNftContract_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_PackNftSupplyArgs = {
+  objects: Array<PackNftSupply_Insert_Input>;
+  on_conflict?: InputMaybe<PackNftSupply_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_PackNftSupply_OneArgs = {
+  object: PackNftSupply_Insert_Input;
+  on_conflict?: InputMaybe<PackNftSupply_On_Conflict>;
 };
 
 
@@ -12264,6 +12318,26 @@ export type Mutation_RootUpdate_PackNftContract_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_PackNftContract_ManyArgs = {
   updates: Array<PackNftContract_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_PackNftSupplyArgs = {
+  _set?: InputMaybe<PackNftSupply_Set_Input>;
+  where: PackNftSupply_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_PackNftSupply_By_PkArgs = {
+  _set?: InputMaybe<PackNftSupply_Set_Input>;
+  pk_columns: PackNftSupply_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_PackNftSupply_ManyArgs = {
+  updates: Array<PackNftSupply_Updates>;
 };
 
 
@@ -14090,6 +14164,334 @@ export type PackNftContract_Variance_Fields = {
   rewardsPerPack?: Maybe<Scalars['Float']>;
 };
 
+/** This table represents the supply details of pack NFTs, tracking the ownership, contents, and metadata associated with each pack. */
+export type PackNftSupply = {
+  __typename?: 'packNftSupply';
+  /** The specific blockchain or network on which the pack NFT exists. */
+  chainId: Scalars['String'];
+  /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
+  contractAddress: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  /** The blockchain address of the current owner of the pack NFT. */
+  currentOwnerAddress?: Maybe<Scalars['String']>;
+  /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
+  error?: Maybe<Scalars['String']>;
+  /** An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened. */
+  eventPassNfts?: Maybe<Array<Scalars['uuid']>>;
+  id: Scalars['uuid'];
+  /** The reference to the latest transfer record for this pack NFT. */
+  lastNftTransferId?: Maybe<Scalars['uuid']>;
+  /** The identifier of the organizer associated with this pack NFT. */
+  organizerId: Scalars['String'];
+  /** A unique identifier for the pack within the platform. */
+  packId: Scalars['String'];
+  /** An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened. */
+  redeemableNfts?: Maybe<Array<Scalars['uuid']>>;
+  /** The URI pointing to the metadata of the pack NFT. */
+  tokenUri?: Maybe<Scalars['String']>;
+  updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "packNftSupply" */
+export type PackNftSupply_Aggregate = {
+  __typename?: 'packNftSupply_aggregate';
+  aggregate?: Maybe<PackNftSupply_Aggregate_Fields>;
+  nodes: Array<PackNftSupply>;
+};
+
+/** aggregate fields of "packNftSupply" */
+export type PackNftSupply_Aggregate_Fields = {
+  __typename?: 'packNftSupply_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<PackNftSupply_Max_Fields>;
+  min?: Maybe<PackNftSupply_Min_Fields>;
+};
+
+
+/** aggregate fields of "packNftSupply" */
+export type PackNftSupply_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<PackNftSupply_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Boolean expression to filter rows from the table "packNftSupply". All fields are combined with a logical 'AND'. */
+export type PackNftSupply_Bool_Exp = {
+  _and?: InputMaybe<Array<PackNftSupply_Bool_Exp>>;
+  _not?: InputMaybe<PackNftSupply_Bool_Exp>;
+  _or?: InputMaybe<Array<PackNftSupply_Bool_Exp>>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  currentOwnerAddress?: InputMaybe<String_Comparison_Exp>;
+  error?: InputMaybe<String_Comparison_Exp>;
+  eventPassNfts?: InputMaybe<Uuid_Array_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  lastNftTransferId?: InputMaybe<Uuid_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  packId?: InputMaybe<String_Comparison_Exp>;
+  redeemableNfts?: InputMaybe<Uuid_Array_Comparison_Exp>;
+  tokenUri?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "packNftSupply" */
+export const enum PackNftSupply_Constraint {
+  /** unique or primary key constraint on columns "chainId", "contractAddress", "packId" */
+  PackNftSupplyContractAddressChainIdPackIdKey = 'packNftSupply_contractAddress_chainId_packId_key',
+  /** unique or primary key constraint on columns "id" */
+  PackNftSupplyPkey = 'packNftSupply_pkey'
+};
+
+/** input type for inserting data into table "packNftSupply" */
+export type PackNftSupply_Insert_Input = {
+  /** The specific blockchain or network on which the pack NFT exists. */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** The blockchain address of the current owner of the pack NFT. */
+  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
+  error?: InputMaybe<Scalars['String']>;
+  /** An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened. */
+  eventPassNfts?: InputMaybe<Array<Scalars['uuid']>>;
+  id?: InputMaybe<Scalars['uuid']>;
+  /** The reference to the latest transfer record for this pack NFT. */
+  lastNftTransferId?: InputMaybe<Scalars['uuid']>;
+  /** The identifier of the organizer associated with this pack NFT. */
+  organizerId?: InputMaybe<Scalars['String']>;
+  /** A unique identifier for the pack within the platform. */
+  packId?: InputMaybe<Scalars['String']>;
+  /** An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened. */
+  redeemableNfts?: InputMaybe<Array<Scalars['uuid']>>;
+  /** The URI pointing to the metadata of the pack NFT. */
+  tokenUri?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type PackNftSupply_Max_Fields = {
+  __typename?: 'packNftSupply_max_fields';
+  /** The specific blockchain or network on which the pack NFT exists. */
+  chainId?: Maybe<Scalars['String']>;
+  /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
+  contractAddress?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** The blockchain address of the current owner of the pack NFT. */
+  currentOwnerAddress?: Maybe<Scalars['String']>;
+  /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
+  error?: Maybe<Scalars['String']>;
+  /** An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened. */
+  eventPassNfts?: Maybe<Array<Scalars['uuid']>>;
+  id?: Maybe<Scalars['uuid']>;
+  /** The reference to the latest transfer record for this pack NFT. */
+  lastNftTransferId?: Maybe<Scalars['uuid']>;
+  /** The identifier of the organizer associated with this pack NFT. */
+  organizerId?: Maybe<Scalars['String']>;
+  /** A unique identifier for the pack within the platform. */
+  packId?: Maybe<Scalars['String']>;
+  /** An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened. */
+  redeemableNfts?: Maybe<Array<Scalars['uuid']>>;
+  /** The URI pointing to the metadata of the pack NFT. */
+  tokenUri?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type PackNftSupply_Min_Fields = {
+  __typename?: 'packNftSupply_min_fields';
+  /** The specific blockchain or network on which the pack NFT exists. */
+  chainId?: Maybe<Scalars['String']>;
+  /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
+  contractAddress?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  /** The blockchain address of the current owner of the pack NFT. */
+  currentOwnerAddress?: Maybe<Scalars['String']>;
+  /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
+  error?: Maybe<Scalars['String']>;
+  /** An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened. */
+  eventPassNfts?: Maybe<Array<Scalars['uuid']>>;
+  id?: Maybe<Scalars['uuid']>;
+  /** The reference to the latest transfer record for this pack NFT. */
+  lastNftTransferId?: Maybe<Scalars['uuid']>;
+  /** The identifier of the organizer associated with this pack NFT. */
+  organizerId?: Maybe<Scalars['String']>;
+  /** A unique identifier for the pack within the platform. */
+  packId?: Maybe<Scalars['String']>;
+  /** An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened. */
+  redeemableNfts?: Maybe<Array<Scalars['uuid']>>;
+  /** The URI pointing to the metadata of the pack NFT. */
+  tokenUri?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "packNftSupply" */
+export type PackNftSupply_Mutation_Response = {
+  __typename?: 'packNftSupply_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<PackNftSupply>;
+};
+
+/** on_conflict condition type for table "packNftSupply" */
+export type PackNftSupply_On_Conflict = {
+  constraint: PackNftSupply_Constraint;
+  update_columns?: Array<PackNftSupply_Update_Column>;
+  where?: InputMaybe<PackNftSupply_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "packNftSupply". */
+export type PackNftSupply_Order_By = {
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  currentOwnerAddress?: InputMaybe<Order_By>;
+  error?: InputMaybe<Order_By>;
+  eventPassNfts?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  lastNftTransferId?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  packId?: InputMaybe<Order_By>;
+  redeemableNfts?: InputMaybe<Order_By>;
+  tokenUri?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: packNftSupply */
+export type PackNftSupply_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "packNftSupply" */
+export const enum PackNftSupply_Select_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CurrentOwnerAddress = 'currentOwnerAddress',
+  /** column name */
+  Error = 'error',
+  /** column name */
+  EventPassNfts = 'eventPassNfts',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LastNftTransferId = 'lastNftTransferId',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  PackId = 'packId',
+  /** column name */
+  RedeemableNfts = 'redeemableNfts',
+  /** column name */
+  TokenUri = 'tokenUri',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "packNftSupply" */
+export type PackNftSupply_Set_Input = {
+  /** The specific blockchain or network on which the pack NFT exists. */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** The blockchain address of the current owner of the pack NFT. */
+  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
+  error?: InputMaybe<Scalars['String']>;
+  /** An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened. */
+  eventPassNfts?: InputMaybe<Array<Scalars['uuid']>>;
+  id?: InputMaybe<Scalars['uuid']>;
+  /** The reference to the latest transfer record for this pack NFT. */
+  lastNftTransferId?: InputMaybe<Scalars['uuid']>;
+  /** The identifier of the organizer associated with this pack NFT. */
+  organizerId?: InputMaybe<Scalars['String']>;
+  /** A unique identifier for the pack within the platform. */
+  packId?: InputMaybe<Scalars['String']>;
+  /** An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened. */
+  redeemableNfts?: InputMaybe<Array<Scalars['uuid']>>;
+  /** The URI pointing to the metadata of the pack NFT. */
+  tokenUri?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Streaming cursor of the table "packNftSupply" */
+export type PackNftSupply_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: PackNftSupply_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type PackNftSupply_Stream_Cursor_Value_Input = {
+  /** The specific blockchain or network on which the pack NFT exists. */
+  chainId?: InputMaybe<Scalars['String']>;
+  /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
+  contractAddress?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  /** The blockchain address of the current owner of the pack NFT. */
+  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
+  error?: InputMaybe<Scalars['String']>;
+  /** An array of UUIDs representing the event pass NFTs contained in the pack. Null if the pack is unopened. */
+  eventPassNfts?: InputMaybe<Array<Scalars['uuid']>>;
+  id?: InputMaybe<Scalars['uuid']>;
+  /** The reference to the latest transfer record for this pack NFT. */
+  lastNftTransferId?: InputMaybe<Scalars['uuid']>;
+  /** The identifier of the organizer associated with this pack NFT. */
+  organizerId?: InputMaybe<Scalars['String']>;
+  /** A unique identifier for the pack within the platform. */
+  packId?: InputMaybe<Scalars['String']>;
+  /** An array of UUIDs representing redeemable NFTs contained in the pack. Null if the pack is unopened. */
+  redeemableNfts?: InputMaybe<Array<Scalars['uuid']>>;
+  /** The URI pointing to the metadata of the pack NFT. */
+  tokenUri?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** update columns of table "packNftSupply" */
+export const enum PackNftSupply_Update_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CurrentOwnerAddress = 'currentOwnerAddress',
+  /** column name */
+  Error = 'error',
+  /** column name */
+  EventPassNfts = 'eventPassNfts',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LastNftTransferId = 'lastNftTransferId',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  PackId = 'packId',
+  /** column name */
+  RedeemableNfts = 'redeemableNfts',
+  /** column name */
+  TokenUri = 'tokenUri',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type PackNftSupply_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<PackNftSupply_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: PackNftSupply_Bool_Exp;
+};
+
 /** Hold the sums for the Pack Orders */
 export type PackOrderSums = {
   __typename?: 'packOrderSums';
@@ -15291,6 +15693,12 @@ export type Query_Root = {
   packNftContract_aggregate: PackNftContract_Aggregate;
   /** fetch data from the table: "packNftContract" using primary key columns */
   packNftContract_by_pk?: Maybe<PackNftContract>;
+  /** fetch data from the table: "packNftSupply" */
+  packNftSupply: Array<PackNftSupply>;
+  /** fetch aggregated fields from the table: "packNftSupply" */
+  packNftSupply_aggregate: PackNftSupply_Aggregate;
+  /** fetch data from the table: "packNftSupply" using primary key columns */
+  packNftSupply_by_pk?: Maybe<PackNftSupply>;
   /** fetch data from the table: "packOrderSums" */
   packOrderSums: Array<PackOrderSums>;
   /** fetch aggregated fields from the table: "packOrderSums" */
@@ -15950,6 +16358,29 @@ export type Query_RootPackNftContract_AggregateArgs = {
 
 
 export type Query_RootPackNftContract_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootPackNftSupplyArgs = {
+  distinct_on?: InputMaybe<Array<PackNftSupply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PackNftSupply_Order_By>>;
+  where?: InputMaybe<PackNftSupply_Bool_Exp>;
+};
+
+
+export type Query_RootPackNftSupply_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<PackNftSupply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PackNftSupply_Order_By>>;
+  where?: InputMaybe<PackNftSupply_Bool_Exp>;
+};
+
+
+export type Query_RootPackNftSupply_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -17447,6 +17878,14 @@ export type Subscription_Root = {
   packNftContract_by_pk?: Maybe<PackNftContract>;
   /** fetch data from the table in a streaming manner: "packNftContract" */
   packNftContract_stream: Array<PackNftContract>;
+  /** fetch data from the table: "packNftSupply" */
+  packNftSupply: Array<PackNftSupply>;
+  /** fetch aggregated fields from the table: "packNftSupply" */
+  packNftSupply_aggregate: PackNftSupply_Aggregate;
+  /** fetch data from the table: "packNftSupply" using primary key columns */
+  packNftSupply_by_pk?: Maybe<PackNftSupply>;
+  /** fetch data from the table in a streaming manner: "packNftSupply" */
+  packNftSupply_stream: Array<PackNftSupply>;
   /** fetch data from the table: "packOrderSums" */
   packOrderSums: Array<PackOrderSums>;
   /** fetch aggregated fields from the table: "packOrderSums" */
@@ -18009,6 +18448,36 @@ export type Subscription_RootPackNftContract_StreamArgs = {
 };
 
 
+export type Subscription_RootPackNftSupplyArgs = {
+  distinct_on?: InputMaybe<Array<PackNftSupply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PackNftSupply_Order_By>>;
+  where?: InputMaybe<PackNftSupply_Bool_Exp>;
+};
+
+
+export type Subscription_RootPackNftSupply_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<PackNftSupply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PackNftSupply_Order_By>>;
+  where?: InputMaybe<PackNftSupply_Bool_Exp>;
+};
+
+
+export type Subscription_RootPackNftSupply_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootPackNftSupply_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<PackNftSupply_Stream_Cursor_Input>>;
+  where?: InputMaybe<PackNftSupply_Bool_Exp>;
+};
+
+
 export type Subscription_RootPackOrderSumsArgs = {
   distinct_on?: InputMaybe<Array<PackOrderSums_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -18449,6 +18918,23 @@ export type Timezone_Updates = {
   _set?: InputMaybe<Timezone_Set_Input>;
   /** filter the rows which have to be updated */
   where: Timezone_Bool_Exp;
+};
+
+/** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
+export type Uuid_Array_Comparison_Exp = {
+  /** is the array contained in the given array value */
+  _contained_in?: InputMaybe<Array<Scalars['uuid']>>;
+  /** does the array contain the given value */
+  _contains?: InputMaybe<Array<Scalars['uuid']>>;
+  _eq?: InputMaybe<Array<Scalars['uuid']>>;
+  _gt?: InputMaybe<Array<Scalars['uuid']>>;
+  _gte?: InputMaybe<Array<Scalars['uuid']>>;
+  _in?: InputMaybe<Array<Array<Scalars['uuid']>>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Array<Scalars['uuid']>>;
+  _lte?: InputMaybe<Array<Scalars['uuid']>>;
+  _neq?: InputMaybe<Array<Scalars['uuid']>>;
+  _nin?: InputMaybe<Array<Array<Scalars['uuid']>>>;
 };
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
