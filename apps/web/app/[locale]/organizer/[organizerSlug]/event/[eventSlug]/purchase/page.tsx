@@ -1,6 +1,9 @@
 import { AppContainer } from '@features/app-nav';
 import { NotFound } from '@features/navigation';
-import { PassPurchaseCard } from '@features/organizer/event';
+import {
+  PassPurchaseCard,
+  PassPurchaseCardProps,
+} from '@features/organizer/event';
 import {
   getEventPasses,
   getOrdersConfirmed,
@@ -29,6 +32,7 @@ export default async function PurchaseSection({
     return (
       <PurchaseSectionContent
         passes={passes.eventPasses}
+        eventParameters={passes.event.eventParameters}
         eventSlug={eventSlug}
         organizerSlug={organizerSlug}
         hasConfirmedPasses={!!confirmedPasses?.length}
@@ -37,7 +41,8 @@ export default async function PurchaseSection({
   }
 }
 
-interface PurchaseSectionContentProps {
+interface PurchaseSectionContentProps
+  extends Pick<PassPurchaseCardProps, 'eventParameters'> {
   passes: EventPass[];
   eventSlug: string;
   organizerSlug: string;
@@ -49,6 +54,7 @@ function PurchaseSectionContent({
   eventSlug,
   organizerSlug,
   hasConfirmedPasses,
+  eventParameters,
 }: PurchaseSectionContentProps) {
   const t = useTranslations('Organizer.Event.PassPurchase');
   const backRoute = `/organizer/${organizerSlug}/event/${eventSlug}`;
@@ -58,6 +64,7 @@ function PurchaseSectionContent({
         passes={passes}
         organizerSlug={organizerSlug}
         eventSlug={eventSlug}
+        eventParameters={eventParameters}
         title={t('title')}
         description={t('description')}
         goPaymentText={
