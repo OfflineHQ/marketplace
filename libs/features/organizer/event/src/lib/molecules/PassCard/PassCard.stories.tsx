@@ -1,8 +1,8 @@
 import { expect } from '@storybook/jest';
 import { screen, userEvent } from '@storybook/test';
-// PassCard.stories.tsx
 import * as eventActions from '@features/organizer/event-actions';
 import * as eventApi from '@features/organizer/event-api';
+import { SaleStatus } from '@features/organizer/event-types';
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { Meta, StoryObj } from '@storybook/react';
 import { createMock, getMock } from 'storybook-addon-module-mock';
@@ -12,12 +12,14 @@ import {
   passWithMaxAmountPerUser,
   passWithSoldOut,
 } from './examples';
+import { mobileMode } from '@test-utils/storybook';
 
 const meta = {
   component: PassCard,
   args: {
     organizerSlug: 'organizer-slug',
     eventSlug: 'event-slug',
+    saleStatus: SaleStatus.Ongoing,
     ...passWithMaxAmount,
   },
   parameters: {
@@ -120,6 +122,45 @@ export const BoundaryConditionsPerUser: Story = {
       quantity: 3,
     });
     if (BoundaryConditions.play) await BoundaryConditions.play(context);
+  },
+};
+
+export const HasConfirmedPasses: Story = {
+  args: {
+    hasConfirmedPasses: true,
+  },
+  play: async (context) => {
+    expect(await screen.findByText(/purchase/i)).toBeInTheDocument();
+  },
+};
+
+export const HasConfirmedPassesMobile: Story = {
+  parameters: {
+    ...mobileMode,
+  },
+  args: {
+    hasConfirmedPasses: true,
+  },
+  play: async (context) => {
+    expect(await screen.findByText(/purchase/i)).toBeInTheDocument();
+  },
+};
+
+export const SaleNotStarted: Story = {
+  args: {
+    saleStatus: SaleStatus.NotStarted,
+  },
+  play: async (context) => {
+    expect(await screen.findByText(/not started/i)).toBeInTheDocument();
+  },
+};
+
+export const SaleEnded: Story = {
+  args: {
+    saleStatus: SaleStatus.Ended,
+  },
+  play: async (context) => {
+    expect(await screen.findByText(/sale ended/i)).toBeInTheDocument();
   },
 };
 
