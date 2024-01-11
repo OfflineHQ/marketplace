@@ -201,9 +201,6 @@
       "PassPurchase": {
         "title": "Pass selection",
         "description": "Select the passes you want to purchase and validate your order",
-        "Pass": {
-          "sold-out": "Sold Out"
-        },
         "see-event-button": "See the event",
         "go-back-button": "Come back to the event",
         "Footer": {
@@ -219,6 +216,12 @@
           "revealed-title": "Mystery Pass Unveiled",
           "not-revealed-description": "Details to be revealed! This pass holds hidden features and exclusive benefits, set to be unveiled soon. Secure your pass now and be part of the exciting reveal!",
           "revealed-description": "Discover what's in store! This pass offers a range of exclusive benefits and features, now fully disclosed. Don’t miss out, get your pass and enjoy the complete experience."
+        },
+        "PassCardStatusBadge": {
+          "sold-out": "Sold Out",
+          "sale-ended": "Sale ended",
+          "already-have-purchase": "You have a purchase ongoing",
+          "sale-starting-in": "Sale not started"
         }
       },
       "EventSaleDates": {
