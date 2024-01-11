@@ -19,7 +19,7 @@ const badgeVariants = {
     'bg-destructive hover:bg-destructive/80 border-transparent text-destructive-foreground',
   outline: 'text-foreground',
   success: 'text-success border-success ' + backgroundColors.green,
-  info: 'text-info border-info ' + backgroundColors.blue,
+  info: 'text-info dark:text-blue-100 border-info ' + backgroundColors.blue,
   warning: 'text-warning border-warning ' + backgroundColors.yellow,
   failure: 'text-failure border-failure ' + backgroundColors.red,
   blue: textColors.blue + ' ' + backgroundColors.blue,
