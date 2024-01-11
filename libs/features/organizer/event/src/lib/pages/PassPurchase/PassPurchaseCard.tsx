@@ -4,6 +4,8 @@ import {
   AppContainerNavBackProps,
   AppContainerOverflow,
 } from '@features/app-nav';
+import { getSaleStatus } from '@features/organizer/event-actions';
+import { EventParametersPasses } from '@features/organizer/event-types';
 import { Link } from '@next/navigation';
 import { PropsFrom } from '@next/types';
 import {
@@ -17,13 +19,15 @@ import { PassFooterCardClient } from '../../organisms/PassFooter/PassFooterCardC
 import { PassFooterServer } from '../../organisms/PassFooter/PassFooterServer';
 import { PassList, PassListProps } from '../../organisms/PassList/PassList';
 
-export interface PassPurchaseCardProps extends PassListProps {
+export interface PassPurchaseCardProps
+  extends Omit<PassListProps, 'saleStatus'> {
   backButtonText: string;
   backButtonLink: AppContainerNavBackProps['href'];
   goPaymentText: string;
   goPaymentLink: PropsFrom<typeof Link>;
   title: string;
   description: string;
+  eventParameters: EventParametersPasses;
 }
 
 export const PassPurchaseCard: React.FC<PassPurchaseCardProps> = ({
@@ -35,9 +39,10 @@ export const PassPurchaseCard: React.FC<PassPurchaseCardProps> = ({
   organizerSlug,
   eventSlug,
   hasConfirmedPasses,
-  saleStatus,
+  eventParameters,
   ...footerProps
 }) => {
+  const saleStatus = getSaleStatus(eventParameters);
   return (
     <>
       <AppContainerNavBack text={backButtonText} href={backButtonLink} />

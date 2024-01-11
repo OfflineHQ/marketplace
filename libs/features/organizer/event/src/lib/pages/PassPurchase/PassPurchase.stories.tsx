@@ -2,6 +2,7 @@
 import * as eventApi from '@features/organizer/event-api';
 import { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
+import { mobileMode } from '@test-utils/storybook';
 import { createMock, getMock, render } from 'storybook-addon-module-mock';
 import { default as passCardMeta } from '../../molecules/PassCard/PassCard.stories';
 import { PassPurchaseSheet } from './PassPurchaseSheet';
@@ -12,7 +13,6 @@ import {
   passPurchaseProps,
   passPurchasePropsWithLotsOfPasses,
 } from './examples';
-import { mobileMode } from '@test-utils/storybook';
 
 const meta = {
   component: PassPurchaseSheet,
