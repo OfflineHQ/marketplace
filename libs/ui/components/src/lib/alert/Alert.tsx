@@ -1,13 +1,13 @@
 /* eslint-disable react/jsx-pascal-case */
-import * as React from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
+import * as React from 'react';
 import { statusVariantIcons } from '../shared/statusVariant';
 
 import { cn } from '@ui/shared';
 import { TextSkeleton } from '../text/Text';
 
 const alertVariants = cva(
-  'relative w-full rounded-lg border p-4 [&:has(svg)]:pl-11 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground',
+  'relative w-full rounded-lg border p-4 text-left [&:has(svg)]:pl-11 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground',
   {
     variants: {
       variant: {
@@ -83,4 +83,4 @@ const AlertSkeleton: React.FC = () => {
   );
 };
 
-export { Alert, AlertTitle, AlertDescription, AlertSkeleton, type AlertProps };
+export { Alert, AlertDescription, AlertSkeleton, AlertTitle, type AlertProps };
