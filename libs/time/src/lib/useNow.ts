@@ -1,5 +1,3 @@
-'use client';
-
 declare let STORYBOOK_ENV: string;
 
 import { useNow as _useNow } from 'next-intl';
