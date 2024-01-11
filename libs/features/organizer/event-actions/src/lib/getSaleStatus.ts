@@ -1,24 +1,30 @@
 'use server';
 
+import { UTCDateMini } from '@date-fns/utc';
 import {
   EventParametersPasses,
   SaleStatus,
 } from '@features/organizer/event-types';
+import { isBefore } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 
 export interface GetSaleStatusProps
   extends Pick<
     EventParametersPasses,
-    'dateSaleStart' | 'dateSaleEnd' | 'timezone' | 'isSaleOngoing'
+    'dateSaleStart' | 'timezone' | 'isSaleOngoing'
   > {}
 export function getSaleStatus({
   dateSaleStart,
-  dateSaleEnd,
   timezone,
   isSaleOngoing,
 }: GetSaleStatusProps) {
   if (isSaleOngoing) {
     return SaleStatus.Ongoing;
-  } else {
+  }
+  const dateSaleStartObj = utcToZonedTime(dateSaleStart, timezone);
+  const nowInUTC = new UTCDateMini();
+  if (isBefore(nowInUTC, dateSaleStartObj)) {
     return SaleStatus.NotStarted;
   }
+  return SaleStatus.Ended;
 }

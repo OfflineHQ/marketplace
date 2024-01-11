@@ -54,9 +54,11 @@ const PurchaseSectionContent: React.FC<PurchaseSectionContentProps> = async ({
     return <NotFound />;
   else {
     const confirmedPasses = await getOrdersConfirmed();
-    return (
+    const { eventPasses, event } = passes;
+    return event.eventParameters ? (
       <PassPurchaseSheet
-        passes={passes.eventPasses}
+        passes={eventPasses}
+        eventParameters={event.eventParameters}
         organizerSlug={organizerSlug}
         eventSlug={eventSlug}
         size={'lg'}
@@ -70,6 +72,8 @@ const PurchaseSectionContent: React.FC<PurchaseSectionContentProps> = async ({
         }}
         hasConfirmedPasses={!!confirmedPasses?.length}
       />
+    ) : (
+      <NotFound />
     );
   }
 };

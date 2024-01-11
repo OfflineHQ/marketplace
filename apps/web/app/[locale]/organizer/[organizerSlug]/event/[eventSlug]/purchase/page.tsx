@@ -29,14 +29,17 @@ export default async function PurchaseSection({
     return <NotFound />;
   else {
     const confirmedPasses = await getOrdersConfirmed();
-    return (
+    const { eventPasses, event } = passes;
+    return event.eventParameters ? (
       <PurchaseSectionContent
-        passes={passes.eventPasses}
-        eventParameters={passes.event.eventParameters}
+        passes={eventPasses}
+        eventParameters={event.eventParameters}
         eventSlug={eventSlug}
         organizerSlug={organizerSlug}
         hasConfirmedPasses={!!confirmedPasses?.length}
       />
+    ) : (
+      <NotFound />
     );
   }
 }
