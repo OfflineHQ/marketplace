@@ -12,6 +12,7 @@ import {
   default as passPurchaseMeta,
   WithLotsOfPassesSelected,
 } from '../PassPurchase/PassPurchase.stories';
+import { mobileMode } from '@test-utils/storybook';
 
 const meta = {
   component: PassPurchaseSheetContainerExample,
@@ -49,16 +50,7 @@ export const WithFullSize: Story = {
 
 export const DefaultMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   render: PassPurchaseSheetContainerExample,
 };
@@ -66,15 +58,6 @@ export const DefaultMobile: Story = {
 export const WithPassesSelectedMobile: Story = {
   ...DefaultWithPassesSelected,
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
 };

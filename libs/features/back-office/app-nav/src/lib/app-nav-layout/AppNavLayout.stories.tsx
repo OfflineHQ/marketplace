@@ -17,6 +17,8 @@ import {
   ProfileNavWithUserLoading,
 } from './examples';
 
+import { mobileMode } from '@test-utils/storybook';
+
 const meta = {
   component: AppNavLayout,
   parameters: {
@@ -123,16 +125,7 @@ export const WithNoUserMobile: Story = {
   ...WithNoUser,
   parameters: {
     layout: 'fullscreen',
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   play: async ({ canvasElement }) => {
     await sleep(100);
@@ -147,16 +140,7 @@ export const WithUserMobile: Story = {
   ...WithUser,
   parameters: {
     layout: 'fullscreen',
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
     nextjs: {
       appDirectory: true,
       navigation: {
@@ -180,16 +164,7 @@ export const WithSuperAdminRoleMobile: Story = {
   ...WithSuperAdminRole,
   parameters: {
     layout: 'fullscreen',
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
     nextjs: {
       appDirectory: true,
       navigation: {
@@ -211,16 +186,7 @@ export const WithNoUserLoadingMobile: Story = {
   ...WithNoUserLoading,
   parameters: {
     layout: 'fullscreen',
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
 };
 
@@ -228,16 +194,7 @@ export const WithSkeletonMobile: Story = {
   ...WithSkeleton,
   parameters: {
     layout: 'fullscreen',
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
 };
 
@@ -245,15 +202,6 @@ export const WithUserLoadingMobile: Story = {
   ...WithUserLoading,
   parameters: {
     layout: 'fullscreen',
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
 };

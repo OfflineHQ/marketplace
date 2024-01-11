@@ -6,6 +6,7 @@ import { createMock } from 'storybook-addon-module-mock';
 import { eventCart1Props, eventCart2Props } from '../EventPassList/examples';
 import { NoUserCart } from './NoUserCart';
 import { NoUserCartExample, allPassesCart } from './examples';
+import { mobileMode } from '@test-utils/storybook';
 
 const meta: Meta<typeof NoUserCart> = {
   component: NoUserCart,
@@ -50,16 +51,7 @@ export const SectionWithNoUserNoCart: Story = {
 
 export const SectionWithNoUserNoCartMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   ...SectionWithNoUserNoCart,
 };
@@ -80,16 +72,7 @@ export const SectionWithNoUserWithPasses: Story = {
 
 export const SectionWithNoUserWithPassesMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   ...SectionWithNoUserWithPasses,
 };
