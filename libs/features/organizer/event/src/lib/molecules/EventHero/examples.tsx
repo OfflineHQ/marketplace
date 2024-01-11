@@ -5,6 +5,10 @@ import {
   eventDateLocation3,
   eventLocationsProps,
 } from '../../molecules/EventLocations/examples';
+import {
+  eventParametersSaleEnded,
+  eventParametersSaleOngoing,
+} from '../EventSaleDates/examples';
 import { type EventHeroProps } from './EventHero';
 
 export const eventDatesProps = {
@@ -44,6 +48,7 @@ export const eventHeroProps: EventHeroProps = {
   ...eventLocationsProps,
   ...eventDatesProps,
   organizer,
+  eventParameters: eventParametersSaleEnded,
 };
 
 export const event2HeroProps: EventHeroProps = {
@@ -54,4 +59,5 @@ export const event2HeroProps: EventHeroProps = {
   ...event2LocationsProps,
   ...event2DatesProps,
   organizer: organizer2,
+  eventParameters: eventParametersSaleOngoing,
 };

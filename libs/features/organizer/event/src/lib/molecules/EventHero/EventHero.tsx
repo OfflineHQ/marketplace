@@ -16,6 +16,7 @@ import {
   EventOrganizerButton,
   EventOrganizerButtonSkeleton,
 } from '../../molecules/EventOrganizerButton/EventOrganizerButton';
+import { EventSaleDates } from '../EventSaleDates/EventSaleDates';
 
 export interface EventHeroProps
   extends EventDatesServerProps,
@@ -64,6 +65,9 @@ export const EventHero: React.FC<EventHeroProps> = ({
           </div>
           <EventDatesServer {...locationDatesProps} />
           <EventLocations {...locationDatesProps} />
+          {eventParameters && (
+            <EventSaleDates eventParameters={eventParameters} />
+          )}
         </div>
       </div>
     </div>
