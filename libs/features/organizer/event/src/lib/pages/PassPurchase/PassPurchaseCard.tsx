@@ -35,6 +35,7 @@ export const PassPurchaseCard: React.FC<PassPurchaseCardProps> = ({
   organizerSlug,
   eventSlug,
   hasConfirmedPasses,
+  saleStatus,
   ...footerProps
 }) => {
   return (
@@ -51,6 +52,7 @@ export const PassPurchaseCard: React.FC<PassPurchaseCardProps> = ({
             organizerSlug={organizerSlug}
             eventSlug={eventSlug}
             hasConfirmedPasses={hasConfirmedPasses}
+            saleStatus={saleStatus}
           />
         </CardContent>
       </AppContainerOverflow>

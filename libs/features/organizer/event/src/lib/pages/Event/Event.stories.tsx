@@ -7,6 +7,7 @@ import {
   event2Props,
   eventProps,
 } from './examples';
+import { darkMode, mobileMode } from '@test-utils/storybook';
 
 const meta = {
   component: Event,
@@ -33,43 +34,21 @@ export const Loading: Story = {
 
 export const WithDarkMode: Story = {
   parameters: {
-    darkMode: {
-      isDark: true,
-    },
+    ...darkMode,
   },
   ...Default,
 };
 
 export const WithMobile = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   ...Default,
 };
 export const WithMobileDarkMode = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
-    darkMode: {
-      isDark: true,
-    },
+    ...mobileMode,
+    ...darkMode,
   },
   ...Default,
 };
