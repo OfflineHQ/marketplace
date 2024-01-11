@@ -20,7 +20,7 @@ export const SaleNotStarted: Story = {
     eventParameters: eventParametersSaleNotStarted,
   },
   play: async ({ container }) => {
-    const textElement = await screen.findByText(/Sale not started/i);
+    const textElement = await screen.findByText(/hasn't started/i);
     expect(textElement).toBeInTheDocument();
   },
 };
@@ -30,7 +30,7 @@ export const SaleOngoing: Story = {
     eventParameters: eventParametersSaleOngoing,
   },
   play: async ({ container }) => {
-    const textElement = await screen.findByText(/Sale ongoing/i);
+    const textElement = await screen.findByText(/ongoing/i);
     expect(textElement).toBeInTheDocument();
   },
 };
@@ -40,7 +40,7 @@ export const SaleEnded: Story = {
     eventParameters: eventParametersSaleEnded,
   },
   play: async ({ container }) => {
-    const textElement = await screen.findByText(/Sale ended/i);
+    const textElement = await screen.findByText(/ended/i);
     expect(textElement).toBeInTheDocument();
   },
 };
