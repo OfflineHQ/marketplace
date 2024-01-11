@@ -1,4 +1,4 @@
-import { Event } from '@features/organizer/event-types';
+import { Event, EventParameters } from '@features/organizer/event-types';
 import { EventDatesServer, type EventDatesServerProps } from '@next/date';
 import {
   AspectRatio,
@@ -21,14 +21,9 @@ import { EventSaleDates } from '../EventSaleDates/EventSaleDates';
 export interface EventHeroProps
   extends EventDatesServerProps,
     EventLocationsProps,
-    Pick<
-      Event,
-      | 'heroImage'
-      | 'heroImageClasses'
-      | 'title'
-      | 'organizer'
-      | 'eventParameters'
-    > {}
+    Pick<Event, 'heroImage' | 'heroImageClasses' | 'title' | 'organizer'> {
+  eventParameters: EventParameters;
+}
 
 const layout = {
   grid: 'grid grid-cols-1 items-start gap-8 md:grid-cols-2',
