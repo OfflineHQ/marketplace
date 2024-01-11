@@ -200,7 +200,6 @@
       "purchase-button-activator": "Select passes",
       "PassPurchase": {
         "title": "Pass selection",
-        "description": "Select the passes you want to purchase and validate your order",
         "see-event-button": "See the event",
         "go-back-button": "Come back to the event",
         "Footer": {
@@ -222,7 +221,8 @@
           "sale-ended": "Sale ended",
           "already-have-purchase": "You have a purchase ongoing",
           "sale-starting-in": "Sale not started"
-        }
+        },
+        "title-with-event": "Pass selection for \"{eventTitle}\""
       },
       "EventSaleDates": {
         "sale-not-started": "The sale hasn't started yet",
@@ -230,6 +230,12 @@
         "sale-ended": "The sale has ended",
         "sale-starts-in": "Starts: {time}",
         "sale-ends-in": "Ending: {time}"
+      },
+      "PassPurchaseHeader": {
+        "description": "Select the passes you want to purchase and validate your order",
+        "has-purchase-in-progress-title": "Purchase in progress",
+        "has-purchase-in-progress-description": "You currently have a purchase in progress. Please confirm or cancel this purchase before selecting a new pass.",
+        "go-to-purchase": "Proceed with my purchase"
       }
     },
     "EventDates": {

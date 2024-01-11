@@ -1,8 +1,10 @@
 // PassPurchaseSheet.tsx
 import { getSaleStatus } from '@features/organizer/event-actions';
-import { EventParametersPasses } from '@features/organizer/event-types';
 import {
-  SheetDescription,
+  EventParametersPasses,
+  SaleStatus,
+} from '@features/organizer/event-types';
+import {
   SheetDescriptionSkeleton,
   SheetHeader,
   SheetNavigation,
@@ -12,7 +14,9 @@ import {
   SheetTitleSkeleton,
   type SheetNavigationProps,
 } from '@ui/components';
+import { useTranslations } from 'next-intl';
 import Link, { LinkProps } from 'next/link';
+import { PassPurchaseHeader } from '../../molecules/PassPurchaseHeader/PassPurchaseHeader';
 import { PassFooterServer } from '../../organisms/PassFooter/PassFooterServer';
 import {
   PassFooterSheet,
@@ -28,8 +32,6 @@ export interface PassPurchaseSheetProps
   extends SheetNavigationProps,
     Omit<PassListProps, 'saleStatus'>,
     PassFooterSheetProps {
-  title: string;
-  description: string;
   closeLink: LinkProps;
   eventParameters: EventParametersPasses;
 }
@@ -37,8 +39,6 @@ export interface PassPurchaseSheetProps
 export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
   size = 'lg',
   passes,
-  description,
-  title,
   backButtonText,
   organizerSlug,
   eventSlug,
@@ -48,12 +48,16 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
   ...footerProps
 }) => {
   const saleStatus = getSaleStatus(eventParameters);
+  const t = useTranslations('Organizer.Event.PassPurchase');
   return (
     <>
       <SheetOverflow className="space-y-4">
         <SheetHeader size={size}>
-          <SheetTitle>{title}</SheetTitle>
-          <SheetDescription>{description}</SheetDescription>
+          <SheetTitle>{t('title')}</SheetTitle>
+          <PassPurchaseHeader
+            hasConfirmedPasses={hasConfirmedPasses}
+            saleStatus={saleStatus}
+          />
         </SheetHeader>
         <PassList
           passes={passes}
@@ -63,14 +67,16 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
           saleStatus={saleStatus}
         />
       </SheetOverflow>
-      <PassFooterServer>
-        <PassFooterSheet
-          passes={passes}
-          organizerSlug={organizerSlug}
-          eventSlug={eventSlug}
-          {...footerProps}
-        />
-      </PassFooterServer>
+      {!hasConfirmedPasses && saleStatus === SaleStatus.Ongoing && (
+        <PassFooterServer>
+          <PassFooterSheet
+            passes={passes}
+            organizerSlug={organizerSlug}
+            eventSlug={eventSlug}
+            {...footerProps}
+          />
+        </PassFooterServer>
+      )}
       <SheetNavigation
         wrapper={<Link {...closeLink} />}
         backButtonText={backButtonText}
