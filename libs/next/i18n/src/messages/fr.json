@@ -200,7 +200,6 @@
       "purchase-button-activator": "Sélectionner les pass",
       "PassPurchase": {
         "title": "Sélection de pass",
-        "description": "Sélectionnez les pass que vous souhaitez acheter et validez votre commande",
         "see-event-button": "Voir l'événement",
         "go-back-button": "Revenir à l'événement",
         "Footer": {
@@ -222,7 +221,8 @@
           "sale-ended": "La vente est terminée",
           "already-have-purchase": "Vous avez un achat en cours",
           "sale-starting-in": "Vente non commencée"
-        }
+        },
+        "title-with-event": "Sélection des pass pour \"{eventTitle}\""
       },
       "EventSaleDates": {
         "sale-not-started": "La vente n'a pas encore commencé",
@@ -230,6 +230,12 @@
         "sale-ended": "La vente est terminée",
         "sale-starts-in": "Commence : {time}",
         "sale-ends-in": "Se termine: {time}"
+      },
+      "PassPurchaseHeader": {
+        "description": "Sélectionnez les pass que vous souhaitez acheter et validez votre commande",
+        "has-purchase-in-progress-title": "Achat en cours",
+        "has-purchase-in-progress-description": "Vous avez actuellement un achat en cours. Veuillez confirmer ou annuler cet achat avant de sélectionner un nouveau pass.",
+        "go-to-purchase": "Poursuivre mon achat"
       }
     },
     "EventDates": {
