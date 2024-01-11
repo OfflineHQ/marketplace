@@ -1,4 +1,6 @@
 // PassPurchaseSheet.tsx
+import { getSaleStatus } from '@features/organizer/event-actions';
+import { EventParametersPasses } from '@features/organizer/event-types';
 import {
   SheetDescription,
   SheetDescriptionSkeleton,
@@ -24,11 +26,12 @@ import {
 
 export interface PassPurchaseSheetProps
   extends SheetNavigationProps,
-    PassListProps,
+    Omit<PassListProps, 'saleStatus'>,
     PassFooterSheetProps {
   title: string;
   description: string;
   closeLink: LinkProps;
+  eventParameters: EventParametersPasses;
 }
 
 export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
@@ -41,8 +44,10 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
   eventSlug,
   hasConfirmedPasses,
   closeLink,
+  eventParameters,
   ...footerProps
 }) => {
+  const saleStatus = getSaleStatus(eventParameters);
   return (
     <>
       <SheetOverflow className="space-y-4">
@@ -55,6 +60,7 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
           organizerSlug={organizerSlug}
           eventSlug={eventSlug}
           hasConfirmedPasses={hasConfirmedPasses}
+          saleStatus={saleStatus}
         />
       </SheetOverflow>
       <PassFooterServer>
