@@ -12,6 +12,7 @@ import {
   passPurchaseProps,
   passPurchasePropsWithLotsOfPasses,
 } from './examples';
+import { mobileMode } from '@test-utils/storybook';
 
 const meta = {
   component: PassPurchaseSheet,
@@ -216,16 +217,7 @@ export const CardWithLotsOfPassesSelected: Story = {
 export const CardWithLotsOfPassesSelectedMobile: Story = {
   ...CardWithLotsOfPassesSelected,
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   args: {
     ...CardWithLotsOfPassesSelected.args,

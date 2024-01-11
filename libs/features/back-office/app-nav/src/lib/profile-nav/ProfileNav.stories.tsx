@@ -12,6 +12,7 @@ import {
   itemsUserWithRoles,
   user,
 } from './examples';
+import { mobileMode } from '@test-utils/storybook';
 
 const meta = {
   component: ProfileNav,
@@ -55,16 +56,7 @@ export const WithUserNoRoles: Story = {
 export const WithUserNoRolesMobile: Story = {
   ...WithUserNoRoles,
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
 };
 
@@ -110,16 +102,7 @@ export const WithAdminRole: Story = {
 export const WithAdminRoleMobile: Story = {
   ...WithAdminRole,
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   play: async ({ canvasElement }) => {
     await sleep(100);
@@ -144,16 +127,7 @@ export const WithAdminRoleLoading: Story = {
 
 export const WithAdminRoleLoadingMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   args: {
     ...WithAdminRole.args,

@@ -10,6 +10,7 @@ import {
   allPassesCartUser,
   userPassPendingOrders1,
 } from './examples';
+import { mobileMode } from '@test-utils/storybook';
 
 const meta: Meta<typeof UserCart> = {
   component: UserCart,
@@ -58,16 +59,7 @@ export const SectionWithUserNoCart: Story = {
 
 export const SectionWithUserNoCartMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   ...SectionWithUserNoCart,
 };
@@ -87,16 +79,7 @@ export const SectionWithUserOpened: Story = {
 
 export const SectionWithUserOpenedMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   ...SectionWithUserOpened,
 };
