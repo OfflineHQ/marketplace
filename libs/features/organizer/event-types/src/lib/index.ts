@@ -23,6 +23,9 @@ export type EventOrganizer = NonNullable<Event['organizer']>;
 export type EventPasses = NonNullable<
   GetEventParametersAndEventPassesQuery['eventPasses']
 >;
+export type EventParametersPasses = NonNullable<
+  NonNullable<GetEventParametersAndEventPassesQuery['event']>['eventParameters']
+>;
 
 export type EventPass = EventPasses[0];
 

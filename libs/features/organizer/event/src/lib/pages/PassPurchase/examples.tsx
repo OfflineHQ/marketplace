@@ -25,6 +25,10 @@ export const passPurchaseProps = {
   organizerSlug: eventProps?.organizer?.slug || '',
   eventSlug: eventProps.slug,
   description: 'Select the passes you want to purchase and validate your order',
+  eventParameters: {
+    isSaleOngoing: true,
+    ...eventProps.eventParameters,
+  },
 } satisfies PassPurchaseSheetProps;
 export const passPurchasePropsWithLotsOfPasses = {
   ...passPurchaseProps,

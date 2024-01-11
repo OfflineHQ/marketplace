@@ -1,5 +1,8 @@
 'use client';
-import { EventParameters, SaleStatus } from '@features/organizer/event-types';
+import {
+  EventParametersPasses,
+  SaleStatus,
+} from '@features/organizer/event-types';
 import { UTCDateMini } from '@time';
 import { Alert, AlertSkeleton, Badge } from '@ui/components';
 import { Timer } from '@ui/icons';
@@ -9,7 +12,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 export type EventSaleDatesClientProps = {
-  eventParameters: EventParameters;
+  eventParameters: EventParametersPasses;
 };
 
 export const EventSaleDatesClient: React.FC<EventSaleDatesClientProps> = ({
