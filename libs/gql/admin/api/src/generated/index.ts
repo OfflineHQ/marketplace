@@ -653,6 +653,7 @@ ${PassPricingFieldsFragmentDoc}`;
     }
   }
   event(where: {slug: $eventSlug}, locales: [$locale, en], stage: $stage) {
+    title
     organizer {
       slug
     }

@@ -33,6 +33,7 @@ export default async function PurchaseSection({
     return event.eventParameters ? (
       <PurchaseSectionContent
         passes={eventPasses}
+        eventTitle={event.title}
         eventParameters={event.eventParameters}
         eventSlug={eventSlug}
         organizerSlug={organizerSlug}
@@ -48,6 +49,7 @@ interface PurchaseSectionContentProps
   extends Pick<PassPurchaseCardProps, 'eventParameters'> {
   passes: EventPass[];
   eventSlug: string;
+  eventTitle: string;
   organizerSlug: string;
   hasConfirmedPasses: boolean;
 }
@@ -55,6 +57,7 @@ interface PurchaseSectionContentProps
 function PurchaseSectionContent({
   passes,
   eventSlug,
+  eventTitle,
   organizerSlug,
   hasConfirmedPasses,
   eventParameters,
@@ -67,9 +70,8 @@ function PurchaseSectionContent({
         passes={passes}
         organizerSlug={organizerSlug}
         eventSlug={eventSlug}
+        eventTitle={eventTitle}
         eventParameters={eventParameters}
-        title={t('title')}
-        description={t('description')}
         goPaymentText={
           hasConfirmedPasses
             ? t('Footer.finalize-payment')

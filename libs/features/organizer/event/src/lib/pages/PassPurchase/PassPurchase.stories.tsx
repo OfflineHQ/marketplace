@@ -13,6 +13,7 @@ import {
   passPurchaseProps,
   passPurchasePropsWithLotsOfPasses,
 } from './examples';
+import { eventProps } from '../Event/examples';
 
 const meta = {
   component: PassPurchaseSheet,
@@ -61,6 +62,32 @@ export const NoPassSelected: Story = {
     });
     expect(passCardIncrements).toHaveLength(2);
     expect(screen.getAllByText('0')).toHaveLength(2);
+  },
+};
+
+export const WithPurchaseInProcess: Story = {
+  args: {
+    hasConfirmedPasses: true,
+  },
+  play: async (context) => {
+    // Here will check that the footer is not displayed if has confirmed passes even if user have some passes in the cart
+    const mockGetEventPassesCart = getMock(
+      context.parameters,
+      eventApi,
+      'getEventPassesCart',
+    );
+    mockGetEventPassesCart.mockResolvedValue([
+      {
+        id: '1',
+        eventPassId: '1',
+        quantity: 1,
+        created_at: new Date().toISOString(),
+      },
+    ]);
+    render(context.parameters);
+    expect(screen.getByText(/VIP Pass/i)).toBeInTheDocument();
+    expect(await screen.findAllByText(/purchase ongoing/i)).toHaveLength(2);
+    expect(screen.queryByText(/Go to payment/i)).not.toBeInTheDocument();
   },
 };
 
@@ -190,6 +217,7 @@ export const LoadingFullSize: Story = {
 export const Card: Story = {
   args: {
     backButtonLink: { href: '/dummy' },
+    eventTitle: eventProps.title,
   },
   render: PassPurchaseCardExample,
   play: async (context) => {
