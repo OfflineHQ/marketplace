@@ -1,10 +1,10 @@
 'use server';
 
-import { UTCDateMini } from '@date-fns/utc';
 import {
   EventParametersPasses,
   SaleStatus,
 } from '@features/organizer/event-types';
+import { UTCDateMini } from '@time';
 import { isBefore } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 
