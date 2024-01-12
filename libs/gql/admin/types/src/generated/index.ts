@@ -224,6 +224,13 @@ export type GetEventParametersQueryVariables = Types.Exact<{
 
 export type GetEventParametersQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, dateSaleStart?: any | null, dateSaleEnd?: any | null, timezone: string, status?: Types.EventStatus_Enum | null, isSaleOngoing?: boolean | null, isOngoing?: boolean | null }> };
 
+export type GetEventParametersFromEventPassIdsQueryVariables = Types.Exact<{
+  eventPassIds: Array<Types.Scalars['ID']> | Types.Scalars['ID'];
+}>;
+
+
+export type GetEventParametersFromEventPassIdsQuery = { __typename?: 'query_root', eventPasses: Array<{ __typename?: 'EventPass', id: string, event?: { __typename?: 'Event', eventParameters?: { __typename?: 'eventParameters', isSaleOngoing?: boolean | null } | null } | null }> };
+
 export type GetEventParametersAndEventPassesQueryVariables = Types.Exact<{
   eventSlug: Types.Scalars['String'];
   locale: Types.Locale;

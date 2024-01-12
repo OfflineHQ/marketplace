@@ -621,6 +621,18 @@ ${PassPricingFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetEventParametersFromEventPassIdsDocument = `
+    query GetEventParametersFromEventPassIds($eventPassIds: [ID!]!) {
+  eventPasses(where: {id_in: $eventPassIds}, stage: DRAFT, locales: [en]) {
+    id
+    event {
+      eventParameters {
+        isSaleOngoing
+      }
+    }
+  }
+}
+    `;
  const GetEventParametersAndEventPassesDocument = `
     query GetEventParametersAndEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPasses(
@@ -1183,6 +1195,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventParameters(variables?: Types.GetEventParametersQueryVariables, options?: C): Promise<Types.GetEventParametersQuery> {
       return requester<Types.GetEventParametersQuery, Types.GetEventParametersQueryVariables>(GetEventParametersDocument, variables, options) as Promise<Types.GetEventParametersQuery>;
+    },
+    GetEventParametersFromEventPassIds(variables: Types.GetEventParametersFromEventPassIdsQueryVariables, options?: C): Promise<Types.GetEventParametersFromEventPassIdsQuery> {
+      return requester<Types.GetEventParametersFromEventPassIdsQuery, Types.GetEventParametersFromEventPassIdsQueryVariables>(GetEventParametersFromEventPassIdsDocument, variables, options) as Promise<Types.GetEventParametersFromEventPassIdsQuery>;
     },
     GetEventParametersAndEventPasses(variables: Types.GetEventParametersAndEventPassesQueryVariables, options?: C): Promise<Types.GetEventParametersAndEventPassesQuery> {
       return requester<Types.GetEventParametersAndEventPassesQuery, Types.GetEventParametersAndEventPassesQueryVariables>(GetEventParametersAndEventPassesDocument, variables, options) as Promise<Types.GetEventParametersAndEventPassesQuery>;
