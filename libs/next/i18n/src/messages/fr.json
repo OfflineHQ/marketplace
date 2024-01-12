@@ -235,7 +235,16 @@
         "description": "Sélectionnez les pass que vous souhaitez acheter et validez votre commande",
         "has-purchase-in-progress-title": "Achat en cours",
         "has-purchase-in-progress-description": "Vous avez actuellement un achat en cours. Veuillez confirmer ou annuler cet achat avant de sélectionner un nouveau pass.",
-        "go-to-purchase": "Poursuivre mon achat"
+        "go-to-purchase": "Poursuivre mon achat",
+        "ended-title": "La vente est terminée",
+        "ended-description": "Vous ne pouvez plus acheter ces pass.",
+        "not-started-title": "La vente n'a pas commencé."
+      },
+      "SaleStartsInClient": {
+        "sale-starts-in": "Commence : {time}"
+      },
+      "SaleEndsInClient": {
+        "sale-ends-in": "Se termine: {time}"
       }
     },
     "EventDates": {

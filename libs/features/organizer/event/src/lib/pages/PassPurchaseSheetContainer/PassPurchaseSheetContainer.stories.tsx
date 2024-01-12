@@ -40,6 +40,8 @@ export const Default: Story = {
     mockGetEventPassCart.mockResolvedValue({
       quantity: 0,
     });
+    expect(await screen.findByText(/select the passes/i)).toBeInTheDocument();
+    expect(await screen.findByText(/sale-ends-in/i)).toBeInTheDocument();
   },
 };
 
@@ -75,6 +77,7 @@ export const WithEventEnded: Story = {
     },
   },
   play: async (context) => {
+    expect(await screen.findByText(/cannot purchase/i)).toBeInTheDocument();
     await waitFor(
       () => expect(screen.queryAllByText(/sale ended/i)?.length).toBe(7),
       {
@@ -99,11 +102,20 @@ export const WithEventNotStarted: Story = {
     },
   },
   play: async (context) => {
+    expect(await screen.findByText(/hasn't started/i)).toBeInTheDocument();
+    expect(await screen.findByText(/starts/i)).toBeInTheDocument();
     await waitFor(
       () => expect(screen.queryAllByText(/not started/i)?.length).toBe(7),
       {
         timeout: 5000,
       },
     );
+  },
+};
+
+export const WithEventNotStartedMobile: Story = {
+  ...WithEventNotStarted,
+  parameters: {
+    ...mobileMode,
   },
 };
