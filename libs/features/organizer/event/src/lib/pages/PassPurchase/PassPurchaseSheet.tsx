@@ -55,6 +55,7 @@ export const PassPurchaseSheet: React.FC<PassPurchaseSheetProps> = ({
         <SheetHeader size={size}>
           <SheetTitle>{t('title')}</SheetTitle>
           <PassPurchaseHeader
+            eventParameters={eventParameters}
             hasConfirmedPasses={hasConfirmedPasses}
             saleStatus={saleStatus}
           />
