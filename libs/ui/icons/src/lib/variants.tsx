@@ -2,8 +2,8 @@ import { cva, VariantProps } from 'class-variance-authority';
 
 export const iconSizes = {
   xs: 'w-3.5 h-3.5 md:w-4 md:h-4',
-  sm: 'w-4 h-4 md:w-5 md:h-5',
-  default: 'w-5 h-5 md:w-[1.35rem] md:h-[1.35rem]',
+  sm: 'w-5 h-5 md:w-5 md:h-5',
+  default: 'w-[1.2rem] h-[1.2rem] md:w-[1.35rem] md:h-[1.35rem]',
   lg: 'w-7 h-7 md:w-7 md:h-7',
   xl: 'w-9 h-9 md:w-9.5 md:h-9.5',
   auto: 'w-auto h-auto',
