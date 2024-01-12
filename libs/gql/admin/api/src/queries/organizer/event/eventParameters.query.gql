@@ -22,3 +22,14 @@ query GetEventParameters($eventId: String) {
     isOngoing
   }
 }
+
+query GetEventParametersFromEventPassIds($eventPassIds: [ID!]!) {
+  eventPasses(where: { id_in: $eventPassIds }, stage: DRAFT, locales: [en]) {
+    id
+    event {
+      eventParameters {
+        isSaleOngoing
+      }
+    }
+  }
+}
