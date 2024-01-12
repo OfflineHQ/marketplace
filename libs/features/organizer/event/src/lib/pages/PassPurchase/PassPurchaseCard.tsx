@@ -50,6 +50,7 @@ export const PassPurchaseCard: React.FC<PassPurchaseCardProps> = ({
           <CardTitle>{t('title-with-event', { eventTitle })}</CardTitle>
           <PassPurchaseHeader
             isCard
+            eventParameters={eventParameters}
             hasConfirmedPasses={hasConfirmedPasses}
             saleStatus={saleStatus}
           />
