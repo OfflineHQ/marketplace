@@ -235,7 +235,16 @@
         "description": "Select the passes you want to purchase and validate your order",
         "has-purchase-in-progress-title": "Purchase in progress",
         "has-purchase-in-progress-description": "You currently have a purchase in progress. Please confirm or cancel this purchase before selecting a new pass.",
-        "go-to-purchase": "Proceed with my purchase"
+        "go-to-purchase": "Proceed with my purchase",
+        "ended-title": "The sale has ended",
+        "ended-description": "You cannot purchase thoses pass anymore",
+        "not-started-title": "The sale hasn't started"
+      },
+      "SaleStartsInClient": {
+        "sale-starts-in": "Starts: {time}"
+      },
+      "SaleEndsInClient": {
+        "sale-ends-in": "Ending: {time}"
       }
     },
     "EventDates": {
