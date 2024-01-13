@@ -3,23 +3,9 @@ import {
   applySeeds,
   createDbClient,
   deleteTables,
+  updateObjects,
 } from '@test-utils/db';
 import { adminSdk } from '../../../generated';
-
-async function setEventDates(
-  client: PgClient,
-  eventId: string,
-  dates: { start: Date; end: Date; saleStart: Date; saleEnd: Date },
-) {
-  await client.query(
-    `
-    UPDATE public."eventParameters"
-    SET "dateStart" = $1, "dateEnd" = $2, "dateSaleStart" = $3, "dateSaleEnd" = $4, "status" = 'PUBLISHED'
-    WHERE "eventId" = $5
-  `,
-    [dates.start, dates.end, dates.saleStart, dates.saleEnd, eventId],
-  );
-}
 
 describe('eventParameters integration tests', () => {
   process.env.TZ = 'Europe/London';
@@ -43,19 +29,24 @@ describe('eventParameters integration tests', () => {
 
   it('should not access eventParameters not PUBLISHED', async () => {
     const res = await adminSdk.GetEventParameters({
-      eventId: 'clizzpvidao620buvxit1ynko',
+      eventId: 'clocula4d04g40bw1t9zefsuc',
     });
     expect(res.eventParameters.length).toBe(0);
   });
   describe('eventParameters for event with timezone Europe/London, same as the one in test', () => {
     it('should return isOngoing true if event is ongoing', async () => {
       const currentDate = new Date();
-      await setEventDates(client, 'clizzpvidao620buvxit1ynko', {
-        start: new Date(currentDate.getTime() - 1000 * 60 * 60), // 1 hour before
-        end: new Date(currentDate.getTime() + 1000 * 60 * 60), // 1 hour after
-        saleStart: new Date(currentDate.getTime() - 2000 * 60 * 60), // 2 hours before
-        saleEnd: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
-      });
+      await updateObjects(
+        client,
+        'eventParameters',
+        {
+          dateStart: new Date(currentDate.getTime() - 1000 * 60 * 60), // 1 hour before
+          dateEnd: new Date(currentDate.getTime() + 1000 * 60 * 60), // 1 hour after
+          dateSaleStart: new Date(currentDate.getTime() - 2000 * 60 * 60), // 2 hours before
+          dateSaleEnd: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
+        },
+        { eventId: 'clizzpvidao620buvxit1ynko' },
+      );
       const res = await adminSdk.GetEventParameters({
         eventId: 'clizzpvidao620buvxit1ynko',
       });
@@ -65,12 +56,17 @@ describe('eventParameters integration tests', () => {
 
     it('should return isOngoing false if event is not ongoing', async () => {
       const currentDate = new Date();
-      await setEventDates(client, 'clizzpvidao620buvxit1ynko', {
-        start: new Date(currentDate.getTime() + 1000 * 60 * 60), // 1 hour after
-        end: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
-        saleStart: new Date(currentDate.getTime() - 2000 * 60 * 60), // 2 hours before
-        saleEnd: new Date(currentDate.getTime() - 1000 * 60 * 60), // 1 hour before
-      });
+      await updateObjects(
+        client,
+        'eventParameters',
+        {
+          dateStart: new Date(currentDate.getTime() + 1000 * 60 * 60), // 1 hour after
+          dateEnd: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
+          dateSaleStart: new Date(currentDate.getTime() - 2000 * 60 * 60), // 2 hours before
+          dateSaleEnd: new Date(currentDate.getTime() - 1000 * 60 * 60), // 1 hour before
+        },
+        { eventId: 'clizzpvidao620buvxit1ynko' },
+      );
       const res = await adminSdk.GetEventParameters({
         eventId: 'clizzpvidao620buvxit1ynko',
       });
@@ -80,12 +76,17 @@ describe('eventParameters integration tests', () => {
 
     it('should return isSaleOngoing true if sale is ongoing', async () => {
       const currentDate = new Date();
-      await setEventDates(client, 'clizzpvidao620buvxit1ynko', {
-        start: new Date(currentDate.getTime() - 2000 * 60 * 60), // 2 hours before
-        end: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
-        saleStart: new Date(currentDate.getTime() - 1000 * 60 * 60), // 1 hour before
-        saleEnd: new Date(currentDate.getTime() + 1000 * 60 * 60), // 1 hour after
-      });
+      await updateObjects(
+        client,
+        'eventParameters',
+        {
+          dateStart: new Date(currentDate.getTime() - 2000 * 60 * 60), // 2 hours before
+          dateEnd: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
+          dateSaleStart: new Date(currentDate.getTime() - 1000 * 60 * 60), // 1 hour before
+          dateSaleEnd: new Date(currentDate.getTime() + 1000 * 60 * 60), // 1 hour after
+        },
+        { eventId: 'clizzpvidao620buvxit1ynko' },
+      );
       const res = await adminSdk.GetEventParameters({
         eventId: 'clizzpvidao620buvxit1ynko',
       });
@@ -95,12 +96,17 @@ describe('eventParameters integration tests', () => {
 
     it('should return isSaleOngoing false if sale is not ongoing', async () => {
       const currentDate = new Date();
-      await setEventDates(client, 'clizzpvidao620buvxit1ynko', {
-        start: new Date(currentDate.getTime() - 2000 * 60 * 60), // 2 hours before
-        end: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
-        saleStart: new Date(currentDate.getTime() + 1000 * 60 * 60), // 1 hour after
-        saleEnd: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
-      });
+      await updateObjects(
+        client,
+        'eventParameters',
+        {
+          dateStart: new Date(currentDate.getTime() - 2000 * 60 * 60), // 2 hours before
+          dateEnd: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
+          dateSaleStart: new Date(currentDate.getTime() + 1000 * 60 * 60), // 1 hour after
+          dateSaleEnd: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
+        },
+        { eventId: 'clizzpvidao620buvxit1ynko' },
+      );
       const res = await adminSdk.GetEventParameters({
         eventId: 'clizzpvidao620buvxit1ynko',
       });
@@ -114,20 +120,25 @@ describe('eventParameters integration tests', () => {
     const timezoneOffset = 1000 * 60 * 60 * 5; // 5 hours
     it('should return isOngoing true if event is ongoing', async () => {
       const currentDate = new Date();
-      await setEventDates(client, 'fake-event-1', {
-        start: new Date(
-          currentDate.getTime() - (1000 * 60 * 60 + timezoneOffset),
-        ), // 1 hour before
-        end: new Date(
-          currentDate.getTime() + (1000 * 60 * 60 + timezoneOffset),
-        ), // 1 hour after
-        saleStart: new Date(
-          currentDate.getTime() - (2000 * 60 * 60 + timezoneOffset),
-        ), // 2 hours before
-        saleEnd: new Date(
-          currentDate.getTime() + (2000 * 60 * 60 + timezoneOffset),
-        ), // 2 hours after
-      });
+      await updateObjects(
+        client,
+        'eventParameters',
+        {
+          dateStart: new Date(
+            currentDate.getTime() - (1000 * 60 * 60 + timezoneOffset),
+          ), // 1 hour before
+          dateEnd: new Date(
+            currentDate.getTime() + (1000 * 60 * 60 + timezoneOffset),
+          ), // 1 hour after
+          dateSaleStart: new Date(
+            currentDate.getTime() - (2000 * 60 * 60 + timezoneOffset),
+          ), // 2 hours before
+          dateSaleEnd: new Date(
+            currentDate.getTime() + (2000 * 60 * 60 + timezoneOffset),
+          ), // 2 hours after
+        },
+        { eventId: 'fake-event-1' },
+      );
       const res = await adminSdk.GetEventParameters({
         eventId: 'fake-event-1',
       });
@@ -137,20 +148,25 @@ describe('eventParameters integration tests', () => {
 
     it('should return isOngoing false if event is not ongoing', async () => {
       const currentDate = new Date();
-      await setEventDates(client, 'fake-event-1', {
-        start: new Date(
-          currentDate.getTime() + (1000 * 60 * 60 + timezoneOffset),
-        ), // 1 hour after
-        end: new Date(
-          currentDate.getTime() + (2000 * 60 * 60 + timezoneOffset),
-        ), // 2 hours after
-        saleStart: new Date(
-          currentDate.getTime() - (2000 * 60 * 60 + timezoneOffset),
-        ), // 2 hours before
-        saleEnd: new Date(
-          currentDate.getTime() - (1000 * 60 * 60 + timezoneOffset),
-        ), // 1 hour before
-      });
+      await updateObjects(
+        client,
+        'eventParameters',
+        {
+          dateStart: new Date(
+            currentDate.getTime() + (1000 * 60 * 60 + timezoneOffset),
+          ), // 1 hour after
+          dateEnd: new Date(
+            currentDate.getTime() + (2000 * 60 * 60 + timezoneOffset),
+          ), // 2 hours after
+          dateSaleStart: new Date(
+            currentDate.getTime() - (2000 * 60 * 60 + timezoneOffset),
+          ), // 2 hours before
+          dateSaleEnd: new Date(
+            currentDate.getTime() - (1000 * 60 * 60 + timezoneOffset),
+          ), // 1 hour before
+        },
+        { eventId: 'fake-event-1' },
+      );
       const res = await adminSdk.GetEventParameters({
         eventId: 'fake-event-1',
       });
@@ -160,20 +176,25 @@ describe('eventParameters integration tests', () => {
 
     it('should return isSaleOngoing true if sale is ongoing', async () => {
       const currentDate = new Date();
-      await setEventDates(client, 'fake-event-1', {
-        start: new Date(
-          currentDate.getTime() - (2000 * 60 * 60 + timezoneOffset),
-        ), // 2 hours before
-        end: new Date(
-          currentDate.getTime() + (2000 * 60 * 60 + timezoneOffset),
-        ), // 2 hours after
-        saleStart: new Date(
-          currentDate.getTime() - (1000 * 60 * 60 + timezoneOffset),
-        ), // 1 hour before
-        saleEnd: new Date(
-          currentDate.getTime() + (1000 * 60 * 60 + timezoneOffset),
-        ), // 1 hour after
-      });
+      await updateObjects(
+        client,
+        'eventParameters',
+        {
+          dateStart: new Date(
+            currentDate.getTime() - (2000 * 60 * 60 + timezoneOffset),
+          ), // 2 hours before
+          dateEnd: new Date(
+            currentDate.getTime() + (2000 * 60 * 60 + timezoneOffset),
+          ), // 2 hours after
+          dateSaleStart: new Date(
+            currentDate.getTime() - (1000 * 60 * 60 + timezoneOffset),
+          ), // 1 hour before
+          dateSaleEnd: new Date(
+            currentDate.getTime() + (1000 * 60 * 60 + timezoneOffset),
+          ), // 1 hour after
+        },
+        { eventId: 'fake-event-1' },
+      );
       const res = await adminSdk.GetEventParameters({
         eventId: 'fake-event-1',
       });
@@ -183,20 +204,25 @@ describe('eventParameters integration tests', () => {
 
     it('should return isSaleOngoing false if sale is not ongoing', async () => {
       const currentDate = new Date();
-      await setEventDates(client, 'fake-event-1', {
-        start: new Date(
-          currentDate.getTime() - (2000 * 60 * 60 + timezoneOffset),
-        ), // 2 hours before
-        end: new Date(
-          currentDate.getTime() + (2000 * 60 * 60 + timezoneOffset),
-        ), // 2 hours after
-        saleStart: new Date(
-          currentDate.getTime() + (1000 * 60 * 60 + timezoneOffset),
-        ), // 1 hour after
-        saleEnd: new Date(
-          currentDate.getTime() + (2000 * 60 * 60 + timezoneOffset),
-        ), // 2 hours after
-      });
+      await updateObjects(
+        client,
+        'eventParameters',
+        {
+          dateStart: new Date(
+            currentDate.getTime() - (2000 * 60 * 60 + timezoneOffset),
+          ), // 2 hours before
+          dateEnd: new Date(
+            currentDate.getTime() + (2000 * 60 * 60 + timezoneOffset),
+          ), // 2 hours after
+          dateSaleStart: new Date(
+            currentDate.getTime() + (1000 * 60 * 60 + timezoneOffset),
+          ), // 1 hour after
+          dateSaleEnd: new Date(
+            currentDate.getTime() + (2000 * 60 * 60 + timezoneOffset),
+          ), // 2 hours after
+        },
+        { eventId: 'fake-event-1' },
+      );
       const res = await adminSdk.GetEventParameters({
         eventId: 'fake-event-1',
       });

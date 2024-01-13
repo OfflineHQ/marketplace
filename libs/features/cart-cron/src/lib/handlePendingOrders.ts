@@ -1,4 +1,3 @@
-import { UTCDate } from '@date-fns/utc';
 import { adminSdk } from '@gql/admin/api';
 import { NextResponse } from 'next/server';
 
@@ -54,7 +53,7 @@ export function isOrderPastDeletionTime(
   order: Order,
   currentTime: number,
 ): boolean {
-  const orderCreationTime = new UTCDate(order.created_at).getTime() / 1000; // Convert to UNIX timestamp
+  const orderCreationTime = new Date(order.created_at).getTime() / 1000; // Convert to UNIX timestamp
   const deletionTime =
     orderCreationTime +
     (order.passAmount?.timeBeforeDelete ||
@@ -100,7 +99,7 @@ export function prepareAccountsToNotify(
 export default async function handler() {
   try {
     // Fetch all pending orders
-    const currentTime = Math.floor(UTCDate.now() / 1000); // Current UNIX timestamp
+    const currentTime = Math.floor(Date.now() / 1000); // Current UNIX timestamp
     const response = await adminSdk.GetPendingOrders();
     const pendingOrders = response.pendingOrder;
 
