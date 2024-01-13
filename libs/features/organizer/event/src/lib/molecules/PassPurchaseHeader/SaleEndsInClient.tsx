@@ -1,3 +1,5 @@
+'use client';
+
 import { EventParametersPasses } from '@features/organizer/event-types';
 import { useRouter } from '@next/navigation';
 import { UTCDateMini, getSteppedIntervalTime } from '@time';
