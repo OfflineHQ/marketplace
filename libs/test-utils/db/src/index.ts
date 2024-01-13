@@ -1,5 +1,22 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { PendingOrder } from '@gql/shared/types';
+import type {
+  Account_Insert_Input,
+  EventParameters_Insert_Input,
+  EventPassNftContract_Insert_Input,
+  EventPassNft_Insert_Input,
+  Follow_Insert_Input,
+  Kyc_Insert_Input,
+  NftTransfer_Insert_Input,
+  Order_Insert_Input,
+  PackNftContract_Insert_Input,
+  PassAmount_Insert_Input,
+  PassPricing_Insert_Input,
+  PendingOrder,
+  PendingOrder_Insert_Input,
+  RoleAssignment_Insert_Input,
+  StripeCheckoutSession_Insert_Input,
+  StripeCustomer_Insert_Input,
+} from '@gql/shared/types';
 import { isJestRunning } from '@utils';
 import { Client } from 'pg';
 
@@ -23,6 +40,24 @@ export const SeedTable = {
   roleAssignment: 12,
   follow: 13,
   packNftContract: 14,
+};
+
+type SeedTypeMap = {
+  account: Account_Insert_Input;
+  kyc: Kyc_Insert_Input;
+  passAmount: PassAmount_Insert_Input;
+  passPricing: PassPricing_Insert_Input;
+  pendingOrder: PendingOrder_Insert_Input;
+  eventPassNftContract: EventPassNftContract_Insert_Input;
+  eventParameters: EventParameters_Insert_Input;
+  stripeCustomer: StripeCustomer_Insert_Input;
+  stripeCheckoutSession: StripeCheckoutSession_Insert_Input;
+  order: Order_Insert_Input;
+  nftTransfer: NftTransfer_Insert_Input;
+  eventPassNft: EventPassNft_Insert_Input;
+  roleAssignment: RoleAssignment_Insert_Input;
+  follow: Follow_Insert_Input;
+  packNftContract: PackNftContract_Insert_Input;
 };
 
 export type SeedTableName = keyof typeof SeedTable;
@@ -95,6 +130,22 @@ export const applySeeds = async (client: Client, tables: SeedTableName[]) => {
 
 export const queryDb = async (client: Client, sql: string) => {
   await client.query(sql);
+};
+
+export const insertObjects = async <T extends SeedTableName>(
+  client: Client,
+  table: T,
+  objects: SeedTypeMap[T][],
+): Promise<void> => {
+  for (const obj of objects) {
+    const columns = Object.keys(obj).join(', ');
+    const values = Object.values(obj)
+      .map((value) => (typeof value === 'string' ? `'${value}'` : value))
+      .join(', ');
+
+    const sql = `INSERT INTO "${table}" (${columns}) VALUES (${values});`;
+    await queryDb(client, sql);
+  }
 };
 
 export const pendingOrders = {
