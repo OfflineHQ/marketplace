@@ -42,7 +42,7 @@ export const SeedTable = {
   packNftContract: 14,
 };
 
-type SeedTypeMap = {
+export type SeedTypeMap = {
   account: Account_Insert_Input;
   kyc: Kyc_Insert_Input;
   passAmount: PassAmount_Insert_Input;
@@ -138,14 +138,44 @@ export const insertObjects = async <T extends SeedTableName>(
   objects: SeedTypeMap[T][],
 ): Promise<void> => {
   for (const obj of objects) {
-    const columns = Object.keys(obj).join(', ');
+    const columns = Object.keys(obj)
+      .map((key) => `"${key}"`)
+      .join(', ');
     const values = Object.values(obj)
-      .map((value) => (typeof value === 'string' ? `'${value}'` : value))
+      .map((value) => {
+        if (value instanceof Date) {
+          return `'${value.toISOString()}'`;
+        }
+        return typeof value === 'string' ? `'${value}'` : value;
+      })
       .join(', ');
 
     const sql = `INSERT INTO "${table}" (${columns}) VALUES (${values});`;
     await queryDb(client, sql);
   }
+};
+
+export const updateObjects = async <T extends SeedTableName>(
+  client: Client,
+  table: T,
+  updateObject: Partial<SeedTypeMap[T]>,
+  whereObject: Partial<SeedTypeMap[T]>,
+): Promise<void> => {
+  const setClause = Object.entries(updateObject)
+    .map(([key, value]) => {
+      if (value instanceof Date) {
+        return `"${key}" = '${value.toISOString()}'`;
+      }
+      return `"${key}" = '${value}'`;
+    })
+    .join(', ');
+
+  const whereClause = Object.entries(whereObject)
+    .map(([key, value]) => `"${key}" = '${value}'`)
+    .join(' AND ');
+
+  const sql = `UPDATE "${table}" SET ${setClause} WHERE ${whereClause};`;
+  await queryDb(client, sql);
 };
 
 export const pendingOrders = {
