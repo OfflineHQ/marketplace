@@ -5,7 +5,7 @@ import { useRouter } from '@next/navigation';
 import { UTCDateMini, getSteppedIntervalTime } from '@time';
 import { Badge } from '@ui/components';
 import { Timer } from '@ui/icons';
-import { isAfter } from 'date-fns';
+import { isBefore } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
@@ -31,7 +31,7 @@ export const SaleEndsInClient: React.FC<SaleEndsInClientProps> = ({
   useEffect(() => {
     const updateSaleEndsIn = () => {
       const nowInUTC = new UTCDateMini();
-      if (isAfter(nowInUTC, dateSaleEndObj)) {
+      if (isBefore(nowInUTC, dateSaleEndObj)) {
         setSaleEndsIn(format.relativeTime(dateSaleEndObj, nowInUTC));
       } else if (!isSaleOngoing && !hasAttemptedRefresh) {
         router.refresh();

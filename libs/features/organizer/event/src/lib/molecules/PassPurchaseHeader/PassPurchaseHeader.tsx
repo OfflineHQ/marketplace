@@ -70,11 +70,18 @@ const OngoingSaleDescriptionAndBadge = ({
   ) : (
     <SheetDescription>{t('description')}</SheetDescription>
   );
+  const _locale = useLocale();
+  const locale: Locale = (_locale as Locale) || defaultLocale;
+  const localeMessages = deepPick(messages[locale], [
+    'Organizer.Event.SaleEndsInClient',
+  ]);
 
   return (
     <>
       {description}
-      <SaleEndsInClient {...eventParameters} />
+      <NextIntlClientProvider locale={locale} messages={localeMessages}>
+        <SaleEndsInClient {...eventParameters} />
+      </NextIntlClientProvider>
     </>
   );
 };
