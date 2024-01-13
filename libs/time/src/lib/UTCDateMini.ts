@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-unresolved
+import '@next/types';
 import { UTCDateMini as _UTCDateMini } from '@date-fns/utc';
 
 export class UTCDateMini extends _UTCDateMini {
@@ -13,10 +15,14 @@ export class UTCDateMini extends _UTCDateMini {
     ms?: number,
   );
   constructor(args?: any) {
-    if (window?.STORYBOOK_ENV) {
+    if (typeof window !== 'undefined' && window?.STORYBOOK_ENV) {
       super(new Date('2023-06-05T00:00:00Z'));
     } else {
-      super(args);
+      if (args) {
+        super(args);
+      } else {
+        super(new Date()); // use current date if no args provided
+      }
     }
   }
 }
