@@ -1,7 +1,6 @@
 'use server';
 
 import env from '@env/server';
-import { getEvent } from '@features/organizer/event-api';
 import {
   createNftActivityWebhookForEvent,
   getAlchemyInfosFromEventId,
@@ -12,6 +11,8 @@ import type {
   CreateEventPassNftContractMutation,
   GetEventPassNftContractNftsQueryVariables,
   UpdateNftsWithPackIdMutationVariables,
+  Stage,
+  Locale,
 } from '@gql/admin/types';
 import type {
   EventParameters_Insert_Input,
@@ -83,10 +84,12 @@ export async function createEventParametersAndWebhook({
       eventId,
       nftCollectionAddresses,
     });
-    const event = await getEvent({
-      eventSlug,
-      locale: defaultLocale,
+    const data = await adminSdk.GetEvent({
+      slug: eventSlug,
+      locale: defaultLocale as Locale,
+      stage: env.HYGRAPH_STAGE as Stage,
     });
+    const event = data?.event;
     if (!event) throw new Error('Event not found');
     if (!event.eventDateLocations?.[0]) throw new Error('Event has no date');
     await CreateEventParameters({
@@ -96,6 +99,7 @@ export async function createEventParametersAndWebhook({
       signingKey: newWebhook.signingKey,
       dateEnd: event.eventDateLocations[0].dateEnd, //TODO -> handle multiple dateLocations event ??
       dateStart: event.eventDateLocations[0].dateStart,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, // TODO -> handle timezone selection !
     });
   }
 }
