@@ -11,8 +11,6 @@ import type {
   CreateEventPassNftContractMutation,
   GetEventPassNftContractNftsQueryVariables,
   UpdateNftsWithPackIdMutationVariables,
-  Stage,
-  Locale,
 } from '@gql/admin/types';
 import type {
   EventParameters_Insert_Input,
@@ -20,6 +18,7 @@ import type {
   EventPassNft_Insert_Input,
   PackNftContract_Insert_Input,
 } from '@gql/shared/types';
+import { Locale, Stage } from '@gql/shared/types';
 import { defaultLocale } from '@next/i18n';
 import { ContractType } from '@nft/types';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
