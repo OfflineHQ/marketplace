@@ -1,5 +1,3 @@
-declare let STORYBOOK_ENV: string;
-
 import { UTCDateMini as _UTCDateMini } from '@date-fns/utc';
 
 export class UTCDateMini extends _UTCDateMini {
@@ -15,7 +13,7 @@ export class UTCDateMini extends _UTCDateMini {
     ms?: number,
   );
   constructor(args?: any) {
-    if (STORYBOOK_ENV) {
+    if (window?.STORYBOOK_ENV) {
       super(new Date('2023-06-05T00:00:00Z'));
     } else {
       super(args);
