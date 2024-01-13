@@ -108,7 +108,6 @@ describe('NftCollection', () => {
           stage: Stage.Draft,
         })
       ).event;
-
       await expect(
         nftCollection.deployACollection(
           event.eventPasses[0],
