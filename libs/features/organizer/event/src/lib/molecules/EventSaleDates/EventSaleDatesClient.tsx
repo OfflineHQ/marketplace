@@ -39,6 +39,7 @@ export const EventSaleDatesClient: React.FC<EventSaleDatesClientProps> = ({
   useEffect(() => {
     const updateSaleStatusAndCountdown = () => {
       const nowInUTC = new UTCDateMini();
+      console.log('nowInUTC:', nowInUTC);
       let diffInSeconds;
       if (isBefore(nowInUTC, dateSaleStartObj)) {
         setSaleStatus(SaleStatus.NotStarted);
@@ -50,6 +51,8 @@ export const EventSaleDatesClient: React.FC<EventSaleDatesClientProps> = ({
         return;
       } else {
         setSaleStatus(SaleStatus.Ongoing);
+        console.log('dateSaleEndObj:', dateSaleEndObj); // Add this line
+        console.log('nowInUTC:', nowInUTC); // Add this line
         setSaleEndsIn(format.relativeTime(dateSaleEndObj, nowInUTC));
         diffInSeconds = (dateSaleEndObj.getTime() - nowInUTC.getTime()) / 1000;
       }
@@ -65,6 +68,9 @@ export const EventSaleDatesClient: React.FC<EventSaleDatesClientProps> = ({
         intervalTime,
       );
     };
+
+    const nowInUTC = new UTCDateMini();
+    console.log('nowInUTC:', nowInUTC);
 
     updateSaleStatusAndCountdown();
 

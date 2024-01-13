@@ -4,14 +4,14 @@ import {
   DarkModeDecorator,
   I18nextStoryDecorator,
   localStorageResetDecorator,
+  mockDateDecorator,
 } from '../../../storybook/storybook.nextjs.decorators';
 import { parameters } from '../../../storybook/storybook.preview.base';
 import '../styles/globals.css';
 
-window.STORYBOOK_ENV = true;
-
 // Initialize MSW
 initialize();
+window.STORYBOOK_ENV = true;
 
 // Create a global variable called locale in storybook
 // and add a dropdown in the toolbar to change your locale
@@ -41,6 +41,7 @@ const preview: Preview = {
     },
   },
   decorators: [
+    mockDateDecorator,
     DarkModeDecorator,
     I18nextStoryDecorator,
     localStorageResetDecorator,
