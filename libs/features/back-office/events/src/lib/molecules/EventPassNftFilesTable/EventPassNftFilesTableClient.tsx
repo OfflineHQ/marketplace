@@ -8,6 +8,8 @@ import { GetEventPassOrganizerFolderPath } from '@features/pass-common';
 import { ColumnDef, RowSelectionState } from '@tanstack/react-table';
 import {
   Alert,
+  AlertDescription,
+  AlertTitle,
   Checkbox,
   DataTable,
   DataTableColumnHeader,
@@ -251,13 +253,15 @@ export function EventPassNftFilesTableClient({
     <div className="space-y-4">
       {duplicates.length > 0 && (
         <Alert variant="destructive">
-          {t.rich('duplicates-alert', {
-            count: duplicates.length,
-            br: () => <br />,
-          })}
-          <div className="flex-col space-y-2">
+          <AlertTitle>
+            {t.rich('duplicates-alert', {
+              count: duplicates.length,
+              br: () => <br />,
+            })}
+          </AlertTitle>
+          <AlertDescription className="flex-col space-y-2">
             {formatDuplicates(duplicates).map((group) => group)}
-          </div>
+          </AlertDescription>
         </Alert>
       )}
       <DataTable<EventPassFileWithName, unknown>

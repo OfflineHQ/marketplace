@@ -12,7 +12,7 @@ import {
   type GetEventPassOrganizerFolderPath,
 } from '@features/pass-common';
 import { useUploader } from '@next/uploader-provider';
-import { Alert } from '@ui/components';
+import { Alert, AlertTitle } from '@ui/components';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { resetEventPassNftFiles } from '../../actions/resetEventPassNftFiles';
@@ -126,10 +126,12 @@ export function EventPassFilesUploaderClient({
     <div className="flex-col space-y-2">
       {missingFilesNumber > 0 && (
         <Alert variant="info">
-          {t.rich('missing-files', {
-            missingFilesNumber,
-            strong: (children) => <strong>{children}</strong>,
-          })}
+          <AlertTitle>
+            {t.rich('missing-files', {
+              missingFilesNumber,
+              strong: (children) => <strong>{children}</strong>,
+            })}
+          </AlertTitle>
         </Alert>
       )}
       <UploadDropzone options={uploaderOptions} onUpdate={onUpdate} />
