@@ -1,0 +1,10 @@
+fragment EventParametersFields on eventParameters {
+  ...EventParametersMinimalFields
+  dateStart
+  dateEnd
+  dateSaleStart
+  dateSaleEnd
+  timezone
+  isSaleOngoing
+  isOngoing
+}

@@ -4,5 +4,6 @@ declare global {
   interface Window {
     ethereumProviderMock?: Eip1193Provider;
     useE2EAuthContext?: () => Promise<string>;
+    STORYBOOK_ENV?: boolean;
   }
 }

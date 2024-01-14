@@ -16,6 +16,7 @@ import {
   ProfileNavWithNoUserLoading,
   ProfileNavWithNormalUser,
 } from './examples';
+import { darkMode, mobileMode } from '@test-utils/storybook';
 
 const meta = {
   component: AppNavLayout,
@@ -66,9 +67,7 @@ export const WithCryptoUser: Story = {
 export const WithDarkMode: Story = {
   ...WithNormalUser,
   parameters: {
-    darkMode: {
-      isDark: true,
-    },
+    ...darkMode,
   },
 };
 
@@ -133,16 +132,7 @@ export const WithAllSkeleton: Story = {
 export const WithMobile: Story = {
   ...WithFallbackUser,
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
 };
 

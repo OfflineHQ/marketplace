@@ -1635,10 +1635,10 @@ input EventCreateOneInlineInput {
 Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several.
 """
 type EventDateLocation implements Entity {
-  """The end date including time on the UTC timezone."""
+  """The end date including time."""
   dateEnd: DateTime!
 
-  """The start date including time on the UTC timezone."""
+  """The start date including time."""
   dateStart: DateTime!
 
   """The unique identifier"""
@@ -5306,6 +5306,7 @@ type OrganizerConnection {
 }
 
 input OrganizerCreateInput {
+  clr7j9mmt0q2j01uo9zrs2fm7: PackCreateManyInlineInput
   createdAt: DateTime
 
   """description input for default locale (en)"""
@@ -5855,6 +5856,8 @@ enum OrganizerOrderByInput {
 }
 
 input OrganizerUpdateInput {
+  clr7j9mmt0q2j01uo9zrs2fm7: PackUpdateManyInlineInput
+
   """description input for default locale (en)"""
   description: RichTextAST
   discordWidgetId: String
@@ -6635,6 +6638,27 @@ type Pack implements Entity & Node {
   Permanent name associated with the NFT. Cannot be changed or localized.
   """
   nftName: String!
+  organizer(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): Organizer
 
   """The time the document was published. Null on documents in draft stage."""
   publishedAt(
@@ -6768,6 +6792,7 @@ input PackCreateInput {
   nftDescription: String!
   nftImage: AssetCreateOneInlineInput!
   nftName: String!
+  organizer: OrganizerCreateOneInlineInput
   updatedAt: DateTime
 }
 
@@ -7005,6 +7030,7 @@ input PackManyWhereInput {
 
   """All values starting with the given string."""
   nftName_starts_with: String
+  organizer: OrganizerWhereInput
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -7088,6 +7114,7 @@ input PackUpdateInput {
   nftDescription: String
   nftImage: AssetUpdateOneInlineInput
   nftName: String
+  organizer: OrganizerUpdateOneInlineInput
 }
 
 input PackUpdateLocalizationDataInput {
@@ -7413,6 +7440,7 @@ input PackWhereInput {
 
   """All values starting with the given string."""
   nftName_starts_with: String
+  organizer: OrganizerWhereInput
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -7518,10 +7546,7 @@ type PassOption implements Entity {
   """
   description: String
 
-  """
-  Define the location and date for this option.
-  Important ! It will determine the release and availability for the Pass access.
-  """
+  """Define the location and date for this option."""
   eventDateLocation(
     """
     Sets the locale of the resolved parent document as the only locale in the query's subtree.

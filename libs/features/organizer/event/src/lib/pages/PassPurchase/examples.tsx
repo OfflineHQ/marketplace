@@ -21,10 +21,12 @@ export const passPurchaseProps = {
   goPaymentText: 'Go to payment',
   goPaymentLink: { href: '/dummy' },
   closeLink: { href: '/dummy' },
-  title: 'Pass selection',
   organizerSlug: eventProps?.organizer?.slug || '',
   eventSlug: eventProps.slug,
-  description: 'Select the passes you want to purchase and validate your order',
+  eventParameters: {
+    isSaleOngoing: true,
+    ...eventProps.eventParameters,
+  },
 } satisfies PassPurchaseSheetProps;
 export const passPurchasePropsWithLotsOfPasses = {
   ...passPurchaseProps,

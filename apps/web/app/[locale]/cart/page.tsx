@@ -38,7 +38,7 @@ interface CartSectionContentProps
   kycFlag?: boolean;
 }
 
-const CartSectionContent: FC<CartSectionContentProps> = async ({
+const CartSectionContent: FC<CartSectionContentProps> = ({
   user,
   locale,
   userPassPendingOrders,

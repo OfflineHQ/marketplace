@@ -5,6 +5,7 @@ import {
   EventPassTypeBadge,
   EventPassTypeBadgeProps,
 } from './EventPassTypeBadge';
+import { darkMode } from '@test-utils/storybook';
 
 const typeOptions = Object.values(EventPassNftContractType_Enum);
 
@@ -68,8 +69,6 @@ export const AllTypesWithDarkMode = {
     },
   },
   parameters: {
-    darkMode: {
-      isDark: true,
-    },
+    ...darkMode,
   },
 };

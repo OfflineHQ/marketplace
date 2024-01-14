@@ -3,6 +3,7 @@ import { expect, screen, userEvent } from '@storybook/test';
 
 import { EventPasses, EventPassesSkeleton } from './EventPasses';
 import { EventPassesExample, eventPassesProps } from './examples';
+import { mobileMode } from '@test-utils/storybook';
 
 // Import the stories you want to reuse
 
@@ -95,16 +96,7 @@ export const OpenedWithNoActions: Story = {
 
 export const OpenedMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   ...OpenedWithTimeRemainingDeletion,
 };
@@ -115,16 +107,7 @@ export const Skeleton: Story = {
 
 export const SkeletonMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   ...Skeleton,
 };

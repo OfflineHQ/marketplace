@@ -68,6 +68,7 @@ testem.log
 *.log
 *.eslintcache
 static
+.swc
 
 # System Files
 .DS_Store
@@ -77,4 +78,4 @@ Thumbs.db
 .sentryclirc
 
 #playwright
-playwright-report
+playwright-report/*

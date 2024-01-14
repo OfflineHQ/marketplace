@@ -1,5 +1,5 @@
 import { AllPassesCart, UserPassPendingOrder } from '@features/cart-types';
-import { Alert } from '@ui/components';
+import { Alert, AlertTitle } from '@ui/components';
 import { useLocale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import Image, { StaticImageData } from 'next/image';
@@ -41,7 +41,7 @@ const EventPassesCartContent: React.FC<EventPassesCartProps> = async ({
   ) : (
     <div className="mx-5 flex flex-col items-center md:m-5">
       <Alert variant="info" className="md:w-max">
-        {t('no-cart')}
+        <AlertTitle>{t('no-cart')}</AlertTitle>
       </Alert>
       <div className="relative h-80 w-80 grow">
         <Image fill src={noCartImage} alt={t('no-cart')} />

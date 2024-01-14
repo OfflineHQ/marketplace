@@ -5,7 +5,13 @@ import {
   AppContainerFooter,
   AppContainerOverflow,
 } from '@features/app-nav';
-import { Alert, Button, CardContent } from '@ui/components';
+import {
+  Alert,
+  Button,
+  CardContent,
+  AlertTitle,
+  AlertDescription,
+} from '@ui/components';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
@@ -26,13 +32,11 @@ export function ErrorClient({ error, reset, customMessage }: ErrorProps) {
           </div>
           {/* IMPORTANT: no idea why but putting Alert in this component is breaking the next apps with `TypeError: Cannot destructure property 'parallelRouterKey' of 'param' as it is null.` */}
           <Alert variant="destructive" className="w-fit">
-            {t('error-message')}
-            {customMessage && <p>{customMessage}</p>}
+            <AlertTitle>{t('error-message')}</AlertTitle>
+            {customMessage && (
+              <AlertDescription>{customMessage}</AlertDescription>
+            )}
           </Alert>
-          {/* <div className="w-fit">
-            {t('error-message')}
-            {customMessage && <p>{customMessage}</p>}
-          </div> */}
         </CardContent>
       </AppContainerOverflow>
       <AppContainerFooter>

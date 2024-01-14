@@ -5,6 +5,7 @@ import {
   applySeeds,
   createDbClient,
   deleteAllTables,
+  updateObjects,
 } from '@test-utils/db';
 import { loadAccount } from './utils/loadAccount';
 
@@ -25,7 +26,24 @@ test.afterEach(async () => {
 });
 
 test.beforeEach(async () => {
-  await applySeeds(client, ['account', 'kyc', 'passAmount', 'passPricing']);
+  await applySeeds(client, [
+    'account',
+    'kyc',
+    'passAmount',
+    'passPricing',
+    'eventParameters',
+  ]);
+  const currentDate = new Date();
+  // set the event to be isSaleOnGoing = true
+  await updateObjects(
+    client,
+    'eventParameters',
+    {
+      dateSaleStart: new Date(currentDate.getTime() - 2000 * 60 * 60), // 2 hours before
+      dateSaleEnd: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
+    },
+    { eventId: 'clizzpvidao620buvxit1ynko' },
+  );
 });
 
 test('user should be able to buy a pass', async () => {

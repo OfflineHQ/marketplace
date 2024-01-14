@@ -35,6 +35,17 @@ export const NftTransferFieldsFragmentDoc = `
   created_at
 }
     `;
+export const OrganizerFieldsFragmentDoc = `
+    fragment OrganizerFields on Organizer {
+  id
+  slug
+  name
+  image {
+    url
+  }
+  imageClasses
+}
+    `;
 export const EventListFieldsFragmentDoc = `
     fragment EventListFields on Event {
   id
@@ -48,17 +59,23 @@ export const EventListFieldsFragmentDoc = `
   heroImageClasses
 }
     `;
-export const OrganizerFieldsFragmentDoc = `
-    fragment OrganizerFields on Organizer {
-  id
-  slug
-  name
-  image {
-    url
-  }
-  imageClasses
+export const EventParametersMinimalFieldsFragmentDoc = `
+    fragment EventParametersMinimalFields on eventParameters {
+  status
 }
     `;
+export const EventParametersFieldsFragmentDoc = `
+    fragment EventParametersFields on eventParameters {
+  ...EventParametersMinimalFields
+  dateStart
+  dateEnd
+  dateSaleStart
+  dateSaleEnd
+  timezone
+  isSaleOngoing
+  isOngoing
+}
+    ${EventParametersMinimalFieldsFragmentDoc}`;
 export const PassAmountFieldsFragmentDoc = `
     fragment PassAmountFields on passAmount {
   maxAmount
@@ -441,12 +458,21 @@ ${KycFieldsFragmentDoc}`;
       }
       imageClasses
     }
+    eventParameters {
+      ...EventParametersMinimalFields
+      dateSaleStart
+      dateSaleEnd
+      dateStart
+      dateEnd
+      timezone
+    }
     eventDateLocations {
       ...EventDateLocationsFields
     }
   }
 }
     ${EventListFieldsFragmentDoc}
+${EventParametersMinimalFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}`;
  const GetEventWithPassesDocument = `
     query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
@@ -464,6 +490,9 @@ ${EventDateLocationsFieldsFragmentDoc}`;
     eventDateLocations {
       ...EventDateLocationsFields
     }
+    eventParameters {
+      ...EventParametersFields
+    }
     eventPasses {
       id
       name
@@ -479,6 +508,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
 }
     ${OrganizerFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}
+${EventParametersFieldsFragmentDoc}
 ${PassAmountFieldsFragmentDoc}
 ${PassPricingFieldsFragmentDoc}`;
  const GetEventsFromOrganizerIdTableDocument = `
@@ -557,8 +587,54 @@ ${PassPricingFieldsFragmentDoc}`;
     ${EventDateLocationsFieldsFragmentDoc}
 ${PassAmountFieldsFragmentDoc}
 ${PassPricingFieldsFragmentDoc}`;
- const GetEventPassesDocument = `
-    query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) @cached {
+ const CreateEventParametersDocument = `
+    mutation CreateEventParameters($object: eventParameters_insert_input!) {
+  insert_eventParameters_one(object: $object) {
+    id
+    activityWebhookId
+    eventId
+  }
+}
+    `;
+ const GetAlchemyInfosFromEventIdDocument = `
+    query GetAlchemyInfosFromEventId($eventId: String) {
+  eventParameters(where: {eventId: {_eq: $eventId}}) {
+    activityWebhookId
+    signingKey
+  }
+}
+    `;
+ const GetEventParametersDocument = `
+    query GetEventParameters($eventId: String) {
+  eventParameters(
+    where: {_and: [{eventId: {_eq: $eventId}}, {status: {_eq: PUBLISHED}}]}
+    limit: 1
+  ) {
+    dateStart
+    dateEnd
+    dateSaleStart
+    dateSaleEnd
+    timezone
+    status
+    isSaleOngoing
+    isOngoing
+  }
+}
+    `;
+ const GetEventParametersFromEventPassIdsDocument = `
+    query GetEventParametersFromEventPassIds($eventPassIds: [ID!]!) {
+  eventPasses(where: {id_in: $eventPassIds}, stage: DRAFT, locales: [en]) {
+    id
+    event {
+      eventParameters {
+        isSaleOngoing
+      }
+    }
+  }
+}
+    `;
+ const GetEventParametersAndEventPassesDocument = `
+    query GetEventParametersAndEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPasses(
     where: {event: {slug: $eventSlug}}
     locales: [$locale, en]
@@ -588,10 +664,20 @@ ${PassPricingFieldsFragmentDoc}`;
       isDelayedRevealed
     }
   }
+  event(where: {slug: $eventSlug}, locales: [$locale, en], stage: $stage) {
+    title
+    organizer {
+      slug
+    }
+    eventParameters {
+      ...EventParametersFields
+    }
+  }
 }
     ${PassAmountFieldsFragmentDoc}
 ${PassPricingFieldsFragmentDoc}
-${EventDateLocationsFieldsFragmentDoc}`;
+${EventDateLocationsFieldsFragmentDoc}
+${EventParametersFieldsFragmentDoc}`;
  const GetEventPassDelayedRevealedFromEventPassIdDocument = `
     query GetEventPassDelayedRevealedFromEventPassId($eventPassId: ID!, $locale: Locale!, $stage: Stage!) @cached {
   eventPass(where: {id: $eventPassId}, locales: [$locale, en], stage: $stage) {
@@ -919,7 +1005,7 @@ ${EventDateLocationsFieldsFragmentDoc}`;
  const GetOrganizerLatestEventsDocument = `
     query GetOrganizerLatestEvents($organizerId: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventParameters(
-    where: {organizerId: {_eq: $organizerId}}
+    where: {organizerId: {_eq: $organizerId}, status: {_eq: PUBLISHED}}
     order_by: {dateStart: desc}
     limit: 3
   ) {
@@ -933,37 +1019,6 @@ ${EventDateLocationsFieldsFragmentDoc}`;
       }
       heroImageClasses
     }
-  }
-}
-    `;
- const CreateEventParametersDocument = `
-    mutation CreateEventParameters($object: eventParameters_insert_input!) {
-  insert_eventParameters_one(object: $object) {
-    id
-    activityWebhookId
-    eventId
-  }
-}
-    `;
- const GetAlchemyInfosFromEventIdDocument = `
-    query GetAlchemyInfosFromEventId($eventId: String) {
-  eventParameters(where: {eventId: {_eq: $eventId}}) {
-    activityWebhookId
-    signingKey
-  }
-}
-    `;
- const GetEventParametersDocument = `
-    query GetEventParameters($eventId: String) {
-  eventParameters(where: {eventId: {_eq: $eventId}}) {
-    dateStart
-    dateEnd
-    dateSaleStart
-    dateSaleEnd
-    timezone
-    status
-    isSaleOngoing
-    isOngoing
   }
 }
     `;
@@ -1132,8 +1187,20 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventWithPassesOrganizer(variables: Types.GetEventWithPassesOrganizerQueryVariables, options?: C): Promise<Types.GetEventWithPassesOrganizerQuery> {
       return requester<Types.GetEventWithPassesOrganizerQuery, Types.GetEventWithPassesOrganizerQueryVariables>(GetEventWithPassesOrganizerDocument, variables, options) as Promise<Types.GetEventWithPassesOrganizerQuery>;
     },
-    GetEventPasses(variables: Types.GetEventPassesQueryVariables, options?: C): Promise<Types.GetEventPassesQuery> {
-      return requester<Types.GetEventPassesQuery, Types.GetEventPassesQueryVariables>(GetEventPassesDocument, variables, options) as Promise<Types.GetEventPassesQuery>;
+    CreateEventParameters(variables: Types.CreateEventParametersMutationVariables, options?: C): Promise<Types.CreateEventParametersMutation> {
+      return requester<Types.CreateEventParametersMutation, Types.CreateEventParametersMutationVariables>(CreateEventParametersDocument, variables, options) as Promise<Types.CreateEventParametersMutation>;
+    },
+    GetAlchemyInfosFromEventId(variables?: Types.GetAlchemyInfosFromEventIdQueryVariables, options?: C): Promise<Types.GetAlchemyInfosFromEventIdQuery> {
+      return requester<Types.GetAlchemyInfosFromEventIdQuery, Types.GetAlchemyInfosFromEventIdQueryVariables>(GetAlchemyInfosFromEventIdDocument, variables, options) as Promise<Types.GetAlchemyInfosFromEventIdQuery>;
+    },
+    GetEventParameters(variables?: Types.GetEventParametersQueryVariables, options?: C): Promise<Types.GetEventParametersQuery> {
+      return requester<Types.GetEventParametersQuery, Types.GetEventParametersQueryVariables>(GetEventParametersDocument, variables, options) as Promise<Types.GetEventParametersQuery>;
+    },
+    GetEventParametersFromEventPassIds(variables: Types.GetEventParametersFromEventPassIdsQueryVariables, options?: C): Promise<Types.GetEventParametersFromEventPassIdsQuery> {
+      return requester<Types.GetEventParametersFromEventPassIdsQuery, Types.GetEventParametersFromEventPassIdsQueryVariables>(GetEventParametersFromEventPassIdsDocument, variables, options) as Promise<Types.GetEventParametersFromEventPassIdsQuery>;
+    },
+    GetEventParametersAndEventPasses(variables: Types.GetEventParametersAndEventPassesQueryVariables, options?: C): Promise<Types.GetEventParametersAndEventPassesQuery> {
+      return requester<Types.GetEventParametersAndEventPassesQuery, Types.GetEventParametersAndEventPassesQueryVariables>(GetEventParametersAndEventPassesDocument, variables, options) as Promise<Types.GetEventParametersAndEventPassesQuery>;
     },
     GetEventPassDelayedRevealedFromEventPassId(variables: Types.GetEventPassDelayedRevealedFromEventPassIdQueryVariables, options?: C): Promise<Types.GetEventPassDelayedRevealedFromEventPassIdQuery> {
       return requester<Types.GetEventPassDelayedRevealedFromEventPassIdQuery, Types.GetEventPassDelayedRevealedFromEventPassIdQueryVariables>(GetEventPassDelayedRevealedFromEventPassIdDocument, variables, options) as Promise<Types.GetEventPassDelayedRevealedFromEventPassIdQuery>;
@@ -1212,15 +1279,6 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrganizerLatestEvents(variables: Types.GetOrganizerLatestEventsQueryVariables, options?: C): Promise<Types.GetOrganizerLatestEventsQuery> {
       return requester<Types.GetOrganizerLatestEventsQuery, Types.GetOrganizerLatestEventsQueryVariables>(GetOrganizerLatestEventsDocument, variables, options) as Promise<Types.GetOrganizerLatestEventsQuery>;
-    },
-    CreateEventParameters(variables: Types.CreateEventParametersMutationVariables, options?: C): Promise<Types.CreateEventParametersMutation> {
-      return requester<Types.CreateEventParametersMutation, Types.CreateEventParametersMutationVariables>(CreateEventParametersDocument, variables, options) as Promise<Types.CreateEventParametersMutation>;
-    },
-    GetAlchemyInfosFromEventId(variables?: Types.GetAlchemyInfosFromEventIdQueryVariables, options?: C): Promise<Types.GetAlchemyInfosFromEventIdQuery> {
-      return requester<Types.GetAlchemyInfosFromEventIdQuery, Types.GetAlchemyInfosFromEventIdQueryVariables>(GetAlchemyInfosFromEventIdDocument, variables, options) as Promise<Types.GetAlchemyInfosFromEventIdQuery>;
-    },
-    GetEventParameters(variables?: Types.GetEventParametersQueryVariables, options?: C): Promise<Types.GetEventParametersQuery> {
-      return requester<Types.GetEventParametersQuery, Types.GetEventParametersQueryVariables>(GetEventParametersDocument, variables, options) as Promise<Types.GetEventParametersQuery>;
     },
     GetEventPassNftById(variables: Types.GetEventPassNftByIdQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdQuery> {
       return requester<Types.GetEventPassNftByIdQuery, Types.GetEventPassNftByIdQueryVariables>(GetEventPassNftByIdDocument, variables, options) as Promise<Types.GetEventPassNftByIdQuery>;

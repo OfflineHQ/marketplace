@@ -18,6 +18,7 @@ import {
   eventPassNftFilesTableMocks,
 } from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
+import { mobileMode } from '@test-utils/storybook';
 
 const meta: Meta<typeof EventSheet> = {
   component: EventSheet,
@@ -244,16 +245,7 @@ export const WithEventPassDelayedRevealToReveal: Story = {
 export const WithMobile: Story = {
   parameters: {
     layout: 'fullscreen',
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
 };
 

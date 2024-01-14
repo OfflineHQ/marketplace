@@ -1,16 +1,22 @@
 import * as eventApi from '@features/organizer/event-api';
+import { expect, screen, waitFor } from '@storybook/test';
+import { PassPurchaseSheetContainer } from './PassPurchaseSheetContainer';
 import {
-  passPurchaseContainerProps,
   PassPurchaseSheetContainerExample,
   PassPurchaseSheetContainerWithFullSizeExample,
+  passPurchaseContainerProps,
 } from './examples';
-import { PassPurchaseSheetContainer } from './PassPurchaseSheetContainer';
 
 import { Meta, StoryObj } from '@storybook/react';
+import { mobileMode } from '@test-utils/storybook';
 import { getMock } from 'storybook-addon-module-mock';
 import {
-  default as passPurchaseMeta,
+  eventParametersSaleEnded,
+  eventParametersSaleNotStarted,
+} from '../../molecules/EventSaleDates/examples';
+import {
   WithLotsOfPassesSelected,
+  default as passPurchaseMeta,
 } from '../PassPurchase/PassPurchase.stories';
 
 const meta = {
@@ -34,6 +40,8 @@ export const Default: Story = {
     mockGetEventPassCart.mockResolvedValue({
       quantity: 0,
     });
+    expect(await screen.findByText(/select the passes/i)).toBeInTheDocument();
+    expect(await screen.findByText(/sale-ends-in/i)).toBeInTheDocument();
   },
 };
 
@@ -49,16 +57,7 @@ export const WithFullSize: Story = {
 
 export const DefaultMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   render: PassPurchaseSheetContainerExample,
 };
@@ -66,15 +65,57 @@ export const DefaultMobile: Story = {
 export const WithPassesSelectedMobile: Story = {
   ...DefaultWithPassesSelected,
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
+    ...mobileMode,
+  },
+};
+
+export const WithEventEnded: Story = {
+  args: {
+    eventParameters: {
+      isSaleOngoing: false,
+      ...eventParametersSaleEnded,
     },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
+  },
+  play: async (context) => {
+    expect(await screen.findByText(/cannot purchase/i)).toBeInTheDocument();
+    await waitFor(
+      () => expect(screen.queryAllByText(/sale ended/i)?.length).toBe(7),
+      {
+        timeout: 5000,
       },
+    );
+  },
+};
+
+export const WithEventEndedMobile: Story = {
+  ...WithEventEnded,
+  parameters: {
+    ...mobileMode,
+  },
+};
+
+export const WithEventNotStarted: Story = {
+  args: {
+    eventParameters: {
+      isSaleOngoing: false,
+      ...eventParametersSaleNotStarted,
     },
+  },
+  play: async (context) => {
+    expect(await screen.findByText(/hasn't started/i)).toBeInTheDocument();
+    expect(await screen.findByText(/starts/i)).toBeInTheDocument();
+    await waitFor(
+      () => expect(screen.queryAllByText(/not started/i)?.length).toBe(7),
+      {
+        timeout: 5000,
+      },
+    );
+  },
+};
+
+export const WithEventNotStartedMobile: Story = {
+  ...WithEventNotStarted,
+  parameters: {
+    ...mobileMode,
   },
 };

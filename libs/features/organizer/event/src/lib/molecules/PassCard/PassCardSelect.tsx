@@ -1,4 +1,4 @@
-import { Badge, ButtonSkeleton } from '@ui/components';
+import { ButtonSkeleton } from '@ui/components';
 
 import {
   getEventPassCart,
@@ -6,9 +6,8 @@ import {
   getOrderPurchasedForEventPass,
 } from '@features/organizer/event-api';
 import type { EventPass, EventSlugs } from '@features/organizer/event-types';
-import { useLocale } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
+import { PassCardStatusBadge } from '../../atoms/PassCardStatusBadge/PassCardStatusBadge';
 import { PassCardSelectClient } from './PassCardSelectClient';
 
 export interface PassCardSelectProps
@@ -16,7 +15,9 @@ export interface PassCardSelectProps
       EventPass,
       'description' | 'name' | 'passOptions' | 'nftImage' | 'passPricing'
     >,
-    EventSlugs {}
+    EventSlugs {
+  hasConfirmedPasses?: boolean;
+}
 
 export const PassCardSelect: React.FC<PassCardSelectProps> = (props) => {
   return (
@@ -31,13 +32,9 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
   organizerSlug,
   eventSlug,
   id,
+  hasConfirmedPasses,
   ...props
 }) => {
-  const locale = useLocale();
-  const t = await getTranslations({
-    locale,
-    namespace: 'Organizer.Event.PassPurchase.Pass',
-  });
   const eventPassOrderSums = await getEventPassOrderSums({ eventPassId: id });
   const eventPassCart = await getEventPassCart({
     organizerSlug,
@@ -72,8 +69,11 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
   }
   return (
     <div className="flex gap-1">
-      {maxVal <= 0 ? (
-        <Badge>{t('sold-out')}</Badge>
+      {maxVal <= 0 || hasConfirmedPasses ? (
+        <PassCardStatusBadge
+          isSoldOut={maxVal <= 0}
+          hasConfirmedPasses={hasConfirmedPasses}
+        />
       ) : (
         <PassCardSelectClient
           initialValue={eventPassCart?.quantity || 0}

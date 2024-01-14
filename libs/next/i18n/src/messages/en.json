@@ -102,13 +102,15 @@
     },
     "Successful": {
       "title": "Purchase Successful! 🎉",
-      "description": "Thank you for your purchase. Your passes should be available in a few minutes.",
-      "continue-shopping-button": "Go to Homepage"
+      "description": "Your passes should be available in a few minutes.",
+      "continue-shopping-button": "Go to Homepage",
+      "success-title": "Thank you for your purchase."
     },
     "Cancelled": {
       "title": "Purchase Cancelled",
-      "description": "Your purchase has been successfully cancelled. We're sorry to see you go. If you have any questions or concerns, please don't hesitate to contact us. Feel free to continue shopping if you change your mind.",
-      "continue-shopping-button": "Go to Homepage"
+      "description": "We're sorry to see you go. If you have any questions or concerns, please don't hesitate to contact us. Feel free to continue shopping if you change your mind.",
+      "continue-shopping-button": "Go to Homepage",
+      "cancelled-title": "Your purchase has been successfully cancelled."
     }
   },
   "Pass": {
@@ -200,10 +202,6 @@
       "purchase-button-activator": "Select passes",
       "PassPurchase": {
         "title": "Pass selection",
-        "description": "Select the passes you want to purchase and validate your order",
-        "Pass": {
-          "sold-out": "Sold Out"
-        },
         "see-event-button": "See the event",
         "go-back-button": "Come back to the event",
         "Footer": {
@@ -219,7 +217,36 @@
           "revealed-title": "Mystery Pass Unveiled",
           "not-revealed-description": "Details to be revealed! This pass holds hidden features and exclusive benefits, set to be unveiled soon. Secure your pass now and be part of the exciting reveal!",
           "revealed-description": "Discover what's in store! This pass offers a range of exclusive benefits and features, now fully disclosed. Don’t miss out, get your pass and enjoy the complete experience."
-        }
+        },
+        "PassCardStatusBadge": {
+          "sold-out": "Sold Out",
+          "sale-ended": "Sale ended",
+          "already-have-purchase": "You have a purchase ongoing",
+          "sale-starting-in": "Sale not started"
+        },
+        "title-with-event": "Pass selection for \"{eventTitle}\""
+      },
+      "EventSaleDates": {
+        "sale-not-started": "The sale hasn't started yet",
+        "sale-ongoing": "The sale is ongoing !",
+        "sale-ended": "The sale has ended",
+        "sale-starts-in": "Starts: {time}",
+        "sale-ends-in": "Ending: {time}"
+      },
+      "PassPurchaseHeader": {
+        "description": "Select the passes you want to purchase and validate your order",
+        "has-purchase-in-progress-title": "Purchase in progress",
+        "has-purchase-in-progress-description": "You currently have a purchase in progress. Please confirm or cancel this purchase before selecting a new pass.",
+        "go-to-purchase": "Proceed with my purchase",
+        "ended-title": "The sale has ended",
+        "ended-description": "You cannot purchase thoses pass anymore",
+        "not-started-title": "The sale hasn't started"
+      },
+      "SaleStartsInClient": {
+        "sale-starts-in": "Starts: {time}"
+      },
+      "SaleEndsInClient": {
+        "sale-ends-in": "Ending: {time}"
       }
     },
     "EventDates": {
@@ -236,7 +263,7 @@
       "helperTextUnfollow": "Click to unfollow \"{name}\""
     },
     "OrganizerEventsSection": {
-      "title": "Lastest Events",
+      "title": "Latest Events",
       "noEvents": "There is currently no events to display"
     }
   },
@@ -279,7 +306,8 @@
       "header-date-start": "Start Date",
       "header-edit": "Edit",
       "title": "Events Management",
-      "search-placeholder": "Filter events..."
+      "search-placeholder": "Filter events...",
+      "header-status": "Status"
     },
     "Sheet": {
       "EventPassCard": {
@@ -351,6 +379,11 @@
       "type-delayed-reveal-badge": "Surprise Reveal",
       "type-normal-description": "Present all details of the event pass immediately. Ensure buyers see the full benefits and features of the pass right from the outset",
       "type-delayed-reveal-description": " Initially display placeholder information for the event pass. The final details will be revealed later, creating a sense of mystery and anticipation. This approach can engage attendees with the element of surprise, unveiling final pass benefits and features at a predetermined time or event milestone."
+    },
+    "EventStatusBadge": {
+      "status-draft": "Draft",
+      "status-published": "Published",
+      "status-undefined": "Undefined"
     }
   },
   "UI": {

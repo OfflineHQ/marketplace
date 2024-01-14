@@ -4,7 +4,7 @@ import {
   AppContainerOverflow,
 } from '@features/app-nav';
 import { Link } from '@next/navigation';
-import { Alert, Button, CardContent } from '@ui/components';
+import { Alert, Button, CardContent, AlertTitle } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
@@ -18,7 +18,7 @@ export function NotFound() {
             <Image fill src="/not-found.svg" alt={t('404-not-found')} />
           </div>
           <Alert variant="info" className="w-fit">
-            {t('404-not-found')}
+            <AlertTitle>{t('404-not-found')}</AlertTitle>
           </Alert>
         </CardContent>
       </AppContainerOverflow>

@@ -1,8 +1,10 @@
 import { AppContainer } from '@features/app-nav';
 import { NotFound } from '@features/navigation';
-import { PassPurchaseCard } from '@features/organizer/event';
 import {
-  getEvent,
+  PassPurchaseCard,
+  PassPurchaseCardProps,
+} from '@features/organizer/event';
+import {
   getEventPasses,
   getOrdersConfirmed,
 } from '@features/organizer/event-api';
@@ -22,25 +24,32 @@ export default async function PurchaseSection({
 }: PurchaseSectionProps) {
   const { eventSlug, organizerSlug, locale } = params;
   const passes = await getEventPasses({ eventSlug, locale });
-  const confirmedPasses = await getOrdersConfirmed();
-  const event = await getEvent({ eventSlug, locale });
   // in case the event is not found or the organizer slug is not the same as the one in the url redirect to 404
-  if (!event || event.organizer?.slug !== organizerSlug) {
+  if (!passes || passes.event?.organizer?.slug !== organizerSlug)
     return <NotFound />;
-  } else
-    return (
+  else {
+    const confirmedPasses = await getOrdersConfirmed();
+    const { eventPasses, event } = passes;
+    return event.eventParameters ? (
       <PurchaseSectionContent
-        passes={passes}
+        passes={eventPasses}
+        eventTitle={event.title}
+        eventParameters={event.eventParameters}
         eventSlug={eventSlug}
         organizerSlug={organizerSlug}
         hasConfirmedPasses={!!confirmedPasses?.length}
       />
+    ) : (
+      <NotFound />
     );
+  }
 }
 
-interface PurchaseSectionContentProps {
+interface PurchaseSectionContentProps
+  extends Pick<PassPurchaseCardProps, 'eventParameters'> {
   passes: EventPass[];
   eventSlug: string;
+  eventTitle: string;
   organizerSlug: string;
   hasConfirmedPasses: boolean;
 }
@@ -48,8 +57,10 @@ interface PurchaseSectionContentProps {
 function PurchaseSectionContent({
   passes,
   eventSlug,
+  eventTitle,
   organizerSlug,
   hasConfirmedPasses,
+  eventParameters,
 }: PurchaseSectionContentProps) {
   const t = useTranslations('Organizer.Event.PassPurchase');
   const backRoute = `/organizer/${organizerSlug}/event/${eventSlug}`;
@@ -59,8 +70,8 @@ function PurchaseSectionContent({
         passes={passes}
         organizerSlug={organizerSlug}
         eventSlug={eventSlug}
-        title={t('title')}
-        description={t('description')}
+        eventTitle={eventTitle}
+        eventParameters={eventParameters}
         goPaymentText={
           hasConfirmedPasses
             ? t('Footer.finalize-payment')

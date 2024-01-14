@@ -1,0 +1,35 @@
+query GetAlchemyInfosFromEventId($eventId: String) {
+  eventParameters(where: { eventId: { _eq: $eventId } }) {
+    activityWebhookId
+    signingKey
+  }
+}
+
+query GetEventParameters($eventId: String) {
+  eventParameters(
+    where: {
+      _and: [{ eventId: { _eq: $eventId } }, { status: { _eq: PUBLISHED } }]
+    }
+    limit: 1
+  ) {
+    dateStart
+    dateEnd
+    dateSaleStart
+    dateSaleEnd
+    timezone
+    status
+    isSaleOngoing
+    isOngoing
+  }
+}
+
+query GetEventParametersFromEventPassIds($eventPassIds: [ID!]!) {
+  eventPasses(where: { id_in: $eventPassIds }, stage: DRAFT, locales: [en]) {
+    id
+    event {
+      eventParameters {
+        isSaleOngoing
+      }
+    }
+  }
+}

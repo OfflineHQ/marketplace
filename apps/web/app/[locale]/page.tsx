@@ -103,10 +103,12 @@ async function EventSectionContent({ locale }: EventSectionContentProps) {
   // in case the event is not found or the organizer slug is not the same as the one in the url redirect to 404
   if (!event || event.organizer?.slug !== organizerSlug) {
     return <NotFound />;
-  } else
-    return (
+  } else {
+    const { eventParameters, ...eventProps } = event;
+    return eventParameters ? (
       <Event
-        {...event}
+        {...eventProps}
+        eventParameters={eventParameters}
         purchaseLink={{
           href: {
             pathname: `/organizer/${organizerSlug}/event/${eventSlug}/purchase`,
@@ -114,5 +116,8 @@ async function EventSectionContent({ locale }: EventSectionContentProps) {
         }}
         purchaseText={t('purchase-button-activator')}
       />
+    ) : (
+      <NotFound />
     );
+  }
 }

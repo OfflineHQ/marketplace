@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/test';
 import { Badge } from '../badge/Badge';
 import { PopoverInfo, PopoverInfoProps, iconSizes } from './PopoverInfo';
+import { darkMode } from '@test-utils/storybook';
 
 export default {
   title: 'Molecules/PopoverInfo',
@@ -37,9 +38,7 @@ export const LongDescriptionDarkMode: PopoverInfoStory = {
   ...LongDescription,
   play: undefined,
   parameters: {
-    darkMode: {
-      isDark: true,
-    },
+    ...darkMode,
   },
 };
 
