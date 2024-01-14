@@ -11,7 +11,7 @@ import {
 } from '../../organisms/UserPassList/examples';
 import { UserPass } from './UserPass';
 import { UserPassExample } from './examples';
-// @ts-ignore
+import { darkMode, mobileMode } from '@test-utils/storybook';
 
 const meta: Meta<typeof UserPass> = {
   component: UserPass,
@@ -39,25 +39,14 @@ export const WithUser: Story = {};
 
 export const WithUserMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
 };
 
 export const WithUserDarkMode: Story = {
   ...WithUser,
   parameters: {
-    darkMode: {
-      isDark: true,
-    },
+    ...darkMode,
   },
 };
 
@@ -108,16 +97,7 @@ export const WithUserDialogTimezone: Story = {
 export const WithUserNoDataMobile: Story = {
   ...WithUserNoData,
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
 };
 
@@ -130,16 +110,7 @@ export const WithUserLoading: Story = {
 export const WithUserWithMobileLoading: Story = {
   ...WithUserLoading,
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
 };
 

@@ -102,13 +102,15 @@
     },
     "Successful": {
       "title": "Achat réussi ! 🎉",
-      "description": "Merci pour votre achat. Vos pass devraient être disponibles dans quelques minutes.",
-      "continue-shopping-button": "Aller à la page d'accueil"
+      "description": "Vos pass devraient être disponibles dans quelques minutes.",
+      "continue-shopping-button": "Aller à la page d'accueil",
+      "success-title": "Merci pour votre achat."
     },
     "Cancelled": {
       "title": "Achat annulé",
-      "description": "Votre achat a été annulé avec succès. Nous sommes désolés de vous voir partir. Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contacter. N'hésitez pas à continuer vos achats si vous changez d'avis.",
-      "continue-shopping-button": "Aller à la page d'accueil"
+      "description": "Nous sommes désolés de vous voir partir. Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contacter. N'hésitez pas à continuer vos achats si vous changez d'avis.",
+      "continue-shopping-button": "Aller à la page d'accueil",
+      "cancelled-title": "Votre achat a été annulé avec succès."
     }
   },
   "Pass": {
@@ -200,10 +202,6 @@
       "purchase-button-activator": "Sélectionner les pass",
       "PassPurchase": {
         "title": "Sélection de pass",
-        "description": "Sélectionnez les pass que vous souhaitez acheter et validez votre commande",
-        "Pass": {
-          "sold-out": "Épuisé"
-        },
         "see-event-button": "Voir l'événement",
         "go-back-button": "Revenir à l'événement",
         "Footer": {
@@ -219,7 +217,36 @@
           "not-revealed-title": "Pass mystère",
           "revealed-description": "Découvrez ce qui vous attend ! Ce pass offre une gamme d'avantages et de fonctionnalités exclusives, qui seront bientôt dévoilées. Ne ratez pas cette occasion, obtenez votre pass et préparez-vous à une expérience complète et excitante.",
           "not-revealed-description": "Découvrez ce qui vous attend ! Ce pass offre une gamme d'avantages et de fonctionnalités exclusives, qui seront bientôt dévoilées. Ne manquez pas cette opportunité, sécurisez votre pass et vivez une expérience inoubliable et riche en surprises. "
-        }
+        },
+        "PassCardStatusBadge": {
+          "sold-out": "Épuisé",
+          "sale-ended": "La vente est terminée",
+          "already-have-purchase": "Vous avez un achat en cours",
+          "sale-starting-in": "Vente non commencée"
+        },
+        "title-with-event": "Sélection des pass pour \"{eventTitle}\""
+      },
+      "EventSaleDates": {
+        "sale-not-started": "La vente n'a pas encore commencé",
+        "sale-ongoing": "La vente est en cours !",
+        "sale-ended": "La vente est terminée",
+        "sale-starts-in": "Commence : {time}",
+        "sale-ends-in": "Se termine: {time}"
+      },
+      "PassPurchaseHeader": {
+        "description": "Sélectionnez les pass que vous souhaitez acheter et validez votre commande",
+        "has-purchase-in-progress-title": "Achat en cours",
+        "has-purchase-in-progress-description": "Vous avez actuellement un achat en cours. Veuillez confirmer ou annuler cet achat avant de sélectionner un nouveau pass.",
+        "go-to-purchase": "Poursuivre mon achat",
+        "ended-title": "La vente est terminée",
+        "ended-description": "Vous ne pouvez plus acheter ces pass.",
+        "not-started-title": "La vente n'a pas commencé."
+      },
+      "SaleStartsInClient": {
+        "sale-starts-in": "Commence : {time}"
+      },
+      "SaleEndsInClient": {
+        "sale-ends-in": "Se termine: {time}"
       }
     },
     "EventDates": {
@@ -279,7 +306,8 @@
       "header-date-start": "Date de début",
       "header-edit": "Éditer",
       "title": "Gestion des événements",
-      "search-placeholder": "Filtrer les événements..."
+      "search-placeholder": "Filtrer les événements...",
+      "header-status": "Status"
     },
     "Sheet": {
       "EventPassCard": {
@@ -349,6 +377,11 @@
       "type-delayed-reveal-badge": "Révélation surprise",
       "type-normal-description": "Présentez immédiatement tous les détails du pass. Assurez-vous que les acheteurs voient tous les avantages et caractéristiques du pass dès le début.",
       "type-delayed-reveal-description": "Affichez initialement des informations provisoires pour le pass. Les détails finaux seront révélés plus tard, créant un sentiment de mystère et d'anticipation. Cette approche peut engager les participants avec l'élément de surprise, en dévoilant les avantages et caractéristiques finaux du pass à un moment ou une étape de l'événement prédéterminée."
+    },
+    "EventStatusBadge": {
+      "status-draft": "Brouillon",
+      "status-published": "Publié",
+      "status-undefined": "Indéfini"
     }
   },
   "UI": {

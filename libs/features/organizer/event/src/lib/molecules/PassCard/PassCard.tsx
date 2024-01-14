@@ -19,16 +19,16 @@ import Image from 'next/image';
 
 import { ConvertedCurrency } from '@next/currency';
 
-import type { EventPass } from '@features/organizer/event-types';
+import { SaleStatus, type EventPass } from '@features/organizer/event-types';
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
-import { useTranslations } from 'next-intl';
+import { PassCardStatusBadge } from '../../atoms/PassCardStatusBadge/PassCardStatusBadge';
 import { EventPassContractDelayedRevealBadge } from '../EventPassContractDelayedRevealBadge/EventPassContractDelayedRevealBadge';
 import { PassOptions } from '../PassOptions/PassOptions';
 import { PassCardSelect, PassCardSelectProps } from './PassCardSelect';
 
 export interface PassCardProps extends EventPass, PassCardSelectProps {
   className?: string;
-  hasConfirmedPasses?: boolean;
+  saleStatus: SaleStatus;
 }
 
 export const PassCard: React.FC<PassCardProps> = ({
@@ -39,11 +39,10 @@ export const PassCard: React.FC<PassCardProps> = ({
   passOptions,
   nftImage,
   className,
-  hasConfirmedPasses,
   eventPassNftContract,
+  saleStatus,
   ...props
 }) => {
-  const t = useTranslations('Organizer.Event.PassPurchase.Pass');
   return (
     <Card
       className={`flex h-fit flex-col justify-between ${className}`}
@@ -73,11 +72,17 @@ export const PassCard: React.FC<PassCardProps> = ({
         <PassOptions passOptions={passOptions || []} />
       </CardHeader>
       {passAmount && passPricing ? (
-        <CardFooter className="flex items-center justify-between">
-          <ConvertedCurrency variant="h5" {...passPricing} />
-          {hasConfirmedPasses ? null : (
-            <PassCardSelect {...props} passAmount={passAmount} />
-          )}
+        <CardFooter className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex min-w-0 shrink">
+            <ConvertedCurrency variant="h5" {...passPricing} />
+          </div>
+          <div className="flex flex-wrap">
+            {saleStatus !== SaleStatus.Ongoing ? (
+              <PassCardStatusBadge saleStatus={saleStatus} />
+            ) : (
+              <PassCardSelect {...props} passAmount={passAmount} />
+            )}
+          </div>
         </CardFooter>
       ) : null}
     </Card>

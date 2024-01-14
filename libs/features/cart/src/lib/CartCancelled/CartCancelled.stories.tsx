@@ -11,6 +11,7 @@ import {
   passOrder2,
   passOrderWithEvent2,
 } from './examples';
+import { mobileMode } from '@test-utils/storybook';
 
 const meta: Meta<typeof CartCancelled> = {
   render: CartCancelledExample,
@@ -49,16 +50,7 @@ export const Default: Story = {
 
 export const DefaultMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   ...Default,
 };

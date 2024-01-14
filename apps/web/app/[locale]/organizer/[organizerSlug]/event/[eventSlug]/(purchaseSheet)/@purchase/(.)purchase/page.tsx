@@ -1,3 +1,4 @@
+import { NotFound } from '@features/navigation';
 import {
   PassPurchaseSheet,
   PassPurchaseSheetContainer,
@@ -48,22 +49,29 @@ const PurchaseSectionContent: React.FC<PurchaseSectionContentProps> = async ({
     namespace: 'Organizer.Event.PassPurchase',
   });
   const passes = await getEventPasses({ eventSlug, locale });
-  const confirmedPasses = await getOrdersConfirmed();
-  return (
-    <PassPurchaseSheet
-      passes={passes}
-      organizerSlug={organizerSlug}
-      eventSlug={eventSlug}
-      size={'lg'}
-      title={t('title')}
-      description={t('description')}
-      goPaymentText={t('Footer.purchase-button')}
-      goPaymentLink={{ href: '/cart' }}
-      backButtonText={t('go-back-button')}
-      closeLink={{
-        href: `/${locale}/organizer/${organizerSlug}/event/${eventSlug}`,
-      }}
-      hasConfirmedPasses={!!confirmedPasses?.length}
-    />
-  );
+  // in case the event is not found or the organizer slug is not the same as the one in the url redirect to 404
+  if (!passes || passes.event?.organizer?.slug !== organizerSlug)
+    return <NotFound />;
+  else {
+    const confirmedPasses = await getOrdersConfirmed();
+    const { eventPasses, event } = passes;
+    return event.eventParameters ? (
+      <PassPurchaseSheet
+        passes={eventPasses}
+        eventParameters={event.eventParameters}
+        organizerSlug={organizerSlug}
+        eventSlug={eventSlug}
+        size={'lg'}
+        goPaymentText={t('Footer.purchase-button')}
+        goPaymentLink={{ href: '/cart' }}
+        backButtonText={t('go-back-button')}
+        closeLink={{
+          href: `/${locale}/organizer/${organizerSlug}/event/${eventSlug}`,
+        }}
+        hasConfirmedPasses={!!confirmedPasses?.length}
+      />
+    ) : (
+      <NotFound />
+    );
+  }
 };

@@ -324,7 +324,7 @@ class NftCollection {
         eventSlug,
       } = props;
 
-      await createEventPassNftContract(object);
+      const res = await createEventPassNftContract(object);
 
       const hasuraMetadatas = await this.createHasuraMetadatas(
         metadatas,

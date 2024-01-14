@@ -1,8 +1,8 @@
 {
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit",
-    "source.addMissingImports": "explicit",
-    "source.fixAll": "explicit"
+    "source.organizeImports": "always",
+    "source.addMissingImports": "always",
+    "source.fixAll": "always"
   },
   "editor.formatOnSave": true,
   "editor.tabSize": 2,

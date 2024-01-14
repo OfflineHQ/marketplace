@@ -4,6 +4,7 @@ import { expect, screen, userEvent, within } from '@storybook/test';
 import { EventsTableExample, eventsTableData } from './examples';
 
 import { EventsTable } from './EventsTable';
+import { mobileMode } from '@test-utils/storybook';
 
 const meta: Meta<typeof EventsTable> = {
   component: EventsTable,
@@ -48,15 +49,6 @@ export const WithMoreItems: Story = {
 export const WithMobile: Story = {
   parameters: {
     layout: 'fullscreen',
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
 };

@@ -1,9 +1,11 @@
 // PassPurchaseSheet.stories.tsx
 import * as eventApi from '@features/organizer/event-api';
 import { Meta, StoryObj } from '@storybook/react';
-import { expect, screen, userEvent } from '@storybook/test';
+import { expect, screen, userEvent, waitFor } from '@storybook/test';
+import { mobileMode } from '@test-utils/storybook';
 import { createMock, getMock, render } from 'storybook-addon-module-mock';
 import { default as passCardMeta } from '../../molecules/PassCard/PassCard.stories';
+import { eventProps } from '../Event/examples';
 import { PassPurchaseSheet } from './PassPurchaseSheet';
 import {
   PassPurchaseCardExample,
@@ -60,6 +62,46 @@ export const NoPassSelected: Story = {
     });
     expect(passCardIncrements).toHaveLength(2);
     expect(screen.getAllByText('0')).toHaveLength(2);
+  },
+};
+
+export const WithPurchaseInProcess: Story = {
+  args: {
+    hasConfirmedPasses: true,
+  },
+  play: async (context) => {
+    // Here will check that the footer is not displayed if has confirmed passes even if user have some passes in the cart
+    const mockGetEventPassesCart = getMock(
+      context.parameters,
+      eventApi,
+      'getEventPassesCart',
+    );
+    mockGetEventPassesCart.mockResolvedValue([
+      {
+        id: '1',
+        eventPassId: '1',
+        quantity: 1,
+        created_at: new Date().toISOString(),
+      },
+    ]);
+    render(context.parameters);
+    expect(screen.getByText(/VIP Pass/i)).toBeInTheDocument();
+    expect(
+      await screen.findByRole('button', { name: /proceed with my purchase/i }),
+    ).toBeInTheDocument();
+    await waitFor(
+      () => expect(screen.queryAllByText(/purchase ongoing/i)?.length).toBe(2),
+      {
+        timeout: 10000,
+      },
+    );
+    expect(screen.queryByText(/Go to payment/i)).not.toBeInTheDocument();
+  },
+};
+export const WithPurchaseInProcessMobile: Story = {
+  ...WithPurchaseInProcess,
+  parameters: {
+    ...mobileMode,
   },
 };
 
@@ -189,6 +231,7 @@ export const LoadingFullSize: Story = {
 export const Card: Story = {
   args: {
     backButtonLink: { href: '/dummy' },
+    eventTitle: eventProps.title,
   },
   render: PassPurchaseCardExample,
   play: async (context) => {
@@ -200,6 +243,25 @@ export const Card: Story = {
     mockGetEventPassCart.mockResolvedValue({
       quantity: 0,
     });
+  },
+};
+
+export const CardWithPurchaseInProgress: Story = {
+  ...WithPurchaseInProcess,
+  args: {
+    ...WithPurchaseInProcess.args,
+    ...Card.args,
+  },
+  render: PassPurchaseCardExample,
+};
+
+export const CardWithPurchaseInProgressMobile: Story = {
+  ...CardWithPurchaseInProgress,
+  parameters: {
+    ...mobileMode,
+  },
+  args: {
+    ...CardWithPurchaseInProgress.args,
   },
 };
 
@@ -216,16 +278,7 @@ export const CardWithLotsOfPassesSelected: Story = {
 export const CardWithLotsOfPassesSelectedMobile: Story = {
   ...CardWithLotsOfPassesSelected,
   parameters: {
-    viewport: {
-      defaultViewport: 'small_mobile',
-    },
-    chromatic: {
-      modes: {
-        mobile: {
-          viewport: 'small_mobile',
-        },
-      },
-    },
+    ...mobileMode,
   },
   args: {
     ...CardWithLotsOfPassesSelected.args,

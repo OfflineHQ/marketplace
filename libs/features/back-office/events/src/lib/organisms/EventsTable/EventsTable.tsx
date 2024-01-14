@@ -15,6 +15,7 @@ import {
 } from '@ui/components';
 import { Edit } from '@ui/icons';
 import { useTranslations } from 'next-intl';
+import { EventStatusBadge } from '../../molecules/EventStatusBadge/EventStatusBadge';
 
 export interface ColumnsProps {
   titleText: string;
@@ -29,6 +30,7 @@ export interface EventsTableProps
     Omit<DataTableProps<EventFromOrganizerTable, unknown>, 'columns' | 'data'> {
   events: EventFromOrganizerTable[];
 }
+
 export function EventsTable({
   events,
   headerControlText,
@@ -82,26 +84,27 @@ export function EventsTable({
         return value.includes(row.getValue(id));
       },
     },
-    // {
-    //   accessorKey: 'eventParameters.dateStart',
-    //   meta: {
-    //     title: t('header-date-start'),
-    //   },
-    //   header: ({ column }) => (
-    //     <DataTableColumnHeader
-    //       column={column}
-    //       title={t('header-date-start')}
-    //       controlText={headerControlText}
-    //     />
-    //   ),
-    //   cell: ({ row }) => {
-    //     return (
-    //       <div className="flex items-center">
-    //         <span>{row.getValue('eventParameters.dateStart')}</span>
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      accessorKey: 'eventParameters.status',
+      meta: {
+        title: t('header-status'),
+      },
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t('header-status')}
+          controlText={headerControlText}
+        />
+      ),
+      cell: ({ row }) => {
+        const status = row.original.eventParameters?.status;
+        return (
+          <div className="flex items-center">
+            <EventStatusBadge status={status} />
+          </div>
+        );
+      },
+    },
     {
       id: 'actions',
       meta: {

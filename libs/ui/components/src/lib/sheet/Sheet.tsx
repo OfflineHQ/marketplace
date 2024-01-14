@@ -252,7 +252,11 @@ const SheetOverflow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('overflow-y-auto px-6', className)} {...props} />
+  <div
+    ref={ref}
+    className={cn('overflow-y-auto h-full px-6', className)}
+    {...props}
+  />
 ));
 SheetOverflow.displayName = 'SheetOverflow';
 

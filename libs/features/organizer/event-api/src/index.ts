@@ -1,4 +1,5 @@
 export { getEvent } from './lib/getEvent';
+export { getEventParameters } from './lib/getEventParameters';
 export { getEventPassCart } from './lib/getEventPassCart';
 export { getEventPassOrderSums } from './lib/getEventPassOrderSums';
 export { getEventPasses } from './lib/getEventPasses';

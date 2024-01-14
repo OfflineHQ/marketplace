@@ -1,4 +1,4 @@
-import { Event } from '@features/organizer/event-types';
+import { Event, EventParameters } from '@features/organizer/event-types';
 import { EventDatesServer, type EventDatesServerProps } from '@next/date';
 import {
   AspectRatio,
@@ -16,14 +16,17 @@ import {
   EventOrganizerButton,
   EventOrganizerButtonSkeleton,
 } from '../../molecules/EventOrganizerButton/EventOrganizerButton';
+import { EventSaleDates } from '../EventSaleDates/EventSaleDates';
 
 export interface EventHeroProps
   extends EventDatesServerProps,
     EventLocationsProps,
-    Pick<Event, 'heroImage' | 'heroImageClasses' | 'title' | 'organizer'> {}
+    Pick<Event, 'heroImage' | 'heroImageClasses' | 'title' | 'organizer'> {
+  eventParameters: EventParameters;
+}
 
 const layout = {
-  grid: 'grid grid-cols-1 items-center gap-8 md:grid-cols-2',
+  grid: 'grid grid-cols-1 items-start gap-8 md:grid-cols-2',
   image: 'rounded-sm object-cover',
   textContainer: 'md:space-y-4 items-start h-full flex flex-col',
   text: 'mb-2 md:mb-4',
@@ -34,6 +37,7 @@ export const EventHero: React.FC<EventHeroProps> = ({
   heroImageClasses,
   title,
   organizer,
+  eventParameters,
   ...locationDatesProps
 }) => {
   return (
@@ -56,6 +60,9 @@ export const EventHero: React.FC<EventHeroProps> = ({
           </div>
           <EventDatesServer {...locationDatesProps} />
           <EventLocations {...locationDatesProps} />
+          {eventParameters && (
+            <EventSaleDates eventParameters={eventParameters} />
+          )}
         </div>
       </div>
     </div>

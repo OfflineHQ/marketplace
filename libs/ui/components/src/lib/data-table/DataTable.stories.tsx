@@ -8,6 +8,7 @@ import { DataTable } from './DataTable';
 import { columns } from './examples/columns';
 import { priorities, statuses } from './examples/data/data';
 import { tasks } from './examples/data/tasks';
+import { darkMode } from '@test-utils/storybook';
 
 const meta = {
   title: 'Organisms/DataTable',
@@ -212,9 +213,7 @@ export const DataTableWithSelectedRowsDark: Story = {
     expect(screen.getByText(/10 of 100 selected/i)).toBeInTheDocument();
   },
   parameters: {
-    darkMode: {
-      isDark: true,
-    },
+    ...darkMode,
   },
 };
 
@@ -278,9 +277,7 @@ export const InsideCardDistinctSelectedRowsDark: Story = {
     expect(screen.getByText(/10 of 100 selected/i)).toBeInTheDocument();
   },
   parameters: {
-    darkMode: {
-      isDark: true,
-    },
+    ...darkMode,
   },
 };
 

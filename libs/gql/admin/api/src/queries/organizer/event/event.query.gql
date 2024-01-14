@@ -21,6 +21,14 @@ query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
       }
       imageClasses
     }
+    eventParameters {
+      ...EventParametersMinimalFields
+      dateSaleStart
+      dateSaleEnd
+      dateStart
+      dateEnd
+      timezone
+    }
     eventDateLocations {
       ...EventDateLocationsFields
     }
@@ -42,6 +50,9 @@ query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!)
     }
     eventDateLocations {
       ...EventDateLocationsFields
+    }
+    eventParameters {
+      ...EventParametersFields
     }
     eventPasses {
       id

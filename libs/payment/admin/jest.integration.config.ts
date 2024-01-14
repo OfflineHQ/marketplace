@@ -6,6 +6,6 @@ export default {
   globalSetup: `${process.cwd()}/tools/test/globalSetupHasura.ts`,
   globalTeardown: `${process.cwd()}/tools/test/globalTeardownHasura.ts`,
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/libs/payment/admin',
+  coverageDirectory: '../../../coverage/libs/payment/admin-integration',
   testMatch: ['**/*.integration.test.ts'],
 };
