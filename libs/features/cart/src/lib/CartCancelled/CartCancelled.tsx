@@ -11,6 +11,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  AlertTitle,
+  AlertDescription,
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import { FC } from 'react';
@@ -44,7 +46,8 @@ export const CartCancelled: FC<CartCancelledProps> = ({ passes }) => {
             {t('title')}
           </CardTitle>
           <Alert variant="warning" className="max-w-[600px]">
-            {t('description')}
+            <AlertTitle>{t('cancelled-title')}</AlertTitle>
+            <AlertDescription>{t('description')}</AlertDescription>
           </Alert>
         </CardHeader>
         <CardContent>
