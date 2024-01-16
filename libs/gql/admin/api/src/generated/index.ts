@@ -873,7 +873,6 @@ ${EventParametersFieldsFragmentDoc}`;
     id
     chainId
     contractAddress
-    eventPassIds
     organizerId
     rewardsPerPack
     packId
@@ -888,7 +887,10 @@ ${EventParametersFieldsFragmentDoc}`;
     rewardsPerPack
     organizerId
     contractAddress
-    eventPassIds
+    eventPassNftContracts {
+      eventPassNftContractId
+      amount
+    }
     eventPassNfts {
       tokenId
       contractAddress
