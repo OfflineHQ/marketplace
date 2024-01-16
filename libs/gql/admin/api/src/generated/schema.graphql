@@ -1447,14 +1447,6 @@ type Event implements Entity & Node {
     locales: [Locale!]
   ): Organizer
 
-  """
-  Whether the event is public (visible to anyone) or private (for instance visible only to owner of specific NFTs)
-  """
-  public: Boolean
-
-  """Whether the event is published or not (visible only to organizers)"""
-  published: Boolean!
-
   """The time the document was published. Null on documents in draft stage."""
   publishedAt(
     """
@@ -1589,8 +1581,6 @@ input EventCreateInput {
   """
   localizations: EventCreateLocalizationsInput
   organizer: OrganizerCreateOneInlineInput
-  public: Boolean
-  published: Boolean!
   slug: String!
 
   """title input for default locale (en)"""
@@ -2012,11 +2002,6 @@ input EventManyWhereInput {
   """All values starting with the given string."""
   id_starts_with: ID
   organizer: OrganizerWhereInput
-  public: Boolean
-
-  """Any other value that exists and is not equal to the given value."""
-  public_not: Boolean
-  published: Boolean
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -2040,9 +2025,6 @@ input EventManyWhereInput {
   """All values that are not contained in given list."""
   publishedAt_not_in: [DateTime]
   publishedBy: UserWhereInput
-
-  """Any other value that exists and is not equal to the given value."""
-  published_not: Boolean
   scheduledIn_every: ScheduledOperationWhereInput
   scheduledIn_none: ScheduledOperationWhereInput
   scheduledIn_some: ScheduledOperationWhereInput
@@ -2106,12 +2088,8 @@ enum EventOrderByInput {
   heroImageClasses_DESC
   id_ASC
   id_DESC
-  public_ASC
-  public_DESC
   publishedAt_ASC
   publishedAt_DESC
-  published_ASC
-  published_DESC
   slug_ASC
   slug_DESC
   title_ASC
@@ -4142,8 +4120,6 @@ input EventUpdateInput {
   """Manage document localizations"""
   localizations: EventUpdateLocalizationsInput
   organizer: OrganizerUpdateOneInlineInput
-  public: Boolean
-  published: Boolean
   slug: String
 
   """title input for default locale (en)"""
@@ -4204,8 +4180,6 @@ input EventUpdateManyInput {
 
   """Optional updates to localizations"""
   localizations: EventUpdateManyLocalizationsInput
-  public: Boolean
-  published: Boolean
 
   """title input for default locale (en)"""
   title: String
@@ -4389,11 +4363,6 @@ input EventWhereInput {
   """All values starting with the given string."""
   id_starts_with: ID
   organizer: OrganizerWhereInput
-  public: Boolean
-
-  """Any other value that exists and is not equal to the given value."""
-  public_not: Boolean
-  published: Boolean
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -4417,9 +4386,6 @@ input EventWhereInput {
   """All values that are not contained in given list."""
   publishedAt_not_in: [DateTime]
   publishedBy: UserWhereInput
-
-  """Any other value that exists and is not equal to the given value."""
-  published_not: Boolean
   scheduledIn_every: ScheduledOperationWhereInput
   scheduledIn_none: ScheduledOperationWhereInput
   scheduledIn_some: ScheduledOperationWhereInput
@@ -10480,6 +10446,9 @@ type eventPassNftContract {
   """An object relationship"""
   passPricing: passPricing
 
+  """Type of the pass, referencing the eventPassType table."""
+  passType: eventPassType_enum!
+
   """
   Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type.
   """
@@ -10488,6 +10457,11 @@ type eventPassNftContract {
   """Type of the event pass NFT contract."""
   type: eventPassNftContractType_enum!
   updated_at: timestamptz!
+
+  """
+  The method of validation for the event pass, referencing the eventPassValidationType table.
+  """
+  validationType: eventPassValidationType_enum!
 }
 
 """Contract types representing the nature of the event pass NFT contract."""
@@ -10735,15 +10709,22 @@ input eventPassNftContract_bool_exp {
   organizerId: String_comparison_exp
   passAmount: passAmount_bool_exp
   passPricing: passPricing_bool_exp
+  passType: eventPassType_enum_comparison_exp
   password: String_comparison_exp
   type: eventPassNftContractType_enum_comparison_exp
   updated_at: timestamptz_comparison_exp
+  validationType: eventPassValidationType_enum_comparison_exp
 }
 
 """
 unique or primary key constraints on table "eventPassNftContract"
 """
 enum eventPassNftContract_constraint {
+  """
+  unique or primary key constraint on columns "eventPassId"
+  """
+  eventPassId_unique
+
   """
   unique or primary key constraint on columns "chainId", "contractAddress"
   """
@@ -10791,6 +10772,9 @@ input eventPassNftContract_insert_input {
   passAmount: passAmount_obj_rel_insert_input
   passPricing: passPricing_obj_rel_insert_input
 
+  """Type of the pass, referencing the eventPassType table."""
+  passType: eventPassType_enum
+
   """
   Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type.
   """
@@ -10799,6 +10783,11 @@ input eventPassNftContract_insert_input {
   """Type of the event pass NFT contract."""
   type: eventPassNftContractType_enum
   updated_at: timestamptz
+
+  """
+  The method of validation for the event pass, referencing the eventPassValidationType table.
+  """
+  validationType: eventPassValidationType_enum
 }
 
 """aggregate max on columns"""
@@ -10963,9 +10952,11 @@ input eventPassNftContract_order_by {
   organizerId: order_by
   passAmount: passAmount_order_by
   passPricing: passPricing_order_by
+  passType: order_by
   password: order_by
   type: order_by
   updated_at: order_by
+  validationType: order_by
 }
 
 """primary key columns input for table: eventPassNftContract"""
@@ -11005,6 +10996,9 @@ enum eventPassNftContract_select_column {
   organizerId
 
   """column name"""
+  passType
+
+  """column name"""
   password
 
   """column name"""
@@ -11012,6 +11006,9 @@ enum eventPassNftContract_select_column {
 
   """column name"""
   updated_at
+
+  """column name"""
+  validationType
 }
 
 """
@@ -11067,6 +11064,9 @@ input eventPassNftContract_set_input {
   isDelayedRevealed: Boolean
   organizerId: String
 
+  """Type of the pass, referencing the eventPassType table."""
+  passType: eventPassType_enum
+
   """
   Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type.
   """
@@ -11075,6 +11075,11 @@ input eventPassNftContract_set_input {
   """Type of the event pass NFT contract."""
   type: eventPassNftContractType_enum
   updated_at: timestamptz
+
+  """
+  The method of validation for the event pass, referencing the eventPassValidationType table.
+  """
+  validationType: eventPassValidationType_enum
 }
 
 """
@@ -11117,6 +11122,9 @@ input eventPassNftContract_stream_cursor_value_input {
   isDelayedRevealed: Boolean
   organizerId: String
 
+  """Type of the pass, referencing the eventPassType table."""
+  passType: eventPassType_enum
+
   """
   Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type.
   """
@@ -11125,6 +11133,11 @@ input eventPassNftContract_stream_cursor_value_input {
   """Type of the event pass NFT contract."""
   type: eventPassNftContractType_enum
   updated_at: timestamptz
+
+  """
+  The method of validation for the event pass, referencing the eventPassValidationType table.
+  """
+  validationType: eventPassValidationType_enum
 }
 
 """
@@ -11159,6 +11172,9 @@ enum eventPassNftContract_update_column {
   organizerId
 
   """column name"""
+  passType
+
+  """column name"""
   password
 
   """column name"""
@@ -11166,6 +11182,9 @@ enum eventPassNftContract_update_column {
 
   """column name"""
   updated_at
+
+  """column name"""
+  validationType
 }
 
 input eventPassNftContract_updates {
@@ -12329,6 +12348,325 @@ type eventPassOrderSums_variance_fields {
   totalReserved: Float
 }
 
+"""Defines the types of event passes."""
+type eventPassType {
+  """Type name for event pass."""
+  value: String!
+}
+
+"""
+aggregated selection of "eventPassType"
+"""
+type eventPassType_aggregate {
+  aggregate: eventPassType_aggregate_fields
+  nodes: [eventPassType!]!
+}
+
+"""
+aggregate fields of "eventPassType"
+"""
+type eventPassType_aggregate_fields {
+  count(columns: [eventPassType_select_column!], distinct: Boolean): Int!
+  max: eventPassType_max_fields
+  min: eventPassType_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "eventPassType". All fields are combined with a logical 'AND'.
+"""
+input eventPassType_bool_exp {
+  _and: [eventPassType_bool_exp!]
+  _not: eventPassType_bool_exp
+  _or: [eventPassType_bool_exp!]
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "eventPassType"
+"""
+enum eventPassType_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  eventPassType_pkey
+}
+
+enum eventPassType_enum {
+  event_access
+  redeemable
+}
+
+"""
+Boolean expression to compare columns of type "eventPassType_enum". All fields are combined with logical 'AND'.
+"""
+input eventPassType_enum_comparison_exp {
+  _eq: eventPassType_enum
+  _in: [eventPassType_enum!]
+  _is_null: Boolean
+  _neq: eventPassType_enum
+  _nin: [eventPassType_enum!]
+}
+
+"""
+input type for inserting data into table "eventPassType"
+"""
+input eventPassType_insert_input {
+  """Type name for event pass."""
+  value: String
+}
+
+"""aggregate max on columns"""
+type eventPassType_max_fields {
+  """Type name for event pass."""
+  value: String
+}
+
+"""aggregate min on columns"""
+type eventPassType_min_fields {
+  """Type name for event pass."""
+  value: String
+}
+
+"""
+response of any mutation on the table "eventPassType"
+"""
+type eventPassType_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [eventPassType!]!
+}
+
+"""
+on_conflict condition type for table "eventPassType"
+"""
+input eventPassType_on_conflict {
+  constraint: eventPassType_constraint!
+  update_columns: [eventPassType_update_column!]! = []
+  where: eventPassType_bool_exp
+}
+
+"""Ordering options when selecting data from "eventPassType"."""
+input eventPassType_order_by {
+  value: order_by
+}
+
+"""primary key columns input for table: eventPassType"""
+input eventPassType_pk_columns_input {
+  """Type name for event pass."""
+  value: String!
+}
+
+"""
+select columns of table "eventPassType"
+"""
+enum eventPassType_select_column {
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "eventPassType"
+"""
+input eventPassType_set_input {
+  """Type name for event pass."""
+  value: String
+}
+
+"""
+Streaming cursor of the table "eventPassType"
+"""
+input eventPassType_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: eventPassType_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input eventPassType_stream_cursor_value_input {
+  """Type name for event pass."""
+  value: String
+}
+
+"""
+update columns of table "eventPassType"
+"""
+enum eventPassType_update_column {
+  """column name"""
+  value
+}
+
+input eventPassType_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: eventPassType_set_input
+
+  """filter the rows which have to be updated"""
+  where: eventPassType_bool_exp!
+}
+
+"""Defines the types of validation for event passes."""
+type eventPassValidationType {
+  """Type name for event pass validation."""
+  value: String!
+}
+
+"""
+aggregated selection of "eventPassValidationType"
+"""
+type eventPassValidationType_aggregate {
+  aggregate: eventPassValidationType_aggregate_fields
+  nodes: [eventPassValidationType!]!
+}
+
+"""
+aggregate fields of "eventPassValidationType"
+"""
+type eventPassValidationType_aggregate_fields {
+  count(columns: [eventPassValidationType_select_column!], distinct: Boolean): Int!
+  max: eventPassValidationType_max_fields
+  min: eventPassValidationType_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "eventPassValidationType". All fields are combined with a logical 'AND'.
+"""
+input eventPassValidationType_bool_exp {
+  _and: [eventPassValidationType_bool_exp!]
+  _not: eventPassValidationType_bool_exp
+  _or: [eventPassValidationType_bool_exp!]
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "eventPassValidationType"
+"""
+enum eventPassValidationType_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  eventPassValidationType_pkey
+}
+
+enum eventPassValidationType_enum {
+  external
+  manual
+  nft
+}
+
+"""
+Boolean expression to compare columns of type "eventPassValidationType_enum". All fields are combined with logical 'AND'.
+"""
+input eventPassValidationType_enum_comparison_exp {
+  _eq: eventPassValidationType_enum
+  _in: [eventPassValidationType_enum!]
+  _is_null: Boolean
+  _neq: eventPassValidationType_enum
+  _nin: [eventPassValidationType_enum!]
+}
+
+"""
+input type for inserting data into table "eventPassValidationType"
+"""
+input eventPassValidationType_insert_input {
+  """Type name for event pass validation."""
+  value: String
+}
+
+"""aggregate max on columns"""
+type eventPassValidationType_max_fields {
+  """Type name for event pass validation."""
+  value: String
+}
+
+"""aggregate min on columns"""
+type eventPassValidationType_min_fields {
+  """Type name for event pass validation."""
+  value: String
+}
+
+"""
+response of any mutation on the table "eventPassValidationType"
+"""
+type eventPassValidationType_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [eventPassValidationType!]!
+}
+
+"""
+on_conflict condition type for table "eventPassValidationType"
+"""
+input eventPassValidationType_on_conflict {
+  constraint: eventPassValidationType_constraint!
+  update_columns: [eventPassValidationType_update_column!]! = []
+  where: eventPassValidationType_bool_exp
+}
+
+"""Ordering options when selecting data from "eventPassValidationType"."""
+input eventPassValidationType_order_by {
+  value: order_by
+}
+
+"""primary key columns input for table: eventPassValidationType"""
+input eventPassValidationType_pk_columns_input {
+  """Type name for event pass validation."""
+  value: String!
+}
+
+"""
+select columns of table "eventPassValidationType"
+"""
+enum eventPassValidationType_select_column {
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "eventPassValidationType"
+"""
+input eventPassValidationType_set_input {
+  """Type name for event pass validation."""
+  value: String
+}
+
+"""
+Streaming cursor of the table "eventPassValidationType"
+"""
+input eventPassValidationType_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: eventPassValidationType_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input eventPassValidationType_stream_cursor_value_input {
+  """Type name for event pass validation."""
+  value: String
+}
+
+"""
+update columns of table "eventPassValidationType"
+"""
+enum eventPassValidationType_update_column {
+  """column name"""
+  value
+}
+
+input eventPassValidationType_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: eventPassValidationType_set_input
+
+  """filter the rows which have to be updated"""
+  where: eventPassValidationType_bool_exp!
+}
+
 """
 columns and relationships of "eventStatus"
 """
@@ -13418,6 +13756,542 @@ input kyc_updates {
   where: kyc_bool_exp!
 }
 
+"""
+The lotteryParameters model is designed to define properties on a lottery, including details like the lotteryId and activityWebhookId. It manages various timestamps and settings related to the lottery, ensuring efficient and accurate management of lottery events.
+"""
+type lotteryParameters {
+  """
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery.
+  """
+  activityWebhookId: String
+  created_at: timestamptz!
+
+  """
+  Optional column
+  for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
+  """
+  dateSaleEnd: timestamp
+
+  """
+  Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale.
+  """
+  dateSaleStart: timestamp
+  id: uuid!
+  lotteryId: String!
+  organizerId: String!
+  signingKey: String
+  status: lotteryStatus_enum
+
+  """
+  The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions.
+  """
+  timezone: String!
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "lotteryParameters"
+"""
+type lotteryParameters_aggregate {
+  aggregate: lotteryParameters_aggregate_fields
+  nodes: [lotteryParameters!]!
+}
+
+"""
+aggregate fields of "lotteryParameters"
+"""
+type lotteryParameters_aggregate_fields {
+  count(columns: [lotteryParameters_select_column!], distinct: Boolean): Int!
+  max: lotteryParameters_max_fields
+  min: lotteryParameters_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "lotteryParameters". All fields are combined with a logical 'AND'.
+"""
+input lotteryParameters_bool_exp {
+  _and: [lotteryParameters_bool_exp!]
+  _not: lotteryParameters_bool_exp
+  _or: [lotteryParameters_bool_exp!]
+  activityWebhookId: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  dateSaleEnd: timestamp_comparison_exp
+  dateSaleStart: timestamp_comparison_exp
+  id: uuid_comparison_exp
+  lotteryId: String_comparison_exp
+  organizerId: String_comparison_exp
+  signingKey: String_comparison_exp
+  status: lotteryStatus_enum_comparison_exp
+  timezone: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "lotteryParameters"
+"""
+enum lotteryParameters_constraint {
+  """
+  unique or primary key constraint on columns "lotteryId"
+  """
+  lotteryParameters_lotteryId_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  lotteryParameters_pkey
+
+  """
+  unique or primary key constraint on columns "signingKey"
+  """
+  lotteryParameters_signingKey_key
+}
+
+"""
+input type for inserting data into table "lotteryParameters"
+"""
+input lotteryParameters_insert_input {
+  """
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery.
+  """
+  activityWebhookId: String
+  created_at: timestamptz
+
+  """
+  Optional column
+  for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
+  """
+  dateSaleEnd: timestamp
+
+  """
+  Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale.
+  """
+  dateSaleStart: timestamp
+  id: uuid
+  lotteryId: String
+  organizerId: String
+  signingKey: String
+  status: lotteryStatus_enum
+
+  """
+  The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions.
+  """
+  timezone: String
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type lotteryParameters_max_fields {
+  """
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery.
+  """
+  activityWebhookId: String
+  created_at: timestamptz
+
+  """
+  Optional column
+  for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
+  """
+  dateSaleEnd: timestamp
+
+  """
+  Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale.
+  """
+  dateSaleStart: timestamp
+  id: uuid
+  lotteryId: String
+  organizerId: String
+  signingKey: String
+
+  """
+  The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions.
+  """
+  timezone: String
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type lotteryParameters_min_fields {
+  """
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery.
+  """
+  activityWebhookId: String
+  created_at: timestamptz
+
+  """
+  Optional column
+  for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
+  """
+  dateSaleEnd: timestamp
+
+  """
+  Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale.
+  """
+  dateSaleStart: timestamp
+  id: uuid
+  lotteryId: String
+  organizerId: String
+  signingKey: String
+
+  """
+  The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions.
+  """
+  timezone: String
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "lotteryParameters"
+"""
+type lotteryParameters_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [lotteryParameters!]!
+}
+
+"""
+on_conflict condition type for table "lotteryParameters"
+"""
+input lotteryParameters_on_conflict {
+  constraint: lotteryParameters_constraint!
+  update_columns: [lotteryParameters_update_column!]! = []
+  where: lotteryParameters_bool_exp
+}
+
+"""Ordering options when selecting data from "lotteryParameters"."""
+input lotteryParameters_order_by {
+  activityWebhookId: order_by
+  created_at: order_by
+  dateSaleEnd: order_by
+  dateSaleStart: order_by
+  id: order_by
+  lotteryId: order_by
+  organizerId: order_by
+  signingKey: order_by
+  status: order_by
+  timezone: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: lotteryParameters"""
+input lotteryParameters_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "lotteryParameters"
+"""
+enum lotteryParameters_select_column {
+  """column name"""
+  activityWebhookId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  dateSaleEnd
+
+  """column name"""
+  dateSaleStart
+
+  """column name"""
+  id
+
+  """column name"""
+  lotteryId
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  signingKey
+
+  """column name"""
+  status
+
+  """column name"""
+  timezone
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "lotteryParameters"
+"""
+input lotteryParameters_set_input {
+  """
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery.
+  """
+  activityWebhookId: String
+  created_at: timestamptz
+
+  """
+  Optional column
+  for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
+  """
+  dateSaleEnd: timestamp
+
+  """
+  Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale.
+  """
+  dateSaleStart: timestamp
+  id: uuid
+  lotteryId: String
+  organizerId: String
+  signingKey: String
+  status: lotteryStatus_enum
+
+  """
+  The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions.
+  """
+  timezone: String
+  updated_at: timestamptz
+}
+
+"""
+Streaming cursor of the table "lotteryParameters"
+"""
+input lotteryParameters_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: lotteryParameters_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input lotteryParameters_stream_cursor_value_input {
+  """
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery.
+  """
+  activityWebhookId: String
+  created_at: timestamptz
+
+  """
+  Optional column
+  for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
+  """
+  dateSaleEnd: timestamp
+
+  """
+  Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale.
+  """
+  dateSaleStart: timestamp
+  id: uuid
+  lotteryId: String
+  organizerId: String
+  signingKey: String
+  status: lotteryStatus_enum
+
+  """
+  The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions.
+  """
+  timezone: String
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "lotteryParameters"
+"""
+enum lotteryParameters_update_column {
+  """column name"""
+  activityWebhookId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  dateSaleEnd
+
+  """column name"""
+  dateSaleStart
+
+  """column name"""
+  id
+
+  """column name"""
+  lotteryId
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  signingKey
+
+  """column name"""
+  status
+
+  """column name"""
+  timezone
+
+  """column name"""
+  updated_at
+}
+
+input lotteryParameters_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: lotteryParameters_set_input
+
+  """filter the rows which have to be updated"""
+  where: lotteryParameters_bool_exp!
+}
+
+"""
+columns and relationships of "lotteryStatus"
+"""
+type lotteryStatus {
+  value: String!
+}
+
+"""
+aggregated selection of "lotteryStatus"
+"""
+type lotteryStatus_aggregate {
+  aggregate: lotteryStatus_aggregate_fields
+  nodes: [lotteryStatus!]!
+}
+
+"""
+aggregate fields of "lotteryStatus"
+"""
+type lotteryStatus_aggregate_fields {
+  count(columns: [lotteryStatus_select_column!], distinct: Boolean): Int!
+  max: lotteryStatus_max_fields
+  min: lotteryStatus_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "lotteryStatus". All fields are combined with a logical 'AND'.
+"""
+input lotteryStatus_bool_exp {
+  _and: [lotteryStatus_bool_exp!]
+  _not: lotteryStatus_bool_exp
+  _or: [lotteryStatus_bool_exp!]
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "lotteryStatus"
+"""
+enum lotteryStatus_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  lotteryStatus_pkey
+}
+
+enum lotteryStatus_enum {
+  DRAFT
+  PUBLISHED
+}
+
+"""
+Boolean expression to compare columns of type "lotteryStatus_enum". All fields are combined with logical 'AND'.
+"""
+input lotteryStatus_enum_comparison_exp {
+  _eq: lotteryStatus_enum
+  _in: [lotteryStatus_enum!]
+  _is_null: Boolean
+  _neq: lotteryStatus_enum
+  _nin: [lotteryStatus_enum!]
+}
+
+"""
+input type for inserting data into table "lotteryStatus"
+"""
+input lotteryStatus_insert_input {
+  value: String
+}
+
+"""aggregate max on columns"""
+type lotteryStatus_max_fields {
+  value: String
+}
+
+"""aggregate min on columns"""
+type lotteryStatus_min_fields {
+  value: String
+}
+
+"""
+response of any mutation on the table "lotteryStatus"
+"""
+type lotteryStatus_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [lotteryStatus!]!
+}
+
+"""
+on_conflict condition type for table "lotteryStatus"
+"""
+input lotteryStatus_on_conflict {
+  constraint: lotteryStatus_constraint!
+  update_columns: [lotteryStatus_update_column!]! = []
+  where: lotteryStatus_bool_exp
+}
+
+"""Ordering options when selecting data from "lotteryStatus"."""
+input lotteryStatus_order_by {
+  value: order_by
+}
+
+"""primary key columns input for table: lotteryStatus"""
+input lotteryStatus_pk_columns_input {
+  value: String!
+}
+
+"""
+select columns of table "lotteryStatus"
+"""
+enum lotteryStatus_select_column {
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "lotteryStatus"
+"""
+input lotteryStatus_set_input {
+  value: String
+}
+
+"""
+Streaming cursor of the table "lotteryStatus"
+"""
+input lotteryStatus_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: lotteryStatus_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input lotteryStatus_stream_cursor_value_input {
+  value: String
+}
+
+"""
+update columns of table "lotteryStatus"
+"""
+enum lotteryStatus_update_column {
+  """column name"""
+  value
+}
+
+input lotteryStatus_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: lotteryStatus_set_input
+
+  """filter the rows which have to be updated"""
+  where: lotteryStatus_bool_exp!
+}
+
 """mutation root"""
 type mutation_root {
   """Create one asset"""
@@ -13702,6 +14576,38 @@ type mutation_root {
   delete_eventPassOrderSums_by_pk(eventPassId: String!): eventPassOrderSums
 
   """
+  delete data from the table: "eventPassType"
+  """
+  delete_eventPassType(
+    """filter the rows which have to be deleted"""
+    where: eventPassType_bool_exp!
+  ): eventPassType_mutation_response
+
+  """
+  delete single row from the table: "eventPassType"
+  """
+  delete_eventPassType_by_pk(
+    """Type name for event pass."""
+    value: String!
+  ): eventPassType
+
+  """
+  delete data from the table: "eventPassValidationType"
+  """
+  delete_eventPassValidationType(
+    """filter the rows which have to be deleted"""
+    where: eventPassValidationType_bool_exp!
+  ): eventPassValidationType_mutation_response
+
+  """
+  delete single row from the table: "eventPassValidationType"
+  """
+  delete_eventPassValidationType_by_pk(
+    """Type name for event pass validation."""
+    value: String!
+  ): eventPassValidationType
+
+  """
   delete data from the table: "eventStatus"
   """
   delete_eventStatus(
@@ -13796,6 +14702,32 @@ type mutation_root {
   ): kyc
 
   """
+  delete data from the table: "lotteryParameters"
+  """
+  delete_lotteryParameters(
+    """filter the rows which have to be deleted"""
+    where: lotteryParameters_bool_exp!
+  ): lotteryParameters_mutation_response
+
+  """
+  delete single row from the table: "lotteryParameters"
+  """
+  delete_lotteryParameters_by_pk(id: uuid!): lotteryParameters
+
+  """
+  delete data from the table: "lotteryStatus"
+  """
+  delete_lotteryStatus(
+    """filter the rows which have to be deleted"""
+    where: lotteryStatus_bool_exp!
+  ): lotteryStatus_mutation_response
+
+  """
+  delete single row from the table: "lotteryStatus"
+  """
+  delete_lotteryStatus_by_pk(value: String!): lotteryStatus
+
+  """
   delete data from the table: "nftTransfer"
   """
   delete_nftTransfer(
@@ -13835,6 +14767,25 @@ type mutation_root {
   delete_order_by_pk(id: uuid!): order
 
   """
+  delete data from the table: "packEventPassNft"
+  """
+  delete_packEventPassNft(
+    """filter the rows which have to be deleted"""
+    where: packEventPassNft_bool_exp!
+  ): packEventPassNft_mutation_response
+
+  """
+  delete single row from the table: "packEventPassNft"
+  """
+  delete_packEventPassNft_by_pk(
+    """Identifier for the event pass NFT."""
+    eventPassNftId: uuid!
+
+    """Identifier for the pack NFT supply."""
+    packNftSupplyId: uuid!
+  ): packEventPassNft
+
+  """
   delete data from the table: "packNftContract"
   """
   delete_packNftContract(
@@ -13843,9 +14794,48 @@ type mutation_root {
   ): packNftContract_mutation_response
 
   """
+  delete data from the table: "packNftContractEventPass"
+  """
+  delete_packNftContractEventPass(
+    """filter the rows which have to be deleted"""
+    where: packNftContractEventPass_bool_exp!
+  ): packNftContractEventPass_mutation_response
+
+  """
+  delete single row from the table: "packNftContractEventPass"
+  """
+  delete_packNftContractEventPass_by_pk(
+    """
+    Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+    """
+    eventPassId: String!
+
+    """
+    Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+    """
+    packNftContractId: uuid!
+  ): packNftContractEventPass
+
+  """
   delete single row from the table: "packNftContract"
   """
-  delete_packNftContract_by_pk(id: uuid!): packNftContract
+  delete_packNftContract_by_pk(
+    """Unique identifier for each pack NFT contract."""
+    id: uuid!
+  ): packNftContract
+
+  """
+  delete data from the table: "packNftSupply"
+  """
+  delete_packNftSupply(
+    """filter the rows which have to be deleted"""
+    where: packNftSupply_bool_exp!
+  ): packNftSupply_mutation_response
+
+  """
+  delete single row from the table: "packNftSupply"
+  """
+  delete_packNftSupply_by_pk(id: uuid!): packNftSupply
 
   """
   delete data from the table: "packOrderSums"
@@ -14139,6 +15129,50 @@ type mutation_root {
   ): eventPassOrderSums
 
   """
+  insert data into the table: "eventPassType"
+  """
+  insert_eventPassType(
+    """the rows to be inserted"""
+    objects: [eventPassType_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: eventPassType_on_conflict
+  ): eventPassType_mutation_response
+
+  """
+  insert a single row into the table: "eventPassType"
+  """
+  insert_eventPassType_one(
+    """the row to be inserted"""
+    object: eventPassType_insert_input!
+
+    """upsert condition"""
+    on_conflict: eventPassType_on_conflict
+  ): eventPassType
+
+  """
+  insert data into the table: "eventPassValidationType"
+  """
+  insert_eventPassValidationType(
+    """the rows to be inserted"""
+    objects: [eventPassValidationType_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: eventPassValidationType_on_conflict
+  ): eventPassValidationType_mutation_response
+
+  """
+  insert a single row into the table: "eventPassValidationType"
+  """
+  insert_eventPassValidationType_one(
+    """the row to be inserted"""
+    object: eventPassValidationType_insert_input!
+
+    """upsert condition"""
+    on_conflict: eventPassValidationType_on_conflict
+  ): eventPassValidationType
+
+  """
   insert data into the table: "eventStatus"
   """
   insert_eventStatus(
@@ -14249,6 +15283,50 @@ type mutation_root {
   ): kyc
 
   """
+  insert data into the table: "lotteryParameters"
+  """
+  insert_lotteryParameters(
+    """the rows to be inserted"""
+    objects: [lotteryParameters_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: lotteryParameters_on_conflict
+  ): lotteryParameters_mutation_response
+
+  """
+  insert a single row into the table: "lotteryParameters"
+  """
+  insert_lotteryParameters_one(
+    """the row to be inserted"""
+    object: lotteryParameters_insert_input!
+
+    """upsert condition"""
+    on_conflict: lotteryParameters_on_conflict
+  ): lotteryParameters
+
+  """
+  insert data into the table: "lotteryStatus"
+  """
+  insert_lotteryStatus(
+    """the rows to be inserted"""
+    objects: [lotteryStatus_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: lotteryStatus_on_conflict
+  ): lotteryStatus_mutation_response
+
+  """
+  insert a single row into the table: "lotteryStatus"
+  """
+  insert_lotteryStatus_one(
+    """the row to be inserted"""
+    object: lotteryStatus_insert_input!
+
+    """upsert condition"""
+    on_conflict: lotteryStatus_on_conflict
+  ): lotteryStatus
+
+  """
   insert data into the table: "nftTransfer"
   """
   insert_nftTransfer(
@@ -14315,6 +15393,28 @@ type mutation_root {
   ): order
 
   """
+  insert data into the table: "packEventPassNft"
+  """
+  insert_packEventPassNft(
+    """the rows to be inserted"""
+    objects: [packEventPassNft_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: packEventPassNft_on_conflict
+  ): packEventPassNft_mutation_response
+
+  """
+  insert a single row into the table: "packEventPassNft"
+  """
+  insert_packEventPassNft_one(
+    """the row to be inserted"""
+    object: packEventPassNft_insert_input!
+
+    """upsert condition"""
+    on_conflict: packEventPassNft_on_conflict
+  ): packEventPassNft
+
+  """
   insert data into the table: "packNftContract"
   """
   insert_packNftContract(
@@ -14326,6 +15426,28 @@ type mutation_root {
   ): packNftContract_mutation_response
 
   """
+  insert data into the table: "packNftContractEventPass"
+  """
+  insert_packNftContractEventPass(
+    """the rows to be inserted"""
+    objects: [packNftContractEventPass_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: packNftContractEventPass_on_conflict
+  ): packNftContractEventPass_mutation_response
+
+  """
+  insert a single row into the table: "packNftContractEventPass"
+  """
+  insert_packNftContractEventPass_one(
+    """the row to be inserted"""
+    object: packNftContractEventPass_insert_input!
+
+    """upsert condition"""
+    on_conflict: packNftContractEventPass_on_conflict
+  ): packNftContractEventPass
+
+  """
   insert a single row into the table: "packNftContract"
   """
   insert_packNftContract_one(
@@ -14335,6 +15457,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: packNftContract_on_conflict
   ): packNftContract
+
+  """
+  insert data into the table: "packNftSupply"
+  """
+  insert_packNftSupply(
+    """the rows to be inserted"""
+    objects: [packNftSupply_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: packNftSupply_on_conflict
+  ): packNftSupply_mutation_response
+
+  """
+  insert a single row into the table: "packNftSupply"
+  """
+  insert_packNftSupply_one(
+    """the row to be inserted"""
+    object: packNftSupply_insert_input!
+
+    """upsert condition"""
+    on_conflict: packNftSupply_on_conflict
+  ): packNftSupply
 
   """
   insert data into the table: "packOrderSums"
@@ -16052,6 +17196,62 @@ type mutation_root {
   ): [eventPassOrderSums_mutation_response]
 
   """
+  update data of the table: "eventPassType"
+  """
+  update_eventPassType(
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassType_set_input
+
+    """filter the rows which have to be updated"""
+    where: eventPassType_bool_exp!
+  ): eventPassType_mutation_response
+
+  """
+  update single row of the table: "eventPassType"
+  """
+  update_eventPassType_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassType_set_input
+    pk_columns: eventPassType_pk_columns_input!
+  ): eventPassType
+
+  """
+  update multiples rows of table: "eventPassType"
+  """
+  update_eventPassType_many(
+    """updates to execute, in order"""
+    updates: [eventPassType_updates!]!
+  ): [eventPassType_mutation_response]
+
+  """
+  update data of the table: "eventPassValidationType"
+  """
+  update_eventPassValidationType(
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassValidationType_set_input
+
+    """filter the rows which have to be updated"""
+    where: eventPassValidationType_bool_exp!
+  ): eventPassValidationType_mutation_response
+
+  """
+  update single row of the table: "eventPassValidationType"
+  """
+  update_eventPassValidationType_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: eventPassValidationType_set_input
+    pk_columns: eventPassValidationType_pk_columns_input!
+  ): eventPassValidationType
+
+  """
+  update multiples rows of table: "eventPassValidationType"
+  """
+  update_eventPassValidationType_many(
+    """updates to execute, in order"""
+    updates: [eventPassValidationType_updates!]!
+  ): [eventPassValidationType_mutation_response]
+
+  """
   update data of the table: "eventStatus"
   """
   update_eventStatus(
@@ -16192,6 +17392,62 @@ type mutation_root {
   ): [kyc_mutation_response]
 
   """
+  update data of the table: "lotteryParameters"
+  """
+  update_lotteryParameters(
+    """sets the columns of the filtered rows to the given values"""
+    _set: lotteryParameters_set_input
+
+    """filter the rows which have to be updated"""
+    where: lotteryParameters_bool_exp!
+  ): lotteryParameters_mutation_response
+
+  """
+  update single row of the table: "lotteryParameters"
+  """
+  update_lotteryParameters_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: lotteryParameters_set_input
+    pk_columns: lotteryParameters_pk_columns_input!
+  ): lotteryParameters
+
+  """
+  update multiples rows of table: "lotteryParameters"
+  """
+  update_lotteryParameters_many(
+    """updates to execute, in order"""
+    updates: [lotteryParameters_updates!]!
+  ): [lotteryParameters_mutation_response]
+
+  """
+  update data of the table: "lotteryStatus"
+  """
+  update_lotteryStatus(
+    """sets the columns of the filtered rows to the given values"""
+    _set: lotteryStatus_set_input
+
+    """filter the rows which have to be updated"""
+    where: lotteryStatus_bool_exp!
+  ): lotteryStatus_mutation_response
+
+  """
+  update single row of the table: "lotteryStatus"
+  """
+  update_lotteryStatus_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: lotteryStatus_set_input
+    pk_columns: lotteryStatus_pk_columns_input!
+  ): lotteryStatus
+
+  """
+  update multiples rows of table: "lotteryStatus"
+  """
+  update_lotteryStatus_many(
+    """updates to execute, in order"""
+    updates: [lotteryStatus_updates!]!
+  ): [lotteryStatus_mutation_response]
+
+  """
   update data of the table: "nftTransfer"
   """
   update_nftTransfer(
@@ -16288,32 +17544,39 @@ type mutation_root {
   ): [order_mutation_response]
 
   """
+  update data of the table: "packEventPassNft"
+  """
+  update_packEventPassNft(
+    """sets the columns of the filtered rows to the given values"""
+    _set: packEventPassNft_set_input
+
+    """filter the rows which have to be updated"""
+    where: packEventPassNft_bool_exp!
+  ): packEventPassNft_mutation_response
+
+  """
+  update single row of the table: "packEventPassNft"
+  """
+  update_packEventPassNft_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: packEventPassNft_set_input
+    pk_columns: packEventPassNft_pk_columns_input!
+  ): packEventPassNft
+
+  """
+  update multiples rows of table: "packEventPassNft"
+  """
+  update_packEventPassNft_many(
+    """updates to execute, in order"""
+    updates: [packEventPassNft_updates!]!
+  ): [packEventPassNft_mutation_response]
+
+  """
   update data of the table: "packNftContract"
   """
   update_packNftContract(
-    """append existing jsonb value of filtered columns with new jsonb value"""
-    _append: packNftContract_append_input
-
-    """
-    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-    """
-    _delete_at_path: packNftContract_delete_at_path_input
-
-    """
-    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
-    """
-    _delete_elem: packNftContract_delete_elem_input
-
-    """
-    delete key/value pair or string element. key/value pairs are matched based on their key value
-    """
-    _delete_key: packNftContract_delete_key_input
-
     """increments the numeric columns with given value of the filtered values"""
     _inc: packNftContract_inc_input
-
-    """prepend existing jsonb value of filtered columns with new jsonb value"""
-    _prepend: packNftContract_prepend_input
 
     """sets the columns of the filtered rows to the given values"""
     _set: packNftContract_set_input
@@ -16323,32 +17586,45 @@ type mutation_root {
   ): packNftContract_mutation_response
 
   """
+  update data of the table: "packNftContractEventPass"
+  """
+  update_packNftContractEventPass(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: packNftContractEventPass_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: packNftContractEventPass_set_input
+
+    """filter the rows which have to be updated"""
+    where: packNftContractEventPass_bool_exp!
+  ): packNftContractEventPass_mutation_response
+
+  """
+  update single row of the table: "packNftContractEventPass"
+  """
+  update_packNftContractEventPass_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: packNftContractEventPass_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: packNftContractEventPass_set_input
+    pk_columns: packNftContractEventPass_pk_columns_input!
+  ): packNftContractEventPass
+
+  """
+  update multiples rows of table: "packNftContractEventPass"
+  """
+  update_packNftContractEventPass_many(
+    """updates to execute, in order"""
+    updates: [packNftContractEventPass_updates!]!
+  ): [packNftContractEventPass_mutation_response]
+
+  """
   update single row of the table: "packNftContract"
   """
   update_packNftContract_by_pk(
-    """append existing jsonb value of filtered columns with new jsonb value"""
-    _append: packNftContract_append_input
-
-    """
-    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-    """
-    _delete_at_path: packNftContract_delete_at_path_input
-
-    """
-    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
-    """
-    _delete_elem: packNftContract_delete_elem_input
-
-    """
-    delete key/value pair or string element. key/value pairs are matched based on their key value
-    """
-    _delete_key: packNftContract_delete_key_input
-
     """increments the numeric columns with given value of the filtered values"""
     _inc: packNftContract_inc_input
-
-    """prepend existing jsonb value of filtered columns with new jsonb value"""
-    _prepend: packNftContract_prepend_input
 
     """sets the columns of the filtered rows to the given values"""
     _set: packNftContract_set_input
@@ -16362,6 +17638,34 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [packNftContract_updates!]!
   ): [packNftContract_mutation_response]
+
+  """
+  update data of the table: "packNftSupply"
+  """
+  update_packNftSupply(
+    """sets the columns of the filtered rows to the given values"""
+    _set: packNftSupply_set_input
+
+    """filter the rows which have to be updated"""
+    where: packNftSupply_bool_exp!
+  ): packNftSupply_mutation_response
+
+  """
+  update single row of the table: "packNftSupply"
+  """
+  update_packNftSupply_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: packNftSupply_set_input
+    pk_columns: packNftSupply_pk_columns_input!
+  ): packNftSupply
+
+  """
+  update multiples rows of table: "packNftSupply"
+  """
+  update_packNftSupply_many(
+    """updates to execute, in order"""
+    updates: [packNftSupply_updates!]!
+  ): [packNftSupply_mutation_response]
 
   """
   update data of the table: "packOrderSums"
@@ -18474,15 +19778,283 @@ input order_variance_order_by {
   quantity: order_by
 }
 
-"""packNftContract model to manage the NFTs associated with each pack."""
+"""
+Junction table linking pack NFTs to event pass NFTs. Ensures that each event pass NFT is uniquely associated with a pack.
+"""
+type packEventPassNft {
+  """Identifier for the event pass NFT."""
+  eventPassNftId: uuid!
+
+  """Identifier for the pack NFT supply."""
+  packNftSupplyId: uuid!
+}
+
+"""
+aggregated selection of "packEventPassNft"
+"""
+type packEventPassNft_aggregate {
+  aggregate: packEventPassNft_aggregate_fields
+  nodes: [packEventPassNft!]!
+}
+
+input packEventPassNft_aggregate_bool_exp {
+  count: packEventPassNft_aggregate_bool_exp_count
+}
+
+input packEventPassNft_aggregate_bool_exp_count {
+  arguments: [packEventPassNft_select_column!]
+  distinct: Boolean
+  filter: packEventPassNft_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "packEventPassNft"
+"""
+type packEventPassNft_aggregate_fields {
+  count(columns: [packEventPassNft_select_column!], distinct: Boolean): Int!
+  max: packEventPassNft_max_fields
+  min: packEventPassNft_min_fields
+}
+
+"""
+order by aggregate values of table "packEventPassNft"
+"""
+input packEventPassNft_aggregate_order_by {
+  count: order_by
+  max: packEventPassNft_max_order_by
+  min: packEventPassNft_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "packEventPassNft"
+"""
+input packEventPassNft_arr_rel_insert_input {
+  data: [packEventPassNft_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: packEventPassNft_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "packEventPassNft". All fields are combined with a logical 'AND'.
+"""
+input packEventPassNft_bool_exp {
+  _and: [packEventPassNft_bool_exp!]
+  _not: packEventPassNft_bool_exp
+  _or: [packEventPassNft_bool_exp!]
+  eventPassNftId: uuid_comparison_exp
+  packNftSupplyId: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "packEventPassNft"
+"""
+enum packEventPassNft_constraint {
+  """
+  unique or primary key constraint on columns "eventPassNftId"
+  """
+  packEventPassNft_eventPassNftId_key
+
+  """
+  unique or primary key constraint on columns "packNftSupplyId", "eventPassNftId"
+  """
+  packEventPassNft_pkey
+}
+
+"""
+input type for inserting data into table "packEventPassNft"
+"""
+input packEventPassNft_insert_input {
+  """Identifier for the event pass NFT."""
+  eventPassNftId: uuid
+
+  """Identifier for the pack NFT supply."""
+  packNftSupplyId: uuid
+}
+
+"""aggregate max on columns"""
+type packEventPassNft_max_fields {
+  """Identifier for the event pass NFT."""
+  eventPassNftId: uuid
+
+  """Identifier for the pack NFT supply."""
+  packNftSupplyId: uuid
+}
+
+"""
+order by max() on columns of table "packEventPassNft"
+"""
+input packEventPassNft_max_order_by {
+  """Identifier for the event pass NFT."""
+  eventPassNftId: order_by
+
+  """Identifier for the pack NFT supply."""
+  packNftSupplyId: order_by
+}
+
+"""aggregate min on columns"""
+type packEventPassNft_min_fields {
+  """Identifier for the event pass NFT."""
+  eventPassNftId: uuid
+
+  """Identifier for the pack NFT supply."""
+  packNftSupplyId: uuid
+}
+
+"""
+order by min() on columns of table "packEventPassNft"
+"""
+input packEventPassNft_min_order_by {
+  """Identifier for the event pass NFT."""
+  eventPassNftId: order_by
+
+  """Identifier for the pack NFT supply."""
+  packNftSupplyId: order_by
+}
+
+"""
+response of any mutation on the table "packEventPassNft"
+"""
+type packEventPassNft_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [packEventPassNft!]!
+}
+
+"""
+on_conflict condition type for table "packEventPassNft"
+"""
+input packEventPassNft_on_conflict {
+  constraint: packEventPassNft_constraint!
+  update_columns: [packEventPassNft_update_column!]! = []
+  where: packEventPassNft_bool_exp
+}
+
+"""Ordering options when selecting data from "packEventPassNft"."""
+input packEventPassNft_order_by {
+  eventPassNftId: order_by
+  packNftSupplyId: order_by
+}
+
+"""primary key columns input for table: packEventPassNft"""
+input packEventPassNft_pk_columns_input {
+  """Identifier for the event pass NFT."""
+  eventPassNftId: uuid!
+
+  """Identifier for the pack NFT supply."""
+  packNftSupplyId: uuid!
+}
+
+"""
+select columns of table "packEventPassNft"
+"""
+enum packEventPassNft_select_column {
+  """column name"""
+  eventPassNftId
+
+  """column name"""
+  packNftSupplyId
+}
+
+"""
+input type for updating data in table "packEventPassNft"
+"""
+input packEventPassNft_set_input {
+  """Identifier for the event pass NFT."""
+  eventPassNftId: uuid
+
+  """Identifier for the pack NFT supply."""
+  packNftSupplyId: uuid
+}
+
+"""
+Streaming cursor of the table "packEventPassNft"
+"""
+input packEventPassNft_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: packEventPassNft_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input packEventPassNft_stream_cursor_value_input {
+  """Identifier for the event pass NFT."""
+  eventPassNftId: uuid
+
+  """Identifier for the pack NFT supply."""
+  packNftSupplyId: uuid
+}
+
+"""
+update columns of table "packEventPassNft"
+"""
+enum packEventPassNft_update_column {
+  """column name"""
+  eventPassNftId
+
+  """column name"""
+  packNftSupplyId
+}
+
+input packEventPassNft_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: packEventPassNft_set_input
+
+  """filter the rows which have to be updated"""
+  where: packEventPassNft_bool_exp!
+}
+
+"""
+Manages the NFTs associated with each pack, including details like contract address, chain ID, and the contents of each pack.
+"""
 type packNftContract {
+  """Blockchain network identifier where the NFT contract resides."""
   chainId: String!
+
+  """Smart contract address for the NFT collection."""
   contractAddress: String!
   created_at: timestamptz!
-  eventPassIds(
-    """JSON select path"""
-    path: String
-  ): jsonb!
+
+  """An array relationship"""
+  eventPassNftContracts(
+    """distinct select on columns"""
+    distinct_on: [packNftContractEventPass_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftContractEventPass_order_by!]
+
+    """filter the rows returned"""
+    where: packNftContractEventPass_bool_exp
+  ): [packNftContractEventPass!]!
+
+  """An aggregate relationship"""
+  eventPassNftContracts_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packNftContractEventPass_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftContractEventPass_order_by!]
+
+    """filter the rows returned"""
+    where: packNftContractEventPass_bool_exp
+  ): packNftContractEventPass_aggregate!
 
   """An array relationship"""
   eventPassNfts(
@@ -18519,11 +20091,510 @@ type packNftContract {
     """filter the rows returned"""
     where: eventPassNft_bool_exp
   ): eventPassNft_aggregate!
+
+  """Unique identifier for each pack NFT contract."""
   id: uuid!
+
+  """
+  Indicates whether the pack is distributed through an airdrop. True for airdrops, False otherwise.
+  """
+  isAirdrop: Boolean!
+
+  """Identifier for the lottery associated with the pack."""
+  lotteryId: String!
+
+  """Identifier for the organizer responsible for the pack."""
   organizerId: String!
+
+  """Unique identifier for each pack, ensuring no duplicates in the system."""
   packId: String!
+
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Int!
   updated_at: timestamptz!
+}
+
+"""
+This junction table links each pack NFT contract to various event pass NFT contracts, along with the quantity of each event pass type included in the pack. It facilitates the management of event passes bundled within a specific pack.
+"""
+type packNftContractEventPass {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Int!
+
+  """
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+  """
+  eventPassId: String!
+
+  """
+  Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+  """
+  packNftContractId: uuid!
+}
+
+"""
+aggregated selection of "packNftContractEventPass"
+"""
+type packNftContractEventPass_aggregate {
+  aggregate: packNftContractEventPass_aggregate_fields
+  nodes: [packNftContractEventPass!]!
+}
+
+input packNftContractEventPass_aggregate_bool_exp {
+  count: packNftContractEventPass_aggregate_bool_exp_count
+}
+
+input packNftContractEventPass_aggregate_bool_exp_count {
+  arguments: [packNftContractEventPass_select_column!]
+  distinct: Boolean
+  filter: packNftContractEventPass_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "packNftContractEventPass"
+"""
+type packNftContractEventPass_aggregate_fields {
+  avg: packNftContractEventPass_avg_fields
+  count(columns: [packNftContractEventPass_select_column!], distinct: Boolean): Int!
+  max: packNftContractEventPass_max_fields
+  min: packNftContractEventPass_min_fields
+  stddev: packNftContractEventPass_stddev_fields
+  stddev_pop: packNftContractEventPass_stddev_pop_fields
+  stddev_samp: packNftContractEventPass_stddev_samp_fields
+  sum: packNftContractEventPass_sum_fields
+  var_pop: packNftContractEventPass_var_pop_fields
+  var_samp: packNftContractEventPass_var_samp_fields
+  variance: packNftContractEventPass_variance_fields
+}
+
+"""
+order by aggregate values of table "packNftContractEventPass"
+"""
+input packNftContractEventPass_aggregate_order_by {
+  avg: packNftContractEventPass_avg_order_by
+  count: order_by
+  max: packNftContractEventPass_max_order_by
+  min: packNftContractEventPass_min_order_by
+  stddev: packNftContractEventPass_stddev_order_by
+  stddev_pop: packNftContractEventPass_stddev_pop_order_by
+  stddev_samp: packNftContractEventPass_stddev_samp_order_by
+  sum: packNftContractEventPass_sum_order_by
+  var_pop: packNftContractEventPass_var_pop_order_by
+  var_samp: packNftContractEventPass_var_samp_order_by
+  variance: packNftContractEventPass_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "packNftContractEventPass"
+"""
+input packNftContractEventPass_arr_rel_insert_input {
+  data: [packNftContractEventPass_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: packNftContractEventPass_on_conflict
+}
+
+"""aggregate avg on columns"""
+type packNftContractEventPass_avg_fields {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Float
+}
+
+"""
+order by avg() on columns of table "packNftContractEventPass"
+"""
+input packNftContractEventPass_avg_order_by {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "packNftContractEventPass". All fields are combined with a logical 'AND'.
+"""
+input packNftContractEventPass_bool_exp {
+  _and: [packNftContractEventPass_bool_exp!]
+  _not: packNftContractEventPass_bool_exp
+  _or: [packNftContractEventPass_bool_exp!]
+  amount: Int_comparison_exp
+  eventPassId: String_comparison_exp
+  packNftContractId: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "packNftContractEventPass"
+"""
+enum packNftContractEventPass_constraint {
+  """
+  unique or primary key constraint on columns "eventPassId", "packNftContractId"
+  """
+  packNftContractEventPass_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "packNftContractEventPass"
+"""
+input packNftContractEventPass_inc_input {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Int
+}
+
+"""
+input type for inserting data into table "packNftContractEventPass"
+"""
+input packNftContractEventPass_insert_input {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Int
+
+  """
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+  """
+  eventPassId: String
+
+  """
+  Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+  """
+  packNftContractId: uuid
+}
+
+"""aggregate max on columns"""
+type packNftContractEventPass_max_fields {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Int
+
+  """
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+  """
+  eventPassId: String
+
+  """
+  Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+  """
+  packNftContractId: uuid
+}
+
+"""
+order by max() on columns of table "packNftContractEventPass"
+"""
+input packNftContractEventPass_max_order_by {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: order_by
+
+  """
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+  """
+  eventPassId: order_by
+
+  """
+  Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+  """
+  packNftContractId: order_by
+}
+
+"""aggregate min on columns"""
+type packNftContractEventPass_min_fields {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Int
+
+  """
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+  """
+  eventPassId: String
+
+  """
+  Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+  """
+  packNftContractId: uuid
+}
+
+"""
+order by min() on columns of table "packNftContractEventPass"
+"""
+input packNftContractEventPass_min_order_by {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: order_by
+
+  """
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+  """
+  eventPassId: order_by
+
+  """
+  Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+  """
+  packNftContractId: order_by
+}
+
+"""
+response of any mutation on the table "packNftContractEventPass"
+"""
+type packNftContractEventPass_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [packNftContractEventPass!]!
+}
+
+"""
+on_conflict condition type for table "packNftContractEventPass"
+"""
+input packNftContractEventPass_on_conflict {
+  constraint: packNftContractEventPass_constraint!
+  update_columns: [packNftContractEventPass_update_column!]! = []
+  where: packNftContractEventPass_bool_exp
+}
+
+"""Ordering options when selecting data from "packNftContractEventPass"."""
+input packNftContractEventPass_order_by {
+  amount: order_by
+  eventPassId: order_by
+  packNftContractId: order_by
+}
+
+"""primary key columns input for table: packNftContractEventPass"""
+input packNftContractEventPass_pk_columns_input {
+  """
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+  """
+  eventPassId: String!
+
+  """
+  Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+  """
+  packNftContractId: uuid!
+}
+
+"""
+select columns of table "packNftContractEventPass"
+"""
+enum packNftContractEventPass_select_column {
+  """column name"""
+  amount
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  packNftContractId
+}
+
+"""
+input type for updating data in table "packNftContractEventPass"
+"""
+input packNftContractEventPass_set_input {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Int
+
+  """
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+  """
+  eventPassId: String
+
+  """
+  Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+  """
+  packNftContractId: uuid
+}
+
+"""aggregate stddev on columns"""
+type packNftContractEventPass_stddev_fields {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Float
+}
+
+"""
+order by stddev() on columns of table "packNftContractEventPass"
+"""
+input packNftContractEventPass_stddev_order_by {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type packNftContractEventPass_stddev_pop_fields {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Float
+}
+
+"""
+order by stddev_pop() on columns of table "packNftContractEventPass"
+"""
+input packNftContractEventPass_stddev_pop_order_by {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type packNftContractEventPass_stddev_samp_fields {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Float
+}
+
+"""
+order by stddev_samp() on columns of table "packNftContractEventPass"
+"""
+input packNftContractEventPass_stddev_samp_order_by {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: order_by
+}
+
+"""
+Streaming cursor of the table "packNftContractEventPass"
+"""
+input packNftContractEventPass_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: packNftContractEventPass_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input packNftContractEventPass_stream_cursor_value_input {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Int
+
+  """
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+  """
+  eventPassId: String
+
+  """
+  Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+  """
+  packNftContractId: uuid
+}
+
+"""aggregate sum on columns"""
+type packNftContractEventPass_sum_fields {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Int
+}
+
+"""
+order by sum() on columns of table "packNftContractEventPass"
+"""
+input packNftContractEventPass_sum_order_by {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: order_by
+}
+
+"""
+update columns of table "packNftContractEventPass"
+"""
+enum packNftContractEventPass_update_column {
+  """column name"""
+  amount
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  packNftContractId
+}
+
+input packNftContractEventPass_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: packNftContractEventPass_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: packNftContractEventPass_set_input
+
+  """filter the rows which have to be updated"""
+  where: packNftContractEventPass_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type packNftContractEventPass_var_pop_fields {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Float
+}
+
+"""
+order by var_pop() on columns of table "packNftContractEventPass"
+"""
+input packNftContractEventPass_var_pop_order_by {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: order_by
+}
+
+"""aggregate var_samp on columns"""
+type packNftContractEventPass_var_samp_fields {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Float
+}
+
+"""
+order by var_samp() on columns of table "packNftContractEventPass"
+"""
+input packNftContractEventPass_var_samp_order_by {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: order_by
+}
+
+"""aggregate variance on columns"""
+type packNftContractEventPass_variance_fields {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: Float
+}
+
+"""
+order by variance() on columns of table "packNftContractEventPass"
+"""
+input packNftContractEventPass_variance_order_by {
+  """
+  The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract.
+  """
+  amount: order_by
 }
 
 """
@@ -18551,13 +20622,9 @@ type packNftContract_aggregate_fields {
   variance: packNftContract_variance_fields
 }
 
-"""append existing jsonb value of filtered columns with new jsonb value"""
-input packNftContract_append_input {
-  eventPassIds: jsonb
-}
-
 """aggregate avg on columns"""
 type packNftContract_avg_fields {
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Float
 }
 
@@ -18571,10 +20638,13 @@ input packNftContract_bool_exp {
   chainId: String_comparison_exp
   contractAddress: String_comparison_exp
   created_at: timestamptz_comparison_exp
-  eventPassIds: jsonb_comparison_exp
+  eventPassNftContracts: packNftContractEventPass_bool_exp
+  eventPassNftContracts_aggregate: packNftContractEventPass_aggregate_bool_exp
   eventPassNfts: eventPassNft_bool_exp
   eventPassNfts_aggregate: eventPassNft_aggregate_bool_exp
   id: uuid_comparison_exp
+  isAirdrop: Boolean_comparison_exp
+  lotteryId: String_comparison_exp
   organizerId: String_comparison_exp
   packId: String_comparison_exp
   rewardsPerPack: Int_comparison_exp
@@ -18585,6 +20655,11 @@ input packNftContract_bool_exp {
 unique or primary key constraints on table "packNftContract"
 """
 enum packNftContract_constraint {
+  """
+  unique or primary key constraint on columns "packId"
+  """
+  packId_unique
+
   """
   unique or primary key constraint on columns "chainId", "contractAddress"
   """
@@ -18597,30 +20672,10 @@ enum packNftContract_constraint {
 }
 
 """
-delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-"""
-input packNftContract_delete_at_path_input {
-  eventPassIds: [String!]
-}
-
-"""
-delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
-"""
-input packNftContract_delete_elem_input {
-  eventPassIds: Int
-}
-
-"""
-delete key/value pair or string element. key/value pairs are matched based on their key value
-"""
-input packNftContract_delete_key_input {
-  eventPassIds: String
-}
-
-"""
 input type for incrementing numeric columns in table "packNftContract"
 """
 input packNftContract_inc_input {
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Int
 }
 
@@ -18628,38 +20683,85 @@ input packNftContract_inc_input {
 input type for inserting data into table "packNftContract"
 """
 input packNftContract_insert_input {
+  """Blockchain network identifier where the NFT contract resides."""
   chainId: String
+
+  """Smart contract address for the NFT collection."""
   contractAddress: String
   created_at: timestamptz
-  eventPassIds: jsonb
+  eventPassNftContracts: packNftContractEventPass_arr_rel_insert_input
   eventPassNfts: eventPassNft_arr_rel_insert_input
+
+  """Unique identifier for each pack NFT contract."""
   id: uuid
+
+  """
+  Indicates whether the pack is distributed through an airdrop. True for airdrops, False otherwise.
+  """
+  isAirdrop: Boolean
+
+  """Identifier for the lottery associated with the pack."""
+  lotteryId: String
+
+  """Identifier for the organizer responsible for the pack."""
   organizerId: String
+
+  """Unique identifier for each pack, ensuring no duplicates in the system."""
   packId: String
+
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Int
   updated_at: timestamptz
 }
 
 """aggregate max on columns"""
 type packNftContract_max_fields {
+  """Blockchain network identifier where the NFT contract resides."""
   chainId: String
+
+  """Smart contract address for the NFT collection."""
   contractAddress: String
   created_at: timestamptz
+
+  """Unique identifier for each pack NFT contract."""
   id: uuid
+
+  """Identifier for the lottery associated with the pack."""
+  lotteryId: String
+
+  """Identifier for the organizer responsible for the pack."""
   organizerId: String
+
+  """Unique identifier for each pack, ensuring no duplicates in the system."""
   packId: String
+
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Int
   updated_at: timestamptz
 }
 
 """aggregate min on columns"""
 type packNftContract_min_fields {
+  """Blockchain network identifier where the NFT contract resides."""
   chainId: String
+
+  """Smart contract address for the NFT collection."""
   contractAddress: String
   created_at: timestamptz
+
+  """Unique identifier for each pack NFT contract."""
   id: uuid
+
+  """Identifier for the lottery associated with the pack."""
+  lotteryId: String
+
+  """Identifier for the organizer responsible for the pack."""
   organizerId: String
+
+  """Unique identifier for each pack, ensuring no duplicates in the system."""
   packId: String
+
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Int
   updated_at: timestamptz
 }
@@ -18699,9 +20801,11 @@ input packNftContract_order_by {
   chainId: order_by
   contractAddress: order_by
   created_at: order_by
-  eventPassIds: order_by
+  eventPassNftContracts_aggregate: packNftContractEventPass_aggregate_order_by
   eventPassNfts_aggregate: eventPassNft_aggregate_order_by
   id: order_by
+  isAirdrop: order_by
+  lotteryId: order_by
   organizerId: order_by
   packId: order_by
   rewardsPerPack: order_by
@@ -18710,12 +20814,8 @@ input packNftContract_order_by {
 
 """primary key columns input for table: packNftContract"""
 input packNftContract_pk_columns_input {
+  """Unique identifier for each pack NFT contract."""
   id: uuid!
-}
-
-"""prepend existing jsonb value of filtered columns with new jsonb value"""
-input packNftContract_prepend_input {
-  eventPassIds: jsonb
 }
 
 """
@@ -18732,10 +20832,13 @@ enum packNftContract_select_column {
   created_at
 
   """column name"""
-  eventPassIds
+  id
 
   """column name"""
-  id
+  isAirdrop
+
+  """column name"""
+  lotteryId
 
   """column name"""
   organizerId
@@ -18754,29 +20857,50 @@ enum packNftContract_select_column {
 input type for updating data in table "packNftContract"
 """
 input packNftContract_set_input {
+  """Blockchain network identifier where the NFT contract resides."""
   chainId: String
+
+  """Smart contract address for the NFT collection."""
   contractAddress: String
   created_at: timestamptz
-  eventPassIds: jsonb
+
+  """Unique identifier for each pack NFT contract."""
   id: uuid
+
+  """
+  Indicates whether the pack is distributed through an airdrop. True for airdrops, False otherwise.
+  """
+  isAirdrop: Boolean
+
+  """Identifier for the lottery associated with the pack."""
+  lotteryId: String
+
+  """Identifier for the organizer responsible for the pack."""
   organizerId: String
+
+  """Unique identifier for each pack, ensuring no duplicates in the system."""
   packId: String
+
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Int
   updated_at: timestamptz
 }
 
 """aggregate stddev on columns"""
 type packNftContract_stddev_fields {
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Float
 }
 
 """aggregate stddev_pop on columns"""
 type packNftContract_stddev_pop_fields {
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Float
 }
 
 """aggregate stddev_samp on columns"""
 type packNftContract_stddev_samp_fields {
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Float
 }
 
@@ -18793,19 +20917,38 @@ input packNftContract_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input packNftContract_stream_cursor_value_input {
+  """Blockchain network identifier where the NFT contract resides."""
   chainId: String
+
+  """Smart contract address for the NFT collection."""
   contractAddress: String
   created_at: timestamptz
-  eventPassIds: jsonb
+
+  """Unique identifier for each pack NFT contract."""
   id: uuid
+
+  """
+  Indicates whether the pack is distributed through an airdrop. True for airdrops, False otherwise.
+  """
+  isAirdrop: Boolean
+
+  """Identifier for the lottery associated with the pack."""
+  lotteryId: String
+
+  """Identifier for the organizer responsible for the pack."""
   organizerId: String
+
+  """Unique identifier for each pack, ensuring no duplicates in the system."""
   packId: String
+
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Int
   updated_at: timestamptz
 }
 
 """aggregate sum on columns"""
 type packNftContract_sum_fields {
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Int
 }
 
@@ -18823,10 +20966,13 @@ enum packNftContract_update_column {
   created_at
 
   """column name"""
-  eventPassIds
+  id
 
   """column name"""
-  id
+  isAirdrop
+
+  """column name"""
+  lotteryId
 
   """column name"""
   organizerId
@@ -18842,29 +20988,8 @@ enum packNftContract_update_column {
 }
 
 input packNftContract_updates {
-  """append existing jsonb value of filtered columns with new jsonb value"""
-  _append: packNftContract_append_input
-
-  """
-  delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-  """
-  _delete_at_path: packNftContract_delete_at_path_input
-
-  """
-  delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
-  """
-  _delete_elem: packNftContract_delete_elem_input
-
-  """
-  delete key/value pair or string element. key/value pairs are matched based on their key value
-  """
-  _delete_key: packNftContract_delete_key_input
-
   """increments the numeric columns with given value of the filtered values"""
   _inc: packNftContract_inc_input
-
-  """prepend existing jsonb value of filtered columns with new jsonb value"""
-  _prepend: packNftContract_prepend_input
 
   """sets the columns of the filtered rows to the given values"""
   _set: packNftContract_set_input
@@ -18875,17 +21000,457 @@ input packNftContract_updates {
 
 """aggregate var_pop on columns"""
 type packNftContract_var_pop_fields {
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Float
 }
 
 """aggregate var_samp on columns"""
 type packNftContract_var_samp_fields {
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Float
 }
 
 """aggregate variance on columns"""
 type packNftContract_variance_fields {
+  """Number of rewards (or items) contained within each pack."""
   rewardsPerPack: Float
+}
+
+"""
+This table represents the supply details of pack NFTs, tracking the ownership, contents, and metadata associated with each pack.
+"""
+type packNftSupply {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String!
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String!
+  created_at: timestamptz!
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+  id: uuid!
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String!
+
+  """An array relationship"""
+  packEventPassNfts(
+    """distinct select on columns"""
+    distinct_on: [packEventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packEventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: packEventPassNft_bool_exp
+  ): [packEventPassNft!]!
+
+  """An aggregate relationship"""
+  packEventPassNfts_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packEventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packEventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: packEventPassNft_bool_exp
+  ): packEventPassNft_aggregate!
+
+  """A unique identifier for the pack within the platform."""
+  packId: String!
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "packNftSupply"
+"""
+type packNftSupply_aggregate {
+  aggregate: packNftSupply_aggregate_fields
+  nodes: [packNftSupply!]!
+}
+
+"""
+aggregate fields of "packNftSupply"
+"""
+type packNftSupply_aggregate_fields {
+  count(columns: [packNftSupply_select_column!], distinct: Boolean): Int!
+  max: packNftSupply_max_fields
+  min: packNftSupply_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "packNftSupply". All fields are combined with a logical 'AND'.
+"""
+input packNftSupply_bool_exp {
+  _and: [packNftSupply_bool_exp!]
+  _not: packNftSupply_bool_exp
+  _or: [packNftSupply_bool_exp!]
+  chainId: String_comparison_exp
+  contractAddress: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  currentOwnerAddress: String_comparison_exp
+  error: String_comparison_exp
+  id: uuid_comparison_exp
+  lastNftTransferId: uuid_comparison_exp
+  organizerId: String_comparison_exp
+  packEventPassNfts: packEventPassNft_bool_exp
+  packEventPassNfts_aggregate: packEventPassNft_aggregate_bool_exp
+  packId: String_comparison_exp
+  tokenUri: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "packNftSupply"
+"""
+enum packNftSupply_constraint {
+  """
+  unique or primary key constraint on columns "chainId", "contractAddress", "packId"
+  """
+  packNftSupply_contractAddress_chainId_packId_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  packNftSupply_pkey
+}
+
+"""
+input type for inserting data into table "packNftSupply"
+"""
+input packNftSupply_insert_input {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+  id: uuid
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String
+  packEventPassNfts: packEventPassNft_arr_rel_insert_input
+
+  """A unique identifier for the pack within the platform."""
+  packId: String
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type packNftSupply_max_fields {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+  id: uuid
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String
+
+  """A unique identifier for the pack within the platform."""
+  packId: String
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type packNftSupply_min_fields {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+  id: uuid
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String
+
+  """A unique identifier for the pack within the platform."""
+  packId: String
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "packNftSupply"
+"""
+type packNftSupply_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [packNftSupply!]!
+}
+
+"""
+on_conflict condition type for table "packNftSupply"
+"""
+input packNftSupply_on_conflict {
+  constraint: packNftSupply_constraint!
+  update_columns: [packNftSupply_update_column!]! = []
+  where: packNftSupply_bool_exp
+}
+
+"""Ordering options when selecting data from "packNftSupply"."""
+input packNftSupply_order_by {
+  chainId: order_by
+  contractAddress: order_by
+  created_at: order_by
+  currentOwnerAddress: order_by
+  error: order_by
+  id: order_by
+  lastNftTransferId: order_by
+  organizerId: order_by
+  packEventPassNfts_aggregate: packEventPassNft_aggregate_order_by
+  packId: order_by
+  tokenUri: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: packNftSupply"""
+input packNftSupply_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "packNftSupply"
+"""
+enum packNftSupply_select_column {
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  created_at
+
+  """column name"""
+  currentOwnerAddress
+
+  """column name"""
+  error
+
+  """column name"""
+  id
+
+  """column name"""
+  lastNftTransferId
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  packId
+
+  """column name"""
+  tokenUri
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "packNftSupply"
+"""
+input packNftSupply_set_input {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+  id: uuid
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String
+
+  """A unique identifier for the pack within the platform."""
+  packId: String
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""
+Streaming cursor of the table "packNftSupply"
+"""
+input packNftSupply_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: packNftSupply_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input packNftSupply_stream_cursor_value_input {
+  """The specific blockchain or network on which the pack NFT exists."""
+  chainId: String
+
+  """
+  The address of the smart contract representing the pack NFT. Essential for blockchain interactions.
+  """
+  contractAddress: String
+  created_at: timestamptz
+
+  """The blockchain address of the current owner of the pack NFT."""
+  currentOwnerAddress: String
+
+  """
+  Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
+  """
+  error: String
+  id: uuid
+
+  """The reference to the latest transfer record for this pack NFT."""
+  lastNftTransferId: uuid
+
+  """The identifier of the organizer associated with this pack NFT."""
+  organizerId: String
+
+  """A unique identifier for the pack within the platform."""
+  packId: String
+
+  """The URI pointing to the metadata of the pack NFT."""
+  tokenUri: String
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "packNftSupply"
+"""
+enum packNftSupply_update_column {
+  """column name"""
+  chainId
+
+  """column name"""
+  contractAddress
+
+  """column name"""
+  created_at
+
+  """column name"""
+  currentOwnerAddress
+
+  """column name"""
+  error
+
+  """column name"""
+  id
+
+  """column name"""
+  lastNftTransferId
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  packId
+
+  """column name"""
+  tokenUri
+
+  """column name"""
+  updated_at
+}
+
+input packNftSupply_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: packNftSupply_set_input
+
+  """filter the rows which have to be updated"""
+  where: packNftSupply_bool_exp!
 }
 
 """Hold the sums for the Pack Orders"""
@@ -20484,6 +23049,100 @@ type query_root {
   """
   eventPassOrderSums_by_pk(eventPassId: String!): eventPassOrderSums
 
+  """
+  fetch data from the table: "eventPassType"
+  """
+  eventPassType(
+    """distinct select on columns"""
+    distinct_on: [eventPassType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassType_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassType_bool_exp
+  ): [eventPassType!]!
+
+  """
+  fetch aggregated fields from the table: "eventPassType"
+  """
+  eventPassType_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassType_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassType_bool_exp
+  ): eventPassType_aggregate!
+
+  """fetch data from the table: "eventPassType" using primary key columns"""
+  eventPassType_by_pk(
+    """Type name for event pass."""
+    value: String!
+  ): eventPassType
+
+  """
+  fetch data from the table: "eventPassValidationType"
+  """
+  eventPassValidationType(
+    """distinct select on columns"""
+    distinct_on: [eventPassValidationType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassValidationType_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassValidationType_bool_exp
+  ): [eventPassValidationType!]!
+
+  """
+  fetch aggregated fields from the table: "eventPassValidationType"
+  """
+  eventPassValidationType_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassValidationType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassValidationType_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassValidationType_bool_exp
+  ): eventPassValidationType_aggregate!
+
+  """
+  fetch data from the table: "eventPassValidationType" using primary key columns
+  """
+  eventPassValidationType_by_pk(
+    """Type name for event pass validation."""
+    value: String!
+  ): eventPassValidationType
+
   """Retrieve document version"""
   eventPassVersion(where: VersionWhereInput!): DocumentVersion
 
@@ -20869,6 +23528,94 @@ type query_root {
   ): kyc
 
   """
+  fetch data from the table: "lotteryParameters"
+  """
+  lotteryParameters(
+    """distinct select on columns"""
+    distinct_on: [lotteryParameters_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [lotteryParameters_order_by!]
+
+    """filter the rows returned"""
+    where: lotteryParameters_bool_exp
+  ): [lotteryParameters!]!
+
+  """
+  fetch aggregated fields from the table: "lotteryParameters"
+  """
+  lotteryParameters_aggregate(
+    """distinct select on columns"""
+    distinct_on: [lotteryParameters_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [lotteryParameters_order_by!]
+
+    """filter the rows returned"""
+    where: lotteryParameters_bool_exp
+  ): lotteryParameters_aggregate!
+
+  """
+  fetch data from the table: "lotteryParameters" using primary key columns
+  """
+  lotteryParameters_by_pk(id: uuid!): lotteryParameters
+
+  """
+  fetch data from the table: "lotteryStatus"
+  """
+  lotteryStatus(
+    """distinct select on columns"""
+    distinct_on: [lotteryStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [lotteryStatus_order_by!]
+
+    """filter the rows returned"""
+    where: lotteryStatus_bool_exp
+  ): [lotteryStatus!]!
+
+  """
+  fetch aggregated fields from the table: "lotteryStatus"
+  """
+  lotteryStatus_aggregate(
+    """distinct select on columns"""
+    distinct_on: [lotteryStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [lotteryStatus_order_by!]
+
+    """filter the rows returned"""
+    where: lotteryStatus_bool_exp
+  ): lotteryStatus_aggregate!
+
+  """fetch data from the table: "lotteryStatus" using primary key columns"""
+  lotteryStatus_by_pk(value: String!): lotteryStatus
+
+  """
   fetch data from the table: "nftTransfer"
   """
   nftTransfer(
@@ -21092,6 +23839,57 @@ type query_root {
   ): Pack
 
   """
+  fetch data from the table: "packEventPassNft"
+  """
+  packEventPassNft(
+    """distinct select on columns"""
+    distinct_on: [packEventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packEventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: packEventPassNft_bool_exp
+  ): [packEventPassNft!]!
+
+  """
+  fetch aggregated fields from the table: "packEventPassNft"
+  """
+  packEventPassNft_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packEventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packEventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: packEventPassNft_bool_exp
+  ): packEventPassNft_aggregate!
+
+  """
+  fetch data from the table: "packEventPassNft" using primary key columns
+  """
+  packEventPassNft_by_pk(
+    """Identifier for the event pass NFT."""
+    eventPassNftId: uuid!
+
+    """Identifier for the pack NFT supply."""
+    packNftSupplyId: uuid!
+  ): packEventPassNft
+
+  """
   fetch data from the table: "packNftContract"
   """
   packNftContract(
@@ -21110,6 +23908,61 @@ type query_root {
     """filter the rows returned"""
     where: packNftContract_bool_exp
   ): [packNftContract!]!
+
+  """
+  fetch data from the table: "packNftContractEventPass"
+  """
+  packNftContractEventPass(
+    """distinct select on columns"""
+    distinct_on: [packNftContractEventPass_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftContractEventPass_order_by!]
+
+    """filter the rows returned"""
+    where: packNftContractEventPass_bool_exp
+  ): [packNftContractEventPass!]!
+
+  """
+  fetch aggregated fields from the table: "packNftContractEventPass"
+  """
+  packNftContractEventPass_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packNftContractEventPass_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftContractEventPass_order_by!]
+
+    """filter the rows returned"""
+    where: packNftContractEventPass_bool_exp
+  ): packNftContractEventPass_aggregate!
+
+  """
+  fetch data from the table: "packNftContractEventPass" using primary key columns
+  """
+  packNftContractEventPass_by_pk(
+    """
+    Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+    """
+    eventPassId: String!
+
+    """
+    Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+    """
+    packNftContractId: uuid!
+  ): packNftContractEventPass
 
   """
   fetch aggregated fields from the table: "packNftContract"
@@ -21132,7 +23985,53 @@ type query_root {
   ): packNftContract_aggregate!
 
   """fetch data from the table: "packNftContract" using primary key columns"""
-  packNftContract_by_pk(id: uuid!): packNftContract
+  packNftContract_by_pk(
+    """Unique identifier for each pack NFT contract."""
+    id: uuid!
+  ): packNftContract
+
+  """
+  fetch data from the table: "packNftSupply"
+  """
+  packNftSupply(
+    """distinct select on columns"""
+    distinct_on: [packNftSupply_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftSupply_order_by!]
+
+    """filter the rows returned"""
+    where: packNftSupply_bool_exp
+  ): [packNftSupply!]!
+
+  """
+  fetch aggregated fields from the table: "packNftSupply"
+  """
+  packNftSupply_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packNftSupply_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftSupply_order_by!]
+
+    """filter the rows returned"""
+    where: packNftSupply_bool_exp
+  ): packNftSupply_aggregate!
+
+  """fetch data from the table: "packNftSupply" using primary key columns"""
+  packNftSupply_by_pk(id: uuid!): packNftSupply
 
   """
   fetch data from the table: "packOrderSums"
@@ -23314,6 +26213,128 @@ type subscription_root {
   ): [eventPassOrderSums!]!
 
   """
+  fetch data from the table: "eventPassType"
+  """
+  eventPassType(
+    """distinct select on columns"""
+    distinct_on: [eventPassType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassType_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassType_bool_exp
+  ): [eventPassType!]!
+
+  """
+  fetch aggregated fields from the table: "eventPassType"
+  """
+  eventPassType_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassType_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassType_bool_exp
+  ): eventPassType_aggregate!
+
+  """fetch data from the table: "eventPassType" using primary key columns"""
+  eventPassType_by_pk(
+    """Type name for event pass."""
+    value: String!
+  ): eventPassType
+
+  """
+  fetch data from the table in a streaming manner: "eventPassType"
+  """
+  eventPassType_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [eventPassType_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: eventPassType_bool_exp
+  ): [eventPassType!]!
+
+  """
+  fetch data from the table: "eventPassValidationType"
+  """
+  eventPassValidationType(
+    """distinct select on columns"""
+    distinct_on: [eventPassValidationType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassValidationType_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassValidationType_bool_exp
+  ): [eventPassValidationType!]!
+
+  """
+  fetch aggregated fields from the table: "eventPassValidationType"
+  """
+  eventPassValidationType_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eventPassValidationType_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eventPassValidationType_order_by!]
+
+    """filter the rows returned"""
+    where: eventPassValidationType_bool_exp
+  ): eventPassValidationType_aggregate!
+
+  """
+  fetch data from the table: "eventPassValidationType" using primary key columns
+  """
+  eventPassValidationType_by_pk(
+    """Type name for event pass validation."""
+    value: String!
+  ): eventPassValidationType
+
+  """
+  fetch data from the table in a streaming manner: "eventPassValidationType"
+  """
+  eventPassValidationType_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [eventPassValidationType_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: eventPassValidationType_bool_exp
+  ): [eventPassValidationType!]!
+
+  """
   fetch data from the table: "eventStatus"
   """
   eventStatus(
@@ -23628,6 +26649,122 @@ type subscription_root {
   ): [kyc!]!
 
   """
+  fetch data from the table: "lotteryParameters"
+  """
+  lotteryParameters(
+    """distinct select on columns"""
+    distinct_on: [lotteryParameters_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [lotteryParameters_order_by!]
+
+    """filter the rows returned"""
+    where: lotteryParameters_bool_exp
+  ): [lotteryParameters!]!
+
+  """
+  fetch aggregated fields from the table: "lotteryParameters"
+  """
+  lotteryParameters_aggregate(
+    """distinct select on columns"""
+    distinct_on: [lotteryParameters_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [lotteryParameters_order_by!]
+
+    """filter the rows returned"""
+    where: lotteryParameters_bool_exp
+  ): lotteryParameters_aggregate!
+
+  """
+  fetch data from the table: "lotteryParameters" using primary key columns
+  """
+  lotteryParameters_by_pk(id: uuid!): lotteryParameters
+
+  """
+  fetch data from the table in a streaming manner: "lotteryParameters"
+  """
+  lotteryParameters_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [lotteryParameters_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: lotteryParameters_bool_exp
+  ): [lotteryParameters!]!
+
+  """
+  fetch data from the table: "lotteryStatus"
+  """
+  lotteryStatus(
+    """distinct select on columns"""
+    distinct_on: [lotteryStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [lotteryStatus_order_by!]
+
+    """filter the rows returned"""
+    where: lotteryStatus_bool_exp
+  ): [lotteryStatus!]!
+
+  """
+  fetch aggregated fields from the table: "lotteryStatus"
+  """
+  lotteryStatus_aggregate(
+    """distinct select on columns"""
+    distinct_on: [lotteryStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [lotteryStatus_order_by!]
+
+    """filter the rows returned"""
+    where: lotteryStatus_bool_exp
+  ): lotteryStatus_aggregate!
+
+  """fetch data from the table: "lotteryStatus" using primary key columns"""
+  lotteryStatus_by_pk(value: String!): lotteryStatus
+
+  """
+  fetch data from the table in a streaming manner: "lotteryStatus"
+  """
+  lotteryStatus_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [lotteryStatus_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: lotteryStatus_bool_exp
+  ): [lotteryStatus!]!
+
+  """
   fetch data from the table: "nftTransfer"
   """
   nftTransfer(
@@ -23799,6 +26936,71 @@ type subscription_root {
   ): [order!]!
 
   """
+  fetch data from the table: "packEventPassNft"
+  """
+  packEventPassNft(
+    """distinct select on columns"""
+    distinct_on: [packEventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packEventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: packEventPassNft_bool_exp
+  ): [packEventPassNft!]!
+
+  """
+  fetch aggregated fields from the table: "packEventPassNft"
+  """
+  packEventPassNft_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packEventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packEventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: packEventPassNft_bool_exp
+  ): packEventPassNft_aggregate!
+
+  """
+  fetch data from the table: "packEventPassNft" using primary key columns
+  """
+  packEventPassNft_by_pk(
+    """Identifier for the event pass NFT."""
+    eventPassNftId: uuid!
+
+    """Identifier for the pack NFT supply."""
+    packNftSupplyId: uuid!
+  ): packEventPassNft
+
+  """
+  fetch data from the table in a streaming manner: "packEventPassNft"
+  """
+  packEventPassNft_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [packEventPassNft_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: packEventPassNft_bool_exp
+  ): [packEventPassNft!]!
+
+  """
   fetch data from the table: "packNftContract"
   """
   packNftContract(
@@ -23817,6 +27019,75 @@ type subscription_root {
     """filter the rows returned"""
     where: packNftContract_bool_exp
   ): [packNftContract!]!
+
+  """
+  fetch data from the table: "packNftContractEventPass"
+  """
+  packNftContractEventPass(
+    """distinct select on columns"""
+    distinct_on: [packNftContractEventPass_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftContractEventPass_order_by!]
+
+    """filter the rows returned"""
+    where: packNftContractEventPass_bool_exp
+  ): [packNftContractEventPass!]!
+
+  """
+  fetch aggregated fields from the table: "packNftContractEventPass"
+  """
+  packNftContractEventPass_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packNftContractEventPass_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftContractEventPass_order_by!]
+
+    """filter the rows returned"""
+    where: packNftContractEventPass_bool_exp
+  ): packNftContractEventPass_aggregate!
+
+  """
+  fetch data from the table: "packNftContractEventPass" using primary key columns
+  """
+  packNftContractEventPass_by_pk(
+    """
+    Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
+    """
+    eventPassId: String!
+
+    """
+    Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
+    """
+    packNftContractId: uuid!
+  ): packNftContractEventPass
+
+  """
+  fetch data from the table in a streaming manner: "packNftContractEventPass"
+  """
+  packNftContractEventPass_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [packNftContractEventPass_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: packNftContractEventPass_bool_exp
+  ): [packNftContractEventPass!]!
 
   """
   fetch aggregated fields from the table: "packNftContract"
@@ -23839,7 +27110,10 @@ type subscription_root {
   ): packNftContract_aggregate!
 
   """fetch data from the table: "packNftContract" using primary key columns"""
-  packNftContract_by_pk(id: uuid!): packNftContract
+  packNftContract_by_pk(
+    """Unique identifier for each pack NFT contract."""
+    id: uuid!
+  ): packNftContract
 
   """
   fetch data from the table in a streaming manner: "packNftContract"
@@ -23854,6 +27128,63 @@ type subscription_root {
     """filter the rows returned"""
     where: packNftContract_bool_exp
   ): [packNftContract!]!
+
+  """
+  fetch data from the table: "packNftSupply"
+  """
+  packNftSupply(
+    """distinct select on columns"""
+    distinct_on: [packNftSupply_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftSupply_order_by!]
+
+    """filter the rows returned"""
+    where: packNftSupply_bool_exp
+  ): [packNftSupply!]!
+
+  """
+  fetch aggregated fields from the table: "packNftSupply"
+  """
+  packNftSupply_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packNftSupply_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftSupply_order_by!]
+
+    """filter the rows returned"""
+    where: packNftSupply_bool_exp
+  ): packNftSupply_aggregate!
+
+  """fetch data from the table: "packNftSupply" using primary key columns"""
+  packNftSupply_by_pk(id: uuid!): packNftSupply
+
+  """
+  fetch data from the table in a streaming manner: "packNftSupply"
+  """
+  packNftSupply_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [packNftSupply_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: packNftSupply_bool_exp
+  ): [packNftSupply!]!
 
   """
   fetch data from the table: "packOrderSums"

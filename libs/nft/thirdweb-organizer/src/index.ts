@@ -16,12 +16,13 @@ import {
 } from '@nft/types';
 import { ThirdwebSDK, TransactionResultWithId } from '@thirdweb-dev/sdk';
 import * as crypto from 'crypto';
-import { Signer, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import {
   createEventParametersAndWebhook,
   createEventPassNftContract,
   createEventPassNfts,
   createPackNftContract,
+  createPackNftContractEventPasses,
   getEventPassNftContractNfts,
   updateNftsWithPackId,
 } from './action';
@@ -30,13 +31,14 @@ interface CommonProps extends EventPass, EventSmallData {
   address: string;
   chainId: string;
 }
-
+//TODO: get types from @nft/types and pick from PackNftContract from @gql/shared/types
+// + should separate what's coming from Hygraph (name, image, etc) and the settings for the pack contract (rewardsPerPack, etc)
 type Pack = {
-  //TODO: change to Pack from hygraph
   id: string;
   name: string;
   image: string;
   organizerId: string;
+  lotteryId: string;
   eventPassIds: {
     id: string;
     amount: number;
@@ -86,18 +88,11 @@ class PackDeploymentError extends Error {
   }
 }
 
-class NftCollection {
+export class NftCollection {
   private sdk: ThirdwebSDK;
 
-  constructor(signer: Signer) {
-    this.sdk = ThirdwebSDK.fromSigner(signer, env.NEXT_PUBLIC_CHAIN, {
-      clientId: env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID,
-      gasless: {
-        openzeppelin: {
-          relayerUrl: env.NEXT_PUBLIC_OPENZEPPELIN_URL,
-        },
-      },
-    });
+  constructor(sdk: ThirdwebSDK) {
+    this.sdk = sdk;
   }
 
   async getAddressAndChainId(): Promise<[string, number]> {
@@ -445,21 +440,45 @@ class NftCollection {
       } else throw new Error(error);
     }
   }
+}
+
+export class PackCollection {
+  private sdk: ThirdwebSDK;
+  private nftCollection: NftCollection;
+
+  constructor(sdk: ThirdwebSDK) {
+    this.sdk = sdk;
+    this.nftCollection = new NftCollection(sdk);
+  }
 
   async savePackContractIntoDb(props: SavePackContractIntoDbProps) {
     const { chainIdNumber, pack, txResult, selectedNfts } = props;
-    const { id: packId, rewardsPerPack, eventPassIds, organizerId } = pack;
+    const {
+      id: packId,
+      rewardsPerPack,
+      eventPassIds,
+      organizerId,
+      lotteryId,
+    } = pack;
     const packNftContract = await createPackNftContract({
       chainId: chainIdNumber.toString(),
       ...(rewardsPerPack !== undefined && {
         rewardsPerPack,
       }),
-      eventPassIds,
       organizerId,
       packId,
+      lotteryId,
       contractAddress: txResult,
     });
     if (!packNftContract) throw new Error('Error creating packNftContract');
+
+    await createPackNftContractEventPasses(
+      eventPassIds.map((eventPass) => ({
+        packNftContractId: packNftContract.id,
+        eventPassId: eventPass.id,
+        amount: eventPass.amount,
+      })),
+    );
 
     const updates = selectedNfts.map((nft) => {
       return {
@@ -575,6 +594,7 @@ class NftCollection {
       'name',
       'image',
       'eventPassIds',
+      'lotteryId',
       'organizerId',
     ];
 
@@ -591,7 +611,6 @@ class NftCollection {
       }
     });
   }
-
   async deployAPack(pack: Pack) {
     try {
       this.validateDeployAPackInputs(pack);
@@ -599,7 +618,8 @@ class NftCollection {
       const { selectedNfts, approvalData } =
         await this.getSelectedNftsFromPack(pack);
 
-      const [address, chainIdNumber] = await this.getAddressAndChainId();
+      const [address, chainIdNumber] =
+        await this.nftCollection.getAddressAndChainId();
 
       const txResult = await this.deployAndCreatePack({
         address,
@@ -621,5 +641,3 @@ class NftCollection {
     }
   }
 }
-
-export default NftCollection;

@@ -16,6 +16,7 @@ import type {
   EventParameters_Insert_Input,
   EventPassNftContract_Insert_Input,
   EventPassNft_Insert_Input,
+  PackNftContractEventPass_Insert_Input,
   PackNftContract_Insert_Input,
 } from '@gql/shared/types';
 import { Locale, Stage } from '@gql/shared/types';
@@ -37,6 +38,13 @@ export async function createPackNftContract(
 ) {
   const data = await adminSdk.CreatePackNftContract({ object });
   return data?.insert_packNftContract_one;
+}
+
+export async function createPackNftContractEventPasses(
+  objects: PackNftContractEventPass_Insert_Input[],
+) {
+  const data = await adminSdk.CreatePackNftContractEventPasses({ objects });
+  return data?.insert_packNftContractEventPass || null;
 }
 
 export async function updateNftsWithPackId(

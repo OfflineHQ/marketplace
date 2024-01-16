@@ -873,7 +873,6 @@ ${EventParametersFieldsFragmentDoc}`;
     id
     chainId
     contractAddress
-    eventPassIds
     organizerId
     rewardsPerPack
     packId
@@ -888,13 +887,28 @@ ${EventParametersFieldsFragmentDoc}`;
     rewardsPerPack
     organizerId
     contractAddress
-    eventPassIds
+    lotteryId
+    eventPassNftContracts {
+      eventPassId
+      amount
+    }
     eventPassNfts {
       tokenId
       contractAddress
       currentOwnerAddress
       eventPassId
       packId
+    }
+  }
+}
+    `;
+ const CreatePackNftContractEventPassesDocument = `
+    mutation CreatePackNftContractEventPasses($objects: [packNftContractEventPass_insert_input!]!) {
+  insert_packNftContractEventPass(objects: $objects) {
+    returning {
+      packNftContractId
+      eventPassId
+      amount
     }
   }
 }
@@ -1252,6 +1266,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetPackNftContractFromPackId(variables?: Types.GetPackNftContractFromPackIdQueryVariables, options?: C): Promise<Types.GetPackNftContractFromPackIdQuery> {
       return requester<Types.GetPackNftContractFromPackIdQuery, Types.GetPackNftContractFromPackIdQueryVariables>(GetPackNftContractFromPackIdDocument, variables, options) as Promise<Types.GetPackNftContractFromPackIdQuery>;
+    },
+    CreatePackNftContractEventPasses(variables: Types.CreatePackNftContractEventPassesMutationVariables, options?: C): Promise<Types.CreatePackNftContractEventPassesMutation> {
+      return requester<Types.CreatePackNftContractEventPassesMutation, Types.CreatePackNftContractEventPassesMutationVariables>(CreatePackNftContractEventPassesDocument, variables, options) as Promise<Types.CreatePackNftContractEventPassesMutation>;
     },
     CreatePassAmount(variables: Types.CreatePassAmountMutationVariables, options?: C): Promise<Types.CreatePassAmountMutation> {
       return requester<Types.CreatePassAmountMutation, Types.CreatePassAmountMutationVariables>(CreatePassAmountDocument, variables, options) as Promise<Types.CreatePassAmountMutation>;

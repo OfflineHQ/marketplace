@@ -1,57 +1,47 @@
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
-import NftCollection from './index';
+import { ThirdwebSDK } from '@thirdweb-dev/sdk';
+import { NftCollection } from './index';
 
-jest.mock('@thirdweb-dev/sdk', () => {
-  const mockSigner = {
-    getAddress: jest.fn().mockResolvedValue('mocked_address'),
-    getChainId: jest.fn().mockResolvedValue(1),
-  };
+const mockSigner = {
+  getAddress: jest.fn().mockResolvedValue('mocked_address'),
+  getChainId: jest.fn().mockResolvedValue(1),
+};
 
-  const mockDeployer = {
-    deployBuiltInContract: jest
+const mockDeployer = {
+  deployBuiltInContract: jest.fn().mockResolvedValue('mocked_contract_address'),
+};
+const mockContract = {
+  erc721: {
+    lazyMint: jest
       .fn()
-      .mockResolvedValue('mocked_contract_address'),
-  };
-
-  const mockContract = {
-    erc721: {
-      lazyMint: jest
-        .fn()
-        .mockResolvedValue([{ data: () => ({ uri: 'mocked_uri' }) }]),
-      revealer: {
-        createDelayedRevealBatch: jest.fn(),
-      },
-      claimConditions: {
-        set: jest.fn(),
-      },
-      getAll: jest
-        .fn()
-        .mockResolvedValue([{ metadata: { uri: 'mocked_uri' } }]),
+      .mockResolvedValue([{ data: () => ({ uri: 'mocked_uri' }) }]),
+    revealer: {
+      createDelayedRevealBatch: jest.fn(),
     },
-    getAddress: jest.fn().mockReturnValue('mocked_contract_address'),
-  };
-
-  return {
-    ThirdwebSDK: {
-      fromSigner: jest.fn().mockReturnValue({
-        wallet: mockSigner,
-        deployer: mockDeployer,
-        getContract: jest.fn().mockResolvedValue(mockContract),
-      }),
+    claimConditions: {
+      set: jest.fn(),
     },
-  };
-});
+    getAll: jest.fn().mockResolvedValue([{ metadata: { uri: 'mocked_uri' } }]),
+  },
+  getAddress: jest.fn().mockReturnValue('mocked_contract_address'),
+};
+
+jest.mock('@thirdweb-dev/sdk');
+
+const mockSdk = {
+  wallet: mockSigner,
+  deployer: mockDeployer,
+  getContract: jest.fn().mockResolvedValue(mockContract),
+} as any as ThirdwebSDK;
 
 describe('NftCollection', () => {
   describe('deployACollection', () => {
     let nftCollection;
     let mockEventPass;
     let mockEventData;
-    let mockSigner;
 
     beforeAll(() => {
-      mockSigner = {};
-      nftCollection = new NftCollection(mockSigner);
+      nftCollection = new NftCollection(mockSdk);
       mockEventPass = {};
       mockEventData = {};
       nftCollection.getCommonProps = jest.fn().mockImplementation(() => {
@@ -123,11 +113,9 @@ describe('NftCollection', () => {
   describe('createMetadatas', () => {
     let nftCollection;
     let mockMetadata;
-    let mockSigner;
 
     beforeAll(() => {
-      mockSigner = {};
-      nftCollection = new NftCollection(mockSigner);
+      nftCollection = new NftCollection(mockSdk);
       mockMetadata = {
         name: 'Test Name',
         description: 'Test Description',
@@ -167,11 +155,9 @@ describe('NftCollection', () => {
 
   describe('createHasuraMetadatas', () => {
     let nftCollection;
-    let mockSigner;
 
     beforeAll(() => {
-      mockSigner = {};
-      nftCollection = new NftCollection(mockSigner);
+      nftCollection = new NftCollection(mockSdk);
     });
 
     it('should create correct number of Hasura metadatas for variable length', async () => {
@@ -244,12 +230,9 @@ describe('NftCollection', () => {
 
   describe('deployDropContractAndPrepareMetadata', () => {
     let nftCollection;
-    let mockSigner;
     let mockProps;
 
     beforeAll(() => {
-      mockSigner = {};
-      nftCollection = new NftCollection(mockSigner);
       mockProps = {
         name: 'Test Name',
         address: 'Test Address',
@@ -267,6 +250,8 @@ describe('NftCollection', () => {
     });
 
     it('should deploy a contract and prepare metadata', async () => {
+      nftCollection = new NftCollection(mockSdk);
+
       const result =
         await nftCollection.deployDropContractAndPrepareMetadata(mockProps);
 
@@ -277,12 +262,18 @@ describe('NftCollection', () => {
     });
 
     it('should throw a CollectionDeploymentError if an error occurs', async () => {
-      nftCollection.sdk.deployer.deployBuiltInContract = jest
-        .fn()
-        .mockImplementationOnce(() => {
-          throw new Error('Test error');
-        });
-
+      const mockSdkError = {
+        deployer: {
+          deployBuiltInContract: jest
+            .fn()
+            .mockImplementationOnce(() => {
+              throw new Error('Test error');
+            })
+            .mockResolvedValue('mocked_contract_address'),
+        },
+        getContract: jest.fn().mockResolvedValue(mockContract),
+      } as any as ThirdwebSDK;
+      nftCollection = new NftCollection(mockSdkError);
       await expect(
         nftCollection.deployDropContractAndPrepareMetadata(mockProps),
       ).rejects.toThrow('Error deploying a drop contract : Test error');

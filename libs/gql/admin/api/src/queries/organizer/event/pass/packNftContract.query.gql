@@ -5,7 +5,11 @@ query GetPackNftContractFromPackId($packId: String) @cached {
     rewardsPerPack
     organizerId
     contractAddress
-    eventPassIds
+    lotteryId
+    eventPassNftContracts {
+      eventPassId
+      amount
+    }
     eventPassNfts {
       tokenId
       contractAddress
