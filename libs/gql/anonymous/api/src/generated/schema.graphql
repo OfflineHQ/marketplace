@@ -1446,14 +1446,6 @@ type Event implements Entity & Node {
     locales: [Locale!]
   ): Organizer
 
-  """
-  Whether the event is public (visible to anyone) or private (for instance visible only to owner of specific NFTs)
-  """
-  public: Boolean
-
-  """Whether the event is published or not (visible only to organizers)"""
-  published: Boolean!
-
   """The time the document was published. Null on documents in draft stage."""
   publishedAt(
     """
@@ -1588,8 +1580,6 @@ input EventCreateInput {
   """
   localizations: EventCreateLocalizationsInput
   organizer: OrganizerCreateOneInlineInput
-  public: Boolean
-  published: Boolean!
   slug: String!
 
   """title input for default locale (en)"""
@@ -2011,11 +2001,6 @@ input EventManyWhereInput {
   """All values starting with the given string."""
   id_starts_with: ID
   organizer: OrganizerWhereInput
-  public: Boolean
-
-  """Any other value that exists and is not equal to the given value."""
-  public_not: Boolean
-  published: Boolean
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -2039,9 +2024,6 @@ input EventManyWhereInput {
   """All values that are not contained in given list."""
   publishedAt_not_in: [DateTime]
   publishedBy: UserWhereInput
-
-  """Any other value that exists and is not equal to the given value."""
-  published_not: Boolean
   scheduledIn_every: ScheduledOperationWhereInput
   scheduledIn_none: ScheduledOperationWhereInput
   scheduledIn_some: ScheduledOperationWhereInput
@@ -2105,12 +2087,8 @@ enum EventOrderByInput {
   heroImageClasses_DESC
   id_ASC
   id_DESC
-  public_ASC
-  public_DESC
   publishedAt_ASC
   publishedAt_DESC
-  published_ASC
-  published_DESC
   slug_ASC
   slug_DESC
   title_ASC
@@ -4140,8 +4118,6 @@ input EventUpdateInput {
   """Manage document localizations"""
   localizations: EventUpdateLocalizationsInput
   organizer: OrganizerUpdateOneInlineInput
-  public: Boolean
-  published: Boolean
   slug: String
 
   """title input for default locale (en)"""
@@ -4202,8 +4178,6 @@ input EventUpdateManyInput {
 
   """Optional updates to localizations"""
   localizations: EventUpdateManyLocalizationsInput
-  public: Boolean
-  published: Boolean
 
   """title input for default locale (en)"""
   title: String
@@ -4387,11 +4361,6 @@ input EventWhereInput {
   """All values starting with the given string."""
   id_starts_with: ID
   organizer: OrganizerWhereInput
-  public: Boolean
-
-  """Any other value that exists and is not equal to the given value."""
-  public_not: Boolean
-  published: Boolean
   publishedAt: DateTime
 
   """All values greater than the given value."""
@@ -4415,9 +4384,6 @@ input EventWhereInput {
   """All values that are not contained in given list."""
   publishedAt_not_in: [DateTime]
   publishedBy: UserWhereInput
-
-  """Any other value that exists and is not equal to the given value."""
-  published_not: Boolean
   scheduledIn_every: ScheduledOperationWhereInput
   scheduledIn_none: ScheduledOperationWhereInput
   scheduledIn_some: ScheduledOperationWhereInput
