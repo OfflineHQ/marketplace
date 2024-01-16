@@ -11,3 +11,9 @@ array_relationships:
         remote_table:
           name: eventPassNft
           schema: public
+computed_fields:
+  - name: eventPassNftContracts
+    definition:
+      function:
+        name: get_event_pass_nft_contracts_for_pack
+        schema: public
