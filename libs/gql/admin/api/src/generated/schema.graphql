@@ -14806,9 +14806,9 @@ type mutation_root {
   """
   delete_packNftContractEventPass_by_pk(
     """
-    Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+    Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
     """
-    eventPassNftContractId: uuid!
+    eventPassId: String!
 
     """
     Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
@@ -19797,6 +19797,17 @@ type packEventPassNft_aggregate {
   nodes: [packEventPassNft!]!
 }
 
+input packEventPassNft_aggregate_bool_exp {
+  count: packEventPassNft_aggregate_bool_exp_count
+}
+
+input packEventPassNft_aggregate_bool_exp_count {
+  arguments: [packEventPassNft_select_column!]
+  distinct: Boolean
+  filter: packEventPassNft_bool_exp
+  predicate: Int_comparison_exp!
+}
+
 """
 aggregate fields of "packEventPassNft"
 """
@@ -19804,6 +19815,25 @@ type packEventPassNft_aggregate_fields {
   count(columns: [packEventPassNft_select_column!], distinct: Boolean): Int!
   max: packEventPassNft_max_fields
   min: packEventPassNft_min_fields
+}
+
+"""
+order by aggregate values of table "packEventPassNft"
+"""
+input packEventPassNft_aggregate_order_by {
+  count: order_by
+  max: packEventPassNft_max_order_by
+  min: packEventPassNft_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "packEventPassNft"
+"""
+input packEventPassNft_arr_rel_insert_input {
+  data: [packEventPassNft_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: packEventPassNft_on_conflict
 }
 
 """
@@ -19852,6 +19882,17 @@ type packEventPassNft_max_fields {
   packNftSupplyId: uuid
 }
 
+"""
+order by max() on columns of table "packEventPassNft"
+"""
+input packEventPassNft_max_order_by {
+  """Identifier for the event pass NFT."""
+  eventPassNftId: order_by
+
+  """Identifier for the pack NFT supply."""
+  packNftSupplyId: order_by
+}
+
 """aggregate min on columns"""
 type packEventPassNft_min_fields {
   """Identifier for the event pass NFT."""
@@ -19859,6 +19900,17 @@ type packEventPassNft_min_fields {
 
   """Identifier for the pack NFT supply."""
   packNftSupplyId: uuid
+}
+
+"""
+order by min() on columns of table "packEventPassNft"
+"""
+input packEventPassNft_min_order_by {
+  """Identifier for the event pass NFT."""
+  eventPassNftId: order_by
+
+  """Identifier for the pack NFT supply."""
+  packNftSupplyId: order_by
 }
 
 """
@@ -19968,9 +20020,7 @@ type packNftContract {
   contractAddress: String!
   created_at: timestamptz!
 
-  """
-  A computed field, executes function "get_event_pass_nft_contracts_for_pack"
-  """
+  """An array relationship"""
   eventPassNftContracts(
     """distinct select on columns"""
     distinct_on: [packNftContractEventPass_select_column!]
@@ -19986,7 +20036,25 @@ type packNftContract {
 
     """filter the rows returned"""
     where: packNftContractEventPass_bool_exp
-  ): [packNftContractEventPass!]
+  ): [packNftContractEventPass!]!
+
+  """An aggregate relationship"""
+  eventPassNftContracts_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packNftContractEventPass_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packNftContractEventPass_order_by!]
+
+    """filter the rows returned"""
+    where: packNftContractEventPass_bool_exp
+  ): packNftContractEventPass_aggregate!
 
   """An array relationship"""
   eventPassNfts(
@@ -20056,9 +20124,9 @@ type packNftContractEventPass {
   amount: Int!
 
   """
-  Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
   """
-  eventPassNftContractId: uuid!
+  eventPassId: String!
 
   """
   Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
@@ -20072,6 +20140,17 @@ aggregated selection of "packNftContractEventPass"
 type packNftContractEventPass_aggregate {
   aggregate: packNftContractEventPass_aggregate_fields
   nodes: [packNftContractEventPass!]!
+}
+
+input packNftContractEventPass_aggregate_bool_exp {
+  count: packNftContractEventPass_aggregate_bool_exp_count
+}
+
+input packNftContractEventPass_aggregate_bool_exp_count {
+  arguments: [packNftContractEventPass_select_column!]
+  distinct: Boolean
+  filter: packNftContractEventPass_bool_exp
+  predicate: Int_comparison_exp!
 }
 
 """
@@ -20108,6 +20187,16 @@ input packNftContractEventPass_aggregate_order_by {
   variance: packNftContractEventPass_variance_order_by
 }
 
+"""
+input type for inserting array relation for remote table "packNftContractEventPass"
+"""
+input packNftContractEventPass_arr_rel_insert_input {
+  data: [packNftContractEventPass_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: packNftContractEventPass_on_conflict
+}
+
 """aggregate avg on columns"""
 type packNftContractEventPass_avg_fields {
   """
@@ -20134,7 +20223,7 @@ input packNftContractEventPass_bool_exp {
   _not: packNftContractEventPass_bool_exp
   _or: [packNftContractEventPass_bool_exp!]
   amount: Int_comparison_exp
-  eventPassNftContractId: uuid_comparison_exp
+  eventPassId: String_comparison_exp
   packNftContractId: uuid_comparison_exp
 }
 
@@ -20143,7 +20232,7 @@ unique or primary key constraints on table "packNftContractEventPass"
 """
 enum packNftContractEventPass_constraint {
   """
-  unique or primary key constraint on columns "eventPassNftContractId", "packNftContractId"
+  unique or primary key constraint on columns "eventPassId", "packNftContractId"
   """
   packNftContractEventPass_pkey
 }
@@ -20168,9 +20257,9 @@ input packNftContractEventPass_insert_input {
   amount: Int
 
   """
-  Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
   """
-  eventPassNftContractId: uuid
+  eventPassId: String
 
   """
   Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
@@ -20186,9 +20275,9 @@ type packNftContractEventPass_max_fields {
   amount: Int
 
   """
-  Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
   """
-  eventPassNftContractId: uuid
+  eventPassId: String
 
   """
   Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
@@ -20206,9 +20295,9 @@ input packNftContractEventPass_max_order_by {
   amount: order_by
 
   """
-  Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
   """
-  eventPassNftContractId: order_by
+  eventPassId: order_by
 
   """
   Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
@@ -20224,9 +20313,9 @@ type packNftContractEventPass_min_fields {
   amount: Int
 
   """
-  Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
   """
-  eventPassNftContractId: uuid
+  eventPassId: String
 
   """
   Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
@@ -20244,9 +20333,9 @@ input packNftContractEventPass_min_order_by {
   amount: order_by
 
   """
-  Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
   """
-  eventPassNftContractId: order_by
+  eventPassId: order_by
 
   """
   Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
@@ -20277,16 +20366,16 @@ input packNftContractEventPass_on_conflict {
 """Ordering options when selecting data from "packNftContractEventPass"."""
 input packNftContractEventPass_order_by {
   amount: order_by
-  eventPassNftContractId: order_by
+  eventPassId: order_by
   packNftContractId: order_by
 }
 
 """primary key columns input for table: packNftContractEventPass"""
 input packNftContractEventPass_pk_columns_input {
   """
-  Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
   """
-  eventPassNftContractId: uuid!
+  eventPassId: String!
 
   """
   Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
@@ -20302,7 +20391,7 @@ enum packNftContractEventPass_select_column {
   amount
 
   """column name"""
-  eventPassNftContractId
+  eventPassId
 
   """column name"""
   packNftContractId
@@ -20318,9 +20407,9 @@ input packNftContractEventPass_set_input {
   amount: Int
 
   """
-  Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
   """
-  eventPassNftContractId: uuid
+  eventPassId: String
 
   """
   Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
@@ -20401,9 +20490,9 @@ input packNftContractEventPass_stream_cursor_value_input {
   amount: Int
 
   """
-  Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+  Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
   """
-  eventPassNftContractId: uuid
+  eventPassId: String
 
   """
   Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
@@ -20437,7 +20526,7 @@ enum packNftContractEventPass_update_column {
   amount
 
   """column name"""
-  eventPassNftContractId
+  eventPassId
 
   """column name"""
   packNftContractId
@@ -20550,6 +20639,7 @@ input packNftContract_bool_exp {
   contractAddress: String_comparison_exp
   created_at: timestamptz_comparison_exp
   eventPassNftContracts: packNftContractEventPass_bool_exp
+  eventPassNftContracts_aggregate: packNftContractEventPass_aggregate_bool_exp
   eventPassNfts: eventPassNft_bool_exp
   eventPassNfts_aggregate: eventPassNft_aggregate_bool_exp
   id: uuid_comparison_exp
@@ -20599,6 +20689,7 @@ input packNftContract_insert_input {
   """Smart contract address for the NFT collection."""
   contractAddress: String
   created_at: timestamptz
+  eventPassNftContracts: packNftContractEventPass_arr_rel_insert_input
   eventPassNfts: eventPassNft_arr_rel_insert_input
 
   """Unique identifier for each pack NFT contract."""
@@ -20945,11 +21036,6 @@ type packNftSupply {
   Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
   """
   error: String
-
-  """
-  A computed field, executes function "get_event_pass_nfts_for_pack"
-  """
-  eventPassNfts: uuid
   id: uuid!
 
   """The reference to the latest transfer record for this pack NFT."""
@@ -20957,6 +21043,42 @@ type packNftSupply {
 
   """The identifier of the organizer associated with this pack NFT."""
   organizerId: String!
+
+  """An array relationship"""
+  packEventPassNfts(
+    """distinct select on columns"""
+    distinct_on: [packEventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packEventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: packEventPassNft_bool_exp
+  ): [packEventPassNft!]!
+
+  """An aggregate relationship"""
+  packEventPassNfts_aggregate(
+    """distinct select on columns"""
+    distinct_on: [packEventPassNft_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [packEventPassNft_order_by!]
+
+    """filter the rows returned"""
+    where: packEventPassNft_bool_exp
+  ): packEventPassNft_aggregate!
 
   """A unique identifier for the pack within the platform."""
   packId: String!
@@ -20995,10 +21117,11 @@ input packNftSupply_bool_exp {
   created_at: timestamptz_comparison_exp
   currentOwnerAddress: String_comparison_exp
   error: String_comparison_exp
-  eventPassNfts: uuid_comparison_exp
   id: uuid_comparison_exp
   lastNftTransferId: uuid_comparison_exp
   organizerId: String_comparison_exp
+  packEventPassNfts: packEventPassNft_bool_exp
+  packEventPassNfts_aggregate: packEventPassNft_aggregate_bool_exp
   packId: String_comparison_exp
   tokenUri: String_comparison_exp
   updated_at: timestamptz_comparison_exp
@@ -21046,6 +21169,7 @@ input packNftSupply_insert_input {
 
   """The identifier of the organizer associated with this pack NFT."""
   organizerId: String
+  packEventPassNfts: packEventPassNft_arr_rel_insert_input
 
   """A unique identifier for the pack within the platform."""
   packId: String
@@ -21073,11 +21197,6 @@ type packNftSupply_max_fields {
   Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
   """
   error: String
-
-  """
-  A computed field, executes function "get_event_pass_nfts_for_pack"
-  """
-  eventPassNfts: uuid
   id: uuid
 
   """The reference to the latest transfer record for this pack NFT."""
@@ -21112,11 +21231,6 @@ type packNftSupply_min_fields {
   Any error messages related to this pack NFT, particularly during transactions or metadata retrieval.
   """
   error: String
-
-  """
-  A computed field, executes function "get_event_pass_nfts_for_pack"
-  """
-  eventPassNfts: uuid
   id: uuid
 
   """The reference to the latest transfer record for this pack NFT."""
@@ -21160,10 +21274,10 @@ input packNftSupply_order_by {
   created_at: order_by
   currentOwnerAddress: order_by
   error: order_by
-  eventPassNfts: order_by
   id: order_by
   lastNftTransferId: order_by
   organizerId: order_by
+  packEventPassNfts_aggregate: packEventPassNft_aggregate_order_by
   packId: order_by
   tokenUri: order_by
   updated_at: order_by
@@ -23840,9 +23954,9 @@ type query_root {
   """
   packNftContractEventPass_by_pk(
     """
-    Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+    Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
     """
-    eventPassNftContractId: uuid!
+    eventPassId: String!
 
     """
     Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.
@@ -26951,9 +27065,9 @@ type subscription_root {
   """
   packNftContractEventPass_by_pk(
     """
-    Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack.
+    Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table.
     """
-    eventPassNftContractId: uuid!
+    eventPassId: String!
 
     """
     Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details.

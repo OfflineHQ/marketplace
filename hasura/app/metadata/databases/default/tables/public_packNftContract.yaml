@@ -2,6 +2,13 @@ table:
   name: packNftContract
   schema: public
 array_relationships:
+  - name: eventPassNftContracts
+    using:
+      foreign_key_constraint_on:
+        column: packNftContractId
+        table:
+          name: packNftContractEventPass
+          schema: public
   - name: eventPassNfts
     using:
       manual_configuration:
@@ -11,9 +18,3 @@ array_relationships:
         remote_table:
           name: eventPassNft
           schema: public
-computed_fields:
-  - name: eventPassNftContracts
-    definition:
-      function:
-        name: get_event_pass_nft_contracts_for_pack
-        schema: public
