@@ -10,7 +10,7 @@
     "format:write": "nx format:write",
     "format:check": "nx format:check",
     "all:test-integration": "pnpm docker:test && nx run-many --target=test-integration --all --parallel=false -- --runInBand",
-    "all:e2e": "nx run-many --target=e2e --all",
+    "all:e2e": "nx run-many --target=e2e --all --parallel=false",
     "update:nx": "nx migrate latest && pnpm install && nx migrate --run-migrations",
     "dep-graph": "nx dep-graph",
     "nx-graph-static": "nx graph --file=static/nx-graph/index.html",
