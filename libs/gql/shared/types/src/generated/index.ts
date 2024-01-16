@@ -11612,7 +11612,7 @@ export type Mutation_RootDelete_PackNftContractEventPassArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_PackNftContractEventPass_By_PkArgs = {
-  eventPassNftContractId: Scalars['uuid'];
+  eventPassId: Scalars['String'];
   packNftContractId: Scalars['uuid'];
 };
 
@@ -14890,6 +14890,17 @@ export type PackEventPassNft_Aggregate = {
   nodes: Array<PackEventPassNft>;
 };
 
+export type PackEventPassNft_Aggregate_Bool_Exp = {
+  count?: InputMaybe<PackEventPassNft_Aggregate_Bool_Exp_Count>;
+};
+
+export type PackEventPassNft_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<PackEventPassNft_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "packEventPassNft" */
 export type PackEventPassNft_Aggregate_Fields = {
   __typename?: 'packEventPassNft_aggregate_fields';
@@ -14903,6 +14914,20 @@ export type PackEventPassNft_Aggregate_Fields = {
 export type PackEventPassNft_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
   distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "packEventPassNft" */
+export type PackEventPassNft_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<PackEventPassNft_Max_Order_By>;
+  min?: InputMaybe<PackEventPassNft_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "packEventPassNft" */
+export type PackEventPassNft_Arr_Rel_Insert_Input = {
+  data: Array<PackEventPassNft_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<PackEventPassNft_On_Conflict>;
 };
 
 /** Boolean expression to filter rows from the table "packEventPassNft". All fields are combined with a logical 'AND'. */
@@ -14939,6 +14964,14 @@ export type PackEventPassNft_Max_Fields = {
   packNftSupplyId?: Maybe<Scalars['uuid']>;
 };
 
+/** order by max() on columns of table "packEventPassNft" */
+export type PackEventPassNft_Max_Order_By = {
+  /** Identifier for the event pass NFT. */
+  eventPassNftId?: InputMaybe<Order_By>;
+  /** Identifier for the pack NFT supply. */
+  packNftSupplyId?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type PackEventPassNft_Min_Fields = {
   __typename?: 'packEventPassNft_min_fields';
@@ -14946,6 +14979,14 @@ export type PackEventPassNft_Min_Fields = {
   eventPassNftId?: Maybe<Scalars['uuid']>;
   /** Identifier for the pack NFT supply. */
   packNftSupplyId?: Maybe<Scalars['uuid']>;
+};
+
+/** order by min() on columns of table "packEventPassNft" */
+export type PackEventPassNft_Min_Order_By = {
+  /** Identifier for the event pass NFT. */
+  eventPassNftId?: InputMaybe<Order_By>;
+  /** Identifier for the pack NFT supply. */
+  packNftSupplyId?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "packEventPassNft" */
@@ -15033,8 +15074,10 @@ export type PackNftContract = {
   /** Smart contract address for the NFT collection. */
   contractAddress: Scalars['String'];
   created_at: Scalars['timestamptz'];
-  /** A computed field, executes function "get_event_pass_nft_contracts_for_pack" */
-  eventPassNftContracts?: Maybe<Array<PackNftContractEventPass>>;
+  /** An array relationship */
+  eventPassNftContracts: Array<PackNftContractEventPass>;
+  /** An aggregate relationship */
+  eventPassNftContracts_aggregate: PackNftContractEventPass_Aggregate;
   /** An array relationship */
   eventPassNfts: Array<EventPassNft>;
   /** An aggregate relationship */
@@ -15057,6 +15100,16 @@ export type PackNftContract = {
 
 /** Manages the NFTs associated with each pack, including details like contract address, chain ID, and the contents of each pack. */
 export type PackNftContractEventPassNftContractsArgs = {
+  distinct_on?: InputMaybe<Array<PackNftContractEventPass_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PackNftContractEventPass_Order_By>>;
+  where?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
+};
+
+
+/** Manages the NFTs associated with each pack, including details like contract address, chain ID, and the contents of each pack. */
+export type PackNftContractEventPassNftContracts_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackNftContractEventPass_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -15089,8 +15142,8 @@ export type PackNftContractEventPass = {
   __typename?: 'packNftContractEventPass';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
   amount: Scalars['Int'];
-  /** Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack. */
-  eventPassNftContractId: Scalars['uuid'];
+  /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
+  eventPassId: Scalars['String'];
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
   packNftContractId: Scalars['uuid'];
 };
@@ -15100,6 +15153,17 @@ export type PackNftContractEventPass_Aggregate = {
   __typename?: 'packNftContractEventPass_aggregate';
   aggregate?: Maybe<PackNftContractEventPass_Aggregate_Fields>;
   nodes: Array<PackNftContractEventPass>;
+};
+
+export type PackNftContractEventPass_Aggregate_Bool_Exp = {
+  count?: InputMaybe<PackNftContractEventPass_Aggregate_Bool_Exp_Count>;
+};
+
+export type PackNftContractEventPass_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<PackNftContractEventPass_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+  filter?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "packNftContractEventPass" */
@@ -15140,6 +15204,13 @@ export type PackNftContractEventPass_Aggregate_Order_By = {
   variance?: InputMaybe<PackNftContractEventPass_Variance_Order_By>;
 };
 
+/** input type for inserting array relation for remote table "packNftContractEventPass" */
+export type PackNftContractEventPass_Arr_Rel_Insert_Input = {
+  data: Array<PackNftContractEventPass_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<PackNftContractEventPass_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type PackNftContractEventPass_Avg_Fields = {
   __typename?: 'packNftContractEventPass_avg_fields';
@@ -15159,13 +15230,13 @@ export type PackNftContractEventPass_Bool_Exp = {
   _not?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
   _or?: InputMaybe<Array<PackNftContractEventPass_Bool_Exp>>;
   amount?: InputMaybe<Int_Comparison_Exp>;
-  eventPassNftContractId?: InputMaybe<Uuid_Comparison_Exp>;
+  eventPassId?: InputMaybe<String_Comparison_Exp>;
   packNftContractId?: InputMaybe<Uuid_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "packNftContractEventPass" */
 export const enum PackNftContractEventPass_Constraint {
-  /** unique or primary key constraint on columns "eventPassNftContractId", "packNftContractId" */
+  /** unique or primary key constraint on columns "eventPassId", "packNftContractId" */
   PackNftContractEventPassPkey = 'packNftContractEventPass_pkey'
 };
 
@@ -15179,8 +15250,8 @@ export type PackNftContractEventPass_Inc_Input = {
 export type PackNftContractEventPass_Insert_Input = {
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
   amount?: InputMaybe<Scalars['Int']>;
-  /** Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack. */
-  eventPassNftContractId?: InputMaybe<Scalars['uuid']>;
+  /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
+  eventPassId?: InputMaybe<Scalars['String']>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
   packNftContractId?: InputMaybe<Scalars['uuid']>;
 };
@@ -15190,8 +15261,8 @@ export type PackNftContractEventPass_Max_Fields = {
   __typename?: 'packNftContractEventPass_max_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
   amount?: Maybe<Scalars['Int']>;
-  /** Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack. */
-  eventPassNftContractId?: Maybe<Scalars['uuid']>;
+  /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
+  eventPassId?: Maybe<Scalars['String']>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
   packNftContractId?: Maybe<Scalars['uuid']>;
 };
@@ -15200,8 +15271,8 @@ export type PackNftContractEventPass_Max_Fields = {
 export type PackNftContractEventPass_Max_Order_By = {
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
   amount?: InputMaybe<Order_By>;
-  /** Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack. */
-  eventPassNftContractId?: InputMaybe<Order_By>;
+  /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
+  eventPassId?: InputMaybe<Order_By>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
   packNftContractId?: InputMaybe<Order_By>;
 };
@@ -15211,8 +15282,8 @@ export type PackNftContractEventPass_Min_Fields = {
   __typename?: 'packNftContractEventPass_min_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
   amount?: Maybe<Scalars['Int']>;
-  /** Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack. */
-  eventPassNftContractId?: Maybe<Scalars['uuid']>;
+  /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
+  eventPassId?: Maybe<Scalars['String']>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
   packNftContractId?: Maybe<Scalars['uuid']>;
 };
@@ -15221,8 +15292,8 @@ export type PackNftContractEventPass_Min_Fields = {
 export type PackNftContractEventPass_Min_Order_By = {
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
   amount?: InputMaybe<Order_By>;
-  /** Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack. */
-  eventPassNftContractId?: InputMaybe<Order_By>;
+  /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
+  eventPassId?: InputMaybe<Order_By>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
   packNftContractId?: InputMaybe<Order_By>;
 };
@@ -15246,14 +15317,14 @@ export type PackNftContractEventPass_On_Conflict = {
 /** Ordering options when selecting data from "packNftContractEventPass". */
 export type PackNftContractEventPass_Order_By = {
   amount?: InputMaybe<Order_By>;
-  eventPassNftContractId?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
   packNftContractId?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: packNftContractEventPass */
 export type PackNftContractEventPass_Pk_Columns_Input = {
-  /** Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack. */
-  eventPassNftContractId: Scalars['uuid'];
+  /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
+  eventPassId: Scalars['String'];
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
   packNftContractId: Scalars['uuid'];
 };
@@ -15263,7 +15334,7 @@ export const enum PackNftContractEventPass_Select_Column {
   /** column name */
   Amount = 'amount',
   /** column name */
-  EventPassNftContractId = 'eventPassNftContractId',
+  EventPassId = 'eventPassId',
   /** column name */
   PackNftContractId = 'packNftContractId'
 };
@@ -15272,8 +15343,8 @@ export const enum PackNftContractEventPass_Select_Column {
 export type PackNftContractEventPass_Set_Input = {
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
   amount?: InputMaybe<Scalars['Int']>;
-  /** Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack. */
-  eventPassNftContractId?: InputMaybe<Scalars['uuid']>;
+  /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
+  eventPassId?: InputMaybe<Scalars['String']>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
   packNftContractId?: InputMaybe<Scalars['uuid']>;
 };
@@ -15329,8 +15400,8 @@ export type PackNftContractEventPass_Stream_Cursor_Input = {
 export type PackNftContractEventPass_Stream_Cursor_Value_Input = {
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
   amount?: InputMaybe<Scalars['Int']>;
-  /** Identifier for the event pass NFT contract. This field connects to the eventPassNftContract table, specifying which event pass is included in the pack. */
-  eventPassNftContractId?: InputMaybe<Scalars['uuid']>;
+  /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
+  eventPassId?: InputMaybe<Scalars['String']>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
   packNftContractId?: InputMaybe<Scalars['uuid']>;
 };
@@ -15353,7 +15424,7 @@ export const enum PackNftContractEventPass_Update_Column {
   /** column name */
   Amount = 'amount',
   /** column name */
-  EventPassNftContractId = 'eventPassNftContractId',
+  EventPassId = 'eventPassId',
   /** column name */
   PackNftContractId = 'packNftContractId'
 };
@@ -15452,6 +15523,7 @@ export type PackNftContract_Bool_Exp = {
   contractAddress?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   eventPassNftContracts?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
+  eventPassNftContracts_aggregate?: InputMaybe<PackNftContractEventPass_Aggregate_Bool_Exp>;
   eventPassNfts?: InputMaybe<EventPassNft_Bool_Exp>;
   eventPassNfts_aggregate?: InputMaybe<EventPassNft_Aggregate_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -15486,6 +15558,7 @@ export type PackNftContract_Insert_Input = {
   /** Smart contract address for the NFT collection. */
   contractAddress?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
+  eventPassNftContracts?: InputMaybe<PackNftContractEventPass_Arr_Rel_Insert_Input>;
   eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
   /** Unique identifier for each pack NFT contract. */
   id?: InputMaybe<Scalars['uuid']>;
@@ -15759,18 +15832,40 @@ export type PackNftSupply = {
   currentOwnerAddress?: Maybe<Scalars['String']>;
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
   error?: Maybe<Scalars['String']>;
-  /** A computed field, executes function "get_event_pass_nfts_for_pack" */
-  eventPassNfts?: Maybe<Scalars['uuid']>;
   id: Scalars['uuid'];
   /** The reference to the latest transfer record for this pack NFT. */
   lastNftTransferId?: Maybe<Scalars['uuid']>;
   /** The identifier of the organizer associated with this pack NFT. */
   organizerId: Scalars['String'];
+  /** An array relationship */
+  packEventPassNfts: Array<PackEventPassNft>;
+  /** An aggregate relationship */
+  packEventPassNfts_aggregate: PackEventPassNft_Aggregate;
   /** A unique identifier for the pack within the platform. */
   packId: Scalars['String'];
   /** The URI pointing to the metadata of the pack NFT. */
   tokenUri?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
+};
+
+
+/** This table represents the supply details of pack NFTs, tracking the ownership, contents, and metadata associated with each pack. */
+export type PackNftSupplyPackEventPassNftsArgs = {
+  distinct_on?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PackEventPassNft_Order_By>>;
+  where?: InputMaybe<PackEventPassNft_Bool_Exp>;
+};
+
+
+/** This table represents the supply details of pack NFTs, tracking the ownership, contents, and metadata associated with each pack. */
+export type PackNftSupplyPackEventPassNfts_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<PackEventPassNft_Order_By>>;
+  where?: InputMaybe<PackEventPassNft_Bool_Exp>;
 };
 
 /** aggregated selection of "packNftSupply" */
@@ -15805,10 +15900,11 @@ export type PackNftSupply_Bool_Exp = {
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   currentOwnerAddress?: InputMaybe<String_Comparison_Exp>;
   error?: InputMaybe<String_Comparison_Exp>;
-  eventPassNfts?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   lastNftTransferId?: InputMaybe<Uuid_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
+  packEventPassNfts?: InputMaybe<PackEventPassNft_Bool_Exp>;
+  packEventPassNfts_aggregate?: InputMaybe<PackEventPassNft_Aggregate_Bool_Exp>;
   packId?: InputMaybe<String_Comparison_Exp>;
   tokenUri?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -15838,6 +15934,7 @@ export type PackNftSupply_Insert_Input = {
   lastNftTransferId?: InputMaybe<Scalars['uuid']>;
   /** The identifier of the organizer associated with this pack NFT. */
   organizerId?: InputMaybe<Scalars['String']>;
+  packEventPassNfts?: InputMaybe<PackEventPassNft_Arr_Rel_Insert_Input>;
   /** A unique identifier for the pack within the platform. */
   packId?: InputMaybe<Scalars['String']>;
   /** The URI pointing to the metadata of the pack NFT. */
@@ -15857,8 +15954,6 @@ export type PackNftSupply_Max_Fields = {
   currentOwnerAddress?: Maybe<Scalars['String']>;
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
   error?: Maybe<Scalars['String']>;
-  /** A computed field, executes function "get_event_pass_nfts_for_pack" */
-  eventPassNfts?: Maybe<Scalars['uuid']>;
   id?: Maybe<Scalars['uuid']>;
   /** The reference to the latest transfer record for this pack NFT. */
   lastNftTransferId?: Maybe<Scalars['uuid']>;
@@ -15883,8 +15978,6 @@ export type PackNftSupply_Min_Fields = {
   currentOwnerAddress?: Maybe<Scalars['String']>;
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
   error?: Maybe<Scalars['String']>;
-  /** A computed field, executes function "get_event_pass_nfts_for_pack" */
-  eventPassNfts?: Maybe<Scalars['uuid']>;
   id?: Maybe<Scalars['uuid']>;
   /** The reference to the latest transfer record for this pack NFT. */
   lastNftTransferId?: Maybe<Scalars['uuid']>;
@@ -15920,10 +16013,10 @@ export type PackNftSupply_Order_By = {
   created_at?: InputMaybe<Order_By>;
   currentOwnerAddress?: InputMaybe<Order_By>;
   error?: InputMaybe<Order_By>;
-  eventPassNfts?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   lastNftTransferId?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  packEventPassNfts_aggregate?: InputMaybe<PackEventPassNft_Aggregate_Order_By>;
   packId?: InputMaybe<Order_By>;
   tokenUri?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -18074,7 +18167,7 @@ export type Query_RootPackNftContractEventPass_AggregateArgs = {
 
 
 export type Query_RootPackNftContractEventPass_By_PkArgs = {
-  eventPassNftContractId: Scalars['uuid'];
+  eventPassId: Scalars['String'];
   packNftContractId: Scalars['uuid'];
 };
 
@@ -20376,7 +20469,7 @@ export type Subscription_RootPackNftContractEventPass_AggregateArgs = {
 
 
 export type Subscription_RootPackNftContractEventPass_By_PkArgs = {
-  eventPassNftContractId: Scalars['uuid'];
+  eventPassId: Scalars['String'];
   packNftContractId: Scalars['uuid'];
 };
 

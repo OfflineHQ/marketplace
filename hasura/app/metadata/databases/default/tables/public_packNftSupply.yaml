@@ -1,9 +1,11 @@
 table:
   name: packNftSupply
   schema: public
-computed_fields:
-  - name: eventPassNfts
-    definition:
-      function:
-        name: get_event_pass_nfts_for_pack
-        schema: public
+array_relationships:
+  - name: packEventPassNfts
+    using:
+      foreign_key_constraint_on:
+        column: packNftSupplyId
+        table:
+          name: packEventPassNft
+          schema: public
