@@ -354,14 +354,14 @@ export type CreatePackNftContractMutationVariables = Types.Exact<{
 }>;
 
 
-export type CreatePackNftContractMutation = { __typename?: 'mutation_root', insert_packNftContract_one?: { __typename?: 'packNftContract', id: any, chainId: string, contractAddress: string, eventPassIds: any, organizerId: string, rewardsPerPack: number, packId: string } | null };
+export type CreatePackNftContractMutation = { __typename?: 'mutation_root', insert_packNftContract_one?: { __typename?: 'packNftContract', id: any, chainId: string, contractAddress: string, organizerId: string, rewardsPerPack: number, packId: string } | null };
 
 export type GetPackNftContractFromPackIdQueryVariables = Types.Exact<{
   packId?: Types.InputMaybe<Types.Scalars['String']>;
 }>;
 
 
-export type GetPackNftContractFromPackIdQuery = { __typename?: 'query_root', packNftContract: Array<{ __typename?: 'packNftContract', id: any, chainId: string, rewardsPerPack: number, organizerId: string, contractAddress: string, eventPassIds: any, eventPassNfts: Array<{ __typename?: 'eventPassNft', tokenId: any, contractAddress: string, currentOwnerAddress?: string | null, eventPassId: string, packId?: string | null }> }> };
+export type GetPackNftContractFromPackIdQuery = { __typename?: 'query_root', packNftContract: Array<{ __typename?: 'packNftContract', id: any, chainId: string, rewardsPerPack: number, organizerId: string, contractAddress: string, eventPassNftContracts?: Array<{ __typename?: 'packNftContractEventPass', eventPassNftContractId: any, amount: number }> | null, eventPassNfts: Array<{ __typename?: 'eventPassNft', tokenId: any, contractAddress: string, currentOwnerAddress?: string | null, eventPassId: string, packId?: string | null }> }> };
 
 export type CreatePassAmountMutationVariables = Types.Exact<{
   passAmount: Types.PassAmount_Insert_Input;

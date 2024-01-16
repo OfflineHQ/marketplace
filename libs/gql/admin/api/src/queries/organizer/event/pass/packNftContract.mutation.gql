@@ -3,7 +3,6 @@ mutation CreatePackNftContract($object: packNftContract_insert_input!) {
     id
     chainId
     contractAddress
-    eventPassIds
     organizerId
     rewardsPerPack
     packId
