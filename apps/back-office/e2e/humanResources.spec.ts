@@ -43,8 +43,8 @@ test('human resources should not have access to events', async () => {
     goTo: '/en',
     role: Roles_Enum.OrganizerHumanResources,
   });
-  await expect(page.getByRole('link', { name: 'Manage Roles' })).toBeVisible();
+  await expect(page.getByRole('link', { name: /manage roles/i })).toBeVisible();
   await expect(
-    page.getByRole('link', { name: 'Event Management' }),
+    page.getByRole('link', { name: /event management/i }),
   ).toBeHidden();
 });
