@@ -2,14 +2,14 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@bytescale/sdk':
-    specifier: ^3.10.0
-    version: 3.11.0
+    specifier: ^3.25.0
+    version: 3.25.0
   '@bytescale/upload-widget':
-    specifier: ^4.13.0
-    version: 4.18.0
+    specifier: ^4.22.0
+    version: 4.22.0
   '@bytescale/upload-widget-react':
-    specifier: ^4.13.0
-    version: 4.13.0(react@18.2.0)
+    specifier: ^4.16.0
+    version: 4.16.0(react@18.2.0)
   '@date-fns/utc':
     specifier: ^1.1.1
     version: 1.1.1
@@ -298,9 +298,6 @@ dependencies:
   tslib:
     specifier: ^2.6.2
     version: 2.6.2
-  uploader:
-    specifier: ^3.48.2
-    version: 3.48.3
   uuid:
     specifier: ^8.3.2
     version: 8.3.2
@@ -2167,24 +2164,24 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@bytescale/sdk@3.11.0:
-    resolution: {integrity: sha512-4R5hU+brUpZqNLEacKb7TQ7cYSi47Bm5U3gSG3vttCMI0JElzKH7+g7HP3prHDRuoalrGkzFd8mUi0zs6hJBMg==}
+  /@bytescale/sdk@3.25.0:
+    resolution: {integrity: sha512-mYTnzJFjQkjDj3fr4LdA6RmU7ikBPzyCvp1FySRdVYl2aWdmwmCgqV+ZUZx2i3WbTzSi5sbIPs/w3mlvAZSzPw==}
     dev: false
 
-  /@bytescale/upload-widget-react@4.13.0(react@18.2.0):
-    resolution: {integrity: sha512-FD6a6N//pv0k0rNzzH0q9Ky6Ss4kSs39tMffIldAfZ57mTXgv8K3RrgQVJQkGCRpwytMs163uyAowUQ1Cfcvfw==}
+  /@bytescale/upload-widget-react@4.16.0(react@18.2.0):
+    resolution: {integrity: sha512-BDXfiO104QG/RDawTaeHD0gmDAo3YwbKllvdJXV8MeChZpjm59xeP+4O7TT7HOlTMo51AJHDwFmkeKJ6hFe9nA==}
     peerDependencies:
       react: '>=16.3.0'
     dependencies:
-      '@bytescale/upload-widget': 4.18.0
+      '@bytescale/upload-widget': 4.22.0
       lodash.isequal: 4.5.0
       react: 18.2.0
     dev: false
 
-  /@bytescale/upload-widget@4.18.0:
-    resolution: {integrity: sha512-IrMkVkjaaiy/gywfIVPSxrv1/XezD9hHTTSfG3H9E7OJ4t8YpAfcFbAojOz2xmoLIm55QDJjf5uX279Ap56FNw==}
+  /@bytescale/upload-widget@4.22.0:
+    resolution: {integrity: sha512-3raPedpgJJnGrX2lDb+CAUvqs1LMyww6/UbstRMNDswKUR+uA1Asz2ZfaUE0t77UfEO9vqd7/Q+tXNcrku15vA==}
     dependencies:
-      '@bytescale/sdk': 3.11.0
+      '@bytescale/sdk': 3.25.0
       classnames: 2.3.2
       preact: 10.19.2
     dev: false
@@ -11088,10 +11085,6 @@ packages:
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
-
-  /@upload-io/upload-api-client-upload-js@2.18.0:
-    resolution: {integrity: sha512-yPwsRCecXSilYn4q5ZDD4fyI2PVyUcLimv2LQcfpV3hRyzc8t82NuWHYEYpRZa5K68zxw2RljDf30geT1vJN9g==}
-    dev: false
 
   /@upstash/redis@1.24.3:
     resolution: {integrity: sha512-gw6d4IA1biB4eye5ESaXc0zOlVQI94aptsBvVcTghYWu1kRmOrJFoMFEDCa8p5uzluyYAOFCuY2GWLR6O4ZoIw==}
@@ -23025,10 +23018,6 @@ packages:
     resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
     engines: {node: '>= 0.6.0'}
 
-  /progress-smoother@1.7.0:
-    resolution: {integrity: sha512-ZIbSbPQ8SnEf5Sa0If9lfvn5URyrZfgTTh5DM+04j1GafiLIaWDWW+1AkYXzGl7JQvzAvCy5E1ZPOgx8XORyew==}
-    dev: false
-
   /progress@2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
@@ -26533,21 +26522,6 @@ packages:
       browserslist: 4.22.2
       escalade: 3.1.1
       picocolors: 1.0.0
-
-  /upload-js@2.24.3:
-    resolution: {integrity: sha512-iiTowtr2uRw2coGXlqiN1ff/wfMPVMv2MqaZYqEYBSNGmxD1pLl9R9wU8BT/mK+Yn8fDx7utlPovXziS8PVaIA==}
-    dependencies:
-      '@upload-io/upload-api-client-upload-js': 2.18.0
-      progress-smoother: 1.7.0
-    dev: false
-
-  /uploader@3.48.3:
-    resolution: {integrity: sha512-BGXSS9O54m81TL5Ogn4OHISD/WPuIS3kvNCYomDl8cltPGzUMrHseU1sXHKGrFg65L28qJL6LnGA2fXUxpQVBQ==}
-    dependencies:
-      classnames: 2.3.2
-      preact: 10.19.2
-      upload-js: 2.24.3
-    dev: false
 
   /upper-case-first@2.0.2:
     resolution: {integrity: sha512-514ppYHBaKwfJRK/pNC6c/OxfGa0obSnAl106u97Ed0I625Nin96KAjttZF6ZL3e1XLtphxnqrOi9iWgm+u+bg==}

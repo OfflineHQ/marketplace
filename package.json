@@ -40,9 +40,9 @@
   },
   "private": true,
   "dependencies": {
-    "@bytescale/sdk": "^3.10.0",
-    "@bytescale/upload-widget": "^4.13.0",
-    "@bytescale/upload-widget-react": "^4.13.0",
+    "@bytescale/sdk": "^3.25.0",
+    "@bytescale/upload-widget": "^4.22.0",
+    "@bytescale/upload-widget-react": "^4.16.0",
     "@date-fns/utc": "^1.1.1",
     "@dinero.js/currencies": "2.0.0-alpha.14",
     "@formkit/auto-animate": "1.0.0-beta.6",
@@ -139,7 +139,6 @@
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-gradients": "^3.0.0",
     "tslib": "^2.6.2",
-    "uploader": "^3.48.2",
     "uuid": "^8.3.2",
     "zod": "^3.22.4",
     "zustand": "^4.4.3"
