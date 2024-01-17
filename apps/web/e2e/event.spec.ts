@@ -51,25 +51,25 @@ test('user should be able to buy a pass', async () => {
     user: 'alpha_user',
     goTo: '/en/organizer/test/event/test-an-event',
   });
-  await expect(page.getByRole('img', { name: 'An event' })).toBeVisible();
-  await expect(page.getByText('Wed, Jun 28, 2023, 2:08 PM')).toBeVisible();
-  await expect(page.getByText('Thu, Jun 22, 2023, 8:40 PM')).toBeVisible();
+  await expect(page.getByRole('img', { name: /an event/i })).toBeVisible();
+  await expect(page.getByText(/wed, jun 28, 2023, 2:08 pm/i)).toBeVisible();
+  await expect(page.getByText(/thu, jun 22, 2023, 8:40 pm/i)).toBeVisible();
   await page
-    .getByRole('button', { name: 'Qr Code Select passes' })
+    .getByRole('button', { name: /qr code select passes/i })
     .first()
     .click();
   await page
     .locator('div')
-    .filter({ hasText: /^€82\.500$/ })
-    .getByLabel('increment value')
+    .filter({ hasText: /^€82\.500$/i })
+    .getByLabel(/increment value/i)
     .click();
-  await expect(page.getByText('1 pass selected')).toBeVisible();
+  await expect(page.getByText(/1 pass selected/i)).toBeVisible();
   await expect(
-    page.getByRole('heading', { name: 'Total Price: €82.50' }),
+    page.getByRole('heading', { name: /total price: €82.50/i }),
   ).toBeVisible();
-  await page.getByRole('button', { name: 'Go to payment' }).click();
-  await page.getByRole('button', { name: 'Proceed to payment' }).click();
-  await page.waitForURL(/checkout.stripe.com\/c\/pay/);
-  await page.getByLabel('Back').click();
-  await expect(page.getByText('Purchase Cancelled')).toBeVisible();
+  await page.getByRole('button', { name: /go to payment/i }).click();
+  await page.getByRole('button', { name: /proceed to payment/i }).click();
+  await page.waitForURL(/checkout.stripe.com\/c\/pay/i);
+  await page.getByLabel(/back/i).click();
+  await expect(page.getByText(/purchase cancelled/i)).toBeVisible();
 });

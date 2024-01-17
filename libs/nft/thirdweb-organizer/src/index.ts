@@ -277,6 +277,7 @@ export class NftCollection {
         {
           name,
           primary_sale_recipient: address,
+          platform_fee_recipient: address,
           voting_token_address: address,
         },
       );
@@ -500,6 +501,7 @@ export class PackCollection {
       {
         name: pack.name,
         primary_sale_recipient: address,
+        platform_fee_recipient: address,
         voting_token_address: address,
       },
     );
