@@ -72,7 +72,7 @@ describe('createOptions callbacks', () => {
           pathPermissions: [
             {
               match: {
-                path: `/local/users/${mockUser.address}`,
+                path: `/${process.env.UPLOAD_PATH_PREFIX}/users/${mockUser.address}`,
                 scope: 'Grandchildren+',
               },
               permissions: {
