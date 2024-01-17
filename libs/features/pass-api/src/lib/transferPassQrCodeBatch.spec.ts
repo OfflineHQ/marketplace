@@ -52,22 +52,16 @@ describe('transferPassQrCodeBatch', () => {
       FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
       {
-        destination:
-          '/local/users/test-address/test-organizer/events/test-event/test-id/test-event-test-id-12421.png',
-        source:
-          '/local/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421.png',
+        destination: `/${env.UPLOAD_PATH_PREFIX}/users/test-address/test-organizer/events/test-event/test-id/test-event-test-id-12421.png`,
+        source: `/${env.UPLOAD_PATH_PREFIX}/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421.png`,
       },
       {
-        destination:
-          '/local/users/test-address/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421.png',
-        source:
-          '/local/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421.png',
+        destination: `/${env.UPLOAD_PATH_PREFIX}/users/test-address/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421.png`,
+        source: `/${env.UPLOAD_PATH_PREFIX}/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421.png`,
       },
       {
-        destination:
-          '/local/users/test-address/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421.png',
-        source:
-          '/local/users/0xFormerOwner3/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421.png',
+        destination: `/${env.UPLOAD_PATH_PREFIX}/users/test-address/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421.png`,
+        source: `/${env.UPLOAD_PATH_PREFIX}/users/0xFormerOwner3/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421.png`,
       },
     ]);
 
@@ -77,9 +71,9 @@ describe('transferPassQrCodeBatch', () => {
     expect(
       FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
     ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
-      '/local/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421.png',
-      '/local/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421.png',
-      '/local/users/0xFormerOwner3/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421.png',
+      `/${env.UPLOAD_PATH_PREFIX}/users/0xFormerOwner1/test-organizer/events/test-event/test-id/test-event-test-id-12421.png`,
+      `/${env.UPLOAD_PATH_PREFIX}/users/0xFormerOwner2/test-organizer/events/test-event/test-id-2/test-event-test-id-2-12421.png`,
+      `/${env.UPLOAD_PATH_PREFIX}/users/0xFormerOwner3/test-organizer/events/test-event/test-id-3/test-event-test-id-3-12421.png`,
     ]);
   });
 
