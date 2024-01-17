@@ -51,25 +51,26 @@ test.beforeEach(async () => {
 });
 test('user should be able to download and reveal his pass', async () => {
   const { page, account } = await loadAccount({ user: 'alpha_user' });
-  await page.getByRole('link', { name: 'Qr Code Pass' }).click();
-  await page.getByRole('tab', { name: 'Past' }).click();
-  await expect(page.getByText('Pass #12,432Revealed')).toBeVisible();
-  await expect(page.getByText('Pass #1,234,124Not revealed')).toBeVisible();
+  await page.getByRole('link', { name: /qr code pass/i }).click();
+  await page.getByRole('tab', { name: /past/i }).click();
+  await expect(page.getByText(/pass #12,432revealed/i)).toBeVisible();
+  await expect(page.getByText(/pass #1,234,124not revealed/i)).toBeVisible();
+  await page.getByText(/download 2 passes/i).click();
+  await page.getByRole('button', { name: /reveal yes, reveal it/i }).click();
   await page
-    .getByRole('button', { name: 'Download Download 2 passes' })
+    .getByRole('button', { name: /menu actions/i })
+    .nth(1)
     .click();
-  await page.getByRole('button', { name: 'Reveal Yes, reveal it' }).click();
-  await page.getByRole('button', { name: 'Menu Actions' }).nth(1).click();
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('link', { name: 'Download Download' }).click();
+  await page.locator(':text-is("Download")').click();
   const download = await downloadPromise;
-  await expect(page.getByText('Pass downloaded').nth(1)).toBeVisible();
+  await expect(page.getByText(/pass downloaded/i).nth(1)).toBeVisible();
   await expect(
-    page.getByText('The pass has been downloaded').nth(1),
+    page.getByText(/the pass has been downloaded/i).nth(1),
   ).toBeVisible();
   const downloadFilename = download.suggestedFilename();
   expect(downloadFilename).toEqual('test-an-event-vip-12432.png');
   expect(await download.failure()).toBeFalsy();
   await page.reload();
-  await expect(page.getByText('Pass #1,234,124Revealed')).toBeVisible();
+  await expect(page.getByText(/pass #1,234,124revealed/i)).toBeVisible();
 });
