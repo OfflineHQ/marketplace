@@ -31,6 +31,34 @@ interface GetTransfersForContractOptions
   toBlock: _GetTransfersForContractOptions['toBlock'];
 }
 
+// Change made because the sdk Network enum is not accurate with what the NFT Activity value of network is https://docs.alchemy.com/reference/webhook-types
+const networkToChainIdMap: { [key in Network | string]?: string } = {
+  [Network.ETH_MAINNET]: '1',
+  ETH_MAINNET: '1',
+  [Network.ETH_GOERLI]: '5',
+  ETH_GOERLI: '5',
+  [Network.ETH_SEPOLIA]: '11155111',
+  ETH_SEPOLIA: '11155111',
+  [Network.OPT_MAINNET]: '69',
+  OPT_MAINNET: '69',
+  [Network.OPT_GOERLI]: '420',
+  OPT_GOERLI: '420',
+  [Network.ARB_MAINNET]: '42161',
+  ARB_MAINNET: '42161',
+  [Network.ARB_GOERLI]: '421613',
+  ARB_GOERLI: '421613',
+  [Network.MATIC_MAINNET]: '137',
+  MATIC_MAINNET: '137',
+  [Network.MATIC_MUMBAI]: '80001',
+  MATIC_MUMBAI: '80001',
+  [Network.ASTAR_MAINNET]: '592',
+  ASTAR_MAINNET: '592',
+  [Network.POLYGONZKEVM_MAINNET]: '1101',
+  POLYGONZKEVM_MAINNET: '1101',
+  [Network.POLYGONZKEVM_TESTNET]: '1442',
+  POLYGONZKEVM_TESTNET: '1442',
+};
+
 // Helper function to fetch all pages concurrently
 export async function fetchAllPages<T>(
   fetchPage: (
@@ -111,35 +139,12 @@ export class AlchemyWrapper {
     });
   }
 
-  convertNetworkToChainId(network: Network): string {
-    switch (network) {
-      case Network.ETH_MAINNET:
-        return '1';
-      case Network.ETH_GOERLI:
-        return '5';
-      case Network.ETH_SEPOLIA:
-        return '11155111';
-      case Network.OPT_MAINNET:
-        return '69';
-      case Network.OPT_GOERLI:
-        return '420';
-      case Network.ARB_MAINNET:
-        return '42161';
-      case Network.ARB_GOERLI:
-        return '421613';
-      case Network.MATIC_MAINNET:
-        return '137';
-      case Network.MATIC_MUMBAI:
-        return '80001';
-      case Network.ASTAR_MAINNET:
-        return '592';
-      case Network.POLYGONZKEVM_MAINNET:
-        return '1101';
-      case Network.POLYGONZKEVM_TESTNET:
-        return '1442';
-      default:
-        throw new Error(`Unsupported network: ${network}`);
+  convertNetworkToChainId(network: Network | string): string {
+    const chainId = networkToChainIdMap[network];
+    if (!chainId) {
+      throw new Error(`Unsupported network: ${network}`);
     }
+    return chainId;
   }
   // NFT API
 

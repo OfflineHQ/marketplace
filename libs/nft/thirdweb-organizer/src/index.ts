@@ -320,7 +320,7 @@ export class NftCollection {
         eventSlug,
       } = props;
 
-      const res = await createEventPassNftContract(object);
+      await createEventPassNftContract(object);
 
       const hasuraMetadatas = await this.createHasuraMetadatas(
         metadatas,
@@ -415,7 +415,8 @@ export class NftCollection {
         password,
       );
 
-      const baseUri = (await contract.erc721.getAll())[0].metadata.uri;
+      const fullBaseUri = (await contract.erc721.getAll())[0].metadata.uri;
+      const baseUri = fullBaseUri.slice(0, -1);
 
       await this.saveEventPassContractIntoDb({
         props,
