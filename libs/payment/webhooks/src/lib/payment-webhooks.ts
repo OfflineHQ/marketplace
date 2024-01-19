@@ -4,7 +4,6 @@ import {
   StripeCheckoutSessionEnum,
   StripeEvent,
 } from '@payment/types';
-import { headers } from 'next/headers';
 
 // const payment = new Payment();
 
@@ -27,14 +26,16 @@ const stripeCheckoutSessionEvents = [
 // };
 
 export async function stripeCheckoutStatus(
-  req: Request,
   payment: Payment = new Payment(),
+  signature: string,
+  payload: string,
 ) {
-  const body = await req.text();
-  const signature = headers().get('Stripe-Signature') as string;
   let event: StripeEvent;
   try {
-    event = payment.webhookStripeConstructEvent({ body, signature });
+    event = payment.webhookStripeConstructEvent({
+      body: payload,
+      signature,
+    });
     console.log({ event });
     if (
       !stripeCheckoutSessionEvents.includes(
