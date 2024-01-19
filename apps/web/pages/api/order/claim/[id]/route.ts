@@ -3,6 +3,7 @@ import { NftClaimable } from '@nft/thirdweb-admin';
 
 export const maxDuration = 300;
 
+// This route has been moved to pages/api regarding a Thirdweb and NextJS 14 error, it should be moved back into app/api when the error will be fix https://github.com/AlexandreG-tech/Server-Action-Error
 export async function GET(req: Request, { params: { id } }) {
   const order = (await adminSdk.GetOrderFromId({ id })).order_by_pk;
   const nft = new NftClaimable();
