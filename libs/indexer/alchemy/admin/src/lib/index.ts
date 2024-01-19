@@ -31,6 +31,7 @@ interface GetTransfersForContractOptions
   toBlock: _GetTransfersForContractOptions['toBlock'];
 }
 
+// Change made because the sdk Network enum is not accurate with what the NFT Activity value of network is https://docs.alchemy.com/reference/webhook-types
 const networkToChainIdMap: { [key in Network | string]?: string } = {
   [Network.ETH_MAINNET]: '1',
   ETH_MAINNET: '1',
