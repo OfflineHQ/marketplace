@@ -91,18 +91,12 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/back-office"],
       "options": {
-        "jestConfig": "apps/back-office/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "apps/back-office/jest.config.ts"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "apps/back-office/**/*.{ts,tsx,js,jsx,gql,graphql}"
-        ]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "gql": {
       "executor": "nx:run-commands",
