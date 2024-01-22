@@ -16,17 +16,13 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/gql/user/api/**/*.{ts, gql, graphql}"]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "test-integration": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/gql/user/api"],
       "options": {
         "jestConfig": "libs/gql/user/api/jest.config.ts",
-        "passWithNoTests": true,
         "runInBand": true
       }
     }

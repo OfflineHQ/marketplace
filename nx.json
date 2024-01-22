@@ -45,10 +45,6 @@
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
-    "test": {
-      "inputs": ["noMarkdown", "^noMarkdown"],
-      "cache": true
-    },
     "build-storybook": {
       "inputs": [
         "default",
@@ -67,35 +63,18 @@
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
       "cache": true
     },
-    "affected:build": {
-      "cache": true
-    },
-    "lint:fix": {
-      "cache": true
-    },
-    "affected:lint": {
-      "cache": true
-    },
-    "format": {
-      "cache": true
-    },
-    "format:check": {
-      "cache": true
-    },
-    "format:write": {
-      "cache": true
-    },
-    "affected:test": {
-      "cache": true
-    },
-    "test-integration": {
-      "cache": true
-    },
-    "affected:test-integration": {
-      "cache": true
-    },
-    "affected:e2e": {
-      "cache": true
+    "@nx/jest:jest": {
+      "cache": true,
+      "inputs": ["default", "^default", "{workspaceRoot}/jest.preset.js"],
+      "options": {
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
     }
   },
   "generators": {

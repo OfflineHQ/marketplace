@@ -18,7 +18,10 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/gql/anonymous/types/**/*.ts"]
+        "lintFilePatterns": [
+          "libs/gql/user/types",
+          "libs/gql/anonymous/types/**/*.ts"
+        ]
       }
     }
   },

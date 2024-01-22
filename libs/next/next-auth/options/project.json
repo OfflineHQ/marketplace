@@ -27,17 +27,13 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/next/next-auth/options/**/*.{ts,tsx,js,jsx}"]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/next/next-auth/options"],
       "options": {
-        "jestConfig": "libs/next/next-auth/options/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/next/next-auth/options/jest.config.ts"
       }
     }
   }
