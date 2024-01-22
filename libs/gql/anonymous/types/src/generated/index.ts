@@ -11,11 +11,11 @@ export type EventPassFieldsFragment = { __typename?: 'EventPass', name: string, 
 export type EventPassNftFieldsFragment = { __typename?: 'eventPassNft', tokenId: any, eventId: string, eventPassId: string, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null };
 
 export type GetEventPassNftByTokenReferenceQueryVariables = Types.Exact<{
-  organizerId: Types.Scalars['String'];
-  eventId: Types.Scalars['String'];
-  eventPassId: Types.Scalars['String'];
-  tokenId: Types.Scalars['bigint'];
-  chainId: Types.Scalars['String'];
+  organizerId: Types.Scalars['String']['input'];
+  eventId: Types.Scalars['String']['input'];
+  eventPassId: Types.Scalars['String']['input'];
+  tokenId: Types.Scalars['bigint']['input'];
+  chainId: Types.Scalars['String']['input'];
   locale: Types.Locale;
   stage: Types.Stage;
 }>;
