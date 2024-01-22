@@ -18,11 +18,9 @@
     "javascriptreact",
     "typescript",
     "typescriptreact",
-    "graphql",
     "json",
     "jsonc",
     "json5",
-    "yaml",
     "toml"
   ],
   "eslint.packageManager": "pnpm",
