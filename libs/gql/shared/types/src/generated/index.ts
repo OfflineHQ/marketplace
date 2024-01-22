@@ -3,77 +3,80 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  DateTime: any;
-  Json: any;
-  Long: any;
-  RichTextAST: any;
-  bigint: any;
-  jsonb: any;
-  timestamp: any;
-  timestamptz: any;
-  uuid: any;
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  DateTime: { input: any; output: any; }
+  Json: { input: any; output: any; }
+  Long: { input: any; output: any; }
+  RichTextAST: { input: any; output: any; }
+  bigint: { input: any; output: any; }
+  jsonb: { input: any; output: any; }
+  timestamp: { input: any; output: any; }
+  timestamptz: { input: any; output: any; }
+  uuid: { input: any; output: any; }
 };
 
 export type Aggregate = {
   __typename?: 'Aggregate';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
 };
 
 /** Asset system model */
 export type Asset = Entity & Node & {
   __typename?: 'Asset';
   /** The time the document was created */
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** User that created this document */
   createdBy?: Maybe<User>;
   /** Get the document in other stages */
   documentInStages: Array<Asset>;
   /** The file name */
-  fileName: Scalars['String'];
+  fileName: Scalars['String']['output'];
   /** The file handle */
-  handle: Scalars['String'];
+  handle: Scalars['String']['output'];
   /** The height of the file */
-  height?: Maybe<Scalars['Float']>;
+  height?: Maybe<Scalars['Float']['output']>;
+  heroImageContentSpace: Array<ContentSpace>;
   heroImageEvent: Array<Event>;
   heroImageOrganizer: Array<Organizer>;
   /** List of Asset versions */
   history: Array<Version>;
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   imageOrganizer: Array<Organizer>;
   /** System Locale field */
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<Asset>;
   /** The mime type of the file */
-  mimeType?: Maybe<Scalars['String']>;
+  mimeType?: Maybe<Scalars['String']['output']>;
   nftImageEventPass: Array<EventPass>;
   nftImageEventPassDelayedRevealed: Array<EventPassDelayedRevealed>;
   nftImagePack: Array<Pack>;
   /** The time the document was published. Null on documents in draft stage. */
-  publishedAt?: Maybe<Scalars['DateTime']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
   scheduledIn: Array<ScheduledOperation>;
   /** The file size */
-  size?: Maybe<Scalars['Float']>;
+  size?: Maybe<Scalars['Float']['output']>;
   /** System stage field */
   stage: Stage;
   /** The time the document was updated */
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime']['output'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
   /** Get the url for the asset with provided transformations applied. */
-  url: Scalars['String'];
+  url: Scalars['String']['output'];
   /** The file width */
-  width?: Maybe<Scalars['Float']>;
+  width?: Maybe<Scalars['Float']['output']>;
 };
 
 
@@ -85,114 +88,128 @@ export type AssetCreatedAtArgs = {
 
 /** Asset system model */
 export type AssetCreatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Asset system model */
 export type AssetDocumentInStagesArgs = {
-  includeCurrent?: Scalars['Boolean'];
-  inheritLocale?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
   stages?: Array<Stage>;
 };
 
 
 /** Asset system model */
+export type AssetHeroImageContentSpaceArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<ContentSpaceOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ContentSpaceWhereInput>;
+};
+
+
+/** Asset system model */
 export type AssetHeroImageEventArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<EventOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventWhereInput>;
 };
 
 
 /** Asset system model */
 export type AssetHeroImageOrganizerArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<OrganizerOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<OrganizerWhereInput>;
 };
 
 
 /** Asset system model */
 export type AssetHistoryArgs = {
-  limit?: Scalars['Int'];
-  skip?: Scalars['Int'];
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
   stageOverride?: InputMaybe<Stage>;
 };
 
 
 /** Asset system model */
 export type AssetImageOrganizerArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<OrganizerOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<OrganizerWhereInput>;
 };
 
 
 /** Asset system model */
 export type AssetLocalizationsArgs = {
-  includeCurrent?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
   locales?: Array<Locale>;
 };
 
 
 /** Asset system model */
 export type AssetNftImageEventPassArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<EventPassOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventPassWhereInput>;
 };
 
 
 /** Asset system model */
 export type AssetNftImageEventPassDelayedRevealedArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<EventPassDelayedRevealedOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventPassDelayedRevealedWhereInput>;
 };
 
 
 /** Asset system model */
 export type AssetNftImagePackArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<PackOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<PackWhereInput>;
 };
 
@@ -205,20 +222,20 @@ export type AssetPublishedAtArgs = {
 
 /** Asset system model */
 export type AssetPublishedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Asset system model */
 export type AssetScheduledInArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
@@ -231,7 +248,7 @@ export type AssetUpdatedAtArgs = {
 
 /** Asset system model */
 export type AssetUpdatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -252,33 +269,34 @@ export type AssetConnection = {
 };
 
 export type AssetCreateInput = {
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  fileName: Scalars['String'];
-  handle: Scalars['String'];
-  height?: InputMaybe<Scalars['Float']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  fileName: Scalars['String']['input'];
+  handle: Scalars['String']['input'];
+  height?: InputMaybe<Scalars['Float']['input']>;
+  heroImageContentSpace?: InputMaybe<ContentSpaceCreateManyInlineInput>;
   heroImageEvent?: InputMaybe<EventCreateManyInlineInput>;
   heroImageOrganizer?: InputMaybe<OrganizerCreateManyInlineInput>;
   imageOrganizer?: InputMaybe<OrganizerCreateManyInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<AssetCreateLocalizationsInput>;
-  mimeType?: InputMaybe<Scalars['String']>;
+  mimeType?: InputMaybe<Scalars['String']['input']>;
   nftImageEventPass?: InputMaybe<EventPassCreateManyInlineInput>;
   nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedCreateManyInlineInput>;
   nftImagePack?: InputMaybe<PackCreateManyInlineInput>;
-  size?: InputMaybe<Scalars['Float']>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
-  width?: InputMaybe<Scalars['Float']>;
+  size?: InputMaybe<Scalars['Float']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  width?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type AssetCreateLocalizationDataInput = {
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  fileName: Scalars['String'];
-  handle: Scalars['String'];
-  height?: InputMaybe<Scalars['Float']>;
-  mimeType?: InputMaybe<Scalars['String']>;
-  size?: InputMaybe<Scalars['Float']>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
-  width?: InputMaybe<Scalars['Float']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  fileName: Scalars['String']['input'];
+  handle: Scalars['String']['input'];
+  height?: InputMaybe<Scalars['Float']['input']>;
+  mimeType?: InputMaybe<Scalars['String']['input']>;
+  size?: InputMaybe<Scalars['Float']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  width?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type AssetCreateLocalizationInput = {
@@ -303,7 +321,7 @@ export type AssetCreateOneInlineInput = {
 export type AssetEdge = {
   __typename?: 'AssetEdge';
   /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
   node: Asset;
 };
@@ -317,51 +335,54 @@ export type AssetManyWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<AssetWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
   documentInStages_every?: InputMaybe<AssetWhereStageInput>;
   documentInStages_none?: InputMaybe<AssetWhereStageInput>;
   documentInStages_some?: InputMaybe<AssetWhereStageInput>;
+  heroImageContentSpace_every?: InputMaybe<ContentSpaceWhereInput>;
+  heroImageContentSpace_none?: InputMaybe<ContentSpaceWhereInput>;
+  heroImageContentSpace_some?: InputMaybe<ContentSpaceWhereInput>;
   heroImageEvent_every?: InputMaybe<EventWhereInput>;
   heroImageEvent_none?: InputMaybe<EventWhereInput>;
   heroImageEvent_some?: InputMaybe<EventWhereInput>;
   heroImageOrganizer_every?: InputMaybe<OrganizerWhereInput>;
   heroImageOrganizer_none?: InputMaybe<OrganizerWhereInput>;
   heroImageOrganizer_some?: InputMaybe<OrganizerWhereInput>;
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
   imageOrganizer_every?: InputMaybe<OrganizerWhereInput>;
   imageOrganizer_none?: InputMaybe<OrganizerWhereInput>;
   imageOrganizer_some?: InputMaybe<OrganizerWhereInput>;
@@ -374,40 +395,40 @@ export type AssetManyWhereInput = {
   nftImagePack_every?: InputMaybe<PackWhereInput>;
   nftImagePack_none?: InputMaybe<PackWhereInput>;
   nftImagePack_some?: InputMaybe<PackWhereInput>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
 };
 
@@ -439,33 +460,34 @@ export type AssetTransformationInput = {
   document?: InputMaybe<DocumentTransformationInput>;
   image?: InputMaybe<ImageTransformationInput>;
   /** Pass true if you want to validate the passed transformation parameters */
-  validateOptions?: InputMaybe<Scalars['Boolean']>;
+  validateOptions?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type AssetUpdateInput = {
-  fileName?: InputMaybe<Scalars['String']>;
-  handle?: InputMaybe<Scalars['String']>;
-  height?: InputMaybe<Scalars['Float']>;
+  fileName?: InputMaybe<Scalars['String']['input']>;
+  handle?: InputMaybe<Scalars['String']['input']>;
+  height?: InputMaybe<Scalars['Float']['input']>;
+  heroImageContentSpace?: InputMaybe<ContentSpaceUpdateManyInlineInput>;
   heroImageEvent?: InputMaybe<EventUpdateManyInlineInput>;
   heroImageOrganizer?: InputMaybe<OrganizerUpdateManyInlineInput>;
   imageOrganizer?: InputMaybe<OrganizerUpdateManyInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<AssetUpdateLocalizationsInput>;
-  mimeType?: InputMaybe<Scalars['String']>;
+  mimeType?: InputMaybe<Scalars['String']['input']>;
   nftImageEventPass?: InputMaybe<EventPassUpdateManyInlineInput>;
   nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedUpdateManyInlineInput>;
   nftImagePack?: InputMaybe<PackUpdateManyInlineInput>;
-  size?: InputMaybe<Scalars['Float']>;
-  width?: InputMaybe<Scalars['Float']>;
+  size?: InputMaybe<Scalars['Float']['input']>;
+  width?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type AssetUpdateLocalizationDataInput = {
-  fileName?: InputMaybe<Scalars['String']>;
-  handle?: InputMaybe<Scalars['String']>;
-  height?: InputMaybe<Scalars['Float']>;
-  mimeType?: InputMaybe<Scalars['String']>;
-  size?: InputMaybe<Scalars['Float']>;
-  width?: InputMaybe<Scalars['Float']>;
+  fileName?: InputMaybe<Scalars['String']['input']>;
+  handle?: InputMaybe<Scalars['String']['input']>;
+  height?: InputMaybe<Scalars['Float']['input']>;
+  mimeType?: InputMaybe<Scalars['String']['input']>;
+  size?: InputMaybe<Scalars['Float']['input']>;
+  width?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type AssetUpdateLocalizationInput = {
@@ -484,21 +506,21 @@ export type AssetUpdateLocalizationsInput = {
 };
 
 export type AssetUpdateManyInput = {
-  fileName?: InputMaybe<Scalars['String']>;
-  height?: InputMaybe<Scalars['Float']>;
+  fileName?: InputMaybe<Scalars['String']['input']>;
+  height?: InputMaybe<Scalars['Float']['input']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<AssetUpdateManyLocalizationsInput>;
-  mimeType?: InputMaybe<Scalars['String']>;
-  size?: InputMaybe<Scalars['Float']>;
-  width?: InputMaybe<Scalars['Float']>;
+  mimeType?: InputMaybe<Scalars['String']['input']>;
+  size?: InputMaybe<Scalars['Float']['input']>;
+  width?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type AssetUpdateManyLocalizationDataInput = {
-  fileName?: InputMaybe<Scalars['String']>;
-  height?: InputMaybe<Scalars['Float']>;
-  mimeType?: InputMaybe<Scalars['String']>;
-  size?: InputMaybe<Scalars['Float']>;
-  width?: InputMaybe<Scalars['Float']>;
+  fileName?: InputMaybe<Scalars['String']['input']>;
+  height?: InputMaybe<Scalars['Float']['input']>;
+  mimeType?: InputMaybe<Scalars['String']['input']>;
+  size?: InputMaybe<Scalars['Float']['input']>;
+  width?: InputMaybe<Scalars['Float']['input']>;
 };
 
 export type AssetUpdateManyLocalizationInput = {
@@ -517,9 +539,9 @@ export type AssetUpdateOneInlineInput = {
   /** Create and connect one Asset document */
   create?: InputMaybe<AssetCreateInput>;
   /** Delete currently connected Asset document */
-  delete?: InputMaybe<Scalars['Boolean']>;
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
   /** Disconnect currently connected Asset document */
-  disconnect?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
   /** Update single Asset document */
   update?: InputMaybe<AssetUpdateWithNestedWhereUniqueInput>;
   /** Upsert single Asset document */
@@ -556,7 +578,7 @@ export type AssetUpsertWithNestedWhereUniqueInput = {
 /** This contains a set of filters that can be used to compare values internally */
 export type AssetWhereComparatorInput = {
   /** This field can be used to request to check if the entry is outdated by internal comparison */
-  outdated_to?: InputMaybe<Scalars['Boolean']>;
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Identifies documents */
@@ -568,126 +590,129 @@ export type AssetWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<AssetWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
   documentInStages_every?: InputMaybe<AssetWhereStageInput>;
   documentInStages_none?: InputMaybe<AssetWhereStageInput>;
   documentInStages_some?: InputMaybe<AssetWhereStageInput>;
-  fileName?: InputMaybe<Scalars['String']>;
+  fileName?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  fileName_contains?: InputMaybe<Scalars['String']>;
+  fileName_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  fileName_ends_with?: InputMaybe<Scalars['String']>;
+  fileName_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  fileName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  fileName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  fileName_not?: InputMaybe<Scalars['String']>;
+  fileName_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  fileName_not_contains?: InputMaybe<Scalars['String']>;
+  fileName_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  fileName_not_ends_with?: InputMaybe<Scalars['String']>;
+  fileName_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  fileName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  fileName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  fileName_not_starts_with?: InputMaybe<Scalars['String']>;
+  fileName_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  fileName_starts_with?: InputMaybe<Scalars['String']>;
-  handle?: InputMaybe<Scalars['String']>;
+  fileName_starts_with?: InputMaybe<Scalars['String']['input']>;
+  handle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  handle_contains?: InputMaybe<Scalars['String']>;
+  handle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  handle_ends_with?: InputMaybe<Scalars['String']>;
+  handle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  handle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  handle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  handle_not?: InputMaybe<Scalars['String']>;
+  handle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  handle_not_contains?: InputMaybe<Scalars['String']>;
+  handle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  handle_not_ends_with?: InputMaybe<Scalars['String']>;
+  handle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  handle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  handle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  handle_not_starts_with?: InputMaybe<Scalars['String']>;
+  handle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  handle_starts_with?: InputMaybe<Scalars['String']>;
-  height?: InputMaybe<Scalars['Float']>;
+  handle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  height?: InputMaybe<Scalars['Float']['input']>;
   /** All values greater than the given value. */
-  height_gt?: InputMaybe<Scalars['Float']>;
+  height_gt?: InputMaybe<Scalars['Float']['input']>;
   /** All values greater than or equal the given value. */
-  height_gte?: InputMaybe<Scalars['Float']>;
+  height_gte?: InputMaybe<Scalars['Float']['input']>;
   /** All values that are contained in given list. */
-  height_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  height_in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
   /** All values less than the given value. */
-  height_lt?: InputMaybe<Scalars['Float']>;
+  height_lt?: InputMaybe<Scalars['Float']['input']>;
   /** All values less than or equal the given value. */
-  height_lte?: InputMaybe<Scalars['Float']>;
+  height_lte?: InputMaybe<Scalars['Float']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  height_not?: InputMaybe<Scalars['Float']>;
+  height_not?: InputMaybe<Scalars['Float']['input']>;
   /** All values that are not contained in given list. */
-  height_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  height_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
+  heroImageContentSpace_every?: InputMaybe<ContentSpaceWhereInput>;
+  heroImageContentSpace_none?: InputMaybe<ContentSpaceWhereInput>;
+  heroImageContentSpace_some?: InputMaybe<ContentSpaceWhereInput>;
   heroImageEvent_every?: InputMaybe<EventWhereInput>;
   heroImageEvent_none?: InputMaybe<EventWhereInput>;
   heroImageEvent_some?: InputMaybe<EventWhereInput>;
   heroImageOrganizer_every?: InputMaybe<OrganizerWhereInput>;
   heroImageOrganizer_none?: InputMaybe<OrganizerWhereInput>;
   heroImageOrganizer_some?: InputMaybe<OrganizerWhereInput>;
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
   imageOrganizer_every?: InputMaybe<OrganizerWhereInput>;
   imageOrganizer_none?: InputMaybe<OrganizerWhereInput>;
   imageOrganizer_some?: InputMaybe<OrganizerWhereInput>;
-  mimeType?: InputMaybe<Scalars['String']>;
+  mimeType?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  mimeType_contains?: InputMaybe<Scalars['String']>;
+  mimeType_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  mimeType_ends_with?: InputMaybe<Scalars['String']>;
+  mimeType_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  mimeType_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  mimeType_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  mimeType_not?: InputMaybe<Scalars['String']>;
+  mimeType_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  mimeType_not_contains?: InputMaybe<Scalars['String']>;
+  mimeType_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  mimeType_not_ends_with?: InputMaybe<Scalars['String']>;
+  mimeType_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  mimeType_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  mimeType_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  mimeType_not_starts_with?: InputMaybe<Scalars['String']>;
+  mimeType_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  mimeType_starts_with?: InputMaybe<Scalars['String']>;
+  mimeType_starts_with?: InputMaybe<Scalars['String']['input']>;
   nftImageEventPassDelayedRevealed_every?: InputMaybe<EventPassDelayedRevealedWhereInput>;
   nftImageEventPassDelayedRevealed_none?: InputMaybe<EventPassDelayedRevealedWhereInput>;
   nftImageEventPassDelayedRevealed_some?: InputMaybe<EventPassDelayedRevealedWhereInput>;
@@ -697,71 +722,71 @@ export type AssetWhereInput = {
   nftImagePack_every?: InputMaybe<PackWhereInput>;
   nftImagePack_none?: InputMaybe<PackWhereInput>;
   nftImagePack_some?: InputMaybe<PackWhereInput>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  size?: InputMaybe<Scalars['Float']>;
+  size?: InputMaybe<Scalars['Float']['input']>;
   /** All values greater than the given value. */
-  size_gt?: InputMaybe<Scalars['Float']>;
+  size_gt?: InputMaybe<Scalars['Float']['input']>;
   /** All values greater than or equal the given value. */
-  size_gte?: InputMaybe<Scalars['Float']>;
+  size_gte?: InputMaybe<Scalars['Float']['input']>;
   /** All values that are contained in given list. */
-  size_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  size_in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
   /** All values less than the given value. */
-  size_lt?: InputMaybe<Scalars['Float']>;
+  size_lt?: InputMaybe<Scalars['Float']['input']>;
   /** All values less than or equal the given value. */
-  size_lte?: InputMaybe<Scalars['Float']>;
+  size_lte?: InputMaybe<Scalars['Float']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  size_not?: InputMaybe<Scalars['Float']>;
+  size_not?: InputMaybe<Scalars['Float']['input']>;
   /** All values that are not contained in given list. */
-  size_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  size_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
-  width?: InputMaybe<Scalars['Float']>;
+  width?: InputMaybe<Scalars['Float']['input']>;
   /** All values greater than the given value. */
-  width_gt?: InputMaybe<Scalars['Float']>;
+  width_gt?: InputMaybe<Scalars['Float']['input']>;
   /** All values greater than or equal the given value. */
-  width_gte?: InputMaybe<Scalars['Float']>;
+  width_gte?: InputMaybe<Scalars['Float']['input']>;
   /** All values that are contained in given list. */
-  width_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  width_in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
   /** All values less than the given value. */
-  width_lt?: InputMaybe<Scalars['Float']>;
+  width_lt?: InputMaybe<Scalars['Float']['input']>;
   /** All values less than or equal the given value. */
-  width_lte?: InputMaybe<Scalars['Float']>;
+  width_lte?: InputMaybe<Scalars['Float']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  width_not?: InputMaybe<Scalars['Float']>;
+  width_not?: InputMaybe<Scalars['Float']['input']>;
   /** All values that are not contained in given list. */
-  width_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
+  width_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
 };
 
 /** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
@@ -780,37 +805,707 @@ export type AssetWhereStageInput = {
 
 /** References Asset record uniquely */
 export type AssetWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type BatchPayload = {
   __typename?: 'BatchPayload';
   /** The number of nodes that have been affected by the Batch operation. */
-  count: Scalars['Long'];
+  count: Scalars['Long']['output'];
 };
 
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
 export type Boolean_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['Boolean']>;
-  _gt?: InputMaybe<Scalars['Boolean']>;
-  _gte?: InputMaybe<Scalars['Boolean']>;
-  _in?: InputMaybe<Array<Scalars['Boolean']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['Boolean']>;
-  _lte?: InputMaybe<Scalars['Boolean']>;
-  _neq?: InputMaybe<Scalars['Boolean']>;
-  _nin?: InputMaybe<Array<Scalars['Boolean']>>;
+  _eq?: InputMaybe<Scalars['Boolean']['input']>;
+  _gt?: InputMaybe<Scalars['Boolean']['input']>;
+  _gte?: InputMaybe<Scalars['Boolean']['input']>;
+  _in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Boolean']['input']>;
+  _lte?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Scalars['Boolean']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
 };
 
 export type ConnectPositionInput = {
   /** Connect document after specified document */
-  after?: InputMaybe<Scalars['ID']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
   /** Connect document before specified document */
-  before?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
   /** Connect document at last position */
-  end?: InputMaybe<Scalars['Boolean']>;
+  end?: InputMaybe<Scalars['Boolean']['input']>;
   /** Connect document at first position */
-  start?: InputMaybe<Scalars['Boolean']>;
+  start?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpace = Entity & Node & {
+  __typename?: 'ContentSpace';
+  /** The time the document was created */
+  createdAt: Scalars['DateTime']['output'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  /**
+   * A detailed narrative or summary of what the content space offers. Rich Text Format allows for a more engaging and visually appealing presentation.
+   * Provides users with a clear understanding of the content space's value and contents, enhancing their browsing experience.
+   */
+  description: ContentSpaceDescriptionRichText;
+  /** Get the document in other stages */
+  documentInStages: Array<ContentSpace>;
+  /**
+   * Establishes a connection between each content space and various EventPasses. This linkage determines which NFT holders can access the content.
+   * Enables organizers to manage access and associate specific content spaces with relevant NFTs.
+   */
+  eventPasses: Array<ContentSpaceEventPasses>;
+  /**
+   * Visual representation or thematic image for the content space. It will displayed on a rectangular format. The image need to be high quality in order to display well on every screen. Advised resolution is 1920 * 800 pixels.
+   * Used for thumbnails, marketing, and as a visual cue for users to recognize and differentiate content spaces.
+   */
+  heroImage: Asset;
+  /** List of ContentSpace versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<ContentSpace>;
+  organizer?: Maybe<Organizer>;
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  slug?: Maybe<Scalars['String']['output']>;
+  /** System stage field */
+  stage: Stage;
+  title: Scalars['String']['output'];
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime']['output'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpaceCreatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpaceCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpaceDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
+  stages?: Array<Stage>;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpaceEventPassesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpaceHeroImageArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpaceHistoryArgs = {
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpaceLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  locales?: Array<Locale>;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpaceOrganizerArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpacePublishedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpacePublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpaceScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpaceUpdatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+/** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+export type ContentSpaceUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type ContentSpaceConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: ContentSpaceWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type ContentSpaceConnection = {
+  __typename?: 'ContentSpaceConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<ContentSpaceEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type ContentSpaceCreateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** description input for default locale (en) */
+  description: Scalars['RichTextAST']['input'];
+  eventPasses?: InputMaybe<ContentSpaceEventPassesCreateManyInlineInput>;
+  heroImage: AssetCreateOneInlineInput;
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<ContentSpaceCreateLocalizationsInput>;
+  organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** title input for default locale (en) */
+  title: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type ContentSpaceCreateLocalizationDataInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description: Scalars['RichTextAST']['input'];
+  title: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type ContentSpaceCreateLocalizationInput = {
+  /** Localization input */
+  data: ContentSpaceCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ContentSpaceCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<ContentSpaceCreateLocalizationInput>>;
+};
+
+export type ContentSpaceCreateManyInlineInput = {
+  /** Connect multiple existing ContentSpace documents */
+  connect?: InputMaybe<Array<ContentSpaceWhereUniqueInput>>;
+  /** Create and connect multiple existing ContentSpace documents */
+  create?: InputMaybe<Array<ContentSpaceCreateInput>>;
+};
+
+export type ContentSpaceDescriptionRichText = {
+  __typename?: 'ContentSpaceDescriptionRichText';
+  /** Returns HTMl representation */
+  html: Scalars['String']['output'];
+  json: Scalars['RichTextAST']['output'];
+  /** Returns Markdown representation */
+  markdown: Scalars['String']['output'];
+  raw: Scalars['RichTextAST']['output'];
+  references: Array<ContentSpaceDescriptionRichTextEmbeddedTypes>;
+  /** Returns plain-text contents of RichText */
+  text: Scalars['String']['output'];
+};
+
+
+export type ContentSpaceDescriptionRichTextReferencesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type ContentSpaceDescriptionRichTextEmbeddedTypes = Asset;
+
+/** An edge in a connection. */
+export type ContentSpaceEdge = {
+  __typename?: 'ContentSpaceEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node: ContentSpace;
+};
+
+export type ContentSpaceEventPasses = EventPass;
+
+export type ContentSpaceEventPassesConnectInput = {
+  EventPass?: InputMaybe<EventPassConnectInput>;
+};
+
+export type ContentSpaceEventPassesCreateInput = {
+  EventPass?: InputMaybe<EventPassCreateInput>;
+};
+
+export type ContentSpaceEventPassesCreateManyInlineInput = {
+  /** Connect multiple existing ContentSpaceEventPasses documents */
+  connect?: InputMaybe<Array<ContentSpaceEventPassesWhereUniqueInput>>;
+  /** Create and connect multiple existing ContentSpaceEventPasses documents */
+  create?: InputMaybe<Array<ContentSpaceEventPassesCreateInput>>;
+};
+
+export type ContentSpaceEventPassesUpdateManyInlineInput = {
+  /** Connect multiple existing ContentSpaceEventPasses documents */
+  connect?: InputMaybe<Array<ContentSpaceEventPassesConnectInput>>;
+  /** Create and connect multiple ContentSpaceEventPasses documents */
+  create?: InputMaybe<Array<ContentSpaceEventPassesCreateInput>>;
+  /** Delete multiple ContentSpaceEventPasses documents */
+  delete?: InputMaybe<Array<ContentSpaceEventPassesWhereUniqueInput>>;
+  /** Disconnect multiple ContentSpaceEventPasses documents */
+  disconnect?: InputMaybe<Array<ContentSpaceEventPassesWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing ContentSpaceEventPasses documents */
+  set?: InputMaybe<Array<ContentSpaceEventPassesWhereUniqueInput>>;
+  /** Update multiple ContentSpaceEventPasses documents */
+  update?: InputMaybe<Array<ContentSpaceEventPassesUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple ContentSpaceEventPasses documents */
+  upsert?: InputMaybe<Array<ContentSpaceEventPassesUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type ContentSpaceEventPassesUpdateWithNestedWhereUniqueInput = {
+  EventPass?: InputMaybe<EventPassUpdateWithNestedWhereUniqueInput>;
+};
+
+export type ContentSpaceEventPassesUpsertWithNestedWhereUniqueInput = {
+  EventPass?: InputMaybe<EventPassUpsertWithNestedWhereUniqueInput>;
+};
+
+export type ContentSpaceEventPassesWhereInput = {
+  EventPass?: InputMaybe<EventPassWhereInput>;
+};
+
+export type ContentSpaceEventPassesWhereUniqueInput = {
+  EventPass?: InputMaybe<EventPassWhereUniqueInput>;
+};
+
+/** Identifies documents */
+export type ContentSpaceManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ContentSpaceWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ContentSpaceWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ContentSpaceWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<ContentSpaceWhereStageInput>;
+  documentInStages_none?: InputMaybe<ContentSpaceWhereStageInput>;
+  documentInStages_some?: InputMaybe<ContentSpaceWhereStageInput>;
+  /** All values in which the union is empty */
+  eventPasses_empty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Matches if the union contains at least one connection to the provided item to the filter */
+  eventPasses_some?: InputMaybe<ContentSpaceEventPassesWhereInput>;
+  heroImage?: InputMaybe<AssetWhereInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  slug_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  slug_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  slug_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  slug_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export const enum ContentSpaceOrderByInput {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+};
+
+export type ContentSpaceUpdateInput = {
+  /** description input for default locale (en) */
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
+  eventPasses?: InputMaybe<ContentSpaceEventPassesUpdateManyInlineInput>;
+  heroImage?: InputMaybe<AssetUpdateOneInlineInput>;
+  /** Manage document localizations */
+  localizations?: InputMaybe<ContentSpaceUpdateLocalizationsInput>;
+  organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** title input for default locale (en) */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ContentSpaceUpdateLocalizationDataInput = {
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ContentSpaceUpdateLocalizationInput = {
+  data: ContentSpaceUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ContentSpaceUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<ContentSpaceCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<ContentSpaceUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<ContentSpaceUpsertLocalizationInput>>;
+};
+
+export type ContentSpaceUpdateManyInlineInput = {
+  /** Connect multiple existing ContentSpace documents */
+  connect?: InputMaybe<Array<ContentSpaceConnectInput>>;
+  /** Create and connect multiple ContentSpace documents */
+  create?: InputMaybe<Array<ContentSpaceCreateInput>>;
+  /** Delete multiple ContentSpace documents */
+  delete?: InputMaybe<Array<ContentSpaceWhereUniqueInput>>;
+  /** Disconnect multiple ContentSpace documents */
+  disconnect?: InputMaybe<Array<ContentSpaceWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing ContentSpace documents */
+  set?: InputMaybe<Array<ContentSpaceWhereUniqueInput>>;
+  /** Update multiple ContentSpace documents */
+  update?: InputMaybe<Array<ContentSpaceUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple ContentSpace documents */
+  upsert?: InputMaybe<Array<ContentSpaceUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type ContentSpaceUpdateManyInput = {
+  /** description input for default locale (en) */
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
+  /** Optional updates to localizations */
+  localizations?: InputMaybe<ContentSpaceUpdateManyLocalizationsInput>;
+  /** title input for default locale (en) */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ContentSpaceUpdateManyLocalizationDataInput = {
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ContentSpaceUpdateManyLocalizationInput = {
+  data: ContentSpaceUpdateManyLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ContentSpaceUpdateManyLocalizationsInput = {
+  /** Localizations to update */
+  update?: InputMaybe<Array<ContentSpaceUpdateManyLocalizationInput>>;
+};
+
+export type ContentSpaceUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ContentSpaceUpdateInput;
+  /** Unique document search */
+  where: ContentSpaceWhereUniqueInput;
+};
+
+export type ContentSpaceUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ContentSpaceCreateInput;
+  /** Update document if it exists */
+  update: ContentSpaceUpdateInput;
+};
+
+export type ContentSpaceUpsertLocalizationInput = {
+  create: ContentSpaceCreateLocalizationDataInput;
+  locale: Locale;
+  update: ContentSpaceUpdateLocalizationDataInput;
+};
+
+export type ContentSpaceUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ContentSpaceUpsertInput;
+  /** Unique document search */
+  where: ContentSpaceWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type ContentSpaceWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Identifies documents */
+export type ContentSpaceWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ContentSpaceWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ContentSpaceWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ContentSpaceWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<ContentSpaceWhereStageInput>;
+  documentInStages_none?: InputMaybe<ContentSpaceWhereStageInput>;
+  documentInStages_some?: InputMaybe<ContentSpaceWhereStageInput>;
+  /** All values in which the union is empty */
+  eventPasses_empty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Matches if the union contains at least one connection to the provided item to the filter */
+  eventPasses_some?: InputMaybe<ContentSpaceEventPassesWhereInput>;
+  heroImage?: InputMaybe<AssetWhereInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  slug_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  slug_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  slug_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  slug_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  title_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  title_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  title_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  title_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  title_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  title_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  title_starts_with?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type ContentSpaceWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ContentSpaceWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ContentSpaceWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ContentSpaceWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<ContentSpaceWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References ContentSpace record uniquely */
+export type ContentSpaceWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 export const enum DocumentFileTypes {
@@ -870,17 +1565,17 @@ export type DocumentTransformationInput = {
 
 export type DocumentVersion = {
   __typename?: 'DocumentVersion';
-  createdAt: Scalars['DateTime'];
-  data?: Maybe<Scalars['Json']>;
-  id: Scalars['ID'];
-  revision: Scalars['Int'];
+  createdAt: Scalars['DateTime']['output'];
+  data?: Maybe<Scalars['Json']['output']>;
+  id: Scalars['ID']['output'];
+  revision: Scalars['Int']['output'];
   stage: Stage;
 };
 
 /** An object with an ID */
 export type Entity = {
   /** The id of the object. */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** The Stage of an object */
   stage: Stage;
 };
@@ -889,6 +1584,8 @@ export type Entity = {
 export const enum EntityTypeName {
   /** Asset system model */
   Asset = 'Asset',
+  /** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
+  ContentSpace = 'ContentSpace',
   /** Root event model */
   Event = 'Event',
   /** Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several. */
@@ -919,7 +1616,7 @@ export const enum EntityTypeName {
 /** Allows to specify input to query models and components directly */
 export type EntityWhereInput = {
   /** The ID of an object */
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
   locale?: InputMaybe<Locale>;
   stage: Stage;
   /** The Type name of an object */
@@ -930,7 +1627,7 @@ export type EntityWhereInput = {
 export type Event = Entity & Node & {
   __typename?: 'Event';
   /** The time the document was created */
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** User that created this document */
   createdBy?: Maybe<User>;
   description: EventDescriptionRichText;
@@ -946,28 +1643,28 @@ export type Event = Entity & Node & {
   /** An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen. Advised resolution is 1920 * 800 pixels */
   heroImage: Asset;
   /** Optional field used to style your hero image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
-  heroImageClasses?: Maybe<Scalars['String']>;
+  heroImageClasses?: Maybe<Scalars['String']['output']>;
   /** List of Event versions */
   history: Array<Version>;
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** System Locale field */
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<Event>;
   organizer?: Maybe<Organizer>;
   /** The time the document was published. Null on documents in draft stage. */
-  publishedAt?: Maybe<Scalars['DateTime']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
   scheduledIn: Array<ScheduledOperation>;
   /** Used in the URL */
-  slug: Scalars['String'];
+  slug: Scalars['String']['output'];
   /** System stage field */
   stage: Stage;
-  title: Scalars['String'];
+  title: Scalars['String']['output'];
   /** The time the document was updated */
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime']['output'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
 };
@@ -981,72 +1678,72 @@ export type EventCreatedAtArgs = {
 
 /** Root event model */
 export type EventCreatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Root event model */
 export type EventDocumentInStagesArgs = {
-  includeCurrent?: Scalars['Boolean'];
-  inheritLocale?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
   stages?: Array<Stage>;
 };
 
 
 /** Root event model */
 export type EventEventDateLocationsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<EventDateLocationOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventDateLocationWhereInput>;
 };
 
 
 /** Root event model */
 export type EventEventPassesArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<EventPassOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventPassWhereInput>;
 };
 
 
 /** Root event model */
 export type EventHeroImageArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Root event model */
 export type EventHistoryArgs = {
-  limit?: Scalars['Int'];
-  skip?: Scalars['Int'];
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
   stageOverride?: InputMaybe<Stage>;
 };
 
 
 /** Root event model */
 export type EventLocalizationsArgs = {
-  includeCurrent?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
   locales?: Array<Locale>;
 };
 
 
 /** Root event model */
 export type EventOrganizerArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -1059,20 +1756,20 @@ export type EventPublishedAtArgs = {
 
 /** Root event model */
 export type EventPublishedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Root event model */
 export type EventScheduledInArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
@@ -1085,7 +1782,7 @@ export type EventUpdatedAtArgs = {
 
 /** Root event model */
 export type EventUpdatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -1107,27 +1804,27 @@ export type EventConnection = {
 };
 
 export type EventCreateInput = {
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** description input for default locale (en) */
-  description: Scalars['RichTextAST'];
+  description: Scalars['RichTextAST']['input'];
   eventDateLocations?: InputMaybe<EventDateLocationCreateManyInlineInput>;
   eventPasses?: InputMaybe<EventPassCreateManyInlineInput>;
   heroImage: AssetCreateOneInlineInput;
-  heroImageClasses?: InputMaybe<Scalars['String']>;
+  heroImageClasses?: InputMaybe<Scalars['String']['input']>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventCreateLocalizationsInput>;
   organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
-  slug: Scalars['String'];
+  slug: Scalars['String']['input'];
   /** title input for default locale (en) */
-  title: Scalars['String'];
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  title: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type EventCreateLocalizationDataInput = {
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  description: Scalars['RichTextAST'];
-  title: Scalars['String'];
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description: Scalars['RichTextAST']['input'];
+  title: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type EventCreateLocalizationInput = {
@@ -1159,11 +1856,11 @@ export type EventCreateOneInlineInput = {
 export type EventDateLocation = Entity & {
   __typename?: 'EventDateLocation';
   /** The end date including time. */
-  dateEnd: Scalars['DateTime'];
+  dateEnd: Scalars['DateTime']['output'];
   /** The start date including time. */
-  dateStart: Scalars['DateTime'];
+  dateStart: Scalars['DateTime']['output'];
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** The location expressed in coordinates on a map and address */
   locationAddress: LocationAddress;
   /** System stage field */
@@ -1173,13 +1870,13 @@ export type EventDateLocation = Entity & {
 
 /** Model used to define the different locations and dates of an event. A festival or a tournament for instance could have several. */
 export type EventDateLocationLocationAddressArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 export type EventDateLocationCreateInput = {
-  dateEnd: Scalars['DateTime'];
-  dateStart: Scalars['DateTime'];
+  dateEnd: Scalars['DateTime']['input'];
+  dateStart: Scalars['DateTime']['input'];
   locationAddress: LocationAddressCreateOneInlineInput;
 };
 
@@ -1210,8 +1907,8 @@ export const enum EventDateLocationOrderByInput {
 };
 
 export type EventDateLocationUpdateInput = {
-  dateEnd?: InputMaybe<Scalars['DateTime']>;
-  dateStart?: InputMaybe<Scalars['DateTime']>;
+  dateEnd?: InputMaybe<Scalars['DateTime']['input']>;
+  dateStart?: InputMaybe<Scalars['DateTime']['input']>;
   locationAddress?: InputMaybe<LocationAddressUpdateOneInlineInput>;
 };
 
@@ -1230,7 +1927,7 @@ export type EventDateLocationUpdateOneInlineInput = {
   /** Create and connect one EventDateLocation document */
   create?: InputMaybe<EventDateLocationCreateInput>;
   /** Delete currently connected EventDateLocation document */
-  delete?: InputMaybe<Scalars['Boolean']>;
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
   /** Update single EventDateLocation document */
   update?: InputMaybe<EventDateLocationUpdateWithNestedWhereUniqueInput>;
   /** Upsert single EventDateLocation document */
@@ -1285,84 +1982,84 @@ export type EventDateLocationWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<EventDateLocationWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  dateEnd?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  dateEnd?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  dateEnd_gt?: InputMaybe<Scalars['DateTime']>;
+  dateEnd_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  dateEnd_gte?: InputMaybe<Scalars['DateTime']>;
+  dateEnd_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  dateEnd_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  dateEnd_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  dateEnd_lt?: InputMaybe<Scalars['DateTime']>;
+  dateEnd_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  dateEnd_lte?: InputMaybe<Scalars['DateTime']>;
+  dateEnd_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  dateEnd_not?: InputMaybe<Scalars['DateTime']>;
+  dateEnd_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  dateEnd_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  dateStart?: InputMaybe<Scalars['DateTime']>;
+  dateEnd_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  dateStart?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  dateStart_gt?: InputMaybe<Scalars['DateTime']>;
+  dateStart_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  dateStart_gte?: InputMaybe<Scalars['DateTime']>;
+  dateStart_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  dateStart_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  dateStart_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  dateStart_lt?: InputMaybe<Scalars['DateTime']>;
+  dateStart_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  dateStart_lte?: InputMaybe<Scalars['DateTime']>;
+  dateStart_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  dateStart_not?: InputMaybe<Scalars['DateTime']>;
+  dateStart_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  dateStart_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  id?: InputMaybe<Scalars['ID']>;
+  dateStart_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
   locationAddress?: InputMaybe<LocationAddressWhereInput>;
 };
 
 /** References EventDateLocation record uniquely */
 export type EventDateLocationWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type EventDescriptionRichText = {
   __typename?: 'EventDescriptionRichText';
   /** Returns HTMl representation */
-  html: Scalars['String'];
-  json: Scalars['RichTextAST'];
+  html: Scalars['String']['output'];
+  json: Scalars['RichTextAST']['output'];
   /** Returns Markdown representation */
-  markdown: Scalars['String'];
-  raw: Scalars['RichTextAST'];
+  markdown: Scalars['String']['output'];
+  raw: Scalars['RichTextAST']['output'];
   references: Array<EventDescriptionRichTextEmbeddedTypes>;
   /** Returns plain-text contents of RichText */
-  text: Scalars['String'];
+  text: Scalars['String']['output'];
 };
 
 
 export type EventDescriptionRichTextReferencesArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type EventDescriptionRichTextEmbeddedTypes = Asset;
@@ -1371,7 +2068,7 @@ export type EventDescriptionRichTextEmbeddedTypes = Asset;
 export type EventEdge = {
   __typename?: 'EventEdge';
   /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
   node: Event;
 };
@@ -1385,22 +2082,22 @@ export type EventManyWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<EventWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
   documentInStages_every?: InputMaybe<EventWhereStageInput>;
   documentInStages_none?: InputMaybe<EventWhereStageInput>;
@@ -1412,98 +2109,98 @@ export type EventManyWhereInput = {
   eventPasses_none?: InputMaybe<EventPassWhereInput>;
   eventPasses_some?: InputMaybe<EventPassWhereInput>;
   heroImage?: InputMaybe<AssetWhereInput>;
-  heroImageClasses?: InputMaybe<Scalars['String']>;
+  heroImageClasses?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  heroImageClasses_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
   organizer?: InputMaybe<OrganizerWhereInput>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  slug?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  slug_contains?: InputMaybe<Scalars['String']>;
+  slug_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  slug_ends_with?: InputMaybe<Scalars['String']>;
+  slug_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  slug_not?: InputMaybe<Scalars['String']>;
+  slug_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  slug_not_contains?: InputMaybe<Scalars['String']>;
+  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  slug_not_ends_with?: InputMaybe<Scalars['String']>;
+  slug_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  slug_not_starts_with?: InputMaybe<Scalars['String']>;
+  slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  slug_starts_with?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
 };
 
@@ -1527,12 +2224,14 @@ export const enum EventOrderByInput {
 /** Define a pass for an event with different options */
 export type EventPass = Entity & Node & {
   __typename?: 'EventPass';
+  /** This field represents the connection from an EventPass to multiple ContentSpaces. It identifies all the exclusive content spaces that an EventPass holder has access to. This linkage is crucial for providing NFT owners with their entitled content benefits. */
+  contentSpaces: Array<ContentSpace>;
   /** The time the document was created */
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** User that created this document */
   createdBy?: Maybe<User>;
   /** Description of the pass, like "Access to the event for 3 days" */
-  description: Scalars['String'];
+  description: Scalars['String']['output'];
   /** Get the document in other stages */
   documentInStages: Array<EventPass>;
   event?: Maybe<Event>;
@@ -1542,35 +2241,48 @@ export type EventPass = Entity & Node & {
   /** List of EventPass versions */
   history: Array<Version>;
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** System Locale field */
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<EventPass>;
   /** User-friendly name of the pass, like "VIP 3-Day Pass" */
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
   /** Fixed description pertaining to the NFT. This content is static and non-localizable. */
-  nftDescription: Scalars['String'];
+  nftDescription: Scalars['String']['output'];
   /** Permanent image representing the NFT. Advised resolution is 800 x 800 pixels. Image content is non-changeable and cannot be localized. */
   nftImage: Asset;
   /** Permanent name associated with the NFT. Cannot be changed or localized. */
-  nftName: Scalars['String'];
+  nftName: Scalars['String']['output'];
   pack?: Maybe<Pack>;
   passAmount?: Maybe<PassAmount>;
   /** Define the different pass options. An option is defined for a specific location and timeframe */
   passOptions: Array<PassOption>;
   passPricing?: Maybe<PassPricing>;
   /** The time the document was published. Null on documents in draft stage. */
-  publishedAt?: Maybe<Scalars['DateTime']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
   scheduledIn: Array<ScheduledOperation>;
   /** System stage field */
   stage: Stage;
   /** The time the document was updated */
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime']['output'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
+};
+
+
+/** Define a pass for an event with different options */
+export type EventPassContentSpacesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ContentSpaceWhereInput>;
 };
 
 
@@ -1582,72 +2294,72 @@ export type EventPassCreatedAtArgs = {
 
 /** Define a pass for an event with different options */
 export type EventPassCreatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Define a pass for an event with different options */
 export type EventPassDocumentInStagesArgs = {
-  includeCurrent?: Scalars['Boolean'];
-  inheritLocale?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
   stages?: Array<Stage>;
 };
 
 
 /** Define a pass for an event with different options */
 export type EventPassEventArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Define a pass for an event with different options */
 export type EventPassEventPassDelayedRevealedArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Define a pass for an event with different options */
 export type EventPassHistoryArgs = {
-  limit?: Scalars['Int'];
-  skip?: Scalars['Int'];
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
   stageOverride?: InputMaybe<Stage>;
 };
 
 
 /** Define a pass for an event with different options */
 export type EventPassLocalizationsArgs = {
-  includeCurrent?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
   locales?: Array<Locale>;
 };
 
 
 /** Define a pass for an event with different options */
 export type EventPassNftImageArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Define a pass for an event with different options */
 export type EventPassPackArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Define a pass for an event with different options */
 export type EventPassPassOptionsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<PassOptionOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<PassOptionWhereInput>;
 };
 
@@ -1660,20 +2372,20 @@ export type EventPassPublishedAtArgs = {
 
 /** Define a pass for an event with different options */
 export type EventPassPublishedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Define a pass for an event with different options */
 export type EventPassScheduledInArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
@@ -1686,7 +2398,7 @@ export type EventPassUpdatedAtArgs = {
 
 /** Define a pass for an event with different options */
 export type EventPassUpdatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -1709,28 +2421,29 @@ export type EventPassConnection = {
 
 export type EventPassCreateInput = {
   clptwshsk4wx601usb3uggcu7?: InputMaybe<EventPassDelayedRevealedCreateManyInlineInput>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  contentSpaces?: InputMaybe<ContentSpaceCreateManyInlineInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** description input for default locale (en) */
-  description: Scalars['String'];
+  description: Scalars['String']['input'];
   event?: InputMaybe<EventCreateOneInlineInput>;
   eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedCreateOneInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventPassCreateLocalizationsInput>;
   /** name input for default locale (en) */
-  name: Scalars['String'];
-  nftDescription: Scalars['String'];
+  name: Scalars['String']['input'];
+  nftDescription: Scalars['String']['input'];
   nftImage: AssetCreateOneInlineInput;
-  nftName: Scalars['String'];
+  nftName: Scalars['String']['input'];
   pack?: InputMaybe<PackCreateOneInlineInput>;
   passOptions?: InputMaybe<PassOptionCreateManyInlineInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type EventPassCreateLocalizationDataInput = {
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  description: Scalars['String'];
-  name: Scalars['String'];
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type EventPassCreateLocalizationInput = {
@@ -1762,11 +2475,11 @@ export type EventPassCreateOneInlineInput = {
 export type EventPassDelayedRevealed = Entity & Node & {
   __typename?: 'EventPassDelayedRevealed';
   /** The time the document was created */
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** User that created this document */
   createdBy?: Maybe<User>;
   /** A brief overview or summary of the event pass */
-  description: Scalars['String'];
+  description: Scalars['String']['output'];
   /** Get the document in other stages */
   documentInStages: Array<EventPassDelayedRevealed>;
   /** Links directly to `EventPass`, providing initial, temporary details about the NFT until the full reveal occurs. */
@@ -1774,30 +2487,30 @@ export type EventPassDelayedRevealed = Entity & Node & {
   /** List of EventPassDelayedRevealed versions */
   history: Array<Version>;
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** System Locale field */
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<EventPassDelayedRevealed>;
   /** The official name of the event pass */
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
   /** Fixed description pertaining to the NFT. This content is static and non-localizable. */
-  nftDescription: Scalars['String'];
+  nftDescription: Scalars['String']['output'];
   /** Permanent image representing the NFT. Advised resolution is 800 x 800 pixels. Image content is non-changeable and cannot be localized. */
   nftImage: Asset;
   /** Permanent name associated with the NFT. Cannot be changed or localized. */
-  nftName: Scalars['String'];
+  nftName: Scalars['String']['output'];
   /** Define the different pass options. An option is defined for a specific location and timeframe */
   passOptions: Array<PassOption>;
   /** The time the document was published. Null on documents in draft stage. */
-  publishedAt?: Maybe<Scalars['DateTime']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
   scheduledIn: Array<ScheduledOperation>;
   /** System stage field */
   stage: Stage;
   /** The time the document was updated */
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime']['output'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
 };
@@ -1811,58 +2524,58 @@ export type EventPassDelayedRevealedCreatedAtArgs = {
 
 /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
 export type EventPassDelayedRevealedCreatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
 export type EventPassDelayedRevealedDocumentInStagesArgs = {
-  includeCurrent?: Scalars['Boolean'];
-  inheritLocale?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
   stages?: Array<Stage>;
 };
 
 
 /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
 export type EventPassDelayedRevealedEventPassArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
 export type EventPassDelayedRevealedHistoryArgs = {
-  limit?: Scalars['Int'];
-  skip?: Scalars['Int'];
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
   stageOverride?: InputMaybe<Stage>;
 };
 
 
 /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
 export type EventPassDelayedRevealedLocalizationsArgs = {
-  includeCurrent?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
   locales?: Array<Locale>;
 };
 
 
 /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
 export type EventPassDelayedRevealedNftImageArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
 export type EventPassDelayedRevealedPassOptionsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<PassOptionOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<PassOptionWhereInput>;
 };
 
@@ -1875,20 +2588,20 @@ export type EventPassDelayedRevealedPublishedAtArgs = {
 
 /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
 export type EventPassDelayedRevealedPublishedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
 export type EventPassDelayedRevealedScheduledInArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
@@ -1901,7 +2614,7 @@ export type EventPassDelayedRevealedUpdatedAtArgs = {
 
 /** The EventPassDelayedReveal is a feature in our ticketing system that introduces a timed reveal of certain event pass details. It's designed for special events where additional information about the pass, such as its name, description, and image, is unveiled at a later stage, adding an element of anticipation and exclusivity for attendees. This feature is particularly useful for creating a unique and engaging experience for high-profile events. */
 export type EventPassDelayedRevealedUpdatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -1924,26 +2637,26 @@ export type EventPassDelayedRevealedConnection = {
 
 export type EventPassDelayedRevealedCreateInput = {
   clptyt58r52j901t9gkjuht2t?: InputMaybe<EventPassCreateManyInlineInput>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** description input for default locale (en) */
-  description: Scalars['String'];
+  description: Scalars['String']['input'];
   eventPass?: InputMaybe<EventPassCreateOneInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<EventPassDelayedRevealedCreateLocalizationsInput>;
   /** name input for default locale (en) */
-  name: Scalars['String'];
-  nftDescription: Scalars['String'];
+  name: Scalars['String']['input'];
+  nftDescription: Scalars['String']['input'];
   nftImage: AssetCreateOneInlineInput;
-  nftName: Scalars['String'];
+  nftName: Scalars['String']['input'];
   passOptions?: InputMaybe<PassOptionCreateManyInlineInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type EventPassDelayedRevealedCreateLocalizationDataInput = {
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  description: Scalars['String'];
-  name: Scalars['String'];
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type EventPassDelayedRevealedCreateLocalizationInput = {
@@ -1975,7 +2688,7 @@ export type EventPassDelayedRevealedCreateOneInlineInput = {
 export type EventPassDelayedRevealedEdge = {
   __typename?: 'EventPassDelayedRevealedEdge';
   /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
   node: EventPassDelayedRevealed;
 };
@@ -1989,122 +2702,122 @@ export type EventPassDelayedRevealedManyWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
   documentInStages_every?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
   documentInStages_none?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
   documentInStages_some?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
   eventPass?: InputMaybe<EventPassWhereInput>;
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftDescription_not?: InputMaybe<Scalars['String']>;
+  nftDescription_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_starts_with?: InputMaybe<Scalars['String']['input']>;
   nftImage?: InputMaybe<AssetWhereInput>;
-  nftName?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftName_contains?: InputMaybe<Scalars['String']>;
+  nftName_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftName_not?: InputMaybe<Scalars['String']>;
+  nftName_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  nftName_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_starts_with?: InputMaybe<Scalars['String']['input']>;
   passOptions_every?: InputMaybe<PassOptionWhereInput>;
   passOptions_none?: InputMaybe<PassOptionWhereInput>;
   passOptions_some?: InputMaybe<PassOptionWhereInput>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
 };
 
@@ -2130,21 +2843,21 @@ export const enum EventPassDelayedRevealedOrderByInput {
 export type EventPassDelayedRevealedUpdateInput = {
   clptyt58r52j901t9gkjuht2t?: InputMaybe<EventPassUpdateManyInlineInput>;
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   eventPass?: InputMaybe<EventPassUpdateOneInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventPassDelayedRevealedUpdateLocalizationsInput>;
   /** name input for default locale (en) */
-  name?: InputMaybe<Scalars['String']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
   nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
-  nftName?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
   passOptions?: InputMaybe<PassOptionUpdateManyInlineInput>;
 };
 
 export type EventPassDelayedRevealedUpdateLocalizationDataInput = {
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EventPassDelayedRevealedUpdateLocalizationInput = {
@@ -2181,18 +2894,18 @@ export type EventPassDelayedRevealedUpdateManyInlineInput = {
 
 export type EventPassDelayedRevealedUpdateManyInput = {
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<EventPassDelayedRevealedUpdateManyLocalizationsInput>;
   /** name input for default locale (en) */
-  name?: InputMaybe<Scalars['String']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
-  nftName?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EventPassDelayedRevealedUpdateManyLocalizationDataInput = {
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EventPassDelayedRevealedUpdateManyLocalizationInput = {
@@ -2211,9 +2924,9 @@ export type EventPassDelayedRevealedUpdateOneInlineInput = {
   /** Create and connect one EventPassDelayedRevealed document */
   create?: InputMaybe<EventPassDelayedRevealedCreateInput>;
   /** Delete currently connected EventPassDelayedRevealed document */
-  delete?: InputMaybe<Scalars['Boolean']>;
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
   /** Disconnect currently connected EventPassDelayedRevealed document */
-  disconnect?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
   /** Update single EventPassDelayedRevealed document */
   update?: InputMaybe<EventPassDelayedRevealedUpdateWithNestedWhereUniqueInput>;
   /** Upsert single EventPassDelayedRevealed document */
@@ -2250,7 +2963,7 @@ export type EventPassDelayedRevealedUpsertWithNestedWhereUniqueInput = {
 /** This contains a set of filters that can be used to compare values internally */
 export type EventPassDelayedRevealedWhereComparatorInput = {
   /** This field can be used to request to check if the entry is outdated by internal comparison */
-  outdated_to?: InputMaybe<Scalars['Boolean']>;
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Identifies documents */
@@ -2262,160 +2975,160 @@ export type EventPassDelayedRevealedWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<EventPassDelayedRevealedWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  description_contains?: InputMaybe<Scalars['String']>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  description_ends_with?: InputMaybe<Scalars['String']>;
+  description_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  description_not?: InputMaybe<Scalars['String']>;
+  description_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  description_not_contains?: InputMaybe<Scalars['String']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  description_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  description_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  description_starts_with?: InputMaybe<Scalars['String']>;
+  description_starts_with?: InputMaybe<Scalars['String']['input']>;
   documentInStages_every?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
   documentInStages_none?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
   documentInStages_some?: InputMaybe<EventPassDelayedRevealedWhereStageInput>;
   eventPass?: InputMaybe<EventPassWhereInput>;
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  name?: InputMaybe<Scalars['String']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  name_not?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  name_starts_with?: InputMaybe<Scalars['String']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
+  name_starts_with?: InputMaybe<Scalars['String']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftDescription_not?: InputMaybe<Scalars['String']>;
+  nftDescription_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_starts_with?: InputMaybe<Scalars['String']['input']>;
   nftImage?: InputMaybe<AssetWhereInput>;
-  nftName?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftName_contains?: InputMaybe<Scalars['String']>;
+  nftName_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftName_not?: InputMaybe<Scalars['String']>;
+  nftName_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  nftName_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_starts_with?: InputMaybe<Scalars['String']['input']>;
   passOptions_every?: InputMaybe<PassOptionWhereInput>;
   passOptions_none?: InputMaybe<PassOptionWhereInput>;
   passOptions_some?: InputMaybe<PassOptionWhereInput>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
 };
 
@@ -2435,14 +3148,14 @@ export type EventPassDelayedRevealedWhereStageInput = {
 
 /** References EventPassDelayedRevealed record uniquely */
 export type EventPassDelayedRevealedWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 /** An edge in a connection. */
 export type EventPassEdge = {
   __typename?: 'EventPassEdge';
   /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
   node: EventPass;
 };
@@ -2456,124 +3169,127 @@ export type EventPassManyWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<EventPassWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  contentSpaces_every?: InputMaybe<ContentSpaceWhereInput>;
+  contentSpaces_none?: InputMaybe<ContentSpaceWhereInput>;
+  contentSpaces_some?: InputMaybe<ContentSpaceWhereInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
   documentInStages_every?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_none?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_some?: InputMaybe<EventPassWhereStageInput>;
   event?: InputMaybe<EventWhereInput>;
   eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedWhereInput>;
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftDescription_not?: InputMaybe<Scalars['String']>;
+  nftDescription_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_starts_with?: InputMaybe<Scalars['String']['input']>;
   nftImage?: InputMaybe<AssetWhereInput>;
-  nftName?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftName_contains?: InputMaybe<Scalars['String']>;
+  nftName_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftName_not?: InputMaybe<Scalars['String']>;
+  nftName_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  nftName_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_starts_with?: InputMaybe<Scalars['String']['input']>;
   pack?: InputMaybe<PackWhereInput>;
   passOptions_every?: InputMaybe<PassOptionWhereInput>;
   passOptions_none?: InputMaybe<PassOptionWhereInput>;
   passOptions_some?: InputMaybe<PassOptionWhereInput>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
 };
 
@@ -2598,24 +3314,25 @@ export const enum EventPassOrderByInput {
 
 export type EventPassUpdateInput = {
   clptwshsk4wx601usb3uggcu7?: InputMaybe<EventPassDelayedRevealedUpdateManyInlineInput>;
+  contentSpaces?: InputMaybe<ContentSpaceUpdateManyInlineInput>;
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   event?: InputMaybe<EventUpdateOneInlineInput>;
   eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedUpdateOneInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventPassUpdateLocalizationsInput>;
   /** name input for default locale (en) */
-  name?: InputMaybe<Scalars['String']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
   nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
-  nftName?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
   pack?: InputMaybe<PackUpdateOneInlineInput>;
   passOptions?: InputMaybe<PassOptionUpdateManyInlineInput>;
 };
 
 export type EventPassUpdateLocalizationDataInput = {
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EventPassUpdateLocalizationInput = {
@@ -2652,18 +3369,18 @@ export type EventPassUpdateManyInlineInput = {
 
 export type EventPassUpdateManyInput = {
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<EventPassUpdateManyLocalizationsInput>;
   /** name input for default locale (en) */
-  name?: InputMaybe<Scalars['String']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
-  nftName?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EventPassUpdateManyLocalizationDataInput = {
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EventPassUpdateManyLocalizationInput = {
@@ -2682,9 +3399,9 @@ export type EventPassUpdateOneInlineInput = {
   /** Create and connect one EventPass document */
   create?: InputMaybe<EventPassCreateInput>;
   /** Delete currently connected EventPass document */
-  delete?: InputMaybe<Scalars['Boolean']>;
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
   /** Disconnect currently connected EventPass document */
-  disconnect?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
   /** Update single EventPass document */
   update?: InputMaybe<EventPassUpdateWithNestedWhereUniqueInput>;
   /** Upsert single EventPass document */
@@ -2721,7 +3438,7 @@ export type EventPassUpsertWithNestedWhereUniqueInput = {
 /** This contains a set of filters that can be used to compare values internally */
 export type EventPassWhereComparatorInput = {
   /** This field can be used to request to check if the entry is outdated by internal comparison */
-  outdated_to?: InputMaybe<Scalars['Boolean']>;
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Identifies documents */
@@ -2733,162 +3450,165 @@ export type EventPassWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<EventPassWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  contentSpaces_every?: InputMaybe<ContentSpaceWhereInput>;
+  contentSpaces_none?: InputMaybe<ContentSpaceWhereInput>;
+  contentSpaces_some?: InputMaybe<ContentSpaceWhereInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  description_contains?: InputMaybe<Scalars['String']>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  description_ends_with?: InputMaybe<Scalars['String']>;
+  description_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  description_not?: InputMaybe<Scalars['String']>;
+  description_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  description_not_contains?: InputMaybe<Scalars['String']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  description_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  description_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  description_starts_with?: InputMaybe<Scalars['String']>;
+  description_starts_with?: InputMaybe<Scalars['String']['input']>;
   documentInStages_every?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_none?: InputMaybe<EventPassWhereStageInput>;
   documentInStages_some?: InputMaybe<EventPassWhereStageInput>;
   event?: InputMaybe<EventWhereInput>;
   eventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedWhereInput>;
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  name?: InputMaybe<Scalars['String']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  name_not?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  name_starts_with?: InputMaybe<Scalars['String']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
+  name_starts_with?: InputMaybe<Scalars['String']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftDescription_not?: InputMaybe<Scalars['String']>;
+  nftDescription_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_starts_with?: InputMaybe<Scalars['String']['input']>;
   nftImage?: InputMaybe<AssetWhereInput>;
-  nftName?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftName_contains?: InputMaybe<Scalars['String']>;
+  nftName_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftName_not?: InputMaybe<Scalars['String']>;
+  nftName_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  nftName_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_starts_with?: InputMaybe<Scalars['String']['input']>;
   pack?: InputMaybe<PackWhereInput>;
   passOptions_every?: InputMaybe<PassOptionWhereInput>;
   passOptions_none?: InputMaybe<PassOptionWhereInput>;
   passOptions_some?: InputMaybe<PassOptionWhereInput>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
 };
 
@@ -2908,27 +3628,27 @@ export type EventPassWhereStageInput = {
 
 /** References EventPass record uniquely */
 export type EventPassWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type EventUpdateInput = {
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['RichTextAST']>;
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
   eventDateLocations?: InputMaybe<EventDateLocationUpdateManyInlineInput>;
   eventPasses?: InputMaybe<EventPassUpdateManyInlineInput>;
   heroImage?: InputMaybe<AssetUpdateOneInlineInput>;
-  heroImageClasses?: InputMaybe<Scalars['String']>;
+  heroImageClasses?: InputMaybe<Scalars['String']['input']>;
   /** Manage document localizations */
   localizations?: InputMaybe<EventUpdateLocalizationsInput>;
   organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
-  slug?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   /** title input for default locale (en) */
-  title?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EventUpdateLocalizationDataInput = {
-  description?: InputMaybe<Scalars['RichTextAST']>;
-  title?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EventUpdateLocalizationInput = {
@@ -2965,17 +3685,17 @@ export type EventUpdateManyInlineInput = {
 
 export type EventUpdateManyInput = {
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['RichTextAST']>;
-  heroImageClasses?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
+  heroImageClasses?: InputMaybe<Scalars['String']['input']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<EventUpdateManyLocalizationsInput>;
   /** title input for default locale (en) */
-  title?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EventUpdateManyLocalizationDataInput = {
-  description?: InputMaybe<Scalars['RichTextAST']>;
-  title?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EventUpdateManyLocalizationInput = {
@@ -2994,9 +3714,9 @@ export type EventUpdateOneInlineInput = {
   /** Create and connect one Event document */
   create?: InputMaybe<EventCreateInput>;
   /** Delete currently connected Event document */
-  delete?: InputMaybe<Scalars['Boolean']>;
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
   /** Disconnect currently connected Event document */
-  disconnect?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
   /** Update single Event document */
   update?: InputMaybe<EventUpdateWithNestedWhereUniqueInput>;
   /** Upsert single Event document */
@@ -3033,7 +3753,7 @@ export type EventUpsertWithNestedWhereUniqueInput = {
 /** This contains a set of filters that can be used to compare values internally */
 export type EventWhereComparatorInput = {
   /** This field can be used to request to check if the entry is outdated by internal comparison */
-  outdated_to?: InputMaybe<Scalars['Boolean']>;
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Identifies documents */
@@ -3045,22 +3765,22 @@ export type EventWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<EventWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
   documentInStages_every?: InputMaybe<EventWhereStageInput>;
   documentInStages_none?: InputMaybe<EventWhereStageInput>;
@@ -3072,117 +3792,117 @@ export type EventWhereInput = {
   eventPasses_none?: InputMaybe<EventPassWhereInput>;
   eventPasses_some?: InputMaybe<EventPassWhereInput>;
   heroImage?: InputMaybe<AssetWhereInput>;
-  heroImageClasses?: InputMaybe<Scalars['String']>;
+  heroImageClasses?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  heroImageClasses_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
   organizer?: InputMaybe<OrganizerWhereInput>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  slug?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  slug_contains?: InputMaybe<Scalars['String']>;
+  slug_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  slug_ends_with?: InputMaybe<Scalars['String']>;
+  slug_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  slug_not?: InputMaybe<Scalars['String']>;
+  slug_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  slug_not_contains?: InputMaybe<Scalars['String']>;
+  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  slug_not_ends_with?: InputMaybe<Scalars['String']>;
+  slug_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  slug_not_starts_with?: InputMaybe<Scalars['String']>;
+  slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  slug_starts_with?: InputMaybe<Scalars['String']>;
-  title?: InputMaybe<Scalars['String']>;
+  slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  title_contains?: InputMaybe<Scalars['String']>;
+  title_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  title_ends_with?: InputMaybe<Scalars['String']>;
+  title_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  title_not?: InputMaybe<Scalars['String']>;
+  title_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  title_not_contains?: InputMaybe<Scalars['String']>;
+  title_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  title_not_ends_with?: InputMaybe<Scalars['String']>;
+  title_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  title_not_starts_with?: InputMaybe<Scalars['String']>;
+  title_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  title_starts_with?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  title_starts_with?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
 };
 
@@ -3202,18 +3922,18 @@ export type EventWhereStageInput = {
 
 /** References Event record uniquely */
 export type EventWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
-  slug?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** References Event record uniquely */
 export type EventWhereUniqueInput_Remote_Rel_EventParametersevent = {
-  slug?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** References Event record uniquely */
 export type EventWhereUniqueInput_Remote_Rel_EventPassNftevent = {
-  slug?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 export const enum ImageFit {
@@ -3231,9 +3951,9 @@ export type ImageResizeInput = {
   /** The default value for the fit parameter is fit:clip. */
   fit?: InputMaybe<ImageFit>;
   /** The height in pixels to resize the image to. The value must be an integer from 1 to 10000. */
-  height?: InputMaybe<Scalars['Int']>;
+  height?: InputMaybe<Scalars['Int']['input']>;
   /** The width in pixels to resize the image to. The value must be an integer from 1 to 10000. */
-  width?: InputMaybe<Scalars['Int']>;
+  width?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** Transformations for Images */
@@ -3244,15 +3964,15 @@ export type ImageTransformationInput = {
 
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['Int']>;
-  _gt?: InputMaybe<Scalars['Int']>;
-  _gte?: InputMaybe<Scalars['Int']>;
-  _in?: InputMaybe<Array<Scalars['Int']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['Int']>;
-  _lte?: InputMaybe<Scalars['Int']>;
-  _neq?: InputMaybe<Scalars['Int']>;
-  _nin?: InputMaybe<Array<Scalars['Int']>>;
+  _eq?: InputMaybe<Scalars['Int']['input']>;
+  _gt?: InputMaybe<Scalars['Int']['input']>;
+  _gte?: InputMaybe<Scalars['Int']['input']>;
+  _in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Int']['input']>;
+  _lte?: InputMaybe<Scalars['Int']['input']>;
+  _neq?: InputMaybe<Scalars['Int']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 /** Locale system enumeration */
@@ -3265,9 +3985,9 @@ export const enum Locale {
 /** Representing a geolocation point with latitude and longitude */
 export type Location = {
   __typename?: 'Location';
-  distance: Scalars['Float'];
-  latitude: Scalars['Float'];
-  longitude: Scalars['Float'];
+  distance: Scalars['Float']['output'];
+  latitude: Scalars['Float']['output'];
+  longitude: Scalars['Float']['output'];
 };
 
 
@@ -3280,35 +4000,35 @@ export type LocationDistanceArgs = {
 export type LocationAddress = Entity & {
   __typename?: 'LocationAddress';
   /** Name of the city */
-  city: Scalars['String'];
+  city: Scalars['String']['output'];
   /** Point into the map where the event is happening */
   coordinates: Location;
   /** The name of the country */
-  country: Scalars['String'];
+  country: Scalars['String']['output'];
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** Place ID from google maps. Use this tool to retrieve the correct Place ID from the location you want to open on google maps while clicking on the address provided: https://developers.google.com/maps/documentation/places/web-service/place-id#find-id */
-  placeId?: Maybe<Scalars['String']>;
-  postalCode: Scalars['String'];
+  placeId?: Maybe<Scalars['String']['output']>;
+  postalCode: Scalars['String']['output'];
   /** System stage field */
   stage: Stage;
   /** The name of the state if it exist */
-  state?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']['output']>;
   /** Name of the street */
-  street?: Maybe<Scalars['String']>;
+  street?: Maybe<Scalars['String']['output']>;
   /** Name of the venue, useful if the address doesn't apply */
-  venue?: Maybe<Scalars['String']>;
+  venue?: Maybe<Scalars['String']['output']>;
 };
 
 export type LocationAddressCreateInput = {
-  city: Scalars['String'];
+  city: Scalars['String']['input'];
   coordinates: LocationInput;
-  country: Scalars['String'];
-  placeId?: InputMaybe<Scalars['String']>;
-  postalCode: Scalars['String'];
-  state?: InputMaybe<Scalars['String']>;
-  street?: InputMaybe<Scalars['String']>;
-  venue?: InputMaybe<Scalars['String']>;
+  country: Scalars['String']['input'];
+  placeId?: InputMaybe<Scalars['String']['input']>;
+  postalCode: Scalars['String']['input'];
+  state?: InputMaybe<Scalars['String']['input']>;
+  street?: InputMaybe<Scalars['String']['input']>;
+  venue?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type LocationAddressCreateOneInlineInput = {
@@ -3317,21 +4037,21 @@ export type LocationAddressCreateOneInlineInput = {
 };
 
 export type LocationAddressUpdateInput = {
-  city?: InputMaybe<Scalars['String']>;
+  city?: InputMaybe<Scalars['String']['input']>;
   coordinates?: InputMaybe<LocationInput>;
-  country?: InputMaybe<Scalars['String']>;
-  placeId?: InputMaybe<Scalars['String']>;
-  postalCode?: InputMaybe<Scalars['String']>;
-  state?: InputMaybe<Scalars['String']>;
-  street?: InputMaybe<Scalars['String']>;
-  venue?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  placeId?: InputMaybe<Scalars['String']['input']>;
+  postalCode?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  street?: InputMaybe<Scalars['String']['input']>;
+  venue?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type LocationAddressUpdateOneInlineInput = {
   /** Create and connect one LocationAddress document */
   create?: InputMaybe<LocationAddressCreateInput>;
   /** Delete currently connected LocationAddress document */
-  delete?: InputMaybe<Scalars['Boolean']>;
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
   /** Update single LocationAddress document */
   update?: InputMaybe<LocationAddressUpdateWithNestedWhereUniqueInput>;
   /** Upsert single LocationAddress document */
@@ -3368,176 +4088,176 @@ export type LocationAddressWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<LocationAddressWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  city?: InputMaybe<Scalars['String']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  city_contains?: InputMaybe<Scalars['String']>;
+  city_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  city_ends_with?: InputMaybe<Scalars['String']>;
+  city_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  city_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  city_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  city_not?: InputMaybe<Scalars['String']>;
+  city_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  city_not_contains?: InputMaybe<Scalars['String']>;
+  city_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  city_not_ends_with?: InputMaybe<Scalars['String']>;
+  city_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  city_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  city_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  city_not_starts_with?: InputMaybe<Scalars['String']>;
+  city_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  city_starts_with?: InputMaybe<Scalars['String']>;
-  country?: InputMaybe<Scalars['String']>;
+  city_starts_with?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  country_contains?: InputMaybe<Scalars['String']>;
+  country_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  country_ends_with?: InputMaybe<Scalars['String']>;
+  country_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  country_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  country_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  country_not?: InputMaybe<Scalars['String']>;
+  country_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  country_not_contains?: InputMaybe<Scalars['String']>;
+  country_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  country_not_ends_with?: InputMaybe<Scalars['String']>;
+  country_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  country_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  country_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  country_not_starts_with?: InputMaybe<Scalars['String']>;
+  country_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  country_starts_with?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
+  country_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  placeId?: InputMaybe<Scalars['String']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  placeId?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  placeId_contains?: InputMaybe<Scalars['String']>;
+  placeId_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  placeId_ends_with?: InputMaybe<Scalars['String']>;
+  placeId_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  placeId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  placeId_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  placeId_not?: InputMaybe<Scalars['String']>;
+  placeId_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  placeId_not_contains?: InputMaybe<Scalars['String']>;
+  placeId_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  placeId_not_ends_with?: InputMaybe<Scalars['String']>;
+  placeId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  placeId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  placeId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  placeId_not_starts_with?: InputMaybe<Scalars['String']>;
+  placeId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  placeId_starts_with?: InputMaybe<Scalars['String']>;
-  postalCode?: InputMaybe<Scalars['String']>;
+  placeId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  postalCode?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  postalCode_contains?: InputMaybe<Scalars['String']>;
+  postalCode_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  postalCode_ends_with?: InputMaybe<Scalars['String']>;
+  postalCode_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  postalCode_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  postalCode_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  postalCode_not?: InputMaybe<Scalars['String']>;
+  postalCode_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  postalCode_not_contains?: InputMaybe<Scalars['String']>;
+  postalCode_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  postalCode_not_ends_with?: InputMaybe<Scalars['String']>;
+  postalCode_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  postalCode_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  postalCode_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  postalCode_not_starts_with?: InputMaybe<Scalars['String']>;
+  postalCode_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  postalCode_starts_with?: InputMaybe<Scalars['String']>;
-  state?: InputMaybe<Scalars['String']>;
+  postalCode_starts_with?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  state_contains?: InputMaybe<Scalars['String']>;
+  state_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  state_ends_with?: InputMaybe<Scalars['String']>;
+  state_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  state_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  state_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  state_not?: InputMaybe<Scalars['String']>;
+  state_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  state_not_contains?: InputMaybe<Scalars['String']>;
+  state_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  state_not_ends_with?: InputMaybe<Scalars['String']>;
+  state_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  state_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  state_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  state_not_starts_with?: InputMaybe<Scalars['String']>;
+  state_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  state_starts_with?: InputMaybe<Scalars['String']>;
-  street?: InputMaybe<Scalars['String']>;
+  state_starts_with?: InputMaybe<Scalars['String']['input']>;
+  street?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  street_contains?: InputMaybe<Scalars['String']>;
+  street_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  street_ends_with?: InputMaybe<Scalars['String']>;
+  street_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  street_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  street_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  street_not?: InputMaybe<Scalars['String']>;
+  street_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  street_not_contains?: InputMaybe<Scalars['String']>;
+  street_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  street_not_ends_with?: InputMaybe<Scalars['String']>;
+  street_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  street_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  street_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  street_not_starts_with?: InputMaybe<Scalars['String']>;
+  street_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  street_starts_with?: InputMaybe<Scalars['String']>;
-  venue?: InputMaybe<Scalars['String']>;
+  street_starts_with?: InputMaybe<Scalars['String']['input']>;
+  venue?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  venue_contains?: InputMaybe<Scalars['String']>;
+  venue_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  venue_ends_with?: InputMaybe<Scalars['String']>;
+  venue_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  venue_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  venue_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  venue_not?: InputMaybe<Scalars['String']>;
+  venue_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  venue_not_contains?: InputMaybe<Scalars['String']>;
+  venue_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  venue_not_ends_with?: InputMaybe<Scalars['String']>;
+  venue_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  venue_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  venue_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  venue_not_starts_with?: InputMaybe<Scalars['String']>;
+  venue_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  venue_starts_with?: InputMaybe<Scalars['String']>;
+  venue_starts_with?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** References LocationAddress record uniquely */
 export type LocationAddressWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 /** Input for a geolocation point with latitude and longitude */
 export type LocationInput = {
-  latitude: Scalars['Float'];
-  longitude: Scalars['Float'];
+  latitude: Scalars['Float']['input'];
+  longitude: Scalars['Float']['input'];
 };
 
 /** An object with an ID */
 export type Node = {
   /** The id of the object. */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** The Stage of an object */
   stage: Stage;
 };
@@ -3545,59 +4265,74 @@ export type Node = {
 /** An organizer is an entity that launch events and handle the pass benefits. */
 export type Organizer = Entity & Node & {
   __typename?: 'Organizer';
+  contentSpaces: Array<ContentSpace>;
   /** The time the document was created */
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** User that created this document */
   createdBy?: Maybe<User>;
   description?: Maybe<OrganizerDescriptionRichText>;
   /** The discord widge id of the organizer. You need to enable the widget in your discord server and copy the value in `server id`. For details instruction of how to enable and find the id, refer to this section https://dev.fandom.com/wiki/DiscordIntegrator#Enabling_the_widget */
-  discordWidgetId?: Maybe<Scalars['String']>;
+  discordWidgetId?: Maybe<Scalars['String']['output']>;
   /** Get the document in other stages */
   documentInStages: Array<Organizer>;
   events: Array<Event>;
   /** The facebook handle (username) of the organizer. You can just copy the text on your facebook landing page on the URL, like 'johndoe' for 'https://www.facebook.com/johndoe'. */
-  facebookHandle?: Maybe<Scalars['String']>;
+  facebookHandle?: Maybe<Scalars['String']['output']>;
   /** An hero image that will displayed on a rectangular format. The image need to be high quality in order to display well on every screen. Advised resolution is 1920 * 800 pixels */
   heroImage: Asset;
   /** Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
-  heroImageClasses?: Maybe<Scalars['String']>;
+  heroImageClasses?: Maybe<Scalars['String']['output']>;
   /** List of Organizer versions */
   history: Array<Version>;
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** Image that represent the organizer, typically its logo. Advised resolution is 800 x 800 pixels, in square format with transparency (for ex: svg or png but not jpg) so that the image always look good either on light or dark mode. */
   image: Asset;
   /** Optional field used to style your image with classes. Every classes from tailwind are supported. This is typically useful to adapt your image with light and dark mode (for instance using filter contrast or invert, https://tailwindcss.com/docs/contrast) */
-  imageClasses?: Maybe<Scalars['String']>;
+  imageClasses?: Maybe<Scalars['String']['output']>;
   /** The instagram handle (username) of the organizer. You can just copy the name on your instagram landing page next to the follow button. */
-  instagramHandle?: Maybe<Scalars['String']>;
+  instagramHandle?: Maybe<Scalars['String']['output']>;
   /** System Locale field */
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<Organizer>;
   /** Name of the organizer */
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
   /** The time the document was published. Null on documents in draft stage. */
-  publishedAt?: Maybe<Scalars['DateTime']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
   scheduledIn: Array<ScheduledOperation>;
   /** Used in URL */
-  slug: Scalars['String'];
+  slug: Scalars['String']['output'];
   /** System stage field */
   stage: Stage;
   /** The telegram handle (username) of the organizer. You can just copy the text on your telegram profile page in parameters after the @, like 'johndoe' for '@johndoe'. */
-  telegramHandle?: Maybe<Scalars['String']>;
+  telegramHandle?: Maybe<Scalars['String']['output']>;
   /** The tiktok handle (username) of the organizer. You can just copy the name on your tiktok landing page. */
-  tiktokHandle?: Maybe<Scalars['String']>;
+  tiktokHandle?: Maybe<Scalars['String']['output']>;
   /** The twitter (X) handle (username) of the organizer. You can just copy the text on your twitter landing page after the @, like 'johndoe' for '@johndoe'. */
-  twitterHandle?: Maybe<Scalars['String']>;
+  twitterHandle?: Maybe<Scalars['String']['output']>;
   /** The time the document was updated */
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime']['output'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
   /** The youtube handle (username) of the organizer. YYou can just copy the text on your youtube landing page after the @, like 'johndoe' for '@johndoe'. */
-  youtubeHandle?: Maybe<Scalars['String']>;
+  youtubeHandle?: Maybe<Scalars['String']['output']>;
+};
+
+
+/** An organizer is an entity that launch events and handle the pass benefits. */
+export type OrganizerContentSpacesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<ContentSpaceOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ContentSpaceWhereInput>;
 };
 
 
@@ -3609,58 +4344,58 @@ export type OrganizerCreatedAtArgs = {
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerCreatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerDocumentInStagesArgs = {
-  includeCurrent?: Scalars['Boolean'];
-  inheritLocale?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
   stages?: Array<Stage>;
 };
 
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerEventsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<EventOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventWhereInput>;
 };
 
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerHeroImageArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerHistoryArgs = {
-  limit?: Scalars['Int'];
-  skip?: Scalars['Int'];
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
   stageOverride?: InputMaybe<Stage>;
 };
 
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerImageArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerLocalizationsArgs = {
-  includeCurrent?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
   locales?: Array<Locale>;
 };
 
@@ -3673,20 +4408,20 @@ export type OrganizerPublishedAtArgs = {
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerPublishedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerScheduledInArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
@@ -3699,7 +4434,7 @@ export type OrganizerUpdatedAtArgs = {
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerUpdatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -3722,32 +4457,33 @@ export type OrganizerConnection = {
 
 export type OrganizerCreateInput = {
   clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackCreateManyInlineInput>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  contentSpaces?: InputMaybe<ContentSpaceCreateManyInlineInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['RichTextAST']>;
-  discordWidgetId?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
+  discordWidgetId?: InputMaybe<Scalars['String']['input']>;
   events?: InputMaybe<EventCreateManyInlineInput>;
-  facebookHandle?: InputMaybe<Scalars['String']>;
+  facebookHandle?: InputMaybe<Scalars['String']['input']>;
   heroImage: AssetCreateOneInlineInput;
-  heroImageClasses?: InputMaybe<Scalars['String']>;
+  heroImageClasses?: InputMaybe<Scalars['String']['input']>;
   image: AssetCreateOneInlineInput;
-  imageClasses?: InputMaybe<Scalars['String']>;
-  instagramHandle?: InputMaybe<Scalars['String']>;
+  imageClasses?: InputMaybe<Scalars['String']['input']>;
+  instagramHandle?: InputMaybe<Scalars['String']['input']>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<OrganizerCreateLocalizationsInput>;
-  name: Scalars['String'];
-  slug: Scalars['String'];
-  telegramHandle?: InputMaybe<Scalars['String']>;
-  tiktokHandle?: InputMaybe<Scalars['String']>;
-  twitterHandle?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
-  youtubeHandle?: InputMaybe<Scalars['String']>;
+  name: Scalars['String']['input'];
+  slug: Scalars['String']['input'];
+  telegramHandle?: InputMaybe<Scalars['String']['input']>;
+  tiktokHandle?: InputMaybe<Scalars['String']['input']>;
+  twitterHandle?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  youtubeHandle?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type OrganizerCreateLocalizationDataInput = {
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['RichTextAST']>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type OrganizerCreateLocalizationInput = {
@@ -3778,23 +4514,23 @@ export type OrganizerCreateOneInlineInput = {
 export type OrganizerDescriptionRichText = {
   __typename?: 'OrganizerDescriptionRichText';
   /** Returns HTMl representation */
-  html: Scalars['String'];
-  json: Scalars['RichTextAST'];
+  html: Scalars['String']['output'];
+  json: Scalars['RichTextAST']['output'];
   /** Returns Markdown representation */
-  markdown: Scalars['String'];
-  raw: Scalars['RichTextAST'];
+  markdown: Scalars['String']['output'];
+  raw: Scalars['RichTextAST']['output'];
   references: Array<OrganizerDescriptionRichTextEmbeddedTypes>;
   /** Returns plain-text contents of RichText */
-  text: Scalars['String'];
+  text: Scalars['String']['output'];
 };
 
 
 export type OrganizerDescriptionRichTextReferencesArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type OrganizerDescriptionRichTextEmbeddedTypes = Asset;
@@ -3803,7 +4539,7 @@ export type OrganizerDescriptionRichTextEmbeddedTypes = Asset;
 export type OrganizerEdge = {
   __typename?: 'OrganizerEdge';
   /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
   node: Organizer;
 };
@@ -3817,294 +4553,297 @@ export type OrganizerManyWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<OrganizerWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  contentSpaces_every?: InputMaybe<ContentSpaceWhereInput>;
+  contentSpaces_none?: InputMaybe<ContentSpaceWhereInput>;
+  contentSpaces_some?: InputMaybe<ContentSpaceWhereInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
-  discordWidgetId?: InputMaybe<Scalars['String']>;
+  discordWidgetId?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  discordWidgetId_contains?: InputMaybe<Scalars['String']>;
+  discordWidgetId_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  discordWidgetId_ends_with?: InputMaybe<Scalars['String']>;
+  discordWidgetId_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  discordWidgetId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  discordWidgetId_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  discordWidgetId_not?: InputMaybe<Scalars['String']>;
+  discordWidgetId_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  discordWidgetId_not_contains?: InputMaybe<Scalars['String']>;
+  discordWidgetId_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  discordWidgetId_not_ends_with?: InputMaybe<Scalars['String']>;
+  discordWidgetId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  discordWidgetId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  discordWidgetId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  discordWidgetId_not_starts_with?: InputMaybe<Scalars['String']>;
+  discordWidgetId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  discordWidgetId_starts_with?: InputMaybe<Scalars['String']>;
+  discordWidgetId_starts_with?: InputMaybe<Scalars['String']['input']>;
   documentInStages_every?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_none?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_some?: InputMaybe<OrganizerWhereStageInput>;
   events_every?: InputMaybe<EventWhereInput>;
   events_none?: InputMaybe<EventWhereInput>;
   events_some?: InputMaybe<EventWhereInput>;
-  facebookHandle?: InputMaybe<Scalars['String']>;
+  facebookHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  facebookHandle_contains?: InputMaybe<Scalars['String']>;
+  facebookHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  facebookHandle_ends_with?: InputMaybe<Scalars['String']>;
+  facebookHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  facebookHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  facebookHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  facebookHandle_not?: InputMaybe<Scalars['String']>;
+  facebookHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  facebookHandle_not_contains?: InputMaybe<Scalars['String']>;
+  facebookHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  facebookHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  facebookHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  facebookHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  facebookHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  facebookHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  facebookHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  facebookHandle_starts_with?: InputMaybe<Scalars['String']>;
+  facebookHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
   heroImage?: InputMaybe<AssetWhereInput>;
-  heroImageClasses?: InputMaybe<Scalars['String']>;
+  heroImageClasses?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  heroImageClasses_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
   image?: InputMaybe<AssetWhereInput>;
-  imageClasses?: InputMaybe<Scalars['String']>;
+  imageClasses?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  imageClasses_contains?: InputMaybe<Scalars['String']>;
+  imageClasses_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  imageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  imageClasses_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  imageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  imageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  imageClasses_not?: InputMaybe<Scalars['String']>;
+  imageClasses_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  imageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  imageClasses_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  imageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  imageClasses_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  imageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  imageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  imageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  imageClasses_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  imageClasses_starts_with?: InputMaybe<Scalars['String']>;
-  instagramHandle?: InputMaybe<Scalars['String']>;
+  imageClasses_starts_with?: InputMaybe<Scalars['String']['input']>;
+  instagramHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  instagramHandle_contains?: InputMaybe<Scalars['String']>;
+  instagramHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  instagramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  instagramHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  instagramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  instagramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  instagramHandle_not?: InputMaybe<Scalars['String']>;
+  instagramHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  instagramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  instagramHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  instagramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  instagramHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  instagramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  instagramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  instagramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  instagramHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  instagramHandle_starts_with?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  instagramHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  name_not?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  name_starts_with?: InputMaybe<Scalars['String']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  name_starts_with?: InputMaybe<Scalars['String']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  slug?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  slug_contains?: InputMaybe<Scalars['String']>;
+  slug_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  slug_ends_with?: InputMaybe<Scalars['String']>;
+  slug_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  slug_not?: InputMaybe<Scalars['String']>;
+  slug_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  slug_not_contains?: InputMaybe<Scalars['String']>;
+  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  slug_not_ends_with?: InputMaybe<Scalars['String']>;
+  slug_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  slug_not_starts_with?: InputMaybe<Scalars['String']>;
+  slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  slug_starts_with?: InputMaybe<Scalars['String']>;
-  telegramHandle?: InputMaybe<Scalars['String']>;
+  slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  telegramHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  telegramHandle_contains?: InputMaybe<Scalars['String']>;
+  telegramHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  telegramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  telegramHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  telegramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  telegramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  telegramHandle_not?: InputMaybe<Scalars['String']>;
+  telegramHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  telegramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  telegramHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  telegramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  telegramHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  telegramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  telegramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  telegramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  telegramHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  telegramHandle_starts_with?: InputMaybe<Scalars['String']>;
-  tiktokHandle?: InputMaybe<Scalars['String']>;
+  telegramHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  tiktokHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  tiktokHandle_contains?: InputMaybe<Scalars['String']>;
+  tiktokHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  tiktokHandle_ends_with?: InputMaybe<Scalars['String']>;
+  tiktokHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  tiktokHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  tiktokHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  tiktokHandle_not?: InputMaybe<Scalars['String']>;
+  tiktokHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  tiktokHandle_not_contains?: InputMaybe<Scalars['String']>;
+  tiktokHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  tiktokHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  tiktokHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  tiktokHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  tiktokHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  tiktokHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  tiktokHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  tiktokHandle_starts_with?: InputMaybe<Scalars['String']>;
-  twitterHandle?: InputMaybe<Scalars['String']>;
+  tiktokHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  twitterHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  twitterHandle_contains?: InputMaybe<Scalars['String']>;
+  twitterHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  twitterHandle_ends_with?: InputMaybe<Scalars['String']>;
+  twitterHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  twitterHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  twitterHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  twitterHandle_not?: InputMaybe<Scalars['String']>;
+  twitterHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  twitterHandle_not_contains?: InputMaybe<Scalars['String']>;
+  twitterHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  twitterHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  twitterHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  twitterHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  twitterHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  twitterHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  twitterHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  twitterHandle_starts_with?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  twitterHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
-  youtubeHandle?: InputMaybe<Scalars['String']>;
+  youtubeHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  youtubeHandle_contains?: InputMaybe<Scalars['String']>;
+  youtubeHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  youtubeHandle_ends_with?: InputMaybe<Scalars['String']>;
+  youtubeHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  youtubeHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  youtubeHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  youtubeHandle_not?: InputMaybe<Scalars['String']>;
+  youtubeHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  youtubeHandle_not_contains?: InputMaybe<Scalars['String']>;
+  youtubeHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  youtubeHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  youtubeHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  youtubeHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  youtubeHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  youtubeHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  youtubeHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  youtubeHandle_starts_with?: InputMaybe<Scalars['String']>;
+  youtubeHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
 };
 
 export const enum OrganizerOrderByInput {
@@ -4142,28 +4881,29 @@ export const enum OrganizerOrderByInput {
 
 export type OrganizerUpdateInput = {
   clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackUpdateManyInlineInput>;
+  contentSpaces?: InputMaybe<ContentSpaceUpdateManyInlineInput>;
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['RichTextAST']>;
-  discordWidgetId?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
+  discordWidgetId?: InputMaybe<Scalars['String']['input']>;
   events?: InputMaybe<EventUpdateManyInlineInput>;
-  facebookHandle?: InputMaybe<Scalars['String']>;
+  facebookHandle?: InputMaybe<Scalars['String']['input']>;
   heroImage?: InputMaybe<AssetUpdateOneInlineInput>;
-  heroImageClasses?: InputMaybe<Scalars['String']>;
+  heroImageClasses?: InputMaybe<Scalars['String']['input']>;
   image?: InputMaybe<AssetUpdateOneInlineInput>;
-  imageClasses?: InputMaybe<Scalars['String']>;
-  instagramHandle?: InputMaybe<Scalars['String']>;
+  imageClasses?: InputMaybe<Scalars['String']['input']>;
+  instagramHandle?: InputMaybe<Scalars['String']['input']>;
   /** Manage document localizations */
   localizations?: InputMaybe<OrganizerUpdateLocalizationsInput>;
-  name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
-  telegramHandle?: InputMaybe<Scalars['String']>;
-  tiktokHandle?: InputMaybe<Scalars['String']>;
-  twitterHandle?: InputMaybe<Scalars['String']>;
-  youtubeHandle?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  telegramHandle?: InputMaybe<Scalars['String']['input']>;
+  tiktokHandle?: InputMaybe<Scalars['String']['input']>;
+  twitterHandle?: InputMaybe<Scalars['String']['input']>;
+  youtubeHandle?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type OrganizerUpdateLocalizationDataInput = {
-  description?: InputMaybe<Scalars['RichTextAST']>;
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
 };
 
 export type OrganizerUpdateLocalizationInput = {
@@ -4200,22 +4940,22 @@ export type OrganizerUpdateManyInlineInput = {
 
 export type OrganizerUpdateManyInput = {
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['RichTextAST']>;
-  discordWidgetId?: InputMaybe<Scalars['String']>;
-  facebookHandle?: InputMaybe<Scalars['String']>;
-  heroImageClasses?: InputMaybe<Scalars['String']>;
-  imageClasses?: InputMaybe<Scalars['String']>;
-  instagramHandle?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
+  discordWidgetId?: InputMaybe<Scalars['String']['input']>;
+  facebookHandle?: InputMaybe<Scalars['String']['input']>;
+  heroImageClasses?: InputMaybe<Scalars['String']['input']>;
+  imageClasses?: InputMaybe<Scalars['String']['input']>;
+  instagramHandle?: InputMaybe<Scalars['String']['input']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<OrganizerUpdateManyLocalizationsInput>;
-  telegramHandle?: InputMaybe<Scalars['String']>;
-  tiktokHandle?: InputMaybe<Scalars['String']>;
-  twitterHandle?: InputMaybe<Scalars['String']>;
-  youtubeHandle?: InputMaybe<Scalars['String']>;
+  telegramHandle?: InputMaybe<Scalars['String']['input']>;
+  tiktokHandle?: InputMaybe<Scalars['String']['input']>;
+  twitterHandle?: InputMaybe<Scalars['String']['input']>;
+  youtubeHandle?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type OrganizerUpdateManyLocalizationDataInput = {
-  description?: InputMaybe<Scalars['RichTextAST']>;
+  description?: InputMaybe<Scalars['RichTextAST']['input']>;
 };
 
 export type OrganizerUpdateManyLocalizationInput = {
@@ -4234,9 +4974,9 @@ export type OrganizerUpdateOneInlineInput = {
   /** Create and connect one Organizer document */
   create?: InputMaybe<OrganizerCreateInput>;
   /** Delete currently connected Organizer document */
-  delete?: InputMaybe<Scalars['Boolean']>;
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
   /** Disconnect currently connected Organizer document */
-  disconnect?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
   /** Update single Organizer document */
   update?: InputMaybe<OrganizerUpdateWithNestedWhereUniqueInput>;
   /** Upsert single Organizer document */
@@ -4273,7 +5013,7 @@ export type OrganizerUpsertWithNestedWhereUniqueInput = {
 /** This contains a set of filters that can be used to compare values internally */
 export type OrganizerWhereComparatorInput = {
   /** This field can be used to request to check if the entry is outdated by internal comparison */
-  outdated_to?: InputMaybe<Scalars['Boolean']>;
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Identifies documents */
@@ -4285,294 +5025,297 @@ export type OrganizerWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<OrganizerWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  contentSpaces_every?: InputMaybe<ContentSpaceWhereInput>;
+  contentSpaces_none?: InputMaybe<ContentSpaceWhereInput>;
+  contentSpaces_some?: InputMaybe<ContentSpaceWhereInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
-  discordWidgetId?: InputMaybe<Scalars['String']>;
+  discordWidgetId?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  discordWidgetId_contains?: InputMaybe<Scalars['String']>;
+  discordWidgetId_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  discordWidgetId_ends_with?: InputMaybe<Scalars['String']>;
+  discordWidgetId_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  discordWidgetId_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  discordWidgetId_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  discordWidgetId_not?: InputMaybe<Scalars['String']>;
+  discordWidgetId_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  discordWidgetId_not_contains?: InputMaybe<Scalars['String']>;
+  discordWidgetId_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  discordWidgetId_not_ends_with?: InputMaybe<Scalars['String']>;
+  discordWidgetId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  discordWidgetId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  discordWidgetId_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  discordWidgetId_not_starts_with?: InputMaybe<Scalars['String']>;
+  discordWidgetId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  discordWidgetId_starts_with?: InputMaybe<Scalars['String']>;
+  discordWidgetId_starts_with?: InputMaybe<Scalars['String']['input']>;
   documentInStages_every?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_none?: InputMaybe<OrganizerWhereStageInput>;
   documentInStages_some?: InputMaybe<OrganizerWhereStageInput>;
   events_every?: InputMaybe<EventWhereInput>;
   events_none?: InputMaybe<EventWhereInput>;
   events_some?: InputMaybe<EventWhereInput>;
-  facebookHandle?: InputMaybe<Scalars['String']>;
+  facebookHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  facebookHandle_contains?: InputMaybe<Scalars['String']>;
+  facebookHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  facebookHandle_ends_with?: InputMaybe<Scalars['String']>;
+  facebookHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  facebookHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  facebookHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  facebookHandle_not?: InputMaybe<Scalars['String']>;
+  facebookHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  facebookHandle_not_contains?: InputMaybe<Scalars['String']>;
+  facebookHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  facebookHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  facebookHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  facebookHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  facebookHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  facebookHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  facebookHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  facebookHandle_starts_with?: InputMaybe<Scalars['String']>;
+  facebookHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
   heroImage?: InputMaybe<AssetWhereInput>;
-  heroImageClasses?: InputMaybe<Scalars['String']>;
+  heroImageClasses?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  heroImageClasses_contains?: InputMaybe<Scalars['String']>;
+  heroImageClasses_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  heroImageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  heroImageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  heroImageClasses_not?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  heroImageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  heroImageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  heroImageClasses_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  heroImageClasses_starts_with?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
+  heroImageClasses_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
   image?: InputMaybe<AssetWhereInput>;
-  imageClasses?: InputMaybe<Scalars['String']>;
+  imageClasses?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  imageClasses_contains?: InputMaybe<Scalars['String']>;
+  imageClasses_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  imageClasses_ends_with?: InputMaybe<Scalars['String']>;
+  imageClasses_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  imageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  imageClasses_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  imageClasses_not?: InputMaybe<Scalars['String']>;
+  imageClasses_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  imageClasses_not_contains?: InputMaybe<Scalars['String']>;
+  imageClasses_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  imageClasses_not_ends_with?: InputMaybe<Scalars['String']>;
+  imageClasses_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  imageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  imageClasses_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  imageClasses_not_starts_with?: InputMaybe<Scalars['String']>;
+  imageClasses_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  imageClasses_starts_with?: InputMaybe<Scalars['String']>;
-  instagramHandle?: InputMaybe<Scalars['String']>;
+  imageClasses_starts_with?: InputMaybe<Scalars['String']['input']>;
+  instagramHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  instagramHandle_contains?: InputMaybe<Scalars['String']>;
+  instagramHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  instagramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  instagramHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  instagramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  instagramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  instagramHandle_not?: InputMaybe<Scalars['String']>;
+  instagramHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  instagramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  instagramHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  instagramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  instagramHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  instagramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  instagramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  instagramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  instagramHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  instagramHandle_starts_with?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  instagramHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  name_not?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  name_starts_with?: InputMaybe<Scalars['String']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  name_starts_with?: InputMaybe<Scalars['String']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  slug?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  slug_contains?: InputMaybe<Scalars['String']>;
+  slug_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  slug_ends_with?: InputMaybe<Scalars['String']>;
+  slug_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  slug_not?: InputMaybe<Scalars['String']>;
+  slug_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  slug_not_contains?: InputMaybe<Scalars['String']>;
+  slug_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  slug_not_ends_with?: InputMaybe<Scalars['String']>;
+  slug_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  slug_not_starts_with?: InputMaybe<Scalars['String']>;
+  slug_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  slug_starts_with?: InputMaybe<Scalars['String']>;
-  telegramHandle?: InputMaybe<Scalars['String']>;
+  slug_starts_with?: InputMaybe<Scalars['String']['input']>;
+  telegramHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  telegramHandle_contains?: InputMaybe<Scalars['String']>;
+  telegramHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  telegramHandle_ends_with?: InputMaybe<Scalars['String']>;
+  telegramHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  telegramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  telegramHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  telegramHandle_not?: InputMaybe<Scalars['String']>;
+  telegramHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  telegramHandle_not_contains?: InputMaybe<Scalars['String']>;
+  telegramHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  telegramHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  telegramHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  telegramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  telegramHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  telegramHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  telegramHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  telegramHandle_starts_with?: InputMaybe<Scalars['String']>;
-  tiktokHandle?: InputMaybe<Scalars['String']>;
+  telegramHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  tiktokHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  tiktokHandle_contains?: InputMaybe<Scalars['String']>;
+  tiktokHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  tiktokHandle_ends_with?: InputMaybe<Scalars['String']>;
+  tiktokHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  tiktokHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  tiktokHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  tiktokHandle_not?: InputMaybe<Scalars['String']>;
+  tiktokHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  tiktokHandle_not_contains?: InputMaybe<Scalars['String']>;
+  tiktokHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  tiktokHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  tiktokHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  tiktokHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  tiktokHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  tiktokHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  tiktokHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  tiktokHandle_starts_with?: InputMaybe<Scalars['String']>;
-  twitterHandle?: InputMaybe<Scalars['String']>;
+  tiktokHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  twitterHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  twitterHandle_contains?: InputMaybe<Scalars['String']>;
+  twitterHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  twitterHandle_ends_with?: InputMaybe<Scalars['String']>;
+  twitterHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  twitterHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  twitterHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  twitterHandle_not?: InputMaybe<Scalars['String']>;
+  twitterHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  twitterHandle_not_contains?: InputMaybe<Scalars['String']>;
+  twitterHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  twitterHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  twitterHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  twitterHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  twitterHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  twitterHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  twitterHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  twitterHandle_starts_with?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  twitterHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
-  youtubeHandle?: InputMaybe<Scalars['String']>;
+  youtubeHandle?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  youtubeHandle_contains?: InputMaybe<Scalars['String']>;
+  youtubeHandle_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  youtubeHandle_ends_with?: InputMaybe<Scalars['String']>;
+  youtubeHandle_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  youtubeHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  youtubeHandle_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  youtubeHandle_not?: InputMaybe<Scalars['String']>;
+  youtubeHandle_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  youtubeHandle_not_contains?: InputMaybe<Scalars['String']>;
+  youtubeHandle_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  youtubeHandle_not_ends_with?: InputMaybe<Scalars['String']>;
+  youtubeHandle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  youtubeHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  youtubeHandle_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  youtubeHandle_not_starts_with?: InputMaybe<Scalars['String']>;
+  youtubeHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  youtubeHandle_starts_with?: InputMaybe<Scalars['String']>;
+  youtubeHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
@@ -4591,27 +5334,27 @@ export type OrganizerWhereStageInput = {
 
 /** References Organizer record uniquely */
 export type OrganizerWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
-  name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** References Organizer record uniquely */
 export type OrganizerWhereUniqueInput_Remote_Rel_EventParametersorganizer = {
-  name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** References Organizer record uniquely */
 export type OrganizerWhereUniqueInput_Remote_Rel_EventPassNftorganizer = {
-  name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** References Organizer record uniquely */
 export type OrganizerWhereUniqueInput_Remote_Rel_RoleAssignmentorganizer = {
-  name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 /**
@@ -4621,11 +5364,11 @@ export type OrganizerWhereUniqueInput_Remote_Rel_RoleAssignmentorganizer = {
 export type Pack = Entity & Node & {
   __typename?: 'Pack';
   /** The time the document was created */
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** User that created this document */
   createdBy?: Maybe<User>;
   /** A brief overview detailing the contents and purpose of the Pack. */
-  description: Scalars['String'];
+  description: Scalars['String']['output'];
   /** Get the document in other stages */
   documentInStages: Array<Pack>;
   /** This section allows you to select or create the event passes that will be included in your Pack. Think of it as curating a collection of exclusive access tickets, each offering unique experiences for the events. Here, you can assemble a variety of event passes that together form the enticing bundle that is your Pack. */
@@ -4633,29 +5376,29 @@ export type Pack = Entity & Node & {
   /** List of Pack versions */
   history: Array<Version>;
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** System Locale field */
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<Pack>;
   /** User-friendly name of the the Pack, like "Lottery for VIP 3-Day Pass" */
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
   /** Fixed description pertaining to the NFT Pack. This content is static and non-localizable. */
-  nftDescription: Scalars['String'];
+  nftDescription: Scalars['String']['output'];
   /** Permanent image representing the NFT Pack. Advised resolution is 800 x 800 pixels. Image content is non-changeable and cannot be localized. */
   nftImage: Asset;
   /** Permanent name associated with the NFT. Cannot be changed or localized. */
-  nftName: Scalars['String'];
+  nftName: Scalars['String']['output'];
   organizer?: Maybe<Organizer>;
   /** The time the document was published. Null on documents in draft stage. */
-  publishedAt?: Maybe<Scalars['DateTime']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
   scheduledIn: Array<ScheduledOperation>;
   /** System stage field */
   stage: Stage;
   /** The time the document was updated */
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime']['output'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
 };
@@ -4675,7 +5418,7 @@ export type PackCreatedAtArgs = {
  *
  */
 export type PackCreatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -4685,8 +5428,8 @@ export type PackCreatedByArgs = {
  *
  */
 export type PackDocumentInStagesArgs = {
-  includeCurrent?: Scalars['Boolean'];
-  inheritLocale?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
   stages?: Array<Stage>;
 };
 
@@ -4696,13 +5439,13 @@ export type PackDocumentInStagesArgs = {
  *
  */
 export type PackEventPassesArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -4711,8 +5454,8 @@ export type PackEventPassesArgs = {
  *
  */
 export type PackHistoryArgs = {
-  limit?: Scalars['Int'];
-  skip?: Scalars['Int'];
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
   stageOverride?: InputMaybe<Stage>;
 };
 
@@ -4722,7 +5465,7 @@ export type PackHistoryArgs = {
  *
  */
 export type PackLocalizationsArgs = {
-  includeCurrent?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
   locales?: Array<Locale>;
 };
 
@@ -4732,7 +5475,7 @@ export type PackLocalizationsArgs = {
  *
  */
 export type PackNftImageArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -4742,7 +5485,7 @@ export type PackNftImageArgs = {
  *
  */
 export type PackOrganizerArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -4761,7 +5504,7 @@ export type PackPublishedAtArgs = {
  *
  */
 export type PackPublishedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -4771,13 +5514,13 @@ export type PackPublishedByArgs = {
  *
  */
 export type PackScheduledInArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
@@ -4796,7 +5539,7 @@ export type PackUpdatedAtArgs = {
  *
  */
 export type PackUpdatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -4818,26 +5561,26 @@ export type PackConnection = {
 };
 
 export type PackCreateInput = {
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** description input for default locale (en) */
-  description: Scalars['String'];
+  description: Scalars['String']['input'];
   eventPasses?: InputMaybe<PackEventPassesCreateManyInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<PackCreateLocalizationsInput>;
   /** name input for default locale (en) */
-  name: Scalars['String'];
-  nftDescription: Scalars['String'];
+  name: Scalars['String']['input'];
+  nftDescription: Scalars['String']['input'];
   nftImage: AssetCreateOneInlineInput;
-  nftName: Scalars['String'];
+  nftName: Scalars['String']['input'];
   organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type PackCreateLocalizationDataInput = {
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  description: Scalars['String'];
-  name: Scalars['String'];
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 export type PackCreateLocalizationInput = {
@@ -4869,7 +5612,7 @@ export type PackCreateOneInlineInput = {
 export type PackEdge = {
   __typename?: 'PackEdge';
   /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
   node: Pack;
 };
@@ -4933,123 +5676,123 @@ export type PackManyWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<PackWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
   documentInStages_every?: InputMaybe<PackWhereStageInput>;
   documentInStages_none?: InputMaybe<PackWhereStageInput>;
   documentInStages_some?: InputMaybe<PackWhereStageInput>;
   /** All values in which the union is empty */
-  eventPasses_empty?: InputMaybe<Scalars['Boolean']>;
+  eventPasses_empty?: InputMaybe<Scalars['Boolean']['input']>;
   /** Matches if the union contains at least one connection to the provided item to the filter */
   eventPasses_some?: InputMaybe<PackEventPassesWhereInput>;
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftDescription_not?: InputMaybe<Scalars['String']>;
+  nftDescription_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_starts_with?: InputMaybe<Scalars['String']['input']>;
   nftImage?: InputMaybe<AssetWhereInput>;
-  nftName?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftName_contains?: InputMaybe<Scalars['String']>;
+  nftName_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftName_not?: InputMaybe<Scalars['String']>;
+  nftName_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  nftName_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_starts_with?: InputMaybe<Scalars['String']['input']>;
   organizer?: InputMaybe<OrganizerWhereInput>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
 };
 
@@ -5074,21 +5817,21 @@ export const enum PackOrderByInput {
 
 export type PackUpdateInput = {
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   eventPasses?: InputMaybe<PackEventPassesUpdateManyInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<PackUpdateLocalizationsInput>;
   /** name input for default locale (en) */
-  name?: InputMaybe<Scalars['String']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
   nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
-  nftName?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
   organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
 };
 
 export type PackUpdateLocalizationDataInput = {
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PackUpdateLocalizationInput = {
@@ -5125,18 +5868,18 @@ export type PackUpdateManyInlineInput = {
 
 export type PackUpdateManyInput = {
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<PackUpdateManyLocalizationsInput>;
   /** name input for default locale (en) */
-  name?: InputMaybe<Scalars['String']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
-  nftName?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PackUpdateManyLocalizationDataInput = {
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PackUpdateManyLocalizationInput = {
@@ -5155,9 +5898,9 @@ export type PackUpdateOneInlineInput = {
   /** Create and connect one Pack document */
   create?: InputMaybe<PackCreateInput>;
   /** Delete currently connected Pack document */
-  delete?: InputMaybe<Scalars['Boolean']>;
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
   /** Disconnect currently connected Pack document */
-  disconnect?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
   /** Update single Pack document */
   update?: InputMaybe<PackUpdateWithNestedWhereUniqueInput>;
   /** Upsert single Pack document */
@@ -5194,7 +5937,7 @@ export type PackUpsertWithNestedWhereUniqueInput = {
 /** This contains a set of filters that can be used to compare values internally */
 export type PackWhereComparatorInput = {
   /** This field can be used to request to check if the entry is outdated by internal comparison */
-  outdated_to?: InputMaybe<Scalars['Boolean']>;
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Identifies documents */
@@ -5206,161 +5949,161 @@ export type PackWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<PackWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  description_contains?: InputMaybe<Scalars['String']>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  description_ends_with?: InputMaybe<Scalars['String']>;
+  description_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  description_not?: InputMaybe<Scalars['String']>;
+  description_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  description_not_contains?: InputMaybe<Scalars['String']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  description_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  description_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  description_starts_with?: InputMaybe<Scalars['String']>;
+  description_starts_with?: InputMaybe<Scalars['String']['input']>;
   documentInStages_every?: InputMaybe<PackWhereStageInput>;
   documentInStages_none?: InputMaybe<PackWhereStageInput>;
   documentInStages_some?: InputMaybe<PackWhereStageInput>;
   /** All values in which the union is empty */
-  eventPasses_empty?: InputMaybe<Scalars['Boolean']>;
+  eventPasses_empty?: InputMaybe<Scalars['Boolean']['input']>;
   /** Matches if the union contains at least one connection to the provided item to the filter */
   eventPasses_some?: InputMaybe<PackEventPassesWhereInput>;
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  name?: InputMaybe<Scalars['String']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  name_not?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  name_starts_with?: InputMaybe<Scalars['String']>;
-  nftDescription?: InputMaybe<Scalars['String']>;
+  name_starts_with?: InputMaybe<Scalars['String']['input']>;
+  nftDescription?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftDescription_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftDescription_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftDescription_not?: InputMaybe<Scalars['String']>;
+  nftDescription_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftDescription_not_contains?: InputMaybe<Scalars['String']>;
+  nftDescription_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftDescription_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftDescription_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftDescription_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftDescription_starts_with?: InputMaybe<Scalars['String']>;
+  nftDescription_starts_with?: InputMaybe<Scalars['String']['input']>;
   nftImage?: InputMaybe<AssetWhereInput>;
-  nftName?: InputMaybe<Scalars['String']>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  nftName_contains?: InputMaybe<Scalars['String']>;
+  nftName_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  nftName_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  nftName_not?: InputMaybe<Scalars['String']>;
+  nftName_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  nftName_not_contains?: InputMaybe<Scalars['String']>;
+  nftName_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  nftName_not_ends_with?: InputMaybe<Scalars['String']>;
+  nftName_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  nftName_not_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  nftName_starts_with?: InputMaybe<Scalars['String']>;
+  nftName_starts_with?: InputMaybe<Scalars['String']['input']>;
   organizer?: InputMaybe<OrganizerWhereInput>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
 };
 
@@ -5380,39 +6123,39 @@ export type PackWhereStageInput = {
 
 /** References Pack record uniquely */
 export type PackWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 /** Information about pagination in a connection. */
 export type PageInfo = {
   __typename?: 'PageInfo';
   /** When paginating forwards, the cursor to continue. */
-  endCursor?: Maybe<Scalars['String']>;
+  endCursor?: Maybe<Scalars['String']['output']>;
   /** When paginating forwards, are there more items? */
-  hasNextPage: Scalars['Boolean'];
+  hasNextPage: Scalars['Boolean']['output'];
   /** When paginating backwards, are there more items? */
-  hasPreviousPage: Scalars['Boolean'];
+  hasPreviousPage: Scalars['Boolean']['output'];
   /** Number of items in the current page. */
-  pageSize?: Maybe<Scalars['Int']>;
+  pageSize?: Maybe<Scalars['Int']['output']>;
   /** When paginating backwards, the cursor to continue. */
-  startCursor?: Maybe<Scalars['String']>;
+  startCursor?: Maybe<Scalars['String']['output']>;
 };
 
 /** Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations. */
 export type PassOption = Entity & {
   __typename?: 'PassOption';
   /** Description of the option, like "Access to the event on Day 1" */
-  description?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']['output']>;
   /** Define the location and date for this option. */
   eventDateLocation?: Maybe<EventDateLocation>;
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** System Locale field */
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<PassOption>;
   /** Name of the options, like "Day 1 Access" or "VIP Room Access" */
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
   /** System stage field */
   stage: Stage;
 };
@@ -5420,30 +6163,30 @@ export type PassOption = Entity & {
 
 /** Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations. */
 export type PassOptionEventDateLocationArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Define the options of an 'Event Pass' on an 'Event Date Location'. You can define severals if the event have multiple locations. */
 export type PassOptionLocalizationsArgs = {
-  includeCurrent?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
   locales?: Array<Locale>;
 };
 
 export type PassOptionCreateInput = {
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   eventDateLocation?: InputMaybe<EventDateLocationCreateOneInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<PassOptionCreateLocalizationsInput>;
   /** name input for default locale (en) */
-  name: Scalars['String'];
+  name: Scalars['String']['input'];
 };
 
 export type PassOptionCreateLocalizationDataInput = {
-  description?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
 };
 
 export type PassOptionCreateLocalizationInput = {
@@ -5480,17 +6223,17 @@ export const enum PassOptionOrderByInput {
 
 export type PassOptionUpdateInput = {
   /** description input for default locale (en) */
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   eventDateLocation?: InputMaybe<EventDateLocationUpdateOneInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<PassOptionUpdateLocalizationsInput>;
   /** name input for default locale (en) */
-  name?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PassOptionUpdateLocalizationDataInput = {
-  description?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PassOptionUpdateLocalizationInput = {
@@ -5559,70 +6302,70 @@ export type PassOptionWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<PassOptionWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  description_contains?: InputMaybe<Scalars['String']>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  description_ends_with?: InputMaybe<Scalars['String']>;
+  description_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  description_not?: InputMaybe<Scalars['String']>;
+  description_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  description_not_contains?: InputMaybe<Scalars['String']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  description_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  description_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  description_starts_with?: InputMaybe<Scalars['String']>;
+  description_starts_with?: InputMaybe<Scalars['String']['input']>;
   eventDateLocation?: InputMaybe<EventDateLocationWhereInput>;
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  name?: InputMaybe<Scalars['String']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  name_not?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  name_starts_with?: InputMaybe<Scalars['String']>;
+  name_starts_with?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** References PassOption record uniquely */
 export type PassOptionWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 /** Scheduled Operation system model */
@@ -5630,23 +6373,23 @@ export type ScheduledOperation = Entity & Node & {
   __typename?: 'ScheduledOperation';
   affectedDocuments: Array<ScheduledOperationAffectedDocument>;
   /** The time the document was created */
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** User that created this document */
   createdBy?: Maybe<User>;
   /** Operation description */
-  description?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']['output']>;
   /** Get the document in other stages */
   documentInStages: Array<ScheduledOperation>;
   /** Operation error message */
-  errorMessage?: Maybe<Scalars['String']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** The time the document was published. Null on documents in draft stage. */
-  publishedAt?: Maybe<Scalars['DateTime']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
   /** Raw operation payload including all details, this field is subject to change */
-  rawPayload: Scalars['Json'];
+  rawPayload: Scalars['Json']['output'];
   /** The release this operation is scheduled for */
   release?: Maybe<ScheduledRelease>;
   /** System stage field */
@@ -5654,7 +6397,7 @@ export type ScheduledOperation = Entity & Node & {
   /** operation Status */
   status: ScheduledOperationStatus;
   /** The time the document was updated */
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime']['output'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
 };
@@ -5662,52 +6405,52 @@ export type ScheduledOperation = Entity & Node & {
 
 /** Scheduled Operation system model */
 export type ScheduledOperationAffectedDocumentsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
 /** Scheduled Operation system model */
 export type ScheduledOperationCreatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Scheduled Operation system model */
 export type ScheduledOperationDocumentInStagesArgs = {
-  includeCurrent?: Scalars['Boolean'];
-  inheritLocale?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
   stages?: Array<Stage>;
 };
 
 
 /** Scheduled Operation system model */
 export type ScheduledOperationPublishedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Scheduled Operation system model */
 export type ScheduledOperationReleaseArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Scheduled Operation system model */
 export type ScheduledOperationUpdatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Asset | Event | EventPass | EventPassDelayedRevealed | Organizer | Pack;
+export type ScheduledOperationAffectedDocument = Asset | ContentSpace | Event | EventPass | EventPassDelayedRevealed | Organizer | Pack;
 
 /** A connection to a list of items. */
 export type ScheduledOperationConnection = {
@@ -5723,7 +6466,7 @@ export type ScheduledOperationConnection = {
 export type ScheduledOperationEdge = {
   __typename?: 'ScheduledOperationEdge';
   /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
   node: ScheduledOperation;
 };
@@ -5763,105 +6506,105 @@ export type ScheduledOperationWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<ScheduledOperationWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  description_contains?: InputMaybe<Scalars['String']>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  description_ends_with?: InputMaybe<Scalars['String']>;
+  description_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  description_not?: InputMaybe<Scalars['String']>;
+  description_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  description_not_contains?: InputMaybe<Scalars['String']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  description_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  description_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  description_starts_with?: InputMaybe<Scalars['String']>;
-  errorMessage?: InputMaybe<Scalars['String']>;
+  description_starts_with?: InputMaybe<Scalars['String']['input']>;
+  errorMessage?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  errorMessage_contains?: InputMaybe<Scalars['String']>;
+  errorMessage_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  errorMessage_ends_with?: InputMaybe<Scalars['String']>;
+  errorMessage_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  errorMessage_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  errorMessage_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  errorMessage_not?: InputMaybe<Scalars['String']>;
+  errorMessage_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  errorMessage_not_contains?: InputMaybe<Scalars['String']>;
+  errorMessage_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  errorMessage_not_ends_with?: InputMaybe<Scalars['String']>;
+  errorMessage_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  errorMessage_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  errorMessage_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  errorMessage_not_starts_with?: InputMaybe<Scalars['String']>;
+  errorMessage_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  errorMessage_starts_with?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
+  errorMessage_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
   /** All values containing the given json path. */
-  rawPayload_json_path_exists?: InputMaybe<Scalars['String']>;
+  rawPayload_json_path_exists?: InputMaybe<Scalars['String']['input']>;
   /**
    * Recursively tries to find the provided JSON scalar value inside the field.
    * It does use an exact match when comparing values.
    * If you pass `null` as value the filter will be ignored.
    * Note: This filter fails if you try to look for a non scalar JSON value!
    */
-  rawPayload_value_recursive?: InputMaybe<Scalars['Json']>;
+  rawPayload_value_recursive?: InputMaybe<Scalars['Json']['input']>;
   release?: InputMaybe<ScheduledReleaseWhereInput>;
   status?: InputMaybe<ScheduledOperationStatus>;
   /** All values that are contained in given list. */
@@ -5870,64 +6613,64 @@ export type ScheduledOperationWhereInput = {
   status_not?: InputMaybe<ScheduledOperationStatus>;
   /** All values that are not contained in given list. */
   status_not_in?: InputMaybe<Array<InputMaybe<ScheduledOperationStatus>>>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
 };
 
 /** References ScheduledOperation record uniquely */
 export type ScheduledOperationWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 /** Scheduled Release system model */
 export type ScheduledRelease = Entity & Node & {
   __typename?: 'ScheduledRelease';
   /** The time the document was created */
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** User that created this document */
   createdBy?: Maybe<User>;
   /** Release description */
-  description?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']['output']>;
   /** Get the document in other stages */
   documentInStages: Array<ScheduledRelease>;
   /** Release error message */
-  errorMessage?: Maybe<Scalars['String']>;
+  errorMessage?: Maybe<Scalars['String']['output']>;
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** Whether scheduled release should be run */
-  isActive: Scalars['Boolean'];
+  isActive: Scalars['Boolean']['output'];
   /** Whether scheduled release is implicit */
-  isImplicit: Scalars['Boolean'];
+  isImplicit: Scalars['Boolean']['output'];
   /** Operations to run with this release */
   operations: Array<ScheduledOperation>;
   /** The time the document was published. Null on documents in draft stage. */
-  publishedAt?: Maybe<Scalars['DateTime']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
   /** Release date and time */
-  releaseAt?: Maybe<Scalars['DateTime']>;
+  releaseAt?: Maybe<Scalars['DateTime']['output']>;
   /** System stage field */
   stage: Stage;
   /** Release Status */
   status: ScheduledReleaseStatus;
   /** Release Title */
-  title?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']['output']>;
   /** The time the document was updated */
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime']['output'];
   /** User that last updated this document */
   updatedBy?: Maybe<User>;
 };
@@ -5935,43 +6678,43 @@ export type ScheduledRelease = Entity & Node & {
 
 /** Scheduled Release system model */
 export type ScheduledReleaseCreatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Scheduled Release system model */
 export type ScheduledReleaseDocumentInStagesArgs = {
-  includeCurrent?: Scalars['Boolean'];
-  inheritLocale?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
   stages?: Array<Stage>;
 };
 
 
 /** Scheduled Release system model */
 export type ScheduledReleaseOperationsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
   orderBy?: InputMaybe<ScheduledOperationOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
 
 /** Scheduled Release system model */
 export type ScheduledReleasePublishedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
 
 /** Scheduled Release system model */
 export type ScheduledReleaseUpdatedByArgs = {
-  forceParentLocale?: InputMaybe<Scalars['Boolean']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
   locales?: InputMaybe<Array<Locale>>;
 };
 
@@ -5986,20 +6729,20 @@ export type ScheduledReleaseConnection = {
 };
 
 export type ScheduledReleaseCreateInput = {
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  description?: InputMaybe<Scalars['String']>;
-  errorMessage?: InputMaybe<Scalars['String']>;
-  isActive?: InputMaybe<Scalars['Boolean']>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  title?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  errorMessage?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 /** An edge in a connection. */
 export type ScheduledReleaseEdge = {
   __typename?: 'ScheduledReleaseEdge';
   /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
   node: ScheduledRelease;
 };
@@ -6038,11 +6781,11 @@ export const enum ScheduledReleaseStatus {
 };
 
 export type ScheduledReleaseUpdateInput = {
-  description?: InputMaybe<Scalars['String']>;
-  errorMessage?: InputMaybe<Scalars['String']>;
-  isActive?: InputMaybe<Scalars['Boolean']>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  title?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  errorMessage?: InputMaybe<Scalars['String']['input']>;
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Identifies documents */
@@ -6054,120 +6797,120 @@ export type ScheduledReleaseWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<ScheduledReleaseWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   createdBy?: InputMaybe<UserWhereInput>;
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  description_contains?: InputMaybe<Scalars['String']>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  description_ends_with?: InputMaybe<Scalars['String']>;
+  description_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  description_not?: InputMaybe<Scalars['String']>;
+  description_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  description_not_contains?: InputMaybe<Scalars['String']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  description_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  description_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  description_starts_with?: InputMaybe<Scalars['String']>;
-  errorMessage?: InputMaybe<Scalars['String']>;
+  description_starts_with?: InputMaybe<Scalars['String']['input']>;
+  errorMessage?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  errorMessage_contains?: InputMaybe<Scalars['String']>;
+  errorMessage_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  errorMessage_ends_with?: InputMaybe<Scalars['String']>;
+  errorMessage_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  errorMessage_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  errorMessage_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  errorMessage_not?: InputMaybe<Scalars['String']>;
+  errorMessage_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  errorMessage_not_contains?: InputMaybe<Scalars['String']>;
+  errorMessage_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  errorMessage_not_ends_with?: InputMaybe<Scalars['String']>;
+  errorMessage_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  errorMessage_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  errorMessage_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  errorMessage_not_starts_with?: InputMaybe<Scalars['String']>;
+  errorMessage_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  errorMessage_starts_with?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
+  errorMessage_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  isActive?: InputMaybe<Scalars['Boolean']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  isActive_not?: InputMaybe<Scalars['Boolean']>;
-  isImplicit?: InputMaybe<Scalars['Boolean']>;
+  isActive_not?: InputMaybe<Scalars['Boolean']['input']>;
+  isImplicit?: InputMaybe<Scalars['Boolean']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  isImplicit_not?: InputMaybe<Scalars['Boolean']>;
+  isImplicit_not?: InputMaybe<Scalars['Boolean']['input']>;
   operations_every?: InputMaybe<ScheduledOperationWhereInput>;
   operations_none?: InputMaybe<ScheduledOperationWhereInput>;
   operations_some?: InputMaybe<ScheduledOperationWhereInput>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   publishedBy?: InputMaybe<UserWhereInput>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  releaseAt_gt?: InputMaybe<Scalars['DateTime']>;
+  releaseAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  releaseAt_gte?: InputMaybe<Scalars['DateTime']>;
+  releaseAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  releaseAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  releaseAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  releaseAt_lt?: InputMaybe<Scalars['DateTime']>;
+  releaseAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  releaseAt_lte?: InputMaybe<Scalars['DateTime']>;
+  releaseAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  releaseAt_not?: InputMaybe<Scalars['DateTime']>;
+  releaseAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  releaseAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  releaseAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   status?: InputMaybe<ScheduledReleaseStatus>;
   /** All values that are contained in given list. */
   status_in?: InputMaybe<Array<InputMaybe<ScheduledReleaseStatus>>>;
@@ -6175,46 +6918,46 @@ export type ScheduledReleaseWhereInput = {
   status_not?: InputMaybe<ScheduledReleaseStatus>;
   /** All values that are not contained in given list. */
   status_not_in?: InputMaybe<Array<InputMaybe<ScheduledReleaseStatus>>>;
-  title?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  title_contains?: InputMaybe<Scalars['String']>;
+  title_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  title_ends_with?: InputMaybe<Scalars['String']>;
+  title_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  title_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  title_not?: InputMaybe<Scalars['String']>;
+  title_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  title_not_contains?: InputMaybe<Scalars['String']>;
+  title_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  title_not_ends_with?: InputMaybe<Scalars['String']>;
+  title_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  title_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  title_not_starts_with?: InputMaybe<Scalars['String']>;
+  title_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  title_starts_with?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  title_starts_with?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   updatedBy?: InputMaybe<UserWhereInput>;
 };
 
 /** References ScheduledRelease record uniquely */
 export type ScheduledReleaseWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 /** Stage system enumeration */
@@ -6227,35 +6970,35 @@ export const enum Stage {
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['String']>;
-  _gt?: InputMaybe<Scalars['String']>;
-  _gte?: InputMaybe<Scalars['String']>;
+  _eq?: InputMaybe<Scalars['String']['input']>;
+  _gt?: InputMaybe<Scalars['String']['input']>;
+  _gte?: InputMaybe<Scalars['String']['input']>;
   /** does the column match the given case-insensitive pattern */
-  _ilike?: InputMaybe<Scalars['String']>;
-  _in?: InputMaybe<Array<Scalars['String']>>;
+  _ilike?: InputMaybe<Scalars['String']['input']>;
+  _in?: InputMaybe<Array<Scalars['String']['input']>>;
   /** does the column match the given POSIX regular expression, case insensitive */
-  _iregex?: InputMaybe<Scalars['String']>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _iregex?: InputMaybe<Scalars['String']['input']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   /** does the column match the given pattern */
-  _like?: InputMaybe<Scalars['String']>;
-  _lt?: InputMaybe<Scalars['String']>;
-  _lte?: InputMaybe<Scalars['String']>;
-  _neq?: InputMaybe<Scalars['String']>;
+  _like?: InputMaybe<Scalars['String']['input']>;
+  _lt?: InputMaybe<Scalars['String']['input']>;
+  _lte?: InputMaybe<Scalars['String']['input']>;
+  _neq?: InputMaybe<Scalars['String']['input']>;
   /** does the column NOT match the given case-insensitive pattern */
-  _nilike?: InputMaybe<Scalars['String']>;
-  _nin?: InputMaybe<Array<Scalars['String']>>;
+  _nilike?: InputMaybe<Scalars['String']['input']>;
+  _nin?: InputMaybe<Array<Scalars['String']['input']>>;
   /** does the column NOT match the given POSIX regular expression, case insensitive */
-  _niregex?: InputMaybe<Scalars['String']>;
+  _niregex?: InputMaybe<Scalars['String']['input']>;
   /** does the column NOT match the given pattern */
-  _nlike?: InputMaybe<Scalars['String']>;
+  _nlike?: InputMaybe<Scalars['String']['input']>;
   /** does the column NOT match the given POSIX regular expression, case sensitive */
-  _nregex?: InputMaybe<Scalars['String']>;
+  _nregex?: InputMaybe<Scalars['String']['input']>;
   /** does the column NOT match the given SQL regular expression */
-  _nsimilar?: InputMaybe<Scalars['String']>;
+  _nsimilar?: InputMaybe<Scalars['String']['input']>;
   /** does the column match the given POSIX regular expression, case sensitive */
-  _regex?: InputMaybe<Scalars['String']>;
+  _regex?: InputMaybe<Scalars['String']['input']>;
   /** does the column match the given SQL regular expression */
-  _similar?: InputMaybe<Scalars['String']>;
+  _similar?: InputMaybe<Scalars['String']['input']>;
 };
 
 export const enum SystemDateTimeFieldVariation {
@@ -6268,32 +7011,32 @@ export const enum SystemDateTimeFieldVariation {
 export type User = Entity & Node & {
   __typename?: 'User';
   /** The time the document was created */
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['DateTime']['output'];
   /** Get the document in other stages */
   documentInStages: Array<User>;
   /** The unique identifier */
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   /** Flag to determine if user is active or not */
-  isActive: Scalars['Boolean'];
+  isActive: Scalars['Boolean']['output'];
   /** User Kind. Can be either MEMBER, PAT or PUBLIC */
   kind: UserKind;
   /** The username */
-  name: Scalars['String'];
+  name: Scalars['String']['output'];
   /** Profile Picture url */
-  picture?: Maybe<Scalars['String']>;
+  picture?: Maybe<Scalars['String']['output']>;
   /** The time the document was published. Null on documents in draft stage. */
-  publishedAt?: Maybe<Scalars['DateTime']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   /** System stage field */
   stage: Stage;
   /** The time the document was updated */
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 
 /** User system model */
 export type UserDocumentInStagesArgs = {
-  includeCurrent?: Scalars['Boolean'];
-  inheritLocale?: Scalars['Boolean'];
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
   stages?: Array<Stage>;
 };
 
@@ -6311,7 +7054,7 @@ export type UserConnection = {
 export type UserEdge = {
   __typename?: 'UserEdge';
   /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   /** The item at the end of the edge. */
   node: User;
 };
@@ -6347,7 +7090,7 @@ export const enum UserOrderByInput {
 /** This contains a set of filters that can be used to compare values internally */
 export type UserWhereComparatorInput = {
   /** This field can be used to request to check if the entry is outdated by internal comparison */
-  outdated_to?: InputMaybe<Scalars['Boolean']>;
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Identifies documents */
@@ -6359,47 +7102,47 @@ export type UserWhereInput = {
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<UserWhereInput>>;
   /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   documentInStages_every?: InputMaybe<UserWhereStageInput>;
   documentInStages_none?: InputMaybe<UserWhereStageInput>;
   documentInStages_some?: InputMaybe<UserWhereStageInput>;
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
   /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
   /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
   /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
   /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  isActive?: InputMaybe<Scalars['Boolean']>;
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  isActive?: InputMaybe<Scalars['Boolean']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  isActive_not?: InputMaybe<Scalars['Boolean']>;
+  isActive_not?: InputMaybe<Scalars['Boolean']['input']>;
   kind?: InputMaybe<UserKind>;
   /** All values that are contained in given list. */
   kind_in?: InputMaybe<Array<InputMaybe<UserKind>>>;
@@ -6407,74 +7150,74 @@ export type UserWhereInput = {
   kind_not?: InputMaybe<UserKind>;
   /** All values that are not contained in given list. */
   kind_not_in?: InputMaybe<Array<InputMaybe<UserKind>>>;
-  name?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  name_not?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  name_starts_with?: InputMaybe<Scalars['String']>;
-  picture?: InputMaybe<Scalars['String']>;
+  name_starts_with?: InputMaybe<Scalars['String']['input']>;
+  picture?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
-  picture_contains?: InputMaybe<Scalars['String']>;
+  picture_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values ending with the given string. */
-  picture_ends_with?: InputMaybe<Scalars['String']>;
+  picture_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are contained in given list. */
-  picture_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  picture_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Any other value that exists and is not equal to the given value. */
-  picture_not?: InputMaybe<Scalars['String']>;
+  picture_not?: InputMaybe<Scalars['String']['input']>;
   /** All values not containing the given string. */
-  picture_not_contains?: InputMaybe<Scalars['String']>;
+  picture_not_contains?: InputMaybe<Scalars['String']['input']>;
   /** All values not ending with the given string */
-  picture_not_ends_with?: InputMaybe<Scalars['String']>;
+  picture_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   /** All values that are not contained in given list. */
-  picture_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  picture_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** All values not starting with the given string. */
-  picture_not_starts_with?: InputMaybe<Scalars['String']>;
+  picture_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
-  picture_starts_with?: InputMaybe<Scalars['String']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  picture_starts_with?: InputMaybe<Scalars['String']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
   /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
 };
 
 /** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
@@ -6493,49 +7236,49 @@ export type UserWhereStageInput = {
 
 /** References User record uniquely */
 export type UserWhereUniqueInput = {
-  id?: InputMaybe<Scalars['ID']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type Version = {
   __typename?: 'Version';
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  revision: Scalars['Int'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  revision: Scalars['Int']['output'];
   stage: Stage;
 };
 
 export type VersionWhereInput = {
-  id: Scalars['ID'];
-  revision: Scalars['Int'];
+  id: Scalars['ID']['input'];
+  revision: Scalars['Int']['input'];
   stage: Stage;
 };
 
 /** An account can represent a user or a role on an organizer. It stores essential information and is used as the root class for relationships with other tables */
 export type Account = {
   __typename?: 'account';
-  address: Scalars['String'];
-  created_at?: Maybe<Scalars['timestamptz']>;
-  email?: Maybe<Scalars['String']>;
-  id: Scalars['uuid'];
+  address: Scalars['String']['output'];
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
   /** An object relationship */
   kyc?: Maybe<Kyc>;
-  phone?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   roles: Array<RoleAssignment>;
   /** An aggregate relationship */
   roles_aggregate: RoleAssignment_Aggregate;
-  scwAddress?: Maybe<Scalars['String']>;
+  scwAddress?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   stripeCustomer?: Maybe<StripeCustomer>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 
 /** An account can represent a user or a role on an organizer. It stores essential information and is used as the root class for relationships with other tables */
 export type AccountRolesArgs = {
   distinct_on?: InputMaybe<Array<RoleAssignment_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<RoleAssignment_Order_By>>;
   where?: InputMaybe<RoleAssignment_Bool_Exp>;
 };
@@ -6544,8 +7287,8 @@ export type AccountRolesArgs = {
 /** An account can represent a user or a role on an organizer. It stores essential information and is used as the root class for relationships with other tables */
 export type AccountRoles_AggregateArgs = {
   distinct_on?: InputMaybe<Array<RoleAssignment_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<RoleAssignment_Order_By>>;
   where?: InputMaybe<RoleAssignment_Bool_Exp>;
 };
@@ -6560,7 +7303,7 @@ export type Account_Aggregate = {
 /** aggregate fields of "account" */
 export type Account_Aggregate_Fields = {
   __typename?: 'account_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Account_Max_Fields>;
   min?: Maybe<Account_Min_Fields>;
 };
@@ -6569,7 +7312,7 @@ export type Account_Aggregate_Fields = {
 /** aggregate fields of "account" */
 export type Account_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Account_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "account". All fields are combined with a logical 'AND'. */
@@ -6600,47 +7343,47 @@ export const enum Account_Constraint {
 
 /** input type for inserting data into table "account" */
 export type Account_Insert_Input = {
-  address?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  email?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  address?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   kyc?: InputMaybe<Kyc_Obj_Rel_Insert_Input>;
-  phone?: InputMaybe<Scalars['String']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
   roles?: InputMaybe<RoleAssignment_Arr_Rel_Insert_Input>;
-  scwAddress?: InputMaybe<Scalars['String']>;
+  scwAddress?: InputMaybe<Scalars['String']['input']>;
   stripeCustomer?: InputMaybe<StripeCustomer_Obj_Rel_Insert_Input>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type Account_Max_Fields = {
   __typename?: 'account_max_fields';
-  address?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  email?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  phone?: Maybe<Scalars['String']>;
-  scwAddress?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  address?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  scwAddress?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
 export type Account_Min_Fields = {
   __typename?: 'account_min_fields';
-  address?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  email?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  phone?: Maybe<Scalars['String']>;
-  scwAddress?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  address?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  scwAddress?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "account" */
 export type Account_Mutation_Response = {
   __typename?: 'account_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Account>;
 };
@@ -6675,7 +7418,7 @@ export type Account_Order_By = {
 
 /** primary key columns input for table: account */
 export type Account_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "account" */
@@ -6698,13 +7441,13 @@ export const enum Account_Select_Column {
 
 /** input type for updating data in table "account" */
 export type Account_Set_Input = {
-  address?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  email?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  phone?: InputMaybe<Scalars['String']>;
-  scwAddress?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  address?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  scwAddress?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Streaming cursor of the table "account" */
@@ -6717,13 +7460,13 @@ export type Account_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Account_Stream_Cursor_Value_Input = {
-  address?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  email?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  phone?: InputMaybe<Scalars['String']>;
-  scwAddress?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  address?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  scwAddress?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "account" */
@@ -6753,21 +7496,21 @@ export type Account_Updates = {
 
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
 export type Bigint_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['bigint']>;
-  _gt?: InputMaybe<Scalars['bigint']>;
-  _gte?: InputMaybe<Scalars['bigint']>;
-  _in?: InputMaybe<Array<Scalars['bigint']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['bigint']>;
-  _lte?: InputMaybe<Scalars['bigint']>;
-  _neq?: InputMaybe<Scalars['bigint']>;
-  _nin?: InputMaybe<Array<Scalars['bigint']>>;
+  _eq?: InputMaybe<Scalars['bigint']['input']>;
+  _gt?: InputMaybe<Scalars['bigint']['input']>;
+  _gte?: InputMaybe<Scalars['bigint']['input']>;
+  _in?: InputMaybe<Array<Scalars['bigint']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['bigint']['input']>;
+  _lte?: InputMaybe<Scalars['bigint']['input']>;
+  _neq?: InputMaybe<Scalars['bigint']['input']>;
+  _nin?: InputMaybe<Array<Scalars['bigint']['input']>>;
 };
 
 /** Currencies code following the standard ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217) */
 export type Currency = {
   __typename?: 'currency';
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "currency" */
@@ -6780,7 +7523,7 @@ export type Currency_Aggregate = {
 /** aggregate fields of "currency" */
 export type Currency_Aggregate_Fields = {
   __typename?: 'currency_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Currency_Max_Fields>;
   min?: Maybe<Currency_Min_Fields>;
 };
@@ -6789,7 +7532,7 @@ export type Currency_Aggregate_Fields = {
 /** aggregate fields of "currency" */
 export type Currency_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Currency_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "currency". All fields are combined with a logical 'AND'. */
@@ -6820,33 +7563,33 @@ export const enum Currency_Enum {
 export type Currency_Enum_Comparison_Exp = {
   _eq?: InputMaybe<Currency_Enum>;
   _in?: InputMaybe<Array<Currency_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   _neq?: InputMaybe<Currency_Enum>;
   _nin?: InputMaybe<Array<Currency_Enum>>;
 };
 
 /** input type for inserting data into table "currency" */
 export type Currency_Insert_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type Currency_Max_Fields = {
   __typename?: 'currency_max_fields';
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type Currency_Min_Fields = {
   __typename?: 'currency_min_fields';
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "currency" */
 export type Currency_Mutation_Response = {
   __typename?: 'currency_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Currency>;
 };
@@ -6865,7 +7608,7 @@ export type Currency_Order_By = {
 
 /** primary key columns input for table: currency */
 export type Currency_Pk_Columns_Input = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "currency" */
@@ -6876,7 +7619,7 @@ export const enum Currency_Select_Column {
 
 /** input type for updating data in table "currency" */
 export type Currency_Set_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "currency" */
@@ -6889,7 +7632,7 @@ export type Currency_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Currency_Stream_Cursor_Value_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "currency" */
@@ -6917,18 +7660,18 @@ export const enum Cursor_Ordering {
 export type EventParameters = {
   __typename?: 'eventParameters';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
-  activityWebhookId?: Maybe<Scalars['String']>;
-  created_at: Scalars['timestamptz'];
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['timestamptz']['output'];
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
-  dateEnd?: Maybe<Scalars['timestamp']>;
+  dateEnd?: Maybe<Scalars['timestamp']['output']>;
   /** The "dateSaleEnd" column indicates the end date and time for the sale of event passes. By providing a clear cut-off point for sales, this timestamp aids in the strategic planning and closure of the pass sale period. */
-  dateSaleEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleEnd?: Maybe<Scalars['timestamp']['output']>;
   /** The "dateSaleStart" column denotes the start date and time for when the event passes become available for sale. This timestamp, free from timezone specifics, is critical for controlling the sales window, allowing for precise planning and marketing of the event passes. */
-  dateSaleStart?: Maybe<Scalars['timestamp']>;
+  dateSaleStart?: Maybe<Scalars['timestamp']['output']>;
   /** The "dateStart" column represents the start date and time of the event. This timestamp, set in a timezone-neutral format, indicates when the event officially begins. It is crucial for scheduling and coordinating event-related activities. */
-  dateStart?: Maybe<Scalars['timestamp']>;
+  dateStart?: Maybe<Scalars['timestamp']['output']>;
   event?: Maybe<Event>;
-  eventId: Scalars['String'];
+  eventId: Scalars['String']['output'];
   /** An array relationship */
   eventPassNftContracts: Array<EventPassNftContract>;
   /** An aggregate relationship */
@@ -6937,18 +7680,18 @@ export type EventParameters = {
   eventPassNfts: Array<EventPassNft>;
   /** An aggregate relationship */
   eventPassNfts_aggregate: EventPassNft_Aggregate;
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['output'];
   /** A computed field, executes function "is_event_ongoing" */
-  isOngoing?: Maybe<Scalars['Boolean']>;
+  isOngoing?: Maybe<Scalars['Boolean']['output']>;
   /** A computed field, executes function "is_sale_ongoing" */
-  isSaleOngoing?: Maybe<Scalars['Boolean']>;
+  isSaleOngoing?: Maybe<Scalars['Boolean']['output']>;
   organizer?: Maybe<Organizer>;
-  organizerId: Scalars['String'];
-  signingKey?: Maybe<Scalars['String']>;
+  organizerId: Scalars['String']['output'];
+  signingKey?: Maybe<Scalars['String']['output']>;
   status?: Maybe<EventStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
-  timezone: Scalars['String'];
-  updated_at: Scalars['timestamptz'];
+  timezone: Scalars['String']['output'];
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 
@@ -6963,8 +7706,8 @@ export type EventParametersEventArgs = {
 /** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
 export type EventParametersEventPassNftContractsArgs = {
   distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
 };
@@ -6973,8 +7716,8 @@ export type EventParametersEventPassNftContractsArgs = {
 /** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
 export type EventParametersEventPassNftContracts_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
 };
@@ -6983,8 +7726,8 @@ export type EventParametersEventPassNftContracts_AggregateArgs = {
 /** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
 export type EventParametersEventPassNftsArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
@@ -6993,8 +7736,8 @@ export type EventParametersEventPassNftsArgs = {
 /** The eventParameters model is designed to define properties on an event involving all event passes. This table includes critical details like the eventId and activityWebhookId, which aids in monitoring and processing events or changes related to the event parameters. By centralizing this information, our system can effectively manage and control parameters tied to specific events, enhancing the overall functionality and flexibility of event handling. */
 export type EventParametersEventPassNfts_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
@@ -7017,7 +7760,7 @@ export type EventParameters_Aggregate = {
 /** aggregate fields of "eventParameters" */
 export type EventParameters_Aggregate_Fields = {
   __typename?: 'eventParameters_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<EventParameters_Max_Fields>;
   min?: Maybe<EventParameters_Min_Fields>;
 };
@@ -7026,7 +7769,7 @@ export type EventParameters_Aggregate_Fields = {
 /** aggregate fields of "eventParameters" */
 export type EventParameters_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<EventParameters_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "eventParameters". All fields are combined with a logical 'AND'. */
@@ -7068,79 +7811,79 @@ export const enum EventParameters_Constraint {
 /** input type for inserting data into table "eventParameters" */
 export type EventParameters_Insert_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
-  activityWebhookId?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
-  dateEnd?: InputMaybe<Scalars['timestamp']>;
+  dateEnd?: InputMaybe<Scalars['timestamp']['input']>;
   /** The "dateSaleEnd" column indicates the end date and time for the sale of event passes. By providing a clear cut-off point for sales, this timestamp aids in the strategic planning and closure of the pass sale period. */
-  dateSaleEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleEnd?: InputMaybe<Scalars['timestamp']['input']>;
   /** The "dateSaleStart" column denotes the start date and time for when the event passes become available for sale. This timestamp, free from timezone specifics, is critical for controlling the sales window, allowing for precise planning and marketing of the event passes. */
-  dateSaleStart?: InputMaybe<Scalars['timestamp']>;
+  dateSaleStart?: InputMaybe<Scalars['timestamp']['input']>;
   /** The "dateStart" column represents the start date and time of the event. This timestamp, set in a timezone-neutral format, indicates when the event officially begins. It is crucial for scheduling and coordinating event-related activities. */
-  dateStart?: InputMaybe<Scalars['timestamp']>;
-  eventId?: InputMaybe<Scalars['String']>;
+  dateStart?: InputMaybe<Scalars['timestamp']['input']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
   eventPassNftContracts?: InputMaybe<EventPassNftContract_Arr_Rel_Insert_Input>;
   eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
-  id?: InputMaybe<Scalars['uuid']>;
-  organizerId?: InputMaybe<Scalars['String']>;
-  signingKey?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<EventStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
-  timezone?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  timezone?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type EventParameters_Max_Fields = {
   __typename?: 'eventParameters_max_fields';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
-  activityWebhookId?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
-  dateEnd?: Maybe<Scalars['timestamp']>;
+  dateEnd?: Maybe<Scalars['timestamp']['output']>;
   /** The "dateSaleEnd" column indicates the end date and time for the sale of event passes. By providing a clear cut-off point for sales, this timestamp aids in the strategic planning and closure of the pass sale period. */
-  dateSaleEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleEnd?: Maybe<Scalars['timestamp']['output']>;
   /** The "dateSaleStart" column denotes the start date and time for when the event passes become available for sale. This timestamp, free from timezone specifics, is critical for controlling the sales window, allowing for precise planning and marketing of the event passes. */
-  dateSaleStart?: Maybe<Scalars['timestamp']>;
+  dateSaleStart?: Maybe<Scalars['timestamp']['output']>;
   /** The "dateStart" column represents the start date and time of the event. This timestamp, set in a timezone-neutral format, indicates when the event officially begins. It is crucial for scheduling and coordinating event-related activities. */
-  dateStart?: Maybe<Scalars['timestamp']>;
-  eventId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  organizerId?: Maybe<Scalars['String']>;
-  signingKey?: Maybe<Scalars['String']>;
+  dateStart?: Maybe<Scalars['timestamp']['output']>;
+  eventId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
+  signingKey?: Maybe<Scalars['String']['output']>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
-  timezone?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  timezone?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
 export type EventParameters_Min_Fields = {
   __typename?: 'eventParameters_min_fields';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
-  activityWebhookId?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
-  dateEnd?: Maybe<Scalars['timestamp']>;
+  dateEnd?: Maybe<Scalars['timestamp']['output']>;
   /** The "dateSaleEnd" column indicates the end date and time for the sale of event passes. By providing a clear cut-off point for sales, this timestamp aids in the strategic planning and closure of the pass sale period. */
-  dateSaleEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleEnd?: Maybe<Scalars['timestamp']['output']>;
   /** The "dateSaleStart" column denotes the start date and time for when the event passes become available for sale. This timestamp, free from timezone specifics, is critical for controlling the sales window, allowing for precise planning and marketing of the event passes. */
-  dateSaleStart?: Maybe<Scalars['timestamp']>;
+  dateSaleStart?: Maybe<Scalars['timestamp']['output']>;
   /** The "dateStart" column represents the start date and time of the event. This timestamp, set in a timezone-neutral format, indicates when the event officially begins. It is crucial for scheduling and coordinating event-related activities. */
-  dateStart?: Maybe<Scalars['timestamp']>;
-  eventId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  organizerId?: Maybe<Scalars['String']>;
-  signingKey?: Maybe<Scalars['String']>;
+  dateStart?: Maybe<Scalars['timestamp']['output']>;
+  eventId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
+  signingKey?: Maybe<Scalars['String']['output']>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
-  timezone?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  timezone?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "eventParameters" */
 export type EventParameters_Mutation_Response = {
   __typename?: 'eventParameters_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<EventParameters>;
 };
@@ -7182,7 +7925,7 @@ export type EventParameters_Order_By = {
 
 /** primary key columns input for table: eventParameters */
 export type EventParameters_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "eventParameters" */
@@ -7218,24 +7961,24 @@ export const enum EventParameters_Select_Column {
 /** input type for updating data in table "eventParameters" */
 export type EventParameters_Set_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
-  activityWebhookId?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
-  dateEnd?: InputMaybe<Scalars['timestamp']>;
+  dateEnd?: InputMaybe<Scalars['timestamp']['input']>;
   /** The "dateSaleEnd" column indicates the end date and time for the sale of event passes. By providing a clear cut-off point for sales, this timestamp aids in the strategic planning and closure of the pass sale period. */
-  dateSaleEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleEnd?: InputMaybe<Scalars['timestamp']['input']>;
   /** The "dateSaleStart" column denotes the start date and time for when the event passes become available for sale. This timestamp, free from timezone specifics, is critical for controlling the sales window, allowing for precise planning and marketing of the event passes. */
-  dateSaleStart?: InputMaybe<Scalars['timestamp']>;
+  dateSaleStart?: InputMaybe<Scalars['timestamp']['input']>;
   /** The "dateStart" column represents the start date and time of the event. This timestamp, set in a timezone-neutral format, indicates when the event officially begins. It is crucial for scheduling and coordinating event-related activities. */
-  dateStart?: InputMaybe<Scalars['timestamp']>;
-  eventId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  organizerId?: InputMaybe<Scalars['String']>;
-  signingKey?: InputMaybe<Scalars['String']>;
+  dateStart?: InputMaybe<Scalars['timestamp']['input']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<EventStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
-  timezone?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  timezone?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Streaming cursor of the table "eventParameters" */
@@ -7249,24 +7992,24 @@ export type EventParameters_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type EventParameters_Stream_Cursor_Value_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
-  activityWebhookId?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
-  dateEnd?: InputMaybe<Scalars['timestamp']>;
+  dateEnd?: InputMaybe<Scalars['timestamp']['input']>;
   /** The "dateSaleEnd" column indicates the end date and time for the sale of event passes. By providing a clear cut-off point for sales, this timestamp aids in the strategic planning and closure of the pass sale period. */
-  dateSaleEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleEnd?: InputMaybe<Scalars['timestamp']['input']>;
   /** The "dateSaleStart" column denotes the start date and time for when the event passes become available for sale. This timestamp, free from timezone specifics, is critical for controlling the sales window, allowing for precise planning and marketing of the event passes. */
-  dateSaleStart?: InputMaybe<Scalars['timestamp']>;
+  dateSaleStart?: InputMaybe<Scalars['timestamp']['input']>;
   /** The "dateStart" column represents the start date and time of the event. This timestamp, set in a timezone-neutral format, indicates when the event officially begins. It is crucial for scheduling and coordinating event-related activities. */
-  dateStart?: InputMaybe<Scalars['timestamp']>;
-  eventId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  organizerId?: InputMaybe<Scalars['String']>;
-  signingKey?: InputMaybe<Scalars['String']>;
+  dateStart?: InputMaybe<Scalars['timestamp']['input']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<EventStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
-  timezone?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  timezone?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "eventParameters" */
@@ -7310,43 +8053,43 @@ export type EventParameters_Updates = {
 export type EventPassNft = {
   __typename?: 'eventPassNft';
   /** Denotes the specific blockchain or network of the event pass NFT */
-  chainId: Scalars['String'];
+  chainId: Scalars['String']['output'];
   /** Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress: Scalars['String'];
-  created_at: Scalars['timestamptz'];
+  contractAddress: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
   /** The address currently holding the event pass NFT, allowing tracking of ownership */
-  currentOwnerAddress?: Maybe<Scalars['String']>;
+  currentOwnerAddress?: Maybe<Scalars['String']['output']>;
   /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
-  error?: Maybe<Scalars['String']>;
+  error?: Maybe<Scalars['String']['output']>;
   event?: Maybe<Event>;
   /** A reference to the event associated with the event pass NFT */
-  eventId: Scalars['String'];
+  eventId: Scalars['String']['output'];
   /** An object relationship */
   eventParameters?: Maybe<EventParameters>;
   eventPass?: Maybe<EventPass>;
   /** Directly relates to a specific Event Pass within the system */
-  eventPassId: Scalars['String'];
+  eventPassId: Scalars['String']['output'];
   /** An object relationship */
   eventPassNftContract?: Maybe<EventPassNftContract>;
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['output'];
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
-  isRevealed: Scalars['Boolean'];
+  isRevealed: Scalars['Boolean']['output'];
   /** An object relationship */
   lastNftTransfer?: Maybe<NftTransfer>;
   /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
-  lastNftTransferId?: Maybe<Scalars['uuid']>;
+  lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
   /** The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT. */
-  metadata: Scalars['jsonb'];
+  metadata: Scalars['jsonb']['output'];
   /** An array relationship */
   nftTransfers: Array<NftTransfer>;
   /** An aggregate relationship */
   nftTransfers_aggregate: NftTransfer_Aggregate;
   organizer?: Maybe<Organizer>;
   /** Ties the event pass NFT to a specific organizer within the platform */
-  organizerId: Scalars['String'];
+  organizerId: Scalars['String']['output'];
   /** An object relationship */
   packAmount?: Maybe<PassAmount>;
-  packId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   packPricing?: Maybe<PassPricing>;
   /** An object relationship */
@@ -7354,10 +8097,10 @@ export type EventPassNft = {
   /** An object relationship */
   passPricing?: Maybe<PassPricing>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId: Scalars['bigint'];
+  tokenId: Scalars['bigint']['output'];
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
-  tokenUri?: Maybe<Scalars['String']>;
-  updated_at: Scalars['timestamptz'];
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 
@@ -7378,15 +8121,15 @@ export type EventPassNftEventPassArgs = {
 
 /** columns and relationships of "eventPassNft" */
 export type EventPassNftMetadataArgs = {
-  path?: InputMaybe<Scalars['String']>;
+  path?: InputMaybe<Scalars['String']['input']>;
 };
 
 
 /** columns and relationships of "eventPassNft" */
 export type EventPassNftNftTransfersArgs = {
   distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
   where?: InputMaybe<NftTransfer_Bool_Exp>;
 };
@@ -7395,8 +8138,8 @@ export type EventPassNftNftTransfersArgs = {
 /** columns and relationships of "eventPassNft" */
 export type EventPassNftNftTransfers_AggregateArgs = {
   distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
   where?: InputMaybe<NftTransfer_Bool_Exp>;
 };
@@ -7413,30 +8156,30 @@ export type EventPassNftOrganizerArgs = {
 export type EventPassNftContract = {
   __typename?: 'eventPassNftContract';
   /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId: Scalars['String'];
+  chainId: Scalars['String']['output'];
   /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFTs existence and behavior on the blockchain. */
-  contractAddress: Scalars['String'];
-  created_at: Scalars['timestamptz'];
+  contractAddress: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
   /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
-  eventId: Scalars['String'];
+  eventId: Scalars['String']['output'];
   eventPass?: Maybe<EventPass>;
-  eventPassId: Scalars['String'];
+  eventPassId: Scalars['String']['output'];
   /** An array relationship */
   eventPassNfts: Array<EventPassNft>;
   /** An aggregate relationship */
   eventPassNfts_aggregate: EventPassNft_Aggregate;
   /** An object relationship */
   eventPassOrderSums?: Maybe<EventPassOrderSums>;
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['output'];
   /** Flag indicating whether the event pass NFT is airdropped. */
-  isAirdrop: Scalars['Boolean'];
+  isAirdrop: Scalars['Boolean']['output'];
   /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
-  isDelayedRevealed: Scalars['Boolean'];
+  isDelayedRevealed: Scalars['Boolean']['output'];
   /** An array relationship */
   orders: Array<Order>;
   /** An aggregate relationship */
   orders_aggregate: Order_Aggregate;
-  organizerId: Scalars['String'];
+  organizerId: Scalars['String']['output'];
   /** An object relationship */
   passAmount?: Maybe<PassAmount>;
   /** An object relationship */
@@ -7444,10 +8187,10 @@ export type EventPassNftContract = {
   /** Type of the pass, referencing the eventPassType table. */
   passType: EventPassType_Enum;
   /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
-  password?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']['output']>;
   /** Type of the event pass NFT contract. */
   type: EventPassNftContractType_Enum;
-  updated_at: Scalars['timestamptz'];
+  updated_at: Scalars['timestamptz']['output'];
   /** The method of validation for the event pass, referencing the eventPassValidationType table. */
   validationType: EventPassValidationType_Enum;
 };
@@ -7463,8 +8206,8 @@ export type EventPassNftContractEventPassArgs = {
 /** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
 export type EventPassNftContractEventPassNftsArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
@@ -7473,8 +8216,8 @@ export type EventPassNftContractEventPassNftsArgs = {
 /** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
 export type EventPassNftContractEventPassNfts_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
@@ -7483,8 +8226,8 @@ export type EventPassNftContractEventPassNfts_AggregateArgs = {
 /** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
 export type EventPassNftContractOrdersArgs = {
   distinct_on?: InputMaybe<Array<Order_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Order_Order_By>>;
   where?: InputMaybe<Order_Bool_Exp>;
 };
@@ -7493,8 +8236,8 @@ export type EventPassNftContractOrdersArgs = {
 /** The eventPassNftContract model is designed to store metadata associated with NFT contracts linked to specific event passes. This table captures critical, immutable details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. Additionally, this table includes information specific to each event pass, like the eventPassId and organizerId, allowing for precise management and interaction with NFT contracts tied to individual event passes. By centralizing this information, our system can effectively manage, reference, and interact with NFT contracts related to particular event passes. */
 export type EventPassNftContractOrders_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Order_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Order_Order_By>>;
   where?: InputMaybe<Order_Bool_Exp>;
 };
@@ -7503,7 +8246,7 @@ export type EventPassNftContractOrders_AggregateArgs = {
 export type EventPassNftContractType = {
   __typename?: 'eventPassNftContractType';
   /** Type name for event pass NFT contract. */
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "eventPassNftContractType" */
@@ -7516,7 +8259,7 @@ export type EventPassNftContractType_Aggregate = {
 /** aggregate fields of "eventPassNftContractType" */
 export type EventPassNftContractType_Aggregate_Fields = {
   __typename?: 'eventPassNftContractType_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<EventPassNftContractType_Max_Fields>;
   min?: Maybe<EventPassNftContractType_Min_Fields>;
 };
@@ -7525,7 +8268,7 @@ export type EventPassNftContractType_Aggregate_Fields = {
 /** aggregate fields of "eventPassNftContractType" */
 export type EventPassNftContractType_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "eventPassNftContractType". All fields are combined with a logical 'AND'. */
@@ -7551,7 +8294,7 @@ export const enum EventPassNftContractType_Enum {
 export type EventPassNftContractType_Enum_Comparison_Exp = {
   _eq?: InputMaybe<EventPassNftContractType_Enum>;
   _in?: InputMaybe<Array<EventPassNftContractType_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   _neq?: InputMaybe<EventPassNftContractType_Enum>;
   _nin?: InputMaybe<Array<EventPassNftContractType_Enum>>;
 };
@@ -7559,28 +8302,28 @@ export type EventPassNftContractType_Enum_Comparison_Exp = {
 /** input type for inserting data into table "eventPassNftContractType" */
 export type EventPassNftContractType_Insert_Input = {
   /** Type name for event pass NFT contract. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type EventPassNftContractType_Max_Fields = {
   __typename?: 'eventPassNftContractType_max_fields';
   /** Type name for event pass NFT contract. */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type EventPassNftContractType_Min_Fields = {
   __typename?: 'eventPassNftContractType_min_fields';
   /** Type name for event pass NFT contract. */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "eventPassNftContractType" */
 export type EventPassNftContractType_Mutation_Response = {
   __typename?: 'eventPassNftContractType_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<EventPassNftContractType>;
 };
@@ -7600,7 +8343,7 @@ export type EventPassNftContractType_Order_By = {
 /** primary key columns input for table: eventPassNftContractType */
 export type EventPassNftContractType_Pk_Columns_Input = {
   /** Type name for event pass NFT contract. */
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "eventPassNftContractType" */
@@ -7612,7 +8355,7 @@ export const enum EventPassNftContractType_Select_Column {
 /** input type for updating data in table "eventPassNftContractType" */
 export type EventPassNftContractType_Set_Input = {
   /** Type name for event pass NFT contract. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "eventPassNftContractType" */
@@ -7626,7 +8369,7 @@ export type EventPassNftContractType_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type EventPassNftContractType_Stream_Cursor_Value_Input = {
   /** Type name for event pass NFT contract. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "eventPassNftContractType" */
@@ -7657,21 +8400,21 @@ export type EventPassNftContract_Aggregate_Bool_Exp = {
 
 export type EventPassNftContract_Aggregate_Bool_Exp_Bool_And = {
   arguments: EventPassNftContract_Select_Column_EventPassNftContract_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<EventPassNftContract_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type EventPassNftContract_Aggregate_Bool_Exp_Bool_Or = {
   arguments: EventPassNftContract_Select_Column_EventPassNftContract_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<EventPassNftContract_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type EventPassNftContract_Aggregate_Bool_Exp_Count = {
   arguments?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<EventPassNftContract_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
@@ -7679,7 +8422,7 @@ export type EventPassNftContract_Aggregate_Bool_Exp_Count = {
 /** aggregate fields of "eventPassNftContract" */
 export type EventPassNftContract_Aggregate_Fields = {
   __typename?: 'eventPassNftContract_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<EventPassNftContract_Max_Fields>;
   min?: Maybe<EventPassNftContract_Min_Fields>;
 };
@@ -7688,7 +8431,7 @@ export type EventPassNftContract_Aggregate_Fields = {
 /** aggregate fields of "eventPassNftContract" */
 export type EventPassNftContract_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "eventPassNftContract" */
@@ -7746,31 +8489,31 @@ export const enum EventPassNftContract_Constraint {
 /** input type for inserting data into table "eventPassNftContract" */
 export type EventPassNftContract_Insert_Input = {
   /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFTs existence and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
-  eventId?: InputMaybe<Scalars['String']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
   eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
   eventPassOrderSums?: InputMaybe<EventPassOrderSums_Obj_Rel_Insert_Input>;
-  id?: InputMaybe<Scalars['uuid']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Flag indicating whether the event pass NFT is airdropped. */
-  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  isAirdrop?: InputMaybe<Scalars['Boolean']['input']>;
   /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
-  isDelayedRevealed?: InputMaybe<Scalars['Boolean']>;
+  isDelayedRevealed?: InputMaybe<Scalars['Boolean']['input']>;
   orders?: InputMaybe<Order_Arr_Rel_Insert_Input>;
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   passAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
   passPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
   /** Type of the pass, referencing the eventPassType table. */
   passType?: InputMaybe<EventPassType_Enum>;
   /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
-  password?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']['input']>;
   /** Type of the event pass NFT contract. */
   type?: InputMaybe<EventPassNftContractType_Enum>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The method of validation for the event pass, referencing the eventPassValidationType table. */
   validationType?: InputMaybe<EventPassValidationType_Enum>;
 };
@@ -7779,18 +8522,18 @@ export type EventPassNftContract_Insert_Input = {
 export type EventPassNftContract_Max_Fields = {
   __typename?: 'eventPassNftContract_max_fields';
   /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']['output']>;
   /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFTs existence and behavior on the blockchain. */
-  contractAddress?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
-  eventId?: Maybe<Scalars['String']>;
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  organizerId?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']['output']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
   /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
-  password?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  password?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by max() on columns of table "eventPassNftContract" */
@@ -7814,18 +8557,18 @@ export type EventPassNftContract_Max_Order_By = {
 export type EventPassNftContract_Min_Fields = {
   __typename?: 'eventPassNftContract_min_fields';
   /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']['output']>;
   /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFTs existence and behavior on the blockchain. */
-  contractAddress?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
-  eventId?: Maybe<Scalars['String']>;
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  organizerId?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']['output']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
   /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
-  password?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  password?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by min() on columns of table "eventPassNftContract" */
@@ -7849,7 +8592,7 @@ export type EventPassNftContract_Min_Order_By = {
 export type EventPassNftContract_Mutation_Response = {
   __typename?: 'eventPassNftContract_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<EventPassNftContract>;
 };
@@ -7893,7 +8636,7 @@ export type EventPassNftContract_Order_By = {
 
 /** primary key columns input for table: eventPassNftContract */
 export type EventPassNftContract_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "eventPassNftContract" */
@@ -7947,26 +8690,26 @@ export const enum EventPassNftContract_Select_Column_EventPassNftContract_Aggreg
 /** input type for updating data in table "eventPassNftContract" */
 export type EventPassNftContract_Set_Input = {
   /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFTs existence and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
-  eventId?: InputMaybe<Scalars['String']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Flag indicating whether the event pass NFT is airdropped. */
-  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  isAirdrop?: InputMaybe<Scalars['Boolean']['input']>;
   /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
-  isDelayedRevealed?: InputMaybe<Scalars['Boolean']>;
-  organizerId?: InputMaybe<Scalars['String']>;
+  isDelayedRevealed?: InputMaybe<Scalars['Boolean']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   /** Type of the pass, referencing the eventPassType table. */
   passType?: InputMaybe<EventPassType_Enum>;
   /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
-  password?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']['input']>;
   /** Type of the event pass NFT contract. */
   type?: InputMaybe<EventPassNftContractType_Enum>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The method of validation for the event pass, referencing the eventPassValidationType table. */
   validationType?: InputMaybe<EventPassValidationType_Enum>;
 };
@@ -7982,26 +8725,26 @@ export type EventPassNftContract_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type EventPassNftContract_Stream_Cursor_Value_Input = {
   /** Specifies the particular blockchain or network on which the NFT collection resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Represents the unique address of the smart contract that governs the NFT collection. It acts as the primary reference to the NFTs existence and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** A unique identifier for the event associated with the NFT collection. This ties each collection directly to a specific event within the platform. */
-  eventId?: InputMaybe<Scalars['String']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Flag indicating whether the event pass NFT is airdropped. */
-  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  isAirdrop?: InputMaybe<Scalars['Boolean']['input']>;
   /** Flag indicating whether the delayed reveal functionality is active. Can be set to true only if type is delayed_reveal. */
-  isDelayedRevealed?: InputMaybe<Scalars['Boolean']>;
-  organizerId?: InputMaybe<Scalars['String']>;
+  isDelayedRevealed?: InputMaybe<Scalars['Boolean']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   /** Type of the pass, referencing the eventPassType table. */
   passType?: InputMaybe<EventPassType_Enum>;
   /** Password for the delayed reveal functionality. Nullable and only applicable for delayed_reveal type. */
-  password?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']['input']>;
   /** Type of the event pass NFT contract. */
   type?: InputMaybe<EventPassNftContractType_Enum>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The method of validation for the event pass, referencing the eventPassValidationType table. */
   validationType?: InputMaybe<EventPassValidationType_Enum>;
 };
@@ -8060,21 +8803,21 @@ export type EventPassNft_Aggregate_Bool_Exp = {
 
 export type EventPassNft_Aggregate_Bool_Exp_Bool_And = {
   arguments: EventPassNft_Select_Column_EventPassNft_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<EventPassNft_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type EventPassNft_Aggregate_Bool_Exp_Bool_Or = {
   arguments: EventPassNft_Select_Column_EventPassNft_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<EventPassNft_Bool_Exp>;
   predicate: Boolean_Comparison_Exp;
 };
 
 export type EventPassNft_Aggregate_Bool_Exp_Count = {
   arguments?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<EventPassNft_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
@@ -8083,7 +8826,7 @@ export type EventPassNft_Aggregate_Bool_Exp_Count = {
 export type EventPassNft_Aggregate_Fields = {
   __typename?: 'eventPassNft_aggregate_fields';
   avg?: Maybe<EventPassNft_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<EventPassNft_Max_Fields>;
   min?: Maybe<EventPassNft_Min_Fields>;
   stddev?: Maybe<EventPassNft_Stddev_Fields>;
@@ -8099,7 +8842,7 @@ export type EventPassNft_Aggregate_Fields = {
 /** aggregate fields of "eventPassNft" */
 export type EventPassNft_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "eventPassNft" */
@@ -8120,7 +8863,7 @@ export type EventPassNft_Aggregate_Order_By = {
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type EventPassNft_Append_Input = {
   /** The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT. */
-  metadata?: InputMaybe<Scalars['jsonb']>;
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
 };
 
 /** input type for inserting array relation for remote table "eventPassNft" */
@@ -8134,7 +8877,7 @@ export type EventPassNft_Arr_Rel_Insert_Input = {
 export type EventPassNft_Avg_Fields = {
   __typename?: 'eventPassNft_avg_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "eventPassNft" */
@@ -8186,94 +8929,94 @@ export const enum EventPassNft_Constraint {
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type EventPassNft_Delete_At_Path_Input = {
   /** The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT. */
-  metadata?: InputMaybe<Array<Scalars['String']>>;
+  metadata?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type EventPassNft_Delete_Elem_Input = {
   /** The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT. */
-  metadata?: InputMaybe<Scalars['Int']>;
+  metadata?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type EventPassNft_Delete_Key_Input = {
   /** The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT. */
-  metadata?: InputMaybe<Scalars['String']>;
+  metadata?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** input type for incrementing numeric columns in table "eventPassNft" */
 export type EventPassNft_Inc_Input = {
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: InputMaybe<Scalars['bigint']>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 /** input type for inserting data into table "eventPassNft" */
 export type EventPassNft_Insert_Input = {
   /** Denotes the specific blockchain or network of the event pass NFT */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The address currently holding the event pass NFT, allowing tracking of ownership */
-  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  currentOwnerAddress?: InputMaybe<Scalars['String']['input']>;
   /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
-  error?: InputMaybe<Scalars['String']>;
+  error?: InputMaybe<Scalars['String']['input']>;
   /** A reference to the event associated with the event pass NFT */
-  eventId?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
   eventParameters?: InputMaybe<EventParameters_Obj_Rel_Insert_Input>;
   /** Directly relates to a specific Event Pass within the system */
-  eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
   eventPassNftContract?: InputMaybe<EventPassNftContract_Obj_Rel_Insert_Input>;
-  id?: InputMaybe<Scalars['uuid']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
-  isRevealed?: InputMaybe<Scalars['Boolean']>;
+  isRevealed?: InputMaybe<Scalars['Boolean']['input']>;
   lastNftTransfer?: InputMaybe<NftTransfer_Obj_Rel_Insert_Input>;
   /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
-  lastNftTransferId?: InputMaybe<Scalars['uuid']>;
+  lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT. */
-  metadata?: InputMaybe<Scalars['jsonb']>;
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
   nftTransfers?: InputMaybe<NftTransfer_Arr_Rel_Insert_Input>;
   /** Ties the event pass NFT to a specific organizer within the platform */
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   packAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   packPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
   passAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
   passPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: InputMaybe<Scalars['bigint']>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
-  tokenUri?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type EventPassNft_Max_Fields = {
   __typename?: 'eventPassNft_max_fields';
   /** Denotes the specific blockchain or network of the event pass NFT */
-  chainId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']['output']>;
   /** Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** The address currently holding the event pass NFT, allowing tracking of ownership */
-  currentOwnerAddress?: Maybe<Scalars['String']>;
+  currentOwnerAddress?: Maybe<Scalars['String']['output']>;
   /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
-  error?: Maybe<Scalars['String']>;
+  error?: Maybe<Scalars['String']['output']>;
   /** A reference to the event associated with the event pass NFT */
-  eventId?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']['output']>;
   /** Directly relates to a specific Event Pass within the system */
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
   /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
-  lastNftTransferId?: Maybe<Scalars['uuid']>;
+  lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
   /** Ties the event pass NFT to a specific organizer within the platform */
-  organizerId?: Maybe<Scalars['String']>;
-  packId?: Maybe<Scalars['String']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: Maybe<Scalars['bigint']>;
+  tokenId?: Maybe<Scalars['bigint']['output']>;
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
-  tokenUri?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by max() on columns of table "eventPassNft" */
@@ -8308,29 +9051,29 @@ export type EventPassNft_Max_Order_By = {
 export type EventPassNft_Min_Fields = {
   __typename?: 'eventPassNft_min_fields';
   /** Denotes the specific blockchain or network of the event pass NFT */
-  chainId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']['output']>;
   /** Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** The address currently holding the event pass NFT, allowing tracking of ownership */
-  currentOwnerAddress?: Maybe<Scalars['String']>;
+  currentOwnerAddress?: Maybe<Scalars['String']['output']>;
   /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
-  error?: Maybe<Scalars['String']>;
+  error?: Maybe<Scalars['String']['output']>;
   /** A reference to the event associated with the event pass NFT */
-  eventId?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']['output']>;
   /** Directly relates to a specific Event Pass within the system */
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
   /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
-  lastNftTransferId?: Maybe<Scalars['uuid']>;
+  lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
   /** Ties the event pass NFT to a specific organizer within the platform */
-  organizerId?: Maybe<Scalars['String']>;
-  packId?: Maybe<Scalars['String']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: Maybe<Scalars['bigint']>;
+  tokenId?: Maybe<Scalars['bigint']['output']>;
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
-  tokenUri?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by min() on columns of table "eventPassNft" */
@@ -8365,7 +9108,7 @@ export type EventPassNft_Min_Order_By = {
 export type EventPassNft_Mutation_Response = {
   __typename?: 'eventPassNft_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<EventPassNft>;
 };
@@ -8407,13 +9150,13 @@ export type EventPassNft_Order_By = {
 
 /** primary key columns input for table: eventPassNft */
 export type EventPassNft_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type EventPassNft_Prepend_Input = {
   /** The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT. */
-  metadata?: InputMaybe<Scalars['jsonb']>;
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
 };
 
 /** select columns of table "eventPassNft" */
@@ -8467,40 +9210,40 @@ export const enum EventPassNft_Select_Column_EventPassNft_Aggregate_Bool_Exp_Boo
 /** input type for updating data in table "eventPassNft" */
 export type EventPassNft_Set_Input = {
   /** Denotes the specific blockchain or network of the event pass NFT */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The address currently holding the event pass NFT, allowing tracking of ownership */
-  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  currentOwnerAddress?: InputMaybe<Scalars['String']['input']>;
   /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
-  error?: InputMaybe<Scalars['String']>;
+  error?: InputMaybe<Scalars['String']['input']>;
   /** A reference to the event associated with the event pass NFT */
-  eventId?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
   /** Directly relates to a specific Event Pass within the system */
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
-  isRevealed?: InputMaybe<Scalars['Boolean']>;
+  isRevealed?: InputMaybe<Scalars['Boolean']['input']>;
   /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
-  lastNftTransferId?: InputMaybe<Scalars['uuid']>;
+  lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT. */
-  metadata?: InputMaybe<Scalars['jsonb']>;
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
   /** Ties the event pass NFT to a specific organizer within the platform */
-  organizerId?: InputMaybe<Scalars['String']>;
-  packId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: InputMaybe<Scalars['bigint']>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
-  tokenUri?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type EventPassNft_Stddev_Fields = {
   __typename?: 'eventPassNft_stddev_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "eventPassNft" */
@@ -8513,7 +9256,7 @@ export type EventPassNft_Stddev_Order_By = {
 export type EventPassNft_Stddev_Pop_Fields = {
   __typename?: 'eventPassNft_stddev_pop_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "eventPassNft" */
@@ -8526,7 +9269,7 @@ export type EventPassNft_Stddev_Pop_Order_By = {
 export type EventPassNft_Stddev_Samp_Fields = {
   __typename?: 'eventPassNft_stddev_samp_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "eventPassNft" */
@@ -8546,40 +9289,40 @@ export type EventPassNft_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type EventPassNft_Stream_Cursor_Value_Input = {
   /** Denotes the specific blockchain or network of the event pass NFT */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Identifies the smart contract associated with the event pass NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The address currently holding the event pass NFT, allowing tracking of ownership */
-  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  currentOwnerAddress?: InputMaybe<Scalars['String']['input']>;
   /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
-  error?: InputMaybe<Scalars['String']>;
+  error?: InputMaybe<Scalars['String']['input']>;
   /** A reference to the event associated with the event pass NFT */
-  eventId?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
   /** Directly relates to a specific Event Pass within the system */
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
-  isRevealed?: InputMaybe<Scalars['Boolean']>;
+  isRevealed?: InputMaybe<Scalars['Boolean']['input']>;
   /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
-  lastNftTransferId?: InputMaybe<Scalars['uuid']>;
+  lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT. */
-  metadata?: InputMaybe<Scalars['jsonb']>;
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
   /** Ties the event pass NFT to a specific organizer within the platform */
-  organizerId?: InputMaybe<Scalars['String']>;
-  packId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: InputMaybe<Scalars['bigint']>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
-  tokenUri?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate sum on columns */
 export type EventPassNft_Sum_Fields = {
   __typename?: 'eventPassNft_sum_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: Maybe<Scalars['bigint']>;
+  tokenId?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** order by sum() on columns of table "eventPassNft" */
@@ -8647,7 +9390,7 @@ export type EventPassNft_Updates = {
 export type EventPassNft_Var_Pop_Fields = {
   __typename?: 'eventPassNft_var_pop_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "eventPassNft" */
@@ -8660,7 +9403,7 @@ export type EventPassNft_Var_Pop_Order_By = {
 export type EventPassNft_Var_Samp_Fields = {
   __typename?: 'eventPassNft_var_samp_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "eventPassNft" */
@@ -8673,7 +9416,7 @@ export type EventPassNft_Var_Samp_Order_By = {
 export type EventPassNft_Variance_Fields = {
   __typename?: 'eventPassNft_variance_fields';
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "eventPassNft" */
@@ -8685,8 +9428,8 @@ export type EventPassNft_Variance_Order_By = {
 /** Hold the sums for the Event Pass Orders */
 export type EventPassOrderSums = {
   __typename?: 'eventPassOrderSums';
-  eventPassId: Scalars['String'];
-  totalReserved: Scalars['Int'];
+  eventPassId: Scalars['String']['output'];
+  totalReserved: Scalars['Int']['output'];
 };
 
 /** aggregated selection of "eventPassOrderSums" */
@@ -8700,7 +9443,7 @@ export type EventPassOrderSums_Aggregate = {
 export type EventPassOrderSums_Aggregate_Fields = {
   __typename?: 'eventPassOrderSums_aggregate_fields';
   avg?: Maybe<EventPassOrderSums_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<EventPassOrderSums_Max_Fields>;
   min?: Maybe<EventPassOrderSums_Min_Fields>;
   stddev?: Maybe<EventPassOrderSums_Stddev_Fields>;
@@ -8716,13 +9459,13 @@ export type EventPassOrderSums_Aggregate_Fields = {
 /** aggregate fields of "eventPassOrderSums" */
 export type EventPassOrderSums_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<EventPassOrderSums_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type EventPassOrderSums_Avg_Fields = {
   __typename?: 'eventPassOrderSums_avg_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "eventPassOrderSums". All fields are combined with a logical 'AND'. */
@@ -8742,34 +9485,34 @@ export const enum EventPassOrderSums_Constraint {
 
 /** input type for incrementing numeric columns in table "eventPassOrderSums" */
 export type EventPassOrderSums_Inc_Input = {
-  totalReserved?: InputMaybe<Scalars['Int']>;
+  totalReserved?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "eventPassOrderSums" */
 export type EventPassOrderSums_Insert_Input = {
-  eventPassId?: InputMaybe<Scalars['String']>;
-  totalReserved?: InputMaybe<Scalars['Int']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  totalReserved?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type EventPassOrderSums_Max_Fields = {
   __typename?: 'eventPassOrderSums_max_fields';
-  eventPassId?: Maybe<Scalars['String']>;
-  totalReserved?: Maybe<Scalars['Int']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  totalReserved?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregate min on columns */
 export type EventPassOrderSums_Min_Fields = {
   __typename?: 'eventPassOrderSums_min_fields';
-  eventPassId?: Maybe<Scalars['String']>;
-  totalReserved?: Maybe<Scalars['Int']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  totalReserved?: Maybe<Scalars['Int']['output']>;
 };
 
 /** response of any mutation on the table "eventPassOrderSums" */
 export type EventPassOrderSums_Mutation_Response = {
   __typename?: 'eventPassOrderSums_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<EventPassOrderSums>;
 };
@@ -8796,7 +9539,7 @@ export type EventPassOrderSums_Order_By = {
 
 /** primary key columns input for table: eventPassOrderSums */
 export type EventPassOrderSums_Pk_Columns_Input = {
-  eventPassId: Scalars['String'];
+  eventPassId: Scalars['String']['input'];
 };
 
 /** select columns of table "eventPassOrderSums" */
@@ -8809,26 +9552,26 @@ export const enum EventPassOrderSums_Select_Column {
 
 /** input type for updating data in table "eventPassOrderSums" */
 export type EventPassOrderSums_Set_Input = {
-  eventPassId?: InputMaybe<Scalars['String']>;
-  totalReserved?: InputMaybe<Scalars['Int']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  totalReserved?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type EventPassOrderSums_Stddev_Fields = {
   __typename?: 'eventPassOrderSums_stddev_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type EventPassOrderSums_Stddev_Pop_Fields = {
   __typename?: 'eventPassOrderSums_stddev_pop_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type EventPassOrderSums_Stddev_Samp_Fields = {
   __typename?: 'eventPassOrderSums_stddev_samp_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "eventPassOrderSums" */
@@ -8841,14 +9584,14 @@ export type EventPassOrderSums_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type EventPassOrderSums_Stream_Cursor_Value_Input = {
-  eventPassId?: InputMaybe<Scalars['String']>;
-  totalReserved?: InputMaybe<Scalars['Int']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  totalReserved?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type EventPassOrderSums_Sum_Fields = {
   __typename?: 'eventPassOrderSums_sum_fields';
-  totalReserved?: Maybe<Scalars['Int']>;
+  totalReserved?: Maybe<Scalars['Int']['output']>;
 };
 
 /** update columns of table "eventPassOrderSums" */
@@ -8871,26 +9614,26 @@ export type EventPassOrderSums_Updates = {
 /** aggregate var_pop on columns */
 export type EventPassOrderSums_Var_Pop_Fields = {
   __typename?: 'eventPassOrderSums_var_pop_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type EventPassOrderSums_Var_Samp_Fields = {
   __typename?: 'eventPassOrderSums_var_samp_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type EventPassOrderSums_Variance_Fields = {
   __typename?: 'eventPassOrderSums_variance_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Defines the types of event passes. */
 export type EventPassType = {
   __typename?: 'eventPassType';
   /** Type name for event pass. */
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "eventPassType" */
@@ -8903,7 +9646,7 @@ export type EventPassType_Aggregate = {
 /** aggregate fields of "eventPassType" */
 export type EventPassType_Aggregate_Fields = {
   __typename?: 'eventPassType_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<EventPassType_Max_Fields>;
   min?: Maybe<EventPassType_Min_Fields>;
 };
@@ -8912,7 +9655,7 @@ export type EventPassType_Aggregate_Fields = {
 /** aggregate fields of "eventPassType" */
 export type EventPassType_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<EventPassType_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "eventPassType". All fields are combined with a logical 'AND'. */
@@ -8938,7 +9681,7 @@ export const enum EventPassType_Enum {
 export type EventPassType_Enum_Comparison_Exp = {
   _eq?: InputMaybe<EventPassType_Enum>;
   _in?: InputMaybe<Array<EventPassType_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   _neq?: InputMaybe<EventPassType_Enum>;
   _nin?: InputMaybe<Array<EventPassType_Enum>>;
 };
@@ -8946,28 +9689,28 @@ export type EventPassType_Enum_Comparison_Exp = {
 /** input type for inserting data into table "eventPassType" */
 export type EventPassType_Insert_Input = {
   /** Type name for event pass. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type EventPassType_Max_Fields = {
   __typename?: 'eventPassType_max_fields';
   /** Type name for event pass. */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type EventPassType_Min_Fields = {
   __typename?: 'eventPassType_min_fields';
   /** Type name for event pass. */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "eventPassType" */
 export type EventPassType_Mutation_Response = {
   __typename?: 'eventPassType_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<EventPassType>;
 };
@@ -8987,7 +9730,7 @@ export type EventPassType_Order_By = {
 /** primary key columns input for table: eventPassType */
 export type EventPassType_Pk_Columns_Input = {
   /** Type name for event pass. */
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "eventPassType" */
@@ -8999,7 +9742,7 @@ export const enum EventPassType_Select_Column {
 /** input type for updating data in table "eventPassType" */
 export type EventPassType_Set_Input = {
   /** Type name for event pass. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "eventPassType" */
@@ -9013,7 +9756,7 @@ export type EventPassType_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type EventPassType_Stream_Cursor_Value_Input = {
   /** Type name for event pass. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "eventPassType" */
@@ -9033,7 +9776,7 @@ export type EventPassType_Updates = {
 export type EventPassValidationType = {
   __typename?: 'eventPassValidationType';
   /** Type name for event pass validation. */
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "eventPassValidationType" */
@@ -9046,7 +9789,7 @@ export type EventPassValidationType_Aggregate = {
 /** aggregate fields of "eventPassValidationType" */
 export type EventPassValidationType_Aggregate_Fields = {
   __typename?: 'eventPassValidationType_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<EventPassValidationType_Max_Fields>;
   min?: Maybe<EventPassValidationType_Min_Fields>;
 };
@@ -9055,7 +9798,7 @@ export type EventPassValidationType_Aggregate_Fields = {
 /** aggregate fields of "eventPassValidationType" */
 export type EventPassValidationType_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<EventPassValidationType_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "eventPassValidationType". All fields are combined with a logical 'AND'. */
@@ -9082,7 +9825,7 @@ export const enum EventPassValidationType_Enum {
 export type EventPassValidationType_Enum_Comparison_Exp = {
   _eq?: InputMaybe<EventPassValidationType_Enum>;
   _in?: InputMaybe<Array<EventPassValidationType_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   _neq?: InputMaybe<EventPassValidationType_Enum>;
   _nin?: InputMaybe<Array<EventPassValidationType_Enum>>;
 };
@@ -9090,28 +9833,28 @@ export type EventPassValidationType_Enum_Comparison_Exp = {
 /** input type for inserting data into table "eventPassValidationType" */
 export type EventPassValidationType_Insert_Input = {
   /** Type name for event pass validation. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type EventPassValidationType_Max_Fields = {
   __typename?: 'eventPassValidationType_max_fields';
   /** Type name for event pass validation. */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type EventPassValidationType_Min_Fields = {
   __typename?: 'eventPassValidationType_min_fields';
   /** Type name for event pass validation. */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "eventPassValidationType" */
 export type EventPassValidationType_Mutation_Response = {
   __typename?: 'eventPassValidationType_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<EventPassValidationType>;
 };
@@ -9131,7 +9874,7 @@ export type EventPassValidationType_Order_By = {
 /** primary key columns input for table: eventPassValidationType */
 export type EventPassValidationType_Pk_Columns_Input = {
   /** Type name for event pass validation. */
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "eventPassValidationType" */
@@ -9143,7 +9886,7 @@ export const enum EventPassValidationType_Select_Column {
 /** input type for updating data in table "eventPassValidationType" */
 export type EventPassValidationType_Set_Input = {
   /** Type name for event pass validation. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "eventPassValidationType" */
@@ -9157,7 +9900,7 @@ export type EventPassValidationType_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type EventPassValidationType_Stream_Cursor_Value_Input = {
   /** Type name for event pass validation. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "eventPassValidationType" */
@@ -9176,7 +9919,7 @@ export type EventPassValidationType_Updates = {
 /** columns and relationships of "eventStatus" */
 export type EventStatus = {
   __typename?: 'eventStatus';
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "eventStatus" */
@@ -9189,7 +9932,7 @@ export type EventStatus_Aggregate = {
 /** aggregate fields of "eventStatus" */
 export type EventStatus_Aggregate_Fields = {
   __typename?: 'eventStatus_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<EventStatus_Max_Fields>;
   min?: Maybe<EventStatus_Min_Fields>;
 };
@@ -9198,7 +9941,7 @@ export type EventStatus_Aggregate_Fields = {
 /** aggregate fields of "eventStatus" */
 export type EventStatus_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<EventStatus_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "eventStatus". All fields are combined with a logical 'AND'. */
@@ -9224,33 +9967,33 @@ export const enum EventStatus_Enum {
 export type EventStatus_Enum_Comparison_Exp = {
   _eq?: InputMaybe<EventStatus_Enum>;
   _in?: InputMaybe<Array<EventStatus_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   _neq?: InputMaybe<EventStatus_Enum>;
   _nin?: InputMaybe<Array<EventStatus_Enum>>;
 };
 
 /** input type for inserting data into table "eventStatus" */
 export type EventStatus_Insert_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type EventStatus_Max_Fields = {
   __typename?: 'eventStatus_max_fields';
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type EventStatus_Min_Fields = {
   __typename?: 'eventStatus_min_fields';
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "eventStatus" */
 export type EventStatus_Mutation_Response = {
   __typename?: 'eventStatus_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<EventStatus>;
 };
@@ -9269,7 +10012,7 @@ export type EventStatus_Order_By = {
 
 /** primary key columns input for table: eventStatus */
 export type EventStatus_Pk_Columns_Input = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "eventStatus" */
@@ -9280,7 +10023,7 @@ export const enum EventStatus_Select_Column {
 
 /** input type for updating data in table "eventStatus" */
 export type EventStatus_Set_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "eventStatus" */
@@ -9293,7 +10036,7 @@ export type EventStatus_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type EventStatus_Stream_Cursor_Value_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "eventStatus" */
@@ -9313,10 +10056,10 @@ export type EventStatus_Updates = {
 export type Follow = {
   __typename?: 'follow';
   /** References the unique identifier of the account that is following an organizer. */
-  accountId: Scalars['uuid'];
-  created_at: Scalars['timestamptz'];
+  accountId: Scalars['uuid']['output'];
+  created_at: Scalars['timestamptz']['output'];
   /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
-  organizerSlug: Scalars['String'];
+  organizerSlug: Scalars['String']['output'];
 };
 
 /** aggregated selection of "follow" */
@@ -9329,7 +10072,7 @@ export type Follow_Aggregate = {
 /** aggregate fields of "follow" */
 export type Follow_Aggregate_Fields = {
   __typename?: 'follow_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Follow_Max_Fields>;
   min?: Maybe<Follow_Min_Fields>;
 };
@@ -9338,7 +10081,7 @@ export type Follow_Aggregate_Fields = {
 /** aggregate fields of "follow" */
 export type Follow_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Follow_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "follow". All fields are combined with a logical 'AND'. */
@@ -9360,37 +10103,37 @@ export const enum Follow_Constraint {
 /** input type for inserting data into table "follow" */
 export type Follow_Insert_Input = {
   /** References the unique identifier of the account that is following an organizer. */
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
-  organizerSlug?: InputMaybe<Scalars['String']>;
+  organizerSlug?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type Follow_Max_Fields = {
   __typename?: 'follow_max_fields';
   /** References the unique identifier of the account that is following an organizer. */
-  accountId?: Maybe<Scalars['uuid']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  accountId?: Maybe<Scalars['uuid']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
-  organizerSlug?: Maybe<Scalars['String']>;
+  organizerSlug?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type Follow_Min_Fields = {
   __typename?: 'follow_min_fields';
   /** References the unique identifier of the account that is following an organizer. */
-  accountId?: Maybe<Scalars['uuid']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  accountId?: Maybe<Scalars['uuid']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
-  organizerSlug?: Maybe<Scalars['String']>;
+  organizerSlug?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "follow" */
 export type Follow_Mutation_Response = {
   __typename?: 'follow_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Follow>;
 };
@@ -9412,9 +10155,9 @@ export type Follow_Order_By = {
 /** primary key columns input for table: follow */
 export type Follow_Pk_Columns_Input = {
   /** References the unique identifier of the account that is following an organizer. */
-  accountId: Scalars['uuid'];
+  accountId: Scalars['uuid']['input'];
   /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
-  organizerSlug: Scalars['String'];
+  organizerSlug: Scalars['String']['input'];
 };
 
 /** select columns of table "follow" */
@@ -9430,10 +10173,10 @@ export const enum Follow_Select_Column {
 /** input type for updating data in table "follow" */
 export type Follow_Set_Input = {
   /** References the unique identifier of the account that is following an organizer. */
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
-  organizerSlug?: InputMaybe<Scalars['String']>;
+  organizerSlug?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "follow" */
@@ -9447,10 +10190,10 @@ export type Follow_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Follow_Stream_Cursor_Value_Input = {
   /** References the unique identifier of the account that is following an organizer. */
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Represents the unique slug of the organizer being followed. Slugs are user-friendly identifiers that uniquely identify organizers. */
-  organizerSlug?: InputMaybe<Scalars['String']>;
+  organizerSlug?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "follow" */
@@ -9478,41 +10221,41 @@ export type Jsonb_Cast_Exp = {
 export type Jsonb_Comparison_Exp = {
   _cast?: InputMaybe<Jsonb_Cast_Exp>;
   /** is the column contained in the given json value */
-  _contained_in?: InputMaybe<Scalars['jsonb']>;
+  _contained_in?: InputMaybe<Scalars['jsonb']['input']>;
   /** does the column contain the given json value at the top level */
-  _contains?: InputMaybe<Scalars['jsonb']>;
-  _eq?: InputMaybe<Scalars['jsonb']>;
-  _gt?: InputMaybe<Scalars['jsonb']>;
-  _gte?: InputMaybe<Scalars['jsonb']>;
+  _contains?: InputMaybe<Scalars['jsonb']['input']>;
+  _eq?: InputMaybe<Scalars['jsonb']['input']>;
+  _gt?: InputMaybe<Scalars['jsonb']['input']>;
+  _gte?: InputMaybe<Scalars['jsonb']['input']>;
   /** does the string exist as a top-level key in the column */
-  _has_key?: InputMaybe<Scalars['String']>;
+  _has_key?: InputMaybe<Scalars['String']['input']>;
   /** do all of these strings exist as top-level keys in the column */
-  _has_keys_all?: InputMaybe<Array<Scalars['String']>>;
+  _has_keys_all?: InputMaybe<Array<Scalars['String']['input']>>;
   /** do any of these strings exist as top-level keys in the column */
-  _has_keys_any?: InputMaybe<Array<Scalars['String']>>;
-  _in?: InputMaybe<Array<Scalars['jsonb']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['jsonb']>;
-  _lte?: InputMaybe<Scalars['jsonb']>;
-  _neq?: InputMaybe<Scalars['jsonb']>;
-  _nin?: InputMaybe<Array<Scalars['jsonb']>>;
+  _has_keys_any?: InputMaybe<Array<Scalars['String']['input']>>;
+  _in?: InputMaybe<Array<Scalars['jsonb']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['jsonb']['input']>;
+  _lte?: InputMaybe<Scalars['jsonb']['input']>;
+  _neq?: InputMaybe<Scalars['jsonb']['input']>;
+  _nin?: InputMaybe<Array<Scalars['jsonb']['input']>>;
 };
 
 /** columns and relationships of "kyc" */
 export type Kyc = {
   __typename?: 'kyc';
   /** Unique identifier for the applicant provided by Sumsub. */
-  applicantId?: Maybe<Scalars['String']>;
+  applicantId?: Maybe<Scalars['String']['output']>;
   /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
-  createDate: Scalars['timestamptz'];
+  createDate: Scalars['timestamptz']['output'];
   /** UUID referencing the user ID in the existing accounts table. */
-  externalUserId: Scalars['uuid'];
+  externalUserId: Scalars['uuid']['output'];
   /** Level of KYC verification, referring to kycLevelName. */
   levelName?: Maybe<KycLevelName_Enum>;
   /** Status of the applicant’s review in Sumsub, referring to kycStatus. */
   reviewStatus?: Maybe<KycStatus_Enum>;
   /** Timestamp automatically updated whenever the kyc row changes. */
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** KYC levels representing the level of verification for the applicant. */
@@ -9522,7 +10265,7 @@ export type KycLevelName = {
    * basic_kyc_level: Basic level of KYC verification.
    * advanced_kyc_level: Advanced level of KYC verification.
    */
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "kycLevelName" */
@@ -9535,7 +10278,7 @@ export type KycLevelName_Aggregate = {
 /** aggregate fields of "kycLevelName" */
 export type KycLevelName_Aggregate_Fields = {
   __typename?: 'kycLevelName_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<KycLevelName_Max_Fields>;
   min?: Maybe<KycLevelName_Min_Fields>;
 };
@@ -9544,7 +10287,7 @@ export type KycLevelName_Aggregate_Fields = {
 /** aggregate fields of "kycLevelName" */
 export type KycLevelName_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<KycLevelName_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "kycLevelName". All fields are combined with a logical 'AND'. */
@@ -9570,7 +10313,7 @@ export const enum KycLevelName_Enum {
 export type KycLevelName_Enum_Comparison_Exp = {
   _eq?: InputMaybe<KycLevelName_Enum>;
   _in?: InputMaybe<Array<KycLevelName_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   _neq?: InputMaybe<KycLevelName_Enum>;
   _nin?: InputMaybe<Array<KycLevelName_Enum>>;
 };
@@ -9581,7 +10324,7 @@ export type KycLevelName_Insert_Input = {
    * basic_kyc_level: Basic level of KYC verification.
    * advanced_kyc_level: Advanced level of KYC verification.
    */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
@@ -9591,7 +10334,7 @@ export type KycLevelName_Max_Fields = {
    * basic_kyc_level: Basic level of KYC verification.
    * advanced_kyc_level: Advanced level of KYC verification.
    */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
@@ -9601,14 +10344,14 @@ export type KycLevelName_Min_Fields = {
    * basic_kyc_level: Basic level of KYC verification.
    * advanced_kyc_level: Advanced level of KYC verification.
    */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "kycLevelName" */
 export type KycLevelName_Mutation_Response = {
   __typename?: 'kycLevelName_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<KycLevelName>;
 };
@@ -9631,7 +10374,7 @@ export type KycLevelName_Pk_Columns_Input = {
    * basic_kyc_level: Basic level of KYC verification.
    * advanced_kyc_level: Advanced level of KYC verification.
    */
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "kycLevelName" */
@@ -9646,7 +10389,7 @@ export type KycLevelName_Set_Input = {
    * basic_kyc_level: Basic level of KYC verification.
    * advanced_kyc_level: Advanced level of KYC verification.
    */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "kycLevelName" */
@@ -9663,7 +10406,7 @@ export type KycLevelName_Stream_Cursor_Value_Input = {
    * basic_kyc_level: Basic level of KYC verification.
    * advanced_kyc_level: Advanced level of KYC verification.
    */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "kycLevelName" */
@@ -9690,7 +10433,7 @@ export type KycStatus = {
    * completed: The check has been completed.
    * onHold: Applicant waits for a final decision from compliance officer or waits for all beneficiaries to pass KYC in case of company verification.
    */
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "kycStatus" */
@@ -9703,7 +10446,7 @@ export type KycStatus_Aggregate = {
 /** aggregate fields of "kycStatus" */
 export type KycStatus_Aggregate_Fields = {
   __typename?: 'kycStatus_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<KycStatus_Max_Fields>;
   min?: Maybe<KycStatus_Min_Fields>;
 };
@@ -9712,7 +10455,7 @@ export type KycStatus_Aggregate_Fields = {
 /** aggregate fields of "kycStatus" */
 export type KycStatus_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<KycStatus_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "kycStatus". All fields are combined with a logical 'AND'. */
@@ -9742,7 +10485,7 @@ export const enum KycStatus_Enum {
 export type KycStatus_Enum_Comparison_Exp = {
   _eq?: InputMaybe<KycStatus_Enum>;
   _in?: InputMaybe<Array<KycStatus_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   _neq?: InputMaybe<KycStatus_Enum>;
   _nin?: InputMaybe<Array<KycStatus_Enum>>;
 };
@@ -9757,7 +10500,7 @@ export type KycStatus_Insert_Input = {
    * completed: The check has been completed.
    * onHold: Applicant waits for a final decision from compliance officer or waits for all beneficiaries to pass KYC in case of company verification.
    */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
@@ -9771,7 +10514,7 @@ export type KycStatus_Max_Fields = {
    * completed: The check has been completed.
    * onHold: Applicant waits for a final decision from compliance officer or waits for all beneficiaries to pass KYC in case of company verification.
    */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
@@ -9785,14 +10528,14 @@ export type KycStatus_Min_Fields = {
    * completed: The check has been completed.
    * onHold: Applicant waits for a final decision from compliance officer or waits for all beneficiaries to pass KYC in case of company verification.
    */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "kycStatus" */
 export type KycStatus_Mutation_Response = {
   __typename?: 'kycStatus_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<KycStatus>;
 };
@@ -9819,7 +10562,7 @@ export type KycStatus_Pk_Columns_Input = {
    * completed: The check has been completed.
    * onHold: Applicant waits for a final decision from compliance officer or waits for all beneficiaries to pass KYC in case of company verification.
    */
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "kycStatus" */
@@ -9838,7 +10581,7 @@ export type KycStatus_Set_Input = {
    * completed: The check has been completed.
    * onHold: Applicant waits for a final decision from compliance officer or waits for all beneficiaries to pass KYC in case of company verification.
    */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "kycStatus" */
@@ -9859,7 +10602,7 @@ export type KycStatus_Stream_Cursor_Value_Input = {
    * completed: The check has been completed.
    * onHold: Applicant waits for a final decision from compliance officer or waits for all beneficiaries to pass KYC in case of company verification.
    */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "kycStatus" */
@@ -9885,7 +10628,7 @@ export type Kyc_Aggregate = {
 /** aggregate fields of "kyc" */
 export type Kyc_Aggregate_Fields = {
   __typename?: 'kyc_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Kyc_Max_Fields>;
   min?: Maybe<Kyc_Min_Fields>;
 };
@@ -9894,7 +10637,7 @@ export type Kyc_Aggregate_Fields = {
 /** aggregate fields of "kyc" */
 export type Kyc_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Kyc_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "kyc". All fields are combined with a logical 'AND'. */
@@ -9921,50 +10664,50 @@ export const enum Kyc_Constraint {
 /** input type for inserting data into table "kyc" */
 export type Kyc_Insert_Input = {
   /** Unique identifier for the applicant provided by Sumsub. */
-  applicantId?: InputMaybe<Scalars['String']>;
+  applicantId?: InputMaybe<Scalars['String']['input']>;
   /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
-  createDate?: InputMaybe<Scalars['timestamptz']>;
+  createDate?: InputMaybe<Scalars['timestamptz']['input']>;
   /** UUID referencing the user ID in the existing accounts table. */
-  externalUserId?: InputMaybe<Scalars['uuid']>;
+  externalUserId?: InputMaybe<Scalars['uuid']['input']>;
   /** Level of KYC verification, referring to kycLevelName. */
   levelName?: InputMaybe<KycLevelName_Enum>;
   /** Status of the applicant’s review in Sumsub, referring to kycStatus. */
   reviewStatus?: InputMaybe<KycStatus_Enum>;
   /** Timestamp automatically updated whenever the kyc row changes. */
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type Kyc_Max_Fields = {
   __typename?: 'kyc_max_fields';
   /** Unique identifier for the applicant provided by Sumsub. */
-  applicantId?: Maybe<Scalars['String']>;
+  applicantId?: Maybe<Scalars['String']['output']>;
   /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
-  createDate?: Maybe<Scalars['timestamptz']>;
+  createDate?: Maybe<Scalars['timestamptz']['output']>;
   /** UUID referencing the user ID in the existing accounts table. */
-  externalUserId?: Maybe<Scalars['uuid']>;
+  externalUserId?: Maybe<Scalars['uuid']['output']>;
   /** Timestamp automatically updated whenever the kyc row changes. */
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
 export type Kyc_Min_Fields = {
   __typename?: 'kyc_min_fields';
   /** Unique identifier for the applicant provided by Sumsub. */
-  applicantId?: Maybe<Scalars['String']>;
+  applicantId?: Maybe<Scalars['String']['output']>;
   /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
-  createDate?: Maybe<Scalars['timestamptz']>;
+  createDate?: Maybe<Scalars['timestamptz']['output']>;
   /** UUID referencing the user ID in the existing accounts table. */
-  externalUserId?: Maybe<Scalars['uuid']>;
+  externalUserId?: Maybe<Scalars['uuid']['output']>;
   /** Timestamp automatically updated whenever the kyc row changes. */
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "kyc" */
 export type Kyc_Mutation_Response = {
   __typename?: 'kyc_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Kyc>;
 };
@@ -9996,7 +10739,7 @@ export type Kyc_Order_By = {
 /** primary key columns input for table: kyc */
 export type Kyc_Pk_Columns_Input = {
   /** UUID referencing the user ID in the existing accounts table. */
-  externalUserId: Scalars['uuid'];
+  externalUserId: Scalars['uuid']['input'];
 };
 
 /** select columns of table "kyc" */
@@ -10018,17 +10761,17 @@ export const enum Kyc_Select_Column {
 /** input type for updating data in table "kyc" */
 export type Kyc_Set_Input = {
   /** Unique identifier for the applicant provided by Sumsub. */
-  applicantId?: InputMaybe<Scalars['String']>;
+  applicantId?: InputMaybe<Scalars['String']['input']>;
   /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
-  createDate?: InputMaybe<Scalars['timestamptz']>;
+  createDate?: InputMaybe<Scalars['timestamptz']['input']>;
   /** UUID referencing the user ID in the existing accounts table. */
-  externalUserId?: InputMaybe<Scalars['uuid']>;
+  externalUserId?: InputMaybe<Scalars['uuid']['input']>;
   /** Level of KYC verification, referring to kycLevelName. */
   levelName?: InputMaybe<KycLevelName_Enum>;
   /** Status of the applicant’s review in Sumsub, referring to kycStatus. */
   reviewStatus?: InputMaybe<KycStatus_Enum>;
   /** Timestamp automatically updated whenever the kyc row changes. */
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Streaming cursor of the table "kyc" */
@@ -10042,17 +10785,17 @@ export type Kyc_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Kyc_Stream_Cursor_Value_Input = {
   /** Unique identifier for the applicant provided by Sumsub. */
-  applicantId?: InputMaybe<Scalars['String']>;
+  applicantId?: InputMaybe<Scalars['String']['input']>;
   /** The date and time when the applicant was created in Sumsub. Stored in UTC timestamp. */
-  createDate?: InputMaybe<Scalars['timestamptz']>;
+  createDate?: InputMaybe<Scalars['timestamptz']['input']>;
   /** UUID referencing the user ID in the existing accounts table. */
-  externalUserId?: InputMaybe<Scalars['uuid']>;
+  externalUserId?: InputMaybe<Scalars['uuid']['input']>;
   /** Level of KYC verification, referring to kycLevelName. */
   levelName?: InputMaybe<KycLevelName_Enum>;
   /** Status of the applicant’s review in Sumsub, referring to kycStatus. */
   reviewStatus?: InputMaybe<KycStatus_Enum>;
   /** Timestamp automatically updated whenever the kyc row changes. */
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "kyc" */
@@ -10082,23 +10825,23 @@ export type Kyc_Updates = {
 export type LotteryParameters = {
   __typename?: 'lotteryParameters';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
-  activityWebhookId?: Maybe<Scalars['String']>;
-  created_at: Scalars['timestamptz'];
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['timestamptz']['output'];
   /**
    * Optional column
    * for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
    */
-  dateSaleEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleEnd?: Maybe<Scalars['timestamp']['output']>;
   /** Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale. */
-  dateSaleStart?: Maybe<Scalars['timestamp']>;
-  id: Scalars['uuid'];
-  lotteryId: Scalars['String'];
-  organizerId: Scalars['String'];
-  signingKey?: Maybe<Scalars['String']>;
+  dateSaleStart?: Maybe<Scalars['timestamp']['output']>;
+  id: Scalars['uuid']['output'];
+  lotteryId: Scalars['String']['output'];
+  organizerId: Scalars['String']['output'];
+  signingKey?: Maybe<Scalars['String']['output']>;
   status?: Maybe<LotteryStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
-  timezone: Scalars['String'];
-  updated_at: Scalars['timestamptz'];
+  timezone: Scalars['String']['output'];
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 /** aggregated selection of "lotteryParameters" */
@@ -10111,7 +10854,7 @@ export type LotteryParameters_Aggregate = {
 /** aggregate fields of "lotteryParameters" */
 export type LotteryParameters_Aggregate_Fields = {
   __typename?: 'lotteryParameters_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<LotteryParameters_Max_Fields>;
   min?: Maybe<LotteryParameters_Min_Fields>;
 };
@@ -10120,7 +10863,7 @@ export type LotteryParameters_Aggregate_Fields = {
 /** aggregate fields of "lotteryParameters" */
 export type LotteryParameters_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<LotteryParameters_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "lotteryParameters". All fields are combined with a logical 'AND'. */
@@ -10154,74 +10897,74 @@ export const enum LotteryParameters_Constraint {
 /** input type for inserting data into table "lotteryParameters" */
 export type LotteryParameters_Insert_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
-  activityWebhookId?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /**
    * Optional column
    * for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
    */
-  dateSaleEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleEnd?: InputMaybe<Scalars['timestamp']['input']>;
   /** Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale. */
-  dateSaleStart?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  lotteryId?: InputMaybe<Scalars['String']>;
-  organizerId?: InputMaybe<Scalars['String']>;
-  signingKey?: InputMaybe<Scalars['String']>;
+  dateSaleStart?: InputMaybe<Scalars['timestamp']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  lotteryId?: InputMaybe<Scalars['String']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<LotteryStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
-  timezone?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  timezone?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type LotteryParameters_Max_Fields = {
   __typename?: 'lotteryParameters_max_fields';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
-  activityWebhookId?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /**
    * Optional column
    * for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
    */
-  dateSaleEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleEnd?: Maybe<Scalars['timestamp']['output']>;
   /** Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale. */
-  dateSaleStart?: Maybe<Scalars['timestamp']>;
-  id?: Maybe<Scalars['uuid']>;
-  lotteryId?: Maybe<Scalars['String']>;
-  organizerId?: Maybe<Scalars['String']>;
-  signingKey?: Maybe<Scalars['String']>;
+  dateSaleStart?: Maybe<Scalars['timestamp']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  lotteryId?: Maybe<Scalars['String']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
+  signingKey?: Maybe<Scalars['String']['output']>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
-  timezone?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  timezone?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
 export type LotteryParameters_Min_Fields = {
   __typename?: 'lotteryParameters_min_fields';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
-  activityWebhookId?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /**
    * Optional column
    * for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
    */
-  dateSaleEnd?: Maybe<Scalars['timestamp']>;
+  dateSaleEnd?: Maybe<Scalars['timestamp']['output']>;
   /** Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale. */
-  dateSaleStart?: Maybe<Scalars['timestamp']>;
-  id?: Maybe<Scalars['uuid']>;
-  lotteryId?: Maybe<Scalars['String']>;
-  organizerId?: Maybe<Scalars['String']>;
-  signingKey?: Maybe<Scalars['String']>;
+  dateSaleStart?: Maybe<Scalars['timestamp']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  lotteryId?: Maybe<Scalars['String']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
+  signingKey?: Maybe<Scalars['String']['output']>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
-  timezone?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  timezone?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "lotteryParameters" */
 export type LotteryParameters_Mutation_Response = {
   __typename?: 'lotteryParameters_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<LotteryParameters>;
 };
@@ -10250,7 +10993,7 @@ export type LotteryParameters_Order_By = {
 
 /** primary key columns input for table: lotteryParameters */
 export type LotteryParameters_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "lotteryParameters" */
@@ -10282,23 +11025,23 @@ export const enum LotteryParameters_Select_Column {
 /** input type for updating data in table "lotteryParameters" */
 export type LotteryParameters_Set_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
-  activityWebhookId?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /**
    * Optional column
    * for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
    */
-  dateSaleEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleEnd?: InputMaybe<Scalars['timestamp']['input']>;
   /** Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale. */
-  dateSaleStart?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  lotteryId?: InputMaybe<Scalars['String']>;
-  organizerId?: InputMaybe<Scalars['String']>;
-  signingKey?: InputMaybe<Scalars['String']>;
+  dateSaleStart?: InputMaybe<Scalars['timestamp']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  lotteryId?: InputMaybe<Scalars['String']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<LotteryStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
-  timezone?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  timezone?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Streaming cursor of the table "lotteryParameters" */
@@ -10312,23 +11055,23 @@ export type LotteryParameters_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type LotteryParameters_Stream_Cursor_Value_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
-  activityWebhookId?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /**
    * Optional column
    * for the end date and time for the lottery ticket sales, used when there is a defined sales period for the lottery.
    */
-  dateSaleEnd?: InputMaybe<Scalars['timestamp']>;
+  dateSaleEnd?: InputMaybe<Scalars['timestamp']['input']>;
   /** Optional column for the start date and time for the lottery ticket sales, applicable if the lottery involves a sale. */
-  dateSaleStart?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  lotteryId?: InputMaybe<Scalars['String']>;
-  organizerId?: InputMaybe<Scalars['String']>;
-  signingKey?: InputMaybe<Scalars['String']>;
+  dateSaleStart?: InputMaybe<Scalars['timestamp']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  lotteryId?: InputMaybe<Scalars['String']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<LotteryStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
-  timezone?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  timezone?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "lotteryParameters" */
@@ -10367,7 +11110,7 @@ export type LotteryParameters_Updates = {
 /** columns and relationships of "lotteryStatus" */
 export type LotteryStatus = {
   __typename?: 'lotteryStatus';
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "lotteryStatus" */
@@ -10380,7 +11123,7 @@ export type LotteryStatus_Aggregate = {
 /** aggregate fields of "lotteryStatus" */
 export type LotteryStatus_Aggregate_Fields = {
   __typename?: 'lotteryStatus_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<LotteryStatus_Max_Fields>;
   min?: Maybe<LotteryStatus_Min_Fields>;
 };
@@ -10389,7 +11132,7 @@ export type LotteryStatus_Aggregate_Fields = {
 /** aggregate fields of "lotteryStatus" */
 export type LotteryStatus_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<LotteryStatus_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "lotteryStatus". All fields are combined with a logical 'AND'. */
@@ -10415,33 +11158,33 @@ export const enum LotteryStatus_Enum {
 export type LotteryStatus_Enum_Comparison_Exp = {
   _eq?: InputMaybe<LotteryStatus_Enum>;
   _in?: InputMaybe<Array<LotteryStatus_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   _neq?: InputMaybe<LotteryStatus_Enum>;
   _nin?: InputMaybe<Array<LotteryStatus_Enum>>;
 };
 
 /** input type for inserting data into table "lotteryStatus" */
 export type LotteryStatus_Insert_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type LotteryStatus_Max_Fields = {
   __typename?: 'lotteryStatus_max_fields';
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type LotteryStatus_Min_Fields = {
   __typename?: 'lotteryStatus_min_fields';
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "lotteryStatus" */
 export type LotteryStatus_Mutation_Response = {
   __typename?: 'lotteryStatus_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<LotteryStatus>;
 };
@@ -10460,7 +11203,7 @@ export type LotteryStatus_Order_By = {
 
 /** primary key columns input for table: lotteryStatus */
 export type LotteryStatus_Pk_Columns_Input = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "lotteryStatus" */
@@ -10471,7 +11214,7 @@ export const enum LotteryStatus_Select_Column {
 
 /** input type for updating data in table "lotteryStatus" */
 export type LotteryStatus_Set_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "lotteryStatus" */
@@ -10484,7 +11227,7 @@ export type LotteryStatus_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type LotteryStatus_Stream_Cursor_Value_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "lotteryStatus" */
@@ -10505,6 +11248,8 @@ export type Mutation_Root = {
   __typename?: 'mutation_root';
   /** Create one asset */
   createAsset?: Maybe<Asset>;
+  /** Create one contentSpace */
+  createContentSpace?: Maybe<ContentSpace>;
   /** Create one event */
   createEvent?: Maybe<Event>;
   /** Create one eventPass */
@@ -10519,6 +11264,8 @@ export type Mutation_Root = {
   createScheduledRelease?: Maybe<ScheduledRelease>;
   /** Delete one asset from _all_ existing stages. Returns deleted document. */
   deleteAsset?: Maybe<Asset>;
+  /** Delete one contentSpace from _all_ existing stages. Returns deleted document. */
+  deleteContentSpace?: Maybe<ContentSpace>;
   /** Delete one event from _all_ existing stages. Returns deleted document. */
   deleteEvent?: Maybe<Event>;
   /** Delete one eventPass from _all_ existing stages. Returns deleted document. */
@@ -10529,6 +11276,10 @@ export type Mutation_Root = {
   deleteManyAssets: BatchPayload;
   /** Delete many Asset documents, return deleted documents */
   deleteManyAssetsConnection: AssetConnection;
+  /** Delete many ContentSpace documents */
+  deleteManyContentSpaces: BatchPayload;
+  /** Delete many ContentSpace documents, return deleted documents */
+  deleteManyContentSpacesConnection: ContentSpaceConnection;
   /** Delete many EventPass documents */
   deleteManyEventPasses: BatchPayload;
   /** Delete many EventPass documents, return deleted documents */
@@ -10821,6 +11572,8 @@ export type Mutation_Root = {
   insert_timezone_one?: Maybe<Timezone>;
   /** Publish one asset */
   publishAsset?: Maybe<Asset>;
+  /** Publish one contentSpace */
+  publishContentSpace?: Maybe<ContentSpace>;
   /** Publish one event */
   publishEvent?: Maybe<Event>;
   /** Publish one eventPass */
@@ -10831,6 +11584,10 @@ export type Mutation_Root = {
   publishManyAssets: BatchPayload;
   /** Publish many Asset documents */
   publishManyAssetsConnection: AssetConnection;
+  /** Publish many ContentSpace documents */
+  publishManyContentSpaces: BatchPayload;
+  /** Publish many ContentSpace documents */
+  publishManyContentSpacesConnection: ContentSpaceConnection;
   /** Publish many EventPass documents */
   publishManyEventPasses: BatchPayload;
   /** Publish many EventPass documents */
@@ -10857,6 +11614,8 @@ export type Mutation_Root = {
   publishPack?: Maybe<Pack>;
   /** Schedule to publish one asset */
   schedulePublishAsset?: Maybe<Asset>;
+  /** Schedule to publish one contentSpace */
+  schedulePublishContentSpace?: Maybe<ContentSpace>;
   /** Schedule to publish one event */
   schedulePublishEvent?: Maybe<Event>;
   /** Schedule to publish one eventPass */
@@ -10869,6 +11628,8 @@ export type Mutation_Root = {
   schedulePublishPack?: Maybe<Pack>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishAsset?: Maybe<Asset>;
+  /** Unpublish one contentSpace from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishContentSpace?: Maybe<ContentSpace>;
   /** Unpublish one event from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishEvent?: Maybe<Event>;
   /** Unpublish one eventPass from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -10881,6 +11642,8 @@ export type Mutation_Root = {
   scheduleUnpublishPack?: Maybe<Pack>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishAsset?: Maybe<Asset>;
+  /** Unpublish one contentSpace from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishContentSpace?: Maybe<ContentSpace>;
   /** Unpublish one event from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishEvent?: Maybe<Event>;
   /** Unpublish one eventPass from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -10891,6 +11654,10 @@ export type Mutation_Root = {
   unpublishManyAssets: BatchPayload;
   /** Find many Asset documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyAssetsConnection: AssetConnection;
+  /** Unpublish many ContentSpace documents */
+  unpublishManyContentSpaces: BatchPayload;
+  /** Find many ContentSpace documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyContentSpacesConnection: ContentSpaceConnection;
   /** Unpublish many EventPass documents */
   unpublishManyEventPasses: BatchPayload;
   /** Find many EventPass documents that match criteria in specified stage and unpublish from target stages */
@@ -10917,6 +11684,8 @@ export type Mutation_Root = {
   unpublishPack?: Maybe<Pack>;
   /** Update one asset */
   updateAsset?: Maybe<Asset>;
+  /** Update one contentSpace */
+  updateContentSpace?: Maybe<ContentSpace>;
   /** Update one event */
   updateEvent?: Maybe<Event>;
   /** Update one eventPass */
@@ -10927,6 +11696,10 @@ export type Mutation_Root = {
   updateManyAssets: BatchPayload;
   /** Update many Asset documents */
   updateManyAssetsConnection: AssetConnection;
+  /** Update many contentSpaces */
+  updateManyContentSpaces: BatchPayload;
+  /** Update many ContentSpace documents */
+  updateManyContentSpacesConnection: ContentSpaceConnection;
   /** Update many eventPasses */
   updateManyEventPasses: BatchPayload;
   /** Update many EventPass documents */
@@ -11151,6 +11924,8 @@ export type Mutation_Root = {
   update_timezone_many?: Maybe<Array<Maybe<Timezone_Mutation_Response>>>;
   /** Upsert one asset */
   upsertAsset?: Maybe<Asset>;
+  /** Upsert one contentSpace */
+  upsertContentSpace?: Maybe<ContentSpace>;
   /** Upsert one event */
   upsertEvent?: Maybe<Event>;
   /** Upsert one eventPass */
@@ -11167,6 +11942,12 @@ export type Mutation_Root = {
 /** mutation root */
 export type Mutation_RootCreateAssetArgs = {
   data: AssetCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateContentSpaceArgs = {
+  data: ContentSpaceCreateInput;
 };
 
 
@@ -11213,6 +11994,12 @@ export type Mutation_RootDeleteAssetArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteContentSpaceArgs = {
+  where: ContentSpaceWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteEventArgs = {
   where: EventWhereUniqueInput;
 };
@@ -11238,12 +12025,29 @@ export type Mutation_RootDeleteManyAssetsArgs = {
 
 /** mutation root */
 export type Mutation_RootDeleteManyAssetsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<AssetManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyContentSpacesArgs = {
+  where?: InputMaybe<ContentSpaceManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyContentSpacesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ContentSpaceManyWhereInput>;
 };
 
 
@@ -11255,11 +12059,11 @@ export type Mutation_RootDeleteManyEventPassesArgs = {
 
 /** mutation root */
 export type Mutation_RootDeleteManyEventPassesConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventPassManyWhereInput>;
 };
 
@@ -11272,11 +12076,11 @@ export type Mutation_RootDeleteManyEventPassesDelayedRevealedArgs = {
 
 /** mutation root */
 export type Mutation_RootDeleteManyEventPassesDelayedRevealedConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
 };
 
@@ -11289,11 +12093,11 @@ export type Mutation_RootDeleteManyEventsArgs = {
 
 /** mutation root */
 export type Mutation_RootDeleteManyEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventManyWhereInput>;
 };
 
@@ -11306,11 +12110,11 @@ export type Mutation_RootDeleteManyOrganizersArgs = {
 
 /** mutation root */
 export type Mutation_RootDeleteManyOrganizersConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<OrganizerManyWhereInput>;
 };
 
@@ -11323,11 +12127,11 @@ export type Mutation_RootDeleteManyPacksArgs = {
 
 /** mutation root */
 export type Mutation_RootDeleteManyPacksConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<PackManyWhereInput>;
 };
 
@@ -11364,7 +12168,7 @@ export type Mutation_RootDelete_AccountArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Account_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -11376,7 +12180,7 @@ export type Mutation_RootDelete_CurrencyArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Currency_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -11388,7 +12192,7 @@ export type Mutation_RootDelete_EventParametersArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_EventParameters_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -11412,19 +12216,19 @@ export type Mutation_RootDelete_EventPassNftContractTypeArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_EventPassNftContractType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 /** mutation root */
 export type Mutation_RootDelete_EventPassNftContract_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 /** mutation root */
 export type Mutation_RootDelete_EventPassNft_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -11436,7 +12240,7 @@ export type Mutation_RootDelete_EventPassOrderSumsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_EventPassOrderSums_By_PkArgs = {
-  eventPassId: Scalars['String'];
+  eventPassId: Scalars['String']['input'];
 };
 
 
@@ -11448,7 +12252,7 @@ export type Mutation_RootDelete_EventPassTypeArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_EventPassType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -11460,7 +12264,7 @@ export type Mutation_RootDelete_EventPassValidationTypeArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_EventPassValidationType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -11472,7 +12276,7 @@ export type Mutation_RootDelete_EventStatusArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_EventStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -11484,8 +12288,8 @@ export type Mutation_RootDelete_FollowArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Follow_By_PkArgs = {
-  accountId: Scalars['uuid'];
-  organizerSlug: Scalars['String'];
+  accountId: Scalars['uuid']['input'];
+  organizerSlug: Scalars['String']['input'];
 };
 
 
@@ -11503,7 +12307,7 @@ export type Mutation_RootDelete_KycLevelNameArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_KycLevelName_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -11515,13 +12319,13 @@ export type Mutation_RootDelete_KycStatusArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_KycStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 /** mutation root */
 export type Mutation_RootDelete_Kyc_By_PkArgs = {
-  externalUserId: Scalars['uuid'];
+  externalUserId: Scalars['uuid']['input'];
 };
 
 
@@ -11533,7 +12337,7 @@ export type Mutation_RootDelete_LotteryParametersArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_LotteryParameters_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -11545,7 +12349,7 @@ export type Mutation_RootDelete_LotteryStatusArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_LotteryStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -11557,7 +12361,7 @@ export type Mutation_RootDelete_NftTransferArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_NftTransfer_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -11575,13 +12379,13 @@ export type Mutation_RootDelete_OrderStatusArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_OrderStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 /** mutation root */
 export type Mutation_RootDelete_Order_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -11593,8 +12397,8 @@ export type Mutation_RootDelete_PackEventPassNftArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_PackEventPassNft_By_PkArgs = {
-  eventPassNftId: Scalars['uuid'];
-  packNftSupplyId: Scalars['uuid'];
+  eventPassNftId: Scalars['uuid']['input'];
+  packNftSupplyId: Scalars['uuid']['input'];
 };
 
 
@@ -11612,14 +12416,14 @@ export type Mutation_RootDelete_PackNftContractEventPassArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_PackNftContractEventPass_By_PkArgs = {
-  eventPassId: Scalars['String'];
-  packNftContractId: Scalars['uuid'];
+  eventPassId: Scalars['String']['input'];
+  packNftContractId: Scalars['uuid']['input'];
 };
 
 
 /** mutation root */
 export type Mutation_RootDelete_PackNftContract_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -11631,7 +12435,7 @@ export type Mutation_RootDelete_PackNftSupplyArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_PackNftSupply_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -11643,7 +12447,7 @@ export type Mutation_RootDelete_PackOrderSumsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_PackOrderSums_By_PkArgs = {
-  packId: Scalars['String'];
+  packId: Scalars['String']['input'];
 };
 
 
@@ -11655,7 +12459,7 @@ export type Mutation_RootDelete_PassAmountArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_PassAmount_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -11667,7 +12471,7 @@ export type Mutation_RootDelete_PassPricingArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_PassPricing_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -11679,7 +12483,7 @@ export type Mutation_RootDelete_PendingOrderArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_PendingOrder_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -11697,7 +12501,7 @@ export type Mutation_RootDelete_RolesArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Roles_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -11715,13 +12519,13 @@ export type Mutation_RootDelete_StripeCheckoutSessionTypeArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_StripeCheckoutSessionType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 /** mutation root */
 export type Mutation_RootDelete_StripeCheckoutSession_By_PkArgs = {
-  stripeSessionId: Scalars['String'];
+  stripeSessionId: Scalars['String']['input'];
 };
 
 
@@ -11733,7 +12537,7 @@ export type Mutation_RootDelete_StripeCustomerArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_StripeCustomer_By_PkArgs = {
-  stripeCustomerId: Scalars['String'];
+  stripeCustomerId: Scalars['String']['input'];
 };
 
 
@@ -11745,7 +12549,7 @@ export type Mutation_RootDelete_TimezoneArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Timezone_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -12214,288 +13018,336 @@ export type Mutation_RootInsert_Timezone_OneArgs = {
 /** mutation root */
 export type Mutation_RootPublishAssetArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where: AssetWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishContentSpaceArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  to?: Array<Stage>;
+  where: ContentSpaceWhereUniqueInput;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishEventArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where: EventWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishEventPassArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where: EventPassWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishEventPassDelayedRevealedArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where: EventPassDelayedRevealedWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyAssetsArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<AssetManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyAssetsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: InputMaybe<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<AssetManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyContentSpacesArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<ContentSpaceManyWhereInput>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyContentSpacesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<ContentSpaceManyWhereInput>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyEventPassesArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<EventPassManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyEventPassesConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: InputMaybe<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<EventPassManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyEventPassesDelayedRevealedArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyEventPassesDelayedRevealedConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: InputMaybe<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyEventsArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<EventManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: InputMaybe<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<EventManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyOrganizersArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<OrganizerManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyOrganizersConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: InputMaybe<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<OrganizerManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyPacksArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<PackManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishManyPacksConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: InputMaybe<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   to?: Array<Stage>;
   where?: InputMaybe<PackManyWhereInput>;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishOrganizerArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where: OrganizerWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootPublishPackArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where: PackWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootSchedulePublishAssetArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
   to?: Array<Stage>;
   where: AssetWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootSchedulePublishContentSpaceArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  to?: Array<Stage>;
+  where: ContentSpaceWhereUniqueInput;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootSchedulePublishEventArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
   to?: Array<Stage>;
   where: EventWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootSchedulePublishEventPassArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
   to?: Array<Stage>;
   where: EventPassWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootSchedulePublishEventPassDelayedRevealedArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
   to?: Array<Stage>;
   where: EventPassDelayedRevealedWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootSchedulePublishOrganizerArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
   to?: Array<Stage>;
   where: OrganizerWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
 /** mutation root */
 export type Mutation_RootSchedulePublishPackArgs = {
   locales?: InputMaybe<Array<Locale>>;
-  publishBase?: InputMaybe<Scalars['Boolean']>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
   to?: Array<Stage>;
   where: PackWhereUniqueInput;
-  withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -12503,10 +13355,21 @@ export type Mutation_RootSchedulePublishPackArgs = {
 export type Mutation_RootScheduleUnpublishAssetArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: AssetWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootScheduleUnpublishContentSpaceArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  where: ContentSpaceWhereUniqueInput;
 };
 
 
@@ -12514,9 +13377,9 @@ export type Mutation_RootScheduleUnpublishAssetArgs = {
 export type Mutation_RootScheduleUnpublishEventArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: EventWhereUniqueInput;
 };
 
@@ -12525,9 +13388,9 @@ export type Mutation_RootScheduleUnpublishEventArgs = {
 export type Mutation_RootScheduleUnpublishEventPassArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: EventPassWhereUniqueInput;
 };
 
@@ -12536,9 +13399,9 @@ export type Mutation_RootScheduleUnpublishEventPassArgs = {
 export type Mutation_RootScheduleUnpublishEventPassDelayedRevealedArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: EventPassDelayedRevealedWhereUniqueInput;
 };
 
@@ -12547,9 +13410,9 @@ export type Mutation_RootScheduleUnpublishEventPassDelayedRevealedArgs = {
 export type Mutation_RootScheduleUnpublishOrganizerArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: OrganizerWhereUniqueInput;
 };
 
@@ -12558,9 +13421,9 @@ export type Mutation_RootScheduleUnpublishOrganizerArgs = {
 export type Mutation_RootScheduleUnpublishPackArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: PackWhereUniqueInput;
 };
 
@@ -12569,8 +13432,17 @@ export type Mutation_RootScheduleUnpublishPackArgs = {
 export type Mutation_RootUnpublishAssetArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: AssetWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishContentSpaceArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  where: ContentSpaceWhereUniqueInput;
 };
 
 
@@ -12578,7 +13450,7 @@ export type Mutation_RootUnpublishAssetArgs = {
 export type Mutation_RootUnpublishEventArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: EventWhereUniqueInput;
 };
 
@@ -12587,7 +13459,7 @@ export type Mutation_RootUnpublishEventArgs = {
 export type Mutation_RootUnpublishEventPassArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: EventPassWhereUniqueInput;
 };
 
@@ -12596,7 +13468,7 @@ export type Mutation_RootUnpublishEventPassArgs = {
 export type Mutation_RootUnpublishEventPassDelayedRevealedArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: EventPassDelayedRevealedWhereUniqueInput;
 };
 
@@ -12605,23 +13477,47 @@ export type Mutation_RootUnpublishEventPassDelayedRevealedArgs = {
 export type Mutation_RootUnpublishManyAssetsArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<AssetManyWhereInput>;
 };
 
 
 /** mutation root */
 export type Mutation_RootUnpublishManyAssetsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: Array<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: InputMaybe<Stage>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<AssetManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishManyContentSpacesArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  where?: InputMaybe<ContentSpaceManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishManyContentSpacesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: InputMaybe<Stage>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  where?: InputMaybe<ContentSpaceManyWhereInput>;
 };
 
 
@@ -12629,22 +13525,22 @@ export type Mutation_RootUnpublishManyAssetsConnectionArgs = {
 export type Mutation_RootUnpublishManyEventPassesArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<EventPassManyWhereInput>;
 };
 
 
 /** mutation root */
 export type Mutation_RootUnpublishManyEventPassesConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: Array<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: InputMaybe<Stage>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<EventPassManyWhereInput>;
 };
 
@@ -12653,22 +13549,22 @@ export type Mutation_RootUnpublishManyEventPassesConnectionArgs = {
 export type Mutation_RootUnpublishManyEventPassesDelayedRevealedArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
 };
 
 
 /** mutation root */
 export type Mutation_RootUnpublishManyEventPassesDelayedRevealedConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: Array<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: InputMaybe<Stage>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
 };
 
@@ -12677,22 +13573,22 @@ export type Mutation_RootUnpublishManyEventPassesDelayedRevealedConnectionArgs =
 export type Mutation_RootUnpublishManyEventsArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<EventManyWhereInput>;
 };
 
 
 /** mutation root */
 export type Mutation_RootUnpublishManyEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: Array<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: InputMaybe<Stage>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<EventManyWhereInput>;
 };
 
@@ -12701,22 +13597,22 @@ export type Mutation_RootUnpublishManyEventsConnectionArgs = {
 export type Mutation_RootUnpublishManyOrganizersArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<OrganizerManyWhereInput>;
 };
 
 
 /** mutation root */
 export type Mutation_RootUnpublishManyOrganizersConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: Array<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: InputMaybe<Stage>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<OrganizerManyWhereInput>;
 };
 
@@ -12725,22 +13621,22 @@ export type Mutation_RootUnpublishManyOrganizersConnectionArgs = {
 export type Mutation_RootUnpublishManyPacksArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<PackManyWhereInput>;
 };
 
 
 /** mutation root */
 export type Mutation_RootUnpublishManyPacksConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   from?: Array<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: InputMaybe<Stage>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where?: InputMaybe<PackManyWhereInput>;
 };
 
@@ -12749,7 +13645,7 @@ export type Mutation_RootUnpublishManyPacksConnectionArgs = {
 export type Mutation_RootUnpublishOrganizerArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: OrganizerWhereUniqueInput;
 };
 
@@ -12758,7 +13654,7 @@ export type Mutation_RootUnpublishOrganizerArgs = {
 export type Mutation_RootUnpublishPackArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
-  unpublishBase?: InputMaybe<Scalars['Boolean']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: PackWhereUniqueInput;
 };
 
@@ -12767,6 +13663,13 @@ export type Mutation_RootUnpublishPackArgs = {
 export type Mutation_RootUpdateAssetArgs = {
   data: AssetUpdateInput;
   where: AssetWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateContentSpaceArgs = {
+  data: ContentSpaceUpdateInput;
+  where: ContentSpaceWhereUniqueInput;
 };
 
 
@@ -12800,13 +13703,32 @@ export type Mutation_RootUpdateManyAssetsArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateManyAssetsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
   data: AssetUpdateManyInput;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<AssetManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyContentSpacesArgs = {
+  data: ContentSpaceUpdateManyInput;
+  where?: InputMaybe<ContentSpaceManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyContentSpacesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  data: ContentSpaceUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ContentSpaceManyWhereInput>;
 };
 
 
@@ -12819,12 +13741,12 @@ export type Mutation_RootUpdateManyEventPassesArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateManyEventPassesConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
   data: EventPassUpdateManyInput;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventPassManyWhereInput>;
 };
 
@@ -12838,12 +13760,12 @@ export type Mutation_RootUpdateManyEventPassesDelayedRevealedArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateManyEventPassesDelayedRevealedConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
   data: EventPassDelayedRevealedUpdateManyInput;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventPassDelayedRevealedManyWhereInput>;
 };
 
@@ -12857,12 +13779,12 @@ export type Mutation_RootUpdateManyEventsArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateManyEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
   data: EventUpdateManyInput;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventManyWhereInput>;
 };
 
@@ -12876,12 +13798,12 @@ export type Mutation_RootUpdateManyOrganizersArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateManyOrganizersConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
   data: OrganizerUpdateManyInput;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<OrganizerManyWhereInput>;
 };
 
@@ -12895,12 +13817,12 @@ export type Mutation_RootUpdateManyPacksArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateManyPacksConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
   data: PackUpdateManyInput;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<PackManyWhereInput>;
 };
 
@@ -13617,6 +14539,13 @@ export type Mutation_RootUpsertAssetArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpsertContentSpaceArgs = {
+  upsert: ContentSpaceUpsertInput;
+  where: ContentSpaceWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpsertEventArgs = {
   upsert: EventUpsertInput;
   where: EventWhereUniqueInput;
@@ -13654,31 +14583,31 @@ export type Mutation_RootUpsertPackArgs = {
 export type NftTransfer = {
   __typename?: 'nftTransfer';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber: Scalars['bigint'];
+  blockNumber: Scalars['bigint']['output'];
   /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
-  chainId: Scalars['String'];
+  chainId: Scalars['String']['output'];
   /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress: Scalars['String'];
-  created_at: Scalars['timestamptz'];
+  contractAddress: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
   /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
-  eventId?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']['output']>;
   /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
-  eventPassId?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
   /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFTs movement. */
-  fromAddress: Scalars['String'];
-  id: Scalars['uuid'];
+  fromAddress: Scalars['String']['output'];
+  id: Scalars['uuid']['output'];
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
-  organizerId: Scalars['String'];
+  organizerId: Scalars['String']['output'];
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: Maybe<Scalars['Int']>;
+  packAmount?: Maybe<Scalars['Int']['output']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
-  packId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
-  toAddress: Scalars['String'];
+  toAddress: Scalars['String']['output'];
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId: Scalars['bigint'];
+  tokenId: Scalars['bigint']['output'];
   /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
-  transactionHash: Scalars['String'];
+  transactionHash: Scalars['String']['output'];
 };
 
 /** aggregated selection of "nftTransfer" */
@@ -13694,7 +14623,7 @@ export type NftTransfer_Aggregate_Bool_Exp = {
 
 export type NftTransfer_Aggregate_Bool_Exp_Count = {
   arguments?: InputMaybe<Array<NftTransfer_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<NftTransfer_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
@@ -13703,7 +14632,7 @@ export type NftTransfer_Aggregate_Bool_Exp_Count = {
 export type NftTransfer_Aggregate_Fields = {
   __typename?: 'nftTransfer_aggregate_fields';
   avg?: Maybe<NftTransfer_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<NftTransfer_Max_Fields>;
   min?: Maybe<NftTransfer_Min_Fields>;
   stddev?: Maybe<NftTransfer_Stddev_Fields>;
@@ -13719,7 +14648,7 @@ export type NftTransfer_Aggregate_Fields = {
 /** aggregate fields of "nftTransfer" */
 export type NftTransfer_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<NftTransfer_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "nftTransfer" */
@@ -13748,11 +14677,11 @@ export type NftTransfer_Arr_Rel_Insert_Input = {
 export type NftTransfer_Avg_Fields = {
   __typename?: 'nftTransfer_avg_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: Maybe<Scalars['Float']>;
+  blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: Maybe<Scalars['Float']>;
+  packAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "nftTransfer" */
@@ -13797,72 +14726,72 @@ export const enum NftTransfer_Constraint {
 /** input type for incrementing numeric columns in table "nftTransfer" */
 export type NftTransfer_Inc_Input = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: InputMaybe<Scalars['bigint']>;
+  blockNumber?: InputMaybe<Scalars['bigint']['input']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: InputMaybe<Scalars['Int']>;
+  packAmount?: InputMaybe<Scalars['Int']['input']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: InputMaybe<Scalars['bigint']>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
 };
 
 /** input type for inserting data into table "nftTransfer" */
 export type NftTransfer_Insert_Input = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: InputMaybe<Scalars['bigint']>;
+  blockNumber?: InputMaybe<Scalars['bigint']['input']>;
   /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
-  eventId?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
   /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
-  eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
   /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFTs movement. */
-  fromAddress?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  fromAddress?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: InputMaybe<Scalars['Int']>;
+  packAmount?: InputMaybe<Scalars['Int']['input']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
-  toAddress?: InputMaybe<Scalars['String']>;
+  toAddress?: InputMaybe<Scalars['String']['input']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: InputMaybe<Scalars['bigint']>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
   /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
-  transactionHash?: InputMaybe<Scalars['String']>;
+  transactionHash?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type NftTransfer_Max_Fields = {
   __typename?: 'nftTransfer_max_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: Maybe<Scalars['bigint']>;
+  blockNumber?: Maybe<Scalars['bigint']['output']>;
   /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
-  chainId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']['output']>;
   /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
-  eventId?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']['output']>;
   /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
-  eventPassId?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
   /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFTs movement. */
-  fromAddress?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
+  fromAddress?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
-  organizerId?: Maybe<Scalars['String']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: Maybe<Scalars['Int']>;
+  packAmount?: Maybe<Scalars['Int']['output']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
-  packId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
-  toAddress?: Maybe<Scalars['String']>;
+  toAddress?: Maybe<Scalars['String']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: Maybe<Scalars['bigint']>;
+  tokenId?: Maybe<Scalars['bigint']['output']>;
   /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
-  transactionHash?: Maybe<Scalars['String']>;
+  transactionHash?: Maybe<Scalars['String']['output']>;
 };
 
 /** order by max() on columns of table "nftTransfer" */
@@ -13899,31 +14828,31 @@ export type NftTransfer_Max_Order_By = {
 export type NftTransfer_Min_Fields = {
   __typename?: 'nftTransfer_min_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: Maybe<Scalars['bigint']>;
+  blockNumber?: Maybe<Scalars['bigint']['output']>;
   /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
-  chainId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']['output']>;
   /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
-  eventId?: Maybe<Scalars['String']>;
+  eventId?: Maybe<Scalars['String']['output']>;
   /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
-  eventPassId?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
   /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFTs movement. */
-  fromAddress?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
+  fromAddress?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
-  organizerId?: Maybe<Scalars['String']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: Maybe<Scalars['Int']>;
+  packAmount?: Maybe<Scalars['Int']['output']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
-  packId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
-  toAddress?: Maybe<Scalars['String']>;
+  toAddress?: Maybe<Scalars['String']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: Maybe<Scalars['bigint']>;
+  tokenId?: Maybe<Scalars['bigint']['output']>;
   /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
-  transactionHash?: Maybe<Scalars['String']>;
+  transactionHash?: Maybe<Scalars['String']['output']>;
 };
 
 /** order by min() on columns of table "nftTransfer" */
@@ -13960,7 +14889,7 @@ export type NftTransfer_Min_Order_By = {
 export type NftTransfer_Mutation_Response = {
   __typename?: 'nftTransfer_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<NftTransfer>;
 };
@@ -13999,7 +14928,7 @@ export type NftTransfer_Order_By = {
 
 /** primary key columns input for table: nftTransfer */
 export type NftTransfer_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "nftTransfer" */
@@ -14037,42 +14966,42 @@ export const enum NftTransfer_Select_Column {
 /** input type for updating data in table "nftTransfer" */
 export type NftTransfer_Set_Input = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: InputMaybe<Scalars['bigint']>;
+  blockNumber?: InputMaybe<Scalars['bigint']['input']>;
   /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
-  eventId?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
   /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
-  eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
   /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFTs movement. */
-  fromAddress?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  fromAddress?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: InputMaybe<Scalars['Int']>;
+  packAmount?: InputMaybe<Scalars['Int']['input']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
-  toAddress?: InputMaybe<Scalars['String']>;
+  toAddress?: InputMaybe<Scalars['String']['input']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: InputMaybe<Scalars['bigint']>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
   /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
-  transactionHash?: InputMaybe<Scalars['String']>;
+  transactionHash?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type NftTransfer_Stddev_Fields = {
   __typename?: 'nftTransfer_stddev_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: Maybe<Scalars['Float']>;
+  blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: Maybe<Scalars['Float']>;
+  packAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "nftTransfer" */
@@ -14089,11 +15018,11 @@ export type NftTransfer_Stddev_Order_By = {
 export type NftTransfer_Stddev_Pop_Fields = {
   __typename?: 'nftTransfer_stddev_pop_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: Maybe<Scalars['Float']>;
+  blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: Maybe<Scalars['Float']>;
+  packAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "nftTransfer" */
@@ -14110,11 +15039,11 @@ export type NftTransfer_Stddev_Pop_Order_By = {
 export type NftTransfer_Stddev_Samp_Fields = {
   __typename?: 'nftTransfer_stddev_samp_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: Maybe<Scalars['Float']>;
+  blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: Maybe<Scalars['Float']>;
+  packAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "nftTransfer" */
@@ -14138,42 +15067,42 @@ export type NftTransfer_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type NftTransfer_Stream_Cursor_Value_Input = {
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: InputMaybe<Scalars['bigint']>;
+  blockNumber?: InputMaybe<Scalars['bigint']['input']>;
   /** Indicates the specific blockchain or network where the NFT resides. Useful in a multi-chain environment to distinguish between various chains. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Identifies the smart contract associated with the NFT. This provides a direct link to the NFTs origin and behavior on the blockchain. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Refers to the associated event ID for which the NFT was transferred. Ties the NFT transfer to a particular event in the platform. */
-  eventId?: InputMaybe<Scalars['String']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
   /** Denotes the specific Event Pass associated with the NFT. Helps in tracking the lifecycle of a particular event pass. */
-  eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
   /** Denotes the source address from which the NFT was transferred. Essential to trace the sender in the NFTs movement. */
-  fromAddress?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  fromAddress?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Identifies the organizer who facilitated the event linked to the NFT transfer. Aids in associating NFT movements with specific organizers. */
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: InputMaybe<Scalars['Int']>;
+  packAmount?: InputMaybe<Scalars['Int']['input']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
-  toAddress?: InputMaybe<Scalars['String']>;
+  toAddress?: InputMaybe<Scalars['String']['input']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: InputMaybe<Scalars['bigint']>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
   /** Represents the unique hash of the transaction in which the NFT was transferred. Ensures traceability and verification on the blockchain. */
-  transactionHash?: InputMaybe<Scalars['String']>;
+  transactionHash?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate sum on columns */
 export type NftTransfer_Sum_Fields = {
   __typename?: 'nftTransfer_sum_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: Maybe<Scalars['bigint']>;
+  blockNumber?: Maybe<Scalars['bigint']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: Maybe<Scalars['Int']>;
+  packAmount?: Maybe<Scalars['Int']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: Maybe<Scalars['bigint']>;
+  tokenId?: Maybe<Scalars['bigint']['output']>;
 };
 
 /** order by sum() on columns of table "nftTransfer" */
@@ -14231,11 +15160,11 @@ export type NftTransfer_Updates = {
 export type NftTransfer_Var_Pop_Fields = {
   __typename?: 'nftTransfer_var_pop_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: Maybe<Scalars['Float']>;
+  blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: Maybe<Scalars['Float']>;
+  packAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "nftTransfer" */
@@ -14252,11 +15181,11 @@ export type NftTransfer_Var_Pop_Order_By = {
 export type NftTransfer_Var_Samp_Fields = {
   __typename?: 'nftTransfer_var_samp_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: Maybe<Scalars['Float']>;
+  blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: Maybe<Scalars['Float']>;
+  packAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "nftTransfer" */
@@ -14273,11 +15202,11 @@ export type NftTransfer_Var_Samp_Order_By = {
 export type NftTransfer_Variance_Fields = {
   __typename?: 'nftTransfer_variance_fields';
   /** The specific block on the blockchain where this transfer was recorded. Allows for pinpointing the exact point of transfer in the blockchain history. */
-  blockNumber?: Maybe<Scalars['Float']>;
+  blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
-  packAmount?: Maybe<Scalars['Float']>;
+  packAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
-  tokenId?: Maybe<Scalars['Float']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "nftTransfer" */
@@ -14295,17 +15224,17 @@ export type Order = {
   __typename?: 'order';
   /** An object relationship */
   account?: Maybe<Account>;
-  accountId: Scalars['uuid'];
-  created_at: Scalars['timestamptz'];
+  accountId: Scalars['uuid']['output'];
+  created_at: Scalars['timestamptz']['output'];
   eventPass?: Maybe<EventPass>;
-  eventPassId?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   eventPassNftContract?: Maybe<EventPassNftContract>;
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['output'];
   pack?: Maybe<EventPass>;
   /** An object relationship */
   packAmount?: Maybe<PassAmount>;
-  packId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   packNftContract?: Maybe<PackNftContract>;
   /** An object relationship */
@@ -14314,10 +15243,10 @@ export type Order = {
   passAmount?: Maybe<PassAmount>;
   /** An object relationship */
   passPricing?: Maybe<PassPricing>;
-  quantity: Scalars['Int'];
+  quantity: Scalars['Int']['output'];
   status: OrderStatus_Enum;
-  stripeCheckoutSessionId?: Maybe<Scalars['String']>;
-  updated_at: Scalars['timestamptz'];
+  stripeCheckoutSessionId?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 
@@ -14337,7 +15266,7 @@ export type OrderPackArgs = {
 /** columns and relationships of "orderStatus" */
 export type OrderStatus = {
   __typename?: 'orderStatus';
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "orderStatus" */
@@ -14350,7 +15279,7 @@ export type OrderStatus_Aggregate = {
 /** aggregate fields of "orderStatus" */
 export type OrderStatus_Aggregate_Fields = {
   __typename?: 'orderStatus_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<OrderStatus_Max_Fields>;
   min?: Maybe<OrderStatus_Min_Fields>;
 };
@@ -14359,7 +15288,7 @@ export type OrderStatus_Aggregate_Fields = {
 /** aggregate fields of "orderStatus" */
 export type OrderStatus_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<OrderStatus_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "orderStatus". All fields are combined with a logical 'AND'. */
@@ -14390,33 +15319,33 @@ export const enum OrderStatus_Enum {
 export type OrderStatus_Enum_Comparison_Exp = {
   _eq?: InputMaybe<OrderStatus_Enum>;
   _in?: InputMaybe<Array<OrderStatus_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   _neq?: InputMaybe<OrderStatus_Enum>;
   _nin?: InputMaybe<Array<OrderStatus_Enum>>;
 };
 
 /** input type for inserting data into table "orderStatus" */
 export type OrderStatus_Insert_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type OrderStatus_Max_Fields = {
   __typename?: 'orderStatus_max_fields';
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type OrderStatus_Min_Fields = {
   __typename?: 'orderStatus_min_fields';
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "orderStatus" */
 export type OrderStatus_Mutation_Response = {
   __typename?: 'orderStatus_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<OrderStatus>;
 };
@@ -14435,7 +15364,7 @@ export type OrderStatus_Order_By = {
 
 /** primary key columns input for table: orderStatus */
 export type OrderStatus_Pk_Columns_Input = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "orderStatus" */
@@ -14446,7 +15375,7 @@ export const enum OrderStatus_Select_Column {
 
 /** input type for updating data in table "orderStatus" */
 export type OrderStatus_Set_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "orderStatus" */
@@ -14459,7 +15388,7 @@ export type OrderStatus_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type OrderStatus_Stream_Cursor_Value_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "orderStatus" */
@@ -14488,7 +15417,7 @@ export type Order_Aggregate_Bool_Exp = {
 
 export type Order_Aggregate_Bool_Exp_Count = {
   arguments?: InputMaybe<Array<Order_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<Order_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
@@ -14497,7 +15426,7 @@ export type Order_Aggregate_Bool_Exp_Count = {
 export type Order_Aggregate_Fields = {
   __typename?: 'order_aggregate_fields';
   avg?: Maybe<Order_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Order_Max_Fields>;
   min?: Maybe<Order_Min_Fields>;
   stddev?: Maybe<Order_Stddev_Fields>;
@@ -14513,7 +15442,7 @@ export type Order_Aggregate_Fields = {
 /** aggregate fields of "order" */
 export type Order_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Order_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "order" */
@@ -14541,7 +15470,7 @@ export type Order_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Order_Avg_Fields = {
   __typename?: 'order_avg_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "order" */
@@ -14596,40 +15525,40 @@ export const enum Order_Constraint {
 
 /** input type for incrementing numeric columns in table "order" */
 export type Order_Inc_Input = {
-  quantity?: InputMaybe<Scalars['Int']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "order" */
 export type Order_Insert_Input = {
   account?: InputMaybe<Account_Obj_Rel_Insert_Input>;
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
   eventPassNftContract?: InputMaybe<EventPassNftContract_Obj_Rel_Insert_Input>;
-  id?: InputMaybe<Scalars['uuid']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   packAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   packNftContract?: InputMaybe<PackNftContract_Obj_Rel_Insert_Input>;
   packPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
   passAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
   passPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
-  quantity?: InputMaybe<Scalars['Int']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
   status?: InputMaybe<OrderStatus_Enum>;
-  stripeCheckoutSessionId?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  stripeCheckoutSessionId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type Order_Max_Fields = {
   __typename?: 'order_max_fields';
-  accountId?: Maybe<Scalars['uuid']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  packId?: Maybe<Scalars['String']>;
-  quantity?: Maybe<Scalars['Int']>;
-  stripeCheckoutSessionId?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  accountId?: Maybe<Scalars['uuid']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  packId?: Maybe<Scalars['String']['output']>;
+  quantity?: Maybe<Scalars['Int']['output']>;
+  stripeCheckoutSessionId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by max() on columns of table "order" */
@@ -14647,14 +15576,14 @@ export type Order_Max_Order_By = {
 /** aggregate min on columns */
 export type Order_Min_Fields = {
   __typename?: 'order_min_fields';
-  accountId?: Maybe<Scalars['uuid']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  packId?: Maybe<Scalars['String']>;
-  quantity?: Maybe<Scalars['Int']>;
-  stripeCheckoutSessionId?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  accountId?: Maybe<Scalars['uuid']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  packId?: Maybe<Scalars['String']['output']>;
+  quantity?: Maybe<Scalars['Int']['output']>;
+  stripeCheckoutSessionId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** order by min() on columns of table "order" */
@@ -14673,7 +15602,7 @@ export type Order_Min_Order_By = {
 export type Order_Mutation_Response = {
   __typename?: 'order_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Order>;
 };
@@ -14707,7 +15636,7 @@ export type Order_Order_By = {
 
 /** primary key columns input for table: order */
 export type Order_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "order" */
@@ -14734,21 +15663,21 @@ export const enum Order_Select_Column {
 
 /** input type for updating data in table "order" */
 export type Order_Set_Input = {
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  packId?: InputMaybe<Scalars['String']>;
-  quantity?: InputMaybe<Scalars['Int']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
   status?: InputMaybe<OrderStatus_Enum>;
-  stripeCheckoutSessionId?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  stripeCheckoutSessionId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type Order_Stddev_Fields = {
   __typename?: 'order_stddev_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "order" */
@@ -14759,7 +15688,7 @@ export type Order_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Order_Stddev_Pop_Fields = {
   __typename?: 'order_stddev_pop_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "order" */
@@ -14770,7 +15699,7 @@ export type Order_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Order_Stddev_Samp_Fields = {
   __typename?: 'order_stddev_samp_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "order" */
@@ -14788,21 +15717,21 @@ export type Order_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Order_Stream_Cursor_Value_Input = {
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  packId?: InputMaybe<Scalars['String']>;
-  quantity?: InputMaybe<Scalars['Int']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
   status?: InputMaybe<OrderStatus_Enum>;
-  stripeCheckoutSessionId?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  stripeCheckoutSessionId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate sum on columns */
 export type Order_Sum_Fields = {
   __typename?: 'order_sum_fields';
-  quantity?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "order" */
@@ -14844,7 +15773,7 @@ export type Order_Updates = {
 /** aggregate var_pop on columns */
 export type Order_Var_Pop_Fields = {
   __typename?: 'order_var_pop_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "order" */
@@ -14855,7 +15784,7 @@ export type Order_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Order_Var_Samp_Fields = {
   __typename?: 'order_var_samp_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "order" */
@@ -14866,7 +15795,7 @@ export type Order_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Order_Variance_Fields = {
   __typename?: 'order_variance_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "order" */
@@ -14878,9 +15807,9 @@ export type Order_Variance_Order_By = {
 export type PackEventPassNft = {
   __typename?: 'packEventPassNft';
   /** Identifier for the event pass NFT. */
-  eventPassNftId: Scalars['uuid'];
+  eventPassNftId: Scalars['uuid']['output'];
   /** Identifier for the pack NFT supply. */
-  packNftSupplyId: Scalars['uuid'];
+  packNftSupplyId: Scalars['uuid']['output'];
 };
 
 /** aggregated selection of "packEventPassNft" */
@@ -14896,7 +15825,7 @@ export type PackEventPassNft_Aggregate_Bool_Exp = {
 
 export type PackEventPassNft_Aggregate_Bool_Exp_Count = {
   arguments?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<PackEventPassNft_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
@@ -14904,7 +15833,7 @@ export type PackEventPassNft_Aggregate_Bool_Exp_Count = {
 /** aggregate fields of "packEventPassNft" */
 export type PackEventPassNft_Aggregate_Fields = {
   __typename?: 'packEventPassNft_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<PackEventPassNft_Max_Fields>;
   min?: Maybe<PackEventPassNft_Min_Fields>;
 };
@@ -14913,7 +15842,7 @@ export type PackEventPassNft_Aggregate_Fields = {
 /** aggregate fields of "packEventPassNft" */
 export type PackEventPassNft_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "packEventPassNft" */
@@ -14950,18 +15879,18 @@ export const enum PackEventPassNft_Constraint {
 /** input type for inserting data into table "packEventPassNft" */
 export type PackEventPassNft_Insert_Input = {
   /** Identifier for the event pass NFT. */
-  eventPassNftId?: InputMaybe<Scalars['uuid']>;
+  eventPassNftId?: InputMaybe<Scalars['uuid']['input']>;
   /** Identifier for the pack NFT supply. */
-  packNftSupplyId?: InputMaybe<Scalars['uuid']>;
+  packNftSupplyId?: InputMaybe<Scalars['uuid']['input']>;
 };
 
 /** aggregate max on columns */
 export type PackEventPassNft_Max_Fields = {
   __typename?: 'packEventPassNft_max_fields';
   /** Identifier for the event pass NFT. */
-  eventPassNftId?: Maybe<Scalars['uuid']>;
+  eventPassNftId?: Maybe<Scalars['uuid']['output']>;
   /** Identifier for the pack NFT supply. */
-  packNftSupplyId?: Maybe<Scalars['uuid']>;
+  packNftSupplyId?: Maybe<Scalars['uuid']['output']>;
 };
 
 /** order by max() on columns of table "packEventPassNft" */
@@ -14976,9 +15905,9 @@ export type PackEventPassNft_Max_Order_By = {
 export type PackEventPassNft_Min_Fields = {
   __typename?: 'packEventPassNft_min_fields';
   /** Identifier for the event pass NFT. */
-  eventPassNftId?: Maybe<Scalars['uuid']>;
+  eventPassNftId?: Maybe<Scalars['uuid']['output']>;
   /** Identifier for the pack NFT supply. */
-  packNftSupplyId?: Maybe<Scalars['uuid']>;
+  packNftSupplyId?: Maybe<Scalars['uuid']['output']>;
 };
 
 /** order by min() on columns of table "packEventPassNft" */
@@ -14993,7 +15922,7 @@ export type PackEventPassNft_Min_Order_By = {
 export type PackEventPassNft_Mutation_Response = {
   __typename?: 'packEventPassNft_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<PackEventPassNft>;
 };
@@ -15014,9 +15943,9 @@ export type PackEventPassNft_Order_By = {
 /** primary key columns input for table: packEventPassNft */
 export type PackEventPassNft_Pk_Columns_Input = {
   /** Identifier for the event pass NFT. */
-  eventPassNftId: Scalars['uuid'];
+  eventPassNftId: Scalars['uuid']['input'];
   /** Identifier for the pack NFT supply. */
-  packNftSupplyId: Scalars['uuid'];
+  packNftSupplyId: Scalars['uuid']['input'];
 };
 
 /** select columns of table "packEventPassNft" */
@@ -15030,9 +15959,9 @@ export const enum PackEventPassNft_Select_Column {
 /** input type for updating data in table "packEventPassNft" */
 export type PackEventPassNft_Set_Input = {
   /** Identifier for the event pass NFT. */
-  eventPassNftId?: InputMaybe<Scalars['uuid']>;
+  eventPassNftId?: InputMaybe<Scalars['uuid']['input']>;
   /** Identifier for the pack NFT supply. */
-  packNftSupplyId?: InputMaybe<Scalars['uuid']>;
+  packNftSupplyId?: InputMaybe<Scalars['uuid']['input']>;
 };
 
 /** Streaming cursor of the table "packEventPassNft" */
@@ -15046,9 +15975,9 @@ export type PackEventPassNft_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type PackEventPassNft_Stream_Cursor_Value_Input = {
   /** Identifier for the event pass NFT. */
-  eventPassNftId?: InputMaybe<Scalars['uuid']>;
+  eventPassNftId?: InputMaybe<Scalars['uuid']['input']>;
   /** Identifier for the pack NFT supply. */
-  packNftSupplyId?: InputMaybe<Scalars['uuid']>;
+  packNftSupplyId?: InputMaybe<Scalars['uuid']['input']>;
 };
 
 /** update columns of table "packEventPassNft" */
@@ -15070,10 +15999,10 @@ export type PackEventPassNft_Updates = {
 export type PackNftContract = {
   __typename?: 'packNftContract';
   /** Blockchain network identifier where the NFT contract resides. */
-  chainId: Scalars['String'];
+  chainId: Scalars['String']['output'];
   /** Smart contract address for the NFT collection. */
-  contractAddress: Scalars['String'];
-  created_at: Scalars['timestamptz'];
+  contractAddress: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
   /** An array relationship */
   eventPassNftContracts: Array<PackNftContractEventPass>;
   /** An aggregate relationship */
@@ -15083,26 +16012,26 @@ export type PackNftContract = {
   /** An aggregate relationship */
   eventPassNfts_aggregate: EventPassNft_Aggregate;
   /** Unique identifier for each pack NFT contract. */
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['output'];
   /** Indicates whether the pack is distributed through an airdrop. True for airdrops, False otherwise. */
-  isAirdrop: Scalars['Boolean'];
+  isAirdrop: Scalars['Boolean']['output'];
   /** Identifier for the lottery associated with the pack. */
-  lotteryId: Scalars['String'];
+  lotteryId: Scalars['String']['output'];
   /** Identifier for the organizer responsible for the pack. */
-  organizerId: Scalars['String'];
+  organizerId: Scalars['String']['output'];
   /** Unique identifier for each pack, ensuring no duplicates in the system. */
-  packId: Scalars['String'];
+  packId: Scalars['String']['output'];
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack: Scalars['Int'];
-  updated_at: Scalars['timestamptz'];
+  rewardsPerPack: Scalars['Int']['output'];
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 
 /** Manages the NFTs associated with each pack, including details like contract address, chain ID, and the contents of each pack. */
 export type PackNftContractEventPassNftContractsArgs = {
   distinct_on?: InputMaybe<Array<PackNftContractEventPass_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftContractEventPass_Order_By>>;
   where?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
 };
@@ -15111,8 +16040,8 @@ export type PackNftContractEventPassNftContractsArgs = {
 /** Manages the NFTs associated with each pack, including details like contract address, chain ID, and the contents of each pack. */
 export type PackNftContractEventPassNftContracts_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackNftContractEventPass_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftContractEventPass_Order_By>>;
   where?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
 };
@@ -15121,8 +16050,8 @@ export type PackNftContractEventPassNftContracts_AggregateArgs = {
 /** Manages the NFTs associated with each pack, including details like contract address, chain ID, and the contents of each pack. */
 export type PackNftContractEventPassNftsArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
@@ -15131,8 +16060,8 @@ export type PackNftContractEventPassNftsArgs = {
 /** Manages the NFTs associated with each pack, including details like contract address, chain ID, and the contents of each pack. */
 export type PackNftContractEventPassNfts_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
@@ -15141,11 +16070,11 @@ export type PackNftContractEventPassNfts_AggregateArgs = {
 export type PackNftContractEventPass = {
   __typename?: 'packNftContractEventPass';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount: Scalars['Int'];
+  amount: Scalars['Int']['output'];
   /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
-  eventPassId: Scalars['String'];
+  eventPassId: Scalars['String']['output'];
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
-  packNftContractId: Scalars['uuid'];
+  packNftContractId: Scalars['uuid']['output'];
 };
 
 /** aggregated selection of "packNftContractEventPass" */
@@ -15161,7 +16090,7 @@ export type PackNftContractEventPass_Aggregate_Bool_Exp = {
 
 export type PackNftContractEventPass_Aggregate_Bool_Exp_Count = {
   arguments?: InputMaybe<Array<PackNftContractEventPass_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
@@ -15170,7 +16099,7 @@ export type PackNftContractEventPass_Aggregate_Bool_Exp_Count = {
 export type PackNftContractEventPass_Aggregate_Fields = {
   __typename?: 'packNftContractEventPass_aggregate_fields';
   avg?: Maybe<PackNftContractEventPass_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<PackNftContractEventPass_Max_Fields>;
   min?: Maybe<PackNftContractEventPass_Min_Fields>;
   stddev?: Maybe<PackNftContractEventPass_Stddev_Fields>;
@@ -15186,7 +16115,7 @@ export type PackNftContractEventPass_Aggregate_Fields = {
 /** aggregate fields of "packNftContractEventPass" */
 export type PackNftContractEventPass_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<PackNftContractEventPass_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "packNftContractEventPass" */
@@ -15215,7 +16144,7 @@ export type PackNftContractEventPass_Arr_Rel_Insert_Input = {
 export type PackNftContractEventPass_Avg_Fields = {
   __typename?: 'packNftContractEventPass_avg_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "packNftContractEventPass" */
@@ -15243,28 +16172,28 @@ export const enum PackNftContractEventPass_Constraint {
 /** input type for incrementing numeric columns in table "packNftContractEventPass" */
 export type PackNftContractEventPass_Inc_Input = {
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: InputMaybe<Scalars['Int']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "packNftContractEventPass" */
 export type PackNftContractEventPass_Insert_Input = {
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: InputMaybe<Scalars['Int']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
   /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
-  eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
-  packNftContractId?: InputMaybe<Scalars['uuid']>;
+  packNftContractId?: InputMaybe<Scalars['uuid']['input']>;
 };
 
 /** aggregate max on columns */
 export type PackNftContractEventPass_Max_Fields = {
   __typename?: 'packNftContractEventPass_max_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: Maybe<Scalars['Int']>;
+  amount?: Maybe<Scalars['Int']['output']>;
   /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
-  eventPassId?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
-  packNftContractId?: Maybe<Scalars['uuid']>;
+  packNftContractId?: Maybe<Scalars['uuid']['output']>;
 };
 
 /** order by max() on columns of table "packNftContractEventPass" */
@@ -15281,11 +16210,11 @@ export type PackNftContractEventPass_Max_Order_By = {
 export type PackNftContractEventPass_Min_Fields = {
   __typename?: 'packNftContractEventPass_min_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: Maybe<Scalars['Int']>;
+  amount?: Maybe<Scalars['Int']['output']>;
   /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
-  eventPassId?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
-  packNftContractId?: Maybe<Scalars['uuid']>;
+  packNftContractId?: Maybe<Scalars['uuid']['output']>;
 };
 
 /** order by min() on columns of table "packNftContractEventPass" */
@@ -15302,7 +16231,7 @@ export type PackNftContractEventPass_Min_Order_By = {
 export type PackNftContractEventPass_Mutation_Response = {
   __typename?: 'packNftContractEventPass_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<PackNftContractEventPass>;
 };
@@ -15324,9 +16253,9 @@ export type PackNftContractEventPass_Order_By = {
 /** primary key columns input for table: packNftContractEventPass */
 export type PackNftContractEventPass_Pk_Columns_Input = {
   /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
-  eventPassId: Scalars['String'];
+  eventPassId: Scalars['String']['input'];
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
-  packNftContractId: Scalars['uuid'];
+  packNftContractId: Scalars['uuid']['input'];
 };
 
 /** select columns of table "packNftContractEventPass" */
@@ -15342,18 +16271,18 @@ export const enum PackNftContractEventPass_Select_Column {
 /** input type for updating data in table "packNftContractEventPass" */
 export type PackNftContractEventPass_Set_Input = {
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: InputMaybe<Scalars['Int']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
   /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
-  eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
-  packNftContractId?: InputMaybe<Scalars['uuid']>;
+  packNftContractId?: InputMaybe<Scalars['uuid']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type PackNftContractEventPass_Stddev_Fields = {
   __typename?: 'packNftContractEventPass_stddev_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "packNftContractEventPass" */
@@ -15366,7 +16295,7 @@ export type PackNftContractEventPass_Stddev_Order_By = {
 export type PackNftContractEventPass_Stddev_Pop_Fields = {
   __typename?: 'packNftContractEventPass_stddev_pop_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "packNftContractEventPass" */
@@ -15379,7 +16308,7 @@ export type PackNftContractEventPass_Stddev_Pop_Order_By = {
 export type PackNftContractEventPass_Stddev_Samp_Fields = {
   __typename?: 'packNftContractEventPass_stddev_samp_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "packNftContractEventPass" */
@@ -15399,18 +16328,18 @@ export type PackNftContractEventPass_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type PackNftContractEventPass_Stream_Cursor_Value_Input = {
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: InputMaybe<Scalars['Int']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
   /** Identifier for the event pass. This field specifies which event pass is included in the pack, referring to a unique identifier within the eventPassNftContract table. */
-  eventPassId?: InputMaybe<Scalars['String']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
   /** Identifier for the pack NFT contract. This field links to the packNftContract table, establishing the connection between the pack and its contractual details. */
-  packNftContractId?: InputMaybe<Scalars['uuid']>;
+  packNftContractId?: InputMaybe<Scalars['uuid']['input']>;
 };
 
 /** aggregate sum on columns */
 export type PackNftContractEventPass_Sum_Fields = {
   __typename?: 'packNftContractEventPass_sum_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: Maybe<Scalars['Int']>;
+  amount?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "packNftContractEventPass" */
@@ -15442,7 +16371,7 @@ export type PackNftContractEventPass_Updates = {
 export type PackNftContractEventPass_Var_Pop_Fields = {
   __typename?: 'packNftContractEventPass_var_pop_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "packNftContractEventPass" */
@@ -15455,7 +16384,7 @@ export type PackNftContractEventPass_Var_Pop_Order_By = {
 export type PackNftContractEventPass_Var_Samp_Fields = {
   __typename?: 'packNftContractEventPass_var_samp_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "packNftContractEventPass" */
@@ -15468,7 +16397,7 @@ export type PackNftContractEventPass_Var_Samp_Order_By = {
 export type PackNftContractEventPass_Variance_Fields = {
   __typename?: 'packNftContractEventPass_variance_fields';
   /** The quantity of this specific event pass NFT included in the pack. Indicates how many of this type of event pass are bundled in the associated pack NFT contract. */
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "packNftContractEventPass" */
@@ -15488,7 +16417,7 @@ export type PackNftContract_Aggregate = {
 export type PackNftContract_Aggregate_Fields = {
   __typename?: 'packNftContract_aggregate_fields';
   avg?: Maybe<PackNftContract_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<PackNftContract_Max_Fields>;
   min?: Maybe<PackNftContract_Min_Fields>;
   stddev?: Maybe<PackNftContract_Stddev_Fields>;
@@ -15504,14 +16433,14 @@ export type PackNftContract_Aggregate_Fields = {
 /** aggregate fields of "packNftContract" */
 export type PackNftContract_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<PackNftContract_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type PackNftContract_Avg_Fields = {
   __typename?: 'packNftContract_avg_fields';
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: Maybe<Scalars['Float']>;
+  rewardsPerPack?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "packNftContract". All fields are combined with a logical 'AND'. */
@@ -15548,80 +16477,80 @@ export const enum PackNftContract_Constraint {
 /** input type for incrementing numeric columns in table "packNftContract" */
 export type PackNftContract_Inc_Input = {
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: InputMaybe<Scalars['Int']>;
+  rewardsPerPack?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "packNftContract" */
 export type PackNftContract_Insert_Input = {
   /** Blockchain network identifier where the NFT contract resides. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Smart contract address for the NFT collection. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   eventPassNftContracts?: InputMaybe<PackNftContractEventPass_Arr_Rel_Insert_Input>;
   eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
   /** Unique identifier for each pack NFT contract. */
-  id?: InputMaybe<Scalars['uuid']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Indicates whether the pack is distributed through an airdrop. True for airdrops, False otherwise. */
-  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  isAirdrop?: InputMaybe<Scalars['Boolean']['input']>;
   /** Identifier for the lottery associated with the pack. */
-  lotteryId?: InputMaybe<Scalars['String']>;
+  lotteryId?: InputMaybe<Scalars['String']['input']>;
   /** Identifier for the organizer responsible for the pack. */
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   /** Unique identifier for each pack, ensuring no duplicates in the system. */
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  rewardsPerPack?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type PackNftContract_Max_Fields = {
   __typename?: 'packNftContract_max_fields';
   /** Blockchain network identifier where the NFT contract resides. */
-  chainId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']['output']>;
   /** Smart contract address for the NFT collection. */
-  contractAddress?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** Unique identifier for each pack NFT contract. */
-  id?: Maybe<Scalars['uuid']>;
+  id?: Maybe<Scalars['uuid']['output']>;
   /** Identifier for the lottery associated with the pack. */
-  lotteryId?: Maybe<Scalars['String']>;
+  lotteryId?: Maybe<Scalars['String']['output']>;
   /** Identifier for the organizer responsible for the pack. */
-  organizerId?: Maybe<Scalars['String']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
   /** Unique identifier for each pack, ensuring no duplicates in the system. */
-  packId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  rewardsPerPack?: Maybe<Scalars['Int']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
 export type PackNftContract_Min_Fields = {
   __typename?: 'packNftContract_min_fields';
   /** Blockchain network identifier where the NFT contract resides. */
-  chainId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']['output']>;
   /** Smart contract address for the NFT collection. */
-  contractAddress?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** Unique identifier for each pack NFT contract. */
-  id?: Maybe<Scalars['uuid']>;
+  id?: Maybe<Scalars['uuid']['output']>;
   /** Identifier for the lottery associated with the pack. */
-  lotteryId?: Maybe<Scalars['String']>;
+  lotteryId?: Maybe<Scalars['String']['output']>;
   /** Identifier for the organizer responsible for the pack. */
-  organizerId?: Maybe<Scalars['String']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
   /** Unique identifier for each pack, ensuring no duplicates in the system. */
-  packId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  rewardsPerPack?: Maybe<Scalars['Int']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "packNftContract" */
 export type PackNftContract_Mutation_Response = {
   __typename?: 'packNftContract_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<PackNftContract>;
 };
@@ -15659,7 +16588,7 @@ export type PackNftContract_Order_By = {
 /** primary key columns input for table: packNftContract */
 export type PackNftContract_Pk_Columns_Input = {
   /** Unique identifier for each pack NFT contract. */
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "packNftContract" */
@@ -15689,44 +16618,44 @@ export const enum PackNftContract_Select_Column {
 /** input type for updating data in table "packNftContract" */
 export type PackNftContract_Set_Input = {
   /** Blockchain network identifier where the NFT contract resides. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Smart contract address for the NFT collection. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Unique identifier for each pack NFT contract. */
-  id?: InputMaybe<Scalars['uuid']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Indicates whether the pack is distributed through an airdrop. True for airdrops, False otherwise. */
-  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  isAirdrop?: InputMaybe<Scalars['Boolean']['input']>;
   /** Identifier for the lottery associated with the pack. */
-  lotteryId?: InputMaybe<Scalars['String']>;
+  lotteryId?: InputMaybe<Scalars['String']['input']>;
   /** Identifier for the organizer responsible for the pack. */
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   /** Unique identifier for each pack, ensuring no duplicates in the system. */
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  rewardsPerPack?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type PackNftContract_Stddev_Fields = {
   __typename?: 'packNftContract_stddev_fields';
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: Maybe<Scalars['Float']>;
+  rewardsPerPack?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type PackNftContract_Stddev_Pop_Fields = {
   __typename?: 'packNftContract_stddev_pop_fields';
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: Maybe<Scalars['Float']>;
+  rewardsPerPack?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type PackNftContract_Stddev_Samp_Fields = {
   __typename?: 'packNftContract_stddev_samp_fields';
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: Maybe<Scalars['Float']>;
+  rewardsPerPack?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "packNftContract" */
@@ -15740,30 +16669,30 @@ export type PackNftContract_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type PackNftContract_Stream_Cursor_Value_Input = {
   /** Blockchain network identifier where the NFT contract resides. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** Smart contract address for the NFT collection. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Unique identifier for each pack NFT contract. */
-  id?: InputMaybe<Scalars['uuid']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** Indicates whether the pack is distributed through an airdrop. True for airdrops, False otherwise. */
-  isAirdrop?: InputMaybe<Scalars['Boolean']>;
+  isAirdrop?: InputMaybe<Scalars['Boolean']['input']>;
   /** Identifier for the lottery associated with the pack. */
-  lotteryId?: InputMaybe<Scalars['String']>;
+  lotteryId?: InputMaybe<Scalars['String']['input']>;
   /** Identifier for the organizer responsible for the pack. */
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   /** Unique identifier for each pack, ensuring no duplicates in the system. */
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  rewardsPerPack?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate sum on columns */
 export type PackNftContract_Sum_Fields = {
   __typename?: 'packNftContract_sum_fields';
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: Maybe<Scalars['Int']>;
+  rewardsPerPack?: Maybe<Scalars['Int']['output']>;
 };
 
 /** update columns of table "packNftContract" */
@@ -15803,57 +16732,57 @@ export type PackNftContract_Updates = {
 export type PackNftContract_Var_Pop_Fields = {
   __typename?: 'packNftContract_var_pop_fields';
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: Maybe<Scalars['Float']>;
+  rewardsPerPack?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type PackNftContract_Var_Samp_Fields = {
   __typename?: 'packNftContract_var_samp_fields';
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: Maybe<Scalars['Float']>;
+  rewardsPerPack?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type PackNftContract_Variance_Fields = {
   __typename?: 'packNftContract_variance_fields';
   /** Number of rewards (or items) contained within each pack. */
-  rewardsPerPack?: Maybe<Scalars['Float']>;
+  rewardsPerPack?: Maybe<Scalars['Float']['output']>;
 };
 
 /** This table represents the supply details of pack NFTs, tracking the ownership, contents, and metadata associated with each pack. */
 export type PackNftSupply = {
   __typename?: 'packNftSupply';
   /** The specific blockchain or network on which the pack NFT exists. */
-  chainId: Scalars['String'];
+  chainId: Scalars['String']['output'];
   /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
-  contractAddress: Scalars['String'];
-  created_at: Scalars['timestamptz'];
+  contractAddress: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
   /** The blockchain address of the current owner of the pack NFT. */
-  currentOwnerAddress?: Maybe<Scalars['String']>;
+  currentOwnerAddress?: Maybe<Scalars['String']['output']>;
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
-  error?: Maybe<Scalars['String']>;
-  id: Scalars['uuid'];
+  error?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
   /** The reference to the latest transfer record for this pack NFT. */
-  lastNftTransferId?: Maybe<Scalars['uuid']>;
+  lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
   /** The identifier of the organizer associated with this pack NFT. */
-  organizerId: Scalars['String'];
+  organizerId: Scalars['String']['output'];
   /** An array relationship */
   packEventPassNfts: Array<PackEventPassNft>;
   /** An aggregate relationship */
   packEventPassNfts_aggregate: PackEventPassNft_Aggregate;
   /** A unique identifier for the pack within the platform. */
-  packId: Scalars['String'];
+  packId: Scalars['String']['output'];
   /** The URI pointing to the metadata of the pack NFT. */
-  tokenUri?: Maybe<Scalars['String']>;
-  updated_at: Scalars['timestamptz'];
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 
 /** This table represents the supply details of pack NFTs, tracking the ownership, contents, and metadata associated with each pack. */
 export type PackNftSupplyPackEventPassNftsArgs = {
   distinct_on?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackEventPassNft_Order_By>>;
   where?: InputMaybe<PackEventPassNft_Bool_Exp>;
 };
@@ -15862,8 +16791,8 @@ export type PackNftSupplyPackEventPassNftsArgs = {
 /** This table represents the supply details of pack NFTs, tracking the ownership, contents, and metadata associated with each pack. */
 export type PackNftSupplyPackEventPassNfts_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackEventPassNft_Order_By>>;
   where?: InputMaybe<PackEventPassNft_Bool_Exp>;
 };
@@ -15878,7 +16807,7 @@ export type PackNftSupply_Aggregate = {
 /** aggregate fields of "packNftSupply" */
 export type PackNftSupply_Aggregate_Fields = {
   __typename?: 'packNftSupply_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<PackNftSupply_Max_Fields>;
   min?: Maybe<PackNftSupply_Min_Fields>;
 };
@@ -15887,7 +16816,7 @@ export type PackNftSupply_Aggregate_Fields = {
 /** aggregate fields of "packNftSupply" */
 export type PackNftSupply_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<PackNftSupply_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "packNftSupply". All fields are combined with a logical 'AND'. */
@@ -15921,80 +16850,80 @@ export const enum PackNftSupply_Constraint {
 /** input type for inserting data into table "packNftSupply" */
 export type PackNftSupply_Insert_Input = {
   /** The specific blockchain or network on which the pack NFT exists. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The blockchain address of the current owner of the pack NFT. */
-  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  currentOwnerAddress?: InputMaybe<Scalars['String']['input']>;
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
-  error?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  error?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** The reference to the latest transfer record for this pack NFT. */
-  lastNftTransferId?: InputMaybe<Scalars['uuid']>;
+  lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The identifier of the organizer associated with this pack NFT. */
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   packEventPassNfts?: InputMaybe<PackEventPassNft_Arr_Rel_Insert_Input>;
   /** A unique identifier for the pack within the platform. */
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   /** The URI pointing to the metadata of the pack NFT. */
-  tokenUri?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type PackNftSupply_Max_Fields = {
   __typename?: 'packNftSupply_max_fields';
   /** The specific blockchain or network on which the pack NFT exists. */
-  chainId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']['output']>;
   /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
-  contractAddress?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** The blockchain address of the current owner of the pack NFT. */
-  currentOwnerAddress?: Maybe<Scalars['String']>;
+  currentOwnerAddress?: Maybe<Scalars['String']['output']>;
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
-  error?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
+  error?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
   /** The reference to the latest transfer record for this pack NFT. */
-  lastNftTransferId?: Maybe<Scalars['uuid']>;
+  lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
   /** The identifier of the organizer associated with this pack NFT. */
-  organizerId?: Maybe<Scalars['String']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
   /** A unique identifier for the pack within the platform. */
-  packId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** The URI pointing to the metadata of the pack NFT. */
-  tokenUri?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
 export type PackNftSupply_Min_Fields = {
   __typename?: 'packNftSupply_min_fields';
   /** The specific blockchain or network on which the pack NFT exists. */
-  chainId?: Maybe<Scalars['String']>;
+  chainId?: Maybe<Scalars['String']['output']>;
   /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
-  contractAddress?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** The blockchain address of the current owner of the pack NFT. */
-  currentOwnerAddress?: Maybe<Scalars['String']>;
+  currentOwnerAddress?: Maybe<Scalars['String']['output']>;
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
-  error?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
+  error?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
   /** The reference to the latest transfer record for this pack NFT. */
-  lastNftTransferId?: Maybe<Scalars['uuid']>;
+  lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
   /** The identifier of the organizer associated with this pack NFT. */
-  organizerId?: Maybe<Scalars['String']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
   /** A unique identifier for the pack within the platform. */
-  packId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** The URI pointing to the metadata of the pack NFT. */
-  tokenUri?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "packNftSupply" */
 export type PackNftSupply_Mutation_Response = {
   __typename?: 'packNftSupply_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<PackNftSupply>;
 };
@@ -16024,7 +16953,7 @@ export type PackNftSupply_Order_By = {
 
 /** primary key columns input for table: packNftSupply */
 export type PackNftSupply_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "packNftSupply" */
@@ -16056,24 +16985,24 @@ export const enum PackNftSupply_Select_Column {
 /** input type for updating data in table "packNftSupply" */
 export type PackNftSupply_Set_Input = {
   /** The specific blockchain or network on which the pack NFT exists. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The blockchain address of the current owner of the pack NFT. */
-  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  currentOwnerAddress?: InputMaybe<Scalars['String']['input']>;
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
-  error?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  error?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** The reference to the latest transfer record for this pack NFT. */
-  lastNftTransferId?: InputMaybe<Scalars['uuid']>;
+  lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The identifier of the organizer associated with this pack NFT. */
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   /** A unique identifier for the pack within the platform. */
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   /** The URI pointing to the metadata of the pack NFT. */
-  tokenUri?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Streaming cursor of the table "packNftSupply" */
@@ -16087,24 +17016,24 @@ export type PackNftSupply_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type PackNftSupply_Stream_Cursor_Value_Input = {
   /** The specific blockchain or network on which the pack NFT exists. */
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   /** The address of the smart contract representing the pack NFT. Essential for blockchain interactions. */
-  contractAddress?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The blockchain address of the current owner of the pack NFT. */
-  currentOwnerAddress?: InputMaybe<Scalars['String']>;
+  currentOwnerAddress?: InputMaybe<Scalars['String']['input']>;
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
-  error?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
+  error?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   /** The reference to the latest transfer record for this pack NFT. */
-  lastNftTransferId?: InputMaybe<Scalars['uuid']>;
+  lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The identifier of the organizer associated with this pack NFT. */
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   /** A unique identifier for the pack within the platform. */
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   /** The URI pointing to the metadata of the pack NFT. */
-  tokenUri?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "packNftSupply" */
@@ -16143,8 +17072,8 @@ export type PackNftSupply_Updates = {
 /** Hold the sums for the Pack Orders */
 export type PackOrderSums = {
   __typename?: 'packOrderSums';
-  packId: Scalars['String'];
-  totalReserved: Scalars['Int'];
+  packId: Scalars['String']['output'];
+  totalReserved: Scalars['Int']['output'];
 };
 
 /** aggregated selection of "packOrderSums" */
@@ -16158,7 +17087,7 @@ export type PackOrderSums_Aggregate = {
 export type PackOrderSums_Aggregate_Fields = {
   __typename?: 'packOrderSums_aggregate_fields';
   avg?: Maybe<PackOrderSums_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<PackOrderSums_Max_Fields>;
   min?: Maybe<PackOrderSums_Min_Fields>;
   stddev?: Maybe<PackOrderSums_Stddev_Fields>;
@@ -16174,13 +17103,13 @@ export type PackOrderSums_Aggregate_Fields = {
 /** aggregate fields of "packOrderSums" */
 export type PackOrderSums_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<PackOrderSums_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type PackOrderSums_Avg_Fields = {
   __typename?: 'packOrderSums_avg_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "packOrderSums". All fields are combined with a logical 'AND'. */
@@ -16200,34 +17129,34 @@ export const enum PackOrderSums_Constraint {
 
 /** input type for incrementing numeric columns in table "packOrderSums" */
 export type PackOrderSums_Inc_Input = {
-  totalReserved?: InputMaybe<Scalars['Int']>;
+  totalReserved?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "packOrderSums" */
 export type PackOrderSums_Insert_Input = {
-  packId?: InputMaybe<Scalars['String']>;
-  totalReserved?: InputMaybe<Scalars['Int']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  totalReserved?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type PackOrderSums_Max_Fields = {
   __typename?: 'packOrderSums_max_fields';
-  packId?: Maybe<Scalars['String']>;
-  totalReserved?: Maybe<Scalars['Int']>;
+  packId?: Maybe<Scalars['String']['output']>;
+  totalReserved?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregate min on columns */
 export type PackOrderSums_Min_Fields = {
   __typename?: 'packOrderSums_min_fields';
-  packId?: Maybe<Scalars['String']>;
-  totalReserved?: Maybe<Scalars['Int']>;
+  packId?: Maybe<Scalars['String']['output']>;
+  totalReserved?: Maybe<Scalars['Int']['output']>;
 };
 
 /** response of any mutation on the table "packOrderSums" */
 export type PackOrderSums_Mutation_Response = {
   __typename?: 'packOrderSums_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<PackOrderSums>;
 };
@@ -16247,7 +17176,7 @@ export type PackOrderSums_Order_By = {
 
 /** primary key columns input for table: packOrderSums */
 export type PackOrderSums_Pk_Columns_Input = {
-  packId: Scalars['String'];
+  packId: Scalars['String']['input'];
 };
 
 /** select columns of table "packOrderSums" */
@@ -16260,26 +17189,26 @@ export const enum PackOrderSums_Select_Column {
 
 /** input type for updating data in table "packOrderSums" */
 export type PackOrderSums_Set_Input = {
-  packId?: InputMaybe<Scalars['String']>;
-  totalReserved?: InputMaybe<Scalars['Int']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  totalReserved?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type PackOrderSums_Stddev_Fields = {
   __typename?: 'packOrderSums_stddev_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type PackOrderSums_Stddev_Pop_Fields = {
   __typename?: 'packOrderSums_stddev_pop_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type PackOrderSums_Stddev_Samp_Fields = {
   __typename?: 'packOrderSums_stddev_samp_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "packOrderSums" */
@@ -16292,14 +17221,14 @@ export type PackOrderSums_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type PackOrderSums_Stream_Cursor_Value_Input = {
-  packId?: InputMaybe<Scalars['String']>;
-  totalReserved?: InputMaybe<Scalars['Int']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  totalReserved?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type PackOrderSums_Sum_Fields = {
   __typename?: 'packOrderSums_sum_fields';
-  totalReserved?: Maybe<Scalars['Int']>;
+  totalReserved?: Maybe<Scalars['Int']['output']>;
 };
 
 /** update columns of table "packOrderSums" */
@@ -16322,32 +17251,32 @@ export type PackOrderSums_Updates = {
 /** aggregate var_pop on columns */
 export type PackOrderSums_Var_Pop_Fields = {
   __typename?: 'packOrderSums_var_pop_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type PackOrderSums_Var_Samp_Fields = {
   __typename?: 'packOrderSums_var_samp_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type PackOrderSums_Variance_Fields = {
   __typename?: 'packOrderSums_variance_fields';
-  totalReserved?: Maybe<Scalars['Float']>;
+  totalReserved?: Maybe<Scalars['Float']['output']>;
 };
 
 /** The passAmount table stores quantity information related to each eventPass or Pack */
 export type PassAmount = {
   __typename?: 'passAmount';
-  created_at: Scalars['timestamptz'];
-  eventPassId?: Maybe<Scalars['String']>;
-  id: Scalars['uuid'];
-  maxAmount: Scalars['Int'];
-  maxAmountPerUser?: Maybe<Scalars['Int']>;
-  packId?: Maybe<Scalars['String']>;
-  timeBeforeDelete: Scalars['Int'];
-  updated_at: Scalars['timestamptz'];
+  created_at: Scalars['timestamptz']['output'];
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
+  maxAmount: Scalars['Int']['output'];
+  maxAmountPerUser?: Maybe<Scalars['Int']['output']>;
+  packId?: Maybe<Scalars['String']['output']>;
+  timeBeforeDelete: Scalars['Int']['output'];
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 /** aggregated selection of "passAmount" */
@@ -16361,7 +17290,7 @@ export type PassAmount_Aggregate = {
 export type PassAmount_Aggregate_Fields = {
   __typename?: 'passAmount_aggregate_fields';
   avg?: Maybe<PassAmount_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<PassAmount_Max_Fields>;
   min?: Maybe<PassAmount_Min_Fields>;
   stddev?: Maybe<PassAmount_Stddev_Fields>;
@@ -16377,15 +17306,15 @@ export type PassAmount_Aggregate_Fields = {
 /** aggregate fields of "passAmount" */
 export type PassAmount_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<PassAmount_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type PassAmount_Avg_Fields = {
   __typename?: 'passAmount_avg_fields';
-  maxAmount?: Maybe<Scalars['Float']>;
-  maxAmountPerUser?: Maybe<Scalars['Float']>;
-  timeBeforeDelete?: Maybe<Scalars['Float']>;
+  maxAmount?: Maybe<Scalars['Float']['output']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']['output']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "passAmount". All fields are combined with a logical 'AND'. */
@@ -16415,54 +17344,54 @@ export const enum PassAmount_Constraint {
 
 /** input type for incrementing numeric columns in table "passAmount" */
 export type PassAmount_Inc_Input = {
-  maxAmount?: InputMaybe<Scalars['Int']>;
-  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
-  timeBeforeDelete?: InputMaybe<Scalars['Int']>;
+  maxAmount?: InputMaybe<Scalars['Int']['input']>;
+  maxAmountPerUser?: InputMaybe<Scalars['Int']['input']>;
+  timeBeforeDelete?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "passAmount" */
 export type PassAmount_Insert_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  maxAmount?: InputMaybe<Scalars['Int']>;
-  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
-  packId?: InputMaybe<Scalars['String']>;
-  timeBeforeDelete?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  maxAmount?: InputMaybe<Scalars['Int']['input']>;
+  maxAmountPerUser?: InputMaybe<Scalars['Int']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  timeBeforeDelete?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type PassAmount_Max_Fields = {
   __typename?: 'passAmount_max_fields';
-  created_at?: Maybe<Scalars['timestamptz']>;
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  maxAmount?: Maybe<Scalars['Int']>;
-  maxAmountPerUser?: Maybe<Scalars['Int']>;
-  packId?: Maybe<Scalars['String']>;
-  timeBeforeDelete?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  maxAmount?: Maybe<Scalars['Int']['output']>;
+  maxAmountPerUser?: Maybe<Scalars['Int']['output']>;
+  packId?: Maybe<Scalars['String']['output']>;
+  timeBeforeDelete?: Maybe<Scalars['Int']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
 export type PassAmount_Min_Fields = {
   __typename?: 'passAmount_min_fields';
-  created_at?: Maybe<Scalars['timestamptz']>;
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  maxAmount?: Maybe<Scalars['Int']>;
-  maxAmountPerUser?: Maybe<Scalars['Int']>;
-  packId?: Maybe<Scalars['String']>;
-  timeBeforeDelete?: Maybe<Scalars['Int']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  maxAmount?: Maybe<Scalars['Int']['output']>;
+  maxAmountPerUser?: Maybe<Scalars['Int']['output']>;
+  packId?: Maybe<Scalars['String']['output']>;
+  timeBeforeDelete?: Maybe<Scalars['Int']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "passAmount" */
 export type PassAmount_Mutation_Response = {
   __typename?: 'passAmount_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<PassAmount>;
 };
@@ -16495,7 +17424,7 @@ export type PassAmount_Order_By = {
 
 /** primary key columns input for table: passAmount */
 export type PassAmount_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "passAmount" */
@@ -16520,38 +17449,38 @@ export const enum PassAmount_Select_Column {
 
 /** input type for updating data in table "passAmount" */
 export type PassAmount_Set_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  maxAmount?: InputMaybe<Scalars['Int']>;
-  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
-  packId?: InputMaybe<Scalars['String']>;
-  timeBeforeDelete?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  maxAmount?: InputMaybe<Scalars['Int']['input']>;
+  maxAmountPerUser?: InputMaybe<Scalars['Int']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  timeBeforeDelete?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type PassAmount_Stddev_Fields = {
   __typename?: 'passAmount_stddev_fields';
-  maxAmount?: Maybe<Scalars['Float']>;
-  maxAmountPerUser?: Maybe<Scalars['Float']>;
-  timeBeforeDelete?: Maybe<Scalars['Float']>;
+  maxAmount?: Maybe<Scalars['Float']['output']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']['output']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type PassAmount_Stddev_Pop_Fields = {
   __typename?: 'passAmount_stddev_pop_fields';
-  maxAmount?: Maybe<Scalars['Float']>;
-  maxAmountPerUser?: Maybe<Scalars['Float']>;
-  timeBeforeDelete?: Maybe<Scalars['Float']>;
+  maxAmount?: Maybe<Scalars['Float']['output']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']['output']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type PassAmount_Stddev_Samp_Fields = {
   __typename?: 'passAmount_stddev_samp_fields';
-  maxAmount?: Maybe<Scalars['Float']>;
-  maxAmountPerUser?: Maybe<Scalars['Float']>;
-  timeBeforeDelete?: Maybe<Scalars['Float']>;
+  maxAmount?: Maybe<Scalars['Float']['output']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']['output']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "passAmount" */
@@ -16564,22 +17493,22 @@ export type PassAmount_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type PassAmount_Stream_Cursor_Value_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  maxAmount?: InputMaybe<Scalars['Int']>;
-  maxAmountPerUser?: InputMaybe<Scalars['Int']>;
-  packId?: InputMaybe<Scalars['String']>;
-  timeBeforeDelete?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  maxAmount?: InputMaybe<Scalars['Int']['input']>;
+  maxAmountPerUser?: InputMaybe<Scalars['Int']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  timeBeforeDelete?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate sum on columns */
 export type PassAmount_Sum_Fields = {
   __typename?: 'passAmount_sum_fields';
-  maxAmount?: Maybe<Scalars['Int']>;
-  maxAmountPerUser?: Maybe<Scalars['Int']>;
-  timeBeforeDelete?: Maybe<Scalars['Int']>;
+  maxAmount?: Maybe<Scalars['Int']['output']>;
+  maxAmountPerUser?: Maybe<Scalars['Int']['output']>;
+  timeBeforeDelete?: Maybe<Scalars['Int']['output']>;
 };
 
 /** update columns of table "passAmount" */
@@ -16614,37 +17543,37 @@ export type PassAmount_Updates = {
 /** aggregate var_pop on columns */
 export type PassAmount_Var_Pop_Fields = {
   __typename?: 'passAmount_var_pop_fields';
-  maxAmount?: Maybe<Scalars['Float']>;
-  maxAmountPerUser?: Maybe<Scalars['Float']>;
-  timeBeforeDelete?: Maybe<Scalars['Float']>;
+  maxAmount?: Maybe<Scalars['Float']['output']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']['output']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type PassAmount_Var_Samp_Fields = {
   __typename?: 'passAmount_var_samp_fields';
-  maxAmount?: Maybe<Scalars['Float']>;
-  maxAmountPerUser?: Maybe<Scalars['Float']>;
-  timeBeforeDelete?: Maybe<Scalars['Float']>;
+  maxAmount?: Maybe<Scalars['Float']['output']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']['output']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type PassAmount_Variance_Fields = {
   __typename?: 'passAmount_variance_fields';
-  maxAmount?: Maybe<Scalars['Float']>;
-  maxAmountPerUser?: Maybe<Scalars['Float']>;
-  timeBeforeDelete?: Maybe<Scalars['Float']>;
+  maxAmount?: Maybe<Scalars['Float']['output']>;
+  maxAmountPerUser?: Maybe<Scalars['Float']['output']>;
+  timeBeforeDelete?: Maybe<Scalars['Float']['output']>;
 };
 
 /** The passPricing table stores pricing information for an eventPass or Pack. */
 export type PassPricing = {
   __typename?: 'passPricing';
-  amount: Scalars['Int'];
-  created_at: Scalars['timestamptz'];
+  amount: Scalars['Int']['output'];
+  created_at: Scalars['timestamptz']['output'];
   currency: Currency_Enum;
-  eventPassId?: Maybe<Scalars['String']>;
-  id: Scalars['uuid'];
-  packId?: Maybe<Scalars['String']>;
-  updated_at: Scalars['timestamptz'];
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
+  packId?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 /** aggregated selection of "passPricing" */
@@ -16658,7 +17587,7 @@ export type PassPricing_Aggregate = {
 export type PassPricing_Aggregate_Fields = {
   __typename?: 'passPricing_aggregate_fields';
   avg?: Maybe<PassPricing_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<PassPricing_Max_Fields>;
   min?: Maybe<PassPricing_Min_Fields>;
   stddev?: Maybe<PassPricing_Stddev_Fields>;
@@ -16674,13 +17603,13 @@ export type PassPricing_Aggregate_Fields = {
 /** aggregate fields of "passPricing" */
 export type PassPricing_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<PassPricing_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type PassPricing_Avg_Fields = {
   __typename?: 'passPricing_avg_fields';
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "passPricing". All fields are combined with a logical 'AND'. */
@@ -16705,47 +17634,47 @@ export const enum PassPricing_Constraint {
 
 /** input type for incrementing numeric columns in table "passPricing" */
 export type PassPricing_Inc_Input = {
-  amount?: InputMaybe<Scalars['Int']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "passPricing" */
 export type PassPricing_Insert_Input = {
-  amount?: InputMaybe<Scalars['Int']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   currency?: InputMaybe<Currency_Enum>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  packId?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type PassPricing_Max_Fields = {
   __typename?: 'passPricing_max_fields';
-  amount?: Maybe<Scalars['Int']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  packId?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  amount?: Maybe<Scalars['Int']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  packId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
 export type PassPricing_Min_Fields = {
   __typename?: 'passPricing_min_fields';
-  amount?: Maybe<Scalars['Int']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  packId?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  amount?: Maybe<Scalars['Int']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  packId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "passPricing" */
 export type PassPricing_Mutation_Response = {
   __typename?: 'passPricing_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<PassPricing>;
 };
@@ -16777,7 +17706,7 @@ export type PassPricing_Order_By = {
 
 /** primary key columns input for table: passPricing */
 export type PassPricing_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "passPricing" */
@@ -16800,31 +17729,31 @@ export const enum PassPricing_Select_Column {
 
 /** input type for updating data in table "passPricing" */
 export type PassPricing_Set_Input = {
-  amount?: InputMaybe<Scalars['Int']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   currency?: InputMaybe<Currency_Enum>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  packId?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type PassPricing_Stddev_Fields = {
   __typename?: 'passPricing_stddev_fields';
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type PassPricing_Stddev_Pop_Fields = {
   __typename?: 'passPricing_stddev_pop_fields';
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type PassPricing_Stddev_Samp_Fields = {
   __typename?: 'passPricing_stddev_samp_fields';
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "passPricing" */
@@ -16837,19 +17766,19 @@ export type PassPricing_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type PassPricing_Stream_Cursor_Value_Input = {
-  amount?: InputMaybe<Scalars['Int']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   currency?: InputMaybe<Currency_Enum>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  packId?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate sum on columns */
 export type PassPricing_Sum_Fields = {
   __typename?: 'passPricing_sum_fields';
-  amount?: Maybe<Scalars['Int']>;
+  amount?: Maybe<Scalars['Int']['output']>;
 };
 
 /** update columns of table "passPricing" */
@@ -16882,19 +17811,19 @@ export type PassPricing_Updates = {
 /** aggregate var_pop on columns */
 export type PassPricing_Var_Pop_Fields = {
   __typename?: 'passPricing_var_pop_fields';
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type PassPricing_Var_Samp_Fields = {
   __typename?: 'passPricing_var_samp_fields';
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type PassPricing_Variance_Fields = {
   __typename?: 'passPricing_variance_fields';
-  amount?: Maybe<Scalars['Float']>;
+  amount?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Order a quantity of Event Pass or Pack (linked to Hygraph model EventPass or Pack) and associated to an Account. Those orders are time bound and are automatically destroyed given an amount of time to preserve access to the event for other users. */
@@ -16902,17 +17831,17 @@ export type PendingOrder = {
   __typename?: 'pendingOrder';
   /** An object relationship */
   account?: Maybe<Account>;
-  accountId: Scalars['uuid'];
-  created_at: Scalars['timestamptz'];
+  accountId: Scalars['uuid']['output'];
+  created_at: Scalars['timestamptz']['output'];
   eventPass?: Maybe<EventPass>;
-  eventPassId?: Maybe<Scalars['String']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   eventPassNftContract?: Maybe<EventPassNftContract>;
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['output'];
   pack?: Maybe<EventPass>;
   /** An object relationship */
   packAmount?: Maybe<PassAmount>;
-  packId?: Maybe<Scalars['String']>;
+  packId?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   packNftContract?: Maybe<PackNftContract>;
   /** An object relationship */
@@ -16921,7 +17850,7 @@ export type PendingOrder = {
   passAmount?: Maybe<PassAmount>;
   /** An object relationship */
   passPricing?: Maybe<PassPricing>;
-  quantity: Scalars['Int'];
+  quantity: Scalars['Int']['output'];
 };
 
 
@@ -16949,7 +17878,7 @@ export type PendingOrder_Aggregate = {
 export type PendingOrder_Aggregate_Fields = {
   __typename?: 'pendingOrder_aggregate_fields';
   avg?: Maybe<PendingOrder_Avg_Fields>;
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<PendingOrder_Max_Fields>;
   min?: Maybe<PendingOrder_Min_Fields>;
   stddev?: Maybe<PendingOrder_Stddev_Fields>;
@@ -16965,13 +17894,13 @@ export type PendingOrder_Aggregate_Fields = {
 /** aggregate fields of "pendingOrder" */
 export type PendingOrder_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<PendingOrder_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** aggregate avg on columns */
 export type PendingOrder_Avg_Fields = {
   __typename?: 'pendingOrder_avg_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Boolean expression to filter rows from the table "pendingOrder". All fields are combined with a logical 'AND'. */
@@ -17006,53 +17935,53 @@ export const enum PendingOrder_Constraint {
 
 /** input type for incrementing numeric columns in table "pendingOrder" */
 export type PendingOrder_Inc_Input = {
-  quantity?: InputMaybe<Scalars['Int']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "pendingOrder" */
 export type PendingOrder_Insert_Input = {
   account?: InputMaybe<Account_Obj_Rel_Insert_Input>;
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
   eventPassNftContract?: InputMaybe<EventPassNftContract_Obj_Rel_Insert_Input>;
-  id?: InputMaybe<Scalars['uuid']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
   packAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
-  packId?: InputMaybe<Scalars['String']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
   packNftContract?: InputMaybe<PackNftContract_Obj_Rel_Insert_Input>;
   packPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
   passAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
   passPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
-  quantity?: InputMaybe<Scalars['Int']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate max on columns */
 export type PendingOrder_Max_Fields = {
   __typename?: 'pendingOrder_max_fields';
-  accountId?: Maybe<Scalars['uuid']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  packId?: Maybe<Scalars['String']>;
-  quantity?: Maybe<Scalars['Int']>;
+  accountId?: Maybe<Scalars['uuid']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  packId?: Maybe<Scalars['String']['output']>;
+  quantity?: Maybe<Scalars['Int']['output']>;
 };
 
 /** aggregate min on columns */
 export type PendingOrder_Min_Fields = {
   __typename?: 'pendingOrder_min_fields';
-  accountId?: Maybe<Scalars['uuid']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  eventPassId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  packId?: Maybe<Scalars['String']>;
-  quantity?: Maybe<Scalars['Int']>;
+  accountId?: Maybe<Scalars['uuid']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  packId?: Maybe<Scalars['String']['output']>;
+  quantity?: Maybe<Scalars['Int']['output']>;
 };
 
 /** response of any mutation on the table "pendingOrder" */
 export type PendingOrder_Mutation_Response = {
   __typename?: 'pendingOrder_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<PendingOrder>;
 };
@@ -17083,7 +18012,7 @@ export type PendingOrder_Order_By = {
 
 /** primary key columns input for table: pendingOrder */
 export type PendingOrder_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "pendingOrder" */
@@ -17104,30 +18033,30 @@ export const enum PendingOrder_Select_Column {
 
 /** input type for updating data in table "pendingOrder" */
 export type PendingOrder_Set_Input = {
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  packId?: InputMaybe<Scalars['String']>;
-  quantity?: InputMaybe<Scalars['Int']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
 export type PendingOrder_Stddev_Fields = {
   __typename?: 'pendingOrder_stddev_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type PendingOrder_Stddev_Pop_Fields = {
   __typename?: 'pendingOrder_stddev_pop_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type PendingOrder_Stddev_Samp_Fields = {
   __typename?: 'pendingOrder_stddev_samp_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** Streaming cursor of the table "pendingOrder" */
@@ -17140,18 +18069,18 @@ export type PendingOrder_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type PendingOrder_Stream_Cursor_Value_Input = {
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventPassId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  packId?: InputMaybe<Scalars['String']>;
-  quantity?: InputMaybe<Scalars['Int']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  packId?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
 export type PendingOrder_Sum_Fields = {
   __typename?: 'pendingOrder_sum_fields';
-  quantity?: Maybe<Scalars['Int']>;
+  quantity?: Maybe<Scalars['Int']['output']>;
 };
 
 /** update columns of table "pendingOrder" */
@@ -17182,19 +18111,19 @@ export type PendingOrder_Updates = {
 /** aggregate var_pop on columns */
 export type PendingOrder_Var_Pop_Fields = {
   __typename?: 'pendingOrder_var_pop_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type PendingOrder_Var_Samp_Fields = {
   __typename?: 'pendingOrder_var_samp_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type PendingOrder_Variance_Fields = {
   __typename?: 'pendingOrder_variance_fields';
-  quantity?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Float']['output']>;
 };
 
 export type Query_Root = {
@@ -17213,6 +18142,14 @@ export type Query_Root = {
   assets: Array<Asset>;
   /** Retrieve multiple assets using the Relay connection interface */
   assetsConnection: AssetConnection;
+  /** Retrieve a single contentSpace */
+  contentSpace?: Maybe<ContentSpace>;
+  /** Retrieve document version */
+  contentSpaceVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple contentSpaces */
+  contentSpaces: Array<ContentSpace>;
+  /** Retrieve multiple contentSpaces using the Relay connection interface */
+  contentSpacesConnection: ContentSpaceConnection;
   /** fetch data from the table: "currency" */
   currency: Array<Currency>;
   /** fetch aggregated fields from the table: "currency" */
@@ -17470,8 +18407,8 @@ export type Query_Root = {
 
 export type Query_RootAccountArgs = {
   distinct_on?: InputMaybe<Array<Account_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Account_Order_By>>;
   where?: InputMaybe<Account_Bool_Exp>;
 };
@@ -17479,15 +18416,15 @@ export type Query_RootAccountArgs = {
 
 export type Query_RootAccount_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Account_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Account_Order_By>>;
   where?: InputMaybe<Account_Bool_Exp>;
 };
 
 
 export type Query_RootAccount_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -17504,35 +18441,73 @@ export type Query_RootAssetVersionArgs = {
 
 
 export type Query_RootAssetsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<AssetOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<AssetWhereInput>;
 };
 
 
 export type Query_RootAssetsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<AssetOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<AssetWhereInput>;
 };
 
 
+export type Query_RootContentSpaceArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: ContentSpaceWhereUniqueInput;
+};
+
+
+export type Query_RootContentSpaceVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
+export type Query_RootContentSpacesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<ContentSpaceOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<ContentSpaceWhereInput>;
+};
+
+
+export type Query_RootContentSpacesConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<ContentSpaceOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<ContentSpaceWhereInput>;
+};
+
+
 export type Query_RootCurrencyArgs = {
   distinct_on?: InputMaybe<Array<Currency_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Currency_Order_By>>;
   where?: InputMaybe<Currency_Bool_Exp>;
 };
@@ -17540,15 +18515,15 @@ export type Query_RootCurrencyArgs = {
 
 export type Query_RootCurrency_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Currency_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Currency_Order_By>>;
   where?: InputMaybe<Currency_Bool_Exp>;
 };
 
 
 export type Query_RootCurrency_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -17566,8 +18541,8 @@ export type Query_RootEventArgs = {
 
 export type Query_RootEventParametersArgs = {
   distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventParameters_Order_By>>;
   where?: InputMaybe<EventParameters_Bool_Exp>;
 };
@@ -17575,15 +18550,15 @@ export type Query_RootEventParametersArgs = {
 
 export type Query_RootEventParameters_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventParameters_Order_By>>;
   where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
 
 export type Query_RootEventParameters_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -17608,8 +18583,8 @@ export type Query_RootEventPassDelayedRevealedVersionArgs = {
 
 export type Query_RootEventPassNftArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
@@ -17617,8 +18592,8 @@ export type Query_RootEventPassNftArgs = {
 
 export type Query_RootEventPassNftContractArgs = {
   distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
 };
@@ -17626,8 +18601,8 @@ export type Query_RootEventPassNftContractArgs = {
 
 export type Query_RootEventPassNftContractTypeArgs = {
   distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
   where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
 };
@@ -17635,50 +18610,50 @@ export type Query_RootEventPassNftContractTypeArgs = {
 
 export type Query_RootEventPassNftContractType_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
   where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
 };
 
 
 export type Query_RootEventPassNftContractType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Query_RootEventPassNftContract_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
 };
 
 
 export type Query_RootEventPassNftContract_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootEventPassNft_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
 
 
 export type Query_RootEventPassNft_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootEventPassOrderSumsArgs = {
   distinct_on?: InputMaybe<Array<EventPassOrderSums_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassOrderSums_Order_By>>;
   where?: InputMaybe<EventPassOrderSums_Bool_Exp>;
 };
@@ -17686,22 +18661,22 @@ export type Query_RootEventPassOrderSumsArgs = {
 
 export type Query_RootEventPassOrderSums_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassOrderSums_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassOrderSums_Order_By>>;
   where?: InputMaybe<EventPassOrderSums_Bool_Exp>;
 };
 
 
 export type Query_RootEventPassOrderSums_By_PkArgs = {
-  eventPassId: Scalars['String'];
+  eventPassId: Scalars['String']['input'];
 };
 
 
 export type Query_RootEventPassTypeArgs = {
   distinct_on?: InputMaybe<Array<EventPassType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassType_Order_By>>;
   where?: InputMaybe<EventPassType_Bool_Exp>;
 };
@@ -17709,22 +18684,22 @@ export type Query_RootEventPassTypeArgs = {
 
 export type Query_RootEventPassType_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassType_Order_By>>;
   where?: InputMaybe<EventPassType_Bool_Exp>;
 };
 
 
 export type Query_RootEventPassType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Query_RootEventPassValidationTypeArgs = {
   distinct_on?: InputMaybe<Array<EventPassValidationType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassValidationType_Order_By>>;
   where?: InputMaybe<EventPassValidationType_Bool_Exp>;
 };
@@ -17732,15 +18707,15 @@ export type Query_RootEventPassValidationTypeArgs = {
 
 export type Query_RootEventPassValidationType_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassValidationType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassValidationType_Order_By>>;
   where?: InputMaybe<EventPassValidationType_Bool_Exp>;
 };
 
 
 export type Query_RootEventPassValidationType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -17750,52 +18725,52 @@ export type Query_RootEventPassVersionArgs = {
 
 
 export type Query_RootEventPassesArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<EventPassOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<EventPassWhereInput>;
 };
 
 
 export type Query_RootEventPassesConnectionArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<EventPassOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<EventPassWhereInput>;
 };
 
 
 export type Query_RootEventPassesDelayedRevealedArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<EventPassDelayedRevealedOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<EventPassDelayedRevealedWhereInput>;
 };
 
 
 export type Query_RootEventPassesDelayedRevealedConnectionArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<EventPassDelayedRevealedOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<EventPassDelayedRevealedWhereInput>;
 };
@@ -17803,8 +18778,8 @@ export type Query_RootEventPassesDelayedRevealedConnectionArgs = {
 
 export type Query_RootEventStatusArgs = {
   distinct_on?: InputMaybe<Array<EventStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventStatus_Order_By>>;
   where?: InputMaybe<EventStatus_Bool_Exp>;
 };
@@ -17812,15 +18787,15 @@ export type Query_RootEventStatusArgs = {
 
 export type Query_RootEventStatus_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventStatus_Order_By>>;
   where?: InputMaybe<EventStatus_Bool_Exp>;
 };
 
 
 export type Query_RootEventStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -17830,26 +18805,26 @@ export type Query_RootEventVersionArgs = {
 
 
 export type Query_RootEventsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<EventOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<EventWhereInput>;
 };
 
 
 export type Query_RootEventsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<EventOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<EventWhereInput>;
 };
@@ -17857,8 +18832,8 @@ export type Query_RootEventsConnectionArgs = {
 
 export type Query_RootFollowArgs = {
   distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Follow_Order_By>>;
   where?: InputMaybe<Follow_Bool_Exp>;
 };
@@ -17866,23 +18841,23 @@ export type Query_RootFollowArgs = {
 
 export type Query_RootFollow_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Follow_Order_By>>;
   where?: InputMaybe<Follow_Bool_Exp>;
 };
 
 
 export type Query_RootFollow_By_PkArgs = {
-  accountId: Scalars['uuid'];
-  organizerSlug: Scalars['String'];
+  accountId: Scalars['uuid']['input'];
+  organizerSlug: Scalars['String']['input'];
 };
 
 
 export type Query_RootKycArgs = {
   distinct_on?: InputMaybe<Array<Kyc_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Kyc_Order_By>>;
   where?: InputMaybe<Kyc_Bool_Exp>;
 };
@@ -17890,8 +18865,8 @@ export type Query_RootKycArgs = {
 
 export type Query_RootKycLevelNameArgs = {
   distinct_on?: InputMaybe<Array<KycLevelName_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<KycLevelName_Order_By>>;
   where?: InputMaybe<KycLevelName_Bool_Exp>;
 };
@@ -17899,22 +18874,22 @@ export type Query_RootKycLevelNameArgs = {
 
 export type Query_RootKycLevelName_AggregateArgs = {
   distinct_on?: InputMaybe<Array<KycLevelName_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<KycLevelName_Order_By>>;
   where?: InputMaybe<KycLevelName_Bool_Exp>;
 };
 
 
 export type Query_RootKycLevelName_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Query_RootKycStatusArgs = {
   distinct_on?: InputMaybe<Array<KycStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<KycStatus_Order_By>>;
   where?: InputMaybe<KycStatus_Bool_Exp>;
 };
@@ -17922,36 +18897,36 @@ export type Query_RootKycStatusArgs = {
 
 export type Query_RootKycStatus_AggregateArgs = {
   distinct_on?: InputMaybe<Array<KycStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<KycStatus_Order_By>>;
   where?: InputMaybe<KycStatus_Bool_Exp>;
 };
 
 
 export type Query_RootKycStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Query_RootKyc_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Kyc_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Kyc_Order_By>>;
   where?: InputMaybe<Kyc_Bool_Exp>;
 };
 
 
 export type Query_RootKyc_By_PkArgs = {
-  externalUserId: Scalars['uuid'];
+  externalUserId: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootLotteryParametersArgs = {
   distinct_on?: InputMaybe<Array<LotteryParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<LotteryParameters_Order_By>>;
   where?: InputMaybe<LotteryParameters_Bool_Exp>;
 };
@@ -17959,22 +18934,22 @@ export type Query_RootLotteryParametersArgs = {
 
 export type Query_RootLotteryParameters_AggregateArgs = {
   distinct_on?: InputMaybe<Array<LotteryParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<LotteryParameters_Order_By>>;
   where?: InputMaybe<LotteryParameters_Bool_Exp>;
 };
 
 
 export type Query_RootLotteryParameters_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootLotteryStatusArgs = {
   distinct_on?: InputMaybe<Array<LotteryStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<LotteryStatus_Order_By>>;
   where?: InputMaybe<LotteryStatus_Bool_Exp>;
 };
@@ -17982,22 +18957,22 @@ export type Query_RootLotteryStatusArgs = {
 
 export type Query_RootLotteryStatus_AggregateArgs = {
   distinct_on?: InputMaybe<Array<LotteryStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<LotteryStatus_Order_By>>;
   where?: InputMaybe<LotteryStatus_Bool_Exp>;
 };
 
 
 export type Query_RootLotteryStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Query_RootNftTransferArgs = {
   distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
   where?: InputMaybe<NftTransfer_Bool_Exp>;
 };
@@ -18005,20 +18980,20 @@ export type Query_RootNftTransferArgs = {
 
 export type Query_RootNftTransfer_AggregateArgs = {
   distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
   where?: InputMaybe<NftTransfer_Bool_Exp>;
 };
 
 
 export type Query_RootNftTransfer_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootNodeArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
   locales?: Array<Locale>;
   stage?: Stage;
 };
@@ -18026,8 +19001,8 @@ export type Query_RootNodeArgs = {
 
 export type Query_RootOrderArgs = {
   distinct_on?: InputMaybe<Array<Order_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Order_Order_By>>;
   where?: InputMaybe<Order_Bool_Exp>;
 };
@@ -18035,8 +19010,8 @@ export type Query_RootOrderArgs = {
 
 export type Query_RootOrderStatusArgs = {
   distinct_on?: InputMaybe<Array<OrderStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<OrderStatus_Order_By>>;
   where?: InputMaybe<OrderStatus_Bool_Exp>;
 };
@@ -18044,29 +19019,29 @@ export type Query_RootOrderStatusArgs = {
 
 export type Query_RootOrderStatus_AggregateArgs = {
   distinct_on?: InputMaybe<Array<OrderStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<OrderStatus_Order_By>>;
   where?: InputMaybe<OrderStatus_Bool_Exp>;
 };
 
 
 export type Query_RootOrderStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Query_RootOrder_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Order_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Order_Order_By>>;
   where?: InputMaybe<Order_Bool_Exp>;
 };
 
 
 export type Query_RootOrder_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -18083,26 +19058,26 @@ export type Query_RootOrganizerVersionArgs = {
 
 
 export type Query_RootOrganizersArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<OrganizerOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<OrganizerWhereInput>;
 };
 
 
 export type Query_RootOrganizersConnectionArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<OrganizerOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<OrganizerWhereInput>;
 };
@@ -18117,8 +19092,8 @@ export type Query_RootPackArgs = {
 
 export type Query_RootPackEventPassNftArgs = {
   distinct_on?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackEventPassNft_Order_By>>;
   where?: InputMaybe<PackEventPassNft_Bool_Exp>;
 };
@@ -18126,23 +19101,23 @@ export type Query_RootPackEventPassNftArgs = {
 
 export type Query_RootPackEventPassNft_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackEventPassNft_Order_By>>;
   where?: InputMaybe<PackEventPassNft_Bool_Exp>;
 };
 
 
 export type Query_RootPackEventPassNft_By_PkArgs = {
-  eventPassNftId: Scalars['uuid'];
-  packNftSupplyId: Scalars['uuid'];
+  eventPassNftId: Scalars['uuid']['input'];
+  packNftSupplyId: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootPackNftContractArgs = {
   distinct_on?: InputMaybe<Array<PackNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftContract_Order_By>>;
   where?: InputMaybe<PackNftContract_Bool_Exp>;
 };
@@ -18150,8 +19125,8 @@ export type Query_RootPackNftContractArgs = {
 
 export type Query_RootPackNftContractEventPassArgs = {
   distinct_on?: InputMaybe<Array<PackNftContractEventPass_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftContractEventPass_Order_By>>;
   where?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
 };
@@ -18159,37 +19134,37 @@ export type Query_RootPackNftContractEventPassArgs = {
 
 export type Query_RootPackNftContractEventPass_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackNftContractEventPass_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftContractEventPass_Order_By>>;
   where?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
 };
 
 
 export type Query_RootPackNftContractEventPass_By_PkArgs = {
-  eventPassId: Scalars['String'];
-  packNftContractId: Scalars['uuid'];
+  eventPassId: Scalars['String']['input'];
+  packNftContractId: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootPackNftContract_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftContract_Order_By>>;
   where?: InputMaybe<PackNftContract_Bool_Exp>;
 };
 
 
 export type Query_RootPackNftContract_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootPackNftSupplyArgs = {
   distinct_on?: InputMaybe<Array<PackNftSupply_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftSupply_Order_By>>;
   where?: InputMaybe<PackNftSupply_Bool_Exp>;
 };
@@ -18197,22 +19172,22 @@ export type Query_RootPackNftSupplyArgs = {
 
 export type Query_RootPackNftSupply_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackNftSupply_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftSupply_Order_By>>;
   where?: InputMaybe<PackNftSupply_Bool_Exp>;
 };
 
 
 export type Query_RootPackNftSupply_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootPackOrderSumsArgs = {
   distinct_on?: InputMaybe<Array<PackOrderSums_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackOrderSums_Order_By>>;
   where?: InputMaybe<PackOrderSums_Bool_Exp>;
 };
@@ -18220,15 +19195,15 @@ export type Query_RootPackOrderSumsArgs = {
 
 export type Query_RootPackOrderSums_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackOrderSums_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackOrderSums_Order_By>>;
   where?: InputMaybe<PackOrderSums_Bool_Exp>;
 };
 
 
 export type Query_RootPackOrderSums_By_PkArgs = {
-  packId: Scalars['String'];
+  packId: Scalars['String']['input'];
 };
 
 
@@ -18238,26 +19213,26 @@ export type Query_RootPackVersionArgs = {
 
 
 export type Query_RootPacksArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<PackOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<PackWhereInput>;
 };
 
 
 export type Query_RootPacksConnectionArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<PackOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<PackWhereInput>;
 };
@@ -18265,8 +19240,8 @@ export type Query_RootPacksConnectionArgs = {
 
 export type Query_RootPassAmountArgs = {
   distinct_on?: InputMaybe<Array<PassAmount_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PassAmount_Order_By>>;
   where?: InputMaybe<PassAmount_Bool_Exp>;
 };
@@ -18274,22 +19249,22 @@ export type Query_RootPassAmountArgs = {
 
 export type Query_RootPassAmount_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PassAmount_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PassAmount_Order_By>>;
   where?: InputMaybe<PassAmount_Bool_Exp>;
 };
 
 
 export type Query_RootPassAmount_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootPassPricingArgs = {
   distinct_on?: InputMaybe<Array<PassPricing_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PassPricing_Order_By>>;
   where?: InputMaybe<PassPricing_Bool_Exp>;
 };
@@ -18297,22 +19272,22 @@ export type Query_RootPassPricingArgs = {
 
 export type Query_RootPassPricing_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PassPricing_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PassPricing_Order_By>>;
   where?: InputMaybe<PassPricing_Bool_Exp>;
 };
 
 
 export type Query_RootPassPricing_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootPendingOrderArgs = {
   distinct_on?: InputMaybe<Array<PendingOrder_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PendingOrder_Order_By>>;
   where?: InputMaybe<PendingOrder_Bool_Exp>;
 };
@@ -18320,22 +19295,22 @@ export type Query_RootPendingOrderArgs = {
 
 export type Query_RootPendingOrder_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PendingOrder_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PendingOrder_Order_By>>;
   where?: InputMaybe<PendingOrder_Bool_Exp>;
 };
 
 
 export type Query_RootPendingOrder_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Query_RootRoleAssignmentArgs = {
   distinct_on?: InputMaybe<Array<RoleAssignment_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<RoleAssignment_Order_By>>;
   where?: InputMaybe<RoleAssignment_Bool_Exp>;
 };
@@ -18343,8 +19318,8 @@ export type Query_RootRoleAssignmentArgs = {
 
 export type Query_RootRoleAssignment_AggregateArgs = {
   distinct_on?: InputMaybe<Array<RoleAssignment_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<RoleAssignment_Order_By>>;
   where?: InputMaybe<RoleAssignment_Bool_Exp>;
 };
@@ -18352,8 +19327,8 @@ export type Query_RootRoleAssignment_AggregateArgs = {
 
 export type Query_RootRolesArgs = {
   distinct_on?: InputMaybe<Array<Roles_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Roles_Order_By>>;
   where?: InputMaybe<Roles_Bool_Exp>;
 };
@@ -18361,15 +19336,15 @@ export type Query_RootRolesArgs = {
 
 export type Query_RootRoles_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Roles_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Roles_Order_By>>;
   where?: InputMaybe<Roles_Bool_Exp>;
 };
 
 
 export type Query_RootRoles_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -18381,26 +19356,26 @@ export type Query_RootScheduledOperationArgs = {
 
 
 export type Query_RootScheduledOperationsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<ScheduledOperationOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
 
 
 export type Query_RootScheduledOperationsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<ScheduledOperationOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<ScheduledOperationWhereInput>;
 };
@@ -18414,26 +19389,26 @@ export type Query_RootScheduledReleaseArgs = {
 
 
 export type Query_RootScheduledReleasesArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<ScheduledReleaseOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<ScheduledReleaseWhereInput>;
 };
 
 
 export type Query_RootScheduledReleasesConnectionArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<ScheduledReleaseOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<ScheduledReleaseWhereInput>;
 };
@@ -18441,8 +19416,8 @@ export type Query_RootScheduledReleasesConnectionArgs = {
 
 export type Query_RootStripeCheckoutSessionArgs = {
   distinct_on?: InputMaybe<Array<StripeCheckoutSession_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCheckoutSession_Order_By>>;
   where?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
 };
@@ -18450,8 +19425,8 @@ export type Query_RootStripeCheckoutSessionArgs = {
 
 export type Query_RootStripeCheckoutSessionTypeArgs = {
   distinct_on?: InputMaybe<Array<StripeCheckoutSessionType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCheckoutSessionType_Order_By>>;
   where?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
 };
@@ -18459,36 +19434,36 @@ export type Query_RootStripeCheckoutSessionTypeArgs = {
 
 export type Query_RootStripeCheckoutSessionType_AggregateArgs = {
   distinct_on?: InputMaybe<Array<StripeCheckoutSessionType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCheckoutSessionType_Order_By>>;
   where?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
 };
 
 
 export type Query_RootStripeCheckoutSessionType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Query_RootStripeCheckoutSession_AggregateArgs = {
   distinct_on?: InputMaybe<Array<StripeCheckoutSession_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCheckoutSession_Order_By>>;
   where?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
 };
 
 
 export type Query_RootStripeCheckoutSession_By_PkArgs = {
-  stripeSessionId: Scalars['String'];
+  stripeSessionId: Scalars['String']['input'];
 };
 
 
 export type Query_RootStripeCustomerArgs = {
   distinct_on?: InputMaybe<Array<StripeCustomer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCustomer_Order_By>>;
   where?: InputMaybe<StripeCustomer_Bool_Exp>;
 };
@@ -18496,22 +19471,22 @@ export type Query_RootStripeCustomerArgs = {
 
 export type Query_RootStripeCustomer_AggregateArgs = {
   distinct_on?: InputMaybe<Array<StripeCustomer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCustomer_Order_By>>;
   where?: InputMaybe<StripeCustomer_Bool_Exp>;
 };
 
 
 export type Query_RootStripeCustomer_By_PkArgs = {
-  stripeCustomerId: Scalars['String'];
+  stripeCustomerId: Scalars['String']['input'];
 };
 
 
 export type Query_RootTimezoneArgs = {
   distinct_on?: InputMaybe<Array<Timezone_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Timezone_Order_By>>;
   where?: InputMaybe<Timezone_Bool_Exp>;
 };
@@ -18519,15 +19494,15 @@ export type Query_RootTimezoneArgs = {
 
 export type Query_RootTimezone_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Timezone_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Timezone_Order_By>>;
   where?: InputMaybe<Timezone_Bool_Exp>;
 };
 
 
 export type Query_RootTimezone_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
@@ -18539,26 +19514,26 @@ export type Query_RootUserArgs = {
 
 
 export type Query_RootUsersArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<UserOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<UserWhereInput>;
 };
 
 
 export type Query_RootUsersConnectionArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
   locales?: Array<Locale>;
   orderBy?: InputMaybe<UserOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<UserWhereInput>;
 };
@@ -18566,15 +19541,15 @@ export type Query_RootUsersConnectionArgs = {
 /** Table to assign roles to accounts, allowing a many-to-many relationship. Each account can have multiple roles and each role can be assigned to multiple accounts. This is part of the RBAC system integration. */
 export type RoleAssignment = {
   __typename?: 'roleAssignment';
-  accountId: Scalars['uuid'];
-  created_at: Scalars['timestamptz'];
-  eventId: Scalars['String'];
-  id: Scalars['uuid'];
-  invitedById: Scalars['uuid'];
+  accountId: Scalars['uuid']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  eventId: Scalars['String']['output'];
+  id: Scalars['uuid']['output'];
+  invitedById: Scalars['uuid']['output'];
   /** An object relationship */
   inviter: Account;
   organizer?: Maybe<Organizer>;
-  organizerId: Scalars['String'];
+  organizerId: Scalars['String']['output'];
   role: Roles_Enum;
 };
 
@@ -18599,7 +19574,7 @@ export type RoleAssignment_Aggregate_Bool_Exp = {
 
 export type RoleAssignment_Aggregate_Bool_Exp_Count = {
   arguments?: InputMaybe<Array<RoleAssignment_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
   filter?: InputMaybe<RoleAssignment_Bool_Exp>;
   predicate: Int_Comparison_Exp;
 };
@@ -18607,7 +19582,7 @@ export type RoleAssignment_Aggregate_Bool_Exp_Count = {
 /** aggregate fields of "roleAssignment" */
 export type RoleAssignment_Aggregate_Fields = {
   __typename?: 'roleAssignment_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<RoleAssignment_Max_Fields>;
   min?: Maybe<RoleAssignment_Min_Fields>;
 };
@@ -18616,7 +19591,7 @@ export type RoleAssignment_Aggregate_Fields = {
 /** aggregate fields of "roleAssignment" */
 export type RoleAssignment_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<RoleAssignment_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** order by aggregate values of table "roleAssignment" */
@@ -18656,25 +19631,25 @@ export const enum RoleAssignment_Constraint {
 
 /** input type for inserting data into table "roleAssignment" */
 export type RoleAssignment_Insert_Input = {
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  invitedById?: InputMaybe<Scalars['uuid']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  invitedById?: InputMaybe<Scalars['uuid']['input']>;
   inviter?: InputMaybe<Account_Obj_Rel_Insert_Input>;
-  organizerId?: InputMaybe<Scalars['String']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   role?: InputMaybe<Roles_Enum>;
 };
 
 /** aggregate max on columns */
 export type RoleAssignment_Max_Fields = {
   __typename?: 'roleAssignment_max_fields';
-  accountId?: Maybe<Scalars['uuid']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  eventId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  invitedById?: Maybe<Scalars['uuid']>;
-  organizerId?: Maybe<Scalars['String']>;
+  accountId?: Maybe<Scalars['uuid']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  eventId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  invitedById?: Maybe<Scalars['uuid']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
 };
 
 /** order by max() on columns of table "roleAssignment" */
@@ -18690,12 +19665,12 @@ export type RoleAssignment_Max_Order_By = {
 /** aggregate min on columns */
 export type RoleAssignment_Min_Fields = {
   __typename?: 'roleAssignment_min_fields';
-  accountId?: Maybe<Scalars['uuid']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  eventId?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  invitedById?: Maybe<Scalars['uuid']>;
-  organizerId?: Maybe<Scalars['String']>;
+  accountId?: Maybe<Scalars['uuid']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  eventId?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  invitedById?: Maybe<Scalars['uuid']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
 };
 
 /** order by min() on columns of table "roleAssignment" */
@@ -18712,7 +19687,7 @@ export type RoleAssignment_Min_Order_By = {
 export type RoleAssignment_Mutation_Response = {
   __typename?: 'roleAssignment_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<RoleAssignment>;
 };
@@ -18756,12 +19731,12 @@ export const enum RoleAssignment_Select_Column {
 
 /** input type for updating data in table "roleAssignment" */
 export type RoleAssignment_Set_Input = {
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  invitedById?: InputMaybe<Scalars['uuid']>;
-  organizerId?: InputMaybe<Scalars['String']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  invitedById?: InputMaybe<Scalars['uuid']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   role?: InputMaybe<Roles_Enum>;
 };
 
@@ -18775,12 +19750,12 @@ export type RoleAssignment_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type RoleAssignment_Stream_Cursor_Value_Input = {
-  accountId?: InputMaybe<Scalars['uuid']>;
-  created_at?: InputMaybe<Scalars['timestamptz']>;
-  eventId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['uuid']>;
-  invitedById?: InputMaybe<Scalars['uuid']>;
-  organizerId?: InputMaybe<Scalars['String']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  eventId?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  invitedById?: InputMaybe<Scalars['uuid']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
   role?: InputMaybe<Roles_Enum>;
 };
 
@@ -18825,7 +19800,7 @@ export type Roles = {
    *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
    *
    */
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "roles" */
@@ -18838,7 +19813,7 @@ export type Roles_Aggregate = {
 /** aggregate fields of "roles" */
 export type Roles_Aggregate_Fields = {
   __typename?: 'roles_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Roles_Max_Fields>;
   min?: Maybe<Roles_Min_Fields>;
 };
@@ -18847,7 +19822,7 @@ export type Roles_Aggregate_Fields = {
 /** aggregate fields of "roles" */
 export type Roles_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Roles_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "roles". All fields are combined with a logical 'AND'. */
@@ -18880,7 +19855,7 @@ export const enum Roles_Enum {
 export type Roles_Enum_Comparison_Exp = {
   _eq?: InputMaybe<Roles_Enum>;
   _in?: InputMaybe<Array<Roles_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   _neq?: InputMaybe<Roles_Enum>;
   _nin?: InputMaybe<Array<Roles_Enum>>;
 };
@@ -18900,7 +19875,7 @@ export type Roles_Insert_Input = {
    *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
    *
    */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
@@ -18919,7 +19894,7 @@ export type Roles_Max_Fields = {
    *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
    *
    */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
@@ -18938,14 +19913,14 @@ export type Roles_Min_Fields = {
    *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
    *
    */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "roles" */
 export type Roles_Mutation_Response = {
   __typename?: 'roles_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Roles>;
 };
@@ -18977,7 +19952,7 @@ export type Roles_Pk_Columns_Input = {
    *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
    *
    */
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "roles" */
@@ -19001,7 +19976,7 @@ export type Roles_Set_Input = {
    *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
    *
    */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "roles" */
@@ -19027,7 +20002,7 @@ export type Roles_Stream_Cursor_Value_Input = {
    *     organizer_human_resources: Administrative permissions. Can invite new members for the organization and assign roles (except super admin and human resources).
    *
    */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "roles" */
@@ -19047,22 +20022,22 @@ export type Roles_Updates = {
 export type StripeCheckoutSession = {
   __typename?: 'stripeCheckoutSession';
   /** Timestamp automatically set when the row is created. */
-  created_at: Scalars['timestamptz'];
+  created_at: Scalars['timestamptz']['output'];
   /** Stripe Customer ID referencing to the stripeCustomer table. */
-  stripeCustomerId: Scalars['String'];
+  stripeCustomerId: Scalars['String']['output'];
   /** Unique identifier for the Stripe Checkout Session. */
-  stripeSessionId: Scalars['String'];
+  stripeSessionId: Scalars['String']['output'];
   /** Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table. */
   type: StripeCheckoutSessionType_Enum;
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at: Scalars['timestamptz'];
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 /** Types of Stripe Checkout Sessions. */
 export type StripeCheckoutSessionType = {
   __typename?: 'stripeCheckoutSessionType';
   /** Type value. */
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "stripeCheckoutSessionType" */
@@ -19075,7 +20050,7 @@ export type StripeCheckoutSessionType_Aggregate = {
 /** aggregate fields of "stripeCheckoutSessionType" */
 export type StripeCheckoutSessionType_Aggregate_Fields = {
   __typename?: 'stripeCheckoutSessionType_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<StripeCheckoutSessionType_Max_Fields>;
   min?: Maybe<StripeCheckoutSessionType_Min_Fields>;
 };
@@ -19084,7 +20059,7 @@ export type StripeCheckoutSessionType_Aggregate_Fields = {
 /** aggregate fields of "stripeCheckoutSessionType" */
 export type StripeCheckoutSessionType_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<StripeCheckoutSessionType_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "stripeCheckoutSessionType". All fields are combined with a logical 'AND'. */
@@ -19109,7 +20084,7 @@ export const enum StripeCheckoutSessionType_Enum {
 export type StripeCheckoutSessionType_Enum_Comparison_Exp = {
   _eq?: InputMaybe<StripeCheckoutSessionType_Enum>;
   _in?: InputMaybe<Array<StripeCheckoutSessionType_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
   _neq?: InputMaybe<StripeCheckoutSessionType_Enum>;
   _nin?: InputMaybe<Array<StripeCheckoutSessionType_Enum>>;
 };
@@ -19117,28 +20092,28 @@ export type StripeCheckoutSessionType_Enum_Comparison_Exp = {
 /** input type for inserting data into table "stripeCheckoutSessionType" */
 export type StripeCheckoutSessionType_Insert_Input = {
   /** Type value. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type StripeCheckoutSessionType_Max_Fields = {
   __typename?: 'stripeCheckoutSessionType_max_fields';
   /** Type value. */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type StripeCheckoutSessionType_Min_Fields = {
   __typename?: 'stripeCheckoutSessionType_min_fields';
   /** Type value. */
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "stripeCheckoutSessionType" */
 export type StripeCheckoutSessionType_Mutation_Response = {
   __typename?: 'stripeCheckoutSessionType_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<StripeCheckoutSessionType>;
 };
@@ -19158,7 +20133,7 @@ export type StripeCheckoutSessionType_Order_By = {
 /** primary key columns input for table: stripeCheckoutSessionType */
 export type StripeCheckoutSessionType_Pk_Columns_Input = {
   /** Type value. */
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "stripeCheckoutSessionType" */
@@ -19170,7 +20145,7 @@ export const enum StripeCheckoutSessionType_Select_Column {
 /** input type for updating data in table "stripeCheckoutSessionType" */
 export type StripeCheckoutSessionType_Set_Input = {
   /** Type value. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "stripeCheckoutSessionType" */
@@ -19184,7 +20159,7 @@ export type StripeCheckoutSessionType_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type StripeCheckoutSessionType_Stream_Cursor_Value_Input = {
   /** Type value. */
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "stripeCheckoutSessionType" */
@@ -19210,7 +20185,7 @@ export type StripeCheckoutSession_Aggregate = {
 /** aggregate fields of "stripeCheckoutSession" */
 export type StripeCheckoutSession_Aggregate_Fields = {
   __typename?: 'stripeCheckoutSession_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<StripeCheckoutSession_Max_Fields>;
   min?: Maybe<StripeCheckoutSession_Min_Fields>;
 };
@@ -19219,7 +20194,7 @@ export type StripeCheckoutSession_Aggregate_Fields = {
 /** aggregate fields of "stripeCheckoutSession" */
 export type StripeCheckoutSession_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<StripeCheckoutSession_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "stripeCheckoutSession". All fields are combined with a logical 'AND'. */
@@ -19243,48 +20218,48 @@ export const enum StripeCheckoutSession_Constraint {
 /** input type for inserting data into table "stripeCheckoutSession" */
 export type StripeCheckoutSession_Insert_Input = {
   /** Timestamp automatically set when the row is created. */
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Stripe Customer ID referencing to the stripeCustomer table. */
-  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  stripeCustomerId?: InputMaybe<Scalars['String']['input']>;
   /** Unique identifier for the Stripe Checkout Session. */
-  stripeSessionId?: InputMaybe<Scalars['String']>;
+  stripeSessionId?: InputMaybe<Scalars['String']['input']>;
   /** Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table. */
   type?: InputMaybe<StripeCheckoutSessionType_Enum>;
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type StripeCheckoutSession_Max_Fields = {
   __typename?: 'stripeCheckoutSession_max_fields';
   /** Timestamp automatically set when the row is created. */
-  created_at?: Maybe<Scalars['timestamptz']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** Stripe Customer ID referencing to the stripeCustomer table. */
-  stripeCustomerId?: Maybe<Scalars['String']>;
+  stripeCustomerId?: Maybe<Scalars['String']['output']>;
   /** Unique identifier for the Stripe Checkout Session. */
-  stripeSessionId?: Maybe<Scalars['String']>;
+  stripeSessionId?: Maybe<Scalars['String']['output']>;
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
 export type StripeCheckoutSession_Min_Fields = {
   __typename?: 'stripeCheckoutSession_min_fields';
   /** Timestamp automatically set when the row is created. */
-  created_at?: Maybe<Scalars['timestamptz']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** Stripe Customer ID referencing to the stripeCustomer table. */
-  stripeCustomerId?: Maybe<Scalars['String']>;
+  stripeCustomerId?: Maybe<Scalars['String']['output']>;
   /** Unique identifier for the Stripe Checkout Session. */
-  stripeSessionId?: Maybe<Scalars['String']>;
+  stripeSessionId?: Maybe<Scalars['String']['output']>;
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "stripeCheckoutSession" */
 export type StripeCheckoutSession_Mutation_Response = {
   __typename?: 'stripeCheckoutSession_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<StripeCheckoutSession>;
 };
@@ -19308,7 +20283,7 @@ export type StripeCheckoutSession_Order_By = {
 /** primary key columns input for table: stripeCheckoutSession */
 export type StripeCheckoutSession_Pk_Columns_Input = {
   /** Unique identifier for the Stripe Checkout Session. */
-  stripeSessionId: Scalars['String'];
+  stripeSessionId: Scalars['String']['input'];
 };
 
 /** select columns of table "stripeCheckoutSession" */
@@ -19328,15 +20303,15 @@ export const enum StripeCheckoutSession_Select_Column {
 /** input type for updating data in table "stripeCheckoutSession" */
 export type StripeCheckoutSession_Set_Input = {
   /** Timestamp automatically set when the row is created. */
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Stripe Customer ID referencing to the stripeCustomer table. */
-  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  stripeCustomerId?: InputMaybe<Scalars['String']['input']>;
   /** Unique identifier for the Stripe Checkout Session. */
-  stripeSessionId?: InputMaybe<Scalars['String']>;
+  stripeSessionId?: InputMaybe<Scalars['String']['input']>;
   /** Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table. */
   type?: InputMaybe<StripeCheckoutSessionType_Enum>;
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Streaming cursor of the table "stripeCheckoutSession" */
@@ -19350,15 +20325,15 @@ export type StripeCheckoutSession_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type StripeCheckoutSession_Stream_Cursor_Value_Input = {
   /** Timestamp automatically set when the row is created. */
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Stripe Customer ID referencing to the stripeCustomer table. */
-  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  stripeCustomerId?: InputMaybe<Scalars['String']['input']>;
   /** Unique identifier for the Stripe Checkout Session. */
-  stripeSessionId?: InputMaybe<Scalars['String']>;
+  stripeSessionId?: InputMaybe<Scalars['String']['input']>;
   /** Type of the Stripe Checkout Session. Default is event_pass_order. References to the stripeCheckoutSessionType table. */
   type?: InputMaybe<StripeCheckoutSessionType_Enum>;
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "stripeCheckoutSession" */
@@ -19386,13 +20361,13 @@ export type StripeCheckoutSession_Updates = {
 export type StripeCustomer = {
   __typename?: 'stripeCustomer';
   /** UUID referencing to the account ID in the existing accounts table. */
-  accountId: Scalars['uuid'];
+  accountId: Scalars['uuid']['output'];
   /** Timestamp automatically set when the row is created. */
-  created_at: Scalars['timestamptz'];
+  created_at: Scalars['timestamptz']['output'];
   /** Unique identifier for the Stripe Customer. */
-  stripeCustomerId: Scalars['String'];
+  stripeCustomerId: Scalars['String']['output'];
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at: Scalars['timestamptz'];
+  updated_at: Scalars['timestamptz']['output'];
 };
 
 /** aggregated selection of "stripeCustomer" */
@@ -19405,7 +20380,7 @@ export type StripeCustomer_Aggregate = {
 /** aggregate fields of "stripeCustomer" */
 export type StripeCustomer_Aggregate_Fields = {
   __typename?: 'stripeCustomer_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<StripeCustomer_Max_Fields>;
   min?: Maybe<StripeCustomer_Min_Fields>;
 };
@@ -19414,7 +20389,7 @@ export type StripeCustomer_Aggregate_Fields = {
 /** aggregate fields of "stripeCustomer" */
 export type StripeCustomer_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<StripeCustomer_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "stripeCustomer". All fields are combined with a logical 'AND'. */
@@ -19437,46 +20412,46 @@ export const enum StripeCustomer_Constraint {
 /** input type for inserting data into table "stripeCustomer" */
 export type StripeCustomer_Insert_Input = {
   /** UUID referencing to the account ID in the existing accounts table. */
-  accountId?: InputMaybe<Scalars['uuid']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
   /** Timestamp automatically set when the row is created. */
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Unique identifier for the Stripe Customer. */
-  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  stripeCustomerId?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type StripeCustomer_Max_Fields = {
   __typename?: 'stripeCustomer_max_fields';
   /** UUID referencing to the account ID in the existing accounts table. */
-  accountId?: Maybe<Scalars['uuid']>;
+  accountId?: Maybe<Scalars['uuid']['output']>;
   /** Timestamp automatically set when the row is created. */
-  created_at?: Maybe<Scalars['timestamptz']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** Unique identifier for the Stripe Customer. */
-  stripeCustomerId?: Maybe<Scalars['String']>;
+  stripeCustomerId?: Maybe<Scalars['String']['output']>;
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
 export type StripeCustomer_Min_Fields = {
   __typename?: 'stripeCustomer_min_fields';
   /** UUID referencing to the account ID in the existing accounts table. */
-  accountId?: Maybe<Scalars['uuid']>;
+  accountId?: Maybe<Scalars['uuid']['output']>;
   /** Timestamp automatically set when the row is created. */
-  created_at?: Maybe<Scalars['timestamptz']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** Unique identifier for the Stripe Customer. */
-  stripeCustomerId?: Maybe<Scalars['String']>;
+  stripeCustomerId?: Maybe<Scalars['String']['output']>;
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "stripeCustomer" */
 export type StripeCustomer_Mutation_Response = {
   __typename?: 'stripeCustomer_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<StripeCustomer>;
 };
@@ -19506,7 +20481,7 @@ export type StripeCustomer_Order_By = {
 /** primary key columns input for table: stripeCustomer */
 export type StripeCustomer_Pk_Columns_Input = {
   /** Unique identifier for the Stripe Customer. */
-  stripeCustomerId: Scalars['String'];
+  stripeCustomerId: Scalars['String']['input'];
 };
 
 /** select columns of table "stripeCustomer" */
@@ -19524,13 +20499,13 @@ export const enum StripeCustomer_Select_Column {
 /** input type for updating data in table "stripeCustomer" */
 export type StripeCustomer_Set_Input = {
   /** UUID referencing to the account ID in the existing accounts table. */
-  accountId?: InputMaybe<Scalars['uuid']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
   /** Timestamp automatically set when the row is created. */
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Unique identifier for the Stripe Customer. */
-  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  stripeCustomerId?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Streaming cursor of the table "stripeCustomer" */
@@ -19544,13 +20519,13 @@ export type StripeCustomer_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type StripeCustomer_Stream_Cursor_Value_Input = {
   /** UUID referencing to the account ID in the existing accounts table. */
-  accountId?: InputMaybe<Scalars['uuid']>;
+  accountId?: InputMaybe<Scalars['uuid']['input']>;
   /** Timestamp automatically set when the row is created. */
-  created_at?: InputMaybe<Scalars['timestamptz']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Unique identifier for the Stripe Customer. */
-  stripeCustomerId?: InputMaybe<Scalars['String']>;
+  stripeCustomerId?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp automatically updated whenever the row changes. */
-  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "stripeCustomer" */
@@ -19841,8 +20816,8 @@ export type Subscription_Root = {
 
 export type Subscription_RootAccountArgs = {
   distinct_on?: InputMaybe<Array<Account_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Account_Order_By>>;
   where?: InputMaybe<Account_Bool_Exp>;
 };
@@ -19850,20 +20825,20 @@ export type Subscription_RootAccountArgs = {
 
 export type Subscription_RootAccount_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Account_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Account_Order_By>>;
   where?: InputMaybe<Account_Bool_Exp>;
 };
 
 
 export type Subscription_RootAccount_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootAccount_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Account_Stream_Cursor_Input>>;
   where?: InputMaybe<Account_Bool_Exp>;
 };
@@ -19871,8 +20846,8 @@ export type Subscription_RootAccount_StreamArgs = {
 
 export type Subscription_RootCurrencyArgs = {
   distinct_on?: InputMaybe<Array<Currency_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Currency_Order_By>>;
   where?: InputMaybe<Currency_Bool_Exp>;
 };
@@ -19880,20 +20855,20 @@ export type Subscription_RootCurrencyArgs = {
 
 export type Subscription_RootCurrency_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Currency_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Currency_Order_By>>;
   where?: InputMaybe<Currency_Bool_Exp>;
 };
 
 
 export type Subscription_RootCurrency_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootCurrency_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Currency_Stream_Cursor_Input>>;
   where?: InputMaybe<Currency_Bool_Exp>;
 };
@@ -19901,8 +20876,8 @@ export type Subscription_RootCurrency_StreamArgs = {
 
 export type Subscription_RootEventParametersArgs = {
   distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventParameters_Order_By>>;
   where?: InputMaybe<EventParameters_Bool_Exp>;
 };
@@ -19910,20 +20885,20 @@ export type Subscription_RootEventParametersArgs = {
 
 export type Subscription_RootEventParameters_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventParameters_Order_By>>;
   where?: InputMaybe<EventParameters_Bool_Exp>;
 };
 
 
 export type Subscription_RootEventParameters_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootEventParameters_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventParameters_Stream_Cursor_Input>>;
   where?: InputMaybe<EventParameters_Bool_Exp>;
 };
@@ -19931,8 +20906,8 @@ export type Subscription_RootEventParameters_StreamArgs = {
 
 export type Subscription_RootEventPassNftArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
@@ -19940,8 +20915,8 @@ export type Subscription_RootEventPassNftArgs = {
 
 export type Subscription_RootEventPassNftContractArgs = {
   distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
 };
@@ -19949,8 +20924,8 @@ export type Subscription_RootEventPassNftContractArgs = {
 
 export type Subscription_RootEventPassNftContractTypeArgs = {
   distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
   where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
 };
@@ -19958,20 +20933,20 @@ export type Subscription_RootEventPassNftContractTypeArgs = {
 
 export type Subscription_RootEventPassNftContractType_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassNftContractType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNftContractType_Order_By>>;
   where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
 };
 
 
 export type Subscription_RootEventPassNftContractType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootEventPassNftContractType_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventPassNftContractType_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassNftContractType_Bool_Exp>;
 };
@@ -19979,20 +20954,20 @@ export type Subscription_RootEventPassNftContractType_StreamArgs = {
 
 export type Subscription_RootEventPassNftContract_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNftContract_Order_By>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
 };
 
 
 export type Subscription_RootEventPassNftContract_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootEventPassNftContract_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventPassNftContract_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassNftContract_Bool_Exp>;
 };
@@ -20000,20 +20975,20 @@ export type Subscription_RootEventPassNftContract_StreamArgs = {
 
 export type Subscription_RootEventPassNft_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassNft_Order_By>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
 
 
 export type Subscription_RootEventPassNft_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootEventPassNft_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventPassNft_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassNft_Bool_Exp>;
 };
@@ -20021,8 +20996,8 @@ export type Subscription_RootEventPassNft_StreamArgs = {
 
 export type Subscription_RootEventPassOrderSumsArgs = {
   distinct_on?: InputMaybe<Array<EventPassOrderSums_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassOrderSums_Order_By>>;
   where?: InputMaybe<EventPassOrderSums_Bool_Exp>;
 };
@@ -20030,20 +21005,20 @@ export type Subscription_RootEventPassOrderSumsArgs = {
 
 export type Subscription_RootEventPassOrderSums_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassOrderSums_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassOrderSums_Order_By>>;
   where?: InputMaybe<EventPassOrderSums_Bool_Exp>;
 };
 
 
 export type Subscription_RootEventPassOrderSums_By_PkArgs = {
-  eventPassId: Scalars['String'];
+  eventPassId: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootEventPassOrderSums_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventPassOrderSums_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassOrderSums_Bool_Exp>;
 };
@@ -20051,8 +21026,8 @@ export type Subscription_RootEventPassOrderSums_StreamArgs = {
 
 export type Subscription_RootEventPassTypeArgs = {
   distinct_on?: InputMaybe<Array<EventPassType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassType_Order_By>>;
   where?: InputMaybe<EventPassType_Bool_Exp>;
 };
@@ -20060,20 +21035,20 @@ export type Subscription_RootEventPassTypeArgs = {
 
 export type Subscription_RootEventPassType_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassType_Order_By>>;
   where?: InputMaybe<EventPassType_Bool_Exp>;
 };
 
 
 export type Subscription_RootEventPassType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootEventPassType_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventPassType_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassType_Bool_Exp>;
 };
@@ -20081,8 +21056,8 @@ export type Subscription_RootEventPassType_StreamArgs = {
 
 export type Subscription_RootEventPassValidationTypeArgs = {
   distinct_on?: InputMaybe<Array<EventPassValidationType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassValidationType_Order_By>>;
   where?: InputMaybe<EventPassValidationType_Bool_Exp>;
 };
@@ -20090,20 +21065,20 @@ export type Subscription_RootEventPassValidationTypeArgs = {
 
 export type Subscription_RootEventPassValidationType_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventPassValidationType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventPassValidationType_Order_By>>;
   where?: InputMaybe<EventPassValidationType_Bool_Exp>;
 };
 
 
 export type Subscription_RootEventPassValidationType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootEventPassValidationType_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventPassValidationType_Stream_Cursor_Input>>;
   where?: InputMaybe<EventPassValidationType_Bool_Exp>;
 };
@@ -20111,8 +21086,8 @@ export type Subscription_RootEventPassValidationType_StreamArgs = {
 
 export type Subscription_RootEventStatusArgs = {
   distinct_on?: InputMaybe<Array<EventStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventStatus_Order_By>>;
   where?: InputMaybe<EventStatus_Bool_Exp>;
 };
@@ -20120,20 +21095,20 @@ export type Subscription_RootEventStatusArgs = {
 
 export type Subscription_RootEventStatus_AggregateArgs = {
   distinct_on?: InputMaybe<Array<EventStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<EventStatus_Order_By>>;
   where?: InputMaybe<EventStatus_Bool_Exp>;
 };
 
 
 export type Subscription_RootEventStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootEventStatus_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<EventStatus_Stream_Cursor_Input>>;
   where?: InputMaybe<EventStatus_Bool_Exp>;
 };
@@ -20141,8 +21116,8 @@ export type Subscription_RootEventStatus_StreamArgs = {
 
 export type Subscription_RootFollowArgs = {
   distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Follow_Order_By>>;
   where?: InputMaybe<Follow_Bool_Exp>;
 };
@@ -20150,21 +21125,21 @@ export type Subscription_RootFollowArgs = {
 
 export type Subscription_RootFollow_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Follow_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Follow_Order_By>>;
   where?: InputMaybe<Follow_Bool_Exp>;
 };
 
 
 export type Subscription_RootFollow_By_PkArgs = {
-  accountId: Scalars['uuid'];
-  organizerSlug: Scalars['String'];
+  accountId: Scalars['uuid']['input'];
+  organizerSlug: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootFollow_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Follow_Stream_Cursor_Input>>;
   where?: InputMaybe<Follow_Bool_Exp>;
 };
@@ -20172,8 +21147,8 @@ export type Subscription_RootFollow_StreamArgs = {
 
 export type Subscription_RootKycArgs = {
   distinct_on?: InputMaybe<Array<Kyc_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Kyc_Order_By>>;
   where?: InputMaybe<Kyc_Bool_Exp>;
 };
@@ -20181,8 +21156,8 @@ export type Subscription_RootKycArgs = {
 
 export type Subscription_RootKycLevelNameArgs = {
   distinct_on?: InputMaybe<Array<KycLevelName_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<KycLevelName_Order_By>>;
   where?: InputMaybe<KycLevelName_Bool_Exp>;
 };
@@ -20190,20 +21165,20 @@ export type Subscription_RootKycLevelNameArgs = {
 
 export type Subscription_RootKycLevelName_AggregateArgs = {
   distinct_on?: InputMaybe<Array<KycLevelName_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<KycLevelName_Order_By>>;
   where?: InputMaybe<KycLevelName_Bool_Exp>;
 };
 
 
 export type Subscription_RootKycLevelName_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootKycLevelName_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<KycLevelName_Stream_Cursor_Input>>;
   where?: InputMaybe<KycLevelName_Bool_Exp>;
 };
@@ -20211,8 +21186,8 @@ export type Subscription_RootKycLevelName_StreamArgs = {
 
 export type Subscription_RootKycStatusArgs = {
   distinct_on?: InputMaybe<Array<KycStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<KycStatus_Order_By>>;
   where?: InputMaybe<KycStatus_Bool_Exp>;
 };
@@ -20220,20 +21195,20 @@ export type Subscription_RootKycStatusArgs = {
 
 export type Subscription_RootKycStatus_AggregateArgs = {
   distinct_on?: InputMaybe<Array<KycStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<KycStatus_Order_By>>;
   where?: InputMaybe<KycStatus_Bool_Exp>;
 };
 
 
 export type Subscription_RootKycStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootKycStatus_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<KycStatus_Stream_Cursor_Input>>;
   where?: InputMaybe<KycStatus_Bool_Exp>;
 };
@@ -20241,20 +21216,20 @@ export type Subscription_RootKycStatus_StreamArgs = {
 
 export type Subscription_RootKyc_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Kyc_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Kyc_Order_By>>;
   where?: InputMaybe<Kyc_Bool_Exp>;
 };
 
 
 export type Subscription_RootKyc_By_PkArgs = {
-  externalUserId: Scalars['uuid'];
+  externalUserId: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootKyc_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Kyc_Stream_Cursor_Input>>;
   where?: InputMaybe<Kyc_Bool_Exp>;
 };
@@ -20262,8 +21237,8 @@ export type Subscription_RootKyc_StreamArgs = {
 
 export type Subscription_RootLotteryParametersArgs = {
   distinct_on?: InputMaybe<Array<LotteryParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<LotteryParameters_Order_By>>;
   where?: InputMaybe<LotteryParameters_Bool_Exp>;
 };
@@ -20271,20 +21246,20 @@ export type Subscription_RootLotteryParametersArgs = {
 
 export type Subscription_RootLotteryParameters_AggregateArgs = {
   distinct_on?: InputMaybe<Array<LotteryParameters_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<LotteryParameters_Order_By>>;
   where?: InputMaybe<LotteryParameters_Bool_Exp>;
 };
 
 
 export type Subscription_RootLotteryParameters_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootLotteryParameters_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<LotteryParameters_Stream_Cursor_Input>>;
   where?: InputMaybe<LotteryParameters_Bool_Exp>;
 };
@@ -20292,8 +21267,8 @@ export type Subscription_RootLotteryParameters_StreamArgs = {
 
 export type Subscription_RootLotteryStatusArgs = {
   distinct_on?: InputMaybe<Array<LotteryStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<LotteryStatus_Order_By>>;
   where?: InputMaybe<LotteryStatus_Bool_Exp>;
 };
@@ -20301,20 +21276,20 @@ export type Subscription_RootLotteryStatusArgs = {
 
 export type Subscription_RootLotteryStatus_AggregateArgs = {
   distinct_on?: InputMaybe<Array<LotteryStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<LotteryStatus_Order_By>>;
   where?: InputMaybe<LotteryStatus_Bool_Exp>;
 };
 
 
 export type Subscription_RootLotteryStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootLotteryStatus_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<LotteryStatus_Stream_Cursor_Input>>;
   where?: InputMaybe<LotteryStatus_Bool_Exp>;
 };
@@ -20322,8 +21297,8 @@ export type Subscription_RootLotteryStatus_StreamArgs = {
 
 export type Subscription_RootNftTransferArgs = {
   distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
   where?: InputMaybe<NftTransfer_Bool_Exp>;
 };
@@ -20331,20 +21306,20 @@ export type Subscription_RootNftTransferArgs = {
 
 export type Subscription_RootNftTransfer_AggregateArgs = {
   distinct_on?: InputMaybe<Array<NftTransfer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<NftTransfer_Order_By>>;
   where?: InputMaybe<NftTransfer_Bool_Exp>;
 };
 
 
 export type Subscription_RootNftTransfer_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootNftTransfer_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<NftTransfer_Stream_Cursor_Input>>;
   where?: InputMaybe<NftTransfer_Bool_Exp>;
 };
@@ -20352,8 +21327,8 @@ export type Subscription_RootNftTransfer_StreamArgs = {
 
 export type Subscription_RootOrderArgs = {
   distinct_on?: InputMaybe<Array<Order_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Order_Order_By>>;
   where?: InputMaybe<Order_Bool_Exp>;
 };
@@ -20361,8 +21336,8 @@ export type Subscription_RootOrderArgs = {
 
 export type Subscription_RootOrderStatusArgs = {
   distinct_on?: InputMaybe<Array<OrderStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<OrderStatus_Order_By>>;
   where?: InputMaybe<OrderStatus_Bool_Exp>;
 };
@@ -20370,20 +21345,20 @@ export type Subscription_RootOrderStatusArgs = {
 
 export type Subscription_RootOrderStatus_AggregateArgs = {
   distinct_on?: InputMaybe<Array<OrderStatus_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<OrderStatus_Order_By>>;
   where?: InputMaybe<OrderStatus_Bool_Exp>;
 };
 
 
 export type Subscription_RootOrderStatus_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootOrderStatus_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<OrderStatus_Stream_Cursor_Input>>;
   where?: InputMaybe<OrderStatus_Bool_Exp>;
 };
@@ -20391,20 +21366,20 @@ export type Subscription_RootOrderStatus_StreamArgs = {
 
 export type Subscription_RootOrder_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Order_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Order_Order_By>>;
   where?: InputMaybe<Order_Bool_Exp>;
 };
 
 
 export type Subscription_RootOrder_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootOrder_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Order_Stream_Cursor_Input>>;
   where?: InputMaybe<Order_Bool_Exp>;
 };
@@ -20412,8 +21387,8 @@ export type Subscription_RootOrder_StreamArgs = {
 
 export type Subscription_RootPackEventPassNftArgs = {
   distinct_on?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackEventPassNft_Order_By>>;
   where?: InputMaybe<PackEventPassNft_Bool_Exp>;
 };
@@ -20421,21 +21396,21 @@ export type Subscription_RootPackEventPassNftArgs = {
 
 export type Subscription_RootPackEventPassNft_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackEventPassNft_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackEventPassNft_Order_By>>;
   where?: InputMaybe<PackEventPassNft_Bool_Exp>;
 };
 
 
 export type Subscription_RootPackEventPassNft_By_PkArgs = {
-  eventPassNftId: Scalars['uuid'];
-  packNftSupplyId: Scalars['uuid'];
+  eventPassNftId: Scalars['uuid']['input'];
+  packNftSupplyId: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootPackEventPassNft_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<PackEventPassNft_Stream_Cursor_Input>>;
   where?: InputMaybe<PackEventPassNft_Bool_Exp>;
 };
@@ -20443,8 +21418,8 @@ export type Subscription_RootPackEventPassNft_StreamArgs = {
 
 export type Subscription_RootPackNftContractArgs = {
   distinct_on?: InputMaybe<Array<PackNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftContract_Order_By>>;
   where?: InputMaybe<PackNftContract_Bool_Exp>;
 };
@@ -20452,8 +21427,8 @@ export type Subscription_RootPackNftContractArgs = {
 
 export type Subscription_RootPackNftContractEventPassArgs = {
   distinct_on?: InputMaybe<Array<PackNftContractEventPass_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftContractEventPass_Order_By>>;
   where?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
 };
@@ -20461,21 +21436,21 @@ export type Subscription_RootPackNftContractEventPassArgs = {
 
 export type Subscription_RootPackNftContractEventPass_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackNftContractEventPass_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftContractEventPass_Order_By>>;
   where?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
 };
 
 
 export type Subscription_RootPackNftContractEventPass_By_PkArgs = {
-  eventPassId: Scalars['String'];
-  packNftContractId: Scalars['uuid'];
+  eventPassId: Scalars['String']['input'];
+  packNftContractId: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootPackNftContractEventPass_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<PackNftContractEventPass_Stream_Cursor_Input>>;
   where?: InputMaybe<PackNftContractEventPass_Bool_Exp>;
 };
@@ -20483,20 +21458,20 @@ export type Subscription_RootPackNftContractEventPass_StreamArgs = {
 
 export type Subscription_RootPackNftContract_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackNftContract_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftContract_Order_By>>;
   where?: InputMaybe<PackNftContract_Bool_Exp>;
 };
 
 
 export type Subscription_RootPackNftContract_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootPackNftContract_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<PackNftContract_Stream_Cursor_Input>>;
   where?: InputMaybe<PackNftContract_Bool_Exp>;
 };
@@ -20504,8 +21479,8 @@ export type Subscription_RootPackNftContract_StreamArgs = {
 
 export type Subscription_RootPackNftSupplyArgs = {
   distinct_on?: InputMaybe<Array<PackNftSupply_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftSupply_Order_By>>;
   where?: InputMaybe<PackNftSupply_Bool_Exp>;
 };
@@ -20513,20 +21488,20 @@ export type Subscription_RootPackNftSupplyArgs = {
 
 export type Subscription_RootPackNftSupply_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackNftSupply_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackNftSupply_Order_By>>;
   where?: InputMaybe<PackNftSupply_Bool_Exp>;
 };
 
 
 export type Subscription_RootPackNftSupply_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootPackNftSupply_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<PackNftSupply_Stream_Cursor_Input>>;
   where?: InputMaybe<PackNftSupply_Bool_Exp>;
 };
@@ -20534,8 +21509,8 @@ export type Subscription_RootPackNftSupply_StreamArgs = {
 
 export type Subscription_RootPackOrderSumsArgs = {
   distinct_on?: InputMaybe<Array<PackOrderSums_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackOrderSums_Order_By>>;
   where?: InputMaybe<PackOrderSums_Bool_Exp>;
 };
@@ -20543,20 +21518,20 @@ export type Subscription_RootPackOrderSumsArgs = {
 
 export type Subscription_RootPackOrderSums_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PackOrderSums_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PackOrderSums_Order_By>>;
   where?: InputMaybe<PackOrderSums_Bool_Exp>;
 };
 
 
 export type Subscription_RootPackOrderSums_By_PkArgs = {
-  packId: Scalars['String'];
+  packId: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootPackOrderSums_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<PackOrderSums_Stream_Cursor_Input>>;
   where?: InputMaybe<PackOrderSums_Bool_Exp>;
 };
@@ -20564,8 +21539,8 @@ export type Subscription_RootPackOrderSums_StreamArgs = {
 
 export type Subscription_RootPassAmountArgs = {
   distinct_on?: InputMaybe<Array<PassAmount_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PassAmount_Order_By>>;
   where?: InputMaybe<PassAmount_Bool_Exp>;
 };
@@ -20573,20 +21548,20 @@ export type Subscription_RootPassAmountArgs = {
 
 export type Subscription_RootPassAmount_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PassAmount_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PassAmount_Order_By>>;
   where?: InputMaybe<PassAmount_Bool_Exp>;
 };
 
 
 export type Subscription_RootPassAmount_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootPassAmount_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<PassAmount_Stream_Cursor_Input>>;
   where?: InputMaybe<PassAmount_Bool_Exp>;
 };
@@ -20594,8 +21569,8 @@ export type Subscription_RootPassAmount_StreamArgs = {
 
 export type Subscription_RootPassPricingArgs = {
   distinct_on?: InputMaybe<Array<PassPricing_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PassPricing_Order_By>>;
   where?: InputMaybe<PassPricing_Bool_Exp>;
 };
@@ -20603,20 +21578,20 @@ export type Subscription_RootPassPricingArgs = {
 
 export type Subscription_RootPassPricing_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PassPricing_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PassPricing_Order_By>>;
   where?: InputMaybe<PassPricing_Bool_Exp>;
 };
 
 
 export type Subscription_RootPassPricing_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootPassPricing_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<PassPricing_Stream_Cursor_Input>>;
   where?: InputMaybe<PassPricing_Bool_Exp>;
 };
@@ -20624,8 +21599,8 @@ export type Subscription_RootPassPricing_StreamArgs = {
 
 export type Subscription_RootPendingOrderArgs = {
   distinct_on?: InputMaybe<Array<PendingOrder_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PendingOrder_Order_By>>;
   where?: InputMaybe<PendingOrder_Bool_Exp>;
 };
@@ -20633,20 +21608,20 @@ export type Subscription_RootPendingOrderArgs = {
 
 export type Subscription_RootPendingOrder_AggregateArgs = {
   distinct_on?: InputMaybe<Array<PendingOrder_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<PendingOrder_Order_By>>;
   where?: InputMaybe<PendingOrder_Bool_Exp>;
 };
 
 
 export type Subscription_RootPendingOrder_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['uuid']['input'];
 };
 
 
 export type Subscription_RootPendingOrder_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<PendingOrder_Stream_Cursor_Input>>;
   where?: InputMaybe<PendingOrder_Bool_Exp>;
 };
@@ -20654,8 +21629,8 @@ export type Subscription_RootPendingOrder_StreamArgs = {
 
 export type Subscription_RootRoleAssignmentArgs = {
   distinct_on?: InputMaybe<Array<RoleAssignment_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<RoleAssignment_Order_By>>;
   where?: InputMaybe<RoleAssignment_Bool_Exp>;
 };
@@ -20663,15 +21638,15 @@ export type Subscription_RootRoleAssignmentArgs = {
 
 export type Subscription_RootRoleAssignment_AggregateArgs = {
   distinct_on?: InputMaybe<Array<RoleAssignment_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<RoleAssignment_Order_By>>;
   where?: InputMaybe<RoleAssignment_Bool_Exp>;
 };
 
 
 export type Subscription_RootRoleAssignment_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<RoleAssignment_Stream_Cursor_Input>>;
   where?: InputMaybe<RoleAssignment_Bool_Exp>;
 };
@@ -20679,8 +21654,8 @@ export type Subscription_RootRoleAssignment_StreamArgs = {
 
 export type Subscription_RootRolesArgs = {
   distinct_on?: InputMaybe<Array<Roles_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Roles_Order_By>>;
   where?: InputMaybe<Roles_Bool_Exp>;
 };
@@ -20688,20 +21663,20 @@ export type Subscription_RootRolesArgs = {
 
 export type Subscription_RootRoles_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Roles_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Roles_Order_By>>;
   where?: InputMaybe<Roles_Bool_Exp>;
 };
 
 
 export type Subscription_RootRoles_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootRoles_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Roles_Stream_Cursor_Input>>;
   where?: InputMaybe<Roles_Bool_Exp>;
 };
@@ -20709,8 +21684,8 @@ export type Subscription_RootRoles_StreamArgs = {
 
 export type Subscription_RootStripeCheckoutSessionArgs = {
   distinct_on?: InputMaybe<Array<StripeCheckoutSession_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCheckoutSession_Order_By>>;
   where?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
 };
@@ -20718,8 +21693,8 @@ export type Subscription_RootStripeCheckoutSessionArgs = {
 
 export type Subscription_RootStripeCheckoutSessionTypeArgs = {
   distinct_on?: InputMaybe<Array<StripeCheckoutSessionType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCheckoutSessionType_Order_By>>;
   where?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
 };
@@ -20727,20 +21702,20 @@ export type Subscription_RootStripeCheckoutSessionTypeArgs = {
 
 export type Subscription_RootStripeCheckoutSessionType_AggregateArgs = {
   distinct_on?: InputMaybe<Array<StripeCheckoutSessionType_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCheckoutSessionType_Order_By>>;
   where?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
 };
 
 
 export type Subscription_RootStripeCheckoutSessionType_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootStripeCheckoutSessionType_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<StripeCheckoutSessionType_Stream_Cursor_Input>>;
   where?: InputMaybe<StripeCheckoutSessionType_Bool_Exp>;
 };
@@ -20748,20 +21723,20 @@ export type Subscription_RootStripeCheckoutSessionType_StreamArgs = {
 
 export type Subscription_RootStripeCheckoutSession_AggregateArgs = {
   distinct_on?: InputMaybe<Array<StripeCheckoutSession_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCheckoutSession_Order_By>>;
   where?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
 };
 
 
 export type Subscription_RootStripeCheckoutSession_By_PkArgs = {
-  stripeSessionId: Scalars['String'];
+  stripeSessionId: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootStripeCheckoutSession_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<StripeCheckoutSession_Stream_Cursor_Input>>;
   where?: InputMaybe<StripeCheckoutSession_Bool_Exp>;
 };
@@ -20769,8 +21744,8 @@ export type Subscription_RootStripeCheckoutSession_StreamArgs = {
 
 export type Subscription_RootStripeCustomerArgs = {
   distinct_on?: InputMaybe<Array<StripeCustomer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCustomer_Order_By>>;
   where?: InputMaybe<StripeCustomer_Bool_Exp>;
 };
@@ -20778,20 +21753,20 @@ export type Subscription_RootStripeCustomerArgs = {
 
 export type Subscription_RootStripeCustomer_AggregateArgs = {
   distinct_on?: InputMaybe<Array<StripeCustomer_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<StripeCustomer_Order_By>>;
   where?: InputMaybe<StripeCustomer_Bool_Exp>;
 };
 
 
 export type Subscription_RootStripeCustomer_By_PkArgs = {
-  stripeCustomerId: Scalars['String'];
+  stripeCustomerId: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootStripeCustomer_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<StripeCustomer_Stream_Cursor_Input>>;
   where?: InputMaybe<StripeCustomer_Bool_Exp>;
 };
@@ -20799,8 +21774,8 @@ export type Subscription_RootStripeCustomer_StreamArgs = {
 
 export type Subscription_RootTimezoneArgs = {
   distinct_on?: InputMaybe<Array<Timezone_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Timezone_Order_By>>;
   where?: InputMaybe<Timezone_Bool_Exp>;
 };
@@ -20808,54 +21783,54 @@ export type Subscription_RootTimezoneArgs = {
 
 export type Subscription_RootTimezone_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Timezone_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Timezone_Order_By>>;
   where?: InputMaybe<Timezone_Bool_Exp>;
 };
 
 
 export type Subscription_RootTimezone_By_PkArgs = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 
 export type Subscription_RootTimezone_StreamArgs = {
-  batch_size: Scalars['Int'];
+  batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Timezone_Stream_Cursor_Input>>;
   where?: InputMaybe<Timezone_Bool_Exp>;
 };
 
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
 export type Timestamp_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['timestamp']>;
-  _gt?: InputMaybe<Scalars['timestamp']>;
-  _gte?: InputMaybe<Scalars['timestamp']>;
-  _in?: InputMaybe<Array<Scalars['timestamp']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['timestamp']>;
-  _lte?: InputMaybe<Scalars['timestamp']>;
-  _neq?: InputMaybe<Scalars['timestamp']>;
-  _nin?: InputMaybe<Array<Scalars['timestamp']>>;
+  _eq?: InputMaybe<Scalars['timestamp']['input']>;
+  _gt?: InputMaybe<Scalars['timestamp']['input']>;
+  _gte?: InputMaybe<Scalars['timestamp']['input']>;
+  _in?: InputMaybe<Array<Scalars['timestamp']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['timestamp']['input']>;
+  _lte?: InputMaybe<Scalars['timestamp']['input']>;
+  _neq?: InputMaybe<Scalars['timestamp']['input']>;
+  _nin?: InputMaybe<Array<Scalars['timestamp']['input']>>;
 };
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['timestamptz']>;
-  _gt?: InputMaybe<Scalars['timestamptz']>;
-  _gte?: InputMaybe<Scalars['timestamptz']>;
-  _in?: InputMaybe<Array<Scalars['timestamptz']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['timestamptz']>;
-  _lte?: InputMaybe<Scalars['timestamptz']>;
-  _neq?: InputMaybe<Scalars['timestamptz']>;
-  _nin?: InputMaybe<Array<Scalars['timestamptz']>>;
+  _eq?: InputMaybe<Scalars['timestamptz']['input']>;
+  _gt?: InputMaybe<Scalars['timestamptz']['input']>;
+  _gte?: InputMaybe<Scalars['timestamptz']['input']>;
+  _in?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['timestamptz']['input']>;
+  _lte?: InputMaybe<Scalars['timestamptz']['input']>;
+  _neq?: InputMaybe<Scalars['timestamptz']['input']>;
+  _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
 /** IANA Time Zones fetched from pg_timezone_names in PostgreSQL */
 export type Timezone = {
   __typename?: 'timezone';
-  value: Scalars['String'];
+  value: Scalars['String']['output'];
 };
 
 /** aggregated selection of "timezone" */
@@ -20868,7 +21843,7 @@ export type Timezone_Aggregate = {
 /** aggregate fields of "timezone" */
 export type Timezone_Aggregate_Fields = {
   __typename?: 'timezone_aggregate_fields';
-  count: Scalars['Int'];
+  count: Scalars['Int']['output'];
   max?: Maybe<Timezone_Max_Fields>;
   min?: Maybe<Timezone_Min_Fields>;
 };
@@ -20877,7 +21852,7 @@ export type Timezone_Aggregate_Fields = {
 /** aggregate fields of "timezone" */
 export type Timezone_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Timezone_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Boolean expression to filter rows from the table "timezone". All fields are combined with a logical 'AND'. */
@@ -20896,26 +21871,26 @@ export const enum Timezone_Constraint {
 
 /** input type for inserting data into table "timezone" */
 export type Timezone_Insert_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type Timezone_Max_Fields = {
   __typename?: 'timezone_max_fields';
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type Timezone_Min_Fields = {
   __typename?: 'timezone_min_fields';
-  value?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "timezone" */
 export type Timezone_Mutation_Response = {
   __typename?: 'timezone_mutation_response';
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Timezone>;
 };
@@ -20934,7 +21909,7 @@ export type Timezone_Order_By = {
 
 /** primary key columns input for table: timezone */
 export type Timezone_Pk_Columns_Input = {
-  value: Scalars['String'];
+  value: Scalars['String']['input'];
 };
 
 /** select columns of table "timezone" */
@@ -20945,7 +21920,7 @@ export const enum Timezone_Select_Column {
 
 /** input type for updating data in table "timezone" */
 export type Timezone_Set_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Streaming cursor of the table "timezone" */
@@ -20958,7 +21933,7 @@ export type Timezone_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Timezone_Stream_Cursor_Value_Input = {
-  value?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** update columns of table "timezone" */
@@ -20976,13 +21951,13 @@ export type Timezone_Updates = {
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
 export type Uuid_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['uuid']>;
-  _gt?: InputMaybe<Scalars['uuid']>;
-  _gte?: InputMaybe<Scalars['uuid']>;
-  _in?: InputMaybe<Array<Scalars['uuid']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['uuid']>;
-  _lte?: InputMaybe<Scalars['uuid']>;
-  _neq?: InputMaybe<Scalars['uuid']>;
-  _nin?: InputMaybe<Array<Scalars['uuid']>>;
+  _eq?: InputMaybe<Scalars['uuid']['input']>;
+  _gt?: InputMaybe<Scalars['uuid']['input']>;
+  _gte?: InputMaybe<Scalars['uuid']['input']>;
+  _in?: InputMaybe<Array<Scalars['uuid']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['uuid']['input']>;
+  _lte?: InputMaybe<Scalars['uuid']['input']>;
+  _neq?: InputMaybe<Scalars['uuid']['input']>;
+  _nin?: InputMaybe<Array<Scalars['uuid']['input']>>;
 };
