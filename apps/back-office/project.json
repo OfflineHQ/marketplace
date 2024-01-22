@@ -98,16 +98,6 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     },
-    "gql": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          {
-            "command": "npx graphql-codegen --config codegen.yml -r dotenv/config -e .env.local "
-          }
-        ]
-      }
-    },
     "storybook": {
       "executor": "@nx/storybook:storybook",
       "options": {
