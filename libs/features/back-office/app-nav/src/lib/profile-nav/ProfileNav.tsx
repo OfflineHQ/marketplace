@@ -132,7 +132,7 @@ function ProfileNavRole({ role, isLoading }: ProfileNavRoleProps) {
 export function ProfileNavSkeleton() {
   return (
     <div className="relative inline-block items-center justify-center opacity-100 md:flex">
-      <AvatarSkeleton className="h-12 w-12 md:mx-5" />
+      <AvatarSkeleton className="size-12 md:mx-5" />
       <TextSkeleton className="mr-5 hidden md:flex" />
     </div>
   );
