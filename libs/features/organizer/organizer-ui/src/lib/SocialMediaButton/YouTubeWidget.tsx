@@ -41,7 +41,7 @@ const YouTubeWidgetContent = async ({ handle }: { handle: string }) => {
 };
 
 const YouTubeWidget = ({ handle }: { handle: string }) => (
-  <HoverCardContent className="h-fit w-fit">
+  <HoverCardContent className="size-fit">
     <Suspense fallback={<TextSkeleton variant="p" />}>
       <YouTubeWidgetContent handle={handle} />
     </Suspense>
