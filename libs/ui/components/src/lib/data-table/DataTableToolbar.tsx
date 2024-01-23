@@ -98,7 +98,7 @@ export function DataTableToolbar<TData, TValue>({
               className="h-8 px-2 lg:px-3"
             >
               {filtersConfigText.reset}
-              <Cross2Icon className="size-4 ml-2" />
+              <Cross2Icon className="ml-2 size-4" />
             </Button>
           )}
         </AutoAnimate>
@@ -114,7 +114,7 @@ export function DataTableToolbar<TData, TValue>({
               isActive: true,
               number: numSelectedItems,
             }}
-            className="size-auto mx-2 lg:mx-3"
+            className="mx-2 size-auto lg:mx-3"
             buttonClassName="w-8 h-8"
           />
         )}

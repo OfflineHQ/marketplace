@@ -109,7 +109,7 @@ export const UserPassEvent: React.FC<UserPassEventProps> = ({
       <AccordionContent className="grid grid-cols-1 gap-y-4 md:grid-cols-4 md:gap-4">
         {eventParameters.eventPassNftContracts.map(
           (eventPassNftContract, index) => (
-            <div key={index} className="size-full flex">
+            <div key={index} className="flex size-full">
               <UserPassEventCard
                 eventPassNftContract={eventPassNftContract}
                 eventParameters={eventParameters}
@@ -141,7 +141,7 @@ export const UserPassEventSkeleton: React.FC = () => {
             <BadgeSkeleton />
           </div>
         </div>
-        <ButtonSkeleton className="size-4 md:size-8 rounded-full" />
+        <ButtonSkeleton className="size-4 rounded-full md:size-8" />
       </div>
       <Separator orientation="horizontal" decorative={true} />
     </div>

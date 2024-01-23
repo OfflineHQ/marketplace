@@ -145,7 +145,7 @@ export const EventPassesSkeleton: React.FC = () => {
         <div className={layout.grid}>
           <div className={layout.imageContainer}>
             <div
-              className={`size-20 md:size-40 animate-pulse rounded-sm bg-image`}
+              className={`size-20 animate-pulse rounded-sm bg-image md:size-40`}
             />
           </div>
           <div className={`${layout.textContainer}`}>
@@ -153,7 +153,7 @@ export const EventPassesSkeleton: React.FC = () => {
             <TextSkeleton className="mt-5" />
           </div>
         </div>
-        <ButtonSkeleton className="size-4 md:size-8 rounded-full" />
+        <ButtonSkeleton className="size-4 rounded-full md:size-8" />
       </div>
       <Separator orientation="horizontal" decorative={true} />
     </div>

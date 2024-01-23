@@ -33,7 +33,7 @@ export function DataTableViewOptions<TData>({
           size="sm"
           className="ml-auto hidden h-8 md:flex"
         >
-          <MixerHorizontalIcon className="size-4 mr-2" />
+          <MixerHorizontalIcon className="mr-2 size-4" />
           {controlText.view}
         </Button>
       </DropdownMenuTrigger>
