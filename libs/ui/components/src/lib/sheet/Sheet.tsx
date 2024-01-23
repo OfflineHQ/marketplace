@@ -221,7 +221,7 @@ const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
     return (
       <div
         className={cn(
-          `flex flex-col space-y-2 text-center sm:text-left px-6 pt-6 pb-3 ${
+          `flex flex-col space-y-2 px-6 pb-3 pt-6 text-center sm:text-left ${
             isFullWidth(position, size) && 'pt-16'
           }`,
           className,
@@ -254,7 +254,7 @@ const SheetOverflow = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('overflow-y-auto h-full px-6', className)}
+    className={cn('h-full overflow-y-auto px-6', className)}
     {...props}
   />
 ));

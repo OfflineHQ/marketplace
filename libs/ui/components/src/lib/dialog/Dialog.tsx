@@ -73,7 +73,7 @@ const DialogContent = React.forwardRef<
         {shouldBeClosable && (
           <DialogPrimitive.Close
             data-testid="dialog-close"
-            className={cn(closeClasses, closeButtonClasses, 'right-1 -top-3')}
+            className={cn(closeClasses, closeButtonClasses, '-top-3 right-1')}
           >
             <Close />
           </DialogPrimitive.Close>
