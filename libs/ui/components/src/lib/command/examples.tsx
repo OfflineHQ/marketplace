@@ -213,7 +213,7 @@ export function CommandComboboxDemo() {
               >
                 <Check
                   className={cn(
-                    'size-4 mr-2',
+                    'mr-2 size-4',
                     value === framework.value ? 'opacity-100' : 'opacity-0',
                   )}
                 />
@@ -306,7 +306,7 @@ export function CommandPopoverDemo() {
                   >
                     <status.icon
                       className={cn(
-                        'size-4 mr-2',
+                        'mr-2 size-4',
                         status.value === selectedStatus?.value
                           ? 'opacity-100'
                           : 'opacity-40',

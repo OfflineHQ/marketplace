@@ -28,7 +28,7 @@ export const Ping: React.FC<PingProps> = ({
         >
           <span
             className={cn(
-              `size-full absolute inline-flex rounded-full bg-primary opacity-75 ${
+              `absolute inline-flex size-full rounded-full bg-primary opacity-75 ${
                 isActive ? 'animate-ping' : ''
               }`,
             )}
