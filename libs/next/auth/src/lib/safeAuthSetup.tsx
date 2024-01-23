@@ -460,17 +460,24 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         defaultLanguage: locale as LANGUAGE_TYPE,
       };
 
+      // ...
+
+      const isSafari = /^((?!chrome|android).)*safari/i.test(
+        navigator.userAgent,
+      );
+
       const openloginAdapter = new OpenloginAdapter({
         loginSettings: {
-          mfaLevel: 'default',
+          mfaLevel: 'none',
         },
         adapterSettings: {
-          uxMode: 'popup',
+          uxMode: isSafari ? 'redirect' : 'popup',
           whiteLabel,
         },
         sessionTime,
       });
 
+      // ...
       const web3AuthModalPack = new Web3AuthModalPack({
         txServiceUrl: safeTxServiceUrl,
       });
