@@ -19,7 +19,7 @@ export function DialogExample(args: any) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Profile Dialog</DialogTitle>
+          <DialogTitle>Edit profile Dialog</DialogTitle>
           <DialogDescription>
             Make changes to your profile here. Click save when you&apos;re done.
           </DialogDescription>
