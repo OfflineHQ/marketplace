@@ -1,7 +1,7 @@
-import { HoverCard, HoverCardTrigger, HoverCardContent } from './HoverCard';
-import { Avatar, AvatarImage, AvatarFallback } from '../avatar/Avatar';
-import { Button } from '../button/Button';
 import { OutlineCalendarDays } from '@ui/icons';
+import { Avatar, AvatarFallback, AvatarImage } from '../avatar/Avatar';
+import { Button } from '../button/Button';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from './HoverCard';
 
 export function HoverCardDemo() {
   return (
@@ -22,7 +22,7 @@ export function HoverCardDemo() {
                 The React Framework – created and maintained by @vercel.
               </p>
               <div className="flex items-center pt-2">
-                <OutlineCalendarDays className="mr-2 h-4 w-4 opacity-70" />{' '}
+                <OutlineCalendarDays className="size-4 mr-2 opacity-70" />{' '}
                 <span className="text-xs text-muted-foreground">
                   Joined December 2021
                 </span>

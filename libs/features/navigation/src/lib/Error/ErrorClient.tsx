@@ -7,10 +7,10 @@ import {
 } from '@features/app-nav';
 import {
   Alert,
+  AlertDescription,
+  AlertTitle,
   Button,
   CardContent,
-  AlertTitle,
-  AlertDescription,
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
@@ -26,8 +26,8 @@ export function ErrorClient({ error, reset, customMessage }: ErrorProps) {
   return (
     <AppContainer>
       <AppContainerOverflow variant="stickyFooter">
-        <CardContent className="flex h-full w-full flex-col items-center">
-          <div className="relative h-80 w-80 grow">
+        <CardContent className="size-full flex flex-col items-center">
+          <div className="size-80 relative grow">
             <Image fill src="/error.svg" alt={t('error-message')} />
           </div>
           {/* IMPORTANT: no idea why but putting Alert in this component is breaking the next apps with `TypeError: Cannot destructure property 'parallelRouterKey' of 'param' as it is null.` */}

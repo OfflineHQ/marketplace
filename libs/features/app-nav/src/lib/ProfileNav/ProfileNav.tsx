@@ -43,7 +43,7 @@ export function ProfileNav({
           className="inline-flex h-16 w-fit p-0 md:h-12"
         >
           {user ? (
-            <div className="flex h-16 w-16 flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:space-y-0 md:px-4">
+            <div className="size-16 flex flex-col items-center justify-center space-y-1 px-1 md:w-fit md:flex-row md:space-x-2 md:space-y-0 md:px-4">
               <AutoAnimate>
                 {isLoading ? (
                   <Spinner size="xl" variant="ghost" className="md:mr-2" />
@@ -80,7 +80,7 @@ export function ProfileNav({
 export function ProfileNavSkeleton() {
   return (
     <div className="relative inline-block items-center justify-center opacity-100 md:flex">
-      <AvatarSkeleton className="h-12 w-12 md:mx-5" />
+      <AvatarSkeleton className="size-12 md:mx-5" />
       <TextSkeleton className="mr-5 hidden md:flex" />
     </div>
   );

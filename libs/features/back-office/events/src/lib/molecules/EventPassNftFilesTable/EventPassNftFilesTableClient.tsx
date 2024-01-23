@@ -266,7 +266,7 @@ export function EventPassNftFilesTableClient({
       )}
       <DataTable<EventPassFileWithName, unknown>
         data={data}
-        className={cn('h-full w-full', className)}
+        className={cn('size-full', className)}
         columns={columns}
         selectKey="fileName"
         onRowSelectionChange={setRowSelection}

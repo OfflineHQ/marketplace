@@ -28,7 +28,7 @@ export interface EventPassesProps
 const layout = {
   triggerContainer: 'flex space-x-3 max-h-28 md:max-h-48',
   image: 'rounded-sm object-cover',
-  grid: 'grid max-h-full w-full grid-cols-3 md:grid-cols-6 md:gap-4',
+  grid: 'grid max-size-full grid-cols-3 md:grid-cols-6 md:gap-4',
   textContainer:
     'space-y-2 md:space-y-4 ml-2 text-left flex flex-col justify-start md:justify-center col-span-2 md:col-span-4',
   imageContainer:
@@ -145,7 +145,7 @@ export const EventPassesSkeleton: React.FC = () => {
         <div className={layout.grid}>
           <div className={layout.imageContainer}>
             <div
-              className={`h-20 w-20 animate-pulse rounded-sm bg-image md:h-40 md:w-40`}
+              className={`size-20 md:size-40 animate-pulse rounded-sm bg-image`}
             />
           </div>
           <div className={`${layout.textContainer}`}>
@@ -153,7 +153,7 @@ export const EventPassesSkeleton: React.FC = () => {
             <TextSkeleton className="mt-5" />
           </div>
         </div>
-        <ButtonSkeleton className="h-4 w-4 rounded-full md:h-8 md:w-8" />
+        <ButtonSkeleton className="size-4 md:size-8 rounded-full" />
       </div>
       <Separator orientation="horizontal" decorative={true} />
     </div>

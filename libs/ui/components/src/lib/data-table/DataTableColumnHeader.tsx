@@ -48,18 +48,18 @@ export function DataTableColumnHeader<TData, TValue>({
           >
             <span>{title}</span>
             {column.getIsSorted() === 'desc' ? (
-              <ArrowDownIcon className="ml-2 h-4 w-4" />
+              <ArrowDownIcon className="size-4 ml-2" />
             ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUpIcon className="ml-2 h-4 w-4" />
+              <ArrowUpIcon className="size-4 ml-2" />
             ) : (
-              <CaretSortIcon className="ml-2 h-4 w-4" />
+              <CaretSortIcon className="size-4 ml-2" />
             )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           {column.columnDef.enableSorting !== false && (
             <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-              <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+              <ArrowUpIcon className="size-3.5 mr-2 text-muted-foreground/70" />
               {controlText.asc}
             </DropdownMenuItem>
           )}
@@ -68,14 +68,14 @@ export function DataTableColumnHeader<TData, TValue>({
           )}
           {column.columnDef.enableSorting !== false && (
             <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-              <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+              <ArrowDownIcon className="size-3.5 mr-2 text-muted-foreground/70" />
               {controlText.desc}
             </DropdownMenuItem>
           )}
           {column.columnDef.enableHiding !== false && <DropdownMenuSeparator />}
           {column.columnDef.enableHiding !== false && (
             <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-              <EyeNoneIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
+              <EyeNoneIcon className="size-3.5 mr-2 text-muted-foreground/70" />
               {controlText.hide}
             </DropdownMenuItem>
           )}
