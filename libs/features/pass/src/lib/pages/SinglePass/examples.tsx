@@ -1,18 +1,18 @@
 import {
-  passWithMaxAmount,
+  event2Props,
   eventProps,
   passPremium,
-  event2Props,
+  passWithMaxAmount,
 } from '@features/organizer/event/examples';
+import type { User } from 'next-auth';
 import {
   SinglePass,
   SinglePassSkeleton,
   type SinglePassProps,
 } from './SinglePass';
-import type { User } from 'next-auth';
 
-import { WithNoUser, WithNormalUser } from '@features/app-nav/stories';
 import { AppNavLayout } from '@features/app-nav';
+import { WithNoUser, WithNormalUser } from '@features/app-nav/stories';
 
 export const owner: User = {
   id: '123',
@@ -60,21 +60,24 @@ export const eventPassNft2 = {
 
 export function SinglePassNoUserExample(props: SinglePassProps) {
   return (
-    <AppNavLayout {...WithNoUser.args} children={<SinglePass {...props} />} />
+    <AppNavLayout {...WithNoUser.args}>
+      <SinglePass {...props} />
+    </AppNavLayout>
   );
 }
 
 export function SinglePassOwnerExample(props: SinglePassProps) {
   return (
-    <AppNavLayout
-      {...WithNormalUser.args}
-      children={<SinglePass {...props} />}
-    />
+    <AppNavLayout {...WithNormalUser.args}>
+      <SinglePass {...props} />
+    </AppNavLayout>
   );
 }
 
 export function SinglePassSkeletonExample() {
   return (
-    <AppNavLayout {...WithNoUser.args} children={<SinglePassSkeleton />} />
+    <AppNavLayout {...WithNoUser.args}>
+      <SinglePassSkeleton />
+    </AppNavLayout>
   );
 }

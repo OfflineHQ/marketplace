@@ -8,6 +8,8 @@
     "jsx-a11y"
   ],
   "extends": [
+    "next",
+    "prettier",
     "eslint-config-prettier",
     "plugin:import/recommended",
     "plugin:import/typescript",

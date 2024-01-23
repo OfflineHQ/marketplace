@@ -88,26 +88,12 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/web"],
       "options": {
-        "jestConfig": "apps/web/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "apps/web/jest.config.ts"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["apps/web/**/*.{ts,tsx,js,jsx,gql,graphql}"]
-      }
-    },
-    "gql": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          {
-            "command": "npx graphql-codegen --config codegen.yml -r dotenv/config -e .env.local "
-          }
-        ]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "storybook": {
       "executor": "@nx/storybook:storybook",
@@ -149,7 +135,6 @@
         "config": "apps/web/playwright.config.ts"
       }
     },
-
     "sitemap": {
       "executor": "nx:run-commands",
       "options": {

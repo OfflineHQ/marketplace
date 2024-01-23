@@ -16,7 +16,7 @@ export const NoPassPlaceholder: React.FC<NoPassPlaceholderProps> = ({
         <AlertTitle>{noPassText}</AlertTitle>
       </Alert>
     )}
-    <div className="relative h-80 w-80 grow">
+    <div className="relative size-80 grow">
       <Image fill src={noPassImage} alt={noPassText || ''} />
     </div>
   </div>

@@ -37,7 +37,7 @@ export function ProfileAvatar(props: ProfileAvatarProps) {
   } = props;
   const fallBack = name ? getInitials(name) : '';
   return profileImage || fallBack ? (
-    <Avatar {...props} className={`${className} h-12 w-12`}>
+    <Avatar {...props} className={`${className} size-12`}>
       <AvatarImage
         src={profileImage || ''}
         className="flex items-center justify-center bg-muted"

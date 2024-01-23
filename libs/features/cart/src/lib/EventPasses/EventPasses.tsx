@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
   Badge,
+  BadgeSkeleton,
   ButtonSkeleton,
   Separator,
   Text,
@@ -26,13 +27,14 @@ export interface EventPassesProps
 }
 
 const layout = {
-  triggerContainer: 'flex space-x-3 max-h-28 md:max-h-48',
+  triggerContainer: 'flex space-x-3',
   image: 'rounded-sm object-cover',
-  grid: 'grid max-h-full w-full grid-cols-3 md:grid-cols-6 md:gap-4',
+  grid: 'grid w-full grid-cols-1 md:grid-cols-6 md:gap-4',
   textContainer:
-    'space-y-2 md:space-y-4 ml-2 text-left flex flex-col justify-start md:justify-center col-span-2 md:col-span-4',
+    'mt-4 space-y-2 md:space-y-4 md:ml-2 text-left flex flex-col justify-start md:justify-center col-span-1 md:col-span-4',
   imageContainer:
-    'relative md:h-20 md:w-20 w-16 h-16 shrink-0 overflow-hidden rounded-sm md:h-40 md:w-40 col-span-1 md:col-span-2',
+    'relative h-32 w-full shrink-0 overflow-hidden rounded-sm md:h-40 md:max-w-64 col-span-1 md:col-span-2',
+  passesTextContainer: 'flex gap-x-2 flex-wrap gap-y-2',
   button: 'self-start',
 };
 
@@ -59,16 +61,14 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
       <div className="mt-3 flex flex-col">
         {enrichedPasses.map((pass, index) =>
           pass.quantity ? (
-            <div key={index} className="mb-5 flex md:mb-8">
-              <div
-                className={`flex items-center ${layout.imageContainer} h-auto md:h-auto`}
-              >
+            <div key={index} className="mb-5 grid grid-cols-6 md:mb-8">
+              <div className="col-span-2 flex items-center">
                 <Text
                   variant="h5"
                   className="font-semibold"
                 >{`${pass.quantity} x`}</Text>
               </div>
-              <div className="relative ml-2 flex flex-col justify-center md:ml-3">
+              <div className="col-span-4 flex flex-col justify-center">
                 <Text variant="h5" className="pb-2 font-semibold">
                   {pass.name}
                 </Text>
@@ -112,7 +112,7 @@ export const EventPasses: React.FC<EventPassesProps> = ({
 }) => {
   const t = useTranslations('Cart.List.Event');
   return (
-    <AccordionItem value={event.slug} className="mx-5">
+    <AccordionItem value={event.slug}>
       <AccordionTrigger className={layout.triggerContainer}>
         <div className={layout.grid}>
           <div className={layout.imageContainer}>
@@ -141,19 +141,17 @@ export const EventPasses: React.FC<EventPassesProps> = ({
 export const EventPassesSkeleton: React.FC = () => {
   return (
     <div className="mx-5 flex-col">
-      <div className="flex max-h-28 items-center space-x-3 py-4 md:max-h-48">
+      <div className="flex items-center space-x-3 py-4">
         <div className={layout.grid}>
           <div className={layout.imageContainer}>
-            <div
-              className={`h-20 w-20 animate-pulse rounded-sm bg-image md:h-40 md:w-40`}
-            />
+            <div className={`size-full animate-pulse rounded-sm bg-image`} />
           </div>
-          <div className={`${layout.textContainer}`}>
+          <div className={`${layout.textContainer} mb-4 space-y-4`}>
             <TextSkeleton variant="h4" />
-            <TextSkeleton className="mt-5" />
+            <BadgeSkeleton />
           </div>
         </div>
-        <ButtonSkeleton className="h-4 w-4 rounded-full md:h-8 md:w-8" />
+        <ButtonSkeleton isIconOnly size="xs" />
       </div>
       <Separator orientation="horizontal" decorative={true} />
     </div>

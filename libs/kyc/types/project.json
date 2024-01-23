@@ -17,13 +17,7 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "libs/kyc/types/**/*.ts",
-          "libs/kyc/types/package.json"
-        ]
-      }
+      "outputs": ["{options.outputFile}"]
     }
   },
   "tags": []

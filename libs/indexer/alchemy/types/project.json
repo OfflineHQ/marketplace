@@ -17,13 +17,7 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "libs/indexer/alchemy/types/**/*.ts",
-          "libs/indexer/alchemy/types/package.json"
-        ]
-      }
+      "outputs": ["{options.outputFile}"]
     }
   },
   "tags": []

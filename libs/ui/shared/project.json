@@ -16,17 +16,13 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/ui/shared/**/*.ts"]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/ui/shared"],
       "options": {
-        "jestConfig": "libs/ui/shared/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/ui/shared/jest.config.ts"
       }
     }
   },
