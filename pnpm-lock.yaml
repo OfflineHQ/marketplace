@@ -104,11 +104,11 @@ dependencies:
     specifier: ^0.6.1
     version: 0.6.1(typescript@5.3.3)(zod@3.22.4)
   '@tailwindcss/forms':
-    specifier: ^0.5.6
-    version: 0.5.7(tailwindcss@3.3.6)
+    specifier: ^0.5.7
+    version: 0.5.7(tailwindcss@3.4.1)
   '@tailwindcss/typography':
     specifier: ^0.5.10
-    version: 0.5.10(tailwindcss@3.3.6)
+    version: 0.5.10(tailwindcss@3.4.1)
   '@tanstack/query-core':
     specifier: ^4.36.1
     version: 4.36.1
@@ -287,11 +287,11 @@ dependencies:
     specifier: ^1.14.0
     version: 1.14.0
   tailwindcss:
-    specifier: ^3.3.5
-    version: 3.3.6(ts-node@10.9.1)
+    specifier: ^3.4.1
+    version: 3.4.1(ts-node@10.9.1)
   tailwindcss-animate:
     specifier: ^1.0.7
-    version: 1.0.7(tailwindcss@3.3.6)
+    version: 1.0.7(tailwindcss@3.4.1)
   tailwindcss-gradients:
     specifier: ^3.0.0
     version: 3.0.0
@@ -608,7 +608,7 @@ devDependencies:
     version: 0.6.15(eslint@8.56.0)(typescript@5.3.3)
   eslint-plugin-tailwindcss:
     specifier: ^3.14.0
-    version: 3.14.0(tailwindcss@3.3.6)
+    version: 3.14.0(tailwindcss@3.4.1)
   eth-testing:
     specifier: ^1.14.0
     version: 1.14.0(typescript@5.3.3)
@@ -10370,16 +10370,16 @@ packages:
       zod: 3.22.4
     dev: false
 
-  /@tailwindcss/forms@0.5.7(tailwindcss@3.3.6):
+  /@tailwindcss/forms@0.5.7(tailwindcss@3.4.1):
     resolution: {integrity: sha512-QE7X69iQI+ZXwldE+rzasvbJiyV/ju1FGHH0Qn2W3FKbuYtqp8LKcy6iSw79fVUT5/Vvf+0XgLCeYVG+UV6hOw==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1'
     dependencies:
       mini-svg-data-uri: 1.4.4
-      tailwindcss: 3.3.6(ts-node@10.9.1)
+      tailwindcss: 3.4.1(ts-node@10.9.1)
     dev: false
 
-  /@tailwindcss/typography@0.5.10(tailwindcss@3.3.6):
+  /@tailwindcss/typography@0.5.10(tailwindcss@3.4.1):
     resolution: {integrity: sha512-Pe8BuPJQJd3FfRnm6H0ulKIGoMEQS+Vq01R6M5aCrFB/ccR/shT+0kXLjouGC1gFLm9hopTFN+DMP0pfwRWzPw==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
@@ -10388,7 +10388,7 @@ packages:
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.3.6(ts-node@10.9.1)
+      tailwindcss: 3.4.1(ts-node@10.9.1)
     dev: false
 
   /@tanstack/match-sorter-utils@8.8.4:
@@ -16583,7 +16583,7 @@ packages:
       - typescript
     dev: true
 
-  /eslint-plugin-tailwindcss@3.14.0(tailwindcss@3.3.6):
+  /eslint-plugin-tailwindcss@3.14.0(tailwindcss@3.4.1):
     resolution: {integrity: sha512-SGy4JmZoP5m1bXCbcsPfQg1/axOdriJf9L22HghNMyDTM5mybg2XEkaMwgax4aR13zZJRRB1nWmkuYUn+SV6/Q==}
     engines: {node: '>=12.13.0'}
     peerDependencies:
@@ -16591,7 +16591,7 @@ packages:
     dependencies:
       fast-glob: 3.3.2
       postcss: 8.4.32
-      tailwindcss: 3.3.6(ts-node@10.9.1)
+      tailwindcss: 3.4.1(ts-node@10.9.1)
     dev: true
 
   /eslint-scope@5.1.1:
@@ -26703,12 +26703,12 @@ packages:
     resolution: {integrity: sha512-3mFKyCo/MBcgyOTlrY8T7odzZFx+w+qKSMAmdFzRvqBfLlSigU6TZnlFHK0lkMwj9Bj8OYU+9yW9lmGuS0QEnQ==}
     dev: false
 
-  /tailwindcss-animate@1.0.7(tailwindcss@3.3.6):
+  /tailwindcss-animate@1.0.7(tailwindcss@3.4.1):
     resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
     dependencies:
-      tailwindcss: 3.3.6(ts-node@10.9.1)
+      tailwindcss: 3.4.1(ts-node@10.9.1)
     dev: false
 
   /tailwindcss-gradients@3.0.0:
@@ -26718,8 +26718,8 @@ packages:
       lodash: 4.17.21
     dev: false
 
-  /tailwindcss@3.3.6(ts-node@10.9.1):
-    resolution: {integrity: sha512-AKjF7qbbLvLaPieoKeTjG1+FyNZT6KaJMJPFeQyLfIp7l82ggH1fbHJSsYIvnbTFQOlkh+gBYpyby5GT1LIdLw==}
+  /tailwindcss@3.4.1(ts-node@10.9.1):
+    resolution: {integrity: sha512-qAYmXRfk3ENzuPBakNK0SRrUDipP8NQnEY6772uDhflcQz5EhRdD7JNZxyrFHVQNCwULPBn6FNPp9brpO7ctcA==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
