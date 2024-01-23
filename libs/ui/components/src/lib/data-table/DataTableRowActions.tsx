@@ -32,7 +32,7 @@ export function DataTableRowActions({
           helperText={helperText}
           size="sm"
           icon={<DotsHorizontalIcon />}
-          className="size-8 flex p-0 data-[state=open]:bg-muted"
+          className="flex size-8 p-0 data-[state=open]:bg-muted"
         />
       </DropdownMenuTrigger>
 

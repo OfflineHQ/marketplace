@@ -43,7 +43,7 @@ const EventPassesCartContent: React.FC<EventPassesCartProps> = async ({
       <Alert variant="info" className="md:w-max">
         <AlertTitle>{t('no-cart')}</AlertTitle>
       </Alert>
-      <div className="size-80 relative grow">
+      <div className="relative size-80 grow">
         <Image fill src={noCartImage} alt={t('no-cart')} />
       </div>
     </div>

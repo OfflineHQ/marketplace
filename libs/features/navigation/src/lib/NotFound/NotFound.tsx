@@ -13,8 +13,8 @@ export function NotFound() {
   return (
     <AppContainer>
       <AppContainerOverflow variant="stickyFooter">
-        <CardContent className="size-full flex flex-col items-center">
-          <div className="size-80 relative grow">
+        <CardContent className="flex size-full flex-col items-center">
+          <div className="relative size-80 grow">
             <Image fill src="/not-found.svg" alt={t('404-not-found')} />
           </div>
           <Alert variant="info" className="w-fit">

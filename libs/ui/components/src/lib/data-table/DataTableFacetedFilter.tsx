@@ -45,7 +45,7 @@ export function DataTableFacetedFilter<TData, TValue>({
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="h-8 border-dashed">
-          <PlusCircledIcon className="size-4 mr-2" />
+          <PlusCircledIcon className="mr-2 size-4" />
           {title}
           {selectedValues?.size > 0 && (
             <>
@@ -116,11 +116,11 @@ export function DataTableFacetedFilter<TData, TValue>({
                       <CheckIcon className={cn('size-4')} />
                     </div>
                     {option.icon && (
-                      <option.icon className="size-4 mr-2 text-muted-foreground" />
+                      <option.icon className="mr-2 size-4 text-muted-foreground" />
                     )}
                     <span>{option.text}</span>
                     {facets?.get(option.value) && (
-                      <span className="size-4 ml-auto flex items-center justify-center font-mono text-xs">
+                      <span className="ml-auto flex size-4 items-center justify-center font-mono text-xs">
                         {facets.get(option.value)}
                       </span>
                     )}
