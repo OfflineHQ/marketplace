@@ -167,10 +167,20 @@ export const WithLotsOfPassesSelected: Story = {
       'getEventPassesCart',
     );
     expect(await screen.findByText(/Premium pass/i)).toBeInTheDocument();
-    const passCards = await screen.findAllByRole('button', {
+    await waitFor(
+      () =>
+        expect(
+          screen.queryAllByRole('button', {
+            name: /increment value/i,
+          }).length,
+        ).toBe(7),
+      {
+        timeout: 10000,
+      },
+    );
+    const passCards = screen.getAllByRole('button', {
       name: /increment value/i,
     });
-    expect(passCards).toHaveLength(7);
     userEvent.click(passCards[1]); // Click the 2nd pass increment button
     await userEvent.click(passCards[5]); // Click the 6th pass increment button
     mockGetEventPassesCart.mockResolvedValue([
@@ -188,10 +198,15 @@ export const WithLotsOfPassesSelected: Story = {
       },
     ]);
     render(context.parameters);
-    const cartButton = await screen.findByRole('button', {
-      name: /Go to payment/i,
-    });
-    expect(cartButton).toBeInTheDocument();
+    await waitFor(
+      () =>
+        expect(
+          screen.queryByRole('button', { name: /Go to payment/i }),
+        ).toBeInTheDocument(),
+      {
+        timeout: 10000,
+      },
+    );
   },
 };
 

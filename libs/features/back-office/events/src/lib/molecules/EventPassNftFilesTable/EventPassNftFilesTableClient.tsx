@@ -29,7 +29,6 @@ import {
 } from '../../actions/checkEventPassFilesHash';
 import { deleteEventPassFile } from '../../actions/deleteEventPassFile';
 import { deleteEventPassFiles } from '../../actions/deleteEventPassFiles';
-import { resetEventPassNftFiles } from '../../actions/resetEventPassNftFiles';
 import { ColumnsProps } from '../../organisms/EventsTable/EventsTable';
 import { EventPassFilesUploader } from '../EventPassFilesUploader/EventPassFilesUploader';
 
@@ -144,21 +143,13 @@ export function EventPassNftFilesTableClient({
             text: t('header-delete'),
             icon: <Delete />,
             // Add your delete function here
-            action: async () => {
-              await deleteEventPassFile({
+            action: () =>
+              deleteEventPassFile({
                 filePath: row.original.filePath,
                 organizerId,
                 eventId,
                 eventPassId,
-              });
-              resetEventPassNftFiles({
-                locale,
-                organizerId,
-                eventId,
-                eventPassId,
-                eventSlug,
-              });
-            },
+              }),
             className: 'cursor-pointer',
           });
         }
@@ -194,21 +185,13 @@ export function EventPassNftFilesTableClient({
         type: 'item',
         className: 'cursor-pointer',
         icon: <Delete />,
-        action: async () => {
-          await deleteEventPassFiles({
+        action: () =>
+          deleteEventPassFiles({
             organizerId,
             eventId,
             eventPassId,
             filesSelected: rowSelection,
-          });
-          resetEventPassNftFiles({
-            locale,
-            organizerId,
-            eventId,
-            eventPassId,
-            eventSlug,
-          });
-        },
+          }),
         text: t('menu-actions-delete', { numFilesSelected }),
       });
     }
@@ -220,8 +203,6 @@ export function EventPassNftFilesTableClient({
     rowSelection,
     t,
     eventPass.eventPassNftContract,
-    eventSlug,
-    locale,
   ]);
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import * as authProvider from '@next/auth';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
+import * as deploy from '../../actions/deployCollectionWrapper';
 import * as renameFiles from '../../actions/renameEventPassNftFiles';
 import * as reveal from '../../actions/revealDelayedContract';
 
@@ -12,13 +13,13 @@ import {
   eventWithNormalPasses,
 } from './examples';
 
+import { mobileMode } from '@test-utils/storybook';
 import { getMock, render } from 'storybook-addon-module-mock';
 import {
   eventPassNftFiles,
   eventPassNftFilesTableMocks,
 } from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
-import { mobileMode } from '@test-utils/storybook';
 
 const meta: Meta<typeof EventSheet> = {
   component: EventSheet,
@@ -231,7 +232,7 @@ export const WithEventPassDelayedRevealToReveal: Story = {
     expect(revealMock).toBeCalledTimes(1);
     expect(args).toMatch(
       eventPassWithPassToReveal.eventPasses[0].eventPassNftContract
-        ?.contractAddress,
+        ?.contractAddress as string,
     );
     expect(await screen.findByText(/has been revealed/i)).toBeInTheDocument();
     revealMock.mockRejectedValueOnce(new Error('error'));
