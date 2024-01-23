@@ -51,7 +51,7 @@ export function ProfileNav({
                   <ProfileAvatar user={user} />
                 )}
               </AutoAnimate>
-              <div className="hidden pb-1 font-semibold md:flex md:pb-0">
+              <div className="hidden pb-1 font-medium md:flex md:pb-0">
                 {email
                   ? truncateEmailString(email, 12)
                   : truncateString(eoa, 16)}
