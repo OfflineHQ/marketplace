@@ -12,10 +12,10 @@ export function AppNavLayout(props: AppNavLayoutProps) {
   const { children, ...appNavLayout } = props;
 
   return (
-    <div className="flex h-full w-full flex-col-reverse overflow-hidden md:flex-col">
+    <div className="flex size-full flex-col-reverse overflow-hidden md:flex-col">
       {/* Navigation for larger screens */}
       <AppNavLayoutDesktop {...appNavLayout} />
-      <div className="flex h-full w-full">{children}</div>
+      <div className="flex size-full">{children}</div>
       {/* Navigation for mobile screens */}
       <AppNavLayoutMobile {...appNavLayout} />
     </div>

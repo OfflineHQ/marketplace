@@ -64,10 +64,10 @@ export function NavigationMenuDemo() {
                 <li className="row-span-3">
                   <NavigationMenuLink asChild>
                     <a
-                      className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-rose-500 to-indigo-700 p-6 no-underline outline-none focus:shadow-md"
+                      className="flex size-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-rose-500 to-indigo-700 p-6 no-underline outline-none focus:shadow-md"
                       href="/"
                     >
-                      <Tags className="h-6 w-6 text-white" />
+                      <Tags className="size-6 text-white" />
                       <div className="mb-2 mt-4 text-lg font-medium text-white">
                         shadcn/ui
                       </div>

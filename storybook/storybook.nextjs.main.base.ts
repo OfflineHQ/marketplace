@@ -42,8 +42,8 @@ export const mainConfig = {
     };
     // This modifies the existing image rule to exclude `.svg` files
     // since we handle those with `@svgr/webpack`.
-    const imageRule = config.module.rules.find(
-      (rule) => rule.test?.test('.svg'),
+    const imageRule = config.module.rules.find((rule) =>
+      rule.test?.test('.svg'),
     );
     imageRule.exclude = /\.svg$/;
     config.module.rules.push({

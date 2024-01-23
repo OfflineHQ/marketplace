@@ -130,7 +130,7 @@ export function EventsTable({
         <CardTitle>{t('title')}</CardTitle>
       </AppContainerHeader>
       <DataTable<EventFromOrganizerTable, unknown>
-        className="h-full w-full px-6 pb-60 md:pb-60"
+        className="size-full px-6 pb-60 md:pb-60"
         data={events}
         columns={columns}
         {...props}

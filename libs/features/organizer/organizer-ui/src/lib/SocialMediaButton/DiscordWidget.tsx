@@ -14,7 +14,7 @@ const DiscordWidget = ({ handle }: { handle: string }) => {
         allowTransparency
         frameBorder="0"
         loading="lazy"
-        className="h-full w-full rounded-md border"
+        className="size-full rounded-md border"
         data-testid="iframe"
         sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
       ></iframe>

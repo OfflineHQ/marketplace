@@ -14,7 +14,7 @@ export const Ping: React.FC<PingProps> = ({
   className,
 }) => {
   const isDoubleDigit = number && number > 9;
-  const numberSize = isDoubleDigit ? 'h-4 w-4' : 'h-3.5 w-3.5';
+  const numberSize = isDoubleDigit ? 'size-4' : 'h-3.5 w-3.5';
   const size = number ? numberSize : 'h-2.5 w-2.5';
   const position = number ? 'top-0.5 right-0.5' : 'top-1 right-1';
 
@@ -23,12 +23,12 @@ export const Ping: React.FC<PingProps> = ({
       {((number && number > 0) || isActive) && (
         <span
           className={cn(
-            `absolute z-10 ${position} flex ${size} items-center justify-center pointer-events-none`,
+            `absolute z-10 ${position} flex ${size} pointer-events-none items-center justify-center`,
           )}
         >
           <span
             className={cn(
-              `absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 ${
+              `absolute inline-flex size-full rounded-full bg-primary opacity-75 ${
                 isActive ? 'animate-ping' : ''
               }`,
             )}

@@ -48,7 +48,7 @@ export const UserPass: React.FC<UserPassProps> = ({
       ) : (
         <Tabs
           value={activeTab || 'upcoming'}
-          className="mx-auto h-full w-full flex-col"
+          className="mx-auto size-full flex-col"
         >
           <TabsList className="grid w-full grid-cols-2">
             <Link href="/pass" legacyBehavior>

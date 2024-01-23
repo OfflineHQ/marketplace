@@ -55,7 +55,7 @@ export const EventSkeleton: React.FC = () => {
         <EventDetailsSkeleton className="md:mt-4" />
       </AppContainerOverflow>
       <AppContainerFooter>
-        <ButtonSkeleton className=" w-full md:w-1/6" />
+        <ButtonSkeleton className="w-full md:w-1/6" />
       </AppContainerFooter>
     </AppContainer>
   );

@@ -19,18 +19,16 @@ export function UserPassExample({
     : '';
   return (
     <>
-      <AppNavLayout
-        {...WithNormalUser.args}
-        children={
-          <UserPass
-            title={t('title')}
-            comingSoon={t('upcoming')}
-            past={t('past')}
-            children={children}
-            textMintingOrdersBadge={textMintingOrdersBadge}
-          />
-        }
-      />
+      <AppNavLayout {...WithNormalUser.args}>
+        <UserPass
+          title={t('title')}
+          comingSoon={t('upcoming')}
+          past={t('past')}
+          textMintingOrdersBadge={textMintingOrdersBadge}
+        >
+          {children}
+        </UserPass>
+      </AppNavLayout>
       <Toaster />
     </>
   );

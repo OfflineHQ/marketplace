@@ -4,7 +4,7 @@ import {
   AppContainerOverflow,
 } from '@features/app-nav';
 import { Link } from '@next/navigation';
-import { Alert, Button, CardContent, AlertTitle } from '@ui/components';
+import { Alert, AlertTitle, Button, CardContent } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
@@ -13,8 +13,8 @@ export function NotFound() {
   return (
     <AppContainer>
       <AppContainerOverflow variant="stickyFooter">
-        <CardContent className="flex h-full w-full flex-col items-center">
-          <div className="relative h-80 w-80 grow">
+        <CardContent className="flex size-full flex-col items-center">
+          <div className="relative size-80 grow">
             <Image fill src="/not-found.svg" alt={t('404-not-found')} />
           </div>
           <Alert variant="info" className="w-fit">

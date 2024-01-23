@@ -2,6 +2,7 @@ import * as Types from '@gql/anonymous/types';
 
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { fetchDataReactQuery } from '@next/hasura/react-query';
+
 export const PassAmountFieldsFragmentDoc = `
     fragment PassAmountFields on passAmount {
   maxAmount
@@ -93,15 +94,17 @@ export const GetEventPassNftByTokenReferenceDocument = `
 }
     ${EventPassNftFieldsFragmentDoc}
 ${EventPassFieldsFragmentDoc}`;
+
 export const useGetEventPassNftByTokenReferenceQuery = <
       TData = Types.GetEventPassNftByTokenReferenceQuery,
       TError = Error
     >(
       variables: Types.GetEventPassNftByTokenReferenceQueryVariables,
       options?: UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>(
+    ) => {
+    
+    return useQuery<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>(
       ['GetEventPassNftByTokenReference', variables],
       fetchDataReactQuery<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables),
       options
-    );
+    )};

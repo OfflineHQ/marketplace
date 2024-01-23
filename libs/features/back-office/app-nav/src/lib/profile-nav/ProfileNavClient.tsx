@@ -74,7 +74,7 @@ const RoleItem = ({ role, switchToRole }: RoleItemProps) => {
       <div className="mr-2 flex w-fit flex-row items-center justify-center space-x-2 space-y-0">
         <RoleAvatar role={role} />
         <div className="flex flex-col">
-          <div className="pb-1 font-semibold">{name}</div>
+          <div className="pb-1 font-medium">{name}</div>
           <RoleBadge role={role} size="sm" />
         </div>
       </div>
@@ -86,7 +86,7 @@ const RoleItemDisplay = ({ role }: { role: RoleWithOrganizer }) => (
   <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0 pl-2">
     <RoleAvatar role={role} />
     <div className="flex flex-col">
-      <div className="pb-1 text-sm">{role.organizer?.name}</div>
+      <div className="pb-1 text-sm font-medium">{role.organizer?.name}</div>
       <RoleBadge role={role} size="sm" />
     </div>
   </div>
@@ -168,7 +168,9 @@ export const constructItems = ({
     userInfoSections.splice(1, 0, {
       type: 'children',
       children: (
-        <div className="overflow-hidden py-1 pl-2 text-sm">{safeUser.name}</div>
+        <div className="overflow-hidden py-1 pl-2 text-sm font-medium">
+          {safeUser.name}
+        </div>
       ),
     });
   }
