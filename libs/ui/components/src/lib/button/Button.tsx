@@ -56,9 +56,10 @@ const buttonVariantsCva = cva(
 );
 
 const SkeletonSizes = {
-  sm: 'h-9 w-24',
-  default: 'h-10 w-28',
-  lg: 'h-11 w-32',
+  xs: 'size-4 md:size-8',
+  sm: 'size-9',
+  default: 'size-10',
+  lg: 'size-11',
 };
 
 const buttonSkeletonVariantsCva = cva(
@@ -75,18 +76,26 @@ const buttonSkeletonVariantsCva = cva(
       isIconOnly: false,
     },
     compoundVariants: [
-      ...Object.keys(SkeletonSizes).map((key) => ({
-        size: key as keyof typeof SkeletonSizes,
-        isIconOnly: true,
-        class: `${SkeletonSizes[key as keyof typeof SkeletonSizes].replace(
-          /w-\d+/,
-          `w-${
-            SkeletonSizes[key as keyof typeof SkeletonSizes].match(
-              /h-(\d+)/,
-            )?.[1] || 'default'
-          }`,
-        )} rounded-full`,
-      })),
+      {
+        size: 'xs',
+        isIconOnly: false,
+        class: 'h-4 w-12 md:h-16 md:w-8',
+      },
+      {
+        size: 'sm',
+        isIconOnly: false,
+        class: 'h-9 w-24',
+      },
+      {
+        size: 'default',
+        isIconOnly: false,
+        class: 'h-10 w-28',
+      },
+      {
+        size: 'lg',
+        isIconOnly: false,
+        class: 'h-11 w-32',
+      },
     ],
   },
 );
