@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
 
+import { mobileMode } from '@test-utils/storybook';
 import { EventPasses, EventPassesSkeleton } from './EventPasses';
 import { EventPassesExample, eventPassesProps } from './examples';
-import { mobileMode } from '@test-utils/storybook';
 
 // Import the stories you want to reuse
 
@@ -102,7 +102,11 @@ export const OpenedMobile: Story = {
 };
 
 export const Skeleton: Story = {
-  render: () => <EventPassesSkeleton />,
+  render: () => (
+    <div className="mx-5">
+      <EventPassesSkeleton />
+    </div>
+  ),
 };
 
 export const SkeletonMobile: Story = {

@@ -62,7 +62,9 @@ export const eventPassesProps: EventPassesProps = {
 export const EventPassesExample = (props: EventPassesProps) => {
   return (
     <Accordion type="multiple">
-      <EventPasses {...props} />
+      <div className="mx-5">
+        <EventPasses {...props} />
+      </div>
     </Accordion>
   );
 };

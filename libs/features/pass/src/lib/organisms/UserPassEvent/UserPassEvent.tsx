@@ -27,11 +27,11 @@ export type UserPassEventProps = Omit<
 const layout = {
   triggerContainer: 'flex space-x-3',
   image: 'rounded-sm object-cover',
-  grid: 'grid max-size-full grid-cols-1 md:grid-cols-6 md:gap-4',
+  grid: 'grid w-full grid-cols-1 md:grid-cols-6 md:gap-4',
   textContainer:
-    'mt-4 space-y-2 md:space-y-4 md:ml-2 text-left flex flex-col justify-start md:justify-center col-span-2 md:col-span-4',
+    'mt-4 space-y-2 md:space-y-4 md:ml-2 text-left flex flex-col justify-start md:justify-center col-span-1 md:col-span-4',
   imageContainer:
-    'relative h-32 w-full shrink-0 overflow-hidden rounded-sm md:h-40 md:w-64 col-span-1 md:col-span-2',
+    'relative h-32 w-full shrink-0 overflow-hidden rounded-sm md:h-40 md:max-w-64 col-span-1 md:col-span-2',
   passesTextContainer: 'flex gap-x-2 flex-wrap gap-y-2',
   button: 'self-start',
 };
@@ -129,7 +129,7 @@ export const UserPassEventSkeleton: React.FC = () => {
       <div className="flex items-center space-x-3 py-4">
         <div className={layout.grid}>
           <div className={layout.imageContainer}>
-            <div className={`size-full animate-pulse rounded-sm bg-skeleton`} />
+            <div className={`size-full animate-pulse rounded-sm bg-image`} />
           </div>
           <div className={`${layout.textContainer} mb-4 space-y-4`}>
             <TextSkeleton variant="h4" />
@@ -141,7 +141,7 @@ export const UserPassEventSkeleton: React.FC = () => {
             <BadgeSkeleton />
           </div>
         </div>
-        <ButtonSkeleton className="size-4 rounded-full md:size-8" />
+        <ButtonSkeleton isIconOnly size="xs" />
       </div>
       <Separator orientation="horizontal" decorative={true} />
     </div>
