@@ -116,7 +116,9 @@ export function EventsTable({
             type: 'item',
             text: t('header-edit'),
             icon: <Edit />,
-            wrapper: <Link href={`/events/${row.getValue('slug')}`} />,
+            wrapper: (
+              <Link href={`/campaigns/events/${row.getValue('slug')}`} />
+            ),
             className: 'cursor-pointer',
           },
         ] satisfies DataTableRowActionsProps['items'];
