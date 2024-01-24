@@ -475,7 +475,7 @@ export class Payment {
       });
       const checkedOrders = await Promise.all(checkOrderPromises);
       const fetchPromises = checkedOrders.map((order) =>
-        fetch(`${getNextAppURL()}/api/order/claim/${order.id}`),
+        fetch(`${getNextAppURL()}api/order/claim/${order.id}`),
       );
       Promise.all(fetchPromises);
     } catch (error) {
