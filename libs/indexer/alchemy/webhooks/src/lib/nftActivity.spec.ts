@@ -42,7 +42,7 @@ const mockActivity: Activity = {
   fromAddress: 'fromAddress',
   toAddress: 'toAddress',
   contractAddress: 'contractAddress',
-  blockNumber: '0x78b94e',
+  blockNum: '0x78b94e',
   erc721TokenId:
     '0x2acc2dff0c1fa9c1c62f518c9415a0ca60e03f77000000000000010000000001',
   hash: 'transactionHash',
@@ -64,7 +64,7 @@ const mockActivity2: Activity = {
   fromAddress: 'fromAddress2',
   toAddress: 'toAddress2',
   contractAddress: 'contractAddress2',
-  blockNumber: '0x78b78e',
+  blockNum: '0x78b78e',
   erc721TokenId: '0x1242141243e',
   hash: 'transactionHash2',
   category: 'erc721',

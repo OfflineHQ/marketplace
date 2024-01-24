@@ -27,13 +27,8 @@ export const extractNftTransfersFromEvent = (
     throw new Error('No nft activities found in event');
   }
   for (const activity of nftActivities) {
-    const {
-      fromAddress,
-      toAddress,
-      contractAddress,
-      blockNumber,
-      erc721TokenId,
-    } = activity;
+    const { fromAddress, toAddress, contractAddress, blockNum, erc721TokenId } =
+      activity;
     const { transactionHash, removed } = activity.log;
     if (removed) {
       console.error(
@@ -47,7 +42,7 @@ export const extractNftTransfersFromEvent = (
           fromAddress,
           toAddress,
           contractAddress,
-          blockNumber: hexToBigInt(blockNumber),
+          blockNumber: hexToBigInt(blockNum),
           tokenId: hexToBigInt(erc721TokenId),
           chainId: alchemy.convertNetworkToChainId(network).toString(),
           transactionHash,
