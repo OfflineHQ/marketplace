@@ -1150,6 +1150,8 @@ input ConnectPositionInput {
 The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform.
 """
 type ContentSpace implements Entity & Node {
+  contentSpaceParameters: contentSpaceParameters
+
   """The time the document was created"""
   createdAt(
     """
@@ -2071,6 +2073,11 @@ input ContentSpaceWhereStageInput {
 """References ContentSpace record uniquely"""
 input ContentSpaceWhereUniqueInput {
   id: ID
+  slug: String
+}
+
+"""References ContentSpace record uniquely"""
+input ContentSpaceWhereUniqueInput_remote_rel_contentSpaceParameterscontentSpace {
   slug: String
 }
 
@@ -10462,6 +10469,403 @@ input bigint_comparison_exp {
 }
 
 """
+The contentSpaceParameters model is designed to define properties specifically for content spaces. This table includes essential details like the contentSpaceId, which links to the specific content space. By centralizing this information, our system can effectively manage and control parameters tied to each content space, enhancing functionality and flexibility.
+"""
+type contentSpaceParameters {
+  contentSpace(
+    """
+    Defines which locales should be returned.
+    
+    Note that `ContentSpace` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: ContentSpaceWhereUniqueInput_remote_rel_contentSpaceParameterscontentSpace!
+  ): ContentSpace
+
+  """
+  It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data.
+  """
+  contentSpaceId: String!
+  created_at: timestamptz!
+  id: uuid!
+  organizerId: String!
+  status: contentSpaceStatus_enum
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "contentSpaceParameters"
+"""
+type contentSpaceParameters_aggregate {
+  aggregate: contentSpaceParameters_aggregate_fields
+  nodes: [contentSpaceParameters!]!
+}
+
+"""
+aggregate fields of "contentSpaceParameters"
+"""
+type contentSpaceParameters_aggregate_fields {
+  count(columns: [contentSpaceParameters_select_column!], distinct: Boolean): Int!
+  max: contentSpaceParameters_max_fields
+  min: contentSpaceParameters_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "contentSpaceParameters". All fields are combined with a logical 'AND'.
+"""
+input contentSpaceParameters_bool_exp {
+  _and: [contentSpaceParameters_bool_exp!]
+  _not: contentSpaceParameters_bool_exp
+  _or: [contentSpaceParameters_bool_exp!]
+  contentSpaceId: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  organizerId: String_comparison_exp
+  status: contentSpaceStatus_enum_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "contentSpaceParameters"
+"""
+enum contentSpaceParameters_constraint {
+  """
+  unique or primary key constraint on columns "contentSpaceId"
+  """
+  contentSpaceParameters_contentSpaceId_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  contentSpaceParameters_pkey
+}
+
+"""
+input type for inserting data into table "contentSpaceParameters"
+"""
+input contentSpaceParameters_insert_input {
+  """
+  It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data.
+  """
+  contentSpaceId: String
+  created_at: timestamptz
+  id: uuid
+  organizerId: String
+  status: contentSpaceStatus_enum
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type contentSpaceParameters_max_fields {
+  """
+  It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data.
+  """
+  contentSpaceId: String
+  created_at: timestamptz
+  id: uuid
+  organizerId: String
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type contentSpaceParameters_min_fields {
+  """
+  It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data.
+  """
+  contentSpaceId: String
+  created_at: timestamptz
+  id: uuid
+  organizerId: String
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "contentSpaceParameters"
+"""
+type contentSpaceParameters_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [contentSpaceParameters!]!
+}
+
+"""
+on_conflict condition type for table "contentSpaceParameters"
+"""
+input contentSpaceParameters_on_conflict {
+  constraint: contentSpaceParameters_constraint!
+  update_columns: [contentSpaceParameters_update_column!]! = []
+  where: contentSpaceParameters_bool_exp
+}
+
+"""Ordering options when selecting data from "contentSpaceParameters"."""
+input contentSpaceParameters_order_by {
+  contentSpaceId: order_by
+  created_at: order_by
+  id: order_by
+  organizerId: order_by
+  status: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: contentSpaceParameters"""
+input contentSpaceParameters_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "contentSpaceParameters"
+"""
+enum contentSpaceParameters_select_column {
+  """column name"""
+  contentSpaceId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  status
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "contentSpaceParameters"
+"""
+input contentSpaceParameters_set_input {
+  """
+  It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data.
+  """
+  contentSpaceId: String
+  created_at: timestamptz
+  id: uuid
+  organizerId: String
+  status: contentSpaceStatus_enum
+  updated_at: timestamptz
+}
+
+"""
+Streaming cursor of the table "contentSpaceParameters"
+"""
+input contentSpaceParameters_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: contentSpaceParameters_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input contentSpaceParameters_stream_cursor_value_input {
+  """
+  It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data.
+  """
+  contentSpaceId: String
+  created_at: timestamptz
+  id: uuid
+  organizerId: String
+  status: contentSpaceStatus_enum
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "contentSpaceParameters"
+"""
+enum contentSpaceParameters_update_column {
+  """column name"""
+  contentSpaceId
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  organizerId
+
+  """column name"""
+  status
+
+  """column name"""
+  updated_at
+}
+
+input contentSpaceParameters_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: contentSpaceParameters_set_input
+
+  """filter the rows which have to be updated"""
+  where: contentSpaceParameters_bool_exp!
+}
+
+"""
+columns and relationships of "contentSpaceStatus"
+"""
+type contentSpaceStatus {
+  value: String!
+}
+
+"""
+aggregated selection of "contentSpaceStatus"
+"""
+type contentSpaceStatus_aggregate {
+  aggregate: contentSpaceStatus_aggregate_fields
+  nodes: [contentSpaceStatus!]!
+}
+
+"""
+aggregate fields of "contentSpaceStatus"
+"""
+type contentSpaceStatus_aggregate_fields {
+  count(columns: [contentSpaceStatus_select_column!], distinct: Boolean): Int!
+  max: contentSpaceStatus_max_fields
+  min: contentSpaceStatus_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "contentSpaceStatus". All fields are combined with a logical 'AND'.
+"""
+input contentSpaceStatus_bool_exp {
+  _and: [contentSpaceStatus_bool_exp!]
+  _not: contentSpaceStatus_bool_exp
+  _or: [contentSpaceStatus_bool_exp!]
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "contentSpaceStatus"
+"""
+enum contentSpaceStatus_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  contentSpaceStatus_pkey
+}
+
+enum contentSpaceStatus_enum {
+  DRAFT
+  PUBLISHED
+}
+
+"""
+Boolean expression to compare columns of type "contentSpaceStatus_enum". All fields are combined with logical 'AND'.
+"""
+input contentSpaceStatus_enum_comparison_exp {
+  _eq: contentSpaceStatus_enum
+  _in: [contentSpaceStatus_enum!]
+  _is_null: Boolean
+  _neq: contentSpaceStatus_enum
+  _nin: [contentSpaceStatus_enum!]
+}
+
+"""
+input type for inserting data into table "contentSpaceStatus"
+"""
+input contentSpaceStatus_insert_input {
+  value: String
+}
+
+"""aggregate max on columns"""
+type contentSpaceStatus_max_fields {
+  value: String
+}
+
+"""aggregate min on columns"""
+type contentSpaceStatus_min_fields {
+  value: String
+}
+
+"""
+response of any mutation on the table "contentSpaceStatus"
+"""
+type contentSpaceStatus_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [contentSpaceStatus!]!
+}
+
+"""
+on_conflict condition type for table "contentSpaceStatus"
+"""
+input contentSpaceStatus_on_conflict {
+  constraint: contentSpaceStatus_constraint!
+  update_columns: [contentSpaceStatus_update_column!]! = []
+  where: contentSpaceStatus_bool_exp
+}
+
+"""Ordering options when selecting data from "contentSpaceStatus"."""
+input contentSpaceStatus_order_by {
+  value: order_by
+}
+
+"""primary key columns input for table: contentSpaceStatus"""
+input contentSpaceStatus_pk_columns_input {
+  value: String!
+}
+
+"""
+select columns of table "contentSpaceStatus"
+"""
+enum contentSpaceStatus_select_column {
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "contentSpaceStatus"
+"""
+input contentSpaceStatus_set_input {
+  value: String
+}
+
+"""
+Streaming cursor of the table "contentSpaceStatus"
+"""
+input contentSpaceStatus_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: contentSpaceStatus_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input contentSpaceStatus_stream_cursor_value_input {
+  value: String
+}
+
+"""
+update columns of table "contentSpaceStatus"
+"""
+enum contentSpaceStatus_update_column {
+  """column name"""
+  value
+}
+
+input contentSpaceStatus_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: contentSpaceStatus_set_input
+
+  """filter the rows which have to be updated"""
+  where: contentSpaceStatus_bool_exp!
+}
+
+"""
 Currencies code following the standard ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217)
 """
 type currency {
@@ -15572,6 +15976,32 @@ type mutation_root {
   delete_account_by_pk(id: uuid!): account
 
   """
+  delete data from the table: "contentSpaceParameters"
+  """
+  delete_contentSpaceParameters(
+    """filter the rows which have to be deleted"""
+    where: contentSpaceParameters_bool_exp!
+  ): contentSpaceParameters_mutation_response
+
+  """
+  delete single row from the table: "contentSpaceParameters"
+  """
+  delete_contentSpaceParameters_by_pk(id: uuid!): contentSpaceParameters
+
+  """
+  delete data from the table: "contentSpaceStatus"
+  """
+  delete_contentSpaceStatus(
+    """filter the rows which have to be deleted"""
+    where: contentSpaceStatus_bool_exp!
+  ): contentSpaceStatus_mutation_response
+
+  """
+  delete single row from the table: "contentSpaceStatus"
+  """
+  delete_contentSpaceStatus_by_pk(value: String!): contentSpaceStatus
+
+  """
   delete data from the table: "currency"
   """
   delete_currency(
@@ -16072,6 +16502,50 @@ type mutation_root {
     """upsert condition"""
     on_conflict: account_on_conflict
   ): account
+
+  """
+  insert data into the table: "contentSpaceParameters"
+  """
+  insert_contentSpaceParameters(
+    """the rows to be inserted"""
+    objects: [contentSpaceParameters_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: contentSpaceParameters_on_conflict
+  ): contentSpaceParameters_mutation_response
+
+  """
+  insert a single row into the table: "contentSpaceParameters"
+  """
+  insert_contentSpaceParameters_one(
+    """the row to be inserted"""
+    object: contentSpaceParameters_insert_input!
+
+    """upsert condition"""
+    on_conflict: contentSpaceParameters_on_conflict
+  ): contentSpaceParameters
+
+  """
+  insert data into the table: "contentSpaceStatus"
+  """
+  insert_contentSpaceStatus(
+    """the rows to be inserted"""
+    objects: [contentSpaceStatus_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: contentSpaceStatus_on_conflict
+  ): contentSpaceStatus_mutation_response
+
+  """
+  insert a single row into the table: "contentSpaceStatus"
+  """
+  insert_contentSpaceStatus_one(
+    """the row to be inserted"""
+    object: contentSpaceStatus_insert_input!
+
+    """upsert condition"""
+    on_conflict: contentSpaceStatus_on_conflict
+  ): contentSpaceStatus
 
   """
   insert data into the table: "currency"
@@ -18256,6 +18730,62 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [account_updates!]!
   ): [account_mutation_response]
+
+  """
+  update data of the table: "contentSpaceParameters"
+  """
+  update_contentSpaceParameters(
+    """sets the columns of the filtered rows to the given values"""
+    _set: contentSpaceParameters_set_input
+
+    """filter the rows which have to be updated"""
+    where: contentSpaceParameters_bool_exp!
+  ): contentSpaceParameters_mutation_response
+
+  """
+  update single row of the table: "contentSpaceParameters"
+  """
+  update_contentSpaceParameters_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: contentSpaceParameters_set_input
+    pk_columns: contentSpaceParameters_pk_columns_input!
+  ): contentSpaceParameters
+
+  """
+  update multiples rows of table: "contentSpaceParameters"
+  """
+  update_contentSpaceParameters_many(
+    """updates to execute, in order"""
+    updates: [contentSpaceParameters_updates!]!
+  ): [contentSpaceParameters_mutation_response]
+
+  """
+  update data of the table: "contentSpaceStatus"
+  """
+  update_contentSpaceStatus(
+    """sets the columns of the filtered rows to the given values"""
+    _set: contentSpaceStatus_set_input
+
+    """filter the rows which have to be updated"""
+    where: contentSpaceStatus_bool_exp!
+  ): contentSpaceStatus_mutation_response
+
+  """
+  update single row of the table: "contentSpaceStatus"
+  """
+  update_contentSpaceStatus_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: contentSpaceStatus_set_input
+    pk_columns: contentSpaceStatus_pk_columns_input!
+  ): contentSpaceStatus
+
+  """
+  update multiples rows of table: "contentSpaceStatus"
+  """
+  update_contentSpaceStatus_many(
+    """updates to execute, in order"""
+    updates: [contentSpaceStatus_updates!]!
+  ): [contentSpaceStatus_mutation_response]
 
   """
   update data of the table: "currency"
@@ -24030,6 +24560,96 @@ type query_root {
     where: ContentSpaceWhereUniqueInput!
   ): ContentSpace
 
+  """
+  fetch data from the table: "contentSpaceParameters"
+  """
+  contentSpaceParameters(
+    """distinct select on columns"""
+    distinct_on: [contentSpaceParameters_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [contentSpaceParameters_order_by!]
+
+    """filter the rows returned"""
+    where: contentSpaceParameters_bool_exp
+  ): [contentSpaceParameters!]!
+
+  """
+  fetch aggregated fields from the table: "contentSpaceParameters"
+  """
+  contentSpaceParameters_aggregate(
+    """distinct select on columns"""
+    distinct_on: [contentSpaceParameters_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [contentSpaceParameters_order_by!]
+
+    """filter the rows returned"""
+    where: contentSpaceParameters_bool_exp
+  ): contentSpaceParameters_aggregate!
+
+  """
+  fetch data from the table: "contentSpaceParameters" using primary key columns
+  """
+  contentSpaceParameters_by_pk(id: uuid!): contentSpaceParameters
+
+  """
+  fetch data from the table: "contentSpaceStatus"
+  """
+  contentSpaceStatus(
+    """distinct select on columns"""
+    distinct_on: [contentSpaceStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [contentSpaceStatus_order_by!]
+
+    """filter the rows returned"""
+    where: contentSpaceStatus_bool_exp
+  ): [contentSpaceStatus!]!
+
+  """
+  fetch aggregated fields from the table: "contentSpaceStatus"
+  """
+  contentSpaceStatus_aggregate(
+    """distinct select on columns"""
+    distinct_on: [contentSpaceStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [contentSpaceStatus_order_by!]
+
+    """filter the rows returned"""
+    where: contentSpaceStatus_bool_exp
+  ): contentSpaceStatus_aggregate!
+
+  """
+  fetch data from the table: "contentSpaceStatus" using primary key columns
+  """
+  contentSpaceStatus_by_pk(value: String!): contentSpaceStatus
+
   """Retrieve document version"""
   contentSpaceVersion(where: VersionWhereInput!): DocumentVersion
 
@@ -27209,6 +27829,124 @@ type subscription_root {
     """filter the rows returned"""
     where: account_bool_exp
   ): [account!]!
+
+  """
+  fetch data from the table: "contentSpaceParameters"
+  """
+  contentSpaceParameters(
+    """distinct select on columns"""
+    distinct_on: [contentSpaceParameters_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [contentSpaceParameters_order_by!]
+
+    """filter the rows returned"""
+    where: contentSpaceParameters_bool_exp
+  ): [contentSpaceParameters!]!
+
+  """
+  fetch aggregated fields from the table: "contentSpaceParameters"
+  """
+  contentSpaceParameters_aggregate(
+    """distinct select on columns"""
+    distinct_on: [contentSpaceParameters_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [contentSpaceParameters_order_by!]
+
+    """filter the rows returned"""
+    where: contentSpaceParameters_bool_exp
+  ): contentSpaceParameters_aggregate!
+
+  """
+  fetch data from the table: "contentSpaceParameters" using primary key columns
+  """
+  contentSpaceParameters_by_pk(id: uuid!): contentSpaceParameters
+
+  """
+  fetch data from the table in a streaming manner: "contentSpaceParameters"
+  """
+  contentSpaceParameters_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [contentSpaceParameters_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: contentSpaceParameters_bool_exp
+  ): [contentSpaceParameters!]!
+
+  """
+  fetch data from the table: "contentSpaceStatus"
+  """
+  contentSpaceStatus(
+    """distinct select on columns"""
+    distinct_on: [contentSpaceStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [contentSpaceStatus_order_by!]
+
+    """filter the rows returned"""
+    where: contentSpaceStatus_bool_exp
+  ): [contentSpaceStatus!]!
+
+  """
+  fetch aggregated fields from the table: "contentSpaceStatus"
+  """
+  contentSpaceStatus_aggregate(
+    """distinct select on columns"""
+    distinct_on: [contentSpaceStatus_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [contentSpaceStatus_order_by!]
+
+    """filter the rows returned"""
+    where: contentSpaceStatus_bool_exp
+  ): contentSpaceStatus_aggregate!
+
+  """
+  fetch data from the table: "contentSpaceStatus" using primary key columns
+  """
+  contentSpaceStatus_by_pk(value: String!): contentSpaceStatus
+
+  """
+  fetch data from the table in a streaming manner: "contentSpaceStatus"
+  """
+  contentSpaceStatus_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [contentSpaceStatus_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: contentSpaceStatus_bool_exp
+  ): [contentSpaceStatus!]!
 
   """
   fetch data from the table: "currency"

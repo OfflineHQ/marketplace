@@ -155,6 +155,33 @@ export type GetNftTransferByTokenIdAndCollectionQuery = { __typename?: 'query_ro
 
 export type OrganizerFieldsFragment = { __typename?: 'Organizer', id: string, slug: string, name: string, imageClasses?: string | null, image: { __typename?: 'Asset', url: string } };
 
+export type ContentSpaceFieldsFragment = { __typename?: 'ContentSpace', title: string, slug?: string | null, heroImage: { __typename?: 'Asset', url: string }, description: { __typename?: 'ContentSpaceDescriptionRichText', json: any, references: Array<{ __typename: 'Asset', id: string, url: string, mimeType?: string | null }> } };
+
+export type GetContentSpaceFromOrganizerIdTableQueryVariables = Types.Exact<{
+  id: Types.Scalars['ID']['input'];
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type GetContentSpaceFromOrganizerIdTableQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', contentSpaces: Array<{ __typename?: 'ContentSpace', slug?: string | null, title: string, contentSpaceParameters?: { __typename?: 'contentSpaceParameters', status?: Types.ContentSpaceStatus_Enum | null } | null }> } | null };
+
+export type GetContentSpaceWithEventPassesOrganizerQueryVariables = Types.Exact<{
+  slug: Types.Scalars['String']['input'];
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type GetContentSpaceWithEventPassesOrganizerQuery = { __typename?: 'query_root', contentSpace?: { __typename?: 'ContentSpace', title: string, slug?: string | null, heroImage: { __typename?: 'Asset', url: string }, contentSpaceParameters?: { __typename?: 'contentSpaceParameters', status?: Types.ContentSpaceStatus_Enum | null } | null, eventPasses: Array<{ __typename?: 'EventPass', id: string, name: string, event?: { __typename?: 'Event', slug: string, title: string } | null }> } | null };
+
+export type CreateContentSpaceParametersMutationVariables = Types.Exact<{
+  object: Types.ContentSpaceParameters_Insert_Input;
+}>;
+
+
+export type CreateContentSpaceParametersMutation = { __typename?: 'mutation_root', insert_contentSpaceParameters_one?: { __typename?: 'contentSpaceParameters', id: any } | null };
+
 export type EventDateLocationsFieldsFragment = { __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } };
 
 export type EventListFieldsFragment = { __typename?: 'Event', id: string, slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', width?: number | null, height?: number | null, url: string } };
