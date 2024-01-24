@@ -841,6 +841,7 @@ export type ConnectPositionInput = {
 /** The ContentSpace model is a core component in delivering exclusive, NFT-linked digital content. It serves as a hub for organizers to manage and distribute unique content accessible only to specific NFT holders, enhancing user engagement and value on the platform. */
 export type ContentSpace = Entity & Node & {
   __typename?: 'ContentSpace';
+  contentSpaceParameters?: Maybe<ContentSpaceParameters>;
   /** The time the document was created */
   createdAt: Scalars['DateTime']['output'];
   /** User that created this document */
@@ -1505,6 +1506,11 @@ export type ContentSpaceWhereStageInput = {
 /** References ContentSpace record uniquely */
 export type ContentSpaceWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** References ContentSpace record uniquely */
+export type ContentSpaceWhereUniqueInput_Remote_Rel_ContentSpaceParameterscontentSpace = {
   slug?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -7507,6 +7513,339 @@ export type Bigint_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['bigint']['input']>>;
 };
 
+/** The contentSpaceParameters model is designed to define properties specifically for content spaces. This table includes essential details like the contentSpaceId, which links to the specific content space. By centralizing this information, our system can effectively manage and control parameters tied to each content space, enhancing functionality and flexibility. */
+export type ContentSpaceParameters = {
+  __typename?: 'contentSpaceParameters';
+  contentSpace?: Maybe<ContentSpace>;
+  /** It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data. */
+  contentSpaceId: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  organizerId: Scalars['String']['output'];
+  status?: Maybe<ContentSpaceStatus_Enum>;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+
+/** The contentSpaceParameters model is designed to define properties specifically for content spaces. This table includes essential details like the contentSpaceId, which links to the specific content space. By centralizing this information, our system can effectively manage and control parameters tied to each content space, enhancing functionality and flexibility. */
+export type ContentSpaceParametersContentSpaceArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: ContentSpaceWhereUniqueInput_Remote_Rel_ContentSpaceParameterscontentSpace;
+};
+
+/** aggregated selection of "contentSpaceParameters" */
+export type ContentSpaceParameters_Aggregate = {
+  __typename?: 'contentSpaceParameters_aggregate';
+  aggregate?: Maybe<ContentSpaceParameters_Aggregate_Fields>;
+  nodes: Array<ContentSpaceParameters>;
+};
+
+/** aggregate fields of "contentSpaceParameters" */
+export type ContentSpaceParameters_Aggregate_Fields = {
+  __typename?: 'contentSpaceParameters_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<ContentSpaceParameters_Max_Fields>;
+  min?: Maybe<ContentSpaceParameters_Min_Fields>;
+};
+
+
+/** aggregate fields of "contentSpaceParameters" */
+export type ContentSpaceParameters_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<ContentSpaceParameters_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "contentSpaceParameters". All fields are combined with a logical 'AND'. */
+export type ContentSpaceParameters_Bool_Exp = {
+  _and?: InputMaybe<Array<ContentSpaceParameters_Bool_Exp>>;
+  _not?: InputMaybe<ContentSpaceParameters_Bool_Exp>;
+  _or?: InputMaybe<Array<ContentSpaceParameters_Bool_Exp>>;
+  contentSpaceId?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  status?: InputMaybe<ContentSpaceStatus_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "contentSpaceParameters" */
+export const enum ContentSpaceParameters_Constraint {
+  /** unique or primary key constraint on columns "contentSpaceId" */
+  ContentSpaceParametersContentSpaceIdKey = 'contentSpaceParameters_contentSpaceId_key',
+  /** unique or primary key constraint on columns "id" */
+  ContentSpaceParametersPkey = 'contentSpaceParameters_pkey'
+};
+
+/** input type for inserting data into table "contentSpaceParameters" */
+export type ContentSpaceParameters_Insert_Input = {
+  /** It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data. */
+  contentSpaceId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<ContentSpaceStatus_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type ContentSpaceParameters_Max_Fields = {
+  __typename?: 'contentSpaceParameters_max_fields';
+  /** It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data. */
+  contentSpaceId?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type ContentSpaceParameters_Min_Fields = {
+  __typename?: 'contentSpaceParameters_min_fields';
+  /** It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data. */
+  contentSpaceId?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "contentSpaceParameters" */
+export type ContentSpaceParameters_Mutation_Response = {
+  __typename?: 'contentSpaceParameters_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ContentSpaceParameters>;
+};
+
+/** on_conflict condition type for table "contentSpaceParameters" */
+export type ContentSpaceParameters_On_Conflict = {
+  constraint: ContentSpaceParameters_Constraint;
+  update_columns?: Array<ContentSpaceParameters_Update_Column>;
+  where?: InputMaybe<ContentSpaceParameters_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "contentSpaceParameters". */
+export type ContentSpaceParameters_Order_By = {
+  contentSpaceId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: contentSpaceParameters */
+export type ContentSpaceParameters_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "contentSpaceParameters" */
+export const enum ContentSpaceParameters_Select_Column {
+  /** column name */
+  ContentSpaceId = 'contentSpaceId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "contentSpaceParameters" */
+export type ContentSpaceParameters_Set_Input = {
+  /** It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data. */
+  contentSpaceId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<ContentSpaceStatus_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "contentSpaceParameters" */
+export type ContentSpaceParameters_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: ContentSpaceParameters_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ContentSpaceParameters_Stream_Cursor_Value_Input = {
+  /** It stores the identifier for the content space. This ID is crucial for managing and linking specific parameters to each content space, ensuring accurate and efficient handling of content space-related data. */
+  contentSpaceId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<ContentSpaceStatus_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "contentSpaceParameters" */
+export const enum ContentSpaceParameters_Update_Column {
+  /** column name */
+  ContentSpaceId = 'contentSpaceId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type ContentSpaceParameters_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<ContentSpaceParameters_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: ContentSpaceParameters_Bool_Exp;
+};
+
+/** columns and relationships of "contentSpaceStatus" */
+export type ContentSpaceStatus = {
+  __typename?: 'contentSpaceStatus';
+  value: Scalars['String']['output'];
+};
+
+/** aggregated selection of "contentSpaceStatus" */
+export type ContentSpaceStatus_Aggregate = {
+  __typename?: 'contentSpaceStatus_aggregate';
+  aggregate?: Maybe<ContentSpaceStatus_Aggregate_Fields>;
+  nodes: Array<ContentSpaceStatus>;
+};
+
+/** aggregate fields of "contentSpaceStatus" */
+export type ContentSpaceStatus_Aggregate_Fields = {
+  __typename?: 'contentSpaceStatus_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<ContentSpaceStatus_Max_Fields>;
+  min?: Maybe<ContentSpaceStatus_Min_Fields>;
+};
+
+
+/** aggregate fields of "contentSpaceStatus" */
+export type ContentSpaceStatus_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<ContentSpaceStatus_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "contentSpaceStatus". All fields are combined with a logical 'AND'. */
+export type ContentSpaceStatus_Bool_Exp = {
+  _and?: InputMaybe<Array<ContentSpaceStatus_Bool_Exp>>;
+  _not?: InputMaybe<ContentSpaceStatus_Bool_Exp>;
+  _or?: InputMaybe<Array<ContentSpaceStatus_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "contentSpaceStatus" */
+export const enum ContentSpaceStatus_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  ContentSpaceStatusPkey = 'contentSpaceStatus_pkey'
+};
+
+export const enum ContentSpaceStatus_Enum {
+  Draft = 'DRAFT',
+  Published = 'PUBLISHED'
+};
+
+/** Boolean expression to compare columns of type "contentSpaceStatus_enum". All fields are combined with logical 'AND'. */
+export type ContentSpaceStatus_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<ContentSpaceStatus_Enum>;
+  _in?: InputMaybe<Array<ContentSpaceStatus_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<ContentSpaceStatus_Enum>;
+  _nin?: InputMaybe<Array<ContentSpaceStatus_Enum>>;
+};
+
+/** input type for inserting data into table "contentSpaceStatus" */
+export type ContentSpaceStatus_Insert_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type ContentSpaceStatus_Max_Fields = {
+  __typename?: 'contentSpaceStatus_max_fields';
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type ContentSpaceStatus_Min_Fields = {
+  __typename?: 'contentSpaceStatus_min_fields';
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "contentSpaceStatus" */
+export type ContentSpaceStatus_Mutation_Response = {
+  __typename?: 'contentSpaceStatus_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ContentSpaceStatus>;
+};
+
+/** on_conflict condition type for table "contentSpaceStatus" */
+export type ContentSpaceStatus_On_Conflict = {
+  constraint: ContentSpaceStatus_Constraint;
+  update_columns?: Array<ContentSpaceStatus_Update_Column>;
+  where?: InputMaybe<ContentSpaceStatus_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "contentSpaceStatus". */
+export type ContentSpaceStatus_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: contentSpaceStatus */
+export type ContentSpaceStatus_Pk_Columns_Input = {
+  value: Scalars['String']['input'];
+};
+
+/** select columns of table "contentSpaceStatus" */
+export const enum ContentSpaceStatus_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "contentSpaceStatus" */
+export type ContentSpaceStatus_Set_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "contentSpaceStatus" */
+export type ContentSpaceStatus_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: ContentSpaceStatus_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ContentSpaceStatus_Stream_Cursor_Value_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "contentSpaceStatus" */
+export const enum ContentSpaceStatus_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type ContentSpaceStatus_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<ContentSpaceStatus_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: ContentSpaceStatus_Bool_Exp;
+};
+
 /** Currencies code following the standard ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217) */
 export type Currency = {
   __typename?: 'currency';
@@ -11312,6 +11651,14 @@ export type Mutation_Root = {
   delete_account?: Maybe<Account_Mutation_Response>;
   /** delete single row from the table: "account" */
   delete_account_by_pk?: Maybe<Account>;
+  /** delete data from the table: "contentSpaceParameters" */
+  delete_contentSpaceParameters?: Maybe<ContentSpaceParameters_Mutation_Response>;
+  /** delete single row from the table: "contentSpaceParameters" */
+  delete_contentSpaceParameters_by_pk?: Maybe<ContentSpaceParameters>;
+  /** delete data from the table: "contentSpaceStatus" */
+  delete_contentSpaceStatus?: Maybe<ContentSpaceStatus_Mutation_Response>;
+  /** delete single row from the table: "contentSpaceStatus" */
+  delete_contentSpaceStatus_by_pk?: Maybe<ContentSpaceStatus>;
   /** delete data from the table: "currency" */
   delete_currency?: Maybe<Currency_Mutation_Response>;
   /** delete single row from the table: "currency" */
@@ -11442,6 +11789,14 @@ export type Mutation_Root = {
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert a single row into the table: "account" */
   insert_account_one?: Maybe<Account>;
+  /** insert data into the table: "contentSpaceParameters" */
+  insert_contentSpaceParameters?: Maybe<ContentSpaceParameters_Mutation_Response>;
+  /** insert a single row into the table: "contentSpaceParameters" */
+  insert_contentSpaceParameters_one?: Maybe<ContentSpaceParameters>;
+  /** insert data into the table: "contentSpaceStatus" */
+  insert_contentSpaceStatus?: Maybe<ContentSpaceStatus_Mutation_Response>;
+  /** insert a single row into the table: "contentSpaceStatus" */
+  insert_contentSpaceStatus_one?: Maybe<ContentSpaceStatus>;
   /** insert data into the table: "currency" */
   insert_currency?: Maybe<Currency_Mutation_Response>;
   /** insert a single row into the table: "currency" */
@@ -11732,6 +12087,18 @@ export type Mutation_Root = {
   update_account_by_pk?: Maybe<Account>;
   /** update multiples rows of table: "account" */
   update_account_many?: Maybe<Array<Maybe<Account_Mutation_Response>>>;
+  /** update data of the table: "contentSpaceParameters" */
+  update_contentSpaceParameters?: Maybe<ContentSpaceParameters_Mutation_Response>;
+  /** update single row of the table: "contentSpaceParameters" */
+  update_contentSpaceParameters_by_pk?: Maybe<ContentSpaceParameters>;
+  /** update multiples rows of table: "contentSpaceParameters" */
+  update_contentSpaceParameters_many?: Maybe<Array<Maybe<ContentSpaceParameters_Mutation_Response>>>;
+  /** update data of the table: "contentSpaceStatus" */
+  update_contentSpaceStatus?: Maybe<ContentSpaceStatus_Mutation_Response>;
+  /** update single row of the table: "contentSpaceStatus" */
+  update_contentSpaceStatus_by_pk?: Maybe<ContentSpaceStatus>;
+  /** update multiples rows of table: "contentSpaceStatus" */
+  update_contentSpaceStatus_many?: Maybe<Array<Maybe<ContentSpaceStatus_Mutation_Response>>>;
   /** update data of the table: "currency" */
   update_currency?: Maybe<Currency_Mutation_Response>;
   /** update single row of the table: "currency" */
@@ -12173,6 +12540,30 @@ export type Mutation_RootDelete_Account_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_ContentSpaceParametersArgs = {
+  where: ContentSpaceParameters_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ContentSpaceParameters_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ContentSpaceStatusArgs = {
+  where: ContentSpaceStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ContentSpaceStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_CurrencyArgs = {
   where: Currency_Bool_Exp;
 };
@@ -12564,6 +12955,34 @@ export type Mutation_RootInsert_AccountArgs = {
 export type Mutation_RootInsert_Account_OneArgs = {
   object: Account_Insert_Input;
   on_conflict?: InputMaybe<Account_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ContentSpaceParametersArgs = {
+  objects: Array<ContentSpaceParameters_Insert_Input>;
+  on_conflict?: InputMaybe<ContentSpaceParameters_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ContentSpaceParameters_OneArgs = {
+  object: ContentSpaceParameters_Insert_Input;
+  on_conflict?: InputMaybe<ContentSpaceParameters_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ContentSpaceStatusArgs = {
+  objects: Array<ContentSpaceStatus_Insert_Input>;
+  on_conflict?: InputMaybe<ContentSpaceStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ContentSpaceStatus_OneArgs = {
+  object: ContentSpaceStatus_Insert_Input;
+  on_conflict?: InputMaybe<ContentSpaceStatus_On_Conflict>;
 };
 
 
@@ -13865,6 +14284,46 @@ export type Mutation_RootUpdate_Account_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Account_ManyArgs = {
   updates: Array<Account_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ContentSpaceParametersArgs = {
+  _set?: InputMaybe<ContentSpaceParameters_Set_Input>;
+  where: ContentSpaceParameters_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ContentSpaceParameters_By_PkArgs = {
+  _set?: InputMaybe<ContentSpaceParameters_Set_Input>;
+  pk_columns: ContentSpaceParameters_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ContentSpaceParameters_ManyArgs = {
+  updates: Array<ContentSpaceParameters_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ContentSpaceStatusArgs = {
+  _set?: InputMaybe<ContentSpaceStatus_Set_Input>;
+  where: ContentSpaceStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ContentSpaceStatus_By_PkArgs = {
+  _set?: InputMaybe<ContentSpaceStatus_Set_Input>;
+  pk_columns: ContentSpaceStatus_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ContentSpaceStatus_ManyArgs = {
+  updates: Array<ContentSpaceStatus_Updates>;
 };
 
 
@@ -18144,6 +18603,18 @@ export type Query_Root = {
   assetsConnection: AssetConnection;
   /** Retrieve a single contentSpace */
   contentSpace?: Maybe<ContentSpace>;
+  /** fetch data from the table: "contentSpaceParameters" */
+  contentSpaceParameters: Array<ContentSpaceParameters>;
+  /** fetch aggregated fields from the table: "contentSpaceParameters" */
+  contentSpaceParameters_aggregate: ContentSpaceParameters_Aggregate;
+  /** fetch data from the table: "contentSpaceParameters" using primary key columns */
+  contentSpaceParameters_by_pk?: Maybe<ContentSpaceParameters>;
+  /** fetch data from the table: "contentSpaceStatus" */
+  contentSpaceStatus: Array<ContentSpaceStatus>;
+  /** fetch aggregated fields from the table: "contentSpaceStatus" */
+  contentSpaceStatus_aggregate: ContentSpaceStatus_Aggregate;
+  /** fetch data from the table: "contentSpaceStatus" using primary key columns */
+  contentSpaceStatus_by_pk?: Maybe<ContentSpaceStatus>;
   /** Retrieve document version */
   contentSpaceVersion?: Maybe<DocumentVersion>;
   /** Retrieve multiple contentSpaces */
@@ -18470,6 +18941,52 @@ export type Query_RootContentSpaceArgs = {
   locales?: Array<Locale>;
   stage?: Stage;
   where: ContentSpaceWhereUniqueInput;
+};
+
+
+export type Query_RootContentSpaceParametersArgs = {
+  distinct_on?: InputMaybe<Array<ContentSpaceParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ContentSpaceParameters_Order_By>>;
+  where?: InputMaybe<ContentSpaceParameters_Bool_Exp>;
+};
+
+
+export type Query_RootContentSpaceParameters_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ContentSpaceParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ContentSpaceParameters_Order_By>>;
+  where?: InputMaybe<ContentSpaceParameters_Bool_Exp>;
+};
+
+
+export type Query_RootContentSpaceParameters_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootContentSpaceStatusArgs = {
+  distinct_on?: InputMaybe<Array<ContentSpaceStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ContentSpaceStatus_Order_By>>;
+  where?: InputMaybe<ContentSpaceStatus_Bool_Exp>;
+};
+
+
+export type Query_RootContentSpaceStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ContentSpaceStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ContentSpaceStatus_Order_By>>;
+  where?: InputMaybe<ContentSpaceStatus_Bool_Exp>;
+};
+
+
+export type Query_RootContentSpaceStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
 };
 
 
@@ -20557,6 +21074,22 @@ export type Subscription_Root = {
   account_by_pk?: Maybe<Account>;
   /** fetch data from the table in a streaming manner: "account" */
   account_stream: Array<Account>;
+  /** fetch data from the table: "contentSpaceParameters" */
+  contentSpaceParameters: Array<ContentSpaceParameters>;
+  /** fetch aggregated fields from the table: "contentSpaceParameters" */
+  contentSpaceParameters_aggregate: ContentSpaceParameters_Aggregate;
+  /** fetch data from the table: "contentSpaceParameters" using primary key columns */
+  contentSpaceParameters_by_pk?: Maybe<ContentSpaceParameters>;
+  /** fetch data from the table in a streaming manner: "contentSpaceParameters" */
+  contentSpaceParameters_stream: Array<ContentSpaceParameters>;
+  /** fetch data from the table: "contentSpaceStatus" */
+  contentSpaceStatus: Array<ContentSpaceStatus>;
+  /** fetch aggregated fields from the table: "contentSpaceStatus" */
+  contentSpaceStatus_aggregate: ContentSpaceStatus_Aggregate;
+  /** fetch data from the table: "contentSpaceStatus" using primary key columns */
+  contentSpaceStatus_by_pk?: Maybe<ContentSpaceStatus>;
+  /** fetch data from the table in a streaming manner: "contentSpaceStatus" */
+  contentSpaceStatus_stream: Array<ContentSpaceStatus>;
   /** fetch data from the table: "currency" */
   currency: Array<Currency>;
   /** fetch aggregated fields from the table: "currency" */
@@ -20841,6 +21374,66 @@ export type Subscription_RootAccount_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Account_Stream_Cursor_Input>>;
   where?: InputMaybe<Account_Bool_Exp>;
+};
+
+
+export type Subscription_RootContentSpaceParametersArgs = {
+  distinct_on?: InputMaybe<Array<ContentSpaceParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ContentSpaceParameters_Order_By>>;
+  where?: InputMaybe<ContentSpaceParameters_Bool_Exp>;
+};
+
+
+export type Subscription_RootContentSpaceParameters_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ContentSpaceParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ContentSpaceParameters_Order_By>>;
+  where?: InputMaybe<ContentSpaceParameters_Bool_Exp>;
+};
+
+
+export type Subscription_RootContentSpaceParameters_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootContentSpaceParameters_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<ContentSpaceParameters_Stream_Cursor_Input>>;
+  where?: InputMaybe<ContentSpaceParameters_Bool_Exp>;
+};
+
+
+export type Subscription_RootContentSpaceStatusArgs = {
+  distinct_on?: InputMaybe<Array<ContentSpaceStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ContentSpaceStatus_Order_By>>;
+  where?: InputMaybe<ContentSpaceStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootContentSpaceStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ContentSpaceStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ContentSpaceStatus_Order_By>>;
+  where?: InputMaybe<ContentSpaceStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootContentSpaceStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootContentSpaceStatus_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<ContentSpaceStatus_Stream_Cursor_Input>>;
+  where?: InputMaybe<ContentSpaceStatus_Bool_Exp>;
 };
 
 

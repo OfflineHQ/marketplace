@@ -46,6 +46,26 @@ export const OrganizerFieldsFragmentDoc = `
   imageClasses
 }
     `;
+export const ContentSpaceFieldsFragmentDoc = `
+    fragment ContentSpaceFields on ContentSpace {
+  title
+  slug
+  heroImage {
+    url
+  }
+  description {
+    json
+    references {
+      ... on Asset {
+        __typename
+        id
+        url
+        mimeType
+      }
+    }
+  }
+}
+    `;
 export const EventListFieldsFragmentDoc = `
     fragment EventListFields on Event {
   id
@@ -434,6 +454,50 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     ${NftTransferFieldsFragmentDoc}`;
+ const GetContentSpaceFromOrganizerIdTableDocument = `
+    query GetContentSpaceFromOrganizerIdTable($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
+  organizer(where: {id: $id}, locales: [$locale, en], stage: $stage) {
+    contentSpaces {
+      slug
+      title
+      contentSpaceParameters {
+        status
+      }
+    }
+  }
+}
+    `;
+ const GetContentSpaceWithEventPassesOrganizerDocument = `
+    query GetContentSpaceWithEventPassesOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
+  contentSpace(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
+    title
+    slug
+    heroImage {
+      url
+    }
+    contentSpaceParameters {
+      status
+    }
+    eventPasses(forceParentLocale: true) {
+      ... on EventPass {
+        id
+        name
+        event {
+          slug
+          title
+        }
+      }
+    }
+  }
+}
+    `;
+ const CreateContentSpaceParametersDocument = `
+    mutation CreateContentSpaceParameters($object: contentSpaceParameters_insert_input!) {
+  insert_contentSpaceParameters_one(object: $object) {
+    id
+  }
+}
+    `;
  const GetEventDocument = `
     query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
@@ -1188,6 +1252,15 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetNftTransferByTokenIdAndCollection(variables: Types.GetNftTransferByTokenIdAndCollectionQueryVariables, options?: C): Promise<Types.GetNftTransferByTokenIdAndCollectionQuery> {
       return requester<Types.GetNftTransferByTokenIdAndCollectionQuery, Types.GetNftTransferByTokenIdAndCollectionQueryVariables>(GetNftTransferByTokenIdAndCollectionDocument, variables, options) as Promise<Types.GetNftTransferByTokenIdAndCollectionQuery>;
+    },
+    GetContentSpaceFromOrganizerIdTable(variables: Types.GetContentSpaceFromOrganizerIdTableQueryVariables, options?: C): Promise<Types.GetContentSpaceFromOrganizerIdTableQuery> {
+      return requester<Types.GetContentSpaceFromOrganizerIdTableQuery, Types.GetContentSpaceFromOrganizerIdTableQueryVariables>(GetContentSpaceFromOrganizerIdTableDocument, variables, options) as Promise<Types.GetContentSpaceFromOrganizerIdTableQuery>;
+    },
+    GetContentSpaceWithEventPassesOrganizer(variables: Types.GetContentSpaceWithEventPassesOrganizerQueryVariables, options?: C): Promise<Types.GetContentSpaceWithEventPassesOrganizerQuery> {
+      return requester<Types.GetContentSpaceWithEventPassesOrganizerQuery, Types.GetContentSpaceWithEventPassesOrganizerQueryVariables>(GetContentSpaceWithEventPassesOrganizerDocument, variables, options) as Promise<Types.GetContentSpaceWithEventPassesOrganizerQuery>;
+    },
+    CreateContentSpaceParameters(variables: Types.CreateContentSpaceParametersMutationVariables, options?: C): Promise<Types.CreateContentSpaceParametersMutation> {
+      return requester<Types.CreateContentSpaceParametersMutation, Types.CreateContentSpaceParametersMutationVariables>(CreateContentSpaceParametersDocument, variables, options) as Promise<Types.CreateContentSpaceParametersMutation>;
     },
     GetEvent(variables: Types.GetEventQueryVariables, options?: C): Promise<Types.GetEventQuery> {
       return requester<Types.GetEventQuery, Types.GetEventQueryVariables>(GetEventDocument, variables, options) as Promise<Types.GetEventQuery>;
