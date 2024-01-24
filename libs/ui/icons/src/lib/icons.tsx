@@ -75,6 +75,7 @@ import {
 import {
   MdOutlineClose,
   MdOutlineError,
+  MdOutlineFeed,
   MdOutlineNotificationsActive,
   MdOutlineNotificationsNone,
 } from 'react-icons/md';
@@ -503,6 +504,14 @@ export const Users: FC<IconProps> = (props) => (
 
 export const UserRoles: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={HiOutlineUsers} label={'Users'} {...props} />
+);
+
+export const ContentSpaces: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={MdOutlineFeed}
+    label={'Content Spaces'}
+    {...props}
+  />
 );
 
 export const Close: FC<IconProps> = (props) => (

@@ -11,6 +11,15 @@ describe('middleware', () => {
   const redirectSpy = jest.spyOn(NextResponse, 'redirect');
   const rewriteSpy = jest.spyOn(NextResponse, 'rewrite');
 
+  const adminRoutes = [
+    '/en/campaigns',
+    '/en/campaigns/events',
+    '/en/campaigns/events/yet-another-event-slug',
+    '/en/perks',
+    '/en/perks/content-spaces',
+    '/en/perks/content-spaces/yet-another-content-space-slug',
+  ];
+
   let req;
   let res;
 
@@ -41,15 +50,18 @@ describe('middleware', () => {
     expect(redirectSpy).toHaveBeenCalledWith(new URL('/', req.url));
   });
 
-  it('should redirect if not authenticated on sub route', async () => {
-    req.cookies.get.mockReturnValue(null);
-    req.nextUrl.pathname = '/en/events/event-slug';
+  it.each(adminRoutes)(
+    'should redirect if not authenticated on route %s',
+    async (path) => {
+      req.cookies.get.mockReturnValue(null);
+      req.nextUrl.pathname = path;
 
-    await middleware(req);
+      await middleware(req);
 
-    expect(redirectSpy).toHaveBeenCalledTimes(1);
-    expect(redirectSpy).toHaveBeenCalledWith(new URL('/', req.url));
-  });
+      expect(redirectSpy).toHaveBeenCalledTimes(1);
+      expect(redirectSpy).toHaveBeenCalledWith(new URL('/', req.url));
+    },
+  );
 
   it('should not redirect if authenticated', async () => {
     req.cookies.get.mockReturnValue('auth_token');
@@ -60,14 +72,17 @@ describe('middleware', () => {
     expect(redirectSpy).not.toHaveBeenCalled();
   });
 
-  it('should not redirect if authenticated on sub route', async () => {
-    req.cookies.get.mockReturnValue('auth_token');
-    req.nextUrl.pathname = '/en/events/event-slug';
+  it.each(adminRoutes)(
+    'should not redirect if authenticated on route %s',
+    async (path) => {
+      req.cookies.get.mockReturnValue('auth_token');
+      req.nextUrl.pathname = path;
 
-    await middleware(req);
+      await middleware(req);
 
-    expect(redirectSpy).not.toHaveBeenCalled();
-  });
+      expect(redirectSpy).not.toHaveBeenCalled();
+    },
+  );
 
   it('should not redirect if not an auth page', async () => {
     req.cookies.get.mockReturnValue(null);

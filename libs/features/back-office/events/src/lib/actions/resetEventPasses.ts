@@ -12,5 +12,5 @@ export const resetEventPasses = async ({
   locale,
 }: ResetEventPassesProps) => {
   revalidateTag(`${eventSlug}-getEventWithPassesOrganizer`);
-  await revalidatePath(`/${locale}/events/${eventSlug}`);
+  await revalidatePath(`/${locale}/campaigns/events/${eventSlug}`);
 };

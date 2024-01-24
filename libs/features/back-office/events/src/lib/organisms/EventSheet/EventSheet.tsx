@@ -34,7 +34,7 @@ export const EventSheet = ({ event, organizerId }: EventSheetProps) => {
         ))}
       </SheetOverflow>
       <SheetNavigation
-        wrapper={<Link href={`/${locale}/events`} />}
+        wrapper={<Link href={`/${locale}/campaigns/events`} />}
         size="full"
         backButtonText={t('go-back-to-events')}
       />
