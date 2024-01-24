@@ -23,6 +23,7 @@ query GetEventParameters($eventId: String) {
   }
 }
 
+# Is stage: DRAFT causing an issue on production ?
 query GetEventParametersFromEventPassIds($eventPassIds: [ID!]!) {
   eventPasses(where: { id_in: $eventPassIds }, stage: DRAFT, locales: [en]) {
     id
