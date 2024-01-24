@@ -38,7 +38,7 @@ export interface Activity {
   fromAddress: string;
   toAddress: string;
   contractAddress: string;
-  blockNumber: string;
+  blockNum: string;
   hash: string;
   erc1155Metadata?: ERC1155Metadata[];
   category: 'erc1155' | 'erc721';

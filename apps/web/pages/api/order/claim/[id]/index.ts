@@ -2,7 +2,9 @@ import { adminSdk } from '@gql/admin/api';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export const maxDuration = 300;
+export const config = {
+  maxDuration: 300,
+};
 
 // This route has been moved to pages/api regarding a Thirdweb and NextJS 14 error, it should be moved back into app/api when the error will be fix https://github.com/AlexandreG-tech/Server-Action-Error
 export default async function handler(

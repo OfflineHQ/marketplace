@@ -22,7 +22,7 @@ const mockActivity = {
   fromAddress: '0x1bBEdB07706728A19c9dB82d3c420670D8040592', // from account seed
   toAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D', // to account seed
   contractAddress: '0xfakecontractaddress1', // from eventPassNftContract seed
-  blockNumber: '0x78b94e',
+  blockNum: '0x78b94e',
   hash: 'transactionHash',
   category: 'erc721',
   log: {
@@ -43,7 +43,7 @@ const mockActivity2 = {
   fromAddress: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F', // from account seed
   toAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D', // to account seed
   contractAddress: '0xfakecontractaddress1', // from eventPassNftContract seed
-  blockNumber: '0x78b78e',
+  blockNum: '0x78b78e',
   hash: 'transactionHash',
   category: 'erc721',
   log: {
@@ -64,7 +64,7 @@ const mockActivity3 = {
   fromAddress: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
   toAddress: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
   contractAddress: '0xfakecontractaddress2',
-  blockNumber: '0x78b78124214',
+  blockNum: '0x78b78124214',
   hash: 'transactionHash',
   category: 'erc721',
   log: {
