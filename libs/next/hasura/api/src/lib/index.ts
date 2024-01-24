@@ -28,8 +28,7 @@ export const fetchData = (hasuraOpts: HasuraOpts = { admin: false }) => {
     };
     if (admin) {
       headers['X-Hasura-Admin-Secret'] = env.HASURA_GRAPHQL_ADMIN_SECRET;
-    }
-    if (!isJestRunning()) {
+    } else if (!isJestRunning()) {
       // include the cookie because it's not sent by default in server side with next
       headers['Cookie'] = cookies().toString();
     }
