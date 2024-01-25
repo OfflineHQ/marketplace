@@ -199,9 +199,12 @@ describe('NftCollection', () => {
   describe('deployACollection - errors', () => {
     beforeAll(() => {
       const mockErrorDeployer = {
-        deployBuiltInContract: jest.fn().mockImplementationOnce(() => {
-          throw new Error('Error in deployBuiltInContract');
-        }),
+        deployBuiltInContract: jest
+          .fn()
+          .mockImplementationOnce(() => {
+            throw new Error('Error in deployBuiltInContract');
+          })
+          .mockImplementation(() => 'mocked_contract_address'),
       };
       const mockedThirdwebSDKInstance = new ThirdwebSDK({} as Signer);
       mockedThirdwebSDKInstance.deployer =
