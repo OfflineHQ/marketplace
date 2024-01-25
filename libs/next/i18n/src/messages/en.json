@@ -409,5 +409,20 @@
       "toggle-columns-view": "View",
       "toggle-columns-toggle-columns": "Toggle columns"
     }
+  },
+  "OrganizerContentSpaces": {
+    "Table": {
+      "title": "Content Spaces",
+      "header-title": "Title",
+      "header-slug": "Slug",
+      "header-status": "Status",
+      "header-edit": "Edit",
+      "search-placeholder": "Filter content spaces..."
+    },
+    "ContentSpaceStatusBadge": {
+      "status-draft": "Draft",
+      "status-published": "Published",
+      "status-undefined": "Undefined"
+    }
   }
 }

@@ -408,5 +408,20 @@
       "toggle-columns-view": "Vue",
       "toggle-columns-toggle-columns": "Sélectionner les colonnes"
     }
+  },
+  "OrganizerContentSpaces": {
+    "Table": {
+      "title": "Espaces de contenu",
+      "header-title": "Titre",
+      "header-slug": "Slug",
+      "header-status": "Status",
+      "header-edit": "Éditer",
+      "search-placeholder": "Filtrer les espaces de contenu..."
+    },
+    "ContentSpaceStatusBadge": {
+      "status-draft": "Brouillon",
+      "status-published": "Publié",
+      "status-undefined": "Indéfini"
+    }
   }
 }
