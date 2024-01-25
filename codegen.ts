@@ -233,5 +233,5 @@ const config: CodegenConfig = {
 //    hooks:
 //      afterOneFileWrite:
 //        - make restart-hasura
-
+//  hasura/app/metadata/remote_schemas.yaml:
 export default config;
