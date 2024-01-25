@@ -42,6 +42,7 @@ export class EventPassNftWrapper {
         (n) => n.tokenId == nft.tokenId, // here avoid exact match because we want to compare bigint with number
       );
       if (!nftWithMetadata) {
+        // TODO : Could be possible to create the NFT in Hasura if he's not found in the Database
         console.error(
           `Metadata not found for this token ! Skipping execution for this transfer: ${nft.transactionHash} in ${nft.chainId} for ${nft.contractAddress} collection, fromAddress ${nft.fromAddress} toAddress ${nft.toAddress} with erc721TokenId ${nft.tokenId}. This is a critical error that should be investigated.`,
         );
