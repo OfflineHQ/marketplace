@@ -121,7 +121,7 @@ export const UserPassEventPassActions: React.FC<
         text: t('download-pass'),
         wrapper: (
           <Link
-            href={`${getNextAppURL()}/api/downloadPass?id=${eventPassNft?.id}&tokenId=${eventPassNft?.tokenId}&slug=${event?.slug}-${slugify(
+            href={`${getNextAppURL()}api/downloadPass?id=${eventPassNft?.id}&tokenId=${eventPassNft?.tokenId}&slug=${event?.slug}-${slugify(
               eventPass?.name || '',
             )}`}
           />

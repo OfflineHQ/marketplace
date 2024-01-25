@@ -272,7 +272,7 @@ export class NftCollection {
     const { maxAmount } = passAmount;
 
     try {
-      const txResult = await this.sdk.deployer.deployBuiltInContract(
+      const contractAddress = await this.sdk.deployer.deployBuiltInContract(
         ContractType.NFT_DROP,
         {
           name,
@@ -281,6 +281,8 @@ export class NftCollection {
           voting_token_address: address,
         },
       );
+
+      const txResult = contractAddress.toLowerCase();
 
       const contract = await this.getContractWithClaimConditions(
         txResult,
@@ -354,9 +356,11 @@ export class NftCollection {
       const fullBaseUri = (await results[0].data()).uri;
       const baseUri = fullBaseUri.slice(0, -1);
 
+      const contractAddress = contract.getAddress().toLowerCase();
+
       await this.saveEventPassContractIntoDb({
         props,
-        txResult: contract.getAddress(),
+        txResult: contractAddress,
         baseUri,
         results,
         metadatas,
@@ -365,7 +369,7 @@ export class NftCollection {
           eventPassId: props.id,
           organizerId: props.organizerId,
           eventId: props.eventId,
-          contractAddress: contract.getAddress(),
+          contractAddress,
           chainId: props.chainId,
         },
       });
@@ -418,9 +422,11 @@ export class NftCollection {
       const fullBaseUri = (await contract.erc721.getAll())[0].metadata.uri;
       const baseUri = fullBaseUri.slice(0, -1);
 
+      const contractAddress = contract.getAddress().toLowerCase();
+
       await this.saveEventPassContractIntoDb({
         props,
-        txResult: contract.getAddress(),
+        txResult: contractAddress,
         baseUri,
         results,
         metadatas,
@@ -429,7 +435,7 @@ export class NftCollection {
           eventPassId: props.id,
           organizerId: props.organizerId,
           eventId: props.eventId,
-          contractAddress: contract.getAddress(),
+          contractAddress,
           chainId: props.chainId,
           password,
         },
@@ -497,7 +503,7 @@ export class PackCollection {
   async deployAndCreatePack(props: DeployAndCreatePackProps): Promise<string> {
     const { pack, address, selectedNfts, approvalData } = props;
 
-    const txResult = await this.sdk.deployer.deployBuiltInContract(
+    const contractAddress = await this.sdk.deployer.deployBuiltInContract(
       ContractType.PACK,
       {
         name: pack.name,
@@ -506,6 +512,8 @@ export class PackCollection {
         voting_token_address: address,
       },
     );
+
+    const txResult = contractAddress.toLowerCase();
 
     for (const data of approvalData) {
       const eventPassContract = await this.sdk.getContract(
