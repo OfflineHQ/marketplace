@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@bytescale/sdk':
     specifier: ^3.25.0
@@ -122,8 +126,8 @@ dependencies:
     specifier: ^0.1.61
     version: 0.1.61
   '@thirdweb-dev/sdk':
-    specifier: ^4.0.27
-    version: 4.0.27(ethers@5.7.2)(typescript@5.3.3)
+    specifier: ^4.0.19
+    version: 4.0.19(ethers@5.7.2)(typescript@5.3.3)
   '@uidotdev/usehooks':
     specifier: 2.4.1
     version: 2.4.1(react-dom@18.2.0)(react@18.2.0)
@@ -3528,9 +3532,9 @@ packages:
       '@types/ws': 8.5.10
       graphql: 16.8.1
       graphql-ws: 5.14.2(graphql@16.8.1)
-      isomorphic-ws: 5.0.0(ws@8.14.2)
+      isomorphic-ws: 5.0.0(ws@8.16.0)
       tslib: 2.6.2
-      ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.16.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -3599,7 +3603,7 @@ packages:
       graphql: 16.8.1
       isomorphic-ws: 5.0.0(ws@8.16.0)
       tslib: 2.6.2
-      ws: 8.16.0
+      ws: 8.16.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -3946,10 +3950,10 @@ packages:
       '@types/ws': 8.5.10
       '@whatwg-node/fetch': 0.8.8
       graphql: 16.8.1
-      isomorphic-ws: 5.0.0(ws@8.14.2)
+      isomorphic-ws: 5.0.0(ws@8.16.0)
       tslib: 2.6.2
       value-or-promise: 1.0.12
-      ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.16.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - '@types/node'
       - bufferutil
@@ -3973,10 +3977,10 @@ packages:
       '@types/ws': 8.5.10
       '@whatwg-node/fetch': 0.9.15
       graphql: 16.8.1
-      isomorphic-ws: 5.0.0(ws@8.14.2)
+      isomorphic-ws: 5.0.0(ws@8.16.0)
       tslib: 2.6.2
       value-or-promise: 1.0.12
-      ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.16.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - '@types/node'
       - bufferutil
@@ -8940,7 +8944,7 @@ packages:
       util: 0.12.5
       util-deprecate: 1.0.2
       watchpack: 2.4.0
-      ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.14.2
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -10571,13 +10575,13 @@ packages:
       '@testing-library/dom': 9.3.3
     dev: true
 
-  /@thirdweb-dev/chains@0.1.61:
-    resolution: {integrity: sha512-SlFXjqtqZbGqSYKv1HEhGIG03QjnkQPrgLO7WAar7/ZreEqDb3CtUzysSXnblfMqDDwe51dmWBcZ3dXXtTSZxg==}
+  /@thirdweb-dev/chains@0.1.60:
+    resolution: {integrity: sha512-f0M19fDwOFTbcWhw09DikLzxvz+OBKdT0PC2r7Npj5GfWx8p40cf428Gsvmd5xDRk9mkeANYdGb3dM5iLbC3Gg==}
     engines: {node: '>=18'}
     dev: false
 
-  /@thirdweb-dev/chains@0.1.64:
-    resolution: {integrity: sha512-U1iOuzemdI0skk5WQx6G3YKrs+7TbX+kYrlebkzOfadP5tGEH3oSSKxq9RgABYC/zaI3xFQNzLP4MBH8G/Wt3Q==}
+  /@thirdweb-dev/chains@0.1.61:
+    resolution: {integrity: sha512-SlFXjqtqZbGqSYKv1HEhGIG03QjnkQPrgLO7WAar7/ZreEqDb3CtUzysSXnblfMqDDwe51dmWBcZ3dXXtTSZxg==}
     engines: {node: '>=18'}
     dev: false
 
@@ -10634,8 +10638,8 @@ packages:
       treeify: 1.1.0
     dev: false
 
-  /@thirdweb-dev/sdk@4.0.27(ethers@5.7.2)(typescript@5.3.3):
-    resolution: {integrity: sha512-oxrT/c6lCsAJSEWqkC8MxiyAJBCigeUFONTmxSk0m8VPcMASkwhwprFKJTxQYURjc3yGOfuIptm22C+7SmxIGg==}
+  /@thirdweb-dev/sdk@4.0.19(ethers@5.7.2)(typescript@5.3.3):
+    resolution: {integrity: sha512-RmGoYoyK6FGchSsexjRKE7XtnARnUNXcrMTvsCBWxh77elV7Gen/QxQv1WByRv5LHf1PGRgwXDy1uhu46fTE2g==}
     engines: {node: '>=18'}
     peerDependencies:
       '@aws-sdk/client-secrets-manager': ^3.215.0
@@ -10650,12 +10654,12 @@ packages:
       zksync-web3:
         optional: true
     dependencies:
-      '@thirdweb-dev/chains': 0.1.64
+      '@thirdweb-dev/chains': 0.1.60
       '@thirdweb-dev/contracts-js': 1.3.16(ethers@5.7.2)
       '@thirdweb-dev/crypto': 0.2.0
       '@thirdweb-dev/generated-abis': 0.0.1
       '@thirdweb-dev/merkletree': 0.2.0
-      '@thirdweb-dev/storage': 2.0.8
+      '@thirdweb-dev/storage': 2.0.7
       abitype: 0.2.5(typescript@5.3.3)(zod@3.22.4)
       bn.js: 5.2.1
       bs58: 5.0.0
@@ -10674,8 +10678,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@thirdweb-dev/storage@2.0.8:
-    resolution: {integrity: sha512-h1+3px/01jxM3Ob4fDB+11Jm9r5rEPk8NLrcuKRCRZYxfsThaINpIvmuAkvKlVR2kVvYGKTGbmPVydjNBmPkbA==}
+  /@thirdweb-dev/storage@2.0.7:
+    resolution: {integrity: sha512-pi+wfUycHWoOVxD+CZtfGprP9+yQ2PgErsYwWbW3/pQtk8uatvGJMPgMNYsiu6G3B1V3xokBfnmCTsONjz+YNw==}
     engines: {node: '>=18'}
     dependencies:
       '@thirdweb-dev/crypto': 0.2.0
@@ -19160,20 +19164,12 @@ packages:
       ws: 8.13.0
     dev: true
 
-  /isomorphic-ws@5.0.0(ws@8.14.2):
-    resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
-    peerDependencies:
-      ws: '*'
-    dependencies:
-      ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-    dev: true
-
   /isomorphic-ws@5.0.0(ws@8.16.0):
     resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: 8.16.0
+      ws: 8.16.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     dev: true
 
   /isstream@0.1.2:
@@ -20354,7 +20350,7 @@ packages:
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
-      ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.16.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -25277,7 +25273,7 @@ packages:
       '@babel/runtime': 7.23.5
       eventemitter3: 4.0.7
       uuid: 8.3.2
-      ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.16.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     optionalDependencies:
       bufferutil: 4.0.8
       utf-8-validate: 5.0.10
@@ -28490,7 +28486,7 @@ packages:
       spdy: 4.0.2
       webpack: 5.89.0(@swc/core@1.3.93)(esbuild@0.18.20)
       webpack-dev-middleware: 5.3.3(webpack@5.89.0)
-      ws: 8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 8.16.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -28824,8 +28820,21 @@ packages:
         optional: true
     dev: true
 
-  /ws@8.14.2(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+  /ws@8.14.2:
     resolution: {integrity: sha512-wEBG1ftX4jcglPxgFCMJmZ2PLtSbJ2Peg6TmpJFTbe9GZYOQCDPdMYu/Tm0/bGZkw8paZnJY45J4K2PZrLYq8g==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: true
+
+  /ws@8.16.0(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+    resolution: {integrity: sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -28838,19 +28847,6 @@ packages:
     dependencies:
       bufferutil: 4.0.8
       utf-8-validate: 5.0.10
-
-  /ws@8.16.0:
-    resolution: {integrity: sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dev: true
 
   /ws@8.5.0:
     resolution: {integrity: sha512-BWX0SWVgLPzYwF8lTzEy1egjhS4S4OEAHfsO8o65WOVsrnSRGaSiUaa9e0ggGlkMTtBlmOpEXiie9RUcBO86qg==}
