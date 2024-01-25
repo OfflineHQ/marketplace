@@ -168,7 +168,7 @@ export const WithSuperAdminRoleMobile: Story = {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: '/events',
+        pathname: '/campaigns/events',
       },
     },
   },
