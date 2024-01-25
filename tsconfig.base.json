@@ -24,9 +24,6 @@
       "@feature/organizer/organizer-ui": [
         "libs/features/organizer/organizer-ui/src/index.ts"
       ],
-      "@feature/organizer/organizer-ui/server": [
-        "libs/features/organizer/organizer-ui/src/server.ts"
-      ],
       "@features/account/api": ["libs/features/account/api/src/index.ts"],
       "@features/app-nav": ["libs/features/app-nav/src/index.ts"],
       "@features/app-nav/stories": ["libs/features/app-nav/src/stories.tsx"],
@@ -35,6 +32,15 @@
       ],
       "@features/back-office/app-nav/stories": [
         "libs/features/back-office/app-nav/src/stories.tsx"
+      ],
+      "@features/back-office/content-spaces": [
+        "libs/features/back-office/content-spaces/src/index.ts"
+      ],
+      "@features/back-office/content-spaces-api": [
+        "libs/features/back-office/content-spaces-api/src/index.ts"
+      ],
+      "@features/back-office/content-spaces-types": [
+        "libs/features/back-office/content-spaces-types/src/index.ts"
       ],
       "@features/back-office/events": [
         "libs/features/back-office/events/src/index.ts"
