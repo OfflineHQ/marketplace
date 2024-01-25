@@ -1,8 +1,8 @@
-import { EventPassNftWrapper } from './index';
-import { adminSdk } from '@gql/admin/api';
 import { transferPassQrCodeBatch } from '@features/pass-api';
+import { adminSdk } from '@gql/admin/api';
 import { UpdateEventPassNftFromNftTransferMutation } from '@gql/admin/types';
 import type { EventPassNftAfterMutation } from '@nft/types';
+import { EventPassNftWrapper } from './index';
 
 jest.mock('@features/pass-api', () => ({
   transferPassQrCodeBatch: jest.fn(),
@@ -12,7 +12,7 @@ export const nftTransferWithoutMetadata = [
   {
     tokenId: '123',
     chainId: '1',
-    contractAddress: '0xAddress',
+    contractAddress: '0xaddress',
     fromAddress: '0xFrom',
     toAddress: '0xTo',
     blockNumber: '1000',
@@ -25,7 +25,7 @@ const nftTransfersWithoutMetadata = [
   {
     tokenId: '456',
     chainId: '1',
-    contractAddress: '0xAddress2',
+    contractAddress: '0xaddress2',
     fromAddress: '0xFrom',
     toAddress: '0xTo',
     blockNumber: '1000',
@@ -118,10 +118,33 @@ describe('EventPassNftWrapper', () => {
       expect(
         adminSdk.GetEventPassNftByContractsAndTokenIds,
       ).toHaveBeenCalledWith({
-        contractAddresses: ['0xAddress'],
+        contractAddresses: ['0xaddress'],
         chainId: '1',
         tokenIds: ['123'],
       });
+    });
+
+    it('should log an error for a contractAddress that is not in lowercase', async () => {
+      // Arrange
+      const uppercaseContractAddressNft = {
+        ...nftTransferWithoutMetadata[0],
+        contractAddress: '0xADDRESSWithUPPERCASE',
+      };
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+
+      // Act
+      await wrapper.getEventPassNftTransfersMetadata(
+        [uppercaseContractAddressNft],
+        '1',
+      );
+
+      // Assert
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Contract address 0xADDRESSWithUPPERCASE is not in lowercase',
+      );
+
+      // Restore the original console.error implementation
+      consoleSpy.mockRestore();
     });
 
     it('should retrieve metadata for several nftTransfers', async () => {
@@ -161,7 +184,7 @@ describe('EventPassNftWrapper', () => {
       expect(
         adminSdk.GetEventPassNftByContractsAndTokenIds,
       ).toHaveBeenCalledWith({
-        contractAddresses: ['0xAddress', '0xAddress2'],
+        contractAddresses: ['0xaddress', '0xaddress2'],
         chainId: '1',
         tokenIds: ['123', '456'],
       });
@@ -182,7 +205,7 @@ describe('EventPassNftWrapper', () => {
       expect(
         adminSdk.GetEventPassNftByContractsAndTokenIds,
       ).toHaveBeenCalledWith({
-        contractAddresses: ['0xAddress', '0xAddress2'],
+        contractAddresses: ['0xaddress', '0xaddress2'],
         chainId: '1',
         tokenIds: ['123', '456'],
       });
@@ -222,7 +245,7 @@ describe('EventPassNftWrapper', () => {
       expect(
         adminSdk.GetEventPassNftByContractsAndTokenIds,
       ).toHaveBeenCalledWith({
-        contractAddresses: ['0xAddress', '0xAddress2'],
+        contractAddresses: ['0xaddress', '0xaddress2'],
         chainId: '1',
         tokenIds: ['123', '456'],
       });
