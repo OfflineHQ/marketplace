@@ -19,8 +19,8 @@ async function getMessages(locale: string) {
 
 export function getLocalizedUrls(url: string) {
   const urls: Record<Locale, string> = {
-    en: `${getNextAppURL()}/en/${url}`,
-    fr: `${getNextAppURL()}/fr/${url}`,
+    en: `${getNextAppURL()}en/${url}`,
+    fr: `${getNextAppURL()}fr/${url}`,
   };
   return urls;
 }

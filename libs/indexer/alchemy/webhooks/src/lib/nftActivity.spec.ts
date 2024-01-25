@@ -41,7 +41,7 @@ const applyQrCodeBatchTransferForNewOwnerSpy = jest
 const mockActivity: Activity = {
   fromAddress: 'fromAddress',
   toAddress: 'toAddress',
-  contractAddress: 'contractAddress',
+  contractAddress: '0xcontract',
   blockNum: '0x78b94e',
   erc721TokenId:
     '0x2acc2dff0c1fa9c1c62f518c9415a0ca60e03f77000000000000010000000001',
@@ -63,7 +63,7 @@ const mockActivity: Activity = {
 const mockActivity2: Activity = {
   fromAddress: 'fromAddress2',
   toAddress: 'toAddress2',
-  contractAddress: 'contractAddress2',
+  contractAddress: '0xcontract2',
   blockNum: '0x78b78e',
   erc721TokenId: '0x1242141243e',
   hash: 'transactionHash2',
@@ -110,7 +110,7 @@ describe('extractNftTransfersFromEvent', () => {
       {
         fromAddress: 'fromAddress',
         toAddress: 'toAddress',
-        contractAddress: 'contractAddress',
+        contractAddress: '0xcontract',
         blockNumber: 7911758n,
         tokenId:
           19357893896360757362909707998697759599119570929526790658166113146556033007617n,
@@ -133,7 +133,7 @@ describe('extractNftTransfersFromEvent', () => {
       {
         fromAddress: 'fromAddress',
         toAddress: 'toAddress',
-        contractAddress: 'contractAddress',
+        contractAddress: '0xcontract',
         blockNumber: 7911758n,
         tokenId:
           19357893896360757362909707998697759599119570929526790658166113146556033007617n,
@@ -143,7 +143,7 @@ describe('extractNftTransfersFromEvent', () => {
       {
         fromAddress: 'fromAddress2',
         toAddress: 'toAddress2',
-        contractAddress: 'contractAddress2',
+        contractAddress: '0xcontract2',
         blockNumber: 7911310n,
         tokenId: 1254688367678n,
         chainId: '5',
@@ -177,7 +177,7 @@ describe('extractNftTransfersFromEvent', () => {
       {
         fromAddress: 'fromAddress2',
         toAddress: 'toAddress2',
-        contractAddress: 'contractAddress2',
+        contractAddress: '0xcontract2',
         blockNumber: 7911310n,
         tokenId: 1254688367678n,
         chainId: '5',

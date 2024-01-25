@@ -12,7 +12,7 @@ export { Analytics as VercelAnalytics } from '@vercel/analytics/react';
 if (typeof window !== 'undefined' && isPosthogActivated()) {
   posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
     api_host: process.env.NEXT_PUBLIC_VERCEL_ENV
-      ? `${getNextAppURL()}/ingest`
+      ? `${getNextAppURL()}ingest`
       : 'https://eu.posthog.com',
     capture_pageview: false, // Disable automatic pageview capture, as we capture manually
     advanced_disable_feature_flags_on_first_load: true,

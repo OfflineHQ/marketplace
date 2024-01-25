@@ -1,11 +1,11 @@
+import { transferPassQrCodeBatch } from '@features/pass-api';
 import { adminSdk } from '@gql/admin/api';
 import type {
-  NftTransfer,
-  NftTransferWithoutMetadata,
-  NftTransferNotCreated,
   EventPassNftAfterMutation,
+  NftTransfer,
+  NftTransferNotCreated,
+  NftTransferWithoutMetadata,
 } from '@nft/types';
-import { transferPassQrCodeBatch } from '@features/pass-api';
 
 export class EventPassNftWrapper {
   private adminSdk: typeof adminSdk;
@@ -19,11 +19,22 @@ export class EventPassNftWrapper {
     const contractAddresses: string[] = [
       ...new Set(nftTransfers.map((transfer) => transfer.contractAddress)),
     ];
+    contractAddresses.forEach((address) => {
+      if (address !== address.toLowerCase()) {
+        console.error(`Contract address ${address} is not in lowercase`);
+      }
+    });
+    const tokenIds = nftTransfers.map((t) => t.tokenId);
     const res = await this.adminSdk.GetEventPassNftByContractsAndTokenIds({
       contractAddresses,
       chainId,
-      tokenIds: nftTransfers.map((t) => t.tokenId),
+      tokenIds,
     });
+    if (!res?.eventPassNft) {
+      throw new Error(
+        `No NFTs found in database for contractAddresses ${contractAddresses}, chainId ${chainId} and tokenIds ${tokenIds}`,
+      );
+    }
     const eventPassNft = res.eventPassNft;
 
     return nftTransfers.reduce((acc, nft) => {
