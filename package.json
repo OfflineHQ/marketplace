@@ -35,8 +35,8 @@
     "vercel-build": "npm i -g node-gyp",
     "lint:all": "pnpm nx run-many -t lint --all",
     "test:all": "NODE_ENV=test pnpm nx run-many -t test --all",
-    "build:web": "pnpm nx build web --prod",
-    "build:back-office": "pnpm nx build back-office --prod"
+    "build:web": "pnpm nx build web --prod --no-cache",
+    "build:back-office": "pnpm nx build back-office --prod --no-cache"
   },
   "private": true,
   "dependencies": {
