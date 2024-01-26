@@ -676,14 +676,14 @@ export const useInsertFollowOrganizerMutation = <
 export const GetPassedEventsWithEventPassNftsDocument = `
     query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
-    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_lt: $currentDate}, status: {_eq: PUBLISHED}}
+    where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}, dateEnd: {_lt: $currentDate}, status: {_eq: PUBLISHED}}
     order_by: {dateEnd: desc}
   ) {
     dateStart
     dateEnd
     timezone
     eventPassNftContracts(
-      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+      where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}}
     ) {
       type
       isDelayedRevealed
@@ -697,7 +697,7 @@ export const GetPassedEventsWithEventPassNftsDocument = `
           url
         }
       }
-      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+      eventPassNfts(where: {currentOwnerAddress: {_ilike: $address}}) {
         id
         isRevealed
         tokenId
@@ -742,14 +742,14 @@ export const useGetPassedEventsWithEventPassNftsQuery = <
 export const GetUpcomingEventsWithEventPassNftsDocument = `
     query GetUpcomingEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
-    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_gte: $currentDate}, status: {_eq: PUBLISHED}}
+    where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}, dateEnd: {_gte: $currentDate}, status: {_eq: PUBLISHED}}
     order_by: {dateStart: asc}
   ) {
     dateStart
     dateEnd
     timezone
     eventPassNftContracts(
-      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+      where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}}
     ) {
       type
       isDelayedRevealed
@@ -763,7 +763,7 @@ export const GetUpcomingEventsWithEventPassNftsDocument = `
           url
         }
       }
-      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+      eventPassNfts(where: {currentOwnerAddress: {_ilike: $address}}) {
         id
         isRevealed
         tokenId
