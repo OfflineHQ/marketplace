@@ -348,7 +348,8 @@
           "EventPassContractRevealButtonClient": {
             "reveal-contract": "Révélez votre pass d'événement",
             "success-title": "Votre pass d'événement a été révélé 🎉 !",
-            "error-title": "Il y a eu une erreur lors de la révélation de votre pass d'événement."
+            "error-title": "Il y a eu une erreur lors de la révélation de votre pass d'événement.",
+            "success-description": "Les informations sur les NFTs du pass \"{eventPassName}\" sont maintenant accessibles à tous les utilisateurs."
           }
         },
         "EventPassSaleParameters": {

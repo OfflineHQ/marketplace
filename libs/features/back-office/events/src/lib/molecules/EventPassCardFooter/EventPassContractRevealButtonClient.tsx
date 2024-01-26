@@ -1,12 +1,15 @@
 'use client';
 
+import env from '@env/client';
 import { EventPass } from '@features/back-office/events-types';
+import { useAuthContext } from '@next/auth';
+import { NftCollection } from '@nft/thirdweb-organizer';
+import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 import { Button, useToast } from '@ui/components';
 import { Reveal } from '@ui/icons';
 import { getErrorMessage } from '@utils';
 import { useLocale, useTranslations } from 'next-intl';
 import { resetEventPasses } from '../../actions/resetEventPasses';
-import { revealDelayedContract } from '../../actions/revealDelayedContract';
 
 export interface EventPassContractRevealButtonClientProps {
   eventSlug: string;
@@ -18,14 +21,25 @@ export function EventPassContractRevealButtonClient({
   eventSlug,
 }: EventPassContractRevealButtonClientProps) {
   const { toast } = useToast();
+  const { getSigner } = useAuthContext();
   const t = useTranslations(
     'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter.EventPassContractRevealButtonClient',
   );
   const locale = useLocale();
   async function revealContract() {
     try {
-      await revealDelayedContract(
-        eventPass.eventPassNftContract?.contractAddress as string,
+      if (!eventPass.eventPassNftContract?.contractAddress) {
+        throw new Error('Password is undefined');
+      }
+      const signer = await getSigner();
+      if (!signer) throw new Error('noSigner');
+      const sdk = new NftCollection(
+        ThirdwebSDK.fromSigner(signer, env.NEXT_PUBLIC_CHAIN, {
+          clientId: env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID,
+        }),
+      );
+      await sdk.revealDelayedContract(
+        eventPass.eventPassNftContract?.contractAddress,
       );
       toast({
         title: t('success-title'),
