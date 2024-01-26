@@ -146,11 +146,17 @@ export async function getEventPassDelayedRevealPassword(
 }
 
 export async function saveRevealIntoDb(contractAddress: string) {
-  await adminSdk.UpdateEventPassNftContractDelayedRevealStatus({
-    contractAddress,
-  });
+  try {
+    await adminSdk.UpdateEventPassNftContractDelayedRevealStatus({
+      contractAddress,
+    });
 
-  return adminSdk.GetListCurrentOwnerAddressForContractAddress({
-    contractAddress,
-  });
+    return adminSdk.GetListCurrentOwnerAddressForContractAddress({
+      contractAddress,
+    });
+  } catch (e) {
+    throw new Error(
+      `Error saving the reveal status into the database for address ${contractAddress} : ${e.message}`,
+    );
+  }
 }

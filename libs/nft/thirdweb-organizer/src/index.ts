@@ -476,7 +476,6 @@ export class NftCollection {
         );
       }
       const contract = await this.sdk.getContract(contractAddress);
-      console.log({ pw: eventPassNftContract.password });
       await contract.erc721.revealer.reveal(0, eventPassNftContract.password);
 
       return saveRevealIntoDb(contractAddress);
