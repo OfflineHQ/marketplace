@@ -225,6 +225,7 @@ export const WithEventPassDelayedRevealToReveal: Story = {
     expect(textElement).toBeInTheDocument();
     const buttonElement = await screen.findByText(/reveal your event pass/i);
     await expect(buttonElement).toBeEnabled();
+    // TODO: rework the play with mockReveal
   },
 };
 
