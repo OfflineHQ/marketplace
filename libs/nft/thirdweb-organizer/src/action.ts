@@ -135,3 +135,22 @@ export async function getPackSupply(contractAddress: string) {
   const pack = await sdk.getContract(contractAddress, ContractType.PACK);
   return pack.erc1155.totalSupply(0);
 }
+
+export async function getEventPassDelayedRevealPassword(
+  contractAddress: string,
+) {
+  const res = await adminSdk.GetEventPassNftContractDelayedRevealPassword({
+    contractAddress,
+  });
+  return res?.eventPassNftContract?.[0];
+}
+
+export async function saveRevealIntoDb(contractAddress: string) {
+  await adminSdk.UpdateEventPassNftContractDelayedRevealStatus({
+    contractAddress,
+  });
+
+  return adminSdk.GetListCurrentOwnerAddressForContractAddress({
+    contractAddress,
+  });
+}

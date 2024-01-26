@@ -1,4 +1,5 @@
 'use client';
+
 import env from '@env/client';
 import { EventPass } from '@features/back-office/events-types';
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
