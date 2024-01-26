@@ -454,8 +454,8 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     ${NftTransferFieldsFragmentDoc}`;
- const GetContentSpaceFromOrganizerIdTableDocument = `
-    query GetContentSpaceFromOrganizerIdTable($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
+ const GetContentSpacesFromOrganizerIdTableDocument = `
+    query GetContentSpacesFromOrganizerIdTable($id: ID!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {id: $id}, locales: [$locale, en], stage: $stage) {
     contentSpaces {
       slug
@@ -467,8 +467,8 @@ ${KycFieldsFragmentDoc}`;
   }
 }
     `;
- const GetContentSpaceWithEventPassesOrganizerDocument = `
-    query GetContentSpaceWithEventPassesOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
+ const GetContentSpaceWithPassesOrganizerDocument = `
+    query GetContentSpaceWithPassesOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   contentSpace(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     title
     slug
@@ -1253,11 +1253,11 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetNftTransferByTokenIdAndCollection(variables: Types.GetNftTransferByTokenIdAndCollectionQueryVariables, options?: C): Promise<Types.GetNftTransferByTokenIdAndCollectionQuery> {
       return requester<Types.GetNftTransferByTokenIdAndCollectionQuery, Types.GetNftTransferByTokenIdAndCollectionQueryVariables>(GetNftTransferByTokenIdAndCollectionDocument, variables, options) as Promise<Types.GetNftTransferByTokenIdAndCollectionQuery>;
     },
-    GetContentSpaceFromOrganizerIdTable(variables: Types.GetContentSpaceFromOrganizerIdTableQueryVariables, options?: C): Promise<Types.GetContentSpaceFromOrganizerIdTableQuery> {
-      return requester<Types.GetContentSpaceFromOrganizerIdTableQuery, Types.GetContentSpaceFromOrganizerIdTableQueryVariables>(GetContentSpaceFromOrganizerIdTableDocument, variables, options) as Promise<Types.GetContentSpaceFromOrganizerIdTableQuery>;
+    GetContentSpacesFromOrganizerIdTable(variables: Types.GetContentSpacesFromOrganizerIdTableQueryVariables, options?: C): Promise<Types.GetContentSpacesFromOrganizerIdTableQuery> {
+      return requester<Types.GetContentSpacesFromOrganizerIdTableQuery, Types.GetContentSpacesFromOrganizerIdTableQueryVariables>(GetContentSpacesFromOrganizerIdTableDocument, variables, options) as Promise<Types.GetContentSpacesFromOrganizerIdTableQuery>;
     },
-    GetContentSpaceWithEventPassesOrganizer(variables: Types.GetContentSpaceWithEventPassesOrganizerQueryVariables, options?: C): Promise<Types.GetContentSpaceWithEventPassesOrganizerQuery> {
-      return requester<Types.GetContentSpaceWithEventPassesOrganizerQuery, Types.GetContentSpaceWithEventPassesOrganizerQueryVariables>(GetContentSpaceWithEventPassesOrganizerDocument, variables, options) as Promise<Types.GetContentSpaceWithEventPassesOrganizerQuery>;
+    GetContentSpaceWithPassesOrganizer(variables: Types.GetContentSpaceWithPassesOrganizerQueryVariables, options?: C): Promise<Types.GetContentSpaceWithPassesOrganizerQuery> {
+      return requester<Types.GetContentSpaceWithPassesOrganizerQuery, Types.GetContentSpaceWithPassesOrganizerQueryVariables>(GetContentSpaceWithPassesOrganizerDocument, variables, options) as Promise<Types.GetContentSpaceWithPassesOrganizerQuery>;
     },
     CreateContentSpaceParameters(variables: Types.CreateContentSpaceParametersMutationVariables, options?: C): Promise<Types.CreateContentSpaceParametersMutation> {
       return requester<Types.CreateContentSpaceParametersMutation, Types.CreateContentSpaceParametersMutationVariables>(CreateContentSpaceParametersDocument, variables, options) as Promise<Types.CreateContentSpaceParametersMutation>;

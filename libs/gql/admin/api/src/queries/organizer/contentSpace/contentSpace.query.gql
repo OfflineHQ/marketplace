@@ -1,4 +1,4 @@
-query GetContentSpaceFromOrganizerIdTable(
+query GetContentSpacesFromOrganizerIdTable(
   $id: ID!
   $locale: Locale!
   $stage: Stage!
@@ -14,7 +14,7 @@ query GetContentSpaceFromOrganizerIdTable(
   }
 }
 
-query GetContentSpaceWithEventPassesOrganizer(
+query GetContentSpaceWithPassesOrganizer(
   $slug: String!
   $locale: Locale!
   $stage: Stage!
