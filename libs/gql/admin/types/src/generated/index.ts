@@ -157,23 +157,23 @@ export type OrganizerFieldsFragment = { __typename?: 'Organizer', id: string, sl
 
 export type ContentSpaceFieldsFragment = { __typename?: 'ContentSpace', title: string, slug?: string | null, heroImage: { __typename?: 'Asset', url: string }, description: { __typename?: 'ContentSpaceDescriptionRichText', json: any, references: Array<{ __typename: 'Asset', id: string, url: string, mimeType?: string | null }> } };
 
-export type GetContentSpaceFromOrganizerIdTableQueryVariables = Types.Exact<{
+export type GetContentSpacesFromOrganizerIdTableQueryVariables = Types.Exact<{
   id: Types.Scalars['ID']['input'];
   locale: Types.Locale;
   stage: Types.Stage;
 }>;
 
 
-export type GetContentSpaceFromOrganizerIdTableQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', contentSpaces: Array<{ __typename?: 'ContentSpace', slug?: string | null, title: string, contentSpaceParameters?: { __typename?: 'contentSpaceParameters', status?: Types.ContentSpaceStatus_Enum | null } | null }> } | null };
+export type GetContentSpacesFromOrganizerIdTableQuery = { __typename?: 'query_root', organizer?: { __typename?: 'Organizer', contentSpaces: Array<{ __typename?: 'ContentSpace', slug?: string | null, title: string, contentSpaceParameters?: { __typename?: 'contentSpaceParameters', status?: Types.ContentSpaceStatus_Enum | null } | null }> } | null };
 
-export type GetContentSpaceWithEventPassesOrganizerQueryVariables = Types.Exact<{
+export type GetContentSpaceWithPassesOrganizerQueryVariables = Types.Exact<{
   slug: Types.Scalars['String']['input'];
   locale: Types.Locale;
   stage: Types.Stage;
 }>;
 
 
-export type GetContentSpaceWithEventPassesOrganizerQuery = { __typename?: 'query_root', contentSpace?: { __typename?: 'ContentSpace', title: string, slug?: string | null, heroImage: { __typename?: 'Asset', url: string }, contentSpaceParameters?: { __typename?: 'contentSpaceParameters', status?: Types.ContentSpaceStatus_Enum | null } | null, eventPasses: Array<{ __typename?: 'EventPass', id: string, name: string, event?: { __typename?: 'Event', slug: string, title: string } | null }> } | null };
+export type GetContentSpaceWithPassesOrganizerQuery = { __typename?: 'query_root', contentSpace?: { __typename?: 'ContentSpace', title: string, slug?: string | null, heroImage: { __typename?: 'Asset', url: string }, contentSpaceParameters?: { __typename?: 'contentSpaceParameters', status?: Types.ContentSpaceStatus_Enum | null } | null, eventPasses: Array<{ __typename?: 'EventPass', id: string, name: string, event?: { __typename?: 'Event', slug: string, title: string } | null }> } | null };
 
 export type CreateContentSpaceParametersMutationVariables = Types.Exact<{
   object: Types.ContentSpaceParameters_Insert_Input;

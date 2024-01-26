@@ -3,13 +3,19 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent, within } from '@storybook/test';
 import { EventsTableExample, eventsTableData } from './examples';
 
-import { EventsTable } from './EventsTable';
 import { mobileMode } from '@test-utils/storybook';
+import { EventsTable } from './EventsTable';
 
 const meta: Meta<typeof EventsTable> = {
   component: EventsTable,
   parameters: {
     layout: 'fullscreen',
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/campaigns/events',
+      },
+    },
   },
   render: EventsTableExample,
   args: {
