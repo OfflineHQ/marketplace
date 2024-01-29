@@ -313,7 +313,7 @@ describe('NftCollection', () => {
     let nftCollection: NftCollection;
     let mockedThirdwebSDKInstance: ThirdwebSDK;
     let mockContract: any;
-    const contractAddress = '0xFakeDelayedReveal';
+    const contractAddress = '0xfakedelayedreveal';
 
     beforeEach(async () => {
       mockContract = {

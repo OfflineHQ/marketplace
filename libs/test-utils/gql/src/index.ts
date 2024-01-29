@@ -51,12 +51,12 @@ const fetchDataForTest = (opts: Opts = { jwt: '', anonymous: false }) => {
 export const accounts = {
   google_user: {
     id: 'ac542c34-1907-451c-94be-5df69a959080',
-    address: '0x1bBEdB07706728A19c9dB82d3c420670D8040592',
+    address: '0x1bbedb07706728a19c9db82d3c420670d8040592',
     email: 'googl_user@gmail.com',
   } satisfies AppUser,
   alpha_user: {
     id: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
-    address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
+    address: '0xb98bd7c7f656290071e52d1aa617d9cb4467fd6d',
     email: 'alpha_user@test.io',
     kyc: {
       applicantId: '653bb6d8f8865a0b96363bf3',
@@ -66,7 +66,7 @@ export const accounts = {
   } satisfies AppUser,
   beta_user: {
     id: '76189546-6368-4325-8aad-220e03837b7e',
-    address: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
+    address: '0x1b8bd7c7f656290071e52d1aa617d9cb4469bb9f',
   } satisfies AppUser,
 };
 
@@ -112,7 +112,7 @@ export const backOfficeAccounts = {
   } satisfies AppUser,
   delta_user: {
     id: '9660cf3b-65ec-4ac5-a671-7eac4d93a842',
-    address: '0x2CDE8fb599b7c656e7594959960DbeA1bC2e15F2',
+    address: '0x2cde8fb599b7c656e7594959960dbea1bc2e15f2',
     email: '',
   } satisfies AppUser,
   // Add more users as needed...

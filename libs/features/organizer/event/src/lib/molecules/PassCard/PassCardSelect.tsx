@@ -44,6 +44,10 @@ export const PassCardSelectContent: React.FC<
   locale,
   ...props
 }) => {
+  const locale = useLocale() as Locale;
+  const localeMessages = deepPick(messages[locale], [
+    'Organizer.Event.PassPurchase',
+  ]);
   const eventPassOrderSums = await getEventPassOrderSums({ eventPassId: id });
   const eventPassCart = await getEventPassCart({
     organizerSlug,

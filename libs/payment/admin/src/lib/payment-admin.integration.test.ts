@@ -290,4 +290,83 @@ describe('Payment integration', () => {
       expect(adminSdk.CreateStripeCustomer).toHaveBeenCalled();
     });
   });
+
+  describe('confirmedStripeCheckoutSession', () => {
+    beforeEach(async () => {
+      jest.clearAllMocks();
+      await deleteAllTables(client);
+      await applySeeds(client, [
+        'account',
+        'eventPassNftContract',
+        'eventParameters',
+        'passAmount',
+        'passPricing',
+        'pendingOrder',
+        'order',
+        'nftTransfer',
+        'eventPassNft',
+        'stripeCustomer',
+        'stripeCheckoutSession',
+      ]);
+      payment.nftClaimable.checkOrder = jest.fn().mockResolvedValue({});
+    });
+
+    beforeAll(() => {
+      const originalFetch = global.fetch;
+
+      global.fetch = jest.fn(async (url, options) => {
+        if (url.includes('/api/order/claim/')) {
+          return Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ success: true }),
+          });
+        }
+
+        return originalFetch(url, options);
+      });
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    it('should confirm orders and delete the stripe checkout session', async () => {
+      const stripeCheckoutSessionId =
+        'cs_test_a17kYy8IpmWsLecscKe5pRQNP5hir8ysWC9sturzdXMfh7Y94gYJIAyePN';
+
+      await payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId });
+
+      expect(payment.nftClaimable.checkOrder).toHaveBeenCalled();
+
+      const session = await adminSdk.GetStripeCheckoutSessionForUser({
+        stripeCustomerId: 'cus_OnE9GqPxIIPYtB',
+      });
+      console.log({ session });
+      expect(session.stripeCheckoutSession).toEqual([]);
+    });
+
+    it('should throw an error if there is a problem claiming NFTs', async () => {
+      payment.nftClaimable.checkOrder = jest
+        .fn()
+        .mockRejectedValue(new Error('Failed to claim NFT'));
+
+      const stripeCheckoutSessionId =
+        'cs_test_a17kYy8IpmWsLecscKe5pRQNP5hir8ysWC9sturzdXMfh7Y94gYJIAyePN';
+
+      await expect(
+        payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId }),
+      ).rejects.toThrow('Error claiming NFTs : Failed to claim NFT');
+
+      const session = await adminSdk.GetStripeCheckoutSessionForUser({
+        stripeCustomerId: 'cus_OnE9GqPxIIPYtB',
+      });
+      console.log({ session });
+      expect(session.stripeCheckoutSession).toContainEqual({
+        stripeCustomerId: 'cus_OnE9GqPxIIPYtB',
+        stripeSessionId:
+          'cs_test_a17kYy8IpmWsLecscKe5pRQNP5hir8ysWC9sturzdXMfh7Y94gYJIAyePN',
+        type: 'event_pass_order',
+      });
+    });
+  });
 });

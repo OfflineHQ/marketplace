@@ -88,7 +88,9 @@
       "title": "Panier",
       "description": "Validez votre panier pour procéder au paiement",
       "finalize-button": "Procéder au paiement",
-      "continue-button": "Continuer"
+      "continue-button": "Continuer",
+      "no-mail-description": "Il semble que votre compte ne possède pas l'e-mail nécessaire pour créer une session de paiement. Si vous n'avez pas encore terminé le KYC, veuillez le faire. Si vous avez besoin d'aide, contactez le support.",
+      "no-mail-title": "Pas d'email"
     },
     "List": {
       "Event": {
@@ -245,7 +247,12 @@
         "go-to-purchase": "Poursuivre mon achat",
         "ended-title": "La vente est terminée",
         "ended-description": "Vous ne pouvez plus acheter ces pass.",
-        "not-started-title": "La vente n'a pas commencé."
+        "not-started-title": "La vente n'a pas commencé.",
+        "cancel-purchase": "Annulez mon achat",
+        "cancel-purchase-success-title": "Achat annulé",
+        "cancel-purchase-success-description": "Votre panier d'achat a été annulé avec succès.",
+        "cancel-purchase-error-title": "Erreur lors de l'annulation",
+        "cancel-purchase-error-description": "Une erreur s'est produite lors de l'annulation de votre commande. Veuillez réessayer ultérieurement ou contacter le support."
       },
       "SaleStartsInClient": {
         "sale-starts-in": "Commence : {time}"

@@ -6,6 +6,7 @@ import { updateEventPassCart } from './updateEventPassCart';
 jest.mock('@gql/user/api');
 jest.mock('@features/pass-cache');
 jest.mock('@next/next-auth/user');
+jest.mock('next/cache');
 
 describe('updateEventPassCart', () => {
   const mockProps = {
