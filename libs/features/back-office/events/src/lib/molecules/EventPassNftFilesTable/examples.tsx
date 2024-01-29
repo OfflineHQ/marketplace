@@ -13,6 +13,7 @@ import * as deleteFile from '../../actions/deleteEventPassFile';
 import * as deploy from '../../actions/deployCollectionWrapper';
 import * as getPass from '../../actions/getEventPassNftFiles';
 import * as renameFiles from '../../actions/renameEventPassNftFiles';
+import * as reveal from '../../actions/revealDelayedContract';
 import { EventPassNftFilesTableProps } from './EventPassNftFilesTable';
 
 export const eventPassNftFiles = [
