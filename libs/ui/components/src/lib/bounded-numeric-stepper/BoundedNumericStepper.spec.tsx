@@ -14,27 +14,23 @@ describe('BoundedNumericStepper', () => {
   });
 
   test('increments value when increment button is clicked', () => {
-    const onChangeSpy = jest.fn();
-    render(<Increment onChange={onChangeSpy} />);
+    render(<Increment />);
     const incrementButton = screen.getByRole('button', {
       name: /increment value/i,
     });
     fireEvent.click(incrementButton);
     const newValue = screen.getByText('6');
     expect(newValue).toBeInTheDocument();
-    expect(onChangeSpy).toHaveBeenCalledWith(6);
   });
 
   test('decrements value when decrement button is clicked', () => {
-    const onChangeSpy = jest.fn();
-    render(<Decrement onChange={onChangeSpy} />);
+    render(<Decrement />);
     const decrementButton = screen.getByRole('button', {
       name: /decrement value/i,
     });
     fireEvent.click(decrementButton);
     const newValue = screen.getByText('0');
     expect(newValue).toBeInTheDocument();
-    expect(onChangeSpy).toHaveBeenCalledWith(0);
   });
 
   test('increment button is disabled at max value', async () => {

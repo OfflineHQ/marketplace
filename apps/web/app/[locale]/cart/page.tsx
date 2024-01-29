@@ -29,6 +29,9 @@ interface CartSectionProps {
   params: {
     locale: Locale;
   };
+  searchParams?: {
+    reason?: string;
+  };
 }
 
 interface CartSectionContentProps
@@ -36,6 +39,7 @@ interface CartSectionContentProps
   user: AppUser | undefined;
   locale: Locale;
   kycFlag?: boolean;
+  reason?: string;
 }
 
 const CartSectionContent: FC<CartSectionContentProps> = ({
@@ -44,14 +48,17 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
   userPassPendingOrders,
   kycFlag,
   allPassesCart,
+  reason,
 }) => {
   const t = useTranslations('Cart.UserCart');
   const isEmptyCart = !userPassPendingOrders?.length;
+
   return user ? (
     <UserCart
       userPassPendingOrders={userPassPendingOrders}
       allPassesCart={allPassesCart}
       noCartImage="/empty-cart.svg"
+      reason={reason}
     >
       {!kycFlag || isUserKycValidated(user) ? (
         <Link href={isEmptyCart ? '/cart' : '/cart/purchase'} legacyBehavior>
@@ -82,6 +89,7 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
 
 export default async function CartSection({
   params: { locale },
+  searchParams: { reason } = { reason: undefined },
 }: CartSectionProps) {
   const user = await getCurrentUser();
   if (!user) {
@@ -91,6 +99,7 @@ export default async function CartSection({
         user={user}
         locale={locale}
         allPassesCart={allPassesCart}
+        reason={reason}
       />
     );
   }
@@ -127,6 +136,7 @@ export default async function CartSection({
       locale={locale}
       userPassPendingOrders={userPassPendingOrders}
       allPassesCart={allPassesCart}
+      reason={reason}
     />
   );
 }

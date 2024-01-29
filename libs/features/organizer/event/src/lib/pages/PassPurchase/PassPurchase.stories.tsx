@@ -89,6 +89,9 @@ export const WithPurchaseInProcess: Story = {
     expect(
       await screen.findByRole('button', { name: /proceed with my purchase/i }),
     ).toBeInTheDocument();
+    expect(
+      await screen.findByRole('button', { name: /cancel my purchase/i }),
+    ).toBeInTheDocument();
     await waitFor(
       () => expect(screen.queryAllByText(/purchase ongoing/i)?.length).toBe(2),
       {
