@@ -139,6 +139,7 @@ export function eventPassNftFilesTableMocks() {
     safeUser: {
       eoa: '0x123',
     },
+    getSigner: () => Promise.resolve({}),
   });
   const mockDeleteFile = createMock(deleteFile, 'deleteEventPassFile');
   mockDeleteFile.mockImplementation(async () => {

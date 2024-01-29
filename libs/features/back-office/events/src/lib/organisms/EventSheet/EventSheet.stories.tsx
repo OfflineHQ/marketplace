@@ -222,23 +222,19 @@ export const WithEventPassDelayedRevealToReveal: Story = {
     event: eventPassWithPassToReveal,
   },
   play: async ({ container, parameters }) => {
-    const mockAuth = getMock(parameters, authProvider, 'useAuthContext');
-    mockAuth.mockReturnValue({
-      getSigner: () => Promise.resolve({}),
-    });
     const textElement = await screen.findByText(/0xabcd/i);
     expect(textElement).toBeInTheDocument();
     const buttonElement = await screen.findByText(/reveal your event pass/i);
     await expect(buttonElement).toBeEnabled();
     const revealMock = getMock(parameters, reveal, 'revealDelayedContract');
-    //await userEvent.click(buttonElement);
-    //const args = revealMock.mock.calls[0];
-    //expect(revealMock).toBeCalledTimes(1);
-    //expect(args[1]).toMatch(
-    //  eventPassWithPassToReveal.eventPasses[0].eventPassNftContract
-    //    ?.contractAddress as string,
-    //);
-    //expect(await screen.findByText(/has been revealed/i)).toBeInTheDocument();
+    await userEvent.click(buttonElement);
+    const args = revealMock.mock.calls[0];
+    expect(revealMock).toBeCalledTimes(1);
+    expect(args[1]).toMatch(
+      eventPassWithPassToReveal.eventPasses[0].eventPassNftContract
+        ?.contractAddress as string,
+    );
+    expect(await screen.findByText(/has been revealed/i)).toBeInTheDocument();
     revealMock.mockRejectedValueOnce(new Error('error'));
     render(parameters);
     await expect(buttonElement).toBeEnabled();
