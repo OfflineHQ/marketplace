@@ -3,12 +3,13 @@
 import {
   BoundedNumericStepper,
   BoundedNumericStepperProps,
+  useToast,
 } from '@ui/components';
-import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 
 import { updateEventPassCart } from '@features/organizer/event-actions';
 import { EventSlugs } from '@features/organizer/event-types';
+import { useTranslations } from 'next-intl';
 
 export interface PassCardSelectClientProps
   extends Omit<BoundedNumericStepperProps, 'onChange' | 'disabled'>,
@@ -24,7 +25,9 @@ export const PassCardSelectClient: React.FC<PassCardSelectClientProps> = ({
   ...boundedNumericStepperProps
 }) => {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
+  const { toast } = useToast();
+  const t = useTranslations('Organizer.Event.PassPurchase');
+
   return (
     <BoundedNumericStepper
       onChange={(quantity) =>
@@ -36,11 +39,12 @@ export const PassCardSelectClient: React.FC<PassCardSelectClientProps> = ({
               eventPassId,
               quantity,
             });
-            // pb with revalidatePath or revalidateTag, (error 404 in updateEventPassCart) so refresh for now
-            router.refresh();
           } catch (e) {
             console.error(e);
-            // TODO handle error with toast
+            toast({
+              title: t('error-title'),
+              description: t('error-description'),
+            });
           }
         })
       }

@@ -308,4 +308,94 @@ describe('NftCollection', () => {
       );
     });
   });
+
+  describe('revealDelayedContract', () => {
+    let nftCollection: NftCollection;
+    let mockedThirdwebSDKInstance: ThirdwebSDK;
+    let mockContract: any;
+    const contractAddress = '0xFakeDelayedReveal';
+
+    beforeEach(async () => {
+      mockContract = {
+        erc721: {
+          revealer: {
+            reveal: jest.fn().mockResolvedValue(undefined),
+          },
+        },
+        getAddress: jest.fn().mockReturnValue(contractAddress),
+      };
+
+      mockedThirdwebSDKInstance = new ThirdwebSDK({} as Signer);
+      mockedThirdwebSDKInstance.getContract = jest
+        .fn()
+        .mockResolvedValue(mockContract);
+
+      nftCollection = new NftCollection(mockedThirdwebSDKInstance);
+
+      adminSdk.UpdateEventPassNftContractDelayedRevealStatus = jest
+        .fn()
+        .mockResolvedValue({
+          update_eventPassNftContract_by_pk: { isDelayedRevealed: true },
+        });
+
+      adminSdk.GetListCurrentOwnerAddressForContractAddress = jest
+        .fn()
+        .mockResolvedValue({
+          eventPassNft: ['0xowner1', '0xowner2'],
+        });
+      await applySeeds(client, [
+        'eventPassNftContract',
+        'eventParameters',
+        'nftTransfer',
+        'eventPassNft',
+      ]);
+    });
+
+    afterEach(async () => {
+      await deleteAllTables(client);
+    });
+
+    it('should update the status of isDelayedReveal and return the list of currentOwnerAddress', async () => {
+      const owners = await nftCollection.revealDelayedContract(contractAddress);
+
+      expect(mockContract.erc721.revealer.reveal).toHaveBeenCalledWith(
+        0,
+        expect.any(String),
+      );
+      expect(
+        adminSdk.UpdateEventPassNftContractDelayedRevealStatus,
+      ).toHaveBeenCalledWith({
+        contractAddress,
+      });
+      expect(owners).toEqual({
+        eventPassNft: ['0xowner1', '0xowner2'],
+      });
+    });
+
+    it('should throw an error when reveal fails', async () => {
+      mockContract.erc721.revealer.reveal.mockRejectedValueOnce(
+        new Error('reveal failed'),
+      );
+
+      await expect(
+        nftCollection.revealDelayedContract(contractAddress),
+      ).rejects.toThrowError(
+        `Error revealing the delayed contract at address ${contractAddress} : reveal failed`,
+      );
+    });
+
+    it('should throw an error when update reveal status fails', async () => {
+      adminSdk.UpdateEventPassNftContractDelayedRevealStatus = jest
+        .fn()
+        .mockImplementation(() => {
+          throw new Error('update failed');
+        });
+
+      await expect(
+        nftCollection.revealDelayedContract(contractAddress),
+      ).rejects.toThrowError(
+        `Error saving the reveal status into the database for address ${contractAddress} : update failed`,
+      );
+    });
+  });
 });
