@@ -11,6 +11,7 @@ import {
   Text,
   TextSkeleton,
 } from '@ui/components';
+import { deepPick } from '@utils';
 import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
 import { defaultLocale, messages, type Locale } from '@next/i18n';
 import Image from 'next/image';
