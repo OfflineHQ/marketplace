@@ -1,7 +1,0 @@
--- Could not auto-generate a down migration.
--- Please write an appropriate down migration for the SQL below:
--- ALTER TABLE "public"."order"
--- DROP CONSTRAINT "order_stripeCheckoutSessionId_fkey";
---
--- ALTER TABLE "public"."order"
--- ADD CONSTRAINT "order_stripeCheckoutSessionId_fkey" FOREIGN KEY ("stripeCheckoutSessionId") REFERENCES "public"."stripeCheckoutSession"("stripeSessionId") ON DELETE SET NULL;

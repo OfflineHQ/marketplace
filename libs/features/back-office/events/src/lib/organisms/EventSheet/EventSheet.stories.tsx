@@ -228,9 +228,9 @@ export const WithEventPassDelayedRevealToReveal: Story = {
     await expect(buttonElement).toBeEnabled();
     const revealMock = getMock(parameters, reveal, 'revealDelayedContract');
     await userEvent.click(buttonElement);
-    const args = revealMock.mock.calls[0];
+    const args = revealMock.mock.calls[0][0];
     expect(revealMock).toBeCalledTimes(1);
-    expect(args[1]).toMatch(
+    expect(args).toMatch(
       eventPassWithPassToReveal.eventPasses[0].eventPassNftContract
         ?.contractAddress as string,
     );

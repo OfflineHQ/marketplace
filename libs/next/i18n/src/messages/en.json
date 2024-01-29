@@ -98,9 +98,7 @@
         "remove": "Remove",
         "TimeBeforeDeletion": {
           "time-before-deletion": "expires: {relativeTime}"
-        },
-        "delete-error-title": "Deletion error",
-        "delete-error-description": "The deletion of this order has failed, please try again later."
+        }
       }
     },
     "Successful": {
@@ -227,9 +225,7 @@
           "already-have-purchase": "You have a purchase ongoing",
           "sale-starting-in": "Sale not started"
         },
-        "title-with-event": "Pass selection for \"{eventTitle}\"",
-        "error-title": "Purchase error",
-        "error-description": "The addition of this pass to your order has failed, please try again later."
+        "title-with-event": "Pass selection for \"{eventTitle}\""
       },
       "EventSaleDates": {
         "sale-not-started": "The sale hasn't started yet",

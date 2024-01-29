@@ -77,6 +77,55 @@ export class NftClaimable {
     }
   }
 
+  async revealDelayedContract(contractAddress: string) {
+    if (!this.sdk) {
+      throw new Error('SDK is undefined');
+    }
+
+    try {
+      const res = await adminSdk.GetEventPassNftContractDelayedRevealPassword({
+        contractAddress,
+      });
+      const eventPassNftContract = res?.eventPassNftContract?.[0];
+
+      if (!eventPassNftContract) {
+        throw new Error(
+          `Event pass NFT contract for address ${contractAddress} not found.`,
+        );
+      }
+      if (
+        eventPassNftContract.type !==
+          EventPassNftContractType_Enum.DelayedReveal ||
+        eventPassNftContract.isDelayedRevealed ||
+        !eventPassNftContract.password
+      ) {
+        throw new Error(
+          `Event pass NFT contract for address ${contractAddress} does not meet the required conditions for reveal.`,
+        );
+      }
+      const contract = await this.sdk.getContract(contractAddress);
+
+      await contract.erc721.revealer.reveal(0, eventPassNftContract.password);
+
+      await adminSdk.UpdateEventPassNftContractDelayedRevealStatus({
+        contractAddress,
+      });
+
+      return adminSdk.GetListCurrentOwnerAddressForContractAddress({
+        contractAddress,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(
+          `Error revealing the delayed contract at address ${contractAddress} : ${error.message}`,
+        );
+      } else
+        throw new Error(
+          `Error revealing the delayed contract at address ${contractAddress} : ${error}`,
+        );
+    }
+  }
+
   async claimOrder(
     this: NftClaimable,
     order: OrderWithContractData,

@@ -23,9 +23,7 @@ import {
   createEventPassNfts,
   createPackNftContract,
   createPackNftContractEventPasses,
-  getEventPassDelayedRevealPassword,
   getEventPassNftContractNfts,
-  saveRevealIntoDb,
   updateNftsWithPackId,
 } from './action';
 
@@ -450,46 +448,6 @@ export class NftCollection {
       } else throw new Error(error);
     }
   }
-
-  async revealDelayedContract(contractAddress: string) {
-    if (!this.sdk) {
-      throw new Error('SDK is undefined');
-    }
-
-    try {
-      const eventPassNftContract =
-        await getEventPassDelayedRevealPassword(contractAddress);
-
-      if (!eventPassNftContract) {
-        throw new Error(
-          `Event pass NFT contract for address ${contractAddress} not found.`,
-        );
-      }
-      if (
-        eventPassNftContract.type !==
-          EventPassNftContractType_Enum.DelayedReveal ||
-        eventPassNftContract.isDelayedRevealed ||
-        !eventPassNftContract.password
-      ) {
-        throw new Error(
-          `Event pass NFT contract for address ${contractAddress} does not meet the required conditions for reveal.`,
-        );
-      }
-      const contract = await this.sdk.getContract(contractAddress);
-      await contract.erc721.revealer.reveal(0, eventPassNftContract.password);
-
-      return saveRevealIntoDb(contractAddress);
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(
-          `Error revealing the delayed contract at address ${contractAddress} : ${error.message}`,
-        );
-      } else
-        throw new Error(
-          `Error revealing the delayed contract at address ${contractAddress} : ${error}`,
-        );
-    }
-  }
 }
 
 export class PackCollection {
@@ -664,7 +622,6 @@ export class PackCollection {
       }
     });
   }
-
   async deployAPack(pack: Pack) {
     try {
       this.validateDeployAPackInputs(pack);
