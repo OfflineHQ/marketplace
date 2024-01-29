@@ -1,5 +1,4 @@
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
-import { Locale, messages } from '@next/i18n';
 import {
   BlockchainAddress,
   Button,
