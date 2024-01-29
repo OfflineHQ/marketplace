@@ -6,7 +6,7 @@ query GetPassedEventsWithEventPassNfts(
 ) {
   eventParameters(
     where: {
-      eventPassNfts: { currentOwnerAddress: { _eq: $address } }
+      eventPassNfts: { currentOwnerAddress: { _ilike: $address } }
       dateEnd: { _lt: $currentDate }
       status: { _eq: PUBLISHED }
     }
@@ -16,7 +16,7 @@ query GetPassedEventsWithEventPassNfts(
     dateEnd
     timezone
     eventPassNftContracts(
-      where: { eventPassNfts: { currentOwnerAddress: { _eq: $address } } }
+      where: { eventPassNfts: { currentOwnerAddress: { _ilike: $address } } }
     ) {
       type
       isDelayedRevealed
@@ -30,7 +30,7 @@ query GetPassedEventsWithEventPassNfts(
           url
         }
       }
-      eventPassNfts(where: { currentOwnerAddress: { _eq: $address } }) {
+      eventPassNfts(where: { currentOwnerAddress: { _ilike: $address } }) {
         id
         isRevealed
         tokenId
@@ -65,7 +65,7 @@ query GetUpcomingEventsWithEventPassNfts(
 ) {
   eventParameters(
     where: {
-      eventPassNfts: { currentOwnerAddress: { _eq: $address } }
+      eventPassNfts: { currentOwnerAddress: { _ilike: $address } }
       dateEnd: { _gte: $currentDate }
       status: { _eq: PUBLISHED }
     }
@@ -75,7 +75,7 @@ query GetUpcomingEventsWithEventPassNfts(
     dateEnd
     timezone
     eventPassNftContracts(
-      where: { eventPassNfts: { currentOwnerAddress: { _eq: $address } } }
+      where: { eventPassNfts: { currentOwnerAddress: { _ilike: $address } } }
     ) {
       type
       isDelayedRevealed
@@ -89,7 +89,7 @@ query GetUpcomingEventsWithEventPassNfts(
           url
         }
       }
-      eventPassNfts(where: { currentOwnerAddress: { _eq: $address } }) {
+      eventPassNfts(where: { currentOwnerAddress: { _ilike: $address } }) {
         id
         isRevealed
         tokenId

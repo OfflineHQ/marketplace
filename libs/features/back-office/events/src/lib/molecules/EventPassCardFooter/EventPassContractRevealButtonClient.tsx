@@ -1,6 +1,7 @@
 'use client';
 
 import { EventPass } from '@features/back-office/events-types';
+import { useAuthContext } from '@next/auth';
 import { Button, useToast } from '@ui/components';
 import { Reveal } from '@ui/icons';
 import { getErrorMessage } from '@utils';
@@ -18,13 +19,17 @@ export function EventPassContractRevealButtonClient({
   eventSlug,
 }: EventPassContractRevealButtonClientProps) {
   const { toast } = useToast();
+  const { getSigner } = useAuthContext();
   const t = useTranslations(
     'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter.EventPassContractRevealButtonClient',
   );
   const locale = useLocale();
   async function revealContract() {
     try {
+      const signer = await getSigner();
+      if (!signer) throw new Error('noSigner');
       await revealDelayedContract(
+        signer,
         eventPass.eventPassNftContract?.contractAddress as string,
       );
       toast({
