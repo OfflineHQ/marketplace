@@ -4,6 +4,7 @@ import { expect, screen, userEvent } from '@storybook/test';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
 import * as deploy from '../../actions/deployCollectionWrapper';
 import * as renameFiles from '../../actions/renameEventPassNftFiles';
+import * as reveal from '../../actions/revealDelayedContract';
 
 import {
   EventSheetExample,
@@ -225,7 +226,20 @@ export const WithEventPassDelayedRevealToReveal: Story = {
     expect(textElement).toBeInTheDocument();
     const buttonElement = await screen.findByText(/reveal your event pass/i);
     await expect(buttonElement).toBeEnabled();
-    // TODO: rework the play with mockReveal
+    const revealMock = getMock(parameters, reveal, 'revealDelayedContract');
+    await userEvent.click(buttonElement);
+    const args = revealMock.mock.calls[0][0];
+    expect(revealMock).toBeCalledTimes(1);
+    expect(args).toMatch(
+      eventPassWithPassToReveal.eventPasses[0].eventPassNftContract
+        ?.contractAddress as string,
+    );
+    expect(await screen.findByText(/has been revealed/i)).toBeInTheDocument();
+    revealMock.mockRejectedValueOnce(new Error('error'));
+    render(parameters);
+    await expect(buttonElement).toBeEnabled();
+    await userEvent.click(buttonElement);
+    expect(await screen.findByText(/error during/i)).toBeInTheDocument();
   },
 };
 

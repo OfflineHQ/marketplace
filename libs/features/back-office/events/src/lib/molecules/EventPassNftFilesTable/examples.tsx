@@ -150,7 +150,8 @@ export function eventPassNftFilesTableMocks() {
   mockRename.mockReturnValue(Promise.resolve());
   const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
   mockDeploy.mockReturnValue(Promise.resolve());
-  // TODO : mockReveal
+  const mockReveal = createMock(reveal, 'revealDelayedContract');
+  mockReveal.mockReturnValue(Promise.resolve());
 
   return [
     mock,
@@ -161,6 +162,7 @@ export function eventPassNftFilesTableMocks() {
     mockCheckPass,
     mockRename,
     mockDeploy,
+    mockReveal,
     ...i18nUiTablesServerMocks(),
   ];
 }
