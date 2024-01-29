@@ -1,15 +1,9 @@
 'use client';
 
-import {
-  EventFromOrganizerWithPasses,
-  EventPassFileWithName,
-} from '@features/back-office/events-types';
-import { GetEventPassOrganizerFolderPath } from '@features/pass-common';
+import { ContentSpaceFileWithName } from '@features/back-office/content-spaces-types';
+import { GetContentSpaceFolderPath } from '@features/content-space-common';
 import { ColumnDef, RowSelectionState } from '@tanstack/react-table';
 import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
   Checkbox,
   DataTable,
   DataTableColumnHeader,
@@ -23,54 +17,35 @@ import {
 import { Delete, Download, SeeDetails } from '@ui/icons';
 import { cn } from '@ui/shared';
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useMemo, useState } from 'react';
-import {
-  DuplicatesType,
-  checkEventPassNftFilesHash,
-} from '../../actions/checkEventPassFilesHash';
-import { deleteEventPassFile } from '../../actions/deleteEventPassFile';
-import { deleteEventPassFiles } from '../../actions/deleteEventPassFiles';
-import { EventPassFilesUploader } from '../EventPassFilesUploader/EventPassFilesUploader';
+import { useMemo, useState } from 'react';
+import { deleteContentSpaceFile } from '../../actions/deleteContentSpaceFile';
+import { deleteContentSpaceFiles } from '../../actions/deleteContentSpaceFiles';
+import { ContentSpaceFilesUploader } from '../ContentSpaceFilesUploader/ContentSpaceFilesUploader';
 
-export interface EventPassNftFilesTableClientProps
-  extends Omit<DataTableProps<EventPassFileWithName, unknown>, 'columns'>,
-    GetEventPassOrganizerFolderPath {
+export interface ContentSpaceFilesTableClientProps
+  extends Omit<DataTableProps<ContentSpaceFileWithName, unknown>, 'columns'>,
+    GetContentSpaceFolderPath {
   headerControlText: DataTableColumnHeaderProps<any, any>['controlText'];
-  eventPass: EventFromOrganizerWithPasses['eventPasses'][0];
-  eventSlug: string;
 }
 
 type MenuActionTable = DataTableToolbarProps<
-  EventPassFileWithName,
+  ContentSpaceFileWithName,
   unknown
 >['menuActions'];
 
-export function EventPassNftFilesTableClient({
+export function ContentSpaceFilesTableClient({
   headerControlText,
   className,
-  eventPass,
+  contentSpaceId,
   organizerId,
-  eventId,
-  eventPassId,
-  eventSlug,
   data,
   ...props
-}: EventPassNftFilesTableClientProps) {
+}: ContentSpaceFilesTableClientProps) {
   const t = useTranslations(
-    'OrganizerEvents.Sheet.EventPassCard.EventPassNftFilesTable',
+    'OrganizerContentSpaces.Sheet.ContentSpaceFilesTable',
   );
   const locale = useLocale();
-  const formatDuplicates = (duplicates: DuplicatesType) => {
-    return duplicates.map((group, index) => (
-      <ul key={index}>
-        {group.map((filePath) => (
-          <li key={filePath}>{filePath.split('/').pop()}</li>
-        ))}
-      </ul>
-    ));
-  };
-  const [duplicates, setDuplicates] = useState<DuplicatesType>([]);
-  const columns: ColumnDef<EventPassFileWithName>[] = [
+  const columns: ColumnDef<ContentSpaceFileWithName>[] = [
     {
       id: 'select',
       header: ({ table }) => (
@@ -136,23 +111,20 @@ export function EventPassNftFilesTableClient({
             //TODO action to download the file
             className: 'cursor-pointer',
           },
-        ];
-        if (!eventPass.eventPassNftContract) {
-          items.splice(2, 0, {
+          {
             type: 'item',
             text: t('header-delete'),
             icon: <Delete />,
             // Add your delete function here
             action: () =>
-              deleteEventPassFile({
+              deleteContentSpaceFile({
                 filePath: row.original.filePath,
                 organizerId,
-                eventId,
-                eventPassId,
+                contentSpaceId,
               }),
             className: 'cursor-pointer',
-          });
-        }
+          },
+        ];
         return <DataTableRowActions items={items} />;
       },
     },
@@ -179,73 +151,26 @@ export function EventPassNftFilesTableClient({
         // todo add multi download function
         text: t('menu-actions-download', { numFilesSelected }),
       },
-    ];
-    if (!eventPass.eventPassNftContract) {
-      items.splice(2, 0, {
+      {
         type: 'item',
         className: 'cursor-pointer',
         icon: <Delete />,
         action: () =>
-          deleteEventPassFiles({
+          deleteContentSpaceFiles({
             organizerId,
-            eventId,
-            eventPassId,
+            contentSpaceId,
             filesSelected: rowSelection,
           }),
         text: t('menu-actions-delete', { numFilesSelected }),
-      });
-    }
-    return { items, helperText: t('menu-actions-helper-text') };
-  }, [
-    organizerId,
-    eventId,
-    eventPassId,
-    rowSelection,
-    t,
-    eventPass.eventPassNftContract,
-  ]);
+      },
+    ];
 
-  useEffect(() => {
-    if (data) {
-      checkEventPassNftFilesHash({
-        filesPath: data.map((file) => file.filePath),
-        organizerId,
-        eventId,
-        eventPassId,
-      }).then((duplicates) => {
-        if (duplicates.length > 0) {
-          setDuplicates(duplicates);
-          const newSelection: RowSelectionState = {};
-          duplicates.forEach((group) => {
-            group.forEach((filePath: string, index: number) => {
-              const file = data.find((item) => item.filePath === filePath);
-              if (file && index) {
-                newSelection[file.fileName] = true;
-              }
-            });
-          });
-          setInitialRowSelection(newSelection);
-        } else setDuplicates([]);
-      });
-    }
-  }, [data, organizerId, eventId, eventPassId]);
+    return { items, helperText: t('menu-actions-helper-text') };
+  }, [organizerId, contentSpaceId, rowSelection, t]);
 
   return (
     <div className="space-y-4">
-      {duplicates.length > 0 && (
-        <Alert variant="destructive">
-          <AlertTitle>
-            {t.rich('duplicates-alert', {
-              count: duplicates.length,
-              br: () => <br />,
-            })}
-          </AlertTitle>
-          <AlertDescription className="flex-col space-y-2">
-            {formatDuplicates(duplicates).map((group) => group)}
-          </AlertDescription>
-        </Alert>
-      )}
-      <DataTable<EventPassFileWithName, unknown>
+      <DataTable<ContentSpaceFileWithName, unknown>
         data={data}
         className={cn('size-full', className)}
         columns={columns}
@@ -261,15 +186,10 @@ export function EventPassNftFilesTableClient({
         initialRowSelection={initialRowSelection}
         {...props}
       >
-        {!eventPass.eventPassNftContract && (
-          <EventPassFilesUploader
-            eventPass={eventPass}
-            organizerId={organizerId}
-            eventId={eventId}
-            eventPassId={eventPassId}
-            eventSlug={eventSlug}
-          />
-        )}
+        <ContentSpaceFilesUploader
+          organizerId={organizerId}
+          contentSpaceId={contentSpaceId}
+        />
       </DataTable>
     </div>
   );

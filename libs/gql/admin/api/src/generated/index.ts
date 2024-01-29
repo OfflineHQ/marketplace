@@ -472,9 +472,7 @@ ${KycFieldsFragmentDoc}`;
   contentSpace(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     title
     slug
-    heroImage {
-      url
-    }
+    id
     contentSpaceParameters {
       status
     }
@@ -601,6 +599,9 @@ ${PassPricingFieldsFragmentDoc}`;
     title
     id
     slug
+    eventParameters {
+      status
+    }
     eventPasses {
       name
       id
