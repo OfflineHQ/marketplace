@@ -11,7 +11,8 @@ import {
   Text,
   TextSkeleton,
 } from '@ui/components';
-import { useTranslations } from 'next-intl';
+import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
+import { defaultLocale, messages, type Locale } from '@next/i18n';
 import Image from 'next/image';
 import { EventPassTimeBeforeDeletion } from '../EventPassTimeBeforeDeletion/EventPassTimeBeforeDeletion';
 import {
@@ -45,6 +46,9 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
   timeRemainingDeletion,
 }) => {
   const t = useTranslations('Cart.List.Event');
+  const _locale = useLocale();
+  const locale: Locale = (_locale as Locale) || defaultLocale;
+  const localeMessages = deepPick(messages[locale], ['Cart.List.Event']);
   const enrichedPasses = passes.map((pass) => {
     const matchingEventPass = event.eventPasses.find(
       (eventPass) => eventPass.id === pass.eventPassId,
@@ -93,13 +97,15 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
         )}
       </div>
       {noActions ? null : (
-        <EventPassesActions
-          editText={t('edit')}
-          deleteText={t('remove')}
-          eventSlug={event.slug as string}
-          organizerSlug={event?.organizer?.slug as string}
-          passes={passes}
-        />
+        <NextIntlClientProvider locale={locale} messages={localeMessages}>
+          <EventPassesActions
+            editText={t('edit')}
+            deleteText={t('remove')}
+            eventSlug={event.slug as string}
+            organizerSlug={event?.organizer?.slug as string}
+            passes={passes}
+          />
+        </NextIntlClientProvider>
       )}
     </AccordionContent>
   );
