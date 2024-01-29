@@ -9,11 +9,14 @@ interface GetEventProps {
 }
 
 export const getEvent = cache(async ({ eventSlug, locale }: GetEventProps) => {
-  const data = await adminSdk.GetEvent({
-    slug: eventSlug,
-    locale: locale as Locale,
-    stage: env.HYGRAPH_STAGE as Stage,
-  });
+  const data = await adminSdk.GetEvent(
+    {
+      slug: eventSlug,
+      locale: locale as Locale,
+      stage: env.HYGRAPH_STAGE as Stage,
+    },
+    { next: { revalidate: 60 } },
+  );
   const event = data?.event;
   if (event?.eventParameters?.status === EventStatus_Enum.Published)
     return event;
