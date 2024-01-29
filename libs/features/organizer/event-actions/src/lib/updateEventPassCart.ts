@@ -4,6 +4,7 @@ import { EventSlugs } from '@features/organizer/event-types';
 import { PassCache } from '@features/pass-cache';
 import { userSdk } from '@gql/user/api';
 import { getCurrentUser } from '@next/next-auth/user';
+import { isJestRunning } from '@utils';
 import { revalidateTag } from 'next/cache';
 
 const passCache = new PassCache();
@@ -47,7 +48,9 @@ export async function updateEventPassCart({
         },
       });
   }
-  revalidateTag(`getOrderSum-${eventPassId}`);
-  revalidateTag(`getEventPassCart-${eventPassId}`);
-  revalidateTag('getEventPassesCart');
+  if (!isJestRunning()) {
+    revalidateTag(`getOrderSum-${eventPassId}`);
+    revalidateTag(`getEventPassCart-${eventPassId}`);
+    revalidateTag('getEventPassesCart');
+  }
 }
