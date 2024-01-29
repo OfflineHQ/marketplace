@@ -2,7 +2,7 @@ query GetEventParametersAndEventPasses(
   $eventSlug: String!
   $locale: Locale!
   $stage: Stage!
-) @cached {
+) {
   eventPasses(
     where: { event: { slug: $eventSlug } }
     locales: [$locale, en]

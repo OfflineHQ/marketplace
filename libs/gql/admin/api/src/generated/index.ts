@@ -499,7 +499,7 @@ ${KycFieldsFragmentDoc}`;
 }
     `;
  const GetEventDocument = `
-    query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
+    query GetEvent($slug: String!, $locale: Locale!, $stage: Stage!) {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     ...EventListFields
     description {
@@ -539,7 +539,7 @@ ${KycFieldsFragmentDoc}`;
 ${EventParametersMinimalFieldsFragmentDoc}
 ${EventDateLocationsFieldsFragmentDoc}`;
  const GetEventWithPassesDocument = `
-    query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
+    query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
     id
     slug
@@ -698,7 +698,7 @@ ${PassPricingFieldsFragmentDoc}`;
 }
     `;
  const GetEventParametersAndEventPassesDocument = `
-    query GetEventParametersAndEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) @cached {
+    query GetEventParametersAndEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!) {
   eventPasses(
     where: {event: {slug: $eventSlug}}
     locales: [$locale, en]
