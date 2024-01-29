@@ -97,7 +97,9 @@
         "remove": "Supprimer",
         "TimeBeforeDeletion": {
           "time-before-deletion": "expire : {relativeTime}"
-        }
+        },
+        "delete-error-title": "Erreur de suppression",
+        "delete-error-description": "La suppression de cette commande a échoué, veuillez réessayer ultérieurement."
       },
       "no-cart": "Votre panier d'achat est vide"
     },
@@ -225,7 +227,9 @@
           "already-have-purchase": "Vous avez un achat en cours",
           "sale-starting-in": "Vente non commencée"
         },
-        "title-with-event": "Sélection des pass pour \"{eventTitle}\""
+        "title-with-event": "Sélection des pass pour \"{eventTitle}\"",
+        "error-title": "Erreur d'achat",
+        "error-description": "L'ajout de ce pass à votre commande a échoué, veuillez réessayer ultérieurement."
       },
       "EventSaleDates": {
         "sale-not-started": "La vente n'a pas encore commencé",

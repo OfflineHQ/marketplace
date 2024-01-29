@@ -2,9 +2,10 @@
 import { deleteEventPasses } from '@features/cart-actions';
 import type { EventPassCart } from '@features/cart-types';
 import type { EventSlugs } from '@features/organizer/event-types';
-import { Link, useRouter } from '@next/navigation';
-import { Button } from '@ui/components';
+import { Link } from '@next/navigation';
+import { Button, toast } from '@ui/components';
 import { Delete, Edit } from '@ui/icons';
+import { useTranslations } from 'next-intl';
 import { useTransition } from 'react';
 
 export interface EventPassesActionsProps extends EventSlugs {
@@ -21,7 +22,8 @@ export const EventPassesActions: React.FC<EventPassesActionsProps> = ({
   passes,
 }) => {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
+  const t = useTranslations('Cart.List.Event');
+
   return (
     <div className="mb-4 flex flex-wrap items-center justify-end space-x-6">
       <Link
@@ -48,11 +50,12 @@ export const EventPassesActions: React.FC<EventPassesActionsProps> = ({
                   .filter(({ eventPassId }) => !!eventPassId)
                   .map(({ eventPassId }) => eventPassId as string),
               });
-              // pb with revalidatePath or revalidateTag, (error 404 in updateEventPassCart) so refresh for now
-              router.refresh();
             } catch (e) {
               console.error(e);
-              // TODO handle error with toast
+              toast({
+                title: t('delete-error-title'),
+                description: t('delete-error-description'),
+              });
             }
           })
         }
