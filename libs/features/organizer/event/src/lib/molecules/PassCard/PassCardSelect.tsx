@@ -6,6 +6,9 @@ import {
   getOrderPurchasedForEventPass,
 } from '@features/organizer/event-api';
 import type { EventPass, EventSlugs } from '@features/organizer/event-types';
+import { deepPick } from '@utils';
+import { NextIntlClientProvider, useLocale } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 import { Suspense } from 'react';
 import { PassCardStatusBadge } from '../../atoms/PassCardStatusBadge/PassCardStatusBadge';
 import { PassCardSelectClient } from './PassCardSelectClient';
@@ -44,6 +47,10 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
   const existingEventPasses = await getOrderPurchasedForEventPass({
     eventPassId: id,
   });
+  const locale = useLocale();
+  const messages = await getMessages(locale as any);
+  const localeMessages = deepPick(messages, ['Organizer.Event.PassPurchase']);
+
   // here compute the max amount of tickets that can be bought
   const totalReserved = eventPassOrderSums?.totalReserved ?? 0;
   const maxAvailableTickets = (passAmount?.maxAmount || 0) - totalReserved;
@@ -75,13 +82,15 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
           hasConfirmedPasses={hasConfirmedPasses}
         />
       ) : (
-        <PassCardSelectClient
-          initialValue={eventPassCart?.quantity || 0}
-          maxVal={maxVal}
-          organizerSlug={organizerSlug}
-          eventSlug={eventSlug}
-          eventPassId={id}
-        />
+        <NextIntlClientProvider locale={locale} messages={localeMessages}>
+          <PassCardSelectClient
+            initialValue={eventPassCart?.quantity || 0}
+            maxVal={maxVal}
+            organizerSlug={organizerSlug}
+            eventSlug={eventSlug}
+            eventPassId={id}
+          />
+        </NextIntlClientProvider>
       )}
     </div>
   );

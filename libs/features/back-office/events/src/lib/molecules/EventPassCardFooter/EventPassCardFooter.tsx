@@ -18,6 +18,8 @@ import {
   EventPassDeployButtonClientProps,
 } from './EventPassDeployButtonClient';
 
+import { defaultLocale, messages, type Locale } from '@next/i18n';
+
 export interface EventPassCardFooterProps
   extends Omit<EventPassDeployButtonClientProps, 'children'> {}
 
@@ -126,6 +128,11 @@ function EventPassContractDeployed({
   const t = useTranslations(
     'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter',
   );
+  const _locale = useLocale();
+  const locale: Locale = (_locale as Locale) || defaultLocale;
+  const localeMessages = deepPick(messages[locale], [
+    'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter.EventPassContractRevealButtonClient',
+  ]);
   return (
     <div className="w-full flex-col space-y-4">
       <BlockchainAddress
@@ -134,10 +141,12 @@ function EventPassContractDeployed({
       />
       {eventPassType === EventPassNftContractType_Enum.DelayedReveal &&
         !eventPass?.eventPassNftContract?.isDelayedRevealed && (
-          <EventPassContractRevealButtonClient
-            eventPass={eventPass}
-            {...props}
-          />
+          <NextIntlClientProvider locale={locale} messages={localeMessages}>
+            <EventPassContractRevealButtonClient
+              eventPass={eventPass}
+              {...props}
+            />
+          </NextIntlClientProvider>
         )}
     </div>
   );
