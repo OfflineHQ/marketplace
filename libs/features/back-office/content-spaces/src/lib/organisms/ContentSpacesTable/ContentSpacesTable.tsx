@@ -15,7 +15,7 @@ import {
 } from '@ui/components';
 import { Edit } from '@ui/icons';
 import { useTranslations } from 'next-intl';
-import { ContentSpaceStatusBadge } from '../../molecules/ContentSpaceStatusBadge/ContentSpaceStatusBadge';
+import { ContentSpaceStatusBadge } from '../../atoms/ContentSpaceStatusBadge/ContentSpaceStatusBadge';
 
 export interface ColumnsProps {
   titleText: string;

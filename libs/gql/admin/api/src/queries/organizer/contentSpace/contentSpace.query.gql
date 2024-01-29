@@ -22,9 +22,7 @@ query GetContentSpaceWithPassesOrganizer(
   contentSpace(where: { slug: $slug }, locales: [$locale, en], stage: $stage) {
     title
     slug
-    heroImage {
-      url
-    }
+    id
     contentSpaceParameters {
       status
     }

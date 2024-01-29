@@ -96,6 +96,9 @@ query GetEventWithPassesOrganizer(
     title
     id
     slug
+    eventParameters {
+      status
+    }
     eventPasses {
       name
       id

@@ -427,6 +427,28 @@
       "status-draft": "Brouillon",
       "status-published": "Publié",
       "status-undefined": "Indéfini"
+    },
+    "Sheet": {
+      "go-back-to-content-spaces": "Retournez aux espaces de contenu",
+      "ContentSpaceEventPassesTable": {
+        "event-pass-for-event": "Pass événement ({slug})"
+      },
+      "ContentSpaceFilesUploader": {
+        "trigger-button": "Ajoutez vos fichiers",
+        "title": "Ajoutez vos fichiers",
+        "close-button": "Fermer"
+      },
+      "ContentSpaceFilesTable": {
+        "header-file-path": "Fichier",
+        "header-show": "Montrer le fichier",
+        "header-delete": "Supprimer le fichier",
+        "search-placeholder": "Chercher un fichier...",
+        "menu-actions-label": "{numFilesSelected, plural, =1 {# fichier sélectionné} other {# fichiers sélectionnés}}",
+        "menu-actions-download": "{numFilesSelected, plural, =1 {télécharger le fichier} other {télécharger # fichiers}}",
+        "menu-actions-helper-text": "Appliquer une action sur les fichiers sélectionnés",
+        "header-download": "Téléchargez le fichier",
+        "menu-actions-delete": "{numFilesSelected, plural, =1 {supprimer le fichier} other {supprimer # fichiers}}"
+      }
     }
   }
 }
