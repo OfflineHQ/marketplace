@@ -38,7 +38,7 @@ describe('deleteContentSpaceFile', () => {
     });
 
     expect(mockRevalidateTag).toHaveBeenCalledWith(
-      `${props.organizerId}-${props.contentSpaceId}-getContentSpaceFile`,
+      `${props.organizerId}-${props.contentSpaceId}-getContentSpaceFiles`,
     );
   });
 

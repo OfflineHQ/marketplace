@@ -430,6 +430,8 @@
     },
     "Sheet": {
       "go-back-to-content-spaces": "Retournez aux espaces de contenu",
+      "associated-event-passes": "Pass d'événements associés",
+      "files": "Fichiers",
       "ContentSpaceEventPassesTable": {
         "event-pass-for-event": "Pass événement ({slug})"
       },

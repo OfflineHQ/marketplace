@@ -1,5 +1,5 @@
 import { TableSkeleton } from '@ui/components';
-import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
+import { NextIntlClientProvider, useLocale } from 'next-intl';
 import { Suspense } from 'react';
 
 import { ContentSpaceFromOrganizerWithPasses } from '@features/back-office/content-spaces-types';
@@ -21,12 +21,10 @@ export function ContentSpaceNftFiles({
   contentSpace,
   ...props
 }: ContentSpaceNftFilesProps) {
-  const t = useTranslations(
-    'OrganizerEvents.Sheet.ContentSpaceCard.ContentSpaceNftFiles',
-  );
+  // const t = useTranslations('OrganizerContentSpaces.Sheet.ContentSpaceNftFiles');
   const locale = useLocale() as Locale;
   const localeMessages = deepPick(messages[locale], [
-    'OrganizerEvents.Sheet.ContentSpaceCard.ContentSpaceFilesUploader',
+    'OrganizerContentSpaces.Sheet.ContentSpaceFilesUploader',
   ]);
   return (
     <>

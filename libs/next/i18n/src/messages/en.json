@@ -431,6 +431,7 @@
     "Sheet": {
       "go-back-to-content-spaces": "Go back to content spaces",
       "associated-event-passes": "Associated Event Passes",
+      "files": "Files",
       "ContentSpaceEventPassesTable": {
         "event-pass-for-event": "Event Pass ({slug})"
       },
