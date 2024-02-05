@@ -13,6 +13,7 @@ import {
   eventWithNormalPasses,
 } from './examples';
 
+import { EventStatus_Enum } from '@gql/shared/types';
 import { mobileMode } from '@test-utils/storybook';
 import { getMock, render } from 'storybook-addon-module-mock';
 import {
@@ -219,11 +220,17 @@ const eventPassWithPassToReveal = {
 
 export const WithEventPassDelayedRevealToReveal: Story = {
   args: {
-    event: eventPassWithPassToReveal,
+    event: {
+      ...eventPassWithPassToReveal,
+      eventParameters: {
+        status: EventStatus_Enum.Published,
+      },
+    },
   },
   play: async ({ container, parameters }) => {
     const textElement = await screen.findByText(/0xabcd/i);
     expect(textElement).toBeInTheDocument();
+    expect(screen.getByText(/published/i)).toBeInTheDocument();
     const buttonElement = await screen.findByText(/reveal your event pass/i);
     await expect(buttonElement).toBeEnabled();
     const revealMock = getMock(parameters, reveal, 'revealDelayedContract');

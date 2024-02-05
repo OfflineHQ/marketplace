@@ -2,6 +2,7 @@
 //   ContentSpaceSheet,
 //   ContentSpaceSheetSkeleton,
 // } from '@features/back-office/content-spaces';
+import { ContentSpaceSheet } from '@features/back-office/content-spaces';
 import { getContentSpaceWithPassesOrganizer } from '@features/back-office/content-spaces-api';
 import { getCurrentUser } from '@next/next-auth/user';
 import { SheetContent } from '@ui/components';
@@ -24,11 +25,10 @@ async function ContentSpaceSheetPageContent({
   });
   if (!contentSpace) return notFound();
   return (
-    <div>ContentSpaceSheetPageContent</div>
-    // <ContentSpaceSheet
-    //   contentSpace={contentSpace}
-    //   organizerId={user.role.organizerId}
-    // />
+    <ContentSpaceSheet
+      contentSpace={contentSpace}
+      organizerId={user.role.organizerId}
+    />
   );
 }
 
