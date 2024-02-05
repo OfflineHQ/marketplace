@@ -20,3 +20,7 @@ export async function getTimeZone() {
 export async function getFormatter({ locale }) {
   return Promise.resolve(useFormatter());
 }
+
+export async function getMessages({ locale }) {
+  return Promise.resolve(messages[locale]);
+}

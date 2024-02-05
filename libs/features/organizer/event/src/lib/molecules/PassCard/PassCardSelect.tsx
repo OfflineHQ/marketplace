@@ -23,19 +23,25 @@ export interface PassCardSelectProps
 }
 
 export const PassCardSelect: React.FC<PassCardSelectProps> = (props) => {
+  const locale = useLocale();
   return (
     <Suspense fallback={<PassCardSelectSkeleton />}>
-      <PassCardSelectContent {...props} />
+      <PassCardSelectContent {...props} locale={locale} />
     </Suspense>
   );
 };
 
-export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
+export const PassCardSelectContent: React.FC<
+  PassCardSelectProps & {
+    locale: string;
+  }
+> = async ({
   passAmount,
   organizerSlug,
   eventSlug,
   id,
   hasConfirmedPasses,
+  locale,
   ...props
 }) => {
   const eventPassOrderSums = await getEventPassOrderSums({ eventPassId: id });
@@ -47,8 +53,7 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
   const existingEventPasses = await getOrderPurchasedForEventPass({
     eventPassId: id,
   });
-  const locale = useLocale();
-  const messages = await getMessages(locale as any);
+  const messages = await getMessages({ locale });
   const localeMessages = deepPick(messages, ['Organizer.Event.PassPurchase']);
 
   // here compute the max amount of tickets that can be bought
