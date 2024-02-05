@@ -6,7 +6,7 @@ import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
 import {
   ContentSpacesTable,
   type ContentSpacesTableProps,
-} from '../organisms/ContentSpacesTable/ContentSpacesTable';
+} from '../../organisms/ContentSpacesTable/ContentSpacesTable';
 
 export type ContentSpacesPageProps = ContentSpacesTableProps;
 

@@ -18,12 +18,12 @@ import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
 import {
+  EventPassFilesClientProps,
   EventPassFilesUploaderClient,
-  GetEventPassFilesClientProps,
 } from './EventPassFilesUploaderClient';
 
 export interface EventPassFilesTableProps
-  extends Omit<GetEventPassFilesClientProps, 'currentFiles' | 'maxFileCount'> {
+  extends Omit<EventPassFilesClientProps, 'currentFiles' | 'maxFileCount'> {
   buttonClassName?: string;
 }
 

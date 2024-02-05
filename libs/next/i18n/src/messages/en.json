@@ -427,6 +427,30 @@
       "status-draft": "Draft",
       "status-published": "Published",
       "status-undefined": "Undefined"
+    },
+    "Sheet": {
+      "go-back-to-content-spaces": "Go back to content spaces",
+      "associated-event-passes": "Associated Event Passes",
+      "files": "Files",
+      "ContentSpaceEventPassesTable": {
+        "event-pass-for-event": "Event Pass ({slug})"
+      },
+      "ContentSpaceFilesUploader": {
+        "trigger-button": "Upload your files",
+        "title": "Upload your files",
+        "close-button": "Close"
+      },
+      "ContentSpaceFilesTable": {
+        "header-file-path": "File",
+        "header-show": "Show the file",
+        "header-delete": "Delete the file",
+        "search-placeholder": "Search for file...",
+        "menu-actions-label": "{numFilesSelected, plural, =1 {# file selected} other {# files selected}}",
+        "menu-actions-delete": "{numFilesSelected, plural, =1 {delete the file} other {delete # files}}",
+        "menu-actions-download": "{numFilesSelected, plural, =1 {download the file} other {download # files}}",
+        "menu-actions-helper-text": "Apply an action on the selected files",
+        "header-download": "Download the file"
+      }
     }
   }
 }

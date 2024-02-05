@@ -15,6 +15,16 @@
       "options": {
         "jestConfig": "libs/features/back-office/events/jest.config.ts"
       }
+    },
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/features/back-office/events",
+        "main": "libs/features/back-office/events/src/index.ts",
+        "tsConfig": "libs/features/back-office/events/tsconfig.lib.json",
+        "assets": []
+      }
     }
   }
 }
