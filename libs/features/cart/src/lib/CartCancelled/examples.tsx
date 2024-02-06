@@ -1,5 +1,5 @@
 import { AppNavLayout } from '@features/app-nav';
-import { WithNormalUser } from '@features/app-nav/stories';
+import { WithUserEmail } from '@features/app-nav/stories';
 
 import { CartCancelled, type CartCancelledProps } from './CartCancelled';
 
@@ -11,7 +11,7 @@ export {
 
 export const CartCancelledExample = (props: CartCancelledProps) => {
   return (
-    <AppNavLayout {...WithNormalUser.args}>
+    <AppNavLayout {...WithUserEmail.args}>
       <CartCancelled {...props} />
     </AppNavLayout>
   );

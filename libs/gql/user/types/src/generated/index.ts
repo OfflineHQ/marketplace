@@ -1,20 +1,13 @@
 import * as Types from '@gql/shared/types';
 
-export type AccountFieldsFragment = { __typename?: 'account', id: any, email?: string | null };
+export type AccountFieldsFragment = { __typename?: 'account', id: any, address: string };
 
 export type GetAccountQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
 }>;
 
 
-export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, email?: string | null }> };
-
-export type GetAccountByEmailQueryVariables = Types.Exact<{
-  email: Types.Scalars['String']['input'];
-}>;
-
-
-export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, email?: string | null }> };
+export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string }> };
 
 export type GetEventWithPassesQueryVariables = Types.Exact<{
   slug: Types.Scalars['String']['input'];
@@ -208,7 +201,7 @@ export type GetMyRolesWithOrganizerAndInviterInfosQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetMyRolesWithOrganizerAndInviterInfosQuery = { __typename?: 'query_root', roleAssignment: Array<{ __typename?: 'roleAssignment', role: Types.Roles_Enum, organizerId: string, eventId: string, organizer?: { __typename?: 'Organizer', imageClasses?: string | null, name: string, slug: string, image: { __typename?: 'Asset', url: string } } | null, inviter: { __typename?: 'account', address: string, email?: string | null } }> };
+export type GetMyRolesWithOrganizerAndInviterInfosQuery = { __typename?: 'query_root', roleAssignment: Array<{ __typename?: 'roleAssignment', role: Types.Roles_Enum, organizerId: string, eventId: string, organizer?: { __typename?: 'Organizer', imageClasses?: string | null, name: string, slug: string, image: { __typename?: 'Asset', url: string } } | null, inviter: { __typename?: 'account', address: string } }> };
 
 export type GetStripeCustomerQueryVariables = Types.Exact<{ [key: string]: never; }>;
 

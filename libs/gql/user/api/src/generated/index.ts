@@ -4,7 +4,7 @@ import { fetchData } from "@next/hasura/api";
 export const AccountFieldsFragmentDoc = `
     fragment AccountFields on account {
   id
-  email
+  address
 }
     `;
 export const OrganizerFieldsFragmentDoc = `
@@ -106,13 +106,6 @@ export const RoleAssignmentFieldsFragmentDoc = `
  const GetAccountDocument = `
     query GetAccount($address: String!) {
   account(where: {address: {_eq: $address}}) {
-    ...AccountFields
-  }
-}
-    ${AccountFieldsFragmentDoc}`;
- const GetAccountByEmailDocument = `
-    query GetAccountByEmail($email: String!) {
-  account(where: {email: {_eq: $email}}) {
     ...AccountFields
   }
 }
@@ -383,14 +376,14 @@ ${PassAmountFieldsFragmentDoc}`;
  const GetPassedEventsWithEventPassNftsDocument = `
     query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
-    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_lt: $currentDate}, status: {_eq: PUBLISHED}}
+    where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}, dateEnd: {_lt: $currentDate}, status: {_eq: PUBLISHED}}
     order_by: {dateEnd: desc}
   ) {
     dateStart
     dateEnd
     timezone
     eventPassNftContracts(
-      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+      where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}}
     ) {
       type
       isDelayedRevealed
@@ -404,7 +397,7 @@ ${PassAmountFieldsFragmentDoc}`;
           url
         }
       }
-      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+      eventPassNfts(where: {currentOwnerAddress: {_ilike: $address}}) {
         id
         isRevealed
         tokenId
@@ -434,14 +427,14 @@ ${PassAmountFieldsFragmentDoc}`;
  const GetUpcomingEventsWithEventPassNftsDocument = `
     query GetUpcomingEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
-    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_gte: $currentDate}, status: {_eq: PUBLISHED}}
+    where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}, dateEnd: {_gte: $currentDate}, status: {_eq: PUBLISHED}}
     order_by: {dateStart: asc}
   ) {
     dateStart
     dateEnd
     timezone
     eventPassNftContracts(
-      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+      where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}}
     ) {
       type
       isDelayedRevealed
@@ -455,7 +448,7 @@ ${PassAmountFieldsFragmentDoc}`;
           url
         }
       }
-      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+      eventPassNfts(where: {currentOwnerAddress: {_ilike: $address}}) {
         id
         isRevealed
         tokenId
@@ -522,7 +515,6 @@ ${OrganizerFieldsFragmentDoc}`;
     }
     inviter {
       address
-      email
     }
   }
 }
@@ -541,9 +533,6 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
     GetAccount(variables: Types.GetAccountQueryVariables, options?: C): Promise<Types.GetAccountQuery> {
       return requester<Types.GetAccountQuery, Types.GetAccountQueryVariables>(GetAccountDocument, variables, options) as Promise<Types.GetAccountQuery>;
-    },
-    GetAccountByEmail(variables: Types.GetAccountByEmailQueryVariables, options?: C): Promise<Types.GetAccountByEmailQuery> {
-      return requester<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables, options) as Promise<Types.GetAccountByEmailQuery>;
     },
     GetEventWithPasses(variables: Types.GetEventWithPassesQueryVariables, options?: C): Promise<Types.GetEventWithPassesQuery> {
       return requester<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables, options) as Promise<Types.GetEventWithPassesQuery>;

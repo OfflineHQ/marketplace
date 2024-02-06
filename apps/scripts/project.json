@@ -1,0 +1,68 @@
+{
+  "name": "scripts",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/scripts/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/scripts",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/scripts/src/main.ts",
+        "tsConfig": "apps/scripts/tsconfig.app.json",
+        "assets": ["apps/scripts/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "run-script": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "node dist/apps/scripts/main.js {args.address} {args.role} {args.organizerId}",
+        "forwardAllArgs": true
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "scripts:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "scripts:build:development"
+        },
+        "production": {
+          "buildTarget": "scripts:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": []
+}

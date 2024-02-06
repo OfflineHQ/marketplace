@@ -100,11 +100,13 @@ export const useGetEventPassNftByTokenReferenceQuery = <
       TError = Error
     >(
       variables: Types.GetEventPassNftByTokenReferenceQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>(
-      ['GetEventPassNftByTokenReference', variables],
-      fetchDataReactQuery<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables),
-      options
+      {
+    queryKey: ['GetEventPassNftByTokenReference', variables],
+    queryFn: fetchDataReactQuery<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables),
+    ...options
+  }
     )};

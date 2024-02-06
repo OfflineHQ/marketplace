@@ -1,7 +1,7 @@
 {
-  "name": "features-back-office-events",
+  "name": "features-back-office-eventss",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/features/back-office/events/src",
+  "sourceRoot": "libs/features/back-office/eventss/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -17,13 +17,23 @@
       }
     },
     "build": {
-      "executor": "@nx/js:swc",
+      "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/features/back-office/events",
-        "main": "libs/features/back-office/events/src/index.ts",
         "tsConfig": "libs/features/back-office/events/tsconfig.lib.json",
-        "assets": []
+        "project": "libs/features/back-office/events/package.json",
+        "entryFile": "libs/features/back-office/events/src/index.ts",
+        "external": ["react", "react-dom", "react/jsx-runtime"],
+        "rollupConfig": "@nx/react/plugins/bundle-rollup",
+        "compiler": "swc",
+        "assets": [
+          {
+            "glob": "libs/features/back-office/events/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
       }
     }
   }

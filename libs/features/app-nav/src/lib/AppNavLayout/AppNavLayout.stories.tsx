@@ -38,24 +38,7 @@ export const WithNoUser: Story = {
   },
 };
 
-export const WithNormalUser: Story = {
-  args: {
-    children: 'test',
-    profileNav: <ProfileNavWithNormalUser />,
-    cartNav: <CartNavEmpty />,
-    passNav: <PassNavEmpty />,
-  },
-};
-export const WithFallbackUser: Story = {
-  args: {
-    children: 'test',
-    profileNav: <ProfileNavWithFallbackUser />,
-    cartNav: <CartNavEmpty />,
-    passNav: <PassNavEmpty />,
-  },
-};
-
-export const WithCryptoUser: Story = {
+export const WithUserNoEmail: Story = {
   args: {
     children: 'test',
     profileNav: <ProfileNavWithCryptoUser />,
@@ -63,9 +46,17 @@ export const WithCryptoUser: Story = {
     passNav: <PassNavEmpty />,
   },
 };
+export const WithUserEmail: Story = {
+  args: {
+    children: 'test',
+    profileNav: <ProfileNavWithNormalUser />,
+    cartNav: <CartNavEmpty />,
+    passNav: <PassNavEmpty />,
+  },
+};
 
 export const WithDarkMode: Story = {
-  ...WithNormalUser,
+  ...WithUserEmail,
   parameters: {
     ...darkMode,
   },
@@ -73,28 +64,28 @@ export const WithDarkMode: Story = {
 
 export const WithCartItems: Story = {
   args: {
-    ...WithNormalUser.args,
+    ...WithUserEmail.args,
     cartNav: <CartNavWithItems />,
   },
 };
 
 export const WithPassPing: Story = {
   args: {
-    ...WithNormalUser.args,
+    ...WithUserEmail.args,
     passNav: <PassNavWithPing />,
   },
 };
 
 export const WithPassLoading: Story = {
   args: {
-    ...WithNormalUser.args,
+    ...WithUserEmail.args,
     passNav: <PassNavLoading />,
   },
 };
 
 export const WithPassActive: Story = {
   args: {
-    ...WithNormalUser.args,
+    ...WithUserEmail.args,
     passNav: <PassNavWithPing />,
   },
   parameters: {
@@ -109,14 +100,14 @@ export const WithPassActive: Story = {
 
 export const WithNavSectionSkeleton: Story = {
   args: {
-    ...WithNormalUser.args,
+    ...WithUserEmail.args,
     cartNav: <NavSectionLoading />,
   },
 };
 
 export const WithProfileNavSkeleton: Story = {
   args: {
-    ...WithNormalUser.args,
+    ...WithUserEmail.args,
     profileNav: <ProfileNavLoading />,
   },
 };
@@ -130,7 +121,7 @@ export const WithAllSkeleton: Story = {
 };
 
 export const WithMobile: Story = {
-  ...WithFallbackUser,
+  ...WithUserEmail,
   parameters: {
     ...mobileMode,
   },

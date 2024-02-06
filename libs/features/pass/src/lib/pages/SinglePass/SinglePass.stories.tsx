@@ -147,6 +147,6 @@ export const OwnerRevealedPassWithMobileDarkMode: Story = {
 
 // export const SectionWithNormalUser: Story = {
 //   args: {
-//     children: <AppNavLayout {...WithNormalUser.args} />,
+//     children: <AppNavLayout {...WithUserEmail.args} />,
 //   },
 // };

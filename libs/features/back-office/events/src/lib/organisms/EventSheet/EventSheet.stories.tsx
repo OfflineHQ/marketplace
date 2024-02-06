@@ -1,4 +1,3 @@
-import * as authProvider from '@next/auth';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
@@ -14,7 +13,7 @@ import {
 } from './examples';
 
 import { EventStatus_Enum } from '@gql/shared/types';
-import { mobileMode } from '@test-utils/storybook';
+import { SessionDecorator, mobileMode } from '@test-utils/storybook';
 import { getMock, render } from 'storybook-addon-module-mock';
 import {
   eventPassNftFiles,
@@ -24,6 +23,7 @@ import { EventSheet } from './EventSheet';
 
 const meta: Meta<typeof EventSheet> = {
   component: EventSheet,
+  decorators: [SessionDecorator],
   parameters: {
     layout: 'fullscreen',
     moduleMock: {
@@ -161,20 +161,12 @@ export const WithClickOnDeploy: Story = {
     chromatic: { disableSnapshot: true },
   },
   play: async ({ container, parameters }) => {
-    const mockAuth = getMock(parameters, authProvider, 'useAuthContext');
     const mockRename = getMock(
       parameters,
       renameFiles,
       'renameEventPassNftFiles',
     );
     mockRename.mockReturnValue(Promise.resolve());
-    mockAuth.mockReturnValue({
-      user: {
-        id: '0x1234',
-      },
-      getSigner: () => Promise.resolve({}),
-      provider: {},
-    });
     const buttonElement = await screen.findByText(
       /Deploy the NFTs contract/i,
       {},

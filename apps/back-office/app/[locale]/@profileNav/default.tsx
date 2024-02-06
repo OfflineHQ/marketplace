@@ -46,6 +46,12 @@ async function ProfileNavSectionContent({ locale }: { locale: string }) {
           signOutTitle: t('sections-text.sign-out-title'),
           signOutDescription: t('sections-text.sign-out-description'),
           signIn: t('sections-text.sign-in'),
+          createAccount: t('sections-text.create-account'),
+          createAccountTitle: t('sections-text.create-account-title'),
+          createAccountDescription: t(
+            'sections-text.create-account-description',
+          ),
+          dontHaveAnAccount: t('sections-text.dont-have-an-account'),
           settings: t('sections-text.settings'),
           copiedAddress: t('sections-text.copied-address'),
           switchToMyAccount: t('sections-text.switch-to-my-account'),
@@ -64,6 +70,8 @@ async function ProfileNavSectionContent({ locale }: { locale: string }) {
           switchToMyAccountToastTDescription: t(
             'sections-text.switch-to-my-account-toast-description',
           ),
+          verifyEmail: t('sections-text.verify-email'),
+          verifyEmailContinue: t('sections-text.verify-email-continue'),
         }}
         isNextAuthConnected={!!user}
         roles={roles}

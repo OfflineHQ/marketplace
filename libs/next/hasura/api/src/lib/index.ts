@@ -1,4 +1,3 @@
-import env from '@env/server';
 import { getHasuraEndpoint } from '@shared/server';
 import { isJestRunning } from '@utils';
 import { cookies } from 'next/headers';
@@ -27,7 +26,8 @@ export const fetchData = (hasuraOpts: HasuraOpts = { admin: false }) => {
       'Content-Type': 'application/json',
     };
     if (admin) {
-      headers['X-Hasura-Admin-Secret'] = env.HASURA_GRAPHQL_ADMIN_SECRET;
+      headers['X-Hasura-Admin-Secret'] = process.env
+        .HASURA_GRAPHQL_ADMIN_SECRET as string;
     } else if (!isJestRunning()) {
       // include the cookie because it's not sent by default in server side with next
       headers['Cookie'] = cookies().toString();

@@ -49,26 +49,17 @@ export async function loadAccountAndRole({
   const account: AppUser = accounts[user];
   await page.exposeFunction('useE2EAuthContext', () => {
     return JSON.stringify({
-      safeUser: {
-        eoa: account.address,
-        safes: [],
-        email: account.email,
-        profileImage: 'https://robohash.org/johndoe.png?size=96x96',
-      },
-      safeAuth: 'safeAuth',
-      provider: 'provider',
       login: () => null,
       logout: () => null,
-      loginSiwe: () => null,
-      logoutSiwe: () => null,
+      createAccount: () => null,
       connecting: false,
     });
   });
   await page.goto(goTo);
   await expect(
-    page.getByRole('button', { name: account.email, exact: true }),
+    page.getByRole('button', { name: account.email, exact: false }),
   ).toBeVisible();
-  await page.getByRole('button', { name: account.email, exact: true }).click();
+  await page.getByRole('button', { name: account.email, exact: false }).click();
   const roleName = roleNames[role];
   if (!roleName) {
     throw new Error(`Role name not found for role: ${role}`);

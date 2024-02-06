@@ -12,7 +12,7 @@ import {
   type GetEventPassOrganizerFolderPath,
 } from '@features/pass-common';
 import { useUploader } from '@next/uploader-provider';
-import { Alert, AlertTitle } from '@ui/components';
+import { Alert, AlertTitle, DialogContentSkeleton } from '@ui/components';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { resetEventPassNftFiles } from '../../actions/resetEventPassNftFiles';
@@ -144,15 +144,7 @@ export function EventPassFilesUploaderClient({
 export function UploaderSkeleton() {
   return (
     <div className="rounded-md border border-dashed p-4">
-      <div className="flex animate-pulse space-x-4">
-        <div className="flex-1 space-y-4 py-1">
-          <div className="h-4 w-3/4 rounded bg-skeleton"></div>
-          <div className="space-y-2">
-            <div className="h-4 rounded bg-skeleton"></div>
-            <div className="h-4 w-5/6 rounded bg-skeleton"></div>
-          </div>
-        </div>
-      </div>
+      <DialogContentSkeleton />
     </div>
   );
 }

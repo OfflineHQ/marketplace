@@ -49,11 +49,6 @@ const fetchDataForTest = (opts: Opts = { jwt: '', anonymous: false }) => {
 };
 
 export const accounts = {
-  google_user: {
-    id: 'ac542c34-1907-451c-94be-5df69a959080',
-    address: '0x1bbedb07706728a19c9db82d3c420670d8040592',
-    email: 'googl_user@gmail.com',
-  } satisfies AppUser,
   alpha_user: {
     id: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
     address: '0xb98bd7c7f656290071e52d1aa617d9cb4467fd6d',
@@ -68,6 +63,11 @@ export const accounts = {
     id: '76189546-6368-4325-8aad-220e03837b7e',
     address: '0x1b8bd7c7f656290071e52d1aa617d9cb4469bb9f',
   } satisfies AppUser,
+  delta_user: {
+    id: '9660cf3b-65ec-4ac5-a671-7eac4d93a842',
+    address: '0x2CDE8fb599b7c656e7594959960DbeA1bC2e15F2',
+    email: '',
+  } satisfies AppUser,
 };
 
 const H256SecretMarketplace = 'ALjZVyWYniAX+6A86TilZ9oWJ4t8ZdCwDRrve1SwC/I=';
@@ -79,9 +79,9 @@ const generateJwt = (user: AppUser, secret: string, role?: string): string =>
   jwt.sign(JSON.stringify({ user, role }), secret);
 
 export const usersJwt = {
-  google_user: generateJwt(accounts.google_user, H256SecretMarketplace, 'user'),
   alpha_user: generateJwt(accounts.alpha_user, H256SecretMarketplace, 'user'),
   beta_user: generateJwt(accounts.beta_user, H256SecretMarketplace, 'user'),
+  delta_user: generateJwt(accounts.delta_user, H256SecretMarketplace, 'user'),
 };
 
 // Define back-office users
@@ -110,11 +110,7 @@ export const backOfficeAccounts = {
       eventId: '',
     },
   } satisfies AppUser,
-  delta_user: {
-    id: '9660cf3b-65ec-4ac5-a671-7eac4d93a842',
-    address: '0x2cde8fb599b7c656e7594959960dbea1bc2e15f2',
-    email: '',
-  } satisfies AppUser,
+  ...accounts,
   // Add more users as needed...
 };
 
@@ -175,13 +171,6 @@ export const betaUserClient = ({
       }),
     ),
     me: accounts.beta_user,
-  };
-};
-
-export const googleUserClient = (): UserSdk & { me: AppUser } => {
-  return {
-    ...userSdk(fetchDataForTest({ jwt: usersJwt.google_user })),
-    me: accounts.google_user,
   };
 };
 

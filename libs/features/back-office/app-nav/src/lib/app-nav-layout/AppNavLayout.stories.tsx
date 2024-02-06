@@ -38,7 +38,7 @@ export const WithNoUser: Story = {
   },
   play: async ({ canvasElement }) => {
     await sleep(100);
-    const signIn = await screen.findAllByText('Sign in');
+    const signIn = await screen.findAllByText('Sign In');
     userEvent.click(signIn[0]);
     await screen.findByText('Settings');
     await screen.findByText('Support');
@@ -59,7 +59,7 @@ export const WithUser: Story = {
     userEvent.click(profileButton[0]);
     await screen.findByText('Settings');
     await screen.findByText('Support');
-    await screen.findByText('Sign out');
+    await screen.findByText('Sign Out');
   },
 };
 
@@ -129,7 +129,7 @@ export const WithNoUserMobile: Story = {
   },
   play: async ({ canvasElement }) => {
     await sleep(100);
-    const signIn = await screen.findAllByText('Sign in');
+    const signIn = await screen.findAllByText('Sign In');
     userEvent.click(signIn[1]);
     await screen.findByText('Settings');
     await screen.findByText('Support');
@@ -156,7 +156,7 @@ export const WithUserMobile: Story = {
     userEvent.click(profileButton[1]);
     await screen.findByText('Settings');
     await screen.findByText('Support');
-    await screen.findByText('Sign out');
+    await screen.findByText('Sign Out');
   },
 };
 

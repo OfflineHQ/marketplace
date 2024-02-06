@@ -3,7 +3,6 @@ import { screen, userEvent } from '@storybook/test';
 import {
   cryptoUserSession,
   normalUserSession,
-  normalUserSessionWithImage,
 } from '../profile-avatar/examples';
 import { ProfileNav, ProfileNavSkeleton } from './ProfileNav';
 import {
@@ -19,6 +18,8 @@ const meta = {
   args: {
     user: cryptoUserSession,
     items: cryptoUserMenuItems,
+    signInText: 'Sign In',
+    accountPlaceholder: 'My Account',
   },
 } satisfies Meta<typeof ProfileNav>;
 
@@ -26,41 +27,32 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const CryptoUser: Story = {
-  play: async ({ canvasElement }) => {
-    userEvent.click(await screen.findByText('0x', { exact: false }));
-    await screen.findByText('My Account');
-    await screen.findByText('Log out');
-  },
-};
-
-export const NormalUser: Story = {
+export const UserMail: Story = {
   args: {
     user: normalUserSession,
     items: normalUserMenuItems,
   },
   play: async ({ canvasElement }) => {
-    userEvent.click(await screen.findByText('@', { exact: false }));
+    userEvent.click(await screen.findByText(/johndoe@/i));
     await screen.findByText('My Account');
     await screen.findByText('Log out');
   },
 };
 
-export const NormalUserWithAvatar: Story = {
-  args: {
-    user: normalUserSessionWithImage,
-    items: normalUserMenuItems,
-  },
-};
+// export const UserMailWithAvatar: Story = {
+//   args: {
+//     user: normalUserSessionWithImage,
+//     items: normalUserMenuItems,
+//   },
+// };
 
 export const NoUser: Story = {
   args: {
     user: undefined,
     items: notConnectedMenuItems,
-    signInText: 'Sign in',
   },
   play: async ({ canvasElement }) => {
-    userEvent.click(await screen.findByText('Sign in'));
+    userEvent.click(await screen.findByText('Sign In'));
     await screen.findByText('Settings');
   },
 };

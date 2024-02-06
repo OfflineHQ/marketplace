@@ -56,6 +56,7 @@ import {
   IoChevronBack,
   IoCloudUploadOutline,
   IoLocationOutline,
+  IoPersonAddOutline,
   IoWarning,
   IoWarningOutline,
 } from 'react-icons/io5';
@@ -78,6 +79,7 @@ import {
   MdOutlineFeed,
   MdOutlineNotificationsActive,
   MdOutlineNotificationsNone,
+  MdOutlineMarkEmailRead,
 } from 'react-icons/md';
 import {
   RiDiscordLine,
@@ -150,6 +152,14 @@ export const Upload: FC<IconProps> = (props) => (
 
 export const ChevronBack: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={IoChevronBack} label={'Go Back'} {...props} />
+);
+
+export const SignUp: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={IoPersonAddOutline}
+    label={'Sign Up'}
+    {...props}
+  />
 );
 
 export const SeeDetails: FC<IconProps> = (props) => (
@@ -338,6 +348,14 @@ export const FillInfo: FC<IconProps> = (props) => (
   <AccessibleIcon
     IconComponent={AiFillInfoCircle}
     label={'Fill Info'}
+    {...props}
+  />
+);
+
+export const VerifyEmail: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={MdOutlineMarkEmailRead}
+    label={'Verify Email'}
     {...props}
   />
 );

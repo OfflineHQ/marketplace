@@ -1,9 +1,9 @@
 import { handleAccount } from '@features/account/api';
+import { KycStatus_Enum } from '@gql/shared/types';
+import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
 import type { AppUser } from '@next/types';
-import { getNextAppURL } from '@shared/server';
+import { SmartWallet } from '@smart-wallet/admin';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { getCsrfToken } from 'next-auth/react';
-import { SiweMessage } from 'siwe';
 
 export const SiweProvider = () =>
   CredentialsProvider({
@@ -22,38 +22,57 @@ export const SiweProvider = () =>
       address: {
         type: 'text',
       },
-      email: {
-        type: 'text',
-      },
-      emailVerified: {
-        type: 'boolean',
-      },
     },
     async authorize(credentials, req) {
+      const smartWallet = new SmartWallet();
       try {
-        const siwe = new SiweMessage(JSON.parse(credentials?.message || '{}'));
-        const nextAuthUrl = new URL(getNextAppURL());
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const nonce = await getCsrfToken({ req: { headers: req.headers } });
-        const result = await siwe.verify({
-          signature: credentials?.signature || '',
-          domain: nextAuthUrl.host,
-          nonce,
+        if (
+          !credentials ||
+          typeof credentials !== 'object' ||
+          !('message' in credentials) ||
+          !('signature' in credentials) ||
+          !('address' in credentials)
+        ) {
+          throw new Error('Missing or invalid credentials');
+        }
+        const { message, signature, address } = credentials;
+        const result = await smartWallet.isValidSignature({
+          message,
+          signature,
+          address,
         });
-        if (result.success) {
+        if (result) {
           try {
             // eslint-disable-next-line sonarjs/prefer-immediate-return
-            const appUser = await handleAccount({
-              address: credentials?.address || '',
-              email: credentials?.email || '',
+            const account = await handleAccount({
+              address,
             });
+            const appUser: AppUser = {
+              ...account,
+              kyc: account.kyc
+                ? {
+                    ...account.kyc,
+                  }
+                : undefined,
+            };
+            // here mean user is already registered to sumsub so need to get the user data from sumsub
+            if (
+              appUser?.kyc?.applicantId &&
+              appUser.kyc.reviewStatus === KycStatus_Enum.Completed
+            ) {
+              const sumsubData = await getSumSubApplicantPersonalData(
+                appUser.kyc.applicantId,
+              );
+              appUser.email = sumsubData.email;
+              appUser.phone = sumsubData.phone;
+            }
             return appUser as AppUser;
           } catch (error) {
             console.error({ error });
             throw new Error(error);
           }
         } else {
-          const error = `Invalid signature: ${JSON.stringify(result.error)}`;
+          const error = 'Invalid signature';
           console.error({ error });
           throw new Error(error);
         }

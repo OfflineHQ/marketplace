@@ -13,9 +13,11 @@ import {
   eventPassNftVIPWithContract,
   eventPassNftVipNoContractDelayedReveal,
 } from './examples';
+import { SessionDecorator } from '@test-utils/storybook';
 
 const meta = {
   component: EventPassNftFilesTable,
+  decorators: [SessionDecorator],
   parameters: {
     layout: 'fullscreen',
     moduleMock: {

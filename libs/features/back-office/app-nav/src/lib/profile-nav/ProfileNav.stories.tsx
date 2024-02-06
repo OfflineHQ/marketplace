@@ -26,12 +26,12 @@ type Story = StoryObj<typeof meta>;
 export const NotConnected: Story = {
   args: {
     isLoading: false,
-    signInText: 'Sign in',
+    signInText: 'Sign In',
     items: itemsNotConnected,
   },
   play: async ({ canvasElement }) => {
     await sleep(100);
-    await userEvent.click(await screen.findByText('Sign in'));
+    await userEvent.click(await screen.findByText('Sign In'));
     await screen.findByText('Settings');
     await screen.findByText('Support');
   },

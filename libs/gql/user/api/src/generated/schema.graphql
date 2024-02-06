@@ -10160,12 +10160,10 @@ An account can represent a user or a role on an organizer. It stores essential i
 """
 type account {
   address: String!
-  email: String
   id: uuid!
 
   """An object relationship"""
   kyc: kyc
-  phone: String
 
   """An array relationship"""
   roles(
@@ -10184,7 +10182,6 @@ type account {
     """filter the rows returned"""
     where: roleAssignment_bool_exp
   ): [roleAssignment!]!
-  scwAddress: String
 
   """An object relationship"""
   stripeCustomer: stripeCustomer
@@ -10198,24 +10195,18 @@ input account_bool_exp {
   _not: account_bool_exp
   _or: [account_bool_exp!]
   address: String_comparison_exp
-  email: String_comparison_exp
   id: uuid_comparison_exp
   kyc: kyc_bool_exp
-  phone: String_comparison_exp
   roles: roleAssignment_bool_exp
-  scwAddress: String_comparison_exp
   stripeCustomer: stripeCustomer_bool_exp
 }
 
 """Ordering options when selecting data from "account"."""
 input account_order_by {
   address: order_by
-  email: order_by
   id: order_by
   kyc: kyc_order_by
-  phone: order_by
   roles_aggregate: roleAssignment_aggregate_order_by
-  scwAddress: order_by
   stripeCustomer: stripeCustomer_order_by
 }
 
@@ -10227,16 +10218,7 @@ enum account_select_column {
   address
 
   """column name"""
-  email
-
-  """column name"""
   id
-
-  """column name"""
-  phone
-
-  """column name"""
-  scwAddress
 }
 
 """
@@ -10253,10 +10235,7 @@ input account_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input account_stream_cursor_value_input {
   address: String
-  email: String
   id: uuid
-  phone: String
-  scwAddress: String
 }
 
 scalar bigint

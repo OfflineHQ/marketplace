@@ -100,7 +100,7 @@ export const AppContainerFooter = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'absolute bottom-16 mb-0 mt-auto flex min-w-[100%] items-center justify-center bg-background/95 px-6 pb-0 pt-2 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 md:bottom-0 md:pb-2 md:backdrop-blur-sm',
+      'absolute bottom-16 mb-0 flex w-full max-w-[2160px] items-center justify-center bg-background/95 px-6 pb-0 pt-2 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 md:bottom-0 md:pb-2 md:backdrop-blur-sm',
       className,
     )}
     {...props}

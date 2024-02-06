@@ -1,4 +1,3 @@
-import * as kycApi from '@features/kyc-api';
 import { adminSdk } from '@gql/admin/api';
 import {
   KycStatus_Enum,
@@ -18,10 +17,12 @@ import {
 } from '@test-utils/db';
 import { accounts, alphaUserClient } from '@test-utils/gql';
 import { Payment } from './payment-admin';
+import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
 
 jest.mock('@insight/server');
 jest.mock('@features/kyc-api');
 jest.mock('@nft/thirdweb-admin');
+jest.mock('@next/next-auth/common');
 jest.mock('stripe');
 
 const payment = new Payment();
@@ -93,7 +94,7 @@ describe('Payment integration', () => {
     it('should create a new stripe customer if it does not exist in db', async () => {
       await deleteTables(client, ['stripeCustomer']);
       // Mock the getSumSubApplicantPersonalData function
-      (kycApi.getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue({
+      (getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue({
         review: {
           reviewStatus: KycStatus_Enum.Completed,
         },

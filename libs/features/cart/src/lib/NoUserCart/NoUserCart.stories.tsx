@@ -1,12 +1,13 @@
 import * as cartApi from '@features/cart-api';
-import type { Meta, StoryObj } from '@storybook/react';
+import * as authProvider from '@next/auth';
+import { StoryObj, type Meta } from '@storybook/react';
 import { expect, screen } from '@storybook/test';
 
+import { mobileMode } from '@test-utils/storybook';
 import { createMock } from 'storybook-addon-module-mock';
 import { eventCart1Props, eventCart2Props } from '../EventPassList/examples';
 import { NoUserCart } from './NoUserCart';
 import { NoUserCartExample, allPassesCart } from './examples';
-import { mobileMode } from '@test-utils/storybook';
 
 const meta: Meta<typeof NoUserCart> = {
   component: NoUserCart,
@@ -23,7 +24,15 @@ const meta: Meta<typeof NoUserCart> = {
               : eventCart2Props,
           );
         });
-        return [mock];
+        const mockAuth = createMock(authProvider, 'useAuthContext');
+        mockAuth.mockImplementation(() => ({
+          login: () => Promise.resolve(),
+          logout: () => Promise.resolve(),
+          createAccount: () => Promise.resolve(),
+          isReady: true,
+          connecting: false,
+        }));
+        return [mock, mockAuth];
       },
     },
   },

@@ -57,6 +57,7 @@ export {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogContentSkeleton,
   DialogDescription,
   DialogFooter,
   DialogHeader,
