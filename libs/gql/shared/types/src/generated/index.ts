@@ -7264,16 +7264,13 @@ export type Account = {
   __typename?: 'account';
   address: Scalars['String']['output'];
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  email?: Maybe<Scalars['String']['output']>;
   id: Scalars['uuid']['output'];
   /** An object relationship */
   kyc?: Maybe<Kyc>;
-  phone?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   roles: Array<RoleAssignment>;
   /** An aggregate relationship */
   roles_aggregate: RoleAssignment_Aggregate;
-  scwAddress?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   stripeCustomer?: Maybe<StripeCustomer>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -7328,13 +7325,10 @@ export type Account_Bool_Exp = {
   _or?: InputMaybe<Array<Account_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  email?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   kyc?: InputMaybe<Kyc_Bool_Exp>;
-  phone?: InputMaybe<String_Comparison_Exp>;
   roles?: InputMaybe<RoleAssignment_Bool_Exp>;
   roles_aggregate?: InputMaybe<RoleAssignment_Aggregate_Bool_Exp>;
-  scwAddress?: InputMaybe<String_Comparison_Exp>;
   stripeCustomer?: InputMaybe<StripeCustomer_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
@@ -7351,12 +7345,9 @@ export const enum Account_Constraint {
 export type Account_Insert_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   kyc?: InputMaybe<Kyc_Obj_Rel_Insert_Input>;
-  phone?: InputMaybe<Scalars['String']['input']>;
   roles?: InputMaybe<RoleAssignment_Arr_Rel_Insert_Input>;
-  scwAddress?: InputMaybe<Scalars['String']['input']>;
   stripeCustomer?: InputMaybe<StripeCustomer_Obj_Rel_Insert_Input>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
@@ -7366,10 +7357,7 @@ export type Account_Max_Fields = {
   __typename?: 'account_max_fields';
   address?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
-  phone?: Maybe<Scalars['String']['output']>;
-  scwAddress?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
@@ -7378,10 +7366,7 @@ export type Account_Min_Fields = {
   __typename?: 'account_min_fields';
   address?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
-  phone?: Maybe<Scalars['String']['output']>;
-  scwAddress?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
@@ -7412,12 +7397,9 @@ export type Account_On_Conflict = {
 export type Account_Order_By = {
   address?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
-  email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   kyc?: InputMaybe<Kyc_Order_By>;
-  phone?: InputMaybe<Order_By>;
   roles_aggregate?: InputMaybe<RoleAssignment_Aggregate_Order_By>;
-  scwAddress?: InputMaybe<Order_By>;
   stripeCustomer?: InputMaybe<StripeCustomer_Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
@@ -7434,13 +7416,7 @@ export const enum Account_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
-  Email = 'email',
-  /** column name */
   Id = 'id',
-  /** column name */
-  Phone = 'phone',
-  /** column name */
-  ScwAddress = 'scwAddress',
   /** column name */
   UpdatedAt = 'updated_at'
 };
@@ -7449,10 +7425,7 @@ export const enum Account_Select_Column {
 export type Account_Set_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  phone?: InputMaybe<Scalars['String']['input']>;
-  scwAddress?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
@@ -7468,10 +7441,7 @@ export type Account_Stream_Cursor_Input = {
 export type Account_Stream_Cursor_Value_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  phone?: InputMaybe<Scalars['String']['input']>;
-  scwAddress?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
@@ -7482,13 +7452,7 @@ export const enum Account_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
-  Email = 'email',
-  /** column name */
   Id = 'id',
-  /** column name */
-  Phone = 'phone',
-  /** column name */
-  ScwAddress = 'scwAddress',
   /** column name */
   UpdatedAt = 'updated_at'
 };

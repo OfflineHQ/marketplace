@@ -67,9 +67,10 @@ export function contentSpaceFilesTableMocks() {
   mockUploader.mockReturnValue({ sessionReady: true });
   const mockAuth = createMock(authProvider, 'useAuthContext');
   mockAuth.mockReturnValue({
-    safeUser: {
-      eoa: '0x123',
-    },
+    connecting: false,
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    createAccount: () => Promise.resolve(),
   });
   const mockDeleteFile = createMock(deleteFile, 'deleteContentSpaceFile');
   mockDeleteFile.mockImplementation(async () => {

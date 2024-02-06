@@ -5,7 +5,6 @@ query GetPendingOrders {
     eventPassId
     packId
     account {
-      email
       address
     }
     passAmount {

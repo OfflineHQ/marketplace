@@ -1,5 +1,5 @@
 import { AppNavLayout } from '@features/app-nav';
-import { WithNormalUser } from '@features/app-nav/stories';
+import { WithUserEmail } from '@features/app-nav/stories';
 
 import { CartSuccessful, type CartSuccessfulProps } from './CartSuccessful';
 
@@ -35,7 +35,7 @@ export const passOrderWithEvent2 = {
 
 export const CartSuccessfulExample = (props: CartSuccessfulProps) => {
   return (
-    <AppNavLayout {...WithNormalUser.args}>
+    <AppNavLayout {...WithUserEmail.args}>
       <CartSuccessful {...props} />
     </AppNavLayout>
   );

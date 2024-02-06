@@ -1,4 +1,5 @@
-import { AuthProvider, NextAuthProvider, SafeUser } from '@next/auth';
+import { AuthProvider, NextAuthProvider } from '@next/auth';
+import type { AppUser } from '@next/types';
 import { toast } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import {
@@ -30,6 +31,12 @@ export function ProfileNavClientExample(props: ProfileNavClientProps) {
               signOutTitle: t('sections-text.sign-out-title'),
               signOutDescription: t('sections-text.sign-out-description'),
               signIn: t('sections-text.sign-in'),
+              createAccount: t('sections-text.create-account'),
+              createAccountTitle: t('sections-text.create-account-title'),
+              createAccountDescription: t(
+                'sections-text.create-account-description',
+              ),
+              dontHaveAnAccount: t('sections-text.dont-have-an-account'),
               settings: t('sections-text.settings'),
               copiedAddress: t('sections-text.copied-address'),
               switchToMyAccount: t('sections-text.switch-to-my-account'),
@@ -50,6 +57,8 @@ export function ProfileNavClientExample(props: ProfileNavClientProps) {
               switchToMyAccountToastTDescription: t(
                 'sections-text.switch-to-my-account-toast-description',
               ),
+              verifyEmail: t('sections-text.verify-email'),
+              verifyEmailContinue: t('sections-text.verify-email-continue'),
             }}
           />{' '}
         </AuthProvider>
@@ -71,10 +80,14 @@ const profileSectionsText = {
   support: 'Support',
   supportTitle: 'Support',
   supportDescription: 'Support description',
-  signOut: 'Sign out',
-  signOutTitle: 'Sign out',
-  signOutDescription: 'Sign out description',
-  signIn: 'Sign in',
+  signOut: 'Sign Out',
+  signOutTitle: 'Sign Out',
+  signOutDescription: 'Sign Out description',
+  signIn: 'Sign In',
+  createAccount: 'Sign Up',
+  createAccountTitle: 'Account created',
+  createAccountDescription: 'Create Account description',
+  dontHaveAnAccount: 'Don’t have an account?',
   settings: 'Settings',
   copiedAddress: 'Copied address!',
   switchToMyAccount: 'Switch to my account',
@@ -87,29 +100,30 @@ const profileSectionsText = {
   switchToMyAccountToastTitle: 'User account',
   switchToMyAccountToastTDescription:
     'You are now connected with your own account',
+  verifyEmail: 'Verify my email',
 } as ProfileNavClientProps['profileSectionsText'];
 
 export const user = {
-  eoa: '0x1bBEdB07706728A19c9dB82d3c420670D8040592',
-  safes: [],
+  id: '1',
+  address: '0x1bBEdB07706728A19c9dB82d3c420670D8040592',
   email: 'johndoe@example.com',
-  name: 'John Doe',
-  profileImage: 'https://robohash.org/johndoe.png?size=96x96',
-} satisfies SafeUser;
+} satisfies AppUser;
 
 const commonProps = {
   profileSectionsText,
-  safeUser: user,
+  user,
   login: () => null,
   signOutUserAction: () => null,
   switchToRole: () => null,
   switchToMyAccount: () => null,
+  createAccountAction: () => null,
+  verifyEmail: () => null,
   toast,
 };
 
 export const itemsNotConnected: ProfileNavProps['items'] = constructItems({
   ...commonProps,
-  safeUser: undefined,
+  user: undefined,
 });
 
 export const itemsUserNoRoles: ProfileNavProps['items'] = constructItems({

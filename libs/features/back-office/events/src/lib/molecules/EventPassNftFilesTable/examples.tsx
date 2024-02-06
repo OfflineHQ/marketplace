@@ -2,8 +2,8 @@ import {
   Currency_Enum,
   EventPassNftContractType_Enum,
 } from '@gql/shared/types';
-import * as authProvider from '@next/auth';
 import * as uploaderProvider from '@next/uploader-provider';
+import * as walletProvider from '@next/wallet';
 import { i18nUiTablesServerMocks } from '@test-utils/ui-mocks';
 import { sleep } from '@utils';
 import * as nextIntl from 'next-intl';
@@ -134,12 +134,11 @@ export function eventPassNftFilesTableMocks() {
   mockIntl.mockReturnValue('en');
   const mockUploader = createMock(uploaderProvider, 'useUploader');
   mockUploader.mockReturnValue({ sessionReady: true });
-  const mockAuth = createMock(authProvider, 'useAuthContext');
-  mockAuth.mockReturnValue({
-    safeUser: {
-      eoa: '0x123',
+  const mockWallet = createMock(walletProvider, 'useWalletContext');
+  mockWallet.mockReturnValue({
+    provider: {
+      getSigner: () => Promise.resolve({}),
     },
-    getSigner: () => Promise.resolve({}),
   });
   const mockDeleteFile = createMock(deleteFile, 'deleteEventPassFile');
   mockDeleteFile.mockImplementation(async () => {
@@ -159,7 +158,7 @@ export function eventPassNftFilesTableMocks() {
     mock,
     mockIntl,
     mockUploader,
-    mockAuth,
+    mockWallet,
     mockDeleteFile,
     mockCheckPass,
     mockRename,

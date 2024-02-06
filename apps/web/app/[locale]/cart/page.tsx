@@ -11,9 +11,6 @@ import {
 } from '@features/cart/server';
 import { SumsubButton } from '@features/kyc/server';
 import { PassCache } from '@features/pass-cache';
-import { Locale } from '@gql/shared/types';
-import { Posthog } from '@insight/server';
-import { FeatureFlagsEnum } from '@insight/types';
 import { isUserKycValidated } from '@kyc/common';
 import { Link, redirect } from '@next/navigation';
 import { getCurrentUser } from '@next/next-auth/user';
@@ -37,16 +34,12 @@ interface CartSectionProps {
 interface CartSectionContentProps
   extends Pick<UserCartProps, 'userPassPendingOrders' | 'allPassesCart'> {
   user: AppUser | undefined;
-  locale: Locale;
-  kycFlag?: boolean;
   reason?: string;
 }
 
 const CartSectionContent: FC<CartSectionContentProps> = ({
   user,
-  locale,
   userPassPendingOrders,
-  kycFlag,
   allPassesCart,
   reason,
 }) => {
@@ -60,7 +53,7 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
       noCartImage="/empty-cart.svg"
       reason={reason}
     >
-      {!kycFlag || isUserKycValidated(user) ? (
+      {isUserKycValidated(user) ? (
         <Link href={isEmptyCart ? '/cart' : '/cart/purchase'} legacyBehavior>
           <Button
             disabled={isEmptyCart}
@@ -73,7 +66,6 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
         </Link>
       ) : (
         <SumsubButton
-          locale={locale}
           confirmedText={
             isEmptyCart ? t('continue-button') : t('finalize-button')
           }
@@ -103,18 +95,10 @@ export default async function CartSection({
       />
     );
   }
-  const kycFlag = await Posthog.getInstance().getFeatureFlag(
-    FeatureFlagsEnum.KYC,
-    user.address,
-  );
   let userPassPendingOrders = await getPendingOrders();
   const userPassConfirmedOrders = await getOrdersConfirmed();
   // if user has confirmed orders and kyc validated, redirect to purchase page
-  // if kycflag is false, redirect to purchase page because doesn't have kyc
-  if (
-    userPassConfirmedOrders?.length &&
-    (!kycFlag || isUserKycValidated(user))
-  ) {
+  if (userPassConfirmedOrders?.length && isUserKycValidated(user)) {
     redirect('/cart/purchase');
   }
   // check if user has pending orders, if he have none check for the cache
@@ -131,9 +115,7 @@ export default async function CartSection({
 
   return (
     <CartSectionContent
-      kycFlag={kycFlag}
       user={user}
-      locale={locale}
       userPassPendingOrders={userPassPendingOrders}
       allPassesCart={allPassesCart}
       reason={reason}

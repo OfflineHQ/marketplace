@@ -27,6 +27,8 @@ jest.mock('@features/account/api', () => ({
   getAccount: jest.fn(),
 }));
 
+// TODO, add test cases for getSumSubApplicantPersonalData
+
 describe('createOptions callbacks', () => {
   beforeAll(() => {
     (Posthog.getInstance as jest.Mock).mockImplementation(() => ({

@@ -3,7 +3,7 @@ import { initialize, mswLoader } from 'msw-storybook-addon';
 import {
   DarkModeDecorator,
   I18nextStoryDecorator,
-  localStorageResetDecorator,
+  LocalStorageResetDecorator,
   mockDateDecorator,
 } from '../../../storybook/storybook.nextjs.decorators';
 import { parameters } from '../../../storybook/storybook.preview.base';
@@ -43,7 +43,7 @@ const preview: Preview = {
     mockDateDecorator,
     DarkModeDecorator,
     I18nextStoryDecorator,
-    localStorageResetDecorator,
+    LocalStorageResetDecorator,
   ],
   // Provide the MSW addon loader globally
   loaders: [mswLoader],

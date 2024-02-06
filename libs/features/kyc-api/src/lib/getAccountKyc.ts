@@ -1,3 +1,4 @@
+'use server';
 import { userSdk } from '@gql/user/api';
 
 export const getAccountKyc = async () => {

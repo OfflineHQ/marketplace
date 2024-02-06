@@ -4,12 +4,15 @@ import {
   ClaimEventPassNftsMutation,
   ClaimEventPassNftsMutationVariables,
 } from '@gql/admin/types';
-import {
-  EventPassNftContractType_Enum,
-  OrderStatus_Enum,
-} from '@gql/shared/types';
+import { OrderStatus_Enum } from '@gql/shared/types';
 import { OrderWithContractData } from '@nft/types';
-import { Ethereum, Goerli, Sepolia } from '@thirdweb-dev/chains';
+import {
+  Ethereum,
+  Goerli,
+  Mumbai,
+  Polygon,
+  Sepolia,
+} from '@thirdweb-dev/chains';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 
 function convertChainIdToThirdwebChain(chainId: string) {
@@ -20,6 +23,10 @@ function convertChainIdToThirdwebChain(chainId: string) {
       return Goerli;
     case '11155111':
       return Sepolia;
+    case '80001':
+      return Mumbai;
+    case '137':
+      return Polygon;
     default:
       throw new Error(`Unsupported chainId: ${chainId}`);
   }

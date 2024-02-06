@@ -32,11 +32,8 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - id
         - address
-        - scwAddress
-        - email
-        - phone
+        - id
       filter:
         id:
           _eq: X-Hasura-User-Id

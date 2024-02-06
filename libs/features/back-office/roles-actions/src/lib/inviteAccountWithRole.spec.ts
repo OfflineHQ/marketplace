@@ -31,7 +31,7 @@ describe('inviteAccountWithRole', () => {
 
   const mockInviteProps = {
     role: Roles_Enum.OrganizerAdmin,
-    address: '0x2CDE8fb599b7c656e7594959960DbeA1bC2e15F2',
+    address: '0x2cde8fb599b7c656e7594959960dbea1bc2e15f2',
   };
   const mockInvite = {
     ...mockInviteProps,

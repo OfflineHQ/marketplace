@@ -47,6 +47,7 @@ export interface AppUser {
   // crypto wallet address
   address: string;
   email?: string;
+  phone?: string;
   organizerId?: string;
   clientId?: string;
   kyc?: Pick<Kyc, 'applicantId' | 'reviewStatus' | 'levelName'>;

@@ -6,6 +6,7 @@ export const sumsubDialogProps = {
   defaultOpen: true,
   testEnv: true,
   accessToken: 'your_access_token',
+  title: 'Verify your email',
   expirationHandler: async () => {
     // handle token expiration here
     return 'your_access_token';

@@ -2,17 +2,31 @@
 
 import { useAuthContext } from '@next/auth';
 import { Link } from '@next/navigation';
+import { AppUser } from '@next/types';
 import { useToast } from '@ui/components';
-import { LifeBuoy, LogIn, LogOut, Settings } from '@ui/icons';
-import { useCallback, useMemo } from 'react';
+import {
+  LifeBuoy,
+  LogIn,
+  LogOut,
+  Settings,
+  SignUp,
+  VerifyEmail,
+} from '@ui/icons';
+import dynamic from 'next/dynamic';
+import { useCallback, useMemo, useState } from 'react';
 import {
   ProfileNav,
   ProfileNavSkeleton,
   type ProfileNavProps,
 } from './ProfileNav';
 
-export interface ProfileNavClientProps {
-  signInText: string;
+const VerifyEmailDynamic = dynamic(
+  async () => (await import('@features/kyc')).SumsubDialog,
+  { ssr: false },
+);
+
+export interface ProfileNavClientProps
+  extends Pick<ProfileNavProps, 'signInText' | 'accountPlaceholder'> {
   profileSectionsText: {
     myAccount: string;
     support: string;
@@ -22,18 +36,28 @@ export interface ProfileNavClientProps {
     signOutTitle: string;
     signOutDescription: string;
     signIn: string;
+    createAccount: string;
+    createAccountTitle: string;
+    createAccountDescription: string;
+    dontHaveAnAccount: string;
+    verifyEmail: string;
+    verifyEmailContinue: string;
     settings: string;
   };
   isNextAuthConnected?: boolean;
+  account: AppUser | undefined;
 }
 
 export const ProfileNavClient = ({
   signInText,
+  accountPlaceholder,
   profileSectionsText,
   isNextAuthConnected,
+  account,
 }: ProfileNavClientProps) => {
-  const { safeUser, login, logout, safeAuth, connecting } = useAuthContext();
+  const { login, logout, createAccount, connecting } = useAuthContext();
   const { toast } = useToast();
+  const [isVerifyEmail, setIsVerifyEmail] = useState(false);
 
   const signOutUserAction = useCallback(async () => {
     await logout({ refresh: true });
@@ -42,6 +66,14 @@ export const ProfileNavClient = ({
       description: profileSectionsText.signOutDescription,
     });
   }, [logout, toast, profileSectionsText]);
+
+  const createAccountAction = useCallback(async () => {
+    await createAccount();
+    toast({
+      title: profileSectionsText.createAccountTitle,
+      description: profileSectionsText.createAccountDescription,
+    });
+  }, [createAccount, toast, profileSectionsText]);
 
   const commonSections: ProfileNavProps['items'] = [
     {
@@ -66,7 +98,7 @@ export const ProfileNavClient = ({
 
   const items: ProfileNavProps['items'] = useMemo(
     () =>
-      !safeUser
+      !account
         ? [
             {
               type: 'item',
@@ -74,6 +106,19 @@ export const ProfileNavClient = ({
               className: 'cursor-pointer font-semibold',
               action: login,
               text: profileSectionsText.signIn,
+            },
+            { type: 'separator' },
+            {
+              type: 'label',
+              className: 'font-normal text-xs',
+              text: profileSectionsText.dontHaveAnAccount,
+            },
+            {
+              type: 'item',
+              icon: <SignUp />,
+              className: 'cursor-pointer',
+              action: createAccountAction,
+              text: profileSectionsText.createAccount,
             },
             { type: 'separator' },
             ...commonSections,
@@ -84,14 +129,22 @@ export const ProfileNavClient = ({
               text: profileSectionsText.myAccount,
               className: 'pt-2 pb-0',
             },
-            {
-              type: 'children',
-              children: (
-                <div className="overflow-hidden text-ellipsis px-2 pb-2 text-sm">
-                  {safeUser.name || safeUser.eoa}
-                </div>
-              ),
-            },
+            account.email
+              ? {
+                  type: 'children',
+                  children: (
+                    <div className="overflow-hidden text-ellipsis px-2 pb-2 text-sm">
+                      {account.email}
+                    </div>
+                  ),
+                }
+              : {
+                  type: 'item',
+                  icon: <VerifyEmail />,
+                  className: 'cursor-pointer font-semibold',
+                  action: () => setIsVerifyEmail(true),
+                  text: profileSectionsText.verifyEmail,
+                },
             { type: 'separator' },
             ...commonSections,
             { type: 'separator' },
@@ -103,16 +156,34 @@ export const ProfileNavClient = ({
               text: profileSectionsText.signOut,
             },
           ],
-    [safeUser, signOutUserAction, login, profileSectionsText, commonSections],
+    [
+      account,
+      signOutUserAction,
+      login,
+      profileSectionsText,
+      commonSections,
+      createAccountAction,
+    ],
   );
-  return !safeAuth ? (
+  return connecting ? (
     <ProfileNavSkeleton />
   ) : (
-    <ProfileNav
-      items={items}
-      isLoading={connecting && !isNextAuthConnected}
-      user={safeUser}
-      signInText={signInText}
-    />
+    <>
+      {isVerifyEmail && (
+        <VerifyEmailDynamic
+          open={isVerifyEmail}
+          confirmedText={profileSectionsText.verifyEmailContinue}
+          onOpenChange={setIsVerifyEmail}
+          title={profileSectionsText.verifyEmail}
+        />
+      )}
+      <ProfileNav
+        items={items}
+        isLoading={connecting && !isNextAuthConnected}
+        user={account}
+        signInText={signInText}
+        accountPlaceholder={accountPlaceholder}
+      />
+    </>
   );
 };
