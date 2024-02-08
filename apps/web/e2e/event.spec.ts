@@ -58,11 +58,8 @@ test('user should be able to buy a pass', async () => {
     .getByRole('button', { name: /qr code select passes/i })
     .first()
     .click();
-  await page
-    .locator('div')
-    .filter({ hasText: /^€82\.500$/i })
-    .getByLabel(/increment value/i)
-    .click();
+  await page.getByLabel('increment value').first().click();
+
   await expect(page.getByText(/1 pass selected/i)).toBeVisible();
   await expect(
     page.getByRole('heading', { name: /total price: €82.50/i }),

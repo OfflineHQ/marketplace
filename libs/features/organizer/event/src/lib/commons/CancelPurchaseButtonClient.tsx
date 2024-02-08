@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from '@next/navigation';
-import { Button, toast, useToast } from '@ui/components';
+import { Button, useToast } from '@ui/components';
 import { Close } from '@ui/icons';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';

@@ -5,6 +5,7 @@ import {
 } from '@features/app-nav';
 import { AllPassesCart, UserPassOrder } from '@features/cart-types';
 import { CancelPurchaseButton } from '@features/organizer/event';
+import { messages } from '@next/i18n';
 import { Link } from '@next/navigation';
 import {
   Alert,
@@ -15,7 +16,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@ui/components';
-import { useTranslations } from 'next-intl';
+import { deepPick } from '@utils';
+import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
+import { type Locale } from '@next/i18n';
 import { FC } from 'react';
 import { EventPassList } from '../EventPassList/EventPassList';
 
@@ -25,6 +28,10 @@ export type CartCancelledProps = {
 
 export const CartCancelled: FC<CartCancelledProps> = ({ passes }) => {
   const t = useTranslations('Cart.Cancelled');
+  const locale = useLocale() as Locale;
+  const localeMessages = deepPick(messages[locale], [
+    'Organizer.Event.PassPurchaseHeader',
+  ]);
 
   const allPasses: AllPassesCart = passes?.reduce((acc, pass) => {
     const organizerSlug = pass.eventPass?.event?.organizer?.slug;
@@ -50,7 +57,9 @@ export const CartCancelled: FC<CartCancelledProps> = ({ passes }) => {
           <Alert variant="warning" className="max-w-[600px]">
             <AlertTitle>{t('cancelled-title')}</AlertTitle>
             <AlertDescription>{t('description')}</AlertDescription>
-            <CancelPurchaseButton />
+            <NextIntlClientProvider locale={locale} messages={localeMessages}>
+              <CancelPurchaseButton />
+            </NextIntlClientProvider>
           </Alert>
         </CardHeader>
         <CardContent>
