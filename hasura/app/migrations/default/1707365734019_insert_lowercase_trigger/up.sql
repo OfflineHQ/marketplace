@@ -45,6 +45,34 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER eventPassNft_before_insert
-BEFORE INSERT ON "eventPassNft"
+-- Adjusted trigger for both INSERT and UPDATE
+CREATE TRIGGER eventPassNft_before_insert_or_update
+BEFORE INSERT OR UPDATE ON "eventPassNft"
 FOR EACH ROW EXECUTE FUNCTION force_lowercase_eventPassNft();
+
+-- Function for packNftSupply table
+CREATE OR REPLACE FUNCTION force_lowercase_packNftSupply() RETURNS TRIGGER AS $$
+BEGIN
+    NEW."contractAddress" := LOWER(NEW."contractAddress");
+    NEW."currentOwnerAddress" := LOWER(NEW."currentOwnerAddress");
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger for both INSERT and UPDATE on packNftSupply
+CREATE TRIGGER packNftSupply_before_insert_or_update
+BEFORE INSERT OR UPDATE ON "packNftSupply"
+FOR EACH ROW EXECUTE FUNCTION force_lowercase_packNftSupply();
+
+-- Function for packNftContract table
+CREATE OR REPLACE FUNCTION force_lowercase_packNftContract() RETURNS TRIGGER AS $$
+BEGIN
+    NEW."contractAddress" := LOWER(NEW."contractAddress");
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger for both INSERT and UPDATE on packNftContract
+CREATE TRIGGER packNftContract_before_insert_or_update
+BEFORE INSERT OR UPDATE ON "packNftContract"
+FOR EACH ROW EXECUTE FUNCTION force_lowercase_packNftContract();
