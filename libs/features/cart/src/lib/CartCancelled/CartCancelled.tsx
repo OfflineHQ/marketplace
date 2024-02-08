@@ -4,7 +4,8 @@ import {
   AppContainerOverflow,
 } from '@features/app-nav';
 import { AllPassesCart, UserPassOrder } from '@features/cart-types';
-import { messages } from '@next/i18n';
+import { CancelPurchaseButton } from '@features/organizer/event';
+import { Locale, messages } from '@next/i18n';
 import { Link } from '@next/navigation';
 import {
   Alert,
@@ -15,10 +16,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@ui/components';
-import { Locale, deepPick } from '@utils';
+import { deepPick } from '@utils';
 import { useLocale, useTranslations } from 'next-intl';
 import { FC } from 'react';
-import { CancelPurchaseButton } from '../../../../organizer/event/src/lib/molecules/PassPurchaseHeader/CancelPurchaseButtonClient';
 import { EventPassList } from '../EventPassList/EventPassList';
 
 export type CartCancelledProps = {
@@ -57,30 +57,16 @@ export const CartCancelled: FC<CartCancelledProps> = ({ passes }) => {
             <AlertTitle>{t('cancelled-title')}</AlertTitle>
             <AlertDescription>{t('description')}</AlertDescription>
             <CancelPurchaseButton
-              buttonText={
-                cancelMessages['Organizer']['Event']['PassPurchaseHeader'][
-                  'cancel-purchase'
-                ]
-              }
+              buttonText={cancelMessages['cancel-purchase']}
               successText={{
-                title:
-                  cancelMessages['Organizer']['Event']['PassPurchaseHeader'][
-                    'cancel-purchase-success-title'
-                  ],
+                title: cancelMessages['cancel-purchase-success-title'],
                 description:
-                  cancelMessages['Organizer']['Event']['PassPurchaseHeader'][
-                    'cancel-purchase-success-description'
-                  ],
+                  cancelMessages['cancel-purchase-success-description'],
               }}
               errorText={{
-                title:
-                  cancelMessages['Organizer']['Event']['PassPurchaseHeader'][
-                    'cancel-purchase-error-title'
-                  ],
+                title: cancelMessages['cancel-purchase-error-title'],
                 description:
-                  cancelMessages['Organizer']['Event']['PassPurchaseHeader'][
-                    'cancel-purchase-error-description'
-                  ],
+                  cancelMessages['cancel-purchase-error-description'],
               }}
             />
           </Alert>

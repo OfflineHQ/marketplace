@@ -15,8 +15,8 @@ import {
 import { Cart } from '@ui/icons';
 import { deepPick } from '@utils';
 import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
+import { CancelPurchaseButton } from '../../commons/CancelPurchaseButtonClient';
 import { PassListProps } from '../../organisms/PassList/PassList';
-import { CancelPurchaseButton } from './CancelPurchaseButtonClient';
 import { SaleEndsInClient } from './SaleEndsInClient';
 import { SaleStartsInClient } from './SaleStartsInClient';
 
