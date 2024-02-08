@@ -44,7 +44,6 @@ export const PassCardSelectContent: React.FC<
   locale,
   ...props
 }) => {
-  const locale = useLocale() as Locale;
   const eventPassOrderSums = await getEventPassOrderSums({ eventPassId: id });
   const eventPassCart = await getEventPassCart({
     organizerSlug,
