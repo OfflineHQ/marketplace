@@ -5,7 +5,6 @@ import {
 } from '@features/app-nav';
 import { AllPassesCart, UserPassOrder } from '@features/cart-types';
 import { CancelPurchaseButton } from '@features/organizer/event';
-import { Locale, messages } from '@next/i18n';
 import { Link } from '@next/navigation';
 import {
   Alert,
@@ -16,8 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@ui/components';
-import { deepPick } from '@utils';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { FC } from 'react';
 import { EventPassList } from '../EventPassList/EventPassList';
 
@@ -27,10 +25,6 @@ export type CartCancelledProps = {
 
 export const CartCancelled: FC<CartCancelledProps> = ({ passes }) => {
   const t = useTranslations('Cart.Cancelled');
-  const locale = useLocale() as Locale;
-  const cancelMessages = deepPick(messages[locale], [
-    'Organizer.Event.PassPurchaseHeader',
-  ]);
 
   const allPasses: AllPassesCart = passes?.reduce((acc, pass) => {
     const organizerSlug = pass.eventPass?.event?.organizer?.slug;
@@ -56,19 +50,7 @@ export const CartCancelled: FC<CartCancelledProps> = ({ passes }) => {
           <Alert variant="warning" className="max-w-[600px]">
             <AlertTitle>{t('cancelled-title')}</AlertTitle>
             <AlertDescription>{t('description')}</AlertDescription>
-            <CancelPurchaseButton
-              buttonText={cancelMessages['cancel-purchase']}
-              successText={{
-                title: cancelMessages['cancel-purchase-success-title'],
-                description:
-                  cancelMessages['cancel-purchase-success-description'],
-              }}
-              errorText={{
-                title: cancelMessages['cancel-purchase-error-title'],
-                description:
-                  cancelMessages['cancel-purchase-error-description'],
-              }}
-            />
+            <CancelPurchaseButton />
           </Alert>
         </CardHeader>
         <CardContent>

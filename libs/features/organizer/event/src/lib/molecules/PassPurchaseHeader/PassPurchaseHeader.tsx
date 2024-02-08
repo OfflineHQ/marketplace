@@ -101,17 +101,7 @@ const PurchaseInProgressAlert = () => {
             {t('go-to-purchase')}
           </Button>
         </Link>
-        <CancelPurchaseButton
-          buttonText={t('cancel-purchase')}
-          successText={{
-            title: t('cancel-purchase-success-title'),
-            description: t('cancel-purchase-success-description'),
-          }}
-          errorText={{
-            title: t('cancel-purchase-error-title'),
-            description: t('cancel-purchase-error-description'),
-          }}
-        />
+        <CancelPurchaseButton />
       </div>
     </Alert>
   );
