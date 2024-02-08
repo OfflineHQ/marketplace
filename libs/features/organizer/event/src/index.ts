@@ -9,6 +9,7 @@ export {
   type PassPurchaseSheetProps,
 } from './lib/pages/PassPurchase/PassPurchaseSheet';
 
+export { CancelPurchaseButton } from './lib/commons/CancelPurchaseButtonClient';
 export { EventLocations } from './lib/molecules/EventLocations/EventLocations';
 export { EventOrganizerButton } from './lib/molecules/EventOrganizerButton/EventOrganizerButton';
 export { PassOptions } from './lib/molecules/PassOptions/PassOptions';
