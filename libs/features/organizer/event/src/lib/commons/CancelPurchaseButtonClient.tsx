@@ -1,32 +1,26 @@
 'use client';
 
 import { usePathname, useRouter } from '@next/navigation';
-import { Button, useToast } from '@ui/components';
+import { Button, toast, useToast } from '@ui/components';
 import { Close } from '@ui/icons';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { cancelPurchaseForUser } from './action';
 
-export function CancelPurchaseButton({
-  buttonText,
-  successText,
-  errorText,
-}: {
-  buttonText: string;
-  successText: { title: string; description: string };
-  errorText: { title: string; description: string };
-}) {
+export function CancelPurchaseButton() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
   const { toast } = useToast();
+  const t = useTranslations('Organizer.Event.PassPurchaseHeader');
 
   const handleCancelPurchase = async () => {
     setIsLoading(true);
     try {
       await cancelPurchaseForUser();
       toast({
-        title: successText.title,
-        description: successText.description,
+        title: t('cancel-purchase-success-title'),
+        description: t('cancel-purchase-success-description'),
       });
       if (pathname.includes('/cart/canceled')) {
         router.push('/cart');
@@ -36,8 +30,8 @@ export function CancelPurchaseButton({
     } catch (error) {
       console.error('Failed to cancel purchase', error);
       toast({
-        title: errorText.title,
-        description: errorText.description,
+        title: t('cancel-purchase-error-title'),
+        description: t('cancel-purchase-error-description'),
       });
     } finally {
       setIsLoading(false);
@@ -52,7 +46,7 @@ export function CancelPurchaseButton({
       onClick={handleCancelPurchase}
       isLoading={isLoading}
     >
-      {buttonText}
+      {t('cancel-purchase')}
     </Button>
   );
 }
