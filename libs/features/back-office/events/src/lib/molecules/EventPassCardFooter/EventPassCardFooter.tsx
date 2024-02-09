@@ -127,8 +127,7 @@ function EventPassContractDeployed({
   const t = useTranslations(
     'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter',
   );
-  const _locale = useLocale();
-  const locale: Locale = (_locale as Locale) || defaultLocale;
+  const locale = useLocale() as Locale;
   const localeMessages = deepPick(messages[locale], [
     'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter.EventPassContractRevealButtonClient',
   ]);

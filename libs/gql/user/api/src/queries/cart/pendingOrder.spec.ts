@@ -17,6 +17,10 @@ describe('tests for pendingOrder user', () => {
   const eventPass2 = {
     eventPassId: 'fake-event-pass-2',
   };
+  const eventPass3 = {
+    eventPassId: 'clj8raobj7g8l0aw3bfw6dny4',
+  };
+
   const order1 = {
     ...eventPass,
     quantity: 1,
@@ -24,6 +28,10 @@ describe('tests for pendingOrder user', () => {
 
   const order2 = {
     ...eventPass2,
+    quantity: 2,
+  } satisfies PendingOrder_Insert_Input;
+  const order3 = {
+    ...eventPass3,
     quantity: 2,
   } satisfies PendingOrder_Insert_Input;
 
@@ -89,6 +97,47 @@ describe('tests for pendingOrder user', () => {
     expect(orders2?.length).toBe(1);
     expect(orders2?.[0].eventPassId).toBe(order2.eventPassId);
     expect(orders2?.[0].quantity).toBe(3);
+  });
+
+  it('should allow update of order with new quantity even if order already exists and the quantity is the max_user limit', async () => {
+    const res = await alphaUser.UpsertEventPassPendingOrders({
+      objects: [order1, order2],
+      stage: 'DRAFT' as Stage,
+    });
+    const orders = res.insert_pendingOrder?.returning;
+    expect(orders?.length).toBe(2);
+    expect(orders?.[0].eventPassId).toBe(order1.eventPassId);
+    expect(orders?.[0].quantity).toBe(order1.quantity);
+
+    const res2 = await alphaUser.UpsertEventPassPendingOrders({
+      objects: [{ ...order2, quantity: 10 }],
+      stage: 'DRAFT' as Stage,
+    });
+    const orders2 = res2.insert_pendingOrder?.returning;
+    expect(orders2?.length).toBe(1);
+    expect(orders2?.[0].eventPassId).toBe(order2.eventPassId);
+    expect(orders2?.[0].quantity).toBe(10);
+  });
+
+  it('should allow update of order with new quantity even if order already exists and the quantity is the max limit', async () => {
+    const res = await alphaUser.UpsertEventPassPendingOrders({
+      objects: [order3],
+      stage: 'DRAFT' as Stage,
+    });
+    const orders = res.insert_pendingOrder?.returning;
+    expect(orders?.length).toBe(1);
+    expect(orders?.[0].eventPassId).toBe(order3.eventPassId);
+    expect(orders?.[0].quantity).toBe(order3.quantity);
+
+    const res2 = await alphaUser.UpsertEventPassPendingOrders({
+      objects: [{ ...order3, quantity: 96 }],
+      stage: 'DRAFT' as Stage,
+    });
+    const orders2 = res2.insert_pendingOrder?.returning;
+    console.log({ orders2 });
+    expect(orders2?.length).toBe(1);
+    expect(orders2?.[0].eventPassId).toBe(order3.eventPassId);
+    expect(orders2?.[0].quantity).toBe(96);
   });
 
   it('should create pendingOrder with two successive users on same events', async () => {

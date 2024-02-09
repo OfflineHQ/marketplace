@@ -15,6 +15,7 @@ import {
 import { Cart } from '@ui/icons';
 import { deepPick } from '@utils';
 import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
+import { CancelPurchaseButton } from '../../commons/CancelPurchaseButtonClient';
 import { PassListProps } from '../../organisms/PassList/PassList';
 import { SaleEndsInClient } from './SaleEndsInClient';
 import { SaleStartsInClient } from './SaleStartsInClient';
@@ -94,16 +95,14 @@ const PurchaseInProgressAlert = () => {
       <AlertDescription>
         {t('has-purchase-in-progress-description')}
       </AlertDescription>
-      <Link
-        href="/cart"
-        legacyBehavior
-        passHref
-        className="w-full justify-center"
-      >
-        <Button variant="link" className="mt-1 px-0" icon={<Cart />}>
-          {t('go-to-purchase')}
-        </Button>
-      </Link>
+      <div className="flex w-full flex-col items-center justify-between space-y-4 pt-2 sm:flex-row sm:space-x-4 sm:space-y-0">
+        <Link href="/cart" legacyBehavior passHref>
+          <Button variant="link" className="px-0" icon={<Cart />}>
+            {t('go-to-purchase')}
+          </Button>
+        </Link>
+        <CancelPurchaseButton />
+      </div>
     </Alert>
   );
 };

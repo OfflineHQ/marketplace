@@ -45,6 +45,7 @@ type Story = StoryObj<typeof CartCancelled>;
 export const Default: Story = {
   play: async (context) => {
     expect(await screen.findByText(/Lorem ipsum/i)).toBeInTheDocument();
+    expect(await screen.findByText(/cancel my purchase/i)).toBeInTheDocument();
   },
 };
 

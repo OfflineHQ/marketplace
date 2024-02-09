@@ -230,6 +230,8 @@ export function EventPassNftFilesTableClient({
     }
   }, [data, organizerId, eventId, eventPassId]);
 
+  if (data.length === 0) return null;
+
   return (
     <div className="space-y-4">
       {duplicates.length > 0 && (

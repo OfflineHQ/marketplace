@@ -88,34 +88,6 @@ export const WithFileSelectedAndActions: Story = {
   },
 };
 
-export const WithNoFiles: Story = {
-  ...Default,
-  play: async ({ canvasElement, parameters }) => {
-    const mock = getMock(parameters, getPass, 'getEventPassNftFiles');
-    mock.mockReturnValue(Promise.resolve([]));
-    await waitFor(() => {
-      expect(
-        screen.getByRole('button', { name: /upload your files/i }),
-      ).toBeInTheDocument();
-    });
-  },
-};
-
-export const WithNoFilesUploadModale: Story = {
-  ...Default,
-  parameters: {
-    chromatic: { disableSnapshot: true },
-  },
-  play: async ({ canvasElement, parameters }) => {
-    const mock = getMock(parameters, getPass, 'getEventPassNftFiles');
-    mock.mockReturnValue(Promise.resolve([]));
-    userEvent.click(
-      await screen.findByRole('button', { name: /upload your files/i }),
-    );
-    expect(await screen.findByText(/Upload an image/i)).toBeInTheDocument();
-  },
-};
-
 export const WithEventPassNftContract: Story = {
   ...Default,
   args: {

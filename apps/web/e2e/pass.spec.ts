@@ -19,7 +19,7 @@ test.afterAll(async () => {
   await client.end();
 
   const filePath =
-    '/local/users/0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-1234124.png';
+    '/local/users/0xb98bd7c7f656290071e52d1aa617d9cb4467fd6d/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-1234124.png';
   const fileApi = new Bytescale.FileApi({
     apiKey: process.env.UPLOAD_SECRET_API_KEY || '',
   });

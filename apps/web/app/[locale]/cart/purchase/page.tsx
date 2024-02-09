@@ -30,7 +30,14 @@ export default async function CartPurchase({
     );
   }
   if (!user || (kycFlag && !isUserKycValidated(user))) return redirect('/cart');
-  let session = await getStripeActiveCheckoutSession();
+  let session;
+  try {
+    session = await getStripeActiveCheckoutSession();
+  } catch (error) {
+    if (error.message === 'User has no email') {
+      return redirect('/cart?reason=no-mail');
+    }
+  }
   // if no session means the user has pending orders that need to be transfered to the checkout session as confirmed
   if (!session) {
     const pendingOrders = await getPendingOrders();
