@@ -29,7 +29,7 @@ export interface EventPassFilesTableProps
   buttonClassName?: string;
 }
 
-export function EventPassFilesUploader(props: EventPassFilesTableProps) {
+export async function EventPassFilesUploader(props: EventPassFilesTableProps) {
   return (
     <Suspense fallback={<ButtonSkeleton className="inline-flex" />}>
       <EventPassFilesUploaderContent {...props} />
