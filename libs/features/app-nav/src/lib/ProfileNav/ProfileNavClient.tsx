@@ -1,15 +1,15 @@
 'use client';
 
-import {
-  ProfileNav,
-  ProfileNavSkeleton,
-  type ProfileNavProps,
-} from './ProfileNav';
 import { useAuthContext } from '@next/auth';
 import { Link } from '@next/navigation';
 import { useToast } from '@ui/components';
 import { LifeBuoy, LogIn, LogOut, Settings } from '@ui/icons';
 import { useCallback, useMemo } from 'react';
+import {
+  ProfileNav,
+  ProfileNavSkeleton,
+  type ProfileNavProps,
+} from './ProfileNav';
 
 export interface ProfileNavClientProps {
   signInText: string;
@@ -103,7 +103,7 @@ export const ProfileNavClient = ({
               text: profileSectionsText.signOut,
             },
           ],
-    [safeUser, signOutUserAction, login, profileSectionsText],
+    [safeUser, signOutUserAction, login, profileSectionsText, commonSections],
   );
   return !safeAuth ? (
     <ProfileNavSkeleton />

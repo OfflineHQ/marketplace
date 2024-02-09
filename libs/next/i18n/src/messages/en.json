@@ -88,7 +88,9 @@
       "title": "Cart",
       "description": "Validate your cart to proceed to the payment",
       "finalize-button": "Proceed to payment",
-      "continue-button": "Continue"
+      "continue-button": "Continue",
+      "no-mail-description": "It seems like your account doesn't possess the necessary email to create a payment session. If you have not yet completed the KYC, please do. If you need help, contact the support.",
+      "no-mail-title": "No email"
     },
     "List": {
       "no-cart": "You don't have anything in your cart yet",
@@ -245,7 +247,12 @@
         "go-to-purchase": "Proceed with my purchase",
         "ended-title": "The sale has ended",
         "ended-description": "You cannot purchase thoses pass anymore",
-        "not-started-title": "The sale hasn't started"
+        "not-started-title": "The sale hasn't started",
+        "cancel-purchase": "Cancel my purchase",
+        "cancel-purchase-success-title": "Purchase cancelled",
+        "cancel-purchase-success-description": "Your purchase order has been successfully cancelled.",
+        "cancel-purchase-error-title": "Error while cancelling",
+        "cancel-purchase-error-description": "An error occured during the cancellation of your order. Please try again later or contact the support."
       },
       "SaleStartsInClient": {
         "sale-starts-in": "Starts: {time}"

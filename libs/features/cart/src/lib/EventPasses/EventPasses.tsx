@@ -1,5 +1,6 @@
 import type { EventCart } from '@features/cart-types';
 import { ConvertedCurrency } from '@next/currency';
+import { messages, type Locale } from '@next/i18n';
 import {
   AccordionContent,
   AccordionItem,
@@ -13,7 +14,6 @@ import {
 } from '@ui/components';
 import { deepPick } from '@utils';
 import { NextIntlClientProvider, useLocale, useTranslations } from 'next-intl';
-import { defaultLocale, messages, type Locale } from '@next/i18n';
 import Image from 'next/image';
 import { EventPassTimeBeforeDeletion } from '../EventPassTimeBeforeDeletion/EventPassTimeBeforeDeletion';
 import {
@@ -47,8 +47,7 @@ const AccordionContentWrapper: React.FC<EventPassesProps> = ({
   timeRemainingDeletion,
 }) => {
   const t = useTranslations('Cart.List.Event');
-  const _locale = useLocale();
-  const locale: Locale = (_locale as Locale) || defaultLocale;
+  const locale = useLocale() as Locale;
   const localeMessages = deepPick(messages[locale], ['Cart.List.Event']);
   const enrichedPasses = passes.map((pass) => {
     const matchingEventPass = event.eventPasses.find(
