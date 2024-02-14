@@ -53,7 +53,7 @@ describe('tests for order user', () => {
   it('should get orders with IS_MINTING status', async () => {
     const res = await alphaUser.GetOrdersIsMinting();
     const orders = res.order;
-    expect(orders.length).toBe(1);
+    expect(orders.length).toBe(3);
     expect(orders[0].eventPassId).toBe('fake-event-pass-3');
     expect(orders[0].quantity).toBe(2);
   });

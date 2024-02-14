@@ -10,12 +10,14 @@ import { adminSdk } from '@gql/admin/api';
 import type {
   CreateEventPassNftContractMutation,
   GetEventPassNftContractNftsQueryVariables,
+  InsertMinterTemporaryWalletMutation,
   UpdateNftsWithPackIdMutationVariables,
 } from '@gql/admin/types';
 import type {
   EventParameters_Insert_Input,
   EventPassNftContract_Insert_Input,
   EventPassNft_Insert_Input,
+  MinterTemporaryWallet_Insert_Input,
   PackNftContractEventPass_Insert_Input,
   PackNftContract_Insert_Input,
 } from '@gql/shared/types';
@@ -31,6 +33,15 @@ export async function createEventPassNftContract(
 > {
   const data = await adminSdk.CreateEventPassNftContract({ object });
   return data?.insert_eventPassNftContract_one;
+}
+
+export async function insertMinterTemporaryWallet(
+  object: MinterTemporaryWallet_Insert_Input,
+): Promise<
+  InsertMinterTemporaryWalletMutation['insert_minterTemporaryWallet_one']
+> {
+  const data = await adminSdk.InsertMinterTemporaryWallet({ object });
+  return data?.insert_minterTemporaryWallet_one;
 }
 
 export async function createPackNftContract(

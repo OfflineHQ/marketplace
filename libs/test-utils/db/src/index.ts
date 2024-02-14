@@ -6,6 +6,7 @@ import type {
   EventPassNft_Insert_Input,
   Follow_Insert_Input,
   Kyc_Insert_Input,
+  MinterTemporaryWallet_Insert_Input,
   NftTransfer_Insert_Input,
   Order_Insert_Input,
   PackNftContract_Insert_Input,
@@ -40,6 +41,7 @@ export const SeedTable = {
   roleAssignment: 12,
   follow: 13,
   packNftContract: 14,
+  minterTemporaryWallet: 15,
 };
 
 export type SeedTypeMap = {
@@ -58,6 +60,7 @@ export type SeedTypeMap = {
   roleAssignment: RoleAssignment_Insert_Input;
   follow: Follow_Insert_Input;
   packNftContract: PackNftContract_Insert_Input;
+  minterTemporaryWallet: MinterTemporaryWallet_Insert_Input;
 };
 
 export type SeedTableName = keyof typeof SeedTable;

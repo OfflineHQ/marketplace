@@ -22,6 +22,30 @@ jest.mock('@features/pass-api', () => ({
   }),
 }));
 
+jest.mock('ethers', () => {
+  const actualEthers = jest.requireActual('ethers'); // Import the actual module
+
+  // Mock the specific method createRandom of the Wallet class
+  const mockWallet = {
+    ...actualEthers.Wallet,
+    createRandom: jest.fn(() => ({
+      privateKey:
+        '0x8f63072cd9a2618b1987c991f3e3037862a79692ab494510d4079bd09af8327e',
+      address: '0xDd43A3A2433c629D0070F052AEd53E7C2a78B4F9',
+    })),
+  };
+
+  return {
+    ...actualEthers,
+    Wallet: mockWallet,
+    // Ensure other properties and classes of ethers are correctly mocked/spread
+    ethers: {
+      ...actualEthers.ethers,
+      Wallet: mockWallet,
+    },
+  };
+});
+
 const mockSigner = {
   getAddress: jest.fn().mockResolvedValue('mocked_address'),
   getChainId: jest.fn().mockResolvedValue(1),
@@ -137,12 +161,24 @@ describe('NftCollection', () => {
           stage: Stage.Draft,
         })
       ).event;
+
+      const minterTemporaryWallet = (
+        await adminSdk.GetMinterTemporaryWalletByEventPassId({
+          eventPassId: event.eventPasses[0].id,
+        })
+      ).minterTemporaryWallet;
       expect(event.eventPasses[0].eventPassNftContract.type).toBe(
         EventPassNftContractType_Enum.Normal,
       );
       expect(event.eventPasses[0].eventPassNftContract.contractAddress).toBe(
         'mocked_contract_address',
       );
+      expect(minterTemporaryWallet[0]).toStrictEqual({
+        privateKey:
+          '0x8f63072cd9a2618b1987c991f3e3037862a79692ab494510d4079bd09af8327e',
+        address: '0xdd43a3a2433c629d0070f052aed53e7c2a78b4f9',
+        eventPassId: event.eventPasses[0].id,
+      });
     });
 
     it('should successfully deploy a Delayed Reveal collection', async () => {
@@ -187,12 +223,24 @@ describe('NftCollection', () => {
         })
       ).event;
 
+      const minterTemporaryWallet = (
+        await adminSdk.GetMinterTemporaryWalletByEventPassId({
+          eventPassId: event.eventPasses[1].id,
+        })
+      ).minterTemporaryWallet;
+
       expect(event.eventPasses[1].eventPassNftContract.type).toBe(
         EventPassNftContractType_Enum.DelayedReveal,
       );
       expect(event.eventPasses[1].eventPassNftContract.contractAddress).toBe(
         'mocked_contract_address',
       );
+      expect(minterTemporaryWallet[0]).toStrictEqual({
+        privateKey:
+          '0x8f63072cd9a2618b1987c991f3e3037862a79692ab494510d4079bd09af8327e',
+        address: '0xdd43a3a2433c629d0070f052aed53e7c2a78b4f9',
+        eventPassId: event.eventPasses[1].id,
+      });
     });
   });
 

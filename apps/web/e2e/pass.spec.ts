@@ -50,7 +50,7 @@ test.beforeEach(async () => {
   ]);
 });
 test('user should be able to download and reveal his pass', async () => {
-  const { page, account } = await loadAccount({ user: 'alpha_user' });
+  const { page } = await loadAccount({ user: 'alpha_user' });
   await page.getByRole('link', { name: /qr code pass/i }).click();
   await page.getByRole('tab', { name: /past/i }).click();
   await expect(page.getByText(/pass #12,432revealed/i)).toBeVisible();
@@ -59,11 +59,12 @@ test('user should be able to download and reveal his pass', async () => {
   await page.getByRole('button', { name: /reveal yes, reveal it/i }).click();
   await page
     .getByRole('button', { name: /menu actions/i })
-    .nth(1)
+    .nth(0)
     .click();
-  const downloadPromise = page.waitForEvent('download');
-  await page.locator(':text-is("Download")').click();
-  const download = await downloadPromise;
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.locator(':text-is("Download")').click(),
+  ]);
   await expect(page.getByText(/pass downloaded/i).nth(1)).toBeVisible();
   await expect(
     page.getByText(/the pass has been downloaded/i).nth(1),

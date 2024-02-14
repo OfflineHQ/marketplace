@@ -1,11 +1,13 @@
 'use client';
 
-import env from '@env/client';
 import {
   EventPass,
   EventPassDelayedRevealed,
 } from '@features/back-office/events-types';
-import { EventPassNftContractType_Enum } from '@gql/shared/types';
+import {
+  EventPassNftContractType_Enum,
+  MinterTemporaryWallet_Insert_Input,
+} from '@gql/shared/types';
 import {
   ContractType,
   EventPassNftContractNfts,
@@ -25,6 +27,7 @@ import {
   createPackNftContractEventPasses,
   getEventPassDelayedRevealPassword,
   getEventPassNftContractNfts,
+  insertMinterTemporaryWallet,
   saveRevealIntoDb,
   updateNftsWithPackId,
 } from './action';
@@ -55,6 +58,7 @@ type SaveEventPassContractIntoDbProps = {
   results: TransactionResultWithId[];
   metadatas: NftsMetadata[];
   object: EventPassNftContractObject;
+  minterTemporaryWallet: MinterTemporaryWallet_Insert_Input;
 };
 
 type SavePackContractIntoDbProps = {
@@ -158,6 +162,10 @@ export class NftCollection {
   ) {
     const contract = await this.sdk.getContract(txResult);
 
+    const wallet = ethers.Wallet.createRandom();
+    const walletAddress = wallet.address;
+    const privateKey = wallet.privateKey;
+
     await contract.erc721.claimConditions.set([
       {
         metadata: {
@@ -167,14 +175,20 @@ export class NftCollection {
         maxClaimablePerWallet: 0,
         snapshot: [
           {
-            address: env.NEXT_PUBLIC_THIRDWEB_MASTER_ADDRESS,
+            address: walletAddress,
             maxClaimable: maxAmount,
           },
         ],
       },
     ]);
 
-    return contract;
+    return {
+      contract,
+      wallet: {
+        address: walletAddress,
+        privateKey,
+      },
+    };
   }
 
   createMetadatas(
@@ -286,7 +300,7 @@ export class NftCollection {
 
       const txResult = contractAddress.toLowerCase();
 
-      const contract = await this.getContractWithClaimConditions(
+      const { contract, wallet } = await this.getContractWithClaimConditions(
         txResult,
         maxAmount,
       );
@@ -299,7 +313,7 @@ export class NftCollection {
         eventPassId,
       );
 
-      return { contract, metadatas };
+      return { contract, metadatas, wallet };
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(`Error deploying a drop contract : ${error.message}`);
@@ -314,6 +328,7 @@ export class NftCollection {
     results,
     metadatas,
     object,
+    minterTemporaryWallet,
   }: SaveEventPassContractIntoDbProps) {
     try {
       const {
@@ -325,6 +340,8 @@ export class NftCollection {
       } = props;
 
       await createEventPassNftContract(object);
+
+      await insertMinterTemporaryWallet(minterTemporaryWallet);
 
       const hasuraMetadatas = await this.createHasuraMetadatas(
         metadatas,
@@ -351,7 +368,7 @@ export class NftCollection {
 
   private async deployAnNftDropCollection(props: CommonProps) {
     try {
-      const { contract, metadatas } =
+      const { contract, metadatas, wallet } =
         await this.deployDropContractAndPrepareMetadata(props);
       const results = await contract.erc721.lazyMint(metadatas);
 
@@ -373,6 +390,11 @@ export class NftCollection {
           eventId: props.eventId,
           contractAddress,
           chainId: props.chainId,
+        },
+        minterTemporaryWallet: {
+          address: wallet.address,
+          privateKey: wallet.privateKey,
+          eventPassId: props.id,
         },
       });
     } catch (error) {
@@ -406,7 +428,7 @@ export class NftCollection {
         throw new Error('Missing eventPassDelayedRevealed');
       }
       this.validateEventPassDelayedRevealed(eventPassDelayedRevealed);
-      const { contract, metadatas } =
+      const { contract, metadatas, wallet } =
         await this.deployDropContractAndPrepareMetadata(props);
 
       const password = this.generatePassword();
@@ -440,6 +462,11 @@ export class NftCollection {
           contractAddress,
           chainId: props.chainId,
           password,
+        },
+        minterTemporaryWallet: {
+          address: wallet.address,
+          privateKey: wallet.privateKey,
+          eventPassId: props.id,
         },
       });
     } catch (error) {

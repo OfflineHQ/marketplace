@@ -1,0 +1,7 @@
+query GetMinterTemporaryWalletByEventPassId($eventPassId: String!) {
+  minterTemporaryWallet(where: { eventPassId: { _eq: $eventPassId } }) {
+    address
+    privateKey
+    eventPassId
+  }
+}

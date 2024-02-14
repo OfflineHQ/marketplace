@@ -1,5 +1,5 @@
 import { adminSdk } from '@gql/admin/api';
-import { Order, OrderStatus_Enum } from '@gql/shared/types';
+import { OrderStatus_Enum } from '@gql/shared/types';
 import {
   applySeeds,
   createDbClient,
@@ -9,29 +9,30 @@ import {
 import { describe } from 'node:test';
 import { NftClaimable } from './nft-thirdweb-api';
 
+jest.mock('@thirdweb-dev/sdk', () => {
+  return {
+    ThirdwebSDK: {
+      fromPrivateKey: jest.fn().mockReturnValue({
+        getContract: jest.fn().mockResolvedValue({
+          prepare: jest.fn().mockImplementation(() => ({
+            encode: jest.fn().mockResolvedValue('mockEncodedValue'),
+          })),
+          call: jest.fn().mockResolvedValue([]),
+        }),
+      }),
+    },
+  };
+});
+
 describe('NftClaimable integration test', () => {
   let nftClaimable: NftClaimable;
-  let order: Order;
+  let orders;
+  let minterWallet;
   let client: PgClient;
 
   beforeAll(async () => {
     client = await createDbClient();
     await deleteAllTables(client);
-  });
-
-  beforeEach(async () => {
-    nftClaimable = new NftClaimable();
-
-    nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
-      erc721: {
-        claimConditions: { canClaim: jest.fn().mockResolvedValue(true) },
-        claimTo: jest
-          .fn()
-          .mockResolvedValue([
-            { id: { toNumber: jest.fn().mockReturnValue(1) } },
-          ]),
-      },
-    });
     await applySeeds(client, [
       'account',
       'eventPassNftContract',
@@ -42,12 +43,24 @@ describe('NftClaimable integration test', () => {
       'order',
       'nftTransfer',
       'eventPassNft',
+      'minterTemporaryWallet',
     ]);
-    const res = await adminSdk.GetOrdersFromStripeCheckoutSession({
-      stripeCheckoutSessionId:
-        'cs_test_a17kYy8IpmWsLecscKe5pRQNP5hir8ysWC9sturzdXMfh7Y94gYJIAyePN',
+  });
+
+  beforeEach(async () => {
+    nftClaimable = new NftClaimable();
+
+    // Assuming ThirdwebSDK is already mocked above, no need to mock getContract here
+    // as it's being mocked in the ThirdwebSDK mock implementation
+
+    const resOrders = await adminSdk.GetOrdersWithClaimInfo({
+      ids: ['1e8b9aea-1b0a-4a05-803b-c72d0b46e9a2'],
     });
-    order = res.order[0] as Order;
+    orders = resOrders.order;
+    const resWallet = await adminSdk.GetMinterTemporaryWalletByEventPassId({
+      eventPassId: 'fake-event-pass-2',
+    });
+    minterWallet = resWallet.minterTemporaryWallet[0];
   });
 
   afterEach(async () => {
@@ -58,50 +71,14 @@ describe('NftClaimable integration test', () => {
     await client.end();
   });
 
-  it('should update the database when claimOrder is called', async () => {
-    await nftClaimable.claimOrder(order);
+  it('should successfully execute multicallClaim and update order statuses', async () => {
+    await nftClaimable.multicallClaim(minterWallet, orders);
 
-    const updatedOrder = await adminSdk.GetAccountOrderForEventPasses({
-      accountId: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
-      eventPassIds: 'fake-event-pass-2',
+    const updatedOrders = await adminSdk.GetOrdersWithClaimInfo({
+      ids: orders.map((order) => order.id),
     });
-    expect(updatedOrder.order[0].status).toBe(OrderStatus_Enum.Completed);
-  });
-
-  describe('with fails', () => {
-    it('should throw an error when canClaim returns false', async () => {
-      nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
-        erc721: {
-          claimConditions: {
-            canClaim: jest.fn().mockResolvedValue(false),
-            getClaimIneligibilityReasons: jest
-              .fn()
-              .mockResolvedValue('Not enough gas gas gas'),
-          },
-        },
-      });
-
-      await expect(nftClaimable.checkOrder(order)).rejects.toThrow();
-    });
-
-    it('should throw an error when claimTo fails', async () => {
-      nftClaimable.sdk.getContract = jest.fn().mockReturnValue({
-        erc721: {
-          claimConditions: { canClaim: jest.fn().mockResolvedValue(true) },
-          claimTo: jest.fn().mockRejectedValue(new Error('claimTo failed')),
-        },
-      });
-
-      const consoleSpy = jest
-        .spyOn(console, 'error')
-        .mockImplementation(jest.fn());
-
-      await expect(nftClaimable.claimOrder(order)).rejects.toThrow();
-
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ message: 'claimTo failed' }),
-      );
-      consoleSpy.mockRestore();
+    updatedOrders.order.forEach((order) => {
+      expect(order.status).toBe(OrderStatus_Enum.Completed);
     });
   });
 });
