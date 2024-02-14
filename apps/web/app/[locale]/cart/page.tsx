@@ -89,7 +89,6 @@ export default async function CartSection({
     return (
       <CartSectionContent
         user={user}
-        locale={locale}
         allPassesCart={allPassesCart}
         reason={reason}
       />
