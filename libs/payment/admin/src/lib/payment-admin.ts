@@ -1,5 +1,6 @@
 import env from '@env/server';
 import { UserPassPendingOrder } from '@features/cart-types';
+import { RedisOrderStatus } from '@features/orders-cron';
 import { adminSdk } from '@gql/admin/api';
 import {
   KycStatus_Enum,
@@ -13,6 +14,7 @@ import { FeatureFlagsEnum } from '@insight/types';
 import { CurrencyCache } from '@next/currency-cache';
 import { calculateUnitAmount } from '@next/currency-common';
 import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
+import { NextRedis } from '@next/redis';
 import { AppUser } from '@next/types';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import {
@@ -464,51 +466,31 @@ export class Payment {
   }: {
     stripeCheckoutSessionId: string;
   }) {
+    const cache = new NextRedis();
+
     const orders = await this.getOrdersFromStripeCheckoutSession({
       stripeCheckoutSessionId,
     });
 
     try {
-      const checkOrderPromises = orders.map(async (order) => {
-        await this.nftClaimable.checkOrder(order);
-        return order;
-      });
-      const checkedOrders = await Promise.all(checkOrderPromises);
-      const fetchPromises = checkedOrders.map((order) =>
-        fetch(`${getNextAppURL()}api/order/claim/${order.id}`),
+      const checkOrderPromises = orders.map((order) =>
+        this.nftClaimable.checkOrder(order),
       );
-      Promise.all(fetchPromises);
+      await Promise.all(checkOrderPromises);
+
+      const cachePromises = orders.map((order) =>
+        cache.kv.hset(`${order.eventPassId}`, {
+          [order.id]: RedisOrderStatus.Pending,
+        }),
+      );
+      await Promise.all(cachePromises);
     } catch (error) {
-      throw new Error(`Error claiming NFTs : ${error.message}`);
+      throw new Error(`Error processing orders : ${error.message}`);
     }
 
     await adminSdk.DeleteStripeCheckoutSession({
       stripeSessionId: stripeCheckoutSessionId,
     });
-  }
-
-  async refundPartialPayment({
-    paymentIntentId,
-    amount,
-  }: {
-    paymentIntentId: string;
-    amount: number;
-  }) {
-    const refund = await this.stripe.refunds.create({
-      payment_intent: paymentIntentId,
-      amount,
-    });
-    if (!refund?.status) {
-      throw new Error(
-        'Refund status is null for paymentIntentId: ' + paymentIntentId,
-      );
-    }
-    if (['succeeded', 'pending'].includes(refund.status)) {
-      return refund;
-    }
-    throw new Error(
-      `Partial refund failed for paymentIntentId: ${paymentIntentId} with status: ${refund.status}`,
-    );
   }
 
   // used in case the NFT is not released for any reason or if event is cancelled.

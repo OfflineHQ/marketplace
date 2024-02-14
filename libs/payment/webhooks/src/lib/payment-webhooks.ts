@@ -79,7 +79,7 @@ export async function stripeCheckoutStatus(
         });
       } catch (err) {
         //TODO: refund only if NFT not released ! filter the error depending of that.
-        if (!err.message?.includes('Error claiming NFTs'))
+        if (!err.message?.includes('Error processing orders'))
           return new Response(
             `ConfirmedStripeCheckoutSession Error: ${err.message}`,
             { status: 500 },

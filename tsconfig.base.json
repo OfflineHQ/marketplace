@@ -74,6 +74,7 @@
       "@features/kyc-api": ["libs/features/kyc-api/src/index.ts"],
       "@features/kyc/server": ["libs/features/kyc/src/server.ts"],
       "@features/navigation": ["libs/features/navigation/src/index.ts"],
+      "@features/orders-cron": ["libs/features/orders-cron/src/index.ts"],
       "@features/organizer/event": [
         "libs/features/organizer/event/src/index.ts"
       ],
