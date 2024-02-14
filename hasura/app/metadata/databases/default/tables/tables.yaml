@@ -16,6 +16,7 @@
 - "!include public_kycStatus.yaml"
 - "!include public_lotteryParameters.yaml"
 - "!include public_lotteryStatus.yaml"
+- "!include public_minterTemporaryWallet.yaml"
 - "!include public_nftTransfer.yaml"
 - "!include public_order.yaml"
 - "!include public_orderStatus.yaml"

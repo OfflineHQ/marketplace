@@ -8375,6 +8375,8 @@ export type EventPassNft = {
   /** An object relationship */
   eventPassNftContract?: Maybe<EventPassNftContract>;
   id: Scalars['uuid']['output'];
+  /** Indicates whether the event pass NFT has been delivered to the owner. */
+  isDelivered: Scalars['Boolean']['output'];
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
   isRevealed: Scalars['Boolean']['output'];
   /** An object relationship */
@@ -9204,6 +9206,7 @@ export type EventPassNft_Bool_Exp = {
   eventPassId?: InputMaybe<String_Comparison_Exp>;
   eventPassNftContract?: InputMaybe<EventPassNftContract_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  isDelivered?: InputMaybe<Boolean_Comparison_Exp>;
   isRevealed?: InputMaybe<Boolean_Comparison_Exp>;
   lastNftTransfer?: InputMaybe<NftTransfer_Bool_Exp>;
   lastNftTransferId?: InputMaybe<Uuid_Comparison_Exp>;
@@ -9271,6 +9274,8 @@ export type EventPassNft_Insert_Input = {
   eventPassId?: InputMaybe<Scalars['String']['input']>;
   eventPassNftContract?: InputMaybe<EventPassNftContract_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Indicates whether the event pass NFT has been delivered to the owner. */
+  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
   isRevealed?: InputMaybe<Scalars['Boolean']['input']>;
   lastNftTransfer?: InputMaybe<NftTransfer_Obj_Rel_Insert_Input>;
@@ -9435,6 +9440,7 @@ export type EventPassNft_Order_By = {
   eventPassId?: InputMaybe<Order_By>;
   eventPassNftContract?: InputMaybe<EventPassNftContract_Order_By>;
   id?: InputMaybe<Order_By>;
+  isDelivered?: InputMaybe<Order_By>;
   isRevealed?: InputMaybe<Order_By>;
   lastNftTransfer?: InputMaybe<NftTransfer_Order_By>;
   lastNftTransferId?: InputMaybe<Order_By>;
@@ -9481,6 +9487,8 @@ export const enum EventPassNft_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsDelivered = 'isDelivered',
+  /** column name */
   IsRevealed = 'isRevealed',
   /** column name */
   LastNftTransferId = 'lastNftTransferId',
@@ -9501,11 +9509,15 @@ export const enum EventPassNft_Select_Column {
 /** select "eventPassNft_aggregate_bool_exp_bool_and_arguments_columns" columns of table "eventPassNft" */
 export const enum EventPassNft_Select_Column_EventPassNft_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
   /** column name */
+  IsDelivered = 'isDelivered',
+  /** column name */
   IsRevealed = 'isRevealed'
 };
 
 /** select "eventPassNft_aggregate_bool_exp_bool_or_arguments_columns" columns of table "eventPassNft" */
 export const enum EventPassNft_Select_Column_EventPassNft_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsDelivered = 'isDelivered',
   /** column name */
   IsRevealed = 'isRevealed'
 };
@@ -9526,6 +9538,8 @@ export type EventPassNft_Set_Input = {
   /** Directly relates to a specific Event Pass within the system */
   eventPassId?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Indicates whether the event pass NFT has been delivered to the owner. */
+  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
   isRevealed?: InputMaybe<Scalars['Boolean']['input']>;
   /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
@@ -9605,6 +9619,8 @@ export type EventPassNft_Stream_Cursor_Value_Input = {
   /** Directly relates to a specific Event Pass within the system */
   eventPassId?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Indicates whether the event pass NFT has been delivered to the owner. */
+  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
   isRevealed?: InputMaybe<Scalars['Boolean']['input']>;
   /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
@@ -9652,6 +9668,8 @@ export const enum EventPassNft_Update_Column {
   EventPassId = 'eventPassId',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsDelivered = 'isDelivered',
   /** column name */
   IsRevealed = 'isRevealed',
   /** column name */
@@ -11546,6 +11564,207 @@ export type LotteryStatus_Updates = {
   where: LotteryStatus_Bool_Exp;
 };
 
+/** Temporary wallet information for minters, including optional links to event passes and packs. */
+export type MinterTemporaryWallet = {
+  __typename?: 'minterTemporaryWallet';
+  /** The blockchain address of the temporary wallet. */
+  address: Scalars['String']['output'];
+  /** The timestamp when the temporary wallet was created. */
+  createdAt: Scalars['timestamptz']['output'];
+  /** Optional identifier for an event pass associated with this wallet. */
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  /** Optional identifier for a pack associated with this wallet. */
+  packId?: Maybe<Scalars['String']['output']>;
+  /** The private key for the temporary wallet, necessary for signing transactions. */
+  privateKey: Scalars['String']['output'];
+};
+
+/** aggregated selection of "minterTemporaryWallet" */
+export type MinterTemporaryWallet_Aggregate = {
+  __typename?: 'minterTemporaryWallet_aggregate';
+  aggregate?: Maybe<MinterTemporaryWallet_Aggregate_Fields>;
+  nodes: Array<MinterTemporaryWallet>;
+};
+
+/** aggregate fields of "minterTemporaryWallet" */
+export type MinterTemporaryWallet_Aggregate_Fields = {
+  __typename?: 'minterTemporaryWallet_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<MinterTemporaryWallet_Max_Fields>;
+  min?: Maybe<MinterTemporaryWallet_Min_Fields>;
+};
+
+
+/** aggregate fields of "minterTemporaryWallet" */
+export type MinterTemporaryWallet_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<MinterTemporaryWallet_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "minterTemporaryWallet". All fields are combined with a logical 'AND'. */
+export type MinterTemporaryWallet_Bool_Exp = {
+  _and?: InputMaybe<Array<MinterTemporaryWallet_Bool_Exp>>;
+  _not?: InputMaybe<MinterTemporaryWallet_Bool_Exp>;
+  _or?: InputMaybe<Array<MinterTemporaryWallet_Bool_Exp>>;
+  address?: InputMaybe<String_Comparison_Exp>;
+  createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  eventPassId?: InputMaybe<String_Comparison_Exp>;
+  packId?: InputMaybe<String_Comparison_Exp>;
+  privateKey?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "minterTemporaryWallet" */
+export const enum MinterTemporaryWallet_Constraint {
+  /** unique or primary key constraint on columns "address" */
+  MinterTemporaryWalletPkey = 'minterTemporaryWallet_pkey'
+};
+
+/** input type for inserting data into table "minterTemporaryWallet" */
+export type MinterTemporaryWallet_Insert_Input = {
+  /** The blockchain address of the temporary wallet. */
+  address?: InputMaybe<Scalars['String']['input']>;
+  /** The timestamp when the temporary wallet was created. */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Optional identifier for an event pass associated with this wallet. */
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  /** Optional identifier for a pack associated with this wallet. */
+  packId?: InputMaybe<Scalars['String']['input']>;
+  /** The private key for the temporary wallet, necessary for signing transactions. */
+  privateKey?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type MinterTemporaryWallet_Max_Fields = {
+  __typename?: 'minterTemporaryWallet_max_fields';
+  /** The blockchain address of the temporary wallet. */
+  address?: Maybe<Scalars['String']['output']>;
+  /** The timestamp when the temporary wallet was created. */
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** Optional identifier for an event pass associated with this wallet. */
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  /** Optional identifier for a pack associated with this wallet. */
+  packId?: Maybe<Scalars['String']['output']>;
+  /** The private key for the temporary wallet, necessary for signing transactions. */
+  privateKey?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type MinterTemporaryWallet_Min_Fields = {
+  __typename?: 'minterTemporaryWallet_min_fields';
+  /** The blockchain address of the temporary wallet. */
+  address?: Maybe<Scalars['String']['output']>;
+  /** The timestamp when the temporary wallet was created. */
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** Optional identifier for an event pass associated with this wallet. */
+  eventPassId?: Maybe<Scalars['String']['output']>;
+  /** Optional identifier for a pack associated with this wallet. */
+  packId?: Maybe<Scalars['String']['output']>;
+  /** The private key for the temporary wallet, necessary for signing transactions. */
+  privateKey?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "minterTemporaryWallet" */
+export type MinterTemporaryWallet_Mutation_Response = {
+  __typename?: 'minterTemporaryWallet_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<MinterTemporaryWallet>;
+};
+
+/** on_conflict condition type for table "minterTemporaryWallet" */
+export type MinterTemporaryWallet_On_Conflict = {
+  constraint: MinterTemporaryWallet_Constraint;
+  update_columns?: Array<MinterTemporaryWallet_Update_Column>;
+  where?: InputMaybe<MinterTemporaryWallet_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "minterTemporaryWallet". */
+export type MinterTemporaryWallet_Order_By = {
+  address?: InputMaybe<Order_By>;
+  createdAt?: InputMaybe<Order_By>;
+  eventPassId?: InputMaybe<Order_By>;
+  packId?: InputMaybe<Order_By>;
+  privateKey?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: minterTemporaryWallet */
+export type MinterTemporaryWallet_Pk_Columns_Input = {
+  /** The blockchain address of the temporary wallet. */
+  address: Scalars['String']['input'];
+};
+
+/** select columns of table "minterTemporaryWallet" */
+export const enum MinterTemporaryWallet_Select_Column {
+  /** column name */
+  Address = 'address',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  PackId = 'packId',
+  /** column name */
+  PrivateKey = 'privateKey'
+};
+
+/** input type for updating data in table "minterTemporaryWallet" */
+export type MinterTemporaryWallet_Set_Input = {
+  /** The blockchain address of the temporary wallet. */
+  address?: InputMaybe<Scalars['String']['input']>;
+  /** The timestamp when the temporary wallet was created. */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Optional identifier for an event pass associated with this wallet. */
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  /** Optional identifier for a pack associated with this wallet. */
+  packId?: InputMaybe<Scalars['String']['input']>;
+  /** The private key for the temporary wallet, necessary for signing transactions. */
+  privateKey?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "minterTemporaryWallet" */
+export type MinterTemporaryWallet_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: MinterTemporaryWallet_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type MinterTemporaryWallet_Stream_Cursor_Value_Input = {
+  /** The blockchain address of the temporary wallet. */
+  address?: InputMaybe<Scalars['String']['input']>;
+  /** The timestamp when the temporary wallet was created. */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Optional identifier for an event pass associated with this wallet. */
+  eventPassId?: InputMaybe<Scalars['String']['input']>;
+  /** Optional identifier for a pack associated with this wallet. */
+  packId?: InputMaybe<Scalars['String']['input']>;
+  /** The private key for the temporary wallet, necessary for signing transactions. */
+  privateKey?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "minterTemporaryWallet" */
+export const enum MinterTemporaryWallet_Update_Column {
+  /** column name */
+  Address = 'address',
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  EventPassId = 'eventPassId',
+  /** column name */
+  PackId = 'packId',
+  /** column name */
+  PrivateKey = 'privateKey'
+};
+
+export type MinterTemporaryWallet_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<MinterTemporaryWallet_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: MinterTemporaryWallet_Bool_Exp;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -11683,6 +11902,10 @@ export type Mutation_Root = {
   delete_lotteryStatus?: Maybe<LotteryStatus_Mutation_Response>;
   /** delete single row from the table: "lotteryStatus" */
   delete_lotteryStatus_by_pk?: Maybe<LotteryStatus>;
+  /** delete data from the table: "minterTemporaryWallet" */
+  delete_minterTemporaryWallet?: Maybe<MinterTemporaryWallet_Mutation_Response>;
+  /** delete single row from the table: "minterTemporaryWallet" */
+  delete_minterTemporaryWallet_by_pk?: Maybe<MinterTemporaryWallet>;
   /** delete data from the table: "nftTransfer" */
   delete_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
   /** delete single row from the table: "nftTransfer" */
@@ -11821,6 +12044,10 @@ export type Mutation_Root = {
   insert_lotteryStatus?: Maybe<LotteryStatus_Mutation_Response>;
   /** insert a single row into the table: "lotteryStatus" */
   insert_lotteryStatus_one?: Maybe<LotteryStatus>;
+  /** insert data into the table: "minterTemporaryWallet" */
+  insert_minterTemporaryWallet?: Maybe<MinterTemporaryWallet_Mutation_Response>;
+  /** insert a single row into the table: "minterTemporaryWallet" */
+  insert_minterTemporaryWallet_one?: Maybe<MinterTemporaryWallet>;
   /** insert data into the table: "nftTransfer" */
   insert_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
   /** insert a single row into the table: "nftTransfer" */
@@ -12153,6 +12380,12 @@ export type Mutation_Root = {
   update_lotteryStatus_by_pk?: Maybe<LotteryStatus>;
   /** update multiples rows of table: "lotteryStatus" */
   update_lotteryStatus_many?: Maybe<Array<Maybe<LotteryStatus_Mutation_Response>>>;
+  /** update data of the table: "minterTemporaryWallet" */
+  update_minterTemporaryWallet?: Maybe<MinterTemporaryWallet_Mutation_Response>;
+  /** update single row of the table: "minterTemporaryWallet" */
+  update_minterTemporaryWallet_by_pk?: Maybe<MinterTemporaryWallet>;
+  /** update multiples rows of table: "minterTemporaryWallet" */
+  update_minterTemporaryWallet_many?: Maybe<Array<Maybe<MinterTemporaryWallet_Mutation_Response>>>;
   /** update data of the table: "nftTransfer" */
   update_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
   /** update single row of the table: "nftTransfer" */
@@ -12709,6 +12942,18 @@ export type Mutation_RootDelete_LotteryStatus_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_MinterTemporaryWalletArgs = {
+  where: MinterTemporaryWallet_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_MinterTemporaryWallet_By_PkArgs = {
+  address: Scalars['String']['input'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_NftTransferArgs = {
   where: NftTransfer_Bool_Exp;
 };
@@ -13157,6 +13402,20 @@ export type Mutation_RootInsert_LotteryStatusArgs = {
 export type Mutation_RootInsert_LotteryStatus_OneArgs = {
   object: LotteryStatus_Insert_Input;
   on_conflict?: InputMaybe<LotteryStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_MinterTemporaryWalletArgs = {
+  objects: Array<MinterTemporaryWallet_Insert_Input>;
+  on_conflict?: InputMaybe<MinterTemporaryWallet_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_MinterTemporaryWallet_OneArgs = {
+  object: MinterTemporaryWallet_Insert_Input;
+  on_conflict?: InputMaybe<MinterTemporaryWallet_On_Conflict>;
 };
 
 
@@ -14602,6 +14861,26 @@ export type Mutation_RootUpdate_LotteryStatus_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_LotteryStatus_ManyArgs = {
   updates: Array<LotteryStatus_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_MinterTemporaryWalletArgs = {
+  _set?: InputMaybe<MinterTemporaryWallet_Set_Input>;
+  where: MinterTemporaryWallet_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_MinterTemporaryWallet_By_PkArgs = {
+  _set?: InputMaybe<MinterTemporaryWallet_Set_Input>;
+  pk_columns: MinterTemporaryWallet_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_MinterTemporaryWallet_ManyArgs = {
+  updates: Array<MinterTemporaryWallet_Updates>;
 };
 
 
@@ -17185,6 +17464,8 @@ export type PackNftSupply = {
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
   error?: Maybe<Scalars['String']['output']>;
   id: Scalars['uuid']['output'];
+  /** Indicates whether the pack NFT has been delivered to the owner. */
+  isDelivered: Scalars['Boolean']['output'];
   /** The reference to the latest transfer record for this pack NFT. */
   lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
   /** The identifier of the organizer associated with this pack NFT. */
@@ -17253,6 +17534,7 @@ export type PackNftSupply_Bool_Exp = {
   currentOwnerAddress?: InputMaybe<String_Comparison_Exp>;
   error?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  isDelivered?: InputMaybe<Boolean_Comparison_Exp>;
   lastNftTransferId?: InputMaybe<Uuid_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
   packEventPassNfts?: InputMaybe<PackEventPassNft_Bool_Exp>;
@@ -17282,6 +17564,8 @@ export type PackNftSupply_Insert_Input = {
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
   error?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Indicates whether the pack NFT has been delivered to the owner. */
+  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** The reference to the latest transfer record for this pack NFT. */
   lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The identifier of the organizer associated with this pack NFT. */
@@ -17366,6 +17650,7 @@ export type PackNftSupply_Order_By = {
   currentOwnerAddress?: InputMaybe<Order_By>;
   error?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  isDelivered?: InputMaybe<Order_By>;
   lastNftTransferId?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
   packEventPassNfts_aggregate?: InputMaybe<PackEventPassNft_Aggregate_Order_By>;
@@ -17394,6 +17679,8 @@ export const enum PackNftSupply_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsDelivered = 'isDelivered',
+  /** column name */
   LastNftTransferId = 'lastNftTransferId',
   /** column name */
   OrganizerId = 'organizerId',
@@ -17417,6 +17704,8 @@ export type PackNftSupply_Set_Input = {
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
   error?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Indicates whether the pack NFT has been delivered to the owner. */
+  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** The reference to the latest transfer record for this pack NFT. */
   lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The identifier of the organizer associated with this pack NFT. */
@@ -17448,6 +17737,8 @@ export type PackNftSupply_Stream_Cursor_Value_Input = {
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
   error?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Indicates whether the pack NFT has been delivered to the owner. */
+  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** The reference to the latest transfer record for this pack NFT. */
   lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The identifier of the organizer associated with this pack NFT. */
@@ -17473,6 +17764,8 @@ export const enum PackNftSupply_Update_Column {
   Error = 'error',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsDelivered = 'isDelivered',
   /** column name */
   LastNftTransferId = 'lastNftTransferId',
   /** column name */
@@ -18701,6 +18994,12 @@ export type Query_Root = {
   lotteryStatus_aggregate: LotteryStatus_Aggregate;
   /** fetch data from the table: "lotteryStatus" using primary key columns */
   lotteryStatus_by_pk?: Maybe<LotteryStatus>;
+  /** fetch data from the table: "minterTemporaryWallet" */
+  minterTemporaryWallet: Array<MinterTemporaryWallet>;
+  /** fetch aggregated fields from the table: "minterTemporaryWallet" */
+  minterTemporaryWallet_aggregate: MinterTemporaryWallet_Aggregate;
+  /** fetch data from the table: "minterTemporaryWallet" using primary key columns */
+  minterTemporaryWallet_by_pk?: Maybe<MinterTemporaryWallet>;
   /** fetch data from the table: "nftTransfer" */
   nftTransfer: Array<NftTransfer>;
   /** fetch aggregated fields from the table: "nftTransfer" */
@@ -19447,6 +19746,29 @@ export type Query_RootLotteryStatus_AggregateArgs = {
 
 export type Query_RootLotteryStatus_By_PkArgs = {
   value: Scalars['String']['input'];
+};
+
+
+export type Query_RootMinterTemporaryWalletArgs = {
+  distinct_on?: InputMaybe<Array<MinterTemporaryWallet_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<MinterTemporaryWallet_Order_By>>;
+  where?: InputMaybe<MinterTemporaryWallet_Bool_Exp>;
+};
+
+
+export type Query_RootMinterTemporaryWallet_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<MinterTemporaryWallet_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<MinterTemporaryWallet_Order_By>>;
+  where?: InputMaybe<MinterTemporaryWallet_Bool_Exp>;
+};
+
+
+export type Query_RootMinterTemporaryWallet_By_PkArgs = {
+  address: Scalars['String']['input'];
 };
 
 
@@ -21174,6 +21496,14 @@ export type Subscription_Root = {
   lotteryStatus_by_pk?: Maybe<LotteryStatus>;
   /** fetch data from the table in a streaming manner: "lotteryStatus" */
   lotteryStatus_stream: Array<LotteryStatus>;
+  /** fetch data from the table: "minterTemporaryWallet" */
+  minterTemporaryWallet: Array<MinterTemporaryWallet>;
+  /** fetch aggregated fields from the table: "minterTemporaryWallet" */
+  minterTemporaryWallet_aggregate: MinterTemporaryWallet_Aggregate;
+  /** fetch data from the table: "minterTemporaryWallet" using primary key columns */
+  minterTemporaryWallet_by_pk?: Maybe<MinterTemporaryWallet>;
+  /** fetch data from the table in a streaming manner: "minterTemporaryWallet" */
+  minterTemporaryWallet_stream: Array<MinterTemporaryWallet>;
   /** fetch data from the table: "nftTransfer" */
   nftTransfer: Array<NftTransfer>;
   /** fetch aggregated fields from the table: "nftTransfer" */
@@ -21849,6 +22179,36 @@ export type Subscription_RootLotteryStatus_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<LotteryStatus_Stream_Cursor_Input>>;
   where?: InputMaybe<LotteryStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootMinterTemporaryWalletArgs = {
+  distinct_on?: InputMaybe<Array<MinterTemporaryWallet_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<MinterTemporaryWallet_Order_By>>;
+  where?: InputMaybe<MinterTemporaryWallet_Bool_Exp>;
+};
+
+
+export type Subscription_RootMinterTemporaryWallet_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<MinterTemporaryWallet_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<MinterTemporaryWallet_Order_By>>;
+  where?: InputMaybe<MinterTemporaryWallet_Bool_Exp>;
+};
+
+
+export type Subscription_RootMinterTemporaryWallet_By_PkArgs = {
+  address: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootMinterTemporaryWallet_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<MinterTemporaryWallet_Stream_Cursor_Input>>;
+  where?: InputMaybe<MinterTemporaryWallet_Bool_Exp>;
 };
 
 

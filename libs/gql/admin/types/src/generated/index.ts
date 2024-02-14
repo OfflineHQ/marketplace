@@ -84,6 +84,13 @@ export type GetOrdersFromStripeCheckoutSessionQueryVariables = Types.Exact<{
 
 export type GetOrdersFromStripeCheckoutSessionQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', id: any, eventPassId?: string | null, packId?: string | null, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, packNftContract?: { __typename?: 'packNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null, passPricing?: { __typename?: 'passPricing', amount: number } | null }> };
 
+export type GetOrdersWithClaimInfoQueryVariables = Types.Exact<{
+  ids: Array<Types.Scalars['uuid']['input']> | Types.Scalars['uuid']['input'];
+}>;
+
+
+export type GetOrdersWithClaimInfoQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', id: any, eventPassId?: string | null, packId?: string | null, quantity: number, status: Types.OrderStatus_Enum, eventPassNftContract?: { __typename?: 'eventPassNftContract', contractAddress: string } | null, packNftContract?: { __typename?: 'packNftContract', contractAddress: string } | null, account?: { __typename?: 'account', address: string } | null }> };
+
 export type DeletePendingOrdersMutationVariables = Types.Exact<{
   ids: Array<Types.Scalars['uuid']['input']> | Types.Scalars['uuid']['input'];
 }>;
@@ -368,6 +375,20 @@ export type GetEventPassOrderSumsQueryVariables = Types.Exact<{
 
 
 export type GetEventPassOrderSumsQuery = { __typename?: 'query_root', eventPassOrderSums_by_pk?: { __typename?: 'eventPassOrderSums', totalReserved: number } | null };
+
+export type InsertMinterTemporaryWalletMutationVariables = Types.Exact<{
+  object: Types.MinterTemporaryWallet_Insert_Input;
+}>;
+
+
+export type InsertMinterTemporaryWalletMutation = { __typename?: 'mutation_root', insert_minterTemporaryWallet_one?: { __typename?: 'minterTemporaryWallet', address: string, eventPassId?: string | null, packId?: string | null } | null };
+
+export type GetMinterTemporaryWalletByEventPassIdQueryVariables = Types.Exact<{
+  eventPassId: Types.Scalars['String']['input'];
+}>;
+
+
+export type GetMinterTemporaryWalletByEventPassIdQuery = { __typename?: 'query_root', minterTemporaryWallet: Array<{ __typename?: 'minterTemporaryWallet', address: string, privateKey: string, eventPassId?: string | null }> };
 
 export type CreatePackNftContractMutationVariables = Types.Exact<{
   object: Types.PackNftContract_Insert_Input;

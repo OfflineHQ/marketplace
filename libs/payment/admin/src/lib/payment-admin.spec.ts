@@ -35,6 +35,18 @@ jest.mock('@next/currency-cache', () => {
   };
 });
 
+jest.mock('@next/redis', () => {
+  return {
+    NextRedis: jest.fn().mockImplementation(() => {
+      return {
+        kv: {
+          hset: jest.fn().mockResolvedValue({}),
+        },
+      };
+    }),
+  };
+});
+
 describe('Payment', () => {
   const stripeCustomerId = 'stripeCustomerId';
   const stripeSessionId = 'sessionId';
@@ -773,7 +785,7 @@ describe('Payment', () => {
         payment.confirmedStripeCheckoutSession({
           stripeCheckoutSessionId: 'test',
         }),
-      ).rejects.toThrow('Error claiming NFTs : Failed to claim NFTs');
+      ).rejects.toThrow('Error processing orders : Failed to claim NFTs');
       expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
   });

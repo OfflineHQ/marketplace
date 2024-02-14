@@ -312,21 +312,6 @@ describe('Payment integration', () => {
       payment.nftClaimable.checkOrder = jest.fn().mockResolvedValue({});
     });
 
-    beforeAll(() => {
-      const originalFetch = global.fetch;
-
-      global.fetch = jest.fn(async (url, options) => {
-        if (url.includes('/api/order/claim/')) {
-          return Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({ success: true }),
-          });
-        }
-
-        return originalFetch(url, options);
-      });
-    });
-
     afterEach(() => {
       jest.restoreAllMocks();
     });
@@ -356,7 +341,7 @@ describe('Payment integration', () => {
 
       await expect(
         payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId }),
-      ).rejects.toThrow('Error claiming NFTs : Failed to claim NFT');
+      ).rejects.toThrow('Error processing orders : Failed to claim NFT');
 
       const session = await adminSdk.GetStripeCheckoutSessionForUser({
         stripeCustomerId: 'cus_OnE9GqPxIIPYtB',
