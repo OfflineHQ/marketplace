@@ -13,6 +13,9 @@ export async function handleApplicantStatusChanged(
     throw new Error('User not found');
   }
   const account = await getAccount(user.address);
+  if (!account) {
+    throw new Error('Account not found');
+  }
   if (!account.kyc?.applicantId) {
     throw new Error("User doesn't have an applicant created");
   }

@@ -22,9 +22,8 @@ describe('getAccount test', () => {
   });
   it('should throw an error when account does not exist', async () => {
     const nonExistingAddress = '0xNotExisting';
-    await expect(getAccount(nonExistingAddress)).rejects.toThrow(
-      'Account not found',
-    );
+    const account = await getAccount(nonExistingAddress);
+    expect(account).toBeNull();
   });
   it('should get an existing account by address', async () => {
     const fetchedAccount = await getAccount(accounts.beta_user.address);
