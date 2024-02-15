@@ -83,7 +83,7 @@ export class RoleInvitationService {
       invitations.length &&
       invitations.find((i) => {
         return (
-          i.address === address &&
+          i.address.toLowerCase() === address.toLowerCase() &&
           i.role === role &&
           i.organizerId === organizerId &&
           (i.eventId === eventId || !eventId)
@@ -93,7 +93,7 @@ export class RoleInvitationService {
       return true;
     }
     const res = await adminSdk.GetAccountByAddress({
-      address: address,
+      address: address.toLowerCase(),
     });
     const invited = res.account?.[0];
 
@@ -114,17 +114,25 @@ export class RoleInvitationService {
   ): Promise<string> {
     const nonce = randomUUID(); // Generating a unique identifier for the invitation
     const expiration = Date.now() + 60 * 60 * 24 * 1000; // 24 hours from now
-    const invitation: Invitation = { nonce, ...invitationProps, expiration };
+    const addressLowerCase = invitationProps.address.toLowerCase();
+    const senderAddressLowerCase = invitationProps.senderAddress.toLowerCase();
+    const invitation: Invitation = {
+      nonce,
+      ...invitationProps,
+      senderAddress: senderAddressLowerCase,
+      address: addressLowerCase,
+      expiration,
+    };
 
     // Store the invitation in the cache with a specific expiry of 24h
     await this.cache.kv.set(
-      this.getInvitationKey(invitation.senderAddress, nonce),
+      this.getInvitationKey(senderAddressLowerCase, nonce),
       invitation,
     );
 
     // Add the nonce to the set of the inviter's sent invitations
     await this.cache.kv.sadd(
-      this.getInviterSetKey(invitation.senderAddress),
+      this.getInviterSetKey(senderAddressLowerCase),
       nonce,
     );
 
@@ -133,13 +141,17 @@ export class RoleInvitationService {
   }
 
   async fetchInvitation(senderAddress: string, nonce: string) {
+    const senderAddressLowerCase = senderAddress.toLowerCase();
     const invitation = (await this.cache.kv.get(
-      this.getInvitationKey(senderAddress, nonce),
+      this.getInvitationKey(senderAddressLowerCase, nonce),
     )) as Invitation | null;
 
     if (invitation && invitation.expiration < Date.now()) {
       // If the invitation has expired, perform cleanup
-      await this.deleteInvitation({ senderAddress, nonce });
+      await this.deleteInvitation({
+        senderAddress: senderAddressLowerCase,
+        nonce,
+      });
       return null; // Indicate that the invitation is no longer valid
     }
 
@@ -149,13 +161,17 @@ export class RoleInvitationService {
   async getInvitationsByInviter({
     senderAddress,
   }: GetInvitationsByInviterProps) {
+    const senderAddressLowerCase = senderAddress.toLowerCase();
     const nonces = await this.cache.kv.smembers(
-      this.getInviterSetKey(senderAddress),
+      this.getInviterSetKey(senderAddressLowerCase),
     );
 
     // Retrieve all invitations for the given nonces
     const invitationsPromises = nonces.map((nonce) => {
-      return this.fetchInvitation(senderAddress, nonce) as Promise<Invitation>;
+      return this.fetchInvitation(
+        senderAddressLowerCase,
+        nonce,
+      ) as Promise<Invitation>;
     });
 
     const invitations = await Promise.all(invitationsPromises);
@@ -165,11 +181,17 @@ export class RoleInvitationService {
   }
 
   async deleteInvitation({ senderAddress, nonce }: DeleteInvitationProps) {
+    const senderAddressLowerCase = senderAddress.toLowerCase();
     // Delete the invitation data
-    await this.cache.kv.del(this.getInvitationKey(senderAddress, nonce));
+    await this.cache.kv.del(
+      this.getInvitationKey(senderAddressLowerCase, nonce),
+    );
 
     // Remove the nonce from the inviter's set of sent invitations
-    await this.cache.kv.srem(this.getInviterSetKey(senderAddress), nonce);
+    await this.cache.kv.srem(
+      this.getInviterSetKey(senderAddressLowerCase),
+      nonce,
+    );
   }
 
   async acceptInvitation({
@@ -188,10 +210,13 @@ export class RoleInvitationService {
 
     // Retrieve the invitation from the cache using nonce from the SIWE message
     const invitation = await this.fetchInvitation(
-      inviter.address,
+      inviter.address.toLowerCase(),
       siweMessage.nonce,
     );
-    if (!invitation || invitation.address !== user.address) {
+    if (
+      !invitation ||
+      invitation.address.toLowerCase() !== user.address.toLowerCase()
+    ) {
       throw new Error('Invalid or expired invitation.');
     }
 
@@ -208,7 +233,7 @@ export class RoleInvitationService {
 
     // Upon successful acceptance, remove the invitation from the cache and the inviter's set
     await this.deleteInvitation({
-      senderAddress: invitation.senderAddress,
+      senderAddress: invitation.senderAddress.toLowerCase(),
       nonce: siweMessage.nonce,
     });
     // TODO: inform the inviter that the invitation has been accepted
@@ -216,13 +241,19 @@ export class RoleInvitationService {
 
   async declineInvitation({ user, inviter, nonce }: DeclineInvitationProps) {
     // Retrieve the invitation from the cache using the nonce provided
-    const invitation = await this.fetchInvitation(inviter.address, nonce);
-    if (!invitation || invitation.address !== user.address) {
+    const invitation = await this.fetchInvitation(
+      inviter.address.toLowerCase(),
+      nonce,
+    );
+    if (
+      !invitation ||
+      invitation.address.toLowerCase() !== user.address.toLowerCase()
+    ) {
       throw new Error('Invalid or expired invitation.');
     }
     // Remove the invitation from the cache since it's been declined
     await this.deleteInvitation({
-      senderAddress: invitation.senderAddress,
+      senderAddress: invitation.senderAddress.toLowerCase(),
       nonce,
     });
     // TODO: inform the inviter that the invitation has been declined
@@ -233,18 +264,28 @@ export class RoleInvitationService {
     user,
     senderAddress,
   }: VerifyInvitationProps) {
+    const senderAddressLowerCase = senderAddress.toLowerCase();
     // Retrieve the invitation from the cache using nonce from the SIWE message
-    const invitation = await this.fetchInvitation(senderAddress, nonce);
-    if (!invitation || invitation.address !== user.address) {
+    const invitation = await this.fetchInvitation(
+      senderAddressLowerCase,
+      nonce,
+    );
+    if (
+      !invitation ||
+      invitation.address.toLowerCase() !== user.address.toLowerCase()
+    ) {
       throw new Error('Invalid or expired invitation.');
     }
     if (invitation.expiration < Date.now()) {
       // If the invitation has expired, perform cleanup
-      await this.deleteInvitation({ senderAddress, nonce });
+      await this.deleteInvitation({
+        senderAddress: senderAddressLowerCase,
+        nonce,
+      });
       throw new Error('Invalid or expired invitation.');
     }
     const res = await adminSdk.GetAccountByAddress({
-      address: invitation.senderAddress,
+      address: invitation.senderAddress.toLowerCase(),
     });
     const inviter = res.account?.[0];
 
