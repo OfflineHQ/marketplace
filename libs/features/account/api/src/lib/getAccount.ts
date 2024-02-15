@@ -1,5 +1,6 @@
 import { adminSdk } from '@gql/admin/api';
 import type { GetAccountQuery } from '@gql/admin/types';
+import { ethers } from 'ethers';
 
 export type Account = GetAccountQuery['account'][number];
 
@@ -10,5 +11,10 @@ export const getAccount = async (address: string): Promise<Account> => {
       cache: 'no-store',
     },
   );
-  return data?.account[0] || null;
+
+  if (data?.account[0]) {
+    data.account[0].address = ethers.utils.getAddress(data.account[0].address);
+    return data.account[0];
+  }
+  throw new Error('Account not found');
 };
