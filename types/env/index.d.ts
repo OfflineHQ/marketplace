@@ -17,6 +17,11 @@ declare module '@env/client' {
     NEXT_PUBLIC_OPENZEPPELIN_URL: string;
     NEXT_PUBLIC_THIRDWEB_MASTER_ADDRESS: string;
     NEXT_PUBLIC_POSTHOG_KEY: string;
+    NEXT_PUBLIC_COMETH_MARKETPLACE_API_URL: string;
+    NEXT_PUBLIC_MARKETPLACE_API_KEY: string;
+    NEXT_PUBLIC_COMETH_CONNECT_API_KEY: string;
+    NEXT_PUBLIC_WC_PROJECT_ID: string;
+    NEXT_PUBLIC_WC_RELAY_URL: string;
   };
   export default env;
 }
@@ -59,6 +64,7 @@ declare module '@env/server' {
     OPENZEPPELIN_URL: string;
     POSTHOG_KEY: string;
     POSTHOG_PERSONAL_API_KEY: string;
+    COMETH_CONNECT_API_KEY: string;
   };
   export default env;
 }

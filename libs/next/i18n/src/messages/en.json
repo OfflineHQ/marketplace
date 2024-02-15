@@ -1,10 +1,10 @@
 {
   "Auth": {
     "user-closed-popup": {
-      "title": "Sign in error",
+      "title": "Sign In error",
       "description": "The connection to the login provider was closed. Please try again."
     },
-    "siwe-statement": "Sign in to the Offline app with your wallet",
+    "siwe-statement": "Sign In to the Offline app with your wallet",
     "error-signing-in-with-siwe": {
       "title": "Error signing in with your wallet",
       "description": "Something went wrong with the signature. Please try again or contact the support if its still failing.",
@@ -39,16 +39,16 @@
   },
   "AppNav": {
     "Profile": {
-      "sign-in": "Sign in",
+      "sign-in": "Sign In",
       "sections-text": {
         "my-account": "My Account",
         "support": "Support",
         "support-title": "Coming soon",
         "support-description": "This feature is not available yet",
-        "sign-out": "Sign out",
+        "sign-out": "Sign Out",
         "sign-out-title": "You have been signed out",
         "sign-out-description": "See you soon 👋 !",
-        "sign-in": "Sign in",
+        "sign-in": "Sign In",
         "settings": "Settings",
         "copied-address": "Address copied!",
         "switch-to-my-account": "Switch to my account",
@@ -56,10 +56,17 @@
         "switch-to-role": "Switch to role",
         "switch-to-role-toast-title": "Switched to role:",
         "switch-to-role-toast-error-title": "Error while trying to switch to role",
-        "switch-to-my-account-toast-title": "User account",
+        "switch-to-my-account-toast-title": "Switched to my account",
         "switch-to-my-account-toast-description": "You are now connected with your own account",
-        "switch-to-my-account-toast-error-title": "Error while trying to switch to your account"
-      }
+        "switch-to-my-account-toast-error-title": "Error while trying to switch to your account",
+        "dont-have-an-account": "Don't have an account ?",
+        "create-account": "Sign Up",
+        "create-account-title": "Account created successfully 🎉!",
+        "create-account-description": "You can now register and verify your email to have full access to the platform.",
+        "verify-email": "Verify my email",
+        "verify-email-continue": "Continue"
+      },
+      "account-placeholder": "My Account"
     },
     "Pass": {
       "text": "Pass",
@@ -82,7 +89,7 @@
     "NoUserCart": {
       "title": "Cart",
       "description": "You will be able to validate your cart once you are signed in",
-      "sign-in-text": "Sign in"
+      "sign-in-text": "Sign In"
     },
     "UserCart": {
       "title": "Cart",
@@ -180,7 +187,7 @@
     "NoUserPass": {
       "title": "Pass",
       "description": "You will be able to see your passes once you are signed in",
-      "sign-in-text": "Sign in"
+      "sign-in-text": "Sign In"
     },
     "SinglePass": {
       "title": "{title} #{number, number}",
@@ -280,13 +287,12 @@
     }
   },
   "KYC": {
-    "Dialog": {
-      "title": "Verify Your Identity",
-      "description": "To access exclusive experiences and perks, we need a few details from you.<br></br>Don't worry, it's quick and secure."
-    },
+    "Dialog": {},
     "Button": {
-      "text": "Verify your identity"
-    }
+      "text": "Verify your email",
+      "title": "Verify your email"
+    },
+    "VerifyEmail": {}
   },
   "Error": {
     "description": "There's been an error"

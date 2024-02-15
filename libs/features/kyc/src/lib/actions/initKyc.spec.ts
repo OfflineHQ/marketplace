@@ -2,25 +2,28 @@ import {
   createSumSubApplicant,
   getAccountKyc,
   getSumSubAccessToken,
-  getSumSubApplicantPersonalData,
 } from '@features/kyc-api';
 import { Locale } from '@gql/shared/types';
 import { getCurrentUser } from '@next/next-auth/user';
-import { useKyc } from './useKyc';
+
+import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
+import { initKyc } from './initKyc';
 
 jest.mock('@features/kyc-api', () => ({
   createSumSubApplicant: jest.fn(),
   getSumSubAccessToken: jest.fn(),
   getAccountKyc: jest.fn(),
-  getSumSubApplicantPersonalData: jest.fn(),
 }));
 jest.mock('@next/next-auth/user', () => ({
   getCurrentUser: jest.fn(),
 }));
+jest.mock('@next/next-auth/common', () => ({
+  getSumSubApplicantPersonalData: jest.fn(),
+}));
 
 const mockPersonalData = { lang: Locale.En };
 
-describe('useKyc', () => {
+describe('initKyc', () => {
   it('returns user and access token', async () => {
     const mockUser = { kyc: true };
     const mockToken = 'mockToken';
@@ -28,7 +31,7 @@ describe('useKyc', () => {
     (getCurrentUser as jest.Mock).mockResolvedValue(mockUser);
     (getSumSubAccessToken as jest.Mock).mockResolvedValue(mockToken);
 
-    const result = await useKyc(Locale.En);
+    const result = await initKyc(Locale.En);
 
     expect(result).toEqual({ user: mockUser, accessToken: mockToken });
     expect(getCurrentUser).toHaveBeenCalled();
@@ -43,7 +46,7 @@ describe('useKyc', () => {
     (getSumSubAccessToken as jest.Mock).mockResolvedValue(mockToken);
     (createSumSubApplicant as jest.Mock).mockResolvedValue(null);
 
-    const result = await useKyc(Locale.En);
+    const result = await initKyc(Locale.En);
 
     expect(result).toEqual({ user: mockUser, accessToken: mockToken });
     expect(getCurrentUser).toHaveBeenCalled();
@@ -54,7 +57,7 @@ describe('useKyc', () => {
   it('returns null user and empty access token if no user', async () => {
     (getCurrentUser as jest.Mock).mockResolvedValue(null);
 
-    const result = await useKyc(Locale.En);
+    const result = await initKyc(Locale.En);
 
     expect(result).toEqual({ user: null, accessToken: '' });
     expect(getCurrentUser).toHaveBeenCalled();
@@ -74,7 +77,7 @@ describe('useKyc', () => {
       mockPersonalData,
     );
 
-    const result = await useKyc(Locale.En);
+    const result = await initKyc(Locale.En);
 
     expect(result).toEqual({ user: mockUser, accessToken: mockToken });
     expect(getCurrentUser).toHaveBeenCalled();
@@ -95,7 +98,7 @@ describe('useKyc', () => {
       mockPersonalData,
     );
 
-    const result = await useKyc(Locale.En);
+    const result = await initKyc(Locale.En);
 
     expect(result).toEqual({ user: mockUser, accessToken: mockToken });
     expect(getCurrentUser).toHaveBeenCalled();
@@ -113,7 +116,7 @@ describe('useKyc', () => {
       mockPersonalData,
     );
 
-    const result = await useKyc(Locale.En);
+    const result = await initKyc(Locale.En);
 
     expect(result).toEqual({ user: mockUser, accessToken: mockToken });
     expect(getCurrentUser).toHaveBeenCalled();
@@ -130,7 +133,7 @@ describe('useKyc', () => {
       mockPersonalData,
     );
 
-    const result = await useKyc(Locale.En);
+    const result = await initKyc(Locale.En);
 
     expect(result).toEqual({ user: mockUser, accessToken: mockToken });
     expect(getCurrentUser).toHaveBeenCalled();
@@ -148,7 +151,7 @@ describe('useKyc', () => {
     (getSumSubAccessToken as jest.Mock).mockResolvedValue(mockToken);
     (getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(null);
 
-    const result = await useKyc(Locale.En);
+    const result = await initKyc(Locale.En);
 
     expect(result).toEqual({ user: mockUser, accessToken: mockToken });
     expect(getCurrentUser).toHaveBeenCalled();

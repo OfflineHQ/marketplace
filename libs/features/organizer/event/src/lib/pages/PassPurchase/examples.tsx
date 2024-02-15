@@ -1,5 +1,5 @@
 import { AppContainer, AppNavLayout } from '@features/app-nav';
-import { WithNormalUser } from '@features/app-nav/stories';
+import { WithUserEmail } from '@features/app-nav/stories';
 import { Sheet } from '@ui/components';
 import { lotsOfPasses } from '../../molecules/PassTotal/examples';
 import { passListProps } from '../../organisms/PassList/examples';
@@ -43,7 +43,7 @@ export const PassPurchaseSheetExample = (props: PassPurchaseSheetProps) => {
 };
 
 export const PassPurchaseCardExample = (props: PassPurchaseCardProps) => (
-  <AppNavLayout {...WithNormalUser.args}>
+  <AppNavLayout {...WithUserEmail.args}>
     <AppContainer>
       <PassPurchaseCard {...props} />
     </AppContainer>

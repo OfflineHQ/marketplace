@@ -6,7 +6,7 @@ import { fetchDataReactQuery } from '@next/hasura/react-query';
 export const AccountFieldsFragmentDoc = `
     fragment AccountFields on account {
   id
-  email
+  address
 }
     `;
 export const OrganizerFieldsFragmentDoc = `
@@ -118,35 +118,15 @@ export const useGetAccountQuery = <
       TError = Error
     >(
       variables: Types.GetAccountQueryVariables,
-      options?: UseQueryOptions<Types.GetAccountQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetAccountQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetAccountQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetAccountQuery, TError, TData>(
-      ['GetAccount', variables],
-      fetchDataReactQuery<Types.GetAccountQuery, Types.GetAccountQueryVariables>(GetAccountDocument, variables),
-      options
-    )};
-
-export const GetAccountByEmailDocument = `
-    query GetAccountByEmail($email: String!) {
-  account(where: {email: {_eq: $email}}) {
-    ...AccountFields
+      {
+    queryKey: ['GetAccount', variables],
+    queryFn: fetchDataReactQuery<Types.GetAccountQuery, Types.GetAccountQueryVariables>(GetAccountDocument, variables),
+    ...options
   }
-}
-    ${AccountFieldsFragmentDoc}`;
-
-export const useGetAccountByEmailQuery = <
-      TData = Types.GetAccountByEmailQuery,
-      TError = Error
-    >(
-      variables: Types.GetAccountByEmailQueryVariables,
-      options?: UseQueryOptions<Types.GetAccountByEmailQuery, TError, TData>
-    ) => {
-    
-    return useQuery<Types.GetAccountByEmailQuery, TError, TData>(
-      ['GetAccountByEmail', variables],
-      fetchDataReactQuery<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables),
-      options
     )};
 
 export const GetEventWithPassesDocument = `
@@ -189,13 +169,15 @@ export const useGetEventWithPassesQuery = <
       TError = Error
     >(
       variables: Types.GetEventWithPassesQueryVariables,
-      options?: UseQueryOptions<Types.GetEventWithPassesQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetEventWithPassesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetEventWithPassesQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetEventWithPassesQuery, TError, TData>(
-      ['GetEventWithPasses', variables],
-      fetchDataReactQuery<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables),
-      options
+      {
+    queryKey: ['GetEventWithPasses', variables],
+    queryFn: fetchDataReactQuery<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables),
+    ...options
+  }
     )};
 
 export const GetOrdersConfirmedDocument = `
@@ -212,13 +194,15 @@ export const useGetOrdersConfirmedQuery = <
       TError = Error
     >(
       variables?: Types.GetOrdersConfirmedQueryVariables,
-      options?: UseQueryOptions<Types.GetOrdersConfirmedQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetOrdersConfirmedQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetOrdersConfirmedQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetOrdersConfirmedQuery, TError, TData>(
-      variables === undefined ? ['GetOrdersConfirmed'] : ['GetOrdersConfirmed', variables],
-      fetchDataReactQuery<Types.GetOrdersConfirmedQuery, Types.GetOrdersConfirmedQueryVariables>(GetOrdersConfirmedDocument, variables),
-      options
+      {
+    queryKey: variables === undefined ? ['GetOrdersConfirmed'] : ['GetOrdersConfirmed', variables],
+    queryFn: fetchDataReactQuery<Types.GetOrdersConfirmedQuery, Types.GetOrdersConfirmedQueryVariables>(GetOrdersConfirmedDocument, variables),
+    ...options
+  }
     )};
 
 export const GetOrdersIsMintingDocument = `
@@ -235,13 +219,15 @@ export const useGetOrdersIsMintingQuery = <
       TError = Error
     >(
       variables?: Types.GetOrdersIsMintingQueryVariables,
-      options?: UseQueryOptions<Types.GetOrdersIsMintingQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetOrdersIsMintingQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetOrdersIsMintingQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetOrdersIsMintingQuery, TError, TData>(
-      variables === undefined ? ['GetOrdersIsMinting'] : ['GetOrdersIsMinting', variables],
-      fetchDataReactQuery<Types.GetOrdersIsMintingQuery, Types.GetOrdersIsMintingQueryVariables>(GetOrdersIsMintingDocument, variables),
-      options
+      {
+    queryKey: variables === undefined ? ['GetOrdersIsMinting'] : ['GetOrdersIsMinting', variables],
+    queryFn: fetchDataReactQuery<Types.GetOrdersIsMintingQuery, Types.GetOrdersIsMintingQueryVariables>(GetOrdersIsMintingDocument, variables),
+    ...options
+  }
     )};
 
 export const GetOrdersFromIdsDocument = `
@@ -266,13 +252,15 @@ export const useGetOrdersFromIdsQuery = <
       TError = Error
     >(
       variables: Types.GetOrdersFromIdsQueryVariables,
-      options?: UseQueryOptions<Types.GetOrdersFromIdsQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetOrdersFromIdsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetOrdersFromIdsQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetOrdersFromIdsQuery, TError, TData>(
-      ['GetOrdersFromIds', variables],
-      fetchDataReactQuery<Types.GetOrdersFromIdsQuery, Types.GetOrdersFromIdsQueryVariables>(GetOrdersFromIdsDocument, variables),
-      options
+      {
+    queryKey: ['GetOrdersFromIds', variables],
+    queryFn: fetchDataReactQuery<Types.GetOrdersFromIdsQuery, Types.GetOrdersFromIdsQueryVariables>(GetOrdersFromIdsDocument, variables),
+    ...options
+  }
     )};
 
 export const GetOrderPurchasedForEventPassesIdDocument = `
@@ -291,13 +279,15 @@ export const useGetOrderPurchasedForEventPassesIdQuery = <
       TError = Error
     >(
       variables: Types.GetOrderPurchasedForEventPassesIdQueryVariables,
-      options?: UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetOrderPurchasedForEventPassesIdQuery, TError, TData>(
-      ['GetOrderPurchasedForEventPassesId', variables],
-      fetchDataReactQuery<Types.GetOrderPurchasedForEventPassesIdQuery, Types.GetOrderPurchasedForEventPassesIdQueryVariables>(GetOrderPurchasedForEventPassesIdDocument, variables),
-      options
+      {
+    queryKey: ['GetOrderPurchasedForEventPassesId', variables],
+    queryFn: fetchDataReactQuery<Types.GetOrderPurchasedForEventPassesIdQuery, Types.GetOrderPurchasedForEventPassesIdQueryVariables>(GetOrderPurchasedForEventPassesIdDocument, variables),
+    ...options
+  }
     )};
 
 export const GetOrderPurchasedForEventPassesIdsDocument = `
@@ -316,13 +306,15 @@ export const useGetOrderPurchasedForEventPassesIdsQuery = <
       TError = Error
     >(
       variables: Types.GetOrderPurchasedForEventPassesIdsQueryVariables,
-      options?: UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdsQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdsQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetOrderPurchasedForEventPassesIdsQuery, TError, TData>(
-      ['GetOrderPurchasedForEventPassesIds', variables],
-      fetchDataReactQuery<Types.GetOrderPurchasedForEventPassesIdsQuery, Types.GetOrderPurchasedForEventPassesIdsQueryVariables>(GetOrderPurchasedForEventPassesIdsDocument, variables),
-      options
+      {
+    queryKey: ['GetOrderPurchasedForEventPassesIds', variables],
+    queryFn: fetchDataReactQuery<Types.GetOrderPurchasedForEventPassesIdsQuery, Types.GetOrderPurchasedForEventPassesIdsQueryVariables>(GetOrderPurchasedForEventPassesIdsDocument, variables),
+    ...options
+  }
     )};
 
 export const UpsertEventPassPendingOrderDocument = `
@@ -345,9 +337,11 @@ export const useUpsertEventPassPendingOrderMutation = <
     >(options?: UseMutationOptions<Types.UpsertEventPassPendingOrderMutation, TError, Types.UpsertEventPassPendingOrderMutationVariables, TContext>) => {
     
     return useMutation<Types.UpsertEventPassPendingOrderMutation, TError, Types.UpsertEventPassPendingOrderMutationVariables, TContext>(
-      ['UpsertEventPassPendingOrder'],
-      (variables?: Types.UpsertEventPassPendingOrderMutationVariables) => fetchDataReactQuery<Types.UpsertEventPassPendingOrderMutation, Types.UpsertEventPassPendingOrderMutationVariables>(UpsertEventPassPendingOrderDocument, variables)(),
-      options
+      {
+    mutationKey: ['UpsertEventPassPendingOrder'],
+    mutationFn: (variables?: Types.UpsertEventPassPendingOrderMutationVariables) => fetchDataReactQuery<Types.UpsertEventPassPendingOrderMutation, Types.UpsertEventPassPendingOrderMutationVariables>(UpsertEventPassPendingOrderDocument, variables)(),
+    ...options
+  }
     )};
 
 export const UpsertEventPassPendingOrdersDocument = `
@@ -383,9 +377,11 @@ export const useUpsertEventPassPendingOrdersMutation = <
     >(options?: UseMutationOptions<Types.UpsertEventPassPendingOrdersMutation, TError, Types.UpsertEventPassPendingOrdersMutationVariables, TContext>) => {
     
     return useMutation<Types.UpsertEventPassPendingOrdersMutation, TError, Types.UpsertEventPassPendingOrdersMutationVariables, TContext>(
-      ['UpsertEventPassPendingOrders'],
-      (variables?: Types.UpsertEventPassPendingOrdersMutationVariables) => fetchDataReactQuery<Types.UpsertEventPassPendingOrdersMutation, Types.UpsertEventPassPendingOrdersMutationVariables>(UpsertEventPassPendingOrdersDocument, variables)(),
-      options
+      {
+    mutationKey: ['UpsertEventPassPendingOrders'],
+    mutationFn: (variables?: Types.UpsertEventPassPendingOrdersMutationVariables) => fetchDataReactQuery<Types.UpsertEventPassPendingOrdersMutation, Types.UpsertEventPassPendingOrdersMutationVariables>(UpsertEventPassPendingOrdersDocument, variables)(),
+    ...options
+  }
     )};
 
 export const UpsertPackPendingOrderDocument = `
@@ -408,9 +404,11 @@ export const useUpsertPackPendingOrderMutation = <
     >(options?: UseMutationOptions<Types.UpsertPackPendingOrderMutation, TError, Types.UpsertPackPendingOrderMutationVariables, TContext>) => {
     
     return useMutation<Types.UpsertPackPendingOrderMutation, TError, Types.UpsertPackPendingOrderMutationVariables, TContext>(
-      ['UpsertPackPendingOrder'],
-      (variables?: Types.UpsertPackPendingOrderMutationVariables) => fetchDataReactQuery<Types.UpsertPackPendingOrderMutation, Types.UpsertPackPendingOrderMutationVariables>(UpsertPackPendingOrderDocument, variables)(),
-      options
+      {
+    mutationKey: ['UpsertPackPendingOrder'],
+    mutationFn: (variables?: Types.UpsertPackPendingOrderMutationVariables) => fetchDataReactQuery<Types.UpsertPackPendingOrderMutation, Types.UpsertPackPendingOrderMutationVariables>(UpsertPackPendingOrderDocument, variables)(),
+    ...options
+  }
     )};
 
 export const UpsertPackPendingOrdersDocument = `
@@ -446,9 +444,11 @@ export const useUpsertPackPendingOrdersMutation = <
     >(options?: UseMutationOptions<Types.UpsertPackPendingOrdersMutation, TError, Types.UpsertPackPendingOrdersMutationVariables, TContext>) => {
     
     return useMutation<Types.UpsertPackPendingOrdersMutation, TError, Types.UpsertPackPendingOrdersMutationVariables, TContext>(
-      ['UpsertPackPendingOrders'],
-      (variables?: Types.UpsertPackPendingOrdersMutationVariables) => fetchDataReactQuery<Types.UpsertPackPendingOrdersMutation, Types.UpsertPackPendingOrdersMutationVariables>(UpsertPackPendingOrdersDocument, variables)(),
-      options
+      {
+    mutationKey: ['UpsertPackPendingOrders'],
+    mutationFn: (variables?: Types.UpsertPackPendingOrdersMutationVariables) => fetchDataReactQuery<Types.UpsertPackPendingOrdersMutation, Types.UpsertPackPendingOrdersMutationVariables>(UpsertPackPendingOrdersDocument, variables)(),
+    ...options
+  }
     )};
 
 export const DeletePendingOrderDocument = `
@@ -465,9 +465,11 @@ export const useDeletePendingOrderMutation = <
     >(options?: UseMutationOptions<Types.DeletePendingOrderMutation, TError, Types.DeletePendingOrderMutationVariables, TContext>) => {
     
     return useMutation<Types.DeletePendingOrderMutation, TError, Types.DeletePendingOrderMutationVariables, TContext>(
-      ['DeletePendingOrder'],
-      (variables?: Types.DeletePendingOrderMutationVariables) => fetchDataReactQuery<Types.DeletePendingOrderMutation, Types.DeletePendingOrderMutationVariables>(DeletePendingOrderDocument, variables)(),
-      options
+      {
+    mutationKey: ['DeletePendingOrder'],
+    mutationFn: (variables?: Types.DeletePendingOrderMutationVariables) => fetchDataReactQuery<Types.DeletePendingOrderMutation, Types.DeletePendingOrderMutationVariables>(DeletePendingOrderDocument, variables)(),
+    ...options
+  }
     )};
 
 export const DeletePendingOrdersDocument = `
@@ -484,9 +486,11 @@ export const useDeletePendingOrdersMutation = <
     >(options?: UseMutationOptions<Types.DeletePendingOrdersMutation, TError, Types.DeletePendingOrdersMutationVariables, TContext>) => {
     
     return useMutation<Types.DeletePendingOrdersMutation, TError, Types.DeletePendingOrdersMutationVariables, TContext>(
-      ['DeletePendingOrders'],
-      (variables?: Types.DeletePendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeletePendingOrdersMutation, Types.DeletePendingOrdersMutationVariables>(DeletePendingOrdersDocument, variables)(),
-      options
+      {
+    mutationKey: ['DeletePendingOrders'],
+    mutationFn: (variables?: Types.DeletePendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeletePendingOrdersMutation, Types.DeletePendingOrdersMutationVariables>(DeletePendingOrdersDocument, variables)(),
+    ...options
+  }
     )};
 
 export const DeleteAllPendingOrdersDocument = `
@@ -503,9 +507,11 @@ export const useDeleteAllPendingOrdersMutation = <
     >(options?: UseMutationOptions<Types.DeleteAllPendingOrdersMutation, TError, Types.DeleteAllPendingOrdersMutationVariables, TContext>) => {
     
     return useMutation<Types.DeleteAllPendingOrdersMutation, TError, Types.DeleteAllPendingOrdersMutationVariables, TContext>(
-      ['DeleteAllPendingOrders'],
-      (variables?: Types.DeleteAllPendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeleteAllPendingOrdersMutation, Types.DeleteAllPendingOrdersMutationVariables>(DeleteAllPendingOrdersDocument, variables)(),
-      options
+      {
+    mutationKey: ['DeleteAllPendingOrders'],
+    mutationFn: (variables?: Types.DeleteAllPendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeleteAllPendingOrdersMutation, Types.DeleteAllPendingOrdersMutationVariables>(DeleteAllPendingOrdersDocument, variables)(),
+    ...options
+  }
     )};
 
 export const GetPendingOrderForEventPassDocument = `
@@ -524,13 +530,15 @@ export const useGetPendingOrderForEventPassQuery = <
       TError = Error
     >(
       variables: Types.GetPendingOrderForEventPassQueryVariables,
-      options?: UseQueryOptions<Types.GetPendingOrderForEventPassQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetPendingOrderForEventPassQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetPendingOrderForEventPassQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetPendingOrderForEventPassQuery, TError, TData>(
-      ['GetPendingOrderForEventPass', variables],
-      fetchDataReactQuery<Types.GetPendingOrderForEventPassQuery, Types.GetPendingOrderForEventPassQueryVariables>(GetPendingOrderForEventPassDocument, variables),
-      options
+      {
+    queryKey: ['GetPendingOrderForEventPass', variables],
+    queryFn: fetchDataReactQuery<Types.GetPendingOrderForEventPassQuery, Types.GetPendingOrderForEventPassQueryVariables>(GetPendingOrderForEventPassDocument, variables),
+    ...options
+  }
     )};
 
 export const GetPendingOrderForEventPassesDocument = `
@@ -549,13 +557,15 @@ export const useGetPendingOrderForEventPassesQuery = <
       TError = Error
     >(
       variables?: Types.GetPendingOrderForEventPassesQueryVariables,
-      options?: UseQueryOptions<Types.GetPendingOrderForEventPassesQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetPendingOrderForEventPassesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetPendingOrderForEventPassesQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetPendingOrderForEventPassesQuery, TError, TData>(
-      variables === undefined ? ['GetPendingOrderForEventPasses'] : ['GetPendingOrderForEventPasses', variables],
-      fetchDataReactQuery<Types.GetPendingOrderForEventPassesQuery, Types.GetPendingOrderForEventPassesQueryVariables>(GetPendingOrderForEventPassesDocument, variables),
-      options
+      {
+    queryKey: variables === undefined ? ['GetPendingOrderForEventPasses'] : ['GetPendingOrderForEventPasses', variables],
+    queryFn: fetchDataReactQuery<Types.GetPendingOrderForEventPassesQuery, Types.GetPendingOrderForEventPassesQueryVariables>(GetPendingOrderForEventPassesDocument, variables),
+    ...options
+  }
     )};
 
 export const GetPendingOrdersDocument = `
@@ -597,13 +607,15 @@ export const useGetPendingOrdersQuery = <
       TError = Error
     >(
       variables: Types.GetPendingOrdersQueryVariables,
-      options?: UseQueryOptions<Types.GetPendingOrdersQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetPendingOrdersQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetPendingOrdersQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetPendingOrdersQuery, TError, TData>(
-      ['GetPendingOrders', variables],
-      fetchDataReactQuery<Types.GetPendingOrdersQuery, Types.GetPendingOrdersQueryVariables>(GetPendingOrdersDocument, variables),
-      options
+      {
+    queryKey: ['GetPendingOrders', variables],
+    queryFn: fetchDataReactQuery<Types.GetPendingOrdersQuery, Types.GetPendingOrdersQueryVariables>(GetPendingOrdersDocument, variables),
+    ...options
+  }
     )};
 
 export const GetPendingOrdersMinimalDocument = `
@@ -621,13 +633,15 @@ export const useGetPendingOrdersMinimalQuery = <
       TError = Error
     >(
       variables?: Types.GetPendingOrdersMinimalQueryVariables,
-      options?: UseQueryOptions<Types.GetPendingOrdersMinimalQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetPendingOrdersMinimalQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetPendingOrdersMinimalQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetPendingOrdersMinimalQuery, TError, TData>(
-      variables === undefined ? ['GetPendingOrdersMinimal'] : ['GetPendingOrdersMinimal', variables],
-      fetchDataReactQuery<Types.GetPendingOrdersMinimalQuery, Types.GetPendingOrdersMinimalQueryVariables>(GetPendingOrdersMinimalDocument, variables),
-      options
+      {
+    queryKey: variables === undefined ? ['GetPendingOrdersMinimal'] : ['GetPendingOrdersMinimal', variables],
+    queryFn: fetchDataReactQuery<Types.GetPendingOrdersMinimalQuery, Types.GetPendingOrdersMinimalQueryVariables>(GetPendingOrdersMinimalDocument, variables),
+    ...options
+  }
     )};
 
 export const GetKycDocument = `
@@ -645,13 +659,15 @@ export const useGetKycQuery = <
       TError = Error
     >(
       variables?: Types.GetKycQueryVariables,
-      options?: UseQueryOptions<Types.GetKycQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetKycQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetKycQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetKycQuery, TError, TData>(
-      variables === undefined ? ['GetKyc'] : ['GetKyc', variables],
-      fetchDataReactQuery<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables),
-      options
+      {
+    queryKey: variables === undefined ? ['GetKyc'] : ['GetKyc', variables],
+    queryFn: fetchDataReactQuery<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables),
+    ...options
+  }
     )};
 
 export const InsertFollowOrganizerDocument = `
@@ -668,9 +684,11 @@ export const useInsertFollowOrganizerMutation = <
     >(options?: UseMutationOptions<Types.InsertFollowOrganizerMutation, TError, Types.InsertFollowOrganizerMutationVariables, TContext>) => {
     
     return useMutation<Types.InsertFollowOrganizerMutation, TError, Types.InsertFollowOrganizerMutationVariables, TContext>(
-      ['InsertFollowOrganizer'],
-      (variables?: Types.InsertFollowOrganizerMutationVariables) => fetchDataReactQuery<Types.InsertFollowOrganizerMutation, Types.InsertFollowOrganizerMutationVariables>(InsertFollowOrganizerDocument, variables)(),
-      options
+      {
+    mutationKey: ['InsertFollowOrganizer'],
+    mutationFn: (variables?: Types.InsertFollowOrganizerMutationVariables) => fetchDataReactQuery<Types.InsertFollowOrganizerMutation, Types.InsertFollowOrganizerMutationVariables>(InsertFollowOrganizerDocument, variables)(),
+    ...options
+  }
     )};
 
 export const GetPassedEventsWithEventPassNftsDocument = `
@@ -730,13 +748,15 @@ export const useGetPassedEventsWithEventPassNftsQuery = <
       TError = Error
     >(
       variables: Types.GetPassedEventsWithEventPassNftsQueryVariables,
-      options?: UseQueryOptions<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>(
-      ['GetPassedEventsWithEventPassNfts', variables],
-      fetchDataReactQuery<Types.GetPassedEventsWithEventPassNftsQuery, Types.GetPassedEventsWithEventPassNftsQueryVariables>(GetPassedEventsWithEventPassNftsDocument, variables),
-      options
+      {
+    queryKey: ['GetPassedEventsWithEventPassNfts', variables],
+    queryFn: fetchDataReactQuery<Types.GetPassedEventsWithEventPassNftsQuery, Types.GetPassedEventsWithEventPassNftsQueryVariables>(GetPassedEventsWithEventPassNftsDocument, variables),
+    ...options
+  }
     )};
 
 export const GetUpcomingEventsWithEventPassNftsDocument = `
@@ -796,13 +816,15 @@ export const useGetUpcomingEventsWithEventPassNftsQuery = <
       TError = Error
     >(
       variables: Types.GetUpcomingEventsWithEventPassNftsQueryVariables,
-      options?: UseQueryOptions<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>(
-      ['GetUpcomingEventsWithEventPassNfts', variables],
-      fetchDataReactQuery<Types.GetUpcomingEventsWithEventPassNftsQuery, Types.GetUpcomingEventsWithEventPassNftsQueryVariables>(GetUpcomingEventsWithEventPassNftsDocument, variables),
-      options
+      {
+    queryKey: ['GetUpcomingEventsWithEventPassNfts', variables],
+    queryFn: fetchDataReactQuery<Types.GetUpcomingEventsWithEventPassNftsQuery, Types.GetUpcomingEventsWithEventPassNftsQueryVariables>(GetUpcomingEventsWithEventPassNftsDocument, variables),
+    ...options
+  }
     )};
 
 export const GetEventPassNftByTokenReferenceDocument = `
@@ -824,13 +846,15 @@ export const useGetEventPassNftByTokenReferenceQuery = <
       TError = Error
     >(
       variables: Types.GetEventPassNftByTokenReferenceQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>(
-      ['GetEventPassNftByTokenReference', variables],
-      fetchDataReactQuery<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables),
-      options
+      {
+    queryKey: ['GetEventPassNftByTokenReference', variables],
+    queryFn: fetchDataReactQuery<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables),
+    ...options
+  }
     )};
 
 export const GetMyRolesDocument = `
@@ -846,13 +870,15 @@ export const useGetMyRolesQuery = <
       TError = Error
     >(
       variables?: Types.GetMyRolesQueryVariables,
-      options?: UseQueryOptions<Types.GetMyRolesQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetMyRolesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetMyRolesQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetMyRolesQuery, TError, TData>(
-      variables === undefined ? ['GetMyRoles'] : ['GetMyRoles', variables],
-      fetchDataReactQuery<Types.GetMyRolesQuery, Types.GetMyRolesQueryVariables>(GetMyRolesDocument, variables),
-      options
+      {
+    queryKey: variables === undefined ? ['GetMyRoles'] : ['GetMyRoles', variables],
+    queryFn: fetchDataReactQuery<Types.GetMyRolesQuery, Types.GetMyRolesQueryVariables>(GetMyRolesDocument, variables),
+    ...options
+  }
     )};
 
 export const GetMyRolesWithOrganizerInfosDocument = `
@@ -872,13 +898,15 @@ export const useGetMyRolesWithOrganizerInfosQuery = <
       TError = Error
     >(
       variables: Types.GetMyRolesWithOrganizerInfosQueryVariables,
-      options?: UseQueryOptions<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>(
-      ['GetMyRolesWithOrganizerInfos', variables],
-      fetchDataReactQuery<Types.GetMyRolesWithOrganizerInfosQuery, Types.GetMyRolesWithOrganizerInfosQueryVariables>(GetMyRolesWithOrganizerInfosDocument, variables),
-      options
+      {
+    queryKey: ['GetMyRolesWithOrganizerInfos', variables],
+    queryFn: fetchDataReactQuery<Types.GetMyRolesWithOrganizerInfosQuery, Types.GetMyRolesWithOrganizerInfosQueryVariables>(GetMyRolesWithOrganizerInfosDocument, variables),
+    ...options
+  }
     )};
 
 export const GetMyRolesWithOrganizerAndInviterInfosDocument = `
@@ -890,7 +918,6 @@ export const GetMyRolesWithOrganizerAndInviterInfosDocument = `
     }
     inviter {
       address
-      email
     }
   }
 }
@@ -902,13 +929,15 @@ export const useGetMyRolesWithOrganizerAndInviterInfosQuery = <
       TError = Error
     >(
       variables: Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables,
-      options?: UseQueryOptions<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>(
-      ['GetMyRolesWithOrganizerAndInviterInfos', variables],
-      fetchDataReactQuery<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables>(GetMyRolesWithOrganizerAndInviterInfosDocument, variables),
-      options
+      {
+    queryKey: ['GetMyRolesWithOrganizerAndInviterInfos', variables],
+    queryFn: fetchDataReactQuery<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables>(GetMyRolesWithOrganizerAndInviterInfosDocument, variables),
+    ...options
+  }
     )};
 
 export const GetStripeCustomerDocument = `
@@ -925,11 +954,13 @@ export const useGetStripeCustomerQuery = <
       TError = Error
     >(
       variables?: Types.GetStripeCustomerQueryVariables,
-      options?: UseQueryOptions<Types.GetStripeCustomerQuery, TError, TData>
+      options?: Omit<UseQueryOptions<Types.GetStripeCustomerQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetStripeCustomerQuery, TError, TData>['queryKey'] }
     ) => {
     
     return useQuery<Types.GetStripeCustomerQuery, TError, TData>(
-      variables === undefined ? ['GetStripeCustomer'] : ['GetStripeCustomer', variables],
-      fetchDataReactQuery<Types.GetStripeCustomerQuery, Types.GetStripeCustomerQueryVariables>(GetStripeCustomerDocument, variables),
-      options
+      {
+    queryKey: variables === undefined ? ['GetStripeCustomer'] : ['GetStripeCustomer', variables],
+    queryFn: fetchDataReactQuery<Types.GetStripeCustomerQuery, Types.GetStripeCustomerQueryVariables>(GetStripeCustomerDocument, variables),
+    ...options
+  }
     )};

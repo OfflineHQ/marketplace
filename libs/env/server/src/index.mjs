@@ -39,6 +39,7 @@ const env = createEnv({
     WEB_APP_URL: z.string().optional(),
     POSTHOG_KEY: z.string().min(1),
     POSTHOG_PERSONAL_API_KEY: z.string().min(1),
+    COMETH_CONNECT_API_KEY: z.string().min(1),
   },
   runtimeEnv: {
     APP: process.env.APP,
@@ -80,6 +81,7 @@ const env = createEnv({
     WEB_APP_URL: process.env.WEB_APP_URL,
     POSTHOG_KEY: process.env.POSTHOG_KEY,
     POSTHOG_PERSONAL_API_KEY: process.env.POSTHOG_PERSONAL_API_KEY,
+    COMETH_CONNECT_API_KEY: process.env.COMETH_CONNECT_API_KEY,
   },
 });
 

@@ -1,6 +1,5 @@
 import { CurrencyRates } from '@currency/types';
 import env from '@env/server';
-import * as kycApi from '@features/kyc-api';
 import { adminSdk } from '@gql/admin/api';
 import {
   Currency_Enum,
@@ -11,12 +10,14 @@ import {
 } from '@gql/shared/types';
 import { Posthog } from '@insight/server';
 import { calculateUnitAmount } from '@next/currency-common';
+import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import { StripeCustomer } from '@payment/types';
 import { accounts } from '@test-utils/gql';
 import { Payment } from './payment-admin';
 
 jest.mock('stripe');
+jest.mock('@next/next-auth/common');
 jest.mock('@insight/server');
 jest.mock('@nft/thirdweb-admin');
 jest.mock('@features/kyc-api');
@@ -137,7 +138,7 @@ describe('Payment', () => {
         .mockResolvedValue(createdStripeCustomer);
 
       const res = await payment.getOrCreateStripeCustomer({
-        user: accounts.google_user,
+        user: accounts.delta_user,
       });
       expect(res).toBe(createdStripeCustomer.insert_stripeCustomer_one);
     });
@@ -158,8 +159,8 @@ describe('Payment', () => {
         getFeatureFlag: jest.fn().mockReturnValue(true),
       }));
       await expect(
-        payment.getOrCreateStripeCustomer({ user: accounts.google_user }),
-      ).rejects.toThrow(`Missing kyc for user: ${accounts.google_user.id}`);
+        payment.getOrCreateStripeCustomer({ user: accounts.delta_user }),
+      ).rejects.toThrow(`Missing kyc for user: ${accounts.delta_user.id}`);
     });
 
     it('should create a new stripe customer and store it if it does not exist if kycFlag not activated', async () => {
@@ -214,7 +215,7 @@ describe('Payment', () => {
       const stripeCustomer = { id: 'stripeCustomerId' };
 
       adminSdk.GetStripeCustomerByAccount = jest.fn().mockResolvedValue(null);
-      (kycApi.getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(
+      (getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(
         userPersonalData,
       );
       payment.stripe.customers = {
@@ -228,7 +229,7 @@ describe('Payment', () => {
         user: accounts.alpha_user,
       });
 
-      expect(kycApi.getSumSubApplicantPersonalData).toHaveBeenCalledWith(
+      expect(getSumSubApplicantPersonalData).toHaveBeenCalledWith(
         accounts.alpha_user.kyc.applicantId,
       );
       expect(payment.stripe.customers.create).toHaveBeenCalledWith({

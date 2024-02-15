@@ -203,13 +203,13 @@ describe('handlePendingOrders unit tests', () => {
       const expectedAccountsToNotify = {
         address1: {
           address: 'address1',
-          email: 'test1@example.com',
+          email: null,
           eventPassIds: ['eventPass1'],
           packIds: [],
         },
         address2: {
           address: 'address2',
-          email: 'test2@example.com',
+          email: null,
           eventPassIds: ['eventPass2'],
           packIds: [],
         },
@@ -228,7 +228,7 @@ describe('handlePendingOrders unit tests', () => {
       const expectedAccountsToNotify = {
         address1: {
           address: 'address1',
-          email: 'test1@example.com',
+          email: null,
           eventPassIds: ['eventPass1', 'eventPass1'], // Duplicate eventPassIds are expected as both orders have the same eventPassId
           packIds: [],
         },
@@ -247,7 +247,7 @@ describe('handlePendingOrders unit tests', () => {
       const expectedAccountsToNotify = {
         address1: {
           address: 'address1',
-          email: 'test1@example.com',
+          email: null,
           eventPassIds: ['eventPass1'],
           packIds: [],
         },

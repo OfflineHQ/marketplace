@@ -11,8 +11,8 @@ export interface NoUserPassFooterClientProps {
 export const NoUserPassFooterClient: React.FC<NoUserPassFooterClientProps> = ({
   signInText,
 }) => {
-  const { login, safeAuth, connecting } = useAuthContext();
-  return !safeAuth ? (
+  const { login, isReady, connecting } = useAuthContext();
+  return !isReady ? (
     <ButtonSkeleton className="w-full md:w-1/6" />
   ) : (
     <Button

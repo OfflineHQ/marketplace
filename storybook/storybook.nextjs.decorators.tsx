@@ -21,7 +21,7 @@ export const DarkModeDecorator: Decorator = (Story: any, context: any = {}) => {
   return dark ? <Story key={dark} /> : <Story />;
 };
 
-export const localStorageResetDecorator: Decorator = (Story) => {
+export const LocalStorageResetDecorator: Decorator = (Story) => {
   window.localStorage.clear();
   return <Story />;
 };

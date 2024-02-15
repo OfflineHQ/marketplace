@@ -76,7 +76,8 @@ export function prepareAccountsToNotify(
       if (!accountsToNotify[account.address]) {
         accountsToNotify[account.address] = {
           address: account.address,
-          email: account.email || null,
+          // email: account.email || null, // TODO: get email from sumsub or bypass when user preference is set
+          email: null,
           eventPassIds: order.eventPassId ? [order.eventPassId] : [],
           packIds: order.packId ? [order.packId] : [],
         };

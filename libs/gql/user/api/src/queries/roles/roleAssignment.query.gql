@@ -21,7 +21,6 @@ query GetMyRolesWithOrganizerAndInviterInfos($stage: Stage!) {
     }
     inviter {
       address
-      email
     }
   }
 }

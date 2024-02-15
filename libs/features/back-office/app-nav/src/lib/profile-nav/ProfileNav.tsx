@@ -64,7 +64,6 @@ interface ProfileNavUserProps
 
 function ProfileNavUser({ user, isLoading }: ProfileNavUserProps) {
   const email = user?.email || '';
-  const eoa = user?.eoa || '';
   return (
     <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0 px-4">
       <AutoAnimate>
@@ -75,7 +74,9 @@ function ProfileNavUser({ user, isLoading }: ProfileNavUserProps) {
         )}
       </AutoAnimate>
       <div className="hidden pb-0 font-semibold md:flex">
-        {email ? truncateEmailString(email, 12) : truncateString(eoa, 16)}
+        {email
+          ? truncateEmailString(email, 12)
+          : truncateString(user.address, 16)}
       </div>
     </div>
   );

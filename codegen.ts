@@ -123,6 +123,34 @@ const config: CodegenConfig = {
         },
       ],
     },
+    'libs/gql/user/api/src/generated/index.ts': {
+      preset: 'import-types',
+      presetConfig: {
+        typesPath: '@gql/user/types',
+        importTypesNamespace: 'Types',
+      },
+      documents: './libs/gql/user/api/src/queries/**/*.{graphql,gql}',
+      plugins: [
+        {
+          'typescript-generic-sdk': {
+            noExport: true,
+            documentMode: 'string',
+          },
+        },
+        {
+          add: {
+            content: 'import { fetchData } from "@next/hasura/api";',
+            placement: 'prepend',
+          },
+        },
+        {
+          add: {
+            content: 'export const userSdk = getSdk(fetchData());',
+            placement: 'append',
+          },
+        },
+      ],
+    },
     'libs/gql/user/react-query/src/generated/index.tsx': {
       preset: 'import-types',
       presetConfig: {
@@ -139,7 +167,7 @@ const config: CodegenConfig = {
               isReactHook: false,
             },
             errorType: 'Error',
-            typesPrefix: 'Types.',
+            reactQueryVersion: 5,
           },
         },
       ],
@@ -213,7 +241,7 @@ const config: CodegenConfig = {
               isReactHook: false,
             },
             errorType: 'Error',
-            typesPrefix: 'Types.',
+            reactQueryVersion: 5,
           },
         },
       ],

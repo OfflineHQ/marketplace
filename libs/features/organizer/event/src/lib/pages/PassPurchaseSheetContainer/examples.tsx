@@ -1,5 +1,5 @@
 import { AppNavLayout } from '@features/app-nav';
-import { WithNormalUser } from '@features/app-nav/stories';
+import { WithUserEmail } from '@features/app-nav/stories';
 import { Sheet } from '@ui/components';
 import { Event } from '../Event/Event';
 import { eventProps } from '../Event/examples';
@@ -18,7 +18,7 @@ export const passPurchaseContainerProps = {
 export const PassPurchaseSheetContainerExample = ({
   ...props
 }: PassPurchaseSheetContainerProps) => (
-  <AppNavLayout {...WithNormalUser.args}>
+  <AppNavLayout {...WithUserEmail.args}>
     <Sheet open={true}>
       <Event {...eventProps} />
       <PassPurchaseSheetContainer {...props}>

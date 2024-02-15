@@ -5,9 +5,6 @@ export const AccountFieldsFragmentDoc = `
     fragment AccountFields on account {
   id
   address
-  scwAddress
-  email
-  phone
 }
     `;
 export const KycFieldsFragmentDoc = `
@@ -226,17 +223,6 @@ export const StripeCustomerFieldsFragmentDoc = `
     ${AccountFieldsFragmentDoc}
 ${KycFieldsFragmentDoc}
 ${RoleAssignmentFieldsFragmentDoc}`;
- const GetAccountByEmailDocument = `
-    query GetAccountByEmail($email: String!) {
-  account(where: {email: {_eq: $email}}) {
-    ...AccountFields
-    kyc {
-      ...KycFields
-    }
-  }
-}
-    ${AccountFieldsFragmentDoc}
-${KycFieldsFragmentDoc}`;
  const GetAccountByAddressDocument = `
     query GetAccountByAddress($address: String!) {
   account(where: {address: {_eq: $address}}) {
@@ -391,7 +377,6 @@ ${KycFieldsFragmentDoc}`;
     eventPassId
     packId
     account {
-      email
       address
     }
     passAmount {
@@ -1202,9 +1187,6 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetAccount(variables: Types.GetAccountQueryVariables, options?: C): Promise<Types.GetAccountQuery> {
       return requester<Types.GetAccountQuery, Types.GetAccountQueryVariables>(GetAccountDocument, variables, options) as Promise<Types.GetAccountQuery>;
-    },
-    GetAccountByEmail(variables: Types.GetAccountByEmailQueryVariables, options?: C): Promise<Types.GetAccountByEmailQuery> {
-      return requester<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables, options) as Promise<Types.GetAccountByEmailQuery>;
     },
     GetAccountByAddress(variables: Types.GetAccountByAddressQueryVariables, options?: C): Promise<Types.GetAccountByAddressQuery> {
       return requester<Types.GetAccountByAddressQuery, Types.GetAccountByAddressQueryVariables>(GetAccountByAddressDocument, variables, options) as Promise<Types.GetAccountByAddressQuery>;

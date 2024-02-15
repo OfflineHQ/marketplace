@@ -1,6 +1,6 @@
 import * as Types from '@gql/shared/types';
 
-export type AccountFieldsFragment = { __typename?: 'account', id: any, address: string, scwAddress?: string | null, email?: string | null, phone?: string | null };
+export type AccountFieldsFragment = { __typename?: 'account', id: any, address: string };
 
 export type UpdateAccountMutationVariables = Types.Exact<{
   id: Types.Scalars['uuid']['input'];
@@ -8,35 +8,28 @@ export type UpdateAccountMutationVariables = Types.Exact<{
 }>;
 
 
-export type UpdateAccountMutation = { __typename?: 'mutation_root', update_account_by_pk?: { __typename?: 'account', id: any, address: string, scwAddress?: string | null, email?: string | null, phone?: string | null } | null };
+export type UpdateAccountMutation = { __typename?: 'mutation_root', update_account_by_pk?: { __typename?: 'account', id: any, address: string } | null };
 
 export type CreateAccountMutationVariables = Types.Exact<{
   account: Types.Account_Insert_Input;
 }>;
 
 
-export type CreateAccountMutation = { __typename?: 'mutation_root', insert_account_one?: { __typename?: 'account', id: any, address: string, scwAddress?: string | null, email?: string | null, phone?: string | null } | null };
+export type CreateAccountMutation = { __typename?: 'mutation_root', insert_account_one?: { __typename?: 'account', id: any, address: string } | null };
 
 export type GetAccountQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
 }>;
 
 
-export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, scwAddress?: string | null, email?: string | null, phone?: string | null, kyc?: { __typename?: 'kyc', applicantId?: string | null, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null, roles: Array<{ __typename?: 'roleAssignment', role: Types.Roles_Enum, organizerId: string, eventId: string }> }> };
-
-export type GetAccountByEmailQueryVariables = Types.Exact<{
-  email: Types.Scalars['String']['input'];
-}>;
-
-
-export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, scwAddress?: string | null, email?: string | null, phone?: string | null, kyc?: { __typename?: 'kyc', applicantId?: string | null, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null }> };
+export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, kyc?: { __typename?: 'kyc', applicantId?: string | null, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null } | null, roles: Array<{ __typename?: 'roleAssignment', role: Types.Roles_Enum, organizerId: string, eventId: string }> }> };
 
 export type GetAccountByAddressQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
 }>;
 
 
-export type GetAccountByAddressQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string, scwAddress?: string | null, email?: string | null, phone?: string | null }> };
+export type GetAccountByAddressQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string }> };
 
 export type GetAccountByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['uuid']['input'];
@@ -101,7 +94,7 @@ export type DeletePendingOrdersMutation = { __typename?: 'mutation_root', delete
 export type GetPendingOrdersQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type GetPendingOrdersQuery = { __typename?: 'query_root', pendingOrder: Array<{ __typename?: 'pendingOrder', created_at: any, id: any, eventPassId?: string | null, packId?: string | null, account?: { __typename?: 'account', email?: string | null, address: string } | null, passAmount?: { __typename?: 'passAmount', timeBeforeDelete: number } | null, packAmount?: { __typename?: 'passAmount', timeBeforeDelete: number } | null }> };
+export type GetPendingOrdersQuery = { __typename?: 'query_root', pendingOrder: Array<{ __typename?: 'pendingOrder', created_at: any, id: any, eventPassId?: string | null, packId?: string | null, account?: { __typename?: 'account', address: string } | null, passAmount?: { __typename?: 'passAmount', timeBeforeDelete: number } | null, packAmount?: { __typename?: 'passAmount', timeBeforeDelete: number } | null }> };
 
 export type KycFieldsFragment = { __typename?: 'kyc', applicantId?: string | null, reviewStatus?: Types.KycStatus_Enum | null, levelName?: Types.KycLevelName_Enum | null };
 
