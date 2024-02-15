@@ -210,7 +210,7 @@ export const StripeCustomerFieldsFragmentDoc = `
     ${AccountFieldsFragmentDoc}`;
  const GetAccountDocument = `
     query GetAccount($address: String!) {
-  account(where: {address: {_eq: $address}}) {
+  account(where: {address: {_eq: $address}}, limit: 1) {
     ...AccountFields
     kyc {
       ...KycFields
@@ -225,7 +225,7 @@ ${KycFieldsFragmentDoc}
 ${RoleAssignmentFieldsFragmentDoc}`;
  const GetAccountByAddressDocument = `
     query GetAccountByAddress($address: String!) {
-  account(where: {address: {_eq: $address}}) {
+  account(where: {address: {_eq: $address}}, limit: 1) {
     ...AccountFields
   }
 }

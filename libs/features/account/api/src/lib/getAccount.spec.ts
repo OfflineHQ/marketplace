@@ -5,14 +5,10 @@ import {
   type PgClient,
 } from '@test-utils/db';
 import { accounts } from '@test-utils/gql';
-import { createAccount } from './createAccount';
 import { getAccount } from './getAccount';
 
 describe('getAccount test', () => {
   let client: PgClient;
-  const account = {
-    address: '0x1bbedb07706728a19c9db82d3c420670d8040592',
-  };
   beforeAll(async () => {
     client = await createDbClient();
   });
@@ -22,28 +18,28 @@ describe('getAccount test', () => {
   });
   beforeEach(async () => {
     await deleteAllTables(client);
+    await applySeeds(client, ['account', 'kyc']);
   });
-  it('should return null when account does not exist', async () => {
+  it('should throw an error when account does not exist', async () => {
     const nonExistingAddress = '0xNotExisting';
-    const fetchedAccount = await getAccount(nonExistingAddress);
-    expect(fetchedAccount).toBeNull();
+    await expect(getAccount(nonExistingAddress)).rejects.toThrow(
+      'Account not found',
+    );
   });
-  it('should get an account by address', async () => {
-    const createdAccount = await createAccount(account);
-    const fetchedAccount = await getAccount(createdAccount.address);
+  it('should get an existing account by address', async () => {
+    const fetchedAccount = await getAccount(accounts.beta_user.address);
     expect(fetchedAccount).not.toBeNull();
-    expect(fetchedAccount.address).toEqual(account.address);
+    expect(fetchedAccount.address).toEqual(accounts.beta_user.address);
   });
-  it('should get an existing account with address in uppercase', async () => {
-    const createdAccount = await createAccount(account);
+  it('should get an existing account with address in lowercase', async () => {
     const fetchedAccount = await getAccount(
-      createdAccount.address.toUpperCase(),
+      accounts.delta_user.address.toLowerCase(),
     );
     expect(fetchedAccount).not.toBeNull();
-    expect(fetchedAccount.address).toEqual(account.address);
+    expect(fetchedAccount.address).toEqual(accounts.delta_user.address);
+    expect(fetchedAccount.kyc).toBeNull();
   });
   it('should get an existing account with kyc info if existing', async () => {
-    await applySeeds(client, ['account', 'kyc']);
     const fetchedAccount = await getAccount(accounts.alpha_user.address);
     expect(fetchedAccount).not.toBeNull();
     expect(fetchedAccount.address).toEqual(accounts.alpha_user.address);

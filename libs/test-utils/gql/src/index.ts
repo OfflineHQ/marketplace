@@ -51,7 +51,7 @@ const fetchDataForTest = (opts: Opts = { jwt: '', anonymous: false }) => {
 export const accounts = {
   alpha_user: {
     id: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
-    address: '0xb98bd7c7f656290071e52d1aa617d9cb4467fd6d',
+    address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
     email: 'alpha_user@test.io',
     kyc: {
       applicantId: '653bb6d8f8865a0b96363bf3',
@@ -61,7 +61,7 @@ export const accounts = {
   } satisfies AppUser,
   beta_user: {
     id: '76189546-6368-4325-8aad-220e03837b7e',
-    address: '0x1b8bd7c7f656290071e52d1aa617d9cb4469bb9f',
+    address: '0x1b8Bd7c7f656290071E52d1AA617d9Cb4469bB9F',
   } satisfies AppUser,
   delta_user: {
     id: '9660cf3b-65ec-4ac5-a671-7eac4d93a842',
