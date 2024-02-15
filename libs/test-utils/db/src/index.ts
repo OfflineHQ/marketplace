@@ -18,10 +18,10 @@ import type {
   StripeCustomer_Insert_Input,
 } from '@gql/shared/types';
 import { isJestRunning } from '@utils';
+import * as path from 'path';
 import { Client } from 'pg';
 
 const fs = require('fs');
-
 let dbName = '';
 
 export const SeedTable = {
@@ -113,7 +113,10 @@ export const deleteAccount = async (client: Client, email: string) => {
 
 export const seedDb = async (client: Client, table: SeedTableName) => {
   const order = SeedTable[table];
-  const filePath = `./hasura/app/seeds/default/${order}_${table}.sql`;
+  const filePath = path.join(
+    __dirname,
+    `../../../../hasura/app/seeds/default/${order}_${table}.sql`,
+  );
   const dataSql = fs.readFileSync(filePath).toString();
   await client.query(dataSql);
 };
