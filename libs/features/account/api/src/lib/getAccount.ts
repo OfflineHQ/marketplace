@@ -5,7 +5,7 @@ export type Account = GetAccountQuery['account'][number];
 
 export const getAccount = async (address: string): Promise<Account> => {
   const data = await adminSdk.GetAccount(
-    { address },
+    { address: address.toLowerCase() },
     {
       cache: 'no-store',
     },

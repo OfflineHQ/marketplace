@@ -182,6 +182,7 @@ export const createOptions = () =>
         // user is connected but has been updated on hasura, need to get the updated jwt with user
         if (trigger === 'update' && token) {
           const userAccount = (await getAccount(token.user.address)) as AppUser;
+          if (!userAccount) throw new Error('User not found');
           // if token user has no email and kyc validated, mean we need to fetch it from SumSub to update the user jwt cookie with personal data
           if (
             userAccount?.kyc?.applicantId &&

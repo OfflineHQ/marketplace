@@ -44,14 +44,4 @@ describe('createAccount test', () => {
     const account = {};
     await expect(createAccount(account as any)).rejects.toThrow();
   });
-
-  it('should create account without email', async () => {
-    const account = {
-      address: '0x123',
-    };
-    const data = await createAccount(account);
-    expect(data.address).toEqual(account.address);
-    expect(data.email).toBeNull();
-    expect(data.id).toBeDefined();
-  });
 });

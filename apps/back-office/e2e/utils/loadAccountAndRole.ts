@@ -3,6 +3,7 @@ import { getMessages } from '@next/i18n';
 import { AppUser } from '@next/types';
 import { expect } from '@playwright/test';
 import { accounts } from '@test-utils/gql';
+import * as path from 'path';
 import { chromium } from 'playwright';
 
 interface LoadUserProps {
@@ -43,7 +44,7 @@ export async function loadAccountAndRole({
 
   const browser = await chromium.launch();
   const context = await browser.newContext({
-    storageState: `apps/back-office/e2e/utils/${user as string}.json`,
+    storageState: path.resolve(__dirname, './', `${user as string}.json`),
   });
   const page = await context.newPage();
   const account: AppUser = accounts[user];
