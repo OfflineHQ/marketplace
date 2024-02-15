@@ -97,7 +97,7 @@ describe('Cron job - handlePendingOrders', () => {
     expect(resJson).toEqual({
       accountsToNotify: [
         {
-          address: accounts.alpha_user.address,
+          address: accounts.alpha_user.address.toLowerCase(),
           email: null,
           eventPassIds: ['clj8raobj7g8l0aw3bfw6dny4'],
           packIds: [],
@@ -158,13 +158,13 @@ describe('Cron job - handlePendingOrders', () => {
     expect(resJson).toEqual({
       accountsToNotify: [
         {
-          address: accounts.alpha_user.address,
+          address: accounts.alpha_user.address.toLowerCase(),
           email: null,
           eventPassIds: ['clj8raobj7g8l0aw3bfw6dny4'],
           packIds: [],
         },
         {
-          address: accounts.beta_user.address,
+          address: accounts.beta_user.address.toLowerCase(),
           email: null,
           eventPassIds: ['cloculueqmluk0aujj0ridfwv'],
           packIds: [],

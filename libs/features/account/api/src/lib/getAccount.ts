@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 
 export type Account = GetAccountQuery['account'][number];
 
-export const getAccount = async (address: string): Promise<Account> => {
+export const getAccount = async (address: string): Promise<Account | null> => {
   const data = await adminSdk.GetAccount(
     { address: address.toLowerCase() },
     {
@@ -16,5 +16,5 @@ export const getAccount = async (address: string): Promise<Account> => {
     data.account[0].address = ethers.utils.getAddress(data.account[0].address);
     return data.account[0];
   }
-  throw new Error('Account not found');
+  return null;
 };
