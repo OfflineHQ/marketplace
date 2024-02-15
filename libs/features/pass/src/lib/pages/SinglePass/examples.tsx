@@ -12,7 +12,7 @@ import {
 } from './SinglePass';
 
 import { AppNavLayout } from '@features/app-nav';
-import { WithNoUser, WithNormalUser } from '@features/app-nav/stories';
+import { WithNoUser, WithUserEmail } from '@features/app-nav/stories';
 
 export const owner: User = {
   id: '123',
@@ -68,7 +68,7 @@ export function SinglePassNoUserExample(props: SinglePassProps) {
 
 export function SinglePassOwnerExample(props: SinglePassProps) {
   return (
-    <AppNavLayout {...WithNormalUser.args}>
+    <AppNavLayout {...WithUserEmail.args}>
       <SinglePass {...props} />
     </AppNavLayout>
   );

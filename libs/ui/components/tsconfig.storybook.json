@@ -2,9 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "emitDecoratorMetadata": true,
-    "outDir": ""
+    "outDir": "",
+    "types": ["jest", "node", "@testing-library/jest-dom", "@storybook/types"]
   },
-  "types": ["jest", "node", "@testing-library/jest-dom", "@storybook/jest"],
   "files": [],
   "exclude": [
     "src/**/*.spec.ts",

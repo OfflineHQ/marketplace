@@ -1,5 +1,5 @@
 import { AppNavLayout } from '@features/app-nav';
-import { WithNormalUser } from '@features/app-nav/stories';
+import { WithUserEmail } from '@features/app-nav/stories';
 import { UserPassPendingOrder } from '@features/cart-types';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { Button } from '@ui/components';
@@ -21,7 +21,7 @@ export function UserCartExample(args: UserCartProps) {
   return (
     <NextAuthProvider session={null}>
       <AuthProvider session={null} isConnected={() => true}>
-        <AppNavLayout {...WithNormalUser.args}>
+        <AppNavLayout {...WithUserEmail.args}>
           <UserCart {...args} noCartImage="/empty-cart.svg">
             <Button block className="w-full md:w-1/6" icon={<Cart />}>
               {t('finalize-button')}

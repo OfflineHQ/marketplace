@@ -10168,12 +10168,10 @@ An account can represent a user or a role on an organizer. It stores essential i
 type account {
   address: String!
   created_at: timestamptz
-  email: String
   id: uuid!
 
   """An object relationship"""
   kyc: kyc
-  phone: String
 
   """An array relationship"""
   roles(
@@ -10210,7 +10208,6 @@ type account {
     """filter the rows returned"""
     where: roleAssignment_bool_exp
   ): roleAssignment_aggregate!
-  scwAddress: String
 
   """An object relationship"""
   stripeCustomer: stripeCustomer
@@ -10243,13 +10240,10 @@ input account_bool_exp {
   _or: [account_bool_exp!]
   address: String_comparison_exp
   created_at: timestamptz_comparison_exp
-  email: String_comparison_exp
   id: uuid_comparison_exp
   kyc: kyc_bool_exp
-  phone: String_comparison_exp
   roles: roleAssignment_bool_exp
   roles_aggregate: roleAssignment_aggregate_bool_exp
-  scwAddress: String_comparison_exp
   stripeCustomer: stripeCustomer_bool_exp
   updated_at: timestamptz_comparison_exp
 }
@@ -10275,12 +10269,9 @@ input type for inserting data into table "account"
 input account_insert_input {
   address: String
   created_at: timestamptz
-  email: String
   id: uuid
   kyc: kyc_obj_rel_insert_input
-  phone: String
   roles: roleAssignment_arr_rel_insert_input
-  scwAddress: String
   stripeCustomer: stripeCustomer_obj_rel_insert_input
   updated_at: timestamptz
 }
@@ -10289,10 +10280,7 @@ input account_insert_input {
 type account_max_fields {
   address: String
   created_at: timestamptz
-  email: String
   id: uuid
-  phone: String
-  scwAddress: String
   updated_at: timestamptz
 }
 
@@ -10300,10 +10288,7 @@ type account_max_fields {
 type account_min_fields {
   address: String
   created_at: timestamptz
-  email: String
   id: uuid
-  phone: String
-  scwAddress: String
   updated_at: timestamptz
 }
 
@@ -10341,12 +10326,9 @@ input account_on_conflict {
 input account_order_by {
   address: order_by
   created_at: order_by
-  email: order_by
   id: order_by
   kyc: kyc_order_by
-  phone: order_by
   roles_aggregate: roleAssignment_aggregate_order_by
-  scwAddress: order_by
   stripeCustomer: stripeCustomer_order_by
   updated_at: order_by
 }
@@ -10367,16 +10349,7 @@ enum account_select_column {
   created_at
 
   """column name"""
-  email
-
-  """column name"""
   id
-
-  """column name"""
-  phone
-
-  """column name"""
-  scwAddress
 
   """column name"""
   updated_at
@@ -10388,10 +10361,7 @@ input type for updating data in table "account"
 input account_set_input {
   address: String
   created_at: timestamptz
-  email: String
   id: uuid
-  phone: String
-  scwAddress: String
   updated_at: timestamptz
 }
 
@@ -10410,10 +10380,7 @@ input account_stream_cursor_input {
 input account_stream_cursor_value_input {
   address: String
   created_at: timestamptz
-  email: String
   id: uuid
-  phone: String
-  scwAddress: String
   updated_at: timestamptz
 }
 
@@ -10428,16 +10395,7 @@ enum account_update_column {
   created_at
 
   """column name"""
-  email
-
-  """column name"""
   id
-
-  """column name"""
-  phone
-
-  """column name"""
-  scwAddress
 
   """column name"""
   updated_at

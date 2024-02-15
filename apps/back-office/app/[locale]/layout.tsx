@@ -11,6 +11,7 @@ import { CurrencyProvider } from '@next/currency-provider';
 import { getMessages, locales } from '@next/i18n';
 import { getSession, isConnected } from '@next/next-auth/user';
 import { ReactQueryProviders } from '@next/react-query';
+import { WalletProvider } from '@next/wallet';
 import { isLocal } from '@shared/server';
 import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
@@ -96,43 +97,45 @@ export default async function RootLayout({
       >
         <PHProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <NextAuthProvider session={session}>
-              <AuthProvider
-                messages={{
-                  userClosedPopup: {
-                    title: t('user-closed-popup.title'),
-                    description: t('user-closed-popup.description'),
-                  },
-                  siweStatement: t('siwe-statement'),
-                  errorSigningInWithSiwe: {
-                    title: t('error-signing-in-with-siwe.title'),
-                    description: t('error-signing-in-with-siwe.description'),
-                    tryAgainButton: t(
-                      'error-signing-in-with-siwe.try-again-button',
-                    ),
-                  },
-                  siweDeclined: {
-                    title: t('siwe-declined.title'),
-                    description: t('siwe-declined.description'),
-                    tryAgainButton: t('siwe-declined.try-again-button'),
-                  },
-                }}
-                session={session}
-                isConnected={isConnected}
-              >
-                <ReactQueryProviders>
-                  <CurrencyProvider rates={rates}>
-                    <AppNavLayout {...appNavLayout} />
-                    <NextIntlClientProvider
-                      locale={locale}
-                      messages={localeMessages}
-                    >
-                      <Toaster />
-                    </NextIntlClientProvider>
-                  </CurrencyProvider>
-                </ReactQueryProviders>
-              </AuthProvider>
-            </NextAuthProvider>
+            <WalletProvider>
+              <NextAuthProvider session={session}>
+                <AuthProvider
+                  messages={{
+                    userClosedPopup: {
+                      title: t('user-closed-popup.title'),
+                      description: t('user-closed-popup.description'),
+                    },
+                    siweStatement: t('siwe-statement'),
+                    errorSigningInWithSiwe: {
+                      title: t('error-signing-in-with-siwe.title'),
+                      description: t('error-signing-in-with-siwe.description'),
+                      tryAgainButton: t(
+                        'error-signing-in-with-siwe.try-again-button',
+                      ),
+                    },
+                    siweDeclined: {
+                      title: t('siwe-declined.title'),
+                      description: t('siwe-declined.description'),
+                      tryAgainButton: t('siwe-declined.try-again-button'),
+                    },
+                  }}
+                  session={session}
+                  isConnected={isConnected}
+                >
+                  <ReactQueryProviders>
+                    <CurrencyProvider rates={rates}>
+                      <AppNavLayout {...appNavLayout} />
+                      <NextIntlClientProvider
+                        locale={locale}
+                        messages={localeMessages}
+                      >
+                        <Toaster />
+                      </NextIntlClientProvider>
+                    </CurrencyProvider>
+                  </ReactQueryProviders>
+                </AuthProvider>
+              </NextAuthProvider>
+            </WalletProvider>
           </ThemeProvider>
         </PHProvider>
         <Suspense>

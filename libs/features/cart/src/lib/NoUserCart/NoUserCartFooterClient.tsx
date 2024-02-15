@@ -1,9 +1,8 @@
 'use client';
 
+import { useAuthContext } from '@next/auth';
 import { Button, ButtonSkeleton } from '@ui/components';
 import { LogIn } from '@ui/icons';
-import { signIn } from 'next-auth/react';
-import { useAuthContext } from '@next/auth';
 
 interface NoUserCartFooterClientProps {
   signInText: string;
@@ -12,8 +11,8 @@ interface NoUserCartFooterClientProps {
 export const NoUserCartFooterClient: React.FC<NoUserCartFooterClientProps> = ({
   signInText,
 }) => {
-  const { login, safeAuth, connecting } = useAuthContext();
-  return !safeAuth ? (
+  const { login, isReady, connecting } = useAuthContext();
+  return !isReady ? (
     <ButtonSkeleton className="w-full md:w-1/6" />
   ) : (
     <Button

@@ -1,17 +1,19 @@
-import * as authProvider from '@next/auth';
 import * as uploaderProvider from '@next/uploader-provider';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import * as nextIntl from 'next-intl';
 import * as getPass from '../../actions/getContentSpaceFiles';
 
+import * as walletProvider from '@next/wallet';
 import { screen, userEvent } from '@storybook/test';
+import { SessionDecorator } from '@test-utils/storybook';
 import { createMock, getMock } from 'storybook-addon-module-mock';
 import { contentSpaceFiles } from '../ContentSpaceFilesTable/examples';
 import { ContentSpaceFilesUploader } from './ContentSpaceFilesUploader';
 
 const meta = {
   component: ContentSpaceFilesUploader,
+  decorators: [SessionDecorator],
   parameters: {
     layout: 'fullscreen',
     moduleMock: {
@@ -22,14 +24,14 @@ const meta = {
         mockIntl.mockReturnValue('en');
         const mockUploader = createMock(uploaderProvider, 'useUploader');
         mockUploader.mockReturnValue({ sessionReady: true });
-        const mockAuth = createMock(authProvider, 'useAuthContext');
-        mockAuth.mockReturnValue({
-          safeUser: {
-            eoa: '0x123',
+        const mockWallet = createMock(walletProvider, 'useWalletContext');
+        mockWallet.mockReturnValue({
+          provider: {
+            getSigner: () => Promise.resolve({}),
           },
         });
 
-        return [mock, mockIntl, mockUploader, mockAuth, mockAuth];
+        return [mock, mockIntl, mockUploader, mockWallet];
       },
     },
   },

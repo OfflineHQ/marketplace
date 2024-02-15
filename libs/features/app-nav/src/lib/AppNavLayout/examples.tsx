@@ -27,7 +27,7 @@ export const ProfileNavWithNoUser = () => (
   <ProfileNav
     user={undefined}
     items={notConnectedMenuItems}
-    signInText="Sign in"
+    signInText="Sign In"
   />
 );
 
@@ -36,7 +36,7 @@ export const ProfileNavWithNoUserLoading = () => (
     user={undefined}
     items={notConnectedMenuItems}
     isLoading={true}
-    signInText="Sign in"
+    signInText="Sign In"
   />
 );
 
@@ -44,15 +44,7 @@ export const ProfileNavWithNormalUser = () => (
   <ProfileNav
     user={normalUserSessionWithImage}
     items={normalUserMenuItems}
-    signInText="Sign in"
-  />
-);
-
-export const ProfileNavWithFallbackUser = () => (
-  <ProfileNav
-    user={normalUserSession}
-    items={normalUserMenuItems}
-    signInText="Sign in"
+    signInText="Sign In"
   />
 );
 
@@ -60,7 +52,7 @@ export const ProfileNavWithCryptoUser = () => (
   <ProfileNav
     user={cryptoUserSession}
     items={cryptoUserMenuItems}
-    signInText="Sign in"
+    signInText="Sign In"
   />
 );
 

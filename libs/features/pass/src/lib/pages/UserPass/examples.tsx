@@ -1,5 +1,5 @@
 import { AppNavLayout } from '@features/app-nav';
-import { WithNormalUser } from '@features/app-nav/stories';
+import { WithUserEmail } from '@features/app-nav/stories';
 import { Toaster } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import { UserPass } from './UserPass';
@@ -19,7 +19,7 @@ export function UserPassExample({
     : '';
   return (
     <>
-      <AppNavLayout {...WithNormalUser.args}>
+      <AppNavLayout {...WithUserEmail.args}>
         <UserPass
           title={t('title')}
           comingSoon={t('upcoming')}

@@ -1,6 +1,5 @@
 import env from '@env/server';
 import { UserPassPendingOrder } from '@features/cart-types';
-import { getSumSubApplicantPersonalData } from '@features/kyc-api';
 import { adminSdk } from '@gql/admin/api';
 import {
   KycStatus_Enum,
@@ -13,6 +12,7 @@ import { Posthog } from '@insight/server';
 import { FeatureFlagsEnum } from '@insight/types';
 import { CurrencyCache } from '@next/currency-cache';
 import { calculateUnitAmount } from '@next/currency-common';
+import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
 import { AppUser } from '@next/types';
 import { NftClaimable } from '@nft/thirdweb-admin';
 import {

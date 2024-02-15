@@ -1,13 +1,15 @@
+'use server';
+
 import {
   createSumSubApplicant,
   getAccountKyc,
   getSumSubAccessToken,
-  getSumSubApplicantPersonalData,
 } from '@features/kyc-api';
 import { Locale } from '@gql/shared/types';
+import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
 import { getCurrentUser } from '@next/next-auth/user';
 
-export const useKyc = async (locale: Locale) => {
+export const initKyc = async (locale: Locale) => {
   const user = await getCurrentUser();
   let applicantId: string | undefined | null = '';
   if (!user) return { user: null, accessToken: '' };

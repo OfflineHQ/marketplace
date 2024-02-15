@@ -3,6 +3,7 @@ import { getMessages } from '@next/i18n';
 import { AppUser } from '@next/types';
 import { expect } from '@playwright/test';
 import { accounts } from '@test-utils/gql';
+import * as path from 'path';
 import { chromium } from 'playwright';
 
 interface LoadUserProps {
@@ -43,32 +44,23 @@ export async function loadAccountAndRole({
 
   const browser = await chromium.launch();
   const context = await browser.newContext({
-    storageState: `apps/back-office/e2e/utils/${user as string}.json`,
+    storageState: path.resolve(__dirname, './', `${user as string}.json`),
   });
   const page = await context.newPage();
   const account: AppUser = accounts[user];
   await page.exposeFunction('useE2EAuthContext', () => {
     return JSON.stringify({
-      safeUser: {
-        eoa: account.address,
-        safes: [],
-        email: account.email,
-        profileImage: 'https://robohash.org/johndoe.png?size=96x96',
-      },
-      safeAuth: 'safeAuth',
-      provider: 'provider',
       login: () => null,
       logout: () => null,
-      loginSiwe: () => null,
-      logoutSiwe: () => null,
+      createAccount: () => null,
       connecting: false,
     });
   });
   await page.goto(goTo);
   await expect(
-    page.getByRole('button', { name: account.email, exact: true }),
+    page.getByRole('button', { name: account.email, exact: false }),
   ).toBeVisible();
-  await page.getByRole('button', { name: account.email, exact: true }).click();
+  await page.getByRole('button', { name: account.email, exact: false }).click();
   const roleName = roleNames[role];
   if (!roleName) {
     throw new Error(`Role name not found for role: ${role}`);

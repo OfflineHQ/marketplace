@@ -21,6 +21,7 @@ export interface ProfileNavProps
     DropdownMenuItemsProps {
   user?: ProfileAvatarProps['user'];
   signInText?: React.ReactNode;
+  accountPlaceholder?: React.ReactNode;
   isLoading?: boolean;
 }
 
@@ -29,11 +30,10 @@ export function ProfileNav({
   items,
   signInText,
   isLoading,
+  accountPlaceholder,
   ...props
 }: ProfileNavProps) {
   const email = user?.email || '';
-  const eoa = user?.eoa || '';
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -52,9 +52,7 @@ export function ProfileNav({
                 )}
               </AutoAnimate>
               <div className="hidden pb-1 font-medium md:flex md:pb-0">
-                {email
-                  ? truncateEmailString(email, 12)
-                  : truncateString(eoa, 16)}
+                {email ? truncateEmailString(email, 12) : accountPlaceholder}
               </div>
             </div>
           ) : (

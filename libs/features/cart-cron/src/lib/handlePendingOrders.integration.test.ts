@@ -1,3 +1,4 @@
+import { adminSdk } from '@gql/admin/api';
 import {
   SeedTypeMap,
   applySeeds,
@@ -7,7 +8,6 @@ import {
   updateObjects,
   type PgClient,
 } from '@test-utils/db';
-import { adminSdk } from '@gql/admin/api';
 import { accounts } from '@test-utils/gql';
 import handler from './handlePendingOrders';
 
@@ -98,7 +98,7 @@ describe('Cron job - handlePendingOrders', () => {
       accountsToNotify: [
         {
           address: accounts.alpha_user.address,
-          email: accounts.alpha_user.email,
+          email: null,
           eventPassIds: ['clj8raobj7g8l0aw3bfw6dny4'],
           packIds: [],
         },
@@ -159,7 +159,7 @@ describe('Cron job - handlePendingOrders', () => {
       accountsToNotify: [
         {
           address: accounts.alpha_user.address,
-          email: accounts.alpha_user.email,
+          email: null,
           eventPassIds: ['clj8raobj7g8l0aw3bfw6dny4'],
           packIds: [],
         },
