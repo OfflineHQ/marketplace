@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/test';
 
+import { darkMode, mobileMode } from '@test-utils/storybook';
 import { AppNavLayout } from './AppNavLayout';
 import {
   CartNavEmpty,
@@ -11,12 +12,10 @@ import {
   PassNavWithPing,
   ProfileNavLoading,
   ProfileNavWithCryptoUser,
-  ProfileNavWithFallbackUser,
   ProfileNavWithNoUser,
   ProfileNavWithNoUserLoading,
   ProfileNavWithNormalUser,
 } from './examples';
-import { darkMode, mobileMode } from '@test-utils/storybook';
 
 const meta = {
   component: AppNavLayout,
