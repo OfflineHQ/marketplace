@@ -1,6 +1,6 @@
 'use client';
 
-import { handleApplicantStatusChanged } from '@features/kyc-actions';
+import { handleApplicantStatusChanged, initKyc } from '@features/kyc-actions';
 import { getSumSubAccessToken } from '@features/kyc-api';
 import { KycStatus_Enum, Locale } from '@gql/shared/types';
 import { Link, useRouter } from '@next/navigation';
@@ -23,7 +23,6 @@ import {
 import { useSession } from 'next-auth/react';
 import { useTheme } from 'next-themes';
 import { useState } from 'react';
-import { initKyc } from '../actions/initKyc';
 type MessageType = Parameters<MessageHandler>[0];
 type Error = Parameters<ErrorHandler>[0];
 
