@@ -1,7 +1,13 @@
-import * as authProvider from '@next/auth';
-import type { Meta, StoryObj } from '@storybook/react';
+import * as kycApi from '@features/kyc-actions';
+import * as walletHook from '@next/wallet';
+import { Story, StoryObj, type Meta } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
-import { SessionDecorator, ToasterDecorator } from '@test-utils/storybook';
+import {
+  ReactQueryDecorator,
+  SessionDecorator,
+  ToasterDecorator,
+} from '@test-utils/storybook';
+import * as nextAuth from 'next-auth/react';
 import * as nextIntl from 'next-intl';
 import { createMock } from 'storybook-addon-module-mock';
 import { ProfileNavClient } from './ProfileNavClient';
@@ -10,22 +16,52 @@ import { ProfileNavClientExample, user } from './examples';
 const meta = {
   component: ProfileNavClient,
   render: ProfileNavClientExample,
-  decorators: [ToasterDecorator],
+  decorators: [ToasterDecorator, ReactQueryDecorator],
   parameters: {
     layout: 'fullscreen',
     chromatic: { disableSnapshot: true },
     moduleMock: {
       mock: () => {
-        const mockAuth = createMock(authProvider, 'useAuthContext');
-        mockAuth.mockReturnValue({
-          connecting: false,
-          login: () => Promise.resolve(),
-          logout: () => Promise.resolve(),
-          createAccount: () => Promise.resolve(),
+        const mockSignIn = createMock(nextAuth, 'signIn');
+        mockSignIn.mockReturnValue({ error: null });
+        const mockSignOut = createMock(nextAuth, 'signOut');
+        mockSignOut.mockReturnValue({});
+        const mockWallet = createMock(walletHook, 'useWalletAuth');
+        mockWallet.mockReturnValue({
+          isReady: true,
+          connect: () => Promise.resolve(),
+          disconnect: () => Promise.resolve(),
+          isConnecting: false,
+          isConnected: true,
+          wallet: {} as any,
         });
+        // const mockAuth = createMock(authProvider, 'useAuthContext');
+        // mockAuth.mockReturnValue({
+        //   connecting: false,
+        //   login: () => Promise.resolve(),
+        //   logout: () => Promise.resolve(),
+        //   createAccount: () => Promise.resolve(),
+        // });
+        const mockInitKyc = createMock(kycApi, 'initKyc');
+        mockInitKyc.mockReturnValue({
+          user: {},
+          accessToken: 'accessToken',
+        });
+        const mockApplicantStatusChanged = createMock(
+          kycApi,
+          'handleApplicantStatusChanged',
+        );
+        mockApplicantStatusChanged.mockReturnValue(false);
         const mockIntl = createMock(nextIntl, 'useLocale');
         mockIntl.mockReturnValue('en');
-        return [mockAuth, mockIntl];
+        return [
+          mockSignIn,
+          mockSignOut,
+          mockWallet,
+          mockIntl,
+          mockInitKyc,
+          mockApplicantStatusChanged,
+        ];
       },
     },
   },

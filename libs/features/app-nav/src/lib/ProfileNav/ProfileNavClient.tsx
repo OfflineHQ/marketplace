@@ -165,7 +165,7 @@ export const ProfileNavClient = ({
       createAccountAction,
     ],
   );
-  return connecting ? (
+  return connecting && !isNextAuthConnected ? (
     <ProfileNavSkeleton />
   ) : (
     <>
