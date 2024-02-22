@@ -137,7 +137,7 @@ export const WithMobileLoadingProfile: Story = {
 export const WithMobileOpenedProfileMenu: Story = {
   ...WithMobile,
   play: async ({ container }) => {
-    const profileButton = await screen.findAllByText('JD');
+    const profileButton = await screen.findAllByText('🌶');
     // target the second profile button that is on mobile menu
     userEvent.click(profileButton[1]);
     await screen.findByText('Log out');
