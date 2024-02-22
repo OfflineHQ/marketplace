@@ -1,6 +1,6 @@
 import * as kycApi from '@features/kyc-actions';
-import * as walletHook from '@next/wallet';
-import { Story, StoryObj, type Meta } from '@storybook/react';
+// import * as walletHook from '@next/wallet';
+import { StoryObj, type Meta } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
 import {
   ReactQueryDecorator,
@@ -26,15 +26,15 @@ const meta = {
         mockSignIn.mockReturnValue({ error: null });
         const mockSignOut = createMock(nextAuth, 'signOut');
         mockSignOut.mockReturnValue({});
-        const mockWallet = createMock(walletHook, 'useWalletAuth');
-        mockWallet.mockReturnValue({
-          isReady: true,
-          connect: () => Promise.resolve(),
-          disconnect: () => Promise.resolve(),
-          isConnecting: false,
-          isConnected: true,
-          wallet: {} as any,
-        });
+        // const mockWallet = createMock(walletHook, 'useWalletAuth');
+        // mockWallet.mockImplementation(() => ({
+        //   isReady: true,
+        //   connect: () => Promise.resolve(),
+        //   disconnect: () => Promise.resolve(),
+        //   isConnecting: false,
+        //   isConnected: true,
+        //   wallet: {} as any,
+        // }));
         // const mockAuth = createMock(authProvider, 'useAuthContext');
         // mockAuth.mockReturnValue({
         //   connecting: false,
@@ -55,9 +55,10 @@ const meta = {
         const mockIntl = createMock(nextIntl, 'useLocale');
         mockIntl.mockReturnValue('en');
         return [
+          // comethWallet,
+          // connectAdaptor,
           mockSignIn,
           mockSignOut,
-          mockWallet,
           mockIntl,
           mockInitKyc,
           mockApplicantStatusChanged,
@@ -130,3 +131,5 @@ export const WithUserSignOut: Story = {
     await screen.findByText(/You have been signed out/i);
   },
 };
+
+// export const User

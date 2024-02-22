@@ -112,6 +112,7 @@ export const mainConfig = {
       jsonwebtoken: './mocks/jsonwebtoken.mock.js',
       '@opentelemetry/api': './mocks/opentelemetryApi.mock.js',
       'next/cache': './mocks/nextCache.mock.js',
+      '@cometh/connect-sdk': './mocks/comethConnectSdk.mock.js',
     };
     // set mocks to avoid webpack issues
     for (const externalModule in mockExternalModules) {

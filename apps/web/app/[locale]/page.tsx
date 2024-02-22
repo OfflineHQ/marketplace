@@ -1,10 +1,6 @@
-import { NotFound } from '@features/navigation';
-import { Event, EventSkeleton } from '@features/organizer/event';
 import { getEvent } from '@features/organizer/event-api';
 import { getLocalizedUrls } from '@next/i18n';
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
-import { Suspense } from 'react';
 
 interface EventSectionProps {
   params: {
@@ -81,9 +77,14 @@ export async function generateMetadata({
 export default function EventSection({ params }: EventSectionProps) {
   const { locale } = params;
   return (
-    <Suspense fallback={<EventSkeleton />}>
-      <EventSectionContent locale={locale} />
-    </Suspense>
+    <iframe
+      className="z-10 size-full pb-16"
+      title="cometh"
+      src="https://demo.cometh.io"
+    />
+    // <Suspense fallback={<EventSkeleton />}>
+    //   <EventSectionContent locale={locale} />
+    // </Suspense>
   );
 }
 
@@ -91,33 +92,33 @@ interface EventSectionContentProps {
   locale: string;
 }
 
-async function EventSectionContent({ locale }: EventSectionContentProps) {
-  const t = await getTranslations({ locale, namespace: 'Organizer.Event' });
-  let event: Awaited<ReturnType<typeof getEvent>>;
-  try {
-    event = await getEvent({ eventSlug, locale });
-  } catch (error) {
-    console.error(error);
-    return <NotFound />;
-  }
-  // in case the event is not found or the organizer slug is not the same as the one in the url redirect to 404
-  if (!event || event.organizer?.slug !== organizerSlug) {
-    return <NotFound />;
-  } else {
-    const { eventParameters, ...eventProps } = event;
-    return eventParameters ? (
-      <Event
-        {...eventProps}
-        eventParameters={eventParameters}
-        purchaseLink={{
-          href: {
-            pathname: `/organizer/${organizerSlug}/event/${eventSlug}/purchase`,
-          },
-        }}
-        purchaseText={t('purchase-button-activator')}
-      />
-    ) : (
-      <NotFound />
-    );
-  }
-}
+// async function EventSectionContent({ locale }: EventSectionContentProps) {
+//   const t = await getTranslations({ locale, namespace: 'Organizer.Event' });
+//   let event: Awaited<ReturnType<typeof getEvent>>;
+//   try {
+//     event = await getEvent({ eventSlug, locale });
+//   } catch (error) {
+//     console.error(error);
+//     return <NotFound />;
+//   }
+//   // in case the event is not found or the organizer slug is not the same as the one in the url redirect to 404
+//   if (!event || event.organizer?.slug !== organizerSlug) {
+//     return <NotFound />;
+//   } else {
+//     const { eventParameters, ...eventProps } = event;
+//     return eventParameters ? (
+//       <Event
+//         {...eventProps}
+//         eventParameters={eventParameters}
+//         purchaseLink={{
+//           href: {
+//             pathname: `/organizer/${organizerSlug}/event/${eventSlug}/purchase`,
+//           },
+//         }}
+//         purchaseText={t('purchase-button-activator')}
+//       />
+//     ) : (
+//       <NotFound />
+//     );
+//   }
+// }

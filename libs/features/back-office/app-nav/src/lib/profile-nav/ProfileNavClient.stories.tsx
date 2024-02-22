@@ -1,14 +1,14 @@
 import * as authProvider from '@next/auth';
 import { StoryObj, type Meta } from '@storybook/react';
 import { screen, userEvent } from '@storybook/test';
-import { createMock } from 'storybook-addon-module-mock';
-import { ProfileNavClient } from './ProfileNavClient';
-import { ProfileNavClientExample, user } from './examples';
 import { ToasterDecorator } from '@test-utils/storybook';
+import { createMock } from 'storybook-addon-module-mock';
 import {
   organizerRoleAdmin,
   organizerRoleSuperAdmin,
 } from '../role-avatar/examples';
+import { ProfileNavClient } from './ProfileNavClient';
+import { ProfileNavClientExample, user } from './examples';
 
 const meta = {
   component: ProfileNavClient,
