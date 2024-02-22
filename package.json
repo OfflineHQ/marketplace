@@ -32,11 +32,13 @@
     "build-storybook:ui": "nx run ui-components:build-storybook",
     "build-storybook:web": "nx run web:build-storybook",
     "build-storybook:back-office": "nx run back-office:build-storybook",
+    "build-storybook:unlock": "nx run unlock:build-storybook",
     "vercel-build": "npm i -g node-gyp",
     "lint:all": "pnpm nx run-many -t lint --all",
     "test:all": "NODE_ENV=test pnpm nx run-many -t test --all",
     "build:web": "pnpm nx build web --prod --no-cache --verbose",
-    "build:back-office": "pnpm nx build back-office --prod --no-cache --verbose"
+    "build:back-office": "pnpm nx build back-office --prod --no-cache --verbose",
+    "build:unlock": "pnpm nx build unlock --prod --no-cache --verbose"
   },
   "private": true,
   "dependencies": {
@@ -232,6 +234,7 @@
     "@typescript-eslint/parser": "6.19.0",
     "@vercel/remote-nx": "^1.1.1",
     "axe-playwright": "^2.0.1",
+    "babel-jest": "^29.4.1",
     "babel-loader": "^9.1.3",
     "chromatic": "^6.24.1",
     "cross-env": "^7.0.3",
