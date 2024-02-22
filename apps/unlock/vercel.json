@@ -1,0 +1,8 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "pnpm npm-run-all lint:all test:all build:unlock --aggregate-output --parallel",
+  "outputDirectory": "../../dist/apps/unlock/.next",
+  "installCommand": "pnpm install",
+  "ignoreCommand": "node ../../tools/scripts/vercel-ignore.js",
+  "crons": []
+}
