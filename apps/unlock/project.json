@@ -1,7 +1,7 @@
 {
-  "name": "back-office",
+  "name": "unlock",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/back-office",
+  "sourceRoot": "apps/unlock",
   "projectType": "application",
   "targets": {
     "build": {
@@ -9,8 +9,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/back-office",
-        "postcssConfig": "apps/back-office/postcss.config.js",
+        "outputPath": "dist/apps/unlock",
+        "postcssConfig": "apps/unlock/postcss.config.js",
         "debug": true
       },
       "assets": [
@@ -27,7 +27,7 @@
       ],
       "configurations": {
         "development": {
-          "outputPath": "apps/back-office"
+          "outputPath": "apps/unlock"
         },
         "production": {}
       }
@@ -36,9 +36,9 @@
       "executor": "@nx/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "back-office:build",
+        "buildTarget": "unlock:build",
         "hmr": true,
-        "port": 1789,
+        "port": 8889,
         "dev": true,
         "assets": [
           {
@@ -55,11 +55,11 @@
       },
       "configurations": {
         "development": {
-          "buildTarget": "back-office:build:development",
+          "buildTarget": "unlock:build:development",
           "dev": true
         },
         "production": {
-          "buildTarget": "back-office:build:production",
+          "buildTarget": "unlock:build:production",
           "dev": false
         }
       }
@@ -67,14 +67,14 @@
     "export": {
       "executor": "@nx/next:export",
       "options": {
-        "buildTarget": "back-office:build:production"
+        "buildTarget": "unlock:build:production"
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/apps/back-office"],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/back-office/jest.config.ts"
+        "jestConfig": "apps/unlock/jest.config.ts"
       }
     },
     "lint": {
@@ -84,9 +84,9 @@
     "storybook": {
       "executor": "@nx/storybook:storybook",
       "options": {
-        "port": 4403,
+        "port": 4404,
         "quiet": true,
-        "configDir": "apps/back-office/.storybook"
+        "configDir": "apps/unlock/.storybook"
       },
       "configurations": {
         "ci": {
@@ -98,8 +98,8 @@
       "executor": "@nx/storybook:build",
       "outputs": ["{options.outputDir}"],
       "options": {
-        "configDir": "apps/back-office/.storybook",
-        "outputDir": "dist/storybook/back-office",
+        "configDir": "apps/unlock/.storybook",
+        "outputDir": "dist/storybook/unlock",
         "webpackStatsJson": true
       },
       "configurations": {
@@ -111,14 +111,14 @@
     "test-storybook": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "test-storybook -c apps/back-office/.storybook --url=http://localhost:4403"
+        "command": "test-storybook -c apps/unlock/.storybook --url=http://localhost:4403"
       }
     },
     "e2e": {
       "executor": "@nx/playwright:playwright",
-      "outputs": ["{workspaceRoot}/dist/.playwright/apps/back-office"],
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/unlock"],
       "options": {
-        "config": "apps/back-office/playwright.config.ts"
+        "config": "apps/unlock/playwright.config.ts"
       }
     }
   },

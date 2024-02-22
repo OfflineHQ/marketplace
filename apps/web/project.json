@@ -64,20 +64,6 @@
         }
       }
     },
-    "is-services-launched": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["node tools/test/isServicesLaunched.js"],
-        "readyWhen": "Services ready"
-      }
-    },
-    "serve-e2e": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["nx is-services-launched web", "nx serve web"],
-        "readyWhen": "Services ready"
-      }
-    },
     "export": {
       "executor": "@nx/next:export",
       "options": {
