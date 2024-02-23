@@ -39,6 +39,8 @@
     "**/**/examples.tsx",
     "node_modules",
     "jest.config.ts",
+    "**/**/*.spec.ts",
+    "**/**/*.test.ts",
     "**/**/*.stories.ts",
     "**/**/*.stories.js",
     "**/**/*.stories.jsx",

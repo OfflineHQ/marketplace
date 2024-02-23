@@ -88,7 +88,8 @@
     },
     "@nx/next": {
       "application": {
-        "linter": "eslint"
+        "linter": "eslint",
+        "style": "none"
       }
     },
     "@nx/web:application": {
@@ -104,7 +105,7 @@
     }
   },
   "defaultProject": "web",
-  "defaultAffected": ["web", "back-office"],
+  "defaultAffected": ["web", "back-office", "unlock"],
   "defaultBase": "staging",
   "cacheDirectory": "/tmp/nx-cache",
   "nxCloudAccessToken": "",
