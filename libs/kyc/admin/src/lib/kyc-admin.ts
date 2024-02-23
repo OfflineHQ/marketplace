@@ -113,9 +113,9 @@ export class Kyc {
         createDate: existingApplicant.createdAt,
         ...kyc,
       };
-    } catch (e) {
+    } catch (e: unknown) {
       // if the error is something else than that the applicant is not found pass down the error
-      if (!e.message?.includes('404')) {
+      if (e instanceof Error && !e.message?.includes('404')) {
         throw e;
       }
     }

@@ -5,20 +5,19 @@
     "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": false,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
     "composite": false,
-    "types": ["jest", "node"],
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "strictNullChecks": true
+    "types": ["jest", "node"]
   },
   "include": [
     "**/*.ts",
@@ -29,16 +28,15 @@
     "../../libs/next/types/**/*.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts",
-    "../../dist/apps/back-office/.next/types/**/*.ts",
-    "../../apps/back-office/.next/types/**/*.ts",
-    "../../dist/apps/back-office/.next/types/**/*.ts"
+    "../../apps/unlock/.next/types/**/*.ts",
+    "../../dist/apps/unlock/.next/types/**/*.ts"
   ],
   "exclude": [
-    "**/**/examples.tsx",
     "node_modules",
+    "**/**/examples.tsx",
     "jest.config.ts",
-    "**/**/*.spec.ts",
-    "**/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
     "**/**/*.stories.ts",
     "**/**/*.stories.js",
     "**/**/*.stories.jsx",

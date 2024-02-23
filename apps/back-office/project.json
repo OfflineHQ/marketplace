@@ -22,7 +22,7 @@
         {
           "input": "libs/currency/api/src/rates",
           "glob": "**/*",
-          "output": "dist/apps/web/rates"
+          "output": "dist/apps/back-office/rates"
         }
       ],
       "configurations": {
@@ -45,11 +45,6 @@
             "input": "libs/ui/shared/src/assets",
             "glob": "**/*",
             "output": "assets"
-          },
-          {
-            "input": "libs/currency/api/src/rates",
-            "glob": "**/*",
-            "output": "dist/apps/web/rates"
           }
         ]
       },
@@ -62,23 +57,6 @@
           "buildTarget": "back-office:build:production",
           "dev": false
         }
-      }
-    },
-    "is-services-launched": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["node tools/test/isServicesLaunched.js"],
-        "readyWhen": "Services ready"
-      }
-    },
-    "serve-e2e": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "nx is-services-launched back-office",
-          "nx serve back-office"
-        ],
-        "readyWhen": "Services ready"
       }
     },
     "export": {

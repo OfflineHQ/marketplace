@@ -190,6 +190,7 @@
       "@ui/icons": ["libs/ui/icons/src/index.ts"],
       "@ui/shared": ["libs/ui/shared/src/index.ts"],
       "@ui/theme": ["libs/ui/theme/src/index.ts"],
+      "@unlock/*": ["apps/unlock/*"],
       "@utils": ["libs/utils/src/index.ts"],
       "@web/*": ["apps/web/*"]
     }
