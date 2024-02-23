@@ -1,7 +1,7 @@
 import * as authProvider from '@next/auth';
 import { StoryObj, type Meta } from '@storybook/react';
 import { screen, userEvent } from '@storybook/test';
-import { ToasterDecorator } from '@test-utils/storybook';
+import { ToasterDecorator } from '@test-utils/storybook-decorators';
 import { createMock } from 'storybook-addon-module-mock';
 import {
   organizerRoleAdmin,

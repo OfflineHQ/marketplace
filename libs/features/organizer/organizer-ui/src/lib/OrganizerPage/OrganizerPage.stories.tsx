@@ -8,7 +8,7 @@ import {
   organizer,
   organizer2,
 } from './examples';
-import { darkMode, mobileMode } from '@test-utils/storybook';
+import { darkMode, mobileMode } from '@test-utils/storybook-modes';
 
 const meta = {
   component: OrganizerSection,

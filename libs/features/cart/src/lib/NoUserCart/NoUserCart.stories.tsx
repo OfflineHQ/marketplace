@@ -3,7 +3,7 @@ import * as authProvider from '@next/auth';
 import { StoryObj, type Meta } from '@storybook/react';
 import { expect, screen } from '@storybook/test';
 
-import { mobileMode } from '@test-utils/storybook';
+import { mobileMode } from '@test-utils/storybook-modes';
 import { createMock } from 'storybook-addon-module-mock';
 import { eventCart1Props, eventCart2Props } from '../EventPassList/examples';
 import { NoUserCart } from './NoUserCart';

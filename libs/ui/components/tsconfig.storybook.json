@@ -14,7 +14,6 @@
   ],
   "include": [
     "../../test-utils/ui-mocks/**/*.ts",
-    "../../test-utils/storybook/**/*.ts",
     "src/**/*.ts",
     "src/**/*.js",
     "src/**/*.jsx",

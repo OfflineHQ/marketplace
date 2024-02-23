@@ -11,7 +11,7 @@ import {
   passOrder2,
   passOrderWithEvent2,
 } from './examples';
-import { mobileMode } from '@test-utils/storybook';
+import { mobileMode } from '@test-utils/storybook-modes';
 
 const meta: Meta<typeof CartCancelled> = {
   render: CartCancelledExample,

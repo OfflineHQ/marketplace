@@ -7,7 +7,7 @@ import {
   event2Props,
   eventProps,
 } from './examples';
-import { darkMode, mobileMode } from '@test-utils/storybook';
+import { darkMode, mobileMode } from '@test-utils/storybook-modes';
 
 const meta = {
   component: Event,

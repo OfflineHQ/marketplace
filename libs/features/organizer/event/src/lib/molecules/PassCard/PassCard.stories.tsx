@@ -12,7 +12,7 @@ import {
   passWithMaxAmountPerUser,
   passWithSoldOut,
 } from './examples';
-import { mobileMode } from '@test-utils/storybook';
+import { mobileMode } from '@test-utils/storybook-modes';
 
 const meta = {
   component: PassCard,

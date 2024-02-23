@@ -8,7 +8,7 @@ import { DataTable } from './DataTable';
 import { columns } from './examples/columns';
 import { priorities, statuses } from './examples/data/data';
 import { tasks } from './examples/data/tasks';
-import { darkMode } from '@test-utils/storybook';
+import { darkMode } from '@test-utils/storybook-modes';
 
 const meta = {
   title: 'Organisms/DataTable',

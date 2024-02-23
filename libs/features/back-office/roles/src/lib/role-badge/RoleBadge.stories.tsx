@@ -1,7 +1,7 @@
 import { Roles_Enum_Not_Const_Values } from '@roles/types';
 import { Meta, StoryObj } from '@storybook/react';
 import { RoleBadge, RoleBadgeProps } from './RoleBadge';
-import { darkMode } from '@test-utils/storybook';
+import { darkMode } from '@test-utils/storybook-modes';
 
 const roleOptions = Object.values(Roles_Enum_Not_Const_Values).map((role) => ({
   role,

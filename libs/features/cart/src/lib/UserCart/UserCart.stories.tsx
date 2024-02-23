@@ -10,7 +10,7 @@ import {
   allPassesCartUser,
   userPassPendingOrders1,
 } from './examples';
-import { mobileMode } from '@test-utils/storybook';
+import { mobileMode } from '@test-utils/storybook-modes';
 
 const meta: Meta<typeof UserCart> = {
   component: UserCart,

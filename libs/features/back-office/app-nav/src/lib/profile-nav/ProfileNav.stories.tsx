@@ -12,7 +12,7 @@ import {
   itemsUserWithRoles,
   user,
 } from './examples';
-import { mobileMode } from '@test-utils/storybook';
+import { mobileMode } from '@test-utils/storybook-modes';
 
 const meta = {
   component: ProfileNav,

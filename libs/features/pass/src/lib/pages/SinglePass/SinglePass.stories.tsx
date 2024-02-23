@@ -10,7 +10,7 @@ import {
   eventPassNft2,
   owner,
 } from './examples';
-import { darkMode, mobileMode } from '@test-utils/storybook';
+import { darkMode, mobileMode } from '@test-utils/storybook-modes';
 
 // Import the stories you want to reuse
 

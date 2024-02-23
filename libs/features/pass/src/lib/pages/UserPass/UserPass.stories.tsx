@@ -11,7 +11,7 @@ import {
 } from '../../organisms/UserPassList/examples';
 import { UserPass } from './UserPass';
 import { UserPassExample } from './examples';
-import { darkMode, mobileMode } from '@test-utils/storybook';
+import { darkMode, mobileMode } from '@test-utils/storybook-modes';
 
 const meta: Meta<typeof UserPass> = {
   component: UserPass,

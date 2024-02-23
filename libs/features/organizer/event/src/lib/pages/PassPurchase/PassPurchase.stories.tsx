@@ -2,7 +2,7 @@
 import * as eventApi from '@features/organizer/event-api';
 import { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent, waitFor } from '@storybook/test';
-import { mobileMode } from '@test-utils/storybook';
+import { mobileMode } from '@test-utils/storybook-modes';
 import { createMock, getMock, render } from 'storybook-addon-module-mock';
 import { default as passCardMeta } from '../../molecules/PassCard/PassCard.stories';
 import { eventProps } from '../Event/examples';

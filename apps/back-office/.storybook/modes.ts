@@ -1,2 +1,2 @@
-import { allModes as modes } from '@test-utils/storybook';
+import { allModes as modes } from '@test-utils/storybook-modes';
 export const allModes = modes;
