@@ -1,4 +1,3 @@
-import { AppNavLayout, type AppNavLayoutProps } from '@features/app-nav';
 import { PHProvider, PostHogPageview } from '@insight/client';
 import { AuthProvider, NextAuthProvider } from '@next/auth';
 import { getMessages, locales } from '@next/i18n';
@@ -79,22 +78,22 @@ export const metadata: Metadata = {
 //   return locales.map((locale) => ({ locale }));
 // }
 
-interface RootLayoutProps extends AppNavLayoutProps {
+interface RootLayoutProps {
   params: {
     locale: string;
   };
+  children: React.ReactNode;
 }
 
 export default async function RootLayout({
   params: { locale },
-  ...appNavLayout
+  children,
 }: RootLayoutProps) {
   // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale as any)) notFound();
   const messages = await getMessages(locale);
   const session = await getSession();
   const t = await getTranslations({ locale, namespace: 'Auth' });
-  let rates;
   return (
     <html lang={locale} suppressHydrationWarning>
       <head />
@@ -133,7 +132,7 @@ export default async function RootLayout({
                   isConnected={isConnected}
                 >
                   <ReactQueryProviders>
-                    <AppNavLayout {...appNavLayout} />
+                    {children}
                     <Toaster />
                   </ReactQueryProviders>
                 </AuthProvider>
