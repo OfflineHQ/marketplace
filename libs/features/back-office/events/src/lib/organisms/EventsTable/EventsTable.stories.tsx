@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent, within } from '@storybook/test';
 import { EventsTableExample, eventsTableData } from './examples';
 
-import { mobileMode } from '@test-utils/storybook';
+import { mobileMode } from '@test-utils/storybook-modes';
 import { EventsTable } from './EventsTable';
 
 const meta: Meta<typeof EventsTable> = {

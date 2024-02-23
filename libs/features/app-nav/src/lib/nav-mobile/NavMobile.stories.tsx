@@ -1,7 +1,7 @@
 import type { Meta } from '@storybook/react';
 import { NavMobile } from './NavMobile';
 import { NavMobileExample } from './examples';
-import { mobileMode } from '@test-utils/storybook';
+import { mobileMode } from '@test-utils/storybook-modes';
 
 const Story: Meta<typeof NavMobile> = {
   component: NavMobile,

@@ -4,7 +4,8 @@ import * as checkPass from '../../actions/checkEventPassFilesHash';
 import * as deleteFile from '../../actions/deleteEventPassFile';
 import * as getPass from '../../actions/getEventPassNftFiles';
 
-import { screen, userEvent, waitFor, within } from '@storybook/test';
+import { screen, userEvent, within } from '@storybook/test';
+import { SessionDecorator } from '@test-utils/storybook-decorators';
 import { getMock } from 'storybook-addon-module-mock';
 import { EventPassNftFilesTable } from './EventPassNftFilesTable';
 import {
@@ -13,7 +14,6 @@ import {
   eventPassNftVIPWithContract,
   eventPassNftVipNoContractDelayedReveal,
 } from './examples';
-import { SessionDecorator } from '@test-utils/storybook';
 
 const meta = {
   component: EventPassNftFilesTable,

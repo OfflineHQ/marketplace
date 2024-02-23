@@ -8,7 +8,7 @@ import {
 } from './examples';
 
 import { Meta, StoryObj } from '@storybook/react';
-import { mobileMode } from '@test-utils/storybook';
+import { mobileMode } from '@test-utils/storybook-modes';
 import { getMock } from 'storybook-addon-module-mock';
 import {
   eventParametersSaleEnded,

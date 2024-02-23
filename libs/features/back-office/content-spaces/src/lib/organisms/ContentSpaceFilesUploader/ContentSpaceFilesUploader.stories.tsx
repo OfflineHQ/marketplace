@@ -6,7 +6,7 @@ import * as getPass from '../../actions/getContentSpaceFiles';
 
 import * as walletProvider from '@next/wallet';
 import { screen, userEvent } from '@storybook/test';
-import { SessionDecorator } from '@test-utils/storybook';
+import { SessionDecorator } from '@test-utils/storybook-decorators';
 import { createMock, getMock } from 'storybook-addon-module-mock';
 import { contentSpaceFiles } from '../ContentSpaceFilesTable/examples';
 import { ContentSpaceFilesUploader } from './ContentSpaceFilesUploader';

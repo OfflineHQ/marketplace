@@ -6,7 +6,7 @@ import * as nextIntl from 'next-intl';
 import * as getPass from '../../actions/getEventPassNftFiles';
 
 import { screen, userEvent } from '@storybook/test';
-import { SessionDecorator } from '@test-utils/storybook';
+import { SessionDecorator } from '@test-utils/storybook-decorators';
 import { createMock, getMock } from 'storybook-addon-module-mock';
 import {
   eventPassNftFiles,

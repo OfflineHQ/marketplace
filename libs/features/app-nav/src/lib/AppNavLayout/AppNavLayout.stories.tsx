@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/test';
 
-import { darkMode, mobileMode } from '@test-utils/storybook';
+import { darkMode, mobileMode } from '@test-utils/storybook-modes';
 import { AppNavLayout } from './AppNavLayout';
 import {
   CartNavEmpty,

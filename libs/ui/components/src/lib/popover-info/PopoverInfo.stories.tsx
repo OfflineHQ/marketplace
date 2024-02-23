@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { screen, userEvent } from '@storybook/test';
 import { Badge } from '../badge/Badge';
 import { PopoverInfo, PopoverInfoProps, iconSizes } from './PopoverInfo';
-import { darkMode } from '@test-utils/storybook';
+import { darkMode } from '@test-utils/storybook-modes';
 
 export default {
   title: 'Molecules/PopoverInfo',

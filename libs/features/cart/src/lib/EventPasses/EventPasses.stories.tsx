@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
 
-import { mobileMode } from '@test-utils/storybook';
+import { mobileMode } from '@test-utils/storybook-modes';
 import { EventPasses, EventPassesSkeleton } from './EventPasses';
 import { EventPassesExample, eventPassesProps } from './examples';
 

@@ -6,7 +6,7 @@ import {
   ReactQueryDecorator,
   SessionDecorator,
   ToasterDecorator,
-} from '@test-utils/storybook';
+} from '@test-utils/storybook-decorators';
 import * as nextAuth from 'next-auth/react';
 import * as nextIntl from 'next-intl';
 import { createMock } from 'storybook-addon-module-mock';

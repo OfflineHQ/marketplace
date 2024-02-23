@@ -1,7 +1,7 @@
 {
-  "name": "test-utils-storybook",
+  "name": "test-utils-storybook-modes",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/test-utils/storybook/src",
+  "sourceRoot": "libs/test-utils/storybook-modes/src",
   "projectType": "library",
   "targets": {
     "lint": {

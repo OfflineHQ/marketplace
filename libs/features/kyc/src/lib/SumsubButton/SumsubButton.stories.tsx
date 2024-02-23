@@ -1,7 +1,10 @@
 import * as kycApi from '@features/kyc-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
-import { ReactQueryDecorator, SessionDecorator } from '@test-utils/storybook';
+import {
+  ReactQueryDecorator,
+  SessionDecorator,
+} from '@test-utils/storybook-decorators';
 import * as nextIntl from 'next-intl';
 import { createMock } from 'storybook-addon-module-mock';
 import { SumsubButton } from './SumsubButton';
