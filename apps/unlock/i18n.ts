@@ -3,7 +3,7 @@ import { getRequestConfig } from 'next-intl/server';
 import { messages } from '@next/i18n';
 
 export default getRequestConfig(async ({ locale }) => ({
-  messages: messages[locale],
+  messages: messages[locale as 'en'],
   // This is the default, a single date instance will be used
   // by all Server Components to ensure consistency
   now: new Date(),

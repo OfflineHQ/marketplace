@@ -4,5 +4,11 @@
   "outputDirectory": "../../dist/apps/unlock/.next",
   "installCommand": "pnpm install",
   "ignoreCommand": "node ../../tools/scripts/vercel-ignore.js",
-  "crons": []
+  "crons": [],
+  "rewrites": [
+    {
+      "source": "/ingest/:path*",
+      "destination": "https://eu.posthog.com/:path*"
+    }
+  ]
 }

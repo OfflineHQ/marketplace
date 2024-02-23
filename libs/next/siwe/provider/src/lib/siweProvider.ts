@@ -69,7 +69,9 @@ export const SiweProvider = () =>
             return appUser as AppUser;
           } catch (error) {
             console.error({ error });
-            throw new Error(error);
+            throw new Error(
+              error instanceof Error ? error.message : String(error),
+            );
           }
         } else {
           const error = 'Invalid signature';
@@ -78,7 +80,7 @@ export const SiweProvider = () =>
         }
       } catch (error) {
         console.error({ error });
-        throw new Error(error);
+        throw new Error(error instanceof Error ? error.message : String(error));
       }
     },
   });
