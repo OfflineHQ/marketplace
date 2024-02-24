@@ -6,12 +6,14 @@ on:
       - libs/ui/**
       - libs/features/**
       - '!libs/features/back-office/**'
+      - '!libs/features/unlock/**'
   push:
     branches: ['staging']
     paths:
       - libs/ui/**
       - libs/features/**
       - '!libs/features/back-office/**'
+      - '!libs/features/unlock/**'
   workflow_dispatch:
 
 concurrency:

@@ -13,7 +13,8 @@ import {
 } from './examples';
 
 import { EventStatus_Enum } from '@gql/shared/types';
-import { SessionDecorator, mobileMode } from '@test-utils/storybook-modes';
+import { SessionDecorator } from '@test-utils/storybook-decorators';
+import { mobileMode } from '@test-utils/storybook-modes';
 import { getMock, render } from 'storybook-addon-module-mock';
 import {
   eventPassNftFiles,
