@@ -108,6 +108,7 @@
       "@features/payment-api": ["libs/features/payment-api/src/index.ts"],
       "@features/settings": ["libs/features/settings/src/index.ts"],
       "@features/settings/server": ["libs/features/settings/src/server.ts"],
+      "@features/unlock/app-nav": ["libs/features/unlock/app-nav/src/index.ts"],
       "@features/unlock/shopify": ["libs/features/unlock/shopify/src/index.ts"],
       "@features/unlock/shopify/server": ["libs/unlock/shopify/src/server.ts"],
       "@file-upload/admin": ["libs/file-upload/admin/src/index.ts"],
