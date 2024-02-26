@@ -116,7 +116,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
         setIsLoadingApprove(true);
         // ------- namespaces builder util ------------ //
         const namespaces = buildApprovedNamespaces({
-          proposal: proposal.params,
+          proposal: { ...proposal.params, expiry: proposal.params.expiry || 0 },
           supportedNamespaces: {
             eip155: {
               chains: [`eip155:${env.NEXT_PUBLIC_CHAIN}`],
