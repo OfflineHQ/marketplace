@@ -1,7 +1,8 @@
 'use client';
 import { AppUser } from '@next/types';
 import { useWalletConnect } from '@next/wallet';
-import { useEffect } from 'react';
+import { Button, Input } from '@ui/components';
+import { useEffect, useState } from 'react';
 
 export interface WalletConnectProps extends Pick<AppUser, 'address'> {
   wcUri?: string;
@@ -28,6 +29,8 @@ export function WalletConnect({ address, wcUri }: WalletConnectProps) {
     }
   }, [wcUri, isReady, connectToWallet]);
 
+  const [uri, setUri] = useState('');
+
   return (
     <div className="flex flex-col space-y-2">
       <h2 className="text-3xl font-bold">Connect to WalletConnect</h2>
@@ -35,6 +38,14 @@ export function WalletConnect({ address, wcUri }: WalletConnectProps) {
         <p>isReady: {isReady ? 'true' : 'false'}</p>
         <p>loading: {loading ? 'true' : 'false'}</p>
         <p>isLoadingApprove: {isLoadingApprove ? 'true' : 'false'}</p>
+        <Input
+          placeholder="Enter your WalletConnect URI"
+          className="w-full"
+          onInput={(e) => setUri(e.currentTarget.value)}
+        />
+        <Button onClick={() => connectToWallet(uri)}>
+          Connect to WC {(loading || isLoadingApprove) && 'is loading...'}
+        </Button>
       </div>
     </div>
   );
