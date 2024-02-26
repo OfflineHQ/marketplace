@@ -1,6 +1,7 @@
 'use client';
 
 import env from '@env/client';
+import { AppUser } from '@next/types';
 import * as encoding from '@walletconnect/encoding';
 import { buildApprovedNamespaces, parseUri } from '@walletconnect/utils';
 import { Web3WalletTypes } from '@walletconnect/web3wallet';
@@ -16,84 +17,97 @@ export function convertHexToUtf8(hex: string) {
   }
 }
 
-export const useWalletConnect = (address: string) => {
+export type UseWalletConnectProps = Pick<AppUser, 'address'>;
+
+export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
   const [loading, setLoading] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const [isLoadingApprove, setIsLoadingApprove] = useState(false);
+  const [activeProposals, setActiveProposals] = useState<
+    Record<string, boolean>
+  >({});
   const { wallet } = useWalletContext();
-  const signer = wallet?.signer;
 
   const initializeWalletConnect = useCallback(async () => {
-    setLoading(true);
     try {
       await createWeb3Wallet('');
       console.log('WalletConnect initialized:', web3wallet);
-      setLoading(false);
+      console.log(
+        'WalletConnect active sessions:',
+        web3wallet.getActiveSessions(),
+      );
+      setIsReady(true);
     } catch (error) {
       console.error('Failed to initialize WalletConnect: ', error);
-      setLoading(false);
+      setIsReady(false);
     }
   }, []);
 
-  const connectToWallet = useCallback(async (uri: string) => {
-    const { topic: pairingTopic } = parseUri(uri);
-    // if for some reason, the proposal is not received, we need to close the modal when the pairing expires (5mins)
-    const pairingExpiredListener = ({ topic }: { topic: string }) => {
-      if (pairingTopic === topic) {
-        console.log('pairing expired');
-        //     styledToast('Pairing expired. Please try again with new Connection URI', 'error')
-        //     ModalStore.close()
+  const connectToWallet = useCallback(
+    async (uri: string) => {
+      const { topic: pairingTopic } = parseUri(uri);
+      // if for some reason, the proposal is not received, we need to close the modal when the pairing expires (5mins)
+      const pairingExpiredListener = ({ topic }: { topic: string }) => {
+        if (pairingTopic === topic) {
+          console.log('pairing expired');
+          web3wallet.core.pairing.events.removeListener(
+            'pairing_expire',
+            pairingExpiredListener,
+          );
+        }
+      };
+      web3wallet.on('session_proposal', (args) => {
+        console.log('session_proposal:', args);
+        // Check if the proposal has already been handled
+        if (!activeProposals[args.id]) {
+          setActiveProposals((prev) => ({ ...prev, [args.id]: true }));
+          onApprove(args);
+        } else {
+          console.log(`Proposal ${args.id} is already being processed.`);
+        }
         web3wallet.core.pairing.events.removeListener(
           'pairing_expire',
           pairingExpiredListener,
         );
+      });
+      // Handle session request
+
+      web3wallet.on('session_request', async (event) => {
+        if (!wallet) {
+          console.error('No signer found');
+          return;
+        }
+        const { topic, params, id } = event;
+        const { request } = params;
+        const requestParamsMessage = request.params[0];
+
+        // convert `requestParamsMessage` by using a method like hexToUtf8
+        const message = convertHexToUtf8(requestParamsMessage);
+
+        // sign the message
+        const signedMessage = await wallet.signMessage(message);
+
+        const response = { id, result: signedMessage, jsonrpc: '2.0' };
+        console.log('response:', response);
+
+        await web3wallet.respondSessionRequest({ topic, response });
+      });
+
+      try {
+        setLoading(true);
+        web3wallet.core.pairing.events.on(
+          'pairing_expire',
+          pairingExpiredListener,
+        );
+        await web3wallet.pair({ uri });
+      } catch (error) {
+        console.error('Failed to connect to WalletConnect: ', error);
+      } finally {
+        setLoading(false);
       }
-    };
-    web3wallet.on('session_proposal', (args) => {
-      console.log('session_proposal:', args);
-      onApprove(args);
-      web3wallet.core.pairing.events.removeListener(
-        'pairing_expire',
-        pairingExpiredListener,
-      );
-    });
-    // Handle session request
-
-    web3wallet.on('session_request', async (event) => {
-      if (!signer) {
-        console.error('No signer found');
-        return;
-      }
-      const { topic, params, id } = event;
-      const { request } = params;
-      const requestParamsMessage = request.params[0];
-
-      // convert `requestParamsMessage` by using a method like hexToUtf8
-      const message = convertHexToUtf8(requestParamsMessage);
-
-      // sign the message
-      const signedMessage = await signer.signMessage(message);
-
-      const response = { id, result: signedMessage, jsonrpc: '2.0' };
-      console.log('response:', response);
-
-      await web3wallet.respondSessionRequest({ topic, response });
-    });
-
-    try {
-      setLoading(true);
-      web3wallet.core.pairing.events.on(
-        'pairing_expire',
-        pairingExpiredListener,
-      );
-      await web3wallet.pair({ uri });
-    } catch (error) {
-      console.error('Failed to connect to WalletConnect: ', error);
-      //   styledToast((error as Error).message, 'error')
-      //   ModalStore.close()
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    [activeProposals, wallet, address],
+  );
 
   // Handle approve action, construct session namespace
   const onApprove = useCallback(
@@ -127,21 +141,32 @@ export const useWalletConnect = (address: string) => {
             namespaces,
           });
           console.log('session:', session);
-          //     SettingsStore.setSessions(Object.values(web3wallet.getActiveSessions()))
+          // After successful approval, remove the proposal from activeProposals
+          setActiveProposals((prev) => {
+            const updatedProposals = { ...prev };
+            delete updatedProposals[proposal.id];
+            return updatedProposals;
+          });
         } catch (e) {
           console.error('Failed to approve session:', e);
           setIsLoadingApprove(false);
-          //     styledToast((e as Error).message, 'error')
+          // If approval fails, also remove the proposal to allow retry
+          setActiveProposals((prev) => {
+            const updatedProposals = { ...prev };
+            delete updatedProposals[proposal.id];
+            return updatedProposals;
+          });
           return;
         }
       }
       setIsLoadingApprove(false);
-      // ModalStore.close()
     },
     [address],
   );
 
   return {
+    isReady,
+    web3wallet,
     initializeWalletConnect,
     connectToWallet,
     loading,
