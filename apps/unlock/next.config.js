@@ -135,12 +135,32 @@ const sentryWebpackPluginOptions = {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
+// https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy#without-nonces
+// frame-ancestors *; // Allows embedding from any origin (use carefully)
+const cspHeader = `
+    frame-ancestors *;
+`;
 
 module.exports = async (phase, context) => {
   const addNx = withNx({
     ...nextConfig,
+    async headers() {
+      // only add csp header when deployed with vercel to avoid Safari error in local
+      return process.env.VERCEL_ENV
+        ? [
+            {
+              source: '/(.*)',
+              headers: [
+                {
+                  key: 'Content-Security-Policy',
+                  value: cspHeader.replace(/\n/g, ''),
+                },
+              ],
+            },
+          ]
+        : [];
+    },
   });
-
   let config = await addNx(phase);
   config = await withSentryConfig(config, sentryWebpackPluginOptions);
   config = await withBundleAnalyzer(config);
