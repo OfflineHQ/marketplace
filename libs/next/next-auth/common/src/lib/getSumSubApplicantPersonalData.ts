@@ -1,7 +1,7 @@
 'use server';
 
-import { Kyc } from '@kyc/admin';
 import env from '@env/server';
+import { Kyc } from '@kyc/admin';
 
 export async function getSumSubApplicantPersonalData(applicantId: string) {
   const kyc = new Kyc({

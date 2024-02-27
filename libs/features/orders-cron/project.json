@@ -1,0 +1,30 @@
+{
+  "name": "features-orders-cron",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/features/orders-cron/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/features/orders-cron",
+        "main": "libs/features/orders-cron/src/index.ts",
+        "tsConfig": "libs/features/orders-cron/tsconfig.lib.json",
+        "assets": ["libs/features/orders-cron/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test-integration": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/features/orders-cron/jest.integration.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

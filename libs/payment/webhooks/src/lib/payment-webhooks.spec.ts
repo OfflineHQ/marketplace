@@ -122,11 +122,11 @@ describe('stripeCheckoutStatus', () => {
     expect(result.status).toEqual(500);
   });
 
-  it('Should handle error confirming checkout session failed because `Error claiming NFTs` and no payment_intent is on checkout session for refund', async () => {
+  it('Should handle error confirming checkout session failed because `Error processing orders` and no payment_intent is on checkout session for refund', async () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs: test');
+        throw new Error('Error processing orders: test');
       });
 
     mockPayment.refundPayment = jest.fn();
@@ -141,7 +141,7 @@ describe('stripeCheckoutStatus', () => {
     expect(result.status).toEqual(500);
   });
 
-  it('Should handle error and refund when confirming checkout session because `Error claiming NFTs`', async () => {
+  it('Should handle error and refund when confirming checkout session because `Error processing orders`', async () => {
     mockPayment.webhookStripeConstructEvent = jest.fn().mockReturnValue({
       type: StripeCheckoutSessionEnum.completed,
       data: {
@@ -158,7 +158,7 @@ describe('stripeCheckoutStatus', () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs : Fail');
+        throw new Error('Error processing orders : Fail');
       });
     mockPayment.refundPayment = jest.fn();
 
@@ -192,7 +192,7 @@ describe('stripeCheckoutStatus', () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs : Fail');
+        throw new Error('Error processing orders : Fail');
       });
 
     mockPayment.refundPayment = jest.fn().mockImplementationOnce(() => {
@@ -254,7 +254,7 @@ describe('stripeCheckoutStatus', () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs: test');
+        throw new Error('Error processing orders: test');
       });
     mockPayment.refundPayment = jest.fn();
 
