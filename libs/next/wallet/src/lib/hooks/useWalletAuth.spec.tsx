@@ -46,12 +46,12 @@ describe('useWalletAuth', () => {
     expect(result.current.connectionError).toBeNull();
   });
 
-  describe('useWalletAuth connect function', () => {
+  describe('useWalletAuth connectWithSiwe function', () => {
     it('should connect to wallet address and set state variables correctly', async () => {
       const { result } = renderHook(() => useWalletAuth(), { wrapper });
 
       act(() => {
-        result.current.connect(jest.fn(), '0x1234');
+        result.current.connectWithSiwe(jest.fn(), '0x1234');
       });
 
       await waitFor(() => expect(result.current.isConnected).toBe(true));
@@ -61,7 +61,7 @@ describe('useWalletAuth', () => {
       const mockLoginSiwe = jest.fn();
 
       act(() => {
-        result.current.connect(mockLoginSiwe, '0x1234');
+        result.current.connectWithSiwe(mockLoginSiwe, '0x1234');
       });
 
       await waitFor(() => expect(result.current.isConnected).toBe(true));
@@ -73,7 +73,7 @@ describe('useWalletAuth', () => {
       const mockLoginSiwe = jest.fn();
 
       act(() => {
-        result.current.connect(mockLoginSiwe, undefined, true);
+        result.current.connectWithSiwe(mockLoginSiwe, undefined, true);
       });
 
       await waitFor(() => expect(result.current.isConnected).toBe(true));
@@ -85,7 +85,7 @@ describe('useWalletAuth', () => {
       const { result } = renderHook(() => useWalletAuth(), { wrapper });
 
       await expect(
-        result.current.connect(
+        result.current.connectWithSiwe(
           jest.fn().mockRejectedValue(new Error('Connection failed')),
           undefined,
           true,
@@ -102,7 +102,7 @@ describe('useWalletAuth', () => {
 
     // First, connect to simulate a connected state
     act(() => {
-      result.current.connect(jest.fn(), '0x1234');
+      result.current.connectWithSiwe(jest.fn(), '0x1234');
     });
 
     await waitFor(() => expect(result.current.isConnected).toBe(true));

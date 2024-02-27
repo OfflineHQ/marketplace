@@ -44,7 +44,7 @@ export function useSafeAuth({
 }: UseSafeAuthProps = {}) {
   const [connecting, setConnecting] = useState(false);
   const {
-    connect,
+    connectWithSiwe,
     disconnect,
     isReady,
     isConnecting: isWalletConnecting,
@@ -138,15 +138,15 @@ export function useSafeAuth({
   );
 
   const login = useCallback(async () => {
-    await connect(loginSiwe);
-  }, [connect, loginSiwe]);
+    await connectWithSiwe(loginSiwe);
+  }, [connectWithSiwe, loginSiwe]);
 
   const loginAuto = useCallback(
     async (address: string) => {
-      await connect(loginSiwe, address, true);
+      await connectWithSiwe(loginSiwe, address, true);
       identifyUserPostHog(address);
     },
-    [connect, loginSiwe, identifyUserPostHog],
+    [connectWithSiwe, loginSiwe, identifyUserPostHog],
   );
 
   const logoutSiwe = useCallback(
@@ -172,8 +172,8 @@ export function useSafeAuth({
   );
 
   const createAccount = useCallback(async () => {
-    await connect(loginSiwe, undefined, true);
-  }, [connect, loginSiwe]);
+    await connectWithSiwe(loginSiwe, undefined, true);
+  }, [connectWithSiwe, loginSiwe]);
 
   useEffect(() => {
     (async () => {

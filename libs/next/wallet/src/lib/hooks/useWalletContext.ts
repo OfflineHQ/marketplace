@@ -9,6 +9,10 @@ export function useWalletContext() {
     setProvider,
     walletAdaptor,
     setWalletAdaptor,
+    walletConnected,
+    walletInStorage,
+    setWalletInStorage,
+    setWalletConnected,
   } = useContext(WalletContext);
   return {
     wallet,
@@ -17,5 +21,9 @@ export function useWalletContext() {
     setProvider,
     walletAdaptor,
     setWalletAdaptor,
+    walletConnected,
+    walletInStorage,
+    setWalletInStorage,
+    setWalletConnected,
   };
 }
