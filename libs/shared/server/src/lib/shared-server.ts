@@ -36,6 +36,10 @@ export function isBackOffice(): boolean {
   return process.env.APP === 'BACKOFFICE';
 }
 
+export function isUnlock(): boolean {
+  return process.env.APP === 'UNLOCK';
+}
+
 export function getHasuraEndpoint(): string {
   return process.env.HASURA_PROJECT_ENDPOINT as string;
 }
