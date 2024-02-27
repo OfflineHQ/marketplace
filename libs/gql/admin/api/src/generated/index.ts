@@ -362,6 +362,26 @@ ${RoleAssignmentFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetOrdersWithClaimInfoDocument = `
+    query GetOrdersWithClaimInfo($ids: [uuid!]!) {
+  order(where: {id: {_in: $ids}}) {
+    id
+    eventPassId
+    packId
+    quantity
+    status
+    eventPassNftContract {
+      contractAddress
+    }
+    packNftContract {
+      contractAddress
+    }
+    account {
+      address
+    }
+  }
+}
+    `;
  const DeletePendingOrdersDocument = `
     mutation DeletePendingOrders($ids: [uuid!]!) {
   delete_pendingOrder(where: {id: {_in: $ids}}) {
@@ -917,6 +937,24 @@ ${EventParametersFieldsFragmentDoc}`;
   }
 }
     `;
+ const InsertMinterTemporaryWalletDocument = `
+    mutation InsertMinterTemporaryWallet($object: minterTemporaryWallet_insert_input!) {
+  insert_minterTemporaryWallet_one(object: $object) {
+    address
+    eventPassId
+    packId
+  }
+}
+    `;
+ const GetMinterTemporaryWalletByEventPassIdDocument = `
+    query GetMinterTemporaryWalletByEventPassId($eventPassId: String!) {
+  minterTemporaryWallet(where: {eventPassId: {_eq: $eventPassId}}) {
+    address
+    privateKey
+    eventPassId
+  }
+}
+    `;
  const CreatePackNftContractDocument = `
     mutation CreatePackNftContract($object: packNftContract_insert_input!) {
   insert_packNftContract_one(object: $object) {
@@ -1212,6 +1250,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetOrdersFromStripeCheckoutSession(variables: Types.GetOrdersFromStripeCheckoutSessionQueryVariables, options?: C): Promise<Types.GetOrdersFromStripeCheckoutSessionQuery> {
       return requester<Types.GetOrdersFromStripeCheckoutSessionQuery, Types.GetOrdersFromStripeCheckoutSessionQueryVariables>(GetOrdersFromStripeCheckoutSessionDocument, variables, options) as Promise<Types.GetOrdersFromStripeCheckoutSessionQuery>;
     },
+    GetOrdersWithClaimInfo(variables: Types.GetOrdersWithClaimInfoQueryVariables, options?: C): Promise<Types.GetOrdersWithClaimInfoQuery> {
+      return requester<Types.GetOrdersWithClaimInfoQuery, Types.GetOrdersWithClaimInfoQueryVariables>(GetOrdersWithClaimInfoDocument, variables, options) as Promise<Types.GetOrdersWithClaimInfoQuery>;
+    },
     DeletePendingOrders(variables: Types.DeletePendingOrdersMutationVariables, options?: C): Promise<Types.DeletePendingOrdersMutation> {
       return requester<Types.DeletePendingOrdersMutation, Types.DeletePendingOrdersMutationVariables>(DeletePendingOrdersDocument, variables, options) as Promise<Types.DeletePendingOrdersMutation>;
     },
@@ -1316,6 +1357,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassOrderSums(variables: Types.GetEventPassOrderSumsQueryVariables, options?: C): Promise<Types.GetEventPassOrderSumsQuery> {
       return requester<Types.GetEventPassOrderSumsQuery, Types.GetEventPassOrderSumsQueryVariables>(GetEventPassOrderSumsDocument, variables, options) as Promise<Types.GetEventPassOrderSumsQuery>;
+    },
+    InsertMinterTemporaryWallet(variables: Types.InsertMinterTemporaryWalletMutationVariables, options?: C): Promise<Types.InsertMinterTemporaryWalletMutation> {
+      return requester<Types.InsertMinterTemporaryWalletMutation, Types.InsertMinterTemporaryWalletMutationVariables>(InsertMinterTemporaryWalletDocument, variables, options) as Promise<Types.InsertMinterTemporaryWalletMutation>;
+    },
+    GetMinterTemporaryWalletByEventPassId(variables: Types.GetMinterTemporaryWalletByEventPassIdQueryVariables, options?: C): Promise<Types.GetMinterTemporaryWalletByEventPassIdQuery> {
+      return requester<Types.GetMinterTemporaryWalletByEventPassIdQuery, Types.GetMinterTemporaryWalletByEventPassIdQueryVariables>(GetMinterTemporaryWalletByEventPassIdDocument, variables, options) as Promise<Types.GetMinterTemporaryWalletByEventPassIdQuery>;
     },
     CreatePackNftContract(variables: Types.CreatePackNftContractMutationVariables, options?: C): Promise<Types.CreatePackNftContractMutation> {
       return requester<Types.CreatePackNftContractMutation, Types.CreatePackNftContractMutationVariables>(CreatePackNftContractDocument, variables, options) as Promise<Types.CreatePackNftContractMutation>;

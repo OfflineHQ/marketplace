@@ -121,6 +121,13 @@
       "options": {
         "commands": ["node ./scripts/generate-sitemap.mjs"]
       }
+    },
+    "test-integration": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/web/integration"],
+      "options": {
+        "jestConfig": "apps/web/jest.integration.config.ts"
+      }
     }
   },
   "tags": []

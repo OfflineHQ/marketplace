@@ -11634,6 +11634,9 @@ type eventPassNft {
   eventPassNftContract: eventPassNftContract
   id: uuid!
 
+  """Indicates whether the event pass NFT has been delivered to the owner."""
+  isDelivered: Boolean!
+
   """
   Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform.
   """
@@ -12727,6 +12730,7 @@ input eventPassNft_bool_exp {
   eventPassId: String_comparison_exp
   eventPassNftContract: eventPassNftContract_bool_exp
   id: uuid_comparison_exp
+  isDelivered: Boolean_comparison_exp
   isRevealed: Boolean_comparison_exp
   lastNftTransfer: nftTransfer_bool_exp
   lastNftTransferId: uuid_comparison_exp
@@ -12830,6 +12834,9 @@ input eventPassNft_insert_input {
   eventPassId: String
   eventPassNftContract: eventPassNftContract_obj_rel_insert_input
   id: uuid
+
+  """Indicates whether the event pass NFT has been delivered to the owner."""
+  isDelivered: Boolean
 
   """
   Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform.
@@ -13100,6 +13107,7 @@ input eventPassNft_order_by {
   eventPassId: order_by
   eventPassNftContract: eventPassNftContract_order_by
   id: order_by
+  isDelivered: order_by
   isRevealed: order_by
   lastNftTransfer: nftTransfer_order_by
   lastNftTransferId: order_by
@@ -13158,6 +13166,9 @@ enum eventPassNft_select_column {
   id
 
   """column name"""
+  isDelivered
+
+  """column name"""
   isRevealed
 
   """column name"""
@@ -13187,6 +13198,9 @@ select "eventPassNft_aggregate_bool_exp_bool_and_arguments_columns" columns of t
 """
 enum eventPassNft_select_column_eventPassNft_aggregate_bool_exp_bool_and_arguments_columns {
   """column name"""
+  isDelivered
+
+  """column name"""
   isRevealed
 }
 
@@ -13194,6 +13208,9 @@ enum eventPassNft_select_column_eventPassNft_aggregate_bool_exp_bool_and_argumen
 select "eventPassNft_aggregate_bool_exp_bool_or_arguments_columns" columns of table "eventPassNft"
 """
 enum eventPassNft_select_column_eventPassNft_aggregate_bool_exp_bool_or_arguments_columns {
+  """column name"""
+  isDelivered
+
   """column name"""
   isRevealed
 }
@@ -13227,6 +13244,9 @@ input eventPassNft_set_input {
   """Directly relates to a specific Event Pass within the system"""
   eventPassId: String
   id: uuid
+
+  """Indicates whether the event pass NFT has been delivered to the owner."""
+  isDelivered: Boolean
 
   """
   Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform.
@@ -13352,6 +13372,9 @@ input eventPassNft_stream_cursor_value_input {
   eventPassId: String
   id: uuid
 
+  """Indicates whether the event pass NFT has been delivered to the owner."""
+  isDelivered: Boolean
+
   """
   Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform.
   """
@@ -13428,6 +13451,9 @@ enum eventPassNft_update_column {
 
   """column name"""
   id
+
+  """column name"""
+  isDelivered
 
   """column name"""
   isRevealed
@@ -15702,6 +15728,267 @@ input lotteryStatus_updates {
   where: lotteryStatus_bool_exp!
 }
 
+"""
+Temporary wallet information for minters, including optional links to event passes and packs.
+"""
+type minterTemporaryWallet {
+  """The blockchain address of the temporary wallet."""
+  address: String!
+
+  """The timestamp when the temporary wallet was created."""
+  createdAt: timestamptz!
+
+  """Optional identifier for an event pass associated with this wallet."""
+  eventPassId: String
+
+  """Optional identifier for a pack associated with this wallet."""
+  packId: String
+
+  """
+  The private key for the temporary wallet, necessary for signing transactions.
+  """
+  privateKey: String!
+}
+
+"""
+aggregated selection of "minterTemporaryWallet"
+"""
+type minterTemporaryWallet_aggregate {
+  aggregate: minterTemporaryWallet_aggregate_fields
+  nodes: [minterTemporaryWallet!]!
+}
+
+"""
+aggregate fields of "minterTemporaryWallet"
+"""
+type minterTemporaryWallet_aggregate_fields {
+  count(columns: [minterTemporaryWallet_select_column!], distinct: Boolean): Int!
+  max: minterTemporaryWallet_max_fields
+  min: minterTemporaryWallet_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "minterTemporaryWallet". All fields are combined with a logical 'AND'.
+"""
+input minterTemporaryWallet_bool_exp {
+  _and: [minterTemporaryWallet_bool_exp!]
+  _not: minterTemporaryWallet_bool_exp
+  _or: [minterTemporaryWallet_bool_exp!]
+  address: String_comparison_exp
+  createdAt: timestamptz_comparison_exp
+  eventPassId: String_comparison_exp
+  packId: String_comparison_exp
+  privateKey: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "minterTemporaryWallet"
+"""
+enum minterTemporaryWallet_constraint {
+  """
+  unique or primary key constraint on columns "address"
+  """
+  minterTemporaryWallet_pkey
+}
+
+"""
+input type for inserting data into table "minterTemporaryWallet"
+"""
+input minterTemporaryWallet_insert_input {
+  """The blockchain address of the temporary wallet."""
+  address: String
+
+  """The timestamp when the temporary wallet was created."""
+  createdAt: timestamptz
+
+  """Optional identifier for an event pass associated with this wallet."""
+  eventPassId: String
+
+  """Optional identifier for a pack associated with this wallet."""
+  packId: String
+
+  """
+  The private key for the temporary wallet, necessary for signing transactions.
+  """
+  privateKey: String
+}
+
+"""aggregate max on columns"""
+type minterTemporaryWallet_max_fields {
+  """The blockchain address of the temporary wallet."""
+  address: String
+
+  """The timestamp when the temporary wallet was created."""
+  createdAt: timestamptz
+
+  """Optional identifier for an event pass associated with this wallet."""
+  eventPassId: String
+
+  """Optional identifier for a pack associated with this wallet."""
+  packId: String
+
+  """
+  The private key for the temporary wallet, necessary for signing transactions.
+  """
+  privateKey: String
+}
+
+"""aggregate min on columns"""
+type minterTemporaryWallet_min_fields {
+  """The blockchain address of the temporary wallet."""
+  address: String
+
+  """The timestamp when the temporary wallet was created."""
+  createdAt: timestamptz
+
+  """Optional identifier for an event pass associated with this wallet."""
+  eventPassId: String
+
+  """Optional identifier for a pack associated with this wallet."""
+  packId: String
+
+  """
+  The private key for the temporary wallet, necessary for signing transactions.
+  """
+  privateKey: String
+}
+
+"""
+response of any mutation on the table "minterTemporaryWallet"
+"""
+type minterTemporaryWallet_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [minterTemporaryWallet!]!
+}
+
+"""
+on_conflict condition type for table "minterTemporaryWallet"
+"""
+input minterTemporaryWallet_on_conflict {
+  constraint: minterTemporaryWallet_constraint!
+  update_columns: [minterTemporaryWallet_update_column!]! = []
+  where: minterTemporaryWallet_bool_exp
+}
+
+"""Ordering options when selecting data from "minterTemporaryWallet"."""
+input minterTemporaryWallet_order_by {
+  address: order_by
+  createdAt: order_by
+  eventPassId: order_by
+  packId: order_by
+  privateKey: order_by
+}
+
+"""primary key columns input for table: minterTemporaryWallet"""
+input minterTemporaryWallet_pk_columns_input {
+  """The blockchain address of the temporary wallet."""
+  address: String!
+}
+
+"""
+select columns of table "minterTemporaryWallet"
+"""
+enum minterTemporaryWallet_select_column {
+  """column name"""
+  address
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  packId
+
+  """column name"""
+  privateKey
+}
+
+"""
+input type for updating data in table "minterTemporaryWallet"
+"""
+input minterTemporaryWallet_set_input {
+  """The blockchain address of the temporary wallet."""
+  address: String
+
+  """The timestamp when the temporary wallet was created."""
+  createdAt: timestamptz
+
+  """Optional identifier for an event pass associated with this wallet."""
+  eventPassId: String
+
+  """Optional identifier for a pack associated with this wallet."""
+  packId: String
+
+  """
+  The private key for the temporary wallet, necessary for signing transactions.
+  """
+  privateKey: String
+}
+
+"""
+Streaming cursor of the table "minterTemporaryWallet"
+"""
+input minterTemporaryWallet_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: minterTemporaryWallet_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input minterTemporaryWallet_stream_cursor_value_input {
+  """The blockchain address of the temporary wallet."""
+  address: String
+
+  """The timestamp when the temporary wallet was created."""
+  createdAt: timestamptz
+
+  """Optional identifier for an event pass associated with this wallet."""
+  eventPassId: String
+
+  """Optional identifier for a pack associated with this wallet."""
+  packId: String
+
+  """
+  The private key for the temporary wallet, necessary for signing transactions.
+  """
+  privateKey: String
+}
+
+"""
+update columns of table "minterTemporaryWallet"
+"""
+enum minterTemporaryWallet_update_column {
+  """column name"""
+  address
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  eventPassId
+
+  """column name"""
+  packId
+
+  """column name"""
+  privateKey
+}
+
+input minterTemporaryWallet_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: minterTemporaryWallet_set_input
+
+  """filter the rows which have to be updated"""
+  where: minterTemporaryWallet_bool_exp!
+}
+
 """mutation root"""
 type mutation_root {
   """Create one asset"""
@@ -16191,6 +16478,22 @@ type mutation_root {
   delete single row from the table: "lotteryStatus"
   """
   delete_lotteryStatus_by_pk(value: String!): lotteryStatus
+
+  """
+  delete data from the table: "minterTemporaryWallet"
+  """
+  delete_minterTemporaryWallet(
+    """filter the rows which have to be deleted"""
+    where: minterTemporaryWallet_bool_exp!
+  ): minterTemporaryWallet_mutation_response
+
+  """
+  delete single row from the table: "minterTemporaryWallet"
+  """
+  delete_minterTemporaryWallet_by_pk(
+    """The blockchain address of the temporary wallet."""
+    address: String!
+  ): minterTemporaryWallet
 
   """
   delete data from the table: "nftTransfer"
@@ -16834,6 +17137,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: lotteryStatus_on_conflict
   ): lotteryStatus
+
+  """
+  insert data into the table: "minterTemporaryWallet"
+  """
+  insert_minterTemporaryWallet(
+    """the rows to be inserted"""
+    objects: [minterTemporaryWallet_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: minterTemporaryWallet_on_conflict
+  ): minterTemporaryWallet_mutation_response
+
+  """
+  insert a single row into the table: "minterTemporaryWallet"
+  """
+  insert_minterTemporaryWallet_one(
+    """the row to be inserted"""
+    object: minterTemporaryWallet_insert_input!
+
+    """upsert condition"""
+    on_conflict: minterTemporaryWallet_on_conflict
+  ): minterTemporaryWallet
 
   """
   insert data into the table: "nftTransfer"
@@ -19218,6 +19543,34 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [lotteryStatus_updates!]!
   ): [lotteryStatus_mutation_response]
+
+  """
+  update data of the table: "minterTemporaryWallet"
+  """
+  update_minterTemporaryWallet(
+    """sets the columns of the filtered rows to the given values"""
+    _set: minterTemporaryWallet_set_input
+
+    """filter the rows which have to be updated"""
+    where: minterTemporaryWallet_bool_exp!
+  ): minterTemporaryWallet_mutation_response
+
+  """
+  update single row of the table: "minterTemporaryWallet"
+  """
+  update_minterTemporaryWallet_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: minterTemporaryWallet_set_input
+    pk_columns: minterTemporaryWallet_pk_columns_input!
+  ): minterTemporaryWallet
+
+  """
+  update multiples rows of table: "minterTemporaryWallet"
+  """
+  update_minterTemporaryWallet_many(
+    """updates to execute, in order"""
+    updates: [minterTemporaryWallet_updates!]!
+  ): [minterTemporaryWallet_mutation_response]
 
   """
   update data of the table: "nftTransfer"
@@ -22813,6 +23166,9 @@ type packNftSupply {
   error: String
   id: uuid!
 
+  """Indicates whether the pack NFT has been delivered to the owner."""
+  isDelivered: Boolean!
+
   """The reference to the latest transfer record for this pack NFT."""
   lastNftTransferId: uuid
 
@@ -22893,6 +23249,7 @@ input packNftSupply_bool_exp {
   currentOwnerAddress: String_comparison_exp
   error: String_comparison_exp
   id: uuid_comparison_exp
+  isDelivered: Boolean_comparison_exp
   lastNftTransferId: uuid_comparison_exp
   organizerId: String_comparison_exp
   packEventPassNfts: packEventPassNft_bool_exp
@@ -22938,6 +23295,9 @@ input packNftSupply_insert_input {
   """
   error: String
   id: uuid
+
+  """Indicates whether the pack NFT has been delivered to the owner."""
+  isDelivered: Boolean
 
   """The reference to the latest transfer record for this pack NFT."""
   lastNftTransferId: uuid
@@ -23050,6 +23410,7 @@ input packNftSupply_order_by {
   currentOwnerAddress: order_by
   error: order_by
   id: order_by
+  isDelivered: order_by
   lastNftTransferId: order_by
   organizerId: order_by
   packEventPassNfts_aggregate: packEventPassNft_aggregate_order_by
@@ -23084,6 +23445,9 @@ enum packNftSupply_select_column {
 
   """column name"""
   id
+
+  """column name"""
+  isDelivered
 
   """column name"""
   lastNftTransferId
@@ -23122,6 +23486,9 @@ input packNftSupply_set_input {
   """
   error: String
   id: uuid
+
+  """Indicates whether the pack NFT has been delivered to the owner."""
+  isDelivered: Boolean
 
   """The reference to the latest transfer record for this pack NFT."""
   lastNftTransferId: uuid
@@ -23168,6 +23535,9 @@ input packNftSupply_stream_cursor_value_input {
   error: String
   id: uuid
 
+  """Indicates whether the pack NFT has been delivered to the owner."""
+  isDelivered: Boolean
+
   """The reference to the latest transfer record for this pack NFT."""
   lastNftTransferId: uuid
 
@@ -23203,6 +23573,9 @@ enum packNftSupply_update_column {
 
   """column name"""
   id
+
+  """column name"""
+  isDelivered
 
   """column name"""
   lastNftTransferId
@@ -25541,6 +25914,54 @@ type query_root {
 
   """fetch data from the table: "lotteryStatus" using primary key columns"""
   lotteryStatus_by_pk(value: String!): lotteryStatus
+
+  """
+  fetch data from the table: "minterTemporaryWallet"
+  """
+  minterTemporaryWallet(
+    """distinct select on columns"""
+    distinct_on: [minterTemporaryWallet_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [minterTemporaryWallet_order_by!]
+
+    """filter the rows returned"""
+    where: minterTemporaryWallet_bool_exp
+  ): [minterTemporaryWallet!]!
+
+  """
+  fetch aggregated fields from the table: "minterTemporaryWallet"
+  """
+  minterTemporaryWallet_aggregate(
+    """distinct select on columns"""
+    distinct_on: [minterTemporaryWallet_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [minterTemporaryWallet_order_by!]
+
+    """filter the rows returned"""
+    where: minterTemporaryWallet_bool_exp
+  ): minterTemporaryWallet_aggregate!
+
+  """
+  fetch data from the table: "minterTemporaryWallet" using primary key columns
+  """
+  minterTemporaryWallet_by_pk(
+    """The blockchain address of the temporary wallet."""
+    address: String!
+  ): minterTemporaryWallet
 
   """
   fetch data from the table: "nftTransfer"
@@ -28808,6 +29229,68 @@ type subscription_root {
     """filter the rows returned"""
     where: lotteryStatus_bool_exp
   ): [lotteryStatus!]!
+
+  """
+  fetch data from the table: "minterTemporaryWallet"
+  """
+  minterTemporaryWallet(
+    """distinct select on columns"""
+    distinct_on: [minterTemporaryWallet_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [minterTemporaryWallet_order_by!]
+
+    """filter the rows returned"""
+    where: minterTemporaryWallet_bool_exp
+  ): [minterTemporaryWallet!]!
+
+  """
+  fetch aggregated fields from the table: "minterTemporaryWallet"
+  """
+  minterTemporaryWallet_aggregate(
+    """distinct select on columns"""
+    distinct_on: [minterTemporaryWallet_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [minterTemporaryWallet_order_by!]
+
+    """filter the rows returned"""
+    where: minterTemporaryWallet_bool_exp
+  ): minterTemporaryWallet_aggregate!
+
+  """
+  fetch data from the table: "minterTemporaryWallet" using primary key columns
+  """
+  minterTemporaryWallet_by_pk(
+    """The blockchain address of the temporary wallet."""
+    address: String!
+  ): minterTemporaryWallet
+
+  """
+  fetch data from the table in a streaming manner: "minterTemporaryWallet"
+  """
+  minterTemporaryWallet_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [minterTemporaryWallet_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: minterTemporaryWallet_bool_exp
+  ): [minterTemporaryWallet!]!
 
   """
   fetch data from the table: "nftTransfer"
