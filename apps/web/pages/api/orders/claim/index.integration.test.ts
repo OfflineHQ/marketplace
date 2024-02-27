@@ -111,7 +111,7 @@ describe('Orders Claim API', () => {
     );
   });
 
-  test('handler returns 500 when wallet is busy', async () => {
+  test('handler returns 200 when wallet is busy', async () => {
     const mockReq = {
       method: 'POST',
       body: {
