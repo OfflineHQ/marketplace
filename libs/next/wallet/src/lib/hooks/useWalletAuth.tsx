@@ -18,6 +18,7 @@ export function useWalletAuth() {
     wallet,
     walletAdaptor,
     setWalletAdaptor,
+    setWalletConnected,
   } = useWalletContext();
   const [isConnecting, setIsConnecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
@@ -33,7 +34,7 @@ export function useWalletAuth() {
     const newWalletAdaptor = new ConnectAdaptor({
       chainId: getCurrentChain().chainIdHex,
       apiKey,
-      passKeyName: 'Offline',
+      passKeyName: 'Offline 🔑',
     });
 
     const newInstance = new ComethWallet({
@@ -45,7 +46,39 @@ export function useWalletAuth() {
     setInstance(newInstance);
   }, []);
 
-  async function connect(
+  async function connect(address?: string, createAccount?: boolean) {
+    if (!instance || !walletAdaptor) return; // Ensure instance and walletAdaptor are initialized
+
+    setIsConnecting(true);
+    try {
+      // got an address from useStorageWallet so connect to wallet
+      if (address) {
+        await instance.connect(address);
+      }
+      // user choose to create a new passkey/account
+      else if (createAccount) {
+        await instance.connect();
+      }
+      // no address from useStorageWallet and not creating new account so ask user to choose existing account (passkey)
+      else {
+        const walletAddress =
+          await walletAdaptor.retrieveWalletAddressFromSigner();
+        await instance.connect(walletAddress);
+      }
+      const instanceProvider = new ComethProvider(instance);
+      localStorage?.setItem('wallet-connected', instance.getAddress());
+      setIsConnected(true);
+      setWallet(instance);
+      setProvider(instanceProvider);
+    } catch (e) {
+      setConnectionError((e as Error).message);
+      throw e;
+    } finally {
+      setIsConnecting(false);
+    }
+  }
+
+  async function connectWithSiwe(
     loginSiwe: (signer: ComethWallet) => void,
     address?: string,
     createAccount: boolean = false,
@@ -90,6 +123,9 @@ export function useWalletAuth() {
     if (wallet) {
       try {
         await wallet!.logout();
+        // wallet-connected
+        localStorage.removeItem('wallet-connected');
+        setWalletConnected('');
         setIsConnected(false);
         setWallet(null);
         setProvider(null);
@@ -102,6 +138,7 @@ export function useWalletAuth() {
     wallet,
     walletAdaptor,
     provider,
+    connectWithSiwe,
     connect,
     disconnect,
     isReady: !!walletAdaptor && !!instance,

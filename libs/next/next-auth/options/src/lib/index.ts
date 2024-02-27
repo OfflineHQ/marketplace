@@ -14,7 +14,7 @@ import {
 } from '@next/next-auth/common';
 import { SiweProvider } from '@next/siwe/provider';
 import { AppUser } from '@next/types';
-import { getNextAppURL, isBackOffice, isProd, isUnlock } from '@shared/server';
+import { getNextAppURL, isBackOffice, isProd } from '@shared/server';
 import { Provider } from 'next-auth/providers';
 
 import { KycLevelName_Enum, KycStatus_Enum } from '@gql/shared/types';
@@ -131,7 +131,7 @@ export const createOptions = () =>
         name: nextAuthCookieName(),
         options: {
           httpOnly: true,
-          sameSite: !isUnlock() ? 'lax' : 'none', // needed for cross-domain cookies, in our case for the unlock app embedded in iframe
+          sameSite: 'lax',
           path: '/',
           secure: useSecureCookies,
           // authorize cookie for subdomain, inc. hasura app (strip www. from hostName)
