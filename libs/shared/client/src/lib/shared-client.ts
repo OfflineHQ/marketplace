@@ -39,6 +39,10 @@ export function isBackOffice(): boolean {
   return env.NEXT_PUBLIC_APP === 'BACKOFFICE';
 }
 
+export function isUnlock(): boolean {
+  return process.env.NEXT_PUBLIC_APP === 'UNLOCK';
+}
+
 export function getHasuraEndpoint(): string {
   return env.NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT;
 }

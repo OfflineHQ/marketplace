@@ -146,7 +146,7 @@ module.exports = async (phase, context) => {
     ...nextConfig,
     async headers() {
       // only add csp header when deployed with vercel to avoid Safari error in local
-      return process.env.VERCEL_ENV
+      return process.env.VERCEL_ENV && process.env.APP === 'UNLOCK'
         ? [
             {
               source: '/(.*)',
