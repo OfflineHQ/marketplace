@@ -11,7 +11,7 @@ export interface WalletConnectProps extends Pick<AppUser, 'address'> {
 export function WalletConnect({ address, wcUri }: WalletConnectProps) {
   const {
     initializeWalletConnect,
-    connectToWallet,
+    connectToDapp,
     isReady,
     loading,
     isLoadingApprove,
@@ -24,9 +24,9 @@ export function WalletConnect({ address, wcUri }: WalletConnectProps) {
   useEffect(() => {
     if (wcUri && isReady) {
       console.log('wcUri', wcUri, 'isReady', isReady);
-      connectToWallet(wcUri);
+      connectToDapp(wcUri);
     }
-  }, [wcUri, isReady, connectToWallet]);
+  }, [wcUri, isReady, connectToDapp]);
 
   return (
     <div className="flex flex-col space-y-2">
