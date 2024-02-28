@@ -20,6 +20,17 @@ const mockLocalStorage = (() => {
   };
 })();
 
+jest.mock('next/navigation', () => ({
+  useSearchParams: () => {
+    return new URLSearchParams('wcUri=mockUri&address=mockAddress');
+  },
+  useRouter: () => ({
+    replace: jest.fn(),
+    refresh: jest.fn(),
+  }),
+  usePathname: () => '/mock-path',
+}));
+
 describe('WalletProvider', () => {
   // Setup mock localStorage before each test
   beforeEach(() => {

@@ -3,6 +3,17 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { WalletProvider } from '../services/context'; // Adjust the import path as necessary
 import { useWalletAuth } from './useWalletAuth';
 
+jest.mock('next/navigation', () => ({
+  useSearchParams: () => {
+    return new URLSearchParams('wcUri=mockUri&address=mockAddress');
+  },
+  useRouter: () => ({
+    replace: jest.fn(),
+    refresh: jest.fn(),
+  }),
+  usePathname: () => '/mock-path',
+}));
+
 // Mock the external modules used in your hook
 jest.mock('@cometh/connect-sdk', () => {
   const originalModule = jest.requireActual('@cometh/connect-sdk');
