@@ -3,7 +3,11 @@
 import env from '@env/client';
 import { AppUser } from '@next/types';
 import * as encoding from '@walletconnect/encoding';
-import { buildApprovedNamespaces, parseUri } from '@walletconnect/utils';
+import {
+  buildApprovedNamespaces,
+  getSdkError,
+  parseUri,
+} from '@walletconnect/utils';
 import { Web3WalletTypes } from '@walletconnect/web3wallet';
 import { useCallback, useState } from 'react';
 import { createWeb3Wallet, web3wallet } from '../utils/WalletConnectUtil';
@@ -47,9 +51,9 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
   const disconnectWalletConnect = useCallback(async () => {
     try {
       if (!web3wallet || !currentPairingTopic) return;
-      web3wallet.core.pairing.events.removeAllListeners();
-      await web3wallet.core.pairing.disconnect({
+      await web3wallet.disconnectSession({
         topic: currentPairingTopic,
+        reason: getSdkError('USER_DISCONNECTED'),
       });
       console.log('WalletConnect disconnected');
       setCurrentPairingTopic('');
@@ -58,7 +62,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
     }
   }, [currentPairingTopic]);
 
-  const connectToWallet = useCallback(
+  const connectToDapp = useCallback(
     async (uri: string) => {
       const { topic: pairingTopic } = parseUri(uri);
       setCurrentPairingTopic(pairingTopic);
@@ -72,14 +76,30 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
           );
         }
       };
-      web3wallet.on('session_proposal', (args) => {
-        console.log('session_proposal:', args);
+      web3wallet.on('session_delete', async (event) => {
+        console.log('session_delete:', event);
+        const { topic } = event;
+        await web3wallet.disconnectSession({
+          topic,
+          reason: getSdkError('USER_DISCONNECTED'),
+        });
+      });
+      web3wallet.on('session_proposal', ({ id, params, verifyContext }) => {
+        const {
+          verified: { origin },
+        } = verifyContext;
+        console.log(`session_proposal from "${origin}":`, {
+          id,
+          params,
+          verifyContext,
+        });
+        console.log('activeProposals:', activeProposals);
         // Check if the proposal has already been handled
-        if (!activeProposals[args.id]) {
-          setActiveProposals((prev) => ({ ...prev, [args.id]: true }));
-          onApprove(args);
+        if (!activeProposals[id]) {
+          setActiveProposals((prev) => ({ ...prev, [id]: true }));
+          onApprove({ id, params, verifyContext });
         } else {
-          console.log(`Proposal ${args.id} is already being processed.`);
+          console.log(`Proposal ${id} is already being processed.`);
         }
         web3wallet.core.pairing.events.removeListener(
           'pairing_expire',
@@ -93,6 +113,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
           console.error('No signer found');
           return;
         }
+        console.log('session_request:', event);
         const { topic, params, id } = event;
         const { request } = params;
         const requestParamsMessage = request.params[0];
@@ -108,6 +129,19 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
 
         await web3wallet.respondSessionRequest({ topic, response });
       });
+
+      // Check if a pairing already exists for the given topic
+      const existingPairing = web3wallet.core.pairing
+        .getPairings()
+        .find((p) => p.topic === pairingTopic && p.active);
+      if (existingPairing) {
+        console.log(
+          `Pairing already exists for topic: ${pairingTopic}. Using existing pairing.`,
+        );
+        // Optionally, handle the existing pairing here (e.g., proceed with session proposal)
+        // For now, just return to avoid creating a new pairing
+        return;
+      }
 
       try {
         setLoading(true);
@@ -141,7 +175,6 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
                 'eth_sign',
                 'eth_signTypedData',
                 'eth_signTypedData_v4',
-                'eth_sendTransaction',
               ],
               events: ['accountsChanged', 'chainChanged'],
               accounts: [`eip155:${env.NEXT_PUBLIC_CHAIN}:${address}`],
@@ -184,7 +217,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
     isReady,
     web3wallet,
     initializeWalletConnect,
-    connectToWallet,
+    connectToDapp,
     disconnectWalletConnect,
     loading,
     onApprove,
