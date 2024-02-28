@@ -8,6 +8,7 @@ import {
 import env from '@env/client';
 import { getCurrentChain } from '@next/chains';
 import { useEffect, useState } from 'react';
+import { useWalletConnect } from './useWalletConnect';
 import { useWalletContext } from './useWalletContext';
 
 export function useWalletAuth() {
@@ -20,6 +21,7 @@ export function useWalletAuth() {
     setWalletAdaptor,
     setWalletConnected,
   } = useWalletContext();
+  const { disconnectWalletConnect } = useWalletConnect({ address: '' });
   const [isConnecting, setIsConnecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [connectionError, setConnectionError] = useState<string | null>(null);
@@ -129,6 +131,7 @@ export function useWalletAuth() {
         setIsConnected(false);
         setWallet(null);
         setProvider(null);
+        await disconnectWalletConnect();
       } catch (e) {
         setConnectionError((e as Error).message);
       }
