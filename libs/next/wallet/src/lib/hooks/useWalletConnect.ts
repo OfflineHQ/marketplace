@@ -199,6 +199,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
                 'eth_sign',
                 'eth_signTypedData',
                 'eth_signTypedData_v4',
+                'eth_sendTransaction',
               ],
               events: ['accountsChanged', 'chainChanged'],
               accounts: [`eip155:${env.NEXT_PUBLIC_CHAIN}:${address}`],

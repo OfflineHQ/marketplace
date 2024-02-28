@@ -7,11 +7,15 @@ import {
 } from '@cometh/connect-sdk';
 import env from '@env/client';
 import { getCurrentChain } from '@next/chains';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useWalletConnect } from './useWalletConnect';
 import { useWalletContext } from './useWalletContext';
 
 export function useWalletAuth() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const {
     setWallet,
     provider,
@@ -20,6 +24,7 @@ export function useWalletAuth() {
     walletAdaptor,
     setWalletAdaptor,
     setWalletConnected,
+    setAutoConnectAddress,
   } = useWalletContext();
   const { disconnectWalletConnect } = useWalletConnect({ address: '' });
   const [isConnecting, setIsConnecting] = useState(false);
@@ -125,13 +130,29 @@ export function useWalletAuth() {
     if (wallet) {
       try {
         await wallet!.logout();
-        // wallet-connected
-        localStorage.removeItem('wallet-connected');
         setWalletConnected('');
+        // wallet-connected is used to auto-connect user when they visit the site again
+        localStorage.removeItem('wallet-connected');
         setIsConnected(false);
         setWallet(null);
         setProvider(null);
+        setAutoConnectAddress(null);
         await disconnectWalletConnect();
+        // Here if have an address to auto-connect we want to remove it if user choose to log out
+        if (searchParams.get('address')) {
+          console.log('Removing address from URL');
+          const current = new URLSearchParams(
+            Array.from(searchParams.entries()),
+          );
+          current.delete('address');
+          // cast to string
+          const search = current.toString();
+          const query = search ? `?${search}` : '';
+          // Here don't know why but the `searchParams.get('address')` in Auth at first is populated and then not
+          // refresh is not doing the trick
+          await router.replace(`${pathname}${query}`);
+          await router.refresh();
+        }
       } catch (e) {
         setConnectionError((e as Error).message);
       }
