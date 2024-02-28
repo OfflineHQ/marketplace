@@ -97,14 +97,15 @@ export function WalletProvider({
   }, []);
 
   useEffect(() => {
-    const resWc = searchParams.get('wcUri');
+    const resWc = searchParams?.get('wcUri') || null;
     if (resWc !== wcUri) {
       setWcUri(resWc);
     }
     if (!walletInStorage) return;
-    const resConnectAddress = searchParams.get('address');
+    const resConnectAddress = searchParams?.get('address') || null;
     if (
       resConnectAddress &&
+      resConnectAddress !== '' &&
       !walletInStorage?.find((w) => w.address === resConnectAddress)
     ) {
       console.warn(`Address "${resConnectAddress}" not found in storage`);
