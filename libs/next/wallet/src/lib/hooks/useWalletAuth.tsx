@@ -139,7 +139,7 @@ export function useWalletAuth() {
         setAutoConnectAddress(null);
         await disconnectWalletConnect();
         // Here if have an address to auto-connect we want to remove it if user choose to log out
-        if (searchParams.get('address')) {
+        if (searchParams?.get('address')) {
           console.log('Removing address from URL');
           const current = new URLSearchParams(
             Array.from(searchParams.entries()),
