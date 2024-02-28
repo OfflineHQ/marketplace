@@ -13,6 +13,9 @@ export function useWalletContext() {
     walletInStorage,
     setWalletInStorage,
     setWalletConnected,
+    wcUri,
+    autoConnectAddress,
+    setAutoConnectAddress,
   } = useContext(WalletContext);
   return {
     wallet,
@@ -25,5 +28,8 @@ export function useWalletContext() {
     walletInStorage,
     setWalletInStorage,
     setWalletConnected,
+    wcUri,
+    autoConnectAddress,
+    setAutoConnectAddress,
   };
 }

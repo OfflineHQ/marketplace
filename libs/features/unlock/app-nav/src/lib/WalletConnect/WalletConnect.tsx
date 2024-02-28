@@ -30,9 +30,8 @@ export function WalletConnect({ address, wcUri }: WalletConnectProps) {
 
   return (
     <div className="flex flex-col space-y-2">
-      <h2 className="text-3xl font-bold">Connect to WalletConnect</h2>
+      <h3 className="text-lg font-bold">WalletConnect</h3>
       <div>
-        <p>isReady: {isReady ? 'true' : 'false'}</p>
         <p>loading: {loading ? 'true' : 'false'}</p>
         <p>isLoadingApprove: {isLoadingApprove ? 'true' : 'false'}</p>
       </div>

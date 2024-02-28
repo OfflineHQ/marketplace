@@ -4,6 +4,7 @@ import {
   ComethWallet,
   ConnectAdaptor,
 } from '@cometh/connect-sdk';
+import { useSearchParams } from 'next/navigation';
 import {
   Dispatch,
   SetStateAction,
@@ -28,6 +29,9 @@ export const WalletContext = createContext<{
   setWalletInStorage: Dispatch<SetStateAction<StorageWallet[] | null>>;
   walletConnected: string;
   setWalletConnected: Dispatch<SetStateAction<string>>;
+  wcUri: string | null;
+  autoConnectAddress: string | null;
+  setAutoConnectAddress: Dispatch<SetStateAction<string | null>>;
 }>({
   wallet: null,
   setWallet: () => {},
@@ -39,6 +43,9 @@ export const WalletContext = createContext<{
   setWalletInStorage: () => {},
   walletConnected: '',
   setWalletConnected: () => {},
+  wcUri: null,
+  autoConnectAddress: null,
+  setAutoConnectAddress: () => {},
 });
 
 export function WalletProvider({
@@ -46,7 +53,12 @@ export function WalletProvider({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
+  const searchParams = useSearchParams();
   const [wallet, setWallet] = useState<ComethWallet | null>(null);
+  const [wcUri, setWcUri] = useState<string | null>(null);
+  const [autoConnectAddress, setAutoConnectAddress] = useState<string | null>(
+    null,
+  );
   const [provider, setProvider] = useState<ComethProvider | null>(null);
   const [walletAdaptor, setWalletAdaptor] = useState<ConnectAdaptor | null>(
     null,
@@ -62,6 +74,7 @@ export function WalletProvider({
       return;
     } else {
       const keysInStorage = Object.keys(localStorage);
+      console.log('keysInStorage', keysInStorage);
       for (const key of keysInStorage) {
         if (key.startsWith('cometh-connect')) {
           const keyParts = key.split('-');
@@ -71,7 +84,10 @@ export function WalletProvider({
           if (storedItem && storedItem !== '') {
             wallet = JSON.parse(storedItem);
           }
-          setWalletInStorage([{ address, name: wallet?.name || '' }]);
+          setWalletInStorage((current) => {
+            const newWallet = { address, name: wallet?.name || '' };
+            return current ? [...current, newWallet] : [newWallet];
+          });
         } else if (key.startsWith('wallet-connected')) {
           const address = localStorage.getItem(key);
           setWalletConnected(address || '');
@@ -79,6 +95,24 @@ export function WalletProvider({
       }
     }
   }, []);
+
+  useEffect(() => {
+    const resWc = searchParams.get('wcUri');
+    if (resWc !== wcUri) {
+      setWcUri(resWc);
+    }
+    if (!walletInStorage) return;
+    const resConnectAddress = searchParams.get('address');
+    if (
+      resConnectAddress &&
+      !walletInStorage?.find((w) => w.address === resConnectAddress)
+    ) {
+      console.warn(`Address "${resConnectAddress}" not found in storage`);
+      setAutoConnectAddress('');
+    } else if (resConnectAddress !== autoConnectAddress) {
+      setAutoConnectAddress(resConnectAddress);
+    }
+  }, [autoConnectAddress, searchParams, walletInStorage, wcUri]);
 
   return (
     <WalletContext.Provider
@@ -93,6 +127,9 @@ export function WalletProvider({
         setWalletInStorage,
         walletConnected,
         setWalletConnected,
+        wcUri,
+        autoConnectAddress,
+        setAutoConnectAddress,
       }}
     >
       {children}
