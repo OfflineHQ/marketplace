@@ -48,19 +48,37 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
     }
   }, []);
 
-  const disconnectWalletConnect = useCallback(async () => {
-    try {
-      if (!web3wallet || !currentPairingTopic) return;
-      await web3wallet.disconnectSession({
-        topic: currentPairingTopic,
-        reason: getSdkError('USER_DISCONNECTED'),
-      });
-      console.log('WalletConnect disconnected');
-      setCurrentPairingTopic('');
-    } catch (error) {
-      console.error('Failed to disconnect WalletConnect: ', error);
-    }
-  }, [currentPairingTopic]);
+  const disconnectWalletConnect = useCallback(
+    async (targetDAppIdentifier = null) => {
+      try {
+        console.log('Disconnecting WalletConnect sessions...');
+        if (!web3wallet) return;
+
+        const activeSessions = web3wallet.getActiveSessions();
+        const disconnectPromises = Object.entries(activeSessions)
+          .filter(([topic, session]) => {
+            // If targetDAppIdentifier is provided, filter sessions by some criteria
+            // For example, checking if the session's peerMeta contains the targetDAppIdentifier
+            // This is a placeholder condition. Adjust according to your actual criteria.
+            return targetDAppIdentifier
+              ? session.peer.metadata.url.includes(targetDAppIdentifier)
+              : true;
+          })
+          .map(([topic, session]) =>
+            web3wallet.disconnectSession({
+              topic,
+              reason: getSdkError('USER_DISCONNECTED'),
+            }),
+          );
+
+        await Promise.all(disconnectPromises);
+        console.log('Disconnected from WalletConnect sessions.');
+      } catch (error) {
+        console.error('Failed to disconnect WalletConnect sessions: ', error);
+      }
+    },
+    [],
+  );
 
   const connectToDapp = useCallback(
     async (uri: string) => {
@@ -128,6 +146,12 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
         console.log('response:', response);
 
         await web3wallet.respondSessionRequest({ topic, response });
+      });
+
+      web3wallet.on('session_request_expire', (event) => {
+        // request expired and any modal displaying it should be removed
+        const { id } = event;
+        console.log('session_request_expire:', event);
       });
 
       // Check if a pairing already exists for the given topic

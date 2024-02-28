@@ -14,8 +14,8 @@ export async function createWeb3Wallet(relayerRegionURL: string) {
   web3wallet = await Web3Wallet.init({
     core,
     metadata: {
-      name: 'React Wallet Example',
-      description: 'React Wallet for WalletConnect',
+      name: 'Offline Wallet',
+      description: 'Offline Wallet for WalletConnect',
       url: 'https://walletconnect.com/',
       icons: ['https://avatars.githubusercontent.com/u/37784886'],
     },
