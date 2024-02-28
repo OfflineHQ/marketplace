@@ -22,6 +22,7 @@ export type UseWalletConnectProps = Pick<AppUser, 'address'>;
 export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
   const [loading, setLoading] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [currentPairingTopic, setCurrentPairingTopic] = useState('');
   const [isLoadingApprove, setIsLoadingApprove] = useState(false);
   const [activeProposals, setActiveProposals] = useState<
     Record<string, boolean>
@@ -43,9 +44,24 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
     }
   }, []);
 
+  const disconnectWalletConnect = useCallback(async () => {
+    try {
+      if (!web3wallet || !currentPairingTopic) return;
+      web3wallet.core.pairing.events.removeAllListeners();
+      await web3wallet.core.pairing.disconnect({
+        topic: currentPairingTopic,
+      });
+      console.log('WalletConnect disconnected');
+      setCurrentPairingTopic('');
+    } catch (error) {
+      console.error('Failed to disconnect WalletConnect: ', error);
+    }
+  }, [currentPairingTopic]);
+
   const connectToWallet = useCallback(
     async (uri: string) => {
       const { topic: pairingTopic } = parseUri(uri);
+      setCurrentPairingTopic(pairingTopic);
       // if for some reason, the proposal is not received, we need to close the modal when the pairing expires (5mins)
       const pairingExpiredListener = ({ topic }: { topic: string }) => {
         if (pairingTopic === topic) {
@@ -169,6 +185,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
     web3wallet,
     initializeWalletConnect,
     connectToWallet,
+    disconnectWalletConnect,
     loading,
     onApprove,
     isLoadingApprove,
