@@ -13,8 +13,9 @@ export function WalletConnect({ address, wcUri }: WalletConnectProps) {
     initializeWalletConnect,
     connectToDapp,
     isReady,
-    loading,
+    isLoadingPairing,
     isLoadingApprove,
+    isConnectedToDapp,
   } = useWalletConnect({ address });
   // Call initialize on component mount if necessary
   useEffect(() => {
@@ -32,7 +33,8 @@ export function WalletConnect({ address, wcUri }: WalletConnectProps) {
     <div className="flex flex-col space-y-2">
       <h3 className="text-lg font-bold">WalletConnect</h3>
       <div>
-        <p>loading: {loading ? 'true' : 'false'}</p>
+        <p>isConnectedToDapp: {isConnectedToDapp ? 'true' : 'false'}</p>
+        <p>isLoadingPairing: {isLoadingPairing ? 'true' : 'false'}</p>
         <p>isLoadingApprove: {isLoadingApprove ? 'true' : 'false'}</p>
       </div>
     </div>
