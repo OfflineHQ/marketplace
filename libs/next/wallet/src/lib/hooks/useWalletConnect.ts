@@ -3,6 +3,7 @@
 import env from '@env/client';
 import { AppUser } from '@next/types';
 import * as encoding from '@walletconnect/encoding';
+import { SessionTypes } from '@walletconnect/types';
 import {
   buildApprovedNamespaces,
   getSdkError,
@@ -29,20 +30,98 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
   const [isReady, setIsReady] = useState(false);
   const [currentPairingTopic, setCurrentPairingTopic] = useState('');
   const [isLoadingApprove, setIsLoadingApprove] = useState(false);
-  const [activeProposals, setActiveProposals] = useState<
-    Record<string, boolean>
-  >({});
   const { wallet } = useWalletContext();
+
+  // Function to check if any active session matches the embedding page URL
+  const getSessionMatchingAddressAndDapp = (
+    sessions: SessionTypes.Struct[],
+    dappUrl: string,
+    address: string,
+  ) => {
+    const existingSession = sessions.find((session) => {
+      const sessionUrl = session.peer.metadata.url; // The URL associated with the dApp in the session
+      // Simple comparison, might need adjustments based on how URLs are stored and used
+      return sessionUrl === dappUrl || dappUrl.includes(sessionUrl);
+    });
+    if (!existingSession) return null;
+    // Check if the session's account matches your wallet's address
+    return existingSession.namespaces.eip155.accounts.some((account) => {
+      const accountAddress = account.split(':')[2]; // Splitting 'eip155:80001:0xD48840d7b9E2ad0B79393c2D2F0cD0f604Ec7956' to get the address
+      return accountAddress.toLowerCase() === address.toLowerCase();
+    })
+      ? existingSession
+      : null;
+  };
+
+  // Handle approve action, construct session namespace
+  const onApprove = useCallback(
+    async (proposal: Web3WalletTypes.SessionProposal) => {
+      if (proposal) {
+        setIsLoadingApprove(true);
+        // ------- namespaces builder util ------------ //
+        const namespaces = buildApprovedNamespaces({
+          proposal: { ...proposal.params, expiry: proposal.params.expiry || 0 },
+          supportedNamespaces: {
+            eip155: {
+              chains: [`eip155:${env.NEXT_PUBLIC_CHAIN}`],
+              methods: [
+                'personal_sign',
+                'eth_sign',
+                'eth_signTypedData',
+                'eth_signTypedData_v4',
+                'eth_sendTransaction',
+              ],
+              events: ['accountsChanged', 'chainChanged'],
+              accounts: [`eip155:${env.NEXT_PUBLIC_CHAIN}:${address}`],
+            },
+          },
+        });
+
+        console.log('approving namespaces:', namespaces);
+
+        try {
+          const session = await web3wallet.approveSession({
+            id: proposal.id,
+            namespaces,
+          });
+          setIsConnectedToDapp(true);
+          console.log('session:', session);
+          // After successful approval, remove the proposal from activeProposals
+        } catch (e) {
+          console.error('Failed to approve session:', e);
+          setIsLoadingApprove(false);
+          return;
+        }
+      }
+      setIsLoadingApprove(false);
+    },
+    [address],
+  );
 
   const initializeWalletConnect = useCallback(async () => {
     try {
-      await createWeb3Wallet('');
+      if (!web3wallet) {
+        await createWeb3Wallet('');
+      }
       console.log('WalletConnect initialized:', web3wallet);
-      console.log(
-        'WalletConnect active sessions:',
-        web3wallet.getActiveSessions(),
-      );
+      const activeSessions = web3wallet.getActiveSessions();
+      console.log('WalletConnect active sessions:', activeSessions);
       setIsReady(true);
+      const embeddingPageUrl = document.referrer; // URL of the page embedding the iframe
+      console.log('embeddingPageUrl:', embeddingPageUrl);
+      if (embeddingPageUrl) {
+        const existingSession = getSessionMatchingAddressAndDapp(
+          Object.values(activeSessions),
+          embeddingPageUrl,
+          address,
+        );
+        if (existingSession) {
+          console.log(
+            `initializeWalletConnect // Existing session found for dApp: ${embeddingPageUrl}. Using existing session.`,
+          );
+          setIsConnectedToDapp(true);
+        }
+      }
     } catch (error) {
       console.error('Failed to initialize WalletConnect: ', error);
       setIsReady(false);
@@ -114,16 +193,15 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
           verifyContext,
         });
         const sessionDApp = verifyContext.verified.origin;
-        const existingSessions = web3wallet.getActiveSessions();
-        const existingSession = Object.values(existingSessions).find(
-          (session) => {
-            return session.peer.metadata.url.includes(sessionDApp); // Placeholder condition
-          },
+        const activeSessions = web3wallet.getActiveSessions();
+        const existingSession = getSessionMatchingAddressAndDapp(
+          Object.values(activeSessions),
+          sessionDApp,
+          address,
         );
-
         if (existingSession) {
           console.log(
-            `Existing session found for dApp: ${sessionDApp}. Using existing session.`,
+            `connectToDapp // Existing session found for dApp: ${sessionDApp}. Using existing session.`,
           );
           setIsConnectedToDapp(true);
           // Optionally, handle the existing session here (e.g., proceed with interaction without new session proposal)
@@ -187,52 +265,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
         setIsLoadingPairing(false);
       }
     },
-    [activeProposals, wallet, address],
-  );
-
-  // Handle approve action, construct session namespace
-  const onApprove = useCallback(
-    async (proposal: Web3WalletTypes.SessionProposal) => {
-      if (proposal) {
-        setIsLoadingApprove(true);
-        // ------- namespaces builder util ------------ //
-        const namespaces = buildApprovedNamespaces({
-          proposal: { ...proposal.params, expiry: proposal.params.expiry || 0 },
-          supportedNamespaces: {
-            eip155: {
-              chains: [`eip155:${env.NEXT_PUBLIC_CHAIN}`],
-              methods: [
-                'personal_sign',
-                'eth_sign',
-                'eth_signTypedData',
-                'eth_signTypedData_v4',
-                'eth_sendTransaction',
-              ],
-              events: ['accountsChanged', 'chainChanged'],
-              accounts: [`eip155:${env.NEXT_PUBLIC_CHAIN}:${address}`],
-            },
-          },
-        });
-
-        console.log('approving namespaces:', namespaces);
-
-        try {
-          const session = await web3wallet.approveSession({
-            id: proposal.id,
-            namespaces,
-          });
-          setIsConnectedToDapp(true);
-          console.log('session:', session);
-          // After successful approval, remove the proposal from activeProposals
-        } catch (e) {
-          console.error('Failed to approve session:', e);
-          setIsLoadingApprove(false);
-          return;
-        }
-      }
-      setIsLoadingApprove(false);
-    },
-    [address],
+    [wallet, address, onApprove],
   );
 
   return {
