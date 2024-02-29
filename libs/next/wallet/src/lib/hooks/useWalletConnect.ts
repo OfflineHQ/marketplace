@@ -24,7 +24,8 @@ export function convertHexToUtf8(hex: string) {
 export type UseWalletConnectProps = Pick<AppUser, 'address'>;
 
 export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
-  const [loading, setLoading] = useState(false);
+  const [isConnectedToDapp, setIsConnectedToDapp] = useState(false);
+  const [isLoadingPairing, setIsLoadingPairing] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [currentPairingTopic, setCurrentPairingTopic] = useState('');
   const [isLoadingApprove, setIsLoadingApprove] = useState(false);
@@ -101,6 +102,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
           topic,
           reason: getSdkError('USER_DISCONNECTED'),
         });
+        setIsConnectedToDapp(false);
       });
       web3wallet.on('session_proposal', ({ id, params, verifyContext }) => {
         const {
@@ -111,18 +113,23 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
           params,
           verifyContext,
         });
-        console.log('activeProposals:', activeProposals);
-        // Check if the proposal has already been handled
-        if (!activeProposals[id]) {
-          setActiveProposals((prev) => ({ ...prev, [id]: true }));
-          onApprove({ id, params, verifyContext });
-        } else {
-          console.log(`Proposal ${id} is already being processed.`);
-        }
-        web3wallet.core.pairing.events.removeListener(
-          'pairing_expire',
-          pairingExpiredListener,
+        const sessionDApp = verifyContext.verified.origin;
+        const existingSessions = web3wallet.getActiveSessions();
+        const existingSession = Object.values(existingSessions).find(
+          (session) => {
+            return session.peer.metadata.url.includes(sessionDApp); // Placeholder condition
+          },
         );
+
+        if (existingSession) {
+          console.log(
+            `Existing session found for dApp: ${sessionDApp}. Using existing session.`,
+          );
+          setIsConnectedToDapp(true);
+          // Optionally, handle the existing session here (e.g., proceed with interaction without new session proposal)
+        } else {
+          onApprove({ id, params, verifyContext });
+        }
       });
       // Handle session request
 
@@ -168,7 +175,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
       }
 
       try {
-        setLoading(true);
+        setIsLoadingPairing(true);
         web3wallet.core.pairing.events.on(
           'pairing_expire',
           pairingExpiredListener,
@@ -177,7 +184,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
       } catch (error) {
         console.error('Failed to connect to WalletConnect: ', error);
       } finally {
-        setLoading(false);
+        setIsLoadingPairing(false);
       }
     },
     [activeProposals, wallet, address],
@@ -214,22 +221,12 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
             id: proposal.id,
             namespaces,
           });
+          setIsConnectedToDapp(true);
           console.log('session:', session);
           // After successful approval, remove the proposal from activeProposals
-          setActiveProposals((prev) => {
-            const updatedProposals = { ...prev };
-            delete updatedProposals[proposal.id];
-            return updatedProposals;
-          });
         } catch (e) {
           console.error('Failed to approve session:', e);
           setIsLoadingApprove(false);
-          // If approval fails, also remove the proposal to allow retry
-          setActiveProposals((prev) => {
-            const updatedProposals = { ...prev };
-            delete updatedProposals[proposal.id];
-            return updatedProposals;
-          });
           return;
         }
       }
@@ -239,13 +236,13 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
   );
 
   return {
+    isConnectedToDapp,
     isReady,
     web3wallet,
     initializeWalletConnect,
     connectToDapp,
     disconnectWalletConnect,
-    loading,
-    onApprove,
+    isLoadingPairing,
     isLoadingApprove,
   };
 };
