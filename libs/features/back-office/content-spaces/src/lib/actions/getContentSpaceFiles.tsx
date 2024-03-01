@@ -19,7 +19,8 @@ export const getContentSpaceFiles = cacheWithDynamicKeys(
     });
     return list.items.filter((item): item is FileSummary => 'filePath' in item);
   },
-  (props: [GetContentSpaceFilesProps]) => [
-    `${props[0].organizerId}-${props[0].contentSpaceId}-getContentSpaceFiles`,
-  ],
+  async (props: [GetContentSpaceFilesProps]) =>
+    Promise.resolve([
+      `${props[0].organizerId}-${props[0].contentSpaceId}-getContentSpaceFiles`,
+    ]),
 );

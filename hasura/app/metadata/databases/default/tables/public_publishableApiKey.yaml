@@ -1,0 +1,3 @@
+table:
+  name: publishableApiKey
+  schema: public

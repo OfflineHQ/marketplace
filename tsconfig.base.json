@@ -51,6 +51,15 @@
       "@features/back-office/events-types": [
         "libs/features/back-office/events-types/src/index.ts"
       ],
+      "@features/back-office/loyalty-card": [
+        "libs/features/back-office/loyalty-card/src/index.ts"
+      ],
+      "@features/back-office/loyalty-card-api": [
+        "libs/features/back-office/loyalty-card-api/src/index.ts"
+      ],
+      "@features/back-office/loyalty-card-types": [
+        "libs/features/back-office/loyalty-card-types/src/index.ts"
+      ],
       "@features/back-office/roles": [
         "libs/features/back-office/roles/src/index.ts"
       ],
@@ -73,6 +82,12 @@
       "@features/kyc-actions": ["libs/features/kyc-actions/src/index.ts"],
       "@features/kyc-api": ["libs/features/kyc-api/src/index.ts"],
       "@features/kyc/server": ["libs/features/kyc/src/server.ts"],
+      "@features/loyalty-card-api": [
+        "libs/features/loyalty-card-api/src/index.ts"
+      ],
+      "@features/loyalty-card-cron": [
+        "libs/features/loyalty-card-cron/src/index.ts"
+      ],
       "@features/navigation": ["libs/features/navigation/src/index.ts"],
       "@features/orders-cron": ["libs/features/orders-cron/src/index.ts"],
       "@features/organizer/event": [
@@ -132,11 +147,16 @@
       "@insight/client": ["libs/insight/client/src/index.ts"],
       "@insight/server": ["libs/insight/server/src/index.ts"],
       "@insight/types": ["libs/insight/types/src/index.ts"],
+      "@integrations/api-keys": ["libs/integrations/api-keys/src/index.ts"],
+      "@integrations/external-api-handlers": [
+        "libs/integrations/external-api-handlers/src/index.ts"
+      ],
       "@kyc/admin": ["libs/kyc/admin/src/index.ts"],
       "@kyc/common": ["libs/features/kyc-common/src/index.ts"],
       "@kyc/types": ["libs/kyc/types/src/index.ts"],
       "@kyc/webhooks": ["libs/kyc/webhooks/src/index.ts"],
       "@logger": ["libs/logger/src/index.ts"],
+      "@next/api-handler": ["libs/next/api-handler/src/index.ts"],
       "@next/auth": ["libs/next/auth/src/index.ts"],
       "@next/cache": ["libs/next/cache/src/index.ts"],
       "@next/chains": ["libs/next/chains/src/index.ts"],
@@ -165,8 +185,24 @@
       "@next/wallet": ["libs/next/wallet/src/index.ts"],
       "@next/zustand": ["libs/next/zustand/src/index.ts"],
       "@nft/event-pass": ["libs/nft/event-pass/src/index.ts"],
+      "@nft/loyalty-card": ["libs/nft/loyalty-card/src/index.ts"],
+      "@nft/mint-password": ["libs/nft/mint-password/src/index.ts"],
       "@nft/thirdweb-admin": ["libs/nft/thirdweb-admin/src/index.ts"],
-      "@nft/thirdweb-organizer": ["libs/nft/thirdweb-organizer/src/index.ts"],
+      "@nft/thirdweb-organizer-common": [
+        "libs/nft/thirdweb-organizer-common/src/index.ts"
+      ],
+      "@nft/thirdweb-organizer-event-pass": [
+        "libs/nft/thirdweb-organizer-event-pass/src/index.ts"
+      ],
+      "@nft/thirdweb-organizer-loyalty-card": [
+        "libs/nft/thirdweb-organizer-loyalty-card/src/index.ts"
+      ],
+      "@nft/thirdweb-organizer-pack": [
+        "libs/nft/thirdweb-organizer-pack/src/index.ts"
+      ],
+      "@nft/thirdweb-organizer-stamps": [
+        "libs/nft/thirdweb-organizer-stamps/src/index.ts"
+      ],
       "@nft/types": ["libs/nft/types/src/index.ts"],
       "@payment/admin": ["libs/payment/admin/src/index.ts"],
       "@payment/types": ["libs/payment/types/src/index.ts"],

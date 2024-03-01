@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
-import * as deploy from '../../actions/deployCollectionWrapper';
+import * as deploy from '../../actions/deployEventPassCollectionWrapper';
 import * as renameFiles from '../../actions/renameEventPassNftFiles';
-import * as reveal from '../../actions/revealDelayedContract';
+import * as reveal from '../../actions/revealEventPassDelayedContract';
 
 import {
   EventSheetExample,
@@ -175,7 +175,11 @@ export const WithClickOnDeploy: Story = {
         timeout: 5000,
       },
     );
-    const mockDeploy = getMock(parameters, deploy, 'deployCollectionWrapper');
+    const mockDeploy = getMock(
+      parameters,
+      deploy,
+      'deployEventPassCollectionWrapper',
+    );
     await expect(buttonElement).toBeEnabled();
     await userEvent.click(buttonElement);
     expect(mockDeploy).toBeCalledTimes(1);
@@ -226,7 +230,11 @@ export const WithEventPassDelayedRevealToReveal: Story = {
     expect(screen.getByText(/published/i)).toBeInTheDocument();
     const buttonElement = await screen.findByText(/reveal your event pass/i);
     await expect(buttonElement).toBeEnabled();
-    const revealMock = getMock(parameters, reveal, 'revealDelayedContract');
+    const revealMock = getMock(
+      parameters,
+      reveal,
+      'revealEventPassDelayedContract',
+    );
     await userEvent.click(buttonElement);
     const args = revealMock.mock.calls[0];
     expect(revealMock).toBeCalledTimes(1);

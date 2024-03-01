@@ -285,6 +285,35 @@ type Asset implements Entity & Node {
     skip: Int
     where: EventPassDelayedRevealedWhereInput
   ): [EventPassDelayedRevealed!]!
+  nftImageLoyaltyCard(
+    after: String
+    before: String
+    first: Int
+
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `nftImageLoyaltyCard` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+    last: Int
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `nftImageLoyaltyCard` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+    orderBy: LoyaltyCardOrderByInput
+    skip: Int
+    where: LoyaltyCardWhereInput
+  ): [LoyaltyCard!]!
   nftImagePack(
     after: String
     before: String
@@ -446,6 +475,7 @@ input AssetCreateInput {
   mimeType: String
   nftImageEventPass: EventPassCreateManyInlineInput
   nftImageEventPassDelayedRevealed: EventPassDelayedRevealedCreateManyInlineInput
+  nftImageLoyaltyCard: LoyaltyCardCreateManyInlineInput
   nftImagePack: PackCreateManyInlineInput
   size: Float
   updatedAt: DateTime
@@ -576,6 +606,9 @@ input AssetManyWhereInput {
   nftImageEventPass_every: EventPassWhereInput
   nftImageEventPass_none: EventPassWhereInput
   nftImageEventPass_some: EventPassWhereInput
+  nftImageLoyaltyCard_every: LoyaltyCardWhereInput
+  nftImageLoyaltyCard_none: LoyaltyCardWhereInput
+  nftImageLoyaltyCard_some: LoyaltyCardWhereInput
   nftImagePack_every: PackWhereInput
   nftImagePack_none: PackWhereInput
   nftImagePack_some: PackWhereInput
@@ -676,6 +709,7 @@ input AssetUpdateInput {
   mimeType: String
   nftImageEventPass: EventPassUpdateManyInlineInput
   nftImageEventPassDelayedRevealed: EventPassDelayedRevealedUpdateManyInlineInput
+  nftImageLoyaltyCard: LoyaltyCardUpdateManyInlineInput
   nftImagePack: PackUpdateManyInlineInput
   size: Float
   width: Float
@@ -987,6 +1021,9 @@ input AssetWhereInput {
   nftImageEventPass_every: EventPassWhereInput
   nftImageEventPass_none: EventPassWhereInput
   nftImageEventPass_some: EventPassWhereInput
+  nftImageLoyaltyCard_every: LoyaltyCardWhereInput
+  nftImageLoyaltyCard_none: LoyaltyCardWhereInput
+  nftImageLoyaltyCard_some: LoyaltyCardWhereInput
   nftImagePack_every: PackWhereInput
   nftImagePack_none: PackWhereInput
   nftImagePack_some: PackWhereInput
@@ -2183,6 +2220,9 @@ enum EntityTypeName {
   A model for location data (point on a map) + additional info such as street, venue etc.
   """
   LocationAddress
+
+  """Root loyalty card model"""
+  LoyaltyCard
 
   """
   An organizer is an entity that launch events and handle the pass benefits.
@@ -5941,6 +5981,674 @@ The Long scalar type represents non-fractional signed whole numeric values. Long
 """
 scalar Long
 
+"""Root loyalty card model"""
+type LoyaltyCard implements Entity & Node {
+  """The time the document was created"""
+  createdAt: DateTime!
+
+  """User that created this document"""
+  createdBy(
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `createdBy` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `createdBy` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): User
+
+  """Get the document in other stages"""
+  documentInStages(
+    """Decides if the current stage should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Decides if the documents should match the parent documents locale or should use the fallback order defined in the tree
+    """
+    inheritLocale: Boolean! = false
+
+    """Potential stages that should be returned"""
+    stages: [Stage!]! = [DRAFT, PUBLISHED]
+  ): [LoyaltyCard!]!
+
+  """List of LoyaltyCard versions"""
+  history(
+    limit: Int! = 10
+    skip: Int! = 0
+
+    """
+    This is optional and can be used to fetch the document version history for a specific stage instead of the current one
+    """
+    stageOverride: Stage
+  ): [Version!]!
+
+  """The unique identifier"""
+  id: ID!
+
+  """Image representing the NFT. Advised resolution is 800 x 800 pixels."""
+  nftImage(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `nftImage` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `nftImage` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): Asset!
+
+  """Name associated with the NFT. Cannot be localized."""
+  nftName: String!
+  organizer(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): Organizer
+
+  """The time the document was published. Null on documents in draft stage."""
+  publishedAt: DateTime
+
+  """User that last published this document"""
+  publishedBy(
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `publishedBy` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `publishedBy` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): User
+  scheduledIn(
+    after: String
+    before: String
+    first: Int
+
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `scheduledIn` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+    last: Int
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `scheduledIn` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+    skip: Int
+    where: ScheduledOperationWhereInput
+  ): [ScheduledOperation!]!
+
+  """System stage field"""
+  stage: Stage!
+
+  """The time the document was updated"""
+  updatedAt: DateTime!
+
+  """User that last updated this document"""
+  updatedBy(
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `updatedBy` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `updatedBy` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): User
+}
+
+input LoyaltyCardConnectInput {
+  """
+  Allow to specify document position in list of connected documents, will default to appending at end of list
+  """
+  position: ConnectPositionInput
+
+  """Document to connect"""
+  where: LoyaltyCardWhereUniqueInput!
+}
+
+"""A connection to a list of items."""
+type LoyaltyCardConnection {
+  aggregate: Aggregate!
+
+  """A list of edges."""
+  edges: [LoyaltyCardEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+input LoyaltyCardCreateInput {
+  cltzsfm12094507ul1er1czw6: OrganizerCreateManyInlineInput
+  createdAt: DateTime
+  nftImage: AssetCreateOneInlineInput!
+  nftName: String!
+  organizer: OrganizerCreateOneInlineInput
+  updatedAt: DateTime
+}
+
+input LoyaltyCardCreateManyInlineInput {
+  """Connect multiple existing LoyaltyCard documents"""
+  connect: [LoyaltyCardWhereUniqueInput!]
+
+  """Create and connect multiple existing LoyaltyCard documents"""
+  create: [LoyaltyCardCreateInput!]
+}
+
+input LoyaltyCardCreateOneInlineInput {
+  """Connect one existing LoyaltyCard document"""
+  connect: LoyaltyCardWhereUniqueInput
+
+  """Create and connect one LoyaltyCard document"""
+  create: LoyaltyCardCreateInput
+}
+
+"""An edge in a connection."""
+type LoyaltyCardEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: LoyaltyCard!
+}
+
+"""Identifies documents"""
+input LoyaltyCardManyWhereInput {
+  """Logical AND on all given filters."""
+  AND: [LoyaltyCardWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [LoyaltyCardWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [LoyaltyCardWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  createdAt: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  createdAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime]
+  createdBy: UserWhereInput
+  documentInStages_every: LoyaltyCardWhereStageInput
+  documentInStages_none: LoyaltyCardWhereStageInput
+  documentInStages_some: LoyaltyCardWhereStageInput
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  nftImage: AssetWhereInput
+  nftName: String
+
+  """All values containing the given string."""
+  nftName_contains: String
+
+  """All values ending with the given string."""
+  nftName_ends_with: String
+
+  """All values that are contained in given list."""
+  nftName_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftName_not: String
+
+  """All values not containing the given string."""
+  nftName_not_contains: String
+
+  """All values not ending with the given string"""
+  nftName_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftName_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftName_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftName_starts_with: String
+  organizer: OrganizerWhereInput
+  publishedAt: DateTime
+
+  """All values greater than the given value."""
+  publishedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  publishedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  publishedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  publishedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  publishedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  publishedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  publishedAt_not_in: [DateTime]
+  publishedBy: UserWhereInput
+  scheduledIn_every: ScheduledOperationWhereInput
+  scheduledIn_none: ScheduledOperationWhereInput
+  scheduledIn_some: ScheduledOperationWhereInput
+  updatedAt: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  updatedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime]
+  updatedBy: UserWhereInput
+}
+
+enum LoyaltyCardOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  id_ASC
+  id_DESC
+  nftName_ASC
+  nftName_DESC
+  publishedAt_ASC
+  publishedAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+input LoyaltyCardUpdateInput {
+  cltzsfm12094507ul1er1czw6: OrganizerUpdateManyInlineInput
+  nftImage: AssetUpdateOneInlineInput
+  nftName: String
+  organizer: OrganizerUpdateOneInlineInput
+}
+
+input LoyaltyCardUpdateManyInlineInput {
+  """Connect multiple existing LoyaltyCard documents"""
+  connect: [LoyaltyCardConnectInput!]
+
+  """Create and connect multiple LoyaltyCard documents"""
+  create: [LoyaltyCardCreateInput!]
+
+  """Delete multiple LoyaltyCard documents"""
+  delete: [LoyaltyCardWhereUniqueInput!]
+
+  """Disconnect multiple LoyaltyCard documents"""
+  disconnect: [LoyaltyCardWhereUniqueInput!]
+
+  """
+  Override currently-connected documents with multiple existing LoyaltyCard documents
+  """
+  set: [LoyaltyCardWhereUniqueInput!]
+
+  """Update multiple LoyaltyCard documents"""
+  update: [LoyaltyCardUpdateWithNestedWhereUniqueInput!]
+
+  """Upsert multiple LoyaltyCard documents"""
+  upsert: [LoyaltyCardUpsertWithNestedWhereUniqueInput!]
+}
+
+input LoyaltyCardUpdateManyInput {
+  nftName: String
+}
+
+input LoyaltyCardUpdateOneInlineInput {
+  """Connect existing LoyaltyCard document"""
+  connect: LoyaltyCardWhereUniqueInput
+
+  """Create and connect one LoyaltyCard document"""
+  create: LoyaltyCardCreateInput
+
+  """Delete currently connected LoyaltyCard document"""
+  delete: Boolean
+
+  """Disconnect currently connected LoyaltyCard document"""
+  disconnect: Boolean
+
+  """Update single LoyaltyCard document"""
+  update: LoyaltyCardUpdateWithNestedWhereUniqueInput
+
+  """Upsert single LoyaltyCard document"""
+  upsert: LoyaltyCardUpsertWithNestedWhereUniqueInput
+}
+
+input LoyaltyCardUpdateWithNestedWhereUniqueInput {
+  """Document to update"""
+  data: LoyaltyCardUpdateInput!
+
+  """Unique document search"""
+  where: LoyaltyCardWhereUniqueInput!
+}
+
+input LoyaltyCardUpsertInput {
+  """Create document if it didn't exist"""
+  create: LoyaltyCardCreateInput!
+
+  """Update document if it exists"""
+  update: LoyaltyCardUpdateInput!
+}
+
+input LoyaltyCardUpsertWithNestedWhereUniqueInput {
+  """Upsert data"""
+  data: LoyaltyCardUpsertInput!
+
+  """Unique document search"""
+  where: LoyaltyCardWhereUniqueInput!
+}
+
+"""
+This contains a set of filters that can be used to compare values internally
+"""
+input LoyaltyCardWhereComparatorInput {
+  """
+  This field can be used to request to check if the entry is outdated by internal comparison
+  """
+  outdated_to: Boolean
+}
+
+"""Identifies documents"""
+input LoyaltyCardWhereInput {
+  """Logical AND on all given filters."""
+  AND: [LoyaltyCardWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [LoyaltyCardWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [LoyaltyCardWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  createdAt: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  createdAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime]
+  createdBy: UserWhereInput
+  documentInStages_every: LoyaltyCardWhereStageInput
+  documentInStages_none: LoyaltyCardWhereStageInput
+  documentInStages_some: LoyaltyCardWhereStageInput
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  nftImage: AssetWhereInput
+  nftName: String
+
+  """All values containing the given string."""
+  nftName_contains: String
+
+  """All values ending with the given string."""
+  nftName_ends_with: String
+
+  """All values that are contained in given list."""
+  nftName_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  nftName_not: String
+
+  """All values not containing the given string."""
+  nftName_not_contains: String
+
+  """All values not ending with the given string"""
+  nftName_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  nftName_not_in: [String]
+
+  """All values not starting with the given string."""
+  nftName_not_starts_with: String
+
+  """All values starting with the given string."""
+  nftName_starts_with: String
+  organizer: OrganizerWhereInput
+  publishedAt: DateTime
+
+  """All values greater than the given value."""
+  publishedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  publishedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  publishedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  publishedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  publishedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  publishedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  publishedAt_not_in: [DateTime]
+  publishedBy: UserWhereInput
+  scheduledIn_every: ScheduledOperationWhereInput
+  scheduledIn_none: ScheduledOperationWhereInput
+  scheduledIn_some: ScheduledOperationWhereInput
+  updatedAt: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  updatedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime]
+  updatedBy: UserWhereInput
+}
+
+"""
+The document in stages filter allows specifying a stage entry to cross compare the same document between different stages
+"""
+input LoyaltyCardWhereStageInput {
+  """Logical AND on all given filters."""
+  AND: [LoyaltyCardWhereStageInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [LoyaltyCardWhereStageInput!]
+
+  """Logical OR on all given filters."""
+  OR: [LoyaltyCardWhereStageInput!]
+
+  """
+  This field contains fields which can be set as true or false to specify an internal comparison
+  """
+  compareWithParent: LoyaltyCardWhereComparatorInput
+
+  """Specify the stage to compare with"""
+  stage: Stage
+}
+
+"""References LoyaltyCard record uniquely"""
+input LoyaltyCardWhereUniqueInput {
+  id: ID
+}
+
 """An object with an ID"""
 interface Node {
   """The id of the object."""
@@ -6169,6 +6877,27 @@ type Organizer implements Entity & Node {
     """
     locales: [Locale!]! = [en, fr]
   ): [Organizer!]!
+  loyaltyCard(
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `loyaltyCard` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `loyaltyCard` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): LoyaltyCard
 
   """Name of the organizer"""
   name: String!
@@ -6313,6 +7042,7 @@ type OrganizerConnection {
 
 input OrganizerCreateInput {
   clr7j9mmt0q2j01uo9zrs2fm7: PackCreateManyInlineInput
+  cltzsen11092507ul9qlg4ywb: LoyaltyCardCreateManyInlineInput
   contentSpaces: ContentSpaceCreateManyInlineInput
   createdAt: DateTime
 
@@ -6331,6 +7061,7 @@ input OrganizerCreateInput {
   Inline mutations for managing document localizations excluding the default locale
   """
   localizations: OrganizerCreateLocalizationsInput
+  loyaltyCard: LoyaltyCardCreateOneInlineInput
   name: String!
   slug: String!
   telegramHandle: String
@@ -6613,6 +7344,7 @@ input OrganizerManyWhereInput {
 
   """All values starting with the given string."""
   instagramHandle_starts_with: String
+  loyaltyCard: LoyaltyCardWhereInput
   name: String
 
   """All values containing the given string."""
@@ -6867,6 +7599,7 @@ enum OrganizerOrderByInput {
 
 input OrganizerUpdateInput {
   clr7j9mmt0q2j01uo9zrs2fm7: PackUpdateManyInlineInput
+  cltzsen11092507ul9qlg4ywb: LoyaltyCardUpdateManyInlineInput
   contentSpaces: ContentSpaceUpdateManyInlineInput
 
   """description input for default locale (en)"""
@@ -6882,6 +7615,7 @@ input OrganizerUpdateInput {
 
   """Manage document localizations"""
   localizations: OrganizerUpdateLocalizationsInput
+  loyaltyCard: LoyaltyCardUpdateOneInlineInput
   name: String
   slug: String
   telegramHandle: String
@@ -7242,6 +7976,7 @@ input OrganizerWhereInput {
 
   """All values starting with the given string."""
   instagramHandle_starts_with: String
+  loyaltyCard: LoyaltyCardWhereInput
   name: String
 
   """All values containing the given string."""
@@ -9033,7 +9768,7 @@ type ScheduledOperation implements Entity & Node {
   ): User
 }
 
-union ScheduledOperationAffectedDocument = Asset | ContentSpace | Event | EventPass | EventPassDelayedRevealed | Organizer | Pack
+union ScheduledOperationAffectedDocument = Asset | ContentSpace | Event | EventPass | EventPassDelayedRevealed | LoyaltyCard | Organizer | Pack
 
 """A connection to a list of items."""
 type ScheduledOperationConnection {
@@ -10242,7 +10977,7 @@ type eventPassNft {
   metadata(
     """JSON select path"""
     path: String
-  ): jsonb!
+  ): jsonb
   organizer(
     """
     Defines which locales should be returned.
@@ -10275,7 +11010,7 @@ type eventPassNft {
   """
   The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms.
   """
-  tokenId: bigint!
+  tokenId: bigint
 }
 
 """
@@ -10505,6 +11240,9 @@ type mutation_root {
   """Create one eventPassDelayedRevealed"""
   createEventPassDelayedRevealed(data: EventPassDelayedRevealedCreateInput!): EventPassDelayedRevealed
 
+  """Create one loyaltyCard"""
+  createLoyaltyCard(data: LoyaltyCardCreateInput!): LoyaltyCard
+
   """Create one organizer"""
   createOrganizer(data: OrganizerCreateInput!): Organizer
 
@@ -10549,6 +11287,14 @@ type mutation_root {
     """Document to delete"""
     where: EventPassDelayedRevealedWhereUniqueInput!
   ): EventPassDelayedRevealed
+
+  """
+  Delete one loyaltyCard from _all_ existing stages. Returns deleted document.
+  """
+  deleteLoyaltyCard(
+    """Document to delete"""
+    where: LoyaltyCardWhereUniqueInput!
+  ): LoyaltyCard
 
   """Delete many Asset documents"""
   deleteManyAssets(
@@ -10641,6 +11387,24 @@ type mutation_root {
     """Documents to delete"""
     where: EventManyWhereInput
   ): EventConnection!
+
+  """Delete many LoyaltyCard documents"""
+  deleteManyLoyaltyCards(
+    """Documents to delete"""
+    where: LoyaltyCardManyWhereInput
+  ): BatchPayload!
+
+  """Delete many LoyaltyCard documents, return deleted documents"""
+  deleteManyLoyaltyCardsConnection(
+    after: ID
+    before: ID
+    first: Int
+    last: Int
+    skip: Int
+
+    """Documents to delete"""
+    where: LoyaltyCardManyWhereInput
+  ): LoyaltyCardConnection!
 
   """Delete many Organizer documents"""
   deleteManyOrganizers(
@@ -10795,6 +11559,15 @@ type mutation_root {
     """Whether to include the default locale when publishBase is set"""
     withDefaultLocale: Boolean = true
   ): EventPassDelayedRevealed
+
+  """Publish one loyaltyCard"""
+  publishLoyaltyCard(
+    """Publishing target stage"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Document to publish"""
+    where: LoyaltyCardWhereUniqueInput!
+  ): LoyaltyCard
 
   """Publish many Asset documents"""
   publishManyAssets(
@@ -11020,6 +11793,33 @@ type mutation_root {
     """Whether to include the default locale when publishBase is true"""
     withDefaultLocale: Boolean = true
   ): EventConnection!
+
+  """Publish many LoyaltyCard documents"""
+  publishManyLoyaltyCards(
+    """Stages to publish documents to"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Identifies documents in each stage to be published"""
+    where: LoyaltyCardManyWhereInput
+  ): BatchPayload!
+
+  """Publish many LoyaltyCard documents"""
+  publishManyLoyaltyCardsConnection(
+    after: ID
+    before: ID
+    first: Int
+
+    """Stage to find matching documents in"""
+    from: Stage = DRAFT
+    last: Int
+    skip: Int
+
+    """Stages to publish documents to"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Identifies documents in each stage to be published"""
+    where: LoyaltyCardManyWhereInput
+  ): LoyaltyCardConnection!
 
   """Publish many Organizer documents"""
   publishManyOrganizers(
@@ -11277,6 +12077,23 @@ type mutation_root {
     withDefaultLocale: Boolean = true
   ): EventPassDelayedRevealed
 
+  """Schedule to publish one loyaltyCard"""
+  schedulePublishLoyaltyCard(
+    """
+    Release at point in time, will create new release containing this operation
+    """
+    releaseAt: DateTime
+
+    """Optionally attach this scheduled operation to an existing release"""
+    releaseId: String
+
+    """Publishing target stage"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Document to publish"""
+    where: LoyaltyCardWhereUniqueInput!
+  ): LoyaltyCard
+
   """Schedule to publish one organizer"""
   schedulePublishOrganizer(
     """Optional localizations to publish"""
@@ -11475,6 +12292,25 @@ type mutation_root {
   ): EventPassDelayedRevealed
 
   """
+  Unpublish one loyaltyCard from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only.
+  """
+  scheduleUnpublishLoyaltyCard(
+    """Stages to unpublish document from"""
+    from: [Stage!]! = [PUBLISHED]
+
+    """
+    Release at point in time, will create new release containing this operation
+    """
+    releaseAt: DateTime
+
+    """Optionally attach this scheduled operation to an existing release"""
+    releaseId: String
+
+    """Document to unpublish"""
+    where: LoyaltyCardWhereUniqueInput!
+  ): LoyaltyCard
+
+  """
   Unpublish one organizer from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only.
   """
   scheduleUnpublishOrganizer(
@@ -11636,6 +12472,17 @@ type mutation_root {
     """Document to unpublish"""
     where: EventPassDelayedRevealedWhereUniqueInput!
   ): EventPassDelayedRevealed
+
+  """
+  Unpublish one loyaltyCard from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only.
+  """
+  unpublishLoyaltyCard(
+    """Stages to unpublish document from"""
+    from: [Stage!]! = [PUBLISHED]
+
+    """Document to unpublish"""
+    where: LoyaltyCardWhereUniqueInput!
+  ): LoyaltyCard
 
   """Unpublish many Asset documents"""
   unpublishManyAssets(
@@ -11842,6 +12689,35 @@ type mutation_root {
     where: EventManyWhereInput
   ): EventConnection!
 
+  """Unpublish many LoyaltyCard documents"""
+  unpublishManyLoyaltyCards(
+    """Stages to unpublish documents from"""
+    from: [Stage!]! = [PUBLISHED]
+
+    """Identifies documents in each stage"""
+    where: LoyaltyCardManyWhereInput
+  ): BatchPayload!
+
+  """
+  Find many LoyaltyCard documents that match criteria in specified stage and unpublish from target stages
+  """
+  unpublishManyLoyaltyCardsConnection(
+    after: ID
+    before: ID
+    first: Int
+
+    """Stages to unpublish documents from"""
+    from: [Stage!]! = [PUBLISHED]
+    last: Int
+    skip: Int
+
+    """Stage to find matching documents in"""
+    stage: Stage = DRAFT
+
+    """Identifies documents in draft stage"""
+    where: LoyaltyCardManyWhereInput
+  ): LoyaltyCardConnection!
+
   """Unpublish many Organizer documents"""
   unpublishManyOrganizers(
     """Stages to unpublish documents from"""
@@ -11981,6 +12857,9 @@ type mutation_root {
   """Update one eventPassDelayedRevealed"""
   updateEventPassDelayedRevealed(data: EventPassDelayedRevealedUpdateInput!, where: EventPassDelayedRevealedWhereUniqueInput!): EventPassDelayedRevealed
 
+  """Update one loyaltyCard"""
+  updateLoyaltyCard(data: LoyaltyCardUpdateInput!, where: LoyaltyCardWhereUniqueInput!): LoyaltyCard
+
   """Update many assets"""
   updateManyAssets(
     """Updates to document content"""
@@ -12101,6 +12980,30 @@ type mutation_root {
     where: EventManyWhereInput
   ): EventConnection!
 
+  """Update many loyaltyCards"""
+  updateManyLoyaltyCards(
+    """Updates to document content"""
+    data: LoyaltyCardUpdateManyInput!
+
+    """Documents to apply update on"""
+    where: LoyaltyCardManyWhereInput
+  ): BatchPayload!
+
+  """Update many LoyaltyCard documents"""
+  updateManyLoyaltyCardsConnection(
+    after: ID
+    before: ID
+
+    """Updates to document content"""
+    data: LoyaltyCardUpdateManyInput!
+    first: Int
+    last: Int
+    skip: Int
+
+    """Documents to apply update on"""
+    where: LoyaltyCardManyWhereInput
+  ): LoyaltyCardConnection!
+
   """Update many organizers"""
   updateManyOrganizers(
     """Updates to document content"""
@@ -12172,6 +13075,9 @@ type mutation_root {
 
   """Upsert one eventPassDelayedRevealed"""
   upsertEventPassDelayedRevealed(upsert: EventPassDelayedRevealedUpsertInput!, where: EventPassDelayedRevealedWhereUniqueInput!): EventPassDelayedRevealed
+
+  """Upsert one loyaltyCard"""
+  upsertLoyaltyCard(upsert: LoyaltyCardUpsertInput!, where: LoyaltyCardWhereUniqueInput!): LoyaltyCard
 
   """Upsert one organizer"""
   upsertOrganizer(upsert: OrganizerUpsertInput!, where: OrganizerWhereUniqueInput!): Organizer
@@ -12513,6 +13419,9 @@ type query_root {
 
   """Fetches an object given its ID"""
   entities(
+    """Defines which locales to query for"""
+    locales: [Locale!]
+
     """The where parameters to query components"""
     where: [EntityWhereInput!]!
   ): [Entity!]
@@ -12749,6 +13658,68 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: EventWhereInput
   ): EventConnection!
+
+  """Retrieve a single loyaltyCard"""
+  loyaltyCard(
+    """
+    Defines which locales should be returned.
+    
+    Note that `LoyaltyCard` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: LoyaltyCardWhereUniqueInput!
+  ): LoyaltyCard
+
+  """Retrieve document version"""
+  loyaltyCardVersion(where: VersionWhereInput!): DocumentVersion
+
+  """Retrieve multiple loyaltyCards"""
+  loyaltyCards(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    Defines which locales should be returned.
+    
+    Note that `LoyaltyCard` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    orderBy: LoyaltyCardOrderByInput
+    skip: Int
+    stage: Stage! = PUBLISHED
+    where: LoyaltyCardWhereInput
+  ): [LoyaltyCard!]!
+
+  """Retrieve multiple loyaltyCards using the Relay connection interface"""
+  loyaltyCardsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    Defines which locales should be returned.
+    
+    Note that `LoyaltyCard` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    orderBy: LoyaltyCardOrderByInput
+    skip: Int
+    stage: Stage! = PUBLISHED
+    where: LoyaltyCardWhereInput
+  ): LoyaltyCardConnection!
 
   """Fetches an object given its ID"""
   node(

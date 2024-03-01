@@ -59,6 +59,7 @@ export type Asset = Entity & Node & {
   mimeType?: Maybe<Scalars['String']['output']>;
   nftImageEventPass: Array<EventPass>;
   nftImageEventPassDelayedRevealed: Array<EventPassDelayedRevealed>;
+  nftImageLoyaltyCard: Array<LoyaltyCard>;
   nftImagePack: Array<Pack>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -201,6 +202,20 @@ export type AssetNftImageEventPassDelayedRevealedArgs = {
 
 
 /** Asset system model */
+export type AssetNftImageLoyaltyCardArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<LoyaltyCardOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LoyaltyCardWhereInput>;
+};
+
+
+/** Asset system model */
 export type AssetNftImagePackArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -282,6 +297,7 @@ export type AssetCreateInput = {
   mimeType?: InputMaybe<Scalars['String']['input']>;
   nftImageEventPass?: InputMaybe<EventPassCreateManyInlineInput>;
   nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedCreateManyInlineInput>;
+  nftImageLoyaltyCard?: InputMaybe<LoyaltyCardCreateManyInlineInput>;
   nftImagePack?: InputMaybe<PackCreateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -392,6 +408,9 @@ export type AssetManyWhereInput = {
   nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
+  nftImageLoyaltyCard_every?: InputMaybe<LoyaltyCardWhereInput>;
+  nftImageLoyaltyCard_none?: InputMaybe<LoyaltyCardWhereInput>;
+  nftImageLoyaltyCard_some?: InputMaybe<LoyaltyCardWhereInput>;
   nftImagePack_every?: InputMaybe<PackWhereInput>;
   nftImagePack_none?: InputMaybe<PackWhereInput>;
   nftImagePack_some?: InputMaybe<PackWhereInput>;
@@ -476,6 +495,7 @@ export type AssetUpdateInput = {
   mimeType?: InputMaybe<Scalars['String']['input']>;
   nftImageEventPass?: InputMaybe<EventPassUpdateManyInlineInput>;
   nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedUpdateManyInlineInput>;
+  nftImageLoyaltyCard?: InputMaybe<LoyaltyCardUpdateManyInlineInput>;
   nftImagePack?: InputMaybe<PackUpdateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']['input']>;
   width?: InputMaybe<Scalars['Float']['input']>;
@@ -719,6 +739,9 @@ export type AssetWhereInput = {
   nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
+  nftImageLoyaltyCard_every?: InputMaybe<LoyaltyCardWhereInput>;
+  nftImageLoyaltyCard_none?: InputMaybe<LoyaltyCardWhereInput>;
+  nftImageLoyaltyCard_some?: InputMaybe<LoyaltyCardWhereInput>;
   nftImagePack_every?: InputMaybe<PackWhereInput>;
   nftImagePack_none?: InputMaybe<PackWhereInput>;
   nftImagePack_some?: InputMaybe<PackWhereInput>;
@@ -1602,6 +1625,8 @@ export const enum EntityTypeName {
   EventPassDelayedRevealed = 'EventPassDelayedRevealed',
   /** A model for location data (point on a map) + additional info such as street, venue etc. */
   LocationAddress = 'LocationAddress',
+  /** Root loyalty card model */
+  LoyaltyCard = 'LoyaltyCard',
   /** An organizer is an entity that launch events and handle the pass benefits. */
   Organizer = 'Organizer',
   /**
@@ -4260,6 +4285,466 @@ export type LocationInput = {
   longitude: Scalars['Float']['input'];
 };
 
+/** Root loyalty card model */
+export type LoyaltyCard = Entity & Node & {
+  __typename?: 'LoyaltyCard';
+  /** The time the document was created */
+  createdAt: Scalars['DateTime']['output'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  /** Get the document in other stages */
+  documentInStages: Array<LoyaltyCard>;
+  /** List of LoyaltyCard versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  loyaltyCardNftContract?: Maybe<LoyaltyCardNftContract>;
+  loyaltyCardParameters?: Maybe<LoyaltyCardParameters>;
+  /** Image representing the NFT. Advised resolution is 800 x 800 pixels. */
+  nftImage: Asset;
+  /** Name associated with the NFT. Cannot be localized. */
+  nftName: Scalars['String']['output'];
+  organizer?: Maybe<Organizer>;
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime']['output'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
+  stages?: Array<Stage>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardHistoryArgs = {
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardNftImageArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardOrganizerArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type LoyaltyCardConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type LoyaltyCardConnection = {
+  __typename?: 'LoyaltyCardConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<LoyaltyCardEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type LoyaltyCardCreateInput = {
+  cltzsfm12094507ul1er1czw6?: InputMaybe<OrganizerCreateManyInlineInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  nftImage: AssetCreateOneInlineInput;
+  nftName: Scalars['String']['input'];
+  organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type LoyaltyCardCreateManyInlineInput = {
+  /** Connect multiple existing LoyaltyCard documents */
+  connect?: InputMaybe<Array<LoyaltyCardWhereUniqueInput>>;
+  /** Create and connect multiple existing LoyaltyCard documents */
+  create?: InputMaybe<Array<LoyaltyCardCreateInput>>;
+};
+
+export type LoyaltyCardCreateOneInlineInput = {
+  /** Connect one existing LoyaltyCard document */
+  connect?: InputMaybe<LoyaltyCardWhereUniqueInput>;
+  /** Create and connect one LoyaltyCard document */
+  create?: InputMaybe<LoyaltyCardCreateInput>;
+};
+
+/** An edge in a connection. */
+export type LoyaltyCardEdge = {
+  __typename?: 'LoyaltyCardEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node: LoyaltyCard;
+};
+
+/** Identifies documents */
+export type LoyaltyCardManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<LoyaltyCardWhereStageInput>;
+  documentInStages_none?: InputMaybe<LoyaltyCardWhereStageInput>;
+  documentInStages_some?: InputMaybe<LoyaltyCardWhereStageInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']['input']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export const enum LoyaltyCardOrderByInput {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  NftNameAsc = 'nftName_ASC',
+  NftNameDesc = 'nftName_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+};
+
+export type LoyaltyCardUpdateInput = {
+  cltzsfm12094507ul1er1czw6?: InputMaybe<OrganizerUpdateManyInlineInput>;
+  nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
+  organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
+};
+
+export type LoyaltyCardUpdateManyInlineInput = {
+  /** Connect multiple existing LoyaltyCard documents */
+  connect?: InputMaybe<Array<LoyaltyCardConnectInput>>;
+  /** Create and connect multiple LoyaltyCard documents */
+  create?: InputMaybe<Array<LoyaltyCardCreateInput>>;
+  /** Delete multiple LoyaltyCard documents */
+  delete?: InputMaybe<Array<LoyaltyCardWhereUniqueInput>>;
+  /** Disconnect multiple LoyaltyCard documents */
+  disconnect?: InputMaybe<Array<LoyaltyCardWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing LoyaltyCard documents */
+  set?: InputMaybe<Array<LoyaltyCardWhereUniqueInput>>;
+  /** Update multiple LoyaltyCard documents */
+  update?: InputMaybe<Array<LoyaltyCardUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple LoyaltyCard documents */
+  upsert?: InputMaybe<Array<LoyaltyCardUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type LoyaltyCardUpdateManyInput = {
+  nftName?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type LoyaltyCardUpdateOneInlineInput = {
+  /** Connect existing LoyaltyCard document */
+  connect?: InputMaybe<LoyaltyCardWhereUniqueInput>;
+  /** Create and connect one LoyaltyCard document */
+  create?: InputMaybe<LoyaltyCardCreateInput>;
+  /** Delete currently connected LoyaltyCard document */
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Disconnect currently connected LoyaltyCard document */
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Update single LoyaltyCard document */
+  update?: InputMaybe<LoyaltyCardUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single LoyaltyCard document */
+  upsert?: InputMaybe<LoyaltyCardUpsertWithNestedWhereUniqueInput>;
+};
+
+export type LoyaltyCardUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: LoyaltyCardUpdateInput;
+  /** Unique document search */
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+export type LoyaltyCardUpsertInput = {
+  /** Create document if it didn't exist */
+  create: LoyaltyCardCreateInput;
+  /** Update document if it exists */
+  update: LoyaltyCardUpdateInput;
+};
+
+export type LoyaltyCardUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: LoyaltyCardUpsertInput;
+  /** Unique document search */
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type LoyaltyCardWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Identifies documents */
+export type LoyaltyCardWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<LoyaltyCardWhereStageInput>;
+  documentInStages_none?: InputMaybe<LoyaltyCardWhereStageInput>;
+  documentInStages_some?: InputMaybe<LoyaltyCardWhereStageInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']['input']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type LoyaltyCardWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<LoyaltyCardWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<LoyaltyCardWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<LoyaltyCardWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<LoyaltyCardWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References LoyaltyCard record uniquely */
+export type LoyaltyCardWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
 /** An object with an ID */
 export type Node = {
   /** The id of the object. */
@@ -4302,6 +4787,7 @@ export type Organizer = Entity & Node & {
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<Organizer>;
+  loyaltyCard?: Maybe<LoyaltyCard>;
   /** Name of the organizer */
   name: Scalars['String']['output'];
   /** The time the document was published. Null on documents in draft stage. */
@@ -4407,6 +4893,13 @@ export type OrganizerLocalizationsArgs = {
 
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
+export type OrganizerLoyaltyCardArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerPublishedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
@@ -4463,6 +4956,7 @@ export type OrganizerConnection = {
 
 export type OrganizerCreateInput = {
   clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackCreateManyInlineInput>;
+  cltzsen11092507ul9qlg4ywb?: InputMaybe<LoyaltyCardCreateManyInlineInput>;
   contentSpaces?: InputMaybe<ContentSpaceCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** description input for default locale (en) */
@@ -4477,6 +4971,7 @@ export type OrganizerCreateInput = {
   instagramHandle?: InputMaybe<Scalars['String']['input']>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<OrganizerCreateLocalizationsInput>;
+  loyaltyCard?: InputMaybe<LoyaltyCardCreateOneInlineInput>;
   name: Scalars['String']['input'];
   slug: Scalars['String']['input'];
   telegramHandle?: InputMaybe<Scalars['String']['input']>;
@@ -4701,6 +5196,7 @@ export type OrganizerManyWhereInput = {
   instagramHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
   instagramHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  loyaltyCard?: InputMaybe<LoyaltyCardWhereInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']['input']>;
@@ -4887,6 +5383,7 @@ export const enum OrganizerOrderByInput {
 
 export type OrganizerUpdateInput = {
   clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackUpdateManyInlineInput>;
+  cltzsen11092507ul9qlg4ywb?: InputMaybe<LoyaltyCardUpdateManyInlineInput>;
   contentSpaces?: InputMaybe<ContentSpaceUpdateManyInlineInput>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']['input']>;
@@ -4900,6 +5397,7 @@ export type OrganizerUpdateInput = {
   instagramHandle?: InputMaybe<Scalars['String']['input']>;
   /** Manage document localizations */
   localizations?: InputMaybe<OrganizerUpdateLocalizationsInput>;
+  loyaltyCard?: InputMaybe<LoyaltyCardUpdateOneInlineInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   telegramHandle?: InputMaybe<Scalars['String']['input']>;
@@ -5173,6 +5671,7 @@ export type OrganizerWhereInput = {
   instagramHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
   instagramHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  loyaltyCard?: InputMaybe<LoyaltyCardWhereInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']['input']>;
@@ -5353,6 +5852,18 @@ export type OrganizerWhereUniqueInput_Remote_Rel_EventParametersorganizer = {
 
 /** References Organizer record uniquely */
 export type OrganizerWhereUniqueInput_Remote_Rel_EventPassNftorganizer = {
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** References Organizer record uniquely */
+export type OrganizerWhereUniqueInput_Remote_Rel_LoyaltyCardNftContractorganizer = {
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** References Organizer record uniquely */
+export type OrganizerWhereUniqueInput_Remote_Rel_LoyaltyCardNftorganizer = {
   name?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
 };
@@ -6456,7 +6967,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Asset | ContentSpace | Event | EventPass | EventPassDelayedRevealed | Organizer | Pack;
+export type ScheduledOperationAffectedDocument = Asset | ContentSpace | Event | EventPass | EventPassDelayedRevealed | LoyaltyCard | Organizer | Pack;
 
 /** A connection to a list of items. */
 export type ScheduledOperationConnection = {
@@ -7464,6 +7975,293 @@ export type Account_Updates = {
   where: Account_Bool_Exp;
 };
 
+/** The apiKeyStatus table defines the possible status values for API keys. It ensures data integrity and provides a centralized reference for the status field in the publishableApiKey and secretApiKey tables. */
+export type ApiKeyStatus = {
+  __typename?: 'apiKeyStatus';
+  /** The status value for API keys. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  value: Scalars['String']['output'];
+};
+
+/** aggregated selection of "apiKeyStatus" */
+export type ApiKeyStatus_Aggregate = {
+  __typename?: 'apiKeyStatus_aggregate';
+  aggregate?: Maybe<ApiKeyStatus_Aggregate_Fields>;
+  nodes: Array<ApiKeyStatus>;
+};
+
+/** aggregate fields of "apiKeyStatus" */
+export type ApiKeyStatus_Aggregate_Fields = {
+  __typename?: 'apiKeyStatus_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<ApiKeyStatus_Max_Fields>;
+  min?: Maybe<ApiKeyStatus_Min_Fields>;
+};
+
+
+/** aggregate fields of "apiKeyStatus" */
+export type ApiKeyStatus_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<ApiKeyStatus_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "apiKeyStatus". All fields are combined with a logical 'AND'. */
+export type ApiKeyStatus_Bool_Exp = {
+  _and?: InputMaybe<Array<ApiKeyStatus_Bool_Exp>>;
+  _not?: InputMaybe<ApiKeyStatus_Bool_Exp>;
+  _or?: InputMaybe<Array<ApiKeyStatus_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "apiKeyStatus" */
+export const enum ApiKeyStatus_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  ApiKeyStatusPkey = 'apiKeyStatus_pkey'
+};
+
+export const enum ApiKeyStatus_Enum {
+  Active = 'ACTIVE',
+  Disabled = 'DISABLED',
+  Expired = 'EXPIRED'
+};
+
+/** Boolean expression to compare columns of type "apiKeyStatus_enum". All fields are combined with logical 'AND'. */
+export type ApiKeyStatus_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<ApiKeyStatus_Enum>;
+  _in?: InputMaybe<Array<ApiKeyStatus_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<ApiKeyStatus_Enum>;
+  _nin?: InputMaybe<Array<ApiKeyStatus_Enum>>;
+};
+
+/** input type for inserting data into table "apiKeyStatus" */
+export type ApiKeyStatus_Insert_Input = {
+  /** The status value for API keys. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type ApiKeyStatus_Max_Fields = {
+  __typename?: 'apiKeyStatus_max_fields';
+  /** The status value for API keys. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type ApiKeyStatus_Min_Fields = {
+  __typename?: 'apiKeyStatus_min_fields';
+  /** The status value for API keys. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "apiKeyStatus" */
+export type ApiKeyStatus_Mutation_Response = {
+  __typename?: 'apiKeyStatus_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ApiKeyStatus>;
+};
+
+/** on_conflict condition type for table "apiKeyStatus" */
+export type ApiKeyStatus_On_Conflict = {
+  constraint: ApiKeyStatus_Constraint;
+  update_columns?: Array<ApiKeyStatus_Update_Column>;
+  where?: InputMaybe<ApiKeyStatus_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "apiKeyStatus". */
+export type ApiKeyStatus_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: apiKeyStatus */
+export type ApiKeyStatus_Pk_Columns_Input = {
+  /** The status value for API keys. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  value: Scalars['String']['input'];
+};
+
+/** select columns of table "apiKeyStatus" */
+export const enum ApiKeyStatus_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "apiKeyStatus" */
+export type ApiKeyStatus_Set_Input = {
+  /** The status value for API keys. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "apiKeyStatus" */
+export type ApiKeyStatus_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: ApiKeyStatus_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ApiKeyStatus_Stream_Cursor_Value_Input = {
+  /** The status value for API keys. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "apiKeyStatus" */
+export const enum ApiKeyStatus_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type ApiKeyStatus_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<ApiKeyStatus_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: ApiKeyStatus_Bool_Exp;
+};
+
+/** The apiKeyType table defines the possible types of API keys. It ensures data integrity and provides a centralized reference for the type field in the api key tables. */
+export type ApiKeyType = {
+  __typename?: 'apiKeyType';
+  /** The type of the API key */
+  value: Scalars['String']['output'];
+};
+
+/** aggregated selection of "apiKeyType" */
+export type ApiKeyType_Aggregate = {
+  __typename?: 'apiKeyType_aggregate';
+  aggregate?: Maybe<ApiKeyType_Aggregate_Fields>;
+  nodes: Array<ApiKeyType>;
+};
+
+/** aggregate fields of "apiKeyType" */
+export type ApiKeyType_Aggregate_Fields = {
+  __typename?: 'apiKeyType_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<ApiKeyType_Max_Fields>;
+  min?: Maybe<ApiKeyType_Min_Fields>;
+};
+
+
+/** aggregate fields of "apiKeyType" */
+export type ApiKeyType_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<ApiKeyType_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "apiKeyType". All fields are combined with a logical 'AND'. */
+export type ApiKeyType_Bool_Exp = {
+  _and?: InputMaybe<Array<ApiKeyType_Bool_Exp>>;
+  _not?: InputMaybe<ApiKeyType_Bool_Exp>;
+  _or?: InputMaybe<Array<ApiKeyType_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "apiKeyType" */
+export const enum ApiKeyType_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  ApiKeyTypePkey = 'apiKeyType_pkey'
+};
+
+export const enum ApiKeyType_Enum {
+  External = 'EXTERNAL',
+  Shopify = 'SHOPIFY'
+};
+
+/** Boolean expression to compare columns of type "apiKeyType_enum". All fields are combined with logical 'AND'. */
+export type ApiKeyType_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<ApiKeyType_Enum>;
+  _in?: InputMaybe<Array<ApiKeyType_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<ApiKeyType_Enum>;
+  _nin?: InputMaybe<Array<ApiKeyType_Enum>>;
+};
+
+/** input type for inserting data into table "apiKeyType" */
+export type ApiKeyType_Insert_Input = {
+  /** The type of the API key */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type ApiKeyType_Max_Fields = {
+  __typename?: 'apiKeyType_max_fields';
+  /** The type of the API key */
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type ApiKeyType_Min_Fields = {
+  __typename?: 'apiKeyType_min_fields';
+  /** The type of the API key */
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "apiKeyType" */
+export type ApiKeyType_Mutation_Response = {
+  __typename?: 'apiKeyType_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ApiKeyType>;
+};
+
+/** on_conflict condition type for table "apiKeyType" */
+export type ApiKeyType_On_Conflict = {
+  constraint: ApiKeyType_Constraint;
+  update_columns?: Array<ApiKeyType_Update_Column>;
+  where?: InputMaybe<ApiKeyType_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "apiKeyType". */
+export type ApiKeyType_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: apiKeyType */
+export type ApiKeyType_Pk_Columns_Input = {
+  /** The type of the API key */
+  value: Scalars['String']['input'];
+};
+
+/** select columns of table "apiKeyType" */
+export const enum ApiKeyType_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "apiKeyType" */
+export type ApiKeyType_Set_Input = {
+  /** The type of the API key */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "apiKeyType" */
+export type ApiKeyType_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: ApiKeyType_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ApiKeyType_Stream_Cursor_Value_Input = {
+  /** The type of the API key */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "apiKeyType" */
+export const enum ApiKeyType_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type ApiKeyType_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<ApiKeyType_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: ApiKeyType_Bool_Exp;
+};
+
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
 export type Bigint_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['bigint']['input']>;
@@ -7964,6 +8762,8 @@ export type EventParameters = {
   __typename?: 'eventParameters';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
   activityWebhookId?: Maybe<Scalars['String']['output']>;
+  /** The unique signing key used for securing activity webhooks. */
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['timestamptz']['output'];
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
   dateEnd?: Maybe<Scalars['timestamp']['output']>;
@@ -7988,9 +8788,12 @@ export type EventParameters = {
   isOngoing?: Maybe<Scalars['Boolean']['output']>;
   /** A computed field, executes function "is_sale_ongoing" */
   isSaleOngoing?: Maybe<Scalars['Boolean']['output']>;
+  /** The identifier for the metadata update webhook. */
+  metadataUpdateWebhookId?: Maybe<Scalars['String']['output']>;
+  /** The unique signing key used for securing metadata update webhooks. */
+  metadataUpdateWebhookSigningKey?: Maybe<Scalars['String']['output']>;
   organizer?: Maybe<Organizer>;
   organizerId: Scalars['String']['output'];
-  signingKey?: Maybe<Scalars['String']['output']>;
   status?: Maybe<EventStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
   timezone: Scalars['String']['output'];
@@ -8081,6 +8884,7 @@ export type EventParameters_Bool_Exp = {
   _not?: InputMaybe<EventParameters_Bool_Exp>;
   _or?: InputMaybe<Array<EventParameters_Bool_Exp>>;
   activityWebhookId?: InputMaybe<String_Comparison_Exp>;
+  activityWebhookSigningKey?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   dateEnd?: InputMaybe<Timestamp_Comparison_Exp>;
   dateSaleEnd?: InputMaybe<Timestamp_Comparison_Exp>;
@@ -8094,8 +8898,9 @@ export type EventParameters_Bool_Exp = {
   id?: InputMaybe<Uuid_Comparison_Exp>;
   isOngoing?: InputMaybe<Boolean_Comparison_Exp>;
   isSaleOngoing?: InputMaybe<Boolean_Comparison_Exp>;
+  metadataUpdateWebhookId?: InputMaybe<String_Comparison_Exp>;
+  metadataUpdateWebhookSigningKey?: InputMaybe<String_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
-  signingKey?: InputMaybe<String_Comparison_Exp>;
   status?: InputMaybe<EventStatus_Enum_Comparison_Exp>;
   timezone?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -8105,9 +8910,11 @@ export type EventParameters_Bool_Exp = {
 export const enum EventParameters_Constraint {
   /** unique or primary key constraint on columns "eventId" */
   EventParametersEventIdKey = 'eventParameters_eventId_key',
+  /** unique or primary key constraint on columns "metadataUpdateWebhookSigningKey" */
+  EventParametersMetadataUpdateWebhookSigningKeyKey = 'eventParameters_metadataUpdateWebhookSigningKey_key',
   /** unique or primary key constraint on columns "id" */
   EventParametersPkey = 'eventParameters_pkey',
-  /** unique or primary key constraint on columns "signingKey" */
+  /** unique or primary key constraint on columns "activityWebhookSigningKey" */
   EventParametersSigningKeyKey = 'eventParameters_signingKey_key'
 };
 
@@ -8115,6 +8922,8 @@ export const enum EventParameters_Constraint {
 export type EventParameters_Insert_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
   activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique signing key used for securing activity webhooks. */
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
   dateEnd?: InputMaybe<Scalars['timestamp']['input']>;
@@ -8128,8 +8937,11 @@ export type EventParameters_Insert_Input = {
   eventPassNftContracts?: InputMaybe<EventPassNftContract_Arr_Rel_Insert_Input>;
   eventPassNfts?: InputMaybe<EventPassNft_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** The identifier for the metadata update webhook. */
+  metadataUpdateWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique signing key used for securing metadata update webhooks. */
+  metadataUpdateWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<EventStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
   timezone?: InputMaybe<Scalars['String']['input']>;
@@ -8141,6 +8953,8 @@ export type EventParameters_Max_Fields = {
   __typename?: 'eventParameters_max_fields';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
   activityWebhookId?: Maybe<Scalars['String']['output']>;
+  /** The unique signing key used for securing activity webhooks. */
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
   dateEnd?: Maybe<Scalars['timestamp']['output']>;
@@ -8152,8 +8966,11 @@ export type EventParameters_Max_Fields = {
   dateStart?: Maybe<Scalars['timestamp']['output']>;
   eventId?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  /** The identifier for the metadata update webhook. */
+  metadataUpdateWebhookId?: Maybe<Scalars['String']['output']>;
+  /** The unique signing key used for securing metadata update webhooks. */
+  metadataUpdateWebhookSigningKey?: Maybe<Scalars['String']['output']>;
   organizerId?: Maybe<Scalars['String']['output']>;
-  signingKey?: Maybe<Scalars['String']['output']>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
   timezone?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -8164,6 +8981,8 @@ export type EventParameters_Min_Fields = {
   __typename?: 'eventParameters_min_fields';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
   activityWebhookId?: Maybe<Scalars['String']['output']>;
+  /** The unique signing key used for securing activity webhooks. */
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
   dateEnd?: Maybe<Scalars['timestamp']['output']>;
@@ -8175,8 +8994,11 @@ export type EventParameters_Min_Fields = {
   dateStart?: Maybe<Scalars['timestamp']['output']>;
   eventId?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  /** The identifier for the metadata update webhook. */
+  metadataUpdateWebhookId?: Maybe<Scalars['String']['output']>;
+  /** The unique signing key used for securing metadata update webhooks. */
+  metadataUpdateWebhookSigningKey?: Maybe<Scalars['String']['output']>;
   organizerId?: Maybe<Scalars['String']['output']>;
-  signingKey?: Maybe<Scalars['String']['output']>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
   timezone?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -8208,6 +9030,7 @@ export type EventParameters_On_Conflict = {
 /** Ordering options when selecting data from "eventParameters". */
 export type EventParameters_Order_By = {
   activityWebhookId?: InputMaybe<Order_By>;
+  activityWebhookSigningKey?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   dateEnd?: InputMaybe<Order_By>;
   dateSaleEnd?: InputMaybe<Order_By>;
@@ -8219,8 +9042,9 @@ export type EventParameters_Order_By = {
   id?: InputMaybe<Order_By>;
   isOngoing?: InputMaybe<Order_By>;
   isSaleOngoing?: InputMaybe<Order_By>;
+  metadataUpdateWebhookId?: InputMaybe<Order_By>;
+  metadataUpdateWebhookSigningKey?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
-  signingKey?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   timezone?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -8236,6 +9060,8 @@ export const enum EventParameters_Select_Column {
   /** column name */
   ActivityWebhookId = 'activityWebhookId',
   /** column name */
+  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   DateEnd = 'dateEnd',
@@ -8250,9 +9076,11 @@ export const enum EventParameters_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  OrganizerId = 'organizerId',
+  MetadataUpdateWebhookId = 'metadataUpdateWebhookId',
   /** column name */
-  SigningKey = 'signingKey',
+  MetadataUpdateWebhookSigningKey = 'metadataUpdateWebhookSigningKey',
+  /** column name */
+  OrganizerId = 'organizerId',
   /** column name */
   Status = 'status',
   /** column name */
@@ -8265,6 +9093,8 @@ export const enum EventParameters_Select_Column {
 export type EventParameters_Set_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
   activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique signing key used for securing activity webhooks. */
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
   dateEnd?: InputMaybe<Scalars['timestamp']['input']>;
@@ -8276,8 +9106,11 @@ export type EventParameters_Set_Input = {
   dateStart?: InputMaybe<Scalars['timestamp']['input']>;
   eventId?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** The identifier for the metadata update webhook. */
+  metadataUpdateWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique signing key used for securing metadata update webhooks. */
+  metadataUpdateWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<EventStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
   timezone?: InputMaybe<Scalars['String']['input']>;
@@ -8296,6 +9129,8 @@ export type EventParameters_Stream_Cursor_Input = {
 export type EventParameters_Stream_Cursor_Value_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers. This webhook ID is essential for real-time monitoring and processing of NFT transactions related to the event, ensuring that the platform stays updated with the latest transfer activities. */
   activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique signing key used for securing activity webhooks. */
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /** The "dateEnd" column specifies the end date and time of the event. Similar to "dateStart", this timestamp is stored without a timezone, marking the official conclusion of the event. This information is vital for managing the overall duration and scheduling of the event. */
   dateEnd?: InputMaybe<Scalars['timestamp']['input']>;
@@ -8307,8 +9142,11 @@ export type EventParameters_Stream_Cursor_Value_Input = {
   dateStart?: InputMaybe<Scalars['timestamp']['input']>;
   eventId?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** The identifier for the metadata update webhook. */
+  metadataUpdateWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique signing key used for securing metadata update webhooks. */
+  metadataUpdateWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<EventStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the event. All event-related timestamps, such as "dateStart", "dateEnd", "dateSaleStart", and "dateSaleEnd", are interpreted in this specified timezone. This column ensures consistency in timekeeping and scheduling across various geographic locations. */
   timezone?: InputMaybe<Scalars['String']['input']>;
@@ -8319,6 +9157,8 @@ export type EventParameters_Stream_Cursor_Value_Input = {
 export const enum EventParameters_Update_Column {
   /** column name */
   ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -8334,9 +9174,11 @@ export const enum EventParameters_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  OrganizerId = 'organizerId',
+  MetadataUpdateWebhookId = 'metadataUpdateWebhookId',
   /** column name */
-  SigningKey = 'signingKey',
+  MetadataUpdateWebhookSigningKey = 'metadataUpdateWebhookSigningKey',
+  /** column name */
+  OrganizerId = 'organizerId',
   /** column name */
   Status = 'status',
   /** column name */
@@ -8375,8 +9217,6 @@ export type EventPassNft = {
   /** An object relationship */
   eventPassNftContract?: Maybe<EventPassNftContract>;
   id: Scalars['uuid']['output'];
-  /** Indicates whether the event pass NFT has been delivered to the owner. */
-  isDelivered: Scalars['Boolean']['output'];
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
   isRevealed: Scalars['Boolean']['output'];
   /** An object relationship */
@@ -8384,7 +9224,7 @@ export type EventPassNft = {
   /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
   lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
   /** The structured metadata parsed from the token URI. This contains a variety of details regarding the event pass NFT. */
-  metadata: Scalars['jsonb']['output'];
+  metadata?: Maybe<Scalars['jsonb']['output']>;
   /** An array relationship */
   nftTransfers: Array<NftTransfer>;
   /** An aggregate relationship */
@@ -8401,8 +9241,9 @@ export type EventPassNft = {
   passAmount?: Maybe<PassAmount>;
   /** An object relationship */
   passPricing?: Maybe<PassPricing>;
+  status?: Maybe<NftStatus_Enum>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
-  tokenId: Scalars['bigint']['output'];
+  tokenId?: Maybe<Scalars['bigint']['output']>;
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
   tokenUri?: Maybe<Scalars['String']['output']>;
   updated_at: Scalars['timestamptz']['output'];
@@ -8592,6 +9433,7 @@ export const enum EventPassNftContractType_Constraint {
 
 export const enum EventPassNftContractType_Enum {
   DelayedReveal = 'delayed_reveal',
+  LoyaltyCard = 'loyalty_card',
   Normal = 'normal'
 };
 
@@ -9206,7 +10048,6 @@ export type EventPassNft_Bool_Exp = {
   eventPassId?: InputMaybe<String_Comparison_Exp>;
   eventPassNftContract?: InputMaybe<EventPassNftContract_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
-  isDelivered?: InputMaybe<Boolean_Comparison_Exp>;
   isRevealed?: InputMaybe<Boolean_Comparison_Exp>;
   lastNftTransfer?: InputMaybe<NftTransfer_Bool_Exp>;
   lastNftTransferId?: InputMaybe<Uuid_Comparison_Exp>;
@@ -9219,6 +10060,7 @@ export type EventPassNft_Bool_Exp = {
   packPricing?: InputMaybe<PassPricing_Bool_Exp>;
   passAmount?: InputMaybe<PassAmount_Bool_Exp>;
   passPricing?: InputMaybe<PassPricing_Bool_Exp>;
+  status?: InputMaybe<NftStatus_Enum_Comparison_Exp>;
   tokenId?: InputMaybe<Bigint_Comparison_Exp>;
   tokenUri?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -9227,7 +10069,7 @@ export type EventPassNft_Bool_Exp = {
 /** unique or primary key constraints on table "eventPassNft" */
 export const enum EventPassNft_Constraint {
   /** unique or primary key constraint on columns "chainId", "contractAddress", "tokenId" */
-  EventPassNftContractAddressTokenIdChainIdKey = 'eventPassNft_contractAddress_tokenId_chainId_key',
+  EventPassNftContractAddressTokenIdChainIdIdx = 'eventPassNft_contractAddress_tokenId_chainId_idx',
   /** unique or primary key constraint on columns "id" */
   EventPassNftPkey = 'eventPassNft_pkey'
 };
@@ -9274,8 +10116,6 @@ export type EventPassNft_Insert_Input = {
   eventPassId?: InputMaybe<Scalars['String']['input']>;
   eventPassNftContract?: InputMaybe<EventPassNftContract_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  /** Indicates whether the event pass NFT has been delivered to the owner. */
-  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
   isRevealed?: InputMaybe<Scalars['Boolean']['input']>;
   lastNftTransfer?: InputMaybe<NftTransfer_Obj_Rel_Insert_Input>;
@@ -9291,6 +10131,7 @@ export type EventPassNft_Insert_Input = {
   packPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
   passAmount?: InputMaybe<PassAmount_Obj_Rel_Insert_Input>;
   passPricing?: InputMaybe<PassPricing_Obj_Rel_Insert_Input>;
+  status?: InputMaybe<NftStatus_Enum>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: InputMaybe<Scalars['bigint']['input']>;
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
@@ -9440,7 +10281,6 @@ export type EventPassNft_Order_By = {
   eventPassId?: InputMaybe<Order_By>;
   eventPassNftContract?: InputMaybe<EventPassNftContract_Order_By>;
   id?: InputMaybe<Order_By>;
-  isDelivered?: InputMaybe<Order_By>;
   isRevealed?: InputMaybe<Order_By>;
   lastNftTransfer?: InputMaybe<NftTransfer_Order_By>;
   lastNftTransferId?: InputMaybe<Order_By>;
@@ -9452,6 +10292,7 @@ export type EventPassNft_Order_By = {
   packPricing?: InputMaybe<PassPricing_Order_By>;
   passAmount?: InputMaybe<PassAmount_Order_By>;
   passPricing?: InputMaybe<PassPricing_Order_By>;
+  status?: InputMaybe<Order_By>;
   tokenId?: InputMaybe<Order_By>;
   tokenUri?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -9487,8 +10328,6 @@ export const enum EventPassNft_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  IsDelivered = 'isDelivered',
-  /** column name */
   IsRevealed = 'isRevealed',
   /** column name */
   LastNftTransferId = 'lastNftTransferId',
@@ -9498,6 +10337,8 @@ export const enum EventPassNft_Select_Column {
   OrganizerId = 'organizerId',
   /** column name */
   PackId = 'packId',
+  /** column name */
+  Status = 'status',
   /** column name */
   TokenId = 'tokenId',
   /** column name */
@@ -9509,15 +10350,11 @@ export const enum EventPassNft_Select_Column {
 /** select "eventPassNft_aggregate_bool_exp_bool_and_arguments_columns" columns of table "eventPassNft" */
 export const enum EventPassNft_Select_Column_EventPassNft_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
   /** column name */
-  IsDelivered = 'isDelivered',
-  /** column name */
   IsRevealed = 'isRevealed'
 };
 
 /** select "eventPassNft_aggregate_bool_exp_bool_or_arguments_columns" columns of table "eventPassNft" */
 export const enum EventPassNft_Select_Column_EventPassNft_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
-  /** column name */
-  IsDelivered = 'isDelivered',
   /** column name */
   IsRevealed = 'isRevealed'
 };
@@ -9538,8 +10375,6 @@ export type EventPassNft_Set_Input = {
   /** Directly relates to a specific Event Pass within the system */
   eventPassId?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  /** Indicates whether the event pass NFT has been delivered to the owner. */
-  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
   isRevealed?: InputMaybe<Scalars['Boolean']['input']>;
   /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
@@ -9549,6 +10384,7 @@ export type EventPassNft_Set_Input = {
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId?: InputMaybe<Scalars['String']['input']>;
   packId?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<NftStatus_Enum>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: InputMaybe<Scalars['bigint']['input']>;
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
@@ -9619,8 +10455,6 @@ export type EventPassNft_Stream_Cursor_Value_Input = {
   /** Directly relates to a specific Event Pass within the system */
   eventPassId?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  /** Indicates whether the event pass NFT has been delivered to the owner. */
-  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** Indicates whether the QR code pass for the event pass NFT has been revealed by the owner. This field is essential for tracking and managing the reveal status within the platform. */
   isRevealed?: InputMaybe<Scalars['Boolean']['input']>;
   /** Reference `id` to the latest `nftTransfer` entry, detailing the most recent transaction for this event pass NFT. */
@@ -9630,6 +10464,7 @@ export type EventPassNft_Stream_Cursor_Value_Input = {
   /** Ties the event pass NFT to a specific organizer within the platform */
   organizerId?: InputMaybe<Scalars['String']['input']>;
   packId?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<NftStatus_Enum>;
   /** The unique identifier of the event pass NFT within its specific collection or contract. This remains constant across various platforms. */
   tokenId?: InputMaybe<Scalars['bigint']['input']>;
   /** The designated URI for the event pass NFTs metadata blob, providing a stable reference for data extraction. */
@@ -9669,8 +10504,6 @@ export const enum EventPassNft_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  IsDelivered = 'isDelivered',
-  /** column name */
   IsRevealed = 'isRevealed',
   /** column name */
   LastNftTransferId = 'lastNftTransferId',
@@ -9680,6 +10513,8 @@ export const enum EventPassNft_Update_Column {
   OrganizerId = 'organizerId',
   /** column name */
   PackId = 'packId',
+  /** column name */
+  Status = 'status',
   /** column name */
   TokenId = 'tokenId',
   /** column name */
@@ -11147,6 +11982,7 @@ export type LotteryParameters = {
   __typename?: 'lotteryParameters';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
   activityWebhookId?: Maybe<Scalars['String']['output']>;
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['timestamptz']['output'];
   /**
    * Optional column
@@ -11158,7 +11994,6 @@ export type LotteryParameters = {
   id: Scalars['uuid']['output'];
   lotteryId: Scalars['String']['output'];
   organizerId: Scalars['String']['output'];
-  signingKey?: Maybe<Scalars['String']['output']>;
   status?: Maybe<LotteryStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
   timezone: Scalars['String']['output'];
@@ -11193,13 +12028,13 @@ export type LotteryParameters_Bool_Exp = {
   _not?: InputMaybe<LotteryParameters_Bool_Exp>;
   _or?: InputMaybe<Array<LotteryParameters_Bool_Exp>>;
   activityWebhookId?: InputMaybe<String_Comparison_Exp>;
+  activityWebhookSigningKey?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   dateSaleEnd?: InputMaybe<Timestamp_Comparison_Exp>;
   dateSaleStart?: InputMaybe<Timestamp_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   lotteryId?: InputMaybe<String_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
-  signingKey?: InputMaybe<String_Comparison_Exp>;
   status?: InputMaybe<LotteryStatus_Enum_Comparison_Exp>;
   timezone?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -11211,7 +12046,7 @@ export const enum LotteryParameters_Constraint {
   LotteryParametersLotteryIdKey = 'lotteryParameters_lotteryId_key',
   /** unique or primary key constraint on columns "id" */
   LotteryParametersPkey = 'lotteryParameters_pkey',
-  /** unique or primary key constraint on columns "signingKey" */
+  /** unique or primary key constraint on columns "activityWebhookSigningKey" */
   LotteryParametersSigningKeyKey = 'lotteryParameters_signingKey_key'
 };
 
@@ -11219,6 +12054,7 @@ export const enum LotteryParameters_Constraint {
 export type LotteryParameters_Insert_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
   activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /**
    * Optional column
@@ -11230,7 +12066,6 @@ export type LotteryParameters_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   lotteryId?: InputMaybe<Scalars['String']['input']>;
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<LotteryStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
   timezone?: InputMaybe<Scalars['String']['input']>;
@@ -11242,6 +12077,7 @@ export type LotteryParameters_Max_Fields = {
   __typename?: 'lotteryParameters_max_fields';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
   activityWebhookId?: Maybe<Scalars['String']['output']>;
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   /**
    * Optional column
@@ -11253,7 +12089,6 @@ export type LotteryParameters_Max_Fields = {
   id?: Maybe<Scalars['uuid']['output']>;
   lotteryId?: Maybe<Scalars['String']['output']>;
   organizerId?: Maybe<Scalars['String']['output']>;
-  signingKey?: Maybe<Scalars['String']['output']>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
   timezone?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -11264,6 +12099,7 @@ export type LotteryParameters_Min_Fields = {
   __typename?: 'lotteryParameters_min_fields';
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
   activityWebhookId?: Maybe<Scalars['String']['output']>;
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   /**
    * Optional column
@@ -11275,7 +12111,6 @@ export type LotteryParameters_Min_Fields = {
   id?: Maybe<Scalars['uuid']['output']>;
   lotteryId?: Maybe<Scalars['String']['output']>;
   organizerId?: Maybe<Scalars['String']['output']>;
-  signingKey?: Maybe<Scalars['String']['output']>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
   timezone?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
@@ -11300,13 +12135,13 @@ export type LotteryParameters_On_Conflict = {
 /** Ordering options when selecting data from "lotteryParameters". */
 export type LotteryParameters_Order_By = {
   activityWebhookId?: InputMaybe<Order_By>;
+  activityWebhookSigningKey?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   dateSaleEnd?: InputMaybe<Order_By>;
   dateSaleStart?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   lotteryId?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
-  signingKey?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   timezone?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -11322,6 +12157,8 @@ export const enum LotteryParameters_Select_Column {
   /** column name */
   ActivityWebhookId = 'activityWebhookId',
   /** column name */
+  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   DateSaleEnd = 'dateSaleEnd',
@@ -11334,8 +12171,6 @@ export const enum LotteryParameters_Select_Column {
   /** column name */
   OrganizerId = 'organizerId',
   /** column name */
-  SigningKey = 'signingKey',
-  /** column name */
   Status = 'status',
   /** column name */
   Timezone = 'timezone',
@@ -11347,6 +12182,7 @@ export const enum LotteryParameters_Select_Column {
 export type LotteryParameters_Set_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
   activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /**
    * Optional column
@@ -11358,7 +12194,6 @@ export type LotteryParameters_Set_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   lotteryId?: InputMaybe<Scalars['String']['input']>;
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<LotteryStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
   timezone?: InputMaybe<Scalars['String']['input']>;
@@ -11377,6 +12212,7 @@ export type LotteryParameters_Stream_Cursor_Input = {
 export type LotteryParameters_Stream_Cursor_Value_Input = {
   /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the lottery. */
   activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   /**
    * Optional column
@@ -11388,7 +12224,6 @@ export type LotteryParameters_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   lotteryId?: InputMaybe<Scalars['String']['input']>;
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  signingKey?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<LotteryStatus_Enum>;
   /** The "timezone" column contains the timezone identifier for the lottery, ensuring accurate timing for events and sales across different regions. */
   timezone?: InputMaybe<Scalars['String']['input']>;
@@ -11399,6 +12234,8 @@ export type LotteryParameters_Stream_Cursor_Value_Input = {
 export const enum LotteryParameters_Update_Column {
   /** column name */
   ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -11411,8 +12248,6 @@ export const enum LotteryParameters_Update_Column {
   LotteryId = 'lotteryId',
   /** column name */
   OrganizerId = 'organizerId',
-  /** column name */
-  SigningKey = 'signingKey',
   /** column name */
   Status = 'status',
   /** column name */
@@ -11564,15 +12399,1163 @@ export type LotteryStatus_Updates = {
   where: LotteryStatus_Bool_Exp;
 };
 
+/** The loyaltyCardNft model stores NFTs delivered by the loyaltyCardNftContract, each uniquely associated with a loyalty card. These NFTs are soulbound to a specific owner and not transferable, though they can be burned, indicating the end of their lifecycle. The structure allows for the dynamic update of NFT metadata by contract admins, adhering to the loyalty card contract stipulations. */
+export type LoyaltyCardNft = {
+  __typename?: 'loyaltyCardNft';
+  /** If not null, indicates the NFT has been burned, marking its lifecycle end. This field links to the transaction that executed the burn, whether by the NFT owner or a contract admin. */
+  burnedTransferId?: Maybe<Scalars['uuid']['output']>;
+  /** Denotes the specific blockchain or network of the loyalty card NFT. */
+  chainId: Scalars['String']['output'];
+  /** Identifies the smart contract associated with the loyalty card NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
+  loyaltyCard?: Maybe<LoyaltyCard>;
+  /** A reference to the loyalty card associated with the NFT, linking it directly to the loyalty program within the platform. */
+  loyaltyCardId: Scalars['String']['output'];
+  /** The structured metadata parsed from the token URI. This contains a variety of details regarding the loyalty card NFT. */
+  metadata?: Maybe<Scalars['jsonb']['output']>;
+  organizer?: Maybe<Organizer>;
+  /** A unique identifier for the organizer associated with the NFT. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId: Scalars['String']['output'];
+  /** The address currently holding the loyalty card NFT. Given the soulbound nature, this represents the permanent owner unless the NFT is burned. */
+  ownerAddress: Scalars['String']['output'];
+  status?: Maybe<NftStatus_Enum>;
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+  /** The designated URI for the loyalty card NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+
+/** The loyaltyCardNft model stores NFTs delivered by the loyaltyCardNftContract, each uniquely associated with a loyalty card. These NFTs are soulbound to a specific owner and not transferable, though they can be burned, indicating the end of their lifecycle. The structure allows for the dynamic update of NFT metadata by contract admins, adhering to the loyalty card contract stipulations. */
+export type LoyaltyCardNftLoyaltyCardArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+};
+
+
+/** The loyaltyCardNft model stores NFTs delivered by the loyaltyCardNftContract, each uniquely associated with a loyalty card. These NFTs are soulbound to a specific owner and not transferable, though they can be burned, indicating the end of their lifecycle. The structure allows for the dynamic update of NFT metadata by contract admins, adhering to the loyalty card contract stipulations. */
+export type LoyaltyCardNftMetadataArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** The loyaltyCardNft model stores NFTs delivered by the loyaltyCardNftContract, each uniquely associated with a loyalty card. These NFTs are soulbound to a specific owner and not transferable, though they can be burned, indicating the end of their lifecycle. The structure allows for the dynamic update of NFT metadata by contract admins, adhering to the loyalty card contract stipulations. */
+export type LoyaltyCardNftOrganizerArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: OrganizerWhereUniqueInput_Remote_Rel_LoyaltyCardNftorganizer;
+};
+
+/** The loyaltyCardNftContract model is designed to store metadata associated with NFT contracts that act as loyalty cards for organizers. This table captures critical details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. It includes organizerId to link each loyalty card contract directly with an organizer, facilitating the management and interaction with NFT-based loyalty programs. */
+export type LoyaltyCardNftContract = {
+  __typename?: 'loyaltyCardNftContract';
+  /** Specifies the particular blockchain or network on which the NFT-based loyalty card resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId: Scalars['String']['output'];
+  /** Represents the unique address of the smart contract that governs the NFT-based loyalty card. It acts as the primary reference point to the loyalty card's existence and behavior on the blockchain. */
+  contractAddress: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  loyaltyCard?: Maybe<LoyaltyCard>;
+  /** Identifies the specific loyalty card model in the Hygraph CMS associated with this contract. Ensuring uniqueness of this field guarantees that each NFT-based loyalty card is uniquely linked to a single loyalty card model in the CMS. */
+  loyaltyCardId: Scalars['String']['output'];
+  /** An object relationship */
+  loyaltyCardParameter?: Maybe<LoyaltyCardParameters>;
+  organizer?: Maybe<Organizer>;
+  /** A unique identifier for the organizer associated with the NFT-based loyalty card. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId: Scalars['String']['output'];
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+
+/** The loyaltyCardNftContract model is designed to store metadata associated with NFT contracts that act as loyalty cards for organizers. This table captures critical details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. It includes organizerId to link each loyalty card contract directly with an organizer, facilitating the management and interaction with NFT-based loyalty programs. */
+export type LoyaltyCardNftContractLoyaltyCardArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+};
+
+
+/** The loyaltyCardNftContract model is designed to store metadata associated with NFT contracts that act as loyalty cards for organizers. This table captures critical details from the ERC-721 standard, such as the chainId and contractAddress, ensuring accurate tracking and referencing of NFT contracts. It includes organizerId to link each loyalty card contract directly with an organizer, facilitating the management and interaction with NFT-based loyalty programs. */
+export type LoyaltyCardNftContractOrganizerArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: OrganizerWhereUniqueInput_Remote_Rel_LoyaltyCardNftContractorganizer;
+};
+
+/** aggregated selection of "loyaltyCardNftContract" */
+export type LoyaltyCardNftContract_Aggregate = {
+  __typename?: 'loyaltyCardNftContract_aggregate';
+  aggregate?: Maybe<LoyaltyCardNftContract_Aggregate_Fields>;
+  nodes: Array<LoyaltyCardNftContract>;
+};
+
+/** aggregate fields of "loyaltyCardNftContract" */
+export type LoyaltyCardNftContract_Aggregate_Fields = {
+  __typename?: 'loyaltyCardNftContract_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<LoyaltyCardNftContract_Max_Fields>;
+  min?: Maybe<LoyaltyCardNftContract_Min_Fields>;
+};
+
+
+/** aggregate fields of "loyaltyCardNftContract" */
+export type LoyaltyCardNftContract_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<LoyaltyCardNftContract_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "loyaltyCardNftContract". All fields are combined with a logical 'AND'. */
+export type LoyaltyCardNftContract_Bool_Exp = {
+  _and?: InputMaybe<Array<LoyaltyCardNftContract_Bool_Exp>>;
+  _not?: InputMaybe<LoyaltyCardNftContract_Bool_Exp>;
+  _or?: InputMaybe<Array<LoyaltyCardNftContract_Bool_Exp>>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  loyaltyCardId?: InputMaybe<String_Comparison_Exp>;
+  loyaltyCardParameter?: InputMaybe<LoyaltyCardParameters_Bool_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "loyaltyCardNftContract" */
+export const enum LoyaltyCardNftContract_Constraint {
+  /** unique or primary key constraint on columns "chainId", "contractAddress" */
+  LoyaltyCardNftContractContractAddressChainIdKey = 'loyaltyCardNftContract_contractAddress_chainId_key',
+  /** unique or primary key constraint on columns "loyaltyCardId" */
+  LoyaltyCardNftContractLoyaltyCardIdKey = 'loyaltyCardNftContract_loyaltyCardId_key',
+  /** unique or primary key constraint on columns "id" */
+  LoyaltyCardNftContractPkey = 'loyaltyCardNftContract_pkey'
+};
+
+/** input type for inserting data into table "loyaltyCardNftContract" */
+export type LoyaltyCardNftContract_Insert_Input = {
+  /** Specifies the particular blockchain or network on which the NFT-based loyalty card resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** Represents the unique address of the smart contract that governs the NFT-based loyalty card. It acts as the primary reference point to the loyalty card's existence and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Identifies the specific loyalty card model in the Hygraph CMS associated with this contract. Ensuring uniqueness of this field guarantees that each NFT-based loyalty card is uniquely linked to a single loyalty card model in the CMS. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
+  loyaltyCardParameter?: InputMaybe<LoyaltyCardParameters_Obj_Rel_Insert_Input>;
+  /** A unique identifier for the organizer associated with the NFT-based loyalty card. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type LoyaltyCardNftContract_Max_Fields = {
+  __typename?: 'loyaltyCardNftContract_max_fields';
+  /** Specifies the particular blockchain or network on which the NFT-based loyalty card resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: Maybe<Scalars['String']['output']>;
+  /** Represents the unique address of the smart contract that governs the NFT-based loyalty card. It acts as the primary reference point to the loyalty card's existence and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** Identifies the specific loyalty card model in the Hygraph CMS associated with this contract. Ensuring uniqueness of this field guarantees that each NFT-based loyalty card is uniquely linked to a single loyalty card model in the CMS. */
+  loyaltyCardId?: Maybe<Scalars['String']['output']>;
+  /** A unique identifier for the organizer associated with the NFT-based loyalty card. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type LoyaltyCardNftContract_Min_Fields = {
+  __typename?: 'loyaltyCardNftContract_min_fields';
+  /** Specifies the particular blockchain or network on which the NFT-based loyalty card resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: Maybe<Scalars['String']['output']>;
+  /** Represents the unique address of the smart contract that governs the NFT-based loyalty card. It acts as the primary reference point to the loyalty card's existence and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** Identifies the specific loyalty card model in the Hygraph CMS associated with this contract. Ensuring uniqueness of this field guarantees that each NFT-based loyalty card is uniquely linked to a single loyalty card model in the CMS. */
+  loyaltyCardId?: Maybe<Scalars['String']['output']>;
+  /** A unique identifier for the organizer associated with the NFT-based loyalty card. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "loyaltyCardNftContract" */
+export type LoyaltyCardNftContract_Mutation_Response = {
+  __typename?: 'loyaltyCardNftContract_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<LoyaltyCardNftContract>;
+};
+
+/** input type for inserting object relation for remote table "loyaltyCardNftContract" */
+export type LoyaltyCardNftContract_Obj_Rel_Insert_Input = {
+  data: LoyaltyCardNftContract_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<LoyaltyCardNftContract_On_Conflict>;
+};
+
+/** on_conflict condition type for table "loyaltyCardNftContract" */
+export type LoyaltyCardNftContract_On_Conflict = {
+  constraint: LoyaltyCardNftContract_Constraint;
+  update_columns?: Array<LoyaltyCardNftContract_Update_Column>;
+  where?: InputMaybe<LoyaltyCardNftContract_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "loyaltyCardNftContract". */
+export type LoyaltyCardNftContract_Order_By = {
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  loyaltyCardId?: InputMaybe<Order_By>;
+  loyaltyCardParameter?: InputMaybe<LoyaltyCardParameters_Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: loyaltyCardNftContract */
+export type LoyaltyCardNftContract_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "loyaltyCardNftContract" */
+export const enum LoyaltyCardNftContract_Select_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LoyaltyCardId = 'loyaltyCardId',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "loyaltyCardNftContract" */
+export type LoyaltyCardNftContract_Set_Input = {
+  /** Specifies the particular blockchain or network on which the NFT-based loyalty card resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** Represents the unique address of the smart contract that governs the NFT-based loyalty card. It acts as the primary reference point to the loyalty card's existence and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Identifies the specific loyalty card model in the Hygraph CMS associated with this contract. Ensuring uniqueness of this field guarantees that each NFT-based loyalty card is uniquely linked to a single loyalty card model in the CMS. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
+  /** A unique identifier for the organizer associated with the NFT-based loyalty card. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "loyaltyCardNftContract" */
+export type LoyaltyCardNftContract_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: LoyaltyCardNftContract_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type LoyaltyCardNftContract_Stream_Cursor_Value_Input = {
+  /** Specifies the particular blockchain or network on which the NFT-based loyalty card resides. Essential for distinguishing between different blockchains in a multi-chain environment. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** Represents the unique address of the smart contract that governs the NFT-based loyalty card. It acts as the primary reference point to the loyalty card's existence and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Identifies the specific loyalty card model in the Hygraph CMS associated with this contract. Ensuring uniqueness of this field guarantees that each NFT-based loyalty card is uniquely linked to a single loyalty card model in the CMS. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
+  /** A unique identifier for the organizer associated with the NFT-based loyalty card. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "loyaltyCardNftContract" */
+export const enum LoyaltyCardNftContract_Update_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LoyaltyCardId = 'loyaltyCardId',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type LoyaltyCardNftContract_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<LoyaltyCardNftContract_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: LoyaltyCardNftContract_Bool_Exp;
+};
+
+/** aggregated selection of "loyaltyCardNft" */
+export type LoyaltyCardNft_Aggregate = {
+  __typename?: 'loyaltyCardNft_aggregate';
+  aggregate?: Maybe<LoyaltyCardNft_Aggregate_Fields>;
+  nodes: Array<LoyaltyCardNft>;
+};
+
+/** aggregate fields of "loyaltyCardNft" */
+export type LoyaltyCardNft_Aggregate_Fields = {
+  __typename?: 'loyaltyCardNft_aggregate_fields';
+  avg?: Maybe<LoyaltyCardNft_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<LoyaltyCardNft_Max_Fields>;
+  min?: Maybe<LoyaltyCardNft_Min_Fields>;
+  stddev?: Maybe<LoyaltyCardNft_Stddev_Fields>;
+  stddev_pop?: Maybe<LoyaltyCardNft_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<LoyaltyCardNft_Stddev_Samp_Fields>;
+  sum?: Maybe<LoyaltyCardNft_Sum_Fields>;
+  var_pop?: Maybe<LoyaltyCardNft_Var_Pop_Fields>;
+  var_samp?: Maybe<LoyaltyCardNft_Var_Samp_Fields>;
+  variance?: Maybe<LoyaltyCardNft_Variance_Fields>;
+};
+
+
+/** aggregate fields of "loyaltyCardNft" */
+export type LoyaltyCardNft_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<LoyaltyCardNft_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type LoyaltyCardNft_Append_Input = {
+  /** The structured metadata parsed from the token URI. This contains a variety of details regarding the loyalty card NFT. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** aggregate avg on columns */
+export type LoyaltyCardNft_Avg_Fields = {
+  __typename?: 'loyaltyCardNft_avg_fields';
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "loyaltyCardNft". All fields are combined with a logical 'AND'. */
+export type LoyaltyCardNft_Bool_Exp = {
+  _and?: InputMaybe<Array<LoyaltyCardNft_Bool_Exp>>;
+  _not?: InputMaybe<LoyaltyCardNft_Bool_Exp>;
+  _or?: InputMaybe<Array<LoyaltyCardNft_Bool_Exp>>;
+  burnedTransferId?: InputMaybe<Uuid_Comparison_Exp>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  error?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  loyaltyCardId?: InputMaybe<String_Comparison_Exp>;
+  metadata?: InputMaybe<Jsonb_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  ownerAddress?: InputMaybe<String_Comparison_Exp>;
+  status?: InputMaybe<NftStatus_Enum_Comparison_Exp>;
+  tokenId?: InputMaybe<Bigint_Comparison_Exp>;
+  tokenUri?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "loyaltyCardNft" */
+export const enum LoyaltyCardNft_Constraint {
+  /** unique or primary key constraint on columns "ownerAddress" */
+  IdxLoyaltycardnftOwneraddressActive = 'idx_loyaltycardnft_owneraddress_active',
+  /** unique or primary key constraint on columns "chainId", "contractAddress", "tokenId" */
+  LoyaltyCardNftContractAddressTokenIdChainIdIdx = 'loyaltyCardNft_contractAddress_tokenId_chainId_idx',
+  /** unique or primary key constraint on columns "id" */
+  LoyaltyCardNftPkey = 'loyaltyCardNft_pkey'
+};
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type LoyaltyCardNft_Delete_At_Path_Input = {
+  /** The structured metadata parsed from the token URI. This contains a variety of details regarding the loyalty card NFT. */
+  metadata?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type LoyaltyCardNft_Delete_Elem_Input = {
+  /** The structured metadata parsed from the token URI. This contains a variety of details regarding the loyalty card NFT. */
+  metadata?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type LoyaltyCardNft_Delete_Key_Input = {
+  /** The structured metadata parsed from the token URI. This contains a variety of details regarding the loyalty card NFT. */
+  metadata?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** input type for incrementing numeric columns in table "loyaltyCardNft" */
+export type LoyaltyCardNft_Inc_Input = {
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+/** input type for inserting data into table "loyaltyCardNft" */
+export type LoyaltyCardNft_Insert_Input = {
+  /** If not null, indicates the NFT has been burned, marking its lifecycle end. This field links to the transaction that executed the burn, whether by the NFT owner or a contract admin. */
+  burnedTransferId?: InputMaybe<Scalars['uuid']['input']>;
+  /** Denotes the specific blockchain or network of the loyalty card NFT. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** Identifies the smart contract associated with the loyalty card NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** A reference to the loyalty card associated with the NFT, linking it directly to the loyalty program within the platform. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
+  /** The structured metadata parsed from the token URI. This contains a variety of details regarding the loyalty card NFT. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+  /** A unique identifier for the organizer associated with the NFT. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The address currently holding the loyalty card NFT. Given the soulbound nature, this represents the permanent owner unless the NFT is burned. */
+  ownerAddress?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<NftStatus_Enum>;
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  /** The designated URI for the loyalty card NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type LoyaltyCardNft_Max_Fields = {
+  __typename?: 'loyaltyCardNft_max_fields';
+  /** If not null, indicates the NFT has been burned, marking its lifecycle end. This field links to the transaction that executed the burn, whether by the NFT owner or a contract admin. */
+  burnedTransferId?: Maybe<Scalars['uuid']['output']>;
+  /** Denotes the specific blockchain or network of the loyalty card NFT. */
+  chainId?: Maybe<Scalars['String']['output']>;
+  /** Identifies the smart contract associated with the loyalty card NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** A reference to the loyalty card associated with the NFT, linking it directly to the loyalty program within the platform. */
+  loyaltyCardId?: Maybe<Scalars['String']['output']>;
+  /** A unique identifier for the organizer associated with the NFT. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  /** The address currently holding the loyalty card NFT. Given the soulbound nature, this represents the permanent owner unless the NFT is burned. */
+  ownerAddress?: Maybe<Scalars['String']['output']>;
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+  /** The designated URI for the loyalty card NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type LoyaltyCardNft_Min_Fields = {
+  __typename?: 'loyaltyCardNft_min_fields';
+  /** If not null, indicates the NFT has been burned, marking its lifecycle end. This field links to the transaction that executed the burn, whether by the NFT owner or a contract admin. */
+  burnedTransferId?: Maybe<Scalars['uuid']['output']>;
+  /** Denotes the specific blockchain or network of the loyalty card NFT. */
+  chainId?: Maybe<Scalars['String']['output']>;
+  /** Identifies the smart contract associated with the loyalty card NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** A reference to the loyalty card associated with the NFT, linking it directly to the loyalty program within the platform. */
+  loyaltyCardId?: Maybe<Scalars['String']['output']>;
+  /** A unique identifier for the organizer associated with the NFT. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  /** The address currently holding the loyalty card NFT. Given the soulbound nature, this represents the permanent owner unless the NFT is burned. */
+  ownerAddress?: Maybe<Scalars['String']['output']>;
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+  /** The designated URI for the loyalty card NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "loyaltyCardNft" */
+export type LoyaltyCardNft_Mutation_Response = {
+  __typename?: 'loyaltyCardNft_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<LoyaltyCardNft>;
+};
+
+/** on_conflict condition type for table "loyaltyCardNft" */
+export type LoyaltyCardNft_On_Conflict = {
+  constraint: LoyaltyCardNft_Constraint;
+  update_columns?: Array<LoyaltyCardNft_Update_Column>;
+  where?: InputMaybe<LoyaltyCardNft_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "loyaltyCardNft". */
+export type LoyaltyCardNft_Order_By = {
+  burnedTransferId?: InputMaybe<Order_By>;
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  error?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  loyaltyCardId?: InputMaybe<Order_By>;
+  metadata?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  ownerAddress?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  tokenId?: InputMaybe<Order_By>;
+  tokenUri?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: loyaltyCardNft */
+export type LoyaltyCardNft_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type LoyaltyCardNft_Prepend_Input = {
+  /** The structured metadata parsed from the token URI. This contains a variety of details regarding the loyalty card NFT. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** select columns of table "loyaltyCardNft" */
+export const enum LoyaltyCardNft_Select_Column {
+  /** column name */
+  BurnedTransferId = 'burnedTransferId',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Error = 'error',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LoyaltyCardId = 'loyaltyCardId',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  OwnerAddress = 'ownerAddress',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TokenUri = 'tokenUri',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "loyaltyCardNft" */
+export type LoyaltyCardNft_Set_Input = {
+  /** If not null, indicates the NFT has been burned, marking its lifecycle end. This field links to the transaction that executed the burn, whether by the NFT owner or a contract admin. */
+  burnedTransferId?: InputMaybe<Scalars['uuid']['input']>;
+  /** Denotes the specific blockchain or network of the loyalty card NFT. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** Identifies the smart contract associated with the loyalty card NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** A reference to the loyalty card associated with the NFT, linking it directly to the loyalty program within the platform. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
+  /** The structured metadata parsed from the token URI. This contains a variety of details regarding the loyalty card NFT. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+  /** A unique identifier for the organizer associated with the NFT. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The address currently holding the loyalty card NFT. Given the soulbound nature, this represents the permanent owner unless the NFT is burned. */
+  ownerAddress?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<NftStatus_Enum>;
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  /** The designated URI for the loyalty card NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type LoyaltyCardNft_Stddev_Fields = {
+  __typename?: 'loyaltyCardNft_stddev_fields';
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type LoyaltyCardNft_Stddev_Pop_Fields = {
+  __typename?: 'loyaltyCardNft_stddev_pop_fields';
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type LoyaltyCardNft_Stddev_Samp_Fields = {
+  __typename?: 'loyaltyCardNft_stddev_samp_fields';
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "loyaltyCardNft" */
+export type LoyaltyCardNft_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: LoyaltyCardNft_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type LoyaltyCardNft_Stream_Cursor_Value_Input = {
+  /** If not null, indicates the NFT has been burned, marking its lifecycle end. This field links to the transaction that executed the burn, whether by the NFT owner or a contract admin. */
+  burnedTransferId?: InputMaybe<Scalars['uuid']['input']>;
+  /** Denotes the specific blockchain or network of the loyalty card NFT. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** Identifies the smart contract associated with the loyalty card NFT. This provides a direct link to the NFT's origin and behavior on the blockchain. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Contains any error message related to metadata retrieval, ensuring transparency in the data extraction process. */
+  error?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** A reference to the loyalty card associated with the NFT, linking it directly to the loyalty program within the platform. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
+  /** The structured metadata parsed from the token URI. This contains a variety of details regarding the loyalty card NFT. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+  /** A unique identifier for the organizer associated with the NFT. This links the loyalty card directly to a specific organizer within the platform. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The address currently holding the loyalty card NFT. Given the soulbound nature, this represents the permanent owner unless the NFT is burned. */
+  ownerAddress?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<NftStatus_Enum>;
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  /** The designated URI for the loyalty card NFT's metadata blob, providing a stable reference for data extraction. */
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate sum on columns */
+export type LoyaltyCardNft_Sum_Fields = {
+  __typename?: 'loyaltyCardNft_sum_fields';
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+};
+
+/** update columns of table "loyaltyCardNft" */
+export const enum LoyaltyCardNft_Update_Column {
+  /** column name */
+  BurnedTransferId = 'burnedTransferId',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Error = 'error',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LoyaltyCardId = 'loyaltyCardId',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  OwnerAddress = 'ownerAddress',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TokenUri = 'tokenUri',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type LoyaltyCardNft_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<LoyaltyCardNft_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<LoyaltyCardNft_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<LoyaltyCardNft_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<LoyaltyCardNft_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<LoyaltyCardNft_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<LoyaltyCardNft_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<LoyaltyCardNft_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: LoyaltyCardNft_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type LoyaltyCardNft_Var_Pop_Fields = {
+  __typename?: 'loyaltyCardNft_var_pop_fields';
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type LoyaltyCardNft_Var_Samp_Fields = {
+  __typename?: 'loyaltyCardNft_var_samp_fields';
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type LoyaltyCardNft_Variance_Fields = {
+  __typename?: 'loyaltyCardNft_variance_fields';
+  /** The unique identifier of the loyalty card NFT within its specific collection or contract. This remains constant across various platforms. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** The loyaltyCardParameters model is designed to define properties on a loyalty card, including details like the loyaltyCardId and activityWebhookId. It manages various settings and metadata related to the loyalty card, ensuring efficient and accurate management of loyalty card programs. */
+export type LoyaltyCardParameters = {
+  __typename?: 'loyaltyCardParameters';
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the loyalty card. */
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  /** Unique signing key used for secure operations related to the loyalty card activity webhook. */
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  /** Unique identifier for each loyalty card, ensuring no duplicates in the system. */
+  loyaltyCardId: Scalars['String']['output'];
+  /** An object relationship */
+  loyaltyCardNftContract?: Maybe<LoyaltyCardNftContract>;
+  /** The "metadataUpdateWebhookId" column stores the identifier for the Alchemy webhook that tracks metadata updates related to the loyalty card. */
+  metadataUpdateWebhookId?: Maybe<Scalars['String']['output']>;
+  /** Unique signing key used for secure operations related to the loyalty card metadata update webhook. */
+  metadataUpdateWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  /** Identifier for the organizer responsible for the loyalty card. */
+  organizerId: Scalars['String']['output'];
+  /** Represents the current status of the loyalty card, either "DRAFT" or "PUBLISHED". */
+  status?: Maybe<LoyaltyCardStatus_Enum>;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "loyaltyCardParameters" */
+export type LoyaltyCardParameters_Aggregate = {
+  __typename?: 'loyaltyCardParameters_aggregate';
+  aggregate?: Maybe<LoyaltyCardParameters_Aggregate_Fields>;
+  nodes: Array<LoyaltyCardParameters>;
+};
+
+/** aggregate fields of "loyaltyCardParameters" */
+export type LoyaltyCardParameters_Aggregate_Fields = {
+  __typename?: 'loyaltyCardParameters_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<LoyaltyCardParameters_Max_Fields>;
+  min?: Maybe<LoyaltyCardParameters_Min_Fields>;
+};
+
+
+/** aggregate fields of "loyaltyCardParameters" */
+export type LoyaltyCardParameters_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<LoyaltyCardParameters_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "loyaltyCardParameters". All fields are combined with a logical 'AND'. */
+export type LoyaltyCardParameters_Bool_Exp = {
+  _and?: InputMaybe<Array<LoyaltyCardParameters_Bool_Exp>>;
+  _not?: InputMaybe<LoyaltyCardParameters_Bool_Exp>;
+  _or?: InputMaybe<Array<LoyaltyCardParameters_Bool_Exp>>;
+  activityWebhookId?: InputMaybe<String_Comparison_Exp>;
+  activityWebhookSigningKey?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  loyaltyCardId?: InputMaybe<String_Comparison_Exp>;
+  loyaltyCardNftContract?: InputMaybe<LoyaltyCardNftContract_Bool_Exp>;
+  metadataUpdateWebhookId?: InputMaybe<String_Comparison_Exp>;
+  metadataUpdateWebhookSigningKey?: InputMaybe<String_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  status?: InputMaybe<LoyaltyCardStatus_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "loyaltyCardParameters" */
+export const enum LoyaltyCardParameters_Constraint {
+  /** unique or primary key constraint on columns "activityWebhookSigningKey" */
+  LoyaltyCardParametersActivityWebhookSigningKeyKey = 'loyaltyCardParameters_activityWebhookSigningKey_key',
+  /** unique or primary key constraint on columns "loyaltyCardId" */
+  LoyaltyCardParametersLoyaltyCardIdKey = 'loyaltyCardParameters_loyaltyCardId_key',
+  /** unique or primary key constraint on columns "metadataUpdateWebhookSigningKey" */
+  LoyaltyCardParametersMetadataUpdateWebhookSigningKeyKey = 'loyaltyCardParameters_metadataUpdateWebhookSigningKey_key',
+  /** unique or primary key constraint on columns "id" */
+  LoyaltyCardParametersPkey = 'loyaltyCardParameters_pkey'
+};
+
+/** input type for inserting data into table "loyaltyCardParameters" */
+export type LoyaltyCardParameters_Insert_Input = {
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the loyalty card. */
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique signing key used for secure operations related to the loyalty card activity webhook. */
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Unique identifier for each loyalty card, ensuring no duplicates in the system. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
+  loyaltyCardNftContract?: InputMaybe<LoyaltyCardNftContract_Obj_Rel_Insert_Input>;
+  /** The "metadataUpdateWebhookId" column stores the identifier for the Alchemy webhook that tracks metadata updates related to the loyalty card. */
+  metadataUpdateWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique signing key used for secure operations related to the loyalty card metadata update webhook. */
+  metadataUpdateWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  /** Identifier for the organizer responsible for the loyalty card. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** Represents the current status of the loyalty card, either "DRAFT" or "PUBLISHED". */
+  status?: InputMaybe<LoyaltyCardStatus_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type LoyaltyCardParameters_Max_Fields = {
+  __typename?: 'loyaltyCardParameters_max_fields';
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the loyalty card. */
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  /** Unique signing key used for secure operations related to the loyalty card activity webhook. */
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** Unique identifier for each loyalty card, ensuring no duplicates in the system. */
+  loyaltyCardId?: Maybe<Scalars['String']['output']>;
+  /** The "metadataUpdateWebhookId" column stores the identifier for the Alchemy webhook that tracks metadata updates related to the loyalty card. */
+  metadataUpdateWebhookId?: Maybe<Scalars['String']['output']>;
+  /** Unique signing key used for secure operations related to the loyalty card metadata update webhook. */
+  metadataUpdateWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  /** Identifier for the organizer responsible for the loyalty card. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type LoyaltyCardParameters_Min_Fields = {
+  __typename?: 'loyaltyCardParameters_min_fields';
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the loyalty card. */
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  /** Unique signing key used for secure operations related to the loyalty card activity webhook. */
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** Unique identifier for each loyalty card, ensuring no duplicates in the system. */
+  loyaltyCardId?: Maybe<Scalars['String']['output']>;
+  /** The "metadataUpdateWebhookId" column stores the identifier for the Alchemy webhook that tracks metadata updates related to the loyalty card. */
+  metadataUpdateWebhookId?: Maybe<Scalars['String']['output']>;
+  /** Unique signing key used for secure operations related to the loyalty card metadata update webhook. */
+  metadataUpdateWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  /** Identifier for the organizer responsible for the loyalty card. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "loyaltyCardParameters" */
+export type LoyaltyCardParameters_Mutation_Response = {
+  __typename?: 'loyaltyCardParameters_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<LoyaltyCardParameters>;
+};
+
+/** input type for inserting object relation for remote table "loyaltyCardParameters" */
+export type LoyaltyCardParameters_Obj_Rel_Insert_Input = {
+  data: LoyaltyCardParameters_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<LoyaltyCardParameters_On_Conflict>;
+};
+
+/** on_conflict condition type for table "loyaltyCardParameters" */
+export type LoyaltyCardParameters_On_Conflict = {
+  constraint: LoyaltyCardParameters_Constraint;
+  update_columns?: Array<LoyaltyCardParameters_Update_Column>;
+  where?: InputMaybe<LoyaltyCardParameters_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "loyaltyCardParameters". */
+export type LoyaltyCardParameters_Order_By = {
+  activityWebhookId?: InputMaybe<Order_By>;
+  activityWebhookSigningKey?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  loyaltyCardId?: InputMaybe<Order_By>;
+  loyaltyCardNftContract?: InputMaybe<LoyaltyCardNftContract_Order_By>;
+  metadataUpdateWebhookId?: InputMaybe<Order_By>;
+  metadataUpdateWebhookSigningKey?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: loyaltyCardParameters */
+export type LoyaltyCardParameters_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "loyaltyCardParameters" */
+export const enum LoyaltyCardParameters_Select_Column {
+  /** column name */
+  ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LoyaltyCardId = 'loyaltyCardId',
+  /** column name */
+  MetadataUpdateWebhookId = 'metadataUpdateWebhookId',
+  /** column name */
+  MetadataUpdateWebhookSigningKey = 'metadataUpdateWebhookSigningKey',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "loyaltyCardParameters" */
+export type LoyaltyCardParameters_Set_Input = {
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the loyalty card. */
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique signing key used for secure operations related to the loyalty card activity webhook. */
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Unique identifier for each loyalty card, ensuring no duplicates in the system. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
+  /** The "metadataUpdateWebhookId" column stores the identifier for the Alchemy webhook that tracks metadata updates related to the loyalty card. */
+  metadataUpdateWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique signing key used for secure operations related to the loyalty card metadata update webhook. */
+  metadataUpdateWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  /** Identifier for the organizer responsible for the loyalty card. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** Represents the current status of the loyalty card, either "DRAFT" or "PUBLISHED". */
+  status?: InputMaybe<LoyaltyCardStatus_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "loyaltyCardParameters" */
+export type LoyaltyCardParameters_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: LoyaltyCardParameters_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type LoyaltyCardParameters_Stream_Cursor_Value_Input = {
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the loyalty card. */
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique signing key used for secure operations related to the loyalty card activity webhook. */
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Unique identifier for each loyalty card, ensuring no duplicates in the system. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
+  /** The "metadataUpdateWebhookId" column stores the identifier for the Alchemy webhook that tracks metadata updates related to the loyalty card. */
+  metadataUpdateWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique signing key used for secure operations related to the loyalty card metadata update webhook. */
+  metadataUpdateWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  /** Identifier for the organizer responsible for the loyalty card. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** Represents the current status of the loyalty card, either "DRAFT" or "PUBLISHED". */
+  status?: InputMaybe<LoyaltyCardStatus_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "loyaltyCardParameters" */
+export const enum LoyaltyCardParameters_Update_Column {
+  /** column name */
+  ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LoyaltyCardId = 'loyaltyCardId',
+  /** column name */
+  MetadataUpdateWebhookId = 'metadataUpdateWebhookId',
+  /** column name */
+  MetadataUpdateWebhookSigningKey = 'metadataUpdateWebhookSigningKey',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type LoyaltyCardParameters_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<LoyaltyCardParameters_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: LoyaltyCardParameters_Bool_Exp;
+};
+
+/** columns and relationships of "loyaltyCardStatus" */
+export type LoyaltyCardStatus = {
+  __typename?: 'loyaltyCardStatus';
+  value: Scalars['String']['output'];
+};
+
+/** aggregated selection of "loyaltyCardStatus" */
+export type LoyaltyCardStatus_Aggregate = {
+  __typename?: 'loyaltyCardStatus_aggregate';
+  aggregate?: Maybe<LoyaltyCardStatus_Aggregate_Fields>;
+  nodes: Array<LoyaltyCardStatus>;
+};
+
+/** aggregate fields of "loyaltyCardStatus" */
+export type LoyaltyCardStatus_Aggregate_Fields = {
+  __typename?: 'loyaltyCardStatus_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<LoyaltyCardStatus_Max_Fields>;
+  min?: Maybe<LoyaltyCardStatus_Min_Fields>;
+};
+
+
+/** aggregate fields of "loyaltyCardStatus" */
+export type LoyaltyCardStatus_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<LoyaltyCardStatus_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "loyaltyCardStatus". All fields are combined with a logical 'AND'. */
+export type LoyaltyCardStatus_Bool_Exp = {
+  _and?: InputMaybe<Array<LoyaltyCardStatus_Bool_Exp>>;
+  _not?: InputMaybe<LoyaltyCardStatus_Bool_Exp>;
+  _or?: InputMaybe<Array<LoyaltyCardStatus_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "loyaltyCardStatus" */
+export const enum LoyaltyCardStatus_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  LoyaltyCardStatusPkey = 'loyaltyCardStatus_pkey'
+};
+
+export const enum LoyaltyCardStatus_Enum {
+  Draft = 'DRAFT',
+  Published = 'PUBLISHED'
+};
+
+/** Boolean expression to compare columns of type "loyaltyCardStatus_enum". All fields are combined with logical 'AND'. */
+export type LoyaltyCardStatus_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<LoyaltyCardStatus_Enum>;
+  _in?: InputMaybe<Array<LoyaltyCardStatus_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<LoyaltyCardStatus_Enum>;
+  _nin?: InputMaybe<Array<LoyaltyCardStatus_Enum>>;
+};
+
+/** input type for inserting data into table "loyaltyCardStatus" */
+export type LoyaltyCardStatus_Insert_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type LoyaltyCardStatus_Max_Fields = {
+  __typename?: 'loyaltyCardStatus_max_fields';
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type LoyaltyCardStatus_Min_Fields = {
+  __typename?: 'loyaltyCardStatus_min_fields';
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "loyaltyCardStatus" */
+export type LoyaltyCardStatus_Mutation_Response = {
+  __typename?: 'loyaltyCardStatus_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<LoyaltyCardStatus>;
+};
+
+/** on_conflict condition type for table "loyaltyCardStatus" */
+export type LoyaltyCardStatus_On_Conflict = {
+  constraint: LoyaltyCardStatus_Constraint;
+  update_columns?: Array<LoyaltyCardStatus_Update_Column>;
+  where?: InputMaybe<LoyaltyCardStatus_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "loyaltyCardStatus". */
+export type LoyaltyCardStatus_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: loyaltyCardStatus */
+export type LoyaltyCardStatus_Pk_Columns_Input = {
+  value: Scalars['String']['input'];
+};
+
+/** select columns of table "loyaltyCardStatus" */
+export const enum LoyaltyCardStatus_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "loyaltyCardStatus" */
+export type LoyaltyCardStatus_Set_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "loyaltyCardStatus" */
+export type LoyaltyCardStatus_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: LoyaltyCardStatus_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type LoyaltyCardStatus_Stream_Cursor_Value_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "loyaltyCardStatus" */
+export const enum LoyaltyCardStatus_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type LoyaltyCardStatus_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<LoyaltyCardStatus_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: LoyaltyCardStatus_Bool_Exp;
+};
+
 /** Temporary wallet information for minters, including optional links to event passes and packs. */
 export type MinterTemporaryWallet = {
   __typename?: 'minterTemporaryWallet';
   /** The blockchain address of the temporary wallet. */
   address: Scalars['String']['output'];
+  /** Identifies the campaign associated with this temporary wallet for minting purposes. This text field corresponds to a campaign in the stampNftContract. */
+  campaignId?: Maybe<Scalars['String']['output']>;
   /** The timestamp when the temporary wallet was created. */
   createdAt: Scalars['timestamptz']['output'];
   /** Optional identifier for an event pass associated with this wallet. */
   eventPassId?: Maybe<Scalars['String']['output']>;
+  /** Identifies the loyalty card associated with this temporary wallet for minting purposes. This text field corresponds to a loyalty card in the loyaltyCardNftContract. */
+  loyaltyCardId?: Maybe<Scalars['String']['output']>;
   /** Optional identifier for a pack associated with this wallet. */
   packId?: Maybe<Scalars['String']['output']>;
   /** The private key for the temporary wallet, necessary for signing transactions. */
@@ -11607,8 +13590,10 @@ export type MinterTemporaryWallet_Bool_Exp = {
   _not?: InputMaybe<MinterTemporaryWallet_Bool_Exp>;
   _or?: InputMaybe<Array<MinterTemporaryWallet_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
+  campaignId?: InputMaybe<String_Comparison_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   eventPassId?: InputMaybe<String_Comparison_Exp>;
+  loyaltyCardId?: InputMaybe<String_Comparison_Exp>;
   packId?: InputMaybe<String_Comparison_Exp>;
   privateKey?: InputMaybe<String_Comparison_Exp>;
 };
@@ -11623,10 +13608,14 @@ export const enum MinterTemporaryWallet_Constraint {
 export type MinterTemporaryWallet_Insert_Input = {
   /** The blockchain address of the temporary wallet. */
   address?: InputMaybe<Scalars['String']['input']>;
+  /** Identifies the campaign associated with this temporary wallet for minting purposes. This text field corresponds to a campaign in the stampNftContract. */
+  campaignId?: InputMaybe<Scalars['String']['input']>;
   /** The timestamp when the temporary wallet was created. */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Optional identifier for an event pass associated with this wallet. */
   eventPassId?: InputMaybe<Scalars['String']['input']>;
+  /** Identifies the loyalty card associated with this temporary wallet for minting purposes. This text field corresponds to a loyalty card in the loyaltyCardNftContract. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
   /** Optional identifier for a pack associated with this wallet. */
   packId?: InputMaybe<Scalars['String']['input']>;
   /** The private key for the temporary wallet, necessary for signing transactions. */
@@ -11638,10 +13627,14 @@ export type MinterTemporaryWallet_Max_Fields = {
   __typename?: 'minterTemporaryWallet_max_fields';
   /** The blockchain address of the temporary wallet. */
   address?: Maybe<Scalars['String']['output']>;
+  /** Identifies the campaign associated with this temporary wallet for minting purposes. This text field corresponds to a campaign in the stampNftContract. */
+  campaignId?: Maybe<Scalars['String']['output']>;
   /** The timestamp when the temporary wallet was created. */
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Optional identifier for an event pass associated with this wallet. */
   eventPassId?: Maybe<Scalars['String']['output']>;
+  /** Identifies the loyalty card associated with this temporary wallet for minting purposes. This text field corresponds to a loyalty card in the loyaltyCardNftContract. */
+  loyaltyCardId?: Maybe<Scalars['String']['output']>;
   /** Optional identifier for a pack associated with this wallet. */
   packId?: Maybe<Scalars['String']['output']>;
   /** The private key for the temporary wallet, necessary for signing transactions. */
@@ -11653,10 +13646,14 @@ export type MinterTemporaryWallet_Min_Fields = {
   __typename?: 'minterTemporaryWallet_min_fields';
   /** The blockchain address of the temporary wallet. */
   address?: Maybe<Scalars['String']['output']>;
+  /** Identifies the campaign associated with this temporary wallet for minting purposes. This text field corresponds to a campaign in the stampNftContract. */
+  campaignId?: Maybe<Scalars['String']['output']>;
   /** The timestamp when the temporary wallet was created. */
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Optional identifier for an event pass associated with this wallet. */
   eventPassId?: Maybe<Scalars['String']['output']>;
+  /** Identifies the loyalty card associated with this temporary wallet for minting purposes. This text field corresponds to a loyalty card in the loyaltyCardNftContract. */
+  loyaltyCardId?: Maybe<Scalars['String']['output']>;
   /** Optional identifier for a pack associated with this wallet. */
   packId?: Maybe<Scalars['String']['output']>;
   /** The private key for the temporary wallet, necessary for signing transactions. */
@@ -11682,8 +13679,10 @@ export type MinterTemporaryWallet_On_Conflict = {
 /** Ordering options when selecting data from "minterTemporaryWallet". */
 export type MinterTemporaryWallet_Order_By = {
   address?: InputMaybe<Order_By>;
+  campaignId?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
   eventPassId?: InputMaybe<Order_By>;
+  loyaltyCardId?: InputMaybe<Order_By>;
   packId?: InputMaybe<Order_By>;
   privateKey?: InputMaybe<Order_By>;
 };
@@ -11699,9 +13698,13 @@ export const enum MinterTemporaryWallet_Select_Column {
   /** column name */
   Address = 'address',
   /** column name */
+  CampaignId = 'campaignId',
+  /** column name */
   CreatedAt = 'createdAt',
   /** column name */
   EventPassId = 'eventPassId',
+  /** column name */
+  LoyaltyCardId = 'loyaltyCardId',
   /** column name */
   PackId = 'packId',
   /** column name */
@@ -11712,10 +13715,14 @@ export const enum MinterTemporaryWallet_Select_Column {
 export type MinterTemporaryWallet_Set_Input = {
   /** The blockchain address of the temporary wallet. */
   address?: InputMaybe<Scalars['String']['input']>;
+  /** Identifies the campaign associated with this temporary wallet for minting purposes. This text field corresponds to a campaign in the stampNftContract. */
+  campaignId?: InputMaybe<Scalars['String']['input']>;
   /** The timestamp when the temporary wallet was created. */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Optional identifier for an event pass associated with this wallet. */
   eventPassId?: InputMaybe<Scalars['String']['input']>;
+  /** Identifies the loyalty card associated with this temporary wallet for minting purposes. This text field corresponds to a loyalty card in the loyaltyCardNftContract. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
   /** Optional identifier for a pack associated with this wallet. */
   packId?: InputMaybe<Scalars['String']['input']>;
   /** The private key for the temporary wallet, necessary for signing transactions. */
@@ -11734,10 +13741,14 @@ export type MinterTemporaryWallet_Stream_Cursor_Input = {
 export type MinterTemporaryWallet_Stream_Cursor_Value_Input = {
   /** The blockchain address of the temporary wallet. */
   address?: InputMaybe<Scalars['String']['input']>;
+  /** Identifies the campaign associated with this temporary wallet for minting purposes. This text field corresponds to a campaign in the stampNftContract. */
+  campaignId?: InputMaybe<Scalars['String']['input']>;
   /** The timestamp when the temporary wallet was created. */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Optional identifier for an event pass associated with this wallet. */
   eventPassId?: InputMaybe<Scalars['String']['input']>;
+  /** Identifies the loyalty card associated with this temporary wallet for minting purposes. This text field corresponds to a loyalty card in the loyaltyCardNftContract. */
+  loyaltyCardId?: InputMaybe<Scalars['String']['input']>;
   /** Optional identifier for a pack associated with this wallet. */
   packId?: InputMaybe<Scalars['String']['input']>;
   /** The private key for the temporary wallet, necessary for signing transactions. */
@@ -11749,9 +13760,13 @@ export const enum MinterTemporaryWallet_Update_Column {
   /** column name */
   Address = 'address',
   /** column name */
+  CampaignId = 'campaignId',
+  /** column name */
   CreatedAt = 'createdAt',
   /** column name */
   EventPassId = 'eventPassId',
+  /** column name */
+  LoyaltyCardId = 'loyaltyCardId',
   /** column name */
   PackId = 'packId',
   /** column name */
@@ -11778,6 +13793,8 @@ export type Mutation_Root = {
   createEventPass?: Maybe<EventPass>;
   /** Create one eventPassDelayedRevealed */
   createEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Create one loyaltyCard */
+  createLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Create one organizer */
   createOrganizer?: Maybe<Organizer>;
   /** Create one pack */
@@ -11794,6 +13811,8 @@ export type Mutation_Root = {
   deleteEventPass?: Maybe<EventPass>;
   /** Delete one eventPassDelayedRevealed from _all_ existing stages. Returns deleted document. */
   deleteEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Delete one loyaltyCard from _all_ existing stages. Returns deleted document. */
+  deleteLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Delete many Asset documents */
   deleteManyAssets: BatchPayload;
   /** Delete many Asset documents, return deleted documents */
@@ -11814,6 +13833,10 @@ export type Mutation_Root = {
   deleteManyEvents: BatchPayload;
   /** Delete many Event documents, return deleted documents */
   deleteManyEventsConnection: EventConnection;
+  /** Delete many LoyaltyCard documents */
+  deleteManyLoyaltyCards: BatchPayload;
+  /** Delete many LoyaltyCard documents, return deleted documents */
+  deleteManyLoyaltyCardsConnection: LoyaltyCardConnection;
   /** Delete many Organizer documents */
   deleteManyOrganizers: BatchPayload;
   /** Delete many Organizer documents, return deleted documents */
@@ -11834,6 +13857,14 @@ export type Mutation_Root = {
   delete_account?: Maybe<Account_Mutation_Response>;
   /** delete single row from the table: "account" */
   delete_account_by_pk?: Maybe<Account>;
+  /** delete data from the table: "apiKeyStatus" */
+  delete_apiKeyStatus?: Maybe<ApiKeyStatus_Mutation_Response>;
+  /** delete single row from the table: "apiKeyStatus" */
+  delete_apiKeyStatus_by_pk?: Maybe<ApiKeyStatus>;
+  /** delete data from the table: "apiKeyType" */
+  delete_apiKeyType?: Maybe<ApiKeyType_Mutation_Response>;
+  /** delete single row from the table: "apiKeyType" */
+  delete_apiKeyType_by_pk?: Maybe<ApiKeyType>;
   /** delete data from the table: "contentSpaceParameters" */
   delete_contentSpaceParameters?: Maybe<ContentSpaceParameters_Mutation_Response>;
   /** delete single row from the table: "contentSpaceParameters" */
@@ -11902,10 +13933,34 @@ export type Mutation_Root = {
   delete_lotteryStatus?: Maybe<LotteryStatus_Mutation_Response>;
   /** delete single row from the table: "lotteryStatus" */
   delete_lotteryStatus_by_pk?: Maybe<LotteryStatus>;
+  /** delete data from the table: "loyaltyCardNft" */
+  delete_loyaltyCardNft?: Maybe<LoyaltyCardNft_Mutation_Response>;
+  /** delete data from the table: "loyaltyCardNftContract" */
+  delete_loyaltyCardNftContract?: Maybe<LoyaltyCardNftContract_Mutation_Response>;
+  /** delete single row from the table: "loyaltyCardNftContract" */
+  delete_loyaltyCardNftContract_by_pk?: Maybe<LoyaltyCardNftContract>;
+  /** delete single row from the table: "loyaltyCardNft" */
+  delete_loyaltyCardNft_by_pk?: Maybe<LoyaltyCardNft>;
+  /** delete data from the table: "loyaltyCardParameters" */
+  delete_loyaltyCardParameters?: Maybe<LoyaltyCardParameters_Mutation_Response>;
+  /** delete single row from the table: "loyaltyCardParameters" */
+  delete_loyaltyCardParameters_by_pk?: Maybe<LoyaltyCardParameters>;
+  /** delete data from the table: "loyaltyCardStatus" */
+  delete_loyaltyCardStatus?: Maybe<LoyaltyCardStatus_Mutation_Response>;
+  /** delete single row from the table: "loyaltyCardStatus" */
+  delete_loyaltyCardStatus_by_pk?: Maybe<LoyaltyCardStatus>;
   /** delete data from the table: "minterTemporaryWallet" */
   delete_minterTemporaryWallet?: Maybe<MinterTemporaryWallet_Mutation_Response>;
   /** delete single row from the table: "minterTemporaryWallet" */
   delete_minterTemporaryWallet_by_pk?: Maybe<MinterTemporaryWallet>;
+  /** delete data from the table: "nftMintPassword" */
+  delete_nftMintPassword?: Maybe<NftMintPassword_Mutation_Response>;
+  /** delete single row from the table: "nftMintPassword" */
+  delete_nftMintPassword_by_pk?: Maybe<NftMintPassword>;
+  /** delete data from the table: "nftStatus" */
+  delete_nftStatus?: Maybe<NftStatus_Mutation_Response>;
+  /** delete single row from the table: "nftStatus" */
+  delete_nftStatus_by_pk?: Maybe<NftStatus>;
   /** delete data from the table: "nftTransfer" */
   delete_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
   /** delete single row from the table: "nftTransfer" */
@@ -11950,12 +14005,44 @@ export type Mutation_Root = {
   delete_pendingOrder?: Maybe<PendingOrder_Mutation_Response>;
   /** delete single row from the table: "pendingOrder" */
   delete_pendingOrder_by_pk?: Maybe<PendingOrder>;
+  /** delete data from the table: "publishableApiKey" */
+  delete_publishableApiKey?: Maybe<PublishableApiKey_Mutation_Response>;
+  /** delete single row from the table: "publishableApiKey" */
+  delete_publishableApiKey_by_pk?: Maybe<PublishableApiKey>;
   /** delete data from the table: "roleAssignment" */
   delete_roleAssignment?: Maybe<RoleAssignment_Mutation_Response>;
   /** delete data from the table: "roles" */
   delete_roles?: Maybe<Roles_Mutation_Response>;
   /** delete single row from the table: "roles" */
   delete_roles_by_pk?: Maybe<Roles>;
+  /** delete data from the table: "secretApiKey" */
+  delete_secretApiKey?: Maybe<SecretApiKey_Mutation_Response>;
+  /** delete single row from the table: "secretApiKey" */
+  delete_secretApiKey_by_pk?: Maybe<SecretApiKey>;
+  /** delete data from the table: "shopifyCampaignParameters" */
+  delete_shopifyCampaignParameters?: Maybe<ShopifyCampaignParameters_Mutation_Response>;
+  /** delete single row from the table: "shopifyCampaignParameters" */
+  delete_shopifyCampaignParameters_by_pk?: Maybe<ShopifyCampaignParameters>;
+  /** delete data from the table: "shopifyCampaignStatus" */
+  delete_shopifyCampaignStatus?: Maybe<ShopifyCampaignStatus_Mutation_Response>;
+  /** delete single row from the table: "shopifyCampaignStatus" */
+  delete_shopifyCampaignStatus_by_pk?: Maybe<ShopifyCampaignStatus>;
+  /** delete data from the table: "stampNft" */
+  delete_stampNft?: Maybe<StampNft_Mutation_Response>;
+  /** delete data from the table: "stampNftContract" */
+  delete_stampNftContract?: Maybe<StampNftContract_Mutation_Response>;
+  /** delete data from the table: "stampNftContractType" */
+  delete_stampNftContractType?: Maybe<StampNftContractType_Mutation_Response>;
+  /** delete single row from the table: "stampNftContractType" */
+  delete_stampNftContractType_by_pk?: Maybe<StampNftContractType>;
+  /** delete single row from the table: "stampNftContract" */
+  delete_stampNftContract_by_pk?: Maybe<StampNftContract>;
+  /** delete data from the table: "stampNftSupply" */
+  delete_stampNftSupply?: Maybe<StampNftSupply_Mutation_Response>;
+  /** delete single row from the table: "stampNftSupply" */
+  delete_stampNftSupply_by_pk?: Maybe<StampNftSupply>;
+  /** delete single row from the table: "stampNft" */
+  delete_stampNft_by_pk?: Maybe<StampNft>;
   /** delete data from the table: "stripeCheckoutSession" */
   delete_stripeCheckoutSession?: Maybe<StripeCheckoutSession_Mutation_Response>;
   /** delete data from the table: "stripeCheckoutSessionType" */
@@ -11976,6 +14063,14 @@ export type Mutation_Root = {
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert a single row into the table: "account" */
   insert_account_one?: Maybe<Account>;
+  /** insert data into the table: "apiKeyStatus" */
+  insert_apiKeyStatus?: Maybe<ApiKeyStatus_Mutation_Response>;
+  /** insert a single row into the table: "apiKeyStatus" */
+  insert_apiKeyStatus_one?: Maybe<ApiKeyStatus>;
+  /** insert data into the table: "apiKeyType" */
+  insert_apiKeyType?: Maybe<ApiKeyType_Mutation_Response>;
+  /** insert a single row into the table: "apiKeyType" */
+  insert_apiKeyType_one?: Maybe<ApiKeyType>;
   /** insert data into the table: "contentSpaceParameters" */
   insert_contentSpaceParameters?: Maybe<ContentSpaceParameters_Mutation_Response>;
   /** insert a single row into the table: "contentSpaceParameters" */
@@ -12044,10 +14139,34 @@ export type Mutation_Root = {
   insert_lotteryStatus?: Maybe<LotteryStatus_Mutation_Response>;
   /** insert a single row into the table: "lotteryStatus" */
   insert_lotteryStatus_one?: Maybe<LotteryStatus>;
+  /** insert data into the table: "loyaltyCardNft" */
+  insert_loyaltyCardNft?: Maybe<LoyaltyCardNft_Mutation_Response>;
+  /** insert data into the table: "loyaltyCardNftContract" */
+  insert_loyaltyCardNftContract?: Maybe<LoyaltyCardNftContract_Mutation_Response>;
+  /** insert a single row into the table: "loyaltyCardNftContract" */
+  insert_loyaltyCardNftContract_one?: Maybe<LoyaltyCardNftContract>;
+  /** insert a single row into the table: "loyaltyCardNft" */
+  insert_loyaltyCardNft_one?: Maybe<LoyaltyCardNft>;
+  /** insert data into the table: "loyaltyCardParameters" */
+  insert_loyaltyCardParameters?: Maybe<LoyaltyCardParameters_Mutation_Response>;
+  /** insert a single row into the table: "loyaltyCardParameters" */
+  insert_loyaltyCardParameters_one?: Maybe<LoyaltyCardParameters>;
+  /** insert data into the table: "loyaltyCardStatus" */
+  insert_loyaltyCardStatus?: Maybe<LoyaltyCardStatus_Mutation_Response>;
+  /** insert a single row into the table: "loyaltyCardStatus" */
+  insert_loyaltyCardStatus_one?: Maybe<LoyaltyCardStatus>;
   /** insert data into the table: "minterTemporaryWallet" */
   insert_minterTemporaryWallet?: Maybe<MinterTemporaryWallet_Mutation_Response>;
   /** insert a single row into the table: "minterTemporaryWallet" */
   insert_minterTemporaryWallet_one?: Maybe<MinterTemporaryWallet>;
+  /** insert data into the table: "nftMintPassword" */
+  insert_nftMintPassword?: Maybe<NftMintPassword_Mutation_Response>;
+  /** insert a single row into the table: "nftMintPassword" */
+  insert_nftMintPassword_one?: Maybe<NftMintPassword>;
+  /** insert data into the table: "nftStatus" */
+  insert_nftStatus?: Maybe<NftStatus_Mutation_Response>;
+  /** insert a single row into the table: "nftStatus" */
+  insert_nftStatus_one?: Maybe<NftStatus>;
   /** insert data into the table: "nftTransfer" */
   insert_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
   /** insert a single row into the table: "nftTransfer" */
@@ -12092,6 +14211,10 @@ export type Mutation_Root = {
   insert_pendingOrder?: Maybe<PendingOrder_Mutation_Response>;
   /** insert a single row into the table: "pendingOrder" */
   insert_pendingOrder_one?: Maybe<PendingOrder>;
+  /** insert data into the table: "publishableApiKey" */
+  insert_publishableApiKey?: Maybe<PublishableApiKey_Mutation_Response>;
+  /** insert a single row into the table: "publishableApiKey" */
+  insert_publishableApiKey_one?: Maybe<PublishableApiKey>;
   /** insert data into the table: "roleAssignment" */
   insert_roleAssignment?: Maybe<RoleAssignment_Mutation_Response>;
   /** insert a single row into the table: "roleAssignment" */
@@ -12100,6 +14223,34 @@ export type Mutation_Root = {
   insert_roles?: Maybe<Roles_Mutation_Response>;
   /** insert a single row into the table: "roles" */
   insert_roles_one?: Maybe<Roles>;
+  /** insert data into the table: "secretApiKey" */
+  insert_secretApiKey?: Maybe<SecretApiKey_Mutation_Response>;
+  /** insert a single row into the table: "secretApiKey" */
+  insert_secretApiKey_one?: Maybe<SecretApiKey>;
+  /** insert data into the table: "shopifyCampaignParameters" */
+  insert_shopifyCampaignParameters?: Maybe<ShopifyCampaignParameters_Mutation_Response>;
+  /** insert a single row into the table: "shopifyCampaignParameters" */
+  insert_shopifyCampaignParameters_one?: Maybe<ShopifyCampaignParameters>;
+  /** insert data into the table: "shopifyCampaignStatus" */
+  insert_shopifyCampaignStatus?: Maybe<ShopifyCampaignStatus_Mutation_Response>;
+  /** insert a single row into the table: "shopifyCampaignStatus" */
+  insert_shopifyCampaignStatus_one?: Maybe<ShopifyCampaignStatus>;
+  /** insert data into the table: "stampNft" */
+  insert_stampNft?: Maybe<StampNft_Mutation_Response>;
+  /** insert data into the table: "stampNftContract" */
+  insert_stampNftContract?: Maybe<StampNftContract_Mutation_Response>;
+  /** insert data into the table: "stampNftContractType" */
+  insert_stampNftContractType?: Maybe<StampNftContractType_Mutation_Response>;
+  /** insert a single row into the table: "stampNftContractType" */
+  insert_stampNftContractType_one?: Maybe<StampNftContractType>;
+  /** insert a single row into the table: "stampNftContract" */
+  insert_stampNftContract_one?: Maybe<StampNftContract>;
+  /** insert data into the table: "stampNftSupply" */
+  insert_stampNftSupply?: Maybe<StampNftSupply_Mutation_Response>;
+  /** insert a single row into the table: "stampNftSupply" */
+  insert_stampNftSupply_one?: Maybe<StampNftSupply>;
+  /** insert a single row into the table: "stampNft" */
+  insert_stampNft_one?: Maybe<StampNft>;
   /** insert data into the table: "stripeCheckoutSession" */
   insert_stripeCheckoutSession?: Maybe<StripeCheckoutSession_Mutation_Response>;
   /** insert data into the table: "stripeCheckoutSessionType" */
@@ -12126,6 +14277,8 @@ export type Mutation_Root = {
   publishEventPass?: Maybe<EventPass>;
   /** Publish one eventPassDelayedRevealed */
   publishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Publish one loyaltyCard */
+  publishLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Publish many Asset documents */
   publishManyAssets: BatchPayload;
   /** Publish many Asset documents */
@@ -12146,6 +14299,10 @@ export type Mutation_Root = {
   publishManyEvents: BatchPayload;
   /** Publish many Event documents */
   publishManyEventsConnection: EventConnection;
+  /** Publish many LoyaltyCard documents */
+  publishManyLoyaltyCards: BatchPayload;
+  /** Publish many LoyaltyCard documents */
+  publishManyLoyaltyCardsConnection: LoyaltyCardConnection;
   /** Publish many Organizer documents */
   publishManyOrganizers: BatchPayload;
   /** Publish many Organizer documents */
@@ -12168,6 +14325,8 @@ export type Mutation_Root = {
   schedulePublishEventPass?: Maybe<EventPass>;
   /** Schedule to publish one eventPassDelayedRevealed */
   schedulePublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Schedule to publish one loyaltyCard */
+  schedulePublishLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Schedule to publish one organizer */
   schedulePublishOrganizer?: Maybe<Organizer>;
   /** Schedule to publish one pack */
@@ -12182,6 +14341,8 @@ export type Mutation_Root = {
   scheduleUnpublishEventPass?: Maybe<EventPass>;
   /** Unpublish one eventPassDelayedRevealed from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Unpublish one loyaltyCard from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Unpublish one organizer from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishOrganizer?: Maybe<Organizer>;
   /** Unpublish one pack from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -12196,6 +14357,8 @@ export type Mutation_Root = {
   unpublishEventPass?: Maybe<EventPass>;
   /** Unpublish one eventPassDelayedRevealed from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Unpublish one loyaltyCard from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Unpublish many Asset documents */
   unpublishManyAssets: BatchPayload;
   /** Find many Asset documents that match criteria in specified stage and unpublish from target stages */
@@ -12216,6 +14379,10 @@ export type Mutation_Root = {
   unpublishManyEvents: BatchPayload;
   /** Find many Event documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyEventsConnection: EventConnection;
+  /** Unpublish many LoyaltyCard documents */
+  unpublishManyLoyaltyCards: BatchPayload;
+  /** Find many LoyaltyCard documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyLoyaltyCardsConnection: LoyaltyCardConnection;
   /** Unpublish many Organizer documents */
   unpublishManyOrganizers: BatchPayload;
   /** Find many Organizer documents that match criteria in specified stage and unpublish from target stages */
@@ -12238,6 +14405,8 @@ export type Mutation_Root = {
   updateEventPass?: Maybe<EventPass>;
   /** Update one eventPassDelayedRevealed */
   updateEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Update one loyaltyCard */
+  updateLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Update many assets */
   updateManyAssets: BatchPayload;
   /** Update many Asset documents */
@@ -12258,6 +14427,10 @@ export type Mutation_Root = {
   updateManyEvents: BatchPayload;
   /** Update many Event documents */
   updateManyEventsConnection: EventConnection;
+  /** Update many loyaltyCards */
+  updateManyLoyaltyCards: BatchPayload;
+  /** Update many LoyaltyCard documents */
+  updateManyLoyaltyCardsConnection: LoyaltyCardConnection;
   /** Update many organizers */
   updateManyOrganizers: BatchPayload;
   /** Update many Organizer documents */
@@ -12278,6 +14451,18 @@ export type Mutation_Root = {
   update_account_by_pk?: Maybe<Account>;
   /** update multiples rows of table: "account" */
   update_account_many?: Maybe<Array<Maybe<Account_Mutation_Response>>>;
+  /** update data of the table: "apiKeyStatus" */
+  update_apiKeyStatus?: Maybe<ApiKeyStatus_Mutation_Response>;
+  /** update single row of the table: "apiKeyStatus" */
+  update_apiKeyStatus_by_pk?: Maybe<ApiKeyStatus>;
+  /** update multiples rows of table: "apiKeyStatus" */
+  update_apiKeyStatus_many?: Maybe<Array<Maybe<ApiKeyStatus_Mutation_Response>>>;
+  /** update data of the table: "apiKeyType" */
+  update_apiKeyType?: Maybe<ApiKeyType_Mutation_Response>;
+  /** update single row of the table: "apiKeyType" */
+  update_apiKeyType_by_pk?: Maybe<ApiKeyType>;
+  /** update multiples rows of table: "apiKeyType" */
+  update_apiKeyType_many?: Maybe<Array<Maybe<ApiKeyType_Mutation_Response>>>;
   /** update data of the table: "contentSpaceParameters" */
   update_contentSpaceParameters?: Maybe<ContentSpaceParameters_Mutation_Response>;
   /** update single row of the table: "contentSpaceParameters" */
@@ -12380,12 +14565,48 @@ export type Mutation_Root = {
   update_lotteryStatus_by_pk?: Maybe<LotteryStatus>;
   /** update multiples rows of table: "lotteryStatus" */
   update_lotteryStatus_many?: Maybe<Array<Maybe<LotteryStatus_Mutation_Response>>>;
+  /** update data of the table: "loyaltyCardNft" */
+  update_loyaltyCardNft?: Maybe<LoyaltyCardNft_Mutation_Response>;
+  /** update data of the table: "loyaltyCardNftContract" */
+  update_loyaltyCardNftContract?: Maybe<LoyaltyCardNftContract_Mutation_Response>;
+  /** update single row of the table: "loyaltyCardNftContract" */
+  update_loyaltyCardNftContract_by_pk?: Maybe<LoyaltyCardNftContract>;
+  /** update multiples rows of table: "loyaltyCardNftContract" */
+  update_loyaltyCardNftContract_many?: Maybe<Array<Maybe<LoyaltyCardNftContract_Mutation_Response>>>;
+  /** update single row of the table: "loyaltyCardNft" */
+  update_loyaltyCardNft_by_pk?: Maybe<LoyaltyCardNft>;
+  /** update multiples rows of table: "loyaltyCardNft" */
+  update_loyaltyCardNft_many?: Maybe<Array<Maybe<LoyaltyCardNft_Mutation_Response>>>;
+  /** update data of the table: "loyaltyCardParameters" */
+  update_loyaltyCardParameters?: Maybe<LoyaltyCardParameters_Mutation_Response>;
+  /** update single row of the table: "loyaltyCardParameters" */
+  update_loyaltyCardParameters_by_pk?: Maybe<LoyaltyCardParameters>;
+  /** update multiples rows of table: "loyaltyCardParameters" */
+  update_loyaltyCardParameters_many?: Maybe<Array<Maybe<LoyaltyCardParameters_Mutation_Response>>>;
+  /** update data of the table: "loyaltyCardStatus" */
+  update_loyaltyCardStatus?: Maybe<LoyaltyCardStatus_Mutation_Response>;
+  /** update single row of the table: "loyaltyCardStatus" */
+  update_loyaltyCardStatus_by_pk?: Maybe<LoyaltyCardStatus>;
+  /** update multiples rows of table: "loyaltyCardStatus" */
+  update_loyaltyCardStatus_many?: Maybe<Array<Maybe<LoyaltyCardStatus_Mutation_Response>>>;
   /** update data of the table: "minterTemporaryWallet" */
   update_minterTemporaryWallet?: Maybe<MinterTemporaryWallet_Mutation_Response>;
   /** update single row of the table: "minterTemporaryWallet" */
   update_minterTemporaryWallet_by_pk?: Maybe<MinterTemporaryWallet>;
   /** update multiples rows of table: "minterTemporaryWallet" */
   update_minterTemporaryWallet_many?: Maybe<Array<Maybe<MinterTemporaryWallet_Mutation_Response>>>;
+  /** update data of the table: "nftMintPassword" */
+  update_nftMintPassword?: Maybe<NftMintPassword_Mutation_Response>;
+  /** update single row of the table: "nftMintPassword" */
+  update_nftMintPassword_by_pk?: Maybe<NftMintPassword>;
+  /** update multiples rows of table: "nftMintPassword" */
+  update_nftMintPassword_many?: Maybe<Array<Maybe<NftMintPassword_Mutation_Response>>>;
+  /** update data of the table: "nftStatus" */
+  update_nftStatus?: Maybe<NftStatus_Mutation_Response>;
+  /** update single row of the table: "nftStatus" */
+  update_nftStatus_by_pk?: Maybe<NftStatus>;
+  /** update multiples rows of table: "nftStatus" */
+  update_nftStatus_many?: Maybe<Array<Maybe<NftStatus_Mutation_Response>>>;
   /** update data of the table: "nftTransfer" */
   update_nftTransfer?: Maybe<NftTransfer_Mutation_Response>;
   /** update single row of the table: "nftTransfer" */
@@ -12452,6 +14673,12 @@ export type Mutation_Root = {
   update_pendingOrder_by_pk?: Maybe<PendingOrder>;
   /** update multiples rows of table: "pendingOrder" */
   update_pendingOrder_many?: Maybe<Array<Maybe<PendingOrder_Mutation_Response>>>;
+  /** update data of the table: "publishableApiKey" */
+  update_publishableApiKey?: Maybe<PublishableApiKey_Mutation_Response>;
+  /** update single row of the table: "publishableApiKey" */
+  update_publishableApiKey_by_pk?: Maybe<PublishableApiKey>;
+  /** update multiples rows of table: "publishableApiKey" */
+  update_publishableApiKey_many?: Maybe<Array<Maybe<PublishableApiKey_Mutation_Response>>>;
   /** update data of the table: "roleAssignment" */
   update_roleAssignment?: Maybe<RoleAssignment_Mutation_Response>;
   /** update multiples rows of table: "roleAssignment" */
@@ -12462,6 +14689,48 @@ export type Mutation_Root = {
   update_roles_by_pk?: Maybe<Roles>;
   /** update multiples rows of table: "roles" */
   update_roles_many?: Maybe<Array<Maybe<Roles_Mutation_Response>>>;
+  /** update data of the table: "secretApiKey" */
+  update_secretApiKey?: Maybe<SecretApiKey_Mutation_Response>;
+  /** update single row of the table: "secretApiKey" */
+  update_secretApiKey_by_pk?: Maybe<SecretApiKey>;
+  /** update multiples rows of table: "secretApiKey" */
+  update_secretApiKey_many?: Maybe<Array<Maybe<SecretApiKey_Mutation_Response>>>;
+  /** update data of the table: "shopifyCampaignParameters" */
+  update_shopifyCampaignParameters?: Maybe<ShopifyCampaignParameters_Mutation_Response>;
+  /** update single row of the table: "shopifyCampaignParameters" */
+  update_shopifyCampaignParameters_by_pk?: Maybe<ShopifyCampaignParameters>;
+  /** update multiples rows of table: "shopifyCampaignParameters" */
+  update_shopifyCampaignParameters_many?: Maybe<Array<Maybe<ShopifyCampaignParameters_Mutation_Response>>>;
+  /** update data of the table: "shopifyCampaignStatus" */
+  update_shopifyCampaignStatus?: Maybe<ShopifyCampaignStatus_Mutation_Response>;
+  /** update single row of the table: "shopifyCampaignStatus" */
+  update_shopifyCampaignStatus_by_pk?: Maybe<ShopifyCampaignStatus>;
+  /** update multiples rows of table: "shopifyCampaignStatus" */
+  update_shopifyCampaignStatus_many?: Maybe<Array<Maybe<ShopifyCampaignStatus_Mutation_Response>>>;
+  /** update data of the table: "stampNft" */
+  update_stampNft?: Maybe<StampNft_Mutation_Response>;
+  /** update data of the table: "stampNftContract" */
+  update_stampNftContract?: Maybe<StampNftContract_Mutation_Response>;
+  /** update data of the table: "stampNftContractType" */
+  update_stampNftContractType?: Maybe<StampNftContractType_Mutation_Response>;
+  /** update single row of the table: "stampNftContractType" */
+  update_stampNftContractType_by_pk?: Maybe<StampNftContractType>;
+  /** update multiples rows of table: "stampNftContractType" */
+  update_stampNftContractType_many?: Maybe<Array<Maybe<StampNftContractType_Mutation_Response>>>;
+  /** update single row of the table: "stampNftContract" */
+  update_stampNftContract_by_pk?: Maybe<StampNftContract>;
+  /** update multiples rows of table: "stampNftContract" */
+  update_stampNftContract_many?: Maybe<Array<Maybe<StampNftContract_Mutation_Response>>>;
+  /** update data of the table: "stampNftSupply" */
+  update_stampNftSupply?: Maybe<StampNftSupply_Mutation_Response>;
+  /** update single row of the table: "stampNftSupply" */
+  update_stampNftSupply_by_pk?: Maybe<StampNftSupply>;
+  /** update multiples rows of table: "stampNftSupply" */
+  update_stampNftSupply_many?: Maybe<Array<Maybe<StampNftSupply_Mutation_Response>>>;
+  /** update single row of the table: "stampNft" */
+  update_stampNft_by_pk?: Maybe<StampNft>;
+  /** update multiples rows of table: "stampNft" */
+  update_stampNft_many?: Maybe<Array<Maybe<StampNft_Mutation_Response>>>;
   /** update data of the table: "stripeCheckoutSession" */
   update_stripeCheckoutSession?: Maybe<StripeCheckoutSession_Mutation_Response>;
   /** update data of the table: "stripeCheckoutSessionType" */
@@ -12496,6 +14765,8 @@ export type Mutation_Root = {
   upsertEventPass?: Maybe<EventPass>;
   /** Upsert one eventPassDelayedRevealed */
   upsertEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Upsert one loyaltyCard */
+  upsertLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Upsert one organizer */
   upsertOrganizer?: Maybe<Organizer>;
   /** Upsert one pack */
@@ -12530,6 +14801,12 @@ export type Mutation_RootCreateEventPassArgs = {
 /** mutation root */
 export type Mutation_RootCreateEventPassDelayedRevealedArgs = {
   data: EventPassDelayedRevealedCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateLoyaltyCardArgs = {
+  data: LoyaltyCardCreateInput;
 };
 
 
@@ -12578,6 +14855,12 @@ export type Mutation_RootDeleteEventPassArgs = {
 /** mutation root */
 export type Mutation_RootDeleteEventPassDelayedRevealedArgs = {
   where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteLoyaltyCardArgs = {
+  where: LoyaltyCardWhereUniqueInput;
 };
 
 
@@ -12667,6 +14950,23 @@ export type Mutation_RootDeleteManyEventsConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteManyLoyaltyCardsArgs = {
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyLoyaltyCardsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteManyOrganizersArgs = {
   where?: InputMaybe<OrganizerManyWhereInput>;
 };
@@ -12733,6 +15033,30 @@ export type Mutation_RootDelete_AccountArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Account_By_PkArgs = {
   id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ApiKeyStatusArgs = {
+  where: ApiKeyStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ApiKeyStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ApiKeyTypeArgs = {
+  where: ApiKeyType_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ApiKeyType_By_PkArgs = {
+  value: Scalars['String']['input'];
 };
 
 
@@ -12942,6 +15266,54 @@ export type Mutation_RootDelete_LotteryStatus_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_LoyaltyCardNftArgs = {
+  where: LoyaltyCardNft_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LoyaltyCardNftContractArgs = {
+  where: LoyaltyCardNftContract_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LoyaltyCardNftContract_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LoyaltyCardNft_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LoyaltyCardParametersArgs = {
+  where: LoyaltyCardParameters_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LoyaltyCardParameters_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LoyaltyCardStatusArgs = {
+  where: LoyaltyCardStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LoyaltyCardStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_MinterTemporaryWalletArgs = {
   where: MinterTemporaryWallet_Bool_Exp;
 };
@@ -12950,6 +15322,30 @@ export type Mutation_RootDelete_MinterTemporaryWalletArgs = {
 /** mutation root */
 export type Mutation_RootDelete_MinterTemporaryWallet_By_PkArgs = {
   address: Scalars['String']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_NftMintPasswordArgs = {
+  where: NftMintPassword_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_NftMintPassword_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_NftStatusArgs = {
+  where: NftStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_NftStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
 };
 
 
@@ -13088,6 +15484,18 @@ export type Mutation_RootDelete_PendingOrder_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_PublishableApiKeyArgs = {
+  where: PublishableApiKey_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_PublishableApiKey_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_RoleAssignmentArgs = {
   where: RoleAssignment_Bool_Exp;
 };
@@ -13102,6 +15510,91 @@ export type Mutation_RootDelete_RolesArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Roles_By_PkArgs = {
   value: Scalars['String']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_SecretApiKeyArgs = {
+  where: SecretApiKey_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_SecretApiKey_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ShopifyCampaignParametersArgs = {
+  where: ShopifyCampaignParameters_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ShopifyCampaignParameters_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ShopifyCampaignStatusArgs = {
+  where: ShopifyCampaignStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ShopifyCampaignStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StampNftArgs = {
+  where: StampNft_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StampNftContractArgs = {
+  where: StampNftContract_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StampNftContractTypeArgs = {
+  where: StampNftContractType_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StampNftContractType_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StampNftContract_By_PkArgs = {
+  chainId: Scalars['String']['input'];
+  contractAddress: Scalars['String']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StampNftSupplyArgs = {
+  where: StampNftSupply_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StampNftSupply_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_StampNft_By_PkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -13164,6 +15657,34 @@ export type Mutation_RootInsert_AccountArgs = {
 export type Mutation_RootInsert_Account_OneArgs = {
   object: Account_Insert_Input;
   on_conflict?: InputMaybe<Account_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ApiKeyStatusArgs = {
+  objects: Array<ApiKeyStatus_Insert_Input>;
+  on_conflict?: InputMaybe<ApiKeyStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ApiKeyStatus_OneArgs = {
+  object: ApiKeyStatus_Insert_Input;
+  on_conflict?: InputMaybe<ApiKeyStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ApiKeyTypeArgs = {
+  objects: Array<ApiKeyType_Insert_Input>;
+  on_conflict?: InputMaybe<ApiKeyType_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ApiKeyType_OneArgs = {
+  object: ApiKeyType_Insert_Input;
+  on_conflict?: InputMaybe<ApiKeyType_On_Conflict>;
 };
 
 
@@ -13406,6 +15927,62 @@ export type Mutation_RootInsert_LotteryStatus_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_LoyaltyCardNftArgs = {
+  objects: Array<LoyaltyCardNft_Insert_Input>;
+  on_conflict?: InputMaybe<LoyaltyCardNft_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LoyaltyCardNftContractArgs = {
+  objects: Array<LoyaltyCardNftContract_Insert_Input>;
+  on_conflict?: InputMaybe<LoyaltyCardNftContract_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LoyaltyCardNftContract_OneArgs = {
+  object: LoyaltyCardNftContract_Insert_Input;
+  on_conflict?: InputMaybe<LoyaltyCardNftContract_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LoyaltyCardNft_OneArgs = {
+  object: LoyaltyCardNft_Insert_Input;
+  on_conflict?: InputMaybe<LoyaltyCardNft_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LoyaltyCardParametersArgs = {
+  objects: Array<LoyaltyCardParameters_Insert_Input>;
+  on_conflict?: InputMaybe<LoyaltyCardParameters_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LoyaltyCardParameters_OneArgs = {
+  object: LoyaltyCardParameters_Insert_Input;
+  on_conflict?: InputMaybe<LoyaltyCardParameters_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LoyaltyCardStatusArgs = {
+  objects: Array<LoyaltyCardStatus_Insert_Input>;
+  on_conflict?: InputMaybe<LoyaltyCardStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LoyaltyCardStatus_OneArgs = {
+  object: LoyaltyCardStatus_Insert_Input;
+  on_conflict?: InputMaybe<LoyaltyCardStatus_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_MinterTemporaryWalletArgs = {
   objects: Array<MinterTemporaryWallet_Insert_Input>;
   on_conflict?: InputMaybe<MinterTemporaryWallet_On_Conflict>;
@@ -13416,6 +15993,34 @@ export type Mutation_RootInsert_MinterTemporaryWalletArgs = {
 export type Mutation_RootInsert_MinterTemporaryWallet_OneArgs = {
   object: MinterTemporaryWallet_Insert_Input;
   on_conflict?: InputMaybe<MinterTemporaryWallet_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftMintPasswordArgs = {
+  objects: Array<NftMintPassword_Insert_Input>;
+  on_conflict?: InputMaybe<NftMintPassword_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftMintPassword_OneArgs = {
+  object: NftMintPassword_Insert_Input;
+  on_conflict?: InputMaybe<NftMintPassword_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftStatusArgs = {
+  objects: Array<NftStatus_Insert_Input>;
+  on_conflict?: InputMaybe<NftStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NftStatus_OneArgs = {
+  object: NftStatus_Insert_Input;
+  on_conflict?: InputMaybe<NftStatus_On_Conflict>;
 };
 
 
@@ -13574,6 +16179,20 @@ export type Mutation_RootInsert_PendingOrder_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_PublishableApiKeyArgs = {
+  objects: Array<PublishableApiKey_Insert_Input>;
+  on_conflict?: InputMaybe<PublishableApiKey_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_PublishableApiKey_OneArgs = {
+  object: PublishableApiKey_Insert_Input;
+  on_conflict?: InputMaybe<PublishableApiKey_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_RoleAssignmentArgs = {
   objects: Array<RoleAssignment_Insert_Input>;
   on_conflict?: InputMaybe<RoleAssignment_On_Conflict>;
@@ -13598,6 +16217,104 @@ export type Mutation_RootInsert_RolesArgs = {
 export type Mutation_RootInsert_Roles_OneArgs = {
   object: Roles_Insert_Input;
   on_conflict?: InputMaybe<Roles_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_SecretApiKeyArgs = {
+  objects: Array<SecretApiKey_Insert_Input>;
+  on_conflict?: InputMaybe<SecretApiKey_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_SecretApiKey_OneArgs = {
+  object: SecretApiKey_Insert_Input;
+  on_conflict?: InputMaybe<SecretApiKey_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ShopifyCampaignParametersArgs = {
+  objects: Array<ShopifyCampaignParameters_Insert_Input>;
+  on_conflict?: InputMaybe<ShopifyCampaignParameters_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ShopifyCampaignParameters_OneArgs = {
+  object: ShopifyCampaignParameters_Insert_Input;
+  on_conflict?: InputMaybe<ShopifyCampaignParameters_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ShopifyCampaignStatusArgs = {
+  objects: Array<ShopifyCampaignStatus_Insert_Input>;
+  on_conflict?: InputMaybe<ShopifyCampaignStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ShopifyCampaignStatus_OneArgs = {
+  object: ShopifyCampaignStatus_Insert_Input;
+  on_conflict?: InputMaybe<ShopifyCampaignStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StampNftArgs = {
+  objects: Array<StampNft_Insert_Input>;
+  on_conflict?: InputMaybe<StampNft_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StampNftContractArgs = {
+  objects: Array<StampNftContract_Insert_Input>;
+  on_conflict?: InputMaybe<StampNftContract_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StampNftContractTypeArgs = {
+  objects: Array<StampNftContractType_Insert_Input>;
+  on_conflict?: InputMaybe<StampNftContractType_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StampNftContractType_OneArgs = {
+  object: StampNftContractType_Insert_Input;
+  on_conflict?: InputMaybe<StampNftContractType_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StampNftContract_OneArgs = {
+  object: StampNftContract_Insert_Input;
+  on_conflict?: InputMaybe<StampNftContract_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StampNftSupplyArgs = {
+  objects: Array<StampNftSupply_Insert_Input>;
+  on_conflict?: InputMaybe<StampNftSupply_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StampNftSupply_OneArgs = {
+  object: StampNftSupply_Insert_Input;
+  on_conflict?: InputMaybe<StampNftSupply_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_StampNft_OneArgs = {
+  object: StampNft_Insert_Input;
+  on_conflict?: InputMaybe<StampNft_On_Conflict>;
 };
 
 
@@ -13704,6 +16421,13 @@ export type Mutation_RootPublishEventPassDelayedRevealedArgs = {
   to?: Array<Stage>;
   where: EventPassDelayedRevealedWhereUniqueInput;
   withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishLoyaltyCardArgs = {
+  to?: Array<Stage>;
+  where: LoyaltyCardWhereUniqueInput;
 };
 
 
@@ -13834,6 +16558,26 @@ export type Mutation_RootPublishManyEventsConnectionArgs = {
   to?: Array<Stage>;
   where?: InputMaybe<EventManyWhereInput>;
   withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyLoyaltyCardsArgs = {
+  to?: Array<Stage>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyLoyaltyCardsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
 };
 
 
@@ -13970,6 +16714,15 @@ export type Mutation_RootSchedulePublishEventPassDelayedRevealedArgs = {
 
 
 /** mutation root */
+export type Mutation_RootSchedulePublishLoyaltyCardArgs = {
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  to?: Array<Stage>;
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootSchedulePublishOrganizerArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']['input']>;
@@ -14049,6 +16802,15 @@ export type Mutation_RootScheduleUnpublishEventPassDelayedRevealedArgs = {
 
 
 /** mutation root */
+export type Mutation_RootScheduleUnpublishLoyaltyCardArgs = {
+  from?: Array<Stage>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootScheduleUnpublishOrganizerArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
@@ -14112,6 +16874,13 @@ export type Mutation_RootUnpublishEventPassDelayedRevealedArgs = {
   locales?: InputMaybe<Array<Locale>>;
   unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishLoyaltyCardArgs = {
+  from?: Array<Stage>;
+  where: LoyaltyCardWhereUniqueInput;
 };
 
 
@@ -14236,6 +17005,26 @@ export type Mutation_RootUnpublishManyEventsConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUnpublishManyLoyaltyCardsArgs = {
+  from?: Array<Stage>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishManyLoyaltyCardsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: InputMaybe<Stage>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUnpublishManyOrganizersArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
@@ -14337,6 +17126,13 @@ export type Mutation_RootUpdateEventPassDelayedRevealedArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateLoyaltyCardArgs = {
+  data: LoyaltyCardUpdateInput;
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateManyAssetsArgs = {
   data: AssetUpdateManyInput;
   where?: InputMaybe<AssetManyWhereInput>;
@@ -14432,6 +17228,25 @@ export type Mutation_RootUpdateManyEventsConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateManyLoyaltyCardsArgs = {
+  data: LoyaltyCardUpdateManyInput;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyLoyaltyCardsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  data: LoyaltyCardUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateManyOrganizersArgs = {
   data: OrganizerUpdateManyInput;
   where?: InputMaybe<OrganizerManyWhereInput>;
@@ -14507,6 +17322,46 @@ export type Mutation_RootUpdate_Account_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Account_ManyArgs = {
   updates: Array<Account_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ApiKeyStatusArgs = {
+  _set?: InputMaybe<ApiKeyStatus_Set_Input>;
+  where: ApiKeyStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ApiKeyStatus_By_PkArgs = {
+  _set?: InputMaybe<ApiKeyStatus_Set_Input>;
+  pk_columns: ApiKeyStatus_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ApiKeyStatus_ManyArgs = {
+  updates: Array<ApiKeyStatus_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ApiKeyTypeArgs = {
+  _set?: InputMaybe<ApiKeyType_Set_Input>;
+  where: ApiKeyType_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ApiKeyType_By_PkArgs = {
+  _set?: InputMaybe<ApiKeyType_Set_Input>;
+  pk_columns: ApiKeyType_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ApiKeyType_ManyArgs = {
+  updates: Array<ApiKeyType_Updates>;
 };
 
 
@@ -14865,6 +17720,98 @@ export type Mutation_RootUpdate_LotteryStatus_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardNftArgs = {
+  _append?: InputMaybe<LoyaltyCardNft_Append_Input>;
+  _delete_at_path?: InputMaybe<LoyaltyCardNft_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<LoyaltyCardNft_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<LoyaltyCardNft_Delete_Key_Input>;
+  _inc?: InputMaybe<LoyaltyCardNft_Inc_Input>;
+  _prepend?: InputMaybe<LoyaltyCardNft_Prepend_Input>;
+  _set?: InputMaybe<LoyaltyCardNft_Set_Input>;
+  where: LoyaltyCardNft_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardNftContractArgs = {
+  _set?: InputMaybe<LoyaltyCardNftContract_Set_Input>;
+  where: LoyaltyCardNftContract_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardNftContract_By_PkArgs = {
+  _set?: InputMaybe<LoyaltyCardNftContract_Set_Input>;
+  pk_columns: LoyaltyCardNftContract_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardNftContract_ManyArgs = {
+  updates: Array<LoyaltyCardNftContract_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardNft_By_PkArgs = {
+  _append?: InputMaybe<LoyaltyCardNft_Append_Input>;
+  _delete_at_path?: InputMaybe<LoyaltyCardNft_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<LoyaltyCardNft_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<LoyaltyCardNft_Delete_Key_Input>;
+  _inc?: InputMaybe<LoyaltyCardNft_Inc_Input>;
+  _prepend?: InputMaybe<LoyaltyCardNft_Prepend_Input>;
+  _set?: InputMaybe<LoyaltyCardNft_Set_Input>;
+  pk_columns: LoyaltyCardNft_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardNft_ManyArgs = {
+  updates: Array<LoyaltyCardNft_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardParametersArgs = {
+  _set?: InputMaybe<LoyaltyCardParameters_Set_Input>;
+  where: LoyaltyCardParameters_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardParameters_By_PkArgs = {
+  _set?: InputMaybe<LoyaltyCardParameters_Set_Input>;
+  pk_columns: LoyaltyCardParameters_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardParameters_ManyArgs = {
+  updates: Array<LoyaltyCardParameters_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardStatusArgs = {
+  _set?: InputMaybe<LoyaltyCardStatus_Set_Input>;
+  where: LoyaltyCardStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardStatus_By_PkArgs = {
+  _set?: InputMaybe<LoyaltyCardStatus_Set_Input>;
+  pk_columns: LoyaltyCardStatus_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LoyaltyCardStatus_ManyArgs = {
+  updates: Array<LoyaltyCardStatus_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_MinterTemporaryWalletArgs = {
   _set?: InputMaybe<MinterTemporaryWallet_Set_Input>;
   where: MinterTemporaryWallet_Bool_Exp;
@@ -14881,6 +17828,48 @@ export type Mutation_RootUpdate_MinterTemporaryWallet_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_MinterTemporaryWallet_ManyArgs = {
   updates: Array<MinterTemporaryWallet_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftMintPasswordArgs = {
+  _inc?: InputMaybe<NftMintPassword_Inc_Input>;
+  _set?: InputMaybe<NftMintPassword_Set_Input>;
+  where: NftMintPassword_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftMintPassword_By_PkArgs = {
+  _inc?: InputMaybe<NftMintPassword_Inc_Input>;
+  _set?: InputMaybe<NftMintPassword_Set_Input>;
+  pk_columns: NftMintPassword_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftMintPassword_ManyArgs = {
+  updates: Array<NftMintPassword_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftStatusArgs = {
+  _set?: InputMaybe<NftStatus_Set_Input>;
+  where: NftStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftStatus_By_PkArgs = {
+  _set?: InputMaybe<NftStatus_Set_Input>;
+  pk_columns: NftStatus_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NftStatus_ManyArgs = {
+  updates: Array<NftStatus_Updates>;
 };
 
 
@@ -15121,6 +18110,26 @@ export type Mutation_RootUpdate_PendingOrder_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_PublishableApiKeyArgs = {
+  _set?: InputMaybe<PublishableApiKey_Set_Input>;
+  where: PublishableApiKey_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_PublishableApiKey_By_PkArgs = {
+  _set?: InputMaybe<PublishableApiKey_Set_Input>;
+  pk_columns: PublishableApiKey_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_PublishableApiKey_ManyArgs = {
+  updates: Array<PublishableApiKey_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_RoleAssignmentArgs = {
   _set?: InputMaybe<RoleAssignment_Set_Input>;
   where: RoleAssignment_Bool_Exp;
@@ -15150,6 +18159,160 @@ export type Mutation_RootUpdate_Roles_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Roles_ManyArgs = {
   updates: Array<Roles_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_SecretApiKeyArgs = {
+  _set?: InputMaybe<SecretApiKey_Set_Input>;
+  where: SecretApiKey_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_SecretApiKey_By_PkArgs = {
+  _set?: InputMaybe<SecretApiKey_Set_Input>;
+  pk_columns: SecretApiKey_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_SecretApiKey_ManyArgs = {
+  updates: Array<SecretApiKey_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyCampaignParametersArgs = {
+  _set?: InputMaybe<ShopifyCampaignParameters_Set_Input>;
+  where: ShopifyCampaignParameters_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyCampaignParameters_By_PkArgs = {
+  _set?: InputMaybe<ShopifyCampaignParameters_Set_Input>;
+  pk_columns: ShopifyCampaignParameters_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyCampaignParameters_ManyArgs = {
+  updates: Array<ShopifyCampaignParameters_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyCampaignStatusArgs = {
+  _set?: InputMaybe<ShopifyCampaignStatus_Set_Input>;
+  where: ShopifyCampaignStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyCampaignStatus_By_PkArgs = {
+  _set?: InputMaybe<ShopifyCampaignStatus_Set_Input>;
+  pk_columns: ShopifyCampaignStatus_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyCampaignStatus_ManyArgs = {
+  updates: Array<ShopifyCampaignStatus_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNftArgs = {
+  _append?: InputMaybe<StampNft_Append_Input>;
+  _delete_at_path?: InputMaybe<StampNft_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<StampNft_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<StampNft_Delete_Key_Input>;
+  _inc?: InputMaybe<StampNft_Inc_Input>;
+  _prepend?: InputMaybe<StampNft_Prepend_Input>;
+  _set?: InputMaybe<StampNft_Set_Input>;
+  where: StampNft_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNftContractArgs = {
+  _set?: InputMaybe<StampNftContract_Set_Input>;
+  where: StampNftContract_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNftContractTypeArgs = {
+  _set?: InputMaybe<StampNftContractType_Set_Input>;
+  where: StampNftContractType_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNftContractType_By_PkArgs = {
+  _set?: InputMaybe<StampNftContractType_Set_Input>;
+  pk_columns: StampNftContractType_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNftContractType_ManyArgs = {
+  updates: Array<StampNftContractType_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNftContract_By_PkArgs = {
+  _set?: InputMaybe<StampNftContract_Set_Input>;
+  pk_columns: StampNftContract_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNftContract_ManyArgs = {
+  updates: Array<StampNftContract_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNftSupplyArgs = {
+  _inc?: InputMaybe<StampNftSupply_Inc_Input>;
+  _set?: InputMaybe<StampNftSupply_Set_Input>;
+  where: StampNftSupply_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNftSupply_By_PkArgs = {
+  _inc?: InputMaybe<StampNftSupply_Inc_Input>;
+  _set?: InputMaybe<StampNftSupply_Set_Input>;
+  pk_columns: StampNftSupply_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNftSupply_ManyArgs = {
+  updates: Array<StampNftSupply_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNft_By_PkArgs = {
+  _append?: InputMaybe<StampNft_Append_Input>;
+  _delete_at_path?: InputMaybe<StampNft_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<StampNft_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<StampNft_Delete_Key_Input>;
+  _inc?: InputMaybe<StampNft_Inc_Input>;
+  _prepend?: InputMaybe<StampNft_Prepend_Input>;
+  _set?: InputMaybe<StampNft_Set_Input>;
+  pk_columns: StampNft_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_StampNft_ManyArgs = {
+  updates: Array<StampNft_Updates>;
 };
 
 
@@ -15269,6 +18432,13 @@ export type Mutation_RootUpsertEventPassDelayedRevealedArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpsertLoyaltyCardArgs = {
+  upsert: LoyaltyCardUpsertInput;
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpsertOrganizerArgs = {
   upsert: OrganizerUpsertInput;
   where: OrganizerWhereUniqueInput;
@@ -15279,6 +18449,476 @@ export type Mutation_RootUpsertOrganizerArgs = {
 export type Mutation_RootUpsertPackArgs = {
   upsert: PackUpsertInput;
   where: PackWhereUniqueInput;
+};
+
+/** The nftMintPassword table stores unique passwords that allow for the minting of NFTs on a specific contract. Each password is associated with a contract address, chain ID, and organizer ID, ensuring it can only be used for the intended NFT. Once a password is used to mint an NFT, the minterAddress and tokenId fields are populated, marking the password as consumed and linking it to the minted NFT. */
+export type NftMintPassword = {
+  __typename?: 'nftMintPassword';
+  /** The ID of the blockchain network where the NFT contract is deployed. */
+  chainId: Scalars['String']['output'];
+  /** The address of the NFT contract that the password is associated with. */
+  contractAddress: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  /** The address of the user who used the password to mint an NFT. If null, the password has not been used yet. */
+  minterAddress?: Maybe<Scalars['String']['output']>;
+  /** The ID of the organizer that the NFT contract belongs to. */
+  organizerId: Scalars['String']['output'];
+  /** The unique password that allows for the minting of an NFT. It should be a combination of letters and numbers, typically 6 characters long. */
+  password: Scalars['String']['output'];
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "nftMintPassword" */
+export type NftMintPassword_Aggregate = {
+  __typename?: 'nftMintPassword_aggregate';
+  aggregate?: Maybe<NftMintPassword_Aggregate_Fields>;
+  nodes: Array<NftMintPassword>;
+};
+
+/** aggregate fields of "nftMintPassword" */
+export type NftMintPassword_Aggregate_Fields = {
+  __typename?: 'nftMintPassword_aggregate_fields';
+  avg?: Maybe<NftMintPassword_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<NftMintPassword_Max_Fields>;
+  min?: Maybe<NftMintPassword_Min_Fields>;
+  stddev?: Maybe<NftMintPassword_Stddev_Fields>;
+  stddev_pop?: Maybe<NftMintPassword_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<NftMintPassword_Stddev_Samp_Fields>;
+  sum?: Maybe<NftMintPassword_Sum_Fields>;
+  var_pop?: Maybe<NftMintPassword_Var_Pop_Fields>;
+  var_samp?: Maybe<NftMintPassword_Var_Samp_Fields>;
+  variance?: Maybe<NftMintPassword_Variance_Fields>;
+};
+
+
+/** aggregate fields of "nftMintPassword" */
+export type NftMintPassword_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<NftMintPassword_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type NftMintPassword_Avg_Fields = {
+  __typename?: 'nftMintPassword_avg_fields';
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "nftMintPassword". All fields are combined with a logical 'AND'. */
+export type NftMintPassword_Bool_Exp = {
+  _and?: InputMaybe<Array<NftMintPassword_Bool_Exp>>;
+  _not?: InputMaybe<NftMintPassword_Bool_Exp>;
+  _or?: InputMaybe<Array<NftMintPassword_Bool_Exp>>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  minterAddress?: InputMaybe<String_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  password?: InputMaybe<String_Comparison_Exp>;
+  tokenId?: InputMaybe<Bigint_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "nftMintPassword" */
+export const enum NftMintPassword_Constraint {
+  /** unique or primary key constraint on columns "organizerId", "chainId", "contractAddress", "password" */
+  NftMintPasswordPasswordContractAddressChainIdOrganizerIKey = 'nftMintPassword_password_contractAddress_chainId_organizerI_key',
+  /** unique or primary key constraint on columns "id" */
+  NftMintPasswordPkey = 'nftMintPassword_pkey'
+};
+
+/** input type for incrementing numeric columns in table "nftMintPassword" */
+export type NftMintPassword_Inc_Input = {
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+/** input type for inserting data into table "nftMintPassword" */
+export type NftMintPassword_Insert_Input = {
+  /** The ID of the blockchain network where the NFT contract is deployed. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** The address of the NFT contract that the password is associated with. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** The address of the user who used the password to mint an NFT. If null, the password has not been used yet. */
+  minterAddress?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the organizer that the NFT contract belongs to. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique password that allows for the minting of an NFT. It should be a combination of letters and numbers, typically 6 characters long. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type NftMintPassword_Max_Fields = {
+  __typename?: 'nftMintPassword_max_fields';
+  /** The ID of the blockchain network where the NFT contract is deployed. */
+  chainId?: Maybe<Scalars['String']['output']>;
+  /** The address of the NFT contract that the password is associated with. */
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** The address of the user who used the password to mint an NFT. If null, the password has not been used yet. */
+  minterAddress?: Maybe<Scalars['String']['output']>;
+  /** The ID of the organizer that the NFT contract belongs to. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  /** The unique password that allows for the minting of an NFT. It should be a combination of letters and numbers, typically 6 characters long. */
+  password?: Maybe<Scalars['String']['output']>;
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type NftMintPassword_Min_Fields = {
+  __typename?: 'nftMintPassword_min_fields';
+  /** The ID of the blockchain network where the NFT contract is deployed. */
+  chainId?: Maybe<Scalars['String']['output']>;
+  /** The address of the NFT contract that the password is associated with. */
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** The address of the user who used the password to mint an NFT. If null, the password has not been used yet. */
+  minterAddress?: Maybe<Scalars['String']['output']>;
+  /** The ID of the organizer that the NFT contract belongs to. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  /** The unique password that allows for the minting of an NFT. It should be a combination of letters and numbers, typically 6 characters long. */
+  password?: Maybe<Scalars['String']['output']>;
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "nftMintPassword" */
+export type NftMintPassword_Mutation_Response = {
+  __typename?: 'nftMintPassword_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<NftMintPassword>;
+};
+
+/** on_conflict condition type for table "nftMintPassword" */
+export type NftMintPassword_On_Conflict = {
+  constraint: NftMintPassword_Constraint;
+  update_columns?: Array<NftMintPassword_Update_Column>;
+  where?: InputMaybe<NftMintPassword_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "nftMintPassword". */
+export type NftMintPassword_Order_By = {
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  minterAddress?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  password?: InputMaybe<Order_By>;
+  tokenId?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: nftMintPassword */
+export type NftMintPassword_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "nftMintPassword" */
+export const enum NftMintPassword_Select_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  MinterAddress = 'minterAddress',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Password = 'password',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "nftMintPassword" */
+export type NftMintPassword_Set_Input = {
+  /** The ID of the blockchain network where the NFT contract is deployed. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** The address of the NFT contract that the password is associated with. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** The address of the user who used the password to mint an NFT. If null, the password has not been used yet. */
+  minterAddress?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the organizer that the NFT contract belongs to. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique password that allows for the minting of an NFT. It should be a combination of letters and numbers, typically 6 characters long. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type NftMintPassword_Stddev_Fields = {
+  __typename?: 'nftMintPassword_stddev_fields';
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type NftMintPassword_Stddev_Pop_Fields = {
+  __typename?: 'nftMintPassword_stddev_pop_fields';
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type NftMintPassword_Stddev_Samp_Fields = {
+  __typename?: 'nftMintPassword_stddev_samp_fields';
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "nftMintPassword" */
+export type NftMintPassword_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: NftMintPassword_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type NftMintPassword_Stream_Cursor_Value_Input = {
+  /** The ID of the blockchain network where the NFT contract is deployed. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** The address of the NFT contract that the password is associated with. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** The address of the user who used the password to mint an NFT. If null, the password has not been used yet. */
+  minterAddress?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the organizer that the NFT contract belongs to. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique password that allows for the minting of an NFT. It should be a combination of letters and numbers, typically 6 characters long. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate sum on columns */
+export type NftMintPassword_Sum_Fields = {
+  __typename?: 'nftMintPassword_sum_fields';
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+};
+
+/** update columns of table "nftMintPassword" */
+export const enum NftMintPassword_Update_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  MinterAddress = 'minterAddress',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Password = 'password',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type NftMintPassword_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<NftMintPassword_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<NftMintPassword_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: NftMintPassword_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type NftMintPassword_Var_Pop_Fields = {
+  __typename?: 'nftMintPassword_var_pop_fields';
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type NftMintPassword_Var_Samp_Fields = {
+  __typename?: 'nftMintPassword_var_samp_fields';
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type NftMintPassword_Variance_Fields = {
+  __typename?: 'nftMintPassword_variance_fields';
+  /** The ID of the NFT that was minted using this password. If null, the password has not been used yet. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** columns and relationships of "nftStatus" */
+export type NftStatus = {
+  __typename?: 'nftStatus';
+  value: Scalars['String']['output'];
+};
+
+/** aggregated selection of "nftStatus" */
+export type NftStatus_Aggregate = {
+  __typename?: 'nftStatus_aggregate';
+  aggregate?: Maybe<NftStatus_Aggregate_Fields>;
+  nodes: Array<NftStatus>;
+};
+
+/** aggregate fields of "nftStatus" */
+export type NftStatus_Aggregate_Fields = {
+  __typename?: 'nftStatus_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<NftStatus_Max_Fields>;
+  min?: Maybe<NftStatus_Min_Fields>;
+};
+
+
+/** aggregate fields of "nftStatus" */
+export type NftStatus_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<NftStatus_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "nftStatus". All fields are combined with a logical 'AND'. */
+export type NftStatus_Bool_Exp = {
+  _and?: InputMaybe<Array<NftStatus_Bool_Exp>>;
+  _not?: InputMaybe<NftStatus_Bool_Exp>;
+  _or?: InputMaybe<Array<NftStatus_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "nftStatus" */
+export const enum NftStatus_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  NftStatusPkey = 'nftStatus_pkey'
+};
+
+export const enum NftStatus_Enum {
+  Burned = 'BURNED',
+  Completed = 'COMPLETED',
+  Confirmed = 'CONFIRMED',
+  Error = 'ERROR',
+  HeldByContract = 'HELD_BY_CONTRACT',
+  IsMinting = 'IS_MINTING',
+  IsTransferring = 'IS_TRANSFERRING',
+  LazyMinted = 'LAZY_MINTED'
+};
+
+/** Boolean expression to compare columns of type "nftStatus_enum". All fields are combined with logical 'AND'. */
+export type NftStatus_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<NftStatus_Enum>;
+  _in?: InputMaybe<Array<NftStatus_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<NftStatus_Enum>;
+  _nin?: InputMaybe<Array<NftStatus_Enum>>;
+};
+
+/** input type for inserting data into table "nftStatus" */
+export type NftStatus_Insert_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type NftStatus_Max_Fields = {
+  __typename?: 'nftStatus_max_fields';
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type NftStatus_Min_Fields = {
+  __typename?: 'nftStatus_min_fields';
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "nftStatus" */
+export type NftStatus_Mutation_Response = {
+  __typename?: 'nftStatus_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<NftStatus>;
+};
+
+/** on_conflict condition type for table "nftStatus" */
+export type NftStatus_On_Conflict = {
+  constraint: NftStatus_Constraint;
+  update_columns?: Array<NftStatus_Update_Column>;
+  where?: InputMaybe<NftStatus_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "nftStatus". */
+export type NftStatus_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: nftStatus */
+export type NftStatus_Pk_Columns_Input = {
+  value: Scalars['String']['input'];
+};
+
+/** select columns of table "nftStatus" */
+export const enum NftStatus_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "nftStatus" */
+export type NftStatus_Set_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "nftStatus" */
+export type NftStatus_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: NftStatus_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type NftStatus_Stream_Cursor_Value_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "nftStatus" */
+export const enum NftStatus_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type NftStatus_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<NftStatus_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: NftStatus_Bool_Exp;
 };
 
 /** The nftTransfer model is built to record and chronicle the transfer of NFTs between addresses. This model is crucial in tracing the movement of an NFT, especially when validating that an event pass has reached its intended recipient. Such a system facilitates debugging and reduces the need for excessive querying of our indexer. Entries in this table are populated through two primary avenues: either via an activity webhook responding to real-time NFT transfers or through a regular cron job as a failsafe, ensuring data integrity even if the webhook fails to capture certain events. */
@@ -15304,6 +18944,10 @@ export type NftTransfer = {
   packAmount?: Maybe<Scalars['Int']['output']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
   packId?: Maybe<Scalars['String']['output']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: Maybe<Scalars['Int']['output']>;
+  /** References the specific stampNft associated with the NFT transfer. This field is populated if the transfer involves a stamp NFT. */
+  stampNftId?: Maybe<Scalars['uuid']['output']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress: Scalars['String']['output'];
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -15382,6 +19026,8 @@ export type NftTransfer_Avg_Fields = {
   blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: Maybe<Scalars['Float']['output']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']['output']>;
 };
@@ -15392,6 +19038,8 @@ export type NftTransfer_Avg_Order_By = {
   blockNumber?: InputMaybe<Order_By>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: InputMaybe<Order_By>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -15412,6 +19060,8 @@ export type NftTransfer_Bool_Exp = {
   organizerId?: InputMaybe<String_Comparison_Exp>;
   packAmount?: InputMaybe<Int_Comparison_Exp>;
   packId?: InputMaybe<String_Comparison_Exp>;
+  stampAmount?: InputMaybe<Int_Comparison_Exp>;
+  stampNftId?: InputMaybe<Uuid_Comparison_Exp>;
   toAddress?: InputMaybe<String_Comparison_Exp>;
   tokenId?: InputMaybe<Bigint_Comparison_Exp>;
   transactionHash?: InputMaybe<String_Comparison_Exp>;
@@ -15431,6 +19081,8 @@ export type NftTransfer_Inc_Input = {
   blockNumber?: InputMaybe<Scalars['bigint']['input']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: InputMaybe<Scalars['Int']['input']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Scalars['Int']['input']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Scalars['bigint']['input']>;
 };
@@ -15457,6 +19109,10 @@ export type NftTransfer_Insert_Input = {
   packAmount?: InputMaybe<Scalars['Int']['input']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
   packId?: InputMaybe<Scalars['String']['input']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Scalars['Int']['input']>;
+  /** References the specific stampNft associated with the NFT transfer. This field is populated if the transfer involves a stamp NFT. */
+  stampNftId?: InputMaybe<Scalars['uuid']['input']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: InputMaybe<Scalars['String']['input']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -15488,6 +19144,10 @@ export type NftTransfer_Max_Fields = {
   packAmount?: Maybe<Scalars['Int']['output']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
   packId?: Maybe<Scalars['String']['output']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: Maybe<Scalars['Int']['output']>;
+  /** References the specific stampNft associated with the NFT transfer. This field is populated if the transfer involves a stamp NFT. */
+  stampNftId?: Maybe<Scalars['uuid']['output']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: Maybe<Scalars['String']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -15518,6 +19178,10 @@ export type NftTransfer_Max_Order_By = {
   packAmount?: InputMaybe<Order_By>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
   packId?: InputMaybe<Order_By>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Order_By>;
+  /** References the specific stampNft associated with the NFT transfer. This field is populated if the transfer involves a stamp NFT. */
+  stampNftId?: InputMaybe<Order_By>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -15549,6 +19213,10 @@ export type NftTransfer_Min_Fields = {
   packAmount?: Maybe<Scalars['Int']['output']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
   packId?: Maybe<Scalars['String']['output']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: Maybe<Scalars['Int']['output']>;
+  /** References the specific stampNft associated with the NFT transfer. This field is populated if the transfer involves a stamp NFT. */
+  stampNftId?: Maybe<Scalars['uuid']['output']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: Maybe<Scalars['String']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -15579,6 +19247,10 @@ export type NftTransfer_Min_Order_By = {
   packAmount?: InputMaybe<Order_By>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
   packId?: InputMaybe<Order_By>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Order_By>;
+  /** References the specific stampNft associated with the NFT transfer. This field is populated if the transfer involves a stamp NFT. */
+  stampNftId?: InputMaybe<Order_By>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -15623,6 +19295,8 @@ export type NftTransfer_Order_By = {
   organizerId?: InputMaybe<Order_By>;
   packAmount?: InputMaybe<Order_By>;
   packId?: InputMaybe<Order_By>;
+  stampAmount?: InputMaybe<Order_By>;
+  stampNftId?: InputMaybe<Order_By>;
   toAddress?: InputMaybe<Order_By>;
   tokenId?: InputMaybe<Order_By>;
   transactionHash?: InputMaybe<Order_By>;
@@ -15658,6 +19332,10 @@ export const enum NftTransfer_Select_Column {
   /** column name */
   PackId = 'packId',
   /** column name */
+  StampAmount = 'stampAmount',
+  /** column name */
+  StampNftId = 'stampNftId',
+  /** column name */
   ToAddress = 'toAddress',
   /** column name */
   TokenId = 'tokenId',
@@ -15687,6 +19365,10 @@ export type NftTransfer_Set_Input = {
   packAmount?: InputMaybe<Scalars['Int']['input']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
   packId?: InputMaybe<Scalars['String']['input']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Scalars['Int']['input']>;
+  /** References the specific stampNft associated with the NFT transfer. This field is populated if the transfer involves a stamp NFT. */
+  stampNftId?: InputMaybe<Scalars['uuid']['input']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: InputMaybe<Scalars['String']['input']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -15702,6 +19384,8 @@ export type NftTransfer_Stddev_Fields = {
   blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: Maybe<Scalars['Float']['output']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']['output']>;
 };
@@ -15712,6 +19396,8 @@ export type NftTransfer_Stddev_Order_By = {
   blockNumber?: InputMaybe<Order_By>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: InputMaybe<Order_By>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -15723,6 +19409,8 @@ export type NftTransfer_Stddev_Pop_Fields = {
   blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: Maybe<Scalars['Float']['output']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']['output']>;
 };
@@ -15733,6 +19421,8 @@ export type NftTransfer_Stddev_Pop_Order_By = {
   blockNumber?: InputMaybe<Order_By>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: InputMaybe<Order_By>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -15744,6 +19434,8 @@ export type NftTransfer_Stddev_Samp_Fields = {
   blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: Maybe<Scalars['Float']['output']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']['output']>;
 };
@@ -15754,6 +19446,8 @@ export type NftTransfer_Stddev_Samp_Order_By = {
   blockNumber?: InputMaybe<Order_By>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: InputMaybe<Order_By>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -15788,6 +19482,10 @@ export type NftTransfer_Stream_Cursor_Value_Input = {
   packAmount?: InputMaybe<Scalars['Int']['input']>;
   /** Identifies the specific pack associated with the NFT. This field is only populated if the NFT is part of a pack. */
   packId?: InputMaybe<Scalars['String']['input']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Scalars['Int']['input']>;
+  /** References the specific stampNft associated with the NFT transfer. This field is populated if the transfer involves a stamp NFT. */
+  stampNftId?: InputMaybe<Scalars['uuid']['input']>;
   /** Specifies the destination address receiving the NFT. Critical for determining the current holder of the NFT. */
   toAddress?: InputMaybe<Scalars['String']['input']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
@@ -15803,6 +19501,8 @@ export type NftTransfer_Sum_Fields = {
   blockNumber?: Maybe<Scalars['bigint']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: Maybe<Scalars['Int']['output']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: Maybe<Scalars['Int']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['bigint']['output']>;
 };
@@ -15813,6 +19513,8 @@ export type NftTransfer_Sum_Order_By = {
   blockNumber?: InputMaybe<Order_By>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: InputMaybe<Order_By>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -15842,6 +19544,10 @@ export const enum NftTransfer_Update_Column {
   /** column name */
   PackId = 'packId',
   /** column name */
+  StampAmount = 'stampAmount',
+  /** column name */
+  StampNftId = 'stampNftId',
+  /** column name */
   ToAddress = 'toAddress',
   /** column name */
   TokenId = 'tokenId',
@@ -15865,6 +19571,8 @@ export type NftTransfer_Var_Pop_Fields = {
   blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: Maybe<Scalars['Float']['output']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']['output']>;
 };
@@ -15875,6 +19583,8 @@ export type NftTransfer_Var_Pop_Order_By = {
   blockNumber?: InputMaybe<Order_By>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: InputMaybe<Order_By>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -15886,6 +19596,8 @@ export type NftTransfer_Var_Samp_Fields = {
   blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: Maybe<Scalars['Float']['output']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']['output']>;
 };
@@ -15896,6 +19608,8 @@ export type NftTransfer_Var_Samp_Order_By = {
   blockNumber?: InputMaybe<Order_By>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: InputMaybe<Order_By>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -15907,6 +19621,8 @@ export type NftTransfer_Variance_Fields = {
   blockNumber?: Maybe<Scalars['Float']['output']>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: Maybe<Scalars['Float']['output']>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: Maybe<Scalars['Float']['output']>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: Maybe<Scalars['Float']['output']>;
 };
@@ -15917,6 +19633,8 @@ export type NftTransfer_Variance_Order_By = {
   blockNumber?: InputMaybe<Order_By>;
   /** Specifies the number of NFTs transferred in the transaction. This field is only populated if the NFT is part of a pack. */
   packAmount?: InputMaybe<Order_By>;
+  /** Specifies the quantity of the stamp NFT transferred. This field is only populated if the transfer involves a stamp NFT. */
+  stampAmount?: InputMaybe<Order_By>;
   /** The unique identifier for the NFT within its associated smart contract. Maintains a constant reference to the NFT across platforms. */
   tokenId?: InputMaybe<Order_By>;
 };
@@ -17464,8 +21182,6 @@ export type PackNftSupply = {
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
   error?: Maybe<Scalars['String']['output']>;
   id: Scalars['uuid']['output'];
-  /** Indicates whether the pack NFT has been delivered to the owner. */
-  isDelivered: Scalars['Boolean']['output'];
   /** The reference to the latest transfer record for this pack NFT. */
   lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
   /** The identifier of the organizer associated with this pack NFT. */
@@ -17476,6 +21192,7 @@ export type PackNftSupply = {
   packEventPassNfts_aggregate: PackEventPassNft_Aggregate;
   /** A unique identifier for the pack within the platform. */
   packId: Scalars['String']['output'];
+  status?: Maybe<NftStatus_Enum>;
   /** The URI pointing to the metadata of the pack NFT. */
   tokenUri?: Maybe<Scalars['String']['output']>;
   updated_at: Scalars['timestamptz']['output'];
@@ -17534,12 +21251,12 @@ export type PackNftSupply_Bool_Exp = {
   currentOwnerAddress?: InputMaybe<String_Comparison_Exp>;
   error?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
-  isDelivered?: InputMaybe<Boolean_Comparison_Exp>;
   lastNftTransferId?: InputMaybe<Uuid_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
   packEventPassNfts?: InputMaybe<PackEventPassNft_Bool_Exp>;
   packEventPassNfts_aggregate?: InputMaybe<PackEventPassNft_Aggregate_Bool_Exp>;
   packId?: InputMaybe<String_Comparison_Exp>;
+  status?: InputMaybe<NftStatus_Enum_Comparison_Exp>;
   tokenUri?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
@@ -17564,8 +21281,6 @@ export type PackNftSupply_Insert_Input = {
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
   error?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  /** Indicates whether the pack NFT has been delivered to the owner. */
-  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** The reference to the latest transfer record for this pack NFT. */
   lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The identifier of the organizer associated with this pack NFT. */
@@ -17573,6 +21288,7 @@ export type PackNftSupply_Insert_Input = {
   packEventPassNfts?: InputMaybe<PackEventPassNft_Arr_Rel_Insert_Input>;
   /** A unique identifier for the pack within the platform. */
   packId?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<NftStatus_Enum>;
   /** The URI pointing to the metadata of the pack NFT. */
   tokenUri?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -17650,11 +21366,11 @@ export type PackNftSupply_Order_By = {
   currentOwnerAddress?: InputMaybe<Order_By>;
   error?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  isDelivered?: InputMaybe<Order_By>;
   lastNftTransferId?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
   packEventPassNfts_aggregate?: InputMaybe<PackEventPassNft_Aggregate_Order_By>;
   packId?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   tokenUri?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
@@ -17679,13 +21395,13 @@ export const enum PackNftSupply_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  IsDelivered = 'isDelivered',
-  /** column name */
   LastNftTransferId = 'lastNftTransferId',
   /** column name */
   OrganizerId = 'organizerId',
   /** column name */
   PackId = 'packId',
+  /** column name */
+  Status = 'status',
   /** column name */
   TokenUri = 'tokenUri',
   /** column name */
@@ -17704,14 +21420,13 @@ export type PackNftSupply_Set_Input = {
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
   error?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  /** Indicates whether the pack NFT has been delivered to the owner. */
-  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** The reference to the latest transfer record for this pack NFT. */
   lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The identifier of the organizer associated with this pack NFT. */
   organizerId?: InputMaybe<Scalars['String']['input']>;
   /** A unique identifier for the pack within the platform. */
   packId?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<NftStatus_Enum>;
   /** The URI pointing to the metadata of the pack NFT. */
   tokenUri?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -17737,14 +21452,13 @@ export type PackNftSupply_Stream_Cursor_Value_Input = {
   /** Any error messages related to this pack NFT, particularly during transactions or metadata retrieval. */
   error?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
-  /** Indicates whether the pack NFT has been delivered to the owner. */
-  isDelivered?: InputMaybe<Scalars['Boolean']['input']>;
   /** The reference to the latest transfer record for this pack NFT. */
   lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
   /** The identifier of the organizer associated with this pack NFT. */
   organizerId?: InputMaybe<Scalars['String']['input']>;
   /** A unique identifier for the pack within the platform. */
   packId?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<NftStatus_Enum>;
   /** The URI pointing to the metadata of the pack NFT. */
   tokenUri?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -17765,13 +21479,13 @@ export const enum PackNftSupply_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  IsDelivered = 'isDelivered',
-  /** column name */
   LastNftTransferId = 'lastNftTransferId',
   /** column name */
   OrganizerId = 'organizerId',
   /** column name */
   PackId = 'packId',
+  /** column name */
+  Status = 'status',
   /** column name */
   TokenUri = 'tokenUri',
   /** column name */
@@ -18842,6 +22556,268 @@ export type PendingOrder_Variance_Fields = {
   quantity?: Maybe<Scalars['Float']['output']>;
 };
 
+/** The publishableApiKey table stores the publishable API keys used for querying data from the server externally. It includes fields for management and security, such as an allowlist, expiration timestamp, and status. */
+export type PublishableApiKey = {
+  __typename?: 'publishableApiKey';
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the publishable API key, restricting usage to authorized sources. */
+  allowlist: Scalars['String']['output'];
+  /** The publishable API key used for identification when querying data from the server externally. */
+  apiKey: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  /** The expiration timestamp for the publishable API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: Maybe<Scalars['timestamptz']['output']>;
+  id: Scalars['uuid']['output'];
+  /** A user-defined name for the publishable API key, providing a human-readable identifier for the key. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The unique identifier of the organizer associated with the publishable API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId: Scalars['String']['output'];
+  /** The current status of the publishable API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  status?: Maybe<ApiKeyStatus_Enum>;
+  type: ApiKeyType_Enum;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "publishableApiKey" */
+export type PublishableApiKey_Aggregate = {
+  __typename?: 'publishableApiKey_aggregate';
+  aggregate?: Maybe<PublishableApiKey_Aggregate_Fields>;
+  nodes: Array<PublishableApiKey>;
+};
+
+/** aggregate fields of "publishableApiKey" */
+export type PublishableApiKey_Aggregate_Fields = {
+  __typename?: 'publishableApiKey_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<PublishableApiKey_Max_Fields>;
+  min?: Maybe<PublishableApiKey_Min_Fields>;
+};
+
+
+/** aggregate fields of "publishableApiKey" */
+export type PublishableApiKey_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<PublishableApiKey_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "publishableApiKey". All fields are combined with a logical 'AND'. */
+export type PublishableApiKey_Bool_Exp = {
+  _and?: InputMaybe<Array<PublishableApiKey_Bool_Exp>>;
+  _not?: InputMaybe<PublishableApiKey_Bool_Exp>;
+  _or?: InputMaybe<Array<PublishableApiKey_Bool_Exp>>;
+  allowlist?: InputMaybe<String_Comparison_Exp>;
+  apiKey?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  expiresAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  status?: InputMaybe<ApiKeyStatus_Enum_Comparison_Exp>;
+  type?: InputMaybe<ApiKeyType_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "publishableApiKey" */
+export const enum PublishableApiKey_Constraint {
+  /** unique or primary key constraint on columns "apiKey" */
+  PublishableApiKeyApiKeyKey = 'publishableApiKey_apiKey_key',
+  /** unique or primary key constraint on columns "id" */
+  PublishableApiKeyPkey = 'publishableApiKey_pkey'
+};
+
+/** input type for inserting data into table "publishableApiKey" */
+export type PublishableApiKey_Insert_Input = {
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the publishable API key, restricting usage to authorized sources. */
+  allowlist?: InputMaybe<Scalars['String']['input']>;
+  /** The publishable API key used for identification when querying data from the server externally. */
+  apiKey?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The expiration timestamp for the publishable API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** A user-defined name for the publishable API key, providing a human-readable identifier for the key. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The unique identifier of the organizer associated with the publishable API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The current status of the publishable API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  status?: InputMaybe<ApiKeyStatus_Enum>;
+  type?: InputMaybe<ApiKeyType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type PublishableApiKey_Max_Fields = {
+  __typename?: 'publishableApiKey_max_fields';
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the publishable API key, restricting usage to authorized sources. */
+  allowlist?: Maybe<Scalars['String']['output']>;
+  /** The publishable API key used for identification when querying data from the server externally. */
+  apiKey?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The expiration timestamp for the publishable API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** A user-defined name for the publishable API key, providing a human-readable identifier for the key. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The unique identifier of the organizer associated with the publishable API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type PublishableApiKey_Min_Fields = {
+  __typename?: 'publishableApiKey_min_fields';
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the publishable API key, restricting usage to authorized sources. */
+  allowlist?: Maybe<Scalars['String']['output']>;
+  /** The publishable API key used for identification when querying data from the server externally. */
+  apiKey?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The expiration timestamp for the publishable API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** A user-defined name for the publishable API key, providing a human-readable identifier for the key. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The unique identifier of the organizer associated with the publishable API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "publishableApiKey" */
+export type PublishableApiKey_Mutation_Response = {
+  __typename?: 'publishableApiKey_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<PublishableApiKey>;
+};
+
+/** on_conflict condition type for table "publishableApiKey" */
+export type PublishableApiKey_On_Conflict = {
+  constraint: PublishableApiKey_Constraint;
+  update_columns?: Array<PublishableApiKey_Update_Column>;
+  where?: InputMaybe<PublishableApiKey_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "publishableApiKey". */
+export type PublishableApiKey_Order_By = {
+  allowlist?: InputMaybe<Order_By>;
+  apiKey?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  expiresAt?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: publishableApiKey */
+export type PublishableApiKey_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "publishableApiKey" */
+export const enum PublishableApiKey_Select_Column {
+  /** column name */
+  Allowlist = 'allowlist',
+  /** column name */
+  ApiKey = 'apiKey',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  ExpiresAt = 'expiresAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "publishableApiKey" */
+export type PublishableApiKey_Set_Input = {
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the publishable API key, restricting usage to authorized sources. */
+  allowlist?: InputMaybe<Scalars['String']['input']>;
+  /** The publishable API key used for identification when querying data from the server externally. */
+  apiKey?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The expiration timestamp for the publishable API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** A user-defined name for the publishable API key, providing a human-readable identifier for the key. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The unique identifier of the organizer associated with the publishable API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The current status of the publishable API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  status?: InputMaybe<ApiKeyStatus_Enum>;
+  type?: InputMaybe<ApiKeyType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "publishableApiKey" */
+export type PublishableApiKey_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: PublishableApiKey_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type PublishableApiKey_Stream_Cursor_Value_Input = {
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the publishable API key, restricting usage to authorized sources. */
+  allowlist?: InputMaybe<Scalars['String']['input']>;
+  /** The publishable API key used for identification when querying data from the server externally. */
+  apiKey?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The expiration timestamp for the publishable API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** A user-defined name for the publishable API key, providing a human-readable identifier for the key. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The unique identifier of the organizer associated with the publishable API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The current status of the publishable API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  status?: InputMaybe<ApiKeyStatus_Enum>;
+  type?: InputMaybe<ApiKeyType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "publishableApiKey" */
+export const enum PublishableApiKey_Update_Column {
+  /** column name */
+  Allowlist = 'allowlist',
+  /** column name */
+  ApiKey = 'apiKey',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  ExpiresAt = 'expiresAt',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type PublishableApiKey_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<PublishableApiKey_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: PublishableApiKey_Bool_Exp;
+};
+
 export type Query_Root = {
   __typename?: 'query_root';
   /** fetch data from the table: "account" */
@@ -18850,6 +22826,18 @@ export type Query_Root = {
   account_aggregate: Account_Aggregate;
   /** fetch data from the table: "account" using primary key columns */
   account_by_pk?: Maybe<Account>;
+  /** fetch data from the table: "apiKeyStatus" */
+  apiKeyStatus: Array<ApiKeyStatus>;
+  /** fetch aggregated fields from the table: "apiKeyStatus" */
+  apiKeyStatus_aggregate: ApiKeyStatus_Aggregate;
+  /** fetch data from the table: "apiKeyStatus" using primary key columns */
+  apiKeyStatus_by_pk?: Maybe<ApiKeyStatus>;
+  /** fetch data from the table: "apiKeyType" */
+  apiKeyType: Array<ApiKeyType>;
+  /** fetch aggregated fields from the table: "apiKeyType" */
+  apiKeyType_aggregate: ApiKeyType_Aggregate;
+  /** fetch data from the table: "apiKeyType" using primary key columns */
+  apiKeyType_by_pk?: Maybe<ApiKeyType>;
   /** Retrieve a single asset */
   asset?: Maybe<Asset>;
   /** Retrieve document version */
@@ -18994,12 +22982,56 @@ export type Query_Root = {
   lotteryStatus_aggregate: LotteryStatus_Aggregate;
   /** fetch data from the table: "lotteryStatus" using primary key columns */
   lotteryStatus_by_pk?: Maybe<LotteryStatus>;
+  /** Retrieve a single loyaltyCard */
+  loyaltyCard?: Maybe<LoyaltyCard>;
+  /** fetch data from the table: "loyaltyCardNft" */
+  loyaltyCardNft: Array<LoyaltyCardNft>;
+  /** fetch data from the table: "loyaltyCardNftContract" */
+  loyaltyCardNftContract: Array<LoyaltyCardNftContract>;
+  /** fetch aggregated fields from the table: "loyaltyCardNftContract" */
+  loyaltyCardNftContract_aggregate: LoyaltyCardNftContract_Aggregate;
+  /** fetch data from the table: "loyaltyCardNftContract" using primary key columns */
+  loyaltyCardNftContract_by_pk?: Maybe<LoyaltyCardNftContract>;
+  /** fetch aggregated fields from the table: "loyaltyCardNft" */
+  loyaltyCardNft_aggregate: LoyaltyCardNft_Aggregate;
+  /** fetch data from the table: "loyaltyCardNft" using primary key columns */
+  loyaltyCardNft_by_pk?: Maybe<LoyaltyCardNft>;
+  /** fetch data from the table: "loyaltyCardParameters" */
+  loyaltyCardParameters: Array<LoyaltyCardParameters>;
+  /** fetch aggregated fields from the table: "loyaltyCardParameters" */
+  loyaltyCardParameters_aggregate: LoyaltyCardParameters_Aggregate;
+  /** fetch data from the table: "loyaltyCardParameters" using primary key columns */
+  loyaltyCardParameters_by_pk?: Maybe<LoyaltyCardParameters>;
+  /** fetch data from the table: "loyaltyCardStatus" */
+  loyaltyCardStatus: Array<LoyaltyCardStatus>;
+  /** fetch aggregated fields from the table: "loyaltyCardStatus" */
+  loyaltyCardStatus_aggregate: LoyaltyCardStatus_Aggregate;
+  /** fetch data from the table: "loyaltyCardStatus" using primary key columns */
+  loyaltyCardStatus_by_pk?: Maybe<LoyaltyCardStatus>;
+  /** Retrieve document version */
+  loyaltyCardVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple loyaltyCards */
+  loyaltyCards: Array<LoyaltyCard>;
+  /** Retrieve multiple loyaltyCards using the Relay connection interface */
+  loyaltyCardsConnection: LoyaltyCardConnection;
   /** fetch data from the table: "minterTemporaryWallet" */
   minterTemporaryWallet: Array<MinterTemporaryWallet>;
   /** fetch aggregated fields from the table: "minterTemporaryWallet" */
   minterTemporaryWallet_aggregate: MinterTemporaryWallet_Aggregate;
   /** fetch data from the table: "minterTemporaryWallet" using primary key columns */
   minterTemporaryWallet_by_pk?: Maybe<MinterTemporaryWallet>;
+  /** fetch data from the table: "nftMintPassword" */
+  nftMintPassword: Array<NftMintPassword>;
+  /** fetch aggregated fields from the table: "nftMintPassword" */
+  nftMintPassword_aggregate: NftMintPassword_Aggregate;
+  /** fetch data from the table: "nftMintPassword" using primary key columns */
+  nftMintPassword_by_pk?: Maybe<NftMintPassword>;
+  /** fetch data from the table: "nftStatus" */
+  nftStatus: Array<NftStatus>;
+  /** fetch aggregated fields from the table: "nftStatus" */
+  nftStatus_aggregate: NftStatus_Aggregate;
+  /** fetch data from the table: "nftStatus" using primary key columns */
+  nftStatus_by_pk?: Maybe<NftStatus>;
   /** fetch data from the table: "nftTransfer" */
   nftTransfer: Array<NftTransfer>;
   /** fetch aggregated fields from the table: "nftTransfer" */
@@ -19084,6 +23116,12 @@ export type Query_Root = {
   pendingOrder_aggregate: PendingOrder_Aggregate;
   /** fetch data from the table: "pendingOrder" using primary key columns */
   pendingOrder_by_pk?: Maybe<PendingOrder>;
+  /** fetch data from the table: "publishableApiKey" */
+  publishableApiKey: Array<PublishableApiKey>;
+  /** fetch aggregated fields from the table: "publishableApiKey" */
+  publishableApiKey_aggregate: PublishableApiKey_Aggregate;
+  /** fetch data from the table: "publishableApiKey" using primary key columns */
+  publishableApiKey_by_pk?: Maybe<PublishableApiKey>;
   /** fetch data from the table: "roleAssignment" */
   roleAssignment: Array<RoleAssignment>;
   /** fetch aggregated fields from the table: "roleAssignment" */
@@ -19106,6 +23144,48 @@ export type Query_Root = {
   scheduledReleases: Array<ScheduledRelease>;
   /** Retrieve multiple scheduledReleases using the Relay connection interface */
   scheduledReleasesConnection: ScheduledReleaseConnection;
+  /** fetch data from the table: "secretApiKey" */
+  secretApiKey: Array<SecretApiKey>;
+  /** fetch aggregated fields from the table: "secretApiKey" */
+  secretApiKey_aggregate: SecretApiKey_Aggregate;
+  /** fetch data from the table: "secretApiKey" using primary key columns */
+  secretApiKey_by_pk?: Maybe<SecretApiKey>;
+  /** fetch data from the table: "shopifyCampaignParameters" */
+  shopifyCampaignParameters: Array<ShopifyCampaignParameters>;
+  /** fetch aggregated fields from the table: "shopifyCampaignParameters" */
+  shopifyCampaignParameters_aggregate: ShopifyCampaignParameters_Aggregate;
+  /** fetch data from the table: "shopifyCampaignParameters" using primary key columns */
+  shopifyCampaignParameters_by_pk?: Maybe<ShopifyCampaignParameters>;
+  /** fetch data from the table: "shopifyCampaignStatus" */
+  shopifyCampaignStatus: Array<ShopifyCampaignStatus>;
+  /** fetch aggregated fields from the table: "shopifyCampaignStatus" */
+  shopifyCampaignStatus_aggregate: ShopifyCampaignStatus_Aggregate;
+  /** fetch data from the table: "shopifyCampaignStatus" using primary key columns */
+  shopifyCampaignStatus_by_pk?: Maybe<ShopifyCampaignStatus>;
+  /** fetch data from the table: "stampNft" */
+  stampNft: Array<StampNft>;
+  /** fetch data from the table: "stampNftContract" */
+  stampNftContract: Array<StampNftContract>;
+  /** fetch data from the table: "stampNftContractType" */
+  stampNftContractType: Array<StampNftContractType>;
+  /** fetch aggregated fields from the table: "stampNftContractType" */
+  stampNftContractType_aggregate: StampNftContractType_Aggregate;
+  /** fetch data from the table: "stampNftContractType" using primary key columns */
+  stampNftContractType_by_pk?: Maybe<StampNftContractType>;
+  /** fetch aggregated fields from the table: "stampNftContract" */
+  stampNftContract_aggregate: StampNftContract_Aggregate;
+  /** fetch data from the table: "stampNftContract" using primary key columns */
+  stampNftContract_by_pk?: Maybe<StampNftContract>;
+  /** fetch data from the table: "stampNftSupply" */
+  stampNftSupply: Array<StampNftSupply>;
+  /** fetch aggregated fields from the table: "stampNftSupply" */
+  stampNftSupply_aggregate: StampNftSupply_Aggregate;
+  /** fetch data from the table: "stampNftSupply" using primary key columns */
+  stampNftSupply_by_pk?: Maybe<StampNftSupply>;
+  /** fetch aggregated fields from the table: "stampNft" */
+  stampNft_aggregate: StampNft_Aggregate;
+  /** fetch data from the table: "stampNft" using primary key columns */
+  stampNft_by_pk?: Maybe<StampNft>;
   /** fetch data from the table: "stripeCheckoutSession" */
   stripeCheckoutSession: Array<StripeCheckoutSession>;
   /** fetch data from the table: "stripeCheckoutSessionType" */
@@ -19159,6 +23239,52 @@ export type Query_RootAccount_AggregateArgs = {
 
 export type Query_RootAccount_By_PkArgs = {
   id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootApiKeyStatusArgs = {
+  distinct_on?: InputMaybe<Array<ApiKeyStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ApiKeyStatus_Order_By>>;
+  where?: InputMaybe<ApiKeyStatus_Bool_Exp>;
+};
+
+
+export type Query_RootApiKeyStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ApiKeyStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ApiKeyStatus_Order_By>>;
+  where?: InputMaybe<ApiKeyStatus_Bool_Exp>;
+};
+
+
+export type Query_RootApiKeyStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Query_RootApiKeyTypeArgs = {
+  distinct_on?: InputMaybe<Array<ApiKeyType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ApiKeyType_Order_By>>;
+  where?: InputMaybe<ApiKeyType_Bool_Exp>;
+};
+
+
+export type Query_RootApiKeyType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ApiKeyType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ApiKeyType_Order_By>>;
+  where?: InputMaybe<ApiKeyType_Bool_Exp>;
+};
+
+
+export type Query_RootApiKeyType_By_PkArgs = {
+  value: Scalars['String']['input'];
 };
 
 
@@ -19308,6 +23434,7 @@ export type Query_RootCurrency_By_PkArgs = {
 
 
 export type Query_RootEntitiesArgs = {
+  locales?: InputMaybe<Array<Locale>>;
   where: Array<EntityWhereInput>;
 };
 
@@ -19749,6 +23876,136 @@ export type Query_RootLotteryStatus_By_PkArgs = {
 };
 
 
+export type Query_RootLoyaltyCardArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+
+export type Query_RootLoyaltyCardNftArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardNft_Order_By>>;
+  where?: InputMaybe<LoyaltyCardNft_Bool_Exp>;
+};
+
+
+export type Query_RootLoyaltyCardNftContractArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardNftContract_Order_By>>;
+  where?: InputMaybe<LoyaltyCardNftContract_Bool_Exp>;
+};
+
+
+export type Query_RootLoyaltyCardNftContract_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardNftContract_Order_By>>;
+  where?: InputMaybe<LoyaltyCardNftContract_Bool_Exp>;
+};
+
+
+export type Query_RootLoyaltyCardNftContract_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootLoyaltyCardNft_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardNft_Order_By>>;
+  where?: InputMaybe<LoyaltyCardNft_Bool_Exp>;
+};
+
+
+export type Query_RootLoyaltyCardNft_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootLoyaltyCardParametersArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardParameters_Order_By>>;
+  where?: InputMaybe<LoyaltyCardParameters_Bool_Exp>;
+};
+
+
+export type Query_RootLoyaltyCardParameters_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardParameters_Order_By>>;
+  where?: InputMaybe<LoyaltyCardParameters_Bool_Exp>;
+};
+
+
+export type Query_RootLoyaltyCardParameters_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootLoyaltyCardStatusArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardStatus_Order_By>>;
+  where?: InputMaybe<LoyaltyCardStatus_Bool_Exp>;
+};
+
+
+export type Query_RootLoyaltyCardStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardStatus_Order_By>>;
+  where?: InputMaybe<LoyaltyCardStatus_Bool_Exp>;
+};
+
+
+export type Query_RootLoyaltyCardStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Query_RootLoyaltyCardVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
+export type Query_RootLoyaltyCardsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<LoyaltyCardOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<LoyaltyCardWhereInput>;
+};
+
+
+export type Query_RootLoyaltyCardsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<LoyaltyCardOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<LoyaltyCardWhereInput>;
+};
+
+
 export type Query_RootMinterTemporaryWalletArgs = {
   distinct_on?: InputMaybe<Array<MinterTemporaryWallet_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -19769,6 +24026,52 @@ export type Query_RootMinterTemporaryWallet_AggregateArgs = {
 
 export type Query_RootMinterTemporaryWallet_By_PkArgs = {
   address: Scalars['String']['input'];
+};
+
+
+export type Query_RootNftMintPasswordArgs = {
+  distinct_on?: InputMaybe<Array<NftMintPassword_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NftMintPassword_Order_By>>;
+  where?: InputMaybe<NftMintPassword_Bool_Exp>;
+};
+
+
+export type Query_RootNftMintPassword_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftMintPassword_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NftMintPassword_Order_By>>;
+  where?: InputMaybe<NftMintPassword_Bool_Exp>;
+};
+
+
+export type Query_RootNftMintPassword_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootNftStatusArgs = {
+  distinct_on?: InputMaybe<Array<NftStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NftStatus_Order_By>>;
+  where?: InputMaybe<NftStatus_Bool_Exp>;
+};
+
+
+export type Query_RootNftStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NftStatus_Order_By>>;
+  where?: InputMaybe<NftStatus_Bool_Exp>;
+};
+
+
+export type Query_RootNftStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
 };
 
 
@@ -20110,6 +24413,29 @@ export type Query_RootPendingOrder_By_PkArgs = {
 };
 
 
+export type Query_RootPublishableApiKeyArgs = {
+  distinct_on?: InputMaybe<Array<PublishableApiKey_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<PublishableApiKey_Order_By>>;
+  where?: InputMaybe<PublishableApiKey_Bool_Exp>;
+};
+
+
+export type Query_RootPublishableApiKey_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<PublishableApiKey_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<PublishableApiKey_Order_By>>;
+  where?: InputMaybe<PublishableApiKey_Bool_Exp>;
+};
+
+
+export type Query_RootPublishableApiKey_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
 export type Query_RootRoleAssignmentArgs = {
   distinct_on?: InputMaybe<Array<RoleAssignment_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -20214,6 +24540,168 @@ export type Query_RootScheduledReleasesConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   stage?: Stage;
   where?: InputMaybe<ScheduledReleaseWhereInput>;
+};
+
+
+export type Query_RootSecretApiKeyArgs = {
+  distinct_on?: InputMaybe<Array<SecretApiKey_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<SecretApiKey_Order_By>>;
+  where?: InputMaybe<SecretApiKey_Bool_Exp>;
+};
+
+
+export type Query_RootSecretApiKey_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<SecretApiKey_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<SecretApiKey_Order_By>>;
+  where?: InputMaybe<SecretApiKey_Bool_Exp>;
+};
+
+
+export type Query_RootSecretApiKey_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootShopifyCampaignParametersArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCampaignParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCampaignParameters_Order_By>>;
+  where?: InputMaybe<ShopifyCampaignParameters_Bool_Exp>;
+};
+
+
+export type Query_RootShopifyCampaignParameters_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCampaignParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCampaignParameters_Order_By>>;
+  where?: InputMaybe<ShopifyCampaignParameters_Bool_Exp>;
+};
+
+
+export type Query_RootShopifyCampaignParameters_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootShopifyCampaignStatusArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCampaignStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCampaignStatus_Order_By>>;
+  where?: InputMaybe<ShopifyCampaignStatus_Bool_Exp>;
+};
+
+
+export type Query_RootShopifyCampaignStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCampaignStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCampaignStatus_Order_By>>;
+  where?: InputMaybe<ShopifyCampaignStatus_Bool_Exp>;
+};
+
+
+export type Query_RootShopifyCampaignStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Query_RootStampNftArgs = {
+  distinct_on?: InputMaybe<Array<StampNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNft_Order_By>>;
+  where?: InputMaybe<StampNft_Bool_Exp>;
+};
+
+
+export type Query_RootStampNftContractArgs = {
+  distinct_on?: InputMaybe<Array<StampNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftContract_Order_By>>;
+  where?: InputMaybe<StampNftContract_Bool_Exp>;
+};
+
+
+export type Query_RootStampNftContractTypeArgs = {
+  distinct_on?: InputMaybe<Array<StampNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftContractType_Order_By>>;
+  where?: InputMaybe<StampNftContractType_Bool_Exp>;
+};
+
+
+export type Query_RootStampNftContractType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StampNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftContractType_Order_By>>;
+  where?: InputMaybe<StampNftContractType_Bool_Exp>;
+};
+
+
+export type Query_RootStampNftContractType_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Query_RootStampNftContract_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StampNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftContract_Order_By>>;
+  where?: InputMaybe<StampNftContract_Bool_Exp>;
+};
+
+
+export type Query_RootStampNftContract_By_PkArgs = {
+  chainId: Scalars['String']['input'];
+  contractAddress: Scalars['String']['input'];
+};
+
+
+export type Query_RootStampNftSupplyArgs = {
+  distinct_on?: InputMaybe<Array<StampNftSupply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftSupply_Order_By>>;
+  where?: InputMaybe<StampNftSupply_Bool_Exp>;
+};
+
+
+export type Query_RootStampNftSupply_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StampNftSupply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftSupply_Order_By>>;
+  where?: InputMaybe<StampNftSupply_Bool_Exp>;
+};
+
+
+export type Query_RootStampNftSupply_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootStampNft_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StampNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNft_Order_By>>;
+  where?: InputMaybe<StampNft_Bool_Exp>;
+};
+
+
+export type Query_RootStampNft_By_PkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -20821,6 +25309,1750 @@ export type Roles_Updates = {
   where: Roles_Bool_Exp;
 };
 
+/** The secretApiKey table stores the secret API keys used for querying sensitive data and performing mutations. It includes additional fields for security and management, such as hashed origin secret, encrypted integrity secret, expiration timestamp, and status. */
+export type SecretApiKey = {
+  __typename?: 'secretApiKey';
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the secret API key, restricting usage to authorized sources. */
+  allowlist: Scalars['String']['output'];
+  /** The secret API key used for authentication and identification when querying sensitive data and performing mutations. */
+  apiKey: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  /** The encrypted secret used for verifying the integrity of the request data. The integrity secret is encrypted using a secure encryption algorithm and a salt before storing it in the database. */
+  encryptedIntegritySecret?: Maybe<Scalars['String']['output']>;
+  /** The expiration timestamp for the secret API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** The hashed secret used for verifying the origin of the request. The origin secret is hashed using a secure hashing algorithm and a unique salt before storing it in the database. */
+  hashedOriginSecret?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
+  /** A user-defined name for the secret API key, providing a human-readable identifier for the key. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The unique identifier of the organizer associated with the secret API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId: Scalars['String']['output'];
+  /** The unique salt value used during the hashing process for the origin secret. It enhances security by making it more difficult to crack the hashed origin secret. */
+  originSecretSalt?: Maybe<Scalars['String']['output']>;
+  /** The current status of the secret API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  status?: Maybe<ApiKeyStatus_Enum>;
+  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL". */
+  type: ApiKeyType_Enum;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "secretApiKey" */
+export type SecretApiKey_Aggregate = {
+  __typename?: 'secretApiKey_aggregate';
+  aggregate?: Maybe<SecretApiKey_Aggregate_Fields>;
+  nodes: Array<SecretApiKey>;
+};
+
+/** aggregate fields of "secretApiKey" */
+export type SecretApiKey_Aggregate_Fields = {
+  __typename?: 'secretApiKey_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<SecretApiKey_Max_Fields>;
+  min?: Maybe<SecretApiKey_Min_Fields>;
+};
+
+
+/** aggregate fields of "secretApiKey" */
+export type SecretApiKey_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<SecretApiKey_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "secretApiKey". All fields are combined with a logical 'AND'. */
+export type SecretApiKey_Bool_Exp = {
+  _and?: InputMaybe<Array<SecretApiKey_Bool_Exp>>;
+  _not?: InputMaybe<SecretApiKey_Bool_Exp>;
+  _or?: InputMaybe<Array<SecretApiKey_Bool_Exp>>;
+  allowlist?: InputMaybe<String_Comparison_Exp>;
+  apiKey?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  encryptedIntegritySecret?: InputMaybe<String_Comparison_Exp>;
+  expiresAt?: InputMaybe<Timestamptz_Comparison_Exp>;
+  hashedOriginSecret?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  originSecretSalt?: InputMaybe<String_Comparison_Exp>;
+  status?: InputMaybe<ApiKeyStatus_Enum_Comparison_Exp>;
+  type?: InputMaybe<ApiKeyType_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "secretApiKey" */
+export const enum SecretApiKey_Constraint {
+  /** unique or primary key constraint on columns "apiKey" */
+  SecretApiKeyApiKeyKey = 'secretApiKey_apiKey_key',
+  /** unique or primary key constraint on columns "id" */
+  SecretApiKeyPkey = 'secretApiKey_pkey'
+};
+
+/** input type for inserting data into table "secretApiKey" */
+export type SecretApiKey_Insert_Input = {
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the secret API key, restricting usage to authorized sources. */
+  allowlist?: InputMaybe<Scalars['String']['input']>;
+  /** The secret API key used for authentication and identification when querying sensitive data and performing mutations. */
+  apiKey?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The encrypted secret used for verifying the integrity of the request data. The integrity secret is encrypted using a secure encryption algorithm and a salt before storing it in the database. */
+  encryptedIntegritySecret?: InputMaybe<Scalars['String']['input']>;
+  /** The expiration timestamp for the secret API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The hashed secret used for verifying the origin of the request. The origin secret is hashed using a secure hashing algorithm and a unique salt before storing it in the database. */
+  hashedOriginSecret?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** A user-defined name for the secret API key, providing a human-readable identifier for the key. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The unique identifier of the organizer associated with the secret API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique salt value used during the hashing process for the origin secret. It enhances security by making it more difficult to crack the hashed origin secret. */
+  originSecretSalt?: InputMaybe<Scalars['String']['input']>;
+  /** The current status of the secret API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  status?: InputMaybe<ApiKeyStatus_Enum>;
+  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL". */
+  type?: InputMaybe<ApiKeyType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type SecretApiKey_Max_Fields = {
+  __typename?: 'secretApiKey_max_fields';
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the secret API key, restricting usage to authorized sources. */
+  allowlist?: Maybe<Scalars['String']['output']>;
+  /** The secret API key used for authentication and identification when querying sensitive data and performing mutations. */
+  apiKey?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The encrypted secret used for verifying the integrity of the request data. The integrity secret is encrypted using a secure encryption algorithm and a salt before storing it in the database. */
+  encryptedIntegritySecret?: Maybe<Scalars['String']['output']>;
+  /** The expiration timestamp for the secret API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** The hashed secret used for verifying the origin of the request. The origin secret is hashed using a secure hashing algorithm and a unique salt before storing it in the database. */
+  hashedOriginSecret?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** A user-defined name for the secret API key, providing a human-readable identifier for the key. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The unique identifier of the organizer associated with the secret API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  /** The unique salt value used during the hashing process for the origin secret. It enhances security by making it more difficult to crack the hashed origin secret. */
+  originSecretSalt?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type SecretApiKey_Min_Fields = {
+  __typename?: 'secretApiKey_min_fields';
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the secret API key, restricting usage to authorized sources. */
+  allowlist?: Maybe<Scalars['String']['output']>;
+  /** The secret API key used for authentication and identification when querying sensitive data and performing mutations. */
+  apiKey?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The encrypted secret used for verifying the integrity of the request data. The integrity secret is encrypted using a secure encryption algorithm and a salt before storing it in the database. */
+  encryptedIntegritySecret?: Maybe<Scalars['String']['output']>;
+  /** The expiration timestamp for the secret API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** The hashed secret used for verifying the origin of the request. The origin secret is hashed using a secure hashing algorithm and a unique salt before storing it in the database. */
+  hashedOriginSecret?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** A user-defined name for the secret API key, providing a human-readable identifier for the key. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The unique identifier of the organizer associated with the secret API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  /** The unique salt value used during the hashing process for the origin secret. It enhances security by making it more difficult to crack the hashed origin secret. */
+  originSecretSalt?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "secretApiKey" */
+export type SecretApiKey_Mutation_Response = {
+  __typename?: 'secretApiKey_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<SecretApiKey>;
+};
+
+/** on_conflict condition type for table "secretApiKey" */
+export type SecretApiKey_On_Conflict = {
+  constraint: SecretApiKey_Constraint;
+  update_columns?: Array<SecretApiKey_Update_Column>;
+  where?: InputMaybe<SecretApiKey_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "secretApiKey". */
+export type SecretApiKey_Order_By = {
+  allowlist?: InputMaybe<Order_By>;
+  apiKey?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  encryptedIntegritySecret?: InputMaybe<Order_By>;
+  expiresAt?: InputMaybe<Order_By>;
+  hashedOriginSecret?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  originSecretSalt?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: secretApiKey */
+export type SecretApiKey_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "secretApiKey" */
+export const enum SecretApiKey_Select_Column {
+  /** column name */
+  Allowlist = 'allowlist',
+  /** column name */
+  ApiKey = 'apiKey',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EncryptedIntegritySecret = 'encryptedIntegritySecret',
+  /** column name */
+  ExpiresAt = 'expiresAt',
+  /** column name */
+  HashedOriginSecret = 'hashedOriginSecret',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  OriginSecretSalt = 'originSecretSalt',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "secretApiKey" */
+export type SecretApiKey_Set_Input = {
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the secret API key, restricting usage to authorized sources. */
+  allowlist?: InputMaybe<Scalars['String']['input']>;
+  /** The secret API key used for authentication and identification when querying sensitive data and performing mutations. */
+  apiKey?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The encrypted secret used for verifying the integrity of the request data. The integrity secret is encrypted using a secure encryption algorithm and a salt before storing it in the database. */
+  encryptedIntegritySecret?: InputMaybe<Scalars['String']['input']>;
+  /** The expiration timestamp for the secret API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The hashed secret used for verifying the origin of the request. The origin secret is hashed using a secure hashing algorithm and a unique salt before storing it in the database. */
+  hashedOriginSecret?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** A user-defined name for the secret API key, providing a human-readable identifier for the key. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The unique identifier of the organizer associated with the secret API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique salt value used during the hashing process for the origin secret. It enhances security by making it more difficult to crack the hashed origin secret. */
+  originSecretSalt?: InputMaybe<Scalars['String']['input']>;
+  /** The current status of the secret API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  status?: InputMaybe<ApiKeyStatus_Enum>;
+  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL". */
+  type?: InputMaybe<ApiKeyType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "secretApiKey" */
+export type SecretApiKey_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: SecretApiKey_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type SecretApiKey_Stream_Cursor_Value_Input = {
+  /** A comma-separated list of allowed domains or IP addresses that are permitted to use the secret API key, restricting usage to authorized sources. */
+  allowlist?: InputMaybe<Scalars['String']['input']>;
+  /** The secret API key used for authentication and identification when querying sensitive data and performing mutations. */
+  apiKey?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The encrypted secret used for verifying the integrity of the request data. The integrity secret is encrypted using a secure encryption algorithm and a salt before storing it in the database. */
+  encryptedIntegritySecret?: InputMaybe<Scalars['String']['input']>;
+  /** The expiration timestamp for the secret API key, specifying the validity period after which the key becomes invalid and cannot be used. */
+  expiresAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The hashed secret used for verifying the origin of the request. The origin secret is hashed using a secure hashing algorithm and a unique salt before storing it in the database. */
+  hashedOriginSecret?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** A user-defined name for the secret API key, providing a human-readable identifier for the key. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The unique identifier of the organizer associated with the secret API key, establishing a link between the key and the organizer it belongs to. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The unique salt value used during the hashing process for the origin secret. It enhances security by making it more difficult to crack the hashed origin secret. */
+  originSecretSalt?: InputMaybe<Scalars['String']['input']>;
+  /** The current status of the secret API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
+  status?: InputMaybe<ApiKeyStatus_Enum>;
+  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL". */
+  type?: InputMaybe<ApiKeyType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "secretApiKey" */
+export const enum SecretApiKey_Update_Column {
+  /** column name */
+  Allowlist = 'allowlist',
+  /** column name */
+  ApiKey = 'apiKey',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EncryptedIntegritySecret = 'encryptedIntegritySecret',
+  /** column name */
+  ExpiresAt = 'expiresAt',
+  /** column name */
+  HashedOriginSecret = 'hashedOriginSecret',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  OriginSecretSalt = 'originSecretSalt',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type SecretApiKey_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<SecretApiKey_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: SecretApiKey_Bool_Exp;
+};
+
+/** The shopifyCampaignParameters model is designed to mirror a Shopify token gating campaign operated by a brand on its own Shopify store. It manages various settings and metadata related to the campaign, ensuring efficient and accurate management of token gating campaigns. */
+export type ShopifyCampaignParameters = {
+  __typename?: 'shopifyCampaignParameters';
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  /** Unique signing key used for secure operations related to the campaign activity webhook. */
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
+  campaignId: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  /** Identifier for the organizer responsible for the campaign. */
+  organizerId: Scalars['String']['output'];
+  /** Represents the current status of the campaign, either "DRAFT" or "PUBLISHED". */
+  status?: Maybe<ShopifyCampaignStatus_Enum>;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "shopifyCampaignParameters" */
+export type ShopifyCampaignParameters_Aggregate = {
+  __typename?: 'shopifyCampaignParameters_aggregate';
+  aggregate?: Maybe<ShopifyCampaignParameters_Aggregate_Fields>;
+  nodes: Array<ShopifyCampaignParameters>;
+};
+
+/** aggregate fields of "shopifyCampaignParameters" */
+export type ShopifyCampaignParameters_Aggregate_Fields = {
+  __typename?: 'shopifyCampaignParameters_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<ShopifyCampaignParameters_Max_Fields>;
+  min?: Maybe<ShopifyCampaignParameters_Min_Fields>;
+};
+
+
+/** aggregate fields of "shopifyCampaignParameters" */
+export type ShopifyCampaignParameters_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<ShopifyCampaignParameters_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "shopifyCampaignParameters". All fields are combined with a logical 'AND'. */
+export type ShopifyCampaignParameters_Bool_Exp = {
+  _and?: InputMaybe<Array<ShopifyCampaignParameters_Bool_Exp>>;
+  _not?: InputMaybe<ShopifyCampaignParameters_Bool_Exp>;
+  _or?: InputMaybe<Array<ShopifyCampaignParameters_Bool_Exp>>;
+  activityWebhookId?: InputMaybe<String_Comparison_Exp>;
+  activityWebhookSigningKey?: InputMaybe<String_Comparison_Exp>;
+  campaignId?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  status?: InputMaybe<ShopifyCampaignStatus_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "shopifyCampaignParameters" */
+export const enum ShopifyCampaignParameters_Constraint {
+  /** unique or primary key constraint on columns "activityWebhookSigningKey" */
+  ShopifyCampaignParametersActivityWebhookSigningKeyKey = 'shopifyCampaignParameters_activityWebhookSigningKey_key',
+  /** unique or primary key constraint on columns "campaignId" */
+  ShopifyCampaignParametersCampaignIdKey = 'shopifyCampaignParameters_campaignId_key',
+  /** unique or primary key constraint on columns "id" */
+  ShopifyCampaignParametersPkey = 'shopifyCampaignParameters_pkey'
+};
+
+/** input type for inserting data into table "shopifyCampaignParameters" */
+export type ShopifyCampaignParameters_Insert_Input = {
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique signing key used for secure operations related to the campaign activity webhook. */
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
+  campaignId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Identifier for the organizer responsible for the campaign. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** Represents the current status of the campaign, either "DRAFT" or "PUBLISHED". */
+  status?: InputMaybe<ShopifyCampaignStatus_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type ShopifyCampaignParameters_Max_Fields = {
+  __typename?: 'shopifyCampaignParameters_max_fields';
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  /** Unique signing key used for secure operations related to the campaign activity webhook. */
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
+  campaignId?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** Identifier for the organizer responsible for the campaign. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type ShopifyCampaignParameters_Min_Fields = {
+  __typename?: 'shopifyCampaignParameters_min_fields';
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  /** Unique signing key used for secure operations related to the campaign activity webhook. */
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
+  campaignId?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** Identifier for the organizer responsible for the campaign. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "shopifyCampaignParameters" */
+export type ShopifyCampaignParameters_Mutation_Response = {
+  __typename?: 'shopifyCampaignParameters_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ShopifyCampaignParameters>;
+};
+
+/** on_conflict condition type for table "shopifyCampaignParameters" */
+export type ShopifyCampaignParameters_On_Conflict = {
+  constraint: ShopifyCampaignParameters_Constraint;
+  update_columns?: Array<ShopifyCampaignParameters_Update_Column>;
+  where?: InputMaybe<ShopifyCampaignParameters_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "shopifyCampaignParameters". */
+export type ShopifyCampaignParameters_Order_By = {
+  activityWebhookId?: InputMaybe<Order_By>;
+  activityWebhookSigningKey?: InputMaybe<Order_By>;
+  campaignId?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: shopifyCampaignParameters */
+export type ShopifyCampaignParameters_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "shopifyCampaignParameters" */
+export const enum ShopifyCampaignParameters_Select_Column {
+  /** column name */
+  ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
+  /** column name */
+  CampaignId = 'campaignId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "shopifyCampaignParameters" */
+export type ShopifyCampaignParameters_Set_Input = {
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique signing key used for secure operations related to the campaign activity webhook. */
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
+  campaignId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Identifier for the organizer responsible for the campaign. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** Represents the current status of the campaign, either "DRAFT" or "PUBLISHED". */
+  status?: InputMaybe<ShopifyCampaignStatus_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "shopifyCampaignParameters" */
+export type ShopifyCampaignParameters_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: ShopifyCampaignParameters_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ShopifyCampaignParameters_Stream_Cursor_Value_Input = {
+  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique signing key used for secure operations related to the campaign activity webhook. */
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
+  campaignId?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Identifier for the organizer responsible for the campaign. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** Represents the current status of the campaign, either "DRAFT" or "PUBLISHED". */
+  status?: InputMaybe<ShopifyCampaignStatus_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "shopifyCampaignParameters" */
+export const enum ShopifyCampaignParameters_Update_Column {
+  /** column name */
+  ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
+  /** column name */
+  CampaignId = 'campaignId',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type ShopifyCampaignParameters_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<ShopifyCampaignParameters_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: ShopifyCampaignParameters_Bool_Exp;
+};
+
+/** columns and relationships of "shopifyCampaignStatus" */
+export type ShopifyCampaignStatus = {
+  __typename?: 'shopifyCampaignStatus';
+  value: Scalars['String']['output'];
+};
+
+/** aggregated selection of "shopifyCampaignStatus" */
+export type ShopifyCampaignStatus_Aggregate = {
+  __typename?: 'shopifyCampaignStatus_aggregate';
+  aggregate?: Maybe<ShopifyCampaignStatus_Aggregate_Fields>;
+  nodes: Array<ShopifyCampaignStatus>;
+};
+
+/** aggregate fields of "shopifyCampaignStatus" */
+export type ShopifyCampaignStatus_Aggregate_Fields = {
+  __typename?: 'shopifyCampaignStatus_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<ShopifyCampaignStatus_Max_Fields>;
+  min?: Maybe<ShopifyCampaignStatus_Min_Fields>;
+};
+
+
+/** aggregate fields of "shopifyCampaignStatus" */
+export type ShopifyCampaignStatus_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<ShopifyCampaignStatus_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "shopifyCampaignStatus". All fields are combined with a logical 'AND'. */
+export type ShopifyCampaignStatus_Bool_Exp = {
+  _and?: InputMaybe<Array<ShopifyCampaignStatus_Bool_Exp>>;
+  _not?: InputMaybe<ShopifyCampaignStatus_Bool_Exp>;
+  _or?: InputMaybe<Array<ShopifyCampaignStatus_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "shopifyCampaignStatus" */
+export const enum ShopifyCampaignStatus_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  ShopifyCampaignStatusPkey = 'shopifyCampaignStatus_pkey'
+};
+
+export const enum ShopifyCampaignStatus_Enum {
+  Draft = 'DRAFT',
+  Published = 'PUBLISHED'
+};
+
+/** Boolean expression to compare columns of type "shopifyCampaignStatus_enum". All fields are combined with logical 'AND'. */
+export type ShopifyCampaignStatus_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<ShopifyCampaignStatus_Enum>;
+  _in?: InputMaybe<Array<ShopifyCampaignStatus_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<ShopifyCampaignStatus_Enum>;
+  _nin?: InputMaybe<Array<ShopifyCampaignStatus_Enum>>;
+};
+
+/** input type for inserting data into table "shopifyCampaignStatus" */
+export type ShopifyCampaignStatus_Insert_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type ShopifyCampaignStatus_Max_Fields = {
+  __typename?: 'shopifyCampaignStatus_max_fields';
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type ShopifyCampaignStatus_Min_Fields = {
+  __typename?: 'shopifyCampaignStatus_min_fields';
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "shopifyCampaignStatus" */
+export type ShopifyCampaignStatus_Mutation_Response = {
+  __typename?: 'shopifyCampaignStatus_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ShopifyCampaignStatus>;
+};
+
+/** on_conflict condition type for table "shopifyCampaignStatus" */
+export type ShopifyCampaignStatus_On_Conflict = {
+  constraint: ShopifyCampaignStatus_Constraint;
+  update_columns?: Array<ShopifyCampaignStatus_Update_Column>;
+  where?: InputMaybe<ShopifyCampaignStatus_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "shopifyCampaignStatus". */
+export type ShopifyCampaignStatus_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: shopifyCampaignStatus */
+export type ShopifyCampaignStatus_Pk_Columns_Input = {
+  value: Scalars['String']['input'];
+};
+
+/** select columns of table "shopifyCampaignStatus" */
+export const enum ShopifyCampaignStatus_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "shopifyCampaignStatus" */
+export type ShopifyCampaignStatus_Set_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "shopifyCampaignStatus" */
+export type ShopifyCampaignStatus_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: ShopifyCampaignStatus_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ShopifyCampaignStatus_Stream_Cursor_Value_Input = {
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "shopifyCampaignStatus" */
+export const enum ShopifyCampaignStatus_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type ShopifyCampaignStatus_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<ShopifyCampaignStatus_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: ShopifyCampaignStatus_Bool_Exp;
+};
+
+/** Stores information for each token type managed by a stampNftContract, focusing on unique token IDs and their associated metadata. */
+export type StampNft = {
+  __typename?: 'stampNft';
+  chainId: Scalars['String']['output'];
+  contractAddress: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  /** Structured metadata associated with the token, stored in a JSONB format for flexibility. */
+  metadata: Scalars['jsonb']['output'];
+  /** The unique identifier of the token within its contract. */
+  tokenId: Scalars['bigint']['output'];
+  /** URI pointing to the token metadata, which may include details such as the item associated with the token. */
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+
+/** Stores information for each token type managed by a stampNftContract, focusing on unique token IDs and their associated metadata. */
+export type StampNftMetadataArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Represents stamp NFT contracts used for marketing purposes. Each contract is associated with a type indicating the nature of the campaign, like a purchase completion event. */
+export type StampNftContract = {
+  __typename?: 'stampNftContract';
+  /** A unique identifier for the marketing campaign associated with this contract. */
+  campaignId: Scalars['String']['output'];
+  /** The identifier of the blockchain network where the contract is deployed. */
+  chainId: Scalars['String']['output'];
+  /** The blockchain address of the stamp NFT contract. */
+  contractAddress: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  id?: Maybe<Scalars['uuid']['output']>;
+  organizerId: Scalars['String']['output'];
+  /** The type of marketing campaign the contract is associated with, e.g., SHOPIFY_PURCHASE_COMPLETED. */
+  type: StampNftContractType_Enum;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** Defines contract types for the stampNftContract, representing various marketing campaigns or actions. */
+export type StampNftContractType = {
+  __typename?: 'stampNftContractType';
+  /** Type name for stamp NFT contract. Reflects the nature of the marketing campaign or action, like SHOPIFY_PURCHASE_COMPLETED indicating a purchase event in a token-gating campaign on Shopify. */
+  value: Scalars['String']['output'];
+};
+
+/** aggregated selection of "stampNftContractType" */
+export type StampNftContractType_Aggregate = {
+  __typename?: 'stampNftContractType_aggregate';
+  aggregate?: Maybe<StampNftContractType_Aggregate_Fields>;
+  nodes: Array<StampNftContractType>;
+};
+
+/** aggregate fields of "stampNftContractType" */
+export type StampNftContractType_Aggregate_Fields = {
+  __typename?: 'stampNftContractType_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<StampNftContractType_Max_Fields>;
+  min?: Maybe<StampNftContractType_Min_Fields>;
+};
+
+
+/** aggregate fields of "stampNftContractType" */
+export type StampNftContractType_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<StampNftContractType_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "stampNftContractType". All fields are combined with a logical 'AND'. */
+export type StampNftContractType_Bool_Exp = {
+  _and?: InputMaybe<Array<StampNftContractType_Bool_Exp>>;
+  _not?: InputMaybe<StampNftContractType_Bool_Exp>;
+  _or?: InputMaybe<Array<StampNftContractType_Bool_Exp>>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "stampNftContractType" */
+export const enum StampNftContractType_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  StampNftContractTypePkey = 'stampNftContractType_pkey'
+};
+
+export const enum StampNftContractType_Enum {
+  ShopifyPurchaseCompleted = 'SHOPIFY_PURCHASE_COMPLETED'
+};
+
+/** Boolean expression to compare columns of type "stampNftContractType_enum". All fields are combined with logical 'AND'. */
+export type StampNftContractType_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<StampNftContractType_Enum>;
+  _in?: InputMaybe<Array<StampNftContractType_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<StampNftContractType_Enum>;
+  _nin?: InputMaybe<Array<StampNftContractType_Enum>>;
+};
+
+/** input type for inserting data into table "stampNftContractType" */
+export type StampNftContractType_Insert_Input = {
+  /** Type name for stamp NFT contract. Reflects the nature of the marketing campaign or action, like SHOPIFY_PURCHASE_COMPLETED indicating a purchase event in a token-gating campaign on Shopify. */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type StampNftContractType_Max_Fields = {
+  __typename?: 'stampNftContractType_max_fields';
+  /** Type name for stamp NFT contract. Reflects the nature of the marketing campaign or action, like SHOPIFY_PURCHASE_COMPLETED indicating a purchase event in a token-gating campaign on Shopify. */
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type StampNftContractType_Min_Fields = {
+  __typename?: 'stampNftContractType_min_fields';
+  /** Type name for stamp NFT contract. Reflects the nature of the marketing campaign or action, like SHOPIFY_PURCHASE_COMPLETED indicating a purchase event in a token-gating campaign on Shopify. */
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "stampNftContractType" */
+export type StampNftContractType_Mutation_Response = {
+  __typename?: 'stampNftContractType_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<StampNftContractType>;
+};
+
+/** on_conflict condition type for table "stampNftContractType" */
+export type StampNftContractType_On_Conflict = {
+  constraint: StampNftContractType_Constraint;
+  update_columns?: Array<StampNftContractType_Update_Column>;
+  where?: InputMaybe<StampNftContractType_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "stampNftContractType". */
+export type StampNftContractType_Order_By = {
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: stampNftContractType */
+export type StampNftContractType_Pk_Columns_Input = {
+  /** Type name for stamp NFT contract. Reflects the nature of the marketing campaign or action, like SHOPIFY_PURCHASE_COMPLETED indicating a purchase event in a token-gating campaign on Shopify. */
+  value: Scalars['String']['input'];
+};
+
+/** select columns of table "stampNftContractType" */
+export const enum StampNftContractType_Select_Column {
+  /** column name */
+  Value = 'value'
+};
+
+/** input type for updating data in table "stampNftContractType" */
+export type StampNftContractType_Set_Input = {
+  /** Type name for stamp NFT contract. Reflects the nature of the marketing campaign or action, like SHOPIFY_PURCHASE_COMPLETED indicating a purchase event in a token-gating campaign on Shopify. */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "stampNftContractType" */
+export type StampNftContractType_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: StampNftContractType_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type StampNftContractType_Stream_Cursor_Value_Input = {
+  /** Type name for stamp NFT contract. Reflects the nature of the marketing campaign or action, like SHOPIFY_PURCHASE_COMPLETED indicating a purchase event in a token-gating campaign on Shopify. */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "stampNftContractType" */
+export const enum StampNftContractType_Update_Column {
+  /** column name */
+  Value = 'value'
+};
+
+export type StampNftContractType_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<StampNftContractType_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: StampNftContractType_Bool_Exp;
+};
+
+/** aggregated selection of "stampNftContract" */
+export type StampNftContract_Aggregate = {
+  __typename?: 'stampNftContract_aggregate';
+  aggregate?: Maybe<StampNftContract_Aggregate_Fields>;
+  nodes: Array<StampNftContract>;
+};
+
+/** aggregate fields of "stampNftContract" */
+export type StampNftContract_Aggregate_Fields = {
+  __typename?: 'stampNftContract_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<StampNftContract_Max_Fields>;
+  min?: Maybe<StampNftContract_Min_Fields>;
+};
+
+
+/** aggregate fields of "stampNftContract" */
+export type StampNftContract_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<StampNftContract_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "stampNftContract". All fields are combined with a logical 'AND'. */
+export type StampNftContract_Bool_Exp = {
+  _and?: InputMaybe<Array<StampNftContract_Bool_Exp>>;
+  _not?: InputMaybe<StampNftContract_Bool_Exp>;
+  _or?: InputMaybe<Array<StampNftContract_Bool_Exp>>;
+  campaignId?: InputMaybe<String_Comparison_Exp>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  type?: InputMaybe<StampNftContractType_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "stampNftContract" */
+export const enum StampNftContract_Constraint {
+  /** unique or primary key constraint on columns "chainId", "contractAddress" */
+  StampNftContractPkey = 'stampNftContract_pkey'
+};
+
+/** input type for inserting data into table "stampNftContract" */
+export type StampNftContract_Insert_Input = {
+  /** A unique identifier for the marketing campaign associated with this contract. */
+  campaignId?: InputMaybe<Scalars['String']['input']>;
+  /** The identifier of the blockchain network where the contract is deployed. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** The blockchain address of the stamp NFT contract. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The type of marketing campaign the contract is associated with, e.g., SHOPIFY_PURCHASE_COMPLETED. */
+  type?: InputMaybe<StampNftContractType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type StampNftContract_Max_Fields = {
+  __typename?: 'stampNftContract_max_fields';
+  /** A unique identifier for the marketing campaign associated with this contract. */
+  campaignId?: Maybe<Scalars['String']['output']>;
+  /** The identifier of the blockchain network where the contract is deployed. */
+  chainId?: Maybe<Scalars['String']['output']>;
+  /** The blockchain address of the stamp NFT contract. */
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type StampNftContract_Min_Fields = {
+  __typename?: 'stampNftContract_min_fields';
+  /** A unique identifier for the marketing campaign associated with this contract. */
+  campaignId?: Maybe<Scalars['String']['output']>;
+  /** The identifier of the blockchain network where the contract is deployed. */
+  chainId?: Maybe<Scalars['String']['output']>;
+  /** The blockchain address of the stamp NFT contract. */
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "stampNftContract" */
+export type StampNftContract_Mutation_Response = {
+  __typename?: 'stampNftContract_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<StampNftContract>;
+};
+
+/** on_conflict condition type for table "stampNftContract" */
+export type StampNftContract_On_Conflict = {
+  constraint: StampNftContract_Constraint;
+  update_columns?: Array<StampNftContract_Update_Column>;
+  where?: InputMaybe<StampNftContract_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "stampNftContract". */
+export type StampNftContract_Order_By = {
+  campaignId?: InputMaybe<Order_By>;
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: stampNftContract */
+export type StampNftContract_Pk_Columns_Input = {
+  /** The identifier of the blockchain network where the contract is deployed. */
+  chainId: Scalars['String']['input'];
+  /** The blockchain address of the stamp NFT contract. */
+  contractAddress: Scalars['String']['input'];
+};
+
+/** select columns of table "stampNftContract" */
+export const enum StampNftContract_Select_Column {
+  /** column name */
+  CampaignId = 'campaignId',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "stampNftContract" */
+export type StampNftContract_Set_Input = {
+  /** A unique identifier for the marketing campaign associated with this contract. */
+  campaignId?: InputMaybe<Scalars['String']['input']>;
+  /** The identifier of the blockchain network where the contract is deployed. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** The blockchain address of the stamp NFT contract. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The type of marketing campaign the contract is associated with, e.g., SHOPIFY_PURCHASE_COMPLETED. */
+  type?: InputMaybe<StampNftContractType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "stampNftContract" */
+export type StampNftContract_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: StampNftContract_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type StampNftContract_Stream_Cursor_Value_Input = {
+  /** A unique identifier for the marketing campaign associated with this contract. */
+  campaignId?: InputMaybe<Scalars['String']['input']>;
+  /** The identifier of the blockchain network where the contract is deployed. */
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  /** The blockchain address of the stamp NFT contract. */
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  /** The type of marketing campaign the contract is associated with, e.g., SHOPIFY_PURCHASE_COMPLETED. */
+  type?: InputMaybe<StampNftContractType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "stampNftContract" */
+export const enum StampNftContract_Update_Column {
+  /** column name */
+  CampaignId = 'campaignId',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type StampNftContract_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<StampNftContract_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: StampNftContract_Bool_Exp;
+};
+
+/** Tracks the current ownership and quantities of each token under a stampNftContract. Each row associates a token (identified by tokenId and contractAddress) with an owner and the quantity they hold. */
+export type StampNftSupply = {
+  __typename?: 'stampNftSupply';
+  /** The quantity of the token held by the current owner. */
+  amount: Scalars['Int']['output'];
+  chainId: Scalars['String']['output'];
+  contractAddress: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  /** The blockchain address of the current owner of the token. */
+  currentOwnerAddress: Scalars['String']['output'];
+  error?: Maybe<Scalars['String']['output']>;
+  id: Scalars['uuid']['output'];
+  /** Reference to the last transfer event for this token, providing a link to detailed transfer information. */
+  lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
+  status?: Maybe<NftStatus_Enum>;
+  tokenId: Scalars['bigint']['output'];
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "stampNftSupply" */
+export type StampNftSupply_Aggregate = {
+  __typename?: 'stampNftSupply_aggregate';
+  aggregate?: Maybe<StampNftSupply_Aggregate_Fields>;
+  nodes: Array<StampNftSupply>;
+};
+
+/** aggregate fields of "stampNftSupply" */
+export type StampNftSupply_Aggregate_Fields = {
+  __typename?: 'stampNftSupply_aggregate_fields';
+  avg?: Maybe<StampNftSupply_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<StampNftSupply_Max_Fields>;
+  min?: Maybe<StampNftSupply_Min_Fields>;
+  stddev?: Maybe<StampNftSupply_Stddev_Fields>;
+  stddev_pop?: Maybe<StampNftSupply_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<StampNftSupply_Stddev_Samp_Fields>;
+  sum?: Maybe<StampNftSupply_Sum_Fields>;
+  var_pop?: Maybe<StampNftSupply_Var_Pop_Fields>;
+  var_samp?: Maybe<StampNftSupply_Var_Samp_Fields>;
+  variance?: Maybe<StampNftSupply_Variance_Fields>;
+};
+
+
+/** aggregate fields of "stampNftSupply" */
+export type StampNftSupply_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<StampNftSupply_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type StampNftSupply_Avg_Fields = {
+  __typename?: 'stampNftSupply_avg_fields';
+  /** The quantity of the token held by the current owner. */
+  amount?: Maybe<Scalars['Float']['output']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "stampNftSupply". All fields are combined with a logical 'AND'. */
+export type StampNftSupply_Bool_Exp = {
+  _and?: InputMaybe<Array<StampNftSupply_Bool_Exp>>;
+  _not?: InputMaybe<StampNftSupply_Bool_Exp>;
+  _or?: InputMaybe<Array<StampNftSupply_Bool_Exp>>;
+  amount?: InputMaybe<Int_Comparison_Exp>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  currentOwnerAddress?: InputMaybe<String_Comparison_Exp>;
+  error?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  lastNftTransferId?: InputMaybe<Uuid_Comparison_Exp>;
+  status?: InputMaybe<NftStatus_Enum_Comparison_Exp>;
+  tokenId?: InputMaybe<Bigint_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "stampNftSupply" */
+export const enum StampNftSupply_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  StampNftSupplyPkey = 'stampNftSupply_pkey',
+  /** unique or primary key constraint on columns "currentOwnerAddress", "chainId", "contractAddress", "tokenId" */
+  StampNftSupplyTokenIdContractAddressChainIdCurrentOwnerKey = 'stampNftSupply_tokenId_contractAddress_chainId_currentOwner_key'
+};
+
+/** input type for incrementing numeric columns in table "stampNftSupply" */
+export type StampNftSupply_Inc_Input = {
+  /** The quantity of the token held by the current owner. */
+  amount?: InputMaybe<Scalars['Int']['input']>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+/** input type for inserting data into table "stampNftSupply" */
+export type StampNftSupply_Insert_Input = {
+  /** The quantity of the token held by the current owner. */
+  amount?: InputMaybe<Scalars['Int']['input']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The blockchain address of the current owner of the token. */
+  currentOwnerAddress?: InputMaybe<Scalars['String']['input']>;
+  error?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Reference to the last transfer event for this token, providing a link to detailed transfer information. */
+  lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
+  status?: InputMaybe<NftStatus_Enum>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type StampNftSupply_Max_Fields = {
+  __typename?: 'stampNftSupply_max_fields';
+  /** The quantity of the token held by the current owner. */
+  amount?: Maybe<Scalars['Int']['output']>;
+  chainId?: Maybe<Scalars['String']['output']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The blockchain address of the current owner of the token. */
+  currentOwnerAddress?: Maybe<Scalars['String']['output']>;
+  error?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** Reference to the last transfer event for this token, providing a link to detailed transfer information. */
+  lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type StampNftSupply_Min_Fields = {
+  __typename?: 'stampNftSupply_min_fields';
+  /** The quantity of the token held by the current owner. */
+  amount?: Maybe<Scalars['Int']['output']>;
+  chainId?: Maybe<Scalars['String']['output']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The blockchain address of the current owner of the token. */
+  currentOwnerAddress?: Maybe<Scalars['String']['output']>;
+  error?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** Reference to the last transfer event for this token, providing a link to detailed transfer information. */
+  lastNftTransferId?: Maybe<Scalars['uuid']['output']>;
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "stampNftSupply" */
+export type StampNftSupply_Mutation_Response = {
+  __typename?: 'stampNftSupply_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<StampNftSupply>;
+};
+
+/** on_conflict condition type for table "stampNftSupply" */
+export type StampNftSupply_On_Conflict = {
+  constraint: StampNftSupply_Constraint;
+  update_columns?: Array<StampNftSupply_Update_Column>;
+  where?: InputMaybe<StampNftSupply_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "stampNftSupply". */
+export type StampNftSupply_Order_By = {
+  amount?: InputMaybe<Order_By>;
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  currentOwnerAddress?: InputMaybe<Order_By>;
+  error?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  lastNftTransferId?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  tokenId?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: stampNftSupply */
+export type StampNftSupply_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "stampNftSupply" */
+export const enum StampNftSupply_Select_Column {
+  /** column name */
+  Amount = 'amount',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CurrentOwnerAddress = 'currentOwnerAddress',
+  /** column name */
+  Error = 'error',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LastNftTransferId = 'lastNftTransferId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "stampNftSupply" */
+export type StampNftSupply_Set_Input = {
+  /** The quantity of the token held by the current owner. */
+  amount?: InputMaybe<Scalars['Int']['input']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The blockchain address of the current owner of the token. */
+  currentOwnerAddress?: InputMaybe<Scalars['String']['input']>;
+  error?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Reference to the last transfer event for this token, providing a link to detailed transfer information. */
+  lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
+  status?: InputMaybe<NftStatus_Enum>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type StampNftSupply_Stddev_Fields = {
+  __typename?: 'stampNftSupply_stddev_fields';
+  /** The quantity of the token held by the current owner. */
+  amount?: Maybe<Scalars['Float']['output']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type StampNftSupply_Stddev_Pop_Fields = {
+  __typename?: 'stampNftSupply_stddev_pop_fields';
+  /** The quantity of the token held by the current owner. */
+  amount?: Maybe<Scalars['Float']['output']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type StampNftSupply_Stddev_Samp_Fields = {
+  __typename?: 'stampNftSupply_stddev_samp_fields';
+  /** The quantity of the token held by the current owner. */
+  amount?: Maybe<Scalars['Float']['output']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "stampNftSupply" */
+export type StampNftSupply_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: StampNftSupply_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type StampNftSupply_Stream_Cursor_Value_Input = {
+  /** The quantity of the token held by the current owner. */
+  amount?: InputMaybe<Scalars['Int']['input']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The blockchain address of the current owner of the token. */
+  currentOwnerAddress?: InputMaybe<Scalars['String']['input']>;
+  error?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Reference to the last transfer event for this token, providing a link to detailed transfer information. */
+  lastNftTransferId?: InputMaybe<Scalars['uuid']['input']>;
+  status?: InputMaybe<NftStatus_Enum>;
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate sum on columns */
+export type StampNftSupply_Sum_Fields = {
+  __typename?: 'stampNftSupply_sum_fields';
+  /** The quantity of the token held by the current owner. */
+  amount?: Maybe<Scalars['Int']['output']>;
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+};
+
+/** update columns of table "stampNftSupply" */
+export const enum StampNftSupply_Update_Column {
+  /** column name */
+  Amount = 'amount',
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CurrentOwnerAddress = 'currentOwnerAddress',
+  /** column name */
+  Error = 'error',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LastNftTransferId = 'lastNftTransferId',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type StampNftSupply_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<StampNftSupply_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<StampNftSupply_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: StampNftSupply_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type StampNftSupply_Var_Pop_Fields = {
+  __typename?: 'stampNftSupply_var_pop_fields';
+  /** The quantity of the token held by the current owner. */
+  amount?: Maybe<Scalars['Float']['output']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type StampNftSupply_Var_Samp_Fields = {
+  __typename?: 'stampNftSupply_var_samp_fields';
+  /** The quantity of the token held by the current owner. */
+  amount?: Maybe<Scalars['Float']['output']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type StampNftSupply_Variance_Fields = {
+  __typename?: 'stampNftSupply_variance_fields';
+  /** The quantity of the token held by the current owner. */
+  amount?: Maybe<Scalars['Float']['output']>;
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregated selection of "stampNft" */
+export type StampNft_Aggregate = {
+  __typename?: 'stampNft_aggregate';
+  aggregate?: Maybe<StampNft_Aggregate_Fields>;
+  nodes: Array<StampNft>;
+};
+
+/** aggregate fields of "stampNft" */
+export type StampNft_Aggregate_Fields = {
+  __typename?: 'stampNft_aggregate_fields';
+  avg?: Maybe<StampNft_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<StampNft_Max_Fields>;
+  min?: Maybe<StampNft_Min_Fields>;
+  stddev?: Maybe<StampNft_Stddev_Fields>;
+  stddev_pop?: Maybe<StampNft_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<StampNft_Stddev_Samp_Fields>;
+  sum?: Maybe<StampNft_Sum_Fields>;
+  var_pop?: Maybe<StampNft_Var_Pop_Fields>;
+  var_samp?: Maybe<StampNft_Var_Samp_Fields>;
+  variance?: Maybe<StampNft_Variance_Fields>;
+};
+
+
+/** aggregate fields of "stampNft" */
+export type StampNft_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<StampNft_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type StampNft_Append_Input = {
+  /** Structured metadata associated with the token, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** aggregate avg on columns */
+export type StampNft_Avg_Fields = {
+  __typename?: 'stampNft_avg_fields';
+  /** The unique identifier of the token within its contract. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "stampNft". All fields are combined with a logical 'AND'. */
+export type StampNft_Bool_Exp = {
+  _and?: InputMaybe<Array<StampNft_Bool_Exp>>;
+  _not?: InputMaybe<StampNft_Bool_Exp>;
+  _or?: InputMaybe<Array<StampNft_Bool_Exp>>;
+  chainId?: InputMaybe<String_Comparison_Exp>;
+  contractAddress?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  metadata?: InputMaybe<Jsonb_Comparison_Exp>;
+  tokenId?: InputMaybe<Bigint_Comparison_Exp>;
+  tokenUri?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "stampNft" */
+export const enum StampNft_Constraint {
+  /** unique or primary key constraint on columns "chainId", "contractAddress", "tokenId" */
+  StampNftContractAddressTokenIdChainIdKey = 'stampNft_contractAddress_tokenId_chainId_key',
+  /** unique or primary key constraint on columns "id" */
+  StampNftPkey = 'stampNft_pkey'
+};
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type StampNft_Delete_At_Path_Input = {
+  /** Structured metadata associated with the token, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type StampNft_Delete_Elem_Input = {
+  /** Structured metadata associated with the token, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type StampNft_Delete_Key_Input = {
+  /** Structured metadata associated with the token, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** input type for incrementing numeric columns in table "stampNft" */
+export type StampNft_Inc_Input = {
+  /** The unique identifier of the token within its contract. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+};
+
+/** input type for inserting data into table "stampNft" */
+export type StampNft_Insert_Input = {
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Structured metadata associated with the token, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+  /** The unique identifier of the token within its contract. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  /** URI pointing to the token metadata, which may include details such as the item associated with the token. */
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type StampNft_Max_Fields = {
+  __typename?: 'stampNft_max_fields';
+  chainId?: Maybe<Scalars['String']['output']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** The unique identifier of the token within its contract. */
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+  /** URI pointing to the token metadata, which may include details such as the item associated with the token. */
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type StampNft_Min_Fields = {
+  __typename?: 'stampNft_min_fields';
+  chainId?: Maybe<Scalars['String']['output']>;
+  contractAddress?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** The unique identifier of the token within its contract. */
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+  /** URI pointing to the token metadata, which may include details such as the item associated with the token. */
+  tokenUri?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "stampNft" */
+export type StampNft_Mutation_Response = {
+  __typename?: 'stampNft_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<StampNft>;
+};
+
+/** on_conflict condition type for table "stampNft" */
+export type StampNft_On_Conflict = {
+  constraint: StampNft_Constraint;
+  update_columns?: Array<StampNft_Update_Column>;
+  where?: InputMaybe<StampNft_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "stampNft". */
+export type StampNft_Order_By = {
+  chainId?: InputMaybe<Order_By>;
+  contractAddress?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  metadata?: InputMaybe<Order_By>;
+  tokenId?: InputMaybe<Order_By>;
+  tokenUri?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: stampNft */
+export type StampNft_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type StampNft_Prepend_Input = {
+  /** Structured metadata associated with the token, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** select columns of table "stampNft" */
+export const enum StampNft_Select_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TokenUri = 'tokenUri',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "stampNft" */
+export type StampNft_Set_Input = {
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Structured metadata associated with the token, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+  /** The unique identifier of the token within its contract. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  /** URI pointing to the token metadata, which may include details such as the item associated with the token. */
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type StampNft_Stddev_Fields = {
+  __typename?: 'stampNft_stddev_fields';
+  /** The unique identifier of the token within its contract. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type StampNft_Stddev_Pop_Fields = {
+  __typename?: 'stampNft_stddev_pop_fields';
+  /** The unique identifier of the token within its contract. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type StampNft_Stddev_Samp_Fields = {
+  __typename?: 'stampNft_stddev_samp_fields';
+  /** The unique identifier of the token within its contract. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "stampNft" */
+export type StampNft_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: StampNft_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type StampNft_Stream_Cursor_Value_Input = {
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  contractAddress?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Structured metadata associated with the token, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+  /** The unique identifier of the token within its contract. */
+  tokenId?: InputMaybe<Scalars['bigint']['input']>;
+  /** URI pointing to the token metadata, which may include details such as the item associated with the token. */
+  tokenUri?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate sum on columns */
+export type StampNft_Sum_Fields = {
+  __typename?: 'stampNft_sum_fields';
+  /** The unique identifier of the token within its contract. */
+  tokenId?: Maybe<Scalars['bigint']['output']>;
+};
+
+/** update columns of table "stampNft" */
+export const enum StampNft_Update_Column {
+  /** column name */
+  ChainId = 'chainId',
+  /** column name */
+  ContractAddress = 'contractAddress',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  TokenId = 'tokenId',
+  /** column name */
+  TokenUri = 'tokenUri',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type StampNft_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<StampNft_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<StampNft_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<StampNft_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<StampNft_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<StampNft_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<StampNft_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<StampNft_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: StampNft_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type StampNft_Var_Pop_Fields = {
+  __typename?: 'stampNft_var_pop_fields';
+  /** The unique identifier of the token within its contract. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type StampNft_Var_Samp_Fields = {
+  __typename?: 'stampNft_var_samp_fields';
+  /** The unique identifier of the token within its contract. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type StampNft_Variance_Fields = {
+  __typename?: 'stampNft_variance_fields';
+  /** The unique identifier of the token within its contract. */
+  tokenId?: Maybe<Scalars['Float']['output']>;
+};
+
 /** Table to store Stripe Checkout Sessions for tracking user checkout processes. Sessions are deleted once they are successful or expired. */
 export type StripeCheckoutSession = {
   __typename?: 'stripeCheckoutSession';
@@ -21360,6 +27592,22 @@ export type Subscription_Root = {
   account_by_pk?: Maybe<Account>;
   /** fetch data from the table in a streaming manner: "account" */
   account_stream: Array<Account>;
+  /** fetch data from the table: "apiKeyStatus" */
+  apiKeyStatus: Array<ApiKeyStatus>;
+  /** fetch aggregated fields from the table: "apiKeyStatus" */
+  apiKeyStatus_aggregate: ApiKeyStatus_Aggregate;
+  /** fetch data from the table: "apiKeyStatus" using primary key columns */
+  apiKeyStatus_by_pk?: Maybe<ApiKeyStatus>;
+  /** fetch data from the table in a streaming manner: "apiKeyStatus" */
+  apiKeyStatus_stream: Array<ApiKeyStatus>;
+  /** fetch data from the table: "apiKeyType" */
+  apiKeyType: Array<ApiKeyType>;
+  /** fetch aggregated fields from the table: "apiKeyType" */
+  apiKeyType_aggregate: ApiKeyType_Aggregate;
+  /** fetch data from the table: "apiKeyType" using primary key columns */
+  apiKeyType_by_pk?: Maybe<ApiKeyType>;
+  /** fetch data from the table in a streaming manner: "apiKeyType" */
+  apiKeyType_stream: Array<ApiKeyType>;
   /** fetch data from the table: "contentSpaceParameters" */
   contentSpaceParameters: Array<ContentSpaceParameters>;
   /** fetch aggregated fields from the table: "contentSpaceParameters" */
@@ -21496,6 +27744,38 @@ export type Subscription_Root = {
   lotteryStatus_by_pk?: Maybe<LotteryStatus>;
   /** fetch data from the table in a streaming manner: "lotteryStatus" */
   lotteryStatus_stream: Array<LotteryStatus>;
+  /** fetch data from the table: "loyaltyCardNft" */
+  loyaltyCardNft: Array<LoyaltyCardNft>;
+  /** fetch data from the table: "loyaltyCardNftContract" */
+  loyaltyCardNftContract: Array<LoyaltyCardNftContract>;
+  /** fetch aggregated fields from the table: "loyaltyCardNftContract" */
+  loyaltyCardNftContract_aggregate: LoyaltyCardNftContract_Aggregate;
+  /** fetch data from the table: "loyaltyCardNftContract" using primary key columns */
+  loyaltyCardNftContract_by_pk?: Maybe<LoyaltyCardNftContract>;
+  /** fetch data from the table in a streaming manner: "loyaltyCardNftContract" */
+  loyaltyCardNftContract_stream: Array<LoyaltyCardNftContract>;
+  /** fetch aggregated fields from the table: "loyaltyCardNft" */
+  loyaltyCardNft_aggregate: LoyaltyCardNft_Aggregate;
+  /** fetch data from the table: "loyaltyCardNft" using primary key columns */
+  loyaltyCardNft_by_pk?: Maybe<LoyaltyCardNft>;
+  /** fetch data from the table in a streaming manner: "loyaltyCardNft" */
+  loyaltyCardNft_stream: Array<LoyaltyCardNft>;
+  /** fetch data from the table: "loyaltyCardParameters" */
+  loyaltyCardParameters: Array<LoyaltyCardParameters>;
+  /** fetch aggregated fields from the table: "loyaltyCardParameters" */
+  loyaltyCardParameters_aggregate: LoyaltyCardParameters_Aggregate;
+  /** fetch data from the table: "loyaltyCardParameters" using primary key columns */
+  loyaltyCardParameters_by_pk?: Maybe<LoyaltyCardParameters>;
+  /** fetch data from the table in a streaming manner: "loyaltyCardParameters" */
+  loyaltyCardParameters_stream: Array<LoyaltyCardParameters>;
+  /** fetch data from the table: "loyaltyCardStatus" */
+  loyaltyCardStatus: Array<LoyaltyCardStatus>;
+  /** fetch aggregated fields from the table: "loyaltyCardStatus" */
+  loyaltyCardStatus_aggregate: LoyaltyCardStatus_Aggregate;
+  /** fetch data from the table: "loyaltyCardStatus" using primary key columns */
+  loyaltyCardStatus_by_pk?: Maybe<LoyaltyCardStatus>;
+  /** fetch data from the table in a streaming manner: "loyaltyCardStatus" */
+  loyaltyCardStatus_stream: Array<LoyaltyCardStatus>;
   /** fetch data from the table: "minterTemporaryWallet" */
   minterTemporaryWallet: Array<MinterTemporaryWallet>;
   /** fetch aggregated fields from the table: "minterTemporaryWallet" */
@@ -21504,6 +27784,22 @@ export type Subscription_Root = {
   minterTemporaryWallet_by_pk?: Maybe<MinterTemporaryWallet>;
   /** fetch data from the table in a streaming manner: "minterTemporaryWallet" */
   minterTemporaryWallet_stream: Array<MinterTemporaryWallet>;
+  /** fetch data from the table: "nftMintPassword" */
+  nftMintPassword: Array<NftMintPassword>;
+  /** fetch aggregated fields from the table: "nftMintPassword" */
+  nftMintPassword_aggregate: NftMintPassword_Aggregate;
+  /** fetch data from the table: "nftMintPassword" using primary key columns */
+  nftMintPassword_by_pk?: Maybe<NftMintPassword>;
+  /** fetch data from the table in a streaming manner: "nftMintPassword" */
+  nftMintPassword_stream: Array<NftMintPassword>;
+  /** fetch data from the table: "nftStatus" */
+  nftStatus: Array<NftStatus>;
+  /** fetch aggregated fields from the table: "nftStatus" */
+  nftStatus_aggregate: NftStatus_Aggregate;
+  /** fetch data from the table: "nftStatus" using primary key columns */
+  nftStatus_by_pk?: Maybe<NftStatus>;
+  /** fetch data from the table in a streaming manner: "nftStatus" */
+  nftStatus_stream: Array<NftStatus>;
   /** fetch data from the table: "nftTransfer" */
   nftTransfer: Array<NftTransfer>;
   /** fetch aggregated fields from the table: "nftTransfer" */
@@ -21592,6 +27888,14 @@ export type Subscription_Root = {
   pendingOrder_by_pk?: Maybe<PendingOrder>;
   /** fetch data from the table in a streaming manner: "pendingOrder" */
   pendingOrder_stream: Array<PendingOrder>;
+  /** fetch data from the table: "publishableApiKey" */
+  publishableApiKey: Array<PublishableApiKey>;
+  /** fetch aggregated fields from the table: "publishableApiKey" */
+  publishableApiKey_aggregate: PublishableApiKey_Aggregate;
+  /** fetch data from the table: "publishableApiKey" using primary key columns */
+  publishableApiKey_by_pk?: Maybe<PublishableApiKey>;
+  /** fetch data from the table in a streaming manner: "publishableApiKey" */
+  publishableApiKey_stream: Array<PublishableApiKey>;
   /** fetch data from the table: "roleAssignment" */
   roleAssignment: Array<RoleAssignment>;
   /** fetch aggregated fields from the table: "roleAssignment" */
@@ -21606,6 +27910,62 @@ export type Subscription_Root = {
   roles_by_pk?: Maybe<Roles>;
   /** fetch data from the table in a streaming manner: "roles" */
   roles_stream: Array<Roles>;
+  /** fetch data from the table: "secretApiKey" */
+  secretApiKey: Array<SecretApiKey>;
+  /** fetch aggregated fields from the table: "secretApiKey" */
+  secretApiKey_aggregate: SecretApiKey_Aggregate;
+  /** fetch data from the table: "secretApiKey" using primary key columns */
+  secretApiKey_by_pk?: Maybe<SecretApiKey>;
+  /** fetch data from the table in a streaming manner: "secretApiKey" */
+  secretApiKey_stream: Array<SecretApiKey>;
+  /** fetch data from the table: "shopifyCampaignParameters" */
+  shopifyCampaignParameters: Array<ShopifyCampaignParameters>;
+  /** fetch aggregated fields from the table: "shopifyCampaignParameters" */
+  shopifyCampaignParameters_aggregate: ShopifyCampaignParameters_Aggregate;
+  /** fetch data from the table: "shopifyCampaignParameters" using primary key columns */
+  shopifyCampaignParameters_by_pk?: Maybe<ShopifyCampaignParameters>;
+  /** fetch data from the table in a streaming manner: "shopifyCampaignParameters" */
+  shopifyCampaignParameters_stream: Array<ShopifyCampaignParameters>;
+  /** fetch data from the table: "shopifyCampaignStatus" */
+  shopifyCampaignStatus: Array<ShopifyCampaignStatus>;
+  /** fetch aggregated fields from the table: "shopifyCampaignStatus" */
+  shopifyCampaignStatus_aggregate: ShopifyCampaignStatus_Aggregate;
+  /** fetch data from the table: "shopifyCampaignStatus" using primary key columns */
+  shopifyCampaignStatus_by_pk?: Maybe<ShopifyCampaignStatus>;
+  /** fetch data from the table in a streaming manner: "shopifyCampaignStatus" */
+  shopifyCampaignStatus_stream: Array<ShopifyCampaignStatus>;
+  /** fetch data from the table: "stampNft" */
+  stampNft: Array<StampNft>;
+  /** fetch data from the table: "stampNftContract" */
+  stampNftContract: Array<StampNftContract>;
+  /** fetch data from the table: "stampNftContractType" */
+  stampNftContractType: Array<StampNftContractType>;
+  /** fetch aggregated fields from the table: "stampNftContractType" */
+  stampNftContractType_aggregate: StampNftContractType_Aggregate;
+  /** fetch data from the table: "stampNftContractType" using primary key columns */
+  stampNftContractType_by_pk?: Maybe<StampNftContractType>;
+  /** fetch data from the table in a streaming manner: "stampNftContractType" */
+  stampNftContractType_stream: Array<StampNftContractType>;
+  /** fetch aggregated fields from the table: "stampNftContract" */
+  stampNftContract_aggregate: StampNftContract_Aggregate;
+  /** fetch data from the table: "stampNftContract" using primary key columns */
+  stampNftContract_by_pk?: Maybe<StampNftContract>;
+  /** fetch data from the table in a streaming manner: "stampNftContract" */
+  stampNftContract_stream: Array<StampNftContract>;
+  /** fetch data from the table: "stampNftSupply" */
+  stampNftSupply: Array<StampNftSupply>;
+  /** fetch aggregated fields from the table: "stampNftSupply" */
+  stampNftSupply_aggregate: StampNftSupply_Aggregate;
+  /** fetch data from the table: "stampNftSupply" using primary key columns */
+  stampNftSupply_by_pk?: Maybe<StampNftSupply>;
+  /** fetch data from the table in a streaming manner: "stampNftSupply" */
+  stampNftSupply_stream: Array<StampNftSupply>;
+  /** fetch aggregated fields from the table: "stampNft" */
+  stampNft_aggregate: StampNft_Aggregate;
+  /** fetch data from the table: "stampNft" using primary key columns */
+  stampNft_by_pk?: Maybe<StampNft>;
+  /** fetch data from the table in a streaming manner: "stampNft" */
+  stampNft_stream: Array<StampNft>;
   /** fetch data from the table: "stripeCheckoutSession" */
   stripeCheckoutSession: Array<StripeCheckoutSession>;
   /** fetch data from the table: "stripeCheckoutSessionType" */
@@ -21668,6 +28028,66 @@ export type Subscription_RootAccount_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Account_Stream_Cursor_Input>>;
   where?: InputMaybe<Account_Bool_Exp>;
+};
+
+
+export type Subscription_RootApiKeyStatusArgs = {
+  distinct_on?: InputMaybe<Array<ApiKeyStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ApiKeyStatus_Order_By>>;
+  where?: InputMaybe<ApiKeyStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootApiKeyStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ApiKeyStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ApiKeyStatus_Order_By>>;
+  where?: InputMaybe<ApiKeyStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootApiKeyStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootApiKeyStatus_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<ApiKeyStatus_Stream_Cursor_Input>>;
+  where?: InputMaybe<ApiKeyStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootApiKeyTypeArgs = {
+  distinct_on?: InputMaybe<Array<ApiKeyType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ApiKeyType_Order_By>>;
+  where?: InputMaybe<ApiKeyType_Bool_Exp>;
+};
+
+
+export type Subscription_RootApiKeyType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ApiKeyType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ApiKeyType_Order_By>>;
+  where?: InputMaybe<ApiKeyType_Bool_Exp>;
+};
+
+
+export type Subscription_RootApiKeyType_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootApiKeyType_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<ApiKeyType_Stream_Cursor_Input>>;
+  where?: InputMaybe<ApiKeyType_Bool_Exp>;
 };
 
 
@@ -22182,6 +28602,126 @@ export type Subscription_RootLotteryStatus_StreamArgs = {
 };
 
 
+export type Subscription_RootLoyaltyCardNftArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardNft_Order_By>>;
+  where?: InputMaybe<LoyaltyCardNft_Bool_Exp>;
+};
+
+
+export type Subscription_RootLoyaltyCardNftContractArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardNftContract_Order_By>>;
+  where?: InputMaybe<LoyaltyCardNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootLoyaltyCardNftContract_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardNftContract_Order_By>>;
+  where?: InputMaybe<LoyaltyCardNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootLoyaltyCardNftContract_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootLoyaltyCardNftContract_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<LoyaltyCardNftContract_Stream_Cursor_Input>>;
+  where?: InputMaybe<LoyaltyCardNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootLoyaltyCardNft_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardNft_Order_By>>;
+  where?: InputMaybe<LoyaltyCardNft_Bool_Exp>;
+};
+
+
+export type Subscription_RootLoyaltyCardNft_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootLoyaltyCardNft_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<LoyaltyCardNft_Stream_Cursor_Input>>;
+  where?: InputMaybe<LoyaltyCardNft_Bool_Exp>;
+};
+
+
+export type Subscription_RootLoyaltyCardParametersArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardParameters_Order_By>>;
+  where?: InputMaybe<LoyaltyCardParameters_Bool_Exp>;
+};
+
+
+export type Subscription_RootLoyaltyCardParameters_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardParameters_Order_By>>;
+  where?: InputMaybe<LoyaltyCardParameters_Bool_Exp>;
+};
+
+
+export type Subscription_RootLoyaltyCardParameters_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootLoyaltyCardParameters_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<LoyaltyCardParameters_Stream_Cursor_Input>>;
+  where?: InputMaybe<LoyaltyCardParameters_Bool_Exp>;
+};
+
+
+export type Subscription_RootLoyaltyCardStatusArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardStatus_Order_By>>;
+  where?: InputMaybe<LoyaltyCardStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootLoyaltyCardStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LoyaltyCardStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LoyaltyCardStatus_Order_By>>;
+  where?: InputMaybe<LoyaltyCardStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootLoyaltyCardStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootLoyaltyCardStatus_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<LoyaltyCardStatus_Stream_Cursor_Input>>;
+  where?: InputMaybe<LoyaltyCardStatus_Bool_Exp>;
+};
+
+
 export type Subscription_RootMinterTemporaryWalletArgs = {
   distinct_on?: InputMaybe<Array<MinterTemporaryWallet_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -22209,6 +28749,66 @@ export type Subscription_RootMinterTemporaryWallet_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<MinterTemporaryWallet_Stream_Cursor_Input>>;
   where?: InputMaybe<MinterTemporaryWallet_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftMintPasswordArgs = {
+  distinct_on?: InputMaybe<Array<NftMintPassword_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NftMintPassword_Order_By>>;
+  where?: InputMaybe<NftMintPassword_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftMintPassword_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftMintPassword_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NftMintPassword_Order_By>>;
+  where?: InputMaybe<NftMintPassword_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftMintPassword_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootNftMintPassword_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<NftMintPassword_Stream_Cursor_Input>>;
+  where?: InputMaybe<NftMintPassword_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftStatusArgs = {
+  distinct_on?: InputMaybe<Array<NftStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NftStatus_Order_By>>;
+  where?: InputMaybe<NftStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<NftStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<NftStatus_Order_By>>;
+  where?: InputMaybe<NftStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootNftStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootNftStatus_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<NftStatus_Stream_Cursor_Input>>;
+  where?: InputMaybe<NftStatus_Bool_Exp>;
 };
 
 
@@ -22544,6 +29144,36 @@ export type Subscription_RootPendingOrder_StreamArgs = {
 };
 
 
+export type Subscription_RootPublishableApiKeyArgs = {
+  distinct_on?: InputMaybe<Array<PublishableApiKey_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<PublishableApiKey_Order_By>>;
+  where?: InputMaybe<PublishableApiKey_Bool_Exp>;
+};
+
+
+export type Subscription_RootPublishableApiKey_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<PublishableApiKey_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<PublishableApiKey_Order_By>>;
+  where?: InputMaybe<PublishableApiKey_Bool_Exp>;
+};
+
+
+export type Subscription_RootPublishableApiKey_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootPublishableApiKey_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<PublishableApiKey_Stream_Cursor_Input>>;
+  where?: InputMaybe<PublishableApiKey_Bool_Exp>;
+};
+
+
 export type Subscription_RootRoleAssignmentArgs = {
   distinct_on?: InputMaybe<Array<RoleAssignment_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -22596,6 +29226,217 @@ export type Subscription_RootRoles_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Roles_Stream_Cursor_Input>>;
   where?: InputMaybe<Roles_Bool_Exp>;
+};
+
+
+export type Subscription_RootSecretApiKeyArgs = {
+  distinct_on?: InputMaybe<Array<SecretApiKey_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<SecretApiKey_Order_By>>;
+  where?: InputMaybe<SecretApiKey_Bool_Exp>;
+};
+
+
+export type Subscription_RootSecretApiKey_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<SecretApiKey_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<SecretApiKey_Order_By>>;
+  where?: InputMaybe<SecretApiKey_Bool_Exp>;
+};
+
+
+export type Subscription_RootSecretApiKey_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootSecretApiKey_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<SecretApiKey_Stream_Cursor_Input>>;
+  where?: InputMaybe<SecretApiKey_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyCampaignParametersArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCampaignParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCampaignParameters_Order_By>>;
+  where?: InputMaybe<ShopifyCampaignParameters_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyCampaignParameters_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCampaignParameters_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCampaignParameters_Order_By>>;
+  where?: InputMaybe<ShopifyCampaignParameters_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyCampaignParameters_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootShopifyCampaignParameters_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<ShopifyCampaignParameters_Stream_Cursor_Input>>;
+  where?: InputMaybe<ShopifyCampaignParameters_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyCampaignStatusArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCampaignStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCampaignStatus_Order_By>>;
+  where?: InputMaybe<ShopifyCampaignStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyCampaignStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCampaignStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCampaignStatus_Order_By>>;
+  where?: InputMaybe<ShopifyCampaignStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyCampaignStatus_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootShopifyCampaignStatus_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<ShopifyCampaignStatus_Stream_Cursor_Input>>;
+  where?: InputMaybe<ShopifyCampaignStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNftArgs = {
+  distinct_on?: InputMaybe<Array<StampNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNft_Order_By>>;
+  where?: InputMaybe<StampNft_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNftContractArgs = {
+  distinct_on?: InputMaybe<Array<StampNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftContract_Order_By>>;
+  where?: InputMaybe<StampNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNftContractTypeArgs = {
+  distinct_on?: InputMaybe<Array<StampNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftContractType_Order_By>>;
+  where?: InputMaybe<StampNftContractType_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNftContractType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StampNftContractType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftContractType_Order_By>>;
+  where?: InputMaybe<StampNftContractType_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNftContractType_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootStampNftContractType_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<StampNftContractType_Stream_Cursor_Input>>;
+  where?: InputMaybe<StampNftContractType_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNftContract_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StampNftContract_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftContract_Order_By>>;
+  where?: InputMaybe<StampNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNftContract_By_PkArgs = {
+  chainId: Scalars['String']['input'];
+  contractAddress: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootStampNftContract_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<StampNftContract_Stream_Cursor_Input>>;
+  where?: InputMaybe<StampNftContract_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNftSupplyArgs = {
+  distinct_on?: InputMaybe<Array<StampNftSupply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftSupply_Order_By>>;
+  where?: InputMaybe<StampNftSupply_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNftSupply_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StampNftSupply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNftSupply_Order_By>>;
+  where?: InputMaybe<StampNftSupply_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNftSupply_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootStampNftSupply_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<StampNftSupply_Stream_Cursor_Input>>;
+  where?: InputMaybe<StampNftSupply_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNft_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<StampNft_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<StampNft_Order_By>>;
+  where?: InputMaybe<StampNft_Bool_Exp>;
+};
+
+
+export type Subscription_RootStampNft_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootStampNft_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<StampNft_Stream_Cursor_Input>>;
+  where?: InputMaybe<StampNft_Bool_Exp>;
 };
 
 

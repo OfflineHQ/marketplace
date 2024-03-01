@@ -7,6 +7,7 @@ import {
   deleteAllTables,
   updateObjects,
 } from '@test-utils/db';
+import { utcToZonedTime } from 'date-fns-tz';
 import { loadAccount } from './utils/loadAccount';
 
 let client: PgClient;
@@ -33,7 +34,7 @@ test.beforeEach(async () => {
     'passPricing',
     'eventParameters',
   ]);
-  const currentDate = new Date();
+  const currentDate = utcToZonedTime(new Date(), 'Europe/London');
   // set the event to be isSaleOnGoing = true
   await updateObjects(
     client,

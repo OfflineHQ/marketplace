@@ -58,6 +58,7 @@ export const SiweProvider = () =>
             // here mean user is already registered to sumsub so need to get the user data from sumsub
             if (
               appUser?.kyc?.applicantId &&
+              !appUser.kyc.applicantId.includes('fake-') && // here mean it's a test account so no need to get the data from sumsub
               appUser.kyc.reviewStatus === KycStatus_Enum.Completed
             ) {
               const sumsubData = await getSumSubApplicantPersonalData(

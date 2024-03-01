@@ -22,11 +22,11 @@ query GetEventPassNftContractDelayedRevealPassword($contractAddress: String)
   }
 }
 
-query GetEventPassNftContractNfts($eventPassId: String) @cached {
+query GetEventPassNftContractNftsLazyMinted($eventPassId: String) @cached {
   eventPassNftContract(where: { eventPassId: { _eq: $eventPassId } }) {
     contractAddress
     eventPassId
-    eventPassNfts {
+    eventPassNfts(where: { status: { _eq: LAZY_MINTED } }) {
       id
       packId
       currentOwnerAddress
@@ -34,6 +34,7 @@ query GetEventPassNftContractNfts($eventPassId: String) @cached {
       eventId
       tokenId
       eventPassId
+      status
     }
   }
 }

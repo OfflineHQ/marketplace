@@ -1,0 +1,36 @@
+table:
+  name: loyaltyCardNftContract
+  schema: public
+object_relationships:
+  - name: loyaltyCardParameter
+    using:
+      manual_configuration:
+        column_mapping:
+          loyaltyCardId: loyaltyCardId
+        insertion_order: null
+        remote_table:
+          name: loyaltyCardParameters
+          schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - loyaltyCardId
+        remote_field:
+          loyaltyCard:
+            arguments:
+              where:
+                id: $loyaltyCardId
+        remote_schema: Hygraph CMS Remote Schema
+    name: loyaltyCard
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - organizerId
+        remote_field:
+          organizer:
+            arguments:
+              where:
+                id: $organizerId
+        remote_schema: Hygraph CMS Remote Schema
+    name: organizer

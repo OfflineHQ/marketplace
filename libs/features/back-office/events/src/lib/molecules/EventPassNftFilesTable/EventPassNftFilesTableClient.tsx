@@ -24,12 +24,10 @@ import { Delete, Download, SeeDetails } from '@ui/icons';
 import { cn } from '@ui/shared';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
-import {
-  DuplicatesType,
-  checkEventPassNftFilesHash,
-} from '../../actions/checkEventPassFilesHash';
+import { checkEventPassNftFilesHash } from '../../actions/checkEventPassFilesHash';
 import { deleteEventPassFile } from '../../actions/deleteEventPassFile';
 import { deleteEventPassFiles } from '../../actions/deleteEventPassFiles';
+import { DuplicatesType } from '../../actions/types';
 import { EventPassFilesUploader } from '../EventPassFilesUploader/EventPassFilesUploader';
 
 export interface EventPassNftFilesTableClientProps
@@ -207,13 +205,14 @@ export function EventPassNftFilesTableClient({
   ]);
 
   useEffect(() => {
-    if (data) {
-      checkEventPassNftFilesHash({
-        filesPath: data.map((file) => file.filePath),
-        organizerId,
-        eventId,
-        eventPassId,
-      }).then((duplicates) => {
+    async function fetchDuplicates() {
+      if (data) {
+        const duplicates = await checkEventPassNftFilesHash({
+          filesPath: data.map((file) => file.filePath),
+          organizerId,
+          eventId,
+          eventPassId,
+        });
         if (duplicates.length > 0) {
           setDuplicates(duplicates);
           const newSelection: RowSelectionState = {};
@@ -226,9 +225,13 @@ export function EventPassNftFilesTableClient({
             });
           });
           setInitialRowSelection(newSelection);
-        } else setDuplicates([]);
-      });
+        } else {
+          setDuplicates([]);
+        }
+      }
     }
+
+    fetchDuplicates();
   }, [data, organizerId, eventId, eventPassId]);
 
   if (data.length === 0) return null;
