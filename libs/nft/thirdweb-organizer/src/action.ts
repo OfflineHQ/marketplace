@@ -22,9 +22,11 @@ import type {
   PackNftContract_Insert_Input,
 } from '@gql/shared/types';
 import { Locale, Stage } from '@gql/shared/types';
+import { isUserKycValidated } from '@kyc/common';
 import { defaultLocale } from '@next/i18n';
+import { getCurrentUser } from '@next/next-auth/user';
 import { ContractType } from '@nft/types';
-import { ThirdwebSDK } from '@thirdweb-dev/sdk';
+import { NFTMetadata, ThirdwebSDK } from '@thirdweb-dev/sdk';
 
 export async function createEventPassNftContract(
   object: EventPassNftContract_Insert_Input,
@@ -170,4 +172,64 @@ export async function saveRevealIntoDb(contractAddress: string) {
       `Error saving the reveal status into the database for address ${contractAddress} : ${e.message}`,
     );
   }
+}
+
+async function prepareLoyaltyCardAction(
+  eventPassId: string,
+  sdk: ThirdwebSDK,
+): Promise<{ userAddress: string; contract: any }> {
+  const user = await getCurrentUser();
+
+  if (!user.kyc) throw new Error(`User ${user.id} has no kyc`);
+  if (!isUserKycValidated(user))
+    throw new Error(`User ${user.id} kyc is not validated`);
+
+  const eventPassNftContractData = (
+    await adminSdk.GetContractAddressFromEventPassId({ eventPassId })
+  ).eventPassNftContract[0];
+
+  if (!eventPassNftContractData || !eventPassNftContractData.contractAddress) {
+    throw new Error(
+      `No contract address found for event pass ID: ${eventPassId}`,
+    );
+  }
+
+  const contract = await sdk.getContract(
+    eventPassNftContractData.contractAddress,
+  );
+
+  return { userAddress: user.address, contract };
+}
+
+export async function loyaltyCardMintTo(
+  eventPassId: string,
+  metadata: NFTMetadata,
+  sdk: ThirdwebSDK,
+) {
+  const { userAddress, contract } = await prepareLoyaltyCardAction(
+    eventPassId,
+    sdk,
+  );
+  return contract.erc721.mintTo(userAddress, metadata);
+}
+
+export async function loyaltyCardSignatureMint(
+  eventPassId: string,
+  metadata: NFTMetadata,
+  sdk: ThirdwebSDK,
+) {
+  const { userAddress, contract } = await prepareLoyaltyCardAction(
+    eventPassId,
+    sdk,
+  );
+  const startTime = new Date();
+  const endTime = new Date(Date.now() + 10 * 60 * 1000);
+  const payload = {
+    metadata: metadata,
+    to: userAddress,
+    quantity: 1,
+    mintStartTime: startTime,
+    mintEndTime: endTime,
+  };
+  return contract.erc721.signature.generate(payload);
 }

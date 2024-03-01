@@ -12513,6 +12513,9 @@ type query_root {
 
   """Fetches an object given its ID"""
   entities(
+    """Defines which locales to query for"""
+    locales: [Locale!]
+
     """The where parameters to query components"""
     where: [EntityWhereInput!]!
   ): [Entity!]
