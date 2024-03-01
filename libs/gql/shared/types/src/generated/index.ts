@@ -8592,7 +8592,8 @@ export const enum EventPassNftContractType_Constraint {
 
 export const enum EventPassNftContractType_Enum {
   DelayedReveal = 'delayed_reveal',
-  Normal = 'normal'
+  Normal = 'normal',
+  LoyaltyCard = 'loyalty_card',
 };
 
 /** Boolean expression to compare columns of type "eventPassNftContractType_enum". All fields are combined with logical 'AND'. */
@@ -19308,6 +19309,7 @@ export type Query_RootCurrency_By_PkArgs = {
 
 
 export type Query_RootEntitiesArgs = {
+  locales?: InputMaybe<Array<Locale>>;
   where: Array<EntityWhereInput>;
 };
 

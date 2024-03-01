@@ -73684,6 +73684,26 @@
             "description": "Fetches an object given its ID",
             "args": [
               {
+                "name": "locales",
+                "description": "Defines which locales to query for",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "Locale",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "where",
                 "description": "The where parameters to query components",
                 "type": {

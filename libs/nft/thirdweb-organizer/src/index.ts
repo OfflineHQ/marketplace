@@ -142,6 +142,9 @@ export class NftCollection {
         case EventPassNftContractType_Enum.DelayedReveal:
           await this.deployDelayedRevealCollection(commonProps);
           break;
+        case EventPassNftContractType_Enum.LoyaltyCard:
+          await this.deployLoyaltyCardCollection(commonProps);
+          break;
         default:
           throw new CollectionDeploymentError(
             new Error(
@@ -515,6 +518,33 @@ export class NftCollection {
         throw new Error(
           `Error revealing the delayed contract at address ${contractAddress} : ${error}`,
         );
+    }
+  }
+
+  async deployLoyaltyCardCollection(props: CommonProps) {
+    const { name, address, passAmount } = props;
+
+    try {
+      const contractAddress = await this.sdk.deployer.deployBuiltInContract(
+        ContractType.LOYALTY_CARD,
+        {
+          name,
+          primary_sale_recipient: address,
+          platform_fee_recipient: address,
+          voting_token_address: address,
+        },
+      );
+      const txResult = contractAddress.toLowerCase();
+      return this.getContractWithClaimConditions(
+        txResult,
+        passAmount.maxAmount,
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(
+          `Error deploying a loyalty card collection : ${error.message}`,
+        );
+      } else throw new Error(error);
     }
   }
 }

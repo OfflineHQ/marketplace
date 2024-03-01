@@ -39,6 +39,7 @@ export type OrderWithContractData =
 export enum ContractType {
   NFT_DROP = 'nft-drop',
   PACK = 'pack',
+  LOYALTY_CARD = 'loyalty-card',
 }
 
 export type EventSmallData = Omit<
