@@ -62,6 +62,7 @@ declare module '@env/server' {
     POSTHOG_KEY: string;
     POSTHOG_PERSONAL_API_KEY: string;
     COMETH_CONNECT_API_KEY: string;
+    API_SECRET_ENCRYPTION_KEY: string;
   };
   export default env;
 }

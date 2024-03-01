@@ -1,0 +1,30 @@
+{
+  "name": "nft-thirdweb-organizer-common",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nft/thirdweb-organizer-common/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/nft/thirdweb-organizer-common",
+        "main": "libs/nft/thirdweb-organizer-common/src/index.ts",
+        "tsConfig": "libs/nft/thirdweb-organizer-common/tsconfig.lib.json",
+        "assets": ["libs/nft/thirdweb-organizer-common/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/nft/thirdweb-organizer-common/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

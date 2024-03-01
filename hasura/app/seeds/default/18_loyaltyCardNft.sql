@@ -1,0 +1,6 @@
+INSERT INTO public."loyaltyCardNft"("contractAddress", "tokenId", "metadata", "error", "tokenUri", "chainId", "loyaltyCardId", "organizerId", "ownerAddress", "status", "created_at", "updated_at")
+VALUES 
+('0xLoyaltyCardActivityContractAddress', 1, '{"name": "Loyalty Card NFT #1", "description": "First NFT"}', NULL, 'ipfs://example1', '5', 'test-loyalty-card-activity', 'organizerId1', '0xOwnerAddress1', 'CONFIRMED', '2023-01-01T00:00:00.000Z', '2023-01-01T00:00:00.000Z'),
+('0xLoyaltyCardActivityContractAddress', 2, '{"name": "Loyalty Card NFT #2", "description": "Second NFT"}', NULL, 'ipfs://example2', '5', 'test-loyalty-card-activity', 'organizerId1', '0xOwnerAddress2', 'CONFIRMED', '2023-01-02T00:00:00.000Z', '2023-01-02T00:00:00.000Z'),
+('0xNewContractAddress1', 3, '{"name": "Loyalty Card NFT #3", "description": "Third NFT"}', NULL, 'ipfs://example3', '5', 'test-loyalty-card-activity-2', 'organizerId2', '0xOwnerAddress3', 'CONFIRMED', '2023-01-03T00:00:00.000Z', '2023-01-03T00:00:00.000Z'),
+('0xNewContractAddress2', 4, '{"name": "Loyalty Card NFT #4", "description": "Fourth NFT"}', NULL, 'ipfs://example4', '5', 'test-loyalty-card-activity-3', 'organizerId3', '0xOwnerAddress4', 'CONFIRMED', '2023-01-04T00:00:00.000Z', '2023-01-04T00:00:00.000Z');

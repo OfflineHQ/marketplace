@@ -11,7 +11,7 @@ import handler from './index';
 
 jest.mock('@nft/thirdweb-admin', () => ({
   NftClaimable: jest.fn().mockImplementation(() => ({
-    multicallClaim: jest.fn().mockResolvedValueOnce({ success: true }), // Assuming multicallClaim is async
+    multicallClaim: jest.fn().mockResolvedValueOnce({ success: true }),
   })),
 }));
 

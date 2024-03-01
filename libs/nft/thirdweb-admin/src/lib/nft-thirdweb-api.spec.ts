@@ -50,9 +50,6 @@ describe('NftClaimable integration test', () => {
   beforeEach(async () => {
     nftClaimable = new NftClaimable();
 
-    // Assuming ThirdwebSDK is already mocked above, no need to mock getContract here
-    // as it's being mocked in the ThirdwebSDK mock implementation
-
     const resOrders = await adminSdk.GetOrdersWithClaimInfo({
       ids: ['1e8b9aea-1b0a-4a05-803b-c72d0b46e9a2'],
     });
@@ -80,5 +77,12 @@ describe('NftClaimable integration test', () => {
     updatedOrders.order.forEach((order) => {
       expect(order.status).toBe(OrderStatus_Enum.Completed);
     });
+  });
+
+  it('should throw an error when there are no orders', async () => {
+    const emptyOrders = [];
+    await expect(
+      nftClaimable.multicallClaim(minterWallet, emptyOrders),
+    ).rejects.toThrow('No orders found or eventPassNftContract is undefined');
   });
 });

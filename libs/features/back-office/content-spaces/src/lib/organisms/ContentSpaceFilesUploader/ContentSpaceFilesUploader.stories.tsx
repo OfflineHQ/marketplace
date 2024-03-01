@@ -1,11 +1,10 @@
 import * as uploaderProvider from '@next/uploader-provider';
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/react';
 import * as nextIntl from 'next-intl';
 import * as getPass from '../../actions/getContentSpaceFiles';
 
 import * as walletProvider from '@next/wallet';
-import { screen, userEvent } from '@storybook/test';
+import { expect, screen, userEvent } from '@storybook/test';
 import { SessionDecorator } from '@test-utils/storybook-decorators';
 import { createMock, getMock } from 'storybook-addon-module-mock';
 import { contentSpaceFiles } from '../ContentSpaceFilesTable/examples';

@@ -1,0 +1,23 @@
+query GetMinterTemporaryWalletByEventPassId($eventPassId: String!) {
+  minterTemporaryWallet(where: { eventPassId: { _eq: $eventPassId } }) {
+    address
+    privateKey
+    eventPassId
+  }
+}
+
+query GetMinterTemporaryWalletByLoyaltyCardId($loyaltyCardId: String!) {
+  minterTemporaryWallet(where: { loyaltyCardId: { _eq: $loyaltyCardId } }) {
+    address
+    privateKey
+    loyaltyCardId
+  }
+}
+
+query GetMinterTemporaryWalletByCampaignId($campaignId: String!) {
+  minterTemporaryWallet(where: { campaignId: { _eq: $campaignId } }) {
+    address
+    privateKey
+    campaignId
+  }
+}

@@ -47,7 +47,7 @@ export class Kyc {
 
     const signature = getHmacDigestFromString({
       secret: this.secretKey,
-      string: stringToSign,
+      body: stringToSign,
     });
     return {
       'X-App-Token': this.appToken,

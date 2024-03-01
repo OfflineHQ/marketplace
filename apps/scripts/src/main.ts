@@ -35,6 +35,7 @@ export const giveRoleForTest = async (
       {
         applicantId: `fake-${Math.floor(Math.random() * 10000)}`,
         externalUserId: account.id,
+        createDate: new Date(),
         reviewStatus: KycStatus_Enum.Completed,
         levelName: KycLevelName_Enum.AdvancedKycLevel,
       },
@@ -52,7 +53,7 @@ export const giveRoleForTest = async (
 
 // Assuming the first argument is the address, the second is the role, and the third is the organizerId
 console.log(process.argv);
-const address = process.argv[2];
+const address = process.argv[2].toLowerCase();
 const role = process.argv[3] as Roles_Enum;
 const organizerId = process.argv[4];
 

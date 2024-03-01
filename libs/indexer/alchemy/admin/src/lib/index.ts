@@ -57,6 +57,10 @@ const networkToChainIdMap: { [key in Network | string]?: string } = {
   POLYGONZKEVM_MAINNET: '1101',
   [Network.POLYGONZKEVM_TESTNET]: '1442',
   POLYGONZKEVM_TESTNET: '1442',
+  [Network.BASE_SEPOLIA]: '84532',
+  BASE_SEPOLIA: '84532',
+  [Network.MATIC_AMOY]: '80002',
+  MATIC_AMOY: '80002',
 };
 
 // Helper function to fetch all pages concurrently
@@ -127,6 +131,13 @@ export class AlchemyWrapper {
       case '80001':
         network = Network.MATIC_MUMBAI;
         break;
+      case '80002':
+        network = Network.MATIC_AMOY;
+        break;
+      case '84532':
+        network = Network.BASE_SEPOLIA;
+        break;
+
       default:
         throw new Error(`Unsupported network: ${env.CHAIN}`);
     }
@@ -288,10 +299,31 @@ export class AlchemyWrapper {
     }
   }
 
-  async addAddressNftActivityWebhook(
-    webhookId: string,
-    addresses: NftFilter[],
+  // https://docs.alchemy.com/reference/nft-metadata-updates-webhook
+  async createNftMetadataUpdateWebhook(
+    webhookUrl: string,
+    filters: NftWebhookParams['filters'],
   ) {
+    const params = {
+      network: this.network,
+      filters,
+    } satisfies NftWebhookParams;
+    try {
+      return await this.alchemy.notify.createWebhook(
+        webhookUrl,
+        WebhookType.NFT_METADATA_UPDATE,
+        params,
+      );
+    } catch (error) {
+      console.error(
+        `Creating NFT metadata update webhook failed: ${error.message}`,
+        error,
+      );
+      throw error;
+    }
+  }
+
+  async addContractAddressToWebhook(webhookId: string, addresses: NftFilter[]) {
     try {
       return await this.alchemy.notify.updateWebhook(webhookId, {
         addFilters: addresses,
@@ -306,7 +338,7 @@ export class AlchemyWrapper {
     }
   }
 
-  async deleteNftActivityWebhook(webhookId: string): Promise<void> {
+  async deleteWebhook(webhookId: string): Promise<void> {
     try {
       await this.alchemy.notify.deleteWebhook(webhookId);
     } catch (error) {

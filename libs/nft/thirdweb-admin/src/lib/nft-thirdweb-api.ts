@@ -11,10 +11,12 @@ import { OrderStatus_Enum } from '@gql/shared/types';
 import { NextRedis } from '@next/redis';
 import { OrderWithContractData } from '@nft/types';
 import {
+  BaseSepoliaTestnet,
   Ethereum,
   Goerli,
   Mumbai,
   Polygon,
+  PolygonAmoyTestnet,
   Sepolia,
 } from '@thirdweb-dev/chains';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
@@ -31,6 +33,10 @@ function convertChainIdToThirdwebChain(chainId: string) {
       return Mumbai;
     case '137':
       return Polygon;
+    case '84532':
+      return BaseSepoliaTestnet;
+    case '80002':
+      return PolygonAmoyTestnet;
     default:
       throw new Error(`Unsupported chainId: ${chainId}`);
   }
@@ -176,6 +182,7 @@ export class NftClaimable {
     }
   }
 
+  // deprecated
   async claimOrder(
     this: NftClaimable,
     order: OrderWithContractData,
