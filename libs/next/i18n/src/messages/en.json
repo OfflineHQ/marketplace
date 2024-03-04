@@ -465,5 +465,11 @@
         "header-download": "Download the file"
       }
     }
+  },
+  "Shopify": {
+    "CardHeader": {
+      "unlock-with-your-offkey-title": "Unlock with your ",
+      "unlock-with-your-offkey-description": "To unlock this product you need the key"
+    }
   }
 }
