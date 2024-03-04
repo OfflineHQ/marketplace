@@ -20,20 +20,6 @@ export const Auth: React.FC = () => {
   } = useWalletAuth();
   const { walletConnected, wcUri, autoConnectAddress } = useWalletContext();
   const [isVerifyEmail, setIsVerifyEmail] = useState(false);
-  // const searchParams = useSearchParams();
-  // const wcUri = searchParams.get('wcUri');
-  // let autoConnectAddress = searchParams.get('address');
-  // if (
-  //   autoConnectAddress &&
-  //   !walletInStorage?.find((w) => w.address === autoConnectAddress)
-  // ) {
-  //   console.warn(`Address "${autoConnectAddress}" not found in storage`);
-  //   console.log({ walletInStorage });
-  //   autoConnectAddress = '';
-  // }
-
-  // console.log('wcUri', wcUri);
-
   const connectWalletMutation = useMutation({
     mutationFn: (newWallet: string) => connect(newWallet),
     onSuccess: () => {
@@ -43,13 +29,14 @@ export const Auth: React.FC = () => {
       // Handle connection error
     },
   });
+  console.log({ wallet });
 
   useEffect(() => {
     console.log({
       autoConnectAddress,
       walletConnected,
     });
-    const walletToConnect = autoConnectAddress || walletConnected; // Or derive this value as needed
+    const walletToConnect = autoConnectAddress || walletConnected;
     if (
       walletToConnect &&
       isReady &&
@@ -67,7 +54,6 @@ export const Auth: React.FC = () => {
   ]);
   return (
     <div className="flex flex-col items-center justify-center space-y-4">
-      <h1 className="text-4xl font-bold">Auth</h1>
       <div>
         <p>Connecting: {isConnecting ? 'true' : 'false'}</p>
         <p>

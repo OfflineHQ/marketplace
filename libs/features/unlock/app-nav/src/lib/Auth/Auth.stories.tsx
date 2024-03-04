@@ -1,4 +1,3 @@
-import * as kycApi from '@features/kyc-actions';
 import * as walletApi from '@next/wallet';
 import { expect, screen } from '@storybook/test';
 // import * as walletHook from '@next/wallet';
@@ -7,11 +6,9 @@ import {
   ReactQueryDecorator,
   ToasterDecorator,
 } from '@test-utils/storybook-decorators';
-import * as nextAuth from 'next-auth/react';
-import * as nextIntl from 'next-intl';
-import { createMock, getMock } from 'storybook-addon-module-mock';
+import { getMock } from 'storybook-addon-module-mock';
 import { Auth } from './Auth';
-import { AuthExample } from './examples';
+import { AuthExample, authMocks } from './examples';
 
 const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
 
@@ -23,60 +20,31 @@ const meta = {
     layout: 'fullscreen',
     chromatic: { disableSnapshot: true },
     moduleMock: {
-      mock: () => {
-        const mockSignIn = createMock(nextAuth, 'signIn');
-        mockSignIn.mockReturnValue({ error: null });
-        const mockSignOut = createMock(nextAuth, 'signOut');
-        mockSignOut.mockReturnValue({});
-        const mockWallet = createMock(walletApi, 'useWalletAuth');
-
-        mockWallet.mockReturnValue({
-          connect: () => Promise.resolve(),
-          disconnect: () => Promise.resolve(),
-          wallet: {
-            getAddress: () => address,
-            connected: true,
+      mock: () =>
+        authMocks({
+          walletAuthMocks: {
+            connect: () => Promise.resolve(),
+            disconnect: () => Promise.resolve(),
+            wallet: {
+              getAddress: () => address,
+              connected: true,
+            },
+            isReady: true,
+            isConnecting: false,
           },
-        });
-        const mockWalletContext = createMock(walletApi, 'useWalletContext');
-        mockWalletContext.mockReturnValue({
-          walletConnected: address,
-          wcUri: 'wc:fake',
-          autoConnectAddress: '',
-        });
-        const mockWalletConnect = createMock(walletApi, 'useWalletConnect');
-        mockWalletConnect.mockReturnValue({
-          initializeWalletConnect: () => Promise.resolve(),
-          connectToDapp: () => Promise.resolve(),
-          isReady: true,
-          loading: false,
-          isLoadingApprove: false,
-        });
-        const mockInitKyc = createMock(kycApi, 'initKyc');
-        mockInitKyc.mockReturnValue({
-          user: {},
-          accessToken: 'accessToken',
-        });
-        const mockApplicantStatusChanged = createMock(
-          kycApi,
-          'handleApplicantStatusChanged',
-        );
-        mockApplicantStatusChanged.mockReturnValue(false);
-        const mockIntl = createMock(nextIntl, 'useLocale');
-        mockIntl.mockReturnValue('en');
-        return [
-          // comethWallet,
-          // connectAdaptor,
-          mockSignIn,
-          mockSignOut,
-          mockIntl,
-          mockInitKyc,
-          mockApplicantStatusChanged,
-          mockWallet,
-          mockWalletContext,
-          mockWalletConnect,
-        ];
-      },
+          walletConnectMocks: {
+            initializeWalletConnect: () => Promise.resolve(),
+            connectToDapp: () => Promise.resolve(),
+            isReady: true,
+            loading: false,
+            isLoadingApprove: false,
+          },
+          walletContextMocks: {
+            walletConnected: address,
+            wcUri: 'wc:fake',
+            autoConnectAddress: '',
+          },
+        }),
     },
   },
 } satisfies Meta<typeof Auth>;
@@ -114,5 +82,41 @@ export const UserConnectedNoWalletConnect: Story = {
     // mockWalletConnect.mockResolvedValueOnce({
 
     // })
+  },
+};
+
+export const UserCreateAccount: Story = {
+  parameters: {
+    moduleMock: {
+      mock: () =>
+        authMocks({
+          walletAuthMocks: {
+            connect: () => Promise.resolve(),
+            disconnect: () => Promise.resolve(),
+            wallet: null,
+            isReady: true,
+            isConnecting: false,
+          },
+          walletConnectMocks: {
+            initializeWalletConnect: () => Promise.resolve(),
+            connectToDapp: () => Promise.resolve(),
+            isReady: true,
+            loading: false,
+            isLoadingApprove: false,
+          },
+          walletContextMocks: {
+            walletConnected: '',
+            wcUri: 'wc:fake',
+            autoConnectAddress: '',
+          },
+        }),
+    },
+  },
+  play: async ({ parameters }) => {
+    expect(
+      screen.queryByRole('button', {
+        name: /Create account/i,
+      }),
+    ).toBeInTheDocument();
   },
 };
