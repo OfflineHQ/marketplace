@@ -74,7 +74,6 @@ export function WalletProvider({
       return;
     } else {
       const keysInStorage = Object.keys(localStorage);
-      console.log('keysInStorage', keysInStorage);
       for (const key of keysInStorage) {
         if (key.startsWith('cometh-connect')) {
           const keyParts = key.split('-');
