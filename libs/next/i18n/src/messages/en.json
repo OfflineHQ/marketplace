@@ -472,7 +472,16 @@
       "unlock-with-your-offkey-description": "To unlock this product you need the key"
     },
     "Profile": {
-      "my-account": "My Account"
+      "my-account": "My Account",
+      "view-account": "View Account",
+      "verify-email": "Verify my email",
+      "support": "Get support",
+      "sign-out": "Sign Out",
+      "sign-out-title": "You have been signed out",
+      "sign-out-description": "See you soon 👋 !",
+      "support-toast-title": "Coming soon",
+      "support-toast-description": "This feature is not available yet",
+      "verify-email-continue": "Continue"
     }
   }
 }
