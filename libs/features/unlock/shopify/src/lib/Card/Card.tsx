@@ -1,6 +1,6 @@
-import { Card, CardContent, CardFooter, CardHeader } from '@ui/components';
+import { Card, CardContent, CardFooter } from '@ui/components';
 
-interface ShopifyCardProps {
+export interface ShopifyCardProps {
   header: React.ReactNode;
   footer?: React.ReactNode;
   children: React.ReactNode;
@@ -11,9 +11,8 @@ export const ShopifyCard: React.FC<ShopifyCardProps> = ({
   children,
 }) => {
   return (
-    <Card>
+    <Card className="m-0.5 max-w-xl rounded-xl">
       {header}
-      <CardHeader>{header}</CardHeader>
       <CardContent>{children}</CardContent>
       {footer ? <CardFooter>{footer}</CardFooter> : null}
     </Card>

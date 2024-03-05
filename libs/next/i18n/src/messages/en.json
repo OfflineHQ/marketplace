@@ -470,6 +470,9 @@
     "CardHeader": {
       "unlock-with-your-offkey-title": "Unlock with your ",
       "unlock-with-your-offkey-description": "To unlock this product you need the key"
+    },
+    "Profile": {
+      "my-account": "My Account"
     }
   }
 }
