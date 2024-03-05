@@ -4,7 +4,11 @@ import env from '@env/client';
 import { ProfileAvatar } from '@features/app-nav';
 import { usePathname, useRouter } from '@next/navigation';
 import { AppUser } from '@next/types';
-import { useWalletAuth } from '@next/wallet';
+import {
+  useWalletAuth,
+  useWalletContext,
+  useWalletConnect,
+} from '@next/wallet';
 import {
   AutoAnimate,
   AvatarSkeleton,
@@ -20,11 +24,10 @@ import {
 import { LifeBuoy, LogOut, Settings, VerifyEmail } from '@ui/icons';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 
 export interface ShopifyProfileNavProps {
   user: AppUser;
-  isLoading?: boolean;
 }
 
 const VerifyEmailDynamic = dynamic(
@@ -34,23 +37,57 @@ const VerifyEmailDynamic = dynamic(
 
 export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   user,
-  isLoading,
 }) => {
   const t = useTranslations('Shopify.Profile');
   const { toast } = useToast();
   const {
-    connect,
     disconnect,
-    isReady,
+    isReady: isWalletReady,
     isConnecting,
     isConnected,
     provider,
     wallet,
     connectionError,
   } = useWalletAuth();
+  const {
+    initializeWalletConnect,
+    connectToDapp,
+    isReady,
+    isLoadingPairing,
+    isLoadingApprove,
+    isConnectedToDapp,
+  } = useWalletConnect({ address: user.address });
+  const { walletConnected, wcUri, autoConnectAddress } = useWalletContext();
   const [isVerifyEmail, setIsVerifyEmail] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (isConnected && isReady) initializeWalletConnect();
+  }, [initializeWalletConnect, isConnected, isReady]);
+
+  useEffect(() => {
+    if (wcUri && isReady) {
+      console.log('wcUri', wcUri, 'isReady', isReady);
+      connectToDapp(wcUri);
+    }
+  }, [wcUri, isReady, connectToDapp]);
+
+  useEffect(() => {
+    console.log({
+      autoConnectAddress,
+      walletConnected,
+    });
+    const walletToConnect = autoConnectAddress || walletConnected;
+    if (
+      walletToConnect &&
+      isReady &&
+      !wallet &&
+      !!(connectWalletMutation.status !== 'pending')
+    ) {
+      connectWalletMutation.mutate(walletToConnect);
+    }
+  }, [connectionError, walletConnected, isReady, wallet]);
 
   const signOutUserAction = useCallback(async () => {
     await disconnect();
@@ -123,7 +160,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     ],
     [user, signOutUserAction],
   );
-  return (
+  return isWalletReady ? (
     <>
       {isVerifyEmail && (
         <VerifyEmailDynamic
@@ -140,7 +177,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
             className="mb-1 mr-1 flex space-x-2 rounded-full py-1 pl-1 pr-2"
           >
             <AutoAnimate>
-              {isLoading ? (
+              {!isConnectedToDapp ? (
                 <Spinner
                   size="lg"
                   variant="ghost"
@@ -156,14 +193,16 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
         <DropdownMenuItems items={items} />
       </DropdownMenu>
     </>
+  ) : (
+    <ProfileNavSkeleton />
   );
 };
 
 export function ProfileNavSkeleton() {
   return (
-    <div className="relative inline-block items-center justify-center opacity-100 md:flex">
-      <AvatarSkeleton className="size-12 md:mx-5" />
-      <TextSkeleton className="mr-5 hidden md:flex" />
+    <div className="relative flex items-center justify-center opacity-100">
+      <AvatarSkeleton className="mx-3 size-9 md:size-10" />
+      <TextSkeleton className="mr-3 flex" />
     </div>
   );
 }
