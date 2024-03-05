@@ -1,6 +1,6 @@
-import { NextIntlClientProvider, useLocale } from 'next-intl';
+import { defaultLocale, messages, type Locale } from '@next/i18n';
 import { deepPick } from '@utils';
-import { messages, defaultLocale, type Locale } from '@next/i18n';
+import { NextIntlClientProvider, useLocale } from 'next-intl';
 import {
   RevealPassesDialogClient,
   type RevealPassesDialogClientProps,
