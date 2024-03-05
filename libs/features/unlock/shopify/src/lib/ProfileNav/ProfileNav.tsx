@@ -6,9 +6,10 @@ import { usePathname, useRouter } from '@next/navigation';
 import { AppUser } from '@next/types';
 import {
   useWalletAuth,
-  useWalletContext,
   useWalletConnect,
+  useWalletContext,
 } from '@next/wallet';
+import { useMutation } from '@tanstack/react-query';
 import {
   AutoAnimate,
   AvatarSkeleton,
@@ -21,10 +22,10 @@ import {
   TextSkeleton,
   useToast,
 } from '@ui/components';
-import { LifeBuoy, LogOut, Settings, VerifyEmail } from '@ui/icons';
+import { Key, LifeBuoy, LogOut, VerifyEmail } from '@ui/icons';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { useCallback, useMemo, useState, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export interface ShopifyProfileNavProps {
   user: AppUser;
@@ -41,6 +42,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   const t = useTranslations('Shopify.Profile');
   const { toast } = useToast();
   const {
+    connect,
     disconnect,
     isReady: isWalletReady,
     isConnecting,
@@ -61,6 +63,16 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   const [isVerifyEmail, setIsVerifyEmail] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+
+  const connectWalletMutation = useMutation({
+    mutationFn: (newWallet: string) => connect(newWallet),
+    onSuccess: () => {
+      // Handle successful connection
+    },
+    onError: (error: any) => {
+      // Handle connection error
+    },
+  });
 
   useEffect(() => {
     if (isConnected && isReady) initializeWalletConnect();
@@ -99,6 +111,18 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     });
   }, [disconnect, toast]);
 
+  function WrapperLink({ children }: { children?: React.ReactNode }) {
+    return (
+      <a
+        href={`${env.NEXT_PUBLIC_WEB_APP_URL}?address=${user.address}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {children}
+      </a>
+    );
+  }
+
   const items: DropdownMenuItemsProps['items'] = useMemo(
     () => [
       {
@@ -107,19 +131,11 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
         className: 'pt-2 pb-0',
       },
       {
-        type: 'children',
-        icon: <Settings />,
-        children: (
-          <div className="cursor-pointer font-semibold">
-            <a
-              href={`${env.NEXT_PUBLIC_WEB_APP_URL}?address=${user.address}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {t('view-account')}
-            </a>
-          </div>
-        ),
+        type: 'item',
+        icon: <Key />,
+        text: t('view-account'),
+        className: 'cursor-pointer',
+        wrapper: <WrapperLink />,
       },
       user.email
         ? {
@@ -133,7 +149,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
         : {
             type: 'item',
             icon: <VerifyEmail />,
-            className: 'cursor-pointer font-semibold',
+            className: 'cursor-pointer',
             action: () => setIsVerifyEmail(true),
             text: t('verify-email'),
           },

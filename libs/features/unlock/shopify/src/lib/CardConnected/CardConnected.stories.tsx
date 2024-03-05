@@ -60,7 +60,7 @@ type Story = StoryObj<typeof meta>;
 export const ConnectedUser: Story = {
   play: async ({ container }) => {
     userEvent.click(screen.getByText(/My Account/i));
-    expect(await screen.findByText(/sign-out/i)).toBeInTheDocument();
+    expect(await screen.findByText(/sign out/i)).toBeInTheDocument();
   },
 };
 

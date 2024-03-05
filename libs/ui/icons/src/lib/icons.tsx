@@ -77,14 +77,15 @@ import {
   MdOutlineClose,
   MdOutlineError,
   MdOutlineFeed,
+  MdOutlineMarkEmailRead,
   MdOutlineNotificationsActive,
   MdOutlineNotificationsNone,
-  MdOutlineMarkEmailRead,
 } from 'react-icons/md';
 import {
   RiDiscordLine,
   RiFacebookCircleLine,
   RiInstagramLine,
+  RiKey2Line,
   RiMoonFill,
   RiStarFill,
   RiStarLine,
@@ -382,6 +383,10 @@ export const Bell: FC<IconProps> = (props) => (
     label={'Bell'}
     {...props}
   />
+);
+
+export const Key: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiKey2Line} label={'Key'} {...props} />
 );
 
 export const FillMoon: FC<IconProps> = (props) => (
