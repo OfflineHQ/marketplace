@@ -9,6 +9,9 @@ import {
   ToasterDecorator,
 } from '@test-utils/storybook-decorators';
 import { mobileMode } from '@test-utils/storybook-modes';
+import React from 'react';
+import { firstKey, secondKey } from '../KeyRequired/examples';
+import { KeysRequired } from '../KeysRequired/KeysRequired';
 
 const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
 const meta = {
@@ -47,7 +50,15 @@ const meta = {
     },
   },
   args: {
-    children: 'children',
+    children: (
+      <KeysRequired
+        keys={[
+          { ...firstKey, isOwned: true },
+          { ...secondKey, isOwned: false },
+        ]}
+        separatorText="or"
+      />
+    ),
     user: {
       id: '1',
       address,

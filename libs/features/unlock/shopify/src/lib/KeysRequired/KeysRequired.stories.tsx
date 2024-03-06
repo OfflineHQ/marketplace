@@ -25,3 +25,13 @@ export const WithTwoKeys: Story = {
     separatorText: 'or',
   },
 };
+
+export const WithTwoKeysOwnedNotOwned: Story = {
+  args: {
+    keys: [
+      { ...firstKey, isOwned: true },
+      { ...secondKey, isOwned: false },
+    ],
+    separatorText: 'or',
+  },
+};
