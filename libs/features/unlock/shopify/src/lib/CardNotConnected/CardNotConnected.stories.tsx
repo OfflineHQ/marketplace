@@ -8,6 +8,8 @@ import {
   ReactQueryDecorator,
   ToasterDecorator,
 } from '@test-utils/storybook-decorators';
+import { mobileMode } from '@test-utils/storybook-modes';
+
 const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
 const meta = {
   component: ShopifyCardNotConnected,
@@ -60,7 +62,80 @@ type Story = StoryObj<typeof meta>;
 export const ConnectedUser: Story = {
   play: async ({ container }) => {
     userEvent.click(await screen.findByText(/🌶/i));
+    // userEvent.click(await screen.findByText(/Sign in with/i));
+  },
+};
+
+export const ConnectedUserOpenDialog: Story = {
+  play: async ({ container }) => {
     userEvent.click(await screen.findByText(/Sign in with/i));
+    expect(
+      await screen.findByText(/Sign in with my account/i),
+    ).toBeInTheDocument();
+    userEvent.click((await screen.findAllByText(/Create an account/i))[1]);
+  },
+};
+
+export const ConnectedUserWithMoreAccountOpenDialog: Story = {
+  parameters: {
+    moduleMock: {
+      mock: () =>
+        authMocks({
+          walletAuthMocks: {
+            connect: () => Promise.resolve(),
+            disconnect: () => Promise.resolve(),
+            wallet: {
+              getAddress: () => address,
+              connected: true,
+            },
+            isReady: true,
+            isConnecting: false,
+          },
+          walletConnectMocks: {
+            initializeWalletConnect: () => Promise.resolve(),
+            connectToDapp: () => Promise.resolve(),
+            isReady: true,
+            loading: false,
+            isLoadingApprove: false,
+            isConnectedToDapp: true,
+          },
+          walletContextMocks: {
+            walletInStorage: [{ address }, { address: '0x214123135' }],
+            walletConnected: address,
+            wcUri: 'wc:fake',
+            autoConnectAddress: '',
+          },
+        }),
+    },
+  },
+  play: async ({ container }) => {
+    userEvent.click(await screen.findByText(/Sign in with/i));
+    expect(
+      await screen.findByText(/Sign in with my account/i),
+    ).toBeInTheDocument();
+    userEvent.click(await screen.findByText(/🐧/i));
+  },
+};
+
+export const ConnectedUserWithMobile: Story = {
+  ...ConnectedUser,
+  parameters: {
+    ...mobileMode,
+  },
+};
+
+export const ConnectedUserWithOpenDrawer: Story = {
+  ...ConnectedUserOpenDialog,
+  parameters: {
+    ...mobileMode,
+  },
+};
+
+export const ConnectedUserWithMoreAccountOpenDrawerMobile: Story = {
+  ...ConnectedUserWithMoreAccountOpenDialog,
+  parameters: {
+    ...mobileMode,
+    ...ConnectedUserWithMoreAccountOpenDialog.parameters,
   },
 };
 
@@ -109,12 +184,9 @@ export const SettingUpWallet: Story = {
           walletAuthMocks: {
             connect: () => Promise.resolve(),
             disconnect: () => Promise.resolve(),
-            wallet: {
-              getAddress: () => address,
-              connected: true,
-            },
+            wallet: null,
             isReady: false,
-            isConnecting: true,
+            isConnecting: false,
           },
           walletConnectMocks: {
             initializeWalletConnect: () => Promise.resolve(),
@@ -125,7 +197,7 @@ export const SettingUpWallet: Story = {
             isConnectedToDapp: false,
           },
           walletContextMocks: {
-            walletConnected: address,
+            walletConnected: '',
             wcUri: 'wc:fake',
             autoConnectAddress: '',
           },
@@ -134,5 +206,39 @@ export const SettingUpWallet: Story = {
   },
   play: async ({ container }) => {
     expect(screen.queryByText(/My Account/i)).not.toBeInTheDocument();
+  },
+};
+
+export const WithNoExistingWallet: Story = {
+  parameters: {
+    moduleMock: {
+      mock: () =>
+        authMocks({
+          walletAuthMocks: {
+            connect: () => Promise.resolve(),
+            disconnect: () => Promise.resolve(),
+            wallet: null,
+            isReady: true,
+            isConnecting: false,
+          },
+          walletConnectMocks: {
+            initializeWalletConnect: () => Promise.resolve(),
+            connectToDapp: () => Promise.resolve(),
+            isReady: true,
+            loading: false,
+            isLoadingApprove: false,
+            isConnectedToDapp: false,
+          },
+          walletContextMocks: {
+            walletConnected: '',
+            wcUri: 'wc:fake',
+            autoConnectAddress: '',
+          },
+        }),
+    },
+  },
+  play: async ({ container }) => {
+    userEvent.click(await screen.findByText(/create an account/i));
+    userEvent.click(await screen.findByText(/Sign in with my account/i));
   },
 };

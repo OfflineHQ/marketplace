@@ -1,10 +1,19 @@
 'use client';
 
 import { ProfileAvatar } from '@features/app-nav';
+import { usePathname, useRouter } from '@next/navigation';
 import { useWalletAuth, useWalletContext } from '@next/wallet';
 import { useMutation } from '@tanstack/react-query';
-import { Button, useToast } from '@ui/components';
+import { Button, ButtonSkeleton, useToast } from '@ui/components';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
+import { useState } from 'react';
+import { ConnectProps } from './AuthDialogDrawer';
+
+const AuthDialogDynamic = dynamic(
+  async () => (await import('./AuthDialogDrawer')).AuthDialogDrawer,
+  { ssr: false },
+);
 
 export interface ShopifyAuthProps {}
 
@@ -22,27 +31,24 @@ export function ShopifyAuth({}: ShopifyAuthProps) {
     connectionError,
   } = useWalletAuth();
   const { walletConnected, wcUri, walletInStorage } = useWalletContext();
-  const existingWallet = walletConnected || walletInStorage?.first().address;
+  const existingWallet = walletConnected || walletInStorage?.[0]?.address;
+  const [isDialog, setIsDialog] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const connectWalletMutation = useMutation({
-    mutationFn: (newWallet: string) => connect(newWallet),
-    onSuccess: () => {
-      // Handle successful connection
+    mutationFn: ({ walletAddress, isCreatingAccount }: ConnectProps) =>
+      connect(walletAddress, isCreatingAccount),
+    onSuccess: (data, variables, context) => {
+      console.log({ data, variables, context });
+      router.replace(`${pathname}/${walletConnected}`);
     },
     onError: (error: any) => {
+      console.error({ error });
       // Handle connection error
     },
   });
-  // useEffect(() => {
-  //   if (
-  //     existingWallet &&
-  //     isReady &&
-  //     !wallet &&
-  //     !!(connectWalletMutation.status !== 'pending')
-  //   ) {
-  //     connectWalletMutation.mutate(existingWallet);
-  //   }
-  // }, [connectionError, existingWallet, isReady, wallet]);
+  if (!isWalletReady) return <ShopifyAuthSkelton />;
   return (
     <div className="flex w-full flex-col space-y-4">
       {existingWallet ? (
@@ -50,7 +56,11 @@ export function ShopifyAuth({}: ShopifyAuthProps) {
           className="space-x-2"
           block
           isLoading={isConnecting}
-          onClick={() => connectWalletMutation.mutate(existingWallet)}
+          onClick={() =>
+            connectWalletMutation.mutate({
+              walletAddress: existingWallet,
+            })
+          }
         >
           {!isConnecting && (
             <ProfileAvatar
@@ -61,15 +71,46 @@ export function ShopifyAuth({}: ShopifyAuthProps) {
           <span>{t('sign-in')}</span>
         </Button>
       ) : (
-        <Button block onClick={() => connect()}>
+        <Button
+          block
+          onClick={() =>
+            connectWalletMutation.mutate({ isCreatingAccount: true })
+          }
+        >
           {t('create-account')}
         </Button>
       )}
-      <Button variant="secondary" block onClick={() => disconnect()}>
-        {existingWallet
-          ? t('login-different-account-or-create-account')
-          : t('login-with-my-account')}
-      </Button>
+      {existingWallet ? (
+        <Button variant="secondary" block onClick={() => setIsDialog(true)}>
+          {t('login-different-account-or-create-account')}
+        </Button>
+      ) : (
+        <Button
+          variant="secondary"
+          block
+          onClick={() => connectWalletMutation.mutate({})}
+        >
+          {t('login-with-my-account')}
+        </Button>
+      )}
+      {isDialog ? (
+        <AuthDialogDynamic
+          open={isDialog}
+          onOpenChange={setIsDialog}
+          walletInStorage={walletInStorage}
+          connectWalletMutation={connectWalletMutation}
+          isConnecting={isConnecting}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+export function ShopifyAuthSkelton() {
+  return (
+    <div className="flex w-full flex-col space-y-4">
+      <ButtonSkeleton className="w-full bg-primary" />
+      <ButtonSkeleton className="w-full" />
     </div>
   );
 }
