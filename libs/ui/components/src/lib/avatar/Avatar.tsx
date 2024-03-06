@@ -80,7 +80,7 @@ const AvatarFallback = React.forwardRef<
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
 const avatarSkeletonVariants = cva(
-  'relative shrink-0 animate-pulse rounded-full bg-skeleton',
+  'relative shrink-0 animate-pulse rounded-full bg-image',
   {
     variants: {
       size: avatarSizes,

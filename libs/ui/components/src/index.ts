@@ -1,5 +1,3 @@
-import { Alert } from './lib/alert/Alert';
-
 export {
   Accordion,
   AccordionContent,
@@ -19,6 +17,8 @@ export {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from './lib/alert-dialog/AlertDialog';
+
+export { IconBadgeWrapper } from './lib/IconBadgeWrapper/IconBadgeWrapper';
 
 export {
   Alert,
