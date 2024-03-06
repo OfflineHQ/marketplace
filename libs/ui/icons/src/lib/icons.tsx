@@ -99,7 +99,12 @@ import {
 
 import { TbSunMoon } from 'react-icons/tb';
 
-import { PiIdentificationCardLight, PiSealQuestionBold } from 'react-icons/pi';
+import {
+  PiIdentificationCardLight,
+  PiLockKeyFill,
+  PiLockKeyOpenFill,
+  PiSealQuestionBold,
+} from 'react-icons/pi';
 
 // import and export IconType
 
@@ -115,6 +120,18 @@ export const InfoAvailable: FC<IconProps> = (props) => (
   <AccessibleIcon
     IconComponent={LuBookOpenCheck}
     label={'Info Available'}
+    {...props}
+  />
+);
+
+export const LockKey: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={PiLockKeyFill} label={'Lock Key'} {...props} />
+);
+
+export const LockKeyOpen: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={PiLockKeyOpenFill}
+    label={'Lock Key Open'}
     {...props}
   />
 );

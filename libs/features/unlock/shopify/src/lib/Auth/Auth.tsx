@@ -39,8 +39,13 @@ export function ShopifyAuth({}: ShopifyAuthProps) {
   const connectWalletMutation = useMutation({
     mutationFn: ({ walletAddress, isCreatingAccount }: ConnectProps) =>
       connect(walletAddress, isCreatingAccount),
-    onSuccess: (data, variables, context) => {
-      console.log({ data, variables, context });
+    onSuccess: (data, { walletAddress, isCreatingAccount }, context) => {
+      console.log({ data, walletAddress, isCreatingAccount, context });
+      if (isCreatingAccount) {
+        toast({
+          title: t('account-created'),
+        });
+      }
       router.replace(`${pathname}/${walletConnected}`);
     },
     onError: (error: any) => {

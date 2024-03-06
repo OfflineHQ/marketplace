@@ -11,7 +11,7 @@ export const ShopifyCard: React.FC<ShopifyCardProps> = ({
   children,
 }) => {
   return (
-    <Card className="m-0.5 max-w-xl rounded-xl">
+    <Card className="m-0.5 max-w-xl rounded-xl drop-shadow-md">
       {header}
       <CardContent>{children}</CardContent>
       {footer ? <CardFooter>{footer}</CardFooter> : null}
