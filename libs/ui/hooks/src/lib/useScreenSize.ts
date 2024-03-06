@@ -1,3 +1,5 @@
+'use client';
+
 import { useWindowSize } from 'react-use';
 
 const screens = {

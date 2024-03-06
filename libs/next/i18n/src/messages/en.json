@@ -485,8 +485,10 @@
     },
     "Auth": {
       "sign-in": "Sign In",
-      "login-different-account-or-create-account": "Sign in with a different account or create an account",
-      "login-with-my-account": "Sign in with my account"
+      "login-different-account-or-create-account": "Sign In with a different Account or Create an Account",
+      "login-with-my-account": "Sign In with my Account",
+      "create-account": "Create an Account",
+      "cancel": "Cancel"
     }
   }
 }
