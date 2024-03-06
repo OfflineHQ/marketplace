@@ -1,3 +1,5 @@
+import { Alert } from './lib/alert/Alert';
+
 export {
   Accordion,
   AccordionContent,
@@ -17,6 +19,7 @@ export {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from './lib/alert-dialog/AlertDialog';
+
 export {
   Alert,
   AlertDescription,
@@ -65,6 +68,16 @@ export {
   DialogTrigger,
   type DialogProps,
 } from './lib/dialog/Dialog';
+export {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from './lib/drawer/Drawer';
 export {
   DropdownMenu,
   DropdownMenuCheckboxItem,
