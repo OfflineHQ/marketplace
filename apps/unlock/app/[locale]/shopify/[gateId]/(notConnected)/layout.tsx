@@ -1,16 +1,23 @@
 import { ShopifyCard, ShopifyCardHeader } from '@features/unlock/shopify';
 import { messages, type Locale } from '@next/i18n';
 import { deepPick } from '@utils';
-import { NextIntlClientProvider, useLocale } from 'next-intl';
+import { NextIntlClientProvider } from 'next-intl';
 
 interface LayoutProps {
-  auth: React.ReactNode;
   children: React.ReactNode;
+  auth: React.ReactNode;
+  params: {
+    locale: Locale;
+    gateId: string;
+  };
 }
 
-export default function Layout({ children, auth }: LayoutProps) {
-  const locale = useLocale();
-  const localeMessages = deepPick(messages[locale as Locale], ['Shopify.Auth']);
+export default function Layout({
+  children,
+  auth,
+  params: { locale },
+}: LayoutProps) {
+  const localeMessages = deepPick(messages[locale], ['Shopify.Auth']);
   return (
     <ShopifyCard
       footer={
