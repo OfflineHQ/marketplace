@@ -257,3 +257,8 @@ html,
   display: flex;
   flex-direction: column;
 }
+
+/* TEMPORARY FIX: Enable pointer events for #cometh-gas-modal-wrapper. Remove or revise this once the underlying issue is resolved. */
+#cometh-gas-modal-wrapper {
+  pointer-events: auto !important;
+}

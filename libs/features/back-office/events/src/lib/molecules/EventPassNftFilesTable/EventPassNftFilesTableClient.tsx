@@ -60,6 +60,7 @@ export function EventPassNftFilesTableClient({
     'OrganizerEvents.Sheet.EventPassCard.EventPassNftFilesTable',
   );
   const locale = useLocale();
+
   const formatDuplicates = (duplicates: DuplicatesType) => {
     return duplicates.map((group, index) => (
       <ul key={index}>
