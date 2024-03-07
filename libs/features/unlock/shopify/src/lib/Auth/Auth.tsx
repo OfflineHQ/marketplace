@@ -103,7 +103,7 @@ export function ShopifyAuth() {
           open={isDialog}
           onOpenChange={setIsDialog}
           walletInStorage={walletInStorage}
-          existingWallet={existingWallet}
+          existingWallet={existingWallet || ''}
           connectWalletMutation={connectWalletMutation}
           isConnecting={isConnecting}
         />

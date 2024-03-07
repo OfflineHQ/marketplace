@@ -18,6 +18,7 @@ declare module '@env/client' {
     NEXT_PUBLIC_COMETH_CONNECT_API_KEY: string;
     NEXT_PUBLIC_WC_PROJECT_ID: string;
     NEXT_PUBLIC_WC_RELAY_URL: string;
+    NEXT_PUBLIC_WEB_APP_URL: string;
   };
   export default env;
 }

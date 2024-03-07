@@ -7,14 +7,12 @@ import {
   Button,
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogProps,
   DialogTitle,
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -54,9 +52,9 @@ export function AuthDialogDrawer({
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>{t('dialog-connect-wallet')}</DialogTitle>
-            <DialogDescription>
+            {/* <DialogDescription>
               {t('dialog-connect-wallet-description')}
-            </DialogDescription>
+            </DialogDescription> */}
           </DialogHeader>
           <AuthActions
             isConnecting={isConnecting}
@@ -74,9 +72,9 @@ export function AuthDialogDrawer({
       <DrawerContent>
         <DrawerHeader className="text-left">
           <DrawerTitle>{t('dialog-connect-wallet')}</DrawerTitle>
-          <DrawerDescription>
+          {/* <DrawerDescription>
             {t('dialog-connect-wallet-description')}
-          </DrawerDescription>
+          </DrawerDescription> */}
         </DrawerHeader>
         <DrawerFooter className="space-y-4 pt-2">
           <AuthActions
@@ -98,7 +96,7 @@ interface AuthActionsProps
   extends Pick<ReturnType<typeof useWalletAuth>, 'isConnecting'>,
     Pick<ReturnType<typeof useWalletContext>, 'walletInStorage'> {
   connectWalletMutation: ConnectWalletMutationType;
-  existingWallet: string;
+  existingWallet?: string;
 }
 
 function AuthActions({
@@ -109,9 +107,9 @@ function AuthActions({
 }: AuthActionsProps) {
   const t = useTranslations('Shopify.Auth');
   console.log('walletInStorage', walletInStorage);
-  const otherAccounts = walletInStorage?.filter(
-    (w) => w.address !== existingWallet,
-  );
+  const otherAccounts = existingWallet
+    ? walletInStorage?.filter((w) => w.address !== existingWallet)
+    : walletInStorage?.slice(1);
   return (
     <div className="flex flex-col space-y-4">
       {otherAccounts?.map((wallet) => (
