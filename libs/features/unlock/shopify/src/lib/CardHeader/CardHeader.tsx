@@ -1,6 +1,6 @@
-import { CardHeader, CardTitle, CardDescription, Text } from '@ui/components';
-import { useTranslations } from 'next-intl';
+import { CardDescription, CardHeader, CardTitle } from '@ui/components';
 import { Key } from '@ui/icons';
+import { useTranslations } from 'next-intl';
 
 export interface CardHeaderProps {
   profile?: React.ReactNode;
@@ -9,7 +9,7 @@ function ShopifyCardHeaderNotConnected() {
   const t = useTranslations('Shopify.CardHeader');
   return (
     <CardHeader>
-      <CardTitle className="no-wrap flex flex-row items-center space-x-1">
+      <CardTitle className="flex flex-row items-center space-x-1">
         <span>{t('unlock-with-your-offkey-title')}</span>
         <Key flex size="lg" className="m-0" />
       </CardTitle>

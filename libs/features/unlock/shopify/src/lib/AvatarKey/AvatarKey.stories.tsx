@@ -25,3 +25,12 @@ export const KeyNotOwned: Story = {
     isOwned: false,
   },
 };
+
+export const KeyOwnedAndNotOwned: Story = {
+  render: (args) => (
+    <div className="flex space-x-4">
+      <AvatarKey {...args} isOwned={true} />
+      <AvatarKey {...args} isOwned={false} />
+    </div>
+  ),
+};
