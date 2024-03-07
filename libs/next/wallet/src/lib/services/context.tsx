@@ -72,28 +72,49 @@ export function WalletProvider({
   useEffect(() => {
     if (!localStorage) {
       return;
-    } else {
-      const keysInStorage = Object.keys(localStorage);
-      for (const key of keysInStorage) {
-        if (key.startsWith('cometh-connect')) {
-          const keyParts = key.split('-');
-          const address = keyParts[keyParts.length - 1];
-          const storedItem = localStorage.getItem(key);
-          let wallet: { name?: string } | null = null;
-          if (storedItem && storedItem !== '') {
-            wallet = JSON.parse(storedItem);
-          }
-          setWalletInStorage((current) => {
-            const newWallet = { address, name: wallet?.name || '' };
-            return current ? [...current, newWallet] : [newWallet];
-          });
-        } else if (key.startsWith('wallet-connected')) {
-          const address = localStorage.getItem(key);
-          setWalletConnected(address || '');
+    }
+
+    const currentWalletsInStorage = walletInStorage || [];
+    const updatedWallets = [...currentWalletsInStorage]; // Create a shallow copy of the current state
+
+    let newWalletConnected = walletConnected;
+    let updateWalletConnected = false;
+
+    const keysInStorage = Object.keys(localStorage);
+    for (const key of keysInStorage) {
+      if (key.startsWith('cometh-connect')) {
+        const keyParts = key.split('-');
+        const address = keyParts[keyParts.length - 1];
+        const storedItem = localStorage.getItem(key);
+        let wallet = null;
+        if (storedItem && storedItem !== '') {
+          wallet = JSON.parse(storedItem);
+        }
+        // Check if the address already exists in the current state
+        if (!updatedWallets.some((w) => w.address === address)) {
+          updatedWallets.push({ address, name: wallet?.name || '' });
+        }
+      } else if (key.startsWith('wallet-connected')) {
+        const address = localStorage.getItem(key) || '';
+        if (newWalletConnected !== address) {
+          newWalletConnected = address;
+          updateWalletConnected = true;
         }
       }
     }
-  }, []);
+
+    // Only update the state if there are new wallets to add
+    if (
+      JSON.stringify(currentWalletsInStorage) !== JSON.stringify(updatedWallets)
+    ) {
+      setWalletInStorage(updatedWallets);
+    }
+
+    // Update walletConnected if it has changed
+    if (updateWalletConnected) {
+      setWalletConnected(newWalletConnected);
+    }
+  }, [walletInStorage, walletConnected]);
 
   useEffect(() => {
     const resWc = searchParams?.get('wcUri') || null;
