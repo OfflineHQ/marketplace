@@ -86,7 +86,7 @@ export function WalletProvider({
         const keyParts = key.split('-');
         const address = keyParts[keyParts.length - 1];
         const storedItem = localStorage.getItem(key);
-        let wallet = null;
+        let wallet: StorageWallet | null = null;
         if (storedItem && storedItem !== '') {
           wallet = JSON.parse(storedItem);
         }
