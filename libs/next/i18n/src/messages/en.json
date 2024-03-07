@@ -489,7 +489,8 @@
       "login-with-my-account": "Sign In with my Account",
       "create-account": "Create an Account",
       "cancel": "Cancel",
-      "account-created": "Account created successfully 🎉!"
+      "account-created": "Account created successfully 🎉!",
+      "dialog-connect-wallet": "Connect your existing account or create a new one"
     }
   }
 }
