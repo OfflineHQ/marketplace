@@ -42,6 +42,7 @@ export function AuthDialogDrawer({
   isConnecting,
   connectWalletMutation,
   walletInStorage,
+  existingWallet,
   ...dialogProps
 }: AuthDialogDrawerProps) {
   const { isMobile } = useScreenSize();
@@ -61,6 +62,7 @@ export function AuthDialogDrawer({
             isConnecting={isConnecting}
             connectWalletMutation={connectWalletMutation}
             walletInStorage={walletInStorage}
+            existingWallet={existingWallet}
           />
         </DialogContent>
       </Dialog>
@@ -81,6 +83,7 @@ export function AuthDialogDrawer({
             isConnecting={isConnecting}
             connectWalletMutation={connectWalletMutation}
             walletInStorage={walletInStorage}
+            existingWallet={existingWallet}
           />
           <DrawerClose asChild>
             <Button variant="outline">{t('cancel')}</Button>
@@ -95,44 +98,46 @@ interface AuthActionsProps
   extends Pick<ReturnType<typeof useWalletAuth>, 'isConnecting'>,
     Pick<ReturnType<typeof useWalletContext>, 'walletInStorage'> {
   connectWalletMutation: ConnectWalletMutationType;
+  existingWallet: string;
 }
 
 function AuthActions({
   isConnecting,
   connectWalletMutation,
   walletInStorage,
+  existingWallet,
 }: AuthActionsProps) {
   const t = useTranslations('Shopify.Auth');
+  console.log('walletInStorage', walletInStorage);
+  const otherAccounts = walletInStorage?.filter(
+    (w) => w.address !== existingWallet,
+  );
   return (
     <div className="flex flex-col space-y-4">
-      {walletInStorage &&
-        walletInStorage.length > 1 &&
-        walletInStorage?.slice(1).map((wallet) => (
-          <Button
-            className="space-x-2"
-            key={wallet.address}
-            block
-            onClick={() =>
-              connectWalletMutation.mutate({ walletAddress: wallet.address })
-            }
-          >
-            {!isConnecting && (
-              <ProfileAvatar
-                user={{ id: '', address: wallet.address }}
-                className="my-1 size-8 md:size-8"
-              />
-            )}
-            <span>{t('sign-in')}</span>
-          </Button>
-        ))}
-      <Button block onClick={() => connectWalletMutation.mutate({})}>
+      {otherAccounts?.map((wallet) => (
+        <Button
+          className="space-x-2"
+          key={wallet.address}
+          block
+          onClick={() =>
+            connectWalletMutation.mutateAsync({ walletAddress: wallet.address })
+          }
+        >
+          <ProfileAvatar
+            user={{ id: '', address: wallet.address }}
+            className="my-1 size-8 md:size-8"
+          />
+          <span>{t('sign-in')}</span>
+        </Button>
+      ))}
+      <Button block onClick={() => connectWalletMutation.mutateAsync({})}>
         {t('login-with-my-account')}
       </Button>
       <Button
         variant="secondary"
         block
         onClick={() =>
-          connectWalletMutation.mutate({ isCreatingAccount: true })
+          connectWalletMutation.mutateAsync({ isCreatingAccount: true })
         }
       >
         {t('create-account')}

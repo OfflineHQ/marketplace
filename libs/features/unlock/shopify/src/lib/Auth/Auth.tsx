@@ -46,7 +46,8 @@ export function ShopifyAuth() {
           title: t('account-created'),
         });
       }
-      router.replace(`${pathname}/${walletConnected}`);
+      console.log({ pathname, walletAddress });
+      router.replace(`${pathname}/${walletAddress}`);
     },
     onError: (error: any) => {
       console.error({ error });
@@ -60,9 +61,8 @@ export function ShopifyAuth() {
         <Button
           className="space-x-2"
           block
-          isLoading={isConnecting}
           onClick={() =>
-            connectWalletMutation.mutate({
+            connectWalletMutation.mutateAsync({
               walletAddress: existingWallet,
             })
           }
@@ -79,7 +79,7 @@ export function ShopifyAuth() {
         <Button
           block
           onClick={() =>
-            connectWalletMutation.mutate({ isCreatingAccount: true })
+            connectWalletMutation.mutateAsync({ isCreatingAccount: true })
           }
         >
           {t('create-account')}
@@ -93,7 +93,7 @@ export function ShopifyAuth() {
         <Button
           variant="secondary"
           block
-          onClick={() => connectWalletMutation.mutate({})}
+          onClick={() => connectWalletMutation.mutateAsync({})}
         >
           {t('login-with-my-account')}
         </Button>
@@ -103,6 +103,7 @@ export function ShopifyAuth() {
           open={isDialog}
           onOpenChange={setIsDialog}
           walletInStorage={walletInStorage}
+          existingWallet={existingWallet}
           connectWalletMutation={connectWalletMutation}
           isConnecting={isConnecting}
         />
