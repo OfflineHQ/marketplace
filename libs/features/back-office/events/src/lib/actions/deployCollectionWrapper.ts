@@ -26,11 +26,6 @@ export async function deployCollectionWrapper({
   const sdk = new NftCollection(
     ThirdwebSDK.fromSigner(signer, env.NEXT_PUBLIC_CHAIN, {
       clientId: env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID,
-      gasless: {
-        openzeppelin: {
-          relayerUrl: env.NEXT_PUBLIC_OPENZEPPELIN_URL,
-        },
-      },
     }),
   );
   await sdk.deployACollection(
