@@ -1,14 +1,15 @@
 import { Locale } from '@gql/shared/types';
-interface ShopifyGateProps {
+interface ShopifyGateAddressProps {
   params: {
     locale: Locale;
     gateId: string;
+    address: string;
   };
 }
 
-export default function ShopifyGate({
-  params: { locale, gateId },
-}: ShopifyGateProps) {
+export default function ShopifyGateAddress({
+  params: { locale, gateId, address },
+}: ShopifyGateAddressProps) {
   return (
     <span>
       {locale}
