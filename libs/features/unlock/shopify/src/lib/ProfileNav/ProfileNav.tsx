@@ -75,7 +75,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   });
 
   useEffect(() => {
-    if (isConnected && isReady) initializeWalletConnect();
+    if (isConnected && !isReady) initializeWalletConnect();
   }, [initializeWalletConnect, isConnected, isReady]);
 
   useEffect(() => {
@@ -87,19 +87,29 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
 
   useEffect(() => {
     console.log({
+      isWalletReady,
       autoConnectAddress,
       walletConnected,
+      wallet,
+      connectWalletMutationStatus: connectWalletMutation.status,
     });
     const walletToConnect = autoConnectAddress || walletConnected;
     if (
       walletToConnect &&
-      isReady &&
+      isWalletReady &&
       !wallet &&
-      !!(connectWalletMutation.status !== 'pending')
+      connectWalletMutation.status !== 'pending'
     ) {
       connectWalletMutation.mutate(walletToConnect);
     }
-  }, [connectionError, walletConnected, isReady, wallet]);
+  }, [
+    connectionError,
+    walletConnected,
+    isWalletReady,
+    wallet,
+    connectWalletMutation.status,
+    autoConnectAddress,
+  ]);
 
   const signOutUserAction = useCallback(async () => {
     await disconnect();
