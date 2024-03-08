@@ -31,6 +31,7 @@ interface AuthContextValue {
   login: ReturnType<typeof useSafeAuth>['login'];
   logout: ReturnType<typeof useSafeAuth>['logout'];
   createAccount: ReturnType<typeof useSafeAuth>['createAccount'];
+  loginAuto: ReturnType<typeof useSafeAuth>['loginAuto'];
   connecting: ReturnType<typeof useSafeAuth>['connecting'];
   isReady: ReturnType<typeof useSafeAuth>['isReady'];
 }

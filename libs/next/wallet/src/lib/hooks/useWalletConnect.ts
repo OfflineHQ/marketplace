@@ -38,6 +38,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
     dappUrl: string,
     address: string,
   ) => {
+    console.log({ sessions, dappUrl, address });
     const existingSession = sessions.find((session) => {
       const sessionUrl = session.peer.metadata.url; // The URL associated with the dApp in the session
       // Simple comparison, might need adjustments based on how URLs are stored and used
@@ -107,12 +108,10 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
       if (!web3wallet) {
         await createWeb3Wallet('');
       }
-      console.log('WalletConnect initialized:', web3wallet);
+      console.log('WalletConnect initialized');
       const activeSessions = web3wallet.getActiveSessions();
-      console.log('WalletConnect active sessions:', activeSessions);
       setIsReady(true);
       const embeddingPageUrl = document.referrer; // URL of the page embedding the iframe
-      console.log('embeddingPageUrl:', embeddingPageUrl);
       if (embeddingPageUrl) {
         const existingSession = getSessionMatchingAddressAndDapp(
           Object.values(activeSessions),
