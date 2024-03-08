@@ -7,6 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Button, ButtonSkeleton, useToast } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { ConnectProps } from './AuthDialogDrawer';
 
@@ -35,6 +36,7 @@ export function ShopifyAuth() {
   const [isDialog, setIsDialog] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const connectWalletMutation = useMutation({
     mutationFn: ({ walletAddress, isCreatingAccount }: ConnectProps) =>
@@ -47,7 +49,11 @@ export function ShopifyAuth() {
         });
       }
       console.log({ pathname, walletAddress });
-      router.replace(`${pathname}/${walletAddress}`);
+      let url = `${pathname}/${walletAddress}`;
+      if (searchParams?.toString()) {
+        url += `?${searchParams.toString()}`;
+      }
+      router.replace(url);
     },
     onError: (error: any) => {
       console.error({ error });
