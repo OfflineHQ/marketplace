@@ -51,7 +51,8 @@ export function ShopifyAuth() {
       console.log({ pathname, walletAddress });
       let url = `${pathname}/${walletAddress}`;
       if (searchParams?.toString()) {
-        url += `?${searchParams.toString()}`;
+        const params = new URLSearchParams(searchParams.toString());
+        url += `?${params.toString()}`;
       }
       router.replace(url);
     },

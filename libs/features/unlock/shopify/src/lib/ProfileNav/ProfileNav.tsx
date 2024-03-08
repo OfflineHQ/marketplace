@@ -118,7 +118,8 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     await disconnect();
     let newPathname = pathname.split('/0x')[0];
     if (searchParams?.toString()) {
-      newPathname += `?${searchParams.toString()}`;
+      const params = new URLSearchParams(searchParams.toString());
+      newPathname += `?${params.toString()}`;
     }
     await router.replace(newPathname);
     toast({
