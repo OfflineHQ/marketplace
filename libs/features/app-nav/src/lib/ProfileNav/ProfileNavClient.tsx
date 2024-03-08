@@ -3,6 +3,7 @@
 import { useAuthContext } from '@next/auth';
 import { Link } from '@next/navigation';
 import { AppUser } from '@next/types';
+import { useWalletContext } from '@next/wallet';
 import { useToast } from '@ui/components';
 import {
   LifeBuoy,
@@ -13,7 +14,7 @@ import {
   VerifyEmail,
 } from '@ui/icons';
 import dynamic from 'next/dynamic';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ProfileNav,
   ProfileNavSkeleton,
@@ -55,7 +56,9 @@ export const ProfileNavClient = ({
   isNextAuthConnected,
   account,
 }: ProfileNavClientProps) => {
-  const { login, logout, createAccount, connecting } = useAuthContext();
+  const { login, logout, createAccount, loginAuto, connecting } =
+    useAuthContext();
+  const { autoConnectAddress } = useWalletContext();
   const { toast } = useToast();
   const [isVerifyEmail, setIsVerifyEmail] = useState(false);
 
@@ -74,6 +77,12 @@ export const ProfileNavClient = ({
       description: profileSectionsText.createAccountDescription,
     });
   }, [createAccount, toast, profileSectionsText]);
+
+  useEffect(() => {
+    if (autoConnectAddress) {
+      loginAuto(autoConnectAddress);
+    }
+  }, [autoConnectAddress, login]);
 
   const commonSections: ProfileNavProps['items'] = [
     {

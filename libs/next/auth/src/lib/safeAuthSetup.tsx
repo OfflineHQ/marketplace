@@ -144,9 +144,8 @@ export function useSafeAuth({
   const loginAuto = useCallback(
     async (address: string) => {
       await connectWithSiwe(loginSiwe, address, true);
-      identifyUserPostHog(address);
     },
-    [connectWithSiwe, loginSiwe, identifyUserPostHog],
+    [connectWithSiwe, loginSiwe],
   );
 
   const logoutSiwe = useCallback(
@@ -225,6 +224,7 @@ export function useSafeAuth({
 
   return {
     login,
+    loginAuto,
     logout,
     createAccount,
     isReady,
