@@ -41,7 +41,11 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
     const existingSession = sessions.find((session) => {
       const sessionUrl = session.peer.metadata.url; // The URL associated with the dApp in the session
       // Simple comparison, might need adjustments based on how URLs are stored and used
-      return sessionUrl === dappUrl || dappUrl.includes(sessionUrl);
+      return (
+        sessionUrl === dappUrl ||
+        dappUrl.includes(sessionUrl) ||
+        sessionUrl.includes(dappUrl)
+      );
     });
     if (!existingSession) return null;
     // Check if the session's account matches your wallet's address
