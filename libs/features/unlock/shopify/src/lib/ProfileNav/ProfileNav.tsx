@@ -25,6 +25,7 @@ import {
 import { Key, LifeBuoy, LogOut, VerifyEmail } from '@ui/icons';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
+import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export interface ShopifyProfileNavProps {
@@ -63,6 +64,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   const [isVerifyEmail, setIsVerifyEmail] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const connectWalletMutation = useMutation({
     mutationFn: (newWallet: string) => connect(newWallet),
@@ -80,8 +82,8 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   }, [initializeWalletConnect, wallet, isReady]);
 
   useEffect(() => {
+    console.log('wcUri', wcUri, 'isReady', isReady);
     if (wcUri && isReady) {
-      console.log('wcUri', wcUri, 'isReady', isReady);
       connectToDapp(wcUri);
     }
   }, [wcUri, isReady, connectToDapp]);
@@ -114,7 +116,10 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
 
   const signOutUserAction = useCallback(async () => {
     await disconnect();
-    const newPathname = pathname.split('/0x')[0];
+    let newPathname = pathname.split('/0x')[0];
+    if (searchParams?.toString()) {
+      newPathname += `?${searchParams.toString()}`;
+    }
     await router.replace(newPathname);
     toast({
       title: t('sign-out-title'),
