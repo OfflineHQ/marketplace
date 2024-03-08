@@ -465,5 +465,32 @@
         "header-download": "Download the file"
       }
     }
+  },
+  "Shopify": {
+    "CardHeader": {
+      "unlock-with-your-offkey-title": "Unlock with your ",
+      "unlock-with-your-offkey-description": "To unlock this product you need the key"
+    },
+    "Profile": {
+      "my-account": "My Account",
+      "view-account": "View Account",
+      "verify-email": "Verify my email",
+      "support": "Get support",
+      "sign-out": "Sign Out",
+      "sign-out-title": "You have been signed out",
+      "sign-out-description": "See you soon 👋 !",
+      "support-toast-title": "Coming soon",
+      "support-toast-description": "This feature is not available yet",
+      "verify-email-continue": "Continue"
+    },
+    "Auth": {
+      "sign-in": "Sign In",
+      "login-different-account-or-create-account": "Sign In with a different Account or Create an Account",
+      "login-with-my-account": "Sign In with my Account",
+      "create-account": "Create an Account",
+      "cancel": "Cancel",
+      "account-created": "Account created successfully 🎉!",
+      "dialog-connect-wallet": "Connect your existing account or create a new one"
+    }
   }
 }

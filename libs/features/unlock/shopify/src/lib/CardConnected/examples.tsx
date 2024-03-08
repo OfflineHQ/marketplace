@@ -1,5 +1,4 @@
 import * as kycApi from '@features/kyc-actions';
-import { AuthProvider } from '@next/auth';
 import * as walletApi from '@next/wallet';
 import {
   WalletProvider,
@@ -9,16 +8,16 @@ import {
 } from '@next/wallet';
 import * as nextIntl from 'next-intl';
 import { createMock } from 'storybook-addon-module-mock';
-import { AppContainer } from '../AppContainer/AppContainer';
-import { Auth } from './Auth';
+import {
+  ShopifyCardConnected,
+  ShopifyCardConnectedProps,
+} from './CardConnected';
 
-export const AuthExample = () => {
+export const CardConnectedExample = (props: ShopifyCardConnectedProps) => {
   return (
-    <AppContainer>
-      <WalletProvider>
-        <Auth />
-      </WalletProvider>
-    </AppContainer>
+    <WalletProvider>
+      <ShopifyCardConnected {...props} />
+    </WalletProvider>
   );
 };
 

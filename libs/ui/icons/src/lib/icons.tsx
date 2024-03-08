@@ -77,14 +77,15 @@ import {
   MdOutlineClose,
   MdOutlineError,
   MdOutlineFeed,
+  MdOutlineMarkEmailRead,
   MdOutlineNotificationsActive,
   MdOutlineNotificationsNone,
-  MdOutlineMarkEmailRead,
 } from 'react-icons/md';
 import {
   RiDiscordLine,
   RiFacebookCircleLine,
   RiInstagramLine,
+  RiKey2Line,
   RiMoonFill,
   RiStarFill,
   RiStarLine,
@@ -98,7 +99,12 @@ import {
 
 import { TbSunMoon } from 'react-icons/tb';
 
-import { PiIdentificationCardLight, PiSealQuestionBold } from 'react-icons/pi';
+import {
+  PiIdentificationCardLight,
+  PiLockKeyFill,
+  PiLockKeyOpenFill,
+  PiSealQuestionBold,
+} from 'react-icons/pi';
 
 // import and export IconType
 
@@ -114,6 +120,18 @@ export const InfoAvailable: FC<IconProps> = (props) => (
   <AccessibleIcon
     IconComponent={LuBookOpenCheck}
     label={'Info Available'}
+    {...props}
+  />
+);
+
+export const LockKey: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={PiLockKeyFill} label={'Lock Key'} {...props} />
+);
+
+export const LockKeyOpen: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={PiLockKeyOpenFill}
+    label={'Lock Key Open'}
     {...props}
   />
 );
@@ -382,6 +400,10 @@ export const Bell: FC<IconProps> = (props) => (
     label={'Bell'}
     {...props}
   />
+);
+
+export const Key: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiKey2Line} label={'Key'} {...props} />
 );
 
 export const FillMoon: FC<IconProps> = (props) => (
