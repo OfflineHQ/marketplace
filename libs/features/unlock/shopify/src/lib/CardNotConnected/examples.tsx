@@ -1,5 +1,3 @@
-import * as kycApi from '@features/kyc-actions';
-import { AuthProvider } from '@next/auth';
 import * as walletApi from '@next/wallet';
 import {
   WalletProvider,
@@ -9,16 +7,18 @@ import {
 } from '@next/wallet';
 import * as nextIntl from 'next-intl';
 import { createMock } from 'storybook-addon-module-mock';
-import { AppContainer } from '../AppContainer/AppContainer';
-import { Auth } from './Auth';
+import {
+  ShopifyCardNotConnected,
+  ShopifyCardNotConnectedProps,
+} from './CardNotConnected';
 
-export const AuthExample = () => {
+export const CardNotConnectedExample = (
+  props: ShopifyCardNotConnectedProps,
+) => {
   return (
-    <AppContainer>
-      <WalletProvider>
-        <Auth />
-      </WalletProvider>
-    </AppContainer>
+    <WalletProvider>
+      <ShopifyCardNotConnected {...props} />
+    </WalletProvider>
   );
 };
 
@@ -38,24 +38,13 @@ export function authMocks({
   mockWalletContext.mockReturnValue(walletContextMocks);
   const mockWalletConnect = createMock(walletApi, 'useWalletConnect');
   mockWalletConnect.mockReturnValue(walletConnectMocks);
-  const mockInitKyc = createMock(kycApi, 'initKyc');
-  mockInitKyc.mockReturnValue({
-    user: {},
-    accessToken: 'accessToken',
-  });
-  const mockApplicantStatusChanged = createMock(
-    kycApi,
-    'handleApplicantStatusChanged',
-  );
-  mockApplicantStatusChanged.mockReturnValue(false);
+
   const mockIntl = createMock(nextIntl, 'useLocale');
   mockIntl.mockReturnValue('en');
   return [
     // comethWallet,
     // connectAdaptor,
     mockIntl,
-    mockInitKyc,
-    mockApplicantStatusChanged,
     mockWallet,
     mockWalletContext,
     mockWalletConnect,

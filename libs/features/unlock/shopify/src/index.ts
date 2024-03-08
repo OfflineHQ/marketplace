@@ -1,3 +1,6 @@
-// Use this file to export React client components (e.g. those with 'use client' directive) or other non-server utilities
-
-export * from './lib/unlock-shopify';
+export { ShopifyAuth } from './lib/Auth/Auth';
+export { ShopifyCard } from './lib/Card/Card';
+export * from './lib/CardConnected/CardConnected';
+export { ShopifyCardHeader } from './lib/CardHeader/CardHeader';
+export * from './lib/CardNotConnected/CardNotConnected';
+export { ShopifyProfileNav } from './lib/ProfileNav/ProfileNav';

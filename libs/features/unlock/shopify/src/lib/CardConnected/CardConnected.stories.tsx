@@ -1,20 +1,16 @@
-import * as walletApi from '@next/wallet';
-import { expect, screen } from '@storybook/test';
+import { expect, screen, userEvent } from '@storybook/test';
+import { ShopifyCardConnected } from './CardConnected';
 // import * as walletHook from '@next/wallet';
 import { StoryObj, type Meta } from '@storybook/react';
+import { CardConnectedExample, authMocks } from './examples';
+
 import {
   ReactQueryDecorator,
   ToasterDecorator,
 } from '@test-utils/storybook-decorators';
-import { getMock } from 'storybook-addon-module-mock';
-import { Auth } from './Auth';
-import { AuthExample, authMocks } from './examples';
-
 const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
-
 const meta = {
-  component: Auth,
-  render: AuthExample,
+  component: ShopifyCardConnected,
   decorators: [ToasterDecorator, ReactQueryDecorator],
   parameters: {
     layout: 'fullscreen',
@@ -38,6 +34,7 @@ const meta = {
             isReady: true,
             loading: false,
             isLoadingApprove: false,
+            isConnectedToDapp: true,
           },
           walletContextMocks: {
             walletConnected: address,
@@ -47,45 +44,30 @@ const meta = {
         }),
     },
   },
-} satisfies Meta<typeof Auth>;
-
+  args: {
+    children: 'children',
+    user: {
+      id: '1',
+      address,
+    },
+  },
+  render: CardConnectedExample,
+} satisfies Meta<typeof ShopifyCardConnected>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const UserConnectedWithWalletConnect: Story = {
+export const ConnectedUser: Story = {
   play: async ({ container }) => {
-    expect(
-      screen.queryByRole('button', {
-        name: /Login/i,
-      }),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.getByRole('button', {
-        name: /Logout/i,
-      }),
-    ).toBeInTheDocument();
-    screen.getByText('WalletConnect');
+    userEvent.click(screen.getByText(/My Account/i));
+    expect(await screen.findByText(/sign out/i)).toBeInTheDocument();
   },
 };
 
-export const UserConnectedNoWalletConnect: Story = {
+export const UserConnecting: Story = {
   args: {
-    wcUri: '',
+    isLoading: true,
   },
-  play: async ({ parameters }) => {
-    const mockWalletConnect = getMock(
-      parameters,
-      walletApi,
-      'useWalletConnect',
-    );
-    // mockWalletConnect.mockResolvedValueOnce({
-
-    // })
-  },
-};
-
-export const UserCreateAccount: Story = {
   parameters: {
     moduleMock: {
       mock: () =>
@@ -93,7 +75,10 @@ export const UserCreateAccount: Story = {
           walletAuthMocks: {
             connect: () => Promise.resolve(),
             disconnect: () => Promise.resolve(),
-            wallet: null,
+            wallet: {
+              getAddress: () => address,
+              connected: true,
+            },
             isReady: true,
             isConnecting: false,
           },
@@ -103,20 +88,53 @@ export const UserCreateAccount: Story = {
             isReady: true,
             loading: false,
             isLoadingApprove: false,
+            isConnectedToDapp: false,
           },
           walletContextMocks: {
-            walletConnected: '',
+            walletConnected: address,
             wcUri: 'wc:fake',
             autoConnectAddress: '',
           },
         }),
     },
   },
-  play: async ({ parameters }) => {
-    expect(
-      screen.queryByRole('button', {
-        name: /Create account/i,
-      }),
-    ).toBeInTheDocument();
+  play: async ({ container }) => {
+    expect(await screen.findByRole('status')).toBeInTheDocument();
+  },
+};
+
+export const SettingUpWallet: Story = {
+  parameters: {
+    moduleMock: {
+      mock: () =>
+        authMocks({
+          walletAuthMocks: {
+            connect: () => Promise.resolve(),
+            disconnect: () => Promise.resolve(),
+            wallet: {
+              getAddress: () => address,
+              connected: true,
+            },
+            isReady: false,
+            isConnecting: true,
+          },
+          walletConnectMocks: {
+            initializeWalletConnect: () => Promise.resolve(),
+            connectToDapp: () => Promise.resolve(),
+            isReady: false,
+            loading: false,
+            isLoadingApprove: false,
+            isConnectedToDapp: false,
+          },
+          walletContextMocks: {
+            walletConnected: address,
+            wcUri: 'wc:fake',
+            autoConnectAddress: '',
+          },
+        }),
+    },
+  },
+  play: async ({ container }) => {
+    expect(screen.queryByText(/My Account/i)).not.toBeInTheDocument();
   },
 };

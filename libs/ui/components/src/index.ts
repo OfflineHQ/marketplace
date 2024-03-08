@@ -17,6 +17,9 @@ export {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from './lib/alert-dialog/AlertDialog';
+
+export { IconBadgeWrapper } from './lib/IconBadgeWrapper/IconBadgeWrapper';
+
 export {
   Alert,
   AlertDescription,
@@ -65,6 +68,16 @@ export {
   DialogTrigger,
   type DialogProps,
 } from './lib/dialog/Dialog';
+export {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from './lib/drawer/Drawer';
 export {
   DropdownMenu,
   DropdownMenuCheckboxItem,
