@@ -39,25 +39,20 @@ export const useWalletConnect = () => {
     const normalizedDappUrl = normalizeUrl(dappUrl);
     console.log({ sessions, normalizedDappUrl, address });
 
-    const existingSession = sessions.find((session) => {
+    return sessions.find((session) => {
       const sessionUrl = normalizeUrl(session.peer.metadata.url); // Normalize session URL
-      // Enhanced comparison to account for minor discrepancies
-      return (
+      if (
         sessionUrl === normalizedDappUrl ||
         normalizedDappUrl.includes(sessionUrl) ||
         sessionUrl.includes(normalizedDappUrl)
-      );
+      ) {
+        return session.namespaces.eip155.accounts.some((account) => {
+          const accountAddress = account.split(':')[2]; // Extracting the address
+          return accountAddress.toLowerCase() === address.toLowerCase();
+        });
+      }
+      return false;
     });
-
-    if (!existingSession) return null;
-
-    // Check if the session's account matches your wallet's address
-    return existingSession.namespaces.eip155.accounts.some((account) => {
-      const accountAddress = account.split(':')[2]; // Extracting the address
-      return accountAddress.toLowerCase() === address.toLowerCase();
-    })
-      ? existingSession
-      : null;
   };
 
   // Handle approve action, construct session namespace
@@ -107,33 +102,36 @@ export const useWalletConnect = () => {
     [wallet?.getAddress()],
   );
 
-  const initializeWalletConnect = useCallback(async (address: string) => {
-    try {
-      if (!web3wallet) {
-        await createWeb3Wallet('');
-      }
-      console.log('WalletConnect initialized');
-      const activeSessions = web3wallet.getActiveSessions();
-      setIsReady(true);
-      const embeddingPageUrl = document.referrer; // URL of the page embedding the iframe
-      if (embeddingPageUrl) {
-        const existingSession = getSessionMatchingAddressAndDapp(
-          Object.values(activeSessions),
-          embeddingPageUrl,
-          address,
-        );
-        if (existingSession) {
-          console.log(
-            `initializeWalletConnect // Existing session found for dApp: ${embeddingPageUrl}. Using existing session.`,
-          );
-          setIsConnectedToDapp(true);
+  const initializeWalletConnect = useCallback(
+    async (address: string) => {
+      try {
+        if (!web3wallet) {
+          await createWeb3Wallet('');
         }
+        console.log('WalletConnect initialized');
+        const activeSessions = web3wallet.getActiveSessions();
+        setIsReady(true);
+        const embeddingPageUrl = document.referrer; // URL of the page embedding the iframe
+        if (embeddingPageUrl) {
+          const existingSession = getSessionMatchingAddressAndDapp(
+            Object.values(activeSessions),
+            embeddingPageUrl,
+            address,
+          );
+          if (existingSession) {
+            console.log(
+              `initializeWalletConnect // Existing session found for dApp: ${embeddingPageUrl}. Using existing session.`,
+            );
+            setIsConnectedToDapp(true);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to initialize WalletConnect: ', error);
+        setIsReady(false);
       }
-    } catch (error) {
-      console.error('Failed to initialize WalletConnect: ', error);
-      setIsReady(false);
-    }
-  }, []);
+    },
+    [getSessionMatchingAddressAndDapp],
+  );
 
   const disconnectWalletConnect = useCallback(
     async (targetDAppIdentifier = null) => {

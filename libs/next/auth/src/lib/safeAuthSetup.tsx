@@ -141,20 +141,6 @@ export function useSafeAuth({
     await connectWithSiwe(loginSiwe);
   }, [connectWithSiwe, loginSiwe]);
 
-  const loginAuto = useCallback(
-    async (address: string) => {
-      if (!!session?.user && session?.user?.address !== address) {
-        await logoutSiwe({ refresh: false });
-      }
-      console.log('Auto login with SIWE...', address);
-      await connectWithSiwe(loginSiwe, address, true);
-      if (!session?.user) {
-        await loginSiwe(wallet!);
-      }
-    },
-    [connectWithSiwe, loginSiwe, wallet],
-  );
-
   const logoutSiwe = useCallback(
     async ({ refresh }: { refresh?: boolean }) => {
       console.log('Signing out with SIWE...');
@@ -163,6 +149,20 @@ export function useSafeAuth({
     },
     [router],
   );
+
+  const loginAuto = useCallback(
+    async (address: string) => {
+      if (!!session?.user && session?.user?.address !== address) {
+        await logoutSiwe({ refresh: false });
+      }
+      console.log('Auto login with SIWE...', address);
+      const instance = await connectWithSiwe(loginSiwe, address, true);
+      if (!instance) throw new Error('Error connecting with SIWE');
+      else await loginSiwe(instance);
+    },
+    [connectWithSiwe, loginSiwe, logoutSiwe, session],
+  );
+
   const logoutUserPostHog = useCallback(() => {
     console.log('reset posthog');
     posthog?.reset();

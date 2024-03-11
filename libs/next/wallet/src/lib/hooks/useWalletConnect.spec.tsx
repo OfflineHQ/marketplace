@@ -45,6 +45,14 @@ jest.mock('./useWalletContext', () => ({
   }),
 }));
 
+// Helper function to simulate web3wallet events
+const triggerEvent = (eventName, eventData) => {
+  const callbacks = WalletConnectUtils.web3wallet.on.mock.calls
+    .filter((call) => call[0] === eventName)
+    .map((call) => call[1]);
+  callbacks.forEach((callback) => callback(eventData));
+};
+
 describe('useWalletConnect', () => {
   it('initializes state variables correctly', () => {
     const { result } = renderHook(() => useWalletConnect());
@@ -56,7 +64,79 @@ describe('useWalletConnect', () => {
     // Add assertions for other state variables as needed
   });
 
-  // Additional tests will go here
+  describe('useWalletConnect useEffect', () => {
+    it('registers and cleans up event listeners', () => {
+      const { unmount } = renderHook(() => useWalletConnect());
+
+      // Check that listeners were registered
+      expect(WalletConnectUtils.web3wallet.on).toHaveBeenCalledWith(
+        'session_proposal',
+        expect.any(Function),
+      );
+      expect(WalletConnectUtils.web3wallet.on).toHaveBeenCalledWith(
+        'session_delete',
+        expect.any(Function),
+      );
+      expect(WalletConnectUtils.web3wallet.on).toHaveBeenCalledWith(
+        'session_request',
+        expect.any(Function),
+      );
+      expect(WalletConnectUtils.web3wallet.on).toHaveBeenCalledWith(
+        'session_request_expire',
+        expect.any(Function),
+      );
+      expect(
+        WalletConnectUtils.web3wallet.core.pairing.events.on,
+      ).toHaveBeenCalledWith('pairing_expire', expect.any(Function));
+
+      // Unmount to trigger cleanup
+      unmount();
+
+      // Check that listeners were removed
+      expect(WalletConnectUtils.web3wallet.off).toHaveBeenCalledWith(
+        'session_proposal',
+        expect.any(Function),
+      );
+      expect(WalletConnectUtils.web3wallet.off).toHaveBeenCalledWith(
+        'session_delete',
+        expect.any(Function),
+      );
+      expect(WalletConnectUtils.web3wallet.off).toHaveBeenCalledWith(
+        'session_request',
+        expect.any(Function),
+      );
+      expect(WalletConnectUtils.web3wallet.off).toHaveBeenCalledWith(
+        'session_request_expire',
+        expect.any(Function),
+      );
+      expect(
+        WalletConnectUtils.web3wallet.core.pairing.events.off,
+      ).toHaveBeenCalledWith('pairing_expire', expect.any(Function));
+    });
+    it('handles session proposals correctly', async () => {
+      const { result } = renderHook(() => useWalletConnect());
+
+      // Simulate a session proposal event
+      const mockSessionProposal = {
+        id: 'mockId',
+        params: {
+          /* mock params */
+        },
+        verifyContext: {
+          verified: { origin: 'mockDApp' },
+        },
+      };
+
+      act(() => {
+        triggerEvent('session_proposal', mockSessionProposal);
+      });
+
+      await waitFor(() => {
+        // Verify the hook reacts correctly (e.g., updates state, calls onApprove)
+        expect(result.current.isLoadingApprove).toBe(true);
+      });
+    });
+  });
   describe('connectToDapp function', () => {
     beforeEach(() => {
       (WalletConnectUtils.web3wallet.pair as jest.Mock).mockReset();

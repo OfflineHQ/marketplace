@@ -101,8 +101,9 @@ export const ProfileNavClient = ({
       isReady &&
       !connecting &&
       !isNextAuthConnected &&
-      ['idle', 'error'].includes(loginMutation.status)
+      loginMutation.status === 'idle'
     ) {
+      console.log('applying mutation for auto login', autoConnectAddress);
       loginMutation.mutate(autoConnectAddress);
     }
   }, [
