@@ -56,7 +56,7 @@ export const ProfileNavClient = ({
   isNextAuthConnected,
   account,
 }: ProfileNavClientProps) => {
-  const { login, logout, createAccount, loginAuto, connecting, isReady } =
+  const { login, logout, createAccount, loginAuto, isReady, connecting } =
     useAuthContext();
   const { autoConnectAddress } = useWalletContext();
   const { toast } = useToast();
@@ -79,8 +79,8 @@ export const ProfileNavClient = ({
   }, [createAccount, toast, profileSectionsText]);
 
   useEffect(() => {
-    console.log({ autoConnectAddress, isReady });
-    if (autoConnectAddress && isReady) {
+    console.log({ autoConnectAddress, isReady, connecting });
+    if (autoConnectAddress && isReady && !connecting) {
       loginAuto(autoConnectAddress);
     }
   }, [autoConnectAddress, isReady, loginAuto]);
