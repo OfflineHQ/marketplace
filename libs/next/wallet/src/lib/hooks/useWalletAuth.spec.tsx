@@ -25,6 +25,7 @@ jest.mock('@cometh/connect-sdk', () => {
       disconnect: jest.fn().mockResolvedValue(true), // Ensure disconnect is also mocked
       logout: jest.fn().mockResolvedValue(true), // Ensure logout is also mocked
       retrieveWalletAddressFromSigner: jest.fn().mockResolvedValue('0x1234'),
+      getAddress: jest.fn().mockResolvedValue(['0x1234']),
       // Mock other methods as needed
     })),
     ConnectAdaptor: jest.fn().mockImplementation(() => ({
