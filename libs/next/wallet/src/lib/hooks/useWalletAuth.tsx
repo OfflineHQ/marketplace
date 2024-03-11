@@ -26,7 +26,7 @@ export function useWalletAuth() {
     setWalletConnected,
     setAutoConnectAddress,
   } = useWalletContext();
-  const { disconnectWalletConnect } = useWalletConnect({ address: '' });
+  const { disconnectWalletConnect } = useWalletConnect();
   const [isConnecting, setIsConnecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [connectionError, setConnectionError] = useState<string | null>(null);

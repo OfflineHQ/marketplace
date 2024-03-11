@@ -59,7 +59,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     isLoadingPairing,
     isLoadingApprove,
     isConnectedToDapp,
-  } = useWalletConnect({ address: wallet?.getAddress() || '' });
+  } = useWalletConnect();
   const { walletConnected, wcUri, autoConnectAddress } = useWalletContext();
   const [isVerifyEmail, setIsVerifyEmail] = useState(false);
   const router = useRouter();
