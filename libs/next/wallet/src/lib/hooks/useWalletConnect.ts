@@ -1,7 +1,6 @@
 'use client';
 
 import env from '@env/client';
-import { AppUser } from '@next/types';
 import * as encoding from '@walletconnect/encoding';
 import { SessionTypes } from '@walletconnect/types';
 import {
@@ -22,9 +21,7 @@ export function convertHexToUtf8(hex: string) {
   }
 }
 
-export type UseWalletConnectProps = Pick<AppUser, 'address'>;
-
-export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
+export const useWalletConnect = () => {
   const [isConnectedToDapp, setIsConnectedToDapp] = useState(false);
   const [isLoadingPairing, setIsLoadingPairing] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -36,9 +33,8 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
   const getSessionMatchingAddressAndDapp = (
     sessions: SessionTypes.Struct[],
     dappUrl: string,
-    address: string,
   ) => {
-    console.log({ sessions, dappUrl, address });
+    console.log({ sessions, dappUrl, address: wallet?.getAddress() });
     const existingSession = sessions.find((session) => {
       const sessionUrl = session.peer.metadata.url; // The URL associated with the dApp in the session
       // Simple comparison, might need adjustments based on how URLs are stored and used
@@ -52,7 +48,9 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
     // Check if the session's account matches your wallet's address
     return existingSession.namespaces.eip155.accounts.some((account) => {
       const accountAddress = account.split(':')[2]; // Splitting 'eip155:80001:0xD48840d7b9E2ad0B79393c2D2F0cD0f604Ec7956' to get the address
-      return accountAddress.toLowerCase() === address.toLowerCase();
+      return (
+        accountAddress.toLowerCase() === wallet?.getAddress().toLowerCase()
+      );
     })
       ? existingSession
       : null;
@@ -77,7 +75,9 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
                 'eth_sendTransaction',
               ],
               events: ['accountsChanged', 'chainChanged'],
-              accounts: [`eip155:${env.NEXT_PUBLIC_CHAIN}:${address}`],
+              accounts: [
+                `eip155:${env.NEXT_PUBLIC_CHAIN}:${wallet?.getAddress()}`,
+              ],
             },
           },
         });
@@ -100,7 +100,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
       }
       setIsLoadingApprove(false);
     },
-    [address],
+    [wallet?.getAddress()],
   );
 
   const initializeWalletConnect = useCallback(async () => {
@@ -116,7 +116,6 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
         const existingSession = getSessionMatchingAddressAndDapp(
           Object.values(activeSessions),
           embeddingPageUrl,
-          address,
         );
         if (existingSession) {
           console.log(
@@ -200,7 +199,6 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
         const existingSession = getSessionMatchingAddressAndDapp(
           Object.values(activeSessions),
           sessionDApp,
-          address,
         );
         if (existingSession) {
           console.log(
@@ -268,7 +266,7 @@ export const useWalletConnect = ({ address }: UseWalletConnectProps) => {
         setIsLoadingPairing(false);
       }
     },
-    [wallet, address, onApprove],
+    [wallet?.getAddress(), onApprove],
   );
 
   return {
