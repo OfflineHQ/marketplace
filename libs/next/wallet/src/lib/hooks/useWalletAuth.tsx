@@ -123,6 +123,7 @@ export function useWalletAuth() {
       setIsConnected(true);
       setWallet(instance);
       setProvider(instanceProvider);
+      return instance;
     } catch (e) {
       console.error('Error connecting with SIWE:', e);
       setConnectionError((e as Error).message);

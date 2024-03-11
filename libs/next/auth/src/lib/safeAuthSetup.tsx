@@ -143,10 +143,16 @@ export function useSafeAuth({
 
   const loginAuto = useCallback(
     async (address: string) => {
+      if (!!session?.user && session?.user?.address !== address) {
+        await logoutSiwe({ refresh: false });
+      }
       console.log('Auto login with SIWE...', address);
       await connectWithSiwe(loginSiwe, address, true);
+      if (!session?.user) {
+        await loginSiwe(wallet!);
+      }
     },
-    [connectWithSiwe, loginSiwe],
+    [connectWithSiwe, loginSiwe, wallet],
   );
 
   const logoutSiwe = useCallback(
@@ -202,7 +208,7 @@ export function useSafeAuth({
         if (window.useE2EAuthContext && process.env.NEXT_PUBLIC_E2E_TEST) {
           console.log('Using E2E Auth Context');
         } else if (!isWalletConnected && !isWalletConnecting && isReady) {
-          await loginAuto(session?.user?.address || '');
+          await connectWithSiwe(loginSiwe, session?.user?.address, true);
         } else {
           console.log('User connected');
         }
