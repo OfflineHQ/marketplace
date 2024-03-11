@@ -9,7 +9,7 @@ import {
   parseUri,
 } from '@walletconnect/utils';
 import { Web3WalletTypes } from '@walletconnect/web3wallet';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { createWeb3Wallet, web3wallet } from '../utils/WalletConnectUtil';
 import { useWalletContext } from './useWalletContext';
 
@@ -29,26 +29,31 @@ export const useWalletConnect = () => {
   const [isLoadingApprove, setIsLoadingApprove] = useState(false);
   const { wallet } = useWalletContext();
 
-  // Function to check if any active session matches the embedding page URL
+  const normalizeUrl = (url: string) => url.toLowerCase().replace(/\/$/, ''); // Remove trailing slash and convert to lowercase
+
   const getSessionMatchingAddressAndDapp = (
     sessions: SessionTypes.Struct[],
     dappUrl: string,
     address: string,
   ) => {
-    console.log({ sessions, dappUrl, address });
+    const normalizedDappUrl = normalizeUrl(dappUrl);
+    console.log({ sessions, normalizedDappUrl, address });
+
     const existingSession = sessions.find((session) => {
-      const sessionUrl = session.peer.metadata.url; // The URL associated with the dApp in the session
-      // Simple comparison, might need adjustments based on how URLs are stored and used
+      const sessionUrl = normalizeUrl(session.peer.metadata.url); // Normalize session URL
+      // Enhanced comparison to account for minor discrepancies
       return (
-        sessionUrl === dappUrl ||
-        dappUrl.includes(sessionUrl) ||
-        sessionUrl.includes(dappUrl)
+        sessionUrl === normalizedDappUrl ||
+        normalizedDappUrl.includes(sessionUrl) ||
+        sessionUrl.includes(normalizedDappUrl)
       );
     });
+
     if (!existingSession) return null;
+
     // Check if the session's account matches your wallet's address
     return existingSession.namespaces.eip155.accounts.some((account) => {
-      const accountAddress = account.split(':')[2]; // Splitting 'eip155:80001:0xD48840d7b9E2ad0B79393c2D2F0cD0f604Ec7956' to get the address
+      const accountAddress = account.split(':')[2]; // Extracting the address
       return accountAddress.toLowerCase() === address.toLowerCase();
     })
       ? existingSession
@@ -143,7 +148,9 @@ export const useWalletConnect = () => {
             // For example, checking if the session's peerMeta contains the targetDAppIdentifier
             // This is a placeholder condition. Adjust according to your actual criteria.
             return targetDAppIdentifier
-              ? session.peer.metadata.url.includes(targetDAppIdentifier)
+              ? session.peer.metadata.url.includes(
+                  normalizeUrl(targetDAppIdentifier),
+                )
               : true;
           })
           .map(([topic, session]) =>
@@ -164,83 +171,9 @@ export const useWalletConnect = () => {
 
   const connectToDapp = useCallback(
     async (uri: string) => {
+      if (!web3wallet) return;
       const { topic: pairingTopic } = parseUri(uri);
       setCurrentPairingTopic(pairingTopic);
-      // if for some reason, the proposal is not received, we need to close the modal when the pairing expires (5mins)
-      const pairingExpiredListener = ({ topic }: { topic: string }) => {
-        if (pairingTopic === topic) {
-          console.log('pairing expired');
-          web3wallet.core.pairing.events.removeListener(
-            'pairing_expire',
-            pairingExpiredListener,
-          );
-        }
-      };
-      web3wallet.on('session_delete', async (event) => {
-        console.log('session_delete:', event);
-        const { topic } = event;
-        await web3wallet.disconnectSession({
-          topic,
-          reason: getSdkError('USER_DISCONNECTED'),
-        });
-        setIsConnectedToDapp(false);
-      });
-      web3wallet.on('session_proposal', ({ id, params, verifyContext }) => {
-        const {
-          verified: { origin },
-        } = verifyContext;
-        console.log(`session_proposal from "${origin}":`, {
-          id,
-          params,
-          verifyContext,
-        });
-        const sessionDApp = verifyContext.verified.origin;
-        const activeSessions = web3wallet.getActiveSessions();
-        const existingSession = getSessionMatchingAddressAndDapp(
-          Object.values(activeSessions),
-          sessionDApp,
-          wallet?.getAddress() || '',
-        );
-        if (existingSession) {
-          console.log(
-            `connectToDapp // Existing session found for dApp: ${sessionDApp}. Using existing session.`,
-          );
-          setIsConnectedToDapp(true);
-          // Optionally, handle the existing session here (e.g., proceed with interaction without new session proposal)
-        } else {
-          onApprove({ id, params, verifyContext });
-        }
-      });
-      // Handle session request
-
-      web3wallet.on('session_request', async (event) => {
-        if (!wallet) {
-          console.error('No signer found');
-          return;
-        }
-        console.log('session_request:', event);
-        const { topic, params, id } = event;
-        const { request } = params;
-        const requestParamsMessage = request.params[0];
-
-        // convert `requestParamsMessage` by using a method like hexToUtf8
-        const message = convertHexToUtf8(requestParamsMessage);
-
-        // sign the message
-        const signedMessage = await wallet.signMessage(message);
-
-        const response = { id, result: signedMessage, jsonrpc: '2.0' };
-        console.log('response:', response);
-
-        await web3wallet.respondSessionRequest({ topic, response });
-      });
-
-      web3wallet.on('session_request_expire', (event) => {
-        // request expired and any modal displaying it should be removed
-        const { id } = event;
-        console.log('session_request_expire:', event);
-      });
-
       // Check if a pairing already exists for the given topic
       const existingPairing = web3wallet.core.pairing
         .getPairings()
@@ -256,13 +189,10 @@ export const useWalletConnect = () => {
 
       try {
         setIsLoadingPairing(true);
-        web3wallet.core.pairing.events.on(
-          'pairing_expire',
-          pairingExpiredListener,
-        );
         await web3wallet.pair({ uri });
       } catch (error) {
         console.error('Failed to connect to WalletConnect: ', error);
+        throw error;
       } finally {
         setIsLoadingPairing(false);
       }
@@ -270,9 +200,122 @@ export const useWalletConnect = () => {
     [wallet?.getAddress, onApprove],
   );
 
+  useEffect(() => {
+    if (!web3wallet) return;
+
+    // Pairing expired listener
+    const pairingExpiredListener = ({ topic }: { topic: string }) => {
+      if (topic === currentPairingTopic) {
+        console.log('Pairing expired for topic:', topic);
+        web3wallet.core.pairing.events.removeListener(
+          'pairing_expire',
+          pairingExpiredListener,
+        );
+      }
+    };
+
+    // Session proposal listener
+    const sessionProposalListener = ({
+      id,
+      params,
+      verifyContext,
+    }: Web3WalletTypes.SessionProposal) => {
+      const {
+        verified: { origin },
+      } = verifyContext;
+      console.log(`session_proposal from "${origin}":`, {
+        id,
+        params,
+        verifyContext,
+      });
+      const sessionDApp = verifyContext.verified.origin;
+      const activeSessions = web3wallet.getActiveSessions();
+      const existingSession = getSessionMatchingAddressAndDapp(
+        Object.values(activeSessions),
+        sessionDApp,
+        wallet?.getAddress() || '',
+      );
+      if (existingSession) {
+        console.log(
+          `connectToDapp // Existing session found for dApp: ${sessionDApp}. Using existing session.`,
+        );
+        setIsConnectedToDapp(true);
+        // Optionally, handle the existing session here (e.g., proceed with interaction without new session proposal)
+      } else {
+        onApprove({ id, params, verifyContext });
+      }
+    };
+
+    // Session delete listener
+    const sessionDeleteListener = async ({
+      topic,
+    }: Web3WalletTypes.SessionDelete) => {
+      console.log('Session delete:', { topic });
+      await web3wallet.disconnectSession({
+        topic,
+        reason: getSdkError('USER_DISCONNECTED'),
+      });
+      setIsConnectedToDapp(false);
+    };
+
+    // Session request listener
+    const sessionRequestListener = async ({
+      topic,
+      params,
+      id,
+    }: Web3WalletTypes.SessionRequest) => {
+      console.log('Session request:', { topic, params, id });
+      if (!wallet) {
+        console.error('No signer found');
+      } else {
+        const { request } = params;
+        const requestParamsMessage = request.params[0];
+
+        // convert `requestParamsMessage` by using a method like hexToUtf8
+        const message = convertHexToUtf8(requestParamsMessage);
+
+        // sign the message
+        const signedMessage = await wallet.signMessage(message);
+
+        const response = { id, result: signedMessage, jsonrpc: '2.0' };
+        console.log('response:', response);
+
+        await web3wallet.respondSessionRequest({ topic, response });
+      }
+    };
+
+    // Session request expire listener
+    const sessionRequestExpireListener = ({
+      id,
+    }: Web3WalletTypes.SessionRequestExpire) => {
+      console.log('Session request expired:', { id });
+      // Handle expired session request
+    };
+
+    // Register listeners
+    web3wallet.on('session_proposal', sessionProposalListener);
+    web3wallet.on('session_delete', sessionDeleteListener);
+    web3wallet.on('session_request', sessionRequestListener);
+    web3wallet.on('session_request_expire', sessionRequestExpireListener);
+    web3wallet.core.pairing.events.on('pairing_expire', pairingExpiredListener);
+
+    // Cleanup function to remove listeners
+    return () => {
+      web3wallet.off('session_proposal', sessionProposalListener);
+      web3wallet.off('session_delete', sessionDeleteListener);
+      web3wallet.off('session_request', sessionRequestListener);
+      web3wallet.off('session_request_expire', sessionRequestExpireListener);
+      web3wallet.core.pairing.events.off(
+        'pairing_expire',
+        pairingExpiredListener,
+      );
+    };
+  }, [currentPairingTopic, wallet]);
+
   return {
     isConnectedToDapp,
     isReady,
+    onApprove,
     web3wallet,
     initializeWalletConnect,
     connectToDapp,

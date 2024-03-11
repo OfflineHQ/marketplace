@@ -4,6 +4,7 @@ import { useAuthContext } from '@next/auth';
 import { Link } from '@next/navigation';
 import { AppUser } from '@next/types';
 import { useWalletContext } from '@next/wallet';
+import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@ui/components';
 import {
   LifeBuoy,
@@ -78,12 +79,39 @@ export const ProfileNavClient = ({
     });
   }, [createAccount, toast, profileSectionsText]);
 
+  // Inside your component or hook
+  const loginMutation = useMutation({
+    mutationFn: loginAuto, // Assuming loginAuto is your function to login
+    onSuccess: () => {
+      console.log('Auto login successful with: ', autoConnectAddress);
+      // Handle success, e.g., updating state or notifying the user
+    },
+    onError: (error) => {
+      console.error('Auto login failed with: ', error);
+      // Handle error, e.g., showing an error message
+    },
+  });
+
   useEffect(() => {
     console.log({ autoConnectAddress, isReady, connecting });
-    if (autoConnectAddress && isReady && !connecting) {
-      loginAuto(autoConnectAddress);
+    // Check if autoConnectAddress is available, the system is ready, and not currently connecting
+    // Also, ensure the mutation is not already in progress or has not completed successfully
+    if (
+      autoConnectAddress &&
+      isReady &&
+      !connecting &&
+      !isNextAuthConnected &&
+      ['idle', 'error'].includes(loginMutation.status)
+    ) {
+      loginMutation.mutate(autoConnectAddress);
     }
-  }, [autoConnectAddress, isReady, loginAuto]);
+  }, [
+    autoConnectAddress,
+    isReady,
+    connecting,
+    loginMutation,
+    isNextAuthConnected,
+  ]);
 
   const commonSections: ProfileNavProps['items'] = [
     {
