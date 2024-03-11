@@ -90,6 +90,11 @@ export function useWalletAuth() {
     address?: string,
     createAccount: boolean = false,
   ) {
+    console.log('connectWithSiwe:', {
+      address,
+      createAccount,
+      instanceAndWalletReady: !!instance && !!walletAdaptor,
+    });
     if (!instance || !walletAdaptor) return; // Ensure instance and walletAdaptor are initialized
 
     setIsConnecting(true);
@@ -119,6 +124,7 @@ export function useWalletAuth() {
       setWallet(instance);
       setProvider(instanceProvider);
     } catch (e) {
+      console.error('Error connecting with SIWE:', e);
       setConnectionError((e as Error).message);
       throw e;
     } finally {

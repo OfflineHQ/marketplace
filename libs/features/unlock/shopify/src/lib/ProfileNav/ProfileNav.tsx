@@ -77,16 +77,16 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   });
 
   useEffect(() => {
-    console.log({ wallet, isReady });
-    if (wallet && !isReady) initializeWalletConnect();
-  }, [initializeWalletConnect, wallet, isReady]);
+    console.log({ wallet, isReady, isConnected });
+    if (wallet && !isReady && isConnected) initializeWalletConnect();
+  }, [initializeWalletConnect, wallet, isReady, isConnected]);
 
   useEffect(() => {
     console.log('wcUri', wcUri, 'isReady', isReady);
-    if (wcUri && isReady) {
+    if (wcUri && isReady && isConnected) {
       connectToDapp(wcUri);
     }
-  }, [wcUri, isReady, connectToDapp]);
+  }, [wcUri, isReady, isConnected, connectToDapp]);
 
   useEffect(() => {
     console.log({

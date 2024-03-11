@@ -143,6 +143,7 @@ export function useSafeAuth({
 
   const loginAuto = useCallback(
     async (address: string) => {
+      console.log('Auto login with SIWE...', address);
       await connectWithSiwe(loginSiwe, address, true);
     },
     [connectWithSiwe, loginSiwe],
