@@ -33,8 +33,9 @@ export const useWalletConnect = () => {
   const getSessionMatchingAddressAndDapp = (
     sessions: SessionTypes.Struct[],
     dappUrl: string,
+    address: string,
   ) => {
-    console.log({ sessions, dappUrl, address: wallet?.getAddress() });
+    console.log({ sessions, dappUrl, address });
     const existingSession = sessions.find((session) => {
       const sessionUrl = session.peer.metadata.url; // The URL associated with the dApp in the session
       // Simple comparison, might need adjustments based on how URLs are stored and used
@@ -48,9 +49,7 @@ export const useWalletConnect = () => {
     // Check if the session's account matches your wallet's address
     return existingSession.namespaces.eip155.accounts.some((account) => {
       const accountAddress = account.split(':')[2]; // Splitting 'eip155:80001:0xD48840d7b9E2ad0B79393c2D2F0cD0f604Ec7956' to get the address
-      return (
-        accountAddress.toLowerCase() === wallet?.getAddress().toLowerCase()
-      );
+      return accountAddress.toLowerCase() === address.toLowerCase();
     })
       ? existingSession
       : null;
@@ -103,7 +102,7 @@ export const useWalletConnect = () => {
     [wallet?.getAddress()],
   );
 
-  const initializeWalletConnect = useCallback(async () => {
+  const initializeWalletConnect = useCallback(async (address: string) => {
     try {
       if (!web3wallet) {
         await createWeb3Wallet('');
@@ -116,6 +115,7 @@ export const useWalletConnect = () => {
         const existingSession = getSessionMatchingAddressAndDapp(
           Object.values(activeSessions),
           embeddingPageUrl,
+          address,
         );
         if (existingSession) {
           console.log(
@@ -199,6 +199,7 @@ export const useWalletConnect = () => {
         const existingSession = getSessionMatchingAddressAndDapp(
           Object.values(activeSessions),
           sessionDApp,
+          wallet?.getAddress() || '',
         );
         if (existingSession) {
           console.log(

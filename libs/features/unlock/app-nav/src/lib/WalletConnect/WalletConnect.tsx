@@ -19,8 +19,8 @@ export function WalletConnect({ address, wcUri }: WalletConnectProps) {
   } = useWalletConnect();
   // Call initialize on component mount if necessary
   useEffect(() => {
-    if (!isReady) initializeWalletConnect();
-  }, [initializeWalletConnect, isReady]);
+    if (!isReady) initializeWalletConnect(address);
+  }, [initializeWalletConnect, isReady, address]);
 
   useEffect(() => {
     if (wcUri && isReady) {
