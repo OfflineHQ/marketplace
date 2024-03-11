@@ -266,7 +266,7 @@ export const useWalletConnect = () => {
         setIsLoadingPairing(false);
       }
     },
-    [wallet?.getAddress(), onApprove],
+    [wallet?.getAddress, onApprove],
   );
 
   return {

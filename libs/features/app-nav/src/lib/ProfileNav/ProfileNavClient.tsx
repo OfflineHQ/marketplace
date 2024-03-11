@@ -79,6 +79,7 @@ export const ProfileNavClient = ({
   }, [createAccount, toast, profileSectionsText]);
 
   useEffect(() => {
+    console.log({ autoConnectAddress, isReady });
     if (autoConnectAddress && isReady) {
       loginAuto(autoConnectAddress);
     }

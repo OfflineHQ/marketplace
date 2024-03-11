@@ -126,7 +126,9 @@ export function WalletProvider({
     if (
       resConnectAddress &&
       resConnectAddress !== '' &&
-      !walletInStorage?.find((w) => w.address === resConnectAddress)
+      !walletInStorage?.find(
+        (w) => w.address.toLowerCase() === resConnectAddress.toLowerCase(),
+      )
     ) {
       console.warn(`Address "${resConnectAddress}" not found in storage`);
       setAutoConnectAddress('');
