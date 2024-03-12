@@ -248,11 +248,19 @@ export const useWalletConnect = () => {
       topic,
     }: Web3WalletTypes.SessionDelete) => {
       console.log('Session delete:', { topic });
-      await web3wallet.disconnectSession({
-        topic,
-        reason: getSdkError('USER_DISCONNECTED'),
-      });
-      setIsConnectedToDapp(false);
+      // Check if the topic exists in the active sessions before attempting to disconnect
+      const activeSessions = web3wallet.getActiveSessions();
+      if (activeSessions[topic]) {
+        await web3wallet.disconnectSession({
+          topic,
+          reason: getSdkError('USER_DISCONNECTED'),
+        });
+        if (topic === currentPairingTopic) setIsConnectedToDapp(false);
+      } else {
+        console.log(
+          `No active session found for topic: ${topic}, skipping disconnect.`,
+        );
+      }
     };
 
     // Session request listener
