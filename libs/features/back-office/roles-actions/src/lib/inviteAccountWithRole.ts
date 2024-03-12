@@ -1,3 +1,5 @@
+'use server';
+
 import { getCurrentUser } from '@next/next-auth/user';
 import {
   RoleAuthorization,

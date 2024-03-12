@@ -10,8 +10,6 @@ import '@next/types';
 
 interface AuthProviderProps extends UseSafeAuthProps {
   children?: React.ReactNode;
-  session: Session | null;
-  isConnected?: () => boolean;
 }
 
 interface INextAuthProps {

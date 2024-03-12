@@ -29,7 +29,7 @@ export interface UserPassEventPassActionsProps
 
 export const UserPassEventPassActions: React.FC<
   UserPassEventPassActionsProps
-> = ({
+> = async ({
   eventPassNft,
   isEventPassContractNotRevealed,
   eventPass,

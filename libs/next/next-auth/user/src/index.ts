@@ -1,4 +1,8 @@
-export * from './lib/getCurrentUser';
-export * from './lib/getJwt';
-export * from './lib/getSession';
-export * from './lib/isConnected';
+export {
+  getCurrentUser,
+  getUnauthenticatedUserCookie,
+  handleUnauthenticatedUser,
+} from './lib/getCurrentUser';
+export { getJwt } from './lib/getJwt';
+export { getSession } from './lib/getSession';
+export { isConnected } from './lib/isConnected';

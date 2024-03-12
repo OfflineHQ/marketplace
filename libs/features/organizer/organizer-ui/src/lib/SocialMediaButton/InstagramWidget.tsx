@@ -21,7 +21,7 @@ const InstagramWidgetContent = async ({ handle }: { handle: string }) => {
   ) : null;
 };
 
-const InstagramWidget = ({ handle }: { handle: string }) => (
+const InstagramWidget = async ({ handle }: { handle: string }) => (
   <HoverCardContent className="h-96 w-80 md:h-[30rem] md:w-96">
     <Suspense fallback={<TextSkeleton variant="p" />}>
       <InstagramWidgetContent handle={handle} />
