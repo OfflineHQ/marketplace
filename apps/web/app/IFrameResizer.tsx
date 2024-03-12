@@ -1,3 +1,5 @@
+'use client';
+
 import 'iframe-resizer/js/iframeResizer.contentWindow';
 import { useEffect } from 'react';
 
