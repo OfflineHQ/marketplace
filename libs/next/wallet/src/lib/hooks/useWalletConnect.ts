@@ -31,29 +31,28 @@ export const useWalletConnect = () => {
 
   const normalizeUrl = (url: string) => url.toLowerCase().replace(/\/$/, ''); // Remove trailing slash and convert to lowercase
 
-  const getSessionMatchingAddressAndDapp = (
-    sessions: SessionTypes.Struct[],
-    dappUrl: string,
-    address: string,
-  ) => {
-    const normalizedDappUrl = normalizeUrl(dappUrl);
-    console.log({ sessions, normalizedDappUrl, address });
+  const getSessionMatchingAddressAndDapp = useCallback(
+    (sessions: SessionTypes.Struct[], dappUrl: string, address: string) => {
+      const normalizedDappUrl = normalizeUrl(dappUrl);
+      console.log({ sessions, normalizedDappUrl, address });
 
-    return sessions.find((session) => {
-      const sessionUrl = normalizeUrl(session.peer.metadata.url); // Normalize session URL
-      if (
-        sessionUrl === normalizedDappUrl ||
-        normalizedDappUrl.includes(sessionUrl) ||
-        sessionUrl.includes(normalizedDappUrl)
-      ) {
-        return session.namespaces.eip155.accounts.some((account) => {
-          const accountAddress = account.split(':')[2]; // Extracting the address
-          return accountAddress.toLowerCase() === address.toLowerCase();
-        });
-      }
-      return false;
-    });
-  };
+      return sessions.find((session) => {
+        const sessionUrl = normalizeUrl(session.peer.metadata.url); // Normalize session URL
+        if (
+          sessionUrl === normalizedDappUrl ||
+          normalizedDappUrl.includes(sessionUrl) ||
+          sessionUrl.includes(normalizedDappUrl)
+        ) {
+          return session.namespaces.eip155.accounts.some((account) => {
+            const accountAddress = account.split(':')[2]; // Extracting the address
+            return accountAddress.toLowerCase() === address.toLowerCase();
+          });
+        }
+        return false;
+      });
+    },
+    [],
+  );
 
   // Handle approve action, construct session namespace
   const onApprove = useCallback(

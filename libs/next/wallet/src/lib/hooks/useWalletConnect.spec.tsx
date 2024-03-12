@@ -11,7 +11,7 @@ jest.mock('@walletconnect/encoding', () => ({
 
 jest.mock('@walletconnect/utils', () => ({
   buildApprovedNamespaces: jest.fn(),
-  getSdkError: jest.fn().mockReturnValue('Mocked error'),
+  getSdkError: jest.fn().mockReturnValue('USER_DISCONNECTED'),
   parseUri: jest.fn(),
 }));
 
@@ -20,7 +20,8 @@ jest.mock('../utils/WalletConnectUtil', () => ({
   web3wallet: {
     approveSession: jest.fn(),
     disconnectSession: jest.fn(),
-    getActiveSessions: jest.fn().mockReturnValue({}),
+    getActiveSessions: jest.fn(),
+    respondSessionRequest: jest.fn(),
     pair: jest.fn(),
     on: jest.fn(),
     off: jest.fn(),
@@ -41,6 +42,7 @@ jest.mock('./useWalletContext', () => ({
   useWalletContext: jest.fn().mockReturnValue({
     wallet: {
       getAddress: jest.fn().mockReturnValue('mockedAddress'),
+      signMessage: jest.fn().mockResolvedValue('signedMessageMock'),
     },
   }),
 }));
@@ -64,7 +66,35 @@ describe('useWalletConnect', () => {
     // Add assertions for other state variables as needed
   });
 
+  describe('disconnectSession error handling', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      (
+        WalletConnectUtils.web3wallet.disconnectSession as jest.Mock
+      ).mockReset();
+    });
+    it('handles no active sessions', async () => {
+      (
+        WalletConnectUtils.web3wallet.getActiveSessions as jest.Mock
+      ).mockReturnValueOnce({}); // No active sessions
+
+      const { result } = renderHook(() => useWalletConnect());
+
+      await act(async () => {
+        await result.current.disconnectWalletConnect();
+      });
+
+      // Verify disconnectSession is not called when there are no active sessions
+      expect(
+        WalletConnectUtils.web3wallet.disconnectSession,
+      ).not.toHaveBeenCalled();
+    });
+  });
+
   describe('useWalletConnect useEffect', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
     it('registers and cleans up event listeners', () => {
       const { unmount } = renderHook(() => useWalletConnect());
 
@@ -88,7 +118,6 @@ describe('useWalletConnect', () => {
       expect(
         WalletConnectUtils.web3wallet.core.pairing.events.on,
       ).toHaveBeenCalledWith('pairing_expire', expect.any(Function));
-
       // Unmount to trigger cleanup
       unmount();
 
@@ -113,15 +142,16 @@ describe('useWalletConnect', () => {
         WalletConnectUtils.web3wallet.core.pairing.events.off,
       ).toHaveBeenCalledWith('pairing_expire', expect.any(Function));
     });
-    it('handles session proposals correctly', async () => {
-      const { result } = renderHook(() => useWalletConnect());
+    it('calls onApprove with correct arguments for session proposal without existing session', async () => {
+      // Set up the mock to simulate no existing sessions
+      (
+        WalletConnectUtils.web3wallet.getActiveSessions as jest.Mock
+      ).mockReturnValueOnce({}); // Assume no sessions match
 
-      // Simulate a session proposal event
+      const { result } = renderHook(() => useWalletConnect());
       const mockSessionProposal = {
         id: 'mockId',
-        params: {
-          /* mock params */
-        },
+        params: {},
         verifyContext: {
           verified: { origin: 'mockDApp' },
         },
@@ -132,11 +162,118 @@ describe('useWalletConnect', () => {
       });
 
       await waitFor(() => {
-        // Verify the hook reacts correctly (e.g., updates state, calls onApprove)
+        // Assuming onApprove updates isLoadingApprove to true when called
         expect(result.current.isLoadingApprove).toBe(true);
+        // If possible, directly verify that onApprove was called with the expected arguments
+        // This may require additional mocking or a different approach to track calls to internal functions
+      });
+    });
+
+    it('does not call onApprove for session proposal with existing session', async () => {
+      // Simulate an existing session matching the dApp
+      (
+        WalletConnectUtils.web3wallet.getActiveSessions as jest.Mock
+      ).mockReturnValueOnce({
+        mockSessionId: {
+          peer: {
+            metadata: {
+              url: 'https://example.com/dummy/',
+            },
+          },
+          namespaces: {
+            eip155: {
+              accounts: [`eip155:1:mockedAddress2`],
+            },
+          },
+        },
+        mockSessionId2: {
+          peer: {
+            metadata: {
+              url: 'https://example.com/dummy/',
+            },
+          },
+          namespaces: {
+            eip155: {
+              accounts: [`eip155:1:mockedAddress`],
+            },
+          },
+        },
+      });
+      const { result } = renderHook(() => useWalletConnect());
+      const mockSessionProposal = {
+        id: 'mockId',
+        params: {
+          /* mock params */
+        },
+        verifyContext: {
+          verified: { origin: 'https://example.com' },
+        },
+      };
+      act(() => {
+        triggerEvent('session_proposal', mockSessionProposal);
+      });
+
+      await waitFor(() => {
+        // Assuming onApprove updates isLoadingApprove to true when called
+        expect(result.current.isConnectedToDapp).toBe(true);
+      });
+      expect(
+        WalletConnectUtils.web3wallet.approveSession,
+      ).not.toHaveBeenCalled();
+    });
+
+    it('handles session deletion correctly', async () => {
+      const { result } = renderHook(() => useWalletConnect());
+
+      // Mock a session deletion event
+      const mockSessionDelete = {
+        topic: 'mockTopic',
+      };
+
+      act(() => {
+        triggerEvent('session_delete', mockSessionDelete);
+      });
+
+      await waitFor(() => {
+        expect(WalletConnectUtils.web3wallet.disconnectSession).toBeCalledWith({
+          topic: 'mockTopic',
+          reason: 'USER_DISCONNECTED',
+        });
+        expect(result.current.isConnectedToDapp).toBe(false);
+      });
+    });
+
+    it('handles session request when wallet is present', async () => {
+      const { result } = renderHook(() => useWalletConnect());
+      const mockRequest = {
+        topic: 'mockTopic',
+        params: {
+          request: {
+            params: ['mockRequestParamsMessage'],
+          },
+        },
+        id: 'mockId',
+      };
+
+      act(() => {
+        triggerEvent('session_request', mockRequest);
+      });
+
+      await waitFor(() => {
+        expect(
+          WalletConnectUtils.web3wallet.respondSessionRequest,
+        ).toHaveBeenCalledWith({
+          topic: 'mockTopic',
+          response: {
+            id: 'mockId',
+            result: 'signedMessageMock',
+            jsonrpc: '2.0',
+          },
+        });
       });
     });
   });
+
   describe('connectToDapp function', () => {
     beforeEach(() => {
       (WalletConnectUtils.web3wallet.pair as jest.Mock).mockReset();
@@ -149,17 +286,15 @@ describe('useWalletConnect', () => {
     it('successfully establishes a connection', async () => {
       const { result } = renderHook(() => useWalletConnect());
 
-      act(() => {
-        result.current.connectToDapp('mockUri');
+      await act(async () => {
+        await result.current.connectToDapp('mockUri');
       });
 
       await waitFor(() => {
         expect(result.current.isLoadingPairing).toBe(false);
+        // Assertions to verify successful connection
+        expect(WalletConnectUtils.web3wallet.pair).toHaveBeenCalled();
       });
-
-      // Assertions to verify successful connection
-      expect(WalletConnectUtils.web3wallet.pair).toHaveBeenCalled();
-      // Add more assertions as necessary
     });
 
     it('throws an error when connection fails', async () => {
@@ -168,10 +303,11 @@ describe('useWalletConnect', () => {
       ); // Mock failed pairing
 
       const { result } = renderHook(() => useWalletConnect());
-
-      await expect(result.current.connectToDapp('mockUri')).rejects.toThrow(
-        'Connection error',
-      );
+      await act(async () => {
+        await expect(result.current.connectToDapp('mockUri')).rejects.toThrow(
+          'Connection error',
+        );
+      });
 
       expect(result.current.isLoadingPairing).toBe(false);
       // Add more assertions as necessary
@@ -258,19 +394,26 @@ describe('useWalletConnect', () => {
     const mockActiveSessions = {
       session1: {
         peer: { metadata: { url: 'https://example.com/app' } },
+        namespaces: {
+          eip155: {
+            accounts: [`eip155:1:mockedAddress`],
+          },
+        },
       },
       session2: {
         peer: { metadata: { url: 'https://anotherdomain.com/dapp' } },
+        namespaces: {
+          eip155: {
+            accounts: [`eip155:1:mockedAddress`],
+          },
+        },
       },
     };
 
     beforeEach(() => {
       (
         WalletConnectUtils.web3wallet.getActiveSessions as jest.Mock
-      ).mockReturnValue(mockActiveSessions);
-      (WalletConnectUtilsLib.getSdkError as jest.Mock).mockReturnValue(
-        'USER_DISCONNECTED',
-      );
+      ).mockReturnValueOnce(mockActiveSessions);
       (
         WalletConnectUtils.web3wallet.disconnectSession as jest.Mock
       ).mockReset();
@@ -278,7 +421,7 @@ describe('useWalletConnect', () => {
     it('disconnects from WalletConnect sessions successfully', async () => {
       (
         WalletConnectUtils.web3wallet.disconnectSession as jest.Mock
-      ).mockResolvedValue(true);
+      ).mockResolvedValueOnce(true);
 
       const { result } = renderHook(() => useWalletConnect());
 
@@ -322,22 +465,60 @@ describe('useWalletConnect', () => {
         reason: 'USER_DISCONNECTED',
       });
     });
+  });
 
-    it('handles no active sessions', async () => {
+  describe('initializeWalletConnect function', () => {
+    beforeEach(() => {
+      Object.defineProperty(document, 'referrer', {
+        value: 'https://example.com',
+        configurable: true,
+      }); // Mocking embeddingPageUrl
+    });
+    it('initializes WalletConnect successfully without existing session', async () => {
       (
         WalletConnectUtils.web3wallet.getActiveSessions as jest.Mock
-      ).mockReturnValue({}); // No active sessions
+      ).mockReturnValue({});
+      const { result } = renderHook(() => useWalletConnect());
+
+      await act(async () => {
+        await result.current.initializeWalletConnect('mockAddress');
+      });
+
+      await waitFor(() => {
+        expect(result.current.isReady).toBe(true);
+        expect(result.current.isConnectedToDapp).toBe(false);
+      });
+    });
+    it('initializes WalletConnect with an existing session', async () => {
+      const mockActiveSessions = {
+        mockSessionId2: {
+          peer: {
+            metadata: {
+              url: 'https://example.com/dummy/',
+            },
+          },
+          namespaces: {
+            eip155: {
+              accounts: [`eip155:1:mockedAddress`],
+            },
+          },
+        },
+      };
+
+      (
+        WalletConnectUtils.web3wallet.getActiveSessions as jest.Mock
+      ).mockReturnValue(mockActiveSessions);
 
       const { result } = renderHook(() => useWalletConnect());
 
       await act(async () => {
-        await result.current.disconnectWalletConnect();
+        await result.current.initializeWalletConnect('mockedAddress');
       });
 
-      // Verify disconnectSession is not called when there are no active sessions
-      expect(
-        WalletConnectUtils.web3wallet.disconnectSession,
-      ).not.toHaveBeenCalled();
+      await waitFor(() => {
+        expect(result.current.isReady).toBe(true);
+        expect(result.current.isConnectedToDapp).toBe(true);
+      });
     });
   });
 });

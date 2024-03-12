@@ -53,7 +53,6 @@ describe('useWalletAuth', () => {
     expect(result.current.walletAdaptor).not.toBeNull();
     expect(result.current.isReady).toBe(true);
     expect(result.current.isConnecting).toBe(false);
-    expect(result.current.isConnected).toBe(false);
     expect(result.current.connectionError).toBeNull();
   });
 
@@ -65,7 +64,7 @@ describe('useWalletAuth', () => {
         result.current.connectWithSiwe(jest.fn(), '0x1234');
       });
 
-      await waitFor(() => expect(result.current.isConnected).toBe(true));
+      await waitFor(() => expect(result.current.wallet).not.toBeNull());
     });
     it('should handle connection with an address successfully', async () => {
       const { result } = renderHook(() => useWalletAuth(), { wrapper });
@@ -75,7 +74,7 @@ describe('useWalletAuth', () => {
         result.current.connectWithSiwe(mockLoginSiwe, '0x1234');
       });
 
-      await waitFor(() => expect(result.current.isConnected).toBe(true));
+      await waitFor(() => expect(result.current.wallet).not.toBeNull());
       expect(mockLoginSiwe).not.toHaveBeenCalled();
     });
 
@@ -87,7 +86,7 @@ describe('useWalletAuth', () => {
         result.current.connectWithSiwe(mockLoginSiwe, undefined, true);
       });
 
-      await waitFor(() => expect(result.current.isConnected).toBe(true));
+      await waitFor(() => expect(result.current.wallet).not.toBeNull());
       // Assuming connect() internally handles account creation and does not expose it
       // So, we just check if isConnected turns true
     });
@@ -116,13 +115,13 @@ describe('useWalletAuth', () => {
       result.current.connectWithSiwe(jest.fn(), '0x1234');
     });
 
-    await waitFor(() => expect(result.current.isConnected).toBe(true));
+    await waitFor(() => expect(result.current.wallet).not.toBeNull());
 
     // Then, disconnect
     act(() => {
       result.current.disconnect();
     });
 
-    await waitFor(() => expect(result.current.isConnected).toBe(false));
+    await waitFor(() => expect(result.current.wallet).toBeNull());
   });
 });
