@@ -113,6 +113,7 @@
     "ethers6": "npm:ethers@^6.9.0",
     "framer-motion": "^6.5.1",
     "graphql-ws": "^5.14.1",
+    "iframe-resizer": "^4.3.9",
     "immer": "^10.0.3",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
