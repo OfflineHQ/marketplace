@@ -28,7 +28,6 @@ export function useWalletAuth() {
   } = useWalletContext();
   const { disconnectWalletConnect } = useWalletConnect();
   const [isConnecting, setIsConnecting] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
   const [connectionError, setConnectionError] = useState<string | null>(null);
 
   const apiKey = env.NEXT_PUBLIC_COMETH_CONNECT_API_KEY;
@@ -74,7 +73,6 @@ export function useWalletAuth() {
       }
       const instanceProvider = new ComethProvider(instance);
       localStorage?.setItem('wallet-connected', instance.getAddress());
-      setIsConnected(true);
       setWallet(instance);
       setProvider(instanceProvider);
     } catch (e) {
@@ -120,7 +118,6 @@ export function useWalletAuth() {
         await loginSiwe(instance);
       }
 
-      setIsConnected(true);
       setWallet(instance);
       setProvider(instanceProvider);
       return instance;
@@ -140,7 +137,6 @@ export function useWalletAuth() {
         setWalletConnected('');
         // wallet-connected is used to auto-connect user when they visit the site again
         localStorage.removeItem('wallet-connected');
-        setIsConnected(false);
         setWallet(null);
         setProvider(null);
         setAutoConnectAddress(null);
@@ -173,7 +169,6 @@ export function useWalletAuth() {
     connect,
     disconnect,
     isReady: !!walletAdaptor && !!instance,
-    isConnected,
     isConnecting,
     connectionError,
     setConnectionError,

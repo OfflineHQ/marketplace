@@ -13,7 +13,6 @@ export const Auth: React.FC = () => {
     disconnect,
     isReady,
     isConnecting,
-    isConnected,
     provider,
     wallet,
     connectionError,

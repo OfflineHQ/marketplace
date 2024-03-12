@@ -26,7 +26,6 @@ export function ShopifyAuth() {
     disconnect,
     isReady: isWalletReady,
     isConnecting,
-    isConnected,
     provider,
     wallet,
     connectionError,

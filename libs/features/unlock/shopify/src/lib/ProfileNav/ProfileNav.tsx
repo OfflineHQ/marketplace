@@ -47,7 +47,6 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     disconnect,
     isReady: isWalletReady,
     isConnecting,
-    isConnected,
     provider,
     wallet,
     connectionError,
@@ -77,17 +76,25 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   });
 
   useEffect(() => {
-    console.log({ wallet, isReady, isConnected });
-    if (wallet && !isReady && isConnected)
-      initializeWalletConnect(wallet.getAddress());
-  }, [initializeWalletConnect, wallet, isReady, isConnected]);
+    console.log({ wallet, isReady, isConnected: !!wallet });
+    if (!!wallet && !isReady) initializeWalletConnect(wallet.getAddress());
+  }, [initializeWalletConnect, wallet, isReady]);
 
   useEffect(() => {
-    console.log('wcUri', wcUri, 'isReady', isReady);
-    if (wcUri && isReady && isConnected) {
+    console.log(
+      'wcUri',
+      wcUri,
+      'isReady',
+      isReady,
+      'wallet',
+      wallet,
+      'isConnectedToDapp',
+      isConnectedToDapp,
+    );
+    if (wcUri && isReady && !!wallet && !isConnectedToDapp) {
       connectToDapp(wcUri);
     }
-  }, [wcUri, isReady, isConnected, connectToDapp]);
+  }, [wcUri, isReady, wallet, connectToDapp, isConnectedToDapp]);
 
   useEffect(() => {
     console.log({

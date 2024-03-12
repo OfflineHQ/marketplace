@@ -48,7 +48,6 @@ export function useSafeAuth({
     disconnect,
     isReady,
     isConnecting: isWalletConnecting,
-    isConnected: isWalletConnected,
     provider,
     wallet,
     connectionError,
@@ -207,14 +206,14 @@ export function useSafeAuth({
         // bypass real login for e2e tests
         if (window.useE2EAuthContext && process.env.NEXT_PUBLIC_E2E_TEST) {
           console.log('Using E2E Auth Context');
-        } else if (!isWalletConnected && !isWalletConnecting && isReady) {
+        } else if (!wallet && !isWalletConnecting && isReady) {
           await connectWithSiwe(loginSiwe, session?.user?.address, true);
         } else {
           console.log('User connected');
         }
       }
       // if user is connected to wallet but not to next auth, proceed with SIWE to create cookie
-      else if (isWalletConnected && wallet) {
+      else if (wallet) {
         await loginSiwe(wallet);
       }
       // user is neither connected to next auth nor wallet, proceed with unauthenticated user
