@@ -222,13 +222,53 @@ describe('useWalletConnect', () => {
       ).not.toHaveBeenCalled();
     });
 
-    it('handles session deletion correctly', async () => {
+    it('handles session deletion correctly when no matching topic', async () => {
       const { result } = renderHook(() => useWalletConnect());
 
       // Mock a session deletion event
       const mockSessionDelete = {
         topic: 'mockTopic',
       };
+
+      (
+        WalletConnectUtils.web3wallet.getActiveSessions as jest.Mock
+      ).mockReturnValueOnce({}); // Assume no sessions match
+
+      act(() => {
+        triggerEvent('session_delete', mockSessionDelete);
+      });
+
+      await waitFor(() => {
+        expect(
+          WalletConnectUtils.web3wallet.disconnectSession,
+        ).not.toHaveBeenCalled();
+      });
+    });
+
+    it('handles session deletion correctly when matching topic', async () => {
+      const { result } = renderHook(() => useWalletConnect());
+
+      // Mock a session deletion event
+      const mockSessionDelete = {
+        topic: 'mockTopic',
+      };
+
+      (
+        WalletConnectUtils.web3wallet.getActiveSessions as jest.Mock
+      ).mockReturnValueOnce({
+        mockTopic: {
+          peer: {
+            metadata: {
+              url: 'https://example.com/dummy/',
+            },
+          },
+          namespaces: {
+            eip155: {
+              accounts: [`eip155:1:mockedAddress`],
+            },
+          },
+        },
+      }); // Assume no sessions match
 
       act(() => {
         triggerEvent('session_delete', mockSessionDelete);
