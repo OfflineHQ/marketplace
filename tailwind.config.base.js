@@ -20,6 +20,7 @@ const screens = {
 
 module.exports = {
   darkMode: 'class',
+  // prefix: 'off-', // avoid conflicts with other website css class names
   theme: {
     container: {
       center: true,

@@ -214,6 +214,9 @@ dependencies:
   graphql-ws:
     specifier: ^5.14.1
     version: 5.14.2(graphql@16.8.1)
+  iframe-resizer:
+    specifier: ^4.3.9
+    version: 4.3.9
   immer:
     specifier: ^10.0.3
     version: 10.0.3
@@ -18765,6 +18768,11 @@ packages:
 
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
+
+  /iframe-resizer@4.3.9:
+    resolution: {integrity: sha512-MCt+V/THB4a9OcAdrWo5NsI2CRpeMM4ijhTfiLtsdgDJXWYXf62Ve8yO8rKGmYNs991zty/EolYOxActlkfU+A==}
+    engines: {node: '>=0.8.0'}
+    dev: false
 
   /ignore@5.3.0:
     resolution: {integrity: sha512-g7dmpshy+gD7mh88OC9NwSGTKoc3kyLAZQRU1mt53Aw/vnvfXnbC+F/7F7QoYVKbV+KNvJx8wArewKy1vXMtlg==}
