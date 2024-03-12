@@ -20,7 +20,7 @@ const FacebookWidgetContent = async ({ handle }: { handle: string }) => {
   ) : null;
 };
 
-const FacebookWidget = ({ handle }: { handle: string }) => (
+const FacebookWidget = async ({ handle }: { handle: string }) => (
   <HoverCardContent className="h-96 w-80 md:h-[30rem] md:w-96">
     <Suspense fallback={<TextSkeleton variant="p" />}>
       <FacebookWidgetContent handle={handle} />

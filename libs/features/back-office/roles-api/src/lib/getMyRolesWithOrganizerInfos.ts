@@ -5,7 +5,7 @@ import { isConnected } from '@next/next-auth/user';
 import { cache } from 'react';
 
 export const getMyRolesWithOrganizerInfos = cache(async () => {
-  if (!isConnected()) throw new Error('User not connected');
+  if (!(await isConnected())) throw new Error('User not connected');
   const data = await userSdk.GetMyRolesWithOrganizerInfos(
     {
       stage: env.HYGRAPH_STAGE as Stage,

@@ -32,7 +32,7 @@ export interface UseSafeAuthProps {
     };
   };
   session?: Session | null;
-  isConnected?: () => boolean;
+  isConnected?: () => Promise<boolean>;
   createAccount?: () => void;
 }
 
@@ -219,7 +219,7 @@ export function useSafeAuth({
       // user is neither connected to next auth nor wallet, proceed with unauthenticated user
       else {
         console.log('User not connected');
-        handleUnauthenticatedUser();
+        await handleUnauthenticatedUser();
         // await logoutSiwe({ refresh: false });
         logoutUserPostHog();
       }

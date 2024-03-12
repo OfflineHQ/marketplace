@@ -20,7 +20,7 @@ const TwitterWidgetContent = async ({ handle }: { handle: string }) => {
   ) : null;
 };
 
-const TwitterWidget = ({ handle }: { handle: string }) => (
+const TwitterWidget = async ({ handle }: { handle: string }) => (
   <HoverCardContent className="h-96 w-80 md:h-[30rem] md:w-96">
     <Suspense fallback={<TextSkeleton variant="p" />}>
       <TwitterWidgetContent handle={handle} />
