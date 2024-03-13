@@ -522,6 +522,9 @@ devDependencies:
   '@types/cron':
     specifier: ^2.4.0
     version: 2.4.0
+  '@types/iframe-resizer':
+    specifier: ^3.5.13
+    version: 3.5.13
   '@types/jest':
     specifier: 29.5.0
     version: 29.5.0
@@ -11580,6 +11583,10 @@ packages:
     resolution: {integrity: sha512-SSrD0c1OQzlFX7pGu1eXxSEjemej64aaNPRhhVYUGqXh0BtldAAx37MG8btcumvpgKyZp1F5Gn3JkktdxiFv6w==}
     dependencies:
       '@types/node': 18.16.9
+    dev: true
+
+  /@types/iframe-resizer@3.5.13:
+    resolution: {integrity: sha512-/Np2ntlOWd/NOHs23Mj7QlNEnZ6SL02AWWdYZLm4RQNukDdpqpagfMAdin5FvQDLngR8LWfh/qUnYxuDmR8BCg==}
     dev: true
 
   /@types/istanbul-lib-coverage@2.0.6:
