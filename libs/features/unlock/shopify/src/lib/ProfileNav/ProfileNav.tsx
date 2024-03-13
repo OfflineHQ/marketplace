@@ -201,6 +201,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     ],
     [user, signOutUserAction],
   );
+
   return isWalletReady ? (
     <>
       {isVerifyEmail && (

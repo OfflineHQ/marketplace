@@ -1,34 +1,57 @@
 'use client';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isServerSide } from '@utils';
-import { useEffect, useState } from 'react';
+import { IFramePage } from 'iframe-resizer';
+import { useEffect } from 'react';
+
+export const useParentIFrame = () => {
+  const queryClient = useQueryClient();
+  return queryClient.getQueryData<IFramePage>(['parentIFrame']);
+};
 
 const IFrameResizer: React.FC = () => {
-  const [iframeResizerInstance, setIframeResizerInstance] = useState(null);
-  const [isReady, setIsReady] = useState(false); // Initialize isReady state
-
+  const queryClient = useQueryClient();
+  // https://github.com/davidjbradshaw/iframe-resizer/blob/master/docs/iframed_page/methods.md
   function onReadyHandler() {
-    console.log('iframeResizer contentWindow provider is ready');
-    const myId = (window as any).parentIFrame.getId();
-    console.log('The ID of the iFrame in the parent page is: ' + myId);
-    setIsReady(true); // Set isReady to true when initialized
+    queryClient.setQueryData<IFramePage>(
+      ['parentIFrame'],
+      (window as any).parentIFrame,
+    );
   }
-
+  // https://github.com/davidjbradshaw/iframe-resizer/blob/master/docs/iframed_page/events.md
   function onMessageHandler(message: any) {
     console.log('message from parent', message);
   }
 
-  useEffect(() => {
-    if (!iframeResizerInstance && !isServerSide()) {
+  function initializeIframeResizer() {
+    // Proceed with dynamic import and setup
+    // @ts-expect-error
+    return import('iframe-resizer/js/iframeResizer.contentWindow').then(() => {
       (window as any).iFrameResizer = {
         log: true,
         onReady: onReadyHandler,
         onMessage: onMessageHandler,
       };
-      setIframeResizerInstance((window as any).iFrameResizer);
+      // Return the initialized iFrameResizer object
+      return Promise.resolve((window as any).iFrameResizer);
+    });
+  }
+
+  const { mutate, status } = useMutation({
+    mutationFn: initializeIframeResizer,
+    onSuccess: (props: any) => {
+      console.log('mutation success', props);
+    },
+    onError: (error) => {
+      console.log('mutation error', error);
+    },
+  });
+
+  useEffect(() => {
+    if (!isServerSide() && status === 'idle') {
+      mutate();
     }
-    // @ts-expect-error
-    import('iframe-resizer/js/iframeResizer.contentWindow');
-  }, [iframeResizerInstance]);
+  }, [status, mutate]);
   return null;
 };
 
