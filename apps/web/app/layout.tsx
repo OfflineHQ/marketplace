@@ -1,9 +1,5 @@
 import '@web/styles/globals.css';
-import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
-const IFrameResizer = dynamic(() => import('./IFrameResizer'), {
-  ssr: false,
-});
 
 type Props = {
   children: ReactNode;
@@ -13,5 +9,5 @@ type Props = {
 // is required, even if it's just passing children through.
 
 export default function RootLayout({ children }: Props) {
-  return <IFrameResizer>{children}</IFrameResizer>;
+  return children;
 }
