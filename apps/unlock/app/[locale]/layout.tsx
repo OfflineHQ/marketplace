@@ -13,6 +13,7 @@ import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
+import IFrameResizer from './IFrameResizer';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -103,16 +104,22 @@ export default async function RootLayout({
           fontHeading.variable,
         )}
       >
-        <PHProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <WalletProvider>
-              <ReactQueryProviders>
-                {children}
-                <Toaster />
-              </ReactQueryProviders>
-            </WalletProvider>
-          </ThemeProvider>
-        </PHProvider>
+        <ReactQueryProviders>
+          <IFrameResizer>
+            <PHProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+              >
+                <WalletProvider>
+                  {children}
+                  <Toaster />
+                </WalletProvider>
+              </ThemeProvider>
+            </PHProvider>
+          </IFrameResizer>
+        </ReactQueryProviders>
         <Suspense>
           <PostHogPageview />
         </Suspense>
