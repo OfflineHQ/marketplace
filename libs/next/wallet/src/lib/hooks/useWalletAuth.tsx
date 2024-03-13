@@ -41,6 +41,7 @@ export function useWalletAuth() {
       chainId: getCurrentChain().chainIdHex,
       apiKey,
       passKeyName: 'Offline 🔑',
+      rpcUrl: getCurrentChain().urls[0],
     });
 
     const newInstance = new ComethWallet({

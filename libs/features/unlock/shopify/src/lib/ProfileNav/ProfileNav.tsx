@@ -9,7 +9,7 @@ import {
   useWalletConnect,
   useWalletContext,
 } from '@next/wallet';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   AutoAnimate,
   AvatarSkeleton,
@@ -59,7 +59,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     isLoadingApprove,
     isConnectedToDapp,
   } = useWalletConnect();
-  const { walletConnected, wcUri, autoConnectAddress } = useWalletContext();
+  const { walletConnected, autoConnectAddress } = useWalletContext();
   const [isVerifyEmail, setIsVerifyEmail] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -79,6 +79,9 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     console.log({ wallet, isReady, isConnected: !!wallet });
     if (!!wallet && !isReady) initializeWalletConnect(wallet.getAddress());
   }, [initializeWalletConnect, wallet, isReady]);
+  const { data: wcUri } = useQuery<string>({
+    queryKey: ['walletConnectUri'],
+  });
 
   useEffect(() => {
     console.log(

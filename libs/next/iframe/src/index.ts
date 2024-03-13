@@ -9,6 +9,21 @@ export const useParentIFrame = () => {
   return queryClient.getQueryData<IFramePage>(['parentIFrame']);
 };
 
+enum MessageType {
+  WALLET_CONNECT_URI = 'WALLET_CONNECT_URI',
+  // Additional message types can be added here as needed
+}
+
+interface MessageValues {
+  [MessageType.WALLET_CONNECT_URI]: { wcUri: string };
+  // Additional value shapes can be defined here corresponding to the MessageType
+}
+
+interface IFrameParentMessage<T extends MessageType> {
+  type: T;
+  value: MessageValues[T];
+}
+
 const IFrameResizer: React.FC = () => {
   const queryClient = useQueryClient();
   // https://github.com/davidjbradshaw/iframe-resizer/blob/master/docs/iframed_page/methods.md
@@ -19,11 +34,20 @@ const IFrameResizer: React.FC = () => {
     );
   }
   // https://github.com/davidjbradshaw/iframe-resizer/blob/master/docs/iframed_page/events.md
-  function onMessageHandler(message: any) {
-    console.log('message from parent', message);
+  function onMessageHandler({ type, value }: IFrameParentMessage) {
+    console.log('message from parent', { type, value });
+    // eslint-disable-next-line sonarjs/no-small-switch
+    switch (type) {
+      case MessageType.WALLET_CONNECT_URI:
+        // Handle the wallet connect URI message
+        console.log('setting wallet connect uri', value.wcUri);
+        queryClient.setQueryData(['walletConnectUri'], value.wcUri);
+        break;
+      // Additional message types can be handled here as needed
+    }
   }
 
-  function initializeIframeResizer() {
+  async function initializeIframeResizer() {
     // Proceed with dynamic import and setup
     // @ts-expect-error
     return import('iframe-resizer/js/iframeResizer.contentWindow').then(() => {

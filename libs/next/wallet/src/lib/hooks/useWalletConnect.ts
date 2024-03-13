@@ -1,6 +1,8 @@
 'use client';
 
 import env from '@env/client';
+import { useParentIFrame } from '@next/iframe';
+import { isLocalhost } from '@shared/client';
 import * as encoding from '@walletconnect/encoding';
 import { SessionTypes } from '@walletconnect/types';
 import {
@@ -28,22 +30,7 @@ export const useWalletConnect = () => {
   const [currentPairingTopic, setCurrentPairingTopic] = useState('');
   const [isLoadingApprove, setIsLoadingApprove] = useState(false);
   const { wallet } = useWalletContext();
-
-  useEffect(() => {
-    if (isConnectedToDapp && currentPairingTopic && wallet) {
-      // Logic to connect to the dApp goes here
-      // This could be a function call or any other operation needed to establish the connection
-      console.log('Connected to dApp:', currentPairingTopic);
-      web3wallet.emitSessionEvent({
-        topic: currentPairingTopic,
-        event: {
-          name: 'accountsChanged',
-          data: [wallet?.getAddress()],
-        },
-        chainId: `eip155:${env.NEXT_PUBLIC_CHAIN}`,
-      });
-    }
-  }, [isConnectedToDapp, currentPairingTopic, wallet]);
+  const iframe = useParentIFrame();
 
   const normalizeUrl = (url: string) => url.toLowerCase().replace(/\/$/, ''); // Remove trailing slash and convert to lowercase
 
@@ -114,7 +101,7 @@ export const useWalletConnect = () => {
       }
       setIsLoadingApprove(false);
     },
-    [wallet?.getAddress()],
+    [wallet],
   );
 
   const initializeWalletConnect = useCallback(
@@ -126,7 +113,11 @@ export const useWalletConnect = () => {
         console.log('WalletConnect initialized');
         const activeSessions = web3wallet.getActiveSessions();
         setIsReady(true);
-        const embeddingPageUrl = document.referrer; // URL of the page embedding the iframe
+        // TODO here used for test, remove or replace with something cleaner, more secure
+        const embeddingPageUrl = isLocalhost()
+          ? 'https://offline-unlock.myshopify.com/'
+          : document.referrer; // URL of the page embedding the iframe
+        console.log({ embeddingPageUrl });
         if (embeddingPageUrl) {
           const existingSession = getSessionMatchingAddressAndDapp(
             Object.values(activeSessions),
@@ -139,6 +130,12 @@ export const useWalletConnect = () => {
               `initializeWalletConnect // Existing session found for dApp: ${embeddingPageUrl}. Using existing session.`,
             );
             setIsConnectedToDapp(true);
+          } else {
+            // TODO, here might need message queue with react query in case iframe is not ready. Would recover messages in order when it is
+            iframe?.sendMessage({
+              type: 'WALLET_CONNECT_NEW_SESSION',
+              payload: { address },
+            });
           }
         }
       } catch (error) {
@@ -203,6 +200,7 @@ export const useWalletConnect = () => {
 
       try {
         setIsLoadingPairing(true);
+        console.log('pairing with uri:', uri);
         await web3wallet.pair({ uri });
       } catch (error) {
         console.error('Failed to connect to WalletConnect: ', error);
@@ -215,7 +213,7 @@ export const useWalletConnect = () => {
   );
 
   useEffect(() => {
-    if (!web3wallet) return;
+    if (!isReady) return;
 
     // Pairing expired listener
     const pairingExpiredListener = ({ topic }: { topic: string }) => {
@@ -322,6 +320,8 @@ export const useWalletConnect = () => {
     web3wallet.on('session_request_expire', sessionRequestExpireListener);
     web3wallet.core.pairing.events.on('pairing_expire', pairingExpiredListener);
 
+    console.log('WalletConnect listeners registered');
+
     // Cleanup function to remove listeners
     return () => {
       web3wallet.off('session_proposal', sessionProposalListener);
@@ -332,8 +332,9 @@ export const useWalletConnect = () => {
         'pairing_expire',
         pairingExpiredListener,
       );
+      console.log('WalletConnect listeners removed');
     };
-  }, [currentPairingTopic, wallet]);
+  }, [isReady]);
 
   return {
     isConnectedToDapp,
