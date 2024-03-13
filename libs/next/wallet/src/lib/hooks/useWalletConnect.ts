@@ -134,7 +134,7 @@ export const useWalletConnect = () => {
             address,
           );
           if (existingSession) {
-            setCurrentPairingTopic(existingSession.topic);
+            setCurrentPairingTopic(existingSession.pairingTopic);
             console.log(
               `initializeWalletConnect // Existing session found for dApp: ${embeddingPageUrl}. Using existing session.`,
             );
@@ -250,7 +250,7 @@ export const useWalletConnect = () => {
         wallet?.getAddress() || '',
       );
       if (existingSession) {
-        setCurrentPairingTopic(existingSession.topic);
+        setCurrentPairingTopic(existingSession.pairingTopic);
         console.log(
           `connectToDapp // Existing session found for dApp: ${sessionDApp}. Using existing session.`,
         );

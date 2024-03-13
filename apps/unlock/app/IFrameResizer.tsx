@@ -1,10 +1,12 @@
 'use client';
 
+import { isServerSide } from '@utils';
 import 'iframe-resizer/js/iframeResizer.contentWindow';
 import { useEffect } from 'react';
 
 function IFrameResizer({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    if (isServerSide()) return;
     (window as any).iFrameResizer = {
       log: true,
       onReady: function () {
@@ -16,6 +18,7 @@ function IFrameResizer({ children }: { children: React.ReactNode }) {
         console.log('message from parent', message);
       },
     };
+    console.log('iFrameResizer:', (window as any).iFrameResizer);
   }, []);
 
   return children;
