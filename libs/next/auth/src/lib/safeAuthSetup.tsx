@@ -67,7 +67,7 @@ export function useSafeAuth({
         }
         isSigningInRef.current = true;
         console.log('Signing in with SIWE...');
-        const address = await signer.getAddress();
+        const address = signer.getAddress();
         const message = 'Offline'; // EIP1271: secure because signature verified by smart contract against the hash of this message and send back the magic bytes. So really it can be any message.
         const signature = await signer.signMessage(message);
         const signInRes = await signIn('credentials', {
