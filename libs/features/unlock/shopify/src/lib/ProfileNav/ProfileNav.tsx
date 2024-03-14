@@ -2,14 +2,11 @@
 
 import env from '@env/client';
 import { ProfileAvatar } from '@features/app-nav';
+import { ConnectStatus, useIframeConnect } from '@next/iframe';
 import { usePathname, useRouter } from '@next/navigation';
 import { AppUser } from '@next/types';
-import {
-  useWalletAuth,
-  useWalletConnect,
-  useWalletContext,
-} from '@next/wallet';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useWalletAuth, useWalletContext } from '@next/wallet';
+import { useMutation } from '@tanstack/react-query';
 import {
   AutoAnimate,
   AvatarSkeleton,
@@ -51,14 +48,8 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     wallet,
     connectionError,
   } = useWalletAuth();
-  const {
-    initializeWalletConnect,
-    connectToDapp,
-    isReady,
-    isLoadingPairing,
-    isLoadingApprove,
-    isConnectedToDapp,
-  } = useWalletConnect();
+  const { connectStatus, disconnectFromDapp, signWithEthereum } =
+    useIframeConnect();
   const { walletConnected, autoConnectAddress } = useWalletContext();
   const [isVerifyEmail, setIsVerifyEmail] = useState(false);
   const router = useRouter();
@@ -75,29 +66,39 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     },
   });
 
-  useEffect(() => {
-    console.log({ wallet, isReady, isConnected: !!wallet });
-    if (!!wallet && !isReady) initializeWalletConnect(wallet.getAddress());
-  }, [initializeWalletConnect, wallet, isReady]);
-  const { data: wcUri } = useQuery<string>({
-    queryKey: ['walletConnectUri'],
+  const connectToDappMutation = useMutation({
+    mutationFn: signWithEthereum,
+    onSuccess: () => {
+      // Handle successful connection
+    },
+    onError: (error: any) => {
+      // Handle connection error
+    },
   });
 
   useEffect(() => {
-    console.log(
-      'wcUri',
-      wcUri,
-      'isReady',
-      isReady,
-      'wallet',
+    console.log({
       wallet,
-      'isConnectedToDapp',
-      isConnectedToDapp,
-    );
-    if (wcUri && isReady && !!wallet && !isConnectedToDapp) {
-      connectToDapp(wcUri);
+      connectStatus,
+      connectToDappMutationStatus: connectToDappMutation.status,
+    });
+    if (
+      connectStatus &&
+      ![ConnectStatus.CONNECTED, ConnectStatus.CONNECTING].includes(
+        connectStatus,
+      ) &&
+      !!wallet &&
+      connectToDappMutation.status !== 'pending'
+    ) {
+      connectToDappMutation.mutate();
     }
-  }, [wcUri, isReady, wallet, connectToDapp, isConnectedToDapp]);
+  }, [
+    walletConnected,
+    isWalletReady,
+    wallet,
+    autoConnectAddress,
+    connectToDappMutation.status,
+  ]);
 
   useEffect(() => {
     console.log({
@@ -117,15 +118,15 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
       connectWalletMutation.mutate(walletToConnect);
     }
   }, [
-    connectionError,
     walletConnected,
     isWalletReady,
     wallet,
-    connectWalletMutation.status,
     autoConnectAddress,
+    connectWalletMutation.status,
   ]);
 
   const signOutUserAction = useCallback(async () => {
+    disconnectFromDapp(user.address);
     await disconnect();
     let newPathname = pathname.split('/0x')[0];
     if (searchParams?.toString()) {
@@ -222,7 +223,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
             className="mb-1 mr-1 flex space-x-2 rounded-full py-1 pl-1 pr-2"
           >
             <AutoAnimate>
-              {!isConnectedToDapp ? (
+              {connectStatus !== ConnectStatus.CONNECTED ? (
                 <Spinner
                   size="lg"
                   variant="ghost"
