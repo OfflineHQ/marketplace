@@ -84,9 +84,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     });
     if (
       connectStatus &&
-      ![ConnectStatus.CONNECTED, ConnectStatus.CONNECTING].includes(
-        connectStatus,
-      ) &&
+      connectStatus === ConnectStatus.DISCONNECTED &&
       !!wallet &&
       connectToDappMutation.status !== 'pending'
     ) {
