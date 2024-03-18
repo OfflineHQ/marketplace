@@ -1,5 +1,6 @@
 import { PHProvider, PostHogPageview } from '@insight/client';
 import { getMessages, locales } from '@next/i18n';
+import { IFrameProvider } from '@next/iframe';
 // import { IFrameResizer } from '@next/iframe';
 import { getSession } from '@next/next-auth/user';
 import { ReactQueryProviders } from '@next/react-query';
@@ -10,15 +11,10 @@ import { ThemeProvider } from '@ui/theme';
 import { siteConfig } from '@web/config/site';
 import { Metadata, Viewport } from 'next';
 import { getTranslations } from 'next-intl/server';
-import dynamic from 'next/dynamic';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-
-const IFrameResizer = dynamic(async () => import('@next/iframe'), {
-  ssr: false,
-});
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -110,15 +106,20 @@ export default async function RootLayout({
         )}
       >
         <ReactQueryProviders>
-          <IFrameResizer />
-          <PHProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <WalletProvider>
-                {children}
-                <Toaster />
-              </WalletProvider>
-            </ThemeProvider>
-          </PHProvider>
+          <IFrameProvider>
+            <PHProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+              >
+                <WalletProvider>
+                  {children}
+                  <Toaster />
+                </WalletProvider>
+              </ThemeProvider>
+            </PHProvider>
+          </IFrameProvider>
         </ReactQueryProviders>
         <Suspense>
           <PostHogPageview />

@@ -93,6 +93,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
       connectToDappMutation.mutate();
     }
   }, [
+    connectStatus,
     walletConnected,
     isWalletReady,
     wallet,
