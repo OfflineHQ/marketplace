@@ -22,6 +22,7 @@ export enum SendMessageType {
   DISCONNECT = 'DISCONNECT',
   SIGNATURE = 'SIGNATURE',
   OFFKEY_MINTED = 'OFFKEY_MINTED',
+  CONNECT_STATUS = 'CONNECT_STATUS',
 }
 
 export interface SendMessageValues {
@@ -36,6 +37,9 @@ export interface SendMessageValues {
   [SendMessageType.OFFKEY_MINTED]: {
     contractAddress: string;
     tokenId: string;
+  };
+  [SendMessageType.CONNECT_STATUS]: {
+    address: string;
   };
   // Additional value shapes can be defined here corresponding to the SendMessageType
 }

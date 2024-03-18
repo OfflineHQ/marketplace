@@ -48,8 +48,12 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     wallet,
     connectionError,
   } = useWalletAuth();
-  const { connectStatus, disconnectFromDapp, signWithEthereum } =
-    useIframeConnect();
+  const {
+    connectStatus,
+    disconnectFromDapp,
+    signWithEthereum,
+    askForWalletConnectStatus,
+  } = useIframeConnect();
   const { walletConnected, autoConnectAddress } = useWalletContext();
   const [isVerifyEmail, setIsVerifyEmail] = useState(false);
   const router = useRouter();
@@ -59,6 +63,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   const connectWalletMutation = useMutation({
     mutationFn: (newWallet: string) => connect(newWallet),
     onSuccess: () => {
+      console.log('connected to wallet');
       // Handle successful connection
     },
     onError: (error: any) => {
@@ -69,6 +74,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   const connectToDappMutation = useMutation({
     mutationFn: signWithEthereum,
     onSuccess: () => {
+      console.log('connected to dapp');
       // Handle successful connection
     },
     onError: (error: any) => {
@@ -82,21 +88,21 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
       connectStatus,
       connectToDappMutationStatus: connectToDappMutation.status,
     });
-    if (
-      connectStatus &&
-      connectStatus === ConnectStatus.DISCONNECTED &&
-      !!wallet &&
-      connectToDappMutation.status !== 'pending'
-    ) {
-      connectToDappMutation.mutate();
+    if (isWalletReady && wallet && connectToDappMutation.status === 'idle') {
+      if (!connectStatus) {
+        askForWalletConnectStatus();
+      }
+      // here if connectStatus is disconnected we launch the process of asking the user to connect to the dapp
+      else if (connectStatus === ConnectStatus.DISCONNECTED) {
+        connectToDappMutation.mutate();
+      }
     }
   }, [
     connectStatus,
-    walletConnected,
     isWalletReady,
     wallet,
-    autoConnectAddress,
     connectToDappMutation.status,
+    askForWalletConnectStatus,
   ]);
 
   useEffect(() => {

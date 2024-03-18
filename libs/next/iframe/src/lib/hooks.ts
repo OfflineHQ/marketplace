@@ -51,5 +51,29 @@ export const useIframeConnect = () => {
     }
   };
 
-  return { connectStatus, disconnectFromDapp, signWithEthereum };
+  const askForWalletConnectStatus = () => {
+    if (!iframeParent) {
+      console.warn(
+        'Cannot send connect status request to Dapp, iframe parent not found',
+      );
+      return;
+    } else if (!wallet) {
+      console.warn(
+        'Cannot send connect status request to Dapp, wallet not found',
+      );
+      return;
+    }
+    console.log('asking for CONNECT_STATUS', { address: wallet.getAddress() });
+    iframeParent?.sendMessage({
+      type: SendMessageType.CONNECT_STATUS,
+      value: { address: wallet.getAddress() },
+    });
+  };
+
+  return {
+    connectStatus,
+    disconnectFromDapp,
+    signWithEthereum,
+    askForWalletConnectStatus,
+  };
 };
