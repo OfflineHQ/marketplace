@@ -4,10 +4,10 @@ export enum ReceiveMessageType {
 }
 
 export enum ConnectStatus {
-  CONNECTED = 'CONNECTED', // Wallet is connected and verified with the dApp through SIWE
-  DISCONNECTED = 'DISCONNECTED', // Wallet is disconnected from dApp
-  CONNECTING = 'CONNECTING', // Wallet is in the process of connecting to the dApp through SIWE
-  ERROR = 'ERROR', // An error occurred during the connection process
+  CONNECTED = 'connected', // Wallet is connected and verified with the dApp through SIWE
+  DISCONNECTED = 'disconnected', // Wallet is disconnected from dApp
+  CONNECTING = 'connecting', // Wallet is in the process of connecting to the dApp through SIWE
+  ERROR = 'error', // An error occurred during the connection process
 }
 
 export interface ReceiveMessageValues {
@@ -38,4 +38,9 @@ export interface SendMessageValues {
     tokenId: string;
   };
   // Additional value shapes can be defined here corresponding to the SendMessageType
+}
+
+export interface IFrameParentMessage<T extends ReceiveMessageType> {
+  type: T;
+  value: ReceiveMessageValues[T];
 }
