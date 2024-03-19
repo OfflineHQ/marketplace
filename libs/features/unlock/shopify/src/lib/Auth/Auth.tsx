@@ -93,7 +93,7 @@ export function ShopifyAuth() {
       )}
       {existingWallet ? (
         <Button variant="secondary" block onClick={() => setIsDialog(true)}>
-          {t('login-different-account-or-create-account')}
+          {t('login-different-account')}
         </Button>
       ) : (
         <Button
