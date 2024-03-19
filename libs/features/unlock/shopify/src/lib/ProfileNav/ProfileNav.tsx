@@ -2,13 +2,10 @@
 
 import env from '@env/client';
 import { ProfileAvatar } from '@features/app-nav';
+import { ConnectStatus, useIframeConnect } from '@next/iframe';
 import { usePathname, useRouter } from '@next/navigation';
 import { AppUser } from '@next/types';
-import {
-  useWalletAuth,
-  useWalletConnect,
-  useWalletContext,
-} from '@next/wallet';
+import { useWalletAuth, useWalletContext } from '@next/wallet';
 import { useMutation } from '@tanstack/react-query';
 import {
   AutoAnimate,
@@ -52,14 +49,12 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     connectionError,
   } = useWalletAuth();
   const {
-    initializeWalletConnect,
-    connectToDapp,
-    isReady,
-    isLoadingPairing,
-    isLoadingApprove,
-    isConnectedToDapp,
-  } = useWalletConnect();
-  const { walletConnected, wcUri, autoConnectAddress } = useWalletContext();
+    connectStatus,
+    disconnectFromDapp,
+    signWithEthereum,
+    askForWalletConnectStatus,
+  } = useIframeConnect();
+  const { walletConnected, autoConnectAddress } = useWalletContext();
   const [isVerifyEmail, setIsVerifyEmail] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -68,6 +63,18 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   const connectWalletMutation = useMutation({
     mutationFn: (newWallet: string) => connect(newWallet),
     onSuccess: () => {
+      console.log('connected to wallet');
+      // Handle successful connection
+    },
+    onError: (error: any) => {
+      // Handle connection error
+    },
+  });
+
+  const connectToDappMutation = useMutation({
+    mutationFn: signWithEthereum,
+    onSuccess: () => {
+      console.log('connected to dapp');
       // Handle successful connection
     },
     onError: (error: any) => {
@@ -76,25 +83,27 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   });
 
   useEffect(() => {
-    console.log({ wallet, isReady, isConnected: !!wallet });
-    if (!!wallet && !isReady) initializeWalletConnect(wallet.getAddress());
-  }, [initializeWalletConnect, wallet, isReady]);
-
-  useEffect(() => {
-    console.log(
-      'wcUri',
-      wcUri,
-      'isReady',
-      isReady,
-      'wallet',
+    console.log({
       wallet,
-      'isConnectedToDapp',
-      isConnectedToDapp,
-    );
-    if (wcUri && isReady && !!wallet && !isConnectedToDapp) {
-      connectToDapp(wcUri);
+      connectStatus,
+      connectToDappMutationStatus: connectToDappMutation.status,
+    });
+    if (isWalletReady && wallet && connectToDappMutation.status === 'idle') {
+      if (!connectStatus) {
+        askForWalletConnectStatus();
+      }
+      // here if connectStatus is disconnected we launch the process of asking the user to connect to the dapp
+      else if (connectStatus === ConnectStatus.DISCONNECTED) {
+        connectToDappMutation.mutate();
+      }
     }
-  }, [wcUri, isReady, wallet, connectToDapp, isConnectedToDapp]);
+  }, [
+    connectStatus,
+    isWalletReady,
+    wallet,
+    connectToDappMutation.status,
+    askForWalletConnectStatus,
+  ]);
 
   useEffect(() => {
     console.log({
@@ -114,15 +123,15 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
       connectWalletMutation.mutate(walletToConnect);
     }
   }, [
-    connectionError,
     walletConnected,
     isWalletReady,
     wallet,
-    connectWalletMutation.status,
     autoConnectAddress,
+    connectWalletMutation.status,
   ]);
 
   const signOutUserAction = useCallback(async () => {
+    disconnectFromDapp(user.address);
     await disconnect();
     let newPathname = pathname.split('/0x')[0];
     if (searchParams?.toString()) {
@@ -201,6 +210,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
     ],
     [user, signOutUserAction],
   );
+
   return isWalletReady ? (
     <>
       {isVerifyEmail && (
@@ -218,7 +228,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
             className="mb-1 mr-1 flex space-x-2 rounded-full py-1 pl-1 pr-2"
           >
             <AutoAnimate>
-              {!isConnectedToDapp ? (
+              {connectStatus !== ConnectStatus.CONNECTED ? (
                 <Spinner
                   size="lg"
                   variant="ghost"

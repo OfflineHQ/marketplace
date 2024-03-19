@@ -9,7 +9,6 @@ import env from '@env/client';
 import { getCurrentChain } from '@next/chains';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useWalletConnect } from './useWalletConnect';
 import { useWalletContext } from './useWalletContext';
 
 export function useWalletAuth() {
@@ -26,7 +25,6 @@ export function useWalletAuth() {
     setWalletConnected,
     setAutoConnectAddress,
   } = useWalletContext();
-  const { disconnectWalletConnect } = useWalletConnect();
   const [isConnecting, setIsConnecting] = useState(false);
   const [connectionError, setConnectionError] = useState<string | null>(null);
 
@@ -41,6 +39,7 @@ export function useWalletAuth() {
       chainId: getCurrentChain().chainIdHex,
       apiKey,
       passKeyName: 'Offline 🔑',
+      rpcUrl: getCurrentChain().urls[0],
     });
 
     const newInstance = new ComethWallet({
@@ -140,7 +139,6 @@ export function useWalletAuth() {
         setWallet(null);
         setProvider(null);
         setAutoConnectAddress(null);
-        await disconnectWalletConnect();
         // Here if have an address to auto-connect we want to remove it if user choose to log out
         if (searchParams?.get('address')) {
           console.log('Removing address from URL');
