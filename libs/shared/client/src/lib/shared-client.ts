@@ -46,3 +46,10 @@ export function isUnlock(): boolean {
 export function getHasuraEndpoint(): string {
   return env.NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT;
 }
+
+export function isLocalhost(): boolean {
+  return (
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1'
+  );
+}

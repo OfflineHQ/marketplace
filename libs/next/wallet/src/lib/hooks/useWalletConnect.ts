@@ -29,22 +29,6 @@ export const useWalletConnect = () => {
   const [isLoadingApprove, setIsLoadingApprove] = useState(false);
   const { wallet } = useWalletContext();
 
-  useEffect(() => {
-    if (isConnectedToDapp && currentPairingTopic && wallet) {
-      // Logic to connect to the dApp goes here
-      // This could be a function call or any other operation needed to establish the connection
-      console.log('Connected to dApp:', currentPairingTopic);
-      web3wallet.emitSessionEvent({
-        topic: currentPairingTopic,
-        event: {
-          name: 'accountsChanged',
-          data: [wallet?.getAddress()],
-        },
-        chainId: `eip155:${env.NEXT_PUBLIC_CHAIN}`,
-      });
-    }
-  }, [isConnectedToDapp, currentPairingTopic, wallet]);
-
   const normalizeUrl = (url: string) => url.toLowerCase().replace(/\/$/, ''); // Remove trailing slash and convert to lowercase
 
   const getSessionMatchingAddressAndDapp = useCallback(
@@ -134,7 +118,6 @@ export const useWalletConnect = () => {
             address,
           );
           if (existingSession) {
-            setCurrentPairingTopic(existingSession.pairingTopic);
             console.log(
               `initializeWalletConnect // Existing session found for dApp: ${embeddingPageUrl}. Using existing session.`,
             );
@@ -250,7 +233,6 @@ export const useWalletConnect = () => {
         wallet?.getAddress() || '',
       );
       if (existingSession) {
-        setCurrentPairingTopic(existingSession.pairingTopic);
         console.log(
           `connectToDapp // Existing session found for dApp: ${sessionDApp}. Using existing session.`,
         );

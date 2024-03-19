@@ -151,6 +151,7 @@
       "@next/hygraph/examples": ["libs/next/hygraph/src/examples.tsx"],
       "@next/i18n": ["libs/next/i18n/src/index.ts"],
       "@next/i18n-ui": ["libs/next/i18n-ui/src/index.ts"],
+      "@next/iframe": ["libs/next/iframe/src/index.ts"],
       "@next/navigation": ["libs/next/navigation/src/index.ts"],
       "@next/next-auth/common": ["libs/next/next-auth/common/src/index.ts"],
       "@next/next-auth/options": ["libs/next/next-auth/options/src/index.ts"],

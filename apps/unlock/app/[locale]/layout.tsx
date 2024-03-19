@@ -1,5 +1,7 @@
 import { PHProvider, PostHogPageview } from '@insight/client';
 import { getMessages, locales } from '@next/i18n';
+import { IFrameProvider } from '@next/iframe';
+// import { IFrameResizer } from '@next/iframe';
 import { getSession } from '@next/next-auth/user';
 import { ReactQueryProviders } from '@next/react-query';
 import { WalletProvider } from '@next/wallet';
@@ -13,7 +15,6 @@ import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-import IFrameResizer from './IFrameResizer';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -105,7 +106,7 @@ export default async function RootLayout({
         )}
       >
         <ReactQueryProviders>
-          <IFrameResizer>
+          <IFrameProvider>
             <PHProvider>
               <ThemeProvider
                 attribute="class"
@@ -118,7 +119,7 @@ export default async function RootLayout({
                 </WalletProvider>
               </ThemeProvider>
             </PHProvider>
-          </IFrameResizer>
+          </IFrameProvider>
         </ReactQueryProviders>
         <Suspense>
           <PostHogPageview />

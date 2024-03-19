@@ -485,7 +485,7 @@
     },
     "Auth": {
       "sign-in": "Sign In",
-      "login-different-account-or-create-account": "Sign In with a different Account or Create an Account",
+      "login-different-account": "Sign In with a different Account",
       "login-with-my-account": "Sign In with my Account",
       "create-account": "Create an Account",
       "cancel": "Cancel",
