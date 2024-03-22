@@ -1,5 +1,6 @@
 export enum ReceiveMessageType {
   CONNECT_STATUS = 'CONNECT_STATUS',
+  UPDATE_CSS_VARIABLES = 'UPDATE_CSS_VARIABLES',
   // Additional message types can be added here as needed
 }
 
@@ -15,6 +16,7 @@ export interface ReceiveMessageValues {
     address: string;
     status: ConnectStatus;
   };
+  [ReceiveMessageType.UPDATE_CSS_VARIABLES]: Record<string, string>;
   // Additional value shapes can be defined here corresponding to the ReceiveMessageType
 }
 

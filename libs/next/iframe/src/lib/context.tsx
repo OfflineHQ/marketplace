@@ -44,6 +44,8 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
     null,
   );
 
+  const [cssVariables, setCssVariables] = useState<Record<string, string>>({});
+
   function onReadyHandler() {
     console.log('iframe parent ready');
     setIFrameParent((window as any).parentIFrame);
@@ -54,12 +56,17 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
     value,
   }: IFrameParentMessage<T>) {
     console.log('message from parent', { type, value });
-    // eslint-disable-next-line sonarjs/no-small-switch
+
     switch (type) {
       case ReceiveMessageType.CONNECT_STATUS:
         // Handle the wallet connect URI message
         console.log('CONNECT_STATUS', value.address, value.status);
-        setConnectStatus(value.status);
+        setConnectStatus(value.status as ConnectStatus);
+        break;
+      case ReceiveMessageType.UPDATE_CSS_VARIABLES:
+        // Handle the update CSS variables message
+        console.log('UPDATE_CSS_VARIABLES', value);
+        setCssVariables(value);
         break;
       // Additional message types can be handled here as needed
     }
@@ -71,7 +78,7 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
       <IFrameContext.Provider
         value={{ iframeParent, connectStatus, setConnectStatus }}
       >
-        {children}
+        <div style={cssVariables}>{children}</div>
       </IFrameContext.Provider>
     </>
   );
