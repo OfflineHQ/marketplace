@@ -23,3 +23,22 @@ query GetEventPassNftByIdWithEventPassNftContract($id: uuid!) {
     }
   }
 }
+
+query GetEventPassNftFromContractAndOwnerAddresses(
+  $contractAddress: String!
+  $walletAddress: String!
+) {
+  eventPassNft(
+    where: {
+      contractAddress: { _ilike: $contractAddress }
+      currentOwnerAddress: { _ilike: $walletAddress }
+    }
+  ) {
+    id
+    tokenId
+    contractAddress
+    currentOwnerAddress
+    chainId
+    isDelivered
+  }
+}

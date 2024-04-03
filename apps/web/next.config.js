@@ -42,6 +42,10 @@ const nextConfig = {
         source: '/ingest/:path*',
         destination: 'https://eu.posthog.com/:path*',
       },
+      {
+        source: '/apps/proxy',
+        destination: '/api/proxy',
+      },
     ];
   },
   compiler: {

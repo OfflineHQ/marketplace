@@ -59,6 +59,7 @@ export type Asset = Entity & Node & {
   mimeType?: Maybe<Scalars['String']['output']>;
   nftImageEventPass: Array<EventPass>;
   nftImageEventPassDelayedRevealed: Array<EventPassDelayedRevealed>;
+  nftImageLoyaltyCard: Array<LoyaltyCard>;
   nftImagePack: Array<Pack>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -201,6 +202,20 @@ export type AssetNftImageEventPassDelayedRevealedArgs = {
 
 
 /** Asset system model */
+export type AssetNftImageLoyaltyCardArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<LoyaltyCardOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LoyaltyCardWhereInput>;
+};
+
+
+/** Asset system model */
 export type AssetNftImagePackArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -282,6 +297,7 @@ export type AssetCreateInput = {
   mimeType?: InputMaybe<Scalars['String']['input']>;
   nftImageEventPass?: InputMaybe<EventPassCreateManyInlineInput>;
   nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedCreateManyInlineInput>;
+  nftImageLoyaltyCard?: InputMaybe<LoyaltyCardCreateManyInlineInput>;
   nftImagePack?: InputMaybe<PackCreateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']['input']>;
   updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -392,6 +408,9 @@ export type AssetManyWhereInput = {
   nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
+  nftImageLoyaltyCard_every?: InputMaybe<LoyaltyCardWhereInput>;
+  nftImageLoyaltyCard_none?: InputMaybe<LoyaltyCardWhereInput>;
+  nftImageLoyaltyCard_some?: InputMaybe<LoyaltyCardWhereInput>;
   nftImagePack_every?: InputMaybe<PackWhereInput>;
   nftImagePack_none?: InputMaybe<PackWhereInput>;
   nftImagePack_some?: InputMaybe<PackWhereInput>;
@@ -476,6 +495,7 @@ export type AssetUpdateInput = {
   mimeType?: InputMaybe<Scalars['String']['input']>;
   nftImageEventPass?: InputMaybe<EventPassUpdateManyInlineInput>;
   nftImageEventPassDelayedRevealed?: InputMaybe<EventPassDelayedRevealedUpdateManyInlineInput>;
+  nftImageLoyaltyCard?: InputMaybe<LoyaltyCardUpdateManyInlineInput>;
   nftImagePack?: InputMaybe<PackUpdateManyInlineInput>;
   size?: InputMaybe<Scalars['Float']['input']>;
   width?: InputMaybe<Scalars['Float']['input']>;
@@ -719,6 +739,9 @@ export type AssetWhereInput = {
   nftImageEventPass_every?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_none?: InputMaybe<EventPassWhereInput>;
   nftImageEventPass_some?: InputMaybe<EventPassWhereInput>;
+  nftImageLoyaltyCard_every?: InputMaybe<LoyaltyCardWhereInput>;
+  nftImageLoyaltyCard_none?: InputMaybe<LoyaltyCardWhereInput>;
+  nftImageLoyaltyCard_some?: InputMaybe<LoyaltyCardWhereInput>;
   nftImagePack_every?: InputMaybe<PackWhereInput>;
   nftImagePack_none?: InputMaybe<PackWhereInput>;
   nftImagePack_some?: InputMaybe<PackWhereInput>;
@@ -1602,6 +1625,8 @@ export const enum EntityTypeName {
   EventPassDelayedRevealed = 'EventPassDelayedRevealed',
   /** A model for location data (point on a map) + additional info such as street, venue etc. */
   LocationAddress = 'LocationAddress',
+  /** Root loyalty card model */
+  LoyaltyCard = 'LoyaltyCard',
   /** An organizer is an entity that launch events and handle the pass benefits. */
   Organizer = 'Organizer',
   /**
@@ -4260,6 +4285,464 @@ export type LocationInput = {
   longitude: Scalars['Float']['input'];
 };
 
+/** Root loyalty card model */
+export type LoyaltyCard = Entity & Node & {
+  __typename?: 'LoyaltyCard';
+  /** The time the document was created */
+  createdAt: Scalars['DateTime']['output'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  /** Get the document in other stages */
+  documentInStages: Array<LoyaltyCard>;
+  /** List of LoyaltyCard versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** Image representing the NFT. Advised resolution is 800 x 800 pixels. */
+  nftImage: Asset;
+  /** Name associated with the NFT. Cannot be localized. */
+  nftName: Scalars['String']['output'];
+  organizer?: Maybe<Organizer>;
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime']['output'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
+  stages?: Array<Stage>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardHistoryArgs = {
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardNftImageArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardOrganizerArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardPublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+/** Root loyalty card model */
+export type LoyaltyCardUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type LoyaltyCardConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type LoyaltyCardConnection = {
+  __typename?: 'LoyaltyCardConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<LoyaltyCardEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type LoyaltyCardCreateInput = {
+  cltzsfm12094507ul1er1czw6?: InputMaybe<OrganizerCreateManyInlineInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  nftImage: AssetCreateOneInlineInput;
+  nftName: Scalars['String']['input'];
+  organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type LoyaltyCardCreateManyInlineInput = {
+  /** Connect multiple existing LoyaltyCard documents */
+  connect?: InputMaybe<Array<LoyaltyCardWhereUniqueInput>>;
+  /** Create and connect multiple existing LoyaltyCard documents */
+  create?: InputMaybe<Array<LoyaltyCardCreateInput>>;
+};
+
+export type LoyaltyCardCreateOneInlineInput = {
+  /** Connect one existing LoyaltyCard document */
+  connect?: InputMaybe<LoyaltyCardWhereUniqueInput>;
+  /** Create and connect one LoyaltyCard document */
+  create?: InputMaybe<LoyaltyCardCreateInput>;
+};
+
+/** An edge in a connection. */
+export type LoyaltyCardEdge = {
+  __typename?: 'LoyaltyCardEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node: LoyaltyCard;
+};
+
+/** Identifies documents */
+export type LoyaltyCardManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<LoyaltyCardWhereStageInput>;
+  documentInStages_none?: InputMaybe<LoyaltyCardWhereStageInput>;
+  documentInStages_some?: InputMaybe<LoyaltyCardWhereStageInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']['input']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export const enum LoyaltyCardOrderByInput {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  NftNameAsc = 'nftName_ASC',
+  NftNameDesc = 'nftName_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+};
+
+export type LoyaltyCardUpdateInput = {
+  cltzsfm12094507ul1er1czw6?: InputMaybe<OrganizerUpdateManyInlineInput>;
+  nftImage?: InputMaybe<AssetUpdateOneInlineInput>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
+  organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
+};
+
+export type LoyaltyCardUpdateManyInlineInput = {
+  /** Connect multiple existing LoyaltyCard documents */
+  connect?: InputMaybe<Array<LoyaltyCardConnectInput>>;
+  /** Create and connect multiple LoyaltyCard documents */
+  create?: InputMaybe<Array<LoyaltyCardCreateInput>>;
+  /** Delete multiple LoyaltyCard documents */
+  delete?: InputMaybe<Array<LoyaltyCardWhereUniqueInput>>;
+  /** Disconnect multiple LoyaltyCard documents */
+  disconnect?: InputMaybe<Array<LoyaltyCardWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing LoyaltyCard documents */
+  set?: InputMaybe<Array<LoyaltyCardWhereUniqueInput>>;
+  /** Update multiple LoyaltyCard documents */
+  update?: InputMaybe<Array<LoyaltyCardUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple LoyaltyCard documents */
+  upsert?: InputMaybe<Array<LoyaltyCardUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type LoyaltyCardUpdateManyInput = {
+  nftName?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type LoyaltyCardUpdateOneInlineInput = {
+  /** Connect existing LoyaltyCard document */
+  connect?: InputMaybe<LoyaltyCardWhereUniqueInput>;
+  /** Create and connect one LoyaltyCard document */
+  create?: InputMaybe<LoyaltyCardCreateInput>;
+  /** Delete currently connected LoyaltyCard document */
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Disconnect currently connected LoyaltyCard document */
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Update single LoyaltyCard document */
+  update?: InputMaybe<LoyaltyCardUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single LoyaltyCard document */
+  upsert?: InputMaybe<LoyaltyCardUpsertWithNestedWhereUniqueInput>;
+};
+
+export type LoyaltyCardUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: LoyaltyCardUpdateInput;
+  /** Unique document search */
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+export type LoyaltyCardUpsertInput = {
+  /** Create document if it didn't exist */
+  create: LoyaltyCardCreateInput;
+  /** Update document if it exists */
+  update: LoyaltyCardUpdateInput;
+};
+
+export type LoyaltyCardUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: LoyaltyCardUpsertInput;
+  /** Unique document search */
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type LoyaltyCardWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Identifies documents */
+export type LoyaltyCardWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<LoyaltyCardWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<LoyaltyCardWhereStageInput>;
+  documentInStages_none?: InputMaybe<LoyaltyCardWhereStageInput>;
+  documentInStages_some?: InputMaybe<LoyaltyCardWhereStageInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  nftImage?: InputMaybe<AssetWhereInput>;
+  nftName?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  nftName_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  nftName_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  nftName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  nftName_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  nftName_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  nftName_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  nftName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  nftName_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  nftName_starts_with?: InputMaybe<Scalars['String']['input']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type LoyaltyCardWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<LoyaltyCardWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<LoyaltyCardWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<LoyaltyCardWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<LoyaltyCardWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References LoyaltyCard record uniquely */
+export type LoyaltyCardWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
 /** An object with an ID */
 export type Node = {
   /** The id of the object. */
@@ -4302,6 +4785,7 @@ export type Organizer = Entity & Node & {
   locale: Locale;
   /** Get the other localizations for this document */
   localizations: Array<Organizer>;
+  loyaltyCard?: Maybe<LoyaltyCard>;
   /** Name of the organizer */
   name: Scalars['String']['output'];
   /** The time the document was published. Null on documents in draft stage. */
@@ -4407,6 +4891,13 @@ export type OrganizerLocalizationsArgs = {
 
 
 /** An organizer is an entity that launch events and handle the pass benefits. */
+export type OrganizerLoyaltyCardArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+/** An organizer is an entity that launch events and handle the pass benefits. */
 export type OrganizerPublishedAtArgs = {
   variation?: SystemDateTimeFieldVariation;
 };
@@ -4463,6 +4954,7 @@ export type OrganizerConnection = {
 
 export type OrganizerCreateInput = {
   clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackCreateManyInlineInput>;
+  cltzsen11092507ul9qlg4ywb?: InputMaybe<LoyaltyCardCreateManyInlineInput>;
   contentSpaces?: InputMaybe<ContentSpaceCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** description input for default locale (en) */
@@ -4477,6 +4969,7 @@ export type OrganizerCreateInput = {
   instagramHandle?: InputMaybe<Scalars['String']['input']>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<OrganizerCreateLocalizationsInput>;
+  loyaltyCard?: InputMaybe<LoyaltyCardCreateOneInlineInput>;
   name: Scalars['String']['input'];
   slug: Scalars['String']['input'];
   telegramHandle?: InputMaybe<Scalars['String']['input']>;
@@ -4701,6 +5194,7 @@ export type OrganizerManyWhereInput = {
   instagramHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
   instagramHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  loyaltyCard?: InputMaybe<LoyaltyCardWhereInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']['input']>;
@@ -4887,6 +5381,7 @@ export const enum OrganizerOrderByInput {
 
 export type OrganizerUpdateInput = {
   clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackUpdateManyInlineInput>;
+  cltzsen11092507ul9qlg4ywb?: InputMaybe<LoyaltyCardUpdateManyInlineInput>;
   contentSpaces?: InputMaybe<ContentSpaceUpdateManyInlineInput>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']['input']>;
@@ -4900,6 +5395,7 @@ export type OrganizerUpdateInput = {
   instagramHandle?: InputMaybe<Scalars['String']['input']>;
   /** Manage document localizations */
   localizations?: InputMaybe<OrganizerUpdateLocalizationsInput>;
+  loyaltyCard?: InputMaybe<LoyaltyCardUpdateOneInlineInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   telegramHandle?: InputMaybe<Scalars['String']['input']>;
@@ -5173,6 +5669,7 @@ export type OrganizerWhereInput = {
   instagramHandle_not_starts_with?: InputMaybe<Scalars['String']['input']>;
   /** All values starting with the given string. */
   instagramHandle_starts_with?: InputMaybe<Scalars['String']['input']>;
+  loyaltyCard?: InputMaybe<LoyaltyCardWhereInput>;
   name?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']['input']>;
@@ -6456,7 +6953,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Asset | ContentSpace | Event | EventPass | EventPassDelayedRevealed | Organizer | Pack;
+export type ScheduledOperationAffectedDocument = Asset | ContentSpace | Event | EventPass | EventPassDelayedRevealed | LoyaltyCard | Organizer | Pack;
 
 /** A connection to a list of items. */
 export type ScheduledOperationConnection = {
@@ -8592,6 +9089,7 @@ export const enum EventPassNftContractType_Constraint {
 
 export const enum EventPassNftContractType_Enum {
   DelayedReveal = 'delayed_reveal',
+  LoyaltyCard = 'loyalty_card',
   Normal = 'normal'
 };
 
@@ -11778,6 +12276,8 @@ export type Mutation_Root = {
   createEventPass?: Maybe<EventPass>;
   /** Create one eventPassDelayedRevealed */
   createEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Create one loyaltyCard */
+  createLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Create one organizer */
   createOrganizer?: Maybe<Organizer>;
   /** Create one pack */
@@ -11794,6 +12294,8 @@ export type Mutation_Root = {
   deleteEventPass?: Maybe<EventPass>;
   /** Delete one eventPassDelayedRevealed from _all_ existing stages. Returns deleted document. */
   deleteEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Delete one loyaltyCard from _all_ existing stages. Returns deleted document. */
+  deleteLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Delete many Asset documents */
   deleteManyAssets: BatchPayload;
   /** Delete many Asset documents, return deleted documents */
@@ -11814,6 +12316,10 @@ export type Mutation_Root = {
   deleteManyEvents: BatchPayload;
   /** Delete many Event documents, return deleted documents */
   deleteManyEventsConnection: EventConnection;
+  /** Delete many LoyaltyCard documents */
+  deleteManyLoyaltyCards: BatchPayload;
+  /** Delete many LoyaltyCard documents, return deleted documents */
+  deleteManyLoyaltyCardsConnection: LoyaltyCardConnection;
   /** Delete many Organizer documents */
   deleteManyOrganizers: BatchPayload;
   /** Delete many Organizer documents, return deleted documents */
@@ -12126,6 +12632,8 @@ export type Mutation_Root = {
   publishEventPass?: Maybe<EventPass>;
   /** Publish one eventPassDelayedRevealed */
   publishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Publish one loyaltyCard */
+  publishLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Publish many Asset documents */
   publishManyAssets: BatchPayload;
   /** Publish many Asset documents */
@@ -12146,6 +12654,10 @@ export type Mutation_Root = {
   publishManyEvents: BatchPayload;
   /** Publish many Event documents */
   publishManyEventsConnection: EventConnection;
+  /** Publish many LoyaltyCard documents */
+  publishManyLoyaltyCards: BatchPayload;
+  /** Publish many LoyaltyCard documents */
+  publishManyLoyaltyCardsConnection: LoyaltyCardConnection;
   /** Publish many Organizer documents */
   publishManyOrganizers: BatchPayload;
   /** Publish many Organizer documents */
@@ -12168,6 +12680,8 @@ export type Mutation_Root = {
   schedulePublishEventPass?: Maybe<EventPass>;
   /** Schedule to publish one eventPassDelayedRevealed */
   schedulePublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Schedule to publish one loyaltyCard */
+  schedulePublishLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Schedule to publish one organizer */
   schedulePublishOrganizer?: Maybe<Organizer>;
   /** Schedule to publish one pack */
@@ -12182,6 +12696,8 @@ export type Mutation_Root = {
   scheduleUnpublishEventPass?: Maybe<EventPass>;
   /** Unpublish one eventPassDelayedRevealed from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Unpublish one loyaltyCard from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Unpublish one organizer from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishOrganizer?: Maybe<Organizer>;
   /** Unpublish one pack from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -12196,6 +12712,8 @@ export type Mutation_Root = {
   unpublishEventPass?: Maybe<EventPass>;
   /** Unpublish one eventPassDelayedRevealed from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Unpublish one loyaltyCard from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Unpublish many Asset documents */
   unpublishManyAssets: BatchPayload;
   /** Find many Asset documents that match criteria in specified stage and unpublish from target stages */
@@ -12216,6 +12734,10 @@ export type Mutation_Root = {
   unpublishManyEvents: BatchPayload;
   /** Find many Event documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyEventsConnection: EventConnection;
+  /** Unpublish many LoyaltyCard documents */
+  unpublishManyLoyaltyCards: BatchPayload;
+  /** Find many LoyaltyCard documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyLoyaltyCardsConnection: LoyaltyCardConnection;
   /** Unpublish many Organizer documents */
   unpublishManyOrganizers: BatchPayload;
   /** Find many Organizer documents that match criteria in specified stage and unpublish from target stages */
@@ -12238,6 +12760,8 @@ export type Mutation_Root = {
   updateEventPass?: Maybe<EventPass>;
   /** Update one eventPassDelayedRevealed */
   updateEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Update one loyaltyCard */
+  updateLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Update many assets */
   updateManyAssets: BatchPayload;
   /** Update many Asset documents */
@@ -12258,6 +12782,10 @@ export type Mutation_Root = {
   updateManyEvents: BatchPayload;
   /** Update many Event documents */
   updateManyEventsConnection: EventConnection;
+  /** Update many loyaltyCards */
+  updateManyLoyaltyCards: BatchPayload;
+  /** Update many LoyaltyCard documents */
+  updateManyLoyaltyCardsConnection: LoyaltyCardConnection;
   /** Update many organizers */
   updateManyOrganizers: BatchPayload;
   /** Update many Organizer documents */
@@ -12496,6 +13024,8 @@ export type Mutation_Root = {
   upsertEventPass?: Maybe<EventPass>;
   /** Upsert one eventPassDelayedRevealed */
   upsertEventPassDelayedRevealed?: Maybe<EventPassDelayedRevealed>;
+  /** Upsert one loyaltyCard */
+  upsertLoyaltyCard?: Maybe<LoyaltyCard>;
   /** Upsert one organizer */
   upsertOrganizer?: Maybe<Organizer>;
   /** Upsert one pack */
@@ -12530,6 +13060,12 @@ export type Mutation_RootCreateEventPassArgs = {
 /** mutation root */
 export type Mutation_RootCreateEventPassDelayedRevealedArgs = {
   data: EventPassDelayedRevealedCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateLoyaltyCardArgs = {
+  data: LoyaltyCardCreateInput;
 };
 
 
@@ -12578,6 +13114,12 @@ export type Mutation_RootDeleteEventPassArgs = {
 /** mutation root */
 export type Mutation_RootDeleteEventPassDelayedRevealedArgs = {
   where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteLoyaltyCardArgs = {
+  where: LoyaltyCardWhereUniqueInput;
 };
 
 
@@ -12663,6 +13205,23 @@ export type Mutation_RootDeleteManyEventsConnectionArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyLoyaltyCardsArgs = {
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyLoyaltyCardsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
 };
 
 
@@ -13708,6 +14267,13 @@ export type Mutation_RootPublishEventPassDelayedRevealedArgs = {
 
 
 /** mutation root */
+export type Mutation_RootPublishLoyaltyCardArgs = {
+  to?: Array<Stage>;
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootPublishManyAssetsArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']['input']>;
@@ -13834,6 +14400,26 @@ export type Mutation_RootPublishManyEventsConnectionArgs = {
   to?: Array<Stage>;
   where?: InputMaybe<EventManyWhereInput>;
   withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyLoyaltyCardsArgs = {
+  to?: Array<Stage>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyLoyaltyCardsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
 };
 
 
@@ -13970,6 +14556,15 @@ export type Mutation_RootSchedulePublishEventPassDelayedRevealedArgs = {
 
 
 /** mutation root */
+export type Mutation_RootSchedulePublishLoyaltyCardArgs = {
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  to?: Array<Stage>;
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootSchedulePublishOrganizerArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']['input']>;
@@ -14049,6 +14644,15 @@ export type Mutation_RootScheduleUnpublishEventPassDelayedRevealedArgs = {
 
 
 /** mutation root */
+export type Mutation_RootScheduleUnpublishLoyaltyCardArgs = {
+  from?: Array<Stage>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootScheduleUnpublishOrganizerArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
@@ -14112,6 +14716,13 @@ export type Mutation_RootUnpublishEventPassDelayedRevealedArgs = {
   locales?: InputMaybe<Array<Locale>>;
   unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishLoyaltyCardArgs = {
+  from?: Array<Stage>;
+  where: LoyaltyCardWhereUniqueInput;
 };
 
 
@@ -14236,6 +14847,26 @@ export type Mutation_RootUnpublishManyEventsConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUnpublishManyLoyaltyCardsArgs = {
+  from?: Array<Stage>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishManyLoyaltyCardsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: InputMaybe<Stage>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUnpublishManyOrganizersArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
@@ -14337,6 +14968,13 @@ export type Mutation_RootUpdateEventPassDelayedRevealedArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateLoyaltyCardArgs = {
+  data: LoyaltyCardUpdateInput;
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateManyAssetsArgs = {
   data: AssetUpdateManyInput;
   where?: InputMaybe<AssetManyWhereInput>;
@@ -14428,6 +15066,25 @@ export type Mutation_RootUpdateManyEventsConnectionArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EventManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyLoyaltyCardsArgs = {
+  data: LoyaltyCardUpdateManyInput;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyLoyaltyCardsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  data: LoyaltyCardUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<LoyaltyCardManyWhereInput>;
 };
 
 
@@ -15265,6 +15922,13 @@ export type Mutation_RootUpsertEventPassArgs = {
 export type Mutation_RootUpsertEventPassDelayedRevealedArgs = {
   upsert: EventPassDelayedRevealedUpsertInput;
   where: EventPassDelayedRevealedWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertLoyaltyCardArgs = {
+  upsert: LoyaltyCardUpsertInput;
+  where: LoyaltyCardWhereUniqueInput;
 };
 
 
@@ -18994,6 +19658,14 @@ export type Query_Root = {
   lotteryStatus_aggregate: LotteryStatus_Aggregate;
   /** fetch data from the table: "lotteryStatus" using primary key columns */
   lotteryStatus_by_pk?: Maybe<LotteryStatus>;
+  /** Retrieve a single loyaltyCard */
+  loyaltyCard?: Maybe<LoyaltyCard>;
+  /** Retrieve document version */
+  loyaltyCardVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple loyaltyCards */
+  loyaltyCards: Array<LoyaltyCard>;
+  /** Retrieve multiple loyaltyCards using the Relay connection interface */
+  loyaltyCardsConnection: LoyaltyCardConnection;
   /** fetch data from the table: "minterTemporaryWallet" */
   minterTemporaryWallet: Array<MinterTemporaryWallet>;
   /** fetch aggregated fields from the table: "minterTemporaryWallet" */
@@ -19308,6 +19980,7 @@ export type Query_RootCurrency_By_PkArgs = {
 
 
 export type Query_RootEntitiesArgs = {
+  locales?: InputMaybe<Array<Locale>>;
   where: Array<EntityWhereInput>;
 };
 
@@ -19746,6 +20419,44 @@ export type Query_RootLotteryStatus_AggregateArgs = {
 
 export type Query_RootLotteryStatus_By_PkArgs = {
   value: Scalars['String']['input'];
+};
+
+
+export type Query_RootLoyaltyCardArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: LoyaltyCardWhereUniqueInput;
+};
+
+
+export type Query_RootLoyaltyCardVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
+export type Query_RootLoyaltyCardsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<LoyaltyCardOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<LoyaltyCardWhereInput>;
+};
+
+
+export type Query_RootLoyaltyCardsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<LoyaltyCardOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<LoyaltyCardWhereInput>;
 };
 
 
