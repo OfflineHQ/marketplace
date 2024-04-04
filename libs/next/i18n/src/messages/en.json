@@ -491,6 +491,12 @@
       "cancel": "Cancel",
       "account-created": "Account created successfully 🎉!",
       "dialog-connect-wallet": "Connect your existing account or create a new one"
+    },
+    "OffKeyInfo": {
+      "unlocked": "unlocked",
+      "unlocking": "unlocking",
+      "used": "used",
+      "locked": "locked"
     }
   }
 }
