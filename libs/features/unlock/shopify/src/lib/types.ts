@@ -4,3 +4,8 @@ export enum OffKeyState {
   Unlocking = 'Unlocking',
   Used = 'Used',
 }
+
+export enum OffKeyViewHeaderConnected {
+  Default = 'Default',
+  HowToGet = 'HowToGet',
+}

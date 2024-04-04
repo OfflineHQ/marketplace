@@ -497,6 +497,9 @@
       "unlocking": "unlocking",
       "used": "used",
       "locked": "locked"
+    },
+    "OffKeyHowToGet": {
+      "locked-how-to-get-key": "Locked ! How to get keys ?"
     }
   }
 }
