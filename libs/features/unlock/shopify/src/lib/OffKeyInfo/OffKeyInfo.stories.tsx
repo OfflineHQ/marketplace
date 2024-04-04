@@ -1,6 +1,7 @@
 import { StoryObj, type Meta } from '@storybook/react';
 import { OffKeyState } from '../types';
-import { OffKeyInfo } from './OffKeyInfo';
+import { OffKeyInfo, OffKeySkeleton } from './OffKeyInfo';
+import React from 'react';
 
 const meta = {
   component: OffKeyInfo,
@@ -25,4 +26,8 @@ export const AllStates: Story = {
       <OffKeyInfo {...args} state={OffKeyState.Locked} />
     </div>
   ),
+};
+
+export const Skeleton: Story = {
+  render: (args) => <OffKeySkeleton />,
 };

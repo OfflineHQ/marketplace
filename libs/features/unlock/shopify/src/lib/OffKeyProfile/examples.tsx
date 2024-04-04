@@ -1,4 +1,3 @@
-import * as kycApi from '@features/kyc-actions';
 import * as walletApi from '@next/wallet';
 import { WalletProvider, useWalletAuth, useWalletContext } from '@next/wallet';
 
@@ -6,16 +5,14 @@ import * as iframeApi from '@next/iframe';
 import { useIframeConnect } from '@next/iframe';
 
 import * as nextIntl from 'next-intl';
+import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
-import {
-  ShopifyCardConnected,
-  ShopifyCardConnectedProps,
-} from './CardConnected';
+import { OffKeyProfile, OffKeyProfileProps } from './OffKeyProfile';
 
-export const CardConnectedExample = (props: ShopifyCardConnectedProps) => {
+export const OffKeyProfileExample = (props: OffKeyProfileProps) => {
   return (
     <WalletProvider>
-      <ShopifyCardConnected {...props} />
+      <OffKeyProfile {...props} />
     </WalletProvider>
   );
 };
@@ -34,28 +31,10 @@ export function authMocks({
   mockWallet.mockReturnValue(walletAuthMocks);
   const mockWalletContext = createMock(walletApi, 'useWalletContext');
   mockWalletContext.mockReturnValue(walletContextMocks);
-  const mockInitKyc = createMock(kycApi, 'initKyc');
-  mockInitKyc.mockReturnValue({
-    user: {},
-    accessToken: 'accessToken',
-  });
-  const mockApplicantStatusChanged = createMock(
-    kycApi,
-    'handleApplicantStatusChanged',
-  );
-  mockApplicantStatusChanged.mockReturnValue(false);
-
   const mockIframeConnect = createMock(iframeApi, 'useIframeConnect');
   mockIframeConnect.mockReturnValue(useIframeConnectMocks);
 
   const mockIntl = createMock(nextIntl, 'useLocale');
   mockIntl.mockReturnValue('en');
-  return [
-    mockIntl,
-    mockInitKyc,
-    mockIframeConnect,
-    mockApplicantStatusChanged,
-    mockWallet,
-    mockWalletContext,
-  ];
+  return [mockIntl, mockWallet, mockWalletContext, mockIframeConnect];
 }

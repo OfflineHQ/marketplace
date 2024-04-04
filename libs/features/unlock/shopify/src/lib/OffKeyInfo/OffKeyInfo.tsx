@@ -1,4 +1,5 @@
 import { OffKeyLogo } from '@features/unlock/app-nav';
+import { Text, TextSkeleton } from '@ui/components';
 import { Key } from '@ui/icons';
 import { useTranslations } from 'next-intl';
 import { OffKeyState } from '../types';
@@ -57,14 +58,26 @@ export function OffKeyInfo({ state, offKeyName }: OffKeyInfoProps) {
     >
       <div className={`flex items-center py-2 ${stateToMainTextColor[state]}`}>
         <OffKeyLogo className="size-10" />
-        <div className="mx-4 font-medium">{offKeyName}</div>
+        <Text className="mx-4 font-medium">{offKeyName}</Text>
       </div>
       <div
         className={`flex h-full flex-1 items-center justify-center px-3 ${stateToStatusTextColor[state]} ${stateToStatusBackground[state]}`}
       >
         {stateToKeyIcon[state]}
-        <div className="ml-2 font-medium">{stateToStatusText[state]}</div>
+        <Text className="ml-2 font-medium">{stateToStatusText[state]}</Text>
       </div>
     </div>
   );
 }
+
+export const OffKeySkeleton: React.FC = () => {
+  return (
+    <div className="flex items-center border pl-4">
+      <div className="flex items-center py-2">
+        <OffKeyLogo className="size-10" />
+        <TextSkeleton className="mx-4" />
+      </div>
+      <div className="flex h-full w-24 flex-1 animate-pulse bg-skeleton" />
+    </div>
+  );
+};
