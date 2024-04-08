@@ -1,7 +1,6 @@
-import { ShopifyCard, ShopifyCardHeader } from '@features/unlock/shopify';
-import { messages, type Locale } from '@next/i18n';
-import { deepPick } from '@utils';
-import { NextIntlClientProvider } from 'next-intl';
+// import { ShopifyCard, ShopifyCardHeader } from '@features/unlock/shopify';
+import { OffKeyLayout } from '@features/unlock/shopify';
+import { type Locale } from '@next/i18n';
 
 interface ShopifyGateAddressProps {
   params: {
@@ -9,25 +8,14 @@ interface ShopifyGateAddressProps {
     gateId: string;
     address: string;
   };
-  profile: React.ReactNode;
+  header: React.ReactNode;
   children: React.ReactNode;
 }
 
 export default function Layout({
   children,
   params: { locale },
-  profile,
+  header,
 }: ShopifyGateAddressProps) {
-  const localeMessages = deepPick(messages[locale], ['Shopify.Profile']);
-  return (
-    <ShopifyCard
-      header={
-        <NextIntlClientProvider locale={locale} messages={localeMessages}>
-          <ShopifyCardHeader profile={profile} />
-        </NextIntlClientProvider>
-      }
-    >
-      {children}
-    </ShopifyCard>
-  );
+  return <OffKeyLayout header={header}>{children}</OffKeyLayout>;
 }

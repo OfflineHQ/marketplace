@@ -520,6 +520,10 @@
     "OffKeyHeaderConnected": {
       "connected": "Welcome",
       "connected-how-to-get-key": "How to get the key"
+    },
+    "OffKeyProfile": {
+      "my-account": "My account",
+      "sign-out": "Sign out"
     }
   }
 }
