@@ -6,7 +6,7 @@ import {
 } from './OffKeyHeaderConnected';
 
 export const OffKeyHeaderConnectedExamples = (
-  props: OffKeyHeaderConnectedProps,
+  props: Omit<OffKeyHeaderConnectedProps, 'profile'>,
 ) => {
   return (
     <OffKeyHeaderConnected
