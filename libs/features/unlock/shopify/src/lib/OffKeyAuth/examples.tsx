@@ -5,7 +5,6 @@ import {
   useWalletConnect,
   useWalletContext,
 } from '@next/wallet';
-import { Card } from '@ui/components';
 import * as nextIntl from 'next-intl';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
@@ -14,13 +13,13 @@ import { OffKeyAuth } from './OffKeyAuth';
 
 export function OffKeyAuthDemo() {
   return (
-    <Card className="max-w-lg">
+    <div className="max-w-lg flex-col">
       <OffKeyHeader title="title" />
       Text
       <WalletProvider>
         <OffKeyAuth />
       </WalletProvider>
-    </Card>
+    </div>
   );
 }
 

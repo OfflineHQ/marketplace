@@ -157,7 +157,8 @@ export const OffKeyProfile: React.FC<OffKeyProfileProps> = ({ user }) => {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="mb-1 mr-1 flex space-x-2 rounded-full py-1 pl-1 pr-2"
+          isIconOnly
+          className="h-fit rounded-full p-1.5 md:p-1.5"
         >
           <AutoAnimate>
             {connectStatus !== ConnectStatus.CONNECTED ? (
@@ -167,7 +168,7 @@ export const OffKeyProfile: React.FC<OffKeyProfileProps> = ({ user }) => {
                 className="mr-1.5 mt-2 size-8 md:mr-0 md:mt-0 md:size-12 md:p-2"
               />
             ) : (
-              <ProfileAvatar user={user} className="my-1 size-9 md:size-9" />
+              <ProfileAvatar user={user} />
             )}
           </AutoAnimate>
         </Button>

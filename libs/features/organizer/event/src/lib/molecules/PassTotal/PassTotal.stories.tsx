@@ -10,7 +10,6 @@ import {
 const meta = {
   component: PassTotal,
   args: passTotalProps,
-  render: (props) => <PassTotal {...props} />,
 } satisfies Meta<typeof PassTotal>;
 
 export default meta;

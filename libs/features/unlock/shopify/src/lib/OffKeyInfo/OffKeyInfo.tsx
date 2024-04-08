@@ -7,9 +7,10 @@ import { OffKeyState } from '../types';
 export interface OffKeyInfoProps {
   state: OffKeyState;
   offKeyName: string;
+  className?: string;
 }
 
-export function OffKeyInfo({ state, offKeyName }: OffKeyInfoProps) {
+export function OffKeyInfo({ state, offKeyName, className }: OffKeyInfoProps) {
   const stateToBorderColor = {
     [OffKeyState.Unlocked]: 'border-success-border',
     [OffKeyState.Unlocking]: 'border-primary-border',
@@ -54,14 +55,14 @@ export function OffKeyInfo({ state, offKeyName }: OffKeyInfoProps) {
 
   return (
     <div
-      className={`flex items-center border pl-4 ${stateToBorderColor[state]}`}
+      className={`flex justify-between border pl-4 ${stateToBorderColor[state]} ${className}`}
     >
       <div className={`flex items-center py-2 ${stateToMainTextColor[state]}`}>
         <OffKeyLogo className="size-10" />
         <Text className="mx-4 font-medium">{offKeyName}</Text>
       </div>
       <div
-        className={`flex h-full flex-1 items-center justify-center px-3 ${stateToStatusTextColor[state]} ${stateToStatusBackground[state]}`}
+        className={`flex min-h-max items-center justify-center px-3 ${stateToStatusTextColor[state]} ${stateToStatusBackground[state]}`}
       >
         {stateToKeyIcon[state]}
         <Text className="ml-2 font-medium">{stateToStatusText[state]}</Text>
@@ -70,7 +71,7 @@ export function OffKeyInfo({ state, offKeyName }: OffKeyInfoProps) {
   );
 }
 
-export const OffKeySkeleton: React.FC = () => {
+export const OffKeyInfoSkeleton: React.FC = () => {
   return (
     <div className="flex items-center border pl-4">
       <div className="flex items-center py-2">
