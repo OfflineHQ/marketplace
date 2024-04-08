@@ -13,7 +13,7 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => (
     <defs>
       <style>{'.cls-1{fill:currentColor}'}</style>
     </defs>
-    <g clip-path="url(#clip0_280_1609)">
+    <g clipPath="url(#clip0_280_1609)">
       <path // eslint-disable-next-line tailwindcss/no-custom-classname
         className="cls-1"
         d="M9.32 16.0996V21.4196H4V16.0996H9.32ZM13.32 12.0996H0V25.4196H13.32V12.0996Z"

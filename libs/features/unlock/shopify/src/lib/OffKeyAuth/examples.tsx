@@ -9,17 +9,17 @@ import * as nextIntl from 'next-intl';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
 import { OffKeyHeader } from '../OffKeyHeader/OffKeyHeader';
+import { OffKeyLayout } from '../OffKeyLayout/OffKeyLayout';
 import { OffKeyAuth } from './OffKeyAuth';
 
 export function OffKeyAuthDemo() {
   return (
-    <div className="max-w-lg flex-col">
-      <OffKeyHeader title="title" />
-      Text
-      <WalletProvider>
+    <WalletProvider>
+      <OffKeyLayout header={<OffKeyHeader title="title" />}>
+        <div className="flex px-2">Text</div>
         <OffKeyAuth />
-      </WalletProvider>
-    </div>
+      </OffKeyLayout>
+    </WalletProvider>
   );
 }
 

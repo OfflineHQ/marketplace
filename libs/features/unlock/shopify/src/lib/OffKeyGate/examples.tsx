@@ -1,6 +1,8 @@
 import { ConnectStatus } from '@next/iframe';
+import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
 import { OffKeyHeaderConnectedExamples } from '../OffKeyHeaderConnected/examples';
+import { OffKeyLayout } from '../OffKeyLayout/OffKeyLayout';
 import { authMocks } from '../OffKeyProfile/examples';
 import * as gate from '../actions/getGateStateForAddress';
 import { OffKeyState, OffKeyViewHeaderConnected } from '../types';
@@ -40,11 +42,14 @@ export function offKeyGateMocks({ gateState }: { gateState: OffKeyState }) {
 
 export function OffKeyGateDemo(props: OffKeyGateProps) {
   return (
-    <div className="flex min-h-[220px] w-full flex-col md:max-w-lg">
-      <OffKeyHeaderConnectedExamples
-        viewType={OffKeyViewHeaderConnected.Default}
-      />
+    <OffKeyLayout
+      header={
+        <OffKeyHeaderConnectedExamples
+          viewType={OffKeyViewHeaderConnected.Default}
+        />
+      }
+    >
       <OffKeyGate className="flex-1 pt-2" {...props} />
-    </div>
+    </OffKeyLayout>
   );
 }
