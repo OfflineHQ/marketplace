@@ -500,6 +500,11 @@
     },
     "OffKeyHowToGet": {
       "locked-how-to-get-key": "Locked ! How to get keys ?"
+    },
+    "OffKeyAuth": {
+      "create-new-account": "Create new account",
+      "use-existing-account": "Use existing account",
+      "sign-in": "Sign in"
     }
   }
 }
