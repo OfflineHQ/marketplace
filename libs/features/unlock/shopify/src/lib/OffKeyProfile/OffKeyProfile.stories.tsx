@@ -1,20 +1,19 @@
-import { expect, screen, userEvent } from '@storybook/test';
-import { ShopifyCardConnected } from './CardConnected';
+import { expect, screen, userEvent, waitFor } from '@storybook/test';
+import { OffKeyProfile } from './OffKeyProfile';
 // import * as walletHook from '@next/wallet';
 import { StoryObj, type Meta } from '@storybook/react';
-import { CardConnectedExample, authMocks } from './examples';
+import { OffKeyProfileExample, authMocks } from './examples';
 
+import { ConnectStatus } from '@next/iframe';
 import {
   ReactQueryDecorator,
   ToasterDecorator,
 } from '@test-utils/storybook-decorators';
-import { ConnectStatus } from '../../../../../../next/iframe/src';
 const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
 const meta = {
-  component: ShopifyCardConnected,
+  component: OffKeyProfile,
   decorators: [ToasterDecorator, ReactQueryDecorator],
   parameters: {
-    layout: 'fullscreen',
     chromatic: { disableSnapshot: true },
     moduleMock: {
       mock: () =>
@@ -29,44 +28,41 @@ const meta = {
             isReady: true,
             isConnecting: false,
           },
+          walletContextMocks: {
+            walletConnected: address,
+            autoConnectAddress: '',
+          },
           useIframeConnectMocks: {
             connectStatus: ConnectStatus.CONNECTED,
             disconnectFromDapp: () => Promise.resolve(),
             signWithEthereum: () => Promise.resolve(),
             askForWalletConnectStatus: () => Promise.resolve(),
           },
-          walletContextMocks: {
-            walletConnected: address,
-            wcUri: 'wc:fake',
-            autoConnectAddress: '',
-          },
         }),
     },
   },
   args: {
-    children: 'children',
     user: {
       id: '1',
       address,
     },
   },
-  render: CardConnectedExample,
-} satisfies Meta<typeof ShopifyCardConnected>;
+  render: OffKeyProfileExample,
+} satisfies Meta<typeof OffKeyProfile>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const ConnectedUser: Story = {
   play: async ({ container }) => {
-    userEvent.click(screen.getByText(/My Account/i));
-    expect(await screen.findByText(/sign out/i)).toBeInTheDocument();
+    const profileButton = await screen.findAllByText('🌶');
+    await userEvent.click(profileButton[0]);
+    await waitFor(() => screen.queryByText(/sign out/i));
   },
 };
 
 export const UserConnecting: Story = {
-  args: {
-    isLoading: true,
-  },
+  args: {},
   parameters: {
     moduleMock: {
       mock: () =>
@@ -81,16 +77,15 @@ export const UserConnecting: Story = {
             isReady: true,
             isConnecting: false,
           },
+          walletContextMocks: {
+            walletConnected: address,
+            autoConnectAddress: '',
+          },
           useIframeConnectMocks: {
             connectStatus: ConnectStatus.CONNECTING,
             disconnectFromDapp: () => Promise.resolve(),
             signWithEthereum: () => Promise.resolve(),
             askForWalletConnectStatus: () => Promise.resolve(),
-          },
-          walletContextMocks: {
-            walletConnected: address,
-            wcUri: 'wc:fake',
-            autoConnectAddress: '',
           },
         }),
     },
@@ -115,16 +110,16 @@ export const SettingUpWallet: Story = {
             isReady: false,
             isConnecting: true,
           },
+          walletContextMocks: {
+            walletConnected: address,
+            wcUri: 'wc:fake',
+            autoConnectAddress: '',
+          },
           useIframeConnectMocks: {
             connectStatus: ConnectStatus.CONNECTED,
             disconnectFromDapp: () => Promise.resolve(),
             signWithEthereum: () => Promise.resolve(),
             askForWalletConnectStatus: () => Promise.resolve(),
-          },
-          walletContextMocks: {
-            walletConnected: address,
-            wcUri: 'wc:fake',
-            autoConnectAddress: '',
           },
         }),
     },
