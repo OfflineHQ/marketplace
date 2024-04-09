@@ -1,22 +1,18 @@
-import { expect, screen, userEvent } from '@storybook/test';
-import { ShopifyCardNotConnected } from './CardNotConnected';
-// import * as walletHook from '@next/wallet';
+import { expect } from '@storybook/jest';
 import { StoryObj, type Meta } from '@storybook/react';
-import { CardNotConnectedExample, authMocks } from './examples';
-
+import { screen, userEvent } from '@storybook/test';
 import {
   ReactQueryDecorator,
   ToasterDecorator,
 } from '@test-utils/storybook-decorators';
-import { mobileMode } from '@test-utils/storybook-modes';
-import React from 'react';
-import { firstKey, secondKey } from '../KeyRequired/examples';
-import { KeysRequired } from '../KeysRequired/KeysRequired';
+import { OffKeyAuth } from './OffKeyAuth';
+import { OffKeyAuthDemo, authMocks } from './examples';
 
 const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
 const meta = {
-  component: ShopifyCardNotConnected,
+  component: OffKeyAuth,
   decorators: [ToasterDecorator, ReactQueryDecorator],
+  render: OffKeyAuthDemo,
   parameters: {
     layout: 'fullscreen',
     chromatic: { disableSnapshot: true },
@@ -49,45 +45,21 @@ const meta = {
         }),
     },
   },
-  args: {
-    children: (
-      <KeysRequired
-        keys={[
-          { ...firstKey, isOwned: true },
-          { ...secondKey, isOwned: false },
-        ]}
-        separatorText="or"
-      />
-    ),
-    user: {
-      id: '1',
-      address,
-    },
-  },
-  render: CardNotConnectedExample,
-} satisfies Meta<typeof ShopifyCardNotConnected>;
+} satisfies Meta<typeof OffKeyAuth>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const ConnectedUser: Story = {
   play: async ({ container }) => {
+    screen.findByText(/Sign in/i);
     userEvent.click(await screen.findByText(/🌶/i));
-    // userEvent.click(await screen.findByText(/Sign in with/i));
+    userEvent.click(await screen.findByText(/create new account/i));
+    userEvent.click(await screen.findByText(/use existing account/i));
   },
 };
 
-export const ConnectedUserOpenDialog: Story = {
-  play: async ({ container }) => {
-    userEvent.click(await screen.findByText(/Sign in with/i));
-    expect(
-      await screen.findByText(/Sign in with my account/i),
-    ).toBeInTheDocument();
-    userEvent.click((await screen.findAllByText(/Create an account/i))[0]);
-  },
-};
-
-export const ConnectedUserWithMoreAccountOpenDialog: Story = {
+export const ConnectedUserWithMoreAccount: Story = {
   parameters: {
     moduleMock: {
       mock: () =>
@@ -120,33 +92,10 @@ export const ConnectedUserWithMoreAccountOpenDialog: Story = {
     },
   },
   play: async ({ container }) => {
-    userEvent.click(await screen.findByText(/Sign in with/i));
-    expect(
-      await screen.findByText(/Sign in with my account/i),
-    ).toBeInTheDocument();
+    userEvent.click(await screen.findByText(/create new account/i));
+    userEvent.click(await screen.findByText(/use existing account/i));
+    userEvent.click(await screen.findByText(/🌶/i));
     userEvent.click(await screen.findByText(/🐧/i));
-  },
-};
-
-export const ConnectedUserWithMobile: Story = {
-  ...ConnectedUser,
-  parameters: {
-    ...mobileMode,
-  },
-};
-
-export const ConnectedUserWithOpenDrawer: Story = {
-  ...ConnectedUserOpenDialog,
-  parameters: {
-    ...mobileMode,
-  },
-};
-
-export const ConnectedUserWithMoreAccountOpenDrawerMobile: Story = {
-  ...ConnectedUserWithMoreAccountOpenDialog,
-  parameters: {
-    ...mobileMode,
-    ...ConnectedUserWithMoreAccountOpenDialog.parameters,
   },
 };
 
@@ -216,7 +165,7 @@ export const SettingUpWallet: Story = {
     },
   },
   play: async ({ container }) => {
-    expect(screen.queryByText(/My Account/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/account/i)).not.toBeInTheDocument();
   },
 };
 
@@ -249,7 +198,7 @@ export const WithNoExistingWallet: Story = {
     },
   },
   play: async ({ container }) => {
-    userEvent.click(await screen.findByText(/create an account/i));
-    userEvent.click(await screen.findByText(/Sign in with my account/i));
+    userEvent.click(await screen.findByText(/create new account/i));
+    userEvent.click(await screen.findByText(/use existing account/i));
   },
 };
