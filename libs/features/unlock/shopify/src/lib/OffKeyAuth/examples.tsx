@@ -8,6 +8,7 @@ import {
 import * as nextIntl from 'next-intl';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
+import { OffKeyGateSignIn } from '../OffKeyGateSignIn/OffKeyGateSignIn';
 import { OffKeyHeader } from '../OffKeyHeader/OffKeyHeader';
 import { OffKeyLayout } from '../OffKeyLayout/OffKeyLayout';
 import { OffKeyAuth } from './OffKeyAuth';
@@ -16,7 +17,7 @@ export function OffKeyAuthDemo() {
   return (
     <WalletProvider>
       <OffKeyLayout header={<OffKeyHeader title="title" />}>
-        <div className="flex px-2">Text</div>
+        <OffKeyGateSignIn gateId="gateId" />
         <OffKeyAuth />
       </OffKeyLayout>
     </WalletProvider>
