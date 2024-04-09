@@ -1,4 +1,5 @@
 import { OffKeyHeader } from '@features/unlock/shopify';
+import { type Locale } from '@next/i18n';
 
 interface HeaderProps {
   params: {
