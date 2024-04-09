@@ -504,7 +504,8 @@
     "OffKeyAuth": {
       "create-new-account": "Create new account",
       "use-existing-account": "Use existing account",
-      "sign-in": "Sign in"
+      "sign-in": "Sign in",
+      "gate-sign-in-text": "This item is locked. Please sign in or create an account to unlock it."
     },
     "OffKeyGate": {
       "locked-subtitle": "🙁 Sorry you don't have access",
@@ -514,7 +515,7 @@
       "unlocking-text": "Your key is being created and will be ready in a few seconds.",
       "unlocked-text": "You have unlocked this item and can now add it to your cart.",
       "used-text": "Unfortunately your key has already been used so you can't proceed with the purchase of this item",
-      "locked-text": "Unfortunatly has of now you do not have access to the key to unlock this product. Check out how to get the key and proceed with the purchase.",
+      "locked-text": "Unfortunately has of now you do not have access to the key to unlock this product. Check out how to get the key and proceed with the purchase.",
       "off-key-name": "OffKey"
     },
     "OffKeyHeaderConnected": {

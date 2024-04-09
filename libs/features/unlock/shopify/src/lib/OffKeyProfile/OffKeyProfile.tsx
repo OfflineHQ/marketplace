@@ -122,6 +122,7 @@ export const OffKeyProfile: React.FC<OffKeyProfileProps> = ({ user }) => {
 
   const signOutUserAction = useCallback(
     async (error?: boolean) => {
+      // TODO: handle error, display error on the sign in page with an alert ? Would need to unset error afterwards
       disconnectFromDapp(user.address);
       await disconnect();
       let newPathname = pathname.split('/0x')[0];
@@ -130,18 +131,6 @@ export const OffKeyProfile: React.FC<OffKeyProfileProps> = ({ user }) => {
         newPathname += `?${params.toString()}`;
       }
       await router.replace(newPathname);
-      if (error) {
-        toast({
-          title: t('connection-error-title'),
-          description: t('connection-error-description'),
-          variant: 'destructive',
-        });
-      } else {
-        toast({
-          title: t('sign-out-title'),
-          description: t('sign-out-description'),
-        });
-      }
     },
     [disconnect, toast],
   );
