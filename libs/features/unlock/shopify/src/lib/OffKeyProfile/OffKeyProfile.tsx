@@ -66,6 +66,8 @@ export const OffKeyProfile: React.FC<OffKeyProfileProps> = ({ user }) => {
       // Handle successful connection
     },
     onError: (error: any) => {
+      console.log('error connecting to dapp', error);
+      signOutUserAction(true);
       // Handle connection error
     },
   });
@@ -118,20 +120,31 @@ export const OffKeyProfile: React.FC<OffKeyProfileProps> = ({ user }) => {
     connectWalletMutation.status,
   ]);
 
-  const signOutUserAction = useCallback(async () => {
-    disconnectFromDapp(user.address);
-    await disconnect();
-    let newPathname = pathname.split('/0x')[0];
-    if (searchParams?.toString()) {
-      const params = new URLSearchParams(searchParams.toString());
-      newPathname += `?${params.toString()}`;
-    }
-    await router.replace(newPathname);
-    toast({
-      title: t('sign-out-title'),
-      description: t('sign-out-description'),
-    });
-  }, [disconnect, toast]);
+  const signOutUserAction = useCallback(
+    async (error?: boolean) => {
+      disconnectFromDapp(user.address);
+      await disconnect();
+      let newPathname = pathname.split('/0x')[0];
+      if (searchParams?.toString()) {
+        const params = new URLSearchParams(searchParams.toString());
+        newPathname += `?${params.toString()}`;
+      }
+      await router.replace(newPathname);
+      if (error) {
+        toast({
+          title: t('connection-error-title'),
+          description: t('connection-error-description'),
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: t('sign-out-title'),
+          description: t('sign-out-description'),
+        });
+      }
+    },
+    [disconnect, toast],
+  );
 
   const items: DropdownMenuItemsProps['items'] = useMemo(
     () => [
