@@ -11,6 +11,14 @@ export enum ConnectStatus {
   ERROR = 'error', // An error occurred during the connection process
 }
 
+export enum FontFamily {
+  OPEN_SANS = 'Open Sans',
+  ROBOTO = 'Roboto',
+  INTER = 'Inter',
+  HELVETICA = 'Helvetica',
+  HELVETICA_NEUE = 'Helvetica Neue',
+}
+
 export interface ReceiveMessageValues {
   [ReceiveMessageType.CONNECT_STATUS]: {
     address: string;
@@ -19,6 +27,7 @@ export interface ReceiveMessageValues {
   [ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES]: {
     cssVariables: Record<string, string>;
     classes: string;
+    fontFamily: FontFamily;
   };
   // Additional value shapes can be defined here corresponding to the ReceiveMessageType
 }

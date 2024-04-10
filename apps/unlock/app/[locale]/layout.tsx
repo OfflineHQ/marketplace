@@ -6,25 +6,11 @@ import { getSession } from '@next/next-auth/user';
 import { ReactQueryProviders } from '@next/react-query';
 import { WalletProvider } from '@next/wallet';
 import { Toaster } from '@ui/components';
-import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { siteConfig } from '@web/config/site';
 import { Metadata, Viewport } from 'next';
-import { Inter as FontSans } from 'next/font/google';
-import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-
-const fontSans = FontSans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-});
-
-// Font files can be colocated inside of `pages`
-const fontHeading = localFont({
-  src: '../../assets/fonts/CalSans-SemiBold.woff2',
-  variable: '--font-heading',
-});
 
 export const viewport: Viewport = {
   themeColor: [
@@ -89,7 +75,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head />
-      <body className={cn('h-full', fontSans.variable, fontHeading.variable)}>
+      <body className="h-full">
         <ReactQueryProviders>
           <IFrameProvider>
             <PHProvider>

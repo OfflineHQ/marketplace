@@ -20,20 +20,15 @@ import { deepPick } from '@utils';
 import { Metadata, Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
-import { Inter as FontSans } from 'next/font/google';
-import localFont from 'next/font/local';
+import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-const fontSans = FontSans({
+const fontSans = Inter({
   subsets: ['latin'],
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
   variable: '--font-sans',
-});
-
-// Font files can be colocated inside of `pages`
-const fontHeading = localFont({
-  src: '../../assets/fonts/CalSans-SemiBold.woff2',
-  variable: '--font-heading',
 });
 
 export const viewport: Viewport = {
@@ -92,7 +87,6 @@ export default async function RootLayout({
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
           fontSans.variable,
-          fontHeading.variable,
         )}
       >
         <PHProvider>

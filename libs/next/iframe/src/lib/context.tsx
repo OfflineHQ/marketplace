@@ -2,6 +2,7 @@
 
 import { IFramePage } from 'iframe-resizer';
 import dynamic from 'next/dynamic';
+import { Inter, Roboto } from 'next/font/google';
 import React, {
   Dispatch,
   ReactNode,
@@ -16,6 +17,20 @@ import {
   ReceiveMessageType,
   ReceiveMessageValues,
 } from './types';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-sans',
+});
+
+const roboto = Roboto({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['100', '300', '400', '500', '700', '900'],
+  variable: '--font-sans',
+});
 
 interface IFrameContextType {
   iframeParent: IFramePage | null;
@@ -47,6 +62,7 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
 
   const [cssVariables, setCssVariables] = useState<Record<string, string>>({});
   const [classes, setClasses] = useState<string>('');
+  const [fontFamily, setFontFamily] = useState<string | null>(null);
 
   function onReadyHandler() {
     console.log('iframe parent ready');
@@ -81,9 +97,27 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
             value as ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES]
           ).classes,
         );
+        setFontFamily(
+          (
+            value as ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES]
+          ).fontFamily,
+        );
         break;
       // Additional message types can be handled here as needed
     }
+  }
+
+  // Determine the font variable based on the fontFamily
+  let fontVariable = '';
+  switch (fontFamily) {
+    case 'Helvetica':
+      // fontVariable = helvetica.variable;
+      break;
+    case 'Roboto':
+      fontVariable = roboto.variable;
+      break;
+    default:
+      fontVariable = inter.variable;
   }
 
   return (
@@ -93,7 +127,7 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
         value={{ iframeParent, connectStatus, setConnectStatus }}
       >
         <div
-          className={`h-full bg-transparent font-sans antialiased ${classes}`}
+          className={`off-iframe h-full bg-transparent font-sans antialiased ${classes} ${fontVariable}`}
           style={cssVariables}
         >
           {children}
