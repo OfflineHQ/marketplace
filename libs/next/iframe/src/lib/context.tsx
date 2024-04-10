@@ -46,6 +46,7 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
   );
 
   const [cssVariables, setCssVariables] = useState<Record<string, string>>({});
+  const [classes, setClasses] = useState<string>('');
 
   function onReadyHandler() {
     console.log('iframe parent ready');
@@ -67,11 +68,18 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
             .status,
         );
         break;
-      case ReceiveMessageType.UPDATE_CSS_VARIABLES:
+      case ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES:
         // Handle the update CSS variables message
-        console.log('UPDATE_CSS_VARIABLES', value);
+        console.log('UPDATE_CSS_VARIABLES_AND_CLASSES', value);
         setCssVariables(
-          value as ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES],
+          (
+            value as ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES]
+          ).cssVariables,
+        );
+        setClasses(
+          (
+            value as ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES]
+          ).classes,
         );
         break;
       // Additional message types can be handled here as needed
@@ -85,7 +93,7 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
         value={{ iframeParent, connectStatus, setConnectStatus }}
       >
         <div
-          className="h-full bg-transparent font-sans antialiased"
+          className={`h-full bg-transparent font-sans antialiased ${classes}`}
           style={cssVariables}
         >
           {children}

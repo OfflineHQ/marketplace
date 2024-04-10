@@ -20,13 +20,16 @@ const sizes = {
 };
 
 const variants = {
-  default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+  default:
+    'off-btn-default bg-primary text-primary-foreground hover:bg-primary/90',
   destructive:
-    'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-  outline: 'border border-input hover:bg-accent hover:text-accent-foreground',
-  secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-  ghost: 'hover:bg-accent hover:text-accent-foreground',
-  link: 'underline-offset-4 hover:underline text-primary',
+    'off-btn-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90',
+  outline:
+    'off-btn-outline border border-input hover:bg-accent hover:text-accent-foreground',
+  secondary:
+    'off-btn-secondary bg-secondary text-secondary-foreground hover:bg-secondary/80',
+  ghost: 'off-btn-ghost hover:bg-accent hover:text-accent-foreground',
+  link: 'off-btn-link underline-offset-4 hover:underline text-primary',
 };
 
 const buttonVariantsCva = cva(
@@ -36,7 +39,7 @@ const buttonVariantsCva = cva(
       variant: variants,
       size: sizes,
       isIconOnly: {
-        true: 'h-auto rounded-full p-0',
+        true: 'off-btn-icon-only h-auto rounded-full p-0',
       },
       block: {
         true: 'w-full',
@@ -64,7 +67,7 @@ const SkeletonSizes = {
 };
 
 const buttonSkeletonVariantsCva = cva(
-  'max-w-full shrink-0 animate-pulse rounded-md bg-skeleton',
+  'off-btn-skeleton max-w-full shrink-0 animate-pulse rounded-md bg-skeleton',
   {
     variants: {
       size: SkeletonSizes,
