@@ -10,7 +10,6 @@ import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { siteConfig } from '@web/config/site';
 import { Metadata, Viewport } from 'next';
-import { getTranslations } from 'next-intl/server';
 import { Inter as FontSans } from 'next/font/google';
 import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
@@ -72,13 +71,6 @@ export const metadata: Metadata = {
   // manifest: `${siteConfig.url}/site.webmanifest`, // set back when we have a manifest published
 };
 
-// Error: Usage of next-intl APIs in Server Components is currently only available for dynamic rendering (i.e. no `generateStaticParams`).
-// Support for static rendering is under consideration, please refer to the roadmap: https://next-intl-docs.vercel.app/docs/getting-started/app-router-server-components#roadmap
-// also get issue with cookies and headers usage (most probably in the hasura fetcher)
-// export async function generateStaticParams() {
-//   return locales.map((locale) => ({ locale }));
-// }
-
 interface RootLayoutProps {
   params: {
     locale: string;
@@ -94,17 +86,10 @@ export default async function RootLayout({
   if (!locales.includes(locale as any)) notFound();
   const messages = await getMessages(locale);
   const session = await getSession();
-  const t = await getTranslations({ locale, namespace: 'Auth' });
   return (
     <html lang={locale} suppressHydrationWarning>
       <head />
-      <body
-        className={cn(
-          'h-fit bg-background font-sans antialiased',
-          fontSans.variable,
-          fontHeading.variable,
-        )}
-      >
+      <body className={cn('h-full', fontSans.variable, fontHeading.variable)}>
         <ReactQueryProviders>
           <IFrameProvider>
             <PHProvider>
