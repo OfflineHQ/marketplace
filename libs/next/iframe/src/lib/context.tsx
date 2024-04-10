@@ -14,6 +14,7 @@ import {
   ConnectStatus,
   IFrameParentMessage,
   ReceiveMessageType,
+  ReceiveMessageValues,
 } from './types';
 
 interface IFrameContextType {
@@ -60,13 +61,18 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
     switch (type) {
       case ReceiveMessageType.CONNECT_STATUS:
         // Handle the wallet connect URI message
-        console.log('CONNECT_STATUS', value.address, value.status);
-        setConnectStatus(value.status as ConnectStatus);
+        console.log('CONNECT_STATUS', value);
+        setConnectStatus(
+          (value as ReceiveMessageValues[ReceiveMessageType.CONNECT_STATUS])
+            .status,
+        );
         break;
       case ReceiveMessageType.UPDATE_CSS_VARIABLES:
         // Handle the update CSS variables message
         console.log('UPDATE_CSS_VARIABLES', value);
-        setCssVariables(value);
+        setCssVariables(
+          value as ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES],
+        );
         break;
       // Additional message types can be handled here as needed
     }
@@ -78,7 +84,12 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
       <IFrameContext.Provider
         value={{ iframeParent, connectStatus, setConnectStatus }}
       >
-        <div style={cssVariables}>{children}</div>
+        <div
+          className="h-full bg-transparent font-sans antialiased"
+          style={cssVariables}
+        >
+          {children}
+        </div>
       </IFrameContext.Provider>
     </>
   );
