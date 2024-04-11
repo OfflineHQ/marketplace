@@ -4,7 +4,7 @@ import {
 } from '@features/organizer/event-types';
 import { UTCDateMini } from '@time';
 import { isBefore } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
+import { toZonedTime } from 'date-fns-tz';
 
 export interface GetSaleStatusProps
   extends Pick<
@@ -19,7 +19,7 @@ export function getSaleStatus({
   if (isSaleOngoing) {
     return SaleStatus.Ongoing;
   }
-  const dateSaleStartObj = utcToZonedTime(dateSaleStart, timezone);
+  const dateSaleStartObj = toZonedTime(dateSaleStart, timezone);
   const nowInUTC = new UTCDateMini();
   if (isBefore(nowInUTC, dateSaleStartObj)) {
     return SaleStatus.NotStarted;
