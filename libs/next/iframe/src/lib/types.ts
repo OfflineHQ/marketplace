@@ -12,13 +12,12 @@ export enum ConnectStatus {
 }
 
 export enum FontFamily {
-  OPEN_SANS = 'Open Sans',
-  ROBOTO = 'Roboto',
-  INTER = 'Inter',
-  HELVETICA = 'Helvetica',
-  HELVETICA_NEUE = 'Helvetica Neue',
+  OPEN_SANS = 'openSans',
+  ROBOTO = 'roboto',
+  INTER = 'inter',
+  HELVETICA = 'helvetica',
+  HELVETICA_NEUE = 'helveticaNeue',
 }
-
 export interface ReceiveMessageValues {
   [ReceiveMessageType.CONNECT_STATUS]: {
     address: string;

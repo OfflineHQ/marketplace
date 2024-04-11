@@ -2,7 +2,6 @@
 
 import { IFramePage } from 'iframe-resizer';
 import dynamic from 'next/dynamic';
-import { Inter, Roboto } from 'next/font/google';
 import React, {
   Dispatch,
   ReactNode,
@@ -13,28 +12,16 @@ import React, {
 } from 'react';
 import {
   ConnectStatus,
+  FontFamily,
   IFrameParentMessage,
   ReceiveMessageType,
   ReceiveMessageValues,
 } from './types';
 
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-sans',
-});
-
-const roboto = Roboto({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['100', '300', '400', '500', '700', '900'],
-  variable: '--font-sans',
-});
-
 interface IFrameContextType {
   iframeParent: IFramePage | null;
   connectStatus: ConnectStatus | null;
+  uiReady: boolean;
   setConnectStatus: Dispatch<SetStateAction<ConnectStatus | null>>;
 }
 
@@ -42,6 +29,7 @@ const defaultState: IFrameContextType = {
   iframeParent: null,
   connectStatus: null,
   setConnectStatus: () => {},
+  uiReady: false,
 };
 
 const IFrameContext = createContext<IFrameContextType>(defaultState);
@@ -52,9 +40,11 @@ const IFrameResizer = dynamic(() => import('./injector'), {
 
 export const useIFrame = () => useContext(IFrameContext);
 
-export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+interface IFrameProviderProps {
+  children: ReactNode;
+}
+
+export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
   const [iframeParent, setIFrameParent] = useState<IFramePage | null>(null);
   const [connectStatus, setConnectStatus] = useState<ConnectStatus | null>(
     null,
@@ -62,72 +52,91 @@ export const IFrameProvider: React.FC<{ children: ReactNode }> = ({
 
   const [cssVariables, setCssVariables] = useState<Record<string, string>>({});
   const [classes, setClasses] = useState<string>('');
-  const [fontFamily, setFontFamily] = useState<string | null>(null);
+  const [uiReady, setUiReady] = useState(false);
 
-  function onReadyHandler() {
-    console.log('iframe parent ready');
+  const handleIFrameReady = () => {
     setIFrameParent((window as any).parentIFrame);
+  };
+
+  function getFont(fontFamily: FontFamily) {
+    switch (fontFamily) {
+      case FontFamily.OPEN_SANS:
+        // Load local Open Sans font files
+        Promise.all([
+          new FontFace(
+            fontFamily,
+            `url(/fonts/OpenSans-VariableFont_wdth,wght.ttf)`,
+            { style: 'normal' },
+          ).load(),
+          new FontFace(
+            fontFamily,
+            `url(/fonts/OpenSans-Italic-VariableFont_wdth,wght.ttf)`,
+            { style: 'italic' },
+          ).load(),
+        ])
+          .then((fonts) => {
+            fonts.forEach((font) => {
+              // @ts-expect-error
+              document.fonts.add(font);
+            });
+            setUiReady(true);
+          })
+          .catch((error) => {
+            console.error('Error loading Open Sans fonts', error);
+          });
+
+        return fontFamily; // Return the font family name to be used in CSS
+      case FontFamily.ROBOTO:
+        // Similar approach for Roboto or any other local fonts
+        break;
+      case FontFamily.INTER:
+        // INTER is already used by default, no action needed
+        return '';
+      // Add more cases as needed
+      default:
+        return '';
+    }
   }
   // https://github.com/davidjbradshaw/iframe-resizer/blob/master/docs/iframed_page/events.md
-  function onMessageHandler<T extends ReceiveMessageType>({
+  const handleIFrameMessage = <T extends ReceiveMessageType>({
     type,
     value,
-  }: IFrameParentMessage<T>) {
-    console.log('message from parent', { type, value });
-
+  }: IFrameParentMessage<T>) => {
     switch (type) {
       case ReceiveMessageType.CONNECT_STATUS:
-        // Handle the wallet connect URI message
-        console.log('CONNECT_STATUS', value);
         setConnectStatus(
           (value as ReceiveMessageValues[ReceiveMessageType.CONNECT_STATUS])
             .status,
         );
         break;
       case ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES:
-        // Handle the update CSS variables message
-        console.log('UPDATE_CSS_VARIABLES_AND_CLASSES', value);
-        setCssVariables(
-          (
-            value as ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES]
-          ).cssVariables,
-        );
-        setClasses(
-          (
-            value as ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES]
-          ).classes,
-        );
-        setFontFamily(
-          (
-            value as ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES]
-          ).fontFamily,
-        );
+        // eslint-disable-next-line no-case-declarations
+        const { cssVariables, classes, fontFamily } =
+          value as ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES];
+        console.log('fontFamily', fontFamily);
+        if (fontFamily !== FontFamily.INTER) {
+          const font = getFont(fontFamily);
+          if (font) {
+            cssVariables['--font-family'] =
+              `${font}, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`;
+          }
+        }
+        setCssVariables(cssVariables);
+        setClasses(`${classes} font-${fontFamily}`);
         break;
-      // Additional message types can be handled here as needed
     }
-  }
-
-  // Determine the font variable based on the fontFamily
-  let fontVariable = '';
-  switch (fontFamily) {
-    case 'Helvetica':
-      // fontVariable = helvetica.variable;
-      break;
-    case 'Roboto':
-      fontVariable = roboto.variable;
-      break;
-    default:
-      fontVariable = inter.variable;
-  }
-
+  };
   return (
     <>
-      <IFrameResizer onReady={onReadyHandler} onMessage={onMessageHandler} />
+      <IFrameResizer
+        onReady={handleIFrameReady}
+        onMessage={handleIFrameMessage}
+      />
       <IFrameContext.Provider
-        value={{ iframeParent, connectStatus, setConnectStatus }}
+        value={{ iframeParent, connectStatus, setConnectStatus, uiReady }}
       >
         <div
-          className={`off-iframe h-full bg-transparent font-sans antialiased ${classes} ${fontVariable}`}
+          className={`off-iframe h-full bg-transparent antialiased ${classes}`}
           style={cssVariables}
         >
           {children}

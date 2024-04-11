@@ -1,16 +1,23 @@
-import { PHProvider, PostHogPageview } from '@insight/client';
-import { getMessages, locales } from '@next/i18n';
+import { locales } from '@next/i18n';
 import { IFrameProvider } from '@next/iframe';
 // import { IFrameResizer } from '@next/iframe';
-import { getSession } from '@next/next-auth/user';
 import { ReactQueryProviders } from '@next/react-query';
 import { WalletProvider } from '@next/wallet';
 import { Toaster } from '@ui/components';
 import { ThemeProvider } from '@ui/theme';
 import { siteConfig } from '@web/config/site';
 import { Metadata, Viewport } from 'next';
+import { Inter } from 'next/font/google';
+import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-inter',
+  preload: true,
+});
 
 export const viewport: Viewport = {
   themeColor: [
@@ -68,33 +75,25 @@ export default async function RootLayout({
   params: { locale },
   children,
 }: RootLayoutProps) {
+  const headersList = headers();
+  const url = headersList.get('x-url');
+  const { searchParams } = new URL(url ?? 'https://n');
   // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale as any)) notFound();
-  const messages = await getMessages(locale);
-  const session = await getSession();
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning className={`h-full`}>
       <head />
-      <body className="h-full">
+      <body className={`h-full`}>
         <ReactQueryProviders>
           <IFrameProvider>
-            <PHProvider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-              >
-                <WalletProvider>
-                  {children}
-                  <Toaster />
-                </WalletProvider>
-              </ThemeProvider>
-            </PHProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <WalletProvider>
+                {children}
+                <Toaster />
+              </WalletProvider>
+            </ThemeProvider>
           </IFrameProvider>
         </ReactQueryProviders>
-        <Suspense>
-          <PostHogPageview />
-        </Suspense>
       </body>
     </html>
   );
