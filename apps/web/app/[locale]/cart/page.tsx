@@ -12,6 +12,7 @@ import {
 import { SumsubButton } from '@features/kyc/server';
 import { PassCache } from '@features/pass-cache';
 import { isUserKycValidated } from '@kyc/common';
+import { type Locale } from '@next/i18n';
 import { Link, redirect } from '@next/navigation';
 import { getCurrentUser } from '@next/next-auth/user';
 import { AppUser } from '@next/types';

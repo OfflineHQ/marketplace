@@ -44,20 +44,14 @@
       "error",
       {
         "whitelist": [
-          "primary",
-          "primary-foreground",
-          "secondary",
-          "secondary-foreground",
-          "destructive",
-          "destructive-foreground",
-          "muted",
-          "muted-foreground",
-          "accent",
-          "accent-foreground",
-          "popover",
-          "popover-foreground",
-          "card",
-          "card-foreground"
+          "primary(-foreground)?",
+          "secondary(-foreground)?",
+          "destructive(-foreground)?",
+          "muted(-foreground)?",
+          "accent(-foreground)?",
+          "popover(-foreground)?",
+          "card(-foreground)?",
+          "off-.*"
         ]
       }
     ]

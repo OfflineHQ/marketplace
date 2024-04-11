@@ -17,7 +17,7 @@ function EmojiAvatar({ address, ...props }: EmojiAvatarProps) {
     [address],
   );
   return (
-    <Avatar {...props}>
+    <Avatar {...props} className="text-2xl">
       <AvatarFallback style={{ backgroundColor: color }}>
         {emoji}
       </AvatarFallback>

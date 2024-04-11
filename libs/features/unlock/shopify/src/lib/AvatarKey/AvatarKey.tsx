@@ -14,7 +14,7 @@ export interface AvatarKeyProps {
 export const AvatarKey: React.FC<AvatarKeyProps> = ({ imgSrc, isOwned }) => {
   return (
     <IconBadgeWrapper
-      className={'border-b bg-background p-0.5'}
+      className={'border-b bg-secondary p-0.5'}
       icon={
         isOwned !== undefined ? (
           isOwned ? (

@@ -166,50 +166,11 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     font-feature-settings:
       'rlig' 1,
       'calt' 1;
   }
-  /* h1 {
-    @apply text-4xl font-extrabold tracking-tight lg:text-5xl;
-  }
-  h2 {
-    @apply text-3xl font-semibold tracking-tight;
-  }
-  h3 {
-    @apply text-2xl font-semibold tracking-tight;
-  }
-  h4 {
-    @apply text-xl font-semibold tracking-tight;
-  }
-  h5 {
-    @apply text-lg font-medium;
-  }
-  h6 {
-    @apply text-base font-medium;
-  }
-  p {
-    @apply text-base;
-  }
-  a {
-    @apply text-base;
-  }
-  a:hover {
-    @apply underline;
-    @apply text-primary;
-  }
-  a:focus {
-    @apply underline;
-    @apply text-primary;
-  }
-  a:active {
-    @apply underline;
-    @apply text-primary;
-  }
-  small {
-    @apply text-sm;
-  } */
 }
 
 @layer utilities {
@@ -236,11 +197,12 @@
 }
 
 body {
-  @apply h-full font-sans antialiased;
+  @apply h-full antialiased;
 }
 
-.font-sans {
-  font-family: 'Inter', sans-serif;
+.off-iframe {
+  @apply antialiased;
+  font-family: var(--font-family);
 }
 
 body,
@@ -256,4 +218,24 @@ html,
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+/* Customize UI Library with CSS variables */
+
+.off-btn:not(.off-btn-link) {
+  height: var(--off-btn-height);
+  font-size: var(--off-btn-font-size);
+  letter-spacing: var(--off-btn-letter-spacing);
+}
+
+.off-btn:not(.off-btn-link):has([style*='--off-btn-height']) {
+  height: var(--off-btn-height) !important;
+}
+
+.off-btn-skeleton {
+  height: var(--off-btn-height);
+}
+
+.off-btn-skeleton:has([style*='--off-btn-height']) {
+  height: var(--off-btn-height) !important;
 }

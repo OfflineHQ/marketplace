@@ -20,8 +20,6 @@ export const DarkModeDecorator: Decorator = (Story: any, context: any = {}) => {
   return dark ? <Story key={dark} /> : <Story />;
 };
 
-document.body.classList.add('font-sans');
-
 const preview: Preview = {
   parameters: {
     ...parameters,

@@ -12,12 +12,7 @@ export const OffKeyLayout: React.FC<OffKeyLayoutProps> = ({
   className,
 }) => {
   return (
-    <div
-      className={cn(
-        'flex min-h-[220px] w-full flex-col md:max-w-lg',
-        className,
-      )}
-    >
+    <div className={cn('flex min-h-[220px] w-full flex-col', className)}>
       {header}
       {children}
     </div>
