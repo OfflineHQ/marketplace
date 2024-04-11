@@ -25,9 +25,22 @@ const colors = [
   '#A575FF',
   '#4D82FF',
   '#FFB35A',
+  '#FF7F50', // Coral
+  '#00CED1', // Dark Turquoise
+  '#FF1493', // Deep Pink
+  '#00BFFF', // Deep Sky Blue
+  '#FFD700', // Gold
+  '#9370DB', // Medium Purple
+  '#FF4500', // Orange Red
+  '#7FFFD4', // Aquamarine
+  '#00FA9A', // Medium Spring Green
+  '#DC143C', // Crimson
+  '#00FF7F', // Spring Green
+  '#8A2BE2', // Blue Violet
+  '#228B22', // Forest Green
 ] as const;
 
-const avatars = [
+export const avatars = [
   { color: colors[0], emoji: '🌶' },
   { color: colors[1], emoji: '🤑' },
   { color: colors[2], emoji: '🐙' },
@@ -41,7 +54,6 @@ const avatars = [
   { color: colors[9], emoji: '🦊' },
   { color: colors[10], emoji: '🐼' },
   { color: colors[11], emoji: '🦄' },
-  { color: colors[12], emoji: '🐷' },
   { color: colors[13], emoji: '🐧' },
   { color: colors[8], emoji: '🦩' },
   { color: colors[14], emoji: '👽' },
@@ -63,6 +75,52 @@ const avatars = [
   { color: colors[17], emoji: '🥳' },
   { color: colors[8], emoji: '🤯' },
   { color: colors[22], emoji: '🤠' },
+  { color: colors[23], emoji: '🦜' },
+  { color: colors[24], emoji: '🐬' },
+  { color: colors[25], emoji: '🦚' },
+  { color: colors[26], emoji: '🐋' },
+  { color: colors[27], emoji: '🌟' },
+  { color: colors[28], emoji: '🍇' },
+  { color: colors[29], emoji: '🦖' },
+  { color: colors[30], emoji: '🍹' },
+  { color: colors[31], emoji: '🐢' },
+  { color: colors[32], emoji: '🍒' },
+  { color: colors[33], emoji: '🌿' },
+  { color: colors[34], emoji: '🔮' },
+  { color: colors[35], emoji: '🍀' },
+  { color: colors[1], emoji: '📚' },
+  { color: colors[2], emoji: '🎨' },
+  { color: colors[3], emoji: '🏀' },
+  { color: colors[4], emoji: '🏖' },
+  { color: colors[5], emoji: '🌿' },
+  { color: colors[6], emoji: '☕️' },
+  { color: colors[7], emoji: '🐠' },
+  { color: colors[9], emoji: '🍕' },
+  { color: colors[10], emoji: '🗺' },
+  { color: colors[11], emoji: '🎤' },
+  { color: colors[12], emoji: '🧩' },
+  { color: colors[13], emoji: '🚲' },
+  { color: colors[14], emoji: '🌈' },
+  { color: colors[15], emoji: '🍃' },
+  { color: colors[16], emoji: '🚀' },
+  { color: colors[17], emoji: '🌍' },
+  { color: colors[18], emoji: '🎧' },
+  { color: colors[19], emoji: '🎥' },
+  { color: colors[20], emoji: '🎮' },
+  { color: colors[21], emoji: '🧠' },
+  { color: colors[22], emoji: '🎸' },
+  { color: colors[23], emoji: '🌴' },
+  { color: colors[24], emoji: '🐚' },
+  { color: colors[25], emoji: '💃' },
+  { color: colors[26], emoji: '🏞' },
+  { color: colors[27], emoji: '🏆' },
+  { color: colors[28], emoji: '🎼' },
+  { color: colors[29], emoji: '🍳' },
+  { color: colors[31], emoji: '🌿' },
+  { color: colors[32], emoji: '🎡' },
+  { color: colors[33], emoji: '🎯' },
+  { color: colors[34], emoji: '🧘' },
+  { color: colors[35], emoji: '🌳' },
 ] as const;
 
 function hashCode(text: string) {
