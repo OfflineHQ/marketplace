@@ -83,7 +83,14 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning className={`h-full`}>
       <head />
-      <body className={`h-full`}>
+      {/* here take the default font-family from system and add it to the body https://github.com/necolas/normalize.css/issues/665 */}
+      <body
+        className={`h-full`}
+        style={{
+          fontFamily:
+            '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+        }}
+      >
         <ReactQueryProviders>
           <IFrameProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

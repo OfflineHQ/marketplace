@@ -88,7 +88,10 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
   }
 
   function getFont(fontFamily: FontFamily) {
+    console.log('getFont', fontFamily);
     switch (fontFamily) {
+      case FontFamily.HELVETICA_NEUE:
+        return 'Helvetica Neue';
       case FontFamily.OPEN_SANS:
         return loadFontFamily(fontFamily, [
           {
@@ -104,146 +107,69 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
             },
           },
         ]);
-      case FontFamily.ROBOTO:
-        return loadFontFamily('Roboto', [
+      case FontFamily.NEUE_HAAS_GROTESK:
+        return loadFontFamily(fontFamily, [
           {
-            path: '/fonts/Roboto-Black.woff2',
-            descriptors: {
-              style: 'normal',
-              weight: '900',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-Black.woff2',
+            descriptors: { style: 'normal', weight: '900' },
+          }, // font-black
           {
-            path: '/fonts/Roboto-BlackItalic.woff2',
-            descriptors: {
-              style: 'italic',
-              weight: '900',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-BlackItalic.woff2',
+            descriptors: { style: 'italic', weight: '900' },
+          }, // font-black
           {
-            path: '/fonts/Roboto-Bold.woff2',
-            descriptors: {
-              style: 'normal',
-              weight: 'bold',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-Bold.woff2',
+            descriptors: { style: 'normal', weight: '700' },
+          }, // font-bold
           {
-            path: '/fonts/Roboto-BoldItalic.woff2',
-            descriptors: {
-              style: 'italic',
-              weight: 'bold',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-BoldItalic.woff2',
+            descriptors: { style: 'italic', weight: '700' },
+          }, // font-bold
           {
-            path: '/fonts/Roboto-Italic.woff2',
-            descriptors: {
-              style: 'italic',
-              weight: 'normal',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-Light.woff2',
+            descriptors: { style: 'normal', weight: '300' },
+          }, // font-light
           {
-            path: '/fonts/Roboto-Light.woff2',
-            descriptors: {
-              style: 'normal',
-              weight: '300',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-LightItalic.woff2',
+            descriptors: { style: 'italic', weight: '300' },
+          }, // font-light
           {
-            path: '/fonts/Roboto-LightItalic.woff2',
-            descriptors: {
-              style: 'italic',
-              weight: '300',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-Medium.woff2',
+            descriptors: { style: 'normal', weight: '500' },
+          }, // font-medium
           {
-            path: '/fonts/Roboto-Medium.woff2',
-            descriptors: {
-              style: 'normal',
-              weight: '500',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-MediumItalic.woff2',
+            descriptors: { style: 'italic', weight: '500' },
+          }, // font-medium
           {
-            path: '/fonts/Roboto-MediumItalic.woff2',
-            descriptors: {
-              style: 'italic',
-              weight: '500',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-Thin.woff2',
+            descriptors: { style: 'normal', weight: '100' },
+          }, // font-thin
           {
-            path: '/fonts/Roboto-Regular.woff2',
-            descriptors: {
-              style: 'normal',
-              weight: 'normal',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-ThinItalic.woff2',
+            descriptors: { style: 'italic', weight: '100' },
+          }, // font-thin
           {
-            path: '/fonts/Roboto-Thin.woff2',
-            descriptors: {
-              style: 'normal',
-              weight: '100',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-XThin.woff2',
+            descriptors: { style: 'normal', weight: '200' },
+          }, // font-extralight
           {
-            path: '/fonts/Roboto-ThinItalic.woff2',
-            descriptors: {
-              style: 'italic',
-              weight: '100',
-            },
-          },
+            path: '/fonts/NeueHaasDisplay-XThinItalic.woff2',
+            descriptors: { style: 'italic', weight: '200' },
+          }, // font-extralight
+          {
+            path: '/fonts/NeueHaasDisplay-XXThin.woff2',
+            descriptors: { style: 'normal', weight: '100' },
+          }, // Adjusted to font-thin, consider if this is correct
+          {
+            path: '/fonts/NeueHaasDisplay-XXThinItalic.woff2',
+            descriptors: { style: 'italic', weight: '100' },
+          }, // Adjusted to font-thin, consider if this is correct
         ]);
       case FontFamily.INTER:
         return loadFontFamily(fontFamily, [
           {
             path: '/fonts/Inter-VariableFont_slnt,wght.woff2',
-          },
-        ]);
-      case FontFamily.HELVETICA_NEUE:
-        return loadFontFamily('Helvetica Neue', [
-          {
-            path: '/fonts/HelveticaNeue.woff2',
-            descriptors: {
-              style: 'normal',
-            },
-          },
-          {
-            path: '/fonts/HelveticaNeue-Bold.woff2',
-            descriptors: {
-              style: 'normal',
-              weight: 'bold',
-            },
-          },
-          {
-            path: '/fonts/HelveticaNeue-Italic.woff2',
-            descriptors: {
-              style: 'italic',
-            },
-          },
-          {
-            path: '/fonts/HelveticaNeue-Light.woff2',
-            descriptors: {
-              style: 'normal',
-              weight: '300',
-            },
-          },
-          {
-            path: '/fonts/HelveticaNeue-Medium.woff2',
-            descriptors: {
-              style: 'normal',
-              weight: '500',
-            },
-          },
-          {
-            path: '/fonts/HelveticaNeue-Thin.woff2',
-            descriptors: {
-              style: 'normal',
-              weight: '100',
-            },
-          },
-          {
-            path: '/fonts/HelveticaNeueRegular.woff2',
-            descriptors: {
-              style: 'normal',
-            },
           },
         ]);
       default:
@@ -268,7 +194,7 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
         const { cssVariables, classes, fontFamily } =
           value as ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES];
         cssVariables['--font-family'] =
-          `${getFont(fontFamily)}, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`;
+          `${getFont(fontFamily)}, -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`;
         setCssVariables(cssVariables);
         setClasses(`${classes} font-${fontFamily}`);
         break;

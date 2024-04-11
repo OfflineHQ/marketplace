@@ -13,8 +13,8 @@ export enum ConnectStatus {
 
 export enum FontFamily {
   OPEN_SANS = 'openSans',
-  ROBOTO = 'roboto',
   INTER = 'inter',
+  NEUE_HAAS_GROTESK = 'neueHaasGrotesk',
   HELVETICA_NEUE = 'helveticaNeue',
 }
 export interface ReceiveMessageValues {
