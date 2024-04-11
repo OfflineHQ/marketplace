@@ -1,31 +1,14 @@
-import { PHProvider, PostHogPageview } from '@insight/client';
-import { getMessages, locales } from '@next/i18n';
+import { locales } from '@next/i18n';
 import { IFrameProvider } from '@next/iframe';
 // import { IFrameResizer } from '@next/iframe';
-import { getSession } from '@next/next-auth/user';
 import { ReactQueryProviders } from '@next/react-query';
 import { WalletProvider } from '@next/wallet';
 import { Toaster } from '@ui/components';
-import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { siteConfig } from '@web/config/site';
 import { Metadata, Viewport } from 'next';
-import { getTranslations } from 'next-intl/server';
-import { Inter as FontSans } from 'next/font/google';
-import localFont from 'next/font/local';
+import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
-
-const fontSans = FontSans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-});
-
-// Font files can be colocated inside of `pages`
-const fontHeading = localFont({
-  src: '../../assets/fonts/CalSans-SemiBold.woff2',
-  variable: '--font-heading',
-});
 
 export const viewport: Viewport = {
   themeColor: [
@@ -72,13 +55,6 @@ export const metadata: Metadata = {
   // manifest: `${siteConfig.url}/site.webmanifest`, // set back when we have a manifest published
 };
 
-// Error: Usage of next-intl APIs in Server Components is currently only available for dynamic rendering (i.e. no `generateStaticParams`).
-// Support for static rendering is under consideration, please refer to the roadmap: https://next-intl-docs.vercel.app/docs/getting-started/app-router-server-components#roadmap
-// also get issue with cookies and headers usage (most probably in the hasura fetcher)
-// export async function generateStaticParams() {
-//   return locales.map((locale) => ({ locale }));
-// }
-
 interface RootLayoutProps {
   params: {
     locale: string;
@@ -90,40 +66,32 @@ export default async function RootLayout({
   params: { locale },
   children,
 }: RootLayoutProps) {
+  const headersList = headers();
+  const url = headersList.get('x-url');
+  const { searchParams } = new URL(url ?? 'https://n');
   // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale as any)) notFound();
-  const messages = await getMessages(locale);
-  const session = await getSession();
-  const t = await getTranslations({ locale, namespace: 'Auth' });
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning className={`h-full`}>
       <head />
+      {/* here take the default font-family from system and add it to the body https://github.com/necolas/normalize.css/issues/665 */}
       <body
-        className={cn(
-          'h-fit bg-background font-sans antialiased',
-          fontSans.variable,
-          fontHeading.variable,
-        )}
+        className={`h-full`}
+        style={{
+          fontFamily:
+            '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+        }}
       >
         <ReactQueryProviders>
           <IFrameProvider>
-            <PHProvider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-              >
-                <WalletProvider>
-                  {children}
-                  <Toaster />
-                </WalletProvider>
-              </ThemeProvider>
-            </PHProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <WalletProvider>
+                {children}
+                <Toaster />
+              </WalletProvider>
+            </ThemeProvider>
           </IFrameProvider>
         </ReactQueryProviders>
-        <Suspense>
-          <PostHogPageview />
-        </Suspense>
       </body>
     </html>
   );

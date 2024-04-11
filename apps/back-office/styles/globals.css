@@ -4,6 +4,11 @@
 
 @layer base {
   :root {
+    --default-font-stack: -apple-system, system-ui, BlinkMacSystemFont,
+      'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+      'Noto Color Emoji';
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -236,11 +241,7 @@
 }
 
 body {
-  @apply h-full font-sans antialiased;
-}
-
-.font-sans {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans, var(--default-font-stack));
 }
 
 body,

@@ -31,8 +31,6 @@ export const globalTypes = {
   },
 };
 
-document.body.classList.add('font-sans');
-
 const preview: Preview = {
   parameters: {
     ...parameters,

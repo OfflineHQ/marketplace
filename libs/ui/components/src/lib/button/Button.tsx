@@ -13,29 +13,33 @@ import * as React from 'react';
 import { cn } from '@ui/shared';
 
 const sizes = {
-  sm: 'h-9 px-3 text-sm',
-  default: 'h-10 py-2 px-4 text-sm',
-  lg: 'h-11 px-6 md:px-8 text-base',
+  default: 'h-10 px-4 py-2',
+  xs: 'h-8 rounded-md px-3',
+  sm: 'h-9 rounded-md px-3',
+  lg: 'h-11 rounded-md px-8',
 };
 
 const variants = {
-  default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+  default:
+    'off-btn-default bg-primary text-primary-foreground hover:bg-primary/90',
   destructive:
-    'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-  outline: 'border border-input hover:bg-accent hover:text-accent-foreground',
-  secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-  ghost: 'hover:bg-accent hover:text-accent-foreground',
-  link: 'underline-offset-4 hover:underline text-primary',
+    'off-btn-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90',
+  outline:
+    'off-btn-outline border border-input hover:bg-accent hover:text-accent-foreground',
+  secondary:
+    'off-btn-secondary bg-secondary text-secondary-foreground hover:bg-secondary/80',
+  ghost: 'off-btn-ghost hover:bg-accent hover:text-accent-foreground',
+  link: 'off-btn-link underline-offset-4 hover:underline text-primary',
 };
 
 const buttonVariantsCva = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'off-btn inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: variants,
       size: sizes,
       isIconOnly: {
-        true: 'h-auto rounded-full p-0',
+        true: 'off-btn-icon-only h-auto rounded-full p-0',
       },
       block: {
         true: 'w-full',
@@ -56,14 +60,14 @@ const buttonVariantsCva = cva(
 );
 
 const SkeletonSizes = {
-  xs: 'size-4 md:size-8',
+  xs: 'size-8',
   sm: 'size-9',
   default: 'size-10',
   lg: 'size-11',
 };
 
 const buttonSkeletonVariantsCva = cva(
-  'max-w-full shrink-0 animate-pulse rounded-md bg-skeleton',
+  'off-btn-skeleton max-w-full shrink-0 animate-pulse rounded-md bg-skeleton',
   {
     variants: {
       size: SkeletonSizes,
@@ -79,7 +83,7 @@ const buttonSkeletonVariantsCva = cva(
       {
         size: 'xs',
         isIconOnly: false,
-        class: 'h-4 w-12 md:h-16 md:w-8',
+        class: 'h-8 w-20',
       },
       {
         size: 'sm',
