@@ -12,6 +12,7 @@ export enum ConnectStatus {
 }
 
 export enum FontFamily {
+  ROBOTO = 'roboto',
   OPEN_SANS = 'openSans',
   INTER = 'inter',
   NEUE_HAAS_GROTESK = 'neueHaasGrotesk',

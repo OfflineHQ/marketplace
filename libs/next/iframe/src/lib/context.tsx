@@ -90,7 +90,11 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
   function getFont(fontFamily: FontFamily) {
     console.log('getFont', fontFamily);
     switch (fontFamily) {
+      case FontFamily.ROBOTO:
+        setUiReady(true);
+        return 'Roboto';
       case FontFamily.HELVETICA_NEUE:
+        setUiReady(true);
         return 'Helvetica Neue';
       case FontFamily.OPEN_SANS:
         return loadFontFamily(fontFamily, [
