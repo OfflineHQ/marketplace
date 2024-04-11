@@ -13,7 +13,7 @@ import {
 } from '@ui/components';
 import { Timer } from '@ui/icons';
 import { isAfter, isBefore } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
+import { toZonedTime } from 'date-fns-tz';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
@@ -29,8 +29,8 @@ export const EventSaleDatesClient: React.FC<EventSaleDatesClientProps> = ({
   const format = useFormatter();
 
   // Convert dateSaleStart and dateSaleEnd to Date objects in the event's timezone
-  const dateSaleStartObj = utcToZonedTime(dateSaleStart, timezone);
-  const dateSaleEndObj = utcToZonedTime(dateSaleEnd, timezone);
+  const dateSaleStartObj = toZonedTime(dateSaleStart, timezone);
+  const dateSaleEndObj = toZonedTime(dateSaleEnd, timezone);
 
   const [saleStatus, setSaleStatus] = useState<SaleStatus>();
   const [saleEndsIn, setSaleEndsIn] = useState<string>();

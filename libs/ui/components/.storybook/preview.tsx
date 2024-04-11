@@ -20,7 +20,8 @@ export const DarkModeDecorator: Decorator = (Story: any, context: any = {}) => {
   return dark ? <Story key={dark} /> : <Story />;
 };
 
-document.body.classList.add('font-sans');
+document.body.style.fontFamily =
+  '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 
 const preview: Preview = {
   parameters: {

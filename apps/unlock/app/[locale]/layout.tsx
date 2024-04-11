@@ -7,17 +7,8 @@ import { Toaster } from '@ui/components';
 import { ThemeProvider } from '@ui/theme';
 import { siteConfig } from '@web/config/site';
 import { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-inter',
-  preload: true,
-});
 
 export const viewport: Viewport = {
   themeColor: [

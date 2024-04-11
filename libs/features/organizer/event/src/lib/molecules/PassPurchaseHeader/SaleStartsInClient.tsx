@@ -6,7 +6,7 @@ import { UTCDateMini, getSteppedIntervalTime } from '@time';
 import { Badge } from '@ui/components';
 import { Timer } from '@ui/icons';
 import { isBefore } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
+import { toZonedTime } from 'date-fns-tz';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
@@ -24,7 +24,7 @@ export const SaleStartsInClient: React.FC<SaleStartsInClientProps> = ({
   const t = useTranslations('Organizer.Event.SaleStartsInClient');
   const timeoutId = useRef<NodeJS.Timeout | null>(null); // Declare a ref to store the timeout ID
   const router = useRouter();
-  const dateSaleStartObj = utcToZonedTime(dateSaleStart, timezone);
+  const dateSaleStartObj = toZonedTime(dateSaleStart, timezone);
   const [saleStartsIn, setSaleStartsIn] = useState<string>();
   const [hasAttemptedRefresh, setHasAttemptedRefresh] = useState(false);
   const format = useFormatter();
