@@ -5,7 +5,15 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
 import * as React from 'react';
 
-export function ReactQueryProviders(props: { children: React.ReactNode }) {
+interface ReactQueryProvidersProps {
+  children: React.ReactNode;
+  devTools?: boolean;
+}
+
+export function ReactQueryProviders({
+  devTools = false,
+  ...props
+}: ReactQueryProvidersProps) {
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -22,7 +30,7 @@ export function ReactQueryProviders(props: { children: React.ReactNode }) {
       <ReactQueryStreamedHydration>
         {props.children}
       </ReactQueryStreamedHydration>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {devTools && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );
 }

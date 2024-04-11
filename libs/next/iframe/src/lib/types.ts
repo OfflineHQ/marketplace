@@ -15,7 +15,6 @@ export enum FontFamily {
   OPEN_SANS = 'openSans',
   ROBOTO = 'roboto',
   INTER = 'inter',
-  HELVETICA = 'helvetica',
   HELVETICA_NEUE = 'helveticaNeue',
 }
 export interface ReceiveMessageValues {
