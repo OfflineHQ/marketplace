@@ -197,11 +197,12 @@
 }
 
 body {
-  @apply h-full font-sans antialiased;
+  @apply h-full antialiased;
 }
 
 .off-iframe {
-  @apply font-sans antialiased;
+  @apply antialiased;
+  font-family: var(--font-family);
 }
 
 body,
