@@ -4,6 +4,11 @@
 
 @layer base {
   :root {
+    --default-font-stack: -apple-system, system-ui, BlinkMacSystemFont,
+      'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+      'Noto Color Emoji';
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -198,11 +203,12 @@
 
 body {
   @apply h-full antialiased;
+  font-family: var(--font-family, var(--default-font-stack));
 }
 
 .off-iframe {
   @apply antialiased;
-  font-family: var(--font-family);
+  font-family: var(--font-family, var(--default-font-stack));
 }
 
 body,

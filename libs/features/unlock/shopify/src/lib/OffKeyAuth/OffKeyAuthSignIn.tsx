@@ -57,14 +57,11 @@ export function OffKeyAuthSignIn({
           walletAddress: existingWallet,
         })
       }
-      isLoading={isConnecting}
     >
-      {!isConnecting && (
-        <ProfileAvatar
-          user={{ id: '', address: existingWallet }}
-          className="my-1 size-8 md:size-8"
-        />
-      )}
+      <ProfileAvatar
+        user={{ id: '', address: existingWallet }}
+        className="my-1 size-8 md:size-8"
+      />
       <span>{t('sign-in')}</span>
     </Button>
   );
