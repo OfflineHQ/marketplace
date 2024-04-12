@@ -1,8 +1,8 @@
 import { OffKeyLogo } from '@features/unlock/app-nav';
+import { OffKeyState } from '@next/iframe';
 import { Text, TextSkeleton } from '@ui/components';
 import { Key } from '@ui/icons';
 import { useTranslations } from 'next-intl';
-import { OffKeyState } from '../types';
 
 export interface OffKeyInfoProps {
   state: OffKeyState;

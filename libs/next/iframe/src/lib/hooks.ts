@@ -77,3 +77,11 @@ export const useIframeConnect = () => {
     askForWalletConnectStatus,
   };
 };
+
+export const useIframeOffKey = () => {
+  const { offKeyState } = useIFrame();
+
+  return {
+    offKeyState,
+  };
+};

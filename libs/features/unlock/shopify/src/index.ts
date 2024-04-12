@@ -11,4 +11,4 @@ export { OffKeyHeaderConnected } from './lib/OffKeyHeaderConnected/OffKeyHeaderC
 export { OffKeyLayout } from './lib/OffKeyLayout/OffKeyLayout';
 export { OffKeyProfile } from './lib/OffKeyProfile/OffKeyProfile';
 export { ShopifyProfileNav } from './lib/ProfileNav/ProfileNav';
-export { OffKeyState, OffKeyViewHeaderConnected } from './lib/types';
+export { OffKeyViewHeaderConnected } from './lib/types';

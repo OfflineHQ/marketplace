@@ -4,11 +4,11 @@ import { ShopifyCardConnected } from './CardConnected';
 import { StoryObj, type Meta } from '@storybook/react';
 import { CardConnectedExample, authMocks } from './examples';
 
+import { ConnectStatus } from '@next/iframe';
 import {
   ReactQueryDecorator,
   ToasterDecorator,
 } from '@test-utils/storybook-decorators';
-import { ConnectStatus } from '../../../../../../next/iframe/src';
 const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
 const meta = {
   component: ShopifyCardConnected,

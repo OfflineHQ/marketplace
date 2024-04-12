@@ -1,20 +1,22 @@
-import { ConnectStatus } from '@next/iframe';
+import * as iframeApi from '@next/iframe';
+import { IFrameProvider, useIframeOffKey , ConnectStatus } from '@next/iframe';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
 import { OffKeyHeaderConnectedExamples } from '../OffKeyHeaderConnected/examples';
 import { OffKeyLayout } from '../OffKeyLayout/OffKeyLayout';
-import { authMocks } from '../OffKeyProfile/examples';
-import * as gate from '../actions/getGateStateForAddress';
-import { OffKeyState, OffKeyViewHeaderConnected } from '../types';
+import { OffKeyViewHeaderConnected } from '../types';
 import { OffKeyGate, OffKeyGateProps } from './OffKeyGate';
+import { authMocks } from '../CardConnected/examples';
 
 export const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
 
-export function offKeyGateMocks({ gateState }: { gateState: OffKeyState }) {
-  const mockgetGateStateForAddress = createMock(gate, 'getGateStateForAddress');
-  mockgetGateStateForAddress.mockReturnValue(Promise.resolve(gateState));
+export function offKeyGateMocks(
+  useIframeMocks: ReturnType<typeof useIframeOffKey>,
+) {
+  const mockIframeOffKey = createMock(iframeApi, 'useIframeOffKey');
+  mockIframeOffKey.mockReturnValue(useIframeMocks);
   return [
-    mockgetGateStateForAddress,
+    mockIframeOffKey,
     ...authMocks({
       walletAuthMocks: {
         connect: () => Promise.resolve(),
@@ -42,14 +44,16 @@ export function offKeyGateMocks({ gateState }: { gateState: OffKeyState }) {
 
 export function OffKeyGateDemo(props: OffKeyGateProps) {
   return (
-    <OffKeyLayout
-      header={
-        <OffKeyHeaderConnectedExamples
-          viewType={OffKeyViewHeaderConnected.Default}
-        />
-      }
-    >
-      <OffKeyGate className="flex-1 pt-2" {...props} />
-    </OffKeyLayout>
+    <IFrameProvider>
+      <OffKeyLayout
+        header={
+          <OffKeyHeaderConnectedExamples
+            viewType={OffKeyViewHeaderConnected.Default}
+          />
+        }
+      >
+        <OffKeyGate className="flex-1 pt-2" {...props} />
+      </OffKeyLayout>
+    </IFrameProvider>
   );
 }
