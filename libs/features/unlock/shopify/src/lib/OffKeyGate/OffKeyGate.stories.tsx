@@ -3,8 +3,8 @@ import { OffKeyGate } from './OffKeyGate';
 // import * as walletHook from '@next/wallet';
 import { StoryObj, type Meta } from '@storybook/react';
 
+import { OffKeyState } from '@next/iframe';
 import { ReactQueryDecorator } from '@test-utils/storybook-decorators';
-import { OffKeyState } from '../types';
 import { OffKeyGateDemo, offKeyGateMocks } from './examples';
 
 const meta = {
@@ -13,18 +13,16 @@ const meta = {
   decorators: [ReactQueryDecorator],
   parameters: {
     layout: 'fullscreen',
-    chromatic: { disableSnapshot: true },
     moduleMock: {
       mock: () =>
         offKeyGateMocks({
-          gateState: OffKeyState.Unlocked,
+          offKeyState: OffKeyState.Unlocked,
         }),
     },
   },
   args: {
     gateId: '1',
     address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
-    initialGateState: OffKeyState.Unlocked,
   },
 } satisfies Meta<typeof OffKeyGate>;
 export default meta;
@@ -38,8 +36,13 @@ export const Unlocked: Story = {
 };
 
 export const Unlocking: Story = {
-  args: {
-    initialGateState: OffKeyState.Unlocking,
+  parameters: {
+    moduleMock: {
+      mock: () =>
+        offKeyGateMocks({
+          offKeyState: OffKeyState.Unlocking,
+        }),
+    },
   },
   play: async ({ container }) => {
     await screen.findAllByText(/Unlocking/i);
@@ -47,8 +50,13 @@ export const Unlocking: Story = {
 };
 
 export const Used: Story = {
-  args: {
-    initialGateState: OffKeyState.Used,
+  parameters: {
+    moduleMock: {
+      mock: () =>
+        offKeyGateMocks({
+          offKeyState: OffKeyState.Used,
+        }),
+    },
   },
   play: async ({ container }) => {
     await screen.findAllByText(/Used/i);
@@ -56,10 +64,26 @@ export const Used: Story = {
 };
 
 export const Locked: Story = {
-  args: {
-    initialGateState: OffKeyState.Locked,
+  parameters: {
+    moduleMock: {
+      mock: () =>
+        offKeyGateMocks({
+          offKeyState: OffKeyState.Locked,
+        }),
+    },
   },
   play: async ({ container }) => {
     await screen.findAllByText(/Locked/i);
+  },
+};
+
+export const Loading: Story = {
+  parameters: {
+    moduleMock: {
+      mock: () =>
+        offKeyGateMocks({
+          offKeyState: undefined,
+        }),
+    },
   },
 };

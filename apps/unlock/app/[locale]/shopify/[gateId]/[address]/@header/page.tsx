@@ -1,11 +1,11 @@
 import {
   OffKeyHeaderConnected,
-  OffKeyProfile,
   OffKeyViewHeaderConnected,
 } from '@features/unlock/shopify';
 import { messages, type Locale } from '@next/i18n';
 import { deepPick } from '@utils';
 import { NextIntlClientProvider } from 'next-intl';
+import dynamic from 'next/dynamic';
 
 interface HeaderProps {
   params: {
@@ -14,6 +14,11 @@ interface HeaderProps {
     address: string;
   };
 }
+
+const OffKeyProfile = dynamic(
+  async () => (await import('@features/unlock/shopify')).OffKeyProfile,
+  { ssr: false },
+);
 
 export default function Header({
   params: { locale, gateId, address },

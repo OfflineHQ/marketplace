@@ -1,3 +1,4 @@
+import { adminSdk } from '@gql/admin/api';
 import {
   PgClient,
   applySeeds,
@@ -5,9 +6,9 @@ import {
   deleteTables,
   updateObjects,
 } from '@test-utils/db';
-import { fromZonedTime, toZonedTime } from 'date-fns-tz';
-import { adminSdk } from '../../../generated';
-import { addHours, subHours } from 'date-fns';
+
+import { addHoursInTimeZone, subHoursInTimeZone } from '@time';
+import { toZonedTime } from 'date-fns-tz';
 
 describe('eventParameters integration tests', () => {
   process.env.TZ = 'Europe/London';
@@ -40,18 +41,14 @@ describe('eventParameters integration tests', () => {
   });
   describe('eventParameters for event with timezone Europe/London, same as the one in test', () => {
     it('should return isOngoing true if event is ongoing', async () => {
-      const currentDate = toZonedTime(new Date(), 'Europe/London');
       await updateObjects(
         client,
         'eventParameters',
         {
-          dateStart: fromZonedTime(subHours(currentDate, 2), 'Europe/London'),
-          dateEnd: fromZonedTime(addHours(currentDate, 2), 'Europe/London'),
-          dateSaleStart: fromZonedTime(
-            subHours(currentDate, 2),
-            'Europe/London',
-          ),
-          dateSaleEnd: fromZonedTime(addHours(currentDate, 2), 'Europe/London'),
+          dateStart: subHoursInTimeZone(currentDate, 2, timeZone),
+          dateEnd: addHoursInTimeZone(currentDate, 2, timeZone),
+          dateSaleStart: subHoursInTimeZone(currentDate, 2, timeZone),
+          dateSaleEnd: addHoursInTimeZone(currentDate, 2, timeZone),
         },
         { eventId: 'clizzpvidao620buvxit1ynko' },
       );
@@ -63,18 +60,14 @@ describe('eventParameters integration tests', () => {
     });
 
     it('should return isOngoing false if event is not ongoing', async () => {
-      const currentDate = toZonedTime(new Date(), 'Europe/London');
       await updateObjects(
         client,
         'eventParameters',
         {
-          dateStart: fromZonedTime(subHours(currentDate, 6), 'Europe/London'), // 6 hours before
-          dateEnd: fromZonedTime(subHours(currentDate, 1), 'Europe/London'), // 1 hour before
-          dateSaleStart: fromZonedTime(
-            subHours(currentDate, 2),
-            'Europe/London',
-          ), // 2 hours before
-          dateSaleEnd: fromZonedTime(subHours(currentDate, 1), 'Europe/London'), // 1 hour before
+          dateStart: subHoursInTimeZone(currentDate, 6, timeZone), // 6 hours before
+          dateEnd: subHoursInTimeZone(currentDate, 1, timeZone), // 1 hour before
+          dateSaleStart: subHoursInTimeZone(currentDate, 2, timeZone), // 2 hours before
+          dateSaleEnd: subHoursInTimeZone(currentDate, 1, timeZone), // 1 hour before
         },
         { eventId: 'clizzpvidao620buvxit1ynko' },
       );
@@ -86,18 +79,14 @@ describe('eventParameters integration tests', () => {
     });
 
     it('should return isSaleOngoing true if sale is ongoing', async () => {
-      const currentDate = toZonedTime(new Date(), 'Europe/London');
       await updateObjects(
         client,
         'eventParameters',
         {
-          dateStart: fromZonedTime(subHours(currentDate, 2), 'Europe/London'), // 2 hours before
-          dateEnd: fromZonedTime(addHours(currentDate, 2), 'Europe/London'), // 2 hours after
-          dateSaleStart: fromZonedTime(
-            subHours(currentDate, 2),
-            'Europe/London',
-          ), // 1 hour before
-          dateSaleEnd: fromZonedTime(addHours(currentDate, 2), 'Europe/London'), // 1 hour after
+          dateStart: subHoursInTimeZone(currentDate, 2, timeZone), // 2 hours before
+          dateEnd: addHoursInTimeZone(currentDate, 2, timeZone), // 2 hours after
+          dateSaleStart: subHoursInTimeZone(currentDate, 1, timeZone), // 1 hour before
+          dateSaleEnd: addHoursInTimeZone(currentDate, 1, timeZone), // 1 hour after
         },
         { eventId: 'clizzpvidao620buvxit1ynko' },
       );
@@ -109,18 +98,14 @@ describe('eventParameters integration tests', () => {
     });
 
     it('should return isSaleOngoing false if sale is not ongoing', async () => {
-      const currentDate = toZonedTime(new Date(), 'Europe/London');
       await updateObjects(
         client,
         'eventParameters',
         {
-          dateStart: fromZonedTime(subHours(currentDate, 2), 'Europe/London'), // 2 hours before
-          dateEnd: fromZonedTime(addHours(currentDate, 2), 'Europe/London'), // 2 hours after
-          dateSaleStart: fromZonedTime(
-            subHours(currentDate, 2),
-            'Europe/London',
-          ), // 2 hours before
-          dateSaleEnd: fromZonedTime(subHours(currentDate, 1), 'Europe/London'), // 1 hour before
+          dateStart: subHoursInTimeZone(currentDate, 2, timeZone), // 2 hours before
+          dateEnd: addHoursInTimeZone(currentDate, 2, timeZone), // 2 hours after
+          dateSaleStart: subHoursInTimeZone(currentDate, 4, timeZone), // 4 hours before
+          dateSaleEnd: subHoursInTimeZone(currentDate, 1, timeZone), // 1 hour before
         },
         { eventId: 'clizzpvidao620buvxit1ynko' },
       );
