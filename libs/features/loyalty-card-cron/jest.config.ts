@@ -8,5 +8,4 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../../coverage/libs/features/loyalty-card-cron',
-  testPathIgnorePatterns: ['.*\\.integration\\..*'],
 };
