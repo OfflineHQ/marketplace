@@ -15,6 +15,8 @@ import type {
 } from '@gql/shared/types';
 import { Locale, Stage } from '@gql/shared/types';
 import { defaultLocale } from '@next/i18n';
+import { getErrorMessage } from '@utils';
+import { NftFilter } from 'alchemy-sdk';
 
 export async function createEventPassNftContract(
   object: EventPassNftContract_Insert_Input,
@@ -42,12 +44,19 @@ export async function getEventPassNftContractNftsLazyMinted(
   return data?.eventPassNftContract[0];
 }
 
+interface CreateEventParametersAndWebhookProps {
+  eventId: string;
+  nftCollectionAddresses: NftFilter[];
+  organizerId: string;
+  eventSlug: string;
+}
+
 export async function createEventParametersAndWebhook({
   eventId,
   nftCollectionAddresses,
   organizerId,
   eventSlug,
-}) {
+}: CreateEventParametersAndWebhookProps) {
   const eventParameters = await getAlchemyInfosFromEventId({
     eventId: eventId,
   });
@@ -111,7 +120,7 @@ export async function saveRevealIntoDb(contractAddress: string) {
     });
   } catch (e) {
     throw new Error(
-      `Error saving the reveal status into the database for address ${contractAddress} : ${e.message}`,
+      `Error saving the reveal status into the database for address ${contractAddress} : ${getErrorMessage(e)}`,
     );
   }
 }

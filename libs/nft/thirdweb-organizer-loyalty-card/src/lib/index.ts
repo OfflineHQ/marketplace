@@ -61,7 +61,7 @@ export class LoyaltyCardCollection {
         wallet,
       };
     } catch (error) {
-      throw new CollectionDeploymentError(error);
+      throw new CollectionDeploymentError(error as Error);
     }
   }
 

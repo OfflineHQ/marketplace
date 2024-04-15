@@ -216,6 +216,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "14.0.0",
     "@testing-library/user-event": "^14.5.1",
+    "@types/async-retry": "^1.4.8",
     "@types/cron": "^2.4.0",
     "@types/iframe-resizer": "^3.5.13",
     "@types/jest": "29.5.0",

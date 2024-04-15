@@ -11,6 +11,7 @@ import {
   Sepolia,
 } from '@thirdweb-dev/chains';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
+import { getErrorMessage } from '@utils';
 
 export abstract class NFTClaim {
   sdk?: ThirdwebSDK;
@@ -36,7 +37,9 @@ export abstract class NFTClaim {
         },
       );
     } catch (error) {
-      console.error(`Error initializing ThirdwebSDK: ${error.message}`);
+      console.error(
+        `Error initializing ThirdwebSDK: ${getErrorMessage(error)}`,
+      );
       throw error;
     }
   }
@@ -53,7 +56,9 @@ export abstract class NFTClaim {
         },
       );
     } catch (error) {
-      console.error(`Error initializing ThirdwebSDK: ${error.message}`);
+      console.error(
+        `Error initializing ThirdwebSDK: ${getErrorMessage(error)}`,
+      );
       throw error;
     }
   }

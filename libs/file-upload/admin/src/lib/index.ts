@@ -1,5 +1,6 @@
 import * as Upload from '@bytescale/sdk';
 import env from '@env/server';
+import { getErrorMessage } from '@utils';
 import retry from 'async-retry';
 
 export const enum FileCopyStatusEnum {
@@ -40,16 +41,17 @@ export async function executeJobWithRetry(
 
   try {
     await retry(checkJobStatus, {
+      // @ts-ignore
       retries: 10, // the number of retries
       minTimeout: 2000, // the number of milliseconds before starting the first retry
       onRetry: (error) =>
-        console.log(`Retrying due to error: ${error.message}`), // called when a retry is happening
-      errorFilter: (error) =>
-        error.message.startsWith('Job still running') ||
-        error.message.startsWith('Job failed'),
+        console.log(`Retrying due to error: ${getErrorMessage(error)}`), // called when a retry is happening
+      errorFilter: (error: unknown) =>
+        getErrorMessage(error).startsWith('Job still running') ||
+        getErrorMessage(error).startsWith('Job failed'),
     });
   } catch (error) {
-    if (error.message.startsWith('Job still running')) {
+    if (getErrorMessage(error).startsWith('Job still running')) {
       throw new Error('Job did not finish correctly after retries');
     }
     throw error;
@@ -72,7 +74,7 @@ export class UploadWrapper {
     try {
       return await this.uploadManager.upload(uploadOptions);
     } catch (error) {
-      console.error(`Upload failed: ${error.message}`, error);
+      console.error(`Upload failed: ${getErrorMessage(error)}`, error);
       throw error;
     }
   }
@@ -98,7 +100,7 @@ export class FileWrapper {
     try {
       return await this.fileApi.downloadFile(downloadFileOptions);
     } catch (error) {
-      console.error(`File download failed: ${error.message}`, error);
+      console.error(`File download failed: ${getErrorMessage(error)}`, error);
       throw error;
     }
   }
@@ -109,7 +111,10 @@ export class FileWrapper {
     try {
       return await this.fileApi.getFileDetails(getFileDetailsOptions);
     } catch (error) {
-      console.error(`Fetching file details failed: ${error.message}`, error);
+      console.error(
+        `Fetching file details failed: ${getErrorMessage(error)}`,
+        error,
+      );
       throw error;
     }
   }
@@ -120,7 +125,7 @@ export class FileWrapper {
     try {
       return await this.fileApi.copyFile(copyFileOptions);
     } catch (error) {
-      console.error(`File copy failed: ${error.message}`, error);
+      console.error(`File copy failed: ${getErrorMessage(error)}`, error);
       throw error;
     }
   }
@@ -131,7 +136,7 @@ export class FileWrapper {
     try {
       return await this.fileApi.copyFileBatch(copyFileBatchOptions);
     } catch (error) {
-      console.error(`Batch file copy failed: ${error.message}`, error);
+      console.error(`Batch file copy failed: ${getErrorMessage(error)}`, error);
       throw error;
     }
   }
@@ -158,7 +163,7 @@ export class FileWrapper {
     try {
       await this.fileApi.deleteFile(deleteOptions);
     } catch (error) {
-      console.error(`File delete failed: ${error.message}`, error);
+      console.error(`File delete failed: ${getErrorMessage(error)}`, error);
       throw error;
     }
   }
@@ -169,7 +174,10 @@ export class FileWrapper {
     try {
       return await this.fileApi.deleteFileBatch(deleteBatchOptions);
     } catch (error) {
-      console.error(`Batch file delete failed: ${error.message}`, error);
+      console.error(
+        `Batch file delete failed: ${getErrorMessage(error)}`,
+        error,
+      );
       throw error;
     }
   }
@@ -206,7 +214,7 @@ export class FolderWrapper {
     try {
       return await this.folderApi.putFolder(folderOptions);
     } catch (error) {
-      console.error(`Folder creation failed: ${error.message}`, error);
+      console.error(`Folder creation failed: ${getErrorMessage(error)}`, error);
       throw error;
     }
   }
@@ -217,7 +225,7 @@ export class FolderWrapper {
     try {
       return await this.folderApi.listFolder(listFolderOptions);
     } catch (error) {
-      console.error(`Folder listing failed: ${error.message}`, error);
+      console.error(`Folder listing failed: ${getErrorMessage(error)}`, error);
       throw error;
     }
   }
@@ -239,7 +247,7 @@ export class JobWrapper {
     try {
       return await this.jobApi.getJob(jobOptions);
     } catch (error) {
-      console.error(`Get job failed: ${error.message}`, error);
+      console.error(`Get job failed: ${getErrorMessage(error)}`, error);
       throw error;
     }
   }
@@ -250,7 +258,10 @@ export class JobWrapper {
     try {
       return await this.jobApi.listRecentJobs(jobOptions);
     } catch (error) {
-      console.error(`List recent jobs failed: ${error.message}`, error);
+      console.error(
+        `List recent jobs failed: ${getErrorMessage(error)}`,
+        error,
+      );
       throw error;
     }
   }
@@ -259,7 +270,7 @@ export class JobWrapper {
     try {
       return await this.jobApi.cancelJob(jobOptions);
     } catch (error) {
-      console.error(`Cancel job failed: ${error.message}`, error);
+      console.error(`Cancel job failed: ${getErrorMessage(error)}`, error);
       throw error;
     }
   }

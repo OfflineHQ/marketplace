@@ -15,6 +15,7 @@ import {
 import { SiweProvider } from '@next/siwe/provider';
 import { AppUser } from '@next/types';
 import { getNextAppURL, isBackOffice, isProd } from '@shared/server';
+// @ts-ignore
 import { Provider } from 'next-auth/providers';
 
 import { KycLevelName_Enum, KycStatus_Enum } from '@gql/shared/types';

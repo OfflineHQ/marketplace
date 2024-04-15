@@ -2,7 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-    "module": "commonjs",
+    "module": "nodenext",
+    "strict": false,
     "types": ["jest", "node"]
   },
   "include": [
@@ -15,6 +16,7 @@
     "src/**/*.spec.js",
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "../../../types/**/*.d.ts"
   ]
 }

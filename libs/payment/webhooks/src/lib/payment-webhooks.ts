@@ -4,7 +4,7 @@ import {
   StripeCheckoutSessionEnum,
   StripeEvent,
 } from '@payment/types';
-
+import { getErrorMessage } from '@utils';
 // const payment = new Payment();
 
 //TODO: handle the following events when supporting delayed payment methods (for instance with the future auction feature):
@@ -79,9 +79,9 @@ export async function stripeCheckoutStatus(
         });
       } catch (err) {
         //TODO: refund only if NFT not released ! filter the error depending of that.
-        if (!err.message?.includes('Error processing orders'))
+        if (!getErrorMessage(err)?.includes('Error processing orders'))
           return new Response(
-            `ConfirmedStripeCheckoutSession Error: ${err.message}`,
+            `ConfirmedStripeCheckoutSession Error: ${getErrorMessage(err)}`,
             { status: 500 },
           );
 
@@ -123,7 +123,7 @@ export async function stripeCheckoutStatus(
       } catch (err) {
         console.error(err);
         return new Response(
-          `CanceledStripeCheckoutSession Error: ${err.message}`,
+          `CanceledStripeCheckoutSession Error: ${getErrorMessage(err)}`,
           { status: 400 },
         );
       }
@@ -149,7 +149,9 @@ export async function stripeCheckoutStatus(
       }*/
     }
   } catch (err) {
-    return new Response(`Webhook Error: ${err.message}`, { status: 400 });
+    return new Response(`Webhook Error: ${getErrorMessage(err)}`, {
+      status: 400,
+    });
   }
   return new Response(null, { status: 200 });
 }

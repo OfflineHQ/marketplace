@@ -93,7 +93,7 @@ jest.mock('@bytescale/sdk', () => ({
 describe('executeJobWithRetry', () => {
   beforeEach(() => {
     jobWrapper = new JobWrapper();
-    retry.mockClear();
+    (retry as jest.Mock).mockClear();
   });
 
   it('should not retry if the job has completed', async () => {
