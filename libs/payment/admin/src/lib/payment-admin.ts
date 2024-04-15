@@ -16,7 +16,7 @@ import { calculateUnitAmount } from '@next/currency-common';
 import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
 import { NextRedis } from '@next/redis';
 import { AppUser } from '@next/types';
-import { NftClaimable } from '@nft/thirdweb-admin';
+import { EventPassNftOrder } from '@nft/thirdweb-admin';
 import {
   StripeCheckoutSessionMetadataOrder,
   StripeCreateSessionLineItem,
@@ -27,14 +27,14 @@ import Stripe from 'stripe';
 
 export class Payment {
   stripe: Stripe;
-  nftClaimable: NftClaimable;
+  eventPassNftOrder: EventPassNftOrder;
   baseUrl = getNextAppURL();
   constructor() {
     this.stripe = new Stripe(env.STRIPE_API_KEY, {
       apiVersion: '2023-08-16',
       typescript: true,
     });
-    this.nftClaimable = new NftClaimable();
+    this.eventPassNftOrder = new EventPassNftOrder();
   }
   webhookStripeConstructEvent({
     body,
@@ -474,7 +474,7 @@ export class Payment {
 
     try {
       const checkOrderPromises = orders.map((order) =>
-        this.nftClaimable.checkOrder(order),
+        this.eventPassNftOrder.checkOrder(order),
       );
       await Promise.all(checkOrderPromises);
 

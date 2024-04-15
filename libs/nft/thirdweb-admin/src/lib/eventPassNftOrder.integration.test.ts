@@ -6,8 +6,7 @@ import {
   deleteAllTables,
   type PgClient,
 } from '@test-utils/db';
-import { describe } from 'node:test';
-import { NftClaimable } from './nft-thirdweb-api';
+import { EventPassNftOrder } from './eventPassNftOrder';
 
 jest.mock('@thirdweb-dev/sdk', () => {
   return {
@@ -24,8 +23,8 @@ jest.mock('@thirdweb-dev/sdk', () => {
   };
 });
 
-describe('NftClaimable integration test', () => {
-  let nftClaimable: NftClaimable;
+describe('EventPassNftOrder integration test', () => {
+  let eventPassNftOrder: EventPassNftOrder;
   let orders;
   let minterWallet;
   let client: PgClient;
@@ -48,7 +47,7 @@ describe('NftClaimable integration test', () => {
   });
 
   beforeEach(async () => {
-    nftClaimable = new NftClaimable();
+    eventPassNftOrder = new EventPassNftOrder();
 
     const resOrders = await adminSdk.GetOrdersWithClaimInfo({
       ids: ['1e8b9aea-1b0a-4a05-803b-c72d0b46e9a2'],
@@ -69,7 +68,7 @@ describe('NftClaimable integration test', () => {
   });
 
   it('should successfully execute multicallClaim and update order statuses', async () => {
-    await nftClaimable.multicallClaim(minterWallet, orders);
+    await eventPassNftOrder.multicallClaim(minterWallet, orders);
 
     const updatedOrders = await adminSdk.GetOrdersWithClaimInfo({
       ids: orders.map((order) => order.id),
@@ -82,7 +81,7 @@ describe('NftClaimable integration test', () => {
   it('should throw an error when there are no orders', async () => {
     const emptyOrders = [];
     await expect(
-      nftClaimable.multicallClaim(minterWallet, emptyOrders),
+      eventPassNftOrder.multicallClaim(minterWallet, emptyOrders),
     ).rejects.toThrow('No orders found or eventPassNftContract is undefined');
   });
 });

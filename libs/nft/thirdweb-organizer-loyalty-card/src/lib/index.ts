@@ -2,11 +2,6 @@
 
 import { LoyaltyCardOrganizer } from '@features/back-office/loyalty-card-types';
 import {
-  GetLoyaltyCardByContractAddressForProcessQuery,
-  GetMinterTemporaryWalletByLoyaltyCardIdQuery,
-} from '@gql/admin/types';
-import { NftStatus_Enum } from '@gql/shared/types';
-import {
   ThirdwebOrganizerCommon,
   insertMinterTemporaryWallet,
 } from '@nft/thirdweb-organizer-common';
@@ -15,8 +10,6 @@ import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 import {
   createLoyaltyCardContract,
   createLoyaltyCardParametersAndWebhook,
-  createMinterSdk,
-  updateLoyaltyCardNftsStatus,
 } from './action';
 
 export interface DeployLoyaltyCardContractProps
@@ -120,46 +113,5 @@ export class LoyaltyCardCollection {
       contractAddress,
       wallet,
     });
-  }
-
-  async multicallMint(
-    minterTemporaryWallet: GetMinterTemporaryWalletByLoyaltyCardIdQuery['minterTemporaryWallet'][0],
-    loyaltyCards: GetLoyaltyCardByContractAddressForProcessQuery['loyaltyCardNft'],
-  ) {
-    if (loyaltyCards.length === 0 || !loyaltyCards[0].loyaltyCardId) {
-      throw new Error('No loyaltyCards found or loyaltyCardId is undefined');
-    }
-    const contractAddress = loyaltyCards[0].contractAddress;
-    const loyaltyCardId = loyaltyCards[0].loyaltyCardId;
-
-    if (!contractAddress) {
-      throw new Error(
-        `ContractAddress is undefined for eventPassId ${loyaltyCardId} and temporary wallet address ${minterTemporaryWallet.address}`,
-      );
-    }
-    const minterSdk = await createMinterSdk(minterTemporaryWallet);
-
-    const contract = await minterSdk.getContract(contractAddress);
-
-    try {
-      const encodedTransactions = await Promise.all(
-        loyaltyCards.map(async (loyaltyCard) => {
-          if (!loyaltyCard.ownerAddress) {
-            throw new Error(
-              `loyaltyCardNft ${loyaltyCard.id} does not have an associated owner.`,
-            );
-          }
-          return contract
-            .prepare('mintTo', [loyaltyCard.ownerAddress, loyaltyCard.metadata])
-            .encode();
-        }),
-      );
-
-      await contract.call('multicall', [encodedTransactions]);
-      await updateLoyaltyCardNftsStatus(loyaltyCards, NftStatus_Enum.Completed);
-    } catch (e) {
-      console.error(e);
-      await updateLoyaltyCardNftsStatus(loyaltyCards, NftStatus_Enum.Error);
-    }
   }
 }

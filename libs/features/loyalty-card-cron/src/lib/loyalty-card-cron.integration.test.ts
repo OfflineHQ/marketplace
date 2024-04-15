@@ -12,10 +12,10 @@ jest
   .spyOn(adminSdk, 'GetLoyaltyCardByContractAddressForProcess')
   .mockImplementation(jest.fn());
 
-const multicallMintMock = jest.fn();
-jest.mock('@nft/thirdweb-organizer-loyalty-card', () => ({
-  LoyaltyCardCollection: jest.fn().mockImplementation(() => ({
-    multicallMint: multicallMintMock,
+const multicallClaimMock = jest.fn();
+jest.mock('@nft/thirdweb-admin', () => ({
+  LoyaltyCardNft: jest.fn().mockImplementation(() => ({
+    multicallClaim: multicallClaimMock,
   })),
 }));
 
@@ -51,7 +51,7 @@ describe('handler', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    multicallMintMock.mockClear();
+    multicallClaimMock.mockClear();
   });
 
   it('one contract one nft', async () => {
@@ -87,8 +87,8 @@ describe('handler', () => {
     expect(
       adminSdk.GetLoyaltyCardByContractAddressForProcess,
     ).toHaveBeenCalled();
-    expect(multicallMintMock).toHaveBeenCalled();
-    expect(multicallMintMock).toHaveBeenCalledWith(
+    expect(multicallClaimMock).toHaveBeenCalled();
+    expect(multicallClaimMock).toHaveBeenCalledWith(
       expect.anything(),
       expect.arrayContaining([
         expect.objectContaining({
@@ -132,8 +132,8 @@ describe('handler', () => {
     expect(
       adminSdk.GetLoyaltyCardByContractAddressForProcess,
     ).toHaveBeenCalled();
-    expect(multicallMintMock).toHaveBeenCalled();
-    expect(multicallMintMock).toHaveBeenCalledWith(
+    expect(multicallClaimMock).toHaveBeenCalled();
+    expect(multicallClaimMock).toHaveBeenCalledWith(
       expect.anything(),
       expect.arrayContaining([
         expect.objectContaining({
@@ -223,8 +223,8 @@ describe('handler', () => {
     expect(
       adminSdk.GetLoyaltyCardByContractAddressForProcess,
     ).toHaveBeenCalled();
-    expect(multicallMintMock).toHaveBeenCalled();
-    expect(multicallMintMock).toHaveBeenCalledWith(
+    expect(multicallClaimMock).toHaveBeenCalled();
+    expect(multicallClaimMock).toHaveBeenCalledWith(
       expect.anything(),
       expect.arrayContaining([
         expect.objectContaining({
@@ -309,8 +309,8 @@ describe('handler', () => {
     expect(
       adminSdk.GetLoyaltyCardByContractAddressForProcess,
     ).toHaveBeenCalled();
-    expect(multicallMintMock).toHaveBeenCalledTimes(2);
-    expect(multicallMintMock).toHaveBeenNthCalledWith(
+    expect(multicallClaimMock).toHaveBeenCalledTimes(2);
+    expect(multicallClaimMock).toHaveBeenNthCalledWith(
       1,
       expect.anything(),
       expect.arrayContaining([
@@ -324,7 +324,7 @@ describe('handler', () => {
       ]),
     );
 
-    expect(multicallMintMock).toHaveBeenNthCalledWith(
+    expect(multicallClaimMock).toHaveBeenNthCalledWith(
       2,
       expect.anything(),
       expect.arrayContaining([
@@ -408,8 +408,8 @@ describe('handler', () => {
     expect(
       adminSdk.GetLoyaltyCardByContractAddressForProcess,
     ).toHaveBeenCalled();
-    expect(multicallMintMock).toHaveBeenCalledTimes(2);
-    expect(multicallMintMock).toHaveBeenNthCalledWith(
+    expect(multicallClaimMock).toHaveBeenCalledTimes(2);
+    expect(multicallClaimMock).toHaveBeenNthCalledWith(
       1,
       expect.anything(),
       expect.arrayContaining([
@@ -437,7 +437,7 @@ describe('handler', () => {
       ]),
     );
 
-    expect(multicallMintMock).toHaveBeenNthCalledWith(
+    expect(multicallClaimMock).toHaveBeenNthCalledWith(
       2,
       expect.anything(),
       expect.arrayContaining([
@@ -511,7 +511,7 @@ describe('handler', () => {
     expect(
       adminSdk.GetLoyaltyCardByContractAddressForProcess,
     ).toHaveBeenCalled();
-    expect(multicallMintMock).toHaveBeenCalledTimes(4);
+    expect(multicallClaimMock).toHaveBeenCalledTimes(4);
 
     const nftsPerContract = [10, 15, 20, 25];
     let expectedCallIndex = 1;
@@ -529,7 +529,7 @@ describe('handler', () => {
           }),
         );
 
-      expect(multicallMintMock).toHaveBeenNthCalledWith(
+      expect(multicallClaimMock).toHaveBeenNthCalledWith(
         expectedCallIndex,
         expect.anything(),
         expect.arrayContaining(expectedNFTsForContract),
