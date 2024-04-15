@@ -4,6 +4,16 @@ import { NftStatus_Enum } from '@gql/shared/types';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 import { CollectionDeploymentError, LoyaltyCardCollection } from './index';
 
+jest.mock('@next/next-auth/user', () => {
+  return {
+    getCurrentUser: jest.fn().mockResolvedValue({
+      role: {
+        organizerId: 'test-organizer-id',
+      },
+    }),
+  };
+});
+
 jest.mock('@nft/thirdweb-organizer-common', () => ({
   ThirdwebOrganizerCommon: jest.fn().mockImplementation(() => ({
     setErc721ContractWithClaimConditions: jest
@@ -16,6 +26,7 @@ jest.mock('@nft/thirdweb-organizer-common', () => ({
 }));
 
 jest.mock('./action', () => ({
+  ...jest.requireActual('./action'),
   createLoyaltyCardContract: jest.fn(),
   createLoyaltyCardParametersAndWebhook: jest.fn(),
 }));
@@ -23,6 +34,7 @@ jest.mock('./action', () => ({
 jest.mock('@gql/admin/api', () => ({
   adminSdk: {
     UpdateLoyaltyCardNfts: jest.fn(),
+    InsertLoyaltyCardNftContract: jest.fn(),
   },
 }));
 
