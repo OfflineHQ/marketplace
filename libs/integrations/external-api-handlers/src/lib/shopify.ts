@@ -38,6 +38,11 @@ const requestTypeValidators = {
   [RequestType.HasLoyaltyCard]: HasLoyaltyCardParams,
 };
 
+type RequestTypeToValidator = {
+  [RequestType.MintLoyaltyCard]: z.infer<typeof MintLoyaltyCardParams>;
+  [RequestType.HasLoyaltyCard]: z.infer<typeof HasLoyaltyCardParams>;
+};
+
 interface MintLoyaltyCardWithPasswordProps
   extends Pick<
       MintWithPasswordProps,
@@ -56,10 +61,10 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     super();
   }
 
-  async serializeAndValidateParams(
-    requestType: RequestType,
+  async serializeAndValidateParams<T extends RequestType>(
+    requestType: T,
     params: { [key: string]: string | string[] },
-  ) {
+  ): Promise<RequestTypeToValidator[T]> {
     const deserializedParams = this.deserializeParams(params);
     const validator = requestTypeValidators[requestType];
 
@@ -68,7 +73,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     }
     // Since the function is async, it automatically returns a Promise.
     // No need to wrap the return value in Promise.resolve().
-    return validator.parse(deserializedParams);
+    return validator.parse(deserializedParams) as RequestTypeToValidator[T];
   }
 
   async extractAndVerifyShopifyRequest(req: NextRequest) {

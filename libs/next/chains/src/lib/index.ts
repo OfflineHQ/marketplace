@@ -2,9 +2,11 @@
     Module not found: ESM packages (@web3-onboard/common) need to be imported */
 
 // import { SupportedNetworks } from '@cometh/connect-sdk';
+
 export enum SupportedNetworks {
   POLYGON = '0x89',
   MUMBAI = '0x13881',
+  AMOY = '0x13882',
   AVALANCHE = '0xa86a',
   FUJI = '0xa869',
   XL_NETWORK = '0xc0c',
@@ -118,6 +120,18 @@ export const TESTNET_CHAINS: ChainConfig = {
     chainIdHex: SupportedNetworks.MUMBAI,
     chainId: 80001,
   },
+  80002: {
+    urls: [
+      getAlchemyUrlFor('polygon-amoy'),
+      'https://rpc-amoy.polygon.technology/',
+    ],
+    name: 'Polygon Amoy',
+    nativeCurrency: MATIC,
+    blockExplorerUrls: ['https://www.oklink.com/amoy'],
+    safeTxServiceUrl: '', // not available (need to deploy our own ?): https://docs.safe.global/api-supported-networks
+    chainIdHex: SupportedNetworks.MUMBAI,
+    chainId: 80002,
+  },
   84532: {
     urls: [getAlchemyUrlFor('base-sepolia'), 'https://sepolia.base.org'],
     name: 'Base Sepolia',
@@ -126,18 +140,6 @@ export const TESTNET_CHAINS: ChainConfig = {
     safeTxServiceUrl: 'https://safe-transaction-base.safe.global',
     chainIdHex: SupportedNetworks.BASE_SEPOLIA,
     chainId: 84532,
-  },
-  80002: {
-    urls: [
-      getAlchemyUrlFor('polygon-amoy'), // TODO: setup alchemy for amoy with o-0Gv1BvrP4mEFNNQEQziQvc7SI3T7rm
-      'https://rpc-amoy.polygon.technology/',
-    ],
-    name: 'Polygon Amoy',
-    nativeCurrency: MATIC,
-    blockExplorerUrls: ['https://www.oklink.com/amoy‍'],
-    safeTxServiceUrl: 'https://safe-transaction-base.safe.global',
-    chainIdHex: SupportedNetworks.MUMBAI, //TODO change to SupportedNetworks.AMOY,
-    chainId: 80002,
   },
 };
 

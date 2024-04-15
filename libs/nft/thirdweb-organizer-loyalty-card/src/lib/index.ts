@@ -1,21 +1,22 @@
+'use client';
+
 import { LoyaltyCardOrganizer } from '@features/back-office/loyalty-card-types';
-import { adminSdk } from '@gql/admin/api';
 import {
   GetLoyaltyCardByContractAddressForProcessQuery,
-  GetMinterTemporaryWalletByEventPassIdQuery,
+  GetMinterTemporaryWalletByLoyaltyCardIdQuery,
 } from '@gql/admin/types';
 import { NftStatus_Enum } from '@gql/shared/types';
-import { getCurrentChain } from '@next/chains';
 import {
   ThirdwebOrganizerCommon,
   insertMinterTemporaryWallet,
 } from '@nft/thirdweb-organizer-common';
 import { NftsMetadata } from '@nft/types';
 import { ThirdwebSDK } from '@thirdweb-dev/sdk';
-import { env } from 'process';
 import {
   createLoyaltyCardContract,
   createLoyaltyCardParametersAndWebhook,
+  createMinterSdk,
+  updateLoyaltyCardNftsStatus,
 } from './action';
 
 export interface DeployLoyaltyCardContractProps
@@ -122,7 +123,7 @@ export class LoyaltyCardCollection {
   }
 
   async multicallMint(
-    minterTemporaryWallet: GetMinterTemporaryWalletByEventPassIdQuery['minterTemporaryWallet'][0],
+    minterTemporaryWallet: GetMinterTemporaryWalletByLoyaltyCardIdQuery['minterTemporaryWallet'][0],
     loyaltyCards: GetLoyaltyCardByContractAddressForProcessQuery['loyaltyCardNft'],
   ) {
     if (loyaltyCards.length === 0 || !loyaltyCards[0].loyaltyCardId) {
@@ -136,18 +137,7 @@ export class LoyaltyCardCollection {
         `ContractAddress is undefined for eventPassId ${loyaltyCardId} and temporary wallet address ${minterTemporaryWallet.address}`,
       );
     }
-    const minterSdk = ThirdwebSDK.fromPrivateKey(
-      minterTemporaryWallet.privateKey,
-      getCurrentChain().chainIdHex,
-      {
-        secretKey: env.THIRDWEB_SECRET_KEY,
-        gasless: {
-          openzeppelin: {
-            relayerUrl: env.OPENZEPPELIN_URL,
-          },
-        },
-      },
-    );
+    const minterSdk = await createMinterSdk(minterTemporaryWallet);
 
     const contract = await minterSdk.getContract(contractAddress);
 
@@ -166,32 +156,10 @@ export class LoyaltyCardCollection {
       );
 
       await contract.call('multicall', [encodedTransactions]);
-      await adminSdk.UpdateLoyaltyCardNfts({
-        updates: loyaltyCards.map((loyaltyCard) => ({
-          _set: {
-            status: NftStatus_Enum.Completed,
-          },
-          where: {
-            id: {
-              _eq: loyaltyCard.id,
-            },
-          },
-        })),
-      });
+      await updateLoyaltyCardNftsStatus(loyaltyCards, NftStatus_Enum.Completed);
     } catch (e) {
       console.error(e);
-      await adminSdk.UpdateLoyaltyCardNfts({
-        updates: loyaltyCards.map((loyaltyCard) => ({
-          _set: {
-            status: NftStatus_Enum.Error,
-          },
-          where: {
-            id: {
-              _eq: loyaltyCard.id,
-            },
-          },
-        })),
-      });
+      await updateLoyaltyCardNftsStatus(loyaltyCards, NftStatus_Enum.Error);
     }
   }
 }

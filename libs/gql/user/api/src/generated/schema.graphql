@@ -11438,7 +11438,6 @@ type eventPassNftContract {
 
 enum eventPassNftContractType_enum {
   delayed_reveal
-  loyalty_card
   normal
 }
 

@@ -57537,12 +57537,6 @@
             "deprecationReason": null
           },
           {
-            "name": "loyalty_card",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "normal",
             "description": null,
             "isDeprecated": false,
