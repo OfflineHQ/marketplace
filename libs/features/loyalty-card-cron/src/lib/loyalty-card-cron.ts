@@ -1,8 +1,6 @@
 import { adminSdk } from '@gql/admin/api';
 import { GetLoyaltyCardByContractAddressForProcessQuery } from '@gql/admin/types';
-import { getCurrentChain } from '@next/chains';
-import { LoyaltyCardCollection } from '@nft/thirdweb-organizer-loyalty-card';
-import { ThirdwebSDK } from '@thirdweb-dev/sdk';
+import { LoyaltyCardNft } from '@nft/thirdweb-admin';
 
 export interface GroupedLoyaltyCards {
   contractAddress: string;
@@ -36,12 +34,12 @@ export async function groupLoyaltyCardsByContractAddress(
 
 export async function mintLoyaltyCardsForGroup(
   group: GroupedLoyaltyCards,
-  loyaltyCardCollection: LoyaltyCardCollection,
+  loyaltyCardNft: LoyaltyCardNft,
 ) {
   const wallet = await getMinterTemporaryWallet(
     group.loyaltyCards[0].loyaltyCardId,
   );
-  await loyaltyCardCollection.multicallMint(wallet, group.loyaltyCards);
+  await loyaltyCardNft.multicallClaim(wallet, group.loyaltyCards);
 }
 
 export async function handler() {
@@ -50,18 +48,16 @@ export async function handler() {
   ).loyaltyCardNft;
   const groupedByContractAddress =
     await groupLoyaltyCardsByContractAddress(loyaltyCards);
-  const loyaltyCardCollection = new LoyaltyCardCollection(
-    new ThirdwebSDK(getCurrentChain().chainIdHex),
-  );
+  const loyaltyCardNft = new LoyaltyCardNft();
 
-  for (const group of groupedByContractAddress) {
-    try {
-      await mintLoyaltyCardsForGroup(group, loyaltyCardCollection);
-    } catch (error) {
+  const mintPromises = groupedByContractAddress.map((group) =>
+    mintLoyaltyCardsForGroup(group, loyaltyCardNft).catch((error) => {
       console.error(
         `Error processing group for contractAddress: ${group.contractAddress}`,
         error,
       );
-    }
-  }
+    }),
+  );
+
+  return Promise.all(mintPromises);
 }
