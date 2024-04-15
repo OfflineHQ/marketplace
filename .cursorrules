@@ -1,0 +1,18 @@
+# Project Context
+
+- Name: Offline - Next-gen Consumer Brand Interaction
+- Description: At Offline, we are developing innovative solutions to enhance brand-customer interactions through user-centric applications using blockchain and NFT technologies. The project consists of three main apps: the web platform for users, a back-office for companies and organizers, and a micro-app called 'unlock' for token gating on Shopify pages and potential future vendor integrations.
+
+# Technology Stack
+
+- Frontend: Next.js 14, Storybook for component development
+- Backend: Hasura/Postgres for database operations
+- Testing: Jest for unit and integration tests; Playwright for end-to-end testing
+- Architecture: Nx monorepo setup with clean domain models. Libraries are organized within the 'libs' folder.
+
+# Code Standards
+
+- Clean Code: Follow SOLID principles and ensure code is DRY and easily testable.
+- Typing: Employ strict TypeScript typing to ensure robustness and maintainability.
+- Testing: Aim for high test coverage with well-thought-out unit, integration, and E2E tests.
+- Documentation: Maintain clear and comprehensive documentation, especially for public APIs and complex logic.
