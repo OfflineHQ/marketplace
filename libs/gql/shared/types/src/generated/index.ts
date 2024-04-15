@@ -9433,7 +9433,6 @@ export const enum EventPassNftContractType_Constraint {
 
 export const enum EventPassNftContractType_Enum {
   DelayedReveal = 'delayed_reveal',
-  LoyaltyCard = 'loyalty_card',
   Normal = 'normal'
 };
 

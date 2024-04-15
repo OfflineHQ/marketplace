@@ -1,5 +1,5 @@
 import { isValidSignature } from '@crypto';
-import type { AlchemyRequest } from '@indexer/alchemy/types';
+import type { Activity, AlchemyRequest } from '@indexer/alchemy/types';
 import { AlchemyNFTActivityEvent } from '@indexer/alchemy/types';
 import { hexToBigInt } from '@utils';
 
@@ -18,11 +18,11 @@ export const processNftActivities = (
 ): ProcessedActivity[] => {
   const nftActivities = alchemyWebhookEvent.event.activity;
   if (!nftActivities?.length) {
-    throw new Error('No nft activities found in event');
+    return [];
   }
 
   return nftActivities
-    .map((activity) => {
+    .map((activity: Activity): ProcessedActivity | null => {
       const {
         fromAddress,
         toAddress,
@@ -51,7 +51,7 @@ export const processNftActivities = (
         removed,
       };
     })
-    .filter((activity) => activity !== null);
+    .filter((activity): activity is ProcessedActivity => activity !== null);
 };
 
 export function isValidSignatureForAlchemyRequest(

@@ -1,16 +1,21 @@
 'use server';
 
+import env from '@env/server';
 import {
   createWebhooksForLoyaltyCard,
   getAlchemyInfosFromLoyaltyCardId,
   updateWebhooksForLoyaltyCard,
 } from '@features/back-office/loyalty-card-api';
 import { adminSdk } from '@gql/admin/api';
+import { GetMinterTemporaryWalletByLoyaltyCardIdQuery } from '@gql/admin/types';
 import {
   LoyaltyCardNftContract_Insert_Input,
+  LoyaltyCardNft_Set_Input,
   LoyaltyCardParameters_Insert_Input,
+  NftStatus_Enum,
 } from '@gql/shared/types';
 import { isUserKycValidated } from '@kyc/common';
+import { getCurrentChain } from '@next/chains';
 import { getCurrentUser } from '@next/next-auth/user';
 import { NFTMetadata, ThirdwebSDK } from '@thirdweb-dev/sdk';
 
@@ -129,4 +134,39 @@ export async function createLoyaltyCardParametersAndWebhook({
       });
     }
   }
+}
+
+export async function createMinterSdk(
+  minterTemporaryWallet: GetMinterTemporaryWalletByLoyaltyCardIdQuery['minterTemporaryWallet'][0],
+) {
+  return ThirdwebSDK.fromPrivateKey(
+    minterTemporaryWallet.privateKey,
+    getCurrentChain().chainIdHex,
+    {
+      secretKey: env.THIRDWEB_SECRET_KEY,
+      gasless: {
+        openzeppelin: {
+          relayerUrl: env.OPENZEPPELIN_URL,
+        },
+      },
+    },
+  );
+}
+
+export async function updateLoyaltyCardNftsStatus(
+  loyaltyCards: LoyaltyCardNft_Set_Input[], // Replace 'any' with the appropriate type
+  status: NftStatus_Enum,
+) {
+  await adminSdk.UpdateLoyaltyCardNfts({
+    updates: loyaltyCards.map((loyaltyCard) => ({
+      _set: {
+        status,
+      },
+      where: {
+        id: {
+          _eq: loyaltyCard.id,
+        },
+      },
+    })),
+  });
 }
