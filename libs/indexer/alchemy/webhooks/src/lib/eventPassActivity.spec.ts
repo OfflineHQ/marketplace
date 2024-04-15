@@ -202,7 +202,7 @@ describe('extractNftTransfersFromEvent', () => {
     consoleErrorSpy.mockRestore();
   });
 
-  it('should throw an error when nftActivities is empty', () => {
+  it('should return an empty array when nftActivities is empty', () => {
     const mockEventWithoutActivities: AlchemyNFTActivityEvent = {
       webhookId: 'webhookId',
       id: 'id',
@@ -214,9 +214,9 @@ describe('extractNftTransfersFromEvent', () => {
       },
     };
 
-    expect(() =>
-      extractNftTransfersFromEvent(mockEventWithoutActivities),
-    ).toThrow('No nft activities found in event');
+    expect(extractNftTransfersFromEvent(mockEventWithoutActivities)).toEqual(
+      [],
+    );
   });
 });
 
