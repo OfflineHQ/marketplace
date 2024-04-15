@@ -1,4 +1,5 @@
 import { Alchemy, Network, NftFilter } from 'alchemy-sdk';
+import { getErrorMessage } from '@utils';
 
 import env from '@env/server';
 import type {
@@ -166,7 +167,10 @@ export class AlchemyWrapper {
     try {
       return await this.alchemy.nft.verifyNftOwnership(owner, contractAddress);
     } catch (error) {
-      console.error(`Verifying NFT ownership failed: ${error.message}`, error);
+      console.error(
+        `Verifying NFT ownership failed: ${getErrorMessage(error)}`,
+        error,
+      );
       throw error;
     }
   }
@@ -183,7 +187,10 @@ export class AlchemyWrapper {
         contractAddresses,
       );
     } catch (error) {
-      console.error(`Verifying NFT ownership failed: ${error.message}`, error);
+      console.error(
+        `Verifying NFT ownership failed: ${getErrorMessage(error)}`,
+        error,
+      );
       throw error;
     }
   }
@@ -292,7 +299,7 @@ export class AlchemyWrapper {
       );
     } catch (error) {
       console.error(
-        `Creating NFT activity webhook failed: ${error.message}`,
+        `Creating NFT activity webhook failed: ${getErrorMessage(error)}`,
         error,
       );
       throw error;
@@ -316,7 +323,7 @@ export class AlchemyWrapper {
       );
     } catch (error) {
       console.error(
-        `Creating NFT metadata update webhook failed: ${error.message}`,
+        `Creating NFT metadata update webhook failed: ${getErrorMessage(error)}`,
         error,
       );
       throw error;
@@ -331,7 +338,7 @@ export class AlchemyWrapper {
       });
     } catch (error) {
       console.error(
-        `Updating NFT activity webhook failed: ${error.message}`,
+        `Updating NFT activity webhook failed: ${getErrorMessage(error)}`,
         error,
       );
       throw error;
@@ -343,7 +350,7 @@ export class AlchemyWrapper {
       await this.alchemy.notify.deleteWebhook(webhookId);
     } catch (error) {
       console.error(
-        `Deleting NFT activity webhook failed: ${error.message}`,
+        `Deleting NFT activity webhook failed: ${getErrorMessage(error)}`,
         error,
       );
       throw error;
@@ -354,7 +361,10 @@ export class AlchemyWrapper {
     try {
       return await this.alchemy.notify.getAllWebhooks();
     } catch (error) {
-      console.error(`Fetching all webhooks failed: ${error.message}`, error);
+      console.error(
+        `Fetching all webhooks failed: ${getErrorMessage(error)}`,
+        error,
+      );
       throw error;
     }
   }

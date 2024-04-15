@@ -223,6 +223,7 @@ export class PackCollection {
     ];
 
     for (const field of requiredFields) {
+      // @ts-ignore
       if (!pack[field]) {
         throw new Error(`Missing required field in pack: ${field}`);
       }

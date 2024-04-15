@@ -103,7 +103,7 @@ export async function createLoyaltyCardParametersAndWebhook({
       loyaltyCardId: object.loyaltyCardId,
     });
     if (loyaltyCardParameters) {
-      await updateWebhooksForLoyaltyCard({
+      return updateWebhooksForLoyaltyCard({
         activityWebhookId: loyaltyCardParameters.activityWebhookId || undefined,
         metadataUpdateWebhookId:
           loyaltyCardParameters.metadataUpdateWebhookId || undefined,

@@ -9,6 +9,7 @@ import { OrderStatus_Enum } from '@gql/shared/types';
 import { NextRedis } from '@next/redis';
 import { OrderWithContractData } from '@nft/types';
 import { NFTClaim } from './nftClaim';
+import { getErrorMessage } from '@utils';
 
 export class EventPassNftOrder extends NFTClaim {
   async checkOrder(order: OrderWithContractData) {
@@ -38,7 +39,7 @@ export class EventPassNftOrder extends NFTClaim {
       return await adminSdk.ClaimEventPassNfts(updateData);
     } catch (error) {
       if (error instanceof Error) {
-        console.error(`Error registering ownership: ${error.message}`);
+        console.error(`Error registering ownership: ${getErrorMessage(error)}`);
         throw error;
       } else {
         throw error;

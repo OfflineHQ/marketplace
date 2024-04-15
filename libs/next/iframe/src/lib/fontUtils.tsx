@@ -19,7 +19,7 @@ export function loadFontFamily(
   return Promise.all(fontPromises)
     .then((fonts) => {
       fonts.forEach((font) => {
-        // @ts-expect-error
+        // @ts-ignore
         document.fonts.add(font);
       });
       onFontReady();

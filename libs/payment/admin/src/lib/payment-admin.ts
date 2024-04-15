@@ -23,6 +23,7 @@ import {
   StripeCustomer,
 } from '@payment/types';
 import { getNextAppURL } from '@shared/server';
+import { getErrorMessage } from '@utils';
 import Stripe from 'stripe';
 
 export class Payment {
@@ -485,7 +486,7 @@ export class Payment {
       );
       await Promise.all(cachePromises);
     } catch (error) {
-      throw new Error(`Error processing orders : ${error.message}`);
+      throw new Error(`Error processing orders : ${getErrorMessage(error)}`);
     }
 
     await adminSdk.DeleteStripeCheckoutSession({

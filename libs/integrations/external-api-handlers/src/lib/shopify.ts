@@ -14,6 +14,7 @@ import {
   LoyaltyCardNftWrapper,
   MintWithPasswordProps,
 } from '@nft/loyalty-card';
+import { getErrorMessage } from '@utils';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -183,7 +184,9 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       // Extract and verify Shopify request
       const { resultParams, organizerId } =
         await this.extractAndVerifyShopifyRequest(req).catch((error) => {
-          throw new NotAuthorizedError('Not Authorized: ' + error.message);
+          throw new NotAuthorizedError(
+            'Not Authorized: ' + getErrorMessage(error),
+          );
         });
 
       // Serialize and validate parameters
@@ -191,7 +194,9 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
         RequestType.MintLoyaltyCard,
         resultParams,
       ).catch((error: Error) => {
-        throw new BadRequestError('Invalid query parameters: ' + error.message);
+        throw new BadRequestError(
+          'Invalid query parameters: ' + getErrorMessage(error),
+        );
       });
 
       // Prepare data for minting
@@ -211,9 +216,11 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
             throw error; // It's already a custom error, re-throw it
           } else {
             // It's not one of our custom errors, wrap it in a custom error class
-            console.error(`Error minting loyalty card: ${error.message}`);
+            console.error(
+              `Error minting loyalty card: ${getErrorMessage(error)}`,
+            );
             throw new InternalServerError(
-              `Error minting loyalty card: ${error.message}`,
+              `Error minting loyalty card: ${getErrorMessage(error)}`,
             );
           }
         });
@@ -229,14 +236,18 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
 
     const { resultParams, organizerId } =
       await this.extractAndVerifyShopifyRequest(req).catch((error) => {
-        throw new NotAuthorizedError('Not Authorized: ' + error.message);
+        throw new NotAuthorizedError(
+          'Not Authorized: ' + getErrorMessage(error),
+        );
       });
 
     const { ownerAddress } = await this.serializeAndValidateParams(
       RequestType.HasLoyaltyCard,
       resultParams,
     ).catch((error: Error) => {
-      throw new BadRequestError('Invalid query parameters: ' + error.message);
+      throw new BadRequestError(
+        'Invalid query parameters: ' + getErrorMessage(error),
+      );
     });
 
     const nftExists = await this.checkNftExistence(
@@ -244,9 +255,9 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       contractAddress,
       organizerId,
     ).catch((error: Error) => {
-      console.error(`Error checking NFT existence: ${error.message}`);
+      console.error(`Error checking NFT existence: ${getErrorMessage(error)}`);
       throw new InternalServerError(
-        `Error checking NFT existence: ${error.message}`,
+        `Error checking NFT existence: ${getErrorMessage(error)}`,
       );
     });
 

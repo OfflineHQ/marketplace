@@ -10,23 +10,14 @@
       "outputs": ["{options.outputFile}"]
     },
     "build": {
-      "executor": "@nx/rollup:rollup",
+      "executor": "@nx/js:swc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/next/currency-common",
         "tsConfig": "libs/next/currency-common/tsconfig.lib.json",
-        "project": "libs/next/currency-common/package.json",
-        "entryFile": "libs/next/currency-common/src/index.ts",
-        "external": ["react", "react-dom", "react/jsx-runtime"],
-        "rollupConfig": "@nx/react/plugins/bundle-rollup",
-        "compiler": "swc",
-        "assets": [
-          {
-            "glob": "libs/next/currency-common/README.md",
-            "input": ".",
-            "output": "."
-          }
-        ]
+        "packageJson": "libs/next/currency-common/package.json",
+        "main": "libs/next/currency-common/src/index.ts",
+        "assets": ["libs/next/currency-common/*.md"]
       }
     },
     "test": {

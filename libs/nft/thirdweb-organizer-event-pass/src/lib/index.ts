@@ -172,6 +172,7 @@ export class EventPassCollection {
     ];
 
     for (const field of requiredFields) {
+      // @ts-ignore
       if (!props[field]) {
         throw new Error(`Missing required field: ${field}`);
       }
@@ -237,9 +238,9 @@ export class EventPassCollection {
 
       return { contract, metadatas, wallet };
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Error deploying a drop contract : ${error.message}`);
-      } else throw new Error(error);
+      throw new Error(
+        `Error deploying a drop contract : ${error instanceof Error ? error.message : error}`,
+      );
     }
   }
 
@@ -324,9 +325,9 @@ export class EventPassCollection {
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(
-          `Error deploying a normal collection : ${error.message}`,
+          `Error deploying a normal collection : ${(error as Error).message}`,
         );
-      } else throw new Error(error);
+      } else throw new Error(String(error));
     }
   }
 
@@ -339,6 +340,7 @@ export class EventPassCollection {
   ) {
     const requiredFields = ['nftName', 'nftDescription', 'nftImage'];
     for (const field of requiredFields) {
+      // @ts-ignore
       if (!eventPassDelayedRevealed[field]) {
         throw new Error(`Missing required field: ${field}`);
       }
@@ -398,9 +400,9 @@ export class EventPassCollection {
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(
-          `Error deploying a delayed reveal collection : ${error.message}`,
+          `Error deploying a delayed reveal collection : ${error instanceof Error ? error.message : String(error)}`,
         );
-      } else throw new Error(error);
+      }
     }
   }
 
