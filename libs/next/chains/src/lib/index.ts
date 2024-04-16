@@ -129,7 +129,7 @@ export const TESTNET_CHAINS: ChainConfig = {
     nativeCurrency: MATIC,
     blockExplorerUrls: ['https://www.oklink.com/amoy'],
     safeTxServiceUrl: '', // not available (need to deploy our own ?): https://docs.safe.global/api-supported-networks
-    chainIdHex: SupportedNetworks.MUMBAI,
+    chainIdHex: SupportedNetworks.AMOY,
     chainId: 80002,
   },
   84532: {

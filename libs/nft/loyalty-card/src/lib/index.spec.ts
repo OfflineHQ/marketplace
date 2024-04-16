@@ -39,34 +39,47 @@ describe('LoyaltyCardNftWrapper', () => {
     });
   });
 
-  describe('getLoyaltyCardIdByContractAddress', () => {
+  describe('GetLoyaltyCardNftContractByContractAddress', () => {
     it('should return the loyalty card ID by contract address', async () => {
-      const mockLoyaltyCardId = '1';
+      const mockLoyaltyCardNftContract = {
+        loyaltyCardId: '1',
+        organizerId: '1',
+      };
       (
-        adminSdk.GetLoyaltyCardIdByContractAddress as jest.Mock
+        adminSdk.GetLoyaltyCardNftContractByContractAddress as jest.Mock
       ).mockResolvedValue({
-        loyaltyCardNftContract: [{ loyaltyCardId: mockLoyaltyCardId }],
+        loyaltyCardNftContract: [mockLoyaltyCardNftContract],
       });
 
       const result =
-        await loyaltyCardNftWrapper.getLoyaltyCardIdByContractAddress(
+        await loyaltyCardNftWrapper.getLoyaltyCardNftContractByContractAddress(
           mockInputData,
         );
 
-      expect(result).toEqual(mockLoyaltyCardId);
+      expect(result).toEqual(mockLoyaltyCardNftContract);
     });
   });
 
   describe('mintWithPassword', () => {
     it('should mint a loyalty card with password', async () => {
-      const mockLoyaltyCard = { id: '1', status: NftStatus_Enum.Burned };
+      const mockLoyaltyCard = {
+        id: '1',
+        status: NftStatus_Enum.Burned,
+        organizerId: '1',
+      };
       const mockNftMintPassword = { id: '1' };
       jest
         .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardOwnedByAddress')
         .mockResolvedValue(mockLoyaltyCard);
       jest
-        .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardIdByContractAddress')
-        .mockResolvedValue('1');
+        .spyOn(
+          loyaltyCardNftWrapper,
+          'getLoyaltyCardNftContractByContractAddress',
+        )
+        .mockResolvedValue({
+          loyaltyCardId: '1',
+          organizerId: '1',
+        });
       (
         MintPasswordNftWrapper.prototype.evaluateNftMintPassword as jest.Mock
       ).mockResolvedValue(mockNftMintPassword);
@@ -91,7 +104,11 @@ describe('LoyaltyCardNftWrapper', () => {
       });
     });
     it('should throw an error if the loyalty card is already minted', async () => {
-      const mockLoyaltyCard = { id: '1', status: NftStatus_Enum.Confirmed };
+      const mockLoyaltyCard = {
+        id: '1',
+        status: NftStatus_Enum.Confirmed,
+        organizerId: '1',
+      };
       jest
         .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardOwnedByAddress')
         .mockResolvedValue(mockLoyaltyCard);
@@ -105,7 +122,11 @@ describe('LoyaltyCardNftWrapper', () => {
     });
 
     it('should throw an error if the password is invalid', async () => {
-      const mockLoyaltyCard = { id: '1', status: NftStatus_Enum.Burned };
+      const mockLoyaltyCard = {
+        id: '1',
+        status: NftStatus_Enum.Burned,
+        organizerId: '1',
+      };
       jest
         .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardOwnedByAddress')
         .mockResolvedValue(mockLoyaltyCard);
@@ -121,13 +142,20 @@ describe('LoyaltyCardNftWrapper', () => {
       ).rejects.toThrow('Invalid password');
     });
     it('should throw an error if no loyalty card is found for the contract address', async () => {
-      const mockLoyaltyCard = { id: '1', status: NftStatus_Enum.Burned };
+      const mockLoyaltyCard = {
+        id: '1',
+        status: NftStatus_Enum.Burned,
+        organizerId: '1',
+      };
       const mockNftMintPassword = { id: '1' };
       jest
         .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardOwnedByAddress')
         .mockResolvedValue(mockLoyaltyCard);
       jest
-        .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardIdByContractAddress')
+        .spyOn(
+          loyaltyCardNftWrapper,
+          'getLoyaltyCardNftContractByContractAddress',
+        )
         .mockResolvedValue(null);
       (
         MintPasswordNftWrapper.prototype.evaluateNftMintPassword as jest.Mock
@@ -144,7 +172,11 @@ describe('LoyaltyCardNftWrapper', () => {
 
   describe('setAsMinted', () => {
     it('should update the NFT mint password token ID and set the loyalty card as completed', async () => {
-      const mockLoyaltyCard = { id: '1', status: NftStatus_Enum.Burned };
+      const mockLoyaltyCard = {
+        id: '1',
+        status: NftStatus_Enum.Burned,
+        organizerId: '1',
+      };
       jest
         .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardOwnedByAddress')
         .mockResolvedValue(mockLoyaltyCard);
@@ -166,7 +198,11 @@ describe('LoyaltyCardNftWrapper', () => {
     });
 
     it('should throw an error if the loyalty card is already burned', async () => {
-      const mockLoyaltyCard = { id: '1', status: NftStatus_Enum.Completed };
+      const mockLoyaltyCard = {
+        id: '1',
+        status: NftStatus_Enum.Completed,
+        organizerId: '1',
+      };
       jest
         .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardOwnedByAddress')
         .mockResolvedValue(mockLoyaltyCard);

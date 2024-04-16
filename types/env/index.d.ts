@@ -63,6 +63,7 @@ declare module '@env/server' {
     POSTHOG_PERSONAL_API_KEY: string;
     COMETH_CONNECT_API_KEY: string;
     API_SECRET_ENCRYPTION_KEY: string;
+    SHOPIFY_SHARED_SECRET: string;
   };
   export default env;
 }

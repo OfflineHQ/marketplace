@@ -513,11 +513,10 @@ export type GetLoyaltyCardOwnedByAddressQueryVariables = Types.Exact<{
   contractAddress: Types.Scalars['String']['input'];
   chainId: Types.Scalars['String']['input'];
   ownerAddress: Types.Scalars['String']['input'];
-  organizerId: Types.Scalars['String']['input'];
 }>;
 
 
-export type GetLoyaltyCardOwnedByAddressQuery = { __typename?: 'query_root', loyaltyCardNft: Array<{ __typename?: 'loyaltyCardNft', id: any, status?: Types.NftStatus_Enum | null, burnedTransferId?: any | null }> };
+export type GetLoyaltyCardOwnedByAddressQuery = { __typename?: 'query_root', loyaltyCardNft: Array<{ __typename?: 'loyaltyCardNft', id: any, status?: Types.NftStatus_Enum | null, burnedTransferId?: any | null, organizerId: string }> };
 
 export type GetLoyaltyCardAlchemyEventQueryVariables = Types.Exact<{
   contractAddress: Types.Scalars['String']['input'];
@@ -528,14 +527,13 @@ export type GetLoyaltyCardAlchemyEventQueryVariables = Types.Exact<{
 
 export type GetLoyaltyCardAlchemyEventQuery = { __typename?: 'query_root', loyaltyCardNft: Array<{ __typename?: 'loyaltyCardNft', id: any, status?: Types.NftStatus_Enum | null }> };
 
-export type GetLoyaltyCardIdByContractAddressQueryVariables = Types.Exact<{
+export type GetLoyaltyCardNftContractByContractAddressQueryVariables = Types.Exact<{
   contractAddress: Types.Scalars['String']['input'];
   chainId: Types.Scalars['String']['input'];
-  organizerId: Types.Scalars['String']['input'];
 }>;
 
 
-export type GetLoyaltyCardIdByContractAddressQuery = { __typename?: 'query_root', loyaltyCardNftContract: Array<{ __typename?: 'loyaltyCardNftContract', loyaltyCardId: string }> };
+export type GetLoyaltyCardNftContractByContractAddressQuery = { __typename?: 'query_root', loyaltyCardNftContract: Array<{ __typename?: 'loyaltyCardNftContract', loyaltyCardId: string, organizerId: string }> };
 
 export type GetLoyaltyCardByContractAddressForProcessQueryVariables = Types.Exact<{ [key: string]: never; }>;
 

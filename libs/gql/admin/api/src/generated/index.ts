@@ -1129,14 +1129,15 @@ ${EventParametersFieldsFragmentDoc}`;
 }
     `;
  const GetLoyaltyCardOwnedByAddressDocument = `
-    query GetLoyaltyCardOwnedByAddress($contractAddress: String!, $chainId: String!, $ownerAddress: String!, $organizerId: String!) @cached {
+    query GetLoyaltyCardOwnedByAddress($contractAddress: String!, $chainId: String!, $ownerAddress: String!) @cached {
   loyaltyCardNft(
-    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, organizerId: {_eq: $organizerId}, ownerAddress: {_eq: $ownerAddress}}
+    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, ownerAddress: {_eq: $ownerAddress}}
     limit: 1
   ) {
     id
     status
     burnedTransferId
+    organizerId
   }
 }
     `;
@@ -1151,13 +1152,14 @@ ${EventParametersFieldsFragmentDoc}`;
   }
 }
     `;
- const GetLoyaltyCardIdByContractAddressDocument = `
-    query GetLoyaltyCardIdByContractAddress($contractAddress: String!, $chainId: String!, $organizerId: String!) @cached {
+ const GetLoyaltyCardNftContractByContractAddressDocument = `
+    query GetLoyaltyCardNftContractByContractAddress($contractAddress: String!, $chainId: String!) @cached {
   loyaltyCardNftContract(
-    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, organizerId: {_eq: $organizerId}}
+    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}}
     limit: 1
   ) {
     loyaltyCardId
+    organizerId
   }
 }
     `;
@@ -1735,8 +1737,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetLoyaltyCardAlchemyEvent(variables: Types.GetLoyaltyCardAlchemyEventQueryVariables, options?: C): Promise<Types.GetLoyaltyCardAlchemyEventQuery> {
       return requester<Types.GetLoyaltyCardAlchemyEventQuery, Types.GetLoyaltyCardAlchemyEventQueryVariables>(GetLoyaltyCardAlchemyEventDocument, variables, options) as Promise<Types.GetLoyaltyCardAlchemyEventQuery>;
     },
-    GetLoyaltyCardIdByContractAddress(variables: Types.GetLoyaltyCardIdByContractAddressQueryVariables, options?: C): Promise<Types.GetLoyaltyCardIdByContractAddressQuery> {
-      return requester<Types.GetLoyaltyCardIdByContractAddressQuery, Types.GetLoyaltyCardIdByContractAddressQueryVariables>(GetLoyaltyCardIdByContractAddressDocument, variables, options) as Promise<Types.GetLoyaltyCardIdByContractAddressQuery>;
+    GetLoyaltyCardNftContractByContractAddress(variables: Types.GetLoyaltyCardNftContractByContractAddressQueryVariables, options?: C): Promise<Types.GetLoyaltyCardNftContractByContractAddressQuery> {
+      return requester<Types.GetLoyaltyCardNftContractByContractAddressQuery, Types.GetLoyaltyCardNftContractByContractAddressQueryVariables>(GetLoyaltyCardNftContractByContractAddressDocument, variables, options) as Promise<Types.GetLoyaltyCardNftContractByContractAddressQuery>;
     },
     GetLoyaltyCardByContractAddressForProcess(variables?: Types.GetLoyaltyCardByContractAddressForProcessQueryVariables, options?: C): Promise<Types.GetLoyaltyCardByContractAddressForProcessQuery> {
       return requester<Types.GetLoyaltyCardByContractAddressForProcessQuery, Types.GetLoyaltyCardByContractAddressForProcessQueryVariables>(GetLoyaltyCardByContractAddressForProcessDocument, variables, options) as Promise<Types.GetLoyaltyCardByContractAddressForProcessQuery>;

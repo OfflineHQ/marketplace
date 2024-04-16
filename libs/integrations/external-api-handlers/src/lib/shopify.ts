@@ -1,7 +1,5 @@
-import { decryptSecret } from '@crypto';
+import env from '@env/server';
 import { adminSdk } from '@gql/admin/api';
-import { ApiKeyType_Enum } from '@gql/shared/types';
-import { getSecretApiKey } from '@integrations/api-keys';
 import handleApiRequest, {
   ApiHandlerOptions,
   BadRequestError,
@@ -15,7 +13,6 @@ import {
   MintWithPasswordProps,
 } from '@nft/loyalty-card';
 import { getErrorMessage } from '@utils';
-import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { BaseWebhookAndApiHandler } from './baseWebhookAndApiHandler';
@@ -46,10 +43,9 @@ type RequestTypeToValidator = {
 
 interface MintLoyaltyCardWithPasswordProps
   extends Pick<
-      MintWithPasswordProps,
-      'password' | 'contractAddress' | 'chainId' | 'ownerAddress'
-    >,
-    Required<Pick<MintWithPasswordProps, 'organizerId'>> {}
+    MintWithPasswordProps,
+    'password' | 'contractAddress' | 'chainId' | 'ownerAddress'
+  > {}
 
 // Extended options for the specific handler
 export interface MintLoyaltyCardOptions extends ApiHandlerOptions {
@@ -79,61 +75,51 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
 
   async extractAndVerifyShopifyRequest(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
-    const apiKey = headers().get('x-shopify-client-id') as string;
-    if (!apiKey) {
-      throw new Error('Missing API key');
-    }
-    const secretApiKey = await this.getValidatedSecretApiKey(apiKey);
+    // // TODO: shopify doesn't have that but `x-shop-domain`, so must check that it's an authorized shop (and use it for the allowlist check + pricing logic)
+    // const apiKey = headers().get('x-shopify-client-id') as string;
+    // if (!apiKey) {
+    //   throw new Error('Missing API key');
+    // }
+    // const secretApiKey = await this.getValidatedSecretApiKey(apiKey);
 
     const shop = this.getRequiredParam(searchParams, 'shop');
     const timestamp = this.getRequiredParam(searchParams, 'timestamp');
 
     this.guardRequestTimestamp(timestamp, 300); // 5 minutes in seconds as the allowed time difference
-    if (secretApiKey.allowlist)
-      this.guardAllowListOrigin(secretApiKey.allowlist, `https://${shop}`);
+    // if (secretApiKey.allowlist)
+    //   this.guardAllowListOrigin(secretApiKey.allowlist, `https://${shop}`);
 
     const queryHash = this.populateQueryHash(searchParams);
     const resultParams = this.populateResultParams(searchParams);
     const signature = searchParams.get('signature');
-    if (
-      !signature ||
-      !this.verifyRequestSignature(
-        queryHash,
-        signature,
-        secretApiKey.encryptedIntegritySecret as string,
-      )
-    )
+    if (!signature || !this.verifyRequestSignature(queryHash, signature))
       throw new Error('Invalid signature');
     return {
       resultParams,
-      organizerId: secretApiKey.organizerId,
     };
   }
 
-  private async getValidatedSecretApiKey(apiKey: string) {
-    const secretApiKey = await getSecretApiKey(apiKey);
-    if (
-      !secretApiKey ||
-      secretApiKey.type !== ApiKeyType_Enum.Shopify ||
-      !secretApiKey.encryptedIntegritySecret
-    ) {
-      throw new Error('Invalid signature');
-    }
-    return secretApiKey;
-  }
+  // private async getValidatedSecretApiKey(apiKey: string) {
+  //   const secretApiKey = await getSecretApiKey(apiKey);
+  //   if (
+  //     !secretApiKey ||
+  //     secretApiKey.type !== ApiKeyType_Enum.Shopify ||
+  //     !secretApiKey.encryptedIntegritySecret
+  //   ) {
+  //     throw new Error('Invalid signature');
+  //   }
+  //   return secretApiKey;
+  // }
 
-  private populateQueryHash(searchParams: URLSearchParams): {
-    [key: string]: string | string[];
-  } {
-    const queryHash: { [key: string]: string | string[] } = {};
-    searchParams.forEach((value, key) => {
-      if (key !== 'signature') {
-        queryHash[key] = queryHash[key]
-          ? [...(queryHash[key] as string[]), value]
-          : value;
-      }
-    });
-    return queryHash;
+  private populateQueryHash(searchParams: URLSearchParams): string {
+    // Create a new instance of URLSearchParams to ensure we're not modifying the original
+    const filteredParams = new URLSearchParams(searchParams);
+
+    // Remove the 'signature' parameter
+    filteredParams.delete('signature');
+
+    // Convert the filtered URLSearchParams to a string
+    return filteredParams.toString();
   }
 
   private populateResultParams(searchParams: URLSearchParams): {
@@ -151,24 +137,15 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
   }
 
   private verifyRequestSignature(
-    queryHash: { [key: string]: string | string[] },
+    queryParams: string,
     signature: string | null,
-    encryptedIntegritySecret: string,
   ) {
     if (!signature) {
       throw new Error('Invalid signature');
     }
-    const sortedParams = Object.entries(queryHash)
-      .map(
-        ([key, value]) =>
-          `${key}=${Array.isArray(value) ? value.join(',') : value}`,
-      )
-      .sort()
-      .join('');
-    const decryptedIntegritySecret = decryptSecret(encryptedIntegritySecret);
     return this.verifySignature({
-      body: sortedParams,
-      integritySecret: decryptedIntegritySecret,
+      body: queryParams,
+      integritySecret: env.SHOPIFY_SHARED_SECRET,
       signature,
     });
   }
@@ -182,12 +159,13 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
         options.loyaltyCardSdk || new LoyaltyCardNftWrapper();
 
       // Extract and verify Shopify request
-      const { resultParams, organizerId } =
-        await this.extractAndVerifyShopifyRequest(req).catch((error) => {
-          throw new NotAuthorizedError(
-            'Not Authorized: ' + getErrorMessage(error),
-          );
-        });
+      const { resultParams } = await this.extractAndVerifyShopifyRequest(
+        req,
+      ).catch((error) => {
+        throw new NotAuthorizedError(
+          'Not Authorized: ' + getErrorMessage(error),
+        );
+      });
 
       // Serialize and validate parameters
       const validatedParams = await this.serializeAndValidateParams(
@@ -204,7 +182,6 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
         ...validatedParams,
         contractAddress,
         chainId: getCurrentChain().chainIdHex,
-        organizerId,
       };
 
       // Attempt to mint loyalty card
@@ -234,12 +211,11 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
   async hasLoyaltyCard(options: ApiHandlerOptions, contractAddress: string) {
     const { req } = options;
 
-    const { resultParams, organizerId } =
-      await this.extractAndVerifyShopifyRequest(req).catch((error) => {
-        throw new NotAuthorizedError(
-          'Not Authorized: ' + getErrorMessage(error),
-        );
-      });
+    const { resultParams } = await this.extractAndVerifyShopifyRequest(
+      req,
+    ).catch((error) => {
+      throw new NotAuthorizedError('Not Authorized: ' + getErrorMessage(error));
+    });
 
     const { ownerAddress } = await this.serializeAndValidateParams(
       RequestType.HasLoyaltyCard,
@@ -253,7 +229,6 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     const nftExists = await this.checkNftExistence(
       ownerAddress,
       contractAddress,
-      organizerId,
     ).catch((error: Error) => {
       console.error(`Error checking NFT existence: ${getErrorMessage(error)}`);
       throw new InternalServerError(
@@ -261,7 +236,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       );
     });
 
-    return new NextResponse(JSON.stringify({ exists: nftExists }), {
+    return new NextResponse(JSON.stringify({ isOwned: nftExists }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -270,13 +245,11 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
   private async checkNftExistence(
     ownerAddress: string,
     contractAddress: string,
-    organizerId: string,
   ): Promise<boolean> {
     const loyaltyCardNft = (
       await adminSdk.GetLoyaltyCardOwnedByAddress({
         contractAddress,
         ownerAddress,
-        organizerId,
         chainId: getCurrentChain().chainIdHex,
       })
     ).loyaltyCardNft[0];
