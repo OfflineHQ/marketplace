@@ -51,7 +51,7 @@ export function loyaltyCardNftsPasswordTableMocks() {
     createPasswordAction,
     'createNftsPasswords',
   );
-  mockCreatePasswordAction.mockResolvedValue(loyaltyCardPasswords);
+  mockCreatePasswordAction.mockResolvedValue(loyaltyCardPasswords.slice(0, 3));
   return [
     mockIntl,
     mockLoyaltyCardApi,
