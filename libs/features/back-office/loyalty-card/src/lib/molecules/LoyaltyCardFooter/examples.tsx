@@ -1,6 +1,6 @@
 import * as walletProvider from '@next/wallet';
 import { createMock } from 'storybook-addon-module-mock';
-import * as deployLoyaltyCardCollectionWrapper from '../../actions/deployLoyaltyCardCollectionWrapper';
+import * as deployApi from '../../actions/deployLoyaltyCardCollectionWrapper';
 
 export function loyaltyCardFooterMocks() {
   const mockWallet = createMock(walletProvider, 'useWalletContext');
@@ -10,7 +10,7 @@ export function loyaltyCardFooterMocks() {
     },
   });
   const mockDeployLoyaltyCardCollectionWrapper = createMock(
-    deployLoyaltyCardCollectionWrapper,
+    deployApi,
     'deployLoyaltyCardCollectionWrapper',
   );
   mockDeployLoyaltyCardCollectionWrapper.mockResolvedValue(undefined);
