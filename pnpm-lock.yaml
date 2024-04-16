@@ -709,8 +709,8 @@ devDependencies:
     specifier: ^1.15.4
     version: 1.15.5
   storybook-addon-module-mock:
-    specifier: ^1.1.5
-    version: 1.1.5(@types/react@18.2.33)(react@18.2.0)
+    specifier: ^1.1.6
+    version: 1.1.6(@types/react@18.2.33)(react@18.2.0)
   storybook-dark-mode:
     specifier: ^3.0.3
     version: 3.0.3(@types/react-dom@18.2.14)(@types/react@18.2.33)(react-dom@18.2.0)(react@18.2.0)
@@ -26398,9 +26398,10 @@ packages:
     resolution: {integrity: sha512-siT1RiqlfQnGqgT/YzXVUNsom9S0H1OX+dpdGN1xkyYATo4I6sep5NmsRD/40s3IIOvlCq6akxkqG82urIZW1w==}
     dev: true
 
-  /storybook-addon-module-mock@1.1.5(@types/react@18.2.33)(react@18.2.0):
-    resolution: {integrity: sha512-p6C0Y4zKPCvAu7buBUnjnvMfWrAzFd55T3cF0QHVFNPNXJOS/A0o9KRFzAEJymA3ToNBzEN9hkWQ3XcXJ2tM/w==}
+  /storybook-addon-module-mock@1.1.6(@types/react@18.2.33)(react@18.2.0):
+    resolution: {integrity: sha512-ZNCF1LVNuY3XmDGWYnTiufNe4kwW7srve9moI823I6r3ck7yoAWG4fG+QczjZOYKgxlk6FKEMiKMjHfkcpBHQA==}
     dependencies:
+      jest-mock: 27.5.1
       minimatch: 9.0.3
       react-json-tree: 0.18.0(@types/react@18.2.33)(react@18.2.0)
     transitivePeerDependencies:
