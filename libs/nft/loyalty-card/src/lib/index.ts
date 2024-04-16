@@ -1,6 +1,6 @@
 import { adminSdk } from '@gql/admin/api';
 import {
-  GetLoyaltyCardIdByContractAddressQueryVariables,
+  GetLoyaltyCardNftContractByContractAddressQueryVariables,
   GetLoyaltyCardOwnedByAddressQueryVariables,
 } from '@gql/admin/types';
 import { LoyaltyCardNft_Set_Input, NftStatus_Enum } from '@gql/shared/types';
@@ -9,7 +9,7 @@ import { MintPasswordNftWrapper } from '@nft/mint-password';
 import { NftMintPassword } from '@nft/types';
 
 export interface MintWithPasswordProps
-  extends GetLoyaltyCardOwnedByAddressQueryVariables,
+  extends Omit<GetLoyaltyCardOwnedByAddressQueryVariables, 'organizerId'>,
     Pick<NftMintPassword, 'password'> {}
 
 export interface SetAsMintedProps
@@ -29,11 +29,12 @@ export class LoyaltyCardNftWrapper {
     const res = await this.adminSdk.GetLoyaltyCardOwnedByAddress(props);
     return res.loyaltyCardNft?.[0];
   }
-  async getLoyaltyCardIdByContractAddress(
-    props: GetLoyaltyCardIdByContractAddressQueryVariables,
+  async getLoyaltyCardNftContractByContractAddress(
+    props: GetLoyaltyCardNftContractByContractAddressQueryVariables,
   ) {
-    const res = await this.adminSdk.GetLoyaltyCardIdByContractAddress(props);
-    return res.loyaltyCardNftContract?.[0]?.loyaltyCardId;
+    const res =
+      await this.adminSdk.GetLoyaltyCardNftContractByContractAddress(props);
+    return res.loyaltyCardNftContract?.[0];
   }
   async mintWithPassword({ password, ...props }: MintWithPasswordProps) {
     const loyaltyCard = await this.getLoyaltyCardOwnedByAddress(props);
@@ -47,21 +48,24 @@ export class LoyaltyCardNftWrapper {
     const nftMintPassword =
       await this.mintPasswordNftWrapper.evaluateNftMintPassword({
         ...props,
+        organizerId: loyaltyCard?.organizerId,
         password,
       });
     if (!nftMintPassword) {
       throw new BadRequestError('Invalid password');
     }
-    const loyaltyCardId = await this.getLoyaltyCardIdByContractAddress(props);
-    if (!loyaltyCardId) {
+    const data = await this.getLoyaltyCardNftContractByContractAddress(props);
+    if (!data) {
       throw new NotFoundError(
         'No loyalty card found for this contract address',
       );
     }
+    const { loyaltyCardId, organizerId } = data;
     await this.adminSdk.InsertLoyaltyCardNft({
       object: {
         loyaltyCardId,
         status: NftStatus_Enum.Confirmed,
+        organizerId,
         ...props,
       },
     });

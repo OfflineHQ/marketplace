@@ -16,6 +16,7 @@ export async function GET(
   req: NextRequest,
   { params: { contractAddress } }: { params: { contractAddress: string } },
 ) {
+  console.log('GET contractAddress:', req, contractAddress);
   const shopifyHandler = new ShopifyWebhookAndApiHandler();
   return shopifyHandler.hasLoyaltyCard({ req }, contractAddress);
 }

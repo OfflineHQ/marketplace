@@ -1,3 +1,5 @@
+'use client';
+
 import { OffKeyState, useIframeOffKey } from '@next/iframe';
 import { AutoAnimate, Text, TextSkeleton } from '@ui/components';
 import { useTranslations } from 'next-intl';
