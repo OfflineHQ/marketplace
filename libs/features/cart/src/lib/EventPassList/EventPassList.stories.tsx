@@ -54,7 +54,7 @@ export const Default: Story = {
 export const Opened: Story = {
   ...Default,
   play: async () => {
-    userEvent.click(
+    await userEvent.click(
       await screen.findByRole('button', {
         name: /Lorem ipsum/i,
       }),
