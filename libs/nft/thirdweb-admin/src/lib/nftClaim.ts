@@ -16,8 +16,6 @@ import { getErrorMessage } from '@utils';
 export abstract class NFTClaim {
   sdk?: ThirdwebSDK;
 
-  constructor() {}
-
   protected initializeSdk(
     minterTemporaryWallet: GetMinterTemporaryWalletByLoyaltyCardIdQuery['minterTemporaryWallet'][0],
   ) {

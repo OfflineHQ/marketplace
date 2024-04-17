@@ -86,7 +86,7 @@ export async function createSecretApiKey({
       'At least one of originSecret or integritySecret must be true',
     );
   }
-  let apiKeySecret: string = '';
+  let apiKeySecret = '';
   if (originSecret) {
     apiKeySecret = generateApiKeyId();
     const salt = generateRandomString(16);
@@ -97,7 +97,7 @@ export async function createSecretApiKey({
       originSecretSalt: salt,
     };
   }
-  let apiKeyIntegritySecret: string = '';
+  let apiKeyIntegritySecret = '';
   if (integritySecret) {
     apiKeyIntegritySecret = generateApiKeyId();
     secretObject = {

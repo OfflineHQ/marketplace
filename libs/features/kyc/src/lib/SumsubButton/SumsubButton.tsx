@@ -4,11 +4,10 @@ import { useTranslations } from 'next-intl';
 import { Suspense } from 'react';
 import { SumsubDialog, SumsubDialogProps } from '../SumsubDialog/SumsubDialog';
 
-export interface SumsubButtonProps
-  extends Pick<
-    SumsubDialogProps,
-    'confirmedIcon' | 'confirmedLink' | 'confirmedText'
-  > {}
+export type SumsubButtonProps = Pick<
+  SumsubDialogProps,
+  'confirmedIcon' | 'confirmedLink' | 'confirmedText'
+>;
 
 export const SumsubButton: React.FC<SumsubButtonProps> = ({
   ...dialogProps

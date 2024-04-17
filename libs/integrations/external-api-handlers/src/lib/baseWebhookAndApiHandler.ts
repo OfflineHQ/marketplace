@@ -18,8 +18,6 @@ interface GenerateSignatureProps {
 }
 
 export abstract class BaseWebhookAndApiHandler {
-  constructor() {}
-
   verifySignature({
     integritySecret,
     body,
@@ -126,7 +124,7 @@ export abstract class BaseWebhookAndApiHandler {
     return { signature, timestamp, body: bodyString };
   }
 
-  guardRequestTimestamp(timestamp: string, deltaInSeconds: number = 180) {
+  guardRequestTimestamp(timestamp: string, deltaInSeconds = 180) {
     if (!timestamp || deltaInSeconds <= 0) {
       throw new Error('Timestamp is required and delta must be positive');
     }

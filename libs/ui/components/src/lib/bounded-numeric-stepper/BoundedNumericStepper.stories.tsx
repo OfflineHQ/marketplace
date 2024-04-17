@@ -16,7 +16,7 @@ const meta = {
     maxVal: 10,
     value: 5,
     initialValue: 5,
-    onChange: (value: number) => {},
+    onChange: (value: number) => null,
   },
 } satisfies Meta<typeof BoundedNumericStepper>;
 

@@ -173,8 +173,6 @@ describe('PackCollection', () => {
   describe('getSelectedNftsFromPack', () => {
     let packCollection: PackCollection;
 
-    beforeAll(async () => {});
-
     afterAll(async () => {
       await deleteAllTables(client);
     });
@@ -252,8 +250,6 @@ describe('PackCollection', () => {
   });
   describe('deployAPack', () => {
     let packCollection: PackCollection;
-
-    beforeAll(async () => {});
 
     afterAll(async () => {
       await deleteAllTables(client);
@@ -358,8 +354,6 @@ describe('PackCollection', () => {
 
   describe('deployAPack - errors', () => {
     let packCollection: PackCollection;
-
-    beforeAll(async () => {});
 
     afterAll(async () => {
       await deleteAllTables(client);

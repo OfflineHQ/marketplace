@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
     "module": "nodenext",
+    "strict": false,
     "types": ["jest", "node"]
   },
   "include": [
