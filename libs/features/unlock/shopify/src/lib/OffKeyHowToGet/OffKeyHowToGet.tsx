@@ -4,7 +4,7 @@ import { Button } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import type { LinkProps } from 'next/link';
 
-export interface OffKeyHowToGetProps extends LinkProps {}
+export type OffKeyHowToGetProps = LinkProps;
 
 export const OffKeyHowToGet: React.FC<OffKeyHowToGetProps> = ({ href }) => {
   const t = useTranslations('Shopify.OffKeyHowToGet');

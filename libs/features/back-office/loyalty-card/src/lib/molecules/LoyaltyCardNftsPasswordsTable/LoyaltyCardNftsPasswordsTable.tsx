@@ -12,11 +12,10 @@ import {
   LoyaltyCardNftsPasswordsTableClientProps,
 } from './LoyaltyCardNftsPasswordsTableClient';
 
-export interface LoyaltyCardNftsPasswordsTableProps
-  extends Pick<
-    LoyaltyCardNftsPasswordsTableClientProps,
-    'className' | 'contractAddress' | 'chainId' | 'loyaltyCardId'
-  > {}
+export type LoyaltyCardNftsPasswordsTableProps = Pick<
+  LoyaltyCardNftsPasswordsTableClientProps,
+  'className' | 'contractAddress' | 'chainId' | 'loyaltyCardId'
+>;
 
 export async function LoyaltyCardNftsPasswordsTable({
   contractAddress,

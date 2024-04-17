@@ -30,7 +30,7 @@ interface IFrameContextType {
 const defaultState: IFrameContextType = {
   iframeParent: null,
   connectStatus: null,
-  setConnectStatus: () => {},
+  setConnectStatus: () => null,
   uiReady: false,
   offKeyState: null,
 };

@@ -11,7 +11,7 @@ abstract class CustomError extends Error {
 class NotAuthorizedError extends CustomError {
   statusCode = 403; // HTTP status code for Forbidden
 
-  constructor(message: string = 'Not Authorized') {
+  constructor(message = 'Not Authorized') {
     super(message);
     this.name = 'NotAuthorizedError';
   }
@@ -20,7 +20,7 @@ class NotAuthorizedError extends CustomError {
 class BadRequestError extends CustomError {
   statusCode = 400; // HTTP status code for Bad Request
 
-  constructor(message: string = 'Bad Request') {
+  constructor(message = 'Bad Request') {
     super(message);
     this.name = 'BadRequestError';
   }
@@ -30,7 +30,7 @@ class BadRequestError extends CustomError {
 class NotFoundError extends CustomError {
   statusCode = 404; // HTTP status code for Not Found
 
-  constructor(message: string = 'Not Found') {
+  constructor(message = 'Not Found') {
     super(message);
     this.name = 'NotFoundError';
   }
@@ -39,7 +39,7 @@ class NotFoundError extends CustomError {
 class InternalServerError extends CustomError {
   statusCode = 500; // HTTP status code for Internal Server Error
 
-  constructor(message: string = 'Internal Server Error') {
+  constructor(message = 'Internal Server Error') {
     super(message);
     this.name = 'InternalServerError';
   }

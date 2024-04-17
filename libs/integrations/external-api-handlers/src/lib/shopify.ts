@@ -41,11 +41,10 @@ type RequestTypeToValidator = {
   [RequestType.HasLoyaltyCard]: z.infer<typeof HasLoyaltyCardParams>;
 };
 
-interface MintLoyaltyCardWithPasswordProps
-  extends Pick<
-    MintWithPasswordProps,
-    'password' | 'contractAddress' | 'chainId' | 'ownerAddress'
-  > {}
+type MintLoyaltyCardWithPasswordProps = Pick<
+  MintWithPasswordProps,
+  'password' | 'contractAddress' | 'chainId' | 'ownerAddress'
+>;
 
 // Extended options for the specific handler
 export interface MintLoyaltyCardOptions extends ApiHandlerOptions {
