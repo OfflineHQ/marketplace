@@ -8,7 +8,7 @@ import {
 import { getCurrentChain } from '@next/chains';
 import { LoyaltyCardNftWrapper } from '@nft/loyalty-card';
 import { NextRequest } from 'next/server';
-import { MintLoyaltyCardOptions, ShopifyWebhookAndApiHandler } from './shopify';
+import { MintLoyaltyCardOptions, ShopifyWebhookAndApiHandler } from './index';
 
 jest.mock('@integrations/api-keys');
 jest.mock('@crypto');

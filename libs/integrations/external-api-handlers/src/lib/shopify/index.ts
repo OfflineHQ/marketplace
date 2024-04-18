@@ -16,22 +16,13 @@ import {
 import { getErrorMessage } from '@utils';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { BaseWebhookAndApiHandler } from './baseWebhookAndApiHandler';
+import { BaseWebhookAndApiHandler } from '../baseWebhookAndApiHandler';
+import { MintLoyaltyCardParams, HasLoyaltyCardParams } from './validators';
 
 export enum RequestType {
   MintLoyaltyCard = 'MintLoyaltyCard',
   HasLoyaltyCard = 'HasLoyaltyCard',
 }
-
-const MintLoyaltyCardParams = z.object({
-  password: z.string(),
-  ownerAddress: z.string(),
-  email: z.string().email(),
-});
-
-const HasLoyaltyCardParams = z.object({
-  ownerAddress: z.string(),
-});
 
 const requestTypeValidators = {
   [RequestType.MintLoyaltyCard]: MintLoyaltyCardParams,
