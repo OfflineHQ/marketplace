@@ -1,6 +1,7 @@
 import env from '@env/server';
 // TODO: replace with Web Crypto API instead of Node.js crypto (will make it work in the browser and Edge)
 import {
+  BinaryToTextEncoding,
   createCipheriv,
   createDecipheriv,
   createHmac,
@@ -12,16 +13,18 @@ interface GetHmacDigestFromTextString {
   body: string;
   secret: string;
   algorithm?: string;
+  encoding?: BinaryToTextEncoding;
 }
 
 export function getHmacDigestFromString({
   body,
   secret,
   algorithm = 'sha256',
+  encoding = 'hex',
 }: GetHmacDigestFromTextString): string {
   const hmac = createHmac(algorithm, secret);
   hmac.update(body, 'utf-8');
-  return hmac.digest('hex');
+  return hmac.digest(encoding);
 }
 
 interface IsValidSignatureProps extends GetHmacDigestFromTextString {
@@ -32,6 +35,7 @@ export function isValidSignature({
   signature,
   ...props
 }: IsValidSignatureProps): boolean {
+  console.log(getHmacDigestFromString(props));
   return signature === getHmacDigestFromString(props);
 }
 

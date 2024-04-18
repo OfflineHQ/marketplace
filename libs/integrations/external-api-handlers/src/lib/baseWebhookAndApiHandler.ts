@@ -28,6 +28,7 @@ export abstract class BaseWebhookAndApiHandler {
       body,
       secret: integritySecret,
       signature,
+      encoding: 'base64',
     });
   }
 
