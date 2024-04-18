@@ -1,4 +1,5 @@
 import env from '@env/server';
+// TODO: replace with Web Crypto API instead of Node.js crypto (will make it work in the browser and Edge)
 import {
   createCipheriv,
   createDecipheriv,
@@ -76,7 +77,6 @@ export function verifySecret(
 export function encryptSecret(secret: string): string {
   const iv = randomBytes(16);
   const key = Buffer.from(env.API_SECRET_ENCRYPTION_KEY);
-  console.log('key length', key.length);
   if (key.length !== 32) {
     throw new Error('Invalid encryption key length. Expected 32 bytes.');
   }

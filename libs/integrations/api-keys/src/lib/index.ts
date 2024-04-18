@@ -1,8 +1,8 @@
 import {
+  encryptSecret,
   generateApiKeyId,
   generateRandomString,
   hashSecret,
-  encryptSecret,
 } from '@crypto';
 import { adminSdk } from '@gql/admin/api';
 import {
@@ -109,7 +109,7 @@ export async function createSecretApiKey({
     object: secretObject,
   });
   if (!res || !res.insert_secretApiKey_one) {
-    throw new Error('Failed to create Shopify API key');
+    throw new Error('Failed to create secret API key');
   } else
     return {
       ...res.insert_secretApiKey_one,
@@ -147,7 +147,7 @@ export async function createPublishableApiKey(
     },
   });
   if (!res || !res.insert_publishableApiKey_one) {
-    throw new Error('Failed to create Shopify API key');
+    throw new Error('Failed to create publishable API key');
   } else return res.insert_publishableApiKey_one;
 }
 

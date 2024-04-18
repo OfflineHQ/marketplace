@@ -1,4 +1,5 @@
 import env from '@env/server';
+import { handleAccount } from '@features/account/api';
 import { adminSdk } from '@gql/admin/api';
 import handleApiRequest, {
   ApiHandlerOptions,
@@ -25,6 +26,7 @@ export enum RequestType {
 const MintLoyaltyCardParams = z.object({
   password: z.string(),
   ownerAddress: z.string(),
+  email: z.string().email(),
 });
 
 const HasLoyaltyCardParams = z.object({
@@ -97,18 +99,6 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       resultParams,
     };
   }
-
-  // private async getValidatedSecretApiKey(apiKey: string) {
-  //   const secretApiKey = await getSecretApiKey(apiKey);
-  //   if (
-  //     !secretApiKey ||
-  //     secretApiKey.type !== ApiKeyType_Enum.Shopify ||
-  //     !secretApiKey.encryptedIntegritySecret
-  //   ) {
-  //     throw new Error('Invalid signature');
-  //   }
-  //   return secretApiKey;
-  // }
 
   private populateQueryHash(searchParams: URLSearchParams): string {
     // Create a new instance of URLSearchParams to ensure we're not modifying the original
@@ -200,6 +190,10 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
             );
           }
         });
+      // get or create a new account
+      const account = await handleAccount({
+        address: validatedParams.ownerAddress,
+      });
       return new NextResponse(JSON.stringify(res), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
