@@ -16,7 +16,7 @@ jest.mock('@gql/admin/api', () => ({
   },
 }));
 
-describe('Shopify API Key functions', () => {
+describe('API Key functions', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -175,7 +175,7 @@ describe('Shopify API Key functions', () => {
       (adminSdk.CreateSecretApiKey as jest.Mock).mockResolvedValueOnce({});
 
       await expect(createSecretApiKey(props)).rejects.toThrow(
-        'Failed to create Shopify API key',
+        'Failed to create secret API key',
       );
     });
   });
@@ -239,7 +239,7 @@ describe('Shopify API Key functions', () => {
       (adminSdk.CreatePublishableApiKey as jest.Mock).mockResolvedValueOnce({});
 
       await expect(createPublishableApiKey(props)).rejects.toThrow(
-        'Failed to create Shopify API key',
+        'Failed to create publishable API key',
       );
     });
   });

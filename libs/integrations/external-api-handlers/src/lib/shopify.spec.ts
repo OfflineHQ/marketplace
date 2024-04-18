@@ -1,7 +1,4 @@
-import { decryptSecret } from '@crypto';
 import { adminSdk } from '@gql/admin/api';
-import { ApiKeyType_Enum } from '@gql/shared/types';
-import { getSecretApiKey } from '@integrations/api-keys';
 import {
   BadRequestError,
   InternalServerError,
@@ -58,15 +55,6 @@ describe('ShopifyWebhookAndApiHandler', () => {
         'x-shopify-client-id': 'validApiKey',
       }),
     } as unknown as NextRequest;
-
-    (getSecretApiKey as jest.Mock).mockResolvedValue({
-      type: ApiKeyType_Enum.Shopify,
-      encryptedIntegritySecret: 'encryptedSecret',
-      allowlist: 'https://example.myshopify.com',
-      organizerId: 'org123',
-    });
-
-    (decryptSecret as jest.Mock).mockReturnValue('decryptedSecret');
   });
 
   describe('extractAndVerifyShopifyRequest', () => {
@@ -107,13 +95,6 @@ describe('ShopifyWebhookAndApiHandler', () => {
       // Ensure the mock was called exactly once
       expect(verifySignatureMock).toHaveBeenCalledTimes(1);
     });
-    it('throws an error for an invalid API key', async () => {
-      (getSecretApiKey as jest.Mock).mockResolvedValueOnce(null); // Simulate invalid API key
-
-      await expect(
-        handler.extractAndVerifyShopifyRequest(mockRequest),
-      ).rejects.toThrow('Invalid signature');
-    });
 
     it('throws an error when required parameters are missing', async () => {
       mockRequest.nextUrl.searchParams.delete('shop'); // Remove a required parameter
@@ -122,69 +103,18 @@ describe('ShopifyWebhookAndApiHandler', () => {
         handler.extractAndVerifyShopifyRequest(mockRequest),
       ).rejects.toThrow('Missing shop');
     });
-  });
-  it('should throw an error when the API key type is not Shopify', async () => {
-    (getSecretApiKey as jest.Mock).mockResolvedValueOnce({
-      type: ApiKeyType_Enum.External, // Invalid API key type
-      encryptedIntegritySecret: 'encryptedSecret',
-      allowlist: 'https://example.myshopify.com',
-      organizerId: 'org123',
+
+    it('should throw an error when the timestamp is outside the allowed time difference', async () => {
+      mockRequest.nextUrl.searchParams.set(
+        'timestamp',
+        (Date.now() - 400 * 1000).toString(),
+      ); // Timestamp outside allowed range
+
+      await expect(
+        handler.extractAndVerifyShopifyRequest(mockRequest),
+      ).rejects.toThrow('Timestamp is older than 5 minutes');
     });
-
-    await expect(
-      handler.extractAndVerifyShopifyRequest(mockRequest),
-    ).rejects.toThrow('Invalid signature');
   });
-
-  it('should throw an error when the API key does not have an encryptedIntegritySecret', async () => {
-    (getSecretApiKey as jest.Mock).mockResolvedValueOnce({
-      type: ApiKeyType_Enum.Shopify,
-      encryptedIntegritySecret: undefined, // Missing encryptedIntegritySecret
-      allowlist: 'https://example.myshopify.com',
-      organizerId: 'org123',
-    });
-
-    await expect(
-      handler.extractAndVerifyShopifyRequest(mockRequest),
-    ).rejects.toThrow('Invalid signature');
-  });
-
-  it('should throw an error when the timestamp is outside the allowed time difference', async () => {
-    mockRequest.nextUrl.searchParams.set(
-      'timestamp',
-      (Date.now() - 400 * 1000).toString(),
-    ); // Timestamp outside allowed range
-
-    await expect(
-      handler.extractAndVerifyShopifyRequest(mockRequest),
-    ).rejects.toThrow('Timestamp is older than 5 minutes');
-  });
-
-  // it.skip('should throw an error when the origin is not in the allowlist', async () => {
-  //   (getSecretApiKey as jest.Mock).mockResolvedValueOnce({
-  //     type: ApiKeyType_Enum.Shopify,
-  //     encryptedIntegritySecret: 'encryptedSecret',
-  //     allowlist: 'https://example.myshopify.com',
-  //   });
-  //   mockRequest.nextUrl.searchParams.set('shop', 'invalid.myshopify.com'); // Invalid origin
-
-  //   await expect(
-  //     handler.extractAndVerifyShopifyRequest(mockRequest),
-  //   ).rejects.toThrow('Origin https://invalid.myshopify.com is not allowed.');
-  // });
-
-  // it.skip('should not throw an error when the allowlist is not defined', async () => {
-  //   verifySignatureMock.mockReturnValue(true);
-  //   (getSecretApiKey as jest.Mock).mockResolvedValueOnce({
-  //     type: ApiKeyType_Enum.Shopify,
-  //     encryptedIntegritySecret: 'encryptedSecret',
-  //     allowlist: undefined, // Allowlist not defined
-  //   });
-
-  //   await expect(
-  //     handler.extractAndVerifyShopifyRequest(mockRequest),
-  //   ).resolves.not.toThrow();
-  // });
 
   const createMockRequest = (params: URLSearchParams): NextRequest =>
     ({
@@ -204,13 +134,14 @@ describe('ShopifyWebhookAndApiHandler', () => {
         .fn()
         .mockResolvedValue({
           resultParams: {
+            email: 'test-email@example.com',
             password: 'test-password',
             ownerAddress: 'test-address',
           },
-          organizerId: 'org123',
         });
 
       shopifyHandler.serializeAndValidateParams = jest.fn().mockResolvedValue({
+        email: 'test-email@example.com',
         password: 'test-password',
         ownerAddress: 'test-address',
       });
@@ -227,13 +158,16 @@ describe('ShopifyWebhookAndApiHandler', () => {
       );
 
       const mintData = {
+        email: 'test-email@example.com',
         password: 'test-password',
         ownerAddress: 'test-address',
         contractAddress: 'test-contract',
         chainId: getCurrentChain().chainIdHex,
       };
 
-      mockLoyaltyCardSdk.mintWithPassword.mockResolvedValue({ success: true });
+      (mockLoyaltyCardSdk.mintWithPassword as jest.Mock).mockResolvedValue({
+        success: true,
+      });
 
       const options: MintLoyaltyCardOptions = {
         req: mockRequest,
@@ -301,7 +235,7 @@ describe('ShopifyWebhookAndApiHandler', () => {
         }),
       );
 
-      mockLoyaltyCardSdk.mintWithPassword.mockRejectedValue(
+      (mockLoyaltyCardSdk.mintWithPassword as jest.Mock).mockRejectedValue(
         new Error('Unexpected error'),
       );
       const options: MintLoyaltyCardOptions = {
@@ -325,7 +259,7 @@ describe('ShopifyWebhookAndApiHandler', () => {
         }),
       );
 
-      mockLoyaltyCardSdk.mintWithPassword.mockRejectedValue(
+      (mockLoyaltyCardSdk.mintWithPassword as jest.Mock).mockRejectedValue(
         new NotFoundError('No loyalty card found for this contract address'),
       );
       const options: MintLoyaltyCardOptions = {

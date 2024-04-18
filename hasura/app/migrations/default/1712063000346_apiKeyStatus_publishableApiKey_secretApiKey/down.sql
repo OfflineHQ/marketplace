@@ -1,6 +1,6 @@
 -- Could not auto-generate a down migration.
 -- Please write an appropriate down migration for the SQL below:
--- Create apiKeyStatus table
+-- -- Create apiKeyStatus table
 -- CREATE TABLE public."apiKeyStatus"(
 --   value text NOT NULL
 -- );
@@ -27,8 +27,7 @@
 --   ADD CONSTRAINT "apiKeyType_pkey" PRIMARY KEY (value);
 --
 -- INSERT INTO public."apiKeyType"(value)
---   VALUES ('SHOPIFY'), -- The secret API key is used for Shopify integration
--- ('EXTERNAL');
+--   VALUES ('EXTERNAL');
 --
 -- -- The secret API key is used for external integrations
 -- COMMENT ON TABLE "public"."apiKeyType" IS E'The apiKeyType table defines the possible types of API keys. It ensures data integrity and provides a centralized reference for the type field in the api key tables.';
@@ -44,7 +43,7 @@
 --   "organizerId" text NOT NULL,
 --   "expiresAt" timestamptz,
 --   "status" text DEFAULT 'ACTIVE' REFERENCES "public"."apiKeyStatus"("value") ON UPDATE NO ACTION ON DELETE NO ACTION,
---   "type" text NOT NULL DEFAULT 'SHOPIFY' REFERENCES "public"."apiKeyType"("value") ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   "type" text NOT NULL DEFAULT 'EXTERNAL' REFERENCES "public"."apiKeyType"("value") ON UPDATE NO ACTION ON DELETE NO ACTION,
 --   "created_at" timestamptz NOT NULL DEFAULT now(),
 --   "updated_at" timestamptz NOT NULL DEFAULT now(),
 --   UNIQUE ("apiKey")
@@ -82,7 +81,7 @@
 --   "allowlist" text NOT NULL DEFAULT '*',
 --   "expiresAt" timestamptz,
 --   "status" text DEFAULT 'ACTIVE' REFERENCES "public"."apiKeyStatus"("value") ON UPDATE NO ACTION ON DELETE NO ACTION,
---   "type" text NOT NULL DEFAULT 'SHOPIFY' REFERENCES "public"."apiKeyType"("value") ON UPDATE NO ACTION ON DELETE NO ACTION,
+--   "type" text NOT NULL DEFAULT 'EXTERNAL' REFERENCES "public"."apiKeyType"("value") ON UPDATE NO ACTION ON DELETE NO ACTION,
 --   "created_at" timestamptz NOT NULL DEFAULT now(),
 --   "updated_at" timestamptz NOT NULL DEFAULT now(),
 --   UNIQUE ("apiKey")
@@ -108,7 +107,7 @@
 --
 -- COMMENT ON COLUMN "public"."secretApiKey"."status" IS E'The current status of the secret API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED".';
 --
--- COMMENT ON COLUMN "public"."secretApiKey"."type" IS E'The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL".';
+-- COMMENT ON COLUMN "public"."secretApiKey"."type" IS E'The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible.';
 --
 -- -- Create trigger to set updated_at column on updates for secretApiKey
 -- CREATE TRIGGER set_secretApiKey_updated_at
