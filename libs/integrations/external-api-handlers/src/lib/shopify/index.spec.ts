@@ -10,6 +10,7 @@ import { LoyaltyCardNftWrapper } from '@nft/loyalty-card';
 import { NextRequest } from 'next/server';
 import { MintLoyaltyCardOptions, ShopifyWebhookAndApiHandler } from './index';
 
+jest.mock('@features/account/api');
 jest.mock('@integrations/api-keys');
 jest.mock('@crypto');
 jest.mock('@nft/loyalty-card', () => ({
@@ -134,14 +135,12 @@ describe('ShopifyWebhookAndApiHandler', () => {
         .fn()
         .mockResolvedValue({
           resultParams: {
-            email: 'test-email@example.com',
             password: 'test-password',
             ownerAddress: 'test-address',
           },
         });
 
       shopifyHandler.serializeAndValidateParams = jest.fn().mockResolvedValue({
-        email: 'test-email@example.com',
         password: 'test-password',
         ownerAddress: 'test-address',
       });
@@ -158,7 +157,6 @@ describe('ShopifyWebhookAndApiHandler', () => {
       );
 
       const mintData = {
-        email: 'test-email@example.com',
         password: 'test-password',
         ownerAddress: 'test-address',
         contractAddress: 'test-contract',

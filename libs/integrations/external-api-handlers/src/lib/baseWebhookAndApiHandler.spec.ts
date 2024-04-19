@@ -10,15 +10,34 @@ describe('BaseWebhookAndApiHandler', () => {
   });
 
   describe('verifySignature', () => {
-    it('should return true for a valid signature', () => {
+    it('should return true for a valid signature in base64', () => {
       const body = 'test-body';
       const signature = getHmacDigestFromString({
         body,
         secret: integritySecret,
         algorithm: 'sha256',
+        encoding: 'base64',
       });
       expect(
         handler.verifySignature({ integritySecret, body, signature }),
+      ).toBe(true);
+    });
+
+    it('should return true for a valid signature in hex', () => {
+      const body = 'test-body';
+      const signature = getHmacDigestFromString({
+        body,
+        secret: integritySecret,
+        algorithm: 'sha256',
+        encoding: 'hex',
+      });
+      expect(
+        handler.verifySignature({
+          integritySecret,
+          body,
+          signature,
+          encoding: 'hex',
+        }),
       ).toBe(true);
     });
 
@@ -40,6 +59,7 @@ describe('BaseWebhookAndApiHandler', () => {
         body: timestampedBody,
         secret: integritySecret,
         algorithm: 'sha256',
+        encoding: 'base64',
       });
       expect(
         handler.verifySignatureWithTimestamp({

@@ -35,7 +35,6 @@ export function isValidSignature({
   signature,
   ...props
 }: IsValidSignatureProps): boolean {
-  console.log(getHmacDigestFromString(props));
   return signature === getHmacDigestFromString(props);
 }
 
