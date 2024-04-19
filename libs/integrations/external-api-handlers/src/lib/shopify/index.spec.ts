@@ -1,7 +1,6 @@
 import { adminSdk } from '@gql/admin/api';
 import {
   BadRequestError,
-  InternalServerError,
   NotAuthorizedError,
   NotFoundError,
 } from '@next/api-handler';
@@ -16,6 +15,9 @@ jest.mock('@crypto');
 jest.mock('@nft/loyalty-card', () => ({
   LoyaltyCardNftWrapper: jest.fn().mockImplementation(() => ({
     mintWithPassword: jest.fn(),
+    mint: jest.fn(),
+    setAsMinted: jest.fn(),
+    getLoyaltyCardOwnedByAddress: jest.fn(),
   })),
 }));
 jest.mock('@gql/admin/api');
@@ -295,9 +297,11 @@ describe('ShopifyWebhookAndApiHandler', () => {
   describe('ShopifyWebhookAndApiHandler - hasLoyaltyCard', () => {
     let handler: ShopifyWebhookAndApiHandler;
     let mockRequest: NextRequest;
+    let mockLoyaltyCardSdk: LoyaltyCardNftWrapper;
 
     beforeEach(() => {
       handler = new ShopifyWebhookAndApiHandler();
+      mockLoyaltyCardSdk = new LoyaltyCardNftWrapper();
       mockRequest = createMockRequest(
         new URLSearchParams({
           ownerAddress: 'test-address',
@@ -306,8 +310,6 @@ describe('ShopifyWebhookAndApiHandler', () => {
           signature: 'validSignature',
         }),
       );
-
-      jest.resetAllMocks();
 
       handler.extractAndVerifyShopifyRequest = jest.fn().mockResolvedValue({
         resultParams: {
@@ -321,14 +323,21 @@ describe('ShopifyWebhookAndApiHandler', () => {
     });
 
     it('should return true when the NFT exists', async () => {
-      const response = await handler.hasLoyaltyCard(
-        { req: mockRequest },
-        'test-contract',
-      );
+      (
+        mockLoyaltyCardSdk.getLoyaltyCardOwnedByAddress as jest.Mock
+      ).mockResolvedValue({});
+      const response = await handler.hasLoyaltyCard({
+        req: mockRequest,
+        contractAddress: 'test-contract',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
+      });
+
       expect(response.status).toBe(200);
       expect(JSON.parse(response.body)).toEqual({ isOwned: true });
 
-      expect(adminSdk.GetLoyaltyCardOwnedByAddress).toHaveBeenCalledWith({
+      expect(
+        mockLoyaltyCardSdk.getLoyaltyCardOwnedByAddress,
+      ).toHaveBeenCalledWith({
         contractAddress: 'test-contract',
         ownerAddress: 'test-address',
         chainId: getCurrentChain().chainIdHex,
@@ -336,14 +345,15 @@ describe('ShopifyWebhookAndApiHandler', () => {
     });
 
     it('should return false when the NFT does not exist', async () => {
-      (adminSdk.GetLoyaltyCardOwnedByAddress as jest.Mock).mockResolvedValue({
-        loyaltyCardNft: [],
-      });
+      (
+        mockLoyaltyCardSdk.getLoyaltyCardOwnedByAddress as jest.Mock
+      ).mockResolvedValue(null);
 
-      const response = await handler.hasLoyaltyCard(
-        { req: mockRequest },
-        'test-contract',
-      );
+      const response = await handler.hasLoyaltyCard({
+        req: mockRequest,
+        contractAddress: 'test-contract',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
+      });
       expect(response.status).toBe(200);
       expect(JSON.parse(response.body)).toEqual({ isOwned: false });
     });
@@ -355,13 +365,15 @@ describe('ShopifyWebhookAndApiHandler', () => {
           new NotAuthorizedError('Not Authorized: Invalid API key'),
         );
 
-      await expect(
-        handler.hasLoyaltyCard({ req: mockRequest }, 'test-contract'),
-      ).rejects.toEqual(
+      const response = await handler.hasLoyaltyCard({
+        req: mockRequest,
+        contractAddress: 'test-contract',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
+      });
+      expect(response.status).toBe(403);
+      expect(JSON.parse(response.body)).toEqual(
         expect.objectContaining({
-          name: 'NotAuthorizedError',
-          message: expect.stringContaining('Not Authorized: Invalid API key'),
-          statusCode: 403,
+          error: expect.stringContaining('Not Authorized: Invalid API key'),
         }),
       );
     });
@@ -371,12 +383,16 @@ describe('ShopifyWebhookAndApiHandler', () => {
         .fn()
         .mockRejectedValue(new BadRequestError('Invalid query parameters'));
 
-      await expect(
-        handler.hasLoyaltyCard({ req: mockRequest }, 'test-contract'),
-      ).rejects.toEqual(
-        new BadRequestError(
-          'Invalid query parameters: Invalid query parameters',
-        ),
+      const response = await handler.hasLoyaltyCard({
+        req: mockRequest,
+        contractAddress: 'test-contract',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
+      });
+      expect(response.status).toBe(400);
+      expect(JSON.parse(response.body)).toEqual(
+        expect.objectContaining({
+          error: expect.stringContaining('Invalid query parameters'),
+        }),
       );
     });
 
@@ -384,13 +400,153 @@ describe('ShopifyWebhookAndApiHandler', () => {
       (adminSdk.GetLoyaltyCardOwnedByAddress as jest.Mock).mockRejectedValue(
         new Error('Unexpected error'),
       );
+      const response = await handler.hasLoyaltyCard({
+        req: mockRequest,
+        contractAddress: 'test-contract',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
+      });
+      expect(response.status).toBe(500);
+      expect(JSON.parse(response.body)).toEqual(
+        expect.objectContaining({
+          error: expect.stringContaining('Internal Server Error'),
+        }),
+      );
+    });
+  });
+  describe('ShopifyWebhookAndApiHandler - mintLoyaltyCardWithCustomerId', () => {
+    let handler: ShopifyWebhookAndApiHandler;
+    let mockRequest: NextRequest;
+    let mockLoyaltyCardSdk: LoyaltyCardNftWrapper;
 
-      await expect(
-        handler.hasLoyaltyCard({ req: mockRequest }, 'test-contract'),
-      ).rejects.toEqual(
-        new InternalServerError(
-          'Error checking NFT existence: Unexpected error',
-        ),
+    beforeEach(() => {
+      handler = new ShopifyWebhookAndApiHandler();
+      mockLoyaltyCardSdk = new LoyaltyCardNftWrapper();
+
+      mockRequest = createMockRequest(
+        new URLSearchParams({
+          ownerAddress: 'test-address',
+          customerId: 'test-customer-id',
+          shop: 'example.myshopify.com',
+          timestamp: Date.now().toString(),
+          signature: 'validSignature',
+        }),
+      );
+
+      handler.extractAndVerifyShopifyRequest = jest.fn().mockResolvedValue({
+        resultParams: {
+          ownerAddress: 'test-address',
+          customerId: 'test-customer-id',
+        },
+        organizerId: 'test-organizer-id',
+      });
+
+      (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
+        shopifyCustomer: [
+          {
+            address: 'test-address',
+          },
+        ],
+      });
+    });
+
+    it('should successfully mint a loyalty card with a valid customer ID', async () => {
+      (mockLoyaltyCardSdk.mint as jest.Mock).mockResolvedValue({
+        success: true,
+      });
+      const response = await handler.mintLoyaltyCardWithCustomerId({
+        req: mockRequest,
+        contractAddress: 'test-contract',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
+      });
+      expect(response.status).toBe(200);
+      expect(mockLoyaltyCardSdk.mint).toHaveBeenCalledWith({
+        contractAddress: 'test-contract',
+        ownerAddress: 'test-address',
+        chainId: getCurrentChain().chainIdHex,
+        organizerId: 'test-organizer-id',
+      });
+      expect(adminSdk.InsertShopifyCustomer).not.toHaveBeenCalled();
+    });
+
+    it('should create a new Shopify customer if one does not exist', async () => {
+      (mockLoyaltyCardSdk.mint as jest.Mock).mockResolvedValue({
+        success: true,
+      });
+      (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
+        shopifyCustomer: [],
+      });
+
+      await handler.mintLoyaltyCardWithCustomerId({
+        req: mockRequest,
+        contractAddress: 'test-contract',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
+      });
+
+      expect(adminSdk.InsertShopifyCustomer).toHaveBeenCalledWith({
+        object: {
+          organizerId: 'test-organizer-id',
+          customerId: 'test-customer-id',
+          address: 'test-address',
+        },
+      });
+    });
+
+    it('should throw NotAuthorizedError if the owner address does not match the customer address', async () => {
+      (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
+        shopifyCustomer: [
+          {
+            address: 'different-address',
+          },
+        ],
+      });
+
+      const response = await handler.mintLoyaltyCardWithCustomerId({
+        req: mockRequest,
+        contractAddress: 'test-contract',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
+      });
+
+      expect(response.status).toBe(403);
+      expect(JSON.parse(response.body)).toEqual(
+        expect.objectContaining({
+          error: expect.stringContaining('Invalid owner address'),
+        }),
+      );
+    });
+
+    it('should throw the custom error from LoyaltyCardNftWrapper', async () => {
+      (mockLoyaltyCardSdk.mint as jest.Mock).mockRejectedValue(
+        new BadRequestError('Test error'),
+      );
+
+      const response = await handler.mintLoyaltyCardWithCustomerId({
+        req: mockRequest,
+        contractAddress: 'test-contract',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
+      });
+      expect(response.status).toBe(400);
+      expect(JSON.parse(response.body)).toEqual(
+        expect.objectContaining({
+          error: expect.stringContaining('Test error'),
+        }),
+      );
+    });
+
+    it('should wrap non-custom errors in InternalServerError', async () => {
+      (mockLoyaltyCardSdk.mint as jest.Mock).mockRejectedValue(
+        new Error('Unknown error'),
+      );
+
+      const response = await handler.mintLoyaltyCardWithCustomerId({
+        req: mockRequest,
+        contractAddress: 'test-contract',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
+      });
+      expect(response.status).toBe(500);
+      expect(JSON.parse(response.body)).toEqual(
+        expect.objectContaining({
+          error: expect.any(String),
+        }),
       );
     });
   });

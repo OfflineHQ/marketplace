@@ -60,6 +60,68 @@ describe('LoyaltyCardNftWrapper', () => {
     });
   });
 
+  describe('mint', () => {
+    it('should mint a loyalty card', async () => {
+      jest
+        .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardOwnedByAddress')
+        .mockResolvedValue(null);
+      jest
+        .spyOn(
+          loyaltyCardNftWrapper,
+          'getLoyaltyCardNftContractByContractAddress',
+        )
+        .mockResolvedValue({
+          loyaltyCardId: '1',
+        });
+
+      await loyaltyCardNftWrapper.mint(mockInputData);
+
+      expect(adminSdk.InsertLoyaltyCardNft).toHaveBeenCalledWith({
+        object: {
+          loyaltyCardId: '1',
+          status: NftStatus_Enum.Confirmed,
+          ...mockInputData,
+        },
+      });
+    });
+
+    it('should throw an error if the loyalty card is already minted', async () => {
+      const mockLoyaltyCard = {
+        id: '1',
+        status: NftStatus_Enum.Confirmed,
+        organizerId: '1',
+      };
+      jest
+        .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardOwnedByAddress')
+        .mockResolvedValue(mockLoyaltyCard);
+
+      await expect(loyaltyCardNftWrapper.mint(mockInputData)).rejects.toThrow(
+        'Loyalty card already minted',
+      );
+    });
+
+    it('should throw an error if no loyalty card is found for the contract address', async () => {
+      const mockLoyaltyCard = {
+        id: '1',
+        status: NftStatus_Enum.Burned,
+        organizerId: '1',
+      };
+      jest
+        .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardOwnedByAddress')
+        .mockResolvedValue(mockLoyaltyCard);
+      jest
+        .spyOn(
+          loyaltyCardNftWrapper,
+          'getLoyaltyCardNftContractByContractAddress',
+        )
+        .mockResolvedValue(null);
+
+      await expect(loyaltyCardNftWrapper.mint(mockInputData)).rejects.toThrow(
+        'No loyalty card found for this contract address',
+      );
+    });
+  });
+
   describe('mintWithPassword', () => {
     it('should mint a loyalty card with password', async () => {
       const mockLoyaltyCard = {
@@ -78,7 +140,6 @@ describe('LoyaltyCardNftWrapper', () => {
         )
         .mockResolvedValue({
           loyaltyCardId: '1',
-          organizerId: '1',
         });
       (
         MintPasswordNftWrapper.prototype.evaluateNftMintPassword as jest.Mock
