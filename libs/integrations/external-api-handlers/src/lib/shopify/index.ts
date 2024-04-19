@@ -17,20 +17,32 @@ import { getErrorMessage } from '@utils';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { BaseWebhookAndApiHandler } from '../baseWebhookAndApiHandler';
-import { HasLoyaltyCardParams, MintLoyaltyCardParams } from './validators';
+import {
+  HasLoyaltyCardParams,
+  MintLoyaltyCardWithCustomerIdParams,
+  MintLoyaltyCardWithPasswordParams,
+} from './validators';
 
 export enum RequestType {
-  MintLoyaltyCard = 'MintLoyaltyCard',
+  MintLoyaltyCardWithPassword = 'MintLoyaltyCardWithPassword',
+  MintLoyaltyCardWithCustomerId = 'MintLoyaltyCardWithCustomerId',
   HasLoyaltyCard = 'HasLoyaltyCard',
 }
 
 const requestTypeValidators = {
-  [RequestType.MintLoyaltyCard]: MintLoyaltyCardParams,
+  [RequestType.MintLoyaltyCardWithPassword]: MintLoyaltyCardWithPasswordParams,
+  [RequestType.MintLoyaltyCardWithCustomerId]:
+    MintLoyaltyCardWithCustomerIdParams,
   [RequestType.HasLoyaltyCard]: HasLoyaltyCardParams,
 };
 
 type RequestTypeToValidator = {
-  [RequestType.MintLoyaltyCard]: z.infer<typeof MintLoyaltyCardParams>;
+  [RequestType.MintLoyaltyCardWithPassword]: z.infer<
+    typeof MintLoyaltyCardWithPasswordParams
+  >;
+  [RequestType.MintLoyaltyCardWithCustomerId]: z.infer<
+    typeof MintLoyaltyCardWithCustomerIdParams
+  >;
   [RequestType.HasLoyaltyCard]: z.infer<typeof HasLoyaltyCardParams>;
 };
 
@@ -91,6 +103,25 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     };
   }
 
+  private async extractAndValidateShopifyParams<T extends RequestType>(
+    req: NextRequest,
+    requestType: T,
+  ): Promise<RequestTypeToValidator[T]> {
+    const { resultParams } = await this.extractAndVerifyShopifyRequest(
+      req,
+    ).catch((error) => {
+      throw new NotAuthorizedError('Not Authorized: ' + getErrorMessage(error));
+    });
+
+    return this.serializeAndValidateParams(requestType, resultParams).catch(
+      (error: Error) => {
+        throw new BadRequestError(
+          'Invalid query parameters: ' + getErrorMessage(error),
+        );
+      },
+    );
+  }
+
   private populateQueryHash(searchParams: URLSearchParams): string {
     // Create a new instance of URLSearchParams to ensure we're not modifying the original
     const filteredParams = new URLSearchParams(searchParams);
@@ -130,6 +161,27 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     });
   }
 
+  mintLoyaltyCardWithCustomerId = handleApiRequest<MintLoyaltyCardOptions>(
+    async (options) => {
+      // Destructure options and provide default value for loyaltyCardSdk
+      const { req, contractAddress } = options;
+
+      const loyaltyCardSdk =
+        options.loyaltyCardSdk || new LoyaltyCardNftWrapper();
+
+      const { ownerAddress, customerId } =
+        await this.extractAndValidateShopifyParams(
+          req,
+          RequestType.MintLoyaltyCardWithCustomerId,
+        );
+
+      return new NextResponse(JSON.stringify({}), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    },
+  );
+
   // deprecated (replaced by mintLoyaltyCardWithCustomerId)
   mintLoyaltyCardWithPassword = handleApiRequest<MintLoyaltyCardOptions>(
     async (options) => {
@@ -139,24 +191,10 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       const loyaltyCardSdk =
         options.loyaltyCardSdk || new LoyaltyCardNftWrapper();
 
-      // Extract and verify Shopify request
-      const { resultParams } = await this.extractAndVerifyShopifyRequest(
+      const validatedParams = await this.extractAndValidateShopifyParams(
         req,
-      ).catch((error) => {
-        throw new NotAuthorizedError(
-          'Not Authorized: ' + getErrorMessage(error),
-        );
-      });
-
-      // Serialize and validate parameters
-      const validatedParams = await this.serializeAndValidateParams(
-        RequestType.MintLoyaltyCard,
-        resultParams,
-      ).catch((error: Error) => {
-        throw new BadRequestError(
-          'Invalid query parameters: ' + getErrorMessage(error),
-        );
-      });
+        RequestType.MintLoyaltyCardWithPassword,
+      );
 
       // Prepare data for minting
       const mintData: MintLoyaltyCardWithPasswordProps = {
@@ -196,20 +234,10 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
   async hasLoyaltyCard(options: ApiHandlerOptions, contractAddress: string) {
     const { req } = options;
 
-    const { resultParams } = await this.extractAndVerifyShopifyRequest(
+    const { ownerAddress } = await this.extractAndValidateShopifyParams(
       req,
-    ).catch((error) => {
-      throw new NotAuthorizedError('Not Authorized: ' + getErrorMessage(error));
-    });
-
-    const { ownerAddress } = await this.serializeAndValidateParams(
       RequestType.HasLoyaltyCard,
-      resultParams,
-    ).catch((error: Error) => {
-      throw new BadRequestError(
-        'Invalid query parameters: ' + getErrorMessage(error),
-      );
-    });
+    );
 
     const nftExists = await this.checkNftExistence(
       ownerAddress,
