@@ -8163,8 +8163,7 @@ export const enum ApiKeyType_Constraint {
 };
 
 export const enum ApiKeyType_Enum {
-  External = 'EXTERNAL',
-  Shopify = 'SHOPIFY'
+  External = 'EXTERNAL'
 };
 
 /** Boolean expression to compare columns of type "apiKeyType_enum". All fields are combined with logical 'AND'. */
@@ -14026,6 +14025,12 @@ export type Mutation_Root = {
   delete_shopifyCampaignStatus?: Maybe<ShopifyCampaignStatus_Mutation_Response>;
   /** delete single row from the table: "shopifyCampaignStatus" */
   delete_shopifyCampaignStatus_by_pk?: Maybe<ShopifyCampaignStatus>;
+  /** delete data from the table: "shopifyCustomer" */
+  delete_shopifyCustomer?: Maybe<ShopifyCustomer_Mutation_Response>;
+  /** delete data from the table: "shopifyDomain" */
+  delete_shopifyDomain?: Maybe<ShopifyDomain_Mutation_Response>;
+  /** delete single row from the table: "shopifyDomain" */
+  delete_shopifyDomain_by_pk?: Maybe<ShopifyDomain>;
   /** delete data from the table: "stampNft" */
   delete_stampNft?: Maybe<StampNft_Mutation_Response>;
   /** delete data from the table: "stampNftContract" */
@@ -14234,6 +14239,14 @@ export type Mutation_Root = {
   insert_shopifyCampaignStatus?: Maybe<ShopifyCampaignStatus_Mutation_Response>;
   /** insert a single row into the table: "shopifyCampaignStatus" */
   insert_shopifyCampaignStatus_one?: Maybe<ShopifyCampaignStatus>;
+  /** insert data into the table: "shopifyCustomer" */
+  insert_shopifyCustomer?: Maybe<ShopifyCustomer_Mutation_Response>;
+  /** insert a single row into the table: "shopifyCustomer" */
+  insert_shopifyCustomer_one?: Maybe<ShopifyCustomer>;
+  /** insert data into the table: "shopifyDomain" */
+  insert_shopifyDomain?: Maybe<ShopifyDomain_Mutation_Response>;
+  /** insert a single row into the table: "shopifyDomain" */
+  insert_shopifyDomain_one?: Maybe<ShopifyDomain>;
   /** insert data into the table: "stampNft" */
   insert_stampNft?: Maybe<StampNft_Mutation_Response>;
   /** insert data into the table: "stampNftContract" */
@@ -14706,6 +14719,16 @@ export type Mutation_Root = {
   update_shopifyCampaignStatus_by_pk?: Maybe<ShopifyCampaignStatus>;
   /** update multiples rows of table: "shopifyCampaignStatus" */
   update_shopifyCampaignStatus_many?: Maybe<Array<Maybe<ShopifyCampaignStatus_Mutation_Response>>>;
+  /** update data of the table: "shopifyCustomer" */
+  update_shopifyCustomer?: Maybe<ShopifyCustomer_Mutation_Response>;
+  /** update multiples rows of table: "shopifyCustomer" */
+  update_shopifyCustomer_many?: Maybe<Array<Maybe<ShopifyCustomer_Mutation_Response>>>;
+  /** update data of the table: "shopifyDomain" */
+  update_shopifyDomain?: Maybe<ShopifyDomain_Mutation_Response>;
+  /** update single row of the table: "shopifyDomain" */
+  update_shopifyDomain_by_pk?: Maybe<ShopifyDomain>;
+  /** update multiples rows of table: "shopifyDomain" */
+  update_shopifyDomain_many?: Maybe<Array<Maybe<ShopifyDomain_Mutation_Response>>>;
   /** update data of the table: "stampNft" */
   update_stampNft?: Maybe<StampNft_Mutation_Response>;
   /** update data of the table: "stampNftContract" */
@@ -15549,6 +15572,24 @@ export type Mutation_RootDelete_ShopifyCampaignStatus_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_ShopifyCustomerArgs = {
+  where: ShopifyCustomer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ShopifyDomainArgs = {
+  where: ShopifyDomain_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ShopifyDomain_By_PkArgs = {
+  domain: Scalars['String']['input'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_StampNftArgs = {
   where: StampNft_Bool_Exp;
 };
@@ -16258,6 +16299,34 @@ export type Mutation_RootInsert_ShopifyCampaignStatusArgs = {
 export type Mutation_RootInsert_ShopifyCampaignStatus_OneArgs = {
   object: ShopifyCampaignStatus_Insert_Input;
   on_conflict?: InputMaybe<ShopifyCampaignStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ShopifyCustomerArgs = {
+  objects: Array<ShopifyCustomer_Insert_Input>;
+  on_conflict?: InputMaybe<ShopifyCustomer_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ShopifyCustomer_OneArgs = {
+  object: ShopifyCustomer_Insert_Input;
+  on_conflict?: InputMaybe<ShopifyCustomer_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ShopifyDomainArgs = {
+  objects: Array<ShopifyDomain_Insert_Input>;
+  on_conflict?: InputMaybe<ShopifyDomain_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ShopifyDomain_OneArgs = {
+  object: ShopifyDomain_Insert_Input;
+  on_conflict?: InputMaybe<ShopifyDomain_On_Conflict>;
 };
 
 
@@ -18218,6 +18287,39 @@ export type Mutation_RootUpdate_ShopifyCampaignStatus_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_ShopifyCampaignStatus_ManyArgs = {
   updates: Array<ShopifyCampaignStatus_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyCustomerArgs = {
+  _set?: InputMaybe<ShopifyCustomer_Set_Input>;
+  where: ShopifyCustomer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyCustomer_ManyArgs = {
+  updates: Array<ShopifyCustomer_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyDomainArgs = {
+  _set?: InputMaybe<ShopifyDomain_Set_Input>;
+  where: ShopifyDomain_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyDomain_By_PkArgs = {
+  _set?: InputMaybe<ShopifyDomain_Set_Input>;
+  pk_columns: ShopifyDomain_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyDomain_ManyArgs = {
+  updates: Array<ShopifyDomain_Updates>;
 };
 
 
@@ -23161,6 +23263,16 @@ export type Query_Root = {
   shopifyCampaignStatus_aggregate: ShopifyCampaignStatus_Aggregate;
   /** fetch data from the table: "shopifyCampaignStatus" using primary key columns */
   shopifyCampaignStatus_by_pk?: Maybe<ShopifyCampaignStatus>;
+  /** fetch data from the table: "shopifyCustomer" */
+  shopifyCustomer: Array<ShopifyCustomer>;
+  /** fetch aggregated fields from the table: "shopifyCustomer" */
+  shopifyCustomer_aggregate: ShopifyCustomer_Aggregate;
+  /** fetch data from the table: "shopifyDomain" */
+  shopifyDomain: Array<ShopifyDomain>;
+  /** fetch aggregated fields from the table: "shopifyDomain" */
+  shopifyDomain_aggregate: ShopifyDomain_Aggregate;
+  /** fetch data from the table: "shopifyDomain" using primary key columns */
+  shopifyDomain_by_pk?: Maybe<ShopifyDomain>;
   /** fetch data from the table: "stampNft" */
   stampNft: Array<StampNft>;
   /** fetch data from the table: "stampNftContract" */
@@ -24611,6 +24723,47 @@ export type Query_RootShopifyCampaignStatus_By_PkArgs = {
 };
 
 
+export type Query_RootShopifyCustomerArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCustomer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCustomer_Order_By>>;
+  where?: InputMaybe<ShopifyCustomer_Bool_Exp>;
+};
+
+
+export type Query_RootShopifyCustomer_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCustomer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCustomer_Order_By>>;
+  where?: InputMaybe<ShopifyCustomer_Bool_Exp>;
+};
+
+
+export type Query_RootShopifyDomainArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyDomain_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyDomain_Order_By>>;
+  where?: InputMaybe<ShopifyDomain_Bool_Exp>;
+};
+
+
+export type Query_RootShopifyDomain_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyDomain_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyDomain_Order_By>>;
+  where?: InputMaybe<ShopifyDomain_Bool_Exp>;
+};
+
+
+export type Query_RootShopifyDomain_By_PkArgs = {
+  domain: Scalars['String']['input'];
+};
+
+
 export type Query_RootStampNftArgs = {
   distinct_on?: InputMaybe<Array<StampNft_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -25331,7 +25484,7 @@ export type SecretApiKey = {
   originSecretSalt?: Maybe<Scalars['String']['output']>;
   /** The current status of the secret API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
   status?: Maybe<ApiKeyStatus_Enum>;
-  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL". */
+  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. */
   type: ApiKeyType_Enum;
   updated_at: Scalars['timestamptz']['output'];
 };
@@ -25408,7 +25561,7 @@ export type SecretApiKey_Insert_Input = {
   originSecretSalt?: InputMaybe<Scalars['String']['input']>;
   /** The current status of the secret API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
   status?: InputMaybe<ApiKeyStatus_Enum>;
-  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL". */
+  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. */
   type?: InputMaybe<ApiKeyType_Enum>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
@@ -25551,7 +25704,7 @@ export type SecretApiKey_Set_Input = {
   originSecretSalt?: InputMaybe<Scalars['String']['input']>;
   /** The current status of the secret API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
   status?: InputMaybe<ApiKeyStatus_Enum>;
-  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL". */
+  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. */
   type?: InputMaybe<ApiKeyType_Enum>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
@@ -25586,7 +25739,7 @@ export type SecretApiKey_Stream_Cursor_Value_Input = {
   originSecretSalt?: InputMaybe<Scalars['String']['input']>;
   /** The current status of the secret API key, referencing the apiKeyStatus table. It can be "ACTIVE" (default), "DISABLED", or "EXPIRED". */
   status?: InputMaybe<ApiKeyStatus_Enum>;
-  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL". */
+  /** The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. */
   type?: InputMaybe<ApiKeyType_Enum>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
@@ -25998,6 +26151,378 @@ export type ShopifyCampaignStatus_Updates = {
   _set?: InputMaybe<ShopifyCampaignStatus_Set_Input>;
   /** filter the rows which have to be updated */
   where: ShopifyCampaignStatus_Bool_Exp;
+};
+
+/** This table stores the link between the offline accounts and Shopify customer IDs. It allows organizers to manage customer data seamlessly across platforms without needing to handle sensitive personal information directly. */
+export type ShopifyCustomer = {
+  __typename?: 'shopifyCustomer';
+  /** Reference to the account table, ensuring that customer data is associated with a unique account address. */
+  address: Scalars['String']['output'];
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The unique identifier for the customer as stored in Shopify. This links the internal account to the Shopify customer record, facilitating integrated data management across systems. */
+  customerId: Scalars['String']['output'];
+  /** Unique identifier for each entry, generated automatically as a UUID. */
+  id: Scalars['uuid']['output'];
+  /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
+  organizerId: Scalars['String']['output'];
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregated selection of "shopifyCustomer" */
+export type ShopifyCustomer_Aggregate = {
+  __typename?: 'shopifyCustomer_aggregate';
+  aggregate?: Maybe<ShopifyCustomer_Aggregate_Fields>;
+  nodes: Array<ShopifyCustomer>;
+};
+
+/** aggregate fields of "shopifyCustomer" */
+export type ShopifyCustomer_Aggregate_Fields = {
+  __typename?: 'shopifyCustomer_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<ShopifyCustomer_Max_Fields>;
+  min?: Maybe<ShopifyCustomer_Min_Fields>;
+};
+
+
+/** aggregate fields of "shopifyCustomer" */
+export type ShopifyCustomer_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<ShopifyCustomer_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "shopifyCustomer". All fields are combined with a logical 'AND'. */
+export type ShopifyCustomer_Bool_Exp = {
+  _and?: InputMaybe<Array<ShopifyCustomer_Bool_Exp>>;
+  _not?: InputMaybe<ShopifyCustomer_Bool_Exp>;
+  _or?: InputMaybe<Array<ShopifyCustomer_Bool_Exp>>;
+  address?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  customerId?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "shopifyCustomer" */
+export const enum ShopifyCustomer_Constraint {
+  /** unique or primary key constraint on columns "customerId", "address", "organizerId" */
+  ShopifyCustomerAddressOrganizerIdCustomerIdKey = 'shopifyCustomer_address_organizerId_customerId_key'
+};
+
+/** input type for inserting data into table "shopifyCustomer" */
+export type ShopifyCustomer_Insert_Input = {
+  /** Reference to the account table, ensuring that customer data is associated with a unique account address. */
+  address?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The unique identifier for the customer as stored in Shopify. This links the internal account to the Shopify customer record, facilitating integrated data management across systems. */
+  customerId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique identifier for each entry, generated automatically as a UUID. */
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type ShopifyCustomer_Max_Fields = {
+  __typename?: 'shopifyCustomer_max_fields';
+  /** Reference to the account table, ensuring that customer data is associated with a unique account address. */
+  address?: Maybe<Scalars['String']['output']>;
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The unique identifier for the customer as stored in Shopify. This links the internal account to the Shopify customer record, facilitating integrated data management across systems. */
+  customerId?: Maybe<Scalars['String']['output']>;
+  /** Unique identifier for each entry, generated automatically as a UUID. */
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type ShopifyCustomer_Min_Fields = {
+  __typename?: 'shopifyCustomer_min_fields';
+  /** Reference to the account table, ensuring that customer data is associated with a unique account address. */
+  address?: Maybe<Scalars['String']['output']>;
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The unique identifier for the customer as stored in Shopify. This links the internal account to the Shopify customer record, facilitating integrated data management across systems. */
+  customerId?: Maybe<Scalars['String']['output']>;
+  /** Unique identifier for each entry, generated automatically as a UUID. */
+  id?: Maybe<Scalars['uuid']['output']>;
+  /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "shopifyCustomer" */
+export type ShopifyCustomer_Mutation_Response = {
+  __typename?: 'shopifyCustomer_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ShopifyCustomer>;
+};
+
+/** on_conflict condition type for table "shopifyCustomer" */
+export type ShopifyCustomer_On_Conflict = {
+  constraint: ShopifyCustomer_Constraint;
+  update_columns?: Array<ShopifyCustomer_Update_Column>;
+  where?: InputMaybe<ShopifyCustomer_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "shopifyCustomer". */
+export type ShopifyCustomer_Order_By = {
+  address?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  customerId?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "shopifyCustomer" */
+export const enum ShopifyCustomer_Select_Column {
+  /** column name */
+  Address = 'address',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CustomerId = 'customerId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "shopifyCustomer" */
+export type ShopifyCustomer_Set_Input = {
+  /** Reference to the account table, ensuring that customer data is associated with a unique account address. */
+  address?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The unique identifier for the customer as stored in Shopify. This links the internal account to the Shopify customer record, facilitating integrated data management across systems. */
+  customerId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique identifier for each entry, generated automatically as a UUID. */
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "shopifyCustomer" */
+export type ShopifyCustomer_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: ShopifyCustomer_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ShopifyCustomer_Stream_Cursor_Value_Input = {
+  /** Reference to the account table, ensuring that customer data is associated with a unique account address. */
+  address?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The unique identifier for the customer as stored in Shopify. This links the internal account to the Shopify customer record, facilitating integrated data management across systems. */
+  customerId?: InputMaybe<Scalars['String']['input']>;
+  /** Unique identifier for each entry, generated automatically as a UUID. */
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "shopifyCustomer" */
+export const enum ShopifyCustomer_Update_Column {
+  /** column name */
+  Address = 'address',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CustomerId = 'customerId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizerId = 'organizerId',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type ShopifyCustomer_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<ShopifyCustomer_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: ShopifyCustomer_Bool_Exp;
+};
+
+/** This table is used to link and authenticate queries from Shopify to an organizer in our system. It stores the unique Shopify domains associated with each organizer, allowing for efficient lookup and validation of incoming requests. */
+export type ShopifyDomain = {
+  __typename?: 'shopifyDomain';
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records. */
+  domain: Scalars['String']['output'];
+  /** The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers. */
+  organizerId: Scalars['String']['output'];
+};
+
+/** aggregated selection of "shopifyDomain" */
+export type ShopifyDomain_Aggregate = {
+  __typename?: 'shopifyDomain_aggregate';
+  aggregate?: Maybe<ShopifyDomain_Aggregate_Fields>;
+  nodes: Array<ShopifyDomain>;
+};
+
+/** aggregate fields of "shopifyDomain" */
+export type ShopifyDomain_Aggregate_Fields = {
+  __typename?: 'shopifyDomain_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<ShopifyDomain_Max_Fields>;
+  min?: Maybe<ShopifyDomain_Min_Fields>;
+};
+
+
+/** aggregate fields of "shopifyDomain" */
+export type ShopifyDomain_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<ShopifyDomain_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "shopifyDomain". All fields are combined with a logical 'AND'. */
+export type ShopifyDomain_Bool_Exp = {
+  _and?: InputMaybe<Array<ShopifyDomain_Bool_Exp>>;
+  _not?: InputMaybe<ShopifyDomain_Bool_Exp>;
+  _or?: InputMaybe<Array<ShopifyDomain_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  domain?: InputMaybe<String_Comparison_Exp>;
+  organizerId?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "shopifyDomain" */
+export const enum ShopifyDomain_Constraint {
+  /** unique or primary key constraint on columns "domain" */
+  ShopifyDomainPkey = 'shopifyDomain_pkey'
+};
+
+/** input type for inserting data into table "shopifyDomain" */
+export type ShopifyDomain_Insert_Input = {
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records. */
+  domain?: InputMaybe<Scalars['String']['input']>;
+  /** The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type ShopifyDomain_Max_Fields = {
+  __typename?: 'shopifyDomain_max_fields';
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records. */
+  domain?: Maybe<Scalars['String']['output']>;
+  /** The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type ShopifyDomain_Min_Fields = {
+  __typename?: 'shopifyDomain_min_fields';
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records. */
+  domain?: Maybe<Scalars['String']['output']>;
+  /** The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers. */
+  organizerId?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "shopifyDomain" */
+export type ShopifyDomain_Mutation_Response = {
+  __typename?: 'shopifyDomain_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<ShopifyDomain>;
+};
+
+/** on_conflict condition type for table "shopifyDomain" */
+export type ShopifyDomain_On_Conflict = {
+  constraint: ShopifyDomain_Constraint;
+  update_columns?: Array<ShopifyDomain_Update_Column>;
+  where?: InputMaybe<ShopifyDomain_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "shopifyDomain". */
+export type ShopifyDomain_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  domain?: InputMaybe<Order_By>;
+  organizerId?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: shopifyDomain */
+export type ShopifyDomain_Pk_Columns_Input = {
+  /** The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records. */
+  domain: Scalars['String']['input'];
+};
+
+/** select columns of table "shopifyDomain" */
+export const enum ShopifyDomain_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Domain = 'domain',
+  /** column name */
+  OrganizerId = 'organizerId'
+};
+
+/** input type for updating data in table "shopifyDomain" */
+export type ShopifyDomain_Set_Input = {
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records. */
+  domain?: InputMaybe<Scalars['String']['input']>;
+  /** The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "shopifyDomain" */
+export type ShopifyDomain_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: ShopifyDomain_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ShopifyDomain_Stream_Cursor_Value_Input = {
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records. */
+  domain?: InputMaybe<Scalars['String']['input']>;
+  /** The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers. */
+  organizerId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "shopifyDomain" */
+export const enum ShopifyDomain_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Domain = 'domain',
+  /** column name */
+  OrganizerId = 'organizerId'
+};
+
+export type ShopifyDomain_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<ShopifyDomain_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: ShopifyDomain_Bool_Exp;
 };
 
 /** Stores information for each token type managed by a stampNftContract, focusing on unique token IDs and their associated metadata. */
@@ -27933,6 +28458,20 @@ export type Subscription_Root = {
   shopifyCampaignStatus_by_pk?: Maybe<ShopifyCampaignStatus>;
   /** fetch data from the table in a streaming manner: "shopifyCampaignStatus" */
   shopifyCampaignStatus_stream: Array<ShopifyCampaignStatus>;
+  /** fetch data from the table: "shopifyCustomer" */
+  shopifyCustomer: Array<ShopifyCustomer>;
+  /** fetch aggregated fields from the table: "shopifyCustomer" */
+  shopifyCustomer_aggregate: ShopifyCustomer_Aggregate;
+  /** fetch data from the table in a streaming manner: "shopifyCustomer" */
+  shopifyCustomer_stream: Array<ShopifyCustomer>;
+  /** fetch data from the table: "shopifyDomain" */
+  shopifyDomain: Array<ShopifyDomain>;
+  /** fetch aggregated fields from the table: "shopifyDomain" */
+  shopifyDomain_aggregate: ShopifyDomain_Aggregate;
+  /** fetch data from the table: "shopifyDomain" using primary key columns */
+  shopifyDomain_by_pk?: Maybe<ShopifyDomain>;
+  /** fetch data from the table in a streaming manner: "shopifyDomain" */
+  shopifyDomain_stream: Array<ShopifyDomain>;
   /** fetch data from the table: "stampNft" */
   stampNft: Array<StampNft>;
   /** fetch data from the table: "stampNftContract" */
@@ -29315,6 +29854,61 @@ export type Subscription_RootShopifyCampaignStatus_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<ShopifyCampaignStatus_Stream_Cursor_Input>>;
   where?: InputMaybe<ShopifyCampaignStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyCustomerArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCustomer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCustomer_Order_By>>;
+  where?: InputMaybe<ShopifyCustomer_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyCustomer_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyCustomer_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyCustomer_Order_By>>;
+  where?: InputMaybe<ShopifyCustomer_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyCustomer_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<ShopifyCustomer_Stream_Cursor_Input>>;
+  where?: InputMaybe<ShopifyCustomer_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyDomainArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyDomain_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyDomain_Order_By>>;
+  where?: InputMaybe<ShopifyDomain_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyDomain_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<ShopifyDomain_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<ShopifyDomain_Order_By>>;
+  where?: InputMaybe<ShopifyDomain_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyDomain_By_PkArgs = {
+  domain: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootShopifyDomain_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<ShopifyDomain_Stream_Cursor_Input>>;
+  where?: InputMaybe<ShopifyDomain_Bool_Exp>;
 };
 
 

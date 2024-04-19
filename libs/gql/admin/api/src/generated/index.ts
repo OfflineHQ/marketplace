@@ -1358,6 +1358,13 @@ ${EventParametersFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetShopifyDomainDocument = `
+    query GetShopifyDomain($domain: String!) @cached {
+  shopifyDomain_by_pk(domain: $domain) {
+    organizerId
+  }
+}
+    `;
  const GetEventPassNftByIdDocument = `
     query GetEventPassNftById($id: uuid!, $locale: Locale!, $stage: Stage!) @cached {
   eventPassNft_by_pk(id: $id) {
@@ -1784,6 +1791,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrganizerLatestEvents(variables: Types.GetOrganizerLatestEventsQueryVariables, options?: C): Promise<Types.GetOrganizerLatestEventsQuery> {
       return requester<Types.GetOrganizerLatestEventsQuery, Types.GetOrganizerLatestEventsQueryVariables>(GetOrganizerLatestEventsDocument, variables, options) as Promise<Types.GetOrganizerLatestEventsQuery>;
+    },
+    GetShopifyDomain(variables: Types.GetShopifyDomainQueryVariables, options?: C): Promise<Types.GetShopifyDomainQuery> {
+      return requester<Types.GetShopifyDomainQuery, Types.GetShopifyDomainQueryVariables>(GetShopifyDomainDocument, variables, options) as Promise<Types.GetShopifyDomainQuery>;
     },
     GetEventPassNftById(variables: Types.GetEventPassNftByIdQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdQuery> {
       return requester<Types.GetEventPassNftByIdQuery, Types.GetEventPassNftByIdQueryVariables>(GetEventPassNftByIdDocument, variables, options) as Promise<Types.GetEventPassNftByIdQuery>;
