@@ -17,7 +17,7 @@ import { getErrorMessage } from '@utils';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { BaseWebhookAndApiHandler } from '../baseWebhookAndApiHandler';
-import { MintLoyaltyCardParams, HasLoyaltyCardParams } from './validators';
+import { HasLoyaltyCardParams, MintLoyaltyCardParams } from './validators';
 
 export enum RequestType {
   MintLoyaltyCard = 'MintLoyaltyCard',
@@ -130,6 +130,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     });
   }
 
+  // deprecated (replaced by mintLoyaltyCardWithCustomerId)
   mintLoyaltyCardWithPassword = handleApiRequest<MintLoyaltyCardOptions>(
     async (options) => {
       // Destructure options and provide default value for loyaltyCardSdk
@@ -182,7 +183,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
           }
         });
       // get or create a new account
-      const account = await handleAccount({
+      await handleAccount({
         address: validatedParams.ownerAddress,
       });
       return new NextResponse(JSON.stringify(res), {

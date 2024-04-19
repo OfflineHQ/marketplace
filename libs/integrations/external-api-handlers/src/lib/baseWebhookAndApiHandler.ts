@@ -1,20 +1,23 @@
 import { getHmacDigestFromString, isValidSignature } from '@crypto';
 import { isOriginAllowed } from '@utils';
-import { timingSafeEqual } from 'crypto';
+import { BinaryToTextEncoding, timingSafeEqual } from 'crypto';
 
 interface VerifySignatureProps {
   integritySecret: string;
   body: string;
   signature: string;
+  encoding?: BinaryToTextEncoding;
 }
 
 interface VerifySignatureWithTimestampProps extends VerifySignatureProps {
   timestamp: string;
+  encoding?: BinaryToTextEncoding;
 }
 
 interface GenerateSignatureProps {
   body: string | object;
   secret: string;
+  encoding?: BinaryToTextEncoding;
 }
 
 export abstract class BaseWebhookAndApiHandler {
@@ -22,13 +25,14 @@ export abstract class BaseWebhookAndApiHandler {
     integritySecret,
     body,
     signature,
+    encoding = 'base64',
   }: VerifySignatureProps): boolean {
     return isValidSignature({
       algorithm: 'sha256',
       body,
       secret: integritySecret,
       signature,
-      encoding: 'base64',
+      encoding,
     });
   }
 
@@ -37,6 +41,7 @@ export abstract class BaseWebhookAndApiHandler {
     body,
     signature,
     timestamp,
+    encoding = 'base64',
   }: VerifySignatureWithTimestampProps): boolean {
     // Validate the timestamp
     try {
@@ -49,6 +54,7 @@ export abstract class BaseWebhookAndApiHandler {
       body: timestampedBody,
       secret: integritySecret,
       algorithm: 'sha256',
+      encoding,
     });
     return (
       Buffer.byteLength(signature) === Buffer.byteLength(expectedSignature) &&
@@ -91,26 +97,28 @@ export abstract class BaseWebhookAndApiHandler {
    * @param {string} secret - The secret used for generating the HMAC signature.
    * @returns { signature: string, timestampedBody: string } - The signature and the body with a timestamp.
    */
-  generateSignatureWithBody({ body, secret }: GenerateSignatureProps): {
-    signature: string;
-    body: string;
-  } {
+  generateSignatureWithBody({
+    body,
+    secret,
+    encoding = 'base64',
+  }: GenerateSignatureProps) {
     const bodyString = typeof body === 'object' ? JSON.stringify(body) : body;
 
     const signature = getHmacDigestFromString({
       body: bodyString,
       secret,
       algorithm: 'sha256',
+      encoding,
     });
 
     return { signature, body: bodyString };
   }
 
-  generateSignatureAndTimestamp({ body, secret }: GenerateSignatureProps): {
-    signature: string;
-    timestamp: string;
-    body: string;
-  } {
+  generateSignatureAndTimestamp({
+    body,
+    secret,
+    encoding = 'base64',
+  }: GenerateSignatureProps) {
     const timestamp = Math.floor(Date.now()).toString();
     const bodyString = typeof body === 'object' ? JSON.stringify(body) : body;
     const timestampedBody = `${bodyString}|${timestamp}`; // Combine for signature generation
@@ -119,6 +127,7 @@ export abstract class BaseWebhookAndApiHandler {
       body: timestampedBody,
       secret,
       algorithm: 'sha256',
+      encoding,
     });
 
     // Note: Send the original body, this signature, and the timestamp in your request
