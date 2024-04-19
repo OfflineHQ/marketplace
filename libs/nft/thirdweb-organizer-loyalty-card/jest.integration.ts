@@ -9,4 +9,5 @@ export default {
   coverageDirectory:
     '../../../coverage/libs/nft/thirdweb-organizer-loyalty-card-integration',
   testMatch: ['**/*.integration.test.ts'],
+  maxWorkers: 1,
 };
