@@ -98,28 +98,40 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     const signature = searchParams.get('signature');
     if (!signature || !this.verifyRequestSignature(queryHash, signature))
       throw new Error('Invalid signature');
+    const res = await adminSdk.GetShopifyDomain({
+      domain: shop,
+    });
+    if (!res?.shopifyDomain_by_pk) {
+      throw new Error(`Shopify domain ${shop} not found`);
+    }
     return {
       resultParams,
+      organizerId: res.shopifyDomain_by_pk.organizerId,
     };
   }
 
   private async extractAndValidateShopifyParams<T extends RequestType>(
     req: NextRequest,
     requestType: T,
-  ): Promise<RequestTypeToValidator[T]> {
-    const { resultParams } = await this.extractAndVerifyShopifyRequest(
-      req,
-    ).catch((error) => {
-      throw new NotAuthorizedError('Not Authorized: ' + getErrorMessage(error));
-    });
-
-    return this.serializeAndValidateParams(requestType, resultParams).catch(
-      (error: Error) => {
-        throw new BadRequestError(
-          'Invalid query parameters: ' + getErrorMessage(error),
+  ): Promise<RequestTypeToValidator[T] & { organizerId: string }> {
+    const { resultParams, organizerId } =
+      await this.extractAndVerifyShopifyRequest(req).catch((error) => {
+        throw new NotAuthorizedError(
+          'Not Authorized: ' + getErrorMessage(error),
         );
-      },
-    );
+      });
+    const validatedParams = await this.serializeAndValidateParams(
+      requestType,
+      resultParams,
+    ).catch((error: Error) => {
+      throw new BadRequestError(
+        'Invalid query parameters: ' + getErrorMessage(error),
+      );
+    });
+    return {
+      ...validatedParams,
+      organizerId,
+    };
   }
 
   private populateQueryHash(searchParams: URLSearchParams): string {

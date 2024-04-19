@@ -59,6 +59,15 @@ describe('ShopifyWebhookAndApiHandler', () => {
   });
 
   describe('extractAndVerifyShopifyRequest', () => {
+    beforeEach(() => {
+      (adminSdk.GetShopifyDomain as jest.Mock).mockResolvedValue({
+        shopifyDomain_by_pk: [
+          {
+            organizerId: 'test-organizer-id',
+          },
+        ],
+      });
+    });
     it('should call verifySignature with correct arguments and handle correct of signature', async () => {
       verifySignatureMock.mockReturnValue(true);
 
@@ -114,6 +123,17 @@ describe('ShopifyWebhookAndApiHandler', () => {
       await expect(
         handler.extractAndVerifyShopifyRequest(mockRequest),
       ).rejects.toThrow('Timestamp is older than 5 minutes');
+    });
+
+    it('throws an error when the shop is not found', async () => {
+      verifySignatureMock.mockReturnValue(true);
+      (adminSdk.GetShopifyDomain as jest.Mock).mockResolvedValueOnce({
+        shopifyDomain_by_pk: null, // Simulate shop not found
+      });
+
+      await expect(
+        handler.extractAndVerifyShopifyRequest(mockRequest),
+      ).rejects.toThrow(`Shopify domain example.myshopify.com not found`);
     });
   });
 
