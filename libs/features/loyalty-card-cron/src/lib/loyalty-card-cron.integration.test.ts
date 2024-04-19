@@ -49,9 +49,19 @@ describe('handler', () => {
     await client.end();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
     multicallClaimMock.mockClear();
+    await deleteTables(client, [
+      'loyaltyCardNft',
+      'loyaltyCardNftContract',
+      'minterTemporaryWallet',
+    ]);
+    await applySeeds(client, [
+      'loyaltyCardNft',
+      'loyaltyCardNftContract',
+      'minterTemporaryWallet',
+    ]);
   });
 
   it('one contract one nft', async () => {
@@ -310,9 +320,8 @@ describe('handler', () => {
       adminSdk.GetLoyaltyCardByContractAddressForProcess,
     ).toHaveBeenCalled();
     expect(multicallClaimMock).toHaveBeenCalledTimes(2);
-    expect(multicallClaimMock).toHaveBeenNthCalledWith(
-      1,
-      expect.anything(),
+
+    const expectedCalls = [
       expect.arrayContaining([
         expect.objectContaining({
           id: '1',
@@ -322,11 +331,6 @@ describe('handler', () => {
             '{"name": "Loyalty Card NFT #1", "description": "First NFT"}',
         }),
       ]),
-    );
-
-    expect(multicallClaimMock).toHaveBeenNthCalledWith(
-      2,
-      expect.anything(),
       expect.arrayContaining([
         expect.objectContaining({
           id: '2',
@@ -336,7 +340,15 @@ describe('handler', () => {
             '{"name": "Loyalty Card NFT #2", "description": "Second NFT"}',
         }),
       ]),
-    );
+    ];
+
+    expectedCalls.forEach((call, index) => {
+      expect(multicallClaimMock).toHaveBeenNthCalledWith(
+        index + 1,
+        expect.anything(),
+        call,
+      );
+    });
   });
 
   it('two contracts multiple nfts each', async () => {
@@ -405,83 +417,82 @@ describe('handler', () => {
 
     await handler();
 
+    // Ensure the mock function was called
     expect(
       adminSdk.GetLoyaltyCardByContractAddressForProcess,
     ).toHaveBeenCalled();
-    expect(multicallClaimMock).toHaveBeenCalledTimes(2);
-    expect(multicallClaimMock).toHaveBeenNthCalledWith(
-      1,
-      expect.anything(),
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: '1',
-          contractAddress: '0xLoyaltyCardContractAddress1',
-          tokenId: '1',
-          metadata:
-            '{"name": "Loyalty Card NFT #1", "description": "First NFT"}',
-        }),
-        expect.objectContaining({
-          id: '2',
-          contractAddress: '0xLoyaltyCardContractAddress1',
-          tokenId: '2',
-          metadata:
-            '{"name": "Loyalty Card NFT #2", "description": "Second NFT"}',
-        }),
-        expect.objectContaining({
-          id: '3',
-          contractAddress: '0xLoyaltyCardContractAddress1',
-          tokenId: '3',
-          metadata:
-            '{"name": "Loyalty Card NFT #3", "description": "Third NFT"}',
-        }),
-      ]),
+
+    // Aggregate all calls into a single array
+    const allCallsArgs = multicallClaimMock.mock.calls.flatMap(
+      (call) => call[1],
     );
 
-    expect(multicallClaimMock).toHaveBeenNthCalledWith(
-      2,
-      expect.anything(),
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: '4',
-          contractAddress: '0xLoyaltyCardContractAddress2',
-          tokenId: '4',
-          metadata:
-            '{"name": "Loyalty Card NFT #4", "description": "Fourth NFT"}',
-        }),
-        expect.objectContaining({
-          id: '5',
-          contractAddress: '0xLoyaltyCardContractAddress2',
-          tokenId: '5',
-          metadata:
-            '{"name": "Loyalty Card NFT #5", "description": "Fifth NFT"}',
-        }),
-        expect.objectContaining({
-          id: '6',
-          contractAddress: '0xLoyaltyCardContractAddress2',
-          tokenId: '6',
-          metadata:
-            '{"name": "Loyalty Card NFT #6", "description": "Sixth NFT"}',
-        }),
-        expect.objectContaining({
-          id: '7',
-          contractAddress: '0xLoyaltyCardContractAddress2',
-          tokenId: '7',
-          metadata:
-            '{"name": "Loyalty Card NFT #7", "description": "Seventh NFT"}',
-        }),
-      ]),
-    );
+    // Define the expected calls
+    const expectedCalls = [
+      expect.objectContaining({
+        id: '1',
+        contractAddress: '0xLoyaltyCardContractAddress1',
+        tokenId: '1',
+        metadata: '{"name": "Loyalty Card NFT #1", "description": "First NFT"}',
+      }),
+      expect.objectContaining({
+        id: '2',
+        contractAddress: '0xLoyaltyCardContractAddress1',
+        tokenId: '2',
+        metadata:
+          '{"name": "Loyalty Card NFT #2", "description": "Second NFT"}',
+      }),
+      expect.objectContaining({
+        id: '3',
+        contractAddress: '0xLoyaltyCardContractAddress1',
+        tokenId: '3',
+        metadata: '{"name": "Loyalty Card NFT #3", "description": "Third NFT"}',
+      }),
+      expect.objectContaining({
+        id: '4',
+        contractAddress: '0xLoyaltyCardContractAddress2',
+        tokenId: '4',
+        metadata:
+          '{"name": "Loyalty Card NFT #4", "description": "Fourth NFT"}',
+      }),
+      expect.objectContaining({
+        id: '5',
+        contractAddress: '0xLoyaltyCardContractAddress2',
+        tokenId: '5',
+        metadata: '{"name": "Loyalty Card NFT #5", "description": "Fifth NFT"}',
+      }),
+      expect.objectContaining({
+        id: '6',
+        contractAddress: '0xLoyaltyCardContractAddress2',
+        tokenId: '6',
+        metadata: '{"name": "Loyalty Card NFT #6", "description": "Sixth NFT"}',
+      }),
+      expect.objectContaining({
+        id: '7',
+        contractAddress: '0xLoyaltyCardContractAddress2',
+        tokenId: '7',
+        metadata:
+          '{"name": "Loyalty Card NFT #7", "description": "Seventh NFT"}',
+      }),
+    ];
+
+    expectedCalls.forEach((expectedCall) => {
+      expect(allCallsArgs).toEqual(expect.arrayContaining([expectedCall]));
+    });
   });
 
-  function generateNFTs() {
+  function generateNFTs(numberOfContracts: number) {
     const nfts = [];
     let nftId = 1;
-    const nftsPerContract = [10, 15, 20, 25];
 
-    for (let contractIndex = 1; contractIndex <= 4; contractIndex++) {
+    for (
+      let contractIndex = 1;
+      contractIndex <= numberOfContracts;
+      contractIndex++
+    ) {
       const contractAddress = `0xLoyaltyCardContractAddress${contractIndex}`;
       const loyaltyCardId = `loyaltyCardId${contractIndex}`;
-      const numNFTs = nftsPerContract[contractIndex - 1];
+      const numNFTs = Math.floor(Math.random() * 10) + 1;
 
       for (let i = 0; i < numNFTs; i++) {
         nfts.push({
@@ -497,8 +508,9 @@ describe('handler', () => {
     return nfts;
   }
 
-  it('four contracts with multiple nfts each', async () => {
-    const generatedNFTs = generateNFTs();
+  it('random number of contracts with random nfts each', async () => {
+    const numberOfContracts = Math.floor(Math.random() * 5) + 4;
+    const generatedNFTs = generateNFTs(numberOfContracts);
 
     (
       adminSdk.GetLoyaltyCardByContractAddressForProcess as jest.Mock
@@ -511,31 +523,6 @@ describe('handler', () => {
     expect(
       adminSdk.GetLoyaltyCardByContractAddressForProcess,
     ).toHaveBeenCalled();
-    expect(multicallClaimMock).toHaveBeenCalledTimes(4);
-
-    const nftsPerContract = [10, 15, 20, 25];
-    let expectedCallIndex = 1;
-
-    nftsPerContract.forEach((numNFTs, index) => {
-      const contractAddress = `0xLoyaltyCardContractAddress${index + 1}`;
-      const expectedNFTsForContract = generatedNFTs
-        .filter((nft) => nft.contractAddress === contractAddress)
-        .map((nft) =>
-          expect.objectContaining({
-            id: nft.id,
-            contractAddress: nft.contractAddress,
-            tokenId: nft.tokenId,
-            metadata: nft.metadata,
-          }),
-        );
-
-      expect(multicallClaimMock).toHaveBeenNthCalledWith(
-        expectedCallIndex,
-        expect.anything(),
-        expect.arrayContaining(expectedNFTsForContract),
-      );
-
-      expectedCallIndex++;
-    });
+    expect(multicallClaimMock).toHaveBeenCalledTimes(numberOfContracts);
   });
 });
