@@ -513,6 +513,7 @@ export type GetLoyaltyCardOwnedByAddressQueryVariables = Types.Exact<{
   contractAddress: Types.Scalars['String']['input'];
   chainId: Types.Scalars['String']['input'];
   ownerAddress: Types.Scalars['String']['input'];
+  organizerId: Types.Scalars['String']['input'];
 }>;
 
 
@@ -530,10 +531,11 @@ export type GetLoyaltyCardAlchemyEventQuery = { __typename?: 'query_root', loyal
 export type GetLoyaltyCardNftContractByContractAddressQueryVariables = Types.Exact<{
   contractAddress: Types.Scalars['String']['input'];
   chainId: Types.Scalars['String']['input'];
+  organizerId: Types.Scalars['String']['input'];
 }>;
 
 
-export type GetLoyaltyCardNftContractByContractAddressQuery = { __typename?: 'query_root', loyaltyCardNftContract: Array<{ __typename?: 'loyaltyCardNftContract', loyaltyCardId: string, organizerId: string }> };
+export type GetLoyaltyCardNftContractByContractAddressQuery = { __typename?: 'query_root', loyaltyCardNftContract: Array<{ __typename?: 'loyaltyCardNftContract', loyaltyCardId: string }> };
 
 export type GetLoyaltyCardByContractAddressForProcessQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
@@ -649,6 +651,21 @@ export type GetOrganizerLatestEventsQueryVariables = Types.Exact<{
 
 
 export type GetOrganizerLatestEventsQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, event?: { __typename?: 'Event', slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', url: string } } | null }> };
+
+export type GetShopifyCustomerQueryVariables = Types.Exact<{
+  organizerId: Types.Scalars['String']['input'];
+  customerId: Types.Scalars['String']['input'];
+}>;
+
+
+export type GetShopifyCustomerQuery = { __typename?: 'query_root', shopifyCustomer: Array<{ __typename?: 'shopifyCustomer', address: string }> };
+
+export type InsertShopifyCustomerMutationVariables = Types.Exact<{
+  object: Types.ShopifyCustomer_Insert_Input;
+}>;
+
+
+export type InsertShopifyCustomerMutation = { __typename?: 'mutation_root', insert_shopifyCustomer_one?: { __typename?: 'shopifyCustomer', id: any } | null };
 
 export type GetShopifyDomainQueryVariables = Types.Exact<{
   domain: Types.Scalars['String']['input'];

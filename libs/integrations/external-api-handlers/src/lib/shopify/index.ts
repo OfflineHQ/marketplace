@@ -1,6 +1,7 @@
 import env from '@env/server';
 import { handleAccount } from '@features/account/api';
 import { adminSdk } from '@gql/admin/api';
+import { GetShopifyCustomerQueryVariables } from '@gql/admin/types';
 import handleApiRequest, {
   ApiHandlerOptions,
   BadRequestError,
@@ -9,10 +10,7 @@ import handleApiRequest, {
   NotAuthorizedError,
 } from '@next/api-handler';
 import { getCurrentChain } from '@next/chains';
-import {
-  LoyaltyCardNftWrapper,
-  MintWithPasswordProps,
-} from '@nft/loyalty-card';
+import { LoyaltyCardNftWrapper } from '@nft/loyalty-card';
 import { getErrorMessage } from '@utils';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -46,16 +44,11 @@ type RequestTypeToValidator = {
   [RequestType.HasLoyaltyCard]: z.infer<typeof HasLoyaltyCardParams>;
 };
 
-type MintLoyaltyCardWithPasswordProps = Pick<
-  MintWithPasswordProps,
-  'password' | 'contractAddress' | 'chainId' | 'ownerAddress'
->;
-
-// Extended options for the specific handler
 export interface MintLoyaltyCardOptions extends ApiHandlerOptions {
   contractAddress: string;
   loyaltyCardSdk?: LoyaltyCardNftWrapper;
 }
+export type HasLoyaltyCardOptions = MintLoyaltyCardOptions;
 
 export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
   constructor() {
@@ -173,20 +166,68 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     });
   }
 
+  private async getShopifyCustomer(props: GetShopifyCustomerQueryVariables) {
+    const res = await adminSdk.GetShopifyCustomer(props);
+    return res?.shopifyCustomer?.[0];
+  }
+
   mintLoyaltyCardWithCustomerId = handleApiRequest<MintLoyaltyCardOptions>(
     async (options) => {
-      // Destructure options and provide default value for loyaltyCardSdk
       const { req, contractAddress } = options;
 
       const loyaltyCardSdk =
         options.loyaltyCardSdk || new LoyaltyCardNftWrapper();
 
-      const { ownerAddress, customerId } =
+      const { ownerAddress, customerId, organizerId } =
         await this.extractAndValidateShopifyParams(
           req,
           RequestType.MintLoyaltyCardWithCustomerId,
         );
+      const shopifyCustomer = await this.getShopifyCustomer({
+        organizerId,
+        customerId,
+      });
+      if (shopifyCustomer && shopifyCustomer.address !== ownerAddress) {
+        throw new NotAuthorizedError(
+          'Invalid owner address. The owner address must match the address of the customer.',
+        );
+      }
+      // Attempt to mint loyalty card
+      await loyaltyCardSdk
+        .mint({
+          contractAddress,
+          ownerAddress,
+          chainId: getCurrentChain().chainIdHex,
+          organizerId,
+        })
+        .catch((error: Error) => {
+          // Check if the error is already one of our custom errors
+          if (error instanceof CustomError) {
+            throw error; // It's already a custom error, re-throw it
+          } else {
+            // It's not one of our custom errors, wrap it in a custom error class
+            console.error(
+              `Error minting loyalty card: ${getErrorMessage(error)}`,
+            );
+            throw new InternalServerError(
+              `Error minting loyalty card: ${getErrorMessage(error)}`,
+            );
+          }
+        });
+      // get or create a new account
+      await handleAccount({
+        address: ownerAddress,
+      });
 
+      if (!shopifyCustomer) {
+        await adminSdk.InsertShopifyCustomer({
+          object: {
+            organizerId,
+            customerId,
+            address: ownerAddress,
+          },
+        });
+      }
       return new NextResponse(JSON.stringify({}), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
@@ -197,7 +238,6 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
   // deprecated (replaced by mintLoyaltyCardWithCustomerId)
   mintLoyaltyCardWithPassword = handleApiRequest<MintLoyaltyCardOptions>(
     async (options) => {
-      // Destructure options and provide default value for loyaltyCardSdk
       const { req, contractAddress } = options;
 
       const loyaltyCardSdk =
@@ -209,7 +249,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       );
 
       // Prepare data for minting
-      const mintData: MintLoyaltyCardWithPasswordProps = {
+      const mintData = {
         ...validatedParams,
         contractAddress,
         chainId: getCurrentChain().chainIdHex,
@@ -243,42 +283,37 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     },
   );
 
-  async hasLoyaltyCard(options: ApiHandlerOptions, contractAddress: string) {
-    const { req } = options;
+  hasLoyaltyCard = handleApiRequest<HasLoyaltyCardOptions>(async (options) => {
+    const { req, contractAddress } = options;
 
-    const { ownerAddress } = await this.extractAndValidateShopifyParams(
-      req,
-      RequestType.HasLoyaltyCard,
-    );
+    const loyaltyCardSdk =
+      options.loyaltyCardSdk || new LoyaltyCardNftWrapper();
 
-    const nftExists = await this.checkNftExistence(
-      ownerAddress,
-      contractAddress,
-    ).catch((error: Error) => {
-      console.error(`Error checking NFT existence: ${getErrorMessage(error)}`);
-      throw new InternalServerError(
-        `Error checking NFT existence: ${getErrorMessage(error)}`,
+    const { ownerAddress, organizerId } =
+      await this.extractAndValidateShopifyParams(
+        req,
+        RequestType.HasLoyaltyCard,
       );
-    });
 
-    return new NextResponse(JSON.stringify({ isOwned: nftExists }), {
+    const loyaltyCard = await loyaltyCardSdk
+      .getLoyaltyCardOwnedByAddress({
+        ownerAddress,
+        chainId: getCurrentChain().chainIdHex,
+        contractAddress,
+        organizerId,
+      })
+      .catch((error: Error) => {
+        console.error(
+          `Error checking NFT existence: ${getErrorMessage(error)}`,
+        );
+        throw new InternalServerError(
+          `Error checking NFT existence: ${getErrorMessage(error)}`,
+        );
+      });
+
+    return new NextResponse(JSON.stringify({ isOwned: !!loyaltyCard }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
-  }
-
-  private async checkNftExistence(
-    ownerAddress: string,
-    contractAddress: string,
-  ): Promise<boolean> {
-    const loyaltyCardNft = (
-      await adminSdk.GetLoyaltyCardOwnedByAddress({
-        contractAddress,
-        ownerAddress,
-        chainId: getCurrentChain().chainIdHex,
-      })
-    ).loyaltyCardNft[0];
-
-    return !!loyaltyCardNft;
-  }
+  });
 }

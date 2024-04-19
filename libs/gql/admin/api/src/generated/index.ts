@@ -1129,9 +1129,9 @@ ${EventParametersFieldsFragmentDoc}`;
 }
     `;
  const GetLoyaltyCardOwnedByAddressDocument = `
-    query GetLoyaltyCardOwnedByAddress($contractAddress: String!, $chainId: String!, $ownerAddress: String!) @cached {
+    query GetLoyaltyCardOwnedByAddress($contractAddress: String!, $chainId: String!, $ownerAddress: String!, $organizerId: String!) @cached {
   loyaltyCardNft(
-    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, ownerAddress: {_eq: $ownerAddress}}
+    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, ownerAddress: {_eq: $ownerAddress}, organizerId: {_eq: $organizerId}}
     limit: 1
   ) {
     id
@@ -1153,13 +1153,12 @@ ${EventParametersFieldsFragmentDoc}`;
 }
     `;
  const GetLoyaltyCardNftContractByContractAddressDocument = `
-    query GetLoyaltyCardNftContractByContractAddress($contractAddress: String!, $chainId: String!) @cached {
+    query GetLoyaltyCardNftContractByContractAddress($contractAddress: String!, $chainId: String!, $organizerId: String!) @cached {
   loyaltyCardNftContract(
-    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}}
+    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, organizerId: {_eq: $organizerId}}
     limit: 1
   ) {
     loyaltyCardId
-    organizerId
   }
 }
     `;
@@ -1355,6 +1354,23 @@ ${EventParametersFieldsFragmentDoc}`;
       }
       heroImageClasses
     }
+  }
+}
+    `;
+ const GetShopifyCustomerDocument = `
+    query GetShopifyCustomer($organizerId: String!, $customerId: String!) @cached {
+  shopifyCustomer(
+    where: {organizerId: {_eq: $organizerId}, customerId: {_eq: $customerId}}
+    limit: 1
+  ) {
+    address
+  }
+}
+    `;
+ const InsertShopifyCustomerDocument = `
+    mutation InsertShopifyCustomer($object: shopifyCustomer_insert_input!) {
+  insert_shopifyCustomer_one(object: $object) {
+    id
   }
 }
     `;
@@ -1791,6 +1807,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetOrganizerLatestEvents(variables: Types.GetOrganizerLatestEventsQueryVariables, options?: C): Promise<Types.GetOrganizerLatestEventsQuery> {
       return requester<Types.GetOrganizerLatestEventsQuery, Types.GetOrganizerLatestEventsQueryVariables>(GetOrganizerLatestEventsDocument, variables, options) as Promise<Types.GetOrganizerLatestEventsQuery>;
+    },
+    GetShopifyCustomer(variables: Types.GetShopifyCustomerQueryVariables, options?: C): Promise<Types.GetShopifyCustomerQuery> {
+      return requester<Types.GetShopifyCustomerQuery, Types.GetShopifyCustomerQueryVariables>(GetShopifyCustomerDocument, variables, options) as Promise<Types.GetShopifyCustomerQuery>;
+    },
+    InsertShopifyCustomer(variables: Types.InsertShopifyCustomerMutationVariables, options?: C): Promise<Types.InsertShopifyCustomerMutation> {
+      return requester<Types.InsertShopifyCustomerMutation, Types.InsertShopifyCustomerMutationVariables>(InsertShopifyCustomerDocument, variables, options) as Promise<Types.InsertShopifyCustomerMutation>;
     },
     GetShopifyDomain(variables: Types.GetShopifyDomainQueryVariables, options?: C): Promise<Types.GetShopifyDomainQuery> {
       return requester<Types.GetShopifyDomainQuery, Types.GetShopifyDomainQueryVariables>(GetShopifyDomainDocument, variables, options) as Promise<Types.GetShopifyDomainQuery>;

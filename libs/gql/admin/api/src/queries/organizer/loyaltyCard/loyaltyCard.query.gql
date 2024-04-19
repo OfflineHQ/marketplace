@@ -44,12 +44,14 @@ query GetLoyaltyCardOwnedByAddress(
   $contractAddress: String!
   $chainId: String!
   $ownerAddress: String!
+  $organizerId: String!
 ) @cached {
   loyaltyCardNft(
     where: {
       contractAddress: { _eq: $contractAddress }
       chainId: { _eq: $chainId }
       ownerAddress: { _eq: $ownerAddress }
+      organizerId: { _eq: $organizerId }
     }
     limit: 1
   ) {
@@ -81,16 +83,17 @@ query GetLoyaltyCardAlchemyEvent(
 query GetLoyaltyCardNftContractByContractAddress(
   $contractAddress: String!
   $chainId: String!
+  $organizerId: String!
 ) @cached {
   loyaltyCardNftContract(
     where: {
       contractAddress: { _eq: $contractAddress }
       chainId: { _eq: $chainId }
+      organizerId: { _eq: $organizerId }
     }
     limit: 1
   ) {
     loyaltyCardId
-    organizerId
   }
 }
 
