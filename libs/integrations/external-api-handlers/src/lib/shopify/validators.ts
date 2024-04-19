@@ -1,9 +1,13 @@
 import { z } from 'zod';
 
-export const MintLoyaltyCardParams = z.object({
+export const MintLoyaltyCardWithPasswordParams = z.object({
   password: z.string(),
   ownerAddress: z.string(),
-  email: z.string().email(),
+});
+
+export const MintLoyaltyCardWithCustomerIdParams = z.object({
+  ownerAddress: z.string(),
+  customerId: z.string(),
 });
 
 export const HasLoyaltyCardParams = z.object({
