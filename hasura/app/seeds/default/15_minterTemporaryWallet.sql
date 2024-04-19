@@ -16,4 +16,8 @@ INSERT INTO public."minterTemporaryWallet"("address", "privateKey", "eventPassId
 ('0xMinterWalletAddress1', 'MinterPrivateKey1', NULL, NULL, 'loyaltyCardId1', NULL, '2023-01-01T00:00:00.000Z'),
 ('0xMinterWalletAddress2', 'MinterPrivateKey2', NULL, NULL, 'loyaltyCardId2', NULL, '2023-01-02T00:00:00.000Z'),
 ('0xMinterWalletAddress3', 'MinterPrivateKey3', NULL, NULL, 'loyaltyCardId3', NULL, '2023-01-03T00:00:00.000Z'),
-('0xMinterWalletAddress4', 'MinterPrivateKey4', NULL, NULL, 'loyaltyCardId4', NULL, '2023-01-04T00:00:00.000Z');
+('0xMinterWalletAddress4', 'MinterPrivateKey4', NULL, NULL, 'loyaltyCardId4', NULL, '2023-01-04T00:00:00.000Z'),
+('0xMinterWalletAddress5', 'MinterPrivateKey5', NULL, NULL, 'loyaltyCardId5', NULL, '2023-01-05T00:00:00.000Z'),
+('0xMinterWalletAddress6', 'MinterPrivateKey6', NULL, NULL, 'loyaltyCardId6', NULL, '2023-01-06T00:00:00.000Z'),
+('0xMinterWalletAddress7', 'MinterPrivateKey7', NULL, NULL, 'loyaltyCardId7', NULL, '2023-01-07T00:00:00.000Z'),
+('0xMinterWalletAddress8', 'MinterPrivateKey8', NULL, NULL, 'loyaltyCardId8', NULL, '2023-01-08T00:00:00.000Z');
