@@ -1427,6 +1427,15 @@ ${EventParametersFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetShopifyCustomersDocument = `
+    query GetShopifyCustomers($organizerId: String!, $customerIds: [String!]!) {
+  shopifyCustomer(
+    where: {organizerId: {_eq: $organizerId}, customerId: {_in: $customerIds}}
+  ) {
+    address
+  }
+}
+    `;
  const InsertShopifyCustomerDocument = `
     mutation InsertShopifyCustomer($object: shopifyCustomer_insert_input!) {
   insert_shopifyCustomer_one(object: $object) {
@@ -1446,8 +1455,82 @@ ${EventParametersFieldsFragmentDoc}`;
     `;
  const GetShopifyDomainDocument = `
     query GetShopifyDomain($domain: String!) @cached {
-  shopifyDomain_by_pk(domain: $domain) {
+  shopifyDomain(where: {domain: {_eq: $domain}}) {
     organizerId
+  }
+}
+    `;
+ const InsertManyStampNftsDocument = `
+    mutation InsertManyStampNfts($input: [stampNft_insert_input!]!) {
+  insert_stampNft(objects: $input) {
+    affected_rows
+    returning {
+      id
+      contractAddress
+      chainId
+    }
+  }
+}
+    `;
+ const GetStampNftByProductIdDocument = `
+    query GetStampNftByProductId($productId: String!, $variantId: String) {
+  stampNft(
+    where: {metadata: {_contains: {shopify_product_id: $productId, shopify_variant_id: $variantId}}}
+  ) {
+    id
+    tokenId
+    contractAddress
+  }
+}
+    `;
+ const CreateStampNftContractDocument = `
+    mutation CreateStampNftContract($input: stampNftContract_insert_input!) {
+  insert_stampNftContract_one(object: $input) {
+    id
+    type
+    contractAddress
+    chainId
+    campaignId
+    organizerId
+  }
+}
+    `;
+ const CreateStampNftSupplyForOwnerDocument = `
+    mutation CreateStampNftSupplyForOwner($object: stampNftSupply_insert_input!) {
+  insert_stampNftSupply_one(object: $object) {
+    id
+    contractAddress
+    tokenId
+    chainId
+    currentOwnerAddress
+    amount
+    status
+    lastNftTransferId
+  }
+}
+    `;
+ const UpdateStampNftSupplyForOwnerDocument = `
+    mutation UpdateStampNftSupplyForOwner($id: uuid!, $set: stampNftSupply_set_input!) {
+  update_stampNftSupply_by_pk(pk_columns: {id: $id}, _set: $set) {
+    id
+    tokenId
+    contractAddress
+    chainId
+    currentOwnerAddress
+    amount
+    status
+    lastNftTransferId
+  }
+}
+    `;
+ const GetStampNftSupplyForOwnerDocument = `
+    query GetStampNftSupplyForOwner($currentOwnerAddress: String!) {
+  stampNftSupply(where: {currentOwnerAddress: {_eq: $currentOwnerAddress}}) {
+    id
+    amount
+    contractAddress
+    chainId
+    tokenId
   }
 }
     `;
@@ -1884,6 +1967,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetShopifyCampaignParametersForConnected(variables: Types.GetShopifyCampaignParametersForConnectedQueryVariables, options?: C): Promise<Types.GetShopifyCampaignParametersForConnectedQuery> {
       return requester<Types.GetShopifyCampaignParametersForConnectedQuery, Types.GetShopifyCampaignParametersForConnectedQueryVariables>(GetShopifyCampaignParametersForConnectedDocument, variables, options) as Promise<Types.GetShopifyCampaignParametersForConnectedQuery>;
     },
+    GetShopifyCustomers(variables: Types.GetShopifyCustomersQueryVariables, options?: C): Promise<Types.GetShopifyCustomersQuery> {
+      return requester<Types.GetShopifyCustomersQuery, Types.GetShopifyCustomersQueryVariables>(GetShopifyCustomersDocument, variables, options) as Promise<Types.GetShopifyCustomersQuery>;
+    },
     InsertShopifyCustomer(variables: Types.InsertShopifyCustomerMutationVariables, options?: C): Promise<Types.InsertShopifyCustomerMutation> {
       return requester<Types.InsertShopifyCustomerMutation, Types.InsertShopifyCustomerMutationVariables>(InsertShopifyCustomerDocument, variables, options) as Promise<Types.InsertShopifyCustomerMutation>;
     },
@@ -1892,6 +1978,24 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetShopifyDomain(variables: Types.GetShopifyDomainQueryVariables, options?: C): Promise<Types.GetShopifyDomainQuery> {
       return requester<Types.GetShopifyDomainQuery, Types.GetShopifyDomainQueryVariables>(GetShopifyDomainDocument, variables, options) as Promise<Types.GetShopifyDomainQuery>;
+    },
+    InsertManyStampNfts(variables: Types.InsertManyStampNftsMutationVariables, options?: C): Promise<Types.InsertManyStampNftsMutation> {
+      return requester<Types.InsertManyStampNftsMutation, Types.InsertManyStampNftsMutationVariables>(InsertManyStampNftsDocument, variables, options) as Promise<Types.InsertManyStampNftsMutation>;
+    },
+    GetStampNftByProductId(variables: Types.GetStampNftByProductIdQueryVariables, options?: C): Promise<Types.GetStampNftByProductIdQuery> {
+      return requester<Types.GetStampNftByProductIdQuery, Types.GetStampNftByProductIdQueryVariables>(GetStampNftByProductIdDocument, variables, options) as Promise<Types.GetStampNftByProductIdQuery>;
+    },
+    CreateStampNftContract(variables: Types.CreateStampNftContractMutationVariables, options?: C): Promise<Types.CreateStampNftContractMutation> {
+      return requester<Types.CreateStampNftContractMutation, Types.CreateStampNftContractMutationVariables>(CreateStampNftContractDocument, variables, options) as Promise<Types.CreateStampNftContractMutation>;
+    },
+    CreateStampNftSupplyForOwner(variables: Types.CreateStampNftSupplyForOwnerMutationVariables, options?: C): Promise<Types.CreateStampNftSupplyForOwnerMutation> {
+      return requester<Types.CreateStampNftSupplyForOwnerMutation, Types.CreateStampNftSupplyForOwnerMutationVariables>(CreateStampNftSupplyForOwnerDocument, variables, options) as Promise<Types.CreateStampNftSupplyForOwnerMutation>;
+    },
+    UpdateStampNftSupplyForOwner(variables: Types.UpdateStampNftSupplyForOwnerMutationVariables, options?: C): Promise<Types.UpdateStampNftSupplyForOwnerMutation> {
+      return requester<Types.UpdateStampNftSupplyForOwnerMutation, Types.UpdateStampNftSupplyForOwnerMutationVariables>(UpdateStampNftSupplyForOwnerDocument, variables, options) as Promise<Types.UpdateStampNftSupplyForOwnerMutation>;
+    },
+    GetStampNftSupplyForOwner(variables: Types.GetStampNftSupplyForOwnerQueryVariables, options?: C): Promise<Types.GetStampNftSupplyForOwnerQuery> {
+      return requester<Types.GetStampNftSupplyForOwnerQuery, Types.GetStampNftSupplyForOwnerQueryVariables>(GetStampNftSupplyForOwnerDocument, variables, options) as Promise<Types.GetStampNftSupplyForOwnerQuery>;
     },
     GetEventPassNftById(variables: Types.GetEventPassNftByIdQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdQuery> {
       return requester<Types.GetEventPassNftByIdQuery, Types.GetEventPassNftByIdQueryVariables>(GetEventPassNftByIdDocument, variables, options) as Promise<Types.GetEventPassNftByIdQuery>;

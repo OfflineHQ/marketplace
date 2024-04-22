@@ -1,0 +1,16 @@
+query GetStampNftByProductId($productId: String!, $variantId: String) {
+  stampNft(
+    where: {
+      metadata: {
+        _contains: {
+          shopify_product_id: $productId
+          shopify_variant_id: $variantId
+        }
+      }
+    }
+  ) {
+    id
+    tokenId
+    contractAddress
+  }
+}

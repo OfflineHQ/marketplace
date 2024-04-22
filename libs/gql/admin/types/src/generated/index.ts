@@ -670,6 +670,14 @@ export type GetShopifyCampaignParametersForConnectedQueryVariables = Types.Exact
 
 export type GetShopifyCampaignParametersForConnectedQuery = { __typename?: 'query_root', shopifyCampaignParameters_by_pk?: { __typename?: 'shopifyCampaignParameters', organizerId: string, status?: Types.ShopifyCampaignStatus_Enum | null, shopifyCampaignTemplate?: { __typename?: 'ShopifyCampaignTemplate', gateConnectedTexts: { __typename?: 'ShopifyGateConnected', paragraphLocked: string, paragraphUnlocked: string, paragraphUnlocking: string, paragraphUsed: string, subtitleLocked: string, subtitleUnlocked: string, subtitleUnlocking: string, subtitleUsed: string, gateStatus: { __typename?: 'ShopifyGateStatus', locked: string, name: string, unlocked: string, unlocking: string, used: string } }, headerConnectedTexts: { __typename?: 'ShopifyHeaderConnected', titleDefault: string, titleHowToGet: string }, profileTexts: { __typename?: 'ShopifyProfile', menuActionSignOut: string, menuSectionMyAccount: string } } | null } | null };
 
+export type GetShopifyCustomersQueryVariables = Types.Exact<{
+  organizerId: Types.Scalars['String']['input'];
+  customerIds: Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input'];
+}>;
+
+
+export type GetShopifyCustomersQuery = { __typename?: 'query_root', shopifyCustomer: Array<{ __typename?: 'shopifyCustomer', address: string }> };
+
 export type InsertShopifyCustomerMutationVariables = Types.Exact<{
   object: Types.ShopifyCustomer_Insert_Input;
 }>;
@@ -690,7 +698,51 @@ export type GetShopifyDomainQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetShopifyDomainQuery = { __typename?: 'query_root', shopifyDomain_by_pk?: { __typename?: 'shopifyDomain', organizerId: string } | null };
+export type GetShopifyDomainQuery = { __typename?: 'query_root', shopifyDomain: Array<{ __typename?: 'shopifyDomain', organizerId: string }> };
+
+export type InsertManyStampNftsMutationVariables = Types.Exact<{
+  input: Array<Types.StampNft_Insert_Input> | Types.StampNft_Insert_Input;
+}>;
+
+
+export type InsertManyStampNftsMutation = { __typename?: 'mutation_root', insert_stampNft?: { __typename?: 'stampNft_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'stampNft', id: any, contractAddress: string, chainId: string }> } | null };
+
+export type GetStampNftByProductIdQueryVariables = Types.Exact<{
+  productId: Types.Scalars['String']['input'];
+  variantId?: Types.InputMaybe<Types.Scalars['String']['input']>;
+}>;
+
+
+export type GetStampNftByProductIdQuery = { __typename?: 'query_root', stampNft: Array<{ __typename?: 'stampNft', id: any, tokenId: any, contractAddress: string }> };
+
+export type CreateStampNftContractMutationVariables = Types.Exact<{
+  input: Types.StampNftContract_Insert_Input;
+}>;
+
+
+export type CreateStampNftContractMutation = { __typename?: 'mutation_root', insert_stampNftContract_one?: { __typename?: 'stampNftContract', id?: any | null, type: Types.StampNftContractType_Enum, contractAddress: string, chainId: string, campaignId: string, organizerId: string } | null };
+
+export type CreateStampNftSupplyForOwnerMutationVariables = Types.Exact<{
+  object: Types.StampNftSupply_Insert_Input;
+}>;
+
+
+export type CreateStampNftSupplyForOwnerMutation = { __typename?: 'mutation_root', insert_stampNftSupply_one?: { __typename?: 'stampNftSupply', id: any, contractAddress: string, tokenId: any, chainId: string, currentOwnerAddress: string, amount: number, status?: Types.NftStatus_Enum | null, lastNftTransferId?: any | null } | null };
+
+export type UpdateStampNftSupplyForOwnerMutationVariables = Types.Exact<{
+  id: Types.Scalars['uuid']['input'];
+  set: Types.StampNftSupply_Set_Input;
+}>;
+
+
+export type UpdateStampNftSupplyForOwnerMutation = { __typename?: 'mutation_root', update_stampNftSupply_by_pk?: { __typename?: 'stampNftSupply', id: any, tokenId: any, contractAddress: string, chainId: string, currentOwnerAddress: string, amount: number, status?: Types.NftStatus_Enum | null, lastNftTransferId?: any | null } | null };
+
+export type GetStampNftSupplyForOwnerQueryVariables = Types.Exact<{
+  currentOwnerAddress: Types.Scalars['String']['input'];
+}>;
+
+
+export type GetStampNftSupplyForOwnerQuery = { __typename?: 'query_root', stampNftSupply: Array<{ __typename?: 'stampNftSupply', id: any, amount: number, contractAddress: string, chainId: string, tokenId: any }> };
 
 export type EventPassFieldsFragment = { __typename?: 'EventPass', name: string, description: string, nftImage: { __typename?: 'Asset', url: string }, passOptions: Array<{ __typename?: 'PassOption', name: string, description?: string | null, eventDateLocation?: { __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } } | null }>, passPricing?: { __typename?: 'passPricing', amount: number, currency: Types.Currency_Enum } | null, event?: { __typename?: 'Event', slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', url: string }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, imageClasses?: string | null, image: { __typename?: 'Asset', url: string } } | null } | null };
 

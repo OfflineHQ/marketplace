@@ -9,3 +9,14 @@ query GetShopifyCustomer($organizerId: String!, $customerId: String!) {
     address
   }
 }
+
+query GetShopifyCustomers($organizerId: String!, $customerIds: [String!]!) {
+  shopifyCustomer(
+    where: {
+      organizerId: { _eq: $organizerId }
+      customerId: { _in: $customerIds }
+    }
+  ) {
+    address
+  }
+}

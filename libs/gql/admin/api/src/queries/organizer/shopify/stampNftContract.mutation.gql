@@ -1,0 +1,10 @@
+mutation CreateStampNftContract($input: stampNftContract_insert_input!) {
+  insert_stampNftContract_one(object: $input) {
+    id
+    type
+    contractAddress
+    chainId
+    campaignId
+    organizerId
+  }
+}

@@ -1,0 +1,11 @@
+query GetStampNftSupplyForOwner($currentOwnerAddress: String!) {
+  stampNftSupply(
+    where: { currentOwnerAddress: { _eq: $currentOwnerAddress } }
+  ) {
+    id
+    amount
+    contractAddress
+    chainId
+    tokenId
+  }
+}

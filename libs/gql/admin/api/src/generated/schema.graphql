@@ -14854,6 +14854,7 @@ enum apiKeyType_constraint {
 
 enum apiKeyType_enum {
   EXTERNAL
+  SHOPIFY
 }
 
 """
@@ -16547,6 +16548,7 @@ enum eventPassNftContractType_constraint {
 
 enum eventPassNftContractType_enum {
   delayed_reveal
+  loyalty_card
   normal
 }
 
@@ -23251,12 +23253,7 @@ type mutation_root {
   """
   delete single row from the table: "shopifyCampaignParameters"
   """
-  delete_shopifyCampaignParameters_by_pk(
-    """
-    Primary key. Unique identifier corresponding to the gate id from Shopify campaigns.
-    """
-    gateId: String!
-  ): shopifyCampaignParameters
+  delete_shopifyCampaignParameters_by_pk(id: uuid!): shopifyCampaignParameters
 
   """
   delete data from the table: "shopifyCampaignStatus"
@@ -23300,9 +23297,9 @@ type mutation_root {
   """
   delete_shopifyDomain_by_pk(
     """
-    The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records.
+    Unique identifier for each Shopify domain entry, generated automatically as a UUID.
     """
-    domain: String!
+    id: uuid!
   ): shopifyDomain
 
   """
@@ -27891,27 +27888,6 @@ type mutation_root {
   update data of the table: "stampNftContract"
   """
   update_stampNftContract(
-    """append existing jsonb value of filtered columns with new jsonb value"""
-    _append: stampNftContract_append_input
-
-    """
-    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-    """
-    _delete_at_path: stampNftContract_delete_at_path_input
-
-    """
-    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
-    """
-    _delete_elem: stampNftContract_delete_elem_input
-
-    """
-    delete key/value pair or string element. key/value pairs are matched based on their key value
-    """
-    _delete_key: stampNftContract_delete_key_input
-
-    """prepend existing jsonb value of filtered columns with new jsonb value"""
-    _prepend: stampNftContract_prepend_input
-
     """sets the columns of the filtered rows to the given values"""
     _set: stampNftContract_set_input
 
@@ -27951,27 +27927,6 @@ type mutation_root {
   update single row of the table: "stampNftContract"
   """
   update_stampNftContract_by_pk(
-    """append existing jsonb value of filtered columns with new jsonb value"""
-    _append: stampNftContract_append_input
-
-    """
-    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-    """
-    _delete_at_path: stampNftContract_delete_at_path_input
-
-    """
-    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
-    """
-    _delete_elem: stampNftContract_delete_elem_input
-
-    """
-    delete key/value pair or string element. key/value pairs are matched based on their key value
-    """
-    _delete_key: stampNftContract_delete_key_input
-
-    """prepend existing jsonb value of filtered columns with new jsonb value"""
-    _prepend: stampNftContract_prepend_input
-
     """sets the columns of the filtered rows to the given values"""
     _set: stampNftContract_set_input
     pk_columns: stampNftContract_pk_columns_input!
@@ -36623,12 +36578,7 @@ type query_root {
   """
   fetch data from the table: "shopifyCampaignParameters" using primary key columns
   """
-  shopifyCampaignParameters_by_pk(
-    """
-    Primary key. Unique identifier corresponding to the gate id from Shopify campaigns.
-    """
-    gateId: String!
-  ): shopifyCampaignParameters
+  shopifyCampaignParameters_by_pk(id: uuid!): shopifyCampaignParameters
 
   """
   fetch data from the table: "shopifyCampaignStatus"
@@ -36828,9 +36778,9 @@ type query_root {
   """fetch data from the table: "shopifyDomain" using primary key columns"""
   shopifyDomain_by_pk(
     """
-    The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records.
+    Unique identifier for each Shopify domain entry, generated automatically as a UUID.
     """
-    domain: String!
+    id: uuid!
   ): shopifyDomain
 
   """
@@ -37775,7 +37725,7 @@ type secretApiKey {
   status: apiKeyStatus_enum
 
   """
-  The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible.
+  The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL".
   """
   type: apiKeyType_enum!
   updated_at: timestamptz!
@@ -37887,7 +37837,7 @@ input secretApiKey_insert_input {
   status: apiKeyStatus_enum
 
   """
-  The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible.
+  The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL".
   """
   type: apiKeyType_enum
   updated_at: timestamptz
@@ -38123,7 +38073,7 @@ input secretApiKey_set_input {
   status: apiKeyStatus_enum
 
   """
-  The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible.
+  The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL".
   """
   type: apiKeyType_enum
   updated_at: timestamptz
@@ -38190,7 +38140,7 @@ input secretApiKey_stream_cursor_value_input {
   status: apiKeyStatus_enum
 
   """
-  The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible.
+  The type of the secret API key, referencing the apiKeyType table. It determines how the secret is verified and what scope/routes of query are accessible. It can be "SHOPIFY" or "EXTERNAL".
   """
   type: apiKeyType_enum
   updated_at: timestamptz
@@ -38249,18 +38199,25 @@ input secretApiKey_updates {
 }
 
 """
-This table stores parameters specific to Shopify campaigns, including gate identifiers and links to campaign data in the CRM. It supports context resolution in offline unlock iframes and enables tailored content display.
+The shopifyCampaignParameters model is designed to mirror a Shopify token gating campaign operated by a brand on its own Shopify store. It manages various settings and metadata related to the campaign, ensuring efficient and accurate management of token gating campaigns.
 """
 type shopifyCampaignParameters {
   """
-  Timestamp indicating when the record was initially created, set automatically by the system.
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign.
   """
-  created_at: timestamptz
+  activityWebhookId: String
 
   """
-  Primary key. Unique identifier corresponding to the gate id from Shopify campaigns.
+  Unique signing key used for secure operations related to the campaign activity webhook.
   """
-  gateId: String!
+  activityWebhookSigningKey: String
+
+  """
+  Unique identifier for each Shopify campaign, storing the gate ID from Shopify.
+  """
+  campaignId: String!
+  created_at: timestamptz!
+  id: uuid!
 
   """Identifier for the organizer responsible for the campaign."""
   organizerId: String!
@@ -38277,14 +38234,11 @@ type shopifyCampaignParameters {
     stage: Stage! = PUBLISHED
   ): ShopifyCampaignTemplate
 
-  """Foreign key linking to the shopifyCampaignTemplate model in the CRM."""
-  shopifyCampaignTemplateId: String!
+  """
+  Represents the current status of the campaign, either "DRAFT" or "PUBLISHED".
+  """
   status: shopifyCampaignStatus_enum
-
-  """
-  Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification.
-  """
-  updated_at: timestamptz
+  updated_at: timestamptz!
 }
 
 """
@@ -38311,10 +38265,12 @@ input shopifyCampaignParameters_bool_exp {
   _and: [shopifyCampaignParameters_bool_exp!]
   _not: shopifyCampaignParameters_bool_exp
   _or: [shopifyCampaignParameters_bool_exp!]
+  activityWebhookId: String_comparison_exp
+  activityWebhookSigningKey: String_comparison_exp
+  campaignId: String_comparison_exp
   created_at: timestamptz_comparison_exp
-  gateId: String_comparison_exp
+  id: uuid_comparison_exp
   organizerId: String_comparison_exp
-  shopifyCampaignTemplateId: String_comparison_exp
   status: shopifyCampaignStatus_enum_comparison_exp
   updated_at: timestamptz_comparison_exp
 }
@@ -38324,7 +38280,17 @@ unique or primary key constraints on table "shopifyCampaignParameters"
 """
 enum shopifyCampaignParameters_constraint {
   """
-  unique or primary key constraint on columns "gateId"
+  unique or primary key constraint on columns "activityWebhookSigningKey"
+  """
+  shopifyCampaignParameters_activityWebhookSigningKey_key
+
+  """
+  unique or primary key constraint on columns "campaignId"
+  """
+  shopifyCampaignParameters_campaignId_key
+
+  """
+  unique or primary key constraint on columns "id"
   """
   shopifyCampaignParameters_pkey
 }
@@ -38334,73 +38300,77 @@ input type for inserting data into table "shopifyCampaignParameters"
 """
 input shopifyCampaignParameters_insert_input {
   """
-  Timestamp indicating when the record was initially created, set automatically by the system.
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign.
   """
-  created_at: timestamptz
+  activityWebhookId: String
 
   """
-  Primary key. Unique identifier corresponding to the gate id from Shopify campaigns.
+  Unique signing key used for secure operations related to the campaign activity webhook.
   """
-  gateId: String
+  activityWebhookSigningKey: String
+
+  """
+  Unique identifier for each Shopify campaign, storing the gate ID from Shopify.
+  """
+  campaignId: String
+  created_at: timestamptz
+  id: uuid
 
   """Identifier for the organizer responsible for the campaign."""
   organizerId: String
 
-  """Foreign key linking to the shopifyCampaignTemplate model in the CRM."""
-  shopifyCampaignTemplateId: String
+  """
+  Represents the current status of the campaign, either "DRAFT" or "PUBLISHED".
+  """
   status: shopifyCampaignStatus_enum
-
-  """
-  Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification.
-  """
   updated_at: timestamptz
 }
 
 """aggregate max on columns"""
 type shopifyCampaignParameters_max_fields {
   """
-  Timestamp indicating when the record was initially created, set automatically by the system.
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign.
   """
-  created_at: timestamptz
+  activityWebhookId: String
 
   """
-  Primary key. Unique identifier corresponding to the gate id from Shopify campaigns.
+  Unique signing key used for secure operations related to the campaign activity webhook.
   """
-  gateId: String
+  activityWebhookSigningKey: String
+
+  """
+  Unique identifier for each Shopify campaign, storing the gate ID from Shopify.
+  """
+  campaignId: String
+  created_at: timestamptz
+  id: uuid
 
   """Identifier for the organizer responsible for the campaign."""
   organizerId: String
-
-  """Foreign key linking to the shopifyCampaignTemplate model in the CRM."""
-  shopifyCampaignTemplateId: String
-
-  """
-  Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification.
-  """
   updated_at: timestamptz
 }
 
 """aggregate min on columns"""
 type shopifyCampaignParameters_min_fields {
   """
-  Timestamp indicating when the record was initially created, set automatically by the system.
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign.
   """
-  created_at: timestamptz
+  activityWebhookId: String
 
   """
-  Primary key. Unique identifier corresponding to the gate id from Shopify campaigns.
+  Unique signing key used for secure operations related to the campaign activity webhook.
   """
-  gateId: String
+  activityWebhookSigningKey: String
+
+  """
+  Unique identifier for each Shopify campaign, storing the gate ID from Shopify.
+  """
+  campaignId: String
+  created_at: timestamptz
+  id: uuid
 
   """Identifier for the organizer responsible for the campaign."""
   organizerId: String
-
-  """Foreign key linking to the shopifyCampaignTemplate model in the CRM."""
-  shopifyCampaignTemplateId: String
-
-  """
-  Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification.
-  """
   updated_at: timestamptz
 }
 
@@ -38426,20 +38396,19 @@ input shopifyCampaignParameters_on_conflict {
 
 """Ordering options when selecting data from "shopifyCampaignParameters"."""
 input shopifyCampaignParameters_order_by {
+  activityWebhookId: order_by
+  activityWebhookSigningKey: order_by
+  campaignId: order_by
   created_at: order_by
-  gateId: order_by
+  id: order_by
   organizerId: order_by
-  shopifyCampaignTemplateId: order_by
   status: order_by
   updated_at: order_by
 }
 
 """primary key columns input for table: shopifyCampaignParameters"""
 input shopifyCampaignParameters_pk_columns_input {
-  """
-  Primary key. Unique identifier corresponding to the gate id from Shopify campaigns.
-  """
-  gateId: String!
+  id: uuid!
 }
 
 """
@@ -38447,16 +38416,22 @@ select columns of table "shopifyCampaignParameters"
 """
 enum shopifyCampaignParameters_select_column {
   """column name"""
+  activityWebhookId
+
+  """column name"""
+  activityWebhookSigningKey
+
+  """column name"""
+  campaignId
+
+  """column name"""
   created_at
 
   """column name"""
-  gateId
+  id
 
   """column name"""
   organizerId
-
-  """column name"""
-  shopifyCampaignTemplateId
 
   """column name"""
   status
@@ -38470,25 +38445,29 @@ input type for updating data in table "shopifyCampaignParameters"
 """
 input shopifyCampaignParameters_set_input {
   """
-  Timestamp indicating when the record was initially created, set automatically by the system.
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign.
   """
-  created_at: timestamptz
+  activityWebhookId: String
 
   """
-  Primary key. Unique identifier corresponding to the gate id from Shopify campaigns.
+  Unique signing key used for secure operations related to the campaign activity webhook.
   """
-  gateId: String
+  activityWebhookSigningKey: String
+
+  """
+  Unique identifier for each Shopify campaign, storing the gate ID from Shopify.
+  """
+  campaignId: String
+  created_at: timestamptz
+  id: uuid
 
   """Identifier for the organizer responsible for the campaign."""
   organizerId: String
 
-  """Foreign key linking to the shopifyCampaignTemplate model in the CRM."""
-  shopifyCampaignTemplateId: String
+  """
+  Represents the current status of the campaign, either "DRAFT" or "PUBLISHED".
+  """
   status: shopifyCampaignStatus_enum
-
-  """
-  Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification.
-  """
   updated_at: timestamptz
 }
 
@@ -38506,25 +38485,29 @@ input shopifyCampaignParameters_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input shopifyCampaignParameters_stream_cursor_value_input {
   """
-  Timestamp indicating when the record was initially created, set automatically by the system.
+  The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign.
   """
-  created_at: timestamptz
+  activityWebhookId: String
 
   """
-  Primary key. Unique identifier corresponding to the gate id from Shopify campaigns.
+  Unique signing key used for secure operations related to the campaign activity webhook.
   """
-  gateId: String
+  activityWebhookSigningKey: String
+
+  """
+  Unique identifier for each Shopify campaign, storing the gate ID from Shopify.
+  """
+  campaignId: String
+  created_at: timestamptz
+  id: uuid
 
   """Identifier for the organizer responsible for the campaign."""
   organizerId: String
 
-  """Foreign key linking to the shopifyCampaignTemplate model in the CRM."""
-  shopifyCampaignTemplateId: String
+  """
+  Represents the current status of the campaign, either "DRAFT" or "PUBLISHED".
+  """
   status: shopifyCampaignStatus_enum
-
-  """
-  Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification.
-  """
   updated_at: timestamptz
 }
 
@@ -38533,16 +38516,22 @@ update columns of table "shopifyCampaignParameters"
 """
 enum shopifyCampaignParameters_update_column {
   """column name"""
+  activityWebhookId
+
+  """column name"""
+  activityWebhookSigningKey
+
+  """column name"""
+  campaignId
+
+  """column name"""
   created_at
 
   """column name"""
-  gateId
+  id
 
   """column name"""
   organizerId
-
-  """column name"""
-  shopifyCampaignTemplateId
 
   """column name"""
   status
@@ -39025,14 +39014,24 @@ type shopifyDomain {
   created_at: timestamptz
 
   """
-  The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records.
+  The Shopify domain value, which must be unique across the entire table to ensure accurate mapping between Shopify and our system.
   """
   domain: String!
+
+  """
+  Unique identifier for each Shopify domain entry, generated automatically as a UUID.
+  """
+  id: uuid!
 
   """
   The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers.
   """
   organizerId: String!
+
+  """
+  Timestamp indicating the last time the record was updated, automatically managed by a database trigger to ensure accuracy.
+  """
+  updated_at: timestamptz
 }
 
 """
@@ -39061,7 +39060,9 @@ input shopifyDomain_bool_exp {
   _or: [shopifyDomain_bool_exp!]
   created_at: timestamptz_comparison_exp
   domain: String_comparison_exp
+  id: uuid_comparison_exp
   organizerId: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
 }
 
 """
@@ -39070,6 +39071,11 @@ unique or primary key constraints on table "shopifyDomain"
 enum shopifyDomain_constraint {
   """
   unique or primary key constraint on columns "domain"
+  """
+  idx_shopify_domain_unique_domain
+
+  """
+  unique or primary key constraint on columns "id"
   """
   shopifyDomain_pkey
 }
@@ -39084,14 +39090,24 @@ input shopifyDomain_insert_input {
   created_at: timestamptz
 
   """
-  The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records.
+  The Shopify domain value, which must be unique across the entire table to ensure accurate mapping between Shopify and our system.
   """
   domain: String
+
+  """
+  Unique identifier for each Shopify domain entry, generated automatically as a UUID.
+  """
+  id: uuid
 
   """
   The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers.
   """
   organizerId: String
+
+  """
+  Timestamp indicating the last time the record was updated, automatically managed by a database trigger to ensure accuracy.
+  """
+  updated_at: timestamptz
 }
 
 """aggregate max on columns"""
@@ -39102,14 +39118,24 @@ type shopifyDomain_max_fields {
   created_at: timestamptz
 
   """
-  The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records.
+  The Shopify domain value, which must be unique across the entire table to ensure accurate mapping between Shopify and our system.
   """
   domain: String
+
+  """
+  Unique identifier for each Shopify domain entry, generated automatically as a UUID.
+  """
+  id: uuid
 
   """
   The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers.
   """
   organizerId: String
+
+  """
+  Timestamp indicating the last time the record was updated, automatically managed by a database trigger to ensure accuracy.
+  """
+  updated_at: timestamptz
 }
 
 """aggregate min on columns"""
@@ -39120,14 +39146,24 @@ type shopifyDomain_min_fields {
   created_at: timestamptz
 
   """
-  The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records.
+  The Shopify domain value, which must be unique across the entire table to ensure accurate mapping between Shopify and our system.
   """
   domain: String
+
+  """
+  Unique identifier for each Shopify domain entry, generated automatically as a UUID.
+  """
+  id: uuid
 
   """
   The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers.
   """
   organizerId: String
+
+  """
+  Timestamp indicating the last time the record was updated, automatically managed by a database trigger to ensure accuracy.
+  """
+  updated_at: timestamptz
 }
 
 """
@@ -39154,15 +39190,17 @@ input shopifyDomain_on_conflict {
 input shopifyDomain_order_by {
   created_at: order_by
   domain: order_by
+  id: order_by
   organizerId: order_by
+  updated_at: order_by
 }
 
 """primary key columns input for table: shopifyDomain"""
 input shopifyDomain_pk_columns_input {
   """
-  The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records.
+  Unique identifier for each Shopify domain entry, generated automatically as a UUID.
   """
-  domain: String!
+  id: uuid!
 }
 
 """
@@ -39176,7 +39214,13 @@ enum shopifyDomain_select_column {
   domain
 
   """column name"""
+  id
+
+  """column name"""
   organizerId
+
+  """column name"""
+  updated_at
 }
 
 """
@@ -39189,14 +39233,24 @@ input shopifyDomain_set_input {
   created_at: timestamptz
 
   """
-  The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records.
+  The Shopify domain value, which must be unique across the entire table to ensure accurate mapping between Shopify and our system.
   """
   domain: String
+
+  """
+  Unique identifier for each Shopify domain entry, generated automatically as a UUID.
+  """
+  id: uuid
 
   """
   The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers.
   """
   organizerId: String
+
+  """
+  Timestamp indicating the last time the record was updated, automatically managed by a database trigger to ensure accuracy.
+  """
+  updated_at: timestamptz
 }
 
 """
@@ -39218,14 +39272,24 @@ input shopifyDomain_stream_cursor_value_input {
   created_at: timestamptz
 
   """
-  The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records.
+  The Shopify domain value, which must be unique across the entire table to ensure accurate mapping between Shopify and our system.
   """
   domain: String
+
+  """
+  Unique identifier for each Shopify domain entry, generated automatically as a UUID.
+  """
+  id: uuid
 
   """
   The unique identifier of the associated organizer in our external CRM system. This field is used to link Shopify domains to the corresponding organizers.
   """
   organizerId: String
+
+  """
+  Timestamp indicating the last time the record was updated, automatically managed by a database trigger to ensure accuracy.
+  """
+  updated_at: timestamptz
 }
 
 """
@@ -39239,7 +39303,13 @@ enum shopifyDomain_update_column {
   domain
 
   """column name"""
+  id
+
+  """column name"""
   organizerId
+
+  """column name"""
+  updated_at
 }
 
 input shopifyDomain_updates {
@@ -39281,11 +39351,8 @@ type stampNft {
 Represents stamp NFT contracts used for marketing purposes. Each contract is associated with a type indicating the nature of the campaign, like a purchase completion event.
 """
 type stampNftContract {
-  activityWebhookId: String
-  activityWebhookSigningKey: String
-
   """
-  A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID.
+  A unique identifier for the marketing campaign associated with this contract.
   """
   campaignId: String!
 
@@ -39298,14 +39365,6 @@ type stampNftContract {
   contractAddress: String!
   created_at: timestamptz!
   id: uuid
-
-  """
-  Structured metadata associated with the contract, stored in a JSONB format for flexibility.
-  """
-  metadata(
-    """JSON select path"""
-    path: String
-  ): jsonb!
   organizerId: String!
 
   """
@@ -39506,14 +39565,6 @@ type stampNftContract_aggregate_fields {
   min: stampNftContract_min_fields
 }
 
-"""append existing jsonb value of filtered columns with new jsonb value"""
-input stampNftContract_append_input {
-  """
-  Structured metadata associated with the contract, stored in a JSONB format for flexibility.
-  """
-  metadata: jsonb
-}
-
 """
 Boolean expression to filter rows from the table "stampNftContract". All fields are combined with a logical 'AND'.
 """
@@ -39521,14 +39572,11 @@ input stampNftContract_bool_exp {
   _and: [stampNftContract_bool_exp!]
   _not: stampNftContract_bool_exp
   _or: [stampNftContract_bool_exp!]
-  activityWebhookId: String_comparison_exp
-  activityWebhookSigningKey: String_comparison_exp
   campaignId: String_comparison_exp
   chainId: String_comparison_exp
   contractAddress: String_comparison_exp
   created_at: timestamptz_comparison_exp
   id: uuid_comparison_exp
-  metadata: jsonb_comparison_exp
   organizerId: String_comparison_exp
   type: stampNftContractType_enum_comparison_exp
   updated_at: timestamptz_comparison_exp
@@ -39539,55 +39587,17 @@ unique or primary key constraints on table "stampNftContract"
 """
 enum stampNftContract_constraint {
   """
-  unique or primary key constraint on columns "activityWebhookSigningKey"
-  """
-  stampNftContract_activityWebhookSigningKey_key
-
-  """
   unique or primary key constraint on columns "chainId", "contractAddress"
   """
   stampNftContract_pkey
 }
 
 """
-delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-"""
-input stampNftContract_delete_at_path_input {
-  """
-  Structured metadata associated with the contract, stored in a JSONB format for flexibility.
-  """
-  metadata: [String!]
-}
-
-"""
-delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
-"""
-input stampNftContract_delete_elem_input {
-  """
-  Structured metadata associated with the contract, stored in a JSONB format for flexibility.
-  """
-  metadata: Int
-}
-
-"""
-delete key/value pair or string element. key/value pairs are matched based on their key value
-"""
-input stampNftContract_delete_key_input {
-  """
-  Structured metadata associated with the contract, stored in a JSONB format for flexibility.
-  """
-  metadata: String
-}
-
-"""
 input type for inserting data into table "stampNftContract"
 """
 input stampNftContract_insert_input {
-  activityWebhookId: String
-  activityWebhookSigningKey: String
-
   """
-  A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID.
+  A unique identifier for the marketing campaign associated with this contract.
   """
   campaignId: String
 
@@ -39600,11 +39610,6 @@ input stampNftContract_insert_input {
   contractAddress: String
   created_at: timestamptz
   id: uuid
-
-  """
-  Structured metadata associated with the contract, stored in a JSONB format for flexibility.
-  """
-  metadata: jsonb
   organizerId: String
 
   """
@@ -39616,11 +39621,8 @@ input stampNftContract_insert_input {
 
 """aggregate max on columns"""
 type stampNftContract_max_fields {
-  activityWebhookId: String
-  activityWebhookSigningKey: String
-
   """
-  A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID.
+  A unique identifier for the marketing campaign associated with this contract.
   """
   campaignId: String
 
@@ -39639,11 +39641,8 @@ type stampNftContract_max_fields {
 
 """aggregate min on columns"""
 type stampNftContract_min_fields {
-  activityWebhookId: String
-  activityWebhookSigningKey: String
-
   """
-  A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID.
+  A unique identifier for the marketing campaign associated with this contract.
   """
   campaignId: String
 
@@ -39682,14 +39681,11 @@ input stampNftContract_on_conflict {
 
 """Ordering options when selecting data from "stampNftContract"."""
 input stampNftContract_order_by {
-  activityWebhookId: order_by
-  activityWebhookSigningKey: order_by
   campaignId: order_by
   chainId: order_by
   contractAddress: order_by
   created_at: order_by
   id: order_by
-  metadata: order_by
   organizerId: order_by
   type: order_by
   updated_at: order_by
@@ -39706,24 +39702,10 @@ input stampNftContract_pk_columns_input {
   contractAddress: String!
 }
 
-"""prepend existing jsonb value of filtered columns with new jsonb value"""
-input stampNftContract_prepend_input {
-  """
-  Structured metadata associated with the contract, stored in a JSONB format for flexibility.
-  """
-  metadata: jsonb
-}
-
 """
 select columns of table "stampNftContract"
 """
 enum stampNftContract_select_column {
-  """column name"""
-  activityWebhookId
-
-  """column name"""
-  activityWebhookSigningKey
-
   """column name"""
   campaignId
 
@@ -39740,9 +39722,6 @@ enum stampNftContract_select_column {
   id
 
   """column name"""
-  metadata
-
-  """column name"""
   organizerId
 
   """column name"""
@@ -39756,11 +39735,8 @@ enum stampNftContract_select_column {
 input type for updating data in table "stampNftContract"
 """
 input stampNftContract_set_input {
-  activityWebhookId: String
-  activityWebhookSigningKey: String
-
   """
-  A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID.
+  A unique identifier for the marketing campaign associated with this contract.
   """
   campaignId: String
 
@@ -39773,11 +39749,6 @@ input stampNftContract_set_input {
   contractAddress: String
   created_at: timestamptz
   id: uuid
-
-  """
-  Structured metadata associated with the contract, stored in a JSONB format for flexibility.
-  """
-  metadata: jsonb
   organizerId: String
 
   """
@@ -39800,11 +39771,8 @@ input stampNftContract_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input stampNftContract_stream_cursor_value_input {
-  activityWebhookId: String
-  activityWebhookSigningKey: String
-
   """
-  A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID.
+  A unique identifier for the marketing campaign associated with this contract.
   """
   campaignId: String
 
@@ -39817,11 +39785,6 @@ input stampNftContract_stream_cursor_value_input {
   contractAddress: String
   created_at: timestamptz
   id: uuid
-
-  """
-  Structured metadata associated with the contract, stored in a JSONB format for flexibility.
-  """
-  metadata: jsonb
   organizerId: String
 
   """
@@ -39835,12 +39798,6 @@ input stampNftContract_stream_cursor_value_input {
 update columns of table "stampNftContract"
 """
 enum stampNftContract_update_column {
-  """column name"""
-  activityWebhookId
-
-  """column name"""
-  activityWebhookSigningKey
-
   """column name"""
   campaignId
 
@@ -39857,9 +39814,6 @@ enum stampNftContract_update_column {
   id
 
   """column name"""
-  metadata
-
-  """column name"""
   organizerId
 
   """column name"""
@@ -39870,27 +39824,6 @@ enum stampNftContract_update_column {
 }
 
 input stampNftContract_updates {
-  """append existing jsonb value of filtered columns with new jsonb value"""
-  _append: stampNftContract_append_input
-
-  """
-  delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-  """
-  _delete_at_path: stampNftContract_delete_at_path_input
-
-  """
-  delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
-  """
-  _delete_elem: stampNftContract_delete_elem_input
-
-  """
-  delete key/value pair or string element. key/value pairs are matched based on their key value
-  """
-  _delete_key: stampNftContract_delete_key_input
-
-  """prepend existing jsonb value of filtered columns with new jsonb value"""
-  _prepend: stampNftContract_prepend_input
-
   """sets the columns of the filtered rows to the given values"""
   _set: stampNftContract_set_input
 
@@ -43874,12 +43807,7 @@ type subscription_root {
   """
   fetch data from the table: "shopifyCampaignParameters" using primary key columns
   """
-  shopifyCampaignParameters_by_pk(
-    """
-    Primary key. Unique identifier corresponding to the gate id from Shopify campaigns.
-    """
-    gateId: String!
-  ): shopifyCampaignParameters
+  shopifyCampaignParameters_by_pk(id: uuid!): shopifyCampaignParameters
 
   """
   fetch data from the table in a streaming manner: "shopifyCampaignParameters"
@@ -44057,9 +43985,9 @@ type subscription_root {
   """fetch data from the table: "shopifyDomain" using primary key columns"""
   shopifyDomain_by_pk(
     """
-    The Shopify domain value, which serves as the primary key for the table, ensuring uniqueness across all records.
+    Unique identifier for each Shopify domain entry, generated automatically as a UUID.
     """
-    domain: String!
+    id: uuid!
   ): shopifyDomain
 
   """

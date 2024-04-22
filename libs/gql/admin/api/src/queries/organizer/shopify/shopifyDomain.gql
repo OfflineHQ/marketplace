@@ -1,5 +1,5 @@
 query GetShopifyDomain($domain: String!) @cached {
-  shopifyDomain_by_pk(domain: $domain) {
+  shopifyDomain(where: { domain: { _eq: $domain } }) {
     organizerId
   }
 }

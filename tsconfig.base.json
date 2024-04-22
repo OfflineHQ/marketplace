@@ -154,6 +154,9 @@
       "@integrations/external-api-handlers": [
         "libs/integrations/external-api-handlers/src/index.ts"
       ],
+      "@integrations/shopify-back-office": [
+        "libs/integrations/shopify-back-office/src/index.ts"
+      ],
       "@kyc/admin": ["libs/kyc/admin/src/index.ts"],
       "@kyc/common": ["libs/features/kyc-common/src/index.ts"],
       "@kyc/types": ["libs/kyc/types/src/index.ts"],

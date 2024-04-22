@@ -1,7 +1,7 @@
 {
   "name": "@nft/thirdweb-organizer-stamps",
   "version": "0.0.1",
-  "type": "nodenext",
+  "type": "module",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts"
 }

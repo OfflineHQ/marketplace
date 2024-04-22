@@ -1,5 +1,5 @@
 import env from '@env/server';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -11,7 +11,7 @@ export const config = {
 // This includes verifying session tokens, errors and test more thoughtfully with shopify app making requests using APP Bridge
 export async function middleware(request: NextRequest) {
   const sessionToken = request.headers
-    .get('authorization')
+    .get('X-Shopify-Access-Token')
     ?.split('Bearer ')[1];
   if (!sessionToken) {
     return new Response('Unauthorized: No session token provided', {
@@ -20,19 +20,8 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    await new Promise((resolve, reject) => {
-      jwt.verify(
-        sessionToken,
-        env.SHOPIFY_API_SECRET,
-        { algorithms: ['HS256'] },
-        (err, decoded) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(decoded);
-          }
-        },
-      );
+    jwt.verify(sessionToken, env.SHOPIFY_SHARED_SECRET, {
+      algorithms: ['HS256'],
     });
 
     return NextResponse.next();

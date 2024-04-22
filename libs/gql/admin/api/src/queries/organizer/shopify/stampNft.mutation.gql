@@ -1,0 +1,10 @@
+mutation InsertManyStampNfts($input: [stampNft_insert_input!]!) {
+  insert_stampNft(objects: $input) {
+    affected_rows
+    returning {
+      id
+      contractAddress
+      chainId
+    }
+  }
+}

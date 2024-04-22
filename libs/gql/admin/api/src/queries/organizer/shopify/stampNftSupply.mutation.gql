@@ -1,0 +1,28 @@
+mutation CreateStampNftSupplyForOwner($object: stampNftSupply_insert_input!) {
+  insert_stampNftSupply_one(object: $object) {
+    id
+    contractAddress
+    tokenId
+    chainId
+    currentOwnerAddress
+    amount
+    status
+    lastNftTransferId
+  }
+}
+
+mutation UpdateStampNftSupplyForOwner(
+  $id: uuid!
+  $set: stampNftSupply_set_input!
+) {
+  update_stampNftSupply_by_pk(pk_columns: { id: $id }, _set: $set) {
+    id
+    tokenId
+    contractAddress
+    chainId
+    currentOwnerAddress
+    amount
+    status
+    lastNftTransferId
+  }
+}
