@@ -17,6 +17,14 @@ import type {
   RoleAssignment_Insert_Input,
   StripeCheckoutSession_Insert_Input,
   StripeCustomer_Insert_Input,
+  LoyaltyCardParameters_Insert_Input,
+  LoyaltyCardNftContract_Insert_Input,
+  LoyaltyCardNft_Insert_Input,
+  NftMintPassword_Insert_Input,
+  ShopifyCampaignParameters_Insert_Input,
+  StampNftContract_Insert_Input,
+  StampNft_Insert_Input,
+  StampNftSupply_Insert_Input,
 } from '@gql/shared/types';
 import { isJestRunning } from '@utils';
 import * as path from 'path';
@@ -42,6 +50,14 @@ export const SeedTable = {
   follow: 13,
   packNftContract: 14,
   minterTemporaryWallet: 15,
+  loyaltyCardParameters: 16,
+  loyaltyCardNftContract: 17,
+  loyaltyCardNft: 18,
+  nftMintPassword: 19,
+  shopifyCampaignParameters: 20,
+  stampNftContract: 21,
+  stampNft: 22,
+  stampNftSupply: 23,
 };
 
 export type SeedTypeMap = {
@@ -61,6 +77,14 @@ export type SeedTypeMap = {
   follow: Follow_Insert_Input;
   packNftContract: PackNftContract_Insert_Input;
   minterTemporaryWallet: MinterTemporaryWallet_Insert_Input;
+  loyaltyCardParameters: LoyaltyCardParameters_Insert_Input;
+  loyaltyCardNftContract: LoyaltyCardNftContract_Insert_Input;
+  loyaltyCardNft: LoyaltyCardNft_Insert_Input;
+  nftMintPassword: NftMintPassword_Insert_Input;
+  shopifyCampaignParameters: ShopifyCampaignParameters_Insert_Input;
+  stampNftContract: StampNftContract_Insert_Input;
+  stampNft: StampNft_Insert_Input;
+  stampNftSupply: StampNftSupply_Insert_Input;
 };
 
 export type SeedTableName = keyof typeof SeedTable;

@@ -3,6 +3,8 @@ import { KycStatus_Enum } from '@gql/shared/types';
 import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
 import type { AppUser } from '@next/types';
 import { SmartWallet } from '@smart-wallet/admin';
+import { getErrorMessage } from '@utils';
+import { error } from 'loglevel';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export const SiweProvider = () =>
@@ -58,6 +60,7 @@ export const SiweProvider = () =>
             // here mean user is already registered to sumsub so need to get the user data from sumsub
             if (
               appUser?.kyc?.applicantId &&
+              !appUser.kyc.applicantId.includes('fake-') && // here mean it's a test account so no need to get the data from sumsub
               appUser.kyc.reviewStatus === KycStatus_Enum.Completed
             ) {
               const sumsubData = await getSumSubApplicantPersonalData(
@@ -70,7 +73,7 @@ export const SiweProvider = () =>
           } catch (error) {
             console.error({ error });
             throw new Error(
-              error instanceof Error ? error.message : String(error),
+              error instanceof Error ? getErrorMessage(error) : String(error),
             );
           }
         } else {
@@ -80,7 +83,9 @@ export const SiweProvider = () =>
         }
       } catch (error) {
         console.error({ error });
-        throw new Error(error instanceof Error ? error.message : String(error));
+        throw new Error(
+          error instanceof Error ? getErrorMessage(error) : String(error),
+        );
       }
     },
   });

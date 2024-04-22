@@ -10,8 +10,7 @@
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/back-office",
-        "postcssConfig": "apps/back-office/postcss.config.js",
-        "debug": true
+        "postcssConfig": "apps/back-office/postcss.config.js"
       },
       "assets": [
         {

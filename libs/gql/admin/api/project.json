@@ -3,6 +3,7 @@
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/gql/admin/api/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/js:swc",
@@ -16,12 +17,8 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "libs/gql/admin/api",
-          "libs/gql/user/api/**/*.{ts, gql, graphql}"
-        ]
+        "lintFilePatterns": ["libs/gql/user/api/**/*.{ts, gql, graphql}"]
       }
     },
     "test-integration": {
@@ -31,6 +28,5 @@
         "jestConfig": "libs/gql/admin/api/jest.config.ts"
       }
     }
-  },
-  "tags": []
+  }
 }

@@ -10,11 +10,10 @@ import { toZonedTime } from 'date-fns-tz';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
-interface SaleEndsInClientProps
-  extends Pick<
-    EventParametersPasses,
-    'dateSaleEnd' | 'timezone' | 'isSaleOngoing'
-  > {}
+type SaleEndsInClientProps = Pick<
+  EventParametersPasses,
+  'dateSaleEnd' | 'timezone' | 'isSaleOngoing'
+>;
 
 export const SaleEndsInClient: React.FC<SaleEndsInClientProps> = ({
   dateSaleEnd,

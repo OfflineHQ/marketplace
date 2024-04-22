@@ -9,6 +9,7 @@ import {
   type PgClient,
 } from '@test-utils/db';
 import { accounts } from '@test-utils/gql';
+import { toZonedTime } from 'date-fns-tz';
 import handler from './handlePendingOrders';
 
 describe('Cron job - handlePendingOrders', () => {
@@ -42,7 +43,7 @@ describe('Cron job - handlePendingOrders', () => {
     ]);
     await applySeeds(client, ['account', 'passAmount', 'eventParameters']);
     // Here force the event to be isSaleOnGoing = true
-    const currentDate = new Date();
+    const currentDate = toZonedTime(new Date(), 'Europe/London');
     await updateObjects(
       client,
       'eventParameters',

@@ -19,6 +19,7 @@ import {
   BsQrCodeScan,
   BsTags,
   BsThreeDotsVertical,
+  BsPersonVcard,
 } from 'react-icons/bs';
 import {
   HiCheck,
@@ -60,6 +61,8 @@ import {
   IoWarning,
   IoWarningOutline,
 } from 'react-icons/io5';
+
+import { FaShopify } from 'react-icons/fa';
 
 import {
   FiAward,
@@ -111,6 +114,10 @@ import {
 import type { IconType as ReactIcon } from 'react-icons';
 
 export type IconType = ReactIcon;
+
+export const Shopify: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={FaShopify} label={'Shopify'} {...props} />
+);
 
 export const Copy: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={LuCopy} label={'Copy'} {...props} />
@@ -214,6 +221,14 @@ export const MenuActions: FC<IconProps> = (props) => (
   <AccessibleIcon
     IconComponent={BsThreeDotsVertical}
     label={'Menu Actions'}
+    {...props}
+  />
+);
+
+export const LoyaltyCard: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={BsPersonVcard}
+    label={'Loyalty Card'}
     {...props}
   />
 );

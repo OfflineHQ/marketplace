@@ -10,23 +10,13 @@
       "outputs": ["{options.outputFile}"]
     },
     "build": {
-      "executor": "@nx/rollup:rollup",
+      "executor": "@nx/js:swc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/features/back-office/events-api",
         "tsConfig": "libs/features/back-office/events-api/tsconfig.lib.json",
-        "project": "libs/features/back-office/events-api/package.json",
-        "entryFile": "libs/features/back-office/events-api/src/index.ts",
-        "external": ["react", "react-dom", "react/jsx-runtime"],
-        "rollupConfig": "@nx/react/plugins/bundle-rollup",
-        "compiler": "swc",
-        "assets": [
-          {
-            "glob": "libs/features/back-office/events-api/README.md",
-            "input": ".",
-            "output": "."
-          }
-        ]
+        "main": "libs/features/back-office/events-api/src/index.ts",
+        "assets": ["libs/features/back-office/events-api/*.md"]
       }
     },
     "test": {

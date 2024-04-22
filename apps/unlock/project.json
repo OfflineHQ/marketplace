@@ -10,8 +10,7 @@
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/unlock",
-        "postcssConfig": "apps/unlock/postcss.config.js",
-        "debug": true
+        "postcssConfig": "apps/unlock/postcss.config.js"
       },
       "assets": [
         {

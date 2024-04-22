@@ -1,9 +1,0 @@
-mutation InsertMinterTemporaryWallet(
-  $object: minterTemporaryWallet_insert_input!
-) {
-  insert_minterTemporaryWallet_one(object: $object) {
-    address
-    eventPassId
-    packId
-  }
-}

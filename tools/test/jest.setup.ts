@@ -38,6 +38,28 @@ process.env.KV_REST_API_TOKEN = 'example_token_test';
 // ## timezone
 process.env.TZ = 'Europe/London';
 
+process.env.ALCHEMY_API_KEY = 'fake-key';
+process.env.ALCHEMY_AUTH_TOKEN = 'fake-token';
+process.env.THIRDWEB_CLIENT_ID = 'fake-client-id';
+process.env.THIRDWEB_CLIENT_SECRET = 'fake-client-secret';
+process.env.SUMSUB_API_KEY = 'fake-sumsub-api-key';
+process.env.SUMSUB_SECRET_KEY = 'fake-sumsub-secret-key';
+process.env.SUMSUB_WEBHOOKS_SECRET_KEY = 'fake-sumsub-webhooks-secret-key';
+process.env.STRIPE_PUBLISHABLE_KEY = 'fake-stripe-publishable-key';
+process.env.STRIPE_API_KEY = 'fake-stripe-secret-key';
+process.env.STRIPE_WEBHOOK_SECRET = 'fake-api-secret-encryption-key';
+process.env.UPLOAD_ACCOUNT_ID = 'fake-upload-account-id';
+process.env.UPLOAD_SECRET_API_KEY = 'fake-upload-secret-api-key';
+process.env.UPLOAD_PATH_PREFIX = 'fake-upload-path-prefix';
+process.env.UPLOAD_SECRET_JWT = 'fake-upload-secret-jwt';
+process.env.UPLOAD_PUBLIC_API_KEY = 'fake-upload-public-api-key';
+process.env.FIXER_CURRENCY_API_KEY = 'fake-fixer-currency-api-key';
+process.env.EXCHANGE_RATE_API_KEY = 'fake-exchange-rate-api-key';
+process.env.OPENZEPPELIN_URL = 'https://fake-openzeppelin-url.com';
+process.env.POSTHOG_KEY = 'fake-posthog-key';
+process.env.POSTHOG_PERSONAL_API_KEY = 'fake-posthog-personal-api-key';
+process.env.COMETH_CONNECT_API_KEY = 'fake-cometh-connect-api-key';
+
 //////////////
 
 // used to avoid the error: Attempted to access a server-side environment variable on the client, because it doesn't know it's not on the server in jest.

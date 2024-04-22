@@ -3,23 +3,23 @@ import type { SumsubRequest } from '@kyc/types';
 
 export function isValidSignatureForSumsubRequest(
   request: SumsubRequest,
-  signingKey: string,
+  activityWebhookSigningKey: string,
 ): boolean {
   return isValidSignatureForStringBody(
     request.sumsub.rawBody,
     request.sumsub.signature,
-    signingKey,
+    activityWebhookSigningKey,
   );
 }
 
 export function isValidSignatureForStringBody(
   body: string,
   signature: string,
-  signingKey: string,
+  activityWebhookSigningKey: string,
 ): boolean {
   return isValidSignature({
-    string: body,
-    secret: signingKey,
+    body,
+    secret: activityWebhookSigningKey,
     signature,
     algorithm: 'sha1',
   });

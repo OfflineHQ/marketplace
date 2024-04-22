@@ -1,0 +1,40 @@
+{
+  "name": "features-back-office-loyalty-card",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/features/back-office/loyalty-card/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/features/back-office/loyalty-card",
+        "tsConfig": "libs/features/back-office/loyalty-card/tsconfig.lib.json",
+        "project": "libs/features/back-office/loyalty-card/package.json",
+        "entryFile": "libs/features/back-office/loyalty-card/src/index.ts",
+        "external": ["react", "react-dom", "react/jsx-runtime"],
+        "rollupConfig": "@nx/react/plugins/bundle-rollup",
+        "compiler": "swc",
+        "assets": [
+          {
+            "glob": "libs/features/back-office/loyalty-card/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/features/back-office/loyalty-card/jest.config.ts"
+      }
+    }
+  }
+}

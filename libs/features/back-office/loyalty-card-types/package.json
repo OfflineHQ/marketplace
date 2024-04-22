@@ -1,0 +1,7 @@
+{
+  "name": "@features/back-office/loyalty-card-types",
+  "version": "0.0.1",
+  "type": "nodenext",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts"
+}

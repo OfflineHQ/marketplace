@@ -39,6 +39,7 @@ export interface DataTableToolbarProps<TData, TValue> {
   >['controlText'] & {
     reset: string;
   };
+  toolbarChildren?: React.ReactNode;
   menuActions?: Omit<DropdownMenuActionsProps, 'isLoading'>;
   toggleColumnsText?: DataTableViewOptionsProps<TData>['controlText'];
 }
@@ -50,6 +51,7 @@ export function DataTableToolbar<TData, TValue>({
   filtersConfigText,
   toggleColumnsText,
   menuActions,
+  toolbarChildren,
 }: DataTableToolbarProps<TData, TValue>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const numSelectedItems = table.getFilteredSelectedRowModel().rows.length;
@@ -74,6 +76,7 @@ export function DataTableToolbar<TData, TValue>({
             className="h-8 w-[150px] lg:w-[250px]"
           />
         )}
+        {toolbarChildren}
         {filtersConfig.map(({ id, title, options }) => {
           const column = table.getColumn(id) as Column<TData, any>; // Cast to the correct type
           return (

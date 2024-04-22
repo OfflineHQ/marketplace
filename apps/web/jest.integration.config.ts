@@ -11,7 +11,7 @@ const customConfig = {
   testEnvironment: 'node',
   globalSetup: `${process.cwd()}/tools/test/globalSetupHasura.ts`,
   globalTeardown: `${process.cwd()}/tools/test/globalTeardownHasura.ts`,
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'mjs'],
   coverageDirectory: '../../coverage/apps/web/integration',
   testMatch: ['**/*.integration.test.ts'],
 };

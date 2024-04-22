@@ -1,7 +1,7 @@
 {
-  "name": "features-back-office-eventss",
+  "name": "features-back-office-events",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/features/back-office/eventss/src",
+  "sourceRoot": "libs/features/back-office/events/src",
   "projectType": "library",
   "tags": [],
   "targets": {

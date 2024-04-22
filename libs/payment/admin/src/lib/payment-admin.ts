@@ -16,25 +16,26 @@ import { calculateUnitAmount } from '@next/currency-common';
 import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
 import { NextRedis } from '@next/redis';
 import { AppUser } from '@next/types';
-import { NftClaimable } from '@nft/thirdweb-admin';
+import { EventPassNftOrder } from '@nft/thirdweb-admin';
 import {
   StripeCheckoutSessionMetadataOrder,
   StripeCreateSessionLineItem,
   StripeCustomer,
 } from '@payment/types';
 import { getNextAppURL } from '@shared/server';
+import { getErrorMessage } from '@utils';
 import Stripe from 'stripe';
 
 export class Payment {
   stripe: Stripe;
-  nftClaimable: NftClaimable;
+  eventPassNftOrder: EventPassNftOrder;
   baseUrl = getNextAppURL();
   constructor() {
     this.stripe = new Stripe(env.STRIPE_API_KEY, {
       apiVersion: '2023-08-16',
       typescript: true,
     });
-    this.nftClaimable = new NftClaimable();
+    this.eventPassNftOrder = new EventPassNftOrder();
   }
   webhookStripeConstructEvent({
     body,
@@ -474,7 +475,7 @@ export class Payment {
 
     try {
       const checkOrderPromises = orders.map((order) =>
-        this.nftClaimable.checkOrder(order),
+        this.eventPassNftOrder.checkOrder(order),
       );
       await Promise.all(checkOrderPromises);
 
@@ -485,7 +486,7 @@ export class Payment {
       );
       await Promise.all(cachePromises);
     } catch (error) {
-      throw new Error(`Error processing orders : ${error.message}`);
+      throw new Error(`Error processing orders : ${getErrorMessage(error)}`);
     }
 
     await adminSdk.DeleteStripeCheckoutSession({

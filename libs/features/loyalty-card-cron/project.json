@@ -1,0 +1,37 @@
+{
+  "name": "loyalty-card-cron",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/features/loyalty-card-cron/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/features/loyalty-card-cron",
+        "main": "libs/features/loyalty-card-cron/src/index.ts",
+        "tsConfig": "libs/features/loyalty-card-cron/tsconfig.lib.json",
+        "assets": ["libs/features/loyalty-card-cron/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/features/loyalty-card-cron/jest.config.ts"
+      }
+    },
+    "test-integration": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/features/loyalty-card-cron/jest.integration.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

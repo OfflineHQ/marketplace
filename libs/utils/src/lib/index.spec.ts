@@ -1,8 +1,9 @@
 import {
-  truncateString,
-  truncateEmailString,
-  deepPick,
   deepMerge,
+  deepPick,
+  isOriginAllowed,
+  truncateEmailString,
+  truncateString,
 } from './index';
 
 describe('truncateString', () => {
@@ -138,5 +139,54 @@ describe('deepPick', () => {
         },
       },
     });
+  });
+});
+
+describe('isOriginAllowed', () => {
+  it('should allow a direct match', () => {
+    expect(isOriginAllowed('https://example.com', 'https://example.com')).toBe(
+      true,
+    );
+  });
+
+  it('should allow a match from a list of origins', () => {
+    const allowlist = 'https://example.com, https://another.com';
+    expect(isOriginAllowed(allowlist, 'https://another.com')).toBe(true);
+  });
+
+  it('should reject an origin not in the list', () => {
+    const allowlist = 'https://example.com, https://another.com';
+    expect(isOriginAllowed(allowlist, 'https://notallowed.com')).toBe(false);
+  });
+
+  it('should allow a wildcard subdomain match', () => {
+    expect(isOriginAllowed('*.example.com', 'sub.example.com')).toBe(true);
+  });
+
+  it('should reject a non-matching wildcard subdomain', () => {
+    expect(isOriginAllowed('*.example.com', 'sub.another.com')).toBe(false);
+  });
+
+  it('should handle spaces in the allowlist correctly', () => {
+    const allowlist = 'https://example.com, https://another.com ';
+    expect(isOriginAllowed(allowlist, 'https://another.com')).toBe(true);
+  });
+
+  it('should allow a wildcard match for any subdomain and path', () => {
+    expect(
+      isOriginAllowed('*.example.com/*', 'sub.example.com/path/to/resource'),
+    ).toBe(true);
+  });
+
+  it('should reject an origin when the allowlist is empty', () => {
+    expect(isOriginAllowed('', 'https://example.com')).toBe(false);
+  });
+
+  it('should accept an origin when the allowlist is only a wildcard', () => {
+    expect(isOriginAllowed('*', 'https://example.com')).toBe(true);
+  });
+
+  it('should allow any origin if the allowlist is a global wildcard', () => {
+    expect(isOriginAllowed('*.*', 'https://any.domain.com')).toBe(true); // Assuming '*.*' is used as a global wildcard
   });
 });

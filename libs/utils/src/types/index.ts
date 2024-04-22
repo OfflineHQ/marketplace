@@ -32,3 +32,11 @@ export type MessageKeys<ObjectType, Keys extends string> = {
     ? Property
     : never;
 }[Keys];
+
+export type NonNullableAndOmitTypename<T> = OmitTypename<NonNullable<T>>;
+
+export type OmitTypename<T> = {
+  [K in keyof T as K extends '__typename' ? never : K]: T[K] extends object
+    ? OmitTypename<T[K]>
+    : T[K];
+};

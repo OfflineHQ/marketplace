@@ -109,9 +109,6 @@ const nextConfig = {
       '@nft/thirdweb-organizer',
       '@nft/event-pass',
     ],
-    // https://vercel.com/docs/concepts/deployments/skew-protection#enabling-skew-protection
-    useDeploymentId: true,
-    useDeploymentIdServerActions: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
   },
   sentry: {

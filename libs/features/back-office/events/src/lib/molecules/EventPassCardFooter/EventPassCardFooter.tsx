@@ -19,8 +19,10 @@ import {
 
 import { defaultLocale, messages, type Locale } from '@next/i18n';
 
-export interface EventPassCardFooterProps
-  extends Omit<EventPassDeployButtonClientProps, 'children'> {}
+export type EventPassCardFooterProps = Omit<
+  EventPassDeployButtonClientProps,
+  'children'
+>;
 
 function EventPassContractDeployButton({
   eventPass,

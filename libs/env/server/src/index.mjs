@@ -40,6 +40,8 @@ const env = createEnv({
     POSTHOG_KEY: z.string().min(1),
     POSTHOG_PERSONAL_API_KEY: z.string().min(1),
     COMETH_CONNECT_API_KEY: z.string().min(1),
+    API_SECRET_ENCRYPTION_KEY: z.string().length(32),
+    SHOPIFY_SHARED_SECRET: z.string().length(32),
   },
   runtimeEnv: {
     APP: process.env.APP,
@@ -82,6 +84,8 @@ const env = createEnv({
     POSTHOG_KEY: process.env.POSTHOG_KEY,
     POSTHOG_PERSONAL_API_KEY: process.env.POSTHOG_PERSONAL_API_KEY,
     COMETH_CONNECT_API_KEY: process.env.COMETH_CONNECT_API_KEY,
+    API_SECRET_ENCRYPTION_KEY: process.env.API_SECRET_ENCRYPTION_KEY,
+    SHOPIFY_SHARED_SECRET: process.env.SHOPIFY_SHARED_SECRET,
   },
 });
 

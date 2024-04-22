@@ -34,6 +34,7 @@
     "../../dist/apps/back-office/.next/types/**/*.ts"
   ],
   "exclude": [
+    "**/{web,unlock}/**",
     "**/**/examples.tsx",
     "node_modules",
     "jest.config.ts",

@@ -6,11 +6,10 @@ import { UTCDateMini } from '@time';
 import { isBefore } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 
-export interface GetSaleStatusProps
-  extends Pick<
-    EventParametersPasses,
-    'dateSaleStart' | 'timezone' | 'isSaleOngoing'
-  > {}
+export type GetSaleStatusProps = Pick<
+  EventParametersPasses,
+  'dateSaleStart' | 'timezone' | 'isSaleOngoing'
+>;
 export function getSaleStatus({
   dateSaleStart,
   timezone,

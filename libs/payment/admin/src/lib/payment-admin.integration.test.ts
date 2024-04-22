@@ -309,7 +309,7 @@ describe('Payment integration', () => {
         'stripeCustomer',
         'stripeCheckoutSession',
       ]);
-      payment.nftClaimable.checkOrder = jest.fn().mockResolvedValue({});
+      payment.eventPassNftOrder.checkOrder = jest.fn().mockResolvedValue({});
     });
 
     afterEach(() => {
@@ -322,7 +322,7 @@ describe('Payment integration', () => {
 
       await payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId });
 
-      expect(payment.nftClaimable.checkOrder).toHaveBeenCalled();
+      expect(payment.eventPassNftOrder.checkOrder).toHaveBeenCalled();
 
       const session = await adminSdk.GetStripeCheckoutSessionForUser({
         stripeCustomerId: 'cus_OnE9GqPxIIPYtB',
@@ -334,7 +334,7 @@ describe('Payment integration', () => {
     });
 
     it('should throw an error if there is a problem claiming NFTs', async () => {
-      payment.nftClaimable.checkOrder = jest
+      payment.eventPassNftOrder.checkOrder = jest
         .fn()
         .mockRejectedValue(new Error('Failed to claim NFT'));
 

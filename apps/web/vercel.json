@@ -16,6 +16,10 @@
     {
       "path": "/apps/web/crons/processRedisOrders.ts",
       "schedule": "* * * * *"
+    },
+    {
+      "path": "/apps/web/crons/processLoyaltyCardsMint.ts",
+      "schedule": "*/5 * * * *"
     }
   ],
   "rewrites": [

@@ -16,8 +16,6 @@ const AuthDialogDynamic = dynamic(
   { ssr: false },
 );
 
-export interface ShopifyAuthProps {}
-
 export function ShopifyAuth() {
   const t = useTranslations('Shopify.Auth');
   const { toast } = useToast();

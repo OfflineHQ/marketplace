@@ -34,18 +34,18 @@ export const WalletContext = createContext<{
   setAutoConnectAddress: Dispatch<SetStateAction<string | null>>;
 }>({
   wallet: null,
-  setWallet: () => {},
+  setWallet: () => null,
   provider: null,
-  setProvider: () => {},
+  setProvider: () => null,
   walletAdaptor: null,
-  setWalletAdaptor: () => {},
+  setWalletAdaptor: () => null,
   walletInStorage: null,
-  setWalletInStorage: () => {},
+  setWalletInStorage: () => null,
   walletConnected: '',
-  setWalletConnected: () => {},
+  setWalletConnected: () => null,
   wcUri: null,
   autoConnectAddress: null,
-  setAutoConnectAddress: () => {},
+  setAutoConnectAddress: () => null,
 });
 
 export function WalletProvider({

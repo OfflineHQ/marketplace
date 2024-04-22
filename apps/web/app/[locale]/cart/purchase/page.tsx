@@ -9,6 +9,7 @@ import { isUserKycValidated } from '@kyc/common';
 import { redirect } from '@next/navigation';
 import { getCurrentUser } from '@next/next-auth/user';
 import { redirect as nextRedirect } from 'next/navigation';
+import { getErrorMessage } from '@utils';
 
 interface CartSectionProps {
   params: {
@@ -25,7 +26,7 @@ export default async function CartPurchase({
   try {
     session = await getStripeActiveCheckoutSession();
   } catch (error) {
-    if (error.message === 'User has no email') {
+    if (getErrorMessage(error) === 'User has no email') {
       return redirect('/cart?reason=no-mail');
     }
   }

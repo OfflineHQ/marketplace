@@ -1,0 +1,26 @@
+table:
+  name: loyaltyCardNft
+  schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - loyaltyCardId
+        remote_field:
+          loyaltyCard:
+            arguments:
+              where:
+                id: $loyaltyCardId
+        remote_schema: Hygraph CMS Remote Schema
+    name: loyaltyCard
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - organizerId
+        remote_field:
+          organizer:
+            arguments:
+              where:
+                id: $organizerId
+        remote_schema: Hygraph CMS Remote Schema
+    name: organizer
