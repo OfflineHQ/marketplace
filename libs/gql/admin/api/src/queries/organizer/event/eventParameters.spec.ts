@@ -1,3 +1,4 @@
+import { adminSdk } from '@gql/admin/api';
 import {
   PgClient,
   applySeeds,
@@ -5,7 +6,6 @@ import {
   deleteTables,
   updateObjects,
 } from '@test-utils/db';
-import { adminSdk } from '../../../generated';
 
 import { addHoursInTimeZone, subHoursInTimeZone } from '@time';
 import { toZonedTime } from 'date-fns-tz';

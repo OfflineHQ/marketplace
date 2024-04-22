@@ -1,7 +1,7 @@
 import { deleteOrders, setOrdersToBusy } from '@features/orders-cron';
 import { adminSdk } from '@gql/admin/api';
 import { NextRedis } from '@next/redis';
-import { NftClaimable } from '@nft/thirdweb-admin';
+import { EventPassNftOrder } from '@nft/thirdweb-admin';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export const config = {
@@ -23,7 +23,7 @@ export default async function handler(
   }
 
   const cache = new NextRedis();
-  const claim = new NftClaimable();
+  const claim = new EventPassNftOrder();
 
   try {
     const minterTemporaryWallet = (

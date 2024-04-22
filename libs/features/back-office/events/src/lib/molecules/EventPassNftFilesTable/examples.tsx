@@ -10,10 +10,10 @@ import * as nextIntl from 'next-intl';
 import { createMock } from 'storybook-addon-module-mock';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
 import * as deleteFile from '../../actions/deleteEventPassFile';
-import * as deploy from '../../actions/deployCollectionWrapper';
+import * as deploy from '../../actions/deployEventPassCollectionWrapper';
 import * as getPass from '../../actions/getEventPassNftFiles';
 import * as renameFiles from '../../actions/renameEventPassNftFiles';
-import * as reveal from '../../actions/revealDelayedContract';
+import * as reveal from '../../actions/revealEventPassDelayedContract';
 import { EventPassNftFilesTableProps } from './EventPassNftFilesTable';
 
 export const eventPassNftFiles = [
@@ -149,9 +149,9 @@ export function eventPassNftFilesTableMocks() {
   mockCheckPass.mockReturnValue(Promise.resolve([]));
   const mockRename = createMock(renameFiles, 'renameEventPassNftFiles');
   mockRename.mockReturnValue(Promise.resolve());
-  const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
+  const mockDeploy = createMock(deploy, 'deployEventPassCollectionWrapper');
   mockDeploy.mockReturnValue(Promise.resolve());
-  const mockReveal = createMock(reveal, 'revealDelayedContract');
+  const mockReveal = createMock(reveal, 'revealEventPassDelayedContract');
   mockReveal.mockReturnValue(Promise.resolve());
 
   return [

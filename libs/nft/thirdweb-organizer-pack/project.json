@@ -1,0 +1,38 @@
+{
+  "name": "nft-thirdweb-organizer-pack",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nft/thirdweb-organizer-pack/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/nft/thirdweb-organizer-pack",
+        "main": "libs/nft/thirdweb-organizer-pack/src/index.ts",
+        "tsConfig": "libs/nft/thirdweb-organizer-pack/tsconfig.lib.json",
+        "assets": ["libs/nft/thirdweb-organizer-pack/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/nft/thirdweb-organizer-pack/jest.config.ts"
+      }
+    },
+    "test-integration": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/nft/thirdweb-organizer-pack/jest.integration.ts",
+        "runInBand": true
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,5 @@
+query GetShopifyDomain($domain: String!) @cached {
+  shopifyDomain_by_pk(domain: $domain) {
+    organizerId
+  }
+}

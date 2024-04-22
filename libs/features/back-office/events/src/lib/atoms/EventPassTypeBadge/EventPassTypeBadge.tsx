@@ -1,6 +1,6 @@
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
 import { Badge, BadgeProps, PopoverInfo } from '@ui/components';
-import { InfoAvailable, InfoSealed } from '@ui/icons';
+import { IconProps, InfoAvailable, InfoSealed } from '@ui/icons';
 import {
   backgroundColors,
   backgroundHoverColors,
@@ -19,23 +19,26 @@ export function EventPassTypeBadge({
   ...props
 }: EventPassTypeBadgeProps) {
   const t = useTranslations('OrganizerEvents.EventPassTypeBadge');
-  const texts = {
+  const texts: Record<EventPassNftContractType_Enum, string> = {
     [EventPassNftContractType_Enum.Normal]: t('type-normal-badge'),
     [EventPassNftContractType_Enum.DelayedReveal]: t(
       'type-delayed-reveal-badge',
     ),
   };
-  const descriptions = {
+  const descriptions: Record<EventPassNftContractType_Enum, string> = {
     [EventPassNftContractType_Enum.Normal]: t('type-normal-description'),
     [EventPassNftContractType_Enum.DelayedReveal]: t(
       'type-delayed-reveal-description',
     ),
   };
-  const classes = {
+  const classes: Record<EventPassNftContractType_Enum, string> = {
     [EventPassNftContractType_Enum.Normal]: `${textColors.green} ${backgroundColors.green} ${backgroundHoverColors.green}`,
     [EventPassNftContractType_Enum.DelayedReveal]: `${textColors.blue} ${backgroundColors.blue} ${backgroundHoverColors.blue}`,
   };
-  const icons = {
+  const icons: Record<
+    EventPassNftContractType_Enum,
+    React.ReactElement<IconProps>
+  > = {
     [EventPassNftContractType_Enum.Normal]: <InfoAvailable />,
     [EventPassNftContractType_Enum.DelayedReveal]: <InfoSealed />,
   };

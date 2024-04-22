@@ -18,7 +18,7 @@ async function EventSheetPageContent({
   if (!user || !user?.role) return notFound();
   const event = await getEventWithPassesOrganizer({ slug: eventSlug, locale });
   if (!event) return notFound();
-  return <EventSheet event={event} organizerId={user.role.organizerId} />;
+  return <EventSheet event={event} organizerId={user.role?.organizerId} />;
 }
 
 interface EventSheetPageProps {

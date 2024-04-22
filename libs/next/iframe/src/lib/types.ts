@@ -1,6 +1,7 @@
 export enum ReceiveMessageType {
   CONNECT_STATUS = 'CONNECT_STATUS',
   UPDATE_CSS_VARIABLES_AND_CLASSES = 'UPDATE_CSS_VARIABLES_AND_CLASSES',
+  OFF_KEY_STATE = 'OFF_KEY_STATE',
   // Additional message types can be added here as needed
 }
 
@@ -11,6 +12,13 @@ export enum ConnectStatus {
   ERROR = 'error', // An error occurred during the connection process
 }
 
+export enum OffKeyState {
+  Unlocked = 'Unlocked', // The off-key is unlocked and can be used
+  Locked = 'Locked', // The off-key is locked and cannot be used
+  Unlocking = 'Unlocking', // The off-key is unlocking (being created)
+  Used = 'Used', // The off-key has been used and cannot be used again in this context
+}
+
 export enum FontFamily {
   ROBOTO = 'roboto',
   OPEN_SANS = 'openSans',
@@ -19,6 +27,10 @@ export enum FontFamily {
   HELVETICA_NEUE = 'helveticaNeue',
 }
 export interface ReceiveMessageValues {
+  [ReceiveMessageType.OFF_KEY_STATE]: {
+    address: string;
+    status: OffKeyState;
+  };
   [ReceiveMessageType.CONNECT_STATUS]: {
     address: string;
     status: ConnectStatus;
@@ -34,7 +46,7 @@ export interface ReceiveMessageValues {
 export enum SendMessageType {
   DISCONNECT = 'DISCONNECT',
   SIGNATURE = 'SIGNATURE',
-  OFFKEY_MINTED = 'OFFKEY_MINTED',
+  OFF_KEY_MINT = 'OFF_KEY_MINT',
   CONNECT_STATUS = 'CONNECT_STATUS',
 }
 
@@ -47,9 +59,8 @@ export interface SendMessageValues {
     message: string;
     signature: string;
   };
-  [SendMessageType.OFFKEY_MINTED]: {
-    contractAddress: string;
-    tokenId: string;
+  [SendMessageType.OFF_KEY_MINT]: {
+    mintPassword: string;
   };
   [SendMessageType.CONNECT_STATUS]: {
     address: string;

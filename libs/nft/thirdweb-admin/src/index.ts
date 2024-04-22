@@ -1,1 +1,2 @@
-export * from './lib/nft-thirdweb-api';
+export { LoyaltyCardNft } from './lib/loyaltyCardNft';
+export { EventPassNftOrder } from './lib/eventPassNftOrder';

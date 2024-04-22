@@ -85,7 +85,7 @@ export function useWalletAuth() {
   async function connectWithSiwe(
     loginSiwe: (signer: ComethWallet) => void,
     address?: string,
-    createAccount: boolean = false,
+    createAccount = false,
   ) {
     console.log('connectWithSiwe:', {
       address,

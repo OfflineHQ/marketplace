@@ -1,15 +1,10 @@
 'use server';
 import env from '@env/server';
-import { GetEventPassOrganizerFolderPath } from '@features/pass-common';
 import { FileWrapper } from '@file-upload/admin';
 import { cacheWithDynamicKeys } from '@next/cache';
 
 import crypto from 'crypto';
-
-export type CheckEventPassNftFilesHashProps =
-  GetEventPassOrganizerFolderPath & {
-    filesPath: string[];
-  };
+import { CheckEventPassNftFilesHashProps } from './types';
 
 export const checkEventPassNftFilesHash = cacheWithDynamicKeys(
   async ({ filesPath }: CheckEventPassNftFilesHashProps) => {
@@ -32,7 +27,7 @@ export const checkEventPassNftFilesHash = cacheWithDynamicKeys(
           }),
       ),
     );
-    const hashMap = new Map();
+    const hashMap = new Map<string, string[]>();
     for (const file of filesContent) {
       const existingFiles = hashMap.get(file.hash) || [];
       existingFiles.push(file.path);
@@ -40,9 +35,8 @@ export const checkEventPassNftFilesHash = cacheWithDynamicKeys(
     }
     return Array.from(hashMap.values()).filter((paths) => paths.length > 1);
   },
-  (props: [CheckEventPassNftFilesHashProps]) => [
-    `${props[0].organizerId}-${props[0].eventId}-${props[0].eventPassId}-getEventPassNftFiles`,
-  ],
+  async (props: [CheckEventPassNftFilesHashProps]) =>
+    Promise.resolve([
+      `${props[0].organizerId}-${props[0].eventId}-${props[0].eventPassId}-getEventPassNftFiles`,
+    ]),
 );
-
-export type DuplicatesType = Array<Array<string>>;

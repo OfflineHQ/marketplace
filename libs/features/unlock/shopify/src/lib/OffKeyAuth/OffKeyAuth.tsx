@@ -9,8 +9,6 @@ import { useSearchParams } from 'next/navigation';
 
 import { ConnectProps, OffKeyAuthSignIn } from './OffKeyAuthSignIn';
 
-export interface OffKeyAuthProps {}
-
 export function OffKeyAuth() {
   const t = useTranslations('Shopify.OffKeyAuth');
   const {

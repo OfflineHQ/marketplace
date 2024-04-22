@@ -670,7 +670,9 @@ ${PassPricingFieldsFragmentDoc}`;
     query GetAlchemyInfosFromEventId($eventId: String) {
   eventParameters(where: {eventId: {_eq: $eventId}}) {
     activityWebhookId
-    signingKey
+    activityWebhookSigningKey
+    metadataUpdateWebhookId
+    metadataUpdateWebhookSigningKey
   }
 }
     `;
@@ -913,12 +915,12 @@ ${EventParametersFieldsFragmentDoc}`;
   }
 }
     `;
- const GetEventPassNftContractNftsDocument = `
-    query GetEventPassNftContractNfts($eventPassId: String) @cached {
+ const GetEventPassNftContractNftsLazyMintedDocument = `
+    query GetEventPassNftContractNftsLazyMinted($eventPassId: String) @cached {
   eventPassNftContract(where: {eventPassId: {_eq: $eventPassId}}) {
     contractAddress
     eventPassId
-    eventPassNfts {
+    eventPassNfts(where: {status: {_eq: LAZY_MINTED}}) {
       id
       packId
       currentOwnerAddress
@@ -926,6 +928,7 @@ ${EventParametersFieldsFragmentDoc}`;
       eventId
       tokenId
       eventPassId
+      status
     }
   }
 }
@@ -934,24 +937,6 @@ ${EventParametersFieldsFragmentDoc}`;
     query GetEventPassOrderSums($eventPassId: String!) {
   eventPassOrderSums_by_pk(eventPassId: $eventPassId) {
     totalReserved
-  }
-}
-    `;
- const InsertMinterTemporaryWalletDocument = `
-    mutation InsertMinterTemporaryWallet($object: minterTemporaryWallet_insert_input!) {
-  insert_minterTemporaryWallet_one(object: $object) {
-    address
-    eventPassId
-    packId
-  }
-}
-    `;
- const GetMinterTemporaryWalletByEventPassIdDocument = `
-    query GetMinterTemporaryWalletByEventPassId($eventPassId: String!) {
-  minterTemporaryWallet(where: {eventPassId: {_eq: $eventPassId}}) {
-    address
-    privateKey
-    eventPassId
   }
 }
     `;
@@ -1062,6 +1047,254 @@ ${EventParametersFieldsFragmentDoc}`;
   }
 }
     `;
+ const InsertLoyaltyCardNftContractDocument = `
+    mutation InsertLoyaltyCardNftContract($object: loyaltyCardNftContract_insert_input!) {
+  insert_loyaltyCardNftContract_one(object: $object) {
+    id
+  }
+}
+    `;
+ const CreateLoyaltyCardParametersDocument = `
+    mutation CreateLoyaltyCardParameters($object: loyaltyCardParameters_insert_input!) {
+  insert_loyaltyCardParameters_one(object: $object) {
+    id
+  }
+}
+    `;
+ const UpdateLoyaltyCardParametersDocument = `
+    mutation UpdateLoyaltyCardParameters($id: uuid!, $object: loyaltyCardParameters_set_input!) {
+  update_loyaltyCardParameters_by_pk(pk_columns: {id: $id}, _set: $object) {
+    id
+  }
+}
+    `;
+ const InsertLoyaltyCardNftDocument = `
+    mutation InsertLoyaltyCardNft($object: loyaltyCardNft_insert_input!) {
+  insert_loyaltyCardNft_one(object: $object) {
+    id
+  }
+}
+    `;
+ const UpdateLoyaltyCardNftDocument = `
+    mutation UpdateLoyaltyCardNft($id: uuid!, $object: loyaltyCardNft_set_input!) {
+  update_loyaltyCardNft_by_pk(pk_columns: {id: $id}, _set: $object) {
+    id
+  }
+}
+    `;
+ const UpdateLoyaltyCardNftsDocument = `
+    mutation UpdateLoyaltyCardNfts($updates: [loyaltyCardNft_updates!]!) {
+  update_loyaltyCardNft_many(updates: $updates) {
+    affected_rows
+  }
+}
+    `;
+ const GetLoyaltyCardOrganizerDocument = `
+    query GetLoyaltyCardOrganizer($organizerId: ID!, $stage: Stage!) @cached {
+  organizer(where: {id: $organizerId}, locales: [en], stage: $stage) {
+    loyaltyCard {
+      id
+      nftName
+      nftImage {
+        url
+      }
+      loyaltyCardParameters {
+        status
+      }
+      loyaltyCardNftContract {
+        contractAddress
+        chainId
+      }
+    }
+  }
+}
+    `;
+ const GetLoyaltyCardNftContractByLoyaltyCardIdDocument = `
+    query GetLoyaltyCardNftContractByLoyaltyCardId($loyaltyCardId: String!) {
+  loyaltyCardNftContract(where: {loyaltyCardId: {_eq: $loyaltyCardId}}, limit: 1) {
+    contractAddress
+    chainId
+  }
+}
+    `;
+ const GetAlchemyInfosFromLoyaltyCardIdDocument = `
+    query GetAlchemyInfosFromLoyaltyCardId($loyaltyCardId: String!) {
+  loyaltyCardParameters(where: {loyaltyCardId: {_eq: $loyaltyCardId}}, limit: 1) {
+    id
+    activityWebhookId
+    activityWebhookSigningKey
+    metadataUpdateWebhookId
+    metadataUpdateWebhookSigningKey
+  }
+}
+    `;
+ const GetLoyaltyCardOwnedByAddressDocument = `
+    query GetLoyaltyCardOwnedByAddress($contractAddress: String!, $chainId: String!, $ownerAddress: String!, $organizerId: String!) @cached {
+  loyaltyCardNft(
+    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, ownerAddress: {_eq: $ownerAddress}, organizerId: {_eq: $organizerId}}
+    limit: 1
+  ) {
+    id
+    status
+    burnedTransferId
+    organizerId
+  }
+}
+    `;
+ const GetLoyaltyCardAlchemyEventDocument = `
+    query GetLoyaltyCardAlchemyEvent($contractAddress: String!, $chainId: String!, $tokenId: bigint!) {
+  loyaltyCardNft(
+    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, tokenId: {_eq: $tokenId}}
+    limit: 1
+  ) {
+    id
+    status
+  }
+}
+    `;
+ const GetLoyaltyCardNftContractByContractAddressDocument = `
+    query GetLoyaltyCardNftContractByContractAddress($contractAddress: String!, $chainId: String!, $organizerId: String!) @cached {
+  loyaltyCardNftContract(
+    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, organizerId: {_eq: $organizerId}}
+    limit: 1
+  ) {
+    loyaltyCardId
+  }
+}
+    `;
+ const GetLoyaltyCardByContractAddressForProcessDocument = `
+    query GetLoyaltyCardByContractAddressForProcess {
+  loyaltyCardNft(
+    where: {status: {_in: [CONFIRMED, ERROR]}}
+    order_by: {updated_at: desc}
+  ) {
+    id
+    status
+    updated_at
+    contractAddress
+    ownerAddress
+    loyaltyCardId
+    metadata
+    tokenId
+  }
+}
+    `;
+ const InsertMinterTemporaryWalletDocument = `
+    mutation InsertMinterTemporaryWallet($object: minterTemporaryWallet_insert_input!) {
+  insert_minterTemporaryWallet_one(object: $object) {
+    address
+    eventPassId
+    packId
+    loyaltyCardId
+    campaignId
+  }
+}
+    `;
+ const InsertMinterTemporaryWalletsDocument = `
+    mutation InsertMinterTemporaryWallets($objects: [minterTemporaryWallet_insert_input!]!) {
+  insert_minterTemporaryWallet(objects: $objects) {
+    affected_rows
+    returning {
+      address
+      eventPassId
+      packId
+      loyaltyCardId
+      campaignId
+    }
+  }
+}
+    `;
+ const GetMinterTemporaryWalletByEventPassIdDocument = `
+    query GetMinterTemporaryWalletByEventPassId($eventPassId: String!) {
+  minterTemporaryWallet(where: {eventPassId: {_eq: $eventPassId}}) {
+    address
+    privateKey
+    eventPassId
+  }
+}
+    `;
+ const GetMinterTemporaryWalletByLoyaltyCardIdDocument = `
+    query GetMinterTemporaryWalletByLoyaltyCardId($loyaltyCardId: String!) {
+  minterTemporaryWallet(where: {loyaltyCardId: {_eq: $loyaltyCardId}}) {
+    address
+    privateKey
+    loyaltyCardId
+  }
+}
+    `;
+ const GetMinterTemporaryWalletByCampaignIdDocument = `
+    query GetMinterTemporaryWalletByCampaignId($campaignId: String!) {
+  minterTemporaryWallet(where: {campaignId: {_eq: $campaignId}}) {
+    address
+    privateKey
+    campaignId
+  }
+}
+    `;
+ const InsertNftMintPasswordDocument = `
+    mutation InsertNftMintPassword($object: nftMintPassword_insert_input!) {
+  insert_nftMintPassword_one(object: $object) {
+    id
+  }
+}
+    `;
+ const InsertNftMintPasswordsDocument = `
+    mutation InsertNftMintPasswords($objects: [nftMintPassword_insert_input!]!) {
+  insert_nftMintPassword(objects: $objects) {
+    affected_rows
+    returning {
+      id
+      password
+      tokenId
+      minterAddress
+    }
+  }
+}
+    `;
+ const UpdateNftMintPasswordMinterDocument = `
+    mutation UpdateNftMintPasswordMinter($id: uuid!, $minterAddress: String!) {
+  update_nftMintPassword_by_pk(
+    pk_columns: {id: $id}
+    _set: {minterAddress: $minterAddress}
+  ) {
+    id
+  }
+}
+    `;
+ const UpdateNftMintPasswordTokenIdDocument = `
+    mutation UpdateNftMintPasswordTokenId($tokenId: bigint!, $minterAddress: String!, $contractAddress: String!, $chainId: String!) {
+  update_nftMintPassword(
+    where: {minterAddress: {_eq: $minterAddress}, contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}}
+    _set: {tokenId: $tokenId}
+  ) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+ const GetNftMintPasswordsForContractDocument = `
+    query GetNftMintPasswordsForContract($contractAddress: String!, $chainId: String!) @cached {
+  nftMintPassword(
+    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}}
+  ) {
+    password
+    minterAddress
+    created_at
+    updated_at
+  }
+}
+    `;
+ const GetNftMintPasswordsForContractAvailableDocument = `
+    query GetNftMintPasswordsForContractAvailable($contractAddress: String!, $chainId: String!, $organizerId: String!) @cached {
+  nftMintPassword(
+    where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, minterAddress: {_is_null: true}, organizerId: {_eq: $organizerId}}
+  ) {
+    id
+    password
+  }
+}
+    `;
  const GetOrganizerDocument = `
     query GetOrganizer($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   organizer(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
@@ -1124,6 +1357,30 @@ ${EventParametersFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetShopifyCustomerDocument = `
+    query GetShopifyCustomer($organizerId: String!, $customerId: String!) @cached {
+  shopifyCustomer(
+    where: {organizerId: {_eq: $organizerId}, customerId: {_eq: $customerId}}
+    limit: 1
+  ) {
+    address
+  }
+}
+    `;
+ const InsertShopifyCustomerDocument = `
+    mutation InsertShopifyCustomer($object: shopifyCustomer_insert_input!) {
+  insert_shopifyCustomer_one(object: $object) {
+    id
+  }
+}
+    `;
+ const GetShopifyDomainDocument = `
+    query GetShopifyDomain($domain: String!) @cached {
+  shopifyDomain_by_pk(domain: $domain) {
+    organizerId
+  }
+}
+    `;
  const GetEventPassNftByIdDocument = `
     query GetEventPassNftById($id: uuid!, $locale: Locale!, $stage: Stage!) @cached {
   eventPassNft_by_pk(id: $id) {
@@ -1153,6 +1410,91 @@ ${EventPassFieldsFragmentDoc}`;
   }
 }
     ${EventPassNftFieldsFragmentDoc}`;
+ const CreatePublishableApiKeyDocument = `
+    mutation CreatePublishableApiKey($object: publishableApiKey_insert_input!) {
+  insert_publishableApiKey_one(object: $object) {
+    id
+    name
+    apiKey
+    allowlist
+    organizerId
+    expiresAt
+    type
+  }
+}
+    `;
+ const UpdatePublishableApiKeyDocument = `
+    mutation UpdatePublishableApiKey($id: uuid!, $allowlist: String, $expiresAt: timestamptz, $status: apiKeyStatus_enum) {
+  update_publishableApiKey_by_pk(
+    pk_columns: {id: $id}
+    _set: {allowlist: $allowlist, expiresAt: $expiresAt, status: $status}
+  ) {
+    name
+    allowlist
+    organizerId
+    expiresAt
+  }
+}
+    `;
+ const GetPublishableApiKeyDocument = `
+    query GetPublishableApiKey($apiKey: String!) {
+  publishableApiKey(where: {apiKey: {_eq: $apiKey}}) {
+    id
+    allowlist
+    organizerId
+    expiresAt
+    status
+    type
+  }
+}
+    `;
+ const CreateSecretApiKeyDocument = `
+    mutation CreateSecretApiKey($object: secretApiKey_insert_input!) {
+  insert_secretApiKey_one(object: $object) {
+    id
+    name
+    apiKey
+    hashedOriginSecret
+    originSecretSalt
+    encryptedIntegritySecret
+    allowlist
+    organizerId
+    expiresAt
+    type
+  }
+}
+    `;
+ const UpdateSecretApiKeyDocument = `
+    mutation UpdateSecretApiKey($id: uuid!, $allowlist: String, $expiresAt: timestamptz, $status: apiKeyStatus_enum) {
+  update_secretApiKey_by_pk(
+    pk_columns: {id: $id}
+    _set: {allowlist: $allowlist, expiresAt: $expiresAt, status: $status}
+  ) {
+    name
+    hashedOriginSecret
+    originSecretSalt
+    encryptedIntegritySecret
+    allowlist
+    organizerId
+    expiresAt
+  }
+}
+    `;
+ const GetSecretApiKeyDocument = `
+    query GetSecretApiKey($apiKey: String!) {
+  secretApiKey(where: {apiKey: {_eq: $apiKey}}) {
+    id
+    hashedOriginSecret
+    originSecretSalt
+    encryptedIntegritySecret
+    allowlist
+    organizerId
+    expiresAt
+    status
+    type
+  }
+}
+    `;
  const CreateRoleAssignmentDocument = `
     mutation CreateRoleAssignment($input: roleAssignment_insert_input!) {
   insert_roleAssignment_one(object: $input) {
@@ -1352,17 +1694,11 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetEventPassNftContractDelayedRevealPassword(variables?: Types.GetEventPassNftContractDelayedRevealPasswordQueryVariables, options?: C): Promise<Types.GetEventPassNftContractDelayedRevealPasswordQuery> {
       return requester<Types.GetEventPassNftContractDelayedRevealPasswordQuery, Types.GetEventPassNftContractDelayedRevealPasswordQueryVariables>(GetEventPassNftContractDelayedRevealPasswordDocument, variables, options) as Promise<Types.GetEventPassNftContractDelayedRevealPasswordQuery>;
     },
-    GetEventPassNftContractNfts(variables?: Types.GetEventPassNftContractNftsQueryVariables, options?: C): Promise<Types.GetEventPassNftContractNftsQuery> {
-      return requester<Types.GetEventPassNftContractNftsQuery, Types.GetEventPassNftContractNftsQueryVariables>(GetEventPassNftContractNftsDocument, variables, options) as Promise<Types.GetEventPassNftContractNftsQuery>;
+    GetEventPassNftContractNftsLazyMinted(variables?: Types.GetEventPassNftContractNftsLazyMintedQueryVariables, options?: C): Promise<Types.GetEventPassNftContractNftsLazyMintedQuery> {
+      return requester<Types.GetEventPassNftContractNftsLazyMintedQuery, Types.GetEventPassNftContractNftsLazyMintedQueryVariables>(GetEventPassNftContractNftsLazyMintedDocument, variables, options) as Promise<Types.GetEventPassNftContractNftsLazyMintedQuery>;
     },
     GetEventPassOrderSums(variables: Types.GetEventPassOrderSumsQueryVariables, options?: C): Promise<Types.GetEventPassOrderSumsQuery> {
       return requester<Types.GetEventPassOrderSumsQuery, Types.GetEventPassOrderSumsQueryVariables>(GetEventPassOrderSumsDocument, variables, options) as Promise<Types.GetEventPassOrderSumsQuery>;
-    },
-    InsertMinterTemporaryWallet(variables: Types.InsertMinterTemporaryWalletMutationVariables, options?: C): Promise<Types.InsertMinterTemporaryWalletMutation> {
-      return requester<Types.InsertMinterTemporaryWalletMutation, Types.InsertMinterTemporaryWalletMutationVariables>(InsertMinterTemporaryWalletDocument, variables, options) as Promise<Types.InsertMinterTemporaryWalletMutation>;
-    },
-    GetMinterTemporaryWalletByEventPassId(variables: Types.GetMinterTemporaryWalletByEventPassIdQueryVariables, options?: C): Promise<Types.GetMinterTemporaryWalletByEventPassIdQuery> {
-      return requester<Types.GetMinterTemporaryWalletByEventPassIdQuery, Types.GetMinterTemporaryWalletByEventPassIdQueryVariables>(GetMinterTemporaryWalletByEventPassIdDocument, variables, options) as Promise<Types.GetMinterTemporaryWalletByEventPassIdQuery>;
     },
     CreatePackNftContract(variables: Types.CreatePackNftContractMutationVariables, options?: C): Promise<Types.CreatePackNftContractMutation> {
       return requester<Types.CreatePackNftContractMutation, Types.CreatePackNftContractMutationVariables>(CreatePackNftContractDocument, variables, options) as Promise<Types.CreatePackNftContractMutation>;
@@ -1391,6 +1727,78 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     CheckFollowingOrganizer(variables: Types.CheckFollowingOrganizerQueryVariables, options?: C): Promise<Types.CheckFollowingOrganizerQuery> {
       return requester<Types.CheckFollowingOrganizerQuery, Types.CheckFollowingOrganizerQueryVariables>(CheckFollowingOrganizerDocument, variables, options) as Promise<Types.CheckFollowingOrganizerQuery>;
     },
+    InsertLoyaltyCardNftContract(variables: Types.InsertLoyaltyCardNftContractMutationVariables, options?: C): Promise<Types.InsertLoyaltyCardNftContractMutation> {
+      return requester<Types.InsertLoyaltyCardNftContractMutation, Types.InsertLoyaltyCardNftContractMutationVariables>(InsertLoyaltyCardNftContractDocument, variables, options) as Promise<Types.InsertLoyaltyCardNftContractMutation>;
+    },
+    CreateLoyaltyCardParameters(variables: Types.CreateLoyaltyCardParametersMutationVariables, options?: C): Promise<Types.CreateLoyaltyCardParametersMutation> {
+      return requester<Types.CreateLoyaltyCardParametersMutation, Types.CreateLoyaltyCardParametersMutationVariables>(CreateLoyaltyCardParametersDocument, variables, options) as Promise<Types.CreateLoyaltyCardParametersMutation>;
+    },
+    UpdateLoyaltyCardParameters(variables: Types.UpdateLoyaltyCardParametersMutationVariables, options?: C): Promise<Types.UpdateLoyaltyCardParametersMutation> {
+      return requester<Types.UpdateLoyaltyCardParametersMutation, Types.UpdateLoyaltyCardParametersMutationVariables>(UpdateLoyaltyCardParametersDocument, variables, options) as Promise<Types.UpdateLoyaltyCardParametersMutation>;
+    },
+    InsertLoyaltyCardNft(variables: Types.InsertLoyaltyCardNftMutationVariables, options?: C): Promise<Types.InsertLoyaltyCardNftMutation> {
+      return requester<Types.InsertLoyaltyCardNftMutation, Types.InsertLoyaltyCardNftMutationVariables>(InsertLoyaltyCardNftDocument, variables, options) as Promise<Types.InsertLoyaltyCardNftMutation>;
+    },
+    UpdateLoyaltyCardNft(variables: Types.UpdateLoyaltyCardNftMutationVariables, options?: C): Promise<Types.UpdateLoyaltyCardNftMutation> {
+      return requester<Types.UpdateLoyaltyCardNftMutation, Types.UpdateLoyaltyCardNftMutationVariables>(UpdateLoyaltyCardNftDocument, variables, options) as Promise<Types.UpdateLoyaltyCardNftMutation>;
+    },
+    UpdateLoyaltyCardNfts(variables: Types.UpdateLoyaltyCardNftsMutationVariables, options?: C): Promise<Types.UpdateLoyaltyCardNftsMutation> {
+      return requester<Types.UpdateLoyaltyCardNftsMutation, Types.UpdateLoyaltyCardNftsMutationVariables>(UpdateLoyaltyCardNftsDocument, variables, options) as Promise<Types.UpdateLoyaltyCardNftsMutation>;
+    },
+    GetLoyaltyCardOrganizer(variables: Types.GetLoyaltyCardOrganizerQueryVariables, options?: C): Promise<Types.GetLoyaltyCardOrganizerQuery> {
+      return requester<Types.GetLoyaltyCardOrganizerQuery, Types.GetLoyaltyCardOrganizerQueryVariables>(GetLoyaltyCardOrganizerDocument, variables, options) as Promise<Types.GetLoyaltyCardOrganizerQuery>;
+    },
+    GetLoyaltyCardNftContractByLoyaltyCardId(variables: Types.GetLoyaltyCardNftContractByLoyaltyCardIdQueryVariables, options?: C): Promise<Types.GetLoyaltyCardNftContractByLoyaltyCardIdQuery> {
+      return requester<Types.GetLoyaltyCardNftContractByLoyaltyCardIdQuery, Types.GetLoyaltyCardNftContractByLoyaltyCardIdQueryVariables>(GetLoyaltyCardNftContractByLoyaltyCardIdDocument, variables, options) as Promise<Types.GetLoyaltyCardNftContractByLoyaltyCardIdQuery>;
+    },
+    GetAlchemyInfosFromLoyaltyCardId(variables: Types.GetAlchemyInfosFromLoyaltyCardIdQueryVariables, options?: C): Promise<Types.GetAlchemyInfosFromLoyaltyCardIdQuery> {
+      return requester<Types.GetAlchemyInfosFromLoyaltyCardIdQuery, Types.GetAlchemyInfosFromLoyaltyCardIdQueryVariables>(GetAlchemyInfosFromLoyaltyCardIdDocument, variables, options) as Promise<Types.GetAlchemyInfosFromLoyaltyCardIdQuery>;
+    },
+    GetLoyaltyCardOwnedByAddress(variables: Types.GetLoyaltyCardOwnedByAddressQueryVariables, options?: C): Promise<Types.GetLoyaltyCardOwnedByAddressQuery> {
+      return requester<Types.GetLoyaltyCardOwnedByAddressQuery, Types.GetLoyaltyCardOwnedByAddressQueryVariables>(GetLoyaltyCardOwnedByAddressDocument, variables, options) as Promise<Types.GetLoyaltyCardOwnedByAddressQuery>;
+    },
+    GetLoyaltyCardAlchemyEvent(variables: Types.GetLoyaltyCardAlchemyEventQueryVariables, options?: C): Promise<Types.GetLoyaltyCardAlchemyEventQuery> {
+      return requester<Types.GetLoyaltyCardAlchemyEventQuery, Types.GetLoyaltyCardAlchemyEventQueryVariables>(GetLoyaltyCardAlchemyEventDocument, variables, options) as Promise<Types.GetLoyaltyCardAlchemyEventQuery>;
+    },
+    GetLoyaltyCardNftContractByContractAddress(variables: Types.GetLoyaltyCardNftContractByContractAddressQueryVariables, options?: C): Promise<Types.GetLoyaltyCardNftContractByContractAddressQuery> {
+      return requester<Types.GetLoyaltyCardNftContractByContractAddressQuery, Types.GetLoyaltyCardNftContractByContractAddressQueryVariables>(GetLoyaltyCardNftContractByContractAddressDocument, variables, options) as Promise<Types.GetLoyaltyCardNftContractByContractAddressQuery>;
+    },
+    GetLoyaltyCardByContractAddressForProcess(variables?: Types.GetLoyaltyCardByContractAddressForProcessQueryVariables, options?: C): Promise<Types.GetLoyaltyCardByContractAddressForProcessQuery> {
+      return requester<Types.GetLoyaltyCardByContractAddressForProcessQuery, Types.GetLoyaltyCardByContractAddressForProcessQueryVariables>(GetLoyaltyCardByContractAddressForProcessDocument, variables, options) as Promise<Types.GetLoyaltyCardByContractAddressForProcessQuery>;
+    },
+    InsertMinterTemporaryWallet(variables: Types.InsertMinterTemporaryWalletMutationVariables, options?: C): Promise<Types.InsertMinterTemporaryWalletMutation> {
+      return requester<Types.InsertMinterTemporaryWalletMutation, Types.InsertMinterTemporaryWalletMutationVariables>(InsertMinterTemporaryWalletDocument, variables, options) as Promise<Types.InsertMinterTemporaryWalletMutation>;
+    },
+    InsertMinterTemporaryWallets(variables: Types.InsertMinterTemporaryWalletsMutationVariables, options?: C): Promise<Types.InsertMinterTemporaryWalletsMutation> {
+      return requester<Types.InsertMinterTemporaryWalletsMutation, Types.InsertMinterTemporaryWalletsMutationVariables>(InsertMinterTemporaryWalletsDocument, variables, options) as Promise<Types.InsertMinterTemporaryWalletsMutation>;
+    },
+    GetMinterTemporaryWalletByEventPassId(variables: Types.GetMinterTemporaryWalletByEventPassIdQueryVariables, options?: C): Promise<Types.GetMinterTemporaryWalletByEventPassIdQuery> {
+      return requester<Types.GetMinterTemporaryWalletByEventPassIdQuery, Types.GetMinterTemporaryWalletByEventPassIdQueryVariables>(GetMinterTemporaryWalletByEventPassIdDocument, variables, options) as Promise<Types.GetMinterTemporaryWalletByEventPassIdQuery>;
+    },
+    GetMinterTemporaryWalletByLoyaltyCardId(variables: Types.GetMinterTemporaryWalletByLoyaltyCardIdQueryVariables, options?: C): Promise<Types.GetMinterTemporaryWalletByLoyaltyCardIdQuery> {
+      return requester<Types.GetMinterTemporaryWalletByLoyaltyCardIdQuery, Types.GetMinterTemporaryWalletByLoyaltyCardIdQueryVariables>(GetMinterTemporaryWalletByLoyaltyCardIdDocument, variables, options) as Promise<Types.GetMinterTemporaryWalletByLoyaltyCardIdQuery>;
+    },
+    GetMinterTemporaryWalletByCampaignId(variables: Types.GetMinterTemporaryWalletByCampaignIdQueryVariables, options?: C): Promise<Types.GetMinterTemporaryWalletByCampaignIdQuery> {
+      return requester<Types.GetMinterTemporaryWalletByCampaignIdQuery, Types.GetMinterTemporaryWalletByCampaignIdQueryVariables>(GetMinterTemporaryWalletByCampaignIdDocument, variables, options) as Promise<Types.GetMinterTemporaryWalletByCampaignIdQuery>;
+    },
+    InsertNftMintPassword(variables: Types.InsertNftMintPasswordMutationVariables, options?: C): Promise<Types.InsertNftMintPasswordMutation> {
+      return requester<Types.InsertNftMintPasswordMutation, Types.InsertNftMintPasswordMutationVariables>(InsertNftMintPasswordDocument, variables, options) as Promise<Types.InsertNftMintPasswordMutation>;
+    },
+    InsertNftMintPasswords(variables: Types.InsertNftMintPasswordsMutationVariables, options?: C): Promise<Types.InsertNftMintPasswordsMutation> {
+      return requester<Types.InsertNftMintPasswordsMutation, Types.InsertNftMintPasswordsMutationVariables>(InsertNftMintPasswordsDocument, variables, options) as Promise<Types.InsertNftMintPasswordsMutation>;
+    },
+    UpdateNftMintPasswordMinter(variables: Types.UpdateNftMintPasswordMinterMutationVariables, options?: C): Promise<Types.UpdateNftMintPasswordMinterMutation> {
+      return requester<Types.UpdateNftMintPasswordMinterMutation, Types.UpdateNftMintPasswordMinterMutationVariables>(UpdateNftMintPasswordMinterDocument, variables, options) as Promise<Types.UpdateNftMintPasswordMinterMutation>;
+    },
+    UpdateNftMintPasswordTokenId(variables: Types.UpdateNftMintPasswordTokenIdMutationVariables, options?: C): Promise<Types.UpdateNftMintPasswordTokenIdMutation> {
+      return requester<Types.UpdateNftMintPasswordTokenIdMutation, Types.UpdateNftMintPasswordTokenIdMutationVariables>(UpdateNftMintPasswordTokenIdDocument, variables, options) as Promise<Types.UpdateNftMintPasswordTokenIdMutation>;
+    },
+    GetNftMintPasswordsForContract(variables: Types.GetNftMintPasswordsForContractQueryVariables, options?: C): Promise<Types.GetNftMintPasswordsForContractQuery> {
+      return requester<Types.GetNftMintPasswordsForContractQuery, Types.GetNftMintPasswordsForContractQueryVariables>(GetNftMintPasswordsForContractDocument, variables, options) as Promise<Types.GetNftMintPasswordsForContractQuery>;
+    },
+    GetNftMintPasswordsForContractAvailable(variables: Types.GetNftMintPasswordsForContractAvailableQueryVariables, options?: C): Promise<Types.GetNftMintPasswordsForContractAvailableQuery> {
+      return requester<Types.GetNftMintPasswordsForContractAvailableQuery, Types.GetNftMintPasswordsForContractAvailableQueryVariables>(GetNftMintPasswordsForContractAvailableDocument, variables, options) as Promise<Types.GetNftMintPasswordsForContractAvailableQuery>;
+    },
     GetOrganizer(variables: Types.GetOrganizerQueryVariables, options?: C): Promise<Types.GetOrganizerQuery> {
       return requester<Types.GetOrganizerQuery, Types.GetOrganizerQueryVariables>(GetOrganizerDocument, variables, options) as Promise<Types.GetOrganizerQuery>;
     },
@@ -1400,6 +1808,15 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetOrganizerLatestEvents(variables: Types.GetOrganizerLatestEventsQueryVariables, options?: C): Promise<Types.GetOrganizerLatestEventsQuery> {
       return requester<Types.GetOrganizerLatestEventsQuery, Types.GetOrganizerLatestEventsQueryVariables>(GetOrganizerLatestEventsDocument, variables, options) as Promise<Types.GetOrganizerLatestEventsQuery>;
     },
+    GetShopifyCustomer(variables: Types.GetShopifyCustomerQueryVariables, options?: C): Promise<Types.GetShopifyCustomerQuery> {
+      return requester<Types.GetShopifyCustomerQuery, Types.GetShopifyCustomerQueryVariables>(GetShopifyCustomerDocument, variables, options) as Promise<Types.GetShopifyCustomerQuery>;
+    },
+    InsertShopifyCustomer(variables: Types.InsertShopifyCustomerMutationVariables, options?: C): Promise<Types.InsertShopifyCustomerMutation> {
+      return requester<Types.InsertShopifyCustomerMutation, Types.InsertShopifyCustomerMutationVariables>(InsertShopifyCustomerDocument, variables, options) as Promise<Types.InsertShopifyCustomerMutation>;
+    },
+    GetShopifyDomain(variables: Types.GetShopifyDomainQueryVariables, options?: C): Promise<Types.GetShopifyDomainQuery> {
+      return requester<Types.GetShopifyDomainQuery, Types.GetShopifyDomainQueryVariables>(GetShopifyDomainDocument, variables, options) as Promise<Types.GetShopifyDomainQuery>;
+    },
     GetEventPassNftById(variables: Types.GetEventPassNftByIdQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdQuery> {
       return requester<Types.GetEventPassNftByIdQuery, Types.GetEventPassNftByIdQueryVariables>(GetEventPassNftByIdDocument, variables, options) as Promise<Types.GetEventPassNftByIdQuery>;
     },
@@ -1408,6 +1825,24 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetEventPassNftByIdWithEventPassNftContract(variables: Types.GetEventPassNftByIdWithEventPassNftContractQueryVariables, options?: C): Promise<Types.GetEventPassNftByIdWithEventPassNftContractQuery> {
       return requester<Types.GetEventPassNftByIdWithEventPassNftContractQuery, Types.GetEventPassNftByIdWithEventPassNftContractQueryVariables>(GetEventPassNftByIdWithEventPassNftContractDocument, variables, options) as Promise<Types.GetEventPassNftByIdWithEventPassNftContractQuery>;
+    },
+    CreatePublishableApiKey(variables: Types.CreatePublishableApiKeyMutationVariables, options?: C): Promise<Types.CreatePublishableApiKeyMutation> {
+      return requester<Types.CreatePublishableApiKeyMutation, Types.CreatePublishableApiKeyMutationVariables>(CreatePublishableApiKeyDocument, variables, options) as Promise<Types.CreatePublishableApiKeyMutation>;
+    },
+    UpdatePublishableApiKey(variables: Types.UpdatePublishableApiKeyMutationVariables, options?: C): Promise<Types.UpdatePublishableApiKeyMutation> {
+      return requester<Types.UpdatePublishableApiKeyMutation, Types.UpdatePublishableApiKeyMutationVariables>(UpdatePublishableApiKeyDocument, variables, options) as Promise<Types.UpdatePublishableApiKeyMutation>;
+    },
+    GetPublishableApiKey(variables: Types.GetPublishableApiKeyQueryVariables, options?: C): Promise<Types.GetPublishableApiKeyQuery> {
+      return requester<Types.GetPublishableApiKeyQuery, Types.GetPublishableApiKeyQueryVariables>(GetPublishableApiKeyDocument, variables, options) as Promise<Types.GetPublishableApiKeyQuery>;
+    },
+    CreateSecretApiKey(variables: Types.CreateSecretApiKeyMutationVariables, options?: C): Promise<Types.CreateSecretApiKeyMutation> {
+      return requester<Types.CreateSecretApiKeyMutation, Types.CreateSecretApiKeyMutationVariables>(CreateSecretApiKeyDocument, variables, options) as Promise<Types.CreateSecretApiKeyMutation>;
+    },
+    UpdateSecretApiKey(variables: Types.UpdateSecretApiKeyMutationVariables, options?: C): Promise<Types.UpdateSecretApiKeyMutation> {
+      return requester<Types.UpdateSecretApiKeyMutation, Types.UpdateSecretApiKeyMutationVariables>(UpdateSecretApiKeyDocument, variables, options) as Promise<Types.UpdateSecretApiKeyMutation>;
+    },
+    GetSecretApiKey(variables: Types.GetSecretApiKeyQueryVariables, options?: C): Promise<Types.GetSecretApiKeyQuery> {
+      return requester<Types.GetSecretApiKeyQuery, Types.GetSecretApiKeyQueryVariables>(GetSecretApiKeyDocument, variables, options) as Promise<Types.GetSecretApiKeyQuery>;
     },
     CreateRoleAssignment(variables: Types.CreateRoleAssignmentMutationVariables, options?: C): Promise<Types.CreateRoleAssignmentMutation> {
       return requester<Types.CreateRoleAssignmentMutation, Types.CreateRoleAssignmentMutationVariables>(CreateRoleAssignmentDocument, variables, options) as Promise<Types.CreateRoleAssignmentMutation>;

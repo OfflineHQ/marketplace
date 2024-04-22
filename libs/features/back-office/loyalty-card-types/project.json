@@ -1,0 +1,23 @@
+{
+  "name": "features-back-office-loyalty-card-types",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/features/back-office/loyalty-card-types/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/features/back-office/loyalty-card-types",
+        "main": "libs/features/back-office/loyalty-card-types/src/index.ts",
+        "tsConfig": "libs/features/back-office/loyalty-card-types/tsconfig.lib.json",
+        "assets": ["libs/features/back-office/loyalty-card-types/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": []
+}

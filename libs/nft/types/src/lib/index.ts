@@ -1,6 +1,8 @@
 import { GetEventPassOrganizerFolderPath } from '@features/pass-common';
 import type {
-  GetEventPassNftContractNftsQuery,
+  GetEventPassNftContractNftsLazyMintedQuery,
+  GetNftMintPasswordsForContractAvailableQuery,
+  GetNftMintPasswordsForContractQuery,
   GetOrderFromIdQuery,
   GetOrdersFromStripeCheckoutSessionQuery,
   UpdateEventPassNftFromNftTransferMutation,
@@ -9,7 +11,10 @@ import type {
   EventPassNft as ImportedEventPassNft,
   NftTransfer as ImportedNftTransfer,
 } from '@gql/shared/types';
-import { EventPassNftContract_Insert_Input } from '@gql/shared/types';
+import {
+  EventPassNftContract_Insert_Input,
+  NftStatus_Enum,
+} from '@gql/shared/types';
 import { NFTMetadata as ThirdwebNFTMetadata } from '@thirdweb-dev/sdk';
 
 export type NftTransfer = ImportedNftTransfer;
@@ -39,6 +44,7 @@ export type OrderWithContractData =
 export enum ContractType {
   NFT_DROP = 'nft-drop',
   PACK = 'pack',
+  LOYALTY_CARD = 'loyalty-card',
 }
 
 export type EventSmallData = Omit<
@@ -65,10 +71,23 @@ export type EventPassNftContractObject = Required<
 > &
   EventPassNftContract_Insert_Input;
 
-export type RequiredEventPassNft = Required<
-  Pick<EventPassNft, 'contractAddress' | 'tokenId'>
->;
+interface EventPassNftContractNftLazyMinted
+  extends NonNullable<
+    NonNullable<
+      GetEventPassNftContractNftsLazyMintedQuery['eventPassNftContract'][0]['eventPassNfts']
+    >[0]
+  > {
+  status: NftStatus_Enum.LazyMinted;
+  tokenId: string;
+}
 
-export type EventPassNftContractNfts = NonNullable<
-  GetEventPassNftContractNftsQuery['eventPassNftContract'][0]['eventPassNfts']
->;
+export type EventPassNftContractNftsLazyMinted =
+  EventPassNftContractNftLazyMinted[];
+
+export type NftMintPasswordOrganizer = NonNullable<
+  GetNftMintPasswordsForContractQuery['nftMintPassword']
+>[0];
+
+export type NftMintPassword = NonNullable<
+  GetNftMintPasswordsForContractAvailableQuery['nftMintPassword']
+>[0];

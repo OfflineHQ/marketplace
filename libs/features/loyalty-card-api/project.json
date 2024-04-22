@@ -1,0 +1,30 @@
+{
+  "name": "features-loyalty-card-api",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/features/loyalty-card-api/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/features/loyalty-card-api",
+        "main": "libs/features/loyalty-card-api/src/index.ts",
+        "tsConfig": "libs/features/loyalty-card-api/tsconfig.lib.json",
+        "assets": ["libs/features/loyalty-card-api/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/features/loyalty-card-api/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

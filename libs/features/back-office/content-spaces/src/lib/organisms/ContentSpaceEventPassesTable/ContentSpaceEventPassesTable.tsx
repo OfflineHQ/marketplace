@@ -10,8 +10,10 @@ import {
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
 
-export interface ContentSpaceEventPassesTableProps
-  extends Pick<ContentSpaceFromOrganizerWithPasses, 'eventPasses'> {}
+export type ContentSpaceEventPassesTableProps = Pick<
+  ContentSpaceFromOrganizerWithPasses,
+  'eventPasses'
+>;
 
 export function ContentSpaceEventPassesTable({
   eventPasses,

@@ -15,6 +15,7 @@ import {
 import { SiweProvider } from '@next/siwe/provider';
 import { AppUser } from '@next/types';
 import { getNextAppURL, isBackOffice, isProd } from '@shared/server';
+// @ts-ignore
 import { Provider } from 'next-auth/providers';
 
 import { KycLevelName_Enum, KycStatus_Enum } from '@gql/shared/types';
@@ -186,6 +187,7 @@ export const createOptions = () =>
           // if token user has no email and kyc validated, mean we need to fetch it from SumSub to update the user jwt cookie with personal data
           if (
             userAccount?.kyc?.applicantId &&
+            !userAccount.kyc.applicantId.includes('fake-') && // here mean it's a test account so no need to get the data from sumsub
             userAccount.kyc.reviewStatus === KycStatus_Enum.Completed &&
             !token.user.email
           ) {

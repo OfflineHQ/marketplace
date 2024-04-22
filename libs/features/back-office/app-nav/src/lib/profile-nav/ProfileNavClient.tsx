@@ -300,6 +300,7 @@ export const ProfileNavClient = ({
     : undefined;
 
   const signOutUserAction = useCallback(async () => {
+    router.push('/');
     await logout({ refresh: true });
     toast({
       title: profileSectionsText.signOutTitle,

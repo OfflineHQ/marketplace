@@ -1,0 +1,10 @@
+query GetPublishableApiKey($apiKey: String!) {
+  publishableApiKey(where: { apiKey: { _eq: $apiKey } }) {
+    id
+    allowlist
+    organizerId
+    expiresAt
+    status
+    type
+  }
+}

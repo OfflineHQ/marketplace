@@ -7,7 +7,7 @@ import { Button, ButtonSkeleton, useToast } from '@ui/components';
 import { getErrorMessage } from '@utils';
 import { useLocale, useTranslations } from 'next-intl';
 import { checkEventPassNftFilesHash } from '../../actions/checkEventPassFilesHash';
-import { deployCollectionWrapper } from '../../actions/deployCollectionWrapper';
+import { deployEventPassCollectionWrapper } from '../../actions/deployEventPassCollectionWrapper';
 import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
 import { renameEventPassNftFiles } from '../../actions/renameEventPassNftFiles';
 import { resetEventPassNftFiles } from '../../actions/resetEventPassNftFiles';
@@ -63,7 +63,7 @@ export function EventPassDeployButtonClient({
 
       const signer = await provider?.getSigner();
       if (!signer) throw new Error('noSigner');
-      await deployCollectionWrapper({
+      await deployEventPassCollectionWrapper({
         signer,
         eventPassId: eventPass.id,
         organizerId,
@@ -98,7 +98,6 @@ export function EventPassDeployButtonClient({
       });
     }
   }
-  //TODO add deploy button + await for sdk with signer
   return provider ? (
     <Button block onClick={deployContract}>
       {children}

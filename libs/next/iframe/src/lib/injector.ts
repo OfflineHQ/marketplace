@@ -1,8 +1,6 @@
 'use client';
 
 import 'iframe-resizer/js/iframeResizer.contentWindow';
-import { useMutation } from '@tanstack/react-query';
-import { isServerSide } from '@utils';
 import { useEffect } from 'react';
 import { IFrameParentMessage, ReceiveMessageType } from './types';
 
@@ -19,7 +17,7 @@ const IFrameResizer: React.FC<IFrameResizerProps> = ({
 }) => {
   /* async function initializeIframeResizer() {
      // Proceed with dynamic import and setup
-     // @ts-expect-error
+     // @ts-ignore
      return import('iframe-resizer/js/iframeResizer.contentWindow').then(() => {
        (window as any).iFrameResizer = {
          log: true,

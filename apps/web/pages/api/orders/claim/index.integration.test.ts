@@ -1,4 +1,4 @@
-import { NftClaimable } from '@nft/thirdweb-admin';
+import { EventPassNftOrder } from '@nft/thirdweb-admin';
 import {
   applySeeds,
   createDbClient,
@@ -10,8 +10,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import handler from './index';
 
 jest.mock('@nft/thirdweb-admin', () => ({
-  NftClaimable: jest.fn().mockImplementation(() => ({
-    multicallClaim: jest.fn().mockResolvedValueOnce({ success: true }), // Assuming multicallClaim is async
+  EventPassNftOrder: jest.fn().mockImplementation(() => ({
+    multicallClaim: jest.fn().mockResolvedValueOnce({ success: true }),
   })),
 }));
 
@@ -84,7 +84,7 @@ describe('Orders Claim API', () => {
     await handler(mockReq, mockRes);
 
     const multicallClaimMock =
-      NftClaimable.mock.results[0].value.multicallClaim;
+      EventPassNftOrder.mock.results[0].value.multicallClaim;
 
     expect(multicallClaimMock).toHaveBeenCalled();
 

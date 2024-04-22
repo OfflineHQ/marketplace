@@ -1,0 +1,7 @@
+{
+  "name": "@integrations/api-keys",
+  "version": "0.0.1",
+  "type": "nodenext",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts"
+}

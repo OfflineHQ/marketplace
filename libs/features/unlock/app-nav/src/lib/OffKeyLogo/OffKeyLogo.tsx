@@ -6,7 +6,7 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     stroke="transparent"
-    // @ts-expect-error
+    // @ts-ignore
     class={props.className}
     {...props}
   >

@@ -27,7 +27,7 @@ async function ContentSpaceSheetPageContent({
   return (
     <ContentSpaceSheet
       contentSpace={contentSpace}
-      organizerId={user.role.organizerId}
+      organizerId={user.role?.organizerId}
     />
   );
 }

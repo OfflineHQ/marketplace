@@ -82,7 +82,9 @@
       "my-roles-text": "My Roles",
       "manage-roles-text": "Manage Roles",
       "events-management-text": "Events Management",
-      "content-spaces-text": "Content Spaces"
+      "content-spaces-text": "Content Spaces",
+      "loyalty-card-text": "Loyalty Card",
+      "shopify-text": "Shopify Campaigns"
     }
   },
   "Cart": {
@@ -360,7 +362,7 @@
           "EventPassDeployButtonClient": {
             "success-title": "Contract successfully deployed 🎉!",
             "success-description": "The {eventPassName} contract is now live on the blockchain. Your event pass is ready for use.",
-            "error-title": "There's been an error during the deployement of your contract"
+            "error-title": "There's been an error during the deployment of your contract"
           },
           "EventPassContractRevealButtonClient": {
             "reveal-contract": "Reveal your event pass",
@@ -525,6 +527,53 @@
     "OffKeyProfile": {
       "my-account": "My account",
       "sign-out": "Sign out"
+    }
+  },
+  "OrganizerLoyaltyCard": {
+    "Card": {
+      "title": "Loyalty Card",
+      "LoyaltyCardNftsInfos": {
+        "image": "Image",
+        "name": "Name",
+        "title": "NFTs Informations"
+      },
+      "LoyaltyCardNftsPasswords": {
+        "title": "'One time codes' associated to your NFTs"
+      },
+      "LoyaltyCardNftsPasswordsTable": {
+        "header-password": "'One time code'",
+        "header-minter-address": "Minter Address",
+        "header-show": "Show Details",
+        "header-copy": "Copy the password",
+        "header-delete": "Delete the password",
+        "menu-actions-label": "Actions",
+        "search-placeholder": "Search for a password...",
+        "menu-actions-helper-text": "Select an action to apply to the selected 'One Time Codes'",
+        "menu-actions-download": "Download the 'One Time Codes' in CSV",
+        "no-results-add-more-passwords": "No 'One Time Codes' added yet. Use the button below to create them.",
+        "add-passwords": "Create 'One Time Codes'",
+        "add-more-passwords": "Add more codes"
+      },
+      "LoyaltyCardFooter": {
+        "copied-contract-address": "Copied contract address",
+        "no-amount-set": "No amount set",
+        "deploy-contract": "Deploy the NFTs contract"
+      },
+      "LoyaltyCardDeployButtonClient": {
+        "success-title": "Contract successfully deployed 🎉!",
+        "success-description": "The Loyalty Card contract is now live on the blockchain.",
+        "error-title": "There's been an error during the deployment of your contract"
+      },
+      "AddMoreNftsPasswordsDrawer": {
+        "add-passwords-title": "Add 'One Time Codes' to your Loyalty Cards",
+        "add-passwords-description": "Those will be necessary for your clients in order to access their personalized Loyalty Cards",
+        "number": "Number of 'One Time Codes'",
+        "add-passwords-submit": "Create",
+        "add-passwords-cancel": "Cancel",
+        "success-title": "'One Time Codes' created",
+        "error-title": "Error while creating your 'One Time Codes'",
+        "success-description": "{numberOfPasswords, number} 'One Time Codes' has been added to your Loyalty Cards."
+      }
     }
   }
 }

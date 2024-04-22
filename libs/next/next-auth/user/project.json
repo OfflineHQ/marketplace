@@ -10,23 +10,14 @@
       "outputs": ["{options.outputFile}"]
     },
     "build": {
-      "executor": "@nx/rollup:rollup",
+      "executor": "@nx/js:swc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/next/next-auth/user",
         "tsConfig": "libs/next/next-auth/user/tsconfig.lib.json",
-        "project": "libs/next/next-auth/user/package.json",
-        "entryFile": "libs/next/next-auth/user/src/index.ts",
-        "external": ["react", "react-dom", "react/jsx-runtime"],
-        "rollupConfig": "@nx/react/plugins/bundle-rollup",
-        "compiler": "swc",
-        "assets": [
-          {
-            "glob": "libs/next/next-auth/user/README.md",
-            "input": ".",
-            "output": "."
-          }
-        ]
+        "packageJson": "libs/next/next-auth/user/package.json",
+        "main": "libs/next/next-auth/user/src/index.ts",
+        "assets": ["libs/next/next-auth/user/*.md"]
       }
     },
     "test": {

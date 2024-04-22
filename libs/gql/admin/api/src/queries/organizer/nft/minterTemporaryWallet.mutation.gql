@@ -1,0 +1,26 @@
+mutation InsertMinterTemporaryWallet(
+  $object: minterTemporaryWallet_insert_input!
+) {
+  insert_minterTemporaryWallet_one(object: $object) {
+    address
+    eventPassId
+    packId
+    loyaltyCardId
+    campaignId
+  }
+}
+
+mutation InsertMinterTemporaryWallets(
+  $objects: [minterTemporaryWallet_insert_input!]!
+) {
+  insert_minterTemporaryWallet(objects: $objects) {
+    affected_rows
+    returning {
+      address
+      eventPassId
+      packId
+      loyaltyCardId
+      campaignId
+    }
+  }
+}
