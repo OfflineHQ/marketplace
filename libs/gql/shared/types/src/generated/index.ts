@@ -15555,7 +15555,7 @@ export type Mutation_RootDelete_ShopifyCampaignParametersArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_ShopifyCampaignParameters_By_PkArgs = {
-  id: Scalars['uuid']['input'];
+  gateId: Scalars['String']['input'];
 };
 
 
@@ -18338,6 +18338,11 @@ export type Mutation_RootUpdate_StampNftArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_StampNftContractArgs = {
+  _append?: InputMaybe<StampNftContract_Append_Input>;
+  _delete_at_path?: InputMaybe<StampNftContract_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<StampNftContract_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<StampNftContract_Delete_Key_Input>;
+  _prepend?: InputMaybe<StampNftContract_Prepend_Input>;
   _set?: InputMaybe<StampNftContract_Set_Input>;
   where: StampNftContract_Bool_Exp;
 };
@@ -18365,6 +18370,11 @@ export type Mutation_RootUpdate_StampNftContractType_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_StampNftContract_By_PkArgs = {
+  _append?: InputMaybe<StampNftContract_Append_Input>;
+  _delete_at_path?: InputMaybe<StampNftContract_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<StampNftContract_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<StampNftContract_Delete_Key_Input>;
+  _prepend?: InputMaybe<StampNftContract_Prepend_Input>;
   _set?: InputMaybe<StampNftContract_Set_Input>;
   pk_columns: StampNftContract_Pk_Columns_Input;
 };
@@ -24696,7 +24706,7 @@ export type Query_RootShopifyCampaignParameters_AggregateArgs = {
 
 
 export type Query_RootShopifyCampaignParameters_By_PkArgs = {
-  id: Scalars['uuid']['input'];
+  gateId: Scalars['String']['input'];
 };
 
 
@@ -25781,22 +25791,20 @@ export type SecretApiKey_Updates = {
   where: SecretApiKey_Bool_Exp;
 };
 
-/** The shopifyCampaignParameters model is designed to mirror a Shopify token gating campaign operated by a brand on its own Shopify store. It manages various settings and metadata related to the campaign, ensuring efficient and accurate management of token gating campaigns. */
+/** This table stores parameters specific to Shopify campaigns, including gate identifiers and links to campaign data in the CRM. It supports context resolution in offline unlock iframes and enables tailored content display. */
 export type ShopifyCampaignParameters = {
   __typename?: 'shopifyCampaignParameters';
-  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
-  activityWebhookId?: Maybe<Scalars['String']['output']>;
-  /** Unique signing key used for secure operations related to the campaign activity webhook. */
-  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
-  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
-  campaignId: Scalars['String']['output'];
-  created_at: Scalars['timestamptz']['output'];
-  id: Scalars['uuid']['output'];
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  /** Primary key. Unique identifier corresponding to the gate id from Shopify campaigns. */
+  gateId: Scalars['String']['output'];
   /** Identifier for the organizer responsible for the campaign. */
   organizerId: Scalars['String']['output'];
-  /** Represents the current status of the campaign, either "DRAFT" or "PUBLISHED". */
+  /** Foreign key linking to the shopifyCampaignTemplate model in the CRM. */
+  shopifyCampaignTemplateId: Scalars['String']['output'];
   status?: Maybe<ShopifyCampaignStatus_Enum>;
-  updated_at: Scalars['timestamptz']['output'];
+  /** Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification. */
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregated selection of "shopifyCampaignParameters" */
@@ -25826,72 +25834,62 @@ export type ShopifyCampaignParameters_Bool_Exp = {
   _and?: InputMaybe<Array<ShopifyCampaignParameters_Bool_Exp>>;
   _not?: InputMaybe<ShopifyCampaignParameters_Bool_Exp>;
   _or?: InputMaybe<Array<ShopifyCampaignParameters_Bool_Exp>>;
-  activityWebhookId?: InputMaybe<String_Comparison_Exp>;
-  activityWebhookSigningKey?: InputMaybe<String_Comparison_Exp>;
-  campaignId?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
+  gateId?: InputMaybe<String_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
+  shopifyCampaignTemplateId?: InputMaybe<String_Comparison_Exp>;
   status?: InputMaybe<ShopifyCampaignStatus_Enum_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "shopifyCampaignParameters" */
 export const enum ShopifyCampaignParameters_Constraint {
-  /** unique or primary key constraint on columns "activityWebhookSigningKey" */
-  ShopifyCampaignParametersActivityWebhookSigningKeyKey = 'shopifyCampaignParameters_activityWebhookSigningKey_key',
-  /** unique or primary key constraint on columns "campaignId" */
-  ShopifyCampaignParametersCampaignIdKey = 'shopifyCampaignParameters_campaignId_key',
-  /** unique or primary key constraint on columns "id" */
+  /** unique or primary key constraint on columns "gateId" */
   ShopifyCampaignParametersPkey = 'shopifyCampaignParameters_pkey'
 };
 
 /** input type for inserting data into table "shopifyCampaignParameters" */
 export type ShopifyCampaignParameters_Insert_Input = {
-  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
-  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
-  /** Unique signing key used for secure operations related to the campaign activity webhook. */
-  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
-  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
-  campaignId?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Primary key. Unique identifier corresponding to the gate id from Shopify campaigns. */
+  gateId?: InputMaybe<Scalars['String']['input']>;
   /** Identifier for the organizer responsible for the campaign. */
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  /** Represents the current status of the campaign, either "DRAFT" or "PUBLISHED". */
+  /** Foreign key linking to the shopifyCampaignTemplate model in the CRM. */
+  shopifyCampaignTemplateId?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<ShopifyCampaignStatus_Enum>;
+  /** Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification. */
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
 export type ShopifyCampaignParameters_Max_Fields = {
   __typename?: 'shopifyCampaignParameters_max_fields';
-  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
-  activityWebhookId?: Maybe<Scalars['String']['output']>;
-  /** Unique signing key used for secure operations related to the campaign activity webhook. */
-  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
-  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
-  campaignId?: Maybe<Scalars['String']['output']>;
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['uuid']['output']>;
+  /** Primary key. Unique identifier corresponding to the gate id from Shopify campaigns. */
+  gateId?: Maybe<Scalars['String']['output']>;
   /** Identifier for the organizer responsible for the campaign. */
   organizerId?: Maybe<Scalars['String']['output']>;
+  /** Foreign key linking to the shopifyCampaignTemplate model in the CRM. */
+  shopifyCampaignTemplateId?: Maybe<Scalars['String']['output']>;
+  /** Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification. */
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
 export type ShopifyCampaignParameters_Min_Fields = {
   __typename?: 'shopifyCampaignParameters_min_fields';
-  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
-  activityWebhookId?: Maybe<Scalars['String']['output']>;
-  /** Unique signing key used for secure operations related to the campaign activity webhook. */
-  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
-  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
-  campaignId?: Maybe<Scalars['String']['output']>;
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
   created_at?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['uuid']['output']>;
+  /** Primary key. Unique identifier corresponding to the gate id from Shopify campaigns. */
+  gateId?: Maybe<Scalars['String']['output']>;
   /** Identifier for the organizer responsible for the campaign. */
   organizerId?: Maybe<Scalars['String']['output']>;
+  /** Foreign key linking to the shopifyCampaignTemplate model in the CRM. */
+  shopifyCampaignTemplateId?: Maybe<Scalars['String']['output']>;
+  /** Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification. */
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
@@ -25913,35 +25911,30 @@ export type ShopifyCampaignParameters_On_Conflict = {
 
 /** Ordering options when selecting data from "shopifyCampaignParameters". */
 export type ShopifyCampaignParameters_Order_By = {
-  activityWebhookId?: InputMaybe<Order_By>;
-  activityWebhookSigningKey?: InputMaybe<Order_By>;
-  campaignId?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
+  gateId?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
+  shopifyCampaignTemplateId?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: shopifyCampaignParameters */
 export type ShopifyCampaignParameters_Pk_Columns_Input = {
-  id: Scalars['uuid']['input'];
+  /** Primary key. Unique identifier corresponding to the gate id from Shopify campaigns. */
+  gateId: Scalars['String']['input'];
 };
 
 /** select columns of table "shopifyCampaignParameters" */
 export const enum ShopifyCampaignParameters_Select_Column {
   /** column name */
-  ActivityWebhookId = 'activityWebhookId',
-  /** column name */
-  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
-  /** column name */
-  CampaignId = 'campaignId',
-  /** column name */
   CreatedAt = 'created_at',
   /** column name */
-  Id = 'id',
+  GateId = 'gateId',
   /** column name */
   OrganizerId = 'organizerId',
+  /** column name */
+  ShopifyCampaignTemplateId = 'shopifyCampaignTemplateId',
   /** column name */
   Status = 'status',
   /** column name */
@@ -25950,18 +25943,16 @@ export const enum ShopifyCampaignParameters_Select_Column {
 
 /** input type for updating data in table "shopifyCampaignParameters" */
 export type ShopifyCampaignParameters_Set_Input = {
-  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
-  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
-  /** Unique signing key used for secure operations related to the campaign activity webhook. */
-  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
-  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
-  campaignId?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Primary key. Unique identifier corresponding to the gate id from Shopify campaigns. */
+  gateId?: InputMaybe<Scalars['String']['input']>;
   /** Identifier for the organizer responsible for the campaign. */
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  /** Represents the current status of the campaign, either "DRAFT" or "PUBLISHED". */
+  /** Foreign key linking to the shopifyCampaignTemplate model in the CRM. */
+  shopifyCampaignTemplateId?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<ShopifyCampaignStatus_Enum>;
+  /** Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification. */
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
@@ -25975,35 +25966,29 @@ export type ShopifyCampaignParameters_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type ShopifyCampaignParameters_Stream_Cursor_Value_Input = {
-  /** The "activityWebhookId" column stores the identifier for the Alchemy webhook that tracks NFT transfers related to the campaign. */
-  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
-  /** Unique signing key used for secure operations related to the campaign activity webhook. */
-  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
-  /** Unique identifier for each Shopify campaign, storing the gate ID from Shopify. */
-  campaignId?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp indicating when the record was initially created, set automatically by the system. */
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Primary key. Unique identifier corresponding to the gate id from Shopify campaigns. */
+  gateId?: InputMaybe<Scalars['String']['input']>;
   /** Identifier for the organizer responsible for the campaign. */
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  /** Represents the current status of the campaign, either "DRAFT" or "PUBLISHED". */
+  /** Foreign key linking to the shopifyCampaignTemplate model in the CRM. */
+  shopifyCampaignTemplateId?: InputMaybe<Scalars['String']['input']>;
   status?: InputMaybe<ShopifyCampaignStatus_Enum>;
+  /** Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification. */
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "shopifyCampaignParameters" */
 export const enum ShopifyCampaignParameters_Update_Column {
   /** column name */
-  ActivityWebhookId = 'activityWebhookId',
-  /** column name */
-  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
-  /** column name */
-  CampaignId = 'campaignId',
-  /** column name */
   CreatedAt = 'created_at',
   /** column name */
-  Id = 'id',
+  GateId = 'gateId',
   /** column name */
   OrganizerId = 'organizerId',
+  /** column name */
+  ShopifyCampaignTemplateId = 'shopifyCampaignTemplateId',
   /** column name */
   Status = 'status',
   /** column name */
@@ -26550,7 +26535,9 @@ export type StampNftMetadataArgs = {
 /** Represents stamp NFT contracts used for marketing purposes. Each contract is associated with a type indicating the nature of the campaign, like a purchase completion event. */
 export type StampNftContract = {
   __typename?: 'stampNftContract';
-  /** A unique identifier for the marketing campaign associated with this contract. */
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  /** A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID. */
   campaignId: Scalars['String']['output'];
   /** The identifier of the blockchain network where the contract is deployed. */
   chainId: Scalars['String']['output'];
@@ -26558,10 +26545,18 @@ export type StampNftContract = {
   contractAddress: Scalars['String']['output'];
   created_at: Scalars['timestamptz']['output'];
   id?: Maybe<Scalars['uuid']['output']>;
+  /** Structured metadata associated with the contract, stored in a JSONB format for flexibility. */
+  metadata: Scalars['jsonb']['output'];
   organizerId: Scalars['String']['output'];
   /** The type of marketing campaign the contract is associated with, e.g., SHOPIFY_PURCHASE_COMPLETED. */
   type: StampNftContractType_Enum;
   updated_at: Scalars['timestamptz']['output'];
+};
+
+
+/** Represents stamp NFT contracts used for marketing purposes. Each contract is associated with a type indicating the nature of the campaign, like a purchase completion event. */
+export type StampNftContractMetadataArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Defines contract types for the stampNftContract, representing various marketing campaigns or actions. */
@@ -26728,16 +26723,25 @@ export type StampNftContract_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type StampNftContract_Append_Input = {
+  /** Structured metadata associated with the contract, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
 /** Boolean expression to filter rows from the table "stampNftContract". All fields are combined with a logical 'AND'. */
 export type StampNftContract_Bool_Exp = {
   _and?: InputMaybe<Array<StampNftContract_Bool_Exp>>;
   _not?: InputMaybe<StampNftContract_Bool_Exp>;
   _or?: InputMaybe<Array<StampNftContract_Bool_Exp>>;
+  activityWebhookId?: InputMaybe<String_Comparison_Exp>;
+  activityWebhookSigningKey?: InputMaybe<String_Comparison_Exp>;
   campaignId?: InputMaybe<String_Comparison_Exp>;
   chainId?: InputMaybe<String_Comparison_Exp>;
   contractAddress?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  metadata?: InputMaybe<Jsonb_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
   type?: InputMaybe<StampNftContractType_Enum_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -26745,13 +26749,35 @@ export type StampNftContract_Bool_Exp = {
 
 /** unique or primary key constraints on table "stampNftContract" */
 export const enum StampNftContract_Constraint {
+  /** unique or primary key constraint on columns "activityWebhookSigningKey" */
+  StampNftContractActivityWebhookSigningKeyKey = 'stampNftContract_activityWebhookSigningKey_key',
   /** unique or primary key constraint on columns "chainId", "contractAddress" */
   StampNftContractPkey = 'stampNftContract_pkey'
 };
 
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type StampNftContract_Delete_At_Path_Input = {
+  /** Structured metadata associated with the contract, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type StampNftContract_Delete_Elem_Input = {
+  /** Structured metadata associated with the contract, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type StampNftContract_Delete_Key_Input = {
+  /** Structured metadata associated with the contract, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** input type for inserting data into table "stampNftContract" */
 export type StampNftContract_Insert_Input = {
-  /** A unique identifier for the marketing campaign associated with this contract. */
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  /** A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID. */
   campaignId?: InputMaybe<Scalars['String']['input']>;
   /** The identifier of the blockchain network where the contract is deployed. */
   chainId?: InputMaybe<Scalars['String']['input']>;
@@ -26759,6 +26785,8 @@ export type StampNftContract_Insert_Input = {
   contractAddress?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Structured metadata associated with the contract, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
   organizerId?: InputMaybe<Scalars['String']['input']>;
   /** The type of marketing campaign the contract is associated with, e.g., SHOPIFY_PURCHASE_COMPLETED. */
   type?: InputMaybe<StampNftContractType_Enum>;
@@ -26768,7 +26796,9 @@ export type StampNftContract_Insert_Input = {
 /** aggregate max on columns */
 export type StampNftContract_Max_Fields = {
   __typename?: 'stampNftContract_max_fields';
-  /** A unique identifier for the marketing campaign associated with this contract. */
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  /** A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID. */
   campaignId?: Maybe<Scalars['String']['output']>;
   /** The identifier of the blockchain network where the contract is deployed. */
   chainId?: Maybe<Scalars['String']['output']>;
@@ -26783,7 +26813,9 @@ export type StampNftContract_Max_Fields = {
 /** aggregate min on columns */
 export type StampNftContract_Min_Fields = {
   __typename?: 'stampNftContract_min_fields';
-  /** A unique identifier for the marketing campaign associated with this contract. */
+  activityWebhookId?: Maybe<Scalars['String']['output']>;
+  activityWebhookSigningKey?: Maybe<Scalars['String']['output']>;
+  /** A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID. */
   campaignId?: Maybe<Scalars['String']['output']>;
   /** The identifier of the blockchain network where the contract is deployed. */
   chainId?: Maybe<Scalars['String']['output']>;
@@ -26813,11 +26845,14 @@ export type StampNftContract_On_Conflict = {
 
 /** Ordering options when selecting data from "stampNftContract". */
 export type StampNftContract_Order_By = {
+  activityWebhookId?: InputMaybe<Order_By>;
+  activityWebhookSigningKey?: InputMaybe<Order_By>;
   campaignId?: InputMaybe<Order_By>;
   chainId?: InputMaybe<Order_By>;
   contractAddress?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  metadata?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
   type?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -26831,8 +26866,18 @@ export type StampNftContract_Pk_Columns_Input = {
   contractAddress: Scalars['String']['input'];
 };
 
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type StampNftContract_Prepend_Input = {
+  /** Structured metadata associated with the contract, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
 /** select columns of table "stampNftContract" */
 export const enum StampNftContract_Select_Column {
+  /** column name */
+  ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
   /** column name */
   CampaignId = 'campaignId',
   /** column name */
@@ -26844,6 +26889,8 @@ export const enum StampNftContract_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Metadata = 'metadata',
+  /** column name */
   OrganizerId = 'organizerId',
   /** column name */
   Type = 'type',
@@ -26853,7 +26900,9 @@ export const enum StampNftContract_Select_Column {
 
 /** input type for updating data in table "stampNftContract" */
 export type StampNftContract_Set_Input = {
-  /** A unique identifier for the marketing campaign associated with this contract. */
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  /** A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID. */
   campaignId?: InputMaybe<Scalars['String']['input']>;
   /** The identifier of the blockchain network where the contract is deployed. */
   chainId?: InputMaybe<Scalars['String']['input']>;
@@ -26861,6 +26910,8 @@ export type StampNftContract_Set_Input = {
   contractAddress?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Structured metadata associated with the contract, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
   organizerId?: InputMaybe<Scalars['String']['input']>;
   /** The type of marketing campaign the contract is associated with, e.g., SHOPIFY_PURCHASE_COMPLETED. */
   type?: InputMaybe<StampNftContractType_Enum>;
@@ -26877,7 +26928,9 @@ export type StampNftContract_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type StampNftContract_Stream_Cursor_Value_Input = {
-  /** A unique identifier for the marketing campaign associated with this contract. */
+  activityWebhookId?: InputMaybe<Scalars['String']['input']>;
+  activityWebhookSigningKey?: InputMaybe<Scalars['String']['input']>;
+  /** A unique identifier for the marketing campaign associated with this contract. For instance, a Shopify campaign ID. */
   campaignId?: InputMaybe<Scalars['String']['input']>;
   /** The identifier of the blockchain network where the contract is deployed. */
   chainId?: InputMaybe<Scalars['String']['input']>;
@@ -26885,6 +26938,8 @@ export type StampNftContract_Stream_Cursor_Value_Input = {
   contractAddress?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  /** Structured metadata associated with the contract, stored in a JSONB format for flexibility. */
+  metadata?: InputMaybe<Scalars['jsonb']['input']>;
   organizerId?: InputMaybe<Scalars['String']['input']>;
   /** The type of marketing campaign the contract is associated with, e.g., SHOPIFY_PURCHASE_COMPLETED. */
   type?: InputMaybe<StampNftContractType_Enum>;
@@ -26893,6 +26948,10 @@ export type StampNftContract_Stream_Cursor_Value_Input = {
 
 /** update columns of table "stampNftContract" */
 export const enum StampNftContract_Update_Column {
+  /** column name */
+  ActivityWebhookId = 'activityWebhookId',
+  /** column name */
+  ActivityWebhookSigningKey = 'activityWebhookSigningKey',
   /** column name */
   CampaignId = 'campaignId',
   /** column name */
@@ -26904,6 +26963,8 @@ export const enum StampNftContract_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Metadata = 'metadata',
+  /** column name */
   OrganizerId = 'organizerId',
   /** column name */
   Type = 'type',
@@ -26912,6 +26973,16 @@ export const enum StampNftContract_Update_Column {
 };
 
 export type StampNftContract_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<StampNftContract_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<StampNftContract_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<StampNftContract_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<StampNftContract_Delete_Key_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<StampNftContract_Prepend_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<StampNftContract_Set_Input>;
   /** filter the rows which have to be updated */
@@ -29816,7 +29887,7 @@ export type Subscription_RootShopifyCampaignParameters_AggregateArgs = {
 
 
 export type Subscription_RootShopifyCampaignParameters_By_PkArgs = {
-  id: Scalars['uuid']['input'];
+  gateId: Scalars['String']['input'];
 };
 
 
