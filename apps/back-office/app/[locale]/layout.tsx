@@ -1,4 +1,5 @@
 import { siteConfig } from '@back-office/config/site';
+import '@back-office/styles/globals.css';
 import { Currency_Enum_Not_Const } from '@currency/types';
 import {
   AppNavLayout,

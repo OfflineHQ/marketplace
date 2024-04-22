@@ -1,5 +1,6 @@
 import { locales } from '@next/i18n';
 import { IFrameProvider } from '@next/iframe';
+import '@unlock/styles/globals.css';
 // import { IFrameResizer } from '@next/iframe';
 import { ReactQueryProviders } from '@next/react-query';
 import { WalletProvider } from '@next/wallet';

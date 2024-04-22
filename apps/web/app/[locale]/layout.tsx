@@ -13,6 +13,7 @@ import { Toaster } from '@ui/components';
 import { cn } from '@ui/shared';
 import { ThemeProvider } from '@ui/theme';
 import { siteConfig } from '@web/config/site';
+import '@web/styles/globals.css';
 import { Metadata, Viewport } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { Inter } from 'next/font/google';
