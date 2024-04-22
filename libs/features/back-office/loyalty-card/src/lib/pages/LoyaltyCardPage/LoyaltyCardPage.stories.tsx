@@ -16,6 +16,7 @@ const meta: Meta<typeof LoyaltyCardPage> = {
     loyaltyCard,
   },
   parameters: {
+    chromatic: { disable: true },
     layout: 'fullscreen',
     nextjs: {
       appDirectory: true,
